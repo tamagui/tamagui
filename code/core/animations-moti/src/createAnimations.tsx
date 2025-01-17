@@ -255,17 +255,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         dontAnimate = style
       }
 
-      // without this, the driver breaks on native
-      // stringifying -> parsing fixes that
-      const styles = (() => {
-        if (process.env.TAMAGUI_TARGET === 'native') {
-          const animateStr = JSON.stringify(animate)
-          return React.useMemo(() => JSON.parse(animateStr), [animateStr])
-        } else {
-          return animate
-        }
-      })()
-
+      const styles = animate
       const isExiting = Boolean(presence?.[1])
       const presenceContext = React.useContext(PresenceContext)
       const usePresenceValue = (presence || undefined) as any

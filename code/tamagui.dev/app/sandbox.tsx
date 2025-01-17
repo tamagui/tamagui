@@ -3,6 +3,14 @@ import { styled, View } from '@tamagui/web'
 export default function Sandbox() {
   return (
     <Test
+      animation="bouncy"
+      debug="verbose"
+      pressStyle={{
+        scale: 2,
+      }}
+      hoverStyle={{
+        scale: 1.5,
+      }}
       $platform-web={{
         position: 'fixed',
       }}

@@ -27,13 +27,7 @@ type InternalHooks = {
     staticConfig: StaticConfig
   ) => any
 
-  useChildren?: (
-    elementType: any,
-    children: any,
-    viewProps: Record<string, any>,
-    events: TamaguiComponentEvents | null,
-    staticConfig: StaticConfig
-  ) => any
+  useChildren?: (elementType: any, children: any, viewProps: Record<string, any>) => any
 
   getBaseViews?: () => {
     View: any

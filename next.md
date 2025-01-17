@@ -1,3 +1,6 @@
+2.0:
+  - remove inlineProps, usedKeys, partial extraction
+
 - v4 config:
   - focus styles in the default v3 config are kind of wack
   - must pass in colors separately but it exports the defaults still

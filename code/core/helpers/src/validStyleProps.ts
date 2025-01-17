@@ -341,7 +341,4 @@ export const validPseudoKeys = {
   }),
 }
 
-export const validStyles = {
-  ...validPseudoKeys,
-  ...stylePropsView,
-}
+export const validStyles = stylePropsView

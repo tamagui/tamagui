@@ -2,12 +2,12 @@ import { isWeb } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 import { variableToString } from '../createVariable'
-import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
+import { log } from '../helpers/log'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ChangedThemeResponse } from '../hooks/useTheme'
 import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
-import { log } from '../helpers/log'
 
 export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProps, ref) {
   // @ts-expect-error only for internal views
@@ -50,7 +50,7 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
 
   return getThemedChildren(themeState, finalChildren, props, isRoot, stateRef)
 })
-Theme['displayName'] = 'Theme'
+
 Theme['avoidForwardRef'] = true
 
 export function getThemedChildren(
@@ -119,9 +119,9 @@ export function getThemedChildren(
   }
 
   const elementsWithContext = (
-    <ThemeManagerIDContext.Provider value={themeManager.id}>
+    <ThemeManagerContext.Provider value={themeManager}>
       {next}
-    </ThemeManagerIDContext.Provider>
+    </ThemeManagerContext.Provider>
   )
 
   if (forceClassName === false) {

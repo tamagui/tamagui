@@ -1,5 +1,4 @@
 import {
-  animations,
   fonts,
   media,
   selectionStyles,
@@ -9,6 +8,7 @@ import {
 } from '@tamagui/config/v3'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { createTamagui } from 'tamagui'
+import { animations } from './animations'
 
 export const config = createTamagui({
   animations,

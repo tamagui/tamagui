@@ -1,8 +1,6 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-
 import { getConfig } from '../config'
-import { isDevTools } from '../constants/isDevTools'
 import type { Variable } from '../createVariable'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
@@ -14,13 +12,17 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { normalizeStyle } from './normalizeStyle'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
+import { normalizeStyle } from './normalizeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 
-export const propMapper: PropMapper = (key, value, styleState) => {
+export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
+  if (disabled) {
+    return map(key, value)
+  }
+
   lastFontFamilyToken = null
 
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
@@ -28,43 +30,26 @@ export const propMapper: PropMapper = (key, value, styleState) => {
     if (key === 'elevationAndroid') return
   }
 
-  const { conf, styleProps, fontFamily, staticConfig } = styleState
+  const { conf, styleProps, staticConfig } = styleState
 
   if (value === 'unset') {
     const unsetVal = conf.unset?.[key]
     if (unsetVal != null) {
       value = unsetVal
     } else {
-      // if no unset found, return nothing
+      // if no unset found, do nothing
       return
     }
   }
 
-  // only used by compiler
-  if (styleProps.fallbackProps) {
-    styleState.props = styleProps.fallbackProps
-  }
-
   const { variants } = staticConfig
-
-  if (
-    process.env.NODE_ENV === 'development' &&
-    fontFamily &&
-    fontFamily[0] === '$' &&
-    !(fontFamily in conf.fontsParsed)
-  ) {
-    console.warn(
-      `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
-        conf.fontsParsed
-      ).join(', ')}`
-    )
-  }
 
   if (!styleProps.noExpand) {
     if (variants && key in variants) {
       const variantValue = resolveVariants(key, value, styleProps, styleState, '')
       if (variantValue) {
-        return variantValue
+        variantValue.forEach(([key, value]) => map(key, value))
+        return
       }
     }
   }
@@ -76,7 +61,7 @@ export const propMapper: PropMapper = (key, value, styleState) => {
     }
   }
 
-  if (value) {
+  if (value != null) {
     if (value[0] === '$') {
       value = getTokenForKey(key, value, styleProps.resolveValues, styleState)
     } else if (isVariable(value)) {
@@ -85,13 +70,21 @@ export const propMapper: PropMapper = (key, value, styleState) => {
   }
 
   if (value != null) {
-    const result = (styleProps.noExpand ? null : expandStyle(key, value)) || [
-      [key, value],
-    ]
     if (key === 'fontFamily' && lastFontFamilyToken) {
-      fontFamilyCache.set(result, lastFontFamilyToken)
+      styleState.fontFamily = lastFontFamilyToken
     }
-    return result
+
+    const expanded = styleProps.noExpand ? null : expandStyle(key, value)
+
+    if (expanded) {
+      const max = expanded.length
+      for (let i = 0; i < max; i++) {
+        const [nkey, nvalue] = expanded[i]
+        map(nkey, nvalue)
+      }
+    } else {
+      map(key, value)
+    }
   }
 }
 
@@ -183,7 +176,7 @@ const resolveVariants: StyleResolver = (
 
     // store any changed font family (only support variables for now)
     if (fontFamilyResult && fontFamilyResult[0] === '$') {
-      fontFamilyCache.set(next, getVariableValue(fontFamilyResult))
+      lastFontFamilyToken = getVariableValue(fontFamilyResult)
     }
 
     return next
@@ -216,9 +209,6 @@ const variableToFontNameCache = new WeakMap<Variable, string>()
 
 // special helper for special font family
 const fontFamilyCache = new WeakMap()
-export const getPropMappedFontFamily = (expanded?: any) => {
-  return expanded && fontFamilyCache.get(expanded)
-}
 
 const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead
@@ -473,7 +463,9 @@ function resolveVariableValue(
   valOrVar: Variable | any,
   resolveValues?: ResolveVariableAs
 ) {
-  if (resolveValues === 'none') return valOrVar
+  if (resolveValues === 'none') {
+    return valOrVar
+  }
   if (isVariable(valOrVar)) {
     if (resolveValues === 'value') {
       return valOrVar.val

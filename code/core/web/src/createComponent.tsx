@@ -50,7 +50,6 @@ import { ThemeDebug } from './views/ThemeDebug'
 /**
  * All things that need one-time setup after createTamagui is called
  */
-let tamaguiConfig: TamaguiInternalConfig
 let time: any
 
 let debugKeyListeners: Set<Function> | undefined
@@ -359,8 +358,6 @@ export function createComponent<
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
 
-    if (process.env.NODE_ENV === 'development' && time) time`use-context`
-
     const isTaggable = !Component || typeof Component === 'string'
     const tagProp = props.tag
     // default to tag, fallback to component (when both strings)
@@ -402,11 +399,9 @@ export function createComponent<
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
-
     if (typeof curStateRef.isListeningToTheme === 'boolean') {
-      themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
+      themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
     }
-
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated
@@ -467,10 +462,10 @@ export function createComponent<
 
     const [themeState, theme] = useThemeWithState(themeStateProps)
 
+    if (process.env.NODE_ENV === 'development' && time) time`theme`
+
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
-
-    if (process.env.NODE_ENV === 'development' && time) time`theme`
 
     const mediaState = useMedia(componentContext, debugProp)
 
@@ -816,6 +811,7 @@ export function createComponent<
         attachHover,
         shouldAttach,
         needsHoverState,
+        pseudos,
       })
     }
 
@@ -998,14 +994,10 @@ export function createComponent<
 
     let useChildrenResult: any
     if (hooks.useChildren) {
-      useChildrenResult = hooks.useChildren(
-        elementType,
-        content,
-        viewProps,
-        events,
-        staticConfig
-      )
+      useChildrenResult = hooks.useChildren(elementType, content, viewProps)
     }
+
+    if (process.env.NODE_ENV === 'development' && time) time`use-children`
 
     if (useChildrenResult) {
       content = useChildrenResult
