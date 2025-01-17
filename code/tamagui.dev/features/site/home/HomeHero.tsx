@@ -60,7 +60,7 @@ const HeroSubTitle = memo(() => {
           UI&nbsp;kit
         </Tag>
       </Link>{' '}
-      for&nbsp;React&nbsp;·&nbsp;every&nbsp;platform
+      React&nbsp;and&nbsp;React&nbsp;Native
     </Subtitle>
   )
 })

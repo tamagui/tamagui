@@ -388,8 +388,9 @@ export const useChangeThemeEffect = (
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     if (themeManager) {
-      if (getShouldUpdateTheme(props, parentManager, keys, themeState)) {
-        const next = createState(themeState)
+      const nextState = getShouldUpdateTheme(props, parentManager, keys, themeState)
+      if (nextState) {
+        const next = createState(themeState, undefined, nextState)
         if (next.state?.name !== themeState.state?.name) {
           setThemeState(next)
           console.error = preventWarnSetState

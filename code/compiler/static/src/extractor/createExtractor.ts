@@ -1185,8 +1185,6 @@ export function createExtractor(
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
 
-            console.log('attempint eval on', value, 'got', styleValue)
-
             // never flatten if a prop isn't a valid static attribute
             // only post prop-mapping
             if (!variants[name] && !isValidStyleKey(name, staticConfig)) {
