@@ -39,6 +39,10 @@ const include = [
   '@discordjs/core',
 ]
 
+const optimize = process.env.DISABLE_OPTIMIZATION
+  ? false
+  : process.env.NODE_ENV === 'production'
+
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
@@ -78,7 +82,7 @@ export default {
   plugins: [
     one({
       react: {
-        compiler: process.env.NODE_ENV === 'production',
+        compiler: optimize,
       },
 
       deps: {
@@ -127,7 +131,7 @@ export default {
     // removeReactNativeWebAnimatedPlugin(),
 
     tamaguiPlugin({
-      optimize: process.env.NODE_ENV === 'production',
+      optimize: optimize,
       // useReactNativeWebLite: true,
     }),
   ],

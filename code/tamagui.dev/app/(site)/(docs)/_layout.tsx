@@ -10,10 +10,10 @@ import { Link } from '~/components/Link'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { loader } from './ui/[...subpath]'
 
 export default function DocsLayout() {
-  const frontmatter = useLoader(loader)?.frontmatter
+  // TODO this isn't supported, we should probably get loaders in layouts working
+  // const frontmatter = useLoader(loader)?.frontmatter
   const { currentPath, next, previous, documentVersionPath } = useDocsMenu()
 
   const getMDXPath = (path: string) => {
@@ -22,9 +22,10 @@ export default function DocsLayout() {
       const parts = path.split('/')
       const componentName = parts[2]
 
-      const version = frontmatter?.version || '1.0.0'
+      // const version = frontmatter?.version || '1.0.0'
 
-      return `/docs/components/${componentName}/${version}`
+      // return `/docs/components/${componentName}/${version}`
+      return `/docs/components/${componentName}`
     }
     return `${path}${documentVersionPath}`
   }
