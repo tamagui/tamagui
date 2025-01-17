@@ -327,6 +327,32 @@ const preventWarnSetState =
         return ogLog(a, ...args)
       }
 
+function getShouldUpdateTheme(
+  props: UseThemeWithStateProps,
+  parentManager: ThemeManager | null,
+  keys: MutableRefObject<string[] | null> | undefined,
+  themeState: ChangedThemeResponse | undefined,
+  nextState?: ThemeManagerState | null,
+  forceShouldChange = false
+) {
+  const isTrackingTheme = !isServer && keys?.current
+  if (
+    !isTrackingTheme &&
+    (!themeState || themeState.isNewTheme) &&
+    !getHasThemeUpdatingProps(props)
+  ) {
+    return
+  }
+  const next = nextState || themeState?.themeManager?.getState(props, parentManager)
+  if (forceShouldChange) {
+    return next
+  }
+  if (!next || next.theme === themeState?.state?.theme) {
+    return
+  }
+  return next
+}
+
 export const useChangeThemeEffect = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -360,31 +386,9 @@ export const useChangeThemeEffect = (
   const { state, mounted, isNewTheme, themeManager, prevState } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
 
-  function getShouldUpdateTheme(
-    manager = themeManager,
-    nextState?: ThemeManagerState | null,
-    prevState: ThemeManagerState | undefined = state,
-    forceShouldChange = false
-  ) {
-    const isTrackingTheme = !isServer && keys?.current
-    if (!manager) return
-    if (!isTrackingTheme && !isNewTheme && !getHasThemeUpdatingProps(props)) {
-      return
-    }
-    const next = nextState || manager.getState(props, parentManager)
-    if (forceShouldChange) {
-      return next
-    }
-    if (!next) return
-    if (next.theme === prevState?.theme) {
-      return
-    }
-    return next
-  }
-
   if (process.env.TAMAGUI_TARGET === 'native') {
     if (themeManager) {
-      if (getShouldUpdateTheme(themeManager)) {
+      if (getShouldUpdateTheme(props, parentManager, keys, themeState)) {
         const next = createState(themeState)
         if (next.state?.name !== themeState.state?.name) {
           setThemeState(next)
@@ -423,9 +427,14 @@ export const useChangeThemeEffect = (
         return
       }
 
-      if (isNewTheme || getShouldUpdateTheme(themeManager)) {
+      if (isNewTheme || isRoot) {
         activeThemeManagers.add(themeManager)
-        setThemeState(createState)
+      }
+
+      const updated = getShouldUpdateTheme(props, parentManager, keys, themeState)
+
+      if (updated) {
+        setThemeState((prev) => createState(prev, undefined, updated))
       }
 
       // for updateTheme/replaceTheme
@@ -442,7 +451,7 @@ export const useChangeThemeEffect = (
         (name, manager, forced) => {
           const force =
             forced ||
-            Boolean(!isServer && keys?.current) ||
+            (!isServer ? (keys?.current ? true : undefined) : undefined) ||
             props.deopt ||
             // this fixes themeable() not updating with the new fastSchemeChange setting
             (process.env.TAMAGUI_TARGET === 'native'
@@ -519,8 +528,12 @@ export const useChangeThemeEffect = (
     themeManager,
   }
 
-  function createState(prev?: ChangedThemeResponse, force = false): ChangedThemeResponse {
-    if (prev && !force) {
+  function createState(
+    prev?: ChangedThemeResponse,
+    force = false,
+    foundNextState?: ThemeManagerState
+  ): ChangedThemeResponse {
+    if (prev && !foundNextState && !keys?.current && !force) {
       return prev
     }
 
@@ -530,10 +543,7 @@ export const useChangeThemeEffect = (
     const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
     if (hasThemeUpdatingProps) {
-      const getNewThemeManager = () => {
-        return new ThemeManager(props, isRoot ? 'root' : parentManager)
-      }
-
+      const parentManagerProp = isRoot ? 'root' : parentManager
       if (prev?.themeManager) {
         themeManager = prev.themeManager
 
@@ -543,20 +553,30 @@ export const useChangeThemeEffect = (
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = force || Boolean(keys?.current?.length)
-        const next = themeManager.getState(props, parentManager)
-        const nextState = getShouldUpdateTheme(
-          themeManager,
-          next,
-          prev.state,
-          forceChange
-        )
+        const forceChange = force || (keys?.current ? true : undefined)
+
+        let nextState: ThemeManagerState | null | undefined = null
+
+        // avoid some work if we already found it
+        if (foundNextState) {
+          nextState = foundNextState
+        } else {
+          const next = themeManager.getState(props, parentManager)
+          nextState = getShouldUpdateTheme(
+            props,
+            parentManager,
+            keys,
+            prev,
+            next,
+            forceChange
+          )
+        }
 
         if (nextState) {
           state = nextState
 
           if (!prev.isNewTheme && !isRoot) {
-            themeManager = getNewThemeManager()
+            themeManager = new ThemeManager(props, parentManagerProp)
           } else {
             themeManager.updateState(nextState)
           }
@@ -569,7 +589,7 @@ export const useChangeThemeEffect = (
           }
         }
       } else {
-        themeManager = getNewThemeManager()
+        themeManager = new ThemeManager(props, parentManagerProp)
         state = { ...themeManager.state }
       }
     }
