@@ -153,7 +153,7 @@ export default function TakeoutPage() {
               }}
               size="$4"
             >
-              Buy
+              Purchase
             </PurchaseButton>
           </YStack>
 
