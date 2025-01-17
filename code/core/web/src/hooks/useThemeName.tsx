@@ -1,9 +1,7 @@
-import React from 'react'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-
+import React from 'react'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ThemeName } from '../types'
-import { getThemeManager } from './useTheme'
 
 export function useThemeName(opts?: { parent?: true }): ThemeName {
   const manager = React.useContext(ThemeManagerContext)!
