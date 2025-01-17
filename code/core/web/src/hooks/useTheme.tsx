@@ -405,6 +405,7 @@ export const useChangeThemeEffect = (
       useLayoutEffect(() => {
         // one homepage breaks on useTheme() in MetaTheme if this isnt set up
         if (themeManager && state && prevState && state !== prevState) {
+          console.warn('NOTIFY ON CHANGE', isRoot, state.name, props, themeManager.id)
           themeManager.notify()
         }
       }, [state])
@@ -429,6 +430,7 @@ export const useChangeThemeEffect = (
 
       if (isNewTheme || isRoot) {
         activeThemeManagers.add(themeManager)
+        if (isRoot) globalThis['rtm'] = themeManager
       }
 
       const updated = getShouldUpdateTheme(props, parentManager, keys, themeState)
@@ -458,7 +460,7 @@ export const useChangeThemeEffect = (
               ? props['disable-child-theme']
               : undefined)
 
-          const shouldTryUpdate = force ?? Boolean(keys?.current?.length || isNewTheme)
+          const shouldTryUpdate = force ?? Boolean(keys?.current || isNewTheme)
 
           if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
             // prettier-ignore
@@ -473,7 +475,9 @@ export const useChangeThemeEffect = (
           }
 
           if (shouldTryUpdate) {
-            setThemeState((prev) => createState(prev, force))
+            setThemeState((prev) => {
+              return createState(prev, true)
+            })
           }
         },
         themeManager.id
