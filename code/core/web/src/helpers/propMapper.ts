@@ -76,8 +76,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     const expanded = styleProps.noExpand ? null : expandStyle(key, value)
 
     if (expanded) {
-      console.log('expanded', key, value)
-      for (const [key, value] of expanded) {
+      const max = expanded.length
+      for (let i = 0; i < max; i++) {
+        const [key, value] = expanded[i]
         map(key, value)
       }
     } else {

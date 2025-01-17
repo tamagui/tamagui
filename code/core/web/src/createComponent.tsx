@@ -998,13 +998,7 @@ export function createComponent<
 
     let useChildrenResult: any
     if (hooks.useChildren) {
-      useChildrenResult = hooks.useChildren(
-        elementType,
-        content,
-        viewProps,
-        events,
-        staticConfig
-      )
+      useChildrenResult = hooks.useChildren(elementType, content, viewProps)
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-children`

@@ -18,8 +18,6 @@ export function createOptimizedView(
   const TextAncestor = baseViews.TextAncestor
   const ViewNativeComponent = baseViews.View
 
-  // return createElement(ViewNativeComponent, viewProps, children)
-
   const {
     accessibilityElementsHidden,
     accessibilityLabel,

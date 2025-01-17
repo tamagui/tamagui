@@ -209,7 +209,7 @@ setupHooks({
 
   // attempt at properly fixing RN input, but <Pressable><TextInput /> just doesnt work on RN
   ...(process.env.TAMAGUI_TARGET === 'native' && {
-    useChildren(elementType, children, viewProps, events, staticConfig) {
+    useChildren(elementType, children, viewProps) {
       if (process.env.NODE_ENV === 'test') {
         // test mode - just use regular views since optimizations cause weirdness
         return
