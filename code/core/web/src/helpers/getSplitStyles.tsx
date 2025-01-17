@@ -642,7 +642,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (val == null) return
-      // if (key in usedKeys) return
+      if (key in usedKeys) return
 
       if (process.env.TAMAGUI_TARGET === 'native') {
         if (key === 'pointerEvents') {
@@ -703,15 +703,6 @@ export const getSplitStyles: StyleSplitter = (
           return
         }
 
-        if (!shouldDoClasses || process.env.IS_STATIC === 'is_static') {
-          pseudos ||= {}
-          pseudos[key] ||= {}
-          if (process.env.IS_STATIC === 'is_static') {
-            Object.assign(pseudos[key], pseudoStyleObject)
-            return
-          }
-        }
-
         // on server only generate classes for enterStyle
         if (shouldDoClasses && !isExit) {
           const pseudoStyles = getStyleAtomic(pseudoStyleObject, descriptor)
@@ -741,6 +732,15 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (!shouldDoClasses || isExit || isEnter) {
+          pseudos ||= {}
+          pseudos[key] ||= {}
+
+          // if compiler we can just set this and continue on our way
+          if (process.env.IS_STATIC === 'is_static') {
+            Object.assign(pseudos[key], pseudoStyleObject)
+            return
+          }
+
           // we don't skip this if disabled because we need to animate to default states that aren't even set:
           // so if we have <Stack enterStyle={{ opacity: 0 }} />
           // we need to animate from 0 => 1 once enter is finished
@@ -775,9 +775,9 @@ export const getSplitStyles: StyleSplitter = (
               const shouldMerge = importance >= curImportance
 
               if (shouldMerge) {
-                pseudos ||= {}
-                pseudos[key] ||= {}
-                pseudos[key][pkey] = val
+                // pseudos ||= {}
+                // pseudos[key] ||= {}
+                // pseudos[key][pkey] = val
                 mergeStyle(styleState, pkey, val)
               }
 

@@ -1,9 +1,9 @@
 import {
   fonts,
   media,
+  mediaQueryDefaultActive,
   selectionStyles,
   themes,
-  mediaQueryDefaultActive,
   tokens,
 } from '@tamagui/config/v3'
 import { shorthands } from '@tamagui/shorthands/v2'

@@ -2,6 +2,7 @@
   "name": "@tamagui/config",
   "version": "1.121.12",
   "types": "./types/index.d.ts",
+  "type": "module",
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,

@@ -1,7 +1,6 @@
-import { Check } from '@tamagui/lucide-icons'
-import { isWeb, useTheme } from '@tamagui/web'
 import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import {
+  Button,
   type ColorTokens,
   Switch as TamaguiSwitch,
   type SwitchProps as TamaguiSwitchProps,
@@ -23,6 +22,8 @@ export default function Sandbox() {
 
   return (
     <>
+      <Button>hello world</Button>
+
       <View p={20} onPress={() => setX(Date.now())}>
         <Text>
           Re-render {x} in {time}ms
