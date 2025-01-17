@@ -59,7 +59,7 @@
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:clean": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
-    "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink": "yarn profile react-18 && yarn workspace @tamagui/kitchen-sink start",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink start:web",
     "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
@@ -105,6 +105,13 @@
   },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
+    "react-18": {
+      "applied": false,
+      "resolutions": {
+        "react": "18.3.1",
+        "react-dom": "18.3.1"
+      }
+    },
     "one": {
       "applied": false,
       "resolutions": {
