@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/colors",
-  "version": "1.121.11",
+  "version": "1.121.12",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -21,7 +21,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.11"
+    "@tamagui/build": "1.121.12"
   },
   "exports": {
     "./package.json": "./package.json",
