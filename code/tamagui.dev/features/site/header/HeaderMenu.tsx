@@ -135,6 +135,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent({
 }: { open: boolean }) {
   return (
     <Popover.Content
+      debug="visualize"
       mt={-5}
       bw={0}
       enterStyle={{ x: -10, o: 0 }}

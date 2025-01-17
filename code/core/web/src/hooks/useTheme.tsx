@@ -625,7 +625,9 @@ export const useChangeThemeEffect = (
     const shouldReturnPrev =
       prev &&
       !force &&
+      // isEqualShallow uses the second arg as the keys so this should compare without state first...
       isEqualShallow(prev, response) &&
+      // ... and then compare just the state, because we make a new state obj but is likely the same
       isEqualShallow(prev.state, state)
 
     if (prev && shouldReturnPrev) {
