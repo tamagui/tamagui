@@ -952,13 +952,16 @@ export function createExtractor(
             .get('openingElement')
             .get('attributes')
             .flatMap((path) => {
+              // avoid work
+              if (shouldDeopt) {
+                return
+              }
+
               try {
                 const res = evaluateAttribute(path)
                 if (!res) {
                   path.remove()
                 }
-
-                console.log('evaluated', res)
 
                 return res
               } catch (err: any) {
@@ -1049,6 +1052,14 @@ export function createExtractor(
             }
 
             const name = attribute.name.name
+
+            // in tamagui style is handled at the end of the style loop so its not as simple as just
+            // adding this as a "style" property
+            // its not used often when using tamagui so not optimizing it for now
+            if (name === 'style') {
+              shouldDeopt = true
+              return null
+            }
 
             if (excludeProps?.has(name)) {
               if (shouldPrintDebug) {
