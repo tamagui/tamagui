@@ -22,7 +22,7 @@ import {
   XStack,
   ZStack,
 } from 'tamagui'
-import { CardFrame, Input, Text, YStack } from 'tamagui'
+import { CardFrame, Text, YStack } from 'tamagui'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 
 const Chip = styled(View, {
@@ -341,14 +341,7 @@ const ComponentPreview = {
         >
           Follow
         </Button>
-        <Button
-          theme="accent"
-          mt={'$-6'}
-          ml={'$-6'}
-          alignSelf="center"
-          icon={Share}
-          size="$4"
-        >
+        <Button mt={'$-6'} ml={'$-6'} alignSelf="center" icon={Share} size="$4">
           Share
         </Button>
       </ZStack>
@@ -359,7 +352,6 @@ const ComponentPreview = {
     return (
       <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center">
         <YStack
-          // p="$4"
           borderWidth={1}
           w="100%"
           borderColor="$borderColor"
