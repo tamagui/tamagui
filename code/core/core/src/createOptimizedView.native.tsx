@@ -81,11 +81,6 @@ export function createOptimizedView(
     }
   }
 
-  if (Array.isArray(viewProps.style)) {
-    console.warn('???')
-    // viewProps.style = baseViews.StyleSheet.flatten(viewProps.style)
-  }
-
   if (viewProps.style?.pointerEvents) {
     viewProps.pointerEvents = viewProps.style?.pointerEvents
   }
