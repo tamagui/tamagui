@@ -120,7 +120,7 @@ function isValidStyleKey(
   validStyles: Record<string, boolean>,
   accept?: Record<string, any>
 ) {
-  return key in validStyles || accept?.[key]
+  return key in validStyles ? true : accept && key in accept
 }
 
 export const getSplitStyles: StyleSplitter = (
@@ -331,12 +331,6 @@ export const getSplitStyles: StyleSplitter = (
 
     const valInitType = typeof valInit
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
-
-    // performance: we can avoid a lot of work here
-    if (isValidStyleKeyInit && valInitType === 'number') {
-      mergeStyle(styleState, keyInit, valInit)
-      continue
-    }
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -637,29 +631,32 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    const disablePropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
+    const disablePropMap = isMediaOrPseudo || !isStyleLikeKey
 
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
+      if ((disablePropMap && !isMediaOrPseudo) || isHOC) {
+        viewProps[key] = val
+        return
+      }
+
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         consoleGroupCollapsed('  💠 expanded', keyInit, '=>', key)
         log(val)
         console.groupEnd()
       }
+
       if (val == null) return
       if (key in usedKeys) return
-      if (isHOC) {
-        viewProps[key] = val
-        return
-      }
+
       if (process.env.TAMAGUI_TARGET === 'native') {
         if (key === 'pointerEvents') {
           viewProps[key] = val
           return
         }
       }
-      isValidStyleKeyInit = isValidStyleKey(key, validStyles, accept)
+
       if (
-        isValidStyleKeyInit ||
+        isValidStyleKey(key, validStyles, accept) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
       ) {
         mergeStyle(styleState, key, val)

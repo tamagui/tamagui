@@ -5,7 +5,7 @@
 
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config'
+import { getSetting } from '../config'
 import {
   webToNativeDynamicExpansion,
   webToNativeExpansion,
@@ -27,7 +27,7 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       return [
         ['flexGrow', value],
         ['flexShrink', 1],
-        ['flexBasis', getConfig().settings.styleCompat === 'react-native' ? 0 : 'auto'],
+        ['flexBasis', getSetting('styleCompat') === 'react-native' ? 0 : 'auto'],
       ]
     }
 

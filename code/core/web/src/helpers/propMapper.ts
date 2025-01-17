@@ -61,7 +61,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
-  if (value) {
+  if (value != null) {
     if (value[0] === '$') {
       value = getTokenForKey(key, value, styleProps.resolveValues, styleState)
     } else if (isVariable(value)) {
@@ -79,8 +79,8 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     if (expanded) {
       const max = expanded.length
       for (let i = 0; i < max; i++) {
-        const [key, value] = expanded[i]
-        map(key, value)
+        const [nkey, nvalue] = expanded[i]
+        map(nkey, nvalue)
       }
     } else {
       map(key, value)

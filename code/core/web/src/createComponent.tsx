@@ -811,6 +811,7 @@ export function createComponent<
         attachHover,
         shouldAttach,
         needsHoverState,
+        pseudos,
       })
     }
 
