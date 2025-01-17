@@ -2,6 +2,7 @@ v2:
 
 note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
+  - remove theme inverse in favor of sub-theme you can define (v4 helps here)
   - button-next is mostly ready now to replace button:
     - remove old button, move new button into place, fix issues around the site/bento
     - docs update: we should show "headless" style and non-headless
