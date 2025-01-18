@@ -141,6 +141,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_gray: {
         borderColor: string;
@@ -280,6 +286,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_green: {
         borderColor: string;
@@ -419,6 +431,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_orange: {
         borderColor: string;
@@ -558,6 +576,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_pink: {
         borderColor: string;
@@ -697,6 +721,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_purple: {
         borderColor: string;
@@ -836,6 +866,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_red: {
         borderColor: string;
@@ -975,6 +1011,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_yellow: {
         borderColor: string;
@@ -1114,6 +1156,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_blue: {
         borderColor: string;
@@ -1253,6 +1301,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_gray: {
         borderColor: string;
@@ -1392,6 +1446,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_green: {
         borderColor: string;
@@ -1531,6 +1591,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_orange: {
         borderColor: string;
@@ -1670,6 +1736,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_pink: {
         borderColor: string;
@@ -1809,6 +1881,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_purple: {
         borderColor: string;
@@ -1948,6 +2026,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_red: {
         borderColor: string;
@@ -2087,6 +2171,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_yellow: {
         borderColor: string;
@@ -2226,6 +2316,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light: {
         borderColor: string;
@@ -2365,6 +2461,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark: {
         borderColor: string;
@@ -2504,6 +2606,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_blue_alt1: {
         borderColor: string;
@@ -2643,6 +2751,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_blue_alt2: {
         borderColor: string;
@@ -2782,6 +2896,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_green_alt1: {
         borderColor: string;
@@ -2921,6 +3041,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_green_alt2: {
         borderColor: string;
@@ -3060,6 +3186,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_orange_alt1: {
         borderColor: string;
@@ -3199,6 +3331,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_orange_alt2: {
         borderColor: string;
@@ -3338,6 +3476,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_pink_alt1: {
         borderColor: string;
@@ -3477,6 +3621,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_pink_alt2: {
         borderColor: string;
@@ -3616,6 +3766,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_purple_alt1: {
         borderColor: string;
@@ -3755,6 +3911,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_purple_alt2: {
         borderColor: string;
@@ -3894,6 +4056,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_red_alt1: {
         borderColor: string;
@@ -4033,6 +4201,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_red_alt2: {
         borderColor: string;
@@ -4172,6 +4346,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_yellow_alt1: {
         borderColor: string;
@@ -4311,6 +4491,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_yellow_alt2: {
         borderColor: string;
@@ -4450,6 +4636,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_blue_alt1: {
         borderColor: string;
@@ -4589,6 +4781,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_blue_alt2: {
         borderColor: string;
@@ -4728,6 +4926,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_green_alt1: {
         borderColor: string;
@@ -4867,6 +5071,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_green_alt2: {
         borderColor: string;
@@ -5006,6 +5216,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_orange_alt1: {
         borderColor: string;
@@ -5145,6 +5361,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_orange_alt2: {
         borderColor: string;
@@ -5284,6 +5506,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_pink_alt1: {
         borderColor: string;
@@ -5423,6 +5651,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_pink_alt2: {
         borderColor: string;
@@ -5562,6 +5796,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_purple_alt1: {
         borderColor: string;
@@ -5701,6 +5941,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_purple_alt2: {
         borderColor: string;
@@ -5840,6 +6086,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_red_alt1: {
         borderColor: string;
@@ -5979,6 +6231,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_red_alt2: {
         borderColor: string;
@@ -6118,6 +6376,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_yellow_alt1: {
         borderColor: string;
@@ -6257,6 +6521,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_yellow_alt2: {
         borderColor: string;
@@ -6396,6 +6666,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_gray_alt1: {
         borderColor: string;
@@ -6535,6 +6811,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_gray_alt2: {
         borderColor: string;
@@ -6674,6 +6956,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_gray_alt1: {
         borderColor: string;
@@ -6813,6 +7101,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_gray_alt2: {
         borderColor: string;
@@ -6952,6 +7246,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_blue_surface1: {
         borderColor: string;
@@ -7091,6 +7391,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_blue_surface2: {
         borderColor: string;
@@ -7230,6 +7536,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_blue_surface3: {
         borderColor: string;
@@ -7369,6 +7681,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_gray_surface1: {
         borderColor: string;
@@ -7508,6 +7826,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_gray_surface2: {
         borderColor: string;
@@ -7647,6 +7971,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_gray_surface3: {
         borderColor: string;
@@ -7786,6 +8116,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_green_surface1: {
         borderColor: string;
@@ -7925,6 +8261,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_green_surface2: {
         borderColor: string;
@@ -8064,6 +8406,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_green_surface3: {
         borderColor: string;
@@ -8203,6 +8551,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_orange_surface1: {
         borderColor: string;
@@ -8342,6 +8696,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_orange_surface2: {
         borderColor: string;
@@ -8481,6 +8841,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_orange_surface3: {
         borderColor: string;
@@ -8620,6 +8986,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_pink_surface1: {
         borderColor: string;
@@ -8759,6 +9131,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_pink_surface2: {
         borderColor: string;
@@ -8898,6 +9276,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_pink_surface3: {
         borderColor: string;
@@ -9037,6 +9421,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_purple_surface1: {
         borderColor: string;
@@ -9176,6 +9566,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_purple_surface2: {
         borderColor: string;
@@ -9315,6 +9711,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_purple_surface3: {
         borderColor: string;
@@ -9454,6 +9856,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_red_surface1: {
         borderColor: string;
@@ -9593,6 +10001,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_red_surface2: {
         borderColor: string;
@@ -9732,6 +10146,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_red_surface3: {
         borderColor: string;
@@ -9871,6 +10291,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_yellow_surface1: {
         borderColor: string;
@@ -10010,6 +10436,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_yellow_surface2: {
         borderColor: string;
@@ -10149,6 +10581,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_yellow_surface3: {
         borderColor: string;
@@ -10288,6 +10726,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_blue_surface1: {
         borderColor: string;
@@ -10427,6 +10871,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_blue_surface2: {
         borderColor: string;
@@ -10566,6 +11016,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_blue_surface3: {
         borderColor: string;
@@ -10705,6 +11161,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_gray_surface1: {
         borderColor: string;
@@ -10844,6 +11306,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_gray_surface2: {
         borderColor: string;
@@ -10983,6 +11451,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_gray_surface3: {
         borderColor: string;
@@ -11122,6 +11596,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_green_surface1: {
         borderColor: string;
@@ -11261,6 +11741,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_green_surface2: {
         borderColor: string;
@@ -11400,6 +11886,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_green_surface3: {
         borderColor: string;
@@ -11539,6 +12031,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_orange_surface1: {
         borderColor: string;
@@ -11678,6 +12176,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_orange_surface2: {
         borderColor: string;
@@ -11817,6 +12321,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_orange_surface3: {
         borderColor: string;
@@ -11956,6 +12466,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_pink_surface1: {
         borderColor: string;
@@ -12095,6 +12611,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_pink_surface2: {
         borderColor: string;
@@ -12234,6 +12756,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_pink_surface3: {
         borderColor: string;
@@ -12373,6 +12901,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_purple_surface1: {
         borderColor: string;
@@ -12512,6 +13046,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_purple_surface2: {
         borderColor: string;
@@ -12651,6 +13191,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_purple_surface3: {
         borderColor: string;
@@ -12790,6 +13336,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_red_surface1: {
         borderColor: string;
@@ -12929,6 +13481,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_red_surface2: {
         borderColor: string;
@@ -13068,6 +13626,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_red_surface3: {
         borderColor: string;
@@ -13207,6 +13771,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_yellow_surface1: {
         borderColor: string;
@@ -13346,6 +13916,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_yellow_surface2: {
         borderColor: string;
@@ -13485,6 +14061,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_yellow_surface3: {
         borderColor: string;
@@ -13624,6 +14206,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_accent: {
         borderColor: string;
@@ -13763,6 +14351,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_accent: {
         borderColor: string;
@@ -13902,6 +14496,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_tan: {
         borderColor: string;
@@ -14041,6 +14641,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_tan_alt1: {
         borderColor: string;
@@ -14180,6 +14786,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_tan_alt2: {
         borderColor: string;
@@ -14319,6 +14931,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_tan_surface1: {
         borderColor: string;
@@ -14458,6 +15076,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_tan_surface2: {
         borderColor: string;
@@ -14597,6 +15221,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     light_tan_surface3: {
         borderColor: string;
@@ -14736,6 +15366,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_tan: {
         borderColor: string;
@@ -14875,6 +15511,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_tan_alt1: {
         borderColor: string;
@@ -15014,6 +15656,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_tan_alt2: {
         borderColor: string;
@@ -15153,6 +15801,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_tan_surface1: {
         borderColor: string;
@@ -15292,6 +15946,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_tan_surface2: {
         borderColor: string;
@@ -15431,6 +16091,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
     dark_tan_surface3: {
         borderColor: string;
@@ -15570,6 +16236,12 @@ export declare const tamaguiThemes: {
         color025: string;
         color05: string;
         color075: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
     };
 };
 //# sourceMappingURL=v4-tamagui.d.ts.map

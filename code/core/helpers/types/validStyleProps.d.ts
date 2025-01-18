@@ -1129,13 +1129,5 @@ export declare const validStyles: {
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
-    focusVisibleStyle?: boolean | undefined;
-    enterStyle: boolean;
-    exitStyle: boolean;
-    hoverStyle: boolean;
-    pressStyle: boolean;
-    focusStyle: boolean;
-    disabledStyle: boolean;
-    focusWithinStyle: boolean;
 };
 //# sourceMappingURL=validStyleProps.d.ts.map

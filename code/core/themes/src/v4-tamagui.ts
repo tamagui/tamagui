@@ -41,11 +41,6 @@ const colorTokens = {
   },
 }
 
-const lightShadowColor = 'rgba(0,0,0,0.04)'
-const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
-const darkShadowColor = 'rgba(0,0,0,0.2)'
-const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
-
 const darkPalette = [
   '#050505',
   '#151515',
@@ -76,6 +71,24 @@ const lightPalette = [
   'hsl(0, 0%, 9.0%)',
 ]
 
+const lightShadows = {
+  shadow1: 'rgba(0,0,0,0.04)',
+  shadow2: 'rgba(0,0,0,0.08)',
+  shadow3: 'rgba(0,0,0,0.16)',
+  shadow4: 'rgba(0,0,0,0.24)',
+  shadow5: 'rgba(0,0,0,0.32)',
+  shadow6: 'rgba(0,0,0,0.4)',
+}
+
+const darkShadows = {
+  shadow1: 'rgba(0,0,0,0.2)',
+  shadow2: 'rgba(0,0,0,0.3)',
+  shadow3: 'rgba(0,0,0,0.4)',
+  shadow4: 'rgba(0,0,0,0.5)',
+  shadow5: 'rgba(0,0,0,0.6)',
+  shadow6: 'rgba(0,0,0,0.7)',
+}
+
 /**
  * Default themes for the tamagui.dev site
  * If you'd like to create your own themes, use `createThemeSuite`
@@ -99,10 +112,8 @@ export const tamaguiThemes = createThemeSuite({
         ...colorTokens.light.purple,
         ...colorTokens.light.red,
         ...colorTokens.light.yellow,
-        shadowColor: lightShadowColorStrong,
-        shadowColorHover: lightShadowColorStrong,
-        shadowColorPress: lightShadowColor,
-        shadowColorFocus: lightShadowColor,
+        ...lightShadows,
+        shadowColor: lightShadows.shadow1,
       },
       dark: {
         ...colorTokens.dark.blue,
@@ -113,10 +124,8 @@ export const tamaguiThemes = createThemeSuite({
         ...colorTokens.dark.purple,
         ...colorTokens.dark.red,
         ...colorTokens.dark.yellow,
-        shadowColor: darkShadowColorStrong,
-        shadowColorHover: darkShadowColorStrong,
-        shadowColorPress: darkShadowColor,
-        shadowColorFocus: darkShadowColor,
+        ...darkShadows,
+        shadowColor: darkShadows.shadow1,
       },
     },
   },
