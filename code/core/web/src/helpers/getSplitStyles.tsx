@@ -775,9 +775,11 @@ export const getSplitStyles: StyleSplitter = (
               const shouldMerge = importance >= curImportance
 
               if (shouldMerge) {
-                // pseudos ||= {}
-                // pseudos[key] ||= {}
-                // pseudos[key][pkey] = val
+                if (process.env.IS_STATIC === 'is_static') {
+                  pseudos ||= {}
+                  pseudos[key] ||= {}
+                  pseudos[key][pkey] = val
+                }
                 mergeStyle(styleState, pkey, val)
               }
 

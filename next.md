@@ -18,6 +18,9 @@
   }
 
 
+is this a bug? the is_static conditional is odd, maybe backward
+- if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
+
 ---
 
 v3
