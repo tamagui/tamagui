@@ -23,7 +23,9 @@ type TestProps = {
 const tamaguiConfig = createTamagui(config)
 
 export const Provider = (props) => (
-  <TamaguiProvider config={tamaguiConfig}>{props.children}</TamaguiProvider>
+  <TamaguiProvider defaultTheme="dark" config={tamaguiConfig}>
+    {props.children}
+  </TamaguiProvider>
 )
 
 const child = <Text>hello world</Text>
