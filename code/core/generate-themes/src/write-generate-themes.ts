@@ -22,7 +22,7 @@ export async function writeGeneratedThemes(
   }
 
   await Promise.all([
-    fs.writeFile(outPath, generated),
+    fs.writeFile(outPath, `// @ts-nocheck\n` + generated),
     state && tamaguiDotDirExists
       ? fs.writeFile(themeBuilderStatePath, JSON.stringify(state))
       : null,

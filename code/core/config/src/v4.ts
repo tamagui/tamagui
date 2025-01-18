@@ -12,6 +12,8 @@ export { fonts } from './fonts'
 export { media, mediaQueryDefaultActive } from './media'
 export { animations } from './v4-animations'
 
+export { tamaguiThemes, themes } from '@tamagui/themes/v4'
+
 export const config = {
   animations,
   media,
