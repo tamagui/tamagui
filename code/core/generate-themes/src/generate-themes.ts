@@ -44,6 +44,9 @@ export async function generateThemes(inputFile: string) {
     return out
   }
 
+  let og = process.env.TAMAGUI_KEEP_THEMES
+  process.env.TAMAGUI_KEEP_THEMES = '1'
+
   try {
     const requiredThemes = require(inputFilePath)
     const themes =
@@ -79,6 +82,7 @@ export async function generateThemes(inputFile: string) {
   } catch (err) {
     console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
   } finally {
+    process.env.TAMAGUI_KEEP_THEMES = og
     Module.prototype.require = ogRequire
   }
 }
@@ -166,6 +170,10 @@ function t(a: [number, number][]) {
 
   // add all themes
   let nameI = 0
+
+  let themeTypes = `type ThemeNames =`
+  let exported = `export const themes: Record<ThemeNames, Theme> = {`
+
   dedupedThemes.forEach((theme) => {
     nameI++
     const key = JSON.stringify(theme)
@@ -173,9 +181,16 @@ function t(a: [number, number][]) {
     const name = `n${nameI}`
     const baseTheme = `const ${name} = ${objectToJsString(theme, keys, valueToIndex)}`
     out += `\n${baseTheme}`
-    const duplicateThemes = names.map((n) => `export const ${n} = ${name}`)
-    out += `\n\n` + duplicateThemes.join('\n')
+    names.forEach((n) => {
+      exported += `\n  ${n}: ${name},`
+
+      if (n.toLowerCase() === n) {
+        themeTypes += `\n | '${n}'`
+      }
+    })
   })
+
+  out += `\n\n${themeTypes}\n\n${exported}\n}\n`
 
   return out
 }
@@ -238,14 +253,14 @@ function themeBuilderIntercept(
 function purgeCache(moduleName) {
   // Traverse the cache looking for the files
   // loaded by the specified module name
-  searchCache(moduleName, function (mod) {
+  searchCache(moduleName, (mod) => {
     delete require.cache[mod.id]
   })
 
   // Remove cached paths to the module.
   // Thanks to @bentael for pointing this out.
   // @ts-ignore
-  Object.keys(module.constructor._pathCache).forEach(function (cacheKey) {
+  Object.keys(module.constructor._pathCache).forEach((cacheKey) => {
     if (cacheKey.indexOf(moduleName) > 0) {
       // @ts-ignore
       delete module.constructor._pathCache[cacheKey]
@@ -273,7 +288,7 @@ function searchCache(moduleName, callback) {
       // Go over each of the module's children and
       // traverse them
       // @ts-ignore
-      mod.children.forEach(function (child) {
+      mod.children.forEach((child) => {
         traverse(child, depth + 1)
       })
 
