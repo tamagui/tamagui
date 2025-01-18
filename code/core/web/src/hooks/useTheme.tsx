@@ -439,7 +439,12 @@ export const useChangeThemeEffect = (
 
       if (isNewTheme || isRoot) {
         activeThemeManagers.add(themeManager)
-        if (isRoot) globalThis['rtm'] = themeManager
+
+        if (process.env.NODE_ENV === 'development') {
+          if (isRoot) {
+            globalThis['TamaguiRootThemeManager'] ||= themeManager
+          }
+        }
       }
 
       const updated = getShouldUpdateTheme(
