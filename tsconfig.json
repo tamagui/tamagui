@@ -21,6 +21,8 @@
     "outDir": "dist",
     "importHelpers": true,
     "isolatedModules": true,
+    // TODO: turn on
+    // "isolatedDeclarations": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,

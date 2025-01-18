@@ -131,7 +131,7 @@ export default {
     // removeReactNativeWebAnimatedPlugin(),
 
     tamaguiPlugin({
-      optimize: optimize,
+      optimize,
       // useReactNativeWebLite: true,
     }),
   ],

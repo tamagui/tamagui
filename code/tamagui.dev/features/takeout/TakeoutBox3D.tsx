@@ -47,7 +47,7 @@ function TakeoutBox3D(props) {
     const entryEffectFrames = 130
     const justStarting = frameCount < entryEffectFrames
     const entryEffectPercentComplete = Math.min(1, frameCount / entryEffectFrames)
-    const rotateSpeed = justStarting ? 6 * (1 - entryEffectPercentComplete) + 0.1 : 0.2
+    const rotateSpeed = justStarting ? 6 * (1 - entryEffectPercentComplete) + 0.01 : 0.02
 
     ref.current.rotation.y += delta * rotateSpeed
 

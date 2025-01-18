@@ -3,6 +3,7 @@ import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { useLoader } from 'one'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {
   FontSizeTokens,
@@ -35,8 +36,6 @@ import {
   useMedia,
   useThemeName,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
-import { useLoader } from 'one'
 import { ContainerLarge } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -49,7 +48,6 @@ import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 
 export const loader = async () => {
@@ -146,15 +144,17 @@ export default function TakeoutPage() {
       <ContainerLarge px={0}>
         <YStack h={0} mah={0}>
           <YStack position="absolute" t={30} r="2%">
-            <PurchaseButton
-              // icon={ShoppingCart}
-              onPress={() => {
-                store.showPurchase = true
-              }}
-              size="$4"
-            >
-              Purchase
-            </PurchaseButton>
+            <Theme name="accent">
+              <PurchaseButton
+                // icon={ShoppingCart}
+                onPress={() => {
+                  store.showPurchase = true
+                }}
+                size="$4"
+              >
+                Get Access
+              </PurchaseButton>
+            </Theme>
           </YStack>
 
           {/* <DiscountText>Text</DiscountText> */}
@@ -1040,7 +1040,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               store.showPurchase = true
             }}
           >
-            Purchase
+            Get Access
           </PurchaseButton>
         </YStack>
 

@@ -103,7 +103,7 @@ const HeroContents = memo(function HeroContents() {
         }}
       >
         <>
-          <XGroup pos="absolute" als="center" y={-80} br="$8">
+          <XGroup elevation="$0.5" pos="absolute" als="center" y={-80} br="$8">
             <Link href="/takeout">
               <XGroup.Item>
                 <Button
@@ -111,10 +111,13 @@ const HeroContents = memo(function HeroContents() {
                   bc="$color6"
                   size="$3"
                   br="$10"
-                  elevation="$0.5"
                   fontFamily="$silkscreen"
                   fontSize={12}
                   brw={0.5}
+                  hoverStyle={{
+                    bc: '$color8',
+                    bg: '$color5',
+                  }}
                 >
                   Takeout
                   <YStack y={-1} dsp="inline-flex">
@@ -139,15 +142,14 @@ const HeroContents = memo(function HeroContents() {
                   <Button
                     // animation="bouncy"
                     blw={0.5}
-                    bc="$color3"
+                    bc="$color6"
                     size="$3"
                     br="$10"
-                    elevation="$0.5"
                     fontFamily="$silkscreen"
                     fontSize={12}
                     hoverStyle={{
-                      bc: '$color3',
-                      bg: '$color2',
+                      bc: '$color7',
+                      bg: '$color5',
                     }}
                   >
                     Bento

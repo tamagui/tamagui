@@ -1,7 +1,22 @@
+- // TODO: turn on
+
 2.0:
+  - remove componentName, just allow setting default theme: ""
+  - remove builders like themebuilder etc from config
+    - do it via plugins automatically
   - remove inlineProps, usedKeys, partial extraction
 
+
 - v4 config:
+  - change generate format, automate this in generate:
+
+export type TamaguiThemes = typeof themes
+
+export const tamaguiThemes = // avoid themes only on client bundle
+  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
+    ? (themes as TamaguiThemes)
+    : ({} as TamaguiThemes)
+
   - focus styles in the default v3 config are kind of wack
   - must pass in colors separately but it exports the defaults still
   - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
@@ -11,7 +26,10 @@
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
 
-- v3: shorthands can also take values:
+- v3
+  - tokens => variables (remove nested groups)
+  - theme => variables
+  - shorthands can also take values:
   - {
     block: { display: 'block' },
     'inline-block': { display: 'inline-block' },

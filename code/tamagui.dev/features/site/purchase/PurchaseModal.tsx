@@ -551,7 +551,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
                         disabled={noProductSelected}
                         opacity={noProductSelected ? 0.5 : undefined}
                       >
-                        Purchase
+                        Stripe Checkout
                       </PurchaseButton>
                     </Link>
                     <XStack jc="space-between" gap="$4" ai="center" mb="$2">

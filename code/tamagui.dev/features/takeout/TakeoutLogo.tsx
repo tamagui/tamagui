@@ -69,16 +69,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 zi={1002}
               />
             </ThemeTintAlt>
-            <ThemeTintAlt offset={2}>
-              {/* main color slices */}
-              <TAKEOUT
-                color="$color11"
-                className="clip-slice-2"
-                pos="absolute"
-                o={1}
-                zi={1001}
-              />
-            </ThemeTintAlt>
+            x
           </>
         )}
       </YStack>
