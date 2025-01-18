@@ -1,6 +1,6 @@
 {
   "name": "tamagui-loader",
-  "version": "1.121.12-1737177163952",
+  "version": "1.121.12-1737184001189",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,10 +28,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/cli-color": "1.121.12-1737177163952",
-    "@tamagui/core": "1.121.12-1737177163952",
-    "@tamagui/static": "1.121.12-1737177163952",
-    "@tamagui/web": "1.121.12-1737177163952",
+    "@tamagui/cli-color": "1.121.12-1737184001189",
+    "@tamagui/core": "1.121.12-1737184001189",
+    "@tamagui/static": "1.121.12-1737184001189",
+    "@tamagui/web": "1.121.12-1737184001189",
     "esbuild-loader": "^4.2.2",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
@@ -39,7 +39,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737177163952",
+    "@tamagui/build": "1.121.12-1737184001189",
     "prettyjson": "^1.2.5",
     "webpack": "^5.88.2"
   },

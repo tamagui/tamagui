@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-node",
-  "version": "1.121.12-1737177163952",
+  "version": "1.121.12-1737184001189",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "./dist",
@@ -16,10 +16,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/types": "1.121.12-1737177163952"
+    "@tamagui/types": "1.121.12-1737184001189"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737177163952",
+    "@tamagui/build": "1.121.12-1737184001189",
     "fs-extra": "^11.2.0"
   },
   "publishConfig": {

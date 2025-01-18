@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.121.12-1737177163952",
+  "version": "1.121.12-1737184001189",
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
@@ -14,7 +14,7 @@
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@swc/core": "^1.7.21",
-    "@tamagui/babel-plugin-fully-specified": "1.121.12-1737177163952",
+    "@tamagui/babel-plugin-fully-specified": "1.121.12-1737184001189",
     "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
     "esbuild": "^0.24.2",
