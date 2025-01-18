@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/proxy-tabbable",
   "sideEffects": false,
-  "version": "1.121.12",
+  "version": "1.121.12-1737177163952",
   "type": "module",
   "publishConfig": {
     "access": "public"

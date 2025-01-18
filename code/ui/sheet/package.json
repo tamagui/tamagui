@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.121.12",
+  "version": "1.121.12-1737177163952",
   "sideEffects": [
     "*.css"
   ],
@@ -37,28 +37,28 @@
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.121.12",
-    "@tamagui/animate-presence": "1.121.12",
-    "@tamagui/animations-react-native": "1.121.12",
-    "@tamagui/compose-refs": "1.121.12",
-    "@tamagui/constants": "1.121.12",
-    "@tamagui/core": "1.121.12",
-    "@tamagui/create-context": "1.121.12",
-    "@tamagui/helpers": "1.121.12",
-    "@tamagui/portal": "1.121.12",
-    "@tamagui/remove-scroll": "1.121.12",
-    "@tamagui/scroll-view": "1.121.12",
-    "@tamagui/stacks": "1.121.12",
-    "@tamagui/use-constant": "1.121.12",
-    "@tamagui/use-controllable-state": "1.121.12",
-    "@tamagui/use-did-finish-ssr": "1.121.12",
-    "@tamagui/use-keyboard-visible": "1.121.12"
+    "@tamagui/adapt": "1.121.12-1737177163952",
+    "@tamagui/animate-presence": "1.121.12-1737177163952",
+    "@tamagui/animations-react-native": "1.121.12-1737177163952",
+    "@tamagui/compose-refs": "1.121.12-1737177163952",
+    "@tamagui/constants": "1.121.12-1737177163952",
+    "@tamagui/core": "1.121.12-1737177163952",
+    "@tamagui/create-context": "1.121.12-1737177163952",
+    "@tamagui/helpers": "1.121.12-1737177163952",
+    "@tamagui/portal": "1.121.12-1737177163952",
+    "@tamagui/remove-scroll": "1.121.12-1737177163952",
+    "@tamagui/scroll-view": "1.121.12-1737177163952",
+    "@tamagui/stacks": "1.121.12-1737177163952",
+    "@tamagui/use-constant": "1.121.12-1737177163952",
+    "@tamagui/use-controllable-state": "1.121.12-1737177163952",
+    "@tamagui/use-did-finish-ssr": "1.121.12-1737177163952",
+    "@tamagui/use-keyboard-visible": "1.121.12-1737177163952"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12",
+    "@tamagui/build": "1.121.12-1737177163952",
     "react": "*"
   },
   "publishConfig": {
