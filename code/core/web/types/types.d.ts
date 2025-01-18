@@ -256,12 +256,12 @@ export interface ThemeProps {
     debug?: DebugProp | any;
     inverse?: boolean;
     forceClassName?: boolean;
-    shouldUpdate?: () => boolean | undefined;
     shallow?: boolean;
 }
 export type UseThemeWithStateProps = ThemeProps & {
     deopt?: boolean;
     disable?: boolean;
+    needsUpdate?: () => boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;

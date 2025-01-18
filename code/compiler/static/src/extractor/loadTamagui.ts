@@ -189,6 +189,10 @@ export function loadTamaguiSync({
         const configPath = getTamaguiConfigPathFromOptionsConfig(propsIn.config)
         const exp = require(configPath)
 
+        if (!exp || exp._isProxyWorm) {
+          throw new Error(`Got a empty / proxied config!`)
+        }
+
         tamaguiConfig = (exp['default'] || exp['config'] || exp) as TamaguiInternalConfig
 
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
@@ -365,7 +369,7 @@ export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
 
     alias: {
       '@react-native/normalize-color': '@tamagui/proxy-worm',
-      'react-native-web': '@tamagui/proxy-worm',
+      'react-native-web': '@tamagui/react-native-web-lite',
       'react-native': '@tamagui/proxy-worm',
     },
 

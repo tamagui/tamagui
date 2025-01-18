@@ -35,7 +35,7 @@ const _sheet = __ReactNativeStyleSheet.create({
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui/src/YStack';
+import { YStack } from 'tamagui';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {
   const media = useMedia();
@@ -52,15 +52,14 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   "0": {
-    "backgroundColor": "#050505"
+    "backgroundColor": "#fff"
   },
   "1": {
-    "backgroundColor": "#151515"
+    "backgroundColor": "#f8f8f8"
   }
 });
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-// debug
 import { View } from 'tamagui';
 export function Test() {
   return <__ReactNativeView style={showBackground ? _sheet["0"] : _sheet["1"]} />;
@@ -72,7 +71,7 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
 const _sheet = __ReactNativeStyleSheet.create({
   "0": {
     "flexDirection": "column",
-    "backgroundColor": "#151515",
+    "backgroundColor": "#fff",
     "transform": [{
       "translateY": 10
     }, {
@@ -84,7 +83,7 @@ const _sheet = __ReactNativeStyleSheet.create({
 });
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui/src/YStack';
+import { YStack } from 'tamagui';
 export function Test(isLoading) {
   return <__ReactNativeView style={_sheet["0"]} />;
 }"

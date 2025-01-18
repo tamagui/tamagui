@@ -604,7 +604,7 @@ export const useChangeThemeEffect = (
         } else {
           if (prev.isNewTheme) {
             // reset to parent
-            if (parentManager && !next) {
+            if (parentManager && !nextState) {
               themeManager = parentManager
             }
           }
