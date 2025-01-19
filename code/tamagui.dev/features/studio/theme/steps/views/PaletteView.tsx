@@ -81,6 +81,8 @@ export const PaletteView = memo((props: Props) => {
   const nextAnchor = anchors[anchorIndex + 1]
   const prevAnchor = anchors[anchorIndex - 1]
 
+  console.log('hello?', anchor, anchors, anchorIndex)
+
   const toggleAnchorAt = async (index: number) => {
     if (anchor) {
       // DELETE

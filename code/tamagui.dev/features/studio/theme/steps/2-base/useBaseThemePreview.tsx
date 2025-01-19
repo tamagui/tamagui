@@ -4,7 +4,7 @@ import { getStudioInternalThemeName } from '../../previewTheme'
 export const useBaseThemePreview = () => {
   const store = useThemeBuilderStore()
   return {
-    name: getStudioInternalThemeName(`base`),
+    name: getStudioInternalThemeName(store.themeSuiteUID),
     version: store.themeSuiteVersion,
   }
 }

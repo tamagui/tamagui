@@ -1,7 +1,7 @@
-import { ChevronLeft, ChevronRight, X } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
+import { useParams, useRouter } from 'one'
 import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
   Button,
@@ -14,7 +14,6 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
-import { useLocalSearchParams, useRouter } from 'one'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
@@ -37,7 +36,7 @@ export default function ThemePage() {
   const store = useThemeBuilderStore()
   const themeName = useThemeName()
   const router = useRouter()
-  const params = useLocalSearchParams<any>()
+  const params = useParams<any>()
 
   useEffect(() => {
     // give it a bit to load many dynamic charts that animate etc
@@ -230,6 +229,17 @@ const ThemeStudioStepButtonsBar = () => {
 
   return (
     <XStack gap="$2">
+      <Button
+        size="$3"
+        onPress={() => {
+          if (confirm(`Reset theme builder state?`)) {
+            store.reset()
+          }
+        }}
+      >
+        Reset
+      </Button>
+
       {canGoBackward && (
         <Button
           chromeless

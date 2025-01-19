@@ -53,9 +53,7 @@ export const StudioPreviewFrame = memo(
     const isOnComponents = store.currentSection?.id === 'component'
     const themeName = !isOnComponents
       ? baseStepThemeName
-      : store.componentParentTheme === 'accent'
-        ? (`${baseStepThemeName}_accent` as any)
-        : baseStepThemeName
+      : (`${baseStepThemeName}_accent` as any)
 
     return (
       // for some reason we have to put a light/dark above it

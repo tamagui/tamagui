@@ -1,10 +1,8 @@
 import { memo } from 'react'
-import { XStack, YGroup, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
 
 import { NoticeParagraph, StudioNotice } from '~/features/studio/StudioNotice'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { defaultPalettes } from '../../constants/defaultPalettes'
-import { AddDropdown } from '../../views/AddDropdown'
 import { BuildThemeItemFrame } from '../views/BuildThemeItemFrame'
 import { PaletteView } from '../views/PaletteView'
 import { useSteps } from '../views/Stage'
@@ -113,32 +111,4 @@ export const StepLightDarkPreviewThemes = () => {
   const store = useThemeBuilderStore()
   store.themeSuiteVersion
   return <StepBaseThemes previewMode key={store.themeSuiteVersion} />
-}
-
-export function StepBaseThemesActions() {
-  const store = useThemeBuilderStore()
-  const show = store.showAddThemeMenu
-  const setShow = (val: boolean) => (store.showAddThemeMenu = val)
-  const steps = useBaseThemesSteps()
-
-  return (
-    <XStack ai="center" space>
-      <AddDropdown open={show} onOpenChange={setShow}>
-        <YGroup>
-          {steps.index === 0 && (
-            <>
-              <AddDropdown.Item
-                size="$3"
-                onPress={() => {
-                  store.addPalette(defaultPalettes.accent)
-                  setShow(false)
-                }}
-                title="Add Accent Palette"
-              ></AddDropdown.Item>
-            </>
-          )}
-        </YGroup>
-      </AddDropdown>
-    </XStack>
-  )
 }

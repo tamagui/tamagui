@@ -20,8 +20,12 @@ export class ThemeBuilderStore {
   loaded = false
   state: ThemeBuilderState | null = null
   themeSuiteVersion = 0
-  themeSuiteId: string | undefined
+  themeSuiteId = 'base'
   listeners = new Set<Function>()
+
+  get themeSuiteUID() {
+    return `${this.themeSuiteId}${this.themeSuiteVersion}`
+  }
 
   // using up to date data from unsaved state
   get themeSuite(): ThemeSuiteItem | undefined {
@@ -75,19 +79,21 @@ export class ThemeBuilderStore {
     }
   }
 
+  async reset() {
+    this.name = defaultThemeSuiteItem.name
+    this.palettes = defaultThemeSuiteItem.palettes
+    this.schemes = defaultThemeSuiteItem.schemes
+    await this.save()
+    await this.refreshThemeSuite()
+  }
+
   // state:
-  selectedSubTheme: string | null = null
-  componentParentTheme: 'base' | 'accent' = 'base'
-  selectedComponentTheme: string | null = null
   step = 0
   direction = 0
   steps: ThemeStudioSection[] = []
   // @persist
   showExplanationSteps = true
   hasUnsavedChanges = false
-  showCurrentTheme = false
-  showAddThemeMenu = false
-  showTemplate = false
   demosOptions = demoOptions
   themeSwitchOpen = true
 
@@ -147,30 +153,6 @@ export class ThemeBuilderStore {
     this.listeners.forEach((cb) => {
       cb()
     })
-  }
-
-  async setThemeSuiteId(themeSuiteId: string) {
-    this.themeSuiteId = themeSuiteId
-    if (!this.state) {
-      console.warn(`no data`)
-      return
-    }
-    let row = this.state.themeSuites[themeSuiteId]
-    const wasMissing = !row
-    if (!row) {
-      row = {
-        ...defaultThemeSuiteItem,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        id: themeSuiteId,
-      }
-      this.state.themeSuites[themeSuiteId] = row
-    }
-    await this.updateCurrentThemeSuite(row)
-    if (wasMissing) {
-      this.save()
-    }
-    this.sync(this.state)
   }
 
   private async updateCurrentThemeSuite(next: Partial<ThemeSuiteItem>) {
@@ -289,7 +271,7 @@ export class ThemeBuilderStore {
   async refreshThemeSuite() {
     if (
       await updatePreviewTheme({
-        id: `theme`,
+        id: this.themeSuiteUID,
         palettes: this.palettes,
         schemes: this.schemes,
       })
@@ -311,16 +293,6 @@ export class ThemeBuilderStore {
       textAccent: getRandomElement(optionValues.textAccent),
       backgroundAccent: getRandomElement(optionValues.backgroundAccent),
     }
-  }
-
-  async setSelectedSubTheme(id: string | null) {
-    this.selectedSubTheme = id
-    await this.refreshThemeSuite()
-  }
-
-  async setSelectedComponentTheme(id: string | null) {
-    this.selectedComponentTheme = id
-    await this.refreshThemeSuite()
   }
 
   async addPalette(palette: BuildPalette) {
