@@ -54,6 +54,33 @@ const darkShadows = {
   shadow6: 'rgba(0,0,0,0.7)',
 }
 
+const extraColors = {
+  black1: darkPalette[0],
+  black2: darkPalette[1],
+  black3: darkPalette[2],
+  black4: darkPalette[3],
+  black5: darkPalette[4],
+  black6: darkPalette[5],
+  black7: darkPalette[6],
+  black8: darkPalette[7],
+  black9: darkPalette[8],
+  black10: darkPalette[9],
+  black11: darkPalette[10],
+  black12: darkPalette[11],
+  white1: lightPalette[0],
+  white2: lightPalette[1],
+  white3: lightPalette[2],
+  white4: lightPalette[3],
+  white5: lightPalette[4],
+  white6: lightPalette[5],
+  white7: lightPalette[6],
+  white8: lightPalette[7],
+  white9: lightPalette[8],
+  white10: lightPalette[9],
+  white11: lightPalette[10],
+  white12: lightPalette[11],
+}
+
 const themes = createThemeSuite({
   base: {
     palette: {
@@ -73,6 +100,7 @@ const themes = createThemeSuite({
         ...Colors.red,
         ...Colors.yellow,
         ...lightShadows,
+        ...extraColors,
         shadowColor: lightShadows.shadow1,
         accent1: darkPalette[0],
         accent2: darkPalette[1],
@@ -97,6 +125,7 @@ const themes = createThemeSuite({
         ...Colors.redDark,
         ...Colors.yellowDark,
         ...darkShadows,
+        ...extraColors,
         shadowColor: darkShadows.shadow1,
         accent1: lightPalette[0],
         accent2: lightPalette[1],
