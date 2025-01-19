@@ -128,6 +128,7 @@ type Theme = {
     shadowColorPress: string;
     shadowColorFocus: string;
 };
+export declare const colors: string[];
 type ThemeNames = 'light' | 'dark' | 'light_orange' | 'light_yellow' | 'light_green' | 'light_blue' | 'light_purple' | 'light_pink' | 'light_red' | 'dark_orange' | 'dark_yellow' | 'dark_green' | 'dark_blue' | 'dark_purple' | 'dark_pink' | 'dark_red' | 'light_alt1' | 'light_alt2' | 'light_active' | 'dark_alt1' | 'dark_alt2' | 'dark_active' | 'light_orange_alt1' | 'light_orange_alt2' | 'light_orange_active' | 'light_yellow_alt1' | 'light_yellow_alt2' | 'light_yellow_active' | 'light_green_alt1' | 'light_green_alt2' | 'light_green_active' | 'light_blue_alt1' | 'light_blue_alt2' | 'light_blue_active' | 'light_purple_alt1' | 'light_purple_alt2' | 'light_purple_active' | 'light_pink_alt1' | 'light_pink_alt2' | 'light_pink_active' | 'light_red_alt1' | 'light_red_alt2' | 'light_red_active' | 'dark_orange_alt1' | 'dark_orange_alt2' | 'dark_orange_active' | 'dark_yellow_alt1' | 'dark_yellow_alt2' | 'dark_yellow_active' | 'dark_green_alt1' | 'dark_green_alt2' | 'dark_green_active' | 'dark_blue_alt1' | 'dark_blue_alt2' | 'dark_blue_active' | 'dark_purple_alt1' | 'dark_purple_alt2' | 'dark_purple_active' | 'dark_pink_alt1' | 'dark_pink_alt2' | 'dark_pink_active' | 'dark_red_alt1' | 'dark_red_alt2' | 'dark_red_active';
 export declare const themes: Record<ThemeNames, Theme>;
 export {};

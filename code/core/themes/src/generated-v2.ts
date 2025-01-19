@@ -135,11 +135,11 @@ type Theme = {
 function t(a: [number, number][]) {
   let res: Record<string,string> = {}
   for (const [ki, vi] of a) {
-    res[ks[ki] as string] = vs[vi] as string
+    res[ks[ki] as string] = colors[vi] as string
   }
   return res as Theme
 }
-const vs = [
+export const colors = [
   '#fff',
   '#f8f8f8',
   'hsl(0, 0%, 96.3%)',

@@ -77,6 +77,7 @@ type Theme = {
     yellow11: string;
     yellow12: string;
 };
+export declare const colors: string[];
 type ThemeNames = 'light' | 'dark' | 'light_accent' | 'dark_accent' | 'light_error' | 'light_warning' | 'light_success' | 'dark_error' | 'dark_warning' | 'dark_success';
 export declare const themes: Record<ThemeNames, Theme>;
 export {};
