@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.121.12-1737239089067",
+  "version": "1.121.12-1737271201540",
   "sideEffects": [
     "*.css"
   ],
@@ -46,29 +46,29 @@
     }
   },
   "dependencies": {
-    "@tamagui/avatar": "1.121.12-1737239089067",
-    "@tamagui/button": "1.121.12-1737239089067",
-    "@tamagui/config": "1.121.12-1737239089067",
-    "@tamagui/core": "1.121.12-1737239089067",
-    "@tamagui/list-item": "1.121.12-1737239089067",
-    "@tamagui/logo": "1.121.12-1737239089067",
-    "@tamagui/lucide-icons": "1.121.12-1737239089067",
-    "@tamagui/menu": "1.121.12-1737239089067",
-    "@tamagui/popover": "1.121.12-1737239089067",
-    "@tamagui/progress": "1.121.12-1737239089067",
-    "@tamagui/radio-group": "1.121.12-1737239089067",
-    "@tamagui/select": "1.121.12-1737239089067",
-    "@tamagui/sheet": "1.121.12-1737239089067",
-    "@tamagui/slider": "1.121.12-1737239089067",
-    "@tamagui/stacks": "1.121.12-1737239089067",
-    "@tamagui/toast": "1.121.12-1737239089067",
-    "tamagui": "1.121.12-1737239089067"
+    "@tamagui/avatar": "1.121.12-1737271201540",
+    "@tamagui/button": "1.121.12-1737271201540",
+    "@tamagui/config": "1.121.12-1737271201540",
+    "@tamagui/core": "1.121.12-1737271201540",
+    "@tamagui/list-item": "1.121.12-1737271201540",
+    "@tamagui/logo": "1.121.12-1737271201540",
+    "@tamagui/lucide-icons": "1.121.12-1737271201540",
+    "@tamagui/menu": "1.121.12-1737271201540",
+    "@tamagui/popover": "1.121.12-1737271201540",
+    "@tamagui/progress": "1.121.12-1737271201540",
+    "@tamagui/radio-group": "1.121.12-1737271201540",
+    "@tamagui/select": "1.121.12-1737271201540",
+    "@tamagui/sheet": "1.121.12-1737271201540",
+    "@tamagui/slider": "1.121.12-1737271201540",
+    "@tamagui/stacks": "1.121.12-1737271201540",
+    "@tamagui/toast": "1.121.12-1737271201540",
+    "tamagui": "1.121.12-1737271201540"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737239089067",
+    "@tamagui/build": "1.121.12-1737271201540",
     "react": "*"
   },
   "publishConfig": {

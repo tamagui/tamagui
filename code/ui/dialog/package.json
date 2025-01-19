@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.121.12-1737239089067",
+  "version": "1.121.12-1737271201540",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -36,30 +36,30 @@
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.121.12-1737239089067",
-    "@tamagui/animate-presence": "1.121.12-1737239089067",
-    "@tamagui/aria-hidden": "1.121.12-1737239089067",
-    "@tamagui/compose-refs": "1.121.12-1737239089067",
-    "@tamagui/constants": "1.121.12-1737239089067",
-    "@tamagui/core": "1.121.12-1737239089067",
-    "@tamagui/create-context": "1.121.12-1737239089067",
-    "@tamagui/dismissable": "1.121.12-1737239089067",
-    "@tamagui/focus-scope": "1.121.12-1737239089067",
-    "@tamagui/helpers": "1.121.12-1737239089067",
-    "@tamagui/polyfill-dev": "1.121.12-1737239089067",
-    "@tamagui/popper": "1.121.12-1737239089067",
-    "@tamagui/portal": "1.121.12-1737239089067",
-    "@tamagui/remove-scroll": "1.121.12-1737239089067",
-    "@tamagui/sheet": "1.121.12-1737239089067",
-    "@tamagui/stacks": "1.121.12-1737239089067",
-    "@tamagui/text": "1.121.12-1737239089067",
-    "@tamagui/use-controllable-state": "1.121.12-1737239089067"
+    "@tamagui/adapt": "1.121.12-1737271201540",
+    "@tamagui/animate-presence": "1.121.12-1737271201540",
+    "@tamagui/aria-hidden": "1.121.12-1737271201540",
+    "@tamagui/compose-refs": "1.121.12-1737271201540",
+    "@tamagui/constants": "1.121.12-1737271201540",
+    "@tamagui/core": "1.121.12-1737271201540",
+    "@tamagui/create-context": "1.121.12-1737271201540",
+    "@tamagui/dismissable": "1.121.12-1737271201540",
+    "@tamagui/focus-scope": "1.121.12-1737271201540",
+    "@tamagui/helpers": "1.121.12-1737271201540",
+    "@tamagui/polyfill-dev": "1.121.12-1737271201540",
+    "@tamagui/popper": "1.121.12-1737271201540",
+    "@tamagui/portal": "1.121.12-1737271201540",
+    "@tamagui/remove-scroll": "1.121.12-1737271201540",
+    "@tamagui/sheet": "1.121.12-1737271201540",
+    "@tamagui/stacks": "1.121.12-1737271201540",
+    "@tamagui/text": "1.121.12-1737271201540",
+    "@tamagui/use-controllable-state": "1.121.12-1737271201540"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737239089067",
+    "@tamagui/build": "1.121.12-1737271201540",
     "react": "*",
     "react-native": "^0.76.5"
   },
