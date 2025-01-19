@@ -7451,15 +7451,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-themes@workspace:code/core/create-themes":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/create-themes@workspace:code/core/create-themes"
-  dependencies:
-    "@tamagui/build": "npm:1.121.12-1737271201540"
-    "@tamagui/core": "npm:1.121.12-1737271201540"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/cubic-bezier-animator@npm:1.121.12-1737271201540, @tamagui/cubic-bezier-animator@workspace:code/core/cubic-bezier-animator":
   version: 0.0.0-use.local
   resolution: "@tamagui/cubic-bezier-animator@workspace:code/core/cubic-bezier-animator"

@@ -1,6 +1,7 @@
 - // TODO: turn on
 
 2.0:
+  - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
   - remove componentName, just allow setting default theme: ""
   - remove builders like themebuilder etc from config
