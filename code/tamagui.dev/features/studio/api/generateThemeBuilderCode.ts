@@ -1,4 +1,4 @@
-import { createPalettes, type ThemeBuilder } from '@tamagui/theme-builder'
+import { createPalettes } from '@tamagui/theme-builder'
 import type { BuildThemeSuiteProps } from '@tamagui/themes'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
@@ -17,6 +17,9 @@ export async function generateThemeBuilderCode({
 
   return `import { createThemeSuite } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
+
+const darkPalette = ${arrayToJS(palettesOut.dark_accent)}
+const lightPalette = ${arrayToJS(palettesOut.light_accent)}
 
 const lightShadows = {
   shadow1: 'rgba(0,0,0,0.04)',
@@ -43,8 +46,8 @@ const builtThemes = createThemeSuite({
 
   base: {
     palettes: {
-      dark: ${objectToJS(palettesOut.dark)},
-      light: ${objectToJS(palettesOut.light)},
+      dark: darkPalette,
+      light: lightPalette,
     },
 
     extra: {
@@ -91,8 +94,8 @@ const builtThemes = createThemeSuite({
 
   accent: {
     palettes: {
-      dark: ${objectToJS(palettesOut.dark_accent)},
-      light: ${objectToJS(palettesOut.light_accent)},
+      dark: ${arrayToJS(palettesOut.dark_accent)},
+      light: ${arrayToJS(palettesOut.light_accent)},
     },
   },
 
@@ -124,33 +127,18 @@ export type Themes = typeof builtThemes
 
 // this is optional, but saves client-side JS bundle size by leaving out themes on client.
 // tamagui automatically hydrates themes from css back into JS for you and the tamagui
-// bundler plugins automate setting TAMAGUI_IS_SERVER.
+// bundler plugins automate setting TAMAGUI_ENVIRONMENT.
 
 export const themes: Themes =
-  process.env.TAMAGUI_IS_SERVER ||
-  process.env.NODE_ENV === 'development'
-    ? (builtThemes as any)
-    : ({} as any)
+  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
+  process.env.NODE_ENV === 'production'
+    ? ({} as any)
+    : (builtThemes as any)
 `
 }
 
-function objectToJS(palettes: Record<string, any>) {
-  return `{
-    ${Object.entries(palettes).map(([key, val]) => {
-      return `
-        "${key}": [${(val as any[]).map((color) => `'${color}'`)}]
-      `
-    })}
-  }`
-}
-
-function stringifyTemplates(themeBuilder: ThemeBuilder<any>) {
-  if (!themeBuilder.state.templates) return `{}`
-  return `{
-    ${Object.entries(themeBuilder.state.templates).map(([key, val]) => {
-      return `
-        "${key}": ${JSON.stringify(val)}
-      `
-    })}
-  }`
+function arrayToJS(palette: string[]) {
+  return `[${palette.map((val) => {
+    return `'${val}'`
+  })}]`
 }

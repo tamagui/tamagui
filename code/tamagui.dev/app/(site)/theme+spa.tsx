@@ -76,7 +76,6 @@ export default function ThemePage() {
 
 const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
-  console.log('gogo', baseStepThemeName)
 
   return (
     <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName} debug>

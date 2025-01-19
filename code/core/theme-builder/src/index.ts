@@ -2,6 +2,7 @@ export * from './ThemeBuilder'
 export * from '@tamagui/create-theme'
 
 export {
+  createStudioThemes,
   createThemeSuite,
   getThemeSuitePalettes,
   createPalettes,
