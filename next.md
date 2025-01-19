@@ -1,4 +1,9 @@
-- // TODO: turn on
+v4 config:
+
+- add new doc page just for it
+  - document createThemeSuite there simply
+  - document shorthands etc
+  - document simple themes setup
 
 2.0:
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
@@ -69,6 +74,8 @@ createCore<CustomTypes>({
   - `<Theme values={{}} />` dynamic override
 
 - perf getState could be cached (weakmap themeManager + stringify props)
+
+- isolatedDeclarations for build perf // TODO: turn on
 
 - beef up tests:
   - native
