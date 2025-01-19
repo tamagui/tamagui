@@ -3,6 +3,7 @@ import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamag
 import { parseToHsla } from 'color2k'
 import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes } from './getThemeSuitePalettes'
+import { defaultComponentThemes } from './defaultComponentThemes'
 
 export { defaultTemplates } from './defaultTemplates'
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
@@ -40,7 +41,7 @@ type BaseThemeDefinition<Extra extends ExtraThemeValuesByScheme> = {
   extra?: Extra
 }
 
-type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>
+export type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>
 type SimplePaletteDefinitions = Record<string, string[]>
 
 type SinglePalette = string[]
@@ -68,6 +69,7 @@ export type CreateThemeSuiteProps<
   }) => Record<string, string>
 }
 
+// TODO we moved studio over to mostly just control palette, so the need for this can basically go away
 export function createThemeSuite<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
@@ -165,7 +167,7 @@ export function createSimpleThemeBuilder<
         }
       >,
   HasAccent extends boolean,
-  ComponentThemes extends SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false,
   FullTheme = {
     [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string
   },
@@ -350,27 +352,6 @@ export const getComponentThemes = (components: SimpleThemesDefinition) => {
     })
   )
 }
-
-export const defaultComponentThemes = {
-  ListItem: { template: 'surface1' },
-  SelectTrigger: { template: 'surface1' },
-  Card: { template: 'surface1' },
-  Button: { template: 'surface3' },
-  Checkbox: { template: 'surface2' },
-  Switch: { template: 'surface2' },
-  SwitchThumb: { template: 'inverse' },
-  TooltipContent: { template: 'surface2' },
-  Progress: { template: 'surface1' },
-  RadioGroupItem: { template: 'surface2' },
-  TooltipArrow: { template: 'surface1' },
-  SliderTrackActive: { template: 'surface3' },
-  SliderTrack: { template: 'surface1' },
-  SliderThumb: { template: 'inverse' },
-  Tooltip: { template: 'inverse' },
-  ProgressIndicator: { template: 'inverse' },
-  Input: { template: 'surface1' },
-  TextArea: { template: 'surface1' },
-} satisfies SimpleThemesDefinition
 
 export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinitions {
   const accentPalettes = palettes.accent ? getThemeSuitePalettes(palettes.accent) : null

@@ -24,7 +24,7 @@ export class ThemeBuilderStore {
   listeners = new Set<Function>()
 
   get themeSuiteUID() {
-    return `${this.themeSuiteId}${this.themeSuiteVersion}`
+    return `${this.themeSuiteId}`
   }
 
   // using up to date data from unsaved state

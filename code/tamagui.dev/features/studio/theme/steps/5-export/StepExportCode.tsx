@@ -107,7 +107,7 @@ export class StepExportStore {
           type: 'files',
           files: [
             {
-              filename: 'theme-builder.ts',
+              filename: 'themes.ts',
               content: config,
               maxHeight: 150,
               downloadable: true,
@@ -130,8 +130,8 @@ export class StepExportStore {
           files: [
             {
               filename: 'tamagui.config.ts',
-              content: `import * as themes from './src/themes'
-import { tokens } from '@tamagui/config/v3'
+              content: `import { themes } from './src/themes'
+import { tokens } from '@tamagui/config/v4'
 
 const config = createTamagui({
   tokens,

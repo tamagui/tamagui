@@ -2,15 +2,14 @@ export * from './ThemeBuilder'
 export * from '@tamagui/create-theme'
 
 export {
-  createStudioThemes,
   createThemeSuite,
   getThemeSuitePalettes,
-  getLastBuilder,
   createPalettes,
   type CreateThemeSuiteProps,
 } from './createThemeSuite'
 
 export { defaultTemplates } from './defaultTemplates'
+export { defaultComponentThemes } from './defaultComponentThemes'
 
 export { PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
 

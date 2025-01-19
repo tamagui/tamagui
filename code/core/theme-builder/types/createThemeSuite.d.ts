@@ -30,7 +30,7 @@ type BaseThemeDefinition<Extra extends ExtraThemeValuesByScheme> = {
     template?: string;
     extra?: Extra;
 };
-type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>;
+export type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>;
 type SimplePaletteDefinitions = Record<string, string[]>;
 type SinglePalette = string[];
 type SchemePalette = {
@@ -60,7 +60,7 @@ export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesB
 }>, GrandChildrenThemes extends undefined | Record<string, {
     template: keyof Templates extends string ? keyof Templates : never;
     palette?: string;
-}>, HasAccent extends boolean, ComponentThemes extends SimpleThemesDefinition, FullTheme = {
+}>, HasAccent extends boolean, ComponentThemes extends SimpleThemesDefinition | false, FullTheme = {
     [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string;
 }, ThemeNames extends string = 'light' | 'dark' | (HasAccent extends true ? 'light_accent' | 'dark_accent' : never) | (keyof ChildrenThemes extends string ? `${'light' | 'dark'}_${GrandChildrenThemes extends undefined ? keyof ChildrenThemes : NamesWithChildrenNames<keyof ChildrenThemes, keyof GrandChildrenThemes>}` : never)>(props: {
     palettes?: Palettes;
@@ -77,62 +77,6 @@ export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesB
 export declare const getComponentThemes: (components: SimpleThemesDefinition) => {
     [k: string]: {
         parent: string;
-        template: string;
-    };
-};
-export declare const defaultComponentThemes: {
-    ListItem: {
-        template: string;
-    };
-    SelectTrigger: {
-        template: string;
-    };
-    Card: {
-        template: string;
-    };
-    Button: {
-        template: string;
-    };
-    Checkbox: {
-        template: string;
-    };
-    Switch: {
-        template: string;
-    };
-    SwitchThumb: {
-        template: string;
-    };
-    TooltipContent: {
-        template: string;
-    };
-    Progress: {
-        template: string;
-    };
-    RadioGroupItem: {
-        template: string;
-    };
-    TooltipArrow: {
-        template: string;
-    };
-    SliderTrackActive: {
-        template: string;
-    };
-    SliderTrack: {
-        template: string;
-    };
-    SliderThumb: {
-        template: string;
-    };
-    Tooltip: {
-        template: string;
-    };
-    ProgressIndicator: {
-        template: string;
-    };
-    Input: {
-        template: string;
-    };
-    TextArea: {
         template: string;
     };
 };
