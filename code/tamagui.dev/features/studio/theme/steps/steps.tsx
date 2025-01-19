@@ -1,6 +1,6 @@
 import type { ThemeStudioSection } from '../types'
 import { StepBaseThemes } from './2-base/StepBaseThemes'
-import { StepExportCode, StepExportCodeSidebar } from './5-export/StepExportCode'
+import { StepExportCodeSidebar } from './5-export/StepExportCode'
 
 export const steps: ThemeStudioSection[] = [
   {
@@ -21,11 +21,6 @@ export const steps: ThemeStudioSection[] = [
     title: 'Export',
     id: 'export',
     steps: [
-      {
-        subTitle: 'Export Settings',
-        children: StepExportCode,
-      },
-
       {
         subTitle: 'Done!',
         children: StepExportCodeSidebar,

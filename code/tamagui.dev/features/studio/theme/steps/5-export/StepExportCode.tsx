@@ -8,7 +8,6 @@ import {
   Fieldset,
   Label,
   Paragraph,
-  RadioGroup,
   ScrollView,
   SizableText,
   Switch,
@@ -23,7 +22,7 @@ import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderSto
 import { toastController } from '../../../ToastProvider'
 import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 
-const platforms = ['vanilla', 'nextjs', 'expo', 'webpack', 'vite'] as const
+const platforms = ['vanilla'] as const
 
 type Platform = (typeof platforms)[number]
 
@@ -48,7 +47,7 @@ type Step = {
 }
 
 export class StepExportStore {
-  selectedPlatform: Platform = 'vanilla'
+  includeComponentThemes = true
 
   platformData: Record<
     Platform,
@@ -58,9 +57,6 @@ export class StepExportStore {
       steps: Array<Step>
     }
   > | null = null
-  selectedPlatformData: { name: string; steps: Array<Step> } | null = null
-
-  includeComponentThemes = true
 
   setIncludeComponentThemes(newVal: boolean) {
     this.includeComponentThemes = newVal
@@ -81,209 +77,49 @@ export class StepExportStore {
     })
   }
 
-  setSelectedPlatform(value: Platform) {
-    this.selectedPlatform = value
-    this.updateSelectedPlatformData()
-  }
-
-  updateSelectedPlatformData() {
-    this.selectedPlatformData = this.selectedPlatform
-      ? (this.platformData?.[this.selectedPlatform] ?? null)
-      : null
-  }
-
   async updateSteps() {
     const config = await this.getThemeBuilderConfig()
     if (!config) return
 
-    const addThemeStep = {
-      name: 'Add theme',
-      steps: [
-        {
-          type: 'text',
-          content: 'Copy into a theme-builder.ts file:',
-        },
-        {
-          type: 'files',
-          files: [
-            {
-              filename: 'themes.ts',
-              content: config,
-              maxHeight: 150,
-              downloadable: true,
-            },
-          ],
-        },
-      ],
-    } satisfies Step
-
-    const updateConfigStep = {
-      name: 'Update your Tamagui config',
-      steps: [
-        {
-          type: 'text',
-          content:
-            'Finally update your tamagui.config.ts file to use the theme builder output file.',
-        },
-        {
-          type: 'files',
-          files: [
-            {
-              filename: 'tamagui.config.ts',
-              content: `import { themes } from './src/themes'
-import { tokens } from '@tamagui/config/v4'
-
-const config = createTamagui({
-  tokens,
-  themes,
-  // ...the rest of your config
-})
-`,
-            },
-          ],
-        },
-      ],
-    } satisfies Step
-
     this.platformData = {
-      expo: {
-        name: 'React Native',
-        description: 'react-native or Expo project.',
-        steps: [
-          addThemeStep,
-          {
-            name: 'Add the generate script',
-            steps: [
-              {
-                type: 'text',
-                content: 'Make sure the Tamagui CLI is installed in your project',
-              },
-              {
-                type: 'command',
-                content: 'yarn add @tamagui/cli',
-              },
-              {
-                type: 'text',
-                content: 'then, add the following script to your package.json:',
-              },
-              {
-                type: 'files',
-                files: [
-                  {
-                    filename: 'package.json',
-                    content: `{
-  "scripts": {
-    "generate-themes": "tamagui generate-themes ./path/to/theme-builder.ts ./theme-output.ts"
-  }
-}`,
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            name: 'Generate the theme',
-            steps: [
-              {
-                type: 'text',
-                content: 'Run:',
-              },
-              {
-                type: 'command',
-                content: 'yarn generate-themes',
-              },
-              {
-                type: 'text',
-                content:
-                  'And remember, you will need to re-run this script every time you change your theme builder code.',
-              },
-            ],
-          },
-          updateConfigStep,
-        ],
-      },
-
       vanilla: {
         name: 'Vanilla',
         description: 'Basic steps for any project',
         steps: [
-          addThemeStep,
           {
-            name: `Generate`,
-            steps: [
-              {
-                content: `npx @tamagui/cli generate-themes theme-builder.ts themes.ts`,
-                type: 'command',
-              },
-            ],
-          },
-          updateConfigStep,
-        ],
-      },
-
-      nextjs: {
-        name: 'Next.js',
-        description: 'Used in monorepo or standalone.',
-        steps: [
-          addThemeStep,
-          {
-            name: 'Configure Next.js',
+            name: 'Add theme',
             steps: [
               {
                 type: 'text',
-                content: 'Open your Next.js config file and add the following:',
+                content: 'Copy into a themes.ts file:',
               },
               {
                 type: 'files',
                 files: [
                   {
-                    filename: 'next.config.ts',
-                    content: `withTamagui({
-  themeBuilder: {
-    input: 'src/theme-builder.ts',
-    output: 'src/themes.ts',
-  },
-  outputCSS: process\.env\.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-  // ...
-}),`,
+                    filename: 'themes.ts',
+                    content: config,
+                    maxHeight: 350,
+                    downloadable: true,
                   },
                 ],
               },
-              {
-                type: 'text',
-                content:
-                  'Now, the Next.js server will watch your theme builder file and update the output whenever it changes.',
-              },
             ],
           },
 
           {
-            name: 'Update your Tamagui config',
+            name: 'Update your tamagui config',
             steps: [
-              {
-                type: 'text',
-                content:
-                  'Finally, update your tamagui.config.ts file to use the theme builder output file.',
-              },
               {
                 type: 'files',
                 files: [
                   {
-                    filename: 'tamagui.config.ts',
-                    content: `import * as themesIn from './src/themes'
-import { tokens } from '@tamagui/config/v3'
+                    filename: 'themes.ts',
+                    content: `import { themes } from './themes'
 
-// TAMAGUI_IS_SERVER is set by @tamagui/next-plugin
-const themes =
-  process.env.TAMAGUI_IS_SERVER || process.env.NODE_ENV !== 'production'
-    ? themesIn
-    : ({} as typeof themesIn)
-
-
-const config = createTamagui({
-  tokens,
+export const config = createTamagui({
   themes,
-  // ...the rest of your config
+  ...restOfYourConfig
 })
 `,
                   },
@@ -291,193 +127,59 @@ const config = createTamagui({
               },
             ],
           },
-        ],
-      },
-      vite: {
-        name: 'Vite',
-        description: 'Project using Vite and the `@tamagui/vite-plugin` plugin.',
-        steps: [
-          addThemeStep,
+
           {
-            name: 'Configure Vite',
+            name: 'Done!',
             steps: [
               {
                 type: 'text',
-                content: 'Open your Vite config file and add the following:',
-              },
-              {
-                type: 'files',
-                files: [
-                  {
-                    filename: 'vite.config.ts',
-                    content: `export default defineConfig({
-  plugins: [
-    tamaguiPlugin({
-      themeBuilder: {
-        input: 'src/theme-builder.ts',
-        output: 'src/themes.ts',,
-      },
-      outputCSS: process\.env\.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-      // ...
-    }),
-    // ...
-  ],
-})
-`,
-                  },
-                ],
-              },
-              {
-                type: 'text',
-                content:
-                  'Now, Vite will watch your theme builder file and update the output whenever it changes.',
+                content: `That's it! Tamagui used to require more configuration to optimize your themes in production, but we now automate that optimization for you.`,
               },
             ],
           },
-          updateConfigStep,
-        ],
-      },
-      webpack: {
-        name: 'Webpack',
-        description: 'Project using Webpack and the `tamagui-loader` plugin.',
-        steps: [
-          addThemeStep,
-          {
-            name: 'Configure Webpack',
-            steps: [
-              {
-                type: 'text',
-                content: 'Open your Webpack config file and add the following:',
-              },
-              {
-                type: 'files',
-                files: [
-                  {
-                    filename: 'webpack.config.js',
-                    content: `module.exports = {
-  plugins: [
-    new TamaguiPlugin({
-      themeBuilder: {
-        input: 'src/theme-builder.ts',
-        output: 'src/themes.ts',,
-      },
-      outputCSS: process\.env\.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-      // ...
-    }),
-    // ...
-  ],
-}
-`,
-                  },
-                ],
-              },
-              {
-                type: 'text',
-                content:
-                  'Now, Webpack will watch your theme builder file and update the output whenever it changes.',
-              },
-            ],
-          },
-          updateConfigStep,
         ],
       },
     } satisfies typeof this.platformData
-    this.updateSelectedPlatformData()
   }
 }
 
-export const StepExportCode = () => {
+export const StepExportCodeSidebar = () => {
   const store = useStore(StepExportStore)
 
   useEffect(() => {
     store.updateSteps()
   }, [])
 
-  return (
-    <YStack py="$4" gap="$3" px="$4">
-      <FieldsetWithLabel label="Options">
-        <YStack gap="$1" p="$4">
-          <Fieldset flexDirection="row" ai="center" gap="$3">
-            <YStack>
-              <Switch
-                id="include-component-themes-switch"
-                checked={store.includeComponentThemes}
-                onCheckedChange={(newChecked) =>
-                  store.setIncludeComponentThemes(!!newChecked)
-                }
-                size="$2"
-              >
-                <Switch.Thumb animation="quickest" />
-              </Switch>
-            </YStack>
-            <Label size="$3" htmlFor="include-component-themes-switch">
-              Include Component Themes
-            </Label>
-          </Fieldset>
-        </YStack>
-      </FieldsetWithLabel>
-
-      <YStack f={1}>
-        {!!store.platformData && (
-          <RadioGroup
-            mt="$4"
-            gap="$2"
-            value={store.selectedPlatform ?? undefined}
-            onValueChange={(val) => {
-              store.setSelectedPlatform(val as any)
-            }}
-          >
-            {platforms.map((platform) => {
-              const active = store.selectedPlatform === platform
-              const htmlId = `demo-item-${platform}`
-              const data = store.platformData?.[platform]
-              return (
-                <Label
-                  key={platform}
-                  f={1}
-                  htmlFor={htmlId}
-                  p="$4"
-                  height="unset"
-                  display="flex"
-                  borderWidth="$0.5"
-                  borderColor={active ? '$color8' : '$color5'}
-                  borderRadius="$4"
-                  gap="$4"
-                  ai="center"
-                  hoverStyle={{
-                    borderColor: active ? '$color10' : '$color7',
-                  }}
-                >
-                  <RadioGroup.Item id={htmlId} size="$3" value={platform}>
-                    <RadioGroup.Indicator />
-                  </RadioGroup.Item>
-                  <YStack f={1}>
-                    <Paragraph size="$6">{data?.name}</Paragraph>
-                    <Paragraph size="$4" theme="alt1">
-                      {data?.description}
-                    </Paragraph>
-                  </YStack>
-                </Label>
-              )
-            })}
-          </RadioGroup>
-        )}
-      </YStack>
-    </YStack>
-  )
-}
-
-export const StepExportCodeSidebar = () => {
-  const store = useStore(StepExportStore)
-
-  const platform = store.selectedPlatformData
+  const platform = store.platformData?.vanilla
   if (!platform) {
     return null
   }
 
   return (
     <ScrollView py="$2" pt="$4">
-      <YStack gap="$8" pt="$1" pb="$6" key={store.selectedPlatform}>
+      <YStack gap="$8" pt="$1" pb="$6" px="$3">
+        <FieldsetWithLabel label="Options">
+          <YStack gap="$1" p="$4">
+            <Fieldset flexDirection="row" ai="center" gap="$3">
+              <YStack>
+                <Switch
+                  id="include-component-themes-switch"
+                  checked={store.includeComponentThemes}
+                  onCheckedChange={(newChecked) =>
+                    store.setIncludeComponentThemes(!!newChecked)
+                  }
+                  size="$2"
+                >
+                  <Switch.Thumb animation="quickest" />
+                </Switch>
+              </YStack>
+              <Label size="$3" htmlFor="include-component-themes-switch">
+                Include Component Themes
+              </Label>
+            </Fieldset>
+          </YStack>
+        </FieldsetWithLabel>
+
         {platform.steps.map((step, idx) => (
           <YStack key={idx} gap="$3">
             <XStack gap="$3" ai="center" ml="$3">
@@ -580,7 +282,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           left={0}
           right={0}
           bottom={0}
-          height={50}
+          height={maxHeight}
           colors={['$background', 'transparent']}
           start={[0, 1]}
           end={[0, 0]}
