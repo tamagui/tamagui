@@ -1,6 +1,9 @@
 import type { ThemeBuilder } from '@tamagui/theme-builder'
+// import * as prettier from 'prettier'
+// import tsParser from 'prettier/parser-typescript'
+
 import type { BuildThemeSuiteProps } from '../theme/types'
-import { createThemes } from '@tamagui/themes/v4'
+import { buildThemeSuite } from './buildThemeSuite'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
   includeComponentThemes: boolean
@@ -17,13 +20,13 @@ export async function generateThemeBuilderCode({
   includeComponentThemes,
   includeSizeTokens,
 }: GenerateThemeBuilderCodeProps) {
-  const { themeBuilder } = createThemes({
+  const { themeBuilder } = buildThemeSuite({
     templates,
-    componentThemes,
-    palettes,
     baseTheme,
-    subThemes,
+    componentThemes,
     schemes,
+    palettes,
+    subThemes,
   })
   return `
   import { defaultSubThemes, defaultComponentThemes } from '@tamagui/themes/v3-themes'
@@ -66,7 +69,7 @@ export async function generateThemeBuilderCode({
     .addChildThemes(defaultSubThemes)
     ${
       includeComponentThemes
-        ? `.addComponentThemes(defaultComponentThemes, {
+        ? `.addChildThemes(defaultComponentThemes, {
       avoidNestingWithin: [
         'alt1',
         'alt2',

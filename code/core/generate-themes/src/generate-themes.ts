@@ -29,26 +29,26 @@ export async function generateThemes(inputFile: string) {
     const out = ogRequire.apply(this, arguments)
 
     if (id === '@tamagui/theme-builder') {
-      if (!promise) {
-        let resolve: Function
-        promise = new Promise((res) => {
-          resolve = res
-        })
-        return createThemeIntercept(out, {
-          onComplete: (result) => {
-            resolve?.(result.themeBuilder)
-          },
-        })
-      }
+      let resolve: Function
+      promise = new Promise((res) => {
+        resolve = res
+      })
+      return createThemeIntercept(out, {
+        onComplete: (result) => {
+          resolve?.(result.themeBuilder)
+        },
+      })
     }
     return out
   }
 
   let og = process.env.TAMAGUI_KEEP_THEMES
   process.env.TAMAGUI_KEEP_THEMES = '1'
+  process.env.TAMAGUI_RUN_THEMEBUILDER = '1'
 
   try {
     const requiredThemes = require(inputFilePath)
+
     const themes =
       requiredThemes['default'] ||
       requiredThemes['themes'] ||
@@ -80,7 +80,7 @@ export async function generateThemes(inputFile: string) {
       state: themeBuilder?.state,
     }
   } catch (err) {
-    console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
+    console.warn(` ⚠️ Error running theme builder:\n`, err?.['stack'] || err)
   } finally {
     process.env.TAMAGUI_KEEP_THEMES = og
     Module.prototype.require = ogRequire
