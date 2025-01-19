@@ -87,8 +87,14 @@ export function createThemeSuite<
       : Record<keyof GrandChildrenThemes, any>,
   })
 
+  lastBuilder = builder.themeBuilder
+
   return builder.themes
 }
+
+let lastBuilder: ThemeBuilder | null = null
+
+export const getLastBuilder = () => lastBuilder
 
 function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
   return Object.fromEntries(

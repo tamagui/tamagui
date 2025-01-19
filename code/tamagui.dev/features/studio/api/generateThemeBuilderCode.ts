@@ -1,9 +1,6 @@
 import type { ThemeBuilder } from '@tamagui/theme-builder'
-// import * as prettier from 'prettier'
-// import tsParser from 'prettier/parser-typescript'
-
 import type { BuildThemeSuiteProps } from '../theme/types'
-import { buildThemeSuite } from './buildThemeSuite'
+import { createThemeSuite, getLastBuilder } from '@tamagui/theme-builder'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
   includeComponentThemes: boolean
@@ -20,69 +17,35 @@ export async function generateThemeBuilderCode({
   includeComponentThemes,
   includeSizeTokens,
 }: GenerateThemeBuilderCodeProps) {
-  const { themeBuilder } = buildThemeSuite({
-    templates,
-    baseTheme,
-    componentThemes,
-    schemes,
-    palettes,
-    subThemes,
-  })
-  return `
-  import { defaultSubThemes, defaultComponentThemes } from '@tamagui/themes/v3-themes'
-  import { createThemeBuilder } from '@tamagui/theme-builder'
+  console.log('WTF', palettes)
 
-  const palettes = ${stringifyPalettes(themeBuilder)}
-  const templates = ${stringifyTemplates(themeBuilder)}
+  // side effect to getLastBuilder
+  // createThemeSuite({
+  //   palettes,
+  //   baseTheme,
+  //   subThemes,
+  //   schemes,
+  // })
 
-  export const themes = createThemeBuilder()
-    .addPalettes(palettes)
-    .addTemplates(templates)
-    .addThemes({
-      light: {
-        template: 'base',
-        palette: 'light',
-      },
-      dark: {
-        template: 'base',
-        palette: 'dark',
-      },
-    })
-    .addChildThemes(
-      palettes.light_accent
-        ? {
-            accent: [
-              {
-                parent: 'light',
-                template: 'base',
-                palette: 'light_accent',
-              },
-              {
-                parent: 'dark',
-                template: 'base',
-                palette: 'dark_accent',
-              },
-            ],
-          }
-        : {}
-    )
-    .addChildThemes(defaultSubThemes)
-    ${
-      includeComponentThemes
-        ? `.addChildThemes(defaultComponentThemes, {
-      avoidNestingWithin: [
-        'alt1',
-        'alt2',
-        'surface1',
-        'surface2',
-        'surface3',
-        'surface4',
-        'active',
-      ],
-    })\n`
-        : ``
-    }
-    .build()
+  // const themeBuilder = getLastBuilder()
+
+  return `import { createThemeSuite } from '@tamagui/theme-builder'
+
+const builtThemes = createThemeSuite({
+
+})
+
+export type Themes = typeof builtThemes
+
+// this is optional but saves client-side JS bundle size by leaving out
+// themes on client. tamagui automatically hydrates themes from css back
+// into JS for you and the tamagui bundler plugins set TAMAGUI_IS_SERVER
+
+export const themes: Themes =
+  process.env.TAMAGUI_IS_SERVER ||
+  process.env.NODE_ENV === 'development'
+    ? (themes as any)
+    : ({} as any)
 `
 }
 
