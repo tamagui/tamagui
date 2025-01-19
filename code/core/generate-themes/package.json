@@ -35,7 +35,6 @@
   "dependencies": {
     "@tamagui/create-theme": "1.121.12-1737271201540",
     "@tamagui/theme-builder": "1.121.12-1737271201540",
-    "@tamagui/themes": "1.121.12-1737271201540",
     "@tamagui/types": "1.121.12-1737271201540",
     "esbuild-register": "^3.6.0",
     "fs-extra": "^11.2.0"

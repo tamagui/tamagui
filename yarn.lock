@@ -7783,7 +7783,6 @@ __metadata:
     "@tamagui/build": "npm:1.121.12-1737271201540"
     "@tamagui/create-theme": "npm:1.121.12-1737271201540"
     "@tamagui/theme-builder": "npm:1.121.12-1737271201540"
-    "@tamagui/themes": "npm:1.121.12-1737271201540"
     "@tamagui/types": "npm:1.121.12-1737271201540"
     esbuild-register: "npm:^3.6.0"
     fs-extra: "npm:^11.2.0"
