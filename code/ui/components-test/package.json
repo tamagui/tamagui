@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/components-test",
-  "version": "1.121.12-1737239089067",
+  "version": "1.121.12-1737247304231",
   "module": "dist/esm",
   "type": "module",
   "private": true,

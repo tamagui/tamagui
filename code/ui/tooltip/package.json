@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.121.12-1737239089067",
+  "version": "1.121.12-1737247304231",
   "sideEffects": [
     "*.css"
   ],
@@ -37,24 +37,24 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.24",
-    "@tamagui/compose-refs": "1.121.12-1737239089067",
-    "@tamagui/core": "1.121.12-1737239089067",
-    "@tamagui/create-context": "1.121.12-1737239089067",
-    "@tamagui/floating": "1.121.12-1737239089067",
-    "@tamagui/get-token": "1.121.12-1737239089067",
-    "@tamagui/helpers": "1.121.12-1737239089067",
-    "@tamagui/polyfill-dev": "1.121.12-1737239089067",
-    "@tamagui/popover": "1.121.12-1737239089067",
-    "@tamagui/popper": "1.121.12-1737239089067",
-    "@tamagui/stacks": "1.121.12-1737239089067",
-    "@tamagui/text": "1.121.12-1737239089067",
-    "@tamagui/use-controllable-state": "1.121.12-1737239089067"
+    "@tamagui/compose-refs": "1.121.12-1737247304231",
+    "@tamagui/core": "1.121.12-1737247304231",
+    "@tamagui/create-context": "1.121.12-1737247304231",
+    "@tamagui/floating": "1.121.12-1737247304231",
+    "@tamagui/get-token": "1.121.12-1737247304231",
+    "@tamagui/helpers": "1.121.12-1737247304231",
+    "@tamagui/polyfill-dev": "1.121.12-1737247304231",
+    "@tamagui/popover": "1.121.12-1737247304231",
+    "@tamagui/popper": "1.121.12-1737247304231",
+    "@tamagui/stacks": "1.121.12-1737247304231",
+    "@tamagui/text": "1.121.12-1737247304231",
+    "@tamagui/use-controllable-state": "1.121.12-1737247304231"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737239089067",
+    "@tamagui/build": "1.121.12-1737247304231",
     "react": "*",
     "react-native": "^0.76.5"
   },
