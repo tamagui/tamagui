@@ -27,6 +27,7 @@ export const settings = {
   shouldAddPrefersColorThemes: true,
   allowedStyleValues: 'somewhat-strict-web',
   themeClassNameOnRoot: true,
+  maxDarkLightNesting: 1,
 } satisfies CreateTamaguiProps['settings']
 
 export const defaultConfig = {
