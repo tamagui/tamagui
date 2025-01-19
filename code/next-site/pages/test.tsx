@@ -67,7 +67,7 @@ const AnimatedHeading = memo(
           // }}
           // @ts-ignore
           fontFamily={`$${family}`}
-          textShadowColor="$shadowColorFocus"
+          textShadowColor="$shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
           ellipse

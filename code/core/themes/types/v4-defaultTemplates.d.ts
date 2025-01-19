@@ -1,4 +1,6 @@
 export declare const defaultTemplates: Record<"light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | "light_base" | "light_surface1" | "light_surface2" | "light_surface3" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "light_inverse" | "dark_inverse", {
+    accentBackground: number;
+    accentColor: number;
     background0: number;
     background025: number;
     background05: number;
@@ -34,11 +36,5 @@ export declare const defaultTemplates: Record<"light_alt1" | "light_alt2" | "dar
     colorTransparent: number;
     placeholderColor: number;
     outlineColor: number;
-    shadowColor: string;
-    shadowColorHover: string;
-    shadowColorPress: string;
-    shadowColorFocus: string;
-    accentBackground: number;
-    accentColor: number;
 }>;
 //# sourceMappingURL=v4-defaultTemplates.d.ts.map

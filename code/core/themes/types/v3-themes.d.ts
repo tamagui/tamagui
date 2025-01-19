@@ -15612,10 +15612,10 @@ declare const themesIn: {
             blue12: string;
         };
     };
-};
+} | null;
 type ThemeKeys = keyof typeof defaultTemplates.light_base | keyof typeof nonInherited.light;
 export type Theme = Record<ThemeKeys, string>;
-export type ThemesOut = Record<keyof typeof themesIn, Theme>;
+export type ThemesOut = Record<keyof Exclude<typeof themesIn, null>, Theme>;
 export declare const themes: ThemesOut;
 export declare const size: {
     $0: number;
