@@ -76,9 +76,10 @@ export default function ThemePage() {
 
 const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
+  console.log('gogo', baseStepThemeName)
 
   return (
-    <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName}>
+    <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName} debug>
       <ThemeNameEffect />
       <YStack bg="$background" f={1} pt={20 + 60} my={-60}>
         {props.children}

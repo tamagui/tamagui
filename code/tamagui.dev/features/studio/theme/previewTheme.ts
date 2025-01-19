@@ -51,7 +51,7 @@ export async function updatePreviewTheme(
     })
   }
 
-  console.warn(`updatePreviewTheme()`, themes, insertThemes)
+  console.warn(`updatePreviewTheme()`, args.id, { themes, insertThemes })
 
   last.set(args.id, cacheKey)
 

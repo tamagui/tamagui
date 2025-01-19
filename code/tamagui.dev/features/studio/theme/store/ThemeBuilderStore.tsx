@@ -83,7 +83,6 @@ export class ThemeBuilderStore {
     this.name = defaultThemeSuiteItem.name
     this.palettes = defaultThemeSuiteItem.palettes
     this.schemes = defaultThemeSuiteItem.schemes
-    await this.save()
     await this.refreshThemeSuite()
   }
 
@@ -315,7 +314,6 @@ export class ThemeBuilderStore {
       },
     }
     await this.refreshThemeSuite()
-    await this.save()
   }
 
   async deletePalette(name: string) {
@@ -325,7 +323,6 @@ export class ThemeBuilderStore {
       return next
     })()
     await this.refreshThemeSuite()
-    await this.save()
   }
 
   get sectionsFlat() {

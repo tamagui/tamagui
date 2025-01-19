@@ -1,12 +1,15 @@
 import { memo, startTransition, useLayoutEffect, useState } from 'react'
 import type { ColorTokens } from 'tamagui'
-import { YStack, isClient, useDidFinishSSR, useTheme } from 'tamagui'
+import { YStack, isClient, useDidFinishSSR, useTheme, useThemeName } from 'tamagui'
 
 export const ThemeNameEffect = memo(
   ({ colorKey = '$color1' }: { colorKey?: ColorTokens }) => {
     const isHydrated = useDidFinishSSR()
     const theme = useTheme()
+    const themeName = useThemeName()
     const [isActive, setIsActive] = useState(false)
+
+    console.log("WE GOT'", { themeName, theme })
 
     const color = theme[colorKey]?.val
 

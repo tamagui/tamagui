@@ -17,16 +17,8 @@ import { PieScreen } from './preview/Pie'
 import { PricingCards } from './preview/Pricing'
 import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
 import { UserDropdown } from './preview/UserDropdown'
-import { extraPad } from './views/StudioPreviewFrame'
 
-// const ToggleGroupItem = styled(ToggleGroup.Item, {
-//   height: 28,
-//   w: 30,
-
-//   focusStyle: {
-//     outlineWidth: 0,
-//   },
-// } as any)
+const extraPad = 18
 
 function gridRow(items: Array<[string, number]>) {
   return items.map((item) => Array(item[1]).fill(item[0]).join(' ')).join(' ')

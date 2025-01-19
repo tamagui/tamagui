@@ -74,14 +74,14 @@ export const PaletteView = memo((props: Props) => {
   const hoveredItem = defaultScaleGrouped[activeColor]
 
   const { anchors } = palette
-  const anchorIndex = anchors.findIndex(
-    (x) => x.index === +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
-  )
+
+  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET - 1
+
+  const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
+
   const anchor = anchors[anchorIndex]
   const nextAnchor = anchors[anchorIndex + 1]
   const prevAnchor = anchors[anchorIndex - 1]
-
-  console.log('hello?', anchor, anchors, anchorIndex)
 
   const toggleAnchorAt = async (index: number) => {
     if (anchor) {
