@@ -145,14 +145,14 @@ ${baseKeys
 function t(a: [number, number][]) {
   let res: Record<string,string> = {}
   for (const [ki, vi] of a) {
-    res[ks[ki] as string] = vs[vi] as string
+    res[ks[ki] as string] = colors[vi] as string
   }
   return res as Theme
 }
 `
 
   // add all token variables
-  out += `const vs = [\n`
+  out += `export const colors = [\n`
   let index = 0
   const valueToIndex = {}
   dedupedTokens.forEach((name, value) => {
