@@ -217,8 +217,6 @@ function getState(
   const themes = getThemes()
   const [allManagers, componentManagers] = getManagers(manager)
 
-  console.log('themes', themes)
-
   const isDirectParentAComponentTheme = !!manager?.state.isComponent
   const startIndex = props.reset && !isDirectParentAComponentTheme ? 1 : 0
   let baseManager = allManagers[startIndex]
