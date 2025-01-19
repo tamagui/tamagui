@@ -1,5 +1,5 @@
 ---
-title: Creating Themes with createThemeBuilder
+title: Creating Themes with Tamagui
 description: Learn how to create a suite of themes for a Tamagui app
 demoName: ThemeBuilder
 ---
@@ -9,21 +9,22 @@ demoName: ThemeBuilder
 </HeroContainer>
 
 <IntroParagraph>
-  The new theme-builder package makes creating suites of themes for Tamagui far
-  easier, with some performance benefits to boot.
+  Tamagui themes start simple, but can do some pretty powerful things. To make them easier to generate, we've built a few helpers.
 </IntroParagraph>
 
-Before reading this guide, note that themes can be incredibly simple, and we highly recommend you avoid diving
-into complex themes unless you are on a large team that is willing to invest more effort. You can always
-just create a single `light` or `dark` theme at the root, and be on your way.
+We have two ways to generate themes with `@tamagui/theme-builder`: 
 
-The Tamagui package `@tamagui/theme-builder` makes building complex theme suites easier. It gives you a chainable theme creation API. Because you may not want to bundle the extra overhead of themes, we've also added a `themeBuilder` option to the bundler plugins that lets you pre-generate your themes before runtime.
+- `createThemeBuilder` is a more low-level, chainable API.
+- `createThemeSuite` makes generating a slightly opinonated suite of themes much simpler.
 
-This guide goes into `createThemeBuilder`. If you want to [skip to the API, check here](#createthemebuilder), or you can just copy-paste [a complete example here](#complete-example).
+At it's simplest, `createThemeSuite` is as simple as:
+
+```tsx
+import { createThemeSuite }
+```
 
 <Notice>
-  You don't need to create your own theme suite from the jump. Try using the built-in themes in @tamagui/config.
-  This guide is for more advanced use cases.
+  You don't need to create your own theme suite from the jump. Try using the built-in themes in @tamagui/config/v4. This guide covers more advanced use cases.
 </Notice>
 
 Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, and themes:

@@ -1,5 +1,4 @@
-import { objectFromEntries, objectKeys } from './helpers'
-import type { BuildTemplates } from './types'
+import { objectFromEntries, objectKeys, type BuildTemplates } from '@tamagui/themes'
 
 const getTemplates = () => {
   const lightTemplates = getBaseTemplates('light')

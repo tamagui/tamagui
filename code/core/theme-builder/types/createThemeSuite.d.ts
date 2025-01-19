@@ -1,9 +1,8 @@
 import { type ThemeBuilder } from '@tamagui/theme-builder';
-import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types';
-import { defaultTemplates } from './v4-defaultTemplates';
+import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamagui/themes';
+import { defaultTemplates } from './defaultTemplates';
+export { defaultTemplates } from './defaultTemplates';
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes';
-export type * from './types';
-export { defaultTemplates } from './v4-defaultTemplates';
 /**
  * TODO
  *
@@ -46,7 +45,7 @@ export type CreateThemesProps<Accent extends BaseThemeDefinition<Extra> | undefi
         scheme?: 'light' | 'dark';
     }) => Record<string, string>;
 };
-export declare function createThemeSuite<Extra extends ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition, GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined, Accent extends BaseThemeDefinition<Extra> | undefined = undefined>(props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes>): Record<"light" | "dark" | ((Accent extends undefined ? false : true) extends infer T ? T extends (Accent extends undefined ? false : true) ? T extends true ? "light_accent" | "dark_accent" : never : never : never) | (keyof SubThemes extends string ? `light_${(GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) extends infer T_1 ? T_1 extends (GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) ? T_1 extends undefined ? string & keyof SubThemes : NamesWithChildrenNames<string & keyof SubThemes, keyof T_1> : never : never}` | `dark_${(GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) extends infer T_2 ? T_2 extends (GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) ? T_2 extends undefined ? string & keyof SubThemes : NamesWithChildrenNames<string & keyof SubThemes, keyof T_2> : never : never}` : never), { [ThemeKey in "borderColor" | "borderColorHover" | "borderColorPress" | "borderColorFocus" | "color" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "colorTransparent" | "placeholderColor" | "outlineColor" | "accentBackground" | "accentColor" | "background0" | "background025" | "background05" | "background075" | "color0" | "color025" | "color05" | "color075" | keyof Extra["dark"]]: string; }>;
+export declare function createThemeSuite<Extra extends ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition, GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined, Accent extends BaseThemeDefinition<Extra> | undefined = undefined>(props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes>): Record<"dark" | "light" | ((Accent extends undefined ? false : true) extends infer T ? T extends (Accent extends undefined ? false : true) ? T extends true ? "light_accent" | "dark_accent" : never : never : never) | (keyof SubThemes extends string ? `dark_${(GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) extends infer T_1 ? T_1 extends (GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) ? T_1 extends undefined ? string & keyof SubThemes : NamesWithChildrenNames<string & keyof SubThemes, keyof T_1> : never : never}` | `light_${(GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) extends infer T_2 ? T_2 extends (GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>) ? T_2 extends undefined ? string & keyof SubThemes : NamesWithChildrenNames<string & keyof SubThemes, keyof T_2> : never : never}` : never), { [ThemeKey in "accentBackground" | "accentColor" | "background0" | "background025" | "background05" | "background075" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "color0" | "color025" | "color05" | "color075" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "borderColor" | "borderColorHover" | "borderColorPress" | "borderColorFocus" | "color" | "colorHover" | "colorPress" | "colorFocus" | "colorTransparent" | "placeholderColor" | "outlineColor" | keyof Extra["dark"]]: string; }>;
 type NamesWithChildrenNames<ParentNames extends string, ChildNames> = ParentNames | (ChildNames extends string ? `${ParentNames}_${ChildNames}` : never);
 export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesByScheme, Templates extends BuildTemplates, Palettes extends SimplePaletteDefinitions, ChildrenThemes extends Record<string, {
     template: keyof Templates extends string ? keyof Templates : never;
@@ -70,7 +69,7 @@ export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesB
 };
 export declare function createThemes(props: BuildThemeSuiteProps): {
     themeBuilder: ThemeBuilder<any>;
-    themes: Record<"light" | "dark" | `light_${string}` | `dark_${string}`, {
+    themes: Record<"dark" | "light" | `dark_${string}` | `light_${string}`, {
         [x: string]: string;
         [x: number]: string;
     }>;
@@ -138,4 +137,4 @@ export declare const defaultComponentThemes: {
     };
 };
 export declare function createPalettes(palettes: BuildPalettes): SimplePaletteDefinitions;
-//# sourceMappingURL=v4-createTheme.d.ts.map
+//# sourceMappingURL=createThemeSuite.d.ts.map

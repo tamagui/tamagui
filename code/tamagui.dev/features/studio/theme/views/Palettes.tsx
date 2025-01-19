@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from '@tamagui/lucide-icons'
 import { Paragraph, Theme, XStack, YStack } from 'tamagui'
-import { getThemeSuitePalettes } from '@tamagui/themes/v4'
+import { getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { StudioPaletteBar } from '../../StudioPaletteBar'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import type { BuildPalette } from '~/features/studio/theme/types'

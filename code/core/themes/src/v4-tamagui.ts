@@ -1,5 +1,5 @@
 import * as Colors from '@tamagui/colors'
-import { createThemeSuite } from './v4-createTheme'
+import { createThemeSuite } from '@tamagui/theme-builder'
 
 /**
  * Default themes for the tamagui.dev site

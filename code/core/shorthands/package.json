@@ -6,13 +6,7 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "v2.js",
-    "v2.d.ts"
-  ],
+  "files": ["src", "types", "dist", "v2.js", "v2.d.ts", "v4.d.ts", "v4.js"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -42,14 +36,14 @@
       "import": "./dist/esm/v2.mjs",
       "require": "./dist/cjs/v2.cjs"
     },
-    "./v3": {
+    "./v4": {
       "react-native": {
-        "import": "./dist/esm/v3.native.js",
-        "require": "./dist/cjs/v3.native.js"
+        "import": "./dist/esm/v4.native.js",
+        "require": "./dist/cjs/v4.native.js"
       },
-      "types": "./types/v3.d.ts",
-      "import": "./dist/esm/v3.mjs",
-      "require": "./dist/cjs/v3.cjs"
+      "types": "./types/v4.d.ts",
+      "import": "./dist/esm/v4.mjs",
+      "require": "./dist/cjs/v4.cjs"
     }
   },
   "dependencies": {

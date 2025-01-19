@@ -13,19 +13,19 @@ cycles exist in your imports.
 
 ## Quick Start
 
-You can use `@tamagui/config` which provides a complete config out of the box,
-the same one this site uses.
+We made `@tamagui/config` to make it easy to generate a robust Tamagui configuration.
+
+It comes with a recommended default configuration and themes, as well as an easy way to make your own themes with `createThemeSuite`.
 
 ```tsx fileName="tamagui.config.ts"
-import { config } from '@tamagui/config/v3'
+import { config, createThemeSuite } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
 const appConfig = createTamagui(config)
 
 export type AppConfig = typeof appConfig
 
-declare module 'tamagui' {
-  // or '@tamagui/core'
+declare module 'tamagui' { // or '@tamagui/core'
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}

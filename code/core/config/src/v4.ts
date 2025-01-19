@@ -6,13 +6,13 @@ import { animations } from './v3-animations'
 import { fonts } from './v4-fonts'
 import { media, mediaQueryDefaultActive } from './v4-media'
 
-export { shorthands } from '@tamagui/shorthands/v3'
+export { shorthands } from '@tamagui/shorthands/v4'
 export { tokens } from '@tamagui/themes/v3-themes'
 export { fonts } from './fonts'
 export { media, mediaQueryDefaultActive } from './media'
 export { animations } from './v4-animations'
 
-export { tamaguiThemes, defaultThemes } from '@tamagui/themes/v4'
+export { tamaguiThemes } from '@tamagui/themes/v4'
 
 export const config = {
   animations,

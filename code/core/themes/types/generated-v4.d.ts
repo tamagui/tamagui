@@ -1,10 +1,6 @@
 type Theme = {
     accentBackground: string;
     accentColor: string;
-    shadowColor: string;
-    shadowColorHover: string;
-    shadowColorPress: string;
-    shadowColorFocus: string;
     background0: string;
     background025: string;
     background05: string;
@@ -76,6 +72,10 @@ type Theme = {
     yellow10: string;
     yellow11: string;
     yellow12: string;
+    shadowColor: string;
+    shadowColorHover: string;
+    shadowColorPress: string;
+    shadowColorFocus: string;
 };
 export declare const colors: string[];
 type ThemeNames = 'light' | 'dark' | 'light_accent' | 'dark_accent' | 'light_error' | 'light_warning' | 'light_success' | 'dark_error' | 'dark_warning' | 'dark_success';

@@ -1,12 +1,11 @@
 import { createThemeBuilder, type ThemeBuilder } from '@tamagui/theme-builder'
+import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamagui/themes'
 import { parseToHsla } from 'color2k'
+import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes } from './getThemeSuitePalettes'
-import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
-import { defaultTemplates } from './v4-defaultTemplates'
 
+export { defaultTemplates } from './defaultTemplates'
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
-export type * from './types'
-export { defaultTemplates } from './v4-defaultTemplates'
 
 /**
  * TODO
@@ -35,17 +34,6 @@ type SimplePaletteDefinitions = Record<string, string[]>
 type SinglePalette = string[]
 type SchemePalette = { light: SinglePalette; dark: SinglePalette }
 type Palette = SinglePalette | SchemePalette
-
-const defaultPalettes: SimplePaletteDefinitions = createPalettes(
-  getThemesPalettes({
-    base: {
-      palette: ['#fff', '#000'],
-    },
-    accent: {
-      palette: ['#ff0000', '#ff9999'],
-    },
-  })
-)
 
 export type CreateThemesProps<
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
@@ -115,6 +103,17 @@ function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
     })
   ) as Record<keyof A, any>
 }
+
+const defaultPalettes: SimplePaletteDefinitions = createPalettes(
+  getThemesPalettes({
+    base: {
+      palette: ['#fff', '#000'],
+    },
+    accent: {
+      palette: ['#ff0000', '#ff9999'],
+    },
+  })
+)
 
 type NamesWithChildrenNames<ParentNames extends string, ChildNames> =
   | ParentNames
