@@ -1,14 +1,27 @@
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { SizableText } from '@tamagui/text'
+import { ButtonNestingContext } from '@tamagui/stacks'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { GetProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, styled, View } from '@tamagui/web'
-import { createButton } from './createButton'
+import { createStyledContext, styled, View, withStaticProperties } from '@tamagui/web'
+import { createElement, isValidElement, useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
 export type ButtonProps = GetProps<typeof Frame>
 
+const context = createStyledContext({
+  size: undefined,
+  variant: undefined,
+})
+
 const Frame = styled(View, {
+  context,
+  name: 'Button',
+  group: 'Button' as any,
+  containerType: 'normal',
+  role: 'button',
+  tag: 'button',
+
   variants: {
     unstyled: {
       false: {
@@ -39,26 +52,29 @@ const Frame = styled(View, {
     },
 
     variant: {
-      outlined: {
-        backgroundColor: 'transparent',
-        borderWidth: 2,
-        borderColor: '$borderColor',
+      outlined:
+        process.env.TAMAGUI_HEADLESS === '1'
+          ? {}
+          : {
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              borderColor: '$borderColor',
 
-        hoverStyle: {
-          backgroundColor: 'transparent',
-          borderColor: '$borderColorHover',
-        },
+              hoverStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorHover',
+              },
 
-        pressStyle: {
-          backgroundColor: 'transparent',
-          borderColor: '$borderColorPress',
-        },
+              pressStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorPress',
+              },
 
-        focusVisibleStyle: {
-          backgroundColor: 'transparent',
-          borderColor: '$borderColorFocus',
-        },
-      },
+              focusVisibleStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorFocus',
+              },
+            },
     },
 
     size: {
@@ -79,6 +95,8 @@ const Frame = styled(View, {
 })
 
 const Text = styled(SizableText, {
+  context,
+
   variants: {
     unstyled: {
       false: {
@@ -99,6 +117,8 @@ const Text = styled(SizableText, {
 })
 
 const Icon = styled(SizableText, {
+  context,
+
   variants: {
     unstyled: {
       false: {
@@ -126,15 +146,57 @@ export const ButtonContext = createStyledContext<{
   variant: undefined,
 })
 
-export const Button = createButton<{
+const ButtonComponent = Frame.styleable<{
+  variant?: 'outlined'
   size?: SizeTokens
-  variant?: ButtonVariant
-}>({
+  icon?: any
+  iconAfter?: any
+  scaleIcon?: number
+  iconSize?: SizeTokens
+}>((propsIn: any, ref) => {
+  const isNested = useContext(ButtonNestingContext)
+  const { children, iconSize, icon, iconAfter, scaleIcon = 0.4, ...props } = propsIn
+
+  const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
+    if (!icon) return null
+    const isBefore = i === 0
+    return isValidElement(icon)
+      ? icon
+      : createElement(icon, {
+          size: iconSize ?? props.size,
+          ...(!iconSize &&
+            typeof scaleIcon === 'number' && {
+              scale: scaleIcon,
+              [isBefore ? 'marginLeft' : 'marginRight']: `-${scaleIcon * 40}%`,
+            }),
+        })
+  })
+
+  const wrappedChildren = wrapChildrenInText(
+    Text,
+    { children },
+    propsIn.unstyled !== true
+      ? {
+          unstyled: process.env.TAMAGUI_HEADLESS === '1',
+          size: propsIn.size,
+        }
+      : undefined
+  )
+
+  return (
+    <ButtonNestingContext.Provider value={true}>
+      <Frame ref={ref} {...props} {...(isNested && { tag: 'span' })}>
+        {themedIcon}
+        {wrappedChildren}
+        {themedIconAfter}
+      </Frame>
+    </ButtonNestingContext.Provider>
+  )
+})
+
+export const Button = withStaticProperties(ButtonComponent, {
+  Apply: context.Provider,
   Frame,
   Text,
   Icon,
-  defaultVariants: {
-    size: undefined,
-    variant: undefined,
-  },
 })

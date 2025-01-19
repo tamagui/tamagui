@@ -45,6 +45,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     onEndEditing,
     onScroll,
     onSelectionChange,
+    // @ts-ignore
     caretColor,
     placeholderTextColor,
     blurOnSubmit,

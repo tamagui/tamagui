@@ -822,7 +822,7 @@ export declare const config: {
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
-        themeClassNameOnRoot: boolean;
+        addThemeClassName: "html";
     };
 };
 //# sourceMappingURL=v4.d.ts.map
