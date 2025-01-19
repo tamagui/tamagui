@@ -114,7 +114,7 @@ export class StepExportStore {
                 type: 'files',
                 files: [
                   {
-                    filename: 'themes.ts',
+                    filename: 'tamagui.config.ts',
                     content: `import { themes } from './themes'
 
 export const config = createTamagui({
