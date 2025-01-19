@@ -11,7 +11,7 @@ window['React'] = React
 describe('flatten-tests', () => {
   test(`flattened without extra attributes`, async () => {
     const output = await extractForNative(`
-      import { YStack } from 'tamagui/src/YStack'
+      import { YStack } from 'tamagui'
       import { useMedia } from 'tamagui'
   
       export function Test(isLoading) {
@@ -32,7 +32,7 @@ describe('flatten-tests', () => {
 
   test('flattened media queries', async () => {
     const output = await extractForNative(`
-      import { YStack } from 'tamagui/src/YStack'
+      import { YStack } from 'tamagui'
       import { useMedia } from 'tamagui'
   
       export function Test(isLoading) {
@@ -101,7 +101,7 @@ describe('flatten-tests', () => {
 
   test(`work with experimentalFlattenThemesOnNative`, async () => {
     const output = await extractForNative(`
-      import { YStack } from 'tamagui/src/YStack'
+      import { YStack } from 'tamagui'
   
       export function Test(isLoading) {
         return (
@@ -119,7 +119,7 @@ describe('flatten-tests', () => {
   })
 
   test(`work with experimentalFlattenThemesOnNative + ternary`, async () => {
-    const output = await extractForNative(`// debug
+    const output = await extractForNative(`
       import { View } from 'tamagui'
   
       export function Test() {

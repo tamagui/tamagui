@@ -131,6 +131,12 @@ export const TooltipGroup = ({
   )
 }
 
+const setOpens = new Set<React.Dispatch<React.SetStateAction<boolean>>>()
+
+export const closeOpenTooltips = () => {
+  setOpens.forEach((x) => x(false))
+}
+
 const TooltipComponent = React.forwardRef(function Tooltip(
   props: ScopedTooltipProps<TooltipProps>,
   // no real ref here but React complaining need to see why see SandboxCustomStyledAnimatedTooltip.ts
@@ -177,8 +183,10 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     const openIt = () => {
       setOpen(false)
     }
+    setOpens.add(setOpen)
     document.documentElement.addEventListener('scroll', openIt)
     return () => {
+      setOpens.delete(setOpen)
       document.documentElement.removeEventListener('scroll', openIt)
     }
   }, [open, disableAutoCloseOnScroll])

@@ -12,6 +12,8 @@ export { fonts } from './fonts'
 export { media, mediaQueryDefaultActive } from './media'
 export { animations } from './v4-animations'
 
+export { tamaguiThemes, defaultThemes } from '@tamagui/themes/v4'
+
 export const config = {
   animations,
   media,
@@ -31,6 +33,6 @@ export const config = {
     fastSchemeChange: true,
     shouldAddPrefersColorThemes: true,
     allowedStyleValues: 'somewhat-strict-web',
-    themeClassNameOnRoot: true,
+    addThemeClassName: 'html',
   },
 } satisfies CreateTamaguiProps

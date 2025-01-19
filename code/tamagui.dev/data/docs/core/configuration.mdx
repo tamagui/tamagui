@@ -92,10 +92,6 @@ your [shorthands](#shorthands) to give you a syntax like this:
 ```
 
 ```tsx  fileName="tamagui.config.ts"
-// @tamagui/core doesn't include `createMedia` so that it can avoid
-// a dependency on react-native. If you are using tamagui, you can
-// import createMedia from there directly and avoid this line:
-import { createMedia } from '@tamagui/react-native-media-driver'
 import { createFont, createTamagui, createTokens } from 'tamagui'
 
 // Create a font:
@@ -178,17 +174,13 @@ const config = createTamagui({
     },
   },
 
-  // For web-only, media queries work out of the box and you can avoid the
-  // `createMedia` call here by passing the media object directly.
-  // If you are going to target React Native, use `createMedia` (it's an identity
-  // function on web so you can import it there without concern).
-  media: createMedia({
+  media: {
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
     short: { maxHeight: 820 },
     hoverNone: { hover: 'none' },
     pointerCoarse: { pointer: 'coarse' },
-  }),
+  },
 
   // Shorthands
   // Adds <View m={10} /> to <View margin={10} />
@@ -331,31 +323,6 @@ into your app like so:
 
 ```tsx
 import '@tamagui/core/reset.css'
-```
-
-<Notice>
-  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See [Metro guide](/docs/guides/metro#web-support).
-</Notice>
-
-### Setup media query driver
-
-`@tamagui/core` doesn't provide media capabilities out of the box to native
-apps, while on the web it uses native media queries. To enable media queries for
-React Native, you need to provide matchMedia implementation:
-
-```sh
-yarn add @tamagui/react-native-media-driver
-```
-
-```tsx
-import { createMedia } from '@tamagui/react-native-media-driver'
-
-export default createTamagui({
-  media: createMedia({
-    xs: { maxWidth: 660 },
-    // ...
-  }),
-})
 ```
 
 ##### Optimizing further (Advanced)

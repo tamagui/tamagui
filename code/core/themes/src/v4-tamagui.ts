@@ -1,50 +1,10 @@
-import {
-  blue,
-  blueDark,
-  gray,
-  grayDark,
-  green,
-  greenDark,
-  orange,
-  orangeDark,
-  pink,
-  pinkDark,
-  purple,
-  purpleDark,
-  red,
-  redDark,
-  yellow,
-  yellowDark,
-} from '@tamagui/colors'
+import * as Colors from '@tamagui/colors'
 import { createThemeSuite } from './v4-createTheme'
 
-const colorTokens = {
-  light: {
-    blue,
-    gray,
-    green,
-    orange,
-    pink,
-    purple,
-    red,
-    yellow,
-  },
-  dark: {
-    blue: blueDark,
-    gray: grayDark,
-    green: greenDark,
-    orange: orangeDark,
-    pink: pinkDark,
-    purple: purpleDark,
-    red: redDark,
-    yellow: yellowDark,
-  },
-}
-
-const lightShadowColor = 'rgba(0,0,0,0.04)'
-const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
-const darkShadowColor = 'rgba(0,0,0,0.2)'
-const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
+/**
+ * Default themes for the tamagui.dev site
+ * If you'd like to create your own themes, use `createThemeSuite`
+ */
 
 const darkPalette = [
   '#050505',
@@ -76,106 +36,115 @@ const lightPalette = [
   'hsl(0, 0%, 9.0%)',
 ]
 
-/**
- * Default themes for the tamagui.dev site
- * If you'd like to create your own themes, use `createThemeSuite`
- */
-export const tamaguiThemes = createThemeSuite({
+const lightShadows = {
+  shadow1: 'rgba(0,0,0,0.04)',
+  shadow2: 'rgba(0,0,0,0.08)',
+  shadow3: 'rgba(0,0,0,0.16)',
+  shadow4: 'rgba(0,0,0,0.24)',
+  shadow5: 'rgba(0,0,0,0.32)',
+  shadow6: 'rgba(0,0,0,0.4)',
+}
+
+const darkShadows = {
+  shadow1: 'rgba(0,0,0,0.2)',
+  shadow2: 'rgba(0,0,0,0.3)',
+  shadow3: 'rgba(0,0,0,0.4)',
+  shadow4: 'rgba(0,0,0,0.5)',
+  shadow5: 'rgba(0,0,0,0.6)',
+  shadow6: 'rgba(0,0,0,0.7)',
+}
+
+const themes = createThemeSuite({
   base: {
     palette: {
       dark: darkPalette,
       light: lightPalette,
     },
 
-    // we set a bunch of colors like $red1 => $red1
-    // we only want to set it on the base light/dark theme
+    // for values we don't want being inherited onto sub-themes
     extra: {
       light: {
-        ...colorTokens.light.blue,
-        ...colorTokens.light.gray,
-        ...colorTokens.light.green,
-        ...colorTokens.light.orange,
-        ...colorTokens.light.pink,
-        ...colorTokens.light.purple,
-        ...colorTokens.light.red,
-        ...colorTokens.light.yellow,
-        shadowColor: lightShadowColorStrong,
-        shadowColorHover: lightShadowColorStrong,
-        shadowColorPress: lightShadowColor,
-        shadowColorFocus: lightShadowColor,
+        ...Colors.blue,
+        ...Colors.gray,
+        ...Colors.green,
+        ...Colors.orange,
+        ...Colors.pink,
+        ...Colors.purple,
+        ...Colors.red,
+        ...Colors.yellow,
+        ...lightShadows,
+        shadowColor: lightShadows.shadow1,
       },
       dark: {
-        ...colorTokens.dark.blue,
-        ...colorTokens.dark.gray,
-        ...colorTokens.dark.green,
-        ...colorTokens.dark.orange,
-        ...colorTokens.dark.pink,
-        ...colorTokens.dark.purple,
-        ...colorTokens.dark.red,
-        ...colorTokens.dark.yellow,
-        shadowColor: darkShadowColorStrong,
-        shadowColorHover: darkShadowColorStrong,
-        shadowColorPress: darkShadowColor,
-        shadowColorFocus: darkShadowColor,
+        ...Colors.blueDark,
+        ...Colors.grayDark,
+        ...Colors.greenDark,
+        ...Colors.orangeDark,
+        ...Colors.pinkDark,
+        ...Colors.purpleDark,
+        ...Colors.redDark,
+        ...Colors.yellowDark,
+        ...darkShadows,
+        shadowColor: darkShadows.shadow1,
       },
     },
   },
 
+  // this creates an accent theme, and an accent
   accent: {
     palette: {
-      dark: lightPalette,
-      light: darkPalette,
+      dark: [lightPalette[0], lightPalette[3], lightPalette[11]],
+      light: [darkPalette[0], darkPalette[3], darkPalette[11]],
     },
-    template: 'inverse',
   },
 
   childrenThemes: {
     gray: {
       palette: {
-        dark: Object.values(colorTokens.dark.gray),
-        light: Object.values(colorTokens.light.gray),
+        dark: Object.values(Colors.grayDark),
+        light: Object.values(Colors.gray),
       },
     },
     blue: {
       palette: {
-        dark: Object.values(colorTokens.dark.blue),
-        light: Object.values(colorTokens.light.blue),
+        dark: Object.values(Colors.blueDark),
+        light: Object.values(Colors.blue),
       },
     },
     orange: {
       palette: {
-        dark: Object.values(colorTokens.dark.orange),
-        light: Object.values(colorTokens.light.orange),
+        dark: Object.values(Colors.orangeDark),
+        light: Object.values(Colors.orange),
       },
     },
     red: {
       palette: {
-        dark: Object.values(colorTokens.dark.red),
-        light: Object.values(colorTokens.light.red),
+        dark: Object.values(Colors.redDark),
+        light: Object.values(Colors.red),
       },
     },
     yellow: {
       palette: {
-        dark: Object.values(colorTokens.dark.yellow),
-        light: Object.values(colorTokens.light.yellow),
+        dark: Object.values(Colors.yellowDark),
+        light: Object.values(Colors.yellow),
       },
     },
     green: {
       palette: {
-        dark: Object.values(colorTokens.dark.green),
-        light: Object.values(colorTokens.light.green),
+        dark: Object.values(Colors.greenDark),
+        light: Object.values(Colors.green),
       },
     },
     purple: {
       palette: {
-        dark: Object.values(colorTokens.dark.purple),
-        light: Object.values(colorTokens.light.purple),
+        dark: Object.values(Colors.purpleDark),
+        light: Object.values(Colors.purple),
       },
     },
     pink: {
       palette: {
-        dark: Object.values(colorTokens.dark.pink),
-        light: Object.values(colorTokens.light.pink),
+        dark: Object.values(Colors.pinkDark),
+        light: Object.values(Colors.pink),
       },
     },
     tan: {
@@ -230,3 +199,13 @@ export const tamaguiThemes = createThemeSuite({
     },
   },
 })
+
+export type TamaguiThemes = typeof themes
+
+// avoid themes only on client bundle
+export const tamaguiThemes: TamaguiThemes =
+  process.env.TAMAGUI_IS_SERVER ||
+  process.env.TAMAGUI_KEEP_THEMES ||
+  process.env.NODE_ENV === 'development'
+    ? (themes as any)
+    : ({} as any)

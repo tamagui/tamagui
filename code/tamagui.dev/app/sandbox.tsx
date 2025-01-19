@@ -1,12 +1,27 @@
-import { styled, View } from '@tamagui/web'
+import { styled, Theme, View } from '@tamagui/web'
+import { Button } from 'tamagui'
 
 export default function Sandbox() {
   return (
-    <Test
-      $platform-web={{
-        position: 'fixed',
-      }}
-    />
+    <>
+      <Theme name="accent">
+        <Button>Hello</Button>
+      </Theme>
+
+      {/* <Test
+        animation="bouncy"
+        debug="verbose"
+        pressStyle={{
+          scale: 2,
+        }}
+        hoverStyle={{
+          scale: 1.5,
+        }}
+        $platform-web={{
+          position: 'fixed',
+        }}
+      /> */}
+    </>
   )
 }
 

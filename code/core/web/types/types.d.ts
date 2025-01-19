@@ -252,12 +252,12 @@ export interface ThemeProps {
     debug?: DebugProp | any;
     inverse?: boolean;
     forceClassName?: boolean;
-    shouldUpdate?: () => boolean | undefined;
     shallow?: boolean;
 }
 export type UseThemeWithStateProps = ThemeProps & {
     deopt?: boolean;
     disable?: boolean;
+    needsUpdate?: () => boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
@@ -996,7 +996,7 @@ export type GetStyleState = {
     flatTransforms?: Record<string, any>;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
-export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>) => PropMappedValue;
+export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any) => void) => void;
 export type GenericVariantDefinitions = {
     [key: string]: {
         [key: string]: ((a: any, b: any) => any) | {

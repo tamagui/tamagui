@@ -3,6 +3,7 @@ import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens } from '@tamagui/config/v4'
 import { tamaguiThemes } from '@tamagui/themes/v4'
+
 import { createTamagui } from 'tamagui'
 import { animations } from './animations'
 import {
@@ -36,14 +37,6 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-type Themes = typeof tamaguiThemes
-
-// avoid themes only on client bundle
-const maybeThemes =
-  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
-    ? (tamaguiThemes as Themes)
-    : ({} as Themes)
-
 // for some reason just re-defining these fixes a bug where negative space tokens were dropped
 const fixTypescript55Bug = {
   space: tokens.space,
@@ -56,7 +49,7 @@ const fixTypescript55Bug = {
 const config = {
   fonts,
   animations,
-  themes: maybeThemes,
+  themes: tamaguiThemes,
   media,
   shorthands,
   tokens: fixTypescript55Bug,
@@ -75,7 +68,7 @@ const config = {
   },
 } satisfies CreateTamaguiProps
 
-// for site responsive demo, we want no types here
+// for site responsive demo, but we want no types
 Object.assign(config.media, {
   tiny: { maxWidth: 500 },
   gtTiny: { minWidth: 500 + 1 },
@@ -95,7 +88,7 @@ declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {
-    groupNames(): 'card' | 'takeoutBody' | 'content'
+    groupNames(): 'card' | 'takeoutBody' | 'content' | 'item'
   }
 }
 

@@ -1,7 +1,6 @@
-import Module from 'module'
-import { join } from 'path'
-
 import type { ThemeBuilder } from '@tamagui/theme-builder'
+import Module from 'node:module'
+import { join } from 'node:path'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
@@ -45,9 +44,16 @@ export async function generateThemes(inputFile: string) {
     return out
   }
 
+  let og = process.env.TAMAGUI_KEEP_THEMES
+  process.env.TAMAGUI_KEEP_THEMES = '1'
+
   try {
     const requiredThemes = require(inputFilePath)
-    const themes = requiredThemes['default'] || requiredThemes['themes']
+    const themes =
+      requiredThemes['default'] ||
+      requiredThemes['themes'] ||
+      requiredThemes[Object.keys(requiredThemes)[0]]
+
     const generatedThemes = generatedThemesToTypescript(themes)
 
     let tm: any
@@ -76,6 +82,7 @@ export async function generateThemes(inputFile: string) {
   } catch (err) {
     console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
   } finally {
+    process.env.TAMAGUI_KEEP_THEMES = og
     Module.prototype.require = ogRequire
   }
 }
@@ -114,6 +121,10 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
     }
   }
 
+  if (!themes) {
+    throw new Error(`Didn't find any themes exported or returned`)
+  }
+
   const baseKeys = Object.entries(themes.light || themes[Object.keys(themes)[0]]) as [
     string,
     string,
@@ -134,14 +145,14 @@ ${baseKeys
 function t(a: [number, number][]) {
   let res: Record<string,string> = {}
   for (const [ki, vi] of a) {
-    res[ks[ki] as string] = vs[vi] as string
+    res[ks[ki] as string] = colors[vi] as string
   }
   return res as Theme
 }
 `
 
   // add all token variables
-  out += `const vs = [\n`
+  out += `export const colors = [\n`
   let index = 0
   const valueToIndex = {}
   dedupedTokens.forEach((name, value) => {
@@ -159,6 +170,10 @@ function t(a: [number, number][]) {
 
   // add all themes
   let nameI = 0
+
+  let themeTypes = `type ThemeNames =`
+  let exported = `export const themes: Record<ThemeNames, Theme> = {`
+
   dedupedThemes.forEach((theme) => {
     nameI++
     const key = JSON.stringify(theme)
@@ -166,9 +181,16 @@ function t(a: [number, number][]) {
     const name = `n${nameI}`
     const baseTheme = `const ${name} = ${objectToJsString(theme, keys, valueToIndex)}`
     out += `\n${baseTheme}`
-    const duplicateThemes = names.map((n) => `export const ${n} = ${name}`)
-    out += `\n\n` + duplicateThemes.join('\n')
+    names.forEach((n) => {
+      exported += `\n  ${n}: ${name},`
+
+      if (n.toLowerCase() === n) {
+        themeTypes += `\n | '${n}'`
+      }
+    })
   })
+
+  out += `\n\n${themeTypes}\n\n${exported}\n}\n`
 
   return out
 }
@@ -231,14 +253,14 @@ function themeBuilderIntercept(
 function purgeCache(moduleName) {
   // Traverse the cache looking for the files
   // loaded by the specified module name
-  searchCache(moduleName, function (mod) {
+  searchCache(moduleName, (mod) => {
     delete require.cache[mod.id]
   })
 
   // Remove cached paths to the module.
   // Thanks to @bentael for pointing this out.
   // @ts-ignore
-  Object.keys(module.constructor._pathCache).forEach(function (cacheKey) {
+  Object.keys(module.constructor._pathCache).forEach((cacheKey) => {
     if (cacheKey.indexOf(moduleName) > 0) {
       // @ts-ignore
       delete module.constructor._pathCache[cacheKey]
@@ -266,7 +288,7 @@ function searchCache(moduleName, callback) {
       // Go over each of the module's children and
       // traverse them
       // @ts-ignore
-      mod.children.forEach(function (child) {
+      mod.children.forEach((child) => {
         traverse(child, depth + 1)
       })
 

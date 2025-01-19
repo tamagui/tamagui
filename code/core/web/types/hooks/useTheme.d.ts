@@ -1,7 +1,8 @@
+import { type MutableRefObject } from 'react';
 import type { Variable } from '../createVariable';
 import type { ThemeManagerState } from '../helpers/ThemeManager';
 import { ThemeManager } from '../helpers/ThemeManager';
-import type { DebugProp, ThemeParsed, ThemeProps, Tokens, UseThemeWithStateProps, VariableVal, VariableValGeneric } from '../types';
+import type { ThemeParsed, ThemeProps, Tokens, UseThemeWithStateProps, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
     state?: ThemeManagerState;
     prevState?: ThemeManagerState;
@@ -30,8 +31,7 @@ export type UseThemeResult = {
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: UseThemeWithStateProps) => [ChangedThemeResponse, ThemeParsed];
-export declare function getThemeProxied({ theme, name, scheme }: ThemeManagerState, deopt?: boolean, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const getThemeManager: (id: number) => ThemeManager | undefined;
-export declare const useChangeThemeEffect: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
+export declare const useChangeThemeEffect: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: MutableRefObject<string[] | null>) => ChangedThemeResponse;
 //# sourceMappingURL=useTheme.d.ts.map

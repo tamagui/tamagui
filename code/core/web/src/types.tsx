@@ -422,8 +422,6 @@ export interface ThemeProps {
   inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
-  // allows for forcing the auto-update behavior
-  shouldUpdate?: () => boolean | undefined
 
   // used internally for shallow themes
   shallow?: boolean
@@ -433,6 +431,7 @@ export interface ThemeProps {
 export type UseThemeWithStateProps = ThemeProps & {
   deopt?: boolean
   disable?: boolean
+  needsUpdate?: () => boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -1759,8 +1758,9 @@ export type PropMapper = (
   key: string,
   value: any,
   state: GetStyleState,
-  subProps?: Record<string, any>
-) => PropMappedValue
+  disabled: boolean,
+  map: (key: string, val: any) => void
+) => void
 
 export type GenericVariantDefinitions = {
   [key: string]: {

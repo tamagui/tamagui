@@ -1,25 +1,27 @@
+// debug
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button, Stack, Text, XStack, styled } from 'tamagui'
+import { Button, RefreshControlBase, StyleSheet, View } from 'react-native'
+import { Stack, Text, XStack, styled } from 'tamagui'
+
+// 123
 
 // disabling to avoid dep
-// import { ThemeProvider, createBox } from '@shopify/restyle'
-// const Box = createBox<any>()
-const ThemeProvider = Stack as any
-const Box = Stack as any
+import { ThemeProvider, createBox } from '@shopify/restyle'
+const Box = createBox<any>()
 
 import { TimedRender } from '../components/TimedRender'
 // import { CheckboxDemo } from '@tamagui/demos'
 
 export const Benchmark = () => {
-  return null
-  // return (
-  //   <>
-  //     <BenchmarkFrame name="checkbox">
-  //       <CheckboxDemo />
-  //     </BenchmarkFrame>
-  //   </>
-  // )
+  return (
+    <>
+      <Stack
+        // debug="verbose"
+        style={[{ backgroundColor: 'red', width: 100, height: 100 }]}
+      />
+      <BenchStyled />
+    </>
+  )
 }
 
 const BenchStyled = () => {
@@ -29,6 +31,43 @@ const BenchStyled = () => {
       <BenchTama />
       <BenchRestyle />
     </>
+  )
+}
+
+const StyledStack = styled(Stack, {
+  backgroundColor: 'red',
+  paddingTop: 5,
+  paddingBottom: 5,
+  width: 20,
+})
+
+const BenchmarkFrame = ({ name, children }) => {
+  const [x, setX] = React.useState(0)
+
+  return (
+    <>
+      <>
+        <Text style={{ marginTop: 20 }}>{name}</Text>
+        <Text>run: {x}</Text>
+        <Button title="Go" onPress={() => setX(Math.random())} />
+      </>
+
+      <TimedRender key={x}>{children}</TimedRender>
+    </>
+  )
+}
+
+const iterArr = new Array(1000).fill(0)
+
+const BenchTama = () => {
+  return (
+    <BenchmarkFrame name="tamagui">
+      <View style={{ flexDirection: 'row' }}>
+        {iterArr.map((_, i) => (
+          <StyledStack key={i} />
+        ))}
+      </View>
+    </BenchmarkFrame>
   )
 }
 
@@ -72,70 +111,43 @@ const theme = {
   },
 }
 
-const StyledStack = styled(Stack, {
-  borderColor: 'red',
-  borderWidth: 2,
-  padding: 5,
-})
-
-const BenchmarkFrame = ({ name, children }) => {
-  const [x, setX] = React.useState(0)
-
-  return (
-    <>
-      <>
-        <Text style={{ marginTop: 20 }}>{name}</Text>
-        <Text>run: {x}</Text>
-        <Button onPress={() => setX(Math.random())}>Go</Button>
-      </>
-
-      <TimedRender key={x}>{children}</TimedRender>
-    </>
-  )
-}
-
-const iterArr = new Array(1000).fill(0)
-
-const BenchTama = () => {
-  return (
-    <BenchmarkFrame name="tamagui">
-      <XStack>
-        {iterArr.map((_, i) => (
-          <StyledStack key={i} />
-        ))}
-      </XStack>
-    </BenchmarkFrame>
-  )
-}
-
 const BenchRestyle = () => {
   return (
-    <BenchmarkFrame name="restyle">
-      <XStack>
-        {iterArr.map((_, i) => (
-          <Box borderColor="red" borderWidth={2} padding="s" key={i} />
-        ))}
-      </XStack>
-    </BenchmarkFrame>
+    <ThemeProvider theme={theme}>
+      <BenchmarkFrame name="restyle">
+        <View style={{ flexDirection: 'row' }}>
+          {iterArr.map((_, i) => (
+            <Box
+              backgroundColor="red"
+              paddingTop="s"
+              paddingBottom="s"
+              width={20}
+              key={i}
+            />
+          ))}
+        </View>
+      </BenchmarkFrame>
+    </ThemeProvider>
   )
 }
 
 const styles = StyleSheet.create({
   style: {
-    borderColor: 'red',
-    borderWidth: 2,
-    padding: 5,
+    backgroundColor: 'red',
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: 20,
   },
 })
 
 const BenchRN = () => {
   return (
     <BenchmarkFrame name="rn">
-      <XStack>
+      <View style={{ flexDirection: 'row' }}>
         {iterArr.map((_, i) => (
           <View style={styles.style} key={i} />
         ))}
-      </XStack>
+      </View>
     </BenchmarkFrame>
   )
 }

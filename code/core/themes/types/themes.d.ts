@@ -1,3 +1,2 @@
-import * as themes from './generated-new';
-export { themes };
+export { themes } from './generated-new';
 //# sourceMappingURL=themes.d.ts.map

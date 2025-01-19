@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-internals",
-  "version": "1.121.11",
+  "version": "1.121.12-1737239089067",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -31,14 +31,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/normalize-css-color": "1.121.11",
-    "@tamagui/react-native-use-pressable": "1.121.11",
-    "@tamagui/react-native-use-responder-events": "1.121.11",
-    "@tamagui/simple-hash": "1.121.11",
-    "@tamagui/web": "1.121.11"
+    "@tamagui/normalize-css-color": "1.121.12-1737239089067",
+    "@tamagui/react-native-use-pressable": "1.121.12-1737239089067",
+    "@tamagui/react-native-use-responder-events": "1.121.12-1737239089067",
+    "@tamagui/simple-hash": "1.121.12-1737239089067",
+    "@tamagui/web": "1.121.12-1737239089067"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.11"
+    "@tamagui/build": "1.121.12-1737239089067"
   },
   "license": "MIT",
   "tags": [

@@ -4,9 +4,9 @@ import type { TextStyle } from 'react-native'
 
 export const useCurrentColor = (colorProp: ColorProp) => {
   const theme = useTheme()
-  const out = getVariable(
-    colorProp || theme[colorProp as any]?.get() || theme.color?.get()
-  )
+  const out = colorProp
+    ? getVariable(colorProp)
+    : theme[colorProp as any]?.get() || theme.color?.get()
   return out
 }
 

@@ -1,17 +1,19 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.121.11",
+  "version": "1.121.12-1737239089067",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
   "scripts": {
-    "generate": "yarn generate:v1 && yarn generate:v2",
+    "generate": "yarn generate:v1 && yarn generate:v2 && yarn generate:v3 && yarn generate:v4",
     "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
     "generate:v2": "tamagui generate-themes ./src/v2-themes.ts ./src/generated-v2.ts",
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
-    "build": "tamagui-build",
-    "watch": "yarn build --watch",
+    "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
+    "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",
+    "build": "yarn generate && tamagui-build",
+    "watch": "tamagui-build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -77,15 +79,15 @@
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.121.11",
-    "@tamagui/create-theme": "1.121.11",
-    "@tamagui/theme-builder": "1.121.11",
-    "@tamagui/web": "1.121.11",
+    "@tamagui/colors": "1.121.12-1737239089067",
+    "@tamagui/create-theme": "1.121.12-1737239089067",
+    "@tamagui/theme-builder": "1.121.12-1737239089067",
+    "@tamagui/web": "1.121.12-1737239089067",
     "color2k": "^2.0.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.11",
-    "@tamagui/cli": "1.121.11",
+    "@tamagui/build": "1.121.12-1737239089067",
+    "@tamagui/cli": "1.121.12-1737239089067",
     "vitest": "^2.1.8"
   },
   "publishConfig": {

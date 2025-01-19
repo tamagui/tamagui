@@ -1,6 +1,6 @@
 {
   "name": "tamagui-build-test-watch-package",
-  "version": "1.121.11",
+  "version": "1.121.12-1737239089067",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
@@ -16,7 +16,7 @@
     "build:target-native": "TAMAGUI_TARGET=native node ../../../tamagui-build.js"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.11",
+    "@tamagui/build": "1.121.12-1737239089067",
     "typescript": "^5.7.2"
   }
 }

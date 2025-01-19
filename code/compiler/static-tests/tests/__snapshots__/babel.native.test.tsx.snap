@@ -148,7 +148,7 @@ exports[`normalize dynamic values with theme access only 1`] = `
 const _sheet = __ReactNativeStyleSheet.create({
   "0": {
     "flexDirection": "column",
-    "backgroundColor": "#fff"
+    "backgroundColor": "hsl(0, 0%, 9.0%)"
   }
 });
 const __ReactNativeView = require('react-native').View;
@@ -213,7 +213,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     "letterSpacing": 0,
     "fontSize": 14,
     "lineHeight": 23,
-    "color": "#fff"
+    "color": "hsl(0, 0%, 9.0%)"
   }
 });
 const __ReactNativeView = require('react-native').View;

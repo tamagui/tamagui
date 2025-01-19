@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.121.11",
+  "version": "1.121.12-1737239089067",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -36,30 +36,30 @@
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.121.11",
-    "@tamagui/animate-presence": "1.121.11",
-    "@tamagui/aria-hidden": "1.121.11",
-    "@tamagui/compose-refs": "1.121.11",
-    "@tamagui/constants": "1.121.11",
-    "@tamagui/core": "1.121.11",
-    "@tamagui/create-context": "1.121.11",
-    "@tamagui/dismissable": "1.121.11",
-    "@tamagui/focus-scope": "1.121.11",
-    "@tamagui/helpers": "1.121.11",
-    "@tamagui/polyfill-dev": "1.121.11",
-    "@tamagui/popper": "1.121.11",
-    "@tamagui/portal": "1.121.11",
-    "@tamagui/remove-scroll": "1.121.11",
-    "@tamagui/sheet": "1.121.11",
-    "@tamagui/stacks": "1.121.11",
-    "@tamagui/text": "1.121.11",
-    "@tamagui/use-controllable-state": "1.121.11"
+    "@tamagui/adapt": "1.121.12-1737239089067",
+    "@tamagui/animate-presence": "1.121.12-1737239089067",
+    "@tamagui/aria-hidden": "1.121.12-1737239089067",
+    "@tamagui/compose-refs": "1.121.12-1737239089067",
+    "@tamagui/constants": "1.121.12-1737239089067",
+    "@tamagui/core": "1.121.12-1737239089067",
+    "@tamagui/create-context": "1.121.12-1737239089067",
+    "@tamagui/dismissable": "1.121.12-1737239089067",
+    "@tamagui/focus-scope": "1.121.12-1737239089067",
+    "@tamagui/helpers": "1.121.12-1737239089067",
+    "@tamagui/polyfill-dev": "1.121.12-1737239089067",
+    "@tamagui/popper": "1.121.12-1737239089067",
+    "@tamagui/portal": "1.121.12-1737239089067",
+    "@tamagui/remove-scroll": "1.121.12-1737239089067",
+    "@tamagui/sheet": "1.121.12-1737239089067",
+    "@tamagui/stacks": "1.121.12-1737239089067",
+    "@tamagui/text": "1.121.12-1737239089067",
+    "@tamagui/use-controllable-state": "1.121.12-1737239089067"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.11",
+    "@tamagui/build": "1.121.12-1737239089067",
     "react": "*",
     "react-native": "^0.76.5"
   },

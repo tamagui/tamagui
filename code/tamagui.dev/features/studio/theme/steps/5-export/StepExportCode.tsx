@@ -88,7 +88,7 @@ export class StepExportStore {
 
   updateSelectedPlatformData() {
     this.selectedPlatformData = this.selectedPlatform
-      ? this.platformData?.[this.selectedPlatform] ?? null
+      ? (this.platformData?.[this.selectedPlatform] ?? null)
       : null
   }
 
@@ -212,7 +212,7 @@ const config = createTamagui({
             name: `Generate`,
             steps: [
               {
-                content: `npx tamagui generate-themes theme-builder.ts themes.ts`,
+                content: `npx @tamagui/cli generate-themes theme-builder.ts themes.ts`,
                 type: 'command',
               },
             ],

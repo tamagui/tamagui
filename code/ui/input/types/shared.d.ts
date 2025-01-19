@@ -365,14 +365,6 @@ export declare const styledBody: ({
         direction: boolean;
         shadowOffset: boolean;
         shadowRadius: boolean;
-        focusVisibleStyle?: boolean | undefined;
-        enterStyle: boolean;
-        exitStyle: boolean;
-        hoverStyle: boolean;
-        pressStyle: boolean;
-        focusStyle: boolean;
-        disabledStyle: boolean;
-        focusWithinStyle: boolean;
     };
     name?: undefined;
     tag?: undefined;

@@ -1,6 +1,6 @@
 import { Link } from 'one'
 import { H4, ListItem, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
-import { AllBento, AllTests } from '~/components/allComponents'
+import { AllTests } from '~/components/allComponents'
 import { getUrlFromPath } from '~/utils/getFromPath'
 
 export function HomePage() {
@@ -9,6 +9,11 @@ export function HomePage() {
       <XStack>
         <YStack maw={250}>
           <H4>One-off</H4>
+
+          <Link href="/sandbox">
+            <Paragraph>Sandbox</Paragraph>
+          </Link>
+
           <Link href="/sub/portal-missing-styles">
             <Paragraph>Missing styles on nav</Paragraph>
           </Link>
@@ -25,7 +30,7 @@ export function HomePage() {
           })}
         </YStack>
 
-        <YStack maw={250}>
+        {/* <YStack maw={250}>
           <H4>Bento</H4>
           {Object.keys(AllBento).map((path) => {
             return (
@@ -34,7 +39,7 @@ export function HomePage() {
               </Link>
             )
           })}
-        </YStack>
+        </YStack> */}
       </XStack>
     </ScrollView>
   )

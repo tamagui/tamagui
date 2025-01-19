@@ -36,7 +36,7 @@ export function ComponentItem({
   numberOfComponents: number
   route: string
 }) {
-  const Icon = icons[name] ?? Null
+  const Icon = BENTO_COMPONENT_ICONS[name] ?? Null
   const Preview = ComponentPreview[name] ?? Null
 
   const href = BASE_PATH + route
@@ -124,7 +124,7 @@ const Null = () => null
 
 const BASE_PATH = ' /bento'
 
-const icons = {
+export const BENTO_COMPONENT_ICONS = {
   Inputs: TextCursorInput,
   Checkboxes: CheckSquare,
   Layouts: Layout,

@@ -281,6 +281,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
+    if (selector === ' .tm_xxt') continue
     const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
     const name = selector.slice(lastThemeSelectorIndex).slice(3)
     const [schemeChar] = selector[lastThemeSelectorIndex - 5]
@@ -298,26 +299,19 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   } satisfies DedupedTheme
 }
 
+const tamaguiSelectorRegex = /^:root\s?\.t_[A-Za-z0-9_\,\s\:\.]+\s+\.tm_xxt\s?$/
+
 function getTamaguiSelector(
   rule: CSSRule | null,
   collectThemes = false
 ): readonly [string, CSSStyleRule] | [string, CSSStyleRule, true] | undefined {
   if (rule instanceof CSSStyleRule) {
     const text = rule.selectorText
-    if (text[0] === ':' && text[1] === 'r') {
-      if (text.startsWith(':root ._')) {
-        return [getIdentifierFromTamaguiSelector(text), rule]
-      }
-      if (collectThemes) {
-        // only matches t_ starting selector chains
-        if (/^(:root\s?(\.t_[a-z0-9_]+\s*)+(,)?\s*)+$/i.test(text)) {
-          return [
-            text.slice(0, 20), // just used as uid
-            rule,
-            true,
-          ]
-        }
-      }
+
+    // only matches t_ starting selector chains
+    if (text[0] === ':' && text[1] === 'r' && tamaguiSelectorRegex.test(text)) {
+      const id = getIdentifierFromTamaguiSelector(text)
+      return collectThemes ? [id, rule, true] : [id, rule]
     }
   } else if (rule instanceof CSSMediaRule) {
     // tamagui only ever inserts 1 rule per media

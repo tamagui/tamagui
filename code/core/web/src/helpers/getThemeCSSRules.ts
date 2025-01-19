@@ -119,13 +119,14 @@ export function getThemeCSSRules(props: {
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     // this isBaseTheme logic could probably be done more efficiently above
-    const selectorsString = selectors
-      .map((x) => {
-        const rootSep =
-          isBaseTheme(x) && getSetting('addThemeClassName') !== false ? '' : ' '
-        return `:root${rootSep}${x}`
-      })
-      .join(', ')
+    const selectorsString =
+      selectors
+        .map((x) => {
+          const rootSep =
+            isBaseTheme(x) && getSetting('addThemeClassName') !== false ? '' : ' '
+          return `:root${rootSep}${x}`
+        })
+        .join(', ') + `, .tm_xxt`
 
     const css = `${selectorsString} {${vars}}`
     cssRuleSets.push(css)

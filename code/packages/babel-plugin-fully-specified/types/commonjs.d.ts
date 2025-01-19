@@ -1,7 +1,2 @@
-export default function fullySpecifyCommonJS(api: any): {
-    name: string;
-    visitor: {
-        CallExpression(path: any, state: any): void;
-    };
-};
+export default function fullySpecifyCommonJS(api: any): babel.PluginObj;
 //# sourceMappingURL=commonjs.d.ts.map

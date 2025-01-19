@@ -27,7 +27,7 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
-export default function Community({ frontmatters }) {
+export default function Community() {
   return (
     <CommunityLayout>
       <ThemeNameEffect />
@@ -448,7 +448,11 @@ function IndividualSponsor(props: { name: string; link: string }) {
 
 function CommunityLayout({ children }: { children: any }) {
   const { tint } = useTint()
-  return <YStack theme={tint as any}>{useMemo(() => children, [children])}</YStack>
+  return (
+    <YStack debug="verbose" theme={tint as any}>
+      {useMemo(() => children, [children])}
+    </YStack>
+  )
 }
 
 // export function getStaticProps() {

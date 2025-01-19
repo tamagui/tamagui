@@ -950,11 +950,17 @@ export function createExtractor(
             .get('openingElement')
             .get('attributes')
             .flatMap((path) => {
+              // avoid work
+              if (shouldDeopt) {
+                return
+              }
+
               try {
                 const res = evaluateAttribute(path)
                 if (!res) {
                   path.remove()
                 }
+
                 return res
               } catch (err: any) {
                 if (shouldPrintDebug) {
@@ -1044,6 +1050,14 @@ export function createExtractor(
             }
 
             const name = attribute.name.name
+
+            // in tamagui style is handled at the end of the style loop so its not as simple as just
+            // adding this as a "style" property
+            // its not used often when using tamagui so not optimizing it for now
+            if (name === 'style') {
+              shouldDeopt = true
+              return null
+            }
 
             if (excludeProps?.has(name)) {
               if (shouldPrintDebug) {
@@ -1172,23 +1186,15 @@ export function createExtractor(
             // never flatten if a prop isn't a valid static attribute
             // only post prop-mapping
             if (!variants[name] && !isValidStyleKey(name, staticConfig)) {
-              let keys = [name]
               let out: any = null
 
               // for now passing empty props {}, a bit odd, need to at least document
               // for now we don't expose custom components so just noting behavior
-              out = propMapper(name, styleValue, propMapperStyleState)
+              propMapper(name, styleValue, propMapperStyleState, false, (key, val) => {
+                out ||= {}
+                out[key] = val
+              })
 
-              if (out) {
-                if (!Array.isArray(out)) {
-                  logger.warn(`Error expected array but got`, out)
-                  couldntParse = true
-                  shouldDeopt = true
-                } else {
-                  out = Object.fromEntries(out)
-                  keys = Object.keys(out)
-                }
-              }
               if (out) {
                 if (isTargetingHTML) {
                   // translate to DOM-compat
@@ -1199,12 +1205,10 @@ export function createExtractor(
                   // remove className - we dont use rnw styling
                   delete out.className
                 }
-
-                keys = Object.keys(out)
               }
 
               let didInline = false
-              const attributes = keys.map((key) => {
+              const attributes = Object.keys(out).map((key) => {
                 const val = out[key]
                 const isStyle = isValidStyleKey(key, staticConfig)
                 if (isStyle) {
@@ -1896,9 +1900,17 @@ export function createExtractor(
                       props: completeProps,
                     }
 
-                    let out = Object.fromEntries(
-                      propMapper(name, variantValues.get(name), styleState) || []
+                    let out: Record<string, any> = {}
+                    propMapper(
+                      name,
+                      variantValues.get(name),
+                      styleState,
+                      false,
+                      (key, val) => {
+                        out[key] = val
+                      }
                     )
+
                     if (out && isTargetingHTML) {
                       const cn = out.className
                       // translate to DOM-compat
