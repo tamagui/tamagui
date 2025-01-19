@@ -2,9 +2,11 @@ export * from './ThemeBuilder'
 export * from '@tamagui/create-theme'
 
 export {
+  createStudioThemes,
   createThemeSuite,
   getThemeSuitePalettes,
   getLastBuilder,
+  createPalettes,
   type CreateThemeSuiteProps,
 } from './createThemeSuite'
 

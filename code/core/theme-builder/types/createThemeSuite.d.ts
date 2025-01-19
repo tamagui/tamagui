@@ -3,6 +3,13 @@ import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamag
 import { defaultTemplates } from './defaultTemplates';
 export { defaultTemplates } from './defaultTemplates';
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes';
+export declare function createStudioThemes(props: BuildThemeSuiteProps): {
+    themeBuilder: ThemeBuilder<any>;
+    themes: Record<"dark" | "light" | `dark_${string}` | `light_${string}`, {
+        [x: string]: string;
+        [x: number]: string;
+    }>;
+};
 /**
  * TODO
  *
@@ -67,13 +74,6 @@ export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesB
 }): {
     themeBuilder: ThemeBuilder<any>;
     themes: Record<ThemeNames, FullTheme>;
-};
-export declare function createThemes(props: BuildThemeSuiteProps): {
-    themeBuilder: ThemeBuilder<any>;
-    themes: Record<"dark" | "light" | `dark_${string}` | `light_${string}`, {
-        [x: string]: string;
-        [x: number]: string;
-    }>;
 };
 export declare const getComponentThemes: (components: SimpleThemesDefinition) => {
     [k: string]: {

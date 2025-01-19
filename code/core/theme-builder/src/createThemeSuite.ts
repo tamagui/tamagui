@@ -7,6 +7,18 @@ import { getThemeSuitePalettes } from './getThemeSuitePalettes'
 export { defaultTemplates } from './defaultTemplates'
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
 
+// for studio
+// allows more detailed configuration, used by studio
+// eventually we should merge this down into simple and have it handle what we need
+export function createStudioThemes(props: BuildThemeSuiteProps) {
+  const palettes = createPalettes(props.palettes)
+  return createSimpleThemeBuilder({
+    palettes,
+    templates: props.templates,
+    componentThemes: defaultComponentThemes,
+  })
+}
+
 /**
  * TODO
  *
@@ -249,18 +261,6 @@ export function createSimpleThemeBuilder<
     themeBuilder,
     themes: themeBuilder.build() as any,
   }
-}
-
-// for studio
-// allows more detailed configuration, used by studio
-// eventually we should merge this down into simple and have it handle what we need
-export function createThemes(props: BuildThemeSuiteProps) {
-  const palettes = createPalettes(props.palettes)
-  return createSimpleThemeBuilder({
-    palettes,
-    templates: props.templates,
-    componentThemes: defaultComponentThemes,
-  })
 }
 
 function getSchemePalette(colors: SinglePalette): SchemePalette {

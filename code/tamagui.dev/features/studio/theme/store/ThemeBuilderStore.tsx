@@ -1,7 +1,5 @@
-import type { Template, ThemeDefinitions } from '@tamagui/theme-builder'
 import { createPalettes, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { getURL } from 'one'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
@@ -12,8 +10,6 @@ import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
 import { updatePreviewTheme } from '../previewTheme'
 import type {
   BuildPalette,
-  BuildSubTheme,
-  BuildTemplates,
   BuildTheme,
   ThemeBuilderState,
   ThemeSuiteItem,
@@ -64,11 +60,7 @@ export class ThemeBuilderStore {
   //   1. use-store is tracks non-deeply, reduces renders
   //   2. gives us a basic working data / undo / save functionality
   name = defaultThemeSuiteItem.name
-  baseTheme: BuildTheme = defaultThemeSuiteItem.baseTheme
-  subThemes: BuildSubTheme[] = defaultThemeSuiteItem.subThemes
-  componentThemes: ThemeDefinitions = defaultThemeSuiteItem.componentThemes
   palettes: Record<string, BuildPalette> = defaultThemeSuiteItem.palettes
-  templates: BuildTemplates = defaultThemeSuiteItem.templates
   schemes = defaultThemeSuiteItem.schemes
 
   private async sync(state: ThemeBuilderState) {
@@ -117,41 +109,6 @@ export class ThemeBuilderStore {
     await this.refreshThemeSuite()
   }
 
-  // old load:
-  // if (this.loaded) return
-  //   // const data = await getPersistedState()
-  //   // if (data) {
-  //   //   this.state = data
-  //   // } else {
-  //   this.state = {
-  //     themeSuites: {},
-  //   }
-  //   // }
-
-  //   if (!this.state) throw new Error(`impossible`)
-
-  //   // validation / migration can be here
-  //   if (!this.state.themeSuites) {
-  //     // old style, needs to migrate...
-  //     this.state.themeSuites = {}
-  //   }
-
-  //   for (const key in this.state.themeSuites) {
-  //     const themeSuite = this.state.themeSuites[key]
-  //     if (themeSuite.id !== key) {
-  //       // fix id:
-  //       themeSuite.id = key
-  //     }
-  //   }
-
-  //   if (!this.themeSuiteId) {
-  //     await themeBuilderStore.setThemeSuiteId(`${Math.random()}`.slice(3))
-  //   } else {
-  //     await this.sync(this.state)
-  //   }
-
-  //   this.loaded = true
-
   // most recent first
   history: ThemeBuilderState[] = []
   redoHistory: ThemeBuilderState[] = []
@@ -182,10 +139,6 @@ export class ThemeBuilderStore {
     return {
       name: this.name,
       palettes: this.palettes,
-      templates: this.templates,
-      baseTheme: this.baseTheme,
-      subThemes: this.subThemes,
-      componentThemes: this.componentThemes,
       schemes: this.schemes,
     }
   }
@@ -213,11 +166,6 @@ export class ThemeBuilderStore {
     // })()
 
     // await persistState(this.state)
-  }
-
-  get subTheme() {
-    const val = this.subThemes.find((x) => x.id === this.selectedSubTheme)
-    return val
   }
 
   async setThemeSuiteId(themeSuiteId: string) {
@@ -306,37 +254,6 @@ export class ThemeBuilderStore {
     }
   }
 
-  async updateTheme(next: { id: string } & Partial<BuildTheme>) {
-    if (next.id === this.baseTheme.id) {
-      await this.updateBaseTheme(next)
-    } else if (next.id === this.baseTheme.accent?.id) {
-      await this.updateBaseTheme({
-        accent: {
-          ...this.baseTheme.accent,
-          ...next,
-        },
-      })
-    } else {
-      const { subThemes } = this
-      const theme = subThemes.find((x) => x.id === next.id)
-      if (theme) {
-        this.subThemes = subThemes.map((t) => {
-          if (t.id === next.id) {
-            if (t.type === 'theme') {
-              return {
-                ...t,
-                ...next,
-              }
-            }
-          }
-          return t
-        })
-        await this.save()
-      }
-      console.warn(`Not implemented`)
-    }
-  }
-
   async updateThemeSuite(update: { id: string } & Partial<ThemeSuiteItem>) {
     const themeSuites = this.state?.themeSuites
     if (!themeSuites) throw new Error(`No themes`)
@@ -375,30 +292,6 @@ export class ThemeBuilderStore {
     return getThemeSuitePalettes(palette)
   }
 
-  async updateSubTheme(next: { id: string } & Partial<BuildSubTheme>) {
-    await this.updateCurrentThemeSuite({
-      subThemes: this.subThemes.map((s) =>
-        s.id === next.id
-          ? {
-              ...s,
-              ...(next as any),
-            }
-          : s
-      ),
-    })
-    await this.save()
-  }
-
-  async updateBaseTheme(next: Partial<BuildTheme>) {
-    await this.updateCurrentThemeSuite({
-      baseTheme: {
-        ...this.baseTheme,
-        ...next,
-      },
-    })
-    await this.save()
-  }
-
   setSteps(steps: ThemeStudioSection[]) {
     this.steps = steps
     this.setStep(this.step)
@@ -415,7 +308,7 @@ export class ThemeBuilderStore {
   async refreshThemeSuite() {
     if (
       await updatePreviewTheme({
-        id: this.baseTheme.id,
+        id: `theme`,
         ...this.getWorkingThemeSuite(),
       })
     ) {
@@ -438,66 +331,6 @@ export class ThemeBuilderStore {
     }
   }
 
-  async addSubTheme(theme: Omit<BuildTheme, 'id'>) {
-    const id = getUniqueId()
-
-    // logic to prevent adding duplicate theme names
-    // tries to add numbers to avoid duplication
-    // e.g. warning -> warning-1 -> warning-2
-    const duplicateTheme = this.subThemes.find((_theme) => _theme.name === theme.name)
-    if (duplicateTheme) {
-      const duplicateNumberSuffix = Number(duplicateTheme.name.split('-').pop())
-      let newName = `${theme.name}-1`
-      // biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
-      if (!isNaN(duplicateNumberSuffix)) {
-        let intendedName = (() => {
-          const split = duplicateTheme.name.split('-')
-          split.pop()
-          return split.join('-')
-        })()
-        newName = `${intendedName}-${duplicateNumberSuffix + 1}`
-      }
-      this.addSubTheme({ ...theme, name: newName })
-      return
-    }
-
-    const next = [
-      {
-        ...theme,
-        id,
-      },
-      ...this.subThemes,
-    ]
-    this.subThemes = next
-    this.selectedSubTheme = id
-    await this.save()
-    await this.refreshThemeSuite()
-  }
-
-  addTemplate(
-    template: Template,
-    name = `template-${Object.keys(this.templates).length}`
-  ) {
-    this.templates = {
-      ...this.templates,
-      [name]: template,
-    }
-    void this.save()
-    return name
-  }
-
-  async updateTemplate(name: string, template: Partial<Template>) {
-    this.templates = {
-      ...this.templates,
-      [name]: {
-        ...this.templates[name],
-        ...(template as any),
-      },
-    }
-    await this.refreshThemeSuite()
-    await this.save()
-  }
-
   async setSelectedSubTheme(id: string | null) {
     this.selectedSubTheme = id
     await this.refreshThemeSuite()
@@ -506,12 +339,6 @@ export class ThemeBuilderStore {
   async setSelectedComponentTheme(id: string | null) {
     this.selectedComponentTheme = id
     await this.refreshThemeSuite()
-  }
-
-  async deleteSubTheme(theme: BuildSubTheme) {
-    this.subThemes = this.subThemes.filter((x) => x !== theme)
-    this.setSelectedSubTheme(null)
-    await this.save()
   }
 
   async addPalette(palette: BuildPalette) {
@@ -545,12 +372,6 @@ export class ThemeBuilderStore {
     })()
     await this.refreshThemeSuite()
     await this.save()
-  }
-
-  async deleteAccent() {
-    await this.updateBaseTheme({
-      accent: undefined,
-    })
   }
 
   get sectionsFlat() {
@@ -683,34 +504,3 @@ export const useThemeBuilderStore = createUseStore(ThemeBuilderStore)
 globalThis['themeBuilderStore'] = themeBuilderStore
 
 // for syncing
-
-const loadUrl = `${getURL()}/api/studio/load`
-const saveUrl = `${getURL()}/api/studio/save`
-
-const version = '2'
-const localKey = `tamagui-theme-suites-${version}`
-
-const getPersistedState = async () => {
-  // try {
-  //   return await fetch(loadUrl, {
-  //     credentials: 'include',
-  //   }).then((res) => res.json() as unknown as ThemeBuilderState)
-  // } catch (err) {
-  //   const fallback = JSON.parse(
-  //     localStorage.getItem(localKey) || 'null'
-  //   ) as ThemeBuilderState
-  //   console.warn(`Error loading, fallback to localStorage`, loadUrl)
-  //   console.info(`[load]`, fallback)
-  //   return fallback
-  // }
-}
-
-const persistState = async (state: ThemeBuilderState) => {
-  // console.info('[persist]', saveUrl, state)
-  // localStorage.setItem(localKey, JSON.stringify(state))
-  // return await fetch(saveUrl, {
-  //   method: 'POST',
-  //   body: JSON.stringify(state),
-  //   credentials: 'include',
-  // }).then(() => {})
-}

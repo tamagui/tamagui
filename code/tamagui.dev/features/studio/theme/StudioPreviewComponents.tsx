@@ -267,9 +267,6 @@ const PalettePreviewPanels = memo(() => {
   const themeName = useThemeName()
   const isThemeDark = themeName.startsWith('dark')
   const demoProps = useDemoProps()
-  const theme = themeBuilderStore.baseTheme
-
-  if (!theme) return null
 
   const palettes = themeBuilderStore.palettesBuilt
 
