@@ -36,4 +36,4 @@ export declare const shorthands: {
 };
 export type Shorthands = typeof shorthands;
 export type ShorthandKeys = keyof Shorthands;
-//# sourceMappingURL=v3.d.ts.map
+//# sourceMappingURL=v4.d.ts.map

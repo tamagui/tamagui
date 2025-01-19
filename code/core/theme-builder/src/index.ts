@@ -5,6 +5,7 @@ export {
   createThemeSuite,
   getThemeSuitePalettes,
   getLastBuilder,
+  type CreateThemeSuiteProps,
 } from './createThemeSuite'
 
 export { PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'

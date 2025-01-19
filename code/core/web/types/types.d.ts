@@ -95,19 +95,19 @@ type GenericKey = string;
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
     [key: GenericKey]: Val;
 }> & {
-    color: {
+    color?: {
         [key: GenericKey]: Val;
     };
-    space: {
+    space?: {
         [key: GenericKey]: Val;
     };
-    size: {
+    size?: {
         [key: GenericKey]: Val;
     };
-    radius: {
+    radius?: {
         [key: GenericKey]: Val;
     };
-    zIndex: {
+    zIndex?: {
         [key: GenericKey]: Val;
     };
 };
@@ -115,11 +115,21 @@ export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex';
 type Tokenify<A extends GenericTokens> = Omit<{
     [Key in keyof A]: TokenifyRecord<A[Key]>;
 }, TokenCategories> & {
-    color: TokenifyRecord<A['color']>;
-    space: TokenifyRecord<A['space']>;
-    size: TokenifyRecord<A['size']>;
-    radius: TokenifyRecord<A['radius']>;
-    zIndex: TokenifyRecord<A['zIndex']>;
+    color: TokenifyRecord<A extends {
+        color: any;
+    } ? A['color'] : {}>;
+    space: TokenifyRecord<A extends {
+        space: any;
+    } ? A['space'] : {}>;
+    size: TokenifyRecord<A extends {
+        size: any;
+    } ? A['size'] : {}>;
+    radius: TokenifyRecord<A extends {
+        radius: any;
+    } ? A['radius'] : {}>;
+    zIndex: TokenifyRecord<A extends {
+        zIndex: any;
+    } ? A['zIndex'] : {}>;
 };
 type TokenifyRecord<A extends Object> = {
     [Key in keyof A]: CoerceToVariable<A[Key]>;
@@ -231,7 +241,7 @@ export type ThemeParsed = {
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
-    [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>;
+    [Key in keyof Required<Tokens>]: TokenPrefixed<Tokens[Key]>;
 };
 type TokenPrefixed<A extends {
     [key: string]: any;

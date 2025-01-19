@@ -35,7 +35,7 @@ type SinglePalette = string[]
 type SchemePalette = { light: SinglePalette; dark: SinglePalette }
 type Palette = SinglePalette | SchemePalette
 
-export type CreateThemesProps<
+export type CreateThemeSuiteProps<
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
@@ -63,7 +63,13 @@ export function createThemeSuite<
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
 >(
-  props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes>
+  props: CreateThemeSuiteProps<
+    Accent,
+    GrandChildrenThemes,
+    Extra,
+    SubThemes,
+    ComponentThemes
+  >
 ) {
   const {
     accent,
@@ -291,7 +297,7 @@ function coerceSimplePaletteToSchemePalette(def: Palette) {
   return Array.isArray(def) ? getSchemePalette(def) : def
 }
 
-function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
+function getThemesPalettes(props: CreateThemeSuiteProps<any, any>): BuildPalettes {
   const base = coerceSimplePaletteToSchemePalette(props.base.palette)
   const accent = props.accent
     ? coerceSimplePaletteToSchemePalette(props.accent.palette)

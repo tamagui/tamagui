@@ -1,5 +1,5 @@
 import type { Template, ThemeDefinitions } from '@tamagui/theme-builder'
-import { createPalettes, getThemeSuitePalettes } from '@tamagui/themes/v4'
+import { createPalettes, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { getURL } from 'one'
 import { toastController } from '~/features/studio/ToastProvider'

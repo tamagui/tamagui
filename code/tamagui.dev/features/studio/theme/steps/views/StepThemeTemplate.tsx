@@ -18,7 +18,7 @@ import { StudioPaletteBar } from '../../../StudioPaletteBar'
 import { Checkerboard } from '../../../components/Checkerboard'
 import { Select } from '../../../components/Select'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
-import { createPalettes } from '@tamagui/themes/v4'
+import { createPalettes } from '@tamagui/theme-builder'
 import type { BuildTheme } from '../../types'
 
 export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme }) => {

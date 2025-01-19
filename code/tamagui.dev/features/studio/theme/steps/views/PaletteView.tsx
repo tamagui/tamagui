@@ -5,7 +5,7 @@ import {
   ArrowRight,
   ArrowUpDown,
 } from '@tamagui/lucide-icons'
-import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/themes/v4'
+import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
