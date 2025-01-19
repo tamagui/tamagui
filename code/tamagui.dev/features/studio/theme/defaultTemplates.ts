@@ -1,4 +1,4 @@
-import { PALETTE_BACKGROUND_OFFSET } from '@tamagui/themes/v4'
+import { PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
 
 const colorsTemplate = {
   color1: PALETTE_BACKGROUND_OFFSET,

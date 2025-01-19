@@ -19,7 +19,7 @@ import { useBaseThemePreview } from './useBaseThemePreview'
 
 export function StepBaseThemesSidebar() {
   const themeBuilder = useThemeBuilderStore()
-  const hasAccent = !!themeBuilder.baseTheme?.accent
+  const hasAccent = true
   const { name: themeNameBase } = useBaseThemePreview()
 
   // force re-render on every change

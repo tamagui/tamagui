@@ -14,8 +14,6 @@ import type { SidePaneStore } from './SidePaneStore'
 import { sidePaneStore } from './SidePaneStore'
 import type { ThemesStore } from './ThemesStore'
 import { themesStore } from './ThemesStore'
-import type { TokensStore } from './TokensStore'
-import { tokensStore } from './TokensStore'
 
 const allStores = {
   rootStore,
@@ -24,7 +22,6 @@ const allStores = {
   sidePaneStore,
   animationsStore,
   settingsStore,
-  tokensStore,
   previewStore,
 }
 
@@ -40,8 +37,6 @@ export const useAnimationsStore = (options?: { debug?: boolean }) =>
   useGlobalStore(animationsStore, options?.debug)
 export const useSettingsStore = (options?: { debug?: boolean }) =>
   useGlobalStore(settingsStore, options?.debug)
-export const useTokensStore = (options?: { debug?: boolean }) =>
-  useGlobalStore(tokensStore, options?.debug)
 export const usePreviewStore = (options?: { debug?: boolean }) =>
   useGlobalStore(previewStore, options?.debug)
 
@@ -53,7 +48,6 @@ export const useGlobalState = (options?: { debug?: boolean }) => {
     sidePaneStore: useSidePaneStore(options),
     animationsStore: useAnimationsStore(options),
     settingsStore: useSettingsStore(options),
-    tokensStore: useTokensStore(options),
     previewStore: usePreviewStore(options),
   })
 }
@@ -75,7 +69,6 @@ function combineStores(stores: typeof allStores) {
     sidePane: SidePaneStore
     animations: AnimationsStore
     settings: SettingsStore
-    tokens: TokensStore
     preview: PreviewStore
   }
 }

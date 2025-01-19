@@ -6,11 +6,10 @@
   "module": "dist/esm",
   "sideEffects": false,
   "scripts": {
-    "generate": "yarn generate:v1 && yarn generate:v2 && yarn generate:v3 && yarn generate:v4",
+    "generate": "yarn generate:v1 && yarn generate:v2 && yarn generate:v3 && yarn generate:v4-tamagui",
     "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
     "generate:v2": "tamagui generate-themes ./src/v2-themes.ts ./src/generated-v2.ts",
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
-    "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
     "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",
     "build": "yarn generate && tamagui-build",
     "watch": "tamagui-build --watch",

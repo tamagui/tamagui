@@ -147,25 +147,6 @@ export class ThemeBuilderStore {
     this.listeners.forEach((cb) => {
       cb()
     })
-    // if (!this.state) return
-
-    // if (this.themeSuiteId) {
-    //   const themeSuite = this.state.themeSuites[this.themeSuiteId]
-    //   if (themeSuite) {
-    //     Object.assign(themeSuite, this.getWorkingThemeSuite())
-    //   }
-    // }
-
-    // this.history = (() => {
-    //   let _ = [...this.history]
-    //   _.unshift(structuredClone(this.state))
-    //   if (_.length > 110) {
-    //     _ = _.slice(0, 100)
-    //   }
-    //   return _
-    // })()
-
-    // await persistState(this.state)
   }
 
   async setThemeSuiteId(themeSuiteId: string) {

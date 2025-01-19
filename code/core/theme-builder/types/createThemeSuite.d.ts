@@ -8,6 +8,7 @@ export declare function createStudioThemes(props: BuildThemeSuiteProps): {
     themes: Record<"dark" | "light" | `dark_${string}` | `light_${string}`, {
         [x: string]: string;
         [x: number]: string;
+        [x: symbol]: string;
     }>;
 };
 /**

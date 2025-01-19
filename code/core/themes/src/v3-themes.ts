@@ -17,8 +17,8 @@ import {
   yellowDark,
 } from '@tamagui/colors'
 import { createThemeBuilder, objectFromEntries } from '@tamagui/theme-builder'
-import { objectKeys, postfixObjKeys, sizeToSpace } from './utils'
-import { createTokens } from '@tamagui/web/types'
+import { createTokens } from '@tamagui/web'
+import { objectKeys, postfixObjKeys } from './utils'
 import { tokens as v3Tokens } from './v3-tokens'
 
 const colorTokens = {
@@ -574,72 +574,63 @@ export const defaultSubThemes = {
 
 // --- themeBuilder ---
 
-const themeBuilder = process.env.TAMAGUI_RUN_THEMEBUILDER
-  ? null
-  : createThemeBuilder()
-      .addPalettes(defaultPalettes)
-      .addTemplates(defaultTemplates)
-      .addThemes({
-        light: {
-          template: 'base',
-          palette: 'light',
-          nonInheritedValues: nonInherited.light,
-        },
-        dark: {
-          template: 'base',
-          palette: 'dark',
-          nonInheritedValues: nonInherited.dark,
-        },
-      })
-      .addChildThemes({
-        orange: {
-          palette: 'orange',
-          template: 'base',
-        },
-        yellow: {
-          palette: 'yellow',
-          template: 'base',
-        },
-        green: {
-          palette: 'green',
-          template: 'base',
-        },
-        blue: {
-          palette: 'blue',
-          template: 'base',
-        },
-        purple: {
-          palette: 'purple',
-          template: 'base',
-        },
-        pink: {
-          palette: 'pink',
-          template: 'base',
-        },
-        red: {
-          palette: 'red',
-          template: 'base',
-        },
-        gray: {
-          palette: 'gray',
-          template: 'base',
-        },
-      })
-      .addChildThemes(defaultSubThemes)
-      .addComponentThemes(defaultComponentThemes, {
-        avoidNestingWithin: [
-          'alt1',
-          'alt2',
-          'surface1',
-          'surface2',
-          'surface3',
-          'surface4',
-        ],
-      })
+const themeBuilder = createThemeBuilder()
+  .addPalettes(defaultPalettes)
+  .addTemplates(defaultTemplates)
+  .addThemes({
+    light: {
+      template: 'base',
+      palette: 'light',
+      nonInheritedValues: nonInherited.light,
+    },
+    dark: {
+      template: 'base',
+      palette: 'dark',
+      nonInheritedValues: nonInherited.dark,
+    },
+  })
+  .addChildThemes({
+    orange: {
+      palette: 'orange',
+      template: 'base',
+    },
+    yellow: {
+      palette: 'yellow',
+      template: 'base',
+    },
+    green: {
+      palette: 'green',
+      template: 'base',
+    },
+    blue: {
+      palette: 'blue',
+      template: 'base',
+    },
+    purple: {
+      palette: 'purple',
+      template: 'base',
+    },
+    pink: {
+      palette: 'pink',
+      template: 'base',
+    },
+    red: {
+      palette: 'red',
+      template: 'base',
+    },
+    gray: {
+      palette: 'gray',
+      template: 'base',
+    },
+  })
+  .addChildThemes(defaultSubThemes)
+  .addComponentThemes(defaultComponentThemes, {
+    avoidNestingWithin: ['alt1', 'alt2', 'surface1', 'surface2', 'surface3', 'surface4'],
+  })
 
 // --- themes ---
 
-const themesIn = themeBuilder ? themeBuilder.build() : null
+const themesIn = themeBuilder.build()
 
 type ThemeKeys =
   | keyof typeof defaultTemplates.light_base
@@ -647,7 +638,7 @@ type ThemeKeys =
 
 export type Theme = Record<ThemeKeys, string>
 
-export type ThemesOut = Record<keyof Exclude<typeof themesIn, null>, Theme>
+export type ThemesOut = Record<keyof typeof themesIn, Theme>
 
 export const themes = themesIn as any as ThemesOut
 

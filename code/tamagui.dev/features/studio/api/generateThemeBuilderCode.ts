@@ -1,6 +1,5 @@
 import type { ThemeBuilder } from '@tamagui/theme-builder'
-import type { BuildThemeSuiteProps } from '../theme/types'
-import { createThemeSuite, getLastBuilder } from '@tamagui/theme-builder'
+import type { BuildThemeSuiteProps } from '@tamagui/themes'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
   includeComponentThemes: boolean
@@ -70,65 +69,3 @@ function stringifyTemplates(themeBuilder: ThemeBuilder<any>) {
     })}
   }`
 }
-
-// for accepting dynamic child themes
-
-// const addChildThemes = themeBuilder._addedThemes
-//   .map((addedSection) => {
-//     const callFunction =
-//       addedSection.type === 'childThemes' ? 'addChildThemes' : 'addThemes'
-
-//     const [themes, options] = addedSection.args as [ThemeDefinitions, any]
-
-//     let themesArg = `{`
-
-//     // first loop find common mask options:
-//     for (const [themeName, themeDefinitions] of Object.entries(themes)) {
-//       let children: string[] = []
-
-//       for (const themeDefinition of Array.isArray(themeDefinitions)
-//         ? themeDefinitions
-//         : [themeDefinitions]) {
-//         const { parent, mask, template, palette, ...maskOptions } =
-//           themeDefinition as any
-
-//         let maskOptionsSpread = ``
-
-//         if (Object.keys(maskOptions).length) {
-//           const maskVariableName = (() => {
-//             const maskOptionsKey = JSON.stringify(maskOptions)
-//             if (!maskKeyToName[maskOptionsKey]) {
-//               maskKeyToName[maskOptionsKey] = `maskOptions${maskVersion++}`
-//             }
-//             return maskKeyToName[maskOptionsKey]!
-//           })()
-//           maskOptionsSpread += `...maskOptions.${maskVariableName}`
-//         }
-
-//         children.push(
-//           `{ ${stringifyArgs({
-//             parent,
-//             mask,
-//             template,
-//             palette,
-//           })} ${maskOptionsSpread} },`
-//         )
-//       }
-
-//       themesArg += `  "${themeName}": `
-//       if (children.length === 1) {
-//         themesArg += children[0]
-//       } else {
-//         themesArg += `[ ${children.join('\n')} ],`
-//       }
-//       themesArg += '\n'
-//     }
-
-//     themesArg += `}`
-
-//     return `.${callFunction}(
-//       ${themesArg}
-//       ${options ? `, ${JSON.stringify(options)}` : ''}
-//     )`
-//   })
-//   .join('\n')
