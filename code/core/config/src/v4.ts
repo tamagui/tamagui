@@ -12,25 +12,29 @@ export { createSystemFont, fonts } from './v4-fonts'
 
 export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
 
-export const config = {
+export const selectionStyles = (theme) =>
+  theme.color5
+    ? {
+        backgroundColor: theme.color5,
+        color: theme.color11,
+      }
+    : null
+
+export const settings = {
+  mediaQueryDefaultActive,
+  defaultFont: 'body',
+  fastSchemeChange: true,
+  shouldAddPrefersColorThemes: true,
+  allowedStyleValues: 'somewhat-strict-web',
+  themeClassNameOnRoot: true,
+} satisfies CreateTamaguiProps['settings']
+
+export const defaultConfig = {
   animations,
   media,
   shorthands,
   tokens,
   fonts,
-  selectionStyles: (theme) =>
-    theme.color5
-      ? {
-          backgroundColor: theme.color5,
-          color: theme.color11,
-        }
-      : null,
-  settings: {
-    mediaQueryDefaultActive,
-    defaultFont: 'body',
-    fastSchemeChange: true,
-    shouldAddPrefersColorThemes: true,
-    allowedStyleValues: 'somewhat-strict-web',
-    themeClassNameOnRoot: true,
-  },
+  selectionStyles,
+  settings,
 } satisfies CreateTamaguiProps
