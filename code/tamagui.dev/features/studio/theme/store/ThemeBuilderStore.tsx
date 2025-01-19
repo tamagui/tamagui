@@ -290,7 +290,8 @@ export class ThemeBuilderStore {
     if (
       await updatePreviewTheme({
         id: `theme`,
-        ...this.getWorkingThemeSuite(),
+        palettes: this.palettes,
+        schemes: this.schemes,
       })
     ) {
       this.themeSuiteVersion++

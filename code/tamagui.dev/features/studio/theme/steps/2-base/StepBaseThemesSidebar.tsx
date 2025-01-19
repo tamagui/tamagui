@@ -54,7 +54,7 @@ const Contents = ({
   return (
     <>
       <XStack pos="absolute" t="$4" l={30} zi={1000} gap="$4" scale={0.75}>
-        {procedureStore.loading.createThemes ? <Spinner size="small" /> : null}
+        {procedureStore.loading.createStudioThemes ? <Spinner size="small" /> : null}
       </XStack>
 
       <XStack pos="absolute" t="$4" r="$4" zi={1000}>

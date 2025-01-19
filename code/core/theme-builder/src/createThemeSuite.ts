@@ -14,7 +14,7 @@ export function createStudioThemes(props: BuildThemeSuiteProps) {
   const palettes = createPalettes(props.palettes)
   return createSimpleThemeBuilder({
     palettes,
-    templates: props.templates,
+    templates: defaultTemplates,
     componentThemes: defaultComponentThemes,
   })
 }

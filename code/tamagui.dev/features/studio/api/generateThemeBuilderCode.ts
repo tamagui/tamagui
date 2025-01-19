@@ -1,4 +1,4 @@
-import type { ThemeBuilder } from '@tamagui/theme-builder'
+import { createThemeSuite, type ThemeBuilder } from '@tamagui/theme-builder'
 import type { BuildThemeSuiteProps } from '@tamagui/themes'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
@@ -8,11 +8,7 @@ type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
 
 export async function generateThemeBuilderCode({
   palettes,
-  subThemes,
-  baseTheme,
-  componentThemes,
   schemes,
-  templates,
   includeComponentThemes,
   includeSizeTokens,
 }: GenerateThemeBuilderCodeProps) {
