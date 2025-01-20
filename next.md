@@ -1,26 +1,19 @@
-- // TODO: turn on
+v4 config:
+
+- add new doc page just for it
+  - document createThemes there simply
+  - document shorthands etc
+  - document simple themes setup
 
 2.0:
+  - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
   - remove componentName, just allow setting default theme: ""
   - remove builders like themebuilder etc from config
     - do it via plugins automatically
   - remove inlineProps, usedKeys, partial extraction
 
-
-- v4 config:
-  - change generate format, automate this in generate:
-
-export type TamaguiThemes = typeof themes
-
-export const tamaguiThemes = // avoid themes only on client bundle
-  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
-    ? (themes as TamaguiThemes)
-    : ({} as TamaguiThemes)
-
-  - focus styles in the default v3 config are kind of wack
   - must pass in colors separately but it exports the defaults still
-  - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
   - createSystemFont into package
   - v4 themes
     - based on studio, allows passing in custom colors
@@ -80,6 +73,9 @@ createCore<CustomTypes>({
     - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
   - `<Theme values={{}} />` dynamic override
 
+- perf getState could be cached (weakmap themeManager + stringify props)
+
+- isolatedDeclarations for build perf // TODO: turn on
 
 - beef up tests:
   - native

@@ -1,10 +1,8 @@
-import { X } from '@tamagui/lucide-icons'
-import { Button, EnsureFlexed, XStack, YStack } from 'tamagui'
-
-import { rootStore } from '../../../state/RootStore'
-import { toastController } from '../../../ToastProvider'
+import { XStack, YStack } from 'tamagui'
+import { Select, SelectItem } from '../../../components/Select'
 import type { FieldsetWithLabelProps } from '../../views/FieldsetWithLabel'
 import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
+import { useThemeBuilderStore } from '../../store/ThemeBuilderStore'
 
 export type BuildThemeItemFrameProps = FieldsetWithLabelProps & {
   onDelete?: () => void | Promise<void>
@@ -18,6 +16,9 @@ export const BuildThemeItemFrame = ({
   disabled,
   ...props
 }: BuildThemeItemFrameProps) => {
+  const themeBuilder = useThemeBuilderStore()
+  const isAccent = props.label === 'accent'
+
   return (
     <FieldsetWithLabel
       {...props}
@@ -25,30 +26,32 @@ export const BuildThemeItemFrame = ({
         <XStack gap="$2" ai="center">
           {afterLabel}
 
-          {!!onDelete && (
-            <Button
-              icon={X}
+          {isAccent && (
+            <Select
               size="$2"
-              circular
-              onPress={async () => {
-                if (
-                  await rootStore.confirmDialog('confirm-delete', {
-                    category: '',
-                    snippet: '',
-                    message: ``,
-                  })
-                ) {
-                  await onDelete()
-                  toastController.show(`Deleted!`)
-                }
+              defaultValue={themeBuilder.accentSetting}
+              onValueChange={(value) => {
+                themeBuilder.setAccentSetting(value as any)
               }}
-            />
+            >
+              <SelectItem value="off" index={0}>
+                Off
+              </SelectItem>
+              <SelectItem value="inverse" index={1}>
+                Inverse
+              </SelectItem>
+              <SelectItem value="color" index={2}>
+                Color
+              </SelectItem>
+            </Select>
           )}
         </XStack>
       }
     >
       <YStack
-        {...(disabled && {
+        {...(Boolean(
+          disabled || (isAccent && themeBuilder.accentSetting !== 'color')
+        ) && {
           o: 0.25,
           pe: 'none',
         })}

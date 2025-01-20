@@ -547,12 +547,14 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
                         })()}` as Href
                       }
                     >
-                      <PurchaseButton
-                        disabled={noProductSelected}
-                        opacity={noProductSelected ? 0.5 : undefined}
-                      >
-                        Stripe Checkout
-                      </PurchaseButton>
+                      <Theme name="accent">
+                        <PurchaseButton
+                          disabled={noProductSelected}
+                          opacity={noProductSelected ? 0.5 : undefined}
+                        >
+                          Checkout
+                        </PurchaseButton>
+                      </Theme>
                     </Link>
                     <XStack jc="space-between" gap="$4" ai="center" mb="$2">
                       <XStack

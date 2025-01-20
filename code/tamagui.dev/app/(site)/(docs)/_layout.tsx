@@ -45,9 +45,10 @@ export default function DocsLayout() {
           flexDirection: 'row',
         }}
         $gtLg={{
-          l: -50,
+          l: -60,
+          maw: 1250,
         }}
-        maw={1250}
+        maw={1200}
         zi={100}
         pos="relative"
       >
@@ -84,7 +85,7 @@ export default function DocsLayout() {
                   display: 'block',
                   p: '$0.5',
                   pr: '$3',
-                  mt: 108,
+                  mt: 92,
                   pb: '$18',
                 }}
               >
@@ -128,7 +129,7 @@ export default function DocsLayout() {
                         tag="a"
                         group="card"
                         hoverStyle={{
-                          borderColor: '$color11',
+                          borderColor: '$color5',
                         }}
                         flex={1}
                         width="50%"
@@ -136,9 +137,6 @@ export default function DocsLayout() {
                         borderRadius="$2"
                         borderWidth={1}
                         borderColor="$borderColor"
-                        pressStyle={{
-                          backgroundColor: '$backgroundPress',
-                        }}
                         aria-label={`Previous page: ${previous.title}`}
                         ai="center"
                         gap="$4"
@@ -146,18 +144,16 @@ export default function DocsLayout() {
                       >
                         <View
                           o={0}
-                          l="$-4"
+                          l="$-2"
                           $group-card-hover={{ o: 1, l: '$0' }}
-                          $group-card-press={{ o: 0, l: '$-4' }}
                           animation="quickest"
                         >
                           <ChevronLeft col="$color11" />
                         </View>
 
                         <YStack
-                          l="$-8"
+                          l="$-4"
                           $group-card-hover={{ l: '$0' }}
-                          $group-card-press={{ l: '$-8' }}
                           animation="quicker"
                         >
                           <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -176,7 +172,7 @@ export default function DocsLayout() {
                         tag="a"
                         group="card"
                         hoverStyle={{
-                          borderColor: '$color11',
+                          borderColor: '$color5',
                         }}
                         flex={1}
                         width="50%"
@@ -184,9 +180,6 @@ export default function DocsLayout() {
                         borderRadius="$2"
                         borderWidth={1}
                         borderColor="$borderColor"
-                        pressStyle={{
-                          backgroundColor: '$backgroundPress',
-                        }}
                         aria-label={`Previous page: ${next.title}`}
                         ai="center"
                         jc="flex-end"
@@ -194,9 +187,8 @@ export default function DocsLayout() {
                         animation="100ms"
                       >
                         <YStack
-                          r="$-8"
+                          r="$-4"
                           $group-card-hover={{ r: '$0' }}
-                          $group-card-press={{ r: '$-8' }}
                           animation="quicker"
                         >
                           <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -209,9 +201,8 @@ export default function DocsLayout() {
 
                         <View
                           o={0}
-                          r="$-4"
+                          r="$-2"
                           $group-card-hover={{ o: 1, r: '$0' }}
-                          $group-card-press={{ o: 0, r: '$-4' }}
                           animation="quickest"
                         >
                           <ChevronRight col="$color11" />

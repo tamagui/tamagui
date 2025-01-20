@@ -1,12 +1,29 @@
-import { createThemeBuilder, type ThemeBuilder } from '@tamagui/theme-builder'
+import {
+  createThemeBuilder,
+  PALETTE_BACKGROUND_OFFSET,
+  type ThemeBuilder,
+} from '@tamagui/theme-builder'
+import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamagui/themes'
 import { parseToHsla } from 'color2k'
+import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes } from './getThemeSuitePalettes'
-import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
-import { defaultTemplates } from './v4-defaultTemplates'
+import { defaultComponentThemes } from './defaultComponentThemes'
 
+export { defaultTemplates } from './defaultTemplates'
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
-export type * from './types'
-export { defaultTemplates } from './v4-defaultTemplates'
+
+// for studio
+// allows more detailed configuration, used by studio
+// eventually we should merge this down into simple and have it handle what we need
+export function createStudioThemes(props: BuildThemeSuiteProps) {
+  const palettes = createPalettes(props.palettes)
+  return createSimpleThemeBuilder({
+    palettes,
+    templates: defaultTemplates,
+    componentThemes: defaultComponentThemes,
+    accentTheme: !!props.palettes.accent,
+  })
+}
 
 /**
  * TODO
@@ -29,23 +46,12 @@ type BaseThemeDefinition<Extra extends ExtraThemeValuesByScheme> = {
   extra?: Extra
 }
 
-type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>
+export type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>
 type SimplePaletteDefinitions = Record<string, string[]>
 
 type SinglePalette = string[]
 type SchemePalette = { light: SinglePalette; dark: SinglePalette }
 type Palette = SinglePalette | SchemePalette
-
-const defaultPalettes: SimplePaletteDefinitions = createPalettes(
-  getThemesPalettes({
-    base: {
-      palette: ['#fff', '#000'],
-    },
-    accent: {
-      palette: ['#ff0000', '#ff9999'],
-    },
-  })
-)
 
 export type CreateThemesProps<
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
@@ -68,7 +74,8 @@ export type CreateThemesProps<
   }) => Record<string, string>
 }
 
-export function createThemeSuite<
+// TODO we moved studio over to mostly just control palette, so the need for this can basically go away
+export function createThemes<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition,
@@ -82,7 +89,7 @@ export function createThemeSuite<
     childrenThemes,
     grandChildrenThemes,
     templates = defaultTemplates,
-    componentThemes = defaultComponentThemes as unknown as any,
+    componentThemes,
   } = props
 
   const builder = createSimpleThemeBuilder({
@@ -99,8 +106,14 @@ export function createThemeSuite<
       : Record<keyof GrandChildrenThemes, any>,
   })
 
+  lastBuilder = builder.themeBuilder
+
   return builder.themes
 }
+
+let lastBuilder: ThemeBuilder | null = null
+
+export const getLastBuilder = () => lastBuilder
 
 function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
   return Object.fromEntries(
@@ -115,6 +128,17 @@ function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
     })
   ) as Record<keyof A, any>
 }
+
+const defaultPalettes: SimplePaletteDefinitions = createPalettes(
+  getThemesPalettes({
+    base: {
+      palette: ['#fff', '#000'],
+    },
+    accent: {
+      palette: ['#ff0000', '#ff9999'],
+    },
+  })
+)
 
 type NamesWithChildrenNames<ParentNames extends string, ChildNames> =
   | ParentNames
@@ -141,10 +165,15 @@ export function createSimpleThemeBuilder<
           palette?: string
         }
       >,
-  HasAccent extends boolean,
-  ComponentThemes extends SimpleThemesDefinition,
+  HasAccent extends boolean = false,
+  ComponentThemes extends SimpleThemesDefinition | false = false,
   FullTheme = {
-    [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string
+    [ThemeKey in
+      | keyof Templates['light_base']
+      | keyof Extra['dark']
+      | (HasAccent extends true
+          ? `accent${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`
+          : never)]: string
   },
   ThemeNames extends string =
     | 'light'
@@ -173,6 +202,7 @@ export function createSimpleThemeBuilder<
     grandChildrenThemes = null as unknown as GrandChildrenThemes,
     templates = defaultTemplates as unknown as Templates,
     palettes = defaultPalettes as unknown as Palettes,
+    accentTheme,
     componentThemes = templates === (defaultTemplates as any)
       ? (defaultComponentThemes as unknown as ComponentThemes)
       : undefined,
@@ -186,12 +216,46 @@ export function createSimpleThemeBuilder<
       light: {
         template: 'base',
         palette: 'light',
-        nonInheritedValues: extra?.light,
+        nonInheritedValues: {
+          ...extra?.light,
+          ...(accentTheme &&
+            palettes.light_accent && {
+              accent1: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 0],
+              accent2: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 1],
+              accent3: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 2],
+              accent4: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 3],
+              accent5: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 4],
+              accent6: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 5],
+              accent7: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 6],
+              accent8: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 7],
+              accent9: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 8],
+              accent10: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 9],
+              accent11: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 10],
+              accent12: palettes.light_accent[PALETTE_BACKGROUND_OFFSET + 11],
+            }),
+        },
       },
       dark: {
         template: 'base',
         palette: 'dark',
-        nonInheritedValues: extra?.dark,
+        nonInheritedValues: {
+          ...extra?.dark,
+          ...(accentTheme &&
+            palettes.dark_accent && {
+              accent1: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 0],
+              accent2: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 1],
+              accent3: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 2],
+              accent4: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 3],
+              accent5: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 4],
+              accent6: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 5],
+              accent7: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 6],
+              accent8: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 7],
+              accent9: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 8],
+              accent10: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 9],
+              accent11: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 10],
+              accent12: palettes.dark_accent[PALETTE_BACKGROUND_OFFSET + 11],
+            }),
+        },
       },
     })
 
@@ -238,18 +302,6 @@ export function createSimpleThemeBuilder<
     themeBuilder,
     themes: themeBuilder.build() as any,
   }
-}
-
-// for studio
-// allows more detailed configuration, used by studio
-// eventually we should merge this down into simple and have it handle what we need
-export function createThemes(props: BuildThemeSuiteProps) {
-  const palettes = createPalettes(props.palettes)
-  return createSimpleThemeBuilder({
-    palettes,
-    templates: props.templates,
-    componentThemes: defaultComponentThemes,
-  })
 }
 
 function getSchemePalette(colors: SinglePalette): SchemePalette {
@@ -340,27 +392,6 @@ export const getComponentThemes = (components: SimpleThemesDefinition) => {
   )
 }
 
-export const defaultComponentThemes = {
-  ListItem: { template: 'surface1' },
-  SelectTrigger: { template: 'surface1' },
-  Card: { template: 'surface1' },
-  Button: { template: 'surface3' },
-  Checkbox: { template: 'surface2' },
-  Switch: { template: 'surface2' },
-  SwitchThumb: { template: 'inverse' },
-  TooltipContent: { template: 'surface2' },
-  Progress: { template: 'surface1' },
-  RadioGroupItem: { template: 'surface2' },
-  TooltipArrow: { template: 'surface1' },
-  SliderTrackActive: { template: 'surface3' },
-  SliderTrack: { template: 'surface1' },
-  SliderThumb: { template: 'inverse' },
-  Tooltip: { template: 'inverse' },
-  ProgressIndicator: { template: 'inverse' },
-  Input: { template: 'surface1' },
-  TextArea: { template: 'surface1' },
-} satisfies SimpleThemesDefinition
-
 export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinitions {
   const accentPalettes = palettes.accent ? getThemeSuitePalettes(palettes.accent) : null
   const basePalettes = getThemeSuitePalettes(palettes.base)
@@ -369,7 +400,12 @@ export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinition
     Object.entries(palettes).flatMap(([name, palette]) => {
       const palettes = getThemeSuitePalettes(palette)
       const isAccent = name.startsWith('accent')
-      const oppositePalettes = isAccent ? basePalettes : accentPalettes
+      const oppositePalettes = isAccent ? basePalettes : accentPalettes || basePalettes
+
+      if (!oppositePalettes) {
+        return []
+      }
+
       const oppositeLight = oppositePalettes!.light
       const oppositeDark = oppositePalettes!.dark
 

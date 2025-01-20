@@ -10,16 +10,11 @@ import {
   TooltipGroup,
   TooltipSimple,
   XStack,
-  YStack,
   styled,
-  useThemeName,
 } from 'tamagui'
 
-import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { StudioPaletteBar } from '../StudioPaletteBar'
 import { optionValues } from './constants/demoOptions'
-import { Panel } from './preview/Panel'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
@@ -512,55 +507,3 @@ export function RandomizeButton() {
     </TooltipSimple>
   )
 }
-
-const PalettePreviewPanels = memo(() => {
-  const themeBuilderStore = useThemeBuilderStore()
-  const themeName = useThemeName()
-  const isThemeDark = themeName.startsWith('dark_') || themeName === 'dark'
-  const demoProps = useDemoProps()
-  const theme = themeBuilderStore.baseTheme
-
-  if (!theme) return null
-
-  const palettes = themeBuilderStore.palettesBuilt
-
-  if (!palettes) return null
-
-  return (
-    <YStack gap="$2">
-      {[theme.palette, theme.accent?.palette || ''].filter(Boolean).map((name) => {
-        const scheme = isThemeDark ? 'dark' : 'light'
-        const palette = palettes[name] || palettes[`${scheme}_${name}`]
-
-        if (!palette) {
-          return null
-        }
-
-        return (
-          <Panel
-            key={name}
-            disableSettings
-            m={0}
-            f={0}
-            h="auto"
-            w="calc(100% + 24px)"
-            ml={-1}
-          >
-            <YStack
-              {...demoProps.stackOutlineProps}
-              {...demoProps.borderRadiusProps}
-              {...demoProps.elevationProps}
-              {...demoProps.panelPaddingProps}
-              borderWidth={0}
-              gap="$0"
-              p="$0"
-              ov="hidden"
-            >
-              <StudioPaletteBar showLabelIndices colors={palette} />
-            </YStack>
-          </Panel>
-        )
-      })}
-    </YStack>
-  )
-})

@@ -1,4 +1,4 @@
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { LogoIcon, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { memo } from 'react'
 import {
   Button,
@@ -44,23 +44,23 @@ const HeroSubTitle = memo(() => {
   return (
     <Subtitle>
       <Link asChild href="/docs/core/configuration">
-        <Tag theme="green" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+        <Tag theme="pink" onHoverIn={() => setHovered(0)} active={hovered === 0}>
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+        <Tag theme="gray" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/ui/stacks">
-        <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </Link>{' '}
-      React&nbsp;and&nbsp;React&nbsp;Native
+      for&nbsp;React&nbsp;and&nbsp;React&nbsp;Native
     </Subtitle>
   )
 })
@@ -287,22 +287,23 @@ const HeroContents = memo(function HeroContents() {
           gap="$2"
           $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
-          <Link target="_blank" href="https://twitter.com/tamagui_js">
-            <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
+          <Link target="_blank" href="https://x.com/tamagui_js">
+            <TooltipSimple placement="top" delay={0} restMs={25} label="X">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
-                  <Text>Twitter</Text>
+                  <Text>X</Text>
                 </VisuallyHidden>
-                <TwitterIcon width={24} />
+                <TwitterIcon />
               </YStack>
             </TooltipSimple>
           </Link>
 
-          <ThemeTint>
+          <Theme name="black">
             <Link asChild href="/docs/intro/introduction">
               <Button
                 aria-label="Get started (docs)"
                 fontFamily="$silkscreen"
+                componentName=""
                 size="$5"
                 fontSize="$6"
                 borderRadius={1000}
@@ -324,9 +325,10 @@ const HeroContents = memo(function HeroContents() {
                 // }}
               >
                 Start
+                <LogoIcon downscale={3} />
               </Button>
             </Link>
-          </ThemeTint>
+          </Theme>
 
           <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
             <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
@@ -340,7 +342,7 @@ const HeroContents = memo(function HeroContents() {
                 <VisuallyHidden>
                   <Text>Discord</Text>
                 </VisuallyHidden>
-                <DiscordIcon plain width={24} />
+                <DiscordIcon plain width={30} />
               </YStack>
             </Link>
           </TooltipSimple>
@@ -402,8 +404,8 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color10',
-  bg: '$color3',
+  color: '$color11',
+  bg: '$color4',
 
   hoverStyle: {
     color: '$color',
@@ -413,11 +415,11 @@ const Tag = styled(Text, {
   variants: {
     active: {
       true: {
-        color: '$color10',
-        bg: '$color5',
+        color: '$color',
+        bg: '$color4',
 
         hoverStyle: {
-          color: '$color12',
+          color: '$color',
           bg: '$color5',
         },
       },
@@ -447,73 +449,56 @@ const HeroText = styled(Text, {
 })
 
 const TextWithEffects = ({ text }: { text: string }) => {
-  // for a fade in delay effect
-  // const [show, setShow] = useState(false)
-
-  // useEffect(() => {
-  //   const tm = setTimeout(() => {
-  //     setShow(true)
-  //   }, 500)
-  //   return () => {
-  //     clearTimeout(tm)
-  //   }
-  // }, [])
   return (
     <>
       <span style={{ opacity: 0 }}>{text}</span>
 
-      <YStack
-        // animation="lazy"
-        fullscreen
-        // {...(!show && {
-        //   y: -10,
-        //   o: 0,
-        // })}
-        // {...(show && {
-        //   y: 0,
-        //   o: 1,
-        // })}
-      >
+      <YStack fullscreen>
         <HeroText
-          className="clip-text rainbow"
+          className="clip-text rainbow grain"
           l={-4}
+          o={0.5}
           $sm={{ l: 0 }}
           dangerouslySetInnerHTML={{
             __html: text,
           }}
         />
+
         <ThemeTintAlt offset={2}>
           <HeroText
             className="mask-gradient-down"
-            style={{ mixBlendMode: 'hard-light' }}
             pe="none"
             o={0.5}
-            col="$color8"
+            x={-1}
+            col="$color9"
             $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}
           />
         </ThemeTintAlt>
-        <ThemeTintAlt offset={1}>
+
+        <ThemeTintAlt offset={3}>
           <HeroText
             l={-3}
             className="mask-gradient-up"
-            style={{ mixBlendMode: 'hard-light' }}
+            mixBlendMode="hard-light"
             pe="none"
-            col="$color8"
+            col="$color9"
             $sm={{ l: 1.5 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}
           />
         </ThemeTintAlt>
-        <ThemeTintAlt offset={-2}>
+
+        <ThemeTintAlt offset={0}>
           <HeroText
             l={0}
             className="mask-gradient-right"
+            y={1}
             pe="none"
-            col="$color8"
+            col="$color9"
             o={0.26}
             $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
@@ -521,13 +506,15 @@ const TextWithEffects = ({ text }: { text: string }) => {
             }}
           />
         </ThemeTintAlt>
+
         <ThemeTintAlt offset={-3}>
           <HeroText
             l={0}
+            y={-1}
+            // filter="blur(3px)"
             className="mask-gradient-right"
             pe="none"
             col="$color8"
-            o={0.5}
             $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,

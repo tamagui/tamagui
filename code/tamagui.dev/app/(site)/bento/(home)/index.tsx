@@ -88,7 +88,7 @@ export default function BentoPage() {
           // offset for the banner
           mt={30}
         >
-          <Theme name="tan">
+          {/* <Theme name="tan">
             <Button
               pos="absolute"
               t="$-4"
@@ -99,9 +99,9 @@ export default function BentoPage() {
               onPress={() => {
                 store.heroVisible = !store.heroVisible
               }}
-              bg="$background025"
+              bg="$background02"
             ></Button>
-          </Theme>
+          </Theme> */}
         </ContainerLarge>
         <YStack
           onLayout={(e) => {
@@ -119,7 +119,7 @@ export default function BentoPage() {
             </ContainerLarge>
           </YStack> */}
 
-            <Intermediate />
+            {/* <Intermediate /> */}
           </Theme>
         </YStack>
         <ComponentSection />
@@ -150,8 +150,8 @@ const Intermediate = () => {
           </IntermediateCard>
         </ThemeTintAlt>
         <ThemeTintAlt offset={1}>
-          <IntermediateCard Icon={Leaf} title="Growing">
-            We continuously improve and add to the collection.
+          <IntermediateCard Icon={Leaf} title="Free">
+            Expanding free components. Lifetime&nbsp;rights paid.
           </IntermediateCard>
         </ThemeTintAlt>
       </XStack>
@@ -176,14 +176,14 @@ const IntermediateCard = ({
         <EnsureFlexed />
       </YStack>
       <Circle
-        outlineColor="$color025"
+        outlineColor="$color02"
         outlineOffset={-4}
         outlineWidth={1}
         outlineStyle="solid"
         size="$5"
         elevation="$0.5"
         backdropFilter="blur(5px)"
-        // bg="$color025"
+        // bg="$color02"
       >
         <Icon color="$color11" o={0.85} />
       </Circle>
@@ -209,6 +209,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
         >
           <YStack
             mb={40}
+            mt={30}
             maw="55%"
             zi={100}
             jc="space-between"
@@ -303,18 +304,18 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                       mr="$4"
                       color="$color1"
                       bg="$color9"
-                      outlineColor="$background025"
+                      outlineColor="$background02"
                       outlineOffset={2}
                       outlineWidth={3}
                       outlineStyle="solid"
                       hoverStyle={{
                         bg: '$color10',
-                        outlineColor: '$background05',
+                        outlineColor: '$background04',
                         bc: '$color11',
                       }}
                       pressStyle={{
                         bg: '$color9',
-                        outlineColor: '$background075',
+                        outlineColor: '$background06',
                       }}
                       onPress={() => {
                         store.showPurchase = true
@@ -370,7 +371,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
             <Theme name="green">
               <XStack
                 bw="$1"
-                bc="$color025"
+                bc="$color02"
                 maw={300}
                 als="center"
                 br="$6"

@@ -178,7 +178,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
       >
         <YStack
           {...(props.shouldDim && {
-            o: 0.25,
+            o: 0.5,
           })}
           y="$-2"
           gap="$1"
@@ -208,7 +208,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
 
         <YStack
           {...(props.shouldDim && {
-            o: 0.25,
+            o: 0.5,
           })}
           y="$-2"
           gap="$1"

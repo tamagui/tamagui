@@ -5,7 +5,7 @@ import {
   ArrowRight,
   ArrowUpDown,
 } from '@tamagui/lucide-icons'
-import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/themes/v4'
+import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
@@ -74,9 +74,11 @@ export const PaletteView = memo((props: Props) => {
   const hoveredItem = defaultScaleGrouped[activeColor]
 
   const { anchors } = palette
-  const anchorIndex = anchors.findIndex(
-    (x) => x.index === +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
-  )
+
+  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+
+  const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
+
   const anchor = anchors[anchorIndex]
   const nextAnchor = anchors[anchorIndex + 1]
   const prevAnchor = anchors[anchorIndex - 1]

@@ -1,9 +1,8 @@
+import { tokens } from '@tamagui/config/v3'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
-import { tokens } from '@tamagui/config/v4'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-
 import { createTamagui } from 'tamagui'
 import { animations } from './animations'
 import {
@@ -17,7 +16,6 @@ import {
   nohemiFont,
   silkscreenFont,
 } from './fonts'
-
 // testing tsconfig paths in compiler
 import { media, mediaQueryDefaultActive } from '~/config/media'
 
@@ -56,6 +54,7 @@ const config = {
   settings: {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
+    maxDarkLightNesting: 1,
     themeClassNameOnRoot: true,
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({

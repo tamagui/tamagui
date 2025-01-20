@@ -1,17 +1,16 @@
 import { hsla, parseToHsla } from 'color2k'
-
-import type { BuildPalette } from '../types'
+import type { BuildPalette } from '@tamagui/themes'
 
 /**
  * palette generally is:
  *
- * [constrastBackground, backgroundTransparent, ...background, ...foreground, foregroundTransparent, accentForeground]
+ * [constrastBackground, accent, backgroundTransparent, ...background, ...foreground, foregroundTransparent, accentForeground]
  */
 
 const paletteSize = 12
 
 // how many things come before the actual bg color (transparencies etc)
-export const PALETTE_BACKGROUND_OFFSET = 4
+export const PALETTE_BACKGROUND_OFFSET = 6
 
 const generateColorPalette = ({
   palette: buildPalette,
@@ -68,17 +67,18 @@ const generateColorPalette = ({
   }
 
   // add transparent values
-  const [background] = palette
-  const foreground = palette[palette.length - 1]
+  const background = palette[3]
+  const foreground = palette[palette.length - 3]
 
   const transparentValues = [background, foreground].map((color) => {
     const [h, s, l] = parseToHsla(color)
     // fully transparent to partially
     return [
       hsla(h, s, l, 0),
-      hsla(h, s, l, 0.25),
-      hsla(h, s, l, 0.5),
-      hsla(h, s, l, 0.75),
+      hsla(h, s, l, 0.2),
+      hsla(h, s, l, 0.4),
+      hsla(h, s, l, 0.6),
+      hsla(h, s, l, 0.8),
     ] as const
   })
   const reverseForeground = [...transparentValues[1]].reverse()

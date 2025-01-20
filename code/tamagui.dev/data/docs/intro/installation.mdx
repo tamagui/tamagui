@@ -3,23 +3,25 @@ title: Installation
 description: Get Tamagui set up, step by step
 ---
 
-We recommend using `npm create` to set up one or more of the example apps: `npm create tamagui@latest`. It gives you a variety of end-to-end examples, which is useful even if you plan to start from scratch or integrate into an existing app.
+<IntroParagraph>
+We recommend using `npm create tamagui@latest` to bootstrap one of our starter templates, with examples for many frameworks.
+</IntroParagraph>
 
-## Install
+The base Tamagui style library, `@tamagui/core`, has only one dependency: React. It's lighter weight than React Native Web, yet gives you a much broader style API.
 
-The base Tamagui style library, `@tamagui/core`, has only one dependency: React. It's good for web-only, Native, or both:
+Install it with:
 
 ```bash
 yarn add @tamagui/core
 ```
 
-If you plan to use the full UI kit, you can avoid installing `@tamagui/core` altogether. Instead, use `tamagui` everywhere, as it's a strict superset of core. Anywhere in the docs where `@tamagui/core` is mentioned, you can replace it with `tamagui`:
+If you plan to use the full UI kit, `tamagui`, you can avoid installing `@tamagui/core` altogether. Instead:
 
 ```bash
 yarn add tamagui
 ```
 
-We recommend `yarn` if you are using Tamagui in a monorepo to share code between apps, as it's proven reliable with React Native.
+The `tamagui` package is a superset of core, so anywhere in the docs `@tamagui/core` is used, you can replace it with `tamagui`.
 
 Add the optional `TamaguiProvider` to customize your design system and settings:
 
@@ -36,7 +38,9 @@ export default function App() {
 }
 ```
 
-See the [configuration documentation](/docs/core/configuration) docs for a comprehensive overview of what can be in your config. If you'd like to get started more quickly with presets, we have `@tamagui/config`:
+See the [configuration documentation](/docs/core/configuration) docs for a comprehensive overview of what can be in your config. 
+
+If you'd like to get started more quickly with presets, we have `@tamagui/config`:
 
 ```bash
 yarn add @tamagui/config
@@ -46,20 +50,21 @@ You can use it like so:
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
-import { config } from '@tamagui/config/v3'
+import { defaultConfig } from '@tamagui/config/v4'
 
 // you usually export this from a tamagui.config.ts file
-const tamaguiConfig = createTamagui(config)
+const config = createTamagui(defaultConfig)
 
-// TypeScript types across all Tamagui APIs
-type Conf = typeof tamaguiConfig
+type Conf = typeof config
+
+// get nice types
 declare module '@tamagui/core' {
   interface TamaguiCustomConfig extends Conf {}
 }
 
 export default () => {
   return (
-    <TamaguiProvider config={tamaguiConfig}>
+    <TamaguiProvider config={config}>
       {/* your app here */}
     </TamaguiProvider>
   )
@@ -82,11 +87,13 @@ export default function Demo() {
 
 From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). Tamagui works across 100% of it's features at runtime and compile-time. This means you can wait until you absolutely need more performance to [set up the compiler](/docs/intro/compiler-install).
 
+---
+
 ## Guides
 
-<Notice theme="green">
-  Tamagui generally doesn't require any special bundler setup, but React Native / React Native Web and the general ecosystem of packages often do. Tamagui provides a variety of plugins that help with that compatibility, as well as letting you opt into the compiler.
-</Notice>
+Tamagui generally doesn't require any special bundler setup as we've worked hard to make it "just work" without configuration in a wide variety of environments.
+
+That said, the broader React Native and React Native Web ecosystem is filled with packages that do need configuration. Tamagui provides a variety of bundler plugins that help improve that compatibility, as well as letting you opt into the optimizing compiler.
 
 For more in-depth guides:
 

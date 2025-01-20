@@ -18,7 +18,8 @@ import {
 } from '@tamagui/colors'
 import { createThemeBuilder, objectFromEntries } from '@tamagui/theme-builder'
 import { createTokens } from '@tamagui/web'
-import { objectKeys, postfixObjKeys, sizeToSpace } from './utils'
+import { objectKeys, postfixObjKeys } from './utils'
+import { tokens as v3Tokens } from './v3-tokens'
 
 const colorTokens = {
   light: {
@@ -573,72 +574,63 @@ export const defaultSubThemes = {
 
 // --- themeBuilder ---
 
-const themeBuilder = process.env.TAMAGUI_RUN_THEMEBUILDER
-  ? null
-  : createThemeBuilder()
-      .addPalettes(defaultPalettes)
-      .addTemplates(defaultTemplates)
-      .addThemes({
-        light: {
-          template: 'base',
-          palette: 'light',
-          nonInheritedValues: nonInherited.light,
-        },
-        dark: {
-          template: 'base',
-          palette: 'dark',
-          nonInheritedValues: nonInherited.dark,
-        },
-      })
-      .addChildThemes({
-        orange: {
-          palette: 'orange',
-          template: 'base',
-        },
-        yellow: {
-          palette: 'yellow',
-          template: 'base',
-        },
-        green: {
-          palette: 'green',
-          template: 'base',
-        },
-        blue: {
-          palette: 'blue',
-          template: 'base',
-        },
-        purple: {
-          palette: 'purple',
-          template: 'base',
-        },
-        pink: {
-          palette: 'pink',
-          template: 'base',
-        },
-        red: {
-          palette: 'red',
-          template: 'base',
-        },
-        gray: {
-          palette: 'gray',
-          template: 'base',
-        },
-      })
-      .addChildThemes(defaultSubThemes)
-      .addComponentThemes(defaultComponentThemes, {
-        avoidNestingWithin: [
-          'alt1',
-          'alt2',
-          'surface1',
-          'surface2',
-          'surface3',
-          'surface4',
-        ],
-      })
+const themeBuilder = createThemeBuilder()
+  .addPalettes(defaultPalettes)
+  .addTemplates(defaultTemplates)
+  .addThemes({
+    light: {
+      template: 'base',
+      palette: 'light',
+      nonInheritedValues: nonInherited.light,
+    },
+    dark: {
+      template: 'base',
+      palette: 'dark',
+      nonInheritedValues: nonInherited.dark,
+    },
+  })
+  .addChildThemes({
+    orange: {
+      palette: 'orange',
+      template: 'base',
+    },
+    yellow: {
+      palette: 'yellow',
+      template: 'base',
+    },
+    green: {
+      palette: 'green',
+      template: 'base',
+    },
+    blue: {
+      palette: 'blue',
+      template: 'base',
+    },
+    purple: {
+      palette: 'purple',
+      template: 'base',
+    },
+    pink: {
+      palette: 'pink',
+      template: 'base',
+    },
+    red: {
+      palette: 'red',
+      template: 'base',
+    },
+    gray: {
+      palette: 'gray',
+      template: 'base',
+    },
+  })
+  .addChildThemes(defaultSubThemes)
+  .addComponentThemes(defaultComponentThemes, {
+    avoidNestingWithin: ['alt1', 'alt2', 'surface1', 'surface2', 'surface3', 'surface4'],
+  })
 
 // --- themes ---
 
-const themesIn = themeBuilder ? themeBuilder.build() : null
+const themesIn = themeBuilder.build()
 
 type ThemeKeys =
   | keyof typeof defaultTemplates.light_base
@@ -646,111 +638,13 @@ type ThemeKeys =
 
 export type Theme = Record<ThemeKeys, string>
 
-export type ThemesOut = Record<keyof Exclude<typeof themesIn, null>, Theme>
+export type ThemesOut = Record<keyof typeof themesIn, Theme>
 
 export const themes = themesIn as any as ThemesOut
 
-// --- tokens ---
-
-// should roughly map to button/input etc height at each level
-// fonts should match that height/lineHeight at each stop
-// so these are really non-linear on purpose
-// why?
-//   - at sizes <1, used for fine grained things (borders, smallest paddingY)
-//     - so smallest padY should be roughly 1-4px so it can join with lineHeight
-//   - at sizes >=1, have to consider "pressability" (jumps up)
-//   - after that it should go upwards somewhat naturally
-//   - H1 / headings top out at 10 naturally, so after 10 we can go upwards faster
-//  but also one more wrinkle...
-//  space is used in conjunction with size
-//  i'm setting space to generally just a fixed fraction of size (~1/3-2/3 still fine tuning)
-export const size = {
-  $0: 0,
-  '$0.25': 2,
-  '$0.5': 4,
-  '$0.75': 8,
-  $1: 20,
-  '$1.5': 24,
-  $2: 28,
-  '$2.5': 32,
-  $3: 36,
-  '$3.5': 40,
-  $4: 44,
-  $true: 44,
-  '$4.5': 48,
-  $5: 52,
-  $6: 64,
-  $7: 74,
-  $8: 84,
-  $9: 94,
-  $10: 104,
-  $11: 124,
-  $12: 144,
-  $13: 164,
-  $14: 184,
-  $15: 204,
-  $16: 224,
-  $17: 224,
-  $18: 244,
-  $19: 264,
-  $20: 284,
-}
-
-type SizeKeysIn = keyof typeof size
-type Sizes = {
-  [Key in SizeKeysIn extends `$${infer Key}` ? Key : SizeKeysIn]: number
-}
-type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
-
-export const spaces = Object.entries(size).map(([k, v]) => {
-  return [k, sizeToSpace(v)] as const
-})
-
-export const spacesNegative = spaces.slice(1).map(([k, v]) => [`-${k.slice(1)}`, -v])
-
-type SizeKeysWithNegatives =
-  | Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'>
-  | SizeKeys
-
-export const space: {
-  [Key in SizeKeysWithNegatives]: Key extends keyof Sizes ? Sizes[Key] : number
-} = {
-  ...Object.fromEntries(spaces),
-  ...Object.fromEntries(spacesNegative),
-} as any
-
-export const zIndex = {
-  0: 0,
-  1: 100,
-  2: 200,
-  3: 300,
-  4: 400,
-  5: 500,
-}
-
-export const radius = {
-  0: 0,
-  1: 3,
-  2: 5,
-  3: 7,
-  4: 9,
-  true: 9,
-  5: 10,
-  6: 16,
-  7: 19,
-  8: 22,
-  9: 26,
-  10: 34,
-  11: 42,
-  12: 50,
-}
+// -- tokens ---
 
 export const tokens = createTokens({
   color,
-  radius,
-  zIndex,
-  space,
-  size,
+  ...v3Tokens,
 })
-
-// --- utils ---

@@ -207,7 +207,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                           gap="$3"
                           mt="$4"
                         >
-                          <Separator bc="$color025" o={0.25} my="$2" />
+                          <Separator bc="$color02" o={0.25} my="$2" />
                           <Theme name="gray">
                             <Paragraph size="$4" fow="600" color="$color10">
                               {section.title}

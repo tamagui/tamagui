@@ -1,21 +1,21 @@
 import * as Colors from '@tamagui/colors'
-import { createThemeSuite } from './v4-createTheme'
+import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 
 /**
  * Default themes for the tamagui.dev site
- * If you'd like to create your own themes, use `createThemeSuite`
+ * If you'd like to create your own themes, use `createThemes`
  */
 
 const darkPalette = [
-  '#050505',
+  '#040404',
+  '#090909',
+  '#111',
   '#151515',
-  '#191919',
-  '#232323',
+  '#222',
   '#282828',
-  '#323232',
+  '#343434',
   '#424242',
-  '#494949',
-  '#545454',
+  '#515151',
   '#626262',
   '#a5a5a5',
   '#fff',
@@ -54,7 +54,7 @@ const darkShadows = {
   shadow6: 'rgba(0,0,0,0.7)',
 }
 
-const extraColors = {
+const blackColors = {
   black1: darkPalette[0],
   black2: darkPalette[1],
   black3: darkPalette[2],
@@ -67,6 +67,9 @@ const extraColors = {
   black10: darkPalette[9],
   black11: darkPalette[10],
   black12: darkPalette[11],
+}
+
+const whiteColors = {
   white1: lightPalette[0],
   white2: lightPalette[1],
   white3: lightPalette[2],
@@ -81,7 +84,9 @@ const extraColors = {
   white12: lightPalette[11],
 }
 
-const themes = createThemeSuite({
+const themes = createThemes({
+  componentThemes: defaultComponentThemes,
+
   base: {
     palette: {
       dark: darkPalette,
@@ -100,20 +105,9 @@ const themes = createThemeSuite({
         ...Colors.red,
         ...Colors.yellow,
         ...lightShadows,
-        ...extraColors,
+        ...blackColors,
+        ...whiteColors,
         shadowColor: lightShadows.shadow1,
-        accent1: darkPalette[0],
-        accent2: darkPalette[1],
-        accent3: darkPalette[2],
-        accent4: darkPalette[3],
-        accent5: darkPalette[4],
-        accent6: darkPalette[5],
-        accent7: darkPalette[6],
-        accent8: darkPalette[7],
-        accent9: darkPalette[8],
-        accent10: darkPalette[9],
-        accent11: darkPalette[10],
-        accent12: darkPalette[11],
       },
       dark: {
         ...Colors.blueDark,
@@ -125,20 +119,9 @@ const themes = createThemeSuite({
         ...Colors.redDark,
         ...Colors.yellowDark,
         ...darkShadows,
-        ...extraColors,
+        ...blackColors,
+        ...whiteColors,
         shadowColor: darkShadows.shadow1,
-        accent1: lightPalette[0],
-        accent2: lightPalette[1],
-        accent3: lightPalette[2],
-        accent4: lightPalette[3],
-        accent5: lightPalette[4],
-        accent6: lightPalette[5],
-        accent7: lightPalette[6],
-        accent8: lightPalette[7],
-        accent9: lightPalette[8],
-        accent10: lightPalette[9],
-        accent11: lightPalette[10],
-        accent12: lightPalette[11],
       },
     },
   },
@@ -152,6 +135,18 @@ const themes = createThemeSuite({
   },
 
   childrenThemes: {
+    black: {
+      palette: {
+        dark: Object.values(blackColors),
+        light: Object.values(blackColors),
+      },
+    },
+    white: {
+      palette: {
+        dark: Object.values(whiteColors),
+        light: Object.values(whiteColors),
+      },
+    },
     gray: {
       palette: {
         dark: Object.values(Colors.grayDark),
@@ -255,10 +250,12 @@ const themes = createThemeSuite({
 
 export type TamaguiThemes = typeof themes
 
-// avoid themes only on client bundle
+/**
+ * This is an optional production optimization: themes JS can get to 20Kb or more.
+ * Tamagui has ~1Kb of logic to hydrate themes from CSS, so you can remove the JS.
+ * So long as you server render your Tamagui CSS, this will save you bundle size:
+ */
 export const tamaguiThemes: TamaguiThemes =
-  process.env.TAMAGUI_IS_SERVER ||
-  process.env.TAMAGUI_KEEP_THEMES ||
-  process.env.NODE_ENV === 'development'
-    ? (themes as any)
-    : ({} as any)
+  process.env.TAMAGUI_ENVIRONMENT === 'client' && process.env.NODE_ENV === 'production'
+    ? ({} as any)
+    : (themes as any)

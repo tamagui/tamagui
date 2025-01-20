@@ -215,6 +215,7 @@ function getState(
   }
 
   const themes = getThemes()
+
   const [allManagers, componentManagers] = getManagers(manager)
 
   const isDirectParentAComponentTheme = !!manager?.state.isComponent

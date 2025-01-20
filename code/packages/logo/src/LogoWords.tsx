@@ -4,18 +4,32 @@ import { Circle, XStack } from 'tamagui'
 
 import { useTint } from './useTint'
 
+const rgb = ['#ED0F0F', '#6BCF1A', '#6252F8']
+
 export const LogoWords = React.memo(
   ({
     downscale = 1,
-    grayscale,
     animated,
     ...props
-  }: XStackProps & { downscale?: number; animated?: boolean; grayscale?: boolean }) => {
+  }: XStackProps & { downscale?: number; animated?: boolean }) => {
     const Tint = useTint()
-    const { tintIndex: index, tint } = Tint
-    const tints = Tint.tints.map((t) => `var(--${t}9)`)
     const [hovered, setHovered] = React.useState(false)
     const [mounted, setMounted] = React.useState<'start' | 'animate' | 'done'>('start')
+
+    const { tintIndex: index, tint } = Tint
+    const hoveredTints = Tint.tints.map((x) => `${x}9`).map((t) => `var(--${t})`)
+
+    const tints = [
+      'var(--accent1)',
+      'var(--accent1)',
+      'var(--accent1)',
+      'var(--accent1)',
+      ...rgb,
+    ]
+
+    const circleTints = hovered
+      ? Tint.tints.map((x) => `$${x}9`)
+      : ['$accent1', '$accent1', '$accent1', '$accent1', ...rgb]
 
     React.useEffect(() => {
       const idle = window.requestIdleCallback || setTimeout
@@ -32,18 +46,8 @@ export const LogoWords = React.memo(
 
     const getColor = (i: number) => {
       const isActive = mounted !== 'start' && i === index
-      if (grayscale) {
-        return hovered && isActive
-          ? `var(--gray12)`
-          : hovered
-            ? `var(--gray11)`
-            : `var(--gray10)`
-      }
-      if (mounted !== 'done' || hovered) {
-        return isActive ? 'var(--color)' : tints[index]
-      }
-      if (hovered && isActive) {
-        return 'var(--color)'
+      if (hovered) {
+        return hoveredTints[i]
       }
       return tints[i]
     }
@@ -73,14 +77,14 @@ export const LogoWords = React.memo(
             // the last i is less wide
             x={x}
             size={4}
-            backgroundColor="$color9"
+            backgroundColor={circleTints[index]}
           />
         )}
 
         <svg
           data-tauri-drag-region
-          width={373 * (1 / downscale) * 0.333333334}
-          height={41 * (1 / downscale) * 0.333333334}
+          width={373 * (1 / downscale) * 0.3333333}
+          height={41 * (1 / downscale) * 0.3333333}
           viewBox="0 0 373 41"
         >
           <polygon

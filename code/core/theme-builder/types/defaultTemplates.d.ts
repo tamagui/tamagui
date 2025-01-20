@@ -1,10 +1,11 @@
-export declare const defaultTemplates: Record<"light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | "light_base" | "light_surface1" | "light_surface2" | "light_surface3" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "light_inverse" | "dark_inverse", {
+export declare const defaultTemplates: Record<"light_base" | "light_surface1" | "light_surface2" | "light_surface3" | "light_alt1" | "light_alt2" | "light_inverse" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_alt1" | "dark_alt2" | "dark_inverse", {
     accentBackground: number;
     accentColor: number;
     background0: number;
-    background025: number;
-    background05: number;
-    background075: number;
+    background02: number;
+    background04: number;
+    background06: number;
+    background08: number;
     color1: number;
     color2: number;
     color3: number;
@@ -18,9 +19,10 @@ export declare const defaultTemplates: Record<"light_alt1" | "light_alt2" | "dar
     color11: number;
     color12: number;
     color0: number;
-    color025: number;
-    color05: number;
-    color075: number;
+    color02: number;
+    color04: number;
+    color06: number;
+    color08: number;
     background: number;
     backgroundHover: number;
     backgroundPress: number;
@@ -37,4 +39,4 @@ export declare const defaultTemplates: Record<"light_alt1" | "light_alt2" | "dar
     placeholderColor: number;
     outlineColor: number;
 }>;
-//# sourceMappingURL=v4-defaultTemplates.d.ts.map
+//# sourceMappingURL=defaultTemplates.d.ts.map
