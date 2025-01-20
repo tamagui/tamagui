@@ -48,12 +48,6 @@ const Palettes = memo(() => {
   )
 })
 
-export const StepBaseThemesTray = () => {
-  return null
-  // const store = useStore(StepBaseThemesStore)
-  // return <ThemeTemplate theme={store.baseTheme} />
-}
-
 export const StepLightDarkTip = () => {
   return (
     <StudioNotice
