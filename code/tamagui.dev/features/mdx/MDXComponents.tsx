@@ -698,7 +698,7 @@ const componentsIn = {
           <YStack ov="hidden" f={1} o={0.85} space>
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
-              <a href="https://twitter.com/natebirdman" target="_blank" rel="noreferrer">
+              <a href="https://x.com/natebirdman" target="_blank" rel="noreferrer">
                 me
               </a>
               .

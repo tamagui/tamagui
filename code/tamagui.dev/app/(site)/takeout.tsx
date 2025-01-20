@@ -98,19 +98,20 @@ export default function TakeoutPage() {
         />
       </ThemeTintAlt>
 
-      {/* <ThemeTintAlt offset={0}>
+      <ThemeTintAlt offset={0}>
         <YStack
           pos="absolute"
           l={0}
           r={0}
           t={-100}
+          mixBlendMode="color-burn"
           b={0}
           style={{
-            background: 'linear-gradient(10deg, var(--color2), var(--color1))',
+            background: 'linear-gradient(10deg, var(--color5), var(--color1))',
           }}
           zi={-3}
         />
-      </ThemeTintAlt> */}
+      </ThemeTintAlt>
 
       <YStack
         pe="none"

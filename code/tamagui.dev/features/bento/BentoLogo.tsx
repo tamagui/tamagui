@@ -40,7 +40,7 @@ export const BentoLogo = ({
         backgroundColor: '$background',
       })}
     >
-      <BentoLogoTheme offset={1 + offsetAdjust}>
+      <BentoLogoTheme offset={1 - offsetAdjust}>
         <H1
           componentName="span"
           ff="$cherryBomb"
@@ -53,7 +53,7 @@ export const BentoLogo = ({
           }}
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
@@ -66,7 +66,7 @@ export const BentoLogo = ({
         </H1>
       </BentoLogoTheme>
 
-      <BentoLogoTheme offset={0 + offsetAdjust}>
+      <BentoLogoTheme offset={1 + offsetAdjust}>
         <H1
           // o={0}
           pos="absolute"
@@ -78,18 +78,20 @@ export const BentoLogo = ({
           px="$3"
           mx="$-3"
           whiteSpace="pre"
-          color="$color8"
+          color="$color5"
+          $theme-dark={{
+            color: '$color8',
+          }}
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
           ussel="none"
           pe="none"
-          className="clip-text mask-gradient-down"
           style={{
-            backgroundImage: 'linear-gradient(var(--color10), transparent)',
+            // backgroundImage: 'linear-gradient(var(--color8), transparent)',
             maskImage: `linear-gradient(transparent 20%, rgba(0, 0, 0, 1))`,
           }}
         >
@@ -97,7 +99,7 @@ export const BentoLogo = ({
         </H1>
       </BentoLogoTheme>
 
-      <BentoLogoTheme offset={-2 + offsetAdjust}>
+      {/* <BentoLogoTheme offset={2 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
@@ -110,45 +112,41 @@ export const BentoLogo = ({
           whiteSpace="pre"
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
-          $theme-dark={{
-            opacity: 1,
-          }}
+          o={0.5}
           ussel="none"
           pe="none"
           className="clip-text mask-gradient-down bento-text-3"
         >
           {children}&nbsp;
         </H1>
-      </BentoLogoTheme>
+      </BentoLogoTheme> */}
 
-      <BentoLogoTheme offset={-2 + offsetAdjust}>
+      <BentoLogoTheme offset={-1 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
           l={0}
           x={1}
-          o={0.5}
           zi={1100000000}
           ff="$cherryBomb"
           px="$3"
           mx="$-3"
           whiteSpace="pre"
-          color="$color8"
-          className="mix-blend-color-burn-dodge"
+          color="$color9"
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
           ussel="none"
           pe="none"
           style={{
-            maskImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0) 60%)`,
+            maskImage: `linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0) 60%)`,
           }}
         >
           {children}&nbsp;

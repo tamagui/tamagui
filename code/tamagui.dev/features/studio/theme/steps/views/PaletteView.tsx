@@ -75,7 +75,7 @@ export const PaletteView = memo((props: Props) => {
 
   const { anchors } = palette
 
-  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET - 1
+  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
 
   const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
 

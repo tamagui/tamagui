@@ -210,12 +210,9 @@ pre {
 .rainbow {
   background-image: -webkit-linear-gradient(
     0deg,
-    var(--orange10),
-    var(--yellow10),
+    var(--red10),
     var(--green10),
     var(--blue10),
-    var(--pink10),
-    var(--red10)
   );
 }
 
@@ -681,7 +678,7 @@ textarea {
     mask-image: url(./public/takeouticon.svg);
     mask-size: 20% 20%;
     transform: rotate(1deg);
-    animation: clip-fade2 70s infinite alternate;
+    animation: clip-fade2 50s infinite alternate;
     mix-blend-mode: difference !important;
   }
   

@@ -86,7 +86,7 @@ export const docsRoutes = [
         ),
         route: 'https://github.com/tamagui/tamagui',
       },
-      { title: `Twitter`, route: 'https://twitter.com/tamagui_js' },
+      { title: `X`, route: 'https://x.com/tamagui_js' },
       { title: `Discord`, route: 'https://discord.gg/4qh6tdcVDa' },
     ],
   },

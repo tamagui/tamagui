@@ -119,7 +119,7 @@ export default function BentoPage() {
             </ContainerLarge>
           </YStack> */}
 
-            <Intermediate />
+            {/* <Intermediate /> */}
           </Theme>
         </YStack>
         <ComponentSection />
@@ -150,8 +150,8 @@ const Intermediate = () => {
           </IntermediateCard>
         </ThemeTintAlt>
         <ThemeTintAlt offset={1}>
-          <IntermediateCard Icon={Leaf} title="Growing">
-            We continuously improve and add to the collection.
+          <IntermediateCard Icon={Leaf} title="Free">
+            Expanding free components. Lifetime&nbsp;rights paid.
           </IntermediateCard>
         </ThemeTintAlt>
       </XStack>
@@ -209,6 +209,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
         >
           <YStack
             mb={40}
+            mt={30}
             maw="55%"
             zi={100}
             jc="space-between"

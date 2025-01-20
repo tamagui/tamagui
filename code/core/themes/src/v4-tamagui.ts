@@ -7,15 +7,15 @@ import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
  */
 
 const darkPalette = [
-  '#020202',
+  '#040404',
+  '#090909',
   '#111',
   '#151515',
   '#222',
-  '#262626',
-  '#323232',
+  '#282828',
+  '#343434',
   '#424242',
-  '#494949',
-  '#545454',
+  '#515151',
   '#626262',
   '#a5a5a5',
   '#fff',
@@ -54,7 +54,7 @@ const darkShadows = {
   shadow6: 'rgba(0,0,0,0.7)',
 }
 
-const extraColors = {
+const blackColors = {
   black1: darkPalette[0],
   black2: darkPalette[1],
   black3: darkPalette[2],
@@ -67,6 +67,9 @@ const extraColors = {
   black10: darkPalette[9],
   black11: darkPalette[10],
   black12: darkPalette[11],
+}
+
+const whiteColors = {
   white1: lightPalette[0],
   white2: lightPalette[1],
   white3: lightPalette[2],
@@ -102,7 +105,8 @@ const themes = createThemes({
         ...Colors.red,
         ...Colors.yellow,
         ...lightShadows,
-        ...extraColors,
+        ...blackColors,
+        ...whiteColors,
         shadowColor: lightShadows.shadow1,
       },
       dark: {
@@ -115,7 +119,8 @@ const themes = createThemes({
         ...Colors.redDark,
         ...Colors.yellowDark,
         ...darkShadows,
-        ...extraColors,
+        ...blackColors,
+        ...whiteColors,
         shadowColor: darkShadows.shadow1,
       },
     },
@@ -130,6 +135,18 @@ const themes = createThemes({
   },
 
   childrenThemes: {
+    black: {
+      palette: {
+        dark: Object.values(blackColors),
+        light: Object.values(blackColors),
+      },
+    },
+    white: {
+      palette: {
+        dark: Object.values(whiteColors),
+        light: Object.values(whiteColors),
+      },
+    },
     gray: {
       palette: {
         dark: Object.values(Colors.grayDark),

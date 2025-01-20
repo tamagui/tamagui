@@ -287,22 +287,23 @@ const HeroContents = memo(function HeroContents() {
           gap="$2"
           $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
-          <Link target="_blank" href="https://twitter.com/tamagui_js">
-            <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
+          <Link target="_blank" href="https://x.com/tamagui_js">
+            <TooltipSimple placement="top" delay={0} restMs={25} label="X">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
-                  <Text>Twitter</Text>
+                  <Text>X</Text>
                 </VisuallyHidden>
-                <TwitterIcon width={24} />
+                <TwitterIcon />
               </YStack>
             </TooltipSimple>
           </Link>
 
-          <ThemeTint>
+          <Theme name="black">
             <Link asChild href="/docs/intro/introduction">
               <Button
                 aria-label="Get started (docs)"
                 fontFamily="$silkscreen"
+                componentName=""
                 size="$5"
                 fontSize="$6"
                 borderRadius={1000}
@@ -326,7 +327,7 @@ const HeroContents = memo(function HeroContents() {
                 Start
               </Button>
             </Link>
-          </ThemeTint>
+          </Theme>
 
           <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
             <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
@@ -340,7 +341,7 @@ const HeroContents = memo(function HeroContents() {
                 <VisuallyHidden>
                   <Text>Discord</Text>
                 </VisuallyHidden>
-                <DiscordIcon plain width={24} />
+                <DiscordIcon plain width={30} />
               </YStack>
             </Link>
           </TooltipSimple>
@@ -475,8 +476,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
         // })}
       >
         <HeroText
-          className="clip-text rainbow"
+          className="clip-text rainbow grain"
           l={-4}
+          o={0.5}
           $sm={{ l: 0 }}
           dangerouslySetInnerHTML={{
             __html: text,
@@ -486,7 +488,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
         <ThemeTintAlt offset={2}>
           <HeroText
             className="mask-gradient-down"
-            style={{ mixBlendMode: 'hard-light' }}
             pe="none"
             o={0.5}
             x={-1}
@@ -498,7 +499,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
           />
         </ThemeTintAlt>
 
-        <ThemeTintAlt offset={1}>
+        <ThemeTintAlt offset={3}>
           <HeroText
             l={-3}
             className="mask-gradient-up"
