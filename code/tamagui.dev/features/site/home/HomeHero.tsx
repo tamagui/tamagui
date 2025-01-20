@@ -482,12 +482,14 @@ const TextWithEffects = ({ text }: { text: string }) => {
             __html: text,
           }}
         />
+
         <ThemeTintAlt offset={2}>
           <HeroText
             className="mask-gradient-down"
             style={{ mixBlendMode: 'hard-light' }}
             pe="none"
             o={0.5}
+            x={-1}
             col="$color8"
             $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
@@ -495,6 +497,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
             }}
           />
         </ThemeTintAlt>
+
         <ThemeTintAlt offset={1}>
           <HeroText
             l={-3}
@@ -508,10 +511,12 @@ const TextWithEffects = ({ text }: { text: string }) => {
             }}
           />
         </ThemeTintAlt>
+
         <ThemeTintAlt offset={-2}>
           <HeroText
             l={0}
             className="mask-gradient-right"
+            y={1}
             pe="none"
             col="$color8"
             o={0.26}
@@ -521,13 +526,15 @@ const TextWithEffects = ({ text }: { text: string }) => {
             }}
           />
         </ThemeTintAlt>
+
         <ThemeTintAlt offset={-3}>
           <HeroText
             l={0}
+            y={-1}
+            filter="blur(3px)"
             className="mask-gradient-right"
             pe="none"
             col="$color8"
-            o={0.5}
             $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,

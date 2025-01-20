@@ -1,9 +1,38 @@
+export { createThemeSuite } from '@tamagui/theme-builder';
 export { shorthands } from '@tamagui/shorthands/v4';
 export { media, mediaQueryDefaultActive } from './media';
 export { animations } from './v4-animations';
 export { createSystemFont, fonts } from './v4-fonts';
 export { tamaguiThemes, tokens } from '@tamagui/themes/v4';
-export declare const config: {
+declare const generatedThemes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {
+    [x: string]: string;
+    [x: number]: string;
+    [x: symbol]: string;
+}>;
+export type TamaguiThemes = typeof generatedThemes;
+export declare const themes: TamaguiThemes;
+export declare const selectionStyles: (theme: any) => {
+    backgroundColor: any;
+    color: any;
+} | null;
+export declare const settings: {
+    mediaQueryDefaultActive: {
+        '2xl': boolean;
+        xl: boolean;
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        xs: boolean;
+        xxs: boolean;
+    };
+    defaultFont: string;
+    fastSchemeChange: true;
+    shouldAddPrefersColorThemes: true;
+    allowedStyleValues: "somewhat-strict-web";
+    themeClassNameOnRoot: true;
+    maxDarkLightNesting: number;
+};
+export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
         '75ms': string;
         '100ms': string;
@@ -116,6 +145,11 @@ export declare const config: {
         readonly w: "width";
         readonly zi: "zIndex";
     };
+    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {
+        [x: string]: string;
+        [x: number]: string;
+        [x: symbol]: string;
+    }>;
     tokens: {
         readonly radius: {
             0: number;
@@ -236,9 +270,9 @@ export declare const config: {
         body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
-    selectionStyles: (theme: Record<string, string>) => {
-        backgroundColor: string;
-        color: string;
+    selectionStyles: (theme: any) => {
+        backgroundColor: any;
+        color: any;
     } | null;
     settings: {
         mediaQueryDefaultActive: {
@@ -255,6 +289,7 @@ export declare const config: {
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
         themeClassNameOnRoot: true;
+        maxDarkLightNesting: number;
     };
 };
 //# sourceMappingURL=v4.d.ts.map

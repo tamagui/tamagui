@@ -255,10 +255,10 @@ const themes = createThemeSuite({
 
 export type TamaguiThemes = typeof themes
 
-// avoid themes only on client bundle
 export const tamaguiThemes: TamaguiThemes =
-  process.env.TAMAGUI_IS_SERVER ||
-  process.env.TAMAGUI_KEEP_THEMES ||
-  process.env.NODE_ENV === 'development'
-    ? (themes as any)
-    : ({} as any)
+  // avoid themes only on client bundle
+  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
+  // only in production
+  process.env.NODE_ENV === 'production'
+    ? ({} as any)
+    : (themes as any)

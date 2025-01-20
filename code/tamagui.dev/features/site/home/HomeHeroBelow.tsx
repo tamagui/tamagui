@@ -67,8 +67,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           <Paragraph o={0.7} size="$5">
-            A smart optimizer that makes your app fast with partial analysis, extracts
-            CSS, flattens your tree, and removes code. Next, Webpack, Vite, Babel and
+            A smart optimizer that makes your app fast with partial analysis, extracting
+            CSS, flattening your tree, and removing code. Next, Webpack, Vite, Babel,
             Metro.
           </Paragraph>
         </Section>
@@ -80,7 +80,7 @@ export const HeroBelowContent = memo(() => {
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           <Paragraph o={0.7} size="$5">
             All the components you'd want, cross platform and adaptable to each other.
-            Compound Component APIs, styled or unstyled, sizable, themeable, and more.
+            Compound Component APIs, styled or unstyled, easy to size, theme, and more.
           </Paragraph>
         </Section>
       </XStack>
