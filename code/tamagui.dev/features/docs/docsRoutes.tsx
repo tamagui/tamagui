@@ -20,8 +20,8 @@ export const docsRoutes = [
     isUI: false,
     title: 'Core',
     pages: [
-      { title: 'Introduction', route: '/docs/core/introduction' },
       { title: 'Configuration', route: '/docs/core/configuration' },
+      { title: '@tamagui/config', route: '/docs/core/config-v4' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'View & Text', route: '/docs/core/stack-and-text' },
       { title: 'Props', route: '/docs/intro/props' },
@@ -65,21 +65,6 @@ export const docsRoutes = [
       { title: 'Webpack', route: '/docs/guides/webpack' },
       { title: 'Metro', route: '/docs/guides/metro' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
-    ],
-  },
-
-  {
-    isUI: false,
-    title: 'Tamagui Config',
-    pages: [
-      { title: 'Colors', route: '/docs/intro/colors' },
-      { title: 'Tokens', route: '/docs/intro/tokens' },
-      // { title: 'Themes', route: '/docs/intro/themes' },
-      // { title: 'Fonts', route: '/docs/intro/themes' },
-      // { title: 'Icons', route: '/docs/intro/themes' },
-      // { title: 'Animations', route: '/docs/intro/themes' },
-      // { title: 'Shorthands', route: '/docs/intro/themes' },
-      // { title: 'Media Queries', route: '/docs/intro/themes' },
     ],
   },
 
