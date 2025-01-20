@@ -66,7 +66,7 @@ export const BentoLogo = ({
         </H1>
       </BentoLogoTheme>
 
-      <BentoLogoTheme offset={1 + offsetAdjust}>
+      <BentoLogoTheme offset={-7 + offsetAdjust}>
         <H1
           // o={0}
           pos="absolute"
@@ -125,7 +125,7 @@ export const BentoLogo = ({
         </H1>
       </BentoLogoTheme> */}
 
-      <BentoLogoTheme offset={-1 + offsetAdjust}>
+      <BentoLogoTheme offset={2 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
@@ -136,7 +136,7 @@ export const BentoLogo = ({
           px="$3"
           mx="$-3"
           whiteSpace="pre"
-          color="$color9"
+          color="$color8"
           maw="100%"
           f={1}
           ls={-16}
@@ -146,7 +146,7 @@ export const BentoLogo = ({
           ussel="none"
           pe="none"
           style={{
-            maskImage: `linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0) 60%)`,
+            maskImage: `linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0) 50%)`,
           }}
         >
           {children}&nbsp;
