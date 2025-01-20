@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.121.12-1737271201540",
+  "version": "1.121.12-1737332968773",
   "sideEffects": [
     "*.css"
   ],
@@ -37,28 +37,28 @@
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.121.12-1737271201540",
-    "@tamagui/animate-presence": "1.121.12-1737271201540",
-    "@tamagui/animations-react-native": "1.121.12-1737271201540",
-    "@tamagui/compose-refs": "1.121.12-1737271201540",
-    "@tamagui/constants": "1.121.12-1737271201540",
-    "@tamagui/core": "1.121.12-1737271201540",
-    "@tamagui/create-context": "1.121.12-1737271201540",
-    "@tamagui/helpers": "1.121.12-1737271201540",
-    "@tamagui/portal": "1.121.12-1737271201540",
-    "@tamagui/remove-scroll": "1.121.12-1737271201540",
-    "@tamagui/scroll-view": "1.121.12-1737271201540",
-    "@tamagui/stacks": "1.121.12-1737271201540",
-    "@tamagui/use-constant": "1.121.12-1737271201540",
-    "@tamagui/use-controllable-state": "1.121.12-1737271201540",
-    "@tamagui/use-did-finish-ssr": "1.121.12-1737271201540",
-    "@tamagui/use-keyboard-visible": "1.121.12-1737271201540"
+    "@tamagui/adapt": "1.121.12-1737332968773",
+    "@tamagui/animate-presence": "1.121.12-1737332968773",
+    "@tamagui/animations-react-native": "1.121.12-1737332968773",
+    "@tamagui/compose-refs": "1.121.12-1737332968773",
+    "@tamagui/constants": "1.121.12-1737332968773",
+    "@tamagui/core": "1.121.12-1737332968773",
+    "@tamagui/create-context": "1.121.12-1737332968773",
+    "@tamagui/helpers": "1.121.12-1737332968773",
+    "@tamagui/portal": "1.121.12-1737332968773",
+    "@tamagui/remove-scroll": "1.121.12-1737332968773",
+    "@tamagui/scroll-view": "1.121.12-1737332968773",
+    "@tamagui/stacks": "1.121.12-1737332968773",
+    "@tamagui/use-constant": "1.121.12-1737332968773",
+    "@tamagui/use-controllable-state": "1.121.12-1737332968773",
+    "@tamagui/use-did-finish-ssr": "1.121.12-1737332968773",
+    "@tamagui/use-keyboard-visible": "1.121.12-1737332968773"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737271201540",
+    "@tamagui/build": "1.121.12-1737332968773",
     "react": "*"
   },
   "publishConfig": {

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/one-theme",
-  "version": "1.121.12-1737271201540",
+  "version": "1.121.12-1737332968773",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -33,10 +33,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/use-did-finish-ssr": "1.121.12-1737271201540"
+    "@tamagui/use-did-finish-ssr": "1.121.12-1737332968773"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737271201540",
+    "@tamagui/build": "1.121.12-1737332968773",
     "react": "*",
     "react-native": "^0.76.5"
   },
