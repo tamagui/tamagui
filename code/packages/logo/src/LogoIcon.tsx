@@ -2,7 +2,7 @@ import { YStack } from 'tamagui'
 
 import { TamaguiIconSvg } from './TamaguiLogoSvg'
 
-export const LogoIcon = ({ downscale = 2 }: any) => {
+export const LogoIcon = ({ downscale = 2 }: { downscale?: number }) => {
   return (
     <YStack
       tag="span"

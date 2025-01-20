@@ -1,4 +1,4 @@
-import { ThemeTintAlt, useTint } from '@tamagui/logo'
+import { LogoIcon, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { memo } from 'react'
 import {
   Button,
@@ -325,6 +325,7 @@ const HeroContents = memo(function HeroContents() {
                 // }}
               >
                 Start
+                <LogoIcon downscale={3} />
               </Button>
             </Link>
           </Theme>

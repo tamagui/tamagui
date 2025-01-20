@@ -27,7 +27,7 @@ It gives you a robust suite of themes, a few shorthands that mostly align with T
 
 If you like it, you can always [copy and paste the source code](https://github.com/tamagui/tamagui/blob/5b0c075e92688ac85737fe97c98cd77322f034b0/code/core/config/src/v4.ts) into your app and customize to your taste.
 
-Let's see how `defaultThemes` is defined:
+Let's see how `defaultThemes` is defined so we can learn how `createThemes` works:
 
 ```tsx fileName=themes.ts
 import * as Colors from '@tamagui/colors'
@@ -191,3 +191,4 @@ export const themes: TamaguiThemes =
 ```
 
 This will generate a large amount of themes for you, including component themes.
+

@@ -228,7 +228,7 @@ export const HeaderLinks = (props: HeaderProps) => {
                   href="/takeout"
                   name="Takeout"
                   description="starter kit"
-                  icon={<TakeoutIcon scale={0.8} />}
+                  icon={<TakeoutIcon scale={0.9} />}
                 />
               </SlidingPopoverTrigger>
 
@@ -241,7 +241,7 @@ export const HeaderLinks = (props: HeaderProps) => {
                   description="starter kit"
                   icon={
                     <YStack y={1}>
-                      <BentoIcon scale={0.8} />
+                      <BentoIcon scale={0.9} />
                     </YStack>
                   }
                 />
