@@ -230,8 +230,10 @@ export function createComponent<
           log(` 👇 contextValue`, contextValue)
         }
 
+        const shorthands = config?.shorthands
         for (const key in context.props) {
-          const propVal = propsIn[key]
+          const propVal = propsIn[key] || propsIn[shorthands?.[propsIn as any]]
+
           // if not set, use context
           if (propVal === undefined) {
             const val = contextValue?.[key]
