@@ -1,8 +1,9 @@
 import React from 'react'
 import { Components } from '@tamagui/bento'
+import { FlatList } from 'react-native'
 
 import { createParam } from 'solito'
-import { ScrollView, Separator, YGroup, YStack } from 'tamagui'
+import { Separator, YGroup } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 
 const { useParam } = createParam<{ id: string }>()
@@ -29,28 +30,26 @@ export function BentoPartScreenItem({ navigation }) {
       'useMouseEnter',
     ].includes(component.name)
 
+  const renderItem = ({ item: Component }) => (
+    <YGroup.Item key={Component.name}>
+      <LinkListItem bg="$color1" href={'/' + Component.name} pressTheme size="$5">
+        {Component.name}
+      </LinkListItem>
+    </YGroup.Item>
+  )
+
+  const data = Object.values(Components[name] ?? []).filter(
+    removeComponentsThatAreNotPublic
+  )
+
   return (
-    <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
-        <YGroup size="$4" separator={<Separator />}>
-          {Object.values(Components[name] ?? [])
-            .filter(removeComponentsThatAreNotPublic)
-            .map((Component: any, index) => {
-              return (
-                <YGroup.Item key={Component.name}>
-                  <LinkListItem
-                    bg="$color1"
-                    href={'/' + Component.name}
-                    pressTheme
-                    size="$4"
-                  >
-                    {Component.name}
-                  </LinkListItem>
-                </YGroup.Item>
-              )
-            })}
-        </YGroup>
-      </YStack>
-    </ScrollView>
+    <YGroup bg="$color2" f={1}>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        ItemSeparatorComponent={Separator}
+        contentContainerStyle={{ padding: 16, paddingTop: 24, paddingBottom: 32 }}
+      />
+    </YGroup>
   )
 }
