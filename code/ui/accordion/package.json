@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "1.121.12-1737332968773",
+  "version": "1.122.0",
   "sideEffects": [
     "*.css"
   ],
@@ -22,18 +22,18 @@
     "lint:fix": "biome check --write src"
   },
   "dependencies": {
-    "@tamagui/collapsible": "1.121.12-1737332968773",
-    "@tamagui/collection": "1.121.12-1737332968773",
-    "@tamagui/compose-refs": "1.121.12-1737332968773",
-    "@tamagui/constants": "1.121.12-1737332968773",
-    "@tamagui/core": "1.121.12-1737332968773",
-    "@tamagui/create-context": "1.121.12-1737332968773",
-    "@tamagui/polyfill-dev": "1.121.12-1737332968773",
-    "@tamagui/stacks": "1.121.12-1737332968773",
-    "@tamagui/use-controllable-state": "1.121.12-1737332968773"
+    "@tamagui/collapsible": "1.122.0",
+    "@tamagui/collection": "1.122.0",
+    "@tamagui/compose-refs": "1.122.0",
+    "@tamagui/constants": "1.122.0",
+    "@tamagui/core": "1.122.0",
+    "@tamagui/create-context": "1.122.0",
+    "@tamagui/polyfill-dev": "1.122.0",
+    "@tamagui/stacks": "1.122.0",
+    "@tamagui/use-controllable-state": "1.122.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737332968773",
+    "@tamagui/build": "1.122.0",
     "react": "*"
   },
   "publishConfig": {

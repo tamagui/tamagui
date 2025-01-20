@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/generate-themes",
-  "version": "1.121.12-1737332968773",
+  "version": "1.122.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -33,13 +33,13 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/create-theme": "1.121.12-1737332968773",
-    "@tamagui/theme-builder": "1.121.12-1737332968773",
-    "@tamagui/types": "1.121.12-1737332968773",
+    "@tamagui/create-theme": "1.122.0",
+    "@tamagui/theme-builder": "1.122.0",
+    "@tamagui/types": "1.122.0",
     "esbuild-register": "^3.6.0",
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737332968773"
+    "@tamagui/build": "1.122.0"
   }
 }
