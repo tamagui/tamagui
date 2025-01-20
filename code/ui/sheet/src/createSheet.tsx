@@ -95,7 +95,7 @@ export function createSheet<
             )}
           />
         )
-      }, [props.onPress, context.dismissOnOverlayPress])
+      }, [props.onPress, props.opacity, context.dismissOnOverlayPress])
 
       useIsomorphicLayoutEffect(() => {
         context.onOverlayComponent?.(element)

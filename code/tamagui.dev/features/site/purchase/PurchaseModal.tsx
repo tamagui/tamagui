@@ -160,8 +160,8 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
               </Sheet.ScrollView>
             </Sheet.Frame>
             <Sheet.Overlay
+              bg="$shadow4"
               animation="lazy"
-              o={0.1}
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
