@@ -44,23 +44,23 @@ const HeroSubTitle = memo(() => {
   return (
     <Subtitle>
       <Link asChild href="/docs/core/configuration">
-        <Tag theme="green" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+        <Tag theme="pink" onHoverIn={() => setHovered(0)} active={hovered === 0}>
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+        <Tag theme="gray" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/ui/stacks">
-        <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </Link>{' '}
-      React&nbsp;and&nbsp;React&nbsp;Native
+      for&nbsp;React&nbsp;and&nbsp;React&nbsp;Native
     </Subtitle>
   )
 })
@@ -402,8 +402,8 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color10',
-  bg: '$color3',
+  color: '$color11',
+  bg: '$color4',
 
   hoverStyle: {
     color: '$color',
@@ -413,11 +413,11 @@ const Tag = styled(Text, {
   variants: {
     active: {
       true: {
-        color: '$color10',
-        bg: '$color5',
+        color: '$color',
+        bg: '$color4',
 
         hoverStyle: {
-          color: '$color12',
+          color: '$color',
           bg: '$color5',
         },
       },

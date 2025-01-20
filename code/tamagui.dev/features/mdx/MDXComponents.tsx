@@ -739,7 +739,11 @@ const componentsIn = {
             significantly improves your app or site performance.
           </IntroParagraph>
 
-          <Paragraph size="$6">Tamagui is three things:</Paragraph>
+          <Paragraph size="$6">
+            Tamagui is more than just a style library - it is a style library, a design
+            system, a UI kit, and an optimizing compiler. You can use them all separately,
+            or together:
+          </Paragraph>
 
           <UL mt="$4" gap="$2">
             <ThemeTintAlt>

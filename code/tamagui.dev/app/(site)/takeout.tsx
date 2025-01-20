@@ -651,7 +651,7 @@ const points = {
 const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
 const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'))
 
-const heroHeight = 1000
+const heroHeight = 1050
 
 export type TakeoutPageProps = Awaited<
   ReturnType<typeof getProductsForServerSideRendering>

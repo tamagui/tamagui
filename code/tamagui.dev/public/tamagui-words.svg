@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="635px" height="72px" viewBox="0 0 635 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>tamagui-words</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo-white" transform="translate(-519, -329)" fill-rule="nonzero">
+            <g id="tamagui-words" transform="translate(519, 329)">
+                <polygon id="Path-Copy-6" fill="#6252F8" style="mix-blend-mode: screen;" points="635 72 635 0 607 0 607 72"></polygon>
+                <polygon id="Path-Copy-7" fill="#6BCF1A" style="mix-blend-mode: screen;" points="561.6 72 561.6 57.6 576 57.6 576 0 547.2 0 547.2 57.6 532.8 57.6 532.8 0 504 0 504 57.6 518.4 57.6 518.4 72"></polygon>
+                <polygon id="Path-Copy-8" fill="#ED0F0F" style="mix-blend-mode: screen;" points="458.6 72 458.6 57.6 473 57.6 473 28.8 444.2 28.8 444.2 57.6 429.8 57.6 429.8 14.4 473 14.4 473 0 415.4 0 415.4 14.4 401 14.4 401 57.6 415.4 57.6 415.4 72"></polygon>
+                <path d="M142.6,0 L142.6,14.4 L157,14.4 L157,72 L128.2,72 L128.2,43.2 L113.8,43.2 L113.8,72 L85,72 L85,14.4 L99.4,14.4 L99.4,0 L142.6,0 Z M128.2,14.4 L113.8,14.4 L113.8,28.8 L128.2,28.8 L128.2,14.4 Z" id="Path-9-Copy-2" fill="#000000" style="mix-blend-mode: screen;"></path>
+                <polygon id="Path-Copy-9" fill="#000000" style="mix-blend-mode: screen;" points="219.8 72 219.8 39.6 234.2 39.6 234.2 72 263 72 263 0 241.4 0 241.4 14.4 212.6 14.4 212.6 0 191 0 191 72"></polygon>
+                <path d="M352.6,0 L352.6,14.4 L367,14.4 L367,72 L338.2,72 L338.2,43.2 L323.8,43.2 L323.8,72 L295,72 L295,14.4 L309.4,14.4 L309.4,0 L352.6,0 Z M338.2,14.4 L323.8,14.4 L323.8,28.8 L338.2,28.8 L338.2,14.4 Z" id="Path-10-Copy-2" fill="#000000"></path>
+                <polygon id="Path-Copy-10" fill="#000000" style="mix-blend-mode: screen;" points="43.5 72 43.5 14.4 58 14.4 58 0 0 0 0 14.4 14.5 14.4 14.5 72"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

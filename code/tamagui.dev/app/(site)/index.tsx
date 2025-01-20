@@ -35,7 +35,8 @@ export default function TamaguiHomePage() {
         description="React style library and UI kit that unifies React Native and React web"
       />
 
-      <ThemeNameEffect colorKey="$color2" />
+      <ThemeNameEffect colorKey="$color1" />
+
       <HomeGlow />
       <YStack
         fullscreen
