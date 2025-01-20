@@ -1,9 +1,9 @@
 import * as Colors from '@tamagui/colors'
-import { createThemeSuite } from '@tamagui/theme-builder'
+import { createThemes } from '@tamagui/theme-builder'
 
 /**
  * Default themes for the tamagui.dev site
- * If you'd like to create your own themes, use `createThemeSuite`
+ * If you'd like to create your own themes, use `createThemes`
  */
 
 const darkPalette = [
@@ -81,7 +81,7 @@ const extraColors = {
   white12: lightPalette[11],
 }
 
-const themes = createThemeSuite({
+const themes = createThemes({
   base: {
     palette: {
       dark: darkPalette,

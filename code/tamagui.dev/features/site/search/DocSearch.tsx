@@ -37,7 +37,7 @@ const docSearchCSS = `
 }
 
 .DocSearch-Container {
-  background-color: var(--background075)
+  background-color: var(--background06)
 }
 
 .DocSearch-Modal {

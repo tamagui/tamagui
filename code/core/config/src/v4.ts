@@ -1,5 +1,5 @@
 import * as Colors from '@tamagui/colors'
-import { createThemeSuite } from '@tamagui/theme-builder'
+import { createThemes } from '@tamagui/theme-builder'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens } from '@tamagui/themes/v4'
 import type { CreateTamaguiProps } from '@tamagui/web'
@@ -7,7 +7,7 @@ import { animations } from './v3-animations'
 import { fonts } from './v4-fonts'
 import { media, mediaQueryDefaultActive } from './v4-media'
 
-export { createThemeSuite } from '@tamagui/theme-builder'
+export { createThemes } from '@tamagui/theme-builder'
 export { shorthands } from '@tamagui/shorthands/v4'
 export { media, mediaQueryDefaultActive } from './media'
 export { animations } from './v4-animations'
@@ -92,7 +92,7 @@ const extraColors = {
   white12: lightPalette[11],
 }
 
-const generatedThemes = createThemeSuite({
+const generatedThemes = createThemes({
   base: {
     palette: {
       dark: darkPalette,

@@ -90,9 +90,7 @@ export const BentoLogo = ({
           className="clip-text mask-gradient-down"
           style={{
             backgroundImage: 'linear-gradient(var(--color10), transparent)',
-            // textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.44)`,
             maskImage: `linear-gradient(transparent 20%, rgba(0, 0, 0, 1))`,
-            // mixBlendMode: 'hard-light',
           }}
         >
           {children}&nbsp;

@@ -531,7 +531,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
           <HeroText
             l={0}
             y={-1}
-            filter="blur(3px)"
+            // filter="blur(3px)"
             className="mask-gradient-right"
             pe="none"
             col="$color8"

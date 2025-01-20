@@ -85,7 +85,7 @@ export function ComponentItem({
             borderWidth: 1.5,
           }}
           $theme-light={{
-            bg: '$background025',
+            bg: '$background02',
           }}
           hoverStyle={{
             scale: 1.2,
@@ -96,7 +96,7 @@ export function ComponentItem({
             fullscreen
             start={[1, 0]}
             end={[0, 0.5]}
-            colors={['$background075', 'transparent']}
+            colors={['$background06', 'transparent']}
           />
         </YStack>
 

@@ -1,7 +1,7 @@
 v4 config:
 
 - add new doc page just for it
-  - document createThemeSuite there simply
+  - document createThemes there simply
   - document shorthands etc
   - document simple themes setup
 

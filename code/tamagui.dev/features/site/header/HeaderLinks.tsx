@@ -123,7 +123,7 @@ export const HeaderLinks = (props: HeaderProps) => {
       {forceShowAllLinks ? (
         <>
           {primaryLinks}
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator bc="$color02" o={0.25} my="$2" />
         </>
       ) : (
         primaryLinks
@@ -133,7 +133,7 @@ export const HeaderLinks = (props: HeaderProps) => {
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {primaryLinks}
           </XStack>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator bc="$color02" o={0.25} my="$2" />
         </>
       ) : (
         primaryLinks
@@ -177,7 +177,7 @@ export const HeaderLinks = (props: HeaderProps) => {
               </HeadAnchor>
             </Link>
           </XStack>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator bc="$color02" o={0.25} my="$2" />
         </>
       )}
 
@@ -202,7 +202,7 @@ export const HeaderLinks = (props: HeaderProps) => {
               </HeadAnchor>
             </Link> */}
           </XStack>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator bc="$color02" o={0.25} my="$2" />
         </>
       )}
 
@@ -218,7 +218,7 @@ export const HeaderLinks = (props: HeaderProps) => {
               bw={1}
               bc="transparent"
               hoverStyle={{
-                bc: '$color025',
+                bc: '$color02',
               }}
             >
               <SlidingPopoverTrigger id="takeout">
@@ -272,7 +272,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator bc="$color02" o={0.25} my="$2" />
           {!userSwr.data?.userDetails && (
             <Link asChild href="/login">
               <HeadAnchor grid>
@@ -301,7 +301,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator bc="$color02" o={0.25} my="$2" />
 
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {forceShowAllLinks && (

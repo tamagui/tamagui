@@ -15,7 +15,7 @@ export async function generateThemeBuilderCode({
   // side effect to getLastBuilder
   const palettesOut = createPalettes(palettes)
 
-  return `import { createThemeSuite } from '@tamagui/theme-builder'
+  return `import { createThemes } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
 
 const darkPalette = ${arrayToJS(palettesOut.dark_accent)}
@@ -41,7 +41,7 @@ const darkShadows = {
 
 // we're adding some example sub-themes for you to show how they are done, "success" "warning", "error":
 
-const builtThemes = createThemeSuite({
+const builtThemes = createThemes({
   ${includeComponentThemes === false ? `componentThemes: false,` : ``}
 
   base: {

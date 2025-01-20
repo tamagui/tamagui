@@ -48,7 +48,7 @@ type SinglePalette = string[]
 type SchemePalette = { light: SinglePalette; dark: SinglePalette }
 type Palette = SinglePalette | SchemePalette
 
-export type CreateThemeSuiteProps<
+export type createThemesProps<
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
@@ -70,20 +70,14 @@ export type CreateThemeSuiteProps<
 }
 
 // TODO we moved studio over to mostly just control palette, so the need for this can basically go away
-export function createThemeSuite<
+export function createThemes<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
 >(
-  props: CreateThemeSuiteProps<
-    Accent,
-    GrandChildrenThemes,
-    Extra,
-    SubThemes,
-    ComponentThemes
-  >
+  props: createThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes>
 ) {
   const {
     accent,
@@ -299,7 +293,7 @@ function coerceSimplePaletteToSchemePalette(def: Palette) {
   return Array.isArray(def) ? getSchemePalette(def) : def
 }
 
-function getThemesPalettes(props: CreateThemeSuiteProps<any, any>): BuildPalettes {
+function getThemesPalettes(props: createThemesProps<any, any>): BuildPalettes {
   const base = coerceSimplePaletteToSchemePalette(props.base.palette)
   const accent = props.accent
     ? coerceSimplePaletteToSchemePalette(props.accent.palette)

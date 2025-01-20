@@ -43,7 +43,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         py="$1"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
-          backgroundColor: '$color025',
+          backgroundColor: '$color02',
         }}
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         pos="relative"

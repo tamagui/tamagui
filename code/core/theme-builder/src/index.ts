@@ -3,11 +3,11 @@ export * from '@tamagui/create-theme'
 
 export {
   createStudioThemes,
-  createThemeSuite,
+  createThemes,
   getThemeSuitePalettes,
   createPalettes,
-  type CreateThemeSuiteProps,
-} from './createThemeSuite'
+  type createThemesProps,
+} from './createThemes'
 
 export { defaultTemplates } from './defaultTemplates'
 export { defaultComponentThemes } from './defaultComponentThemes'

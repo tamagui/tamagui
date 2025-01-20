@@ -2,9 +2,10 @@ type Theme = {
     accentBackground: string;
     accentColor: string;
     background0: string;
-    background025: string;
-    background05: string;
-    background075: string;
+    background02: string;
+    background04: string;
+    background06: string;
+    background08: string;
     color1: string;
     color2: string;
     color3: string;
@@ -18,9 +19,10 @@ type Theme = {
     color11: string;
     color12: string;
     color0: string;
-    color025: string;
-    color05: string;
-    color075: string;
+    color02: string;
+    color04: string;
+    color06: string;
+    color08: string;
     background: string;
     backgroundHover: string;
     backgroundPress: string;

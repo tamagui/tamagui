@@ -15,18 +15,18 @@ demoName: ThemeBuilder
 We have two ways to generate themes with `@tamagui/theme-builder`: 
 
 - `createThemeBuilder` is a more low-level, chainable API.
-- `createThemeSuite` makes generating a slightly opinonated suite of themes much simpler.
+- `createThemes` makes generating a slightly opinonated suite of themes much simpler.
 
-We've also released [Theme](/theme), a free point-and-click way to create themes that generates copy-paste `createThemeSuite` code for you.
+We've also released [Theme](/theme), a free point-and-click way to create themes that generates copy-paste `createThemes` code for you.
 
-## createThemeSuite
+## createThemes
 
-At it's simplest, `createThemeSuite` is as simple as:
+At it's simplest, `createThemes` is as simple as:
 
 ```tsx
-import { createThemeSuite } from '@tamagui/theme-builder'
+import { createThemes } from '@tamagui/theme-builder'
 
-export const themes = createThemeSuite({
+export const themes = createThemes({
   base: {
     palettes: {
       dark: ['#000', '#fff'],
@@ -41,10 +41,10 @@ Which will generate `light` and `dark` themes, spreading your palette colors bet
 But you can go much further, generating a production-grade theme suite like so:
 
 ```tsx
-import { createThemeSuite } from '@tamagui/theme-builder'
+import { createThemes } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
 
-export const themes = createThemeSuite({
+export const themes = createThemes({
   base: {
     palettes: {
       dark: ['#000', '#fff',],
@@ -88,7 +88,7 @@ export const themes = createThemeSuite({
 
 ## createThemeBuilder
 
-Under the hood, `createThemeSuite` uses `createThemeBuilder`. It's a very powerful way to generate nested themes, using a chainable API and generating strong types for you. But, it's also quite involved! 99% of projects should start with either hand-made, simple themes, or `createThemeSuite`.
+Under the hood, `createThemes` uses `createThemeBuilder`. It's a very powerful way to generate nested themes, using a chainable API and generating strong types for you. But, it's also quite involved! 99% of projects should start with either hand-made, simple themes, or `createThemes`.
 
 Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, and themes:
 

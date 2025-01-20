@@ -23,7 +23,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
 
   // our palettes have 4 things padding each end until you get to bg/color:
   // [accentBg, transparent1, transparent2, transparent3, transparent4, background, ...]
-  const bgIndex = 5
+  const bgIndex = 6
   const lighten = isLight ? -1 : 1
   const darken = -lighten
   const borderColor = bgIndex + 3
@@ -35,9 +35,10 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     accentColor: -0,
 
     background0: 1,
-    background025: 2,
-    background05: 3,
-    background075: 4,
+    background02: 2,
+    background04: 3,
+    background06: 4,
+    background08: 5,
     color1: bgIndex,
     color2: bgIndex + 1,
     color3: bgIndex + 2,
@@ -51,9 +52,10 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     color11: bgIndex + 10,
     color12: bgIndex + 11,
     color0: -1,
-    color025: -2,
-    color05: -3,
-    color075: -4,
+    color02: -2,
+    color04: -3,
+    color06: -4,
+    color08: -5,
     // the background, color, etc keys here work like generics - they make it so you
     // can publish components for others to use without mandating a specific color scale
     // the @tamagui/button Button component looks for `$background`, so you set the

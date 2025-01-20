@@ -10,7 +10,7 @@ import type { BuildPalette } from '@tamagui/themes'
 const paletteSize = 12
 
 // how many things come before the actual bg color (transparencies etc)
-export const PALETTE_BACKGROUND_OFFSET = 4
+export const PALETTE_BACKGROUND_OFFSET = 5
 
 const generateColorPalette = ({
   palette: buildPalette,
@@ -75,9 +75,10 @@ const generateColorPalette = ({
     // fully transparent to partially
     return [
       hsla(h, s, l, 0),
-      hsla(h, s, l, 0.25),
-      hsla(h, s, l, 0.5),
-      hsla(h, s, l, 0.75),
+      hsla(h, s, l, 0.2),
+      hsla(h, s, l, 0.4),
+      hsla(h, s, l, 0.6),
+      hsla(h, s, l, 0.8),
     ] as const
   })
   const reverseForeground = [...transparentValues[1]].reverse()

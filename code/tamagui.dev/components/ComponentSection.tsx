@@ -91,7 +91,7 @@ export const ComponentSection = () => {
                       fullscreen
                       o={0.15}
                       style={{
-                        background: 'linear-gradient(transparent, var(--background025))',
+                        background: 'linear-gradient(transparent, var(--background02))',
                       }}
                     />
                     <ContainerLarge>
