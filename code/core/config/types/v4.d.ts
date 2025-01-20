@@ -4,7 +4,11 @@ export { media, mediaQueryDefaultActive } from './media';
 export { animations } from './v4-animations';
 export { createSystemFont, fonts } from './v4-fonts';
 export { tamaguiThemes, tokens } from '@tamagui/themes/v4';
-declare const generatedThemes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {}>;
+declare const generatedThemes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {
+    [x: string]: string;
+    [x: number]: string;
+    [x: symbol]: string;
+}>;
 export type TamaguiThemes = typeof generatedThemes;
 /**
  * This is an optional production optimization: themes JS can get to 20Kb or more.
@@ -146,7 +150,11 @@ export declare const defaultConfig: {
         readonly w: "width";
         readonly zi: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {}>;
+    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {
+        [x: string]: string;
+        [x: number]: string;
+        [x: symbol]: string;
+    }>;
     tokens: {
         readonly radius: {
             0: number;

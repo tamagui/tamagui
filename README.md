@@ -7,8 +7,14 @@
 </div>
 
 <h3 align="center">
-  Style and UI for React (web and native) meet an optimizing compiler
+  Style library, design system, composable components, and more.
 </h3>
+
+<h4 align="center">
+  Tamagui is a bunch of libraries for building UIs that share code across React and React Native.
+</h4>
+
+<br />
 
 <div align="center">
   <img alt="NPM downloads" src="https://img.shields.io/npm/dw/@tamagui/core?logo=npm&label=NPM%20downloads&cacheSeconds=3600"/>
