@@ -95,11 +95,10 @@ export const ComponentSection = () => {
                       }}
                     />
                     <ContainerLarge>
-                      <YStack py="$2" px="$3" pos="relative">
+                      <YStack py="$4" px="$3" pos="relative">
                         <H3
                           ff="$silkscreen"
                           size="$3"
-                          fos={18}
                           ls={3}
                           tt="uppercase"
                           color="$color10"

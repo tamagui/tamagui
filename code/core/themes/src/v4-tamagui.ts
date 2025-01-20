@@ -7,7 +7,7 @@ import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
  */
 
 const darkPalette = [
-  '#090909',
+  '#020202',
   '#151515',
   '#191919',
   '#232323',

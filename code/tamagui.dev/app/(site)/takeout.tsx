@@ -83,17 +83,20 @@ export default function TakeoutPage() {
         }}
       />
 
-      <YStack
-        pos="absolute"
-        l={0}
-        r={0}
-        t={-100}
-        b={0}
-        // style={{
-        //   background: 'linear-gradient(var(--color6), var(--color2))',
-        // }}
-        zi={-3}
-      />
+      <ThemeTintAlt>
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background:
+              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
+          }}
+          zi={-3}
+        />
+      </ThemeTintAlt>
 
       {/* <ThemeTintAlt offset={0}>
         <YStack
@@ -114,10 +117,10 @@ export default function TakeoutPage() {
         pos="absolute"
         t={-950}
         l="50%"
-        x={-500}
-        scale={0.75}
+        x={-300}
+        scale={1}
         rotate="120deg"
-        o={0.01}
+        o={0.02}
         $theme-light={{
           o: 0.12,
         }}

@@ -72,7 +72,7 @@ export const HomeGlow = memo(() => {
           x={x}
           y={isOnHeroBelow ? 350 : yRand + 250}
           scale={scale * (isAlt ? 0.5 : 1)}
-          scaleX={isOpposing ? 1 : 1.3}
+          scaleX={isOpposing ? 1 : 1.5}
         >
           <YStack
             fullscreen
@@ -102,7 +102,7 @@ export const HomeGlow = memo(() => {
         // animation: 'superLazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
-        o: 0.15,
+        o: 0.24,
       })}
       // display={isResizing ? 'none' : 'flex'}
     >

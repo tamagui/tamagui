@@ -39,7 +39,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         }}
       >
         <>
-          <ThemeTintAlt offset={-1}>
+          <ThemeTintAlt offset={-7}>
             <TAKEOUT className="text-3d" zi={1000} color="$color9" />
           </ThemeTintAlt>
         </>
@@ -53,14 +53,14 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <ThemeTintAlt offset={11}>
+        <ThemeTintAlt offset={-0}>
           <TAKEOUT className="font-outlined" zi={1000} color="var(--color10)" />
         </ThemeTintAlt>
 
         {!disableMotion && (
           <>
             {/* alt color slices */}
-            <ThemeTintAlt offset={8}>
+            <ThemeTintAlt offset={7}>
               <TAKEOUT
                 color="$color9"
                 className="clip-slice slice-alt"

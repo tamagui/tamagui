@@ -4,13 +4,13 @@ import type { BuildPalette } from '@tamagui/themes'
 /**
  * palette generally is:
  *
- * [constrastBackground, backgroundTransparent, ...background, ...foreground, foregroundTransparent, accentForeground]
+ * [constrastBackground, accent, backgroundTransparent, ...background, ...foreground, foregroundTransparent, accentForeground]
  */
 
 const paletteSize = 12
 
 // how many things come before the actual bg color (transparencies etc)
-export const PALETTE_BACKGROUND_OFFSET = 5
+export const PALETTE_BACKGROUND_OFFSET = 6
 
 const generateColorPalette = ({
   palette: buildPalette,

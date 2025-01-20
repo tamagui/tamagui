@@ -70,7 +70,7 @@ export function ComponentItem({
         {/* Preview */}
         <YStack
           pointerEvents="none"
-          h={172}
+          h={192}
           br="$8"
           ov="hidden"
           p="$6"
@@ -81,11 +81,11 @@ export function ComponentItem({
           justifyContent="center"
           alignItems="center"
           $theme-dark={{
-            borderColor: '$color1',
+            borderColor: '$background04',
             borderWidth: 1.5,
           }}
           $theme-light={{
-            bg: '$background02',
+            bg: '$background',
           }}
           hoverStyle={{
             scale: 1.2,
@@ -96,7 +96,7 @@ export function ComponentItem({
             fullscreen
             start={[1, 0]}
             end={[0, 0.5]}
-            colors={['$background06', 'transparent']}
+            colors={['$background02', 'transparent']}
           />
         </YStack>
 

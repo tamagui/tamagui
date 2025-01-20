@@ -40,7 +40,7 @@ export const BentoLogo = ({
         backgroundColor: '$background',
       })}
     >
-      <BentoLogoTheme offset={0 + offsetAdjust}>
+      <BentoLogoTheme offset={1 + offsetAdjust}>
         <H1
           componentName="span"
           ff="$cherryBomb"
