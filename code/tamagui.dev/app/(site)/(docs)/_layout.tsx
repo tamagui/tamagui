@@ -129,7 +129,7 @@ export default function DocsLayout() {
                         tag="a"
                         group="card"
                         hoverStyle={{
-                          borderColor: '$color11',
+                          borderColor: '$color5',
                         }}
                         flex={1}
                         width="50%"
@@ -137,9 +137,6 @@ export default function DocsLayout() {
                         borderRadius="$2"
                         borderWidth={1}
                         borderColor="$borderColor"
-                        pressStyle={{
-                          backgroundColor: '$backgroundPress',
-                        }}
                         aria-label={`Previous page: ${previous.title}`}
                         ai="center"
                         gap="$4"
@@ -149,7 +146,6 @@ export default function DocsLayout() {
                           o={0}
                           l="$-2"
                           $group-card-hover={{ o: 1, l: '$0' }}
-                          $group-card-press={{ o: 0, l: '$-2' }}
                           animation="quickest"
                         >
                           <ChevronLeft col="$color11" />
@@ -158,7 +154,6 @@ export default function DocsLayout() {
                         <YStack
                           l="$-4"
                           $group-card-hover={{ l: '$0' }}
-                          $group-card-press={{ l: '$-4' }}
                           animation="quicker"
                         >
                           <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -177,7 +172,7 @@ export default function DocsLayout() {
                         tag="a"
                         group="card"
                         hoverStyle={{
-                          borderColor: '$color11',
+                          borderColor: '$color5',
                         }}
                         flex={1}
                         width="50%"
@@ -185,9 +180,6 @@ export default function DocsLayout() {
                         borderRadius="$2"
                         borderWidth={1}
                         borderColor="$borderColor"
-                        pressStyle={{
-                          backgroundColor: '$backgroundPress',
-                        }}
                         aria-label={`Previous page: ${next.title}`}
                         ai="center"
                         jc="flex-end"
@@ -197,7 +189,6 @@ export default function DocsLayout() {
                         <YStack
                           r="$-4"
                           $group-card-hover={{ r: '$0' }}
-                          $group-card-press={{ r: '$-4' }}
                           animation="quicker"
                         >
                           <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -212,7 +203,6 @@ export default function DocsLayout() {
                           o={0}
                           r="$-2"
                           $group-card-hover={{ o: 1, r: '$0' }}
-                          $group-card-press={{ o: 0, r: '$-2' }}
                           animation="quickest"
                         >
                           <ChevronRight col="$color11" />

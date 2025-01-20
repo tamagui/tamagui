@@ -49,6 +49,7 @@ import { getProductsForServerSideRendering } from '~/features/site/purchase/serv
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
+import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
 export const loader = async () => {
   try {
@@ -67,6 +68,7 @@ export default function TakeoutPage() {
 
   return (
     <YStack maw="100%">
+      <ThemeNameEffect colorKey="$color5" />
       <LoadMunro />
       <LoadCherryBomb />
       <script src="https://cdn.paritydeals.com/banner.js" />
@@ -113,6 +115,21 @@ export default function TakeoutPage() {
         />
       </ThemeTintAlt>
 
+      <ThemeTintAlt offset={3}>
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background:
+              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
+          }}
+          zi={-3}
+        />
+      </ThemeTintAlt>
+
       <YStack
         pe="none"
         pos="absolute"
@@ -144,6 +161,18 @@ export default function TakeoutPage() {
           }}
         />
       </ThemeTint>
+
+      <YStack
+        y={-60}
+        className="grain"
+        fullscreen
+        b={-100}
+        o={0.5}
+        zi={0}
+        style={{
+          imageRendering: 'pixelated',
+        }}
+      />
 
       <ContainerLarge px={0}>
         <YStack h={0} mah={0}>

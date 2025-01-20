@@ -1,4 +1,4 @@
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { memo } from 'react'
 import {
   Button,
@@ -448,33 +448,11 @@ const HeroText = styled(Text, {
 })
 
 const TextWithEffects = ({ text }: { text: string }) => {
-  // for a fade in delay effect
-  // const [show, setShow] = useState(false)
-
-  // useEffect(() => {
-  //   const tm = setTimeout(() => {
-  //     setShow(true)
-  //   }, 500)
-  //   return () => {
-  //     clearTimeout(tm)
-  //   }
-  // }, [])
   return (
     <>
       <span style={{ opacity: 0 }}>{text}</span>
 
-      <YStack
-        // animation="lazy"
-        fullscreen
-        // {...(!show && {
-        //   y: -10,
-        //   o: 0,
-        // })}
-        // {...(show && {
-        //   y: 0,
-        //   o: 1,
-        // })}
-      >
+      <YStack fullscreen>
         <HeroText
           className="clip-text rainbow grain"
           l={-4}
@@ -491,7 +469,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
             pe="none"
             o={0.5}
             x={-1}
-            col="$color8"
+            col="$color9"
             $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,
@@ -503,9 +481,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
           <HeroText
             l={-3}
             className="mask-gradient-up"
-            style={{ mixBlendMode: 'hard-light' }}
+            mixBlendMode="hard-light"
             pe="none"
-            col="$color8"
+            col="$color9"
             $sm={{ l: 1.5 }}
             dangerouslySetInnerHTML={{
               __html: text,
@@ -513,13 +491,13 @@ const TextWithEffects = ({ text }: { text: string }) => {
           />
         </ThemeTintAlt>
 
-        <ThemeTintAlt offset={-2}>
+        <ThemeTintAlt offset={0}>
           <HeroText
             l={0}
             className="mask-gradient-right"
             y={1}
             pe="none"
-            col="$color8"
+            col="$color9"
             o={0.26}
             $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{

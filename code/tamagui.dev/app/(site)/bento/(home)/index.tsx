@@ -88,7 +88,7 @@ export default function BentoPage() {
           // offset for the banner
           mt={30}
         >
-          <Theme name="tan">
+          {/* <Theme name="tan">
             <Button
               pos="absolute"
               t="$-4"
@@ -101,7 +101,7 @@ export default function BentoPage() {
               }}
               bg="$background02"
             ></Button>
-          </Theme>
+          </Theme> */}
         </ContainerLarge>
         <YStack
           onLayout={(e) => {

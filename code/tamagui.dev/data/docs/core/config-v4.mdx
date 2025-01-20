@@ -4,10 +4,10 @@ description: Easy config and themes with @tamagui/config/v4
 ---
 
 <IntroParagraph>
-  With config v4, we've simplified the defaults and added a new helper function for generating themes, `createThemes`.
+  Config v4 simplifies configuration, generates much more useful themes, and adds a new helper function for generating your own theme suite called `createThemes`.
 </IntroParagraph>
 
-We export a completely default setup for you which includes a default theme we think covers a wide variety of use cases:
+The new `defaultConfig` is the easiest way to get going:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v4'
@@ -23,13 +23,15 @@ declare module 'tamagui' {
 }
 ```
 
-We think that default config is great: it gives you a robust suite of themes, just a few shorthands that mostly align with Tailwind, and default settings that we like. If you'd like to customize it, we recommend just [copying and pasting it](https://github.com/tamagui/tamagui/blob/5b0c075e92688ac85737fe97c98cd77322f034b0/code/core/config/src/v4.ts) into your app and going from there.
+It gives you a robust suite of themes, a few shorthands that mostly align with Tailwind, and default settings that prevent bugs.
 
-Let's take a look at how the default themes are created with `createThemes`:
+If you like it, you can always [copy and paste the source code](https://github.com/tamagui/tamagui/blob/5b0c075e92688ac85737fe97c98cd77322f034b0/code/core/config/src/v4.ts) into your app and customize to your taste.
+
+Let's see how `defaultThemes` is defined:
 
 ```tsx fileName=themes.ts
 import * as Colors from '@tamagui/colors'
-import { createThemes } from '@tamagui/config/v4'
+import { createThemes, defaultComponentThemes } from '@tamagui/config/v4'
 
 const darkPalette = [
   '#050505',
@@ -107,6 +109,8 @@ const extraColors = {
 }
 
 const generatedThemes = createThemes({
+  componentThemes: defaultComponentThemes,
+  
   base: {
     palette: {
       dark: darkPalette,
