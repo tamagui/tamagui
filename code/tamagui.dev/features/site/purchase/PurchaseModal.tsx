@@ -1,4 +1,5 @@
 import { Check, X } from '@tamagui/lucide-icons'
+import type { Href } from 'one'
 import { startTransition, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
@@ -7,7 +8,6 @@ import {
   Dialog,
   H3,
   H4,
-  H5,
   Paragraph,
   RadioGroup,
   ScrollView,
@@ -21,7 +21,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import type { Href } from 'one'
 import type { TakeoutPageProps } from '~/app/(site)/takeout'
 import { Link } from '~/components/Link'
 import { useUser } from '~/features/user/useUser'
@@ -162,6 +161,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
             </Sheet.Frame>
             <Sheet.Overlay
               animation="lazy"
+              o={0.1}
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
