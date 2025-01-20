@@ -100,6 +100,18 @@ export default function TakeoutPage() {
         />
       </ThemeTintAlt>
 
+      <YStack
+        className="grain"
+        fullscreen
+        t={-60}
+        b={0}
+        o={0.5}
+        zi={0}
+        style={{
+          imageRendering: 'pixelated',
+        }}
+      />
+
       <ThemeTintAlt offset={0}>
         <YStack
           pos="absolute"
@@ -161,18 +173,6 @@ export default function TakeoutPage() {
           }}
         />
       </ThemeTint>
-
-      <YStack
-        y={-60}
-        className="grain"
-        fullscreen
-        b={-100}
-        o={0.5}
-        zi={0}
-        style={{
-          imageRendering: 'pixelated',
-        }}
-      />
 
       <ContainerLarge px={0}>
         <YStack h={0} mah={0}>
