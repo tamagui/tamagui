@@ -449,9 +449,8 @@ const componentsIn = {
     <H2
       pos="relative"
       width={`fit-content` as any}
-      pt="$8"
-      mt="$-4"
-      mb="$2"
+      pt="$7"
+      mb="$3"
       data-heading
       {...props}
     >
@@ -520,7 +519,7 @@ const componentsIn = {
 
   ul: ({ children }) => {
     return (
-      <UL my="$4">
+      <UL tag="ul" my="$4">
         {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
       </UL>
     )
@@ -530,7 +529,15 @@ const componentsIn = {
 
   li: (props) => {
     return (
-      <LI size="$6" my="$1.5" className="docs-paragraph">
+      <LI
+        tag="li"
+        size="$6"
+        my="$1.5"
+        className="docs-paragraph"
+        style={{
+          listStyleType: 'disc',
+        }}
+      >
         {props.children}
       </LI>
     )

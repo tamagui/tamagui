@@ -1,8 +1,27 @@
 ---
-title: @tamagui/config
-description: Easy configuration and themes with @tamagui/config/v4
+title: Quick Config
+description: Easy config and themes with @tamagui/config/v4
 ---
 
-Tamagui is flexible, but it's nice to have sensible defaults. We've been publishing those defaults under `@tamagui/config`, but until version 4 they were a bit of a "take it or leave it" affair.
+<IntroParagraph>
+  With config v4, we've simplified the defaults and added a new helper function for generating themes, `createThemeSuite`.
+</IntroParagraph>
 
-Version 4 simplifies the config, and adds `createThemeSuite`, a helper function that can generate beautiful themes with just a few lines of code.
+Using it is as easy as importing the defaults:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig, defaultThemes } from '@tamagui/config/v4'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  themes: defaultThemes,
+})
+
+type CustomConfig = typeof config
+
+// ensure types work
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends CustomConfig {}
+}
+```

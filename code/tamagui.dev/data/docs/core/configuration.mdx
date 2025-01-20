@@ -3,51 +3,45 @@ title: Configuration
 description: Custom themes, tokens, shorthands, and media queries.
 ---
 
-Setting up `createTamagui` is optional, but there are many useful settings so
-recommend at least using a preset configuration. Create a `tamagui.config.ts`
-somewhere in your app. In general, you don't want to import this file from
-anywhere else but your root layout, where you'll pass it to `TamaguiProvider`.
+All Tamagui configuration is optional, but there are many useful settings accessible with `createTamagui`.
+To use it, create a `tamagui.config.ts` somewhere in your app. In general, you don't want to import this file from
+anywhere else but your root layout, where you'll pass it to `TamaguiProvider`. This avoids circular dependencies that can mess up hot reloading.
 
-In this guide we import everything from `tamagui`, but if you are only using the lower level
+<Notice theme="green">
+  In this guide we import everything from `tamagui`, but if you are only using the lower-level
 `@tamagui/core`, you'll want to import from that instead.
+</Notice>
 
 ## Quick Start
 
 We made `@tamagui/config` to make it easy to get started. It comes with a
-recommended default configuration and themes, as well as an easy way to make
-your own themes with `createThemeSuite`.
+recommended default configuration and themes, as well as an easy way to create themes with `createThemeSuite`:
 
 ```tsx fileName="tamagui.config.ts"
-import { config, defaultThemes } from '@tamagui/config/v4'
+import { defaultConfig, defaultThemes } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
-const appConfig = createTamagui([
-  ...config,
+export const config = createTamagui({
+  ...defaultConfig,
   themes: defaultThemes,
-])
+})
 
-export type AppConfig = typeof appConfig
+type CustomConfig = typeof config
 
-declare module 'tamagui' { // or '@tamagui/core'
-  // overrides TamaguiCustomConfig so your custom types
-  // work everywhere you import `tamagui`
-  interface TamaguiCustomConfig extends AppConfig {}
+// ensure types work
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends CustomConfig {}
 }
-
-export default appConfig
 ```
 
-If you'd like to create your own themes, see [the next section on @tamagui/config](/docs/config-v4).
+For more, see [the next page on **@tamagui/config**](/docs/config-v4).
 
 ## From scratch
 
 Let's start with an example of a complete `tamagui.config.ts`. Note that keys
-used here can be customized to your liking, and remember that they combine with
-your [shorthands](#shorthands) to give you a syntax like this:
+used here can be customized to your liking.
 
-```tsx
-<XStack bg="$red" w="$2" h="$1" />
-```
+Here's a small but complete example:
 
 ```tsx fileName="tamagui.config.ts"
 import { createFont, createTamagui, createTokens, isWeb } from 'tamagui'
@@ -211,35 +205,30 @@ export const tokens = createTokens({
 })
 ```
 
-<Notice>
-  The compiler will parse your tamagui.config.ts file at build-time. For this
-  reason, we recommend keeping it relatively simple. Don't import heavy
-  dependencies, and prefer to import `createTamagui` and other helpers directly
-  from @tamagui/core.
+<Notice theme="green">
+  If using the compiler, your tamagui.config.ts is parsed at build-time. For this
+  reason, we recommend keeping it relatively simple. Avoid importing heavy
+  dependencies.
 </Notice>
 
-### Add Provider
+## TamaguiProvider
 
-Import and use the Tamagui `Provider` component at the top component in your
-app.
+With your config set up, import it near the root of your app and pass it to `TamaguiProvider`:
 
 ```tsx line=3-5 fileName="App.tsx"
 import { TamaguiProvider } from 'tamagui'
-
-import config from './tamagui.config'
+import { config } from './tamagui.config'
 
 export default function App() {
   return (
-    <TamaguiProvider config={config}>
+    <TamaguiProvider config={config} defaultTheme="light">
       <AppContents />
     </TamaguiProvider>
   )
 }
 ```
 
-#### Using Tamagui Provider
-
-TamaguiProvider takes a few optional properties:
+`TamaguiProvider` accepts a few properties:
 
 <PropsTable
   data={[
@@ -266,21 +255,30 @@ TamaguiProvider takes a few optional properties:
 />
 
 By default, Tamagui injects the CSS for your configuration on the client-side into `document.head`, but you
-probably will want something better for production. To do this, set `disableInjectCSS`, and then:
+probably will want something better for production. To do this, pass true to `disableInjectCSS` on `TamaguProvider`, and then do one of the following three options:
 
-If your framework has server-side layouts, you could just render it yourself in a root layout:
+If your framework has server-side layouts, you can just render it inline:
 
-```tsx
-<head>
-  <style
-    dangerouslySetInnerHTML={{
-      __html: Tamagui.getCSS(),
-    }}
-  />
-</head>
+```tsx fileName=app/_layout.tsx
+import { config } from './tamagui.config'
+
+export default () => (
+  <html>
+    <head>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: config.getCSS(),
+        }}
+      />
+    </head>
+    <body>
+      <Slot />
+    </body>
+  </html>
+)
 ```
 
-If you are using one of our bundler plugins, you can add the `outputCSS` setting, like so:
+To optimize a bit more so you share a single CSS file between all pages, you can use one of our bundler plugins' `outputCSS` setting, like so:
 
 ```tsx fileName=vite.config.ts
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
@@ -295,9 +293,9 @@ export default {
 }
 ```
 
-And then you'll want to import the `tamagui.css`.
+And then you'll want to import the resulting `tamagui.css` into your app.
 
-As a final option, you can also generate it yourself with the CLI. First create a `tamagui.build.ts`:
+As final option, you can also generate it yourself with the CLI. First create a `tamagui.build.ts`:
 
 ```tsx fileName=tamagui.build.ts
 import type { TamaguiBuildOptions } from 'tamagui'
@@ -311,15 +309,14 @@ export default {
 
 And then run:
 
-```
+```bash
 npx @tamagui/cli generate
 ```
 
 ## Tokens
 
-Tokens have a structure inspired by but divergent from the
-[Theme UI spec](https://theme-ui.com/theme-spec/). They are mapped to CSS
-variables at build time.
+Tokens are inspired by the [Theme UI spec](https://theme-ui.com/theme-spec/). They are mapped to CSS
+variables at build time. You can read about them in more depth on [the tokens page](/docs/core/tokens).
 
 ### Font tokens
 
@@ -360,8 +357,8 @@ const interFont = createFont({
 ```
 
 <Notice>
-  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or
-  whatever you'd like. But you do want keep those keys consistent.
+  We use numbered keys as an example, but you can use any strings you'd like.
+  The optional default styles in `tamagui` make use of number keys 1-10.
 </Notice>
 
 This gives you a lot of power over customizing every aspect of your design based
@@ -370,37 +367,9 @@ you generally don't group your size/lineHeight/weight/etc tokens by the family,
 which means you are forced to choose a single vertical rhythm no matter the
 font.
 
-Things to note:
+#### Custom Fonts on Native
 
-- The keys of `size`, `lineHeight`, `weight`, and `letterSpacing` are meant to
-  match.
-- Define the full set of keys on `size`, the rest can be a subset.
-- Missing keys from partially defined objects will be filled in.
-  - In the example above, `weight` is only defined at `4` and `6`.
-  - At creation Tamagui fills in the missing keys with previous value, or the
-    next one if no previous exists. So weight `1` === `300`, weight `5` ===
-    `300`, and weight `7` === `600`.
-
-### Troubleshooting
-
-Custom fonts not appearing in Tamagui components? Note the `family` definition,
-on Native it requires a single font name, whereas on web it can include a
-comma-separated list of fallbacks.
-
-You can use the `isWeb` boolean to do this conditionally on `createFont`:
-
-```tsx
-createFont({
-  family: isWeb ? 'Custom-Font, Arial, Helvetica, ...' : 'Custom-Font',
-  ...rest,
-})
-```
-
-#### Custom Font Family on Native
-
-You need to load your fonts for React Native to recognize them. With Expo, this
-typically looks something like this (or you can
-[follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
+If you are using a custom font for native, you need to load your fonts for React Native to recognize them. Tamagui doesn't really touch this area, instead you'll use Expo or [React Native directly](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native), something like this:
 
 ```tsx fileName="App.tsx"
 import { useFonts } from 'expo-font'
@@ -424,8 +393,6 @@ function App() {
   return <MyApp />
 }
 ```
-
----
 
 ### Non-font tokens
 
@@ -462,7 +429,7 @@ section will explain this further.
 
 There are a few settings that control how strict your style values are allowed
 to be, which are handled by the `settings` option of `createTamagui`. See the
-[type strictness settings](#settings) below.
+[settings](#settings) below.
 
 ### Themes
 
@@ -597,11 +564,6 @@ Which will enable usage like:
 ```
 
 where `br` expands into `borderRadius`.
-
-<Notice theme="green">
-  For a full shorthands setup, see [the @tamagui/shorthands
-  source](https://github.com/tamagui/tamagui/blob/master/code/core/shorthands/src/index.ts).
-</Notice>
 
 ### Settings
 

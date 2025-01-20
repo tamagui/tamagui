@@ -31,6 +31,8 @@ export default function DocCorePage() {
   const { code, frontmatter } = useLoader(loader)
   const Component = useMemo(() => getMDXComponent(code), [code])
 
+  console.log('frontmatter', frontmatter)
+
   return (
     <>
       <HeadInfo
@@ -49,7 +51,7 @@ export default function DocCorePage() {
         }}
       />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
-      <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
+      <SubTitle>{frontmatter.description || ''}</SubTitle>
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>
