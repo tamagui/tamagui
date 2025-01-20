@@ -15,6 +15,7 @@ import {
   Label,
   Separator,
   SizableText,
+  Theme,
   TooltipSimple,
   XStack,
   YStack,
@@ -359,92 +360,95 @@ const SyncButtons = memo(
   }) => {
     return (
       <>
-        <TooltipSimple label="Sync to last anchor">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowLeft}
-            themeInverse={anchor?.[anchorKey].syncLeft}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === anchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          syncLeft: !a[anchorKey].syncLeft,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-            {...(!prevAnchor
-              ? {
-                  o: 0.1,
-                  disabled: true,
-                }
-              : null)}
-          />
-        </TooltipSimple>
+        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label="Sync to last anchor">
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowLeft}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!prevAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
 
-        <TooltipSimple label="Sync light and dark">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowUpDown}
-            themeInverse={anchor?.[anchorKey].sync}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === anchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          sync: !a[anchorKey].sync,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-          />
-        </TooltipSimple>
+        <Theme name={anchor?.[anchorKey].sync ? 'accent' : 'surface1'}>
+          <TooltipSimple label="Sync light and dark">
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowUpDown}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            sync: !a[anchorKey].sync,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+            />
+          </TooltipSimple>
+        </Theme>
 
-        <TooltipSimple label="Sync to next anchor">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowRight}
-            themeInverse={nextAnchor?.[anchorKey].syncLeft}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === nextAnchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          syncLeft: !a[anchorKey].syncLeft,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-            {...(!nextAnchor
-              ? {
-                  o: 0.1,
-                  disabled: true,
-                }
-              : null)}
-          />
-        </TooltipSimple>
+        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label="Sync to next anchor">
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowRight}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === nextAnchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!nextAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
       </>
     )
   }

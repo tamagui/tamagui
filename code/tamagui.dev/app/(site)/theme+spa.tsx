@@ -25,6 +25,7 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
+import { Dialogs } from '../../features/studio/components/Dialogs'
 // import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 themeBuilderStore.setSteps(steps)
@@ -65,6 +66,8 @@ export default function ThemePage() {
   return (
     <YStack>
       {loaded && <ThemeBuilderModal />}
+
+      <Dialogs />
 
       <PreviewTheme key={`${loaded}${themeName}`}>
         <StudioPreviewComponentsBar scrollView={document.documentElement} />
