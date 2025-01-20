@@ -88,7 +88,7 @@
   "devDependencies": {
     "@tamagui/build": "1.122.1",
     "@tamagui/cli": "1.122.1",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.2"
   },
   "publishConfig": {
     "access": "public"

@@ -38,7 +38,7 @@
   "devDependencies": {
     "@tamagui/build": "1.122.1",
     "react": "*",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.2"
   },
   "peerDependencies": {
     "react": "*"
