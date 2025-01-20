@@ -16,6 +16,8 @@ import type {
   ThemeSuiteItemData,
 } from '../types'
 
+type AccentSetting = 'color' | 'inverse' | 'off'
+
 export class ThemeBuilderStore {
   loaded = false
   state: ThemeBuilderState | null = null
@@ -66,6 +68,7 @@ export class ThemeBuilderStore {
   name = defaultThemeSuiteItem.name
   palettes: Record<string, BuildPalette> = defaultThemeSuiteItem.palettes
   schemes = defaultThemeSuiteItem.schemes
+  accentSetting: AccentSetting = 'color'
 
   private async sync(state: ThemeBuilderState) {
     if (!this.themeSuiteId) {
@@ -83,6 +86,7 @@ export class ThemeBuilderStore {
     this.name = defaultThemeSuiteItem.name
     this.palettes = defaultThemeSuiteItem.palettes
     this.schemes = defaultThemeSuiteItem.schemes
+    this.accentSetting = 'color'
     await this.refreshThemeSuite()
   }
 
@@ -95,6 +99,11 @@ export class ThemeBuilderStore {
   hasUnsavedChanges = false
   demosOptions = demoOptions
   themeSwitchOpen = true
+
+  async setAccentSetting(next: AccentSetting) {
+    this.accentSetting = next
+    await this.refreshThemeSuite()
+  }
 
   get serializedState() {
     return btoa(JSON.stringify(this.getWorkingThemeSuite()))
@@ -268,10 +277,42 @@ export class ThemeBuilderStore {
   }
 
   async refreshThemeSuite() {
+    const palettes = { ...this.palettes }
+
+    if (this.accentSetting === 'off') {
+      delete palettes['accent']
+    }
+
+    if (this.accentSetting === 'inverse') {
+      palettes['accent'] = {
+        name: 'accent',
+        anchors: palettes.base.anchors.map((anchor) => {
+          return {
+            ...anchor,
+            hue: {
+              ...anchor.hue,
+              dark: anchor.hue.light,
+              light: anchor.hue.dark,
+            },
+            sat: {
+              ...anchor.sat,
+              dark: anchor.sat.light,
+              light: anchor.sat.dark,
+            },
+            lum: {
+              ...anchor.lum,
+              dark: anchor.lum.light,
+              light: anchor.lum.dark,
+            },
+          }
+        }),
+      }
+    }
+
     if (
       await updatePreviewTheme({
         id: this.themeSuiteUID,
-        palettes: this.palettes,
+        palettes,
         schemes: this.schemes,
       })
     ) {

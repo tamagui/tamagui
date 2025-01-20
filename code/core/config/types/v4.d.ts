@@ -4,8 +4,13 @@ export { media, mediaQueryDefaultActive } from './media';
 export { animations } from './v4-animations';
 export { createSystemFont, fonts } from './v4-fonts';
 export { tamaguiThemes, tokens } from '@tamagui/themes/v4';
-declare const generatedThemes: any;
+declare const generatedThemes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {}>;
 export type TamaguiThemes = typeof generatedThemes;
+/**
+ * This is an optional production optimization: themes JS can get to 20Kb or more.
+ * Tamagui has ~1Kb of logic to hydrate themes from CSS, so you can remove the JS.
+ * So long as you server render your Tamagui CSS, this will save you bundle size:
+ */
 export declare const themes: TamaguiThemes;
 export declare const selectionStyles: (theme: any) => {
     backgroundColor: any;
@@ -141,7 +146,7 @@ export declare const defaultConfig: {
         readonly w: "width";
         readonly zi: "zIndex";
     };
-    themes: any;
+    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent", {}>;
     tokens: {
         readonly radius: {
             0: number;

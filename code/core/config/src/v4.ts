@@ -184,11 +184,13 @@ const generatedThemes = createThemes({
 
 export type TamaguiThemes = typeof generatedThemes
 
+/**
+ * This is an optional production optimization: themes JS can get to 20Kb or more.
+ * Tamagui has ~1Kb of logic to hydrate themes from CSS, so you can remove the JS.
+ * So long as you server render your Tamagui CSS, this will save you bundle size:
+ */
 export const themes: TamaguiThemes =
-  // avoid themes only on client bundle
-  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
-  // only in production
-  process.env.NODE_ENV === 'production'
+  process.env.TAMAGUI_ENVIRONMENT === 'client' && process.env.NODE_ENV === 'production'
     ? {}
     : (generatedThemes as any)
 

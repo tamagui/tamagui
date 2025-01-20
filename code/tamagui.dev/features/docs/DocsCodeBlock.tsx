@@ -260,7 +260,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   $xs={{
                     display: 'none',
                   }}
-                />
+                >
+                  Copy
+                </Button>
               </TooltipSimple>
             )}
           </YStack>

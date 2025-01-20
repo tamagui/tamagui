@@ -1,5 +1,5 @@
 import * as Colors from '@tamagui/colors'
-import { createThemes } from '@tamagui/theme-builder'
+import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 
 /**
  * Default themes for the tamagui.dev site
@@ -82,6 +82,8 @@ const extraColors = {
 }
 
 const themes = createThemes({
+  componentThemes: defaultComponentThemes,
+
   base: {
     palette: {
       dark: darkPalette,
@@ -102,18 +104,6 @@ const themes = createThemes({
         ...lightShadows,
         ...extraColors,
         shadowColor: lightShadows.shadow1,
-        accent1: darkPalette[0],
-        accent2: darkPalette[1],
-        accent3: darkPalette[2],
-        accent4: darkPalette[3],
-        accent5: darkPalette[4],
-        accent6: darkPalette[5],
-        accent7: darkPalette[6],
-        accent8: darkPalette[7],
-        accent9: darkPalette[8],
-        accent10: darkPalette[9],
-        accent11: darkPalette[10],
-        accent12: darkPalette[11],
       },
       dark: {
         ...Colors.blueDark,
@@ -127,18 +117,6 @@ const themes = createThemes({
         ...darkShadows,
         ...extraColors,
         shadowColor: darkShadows.shadow1,
-        accent1: lightPalette[0],
-        accent2: lightPalette[1],
-        accent3: lightPalette[2],
-        accent4: lightPalette[3],
-        accent5: lightPalette[4],
-        accent6: lightPalette[5],
-        accent7: lightPalette[6],
-        accent8: lightPalette[7],
-        accent9: lightPalette[8],
-        accent10: lightPalette[9],
-        accent11: lightPalette[10],
-        accent12: lightPalette[11],
       },
     },
   },
@@ -255,10 +233,12 @@ const themes = createThemes({
 
 export type TamaguiThemes = typeof themes
 
+/**
+ * This is an optional production optimization: themes JS can get to 20Kb or more.
+ * Tamagui has ~1Kb of logic to hydrate themes from CSS, so you can remove the JS.
+ * So long as you server render your Tamagui CSS, this will save you bundle size:
+ */
 export const tamaguiThemes: TamaguiThemes =
-  // avoid themes only on client bundle
-  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
-  // only in production
-  process.env.NODE_ENV === 'production'
+  process.env.TAMAGUI_ENVIRONMENT === 'client' && process.env.NODE_ENV === 'production'
     ? ({} as any)
     : (themes as any)

@@ -15,7 +15,7 @@ export async function generateThemeBuilderCode({
   // side effect to getLastBuilder
   const palettesOut = createPalettes(palettes)
 
-  return `import { createThemes } from '@tamagui/theme-builder'
+  return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``} } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
 
 const darkPalette = ${arrayToJS(palettesOut.dark_accent)}
@@ -42,7 +42,7 @@ const darkShadows = {
 // we're adding some example sub-themes for you to show how they are done, "success" "warning", "error":
 
 const builtThemes = createThemes({
-  ${includeComponentThemes === false ? `componentThemes: false,` : ``}
+  ${includeComponentThemes === false ? `componentThemes: defaultComponentThemes,` : ``}
 
   base: {
     palettes: {
@@ -57,18 +57,6 @@ const builtThemes = createThemes({
         ...Colors.yellow,
         ...lightShadows,
         shadowColor: lightShadows.shadow1,
-        accent1: darkPalette[0],
-        accent2: darkPalette[1],
-        accent3: darkPalette[2],
-        accent4: darkPalette[3],
-        accent5: darkPalette[4],
-        accent6: darkPalette[5],
-        accent7: darkPalette[6],
-        accent8: darkPalette[7],
-        accent9: darkPalette[8],
-        accent10: darkPalette[9],
-        accent11: darkPalette[10],
-        accent12: darkPalette[11],
       },
       dark: {
         ...Colors.greenDark,
@@ -76,18 +64,6 @@ const builtThemes = createThemes({
         ...Colors.yellowDark,
         ...darkShadows,
         shadowColor: darkShadows.shadow1,
-        accent1: lightPalette[0],
-        accent2: lightPalette[1],
-        accent3: lightPalette[2],
-        accent4: lightPalette[3],
-        accent5: lightPalette[4],
-        accent6: lightPalette[5],
-        accent7: lightPalette[6],
-        accent8: lightPalette[7],
-        accent9: lightPalette[8],
-        accent10: lightPalette[9],
-        accent11: lightPalette[10],
-        accent12: lightPalette[11],
       },
     },
   },

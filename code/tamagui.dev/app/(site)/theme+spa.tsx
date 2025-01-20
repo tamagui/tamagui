@@ -80,7 +80,7 @@ const PreviewTheme = (props: { children: any }) => {
   return (
     <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName} debug>
       <ThemeNameEffect />
-      <YStack bg="$background" f={1} pt={20 + 60} my={-60}>
+      <YStack bg="$background" f={1} pt={20 + 60} mt={-60} pb={50}>
         {props.children}
       </YStack>
     </Theme>

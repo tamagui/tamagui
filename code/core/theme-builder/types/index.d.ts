@@ -1,6 +1,6 @@
 export * from './ThemeBuilder';
 export * from '@tamagui/create-theme';
-export { createStudioThemes, createThemes, getThemeSuitePalettes, createPalettes, type createThemesProps, } from './createThemes';
+export { createStudioThemes, createThemes, getThemeSuitePalettes, createPalettes, type CreateThemesProps, } from './createThemes';
 export { defaultTemplates } from './defaultTemplates';
 export { defaultComponentThemes } from './defaultComponentThemes';
 export { PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes';

@@ -46,8 +46,9 @@ export default function DocsLayout() {
         }}
         $gtLg={{
           l: -60,
+          maw: 1250,
         }}
-        maw={1250}
+        maw={1200}
         zi={100}
         pos="relative"
       >
@@ -84,7 +85,7 @@ export default function DocsLayout() {
                   display: 'block',
                   p: '$0.5',
                   pr: '$3',
-                  mt: 108,
+                  mt: 92,
                   pb: '$18',
                 }}
               >
@@ -146,18 +147,18 @@ export default function DocsLayout() {
                       >
                         <View
                           o={0}
-                          l="$-4"
+                          l="$-2"
                           $group-card-hover={{ o: 1, l: '$0' }}
-                          $group-card-press={{ o: 0, l: '$-4' }}
+                          $group-card-press={{ o: 0, l: '$-2' }}
                           animation="quickest"
                         >
                           <ChevronLeft col="$color11" />
                         </View>
 
                         <YStack
-                          l="$-8"
+                          l="$-4"
                           $group-card-hover={{ l: '$0' }}
-                          $group-card-press={{ l: '$-8' }}
+                          $group-card-press={{ l: '$-4' }}
                           animation="quicker"
                         >
                           <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -194,9 +195,9 @@ export default function DocsLayout() {
                         animation="100ms"
                       >
                         <YStack
-                          r="$-8"
+                          r="$-4"
                           $group-card-hover={{ r: '$0' }}
-                          $group-card-press={{ r: '$-8' }}
+                          $group-card-press={{ r: '$-4' }}
                           animation="quicker"
                         >
                           <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -209,9 +210,9 @@ export default function DocsLayout() {
 
                         <View
                           o={0}
-                          r="$-4"
+                          r="$-2"
                           $group-card-hover={{ o: 1, r: '$0' }}
-                          $group-card-press={{ o: 0, r: '$-4' }}
+                          $group-card-press={{ o: 0, r: '$-2' }}
                           animation="quickest"
                         >
                           <ChevronRight col="$color11" />

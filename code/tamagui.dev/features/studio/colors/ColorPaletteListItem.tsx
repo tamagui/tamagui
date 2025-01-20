@@ -1,5 +1,3 @@
-'use client'
-
 import {
   H5,
   ListItem,

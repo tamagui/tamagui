@@ -6,7 +6,7 @@ export {
   createThemes,
   getThemeSuitePalettes,
   createPalettes,
-  type createThemesProps,
+  type CreateThemesProps,
 } from './createThemes'
 
 export { defaultTemplates } from './defaultTemplates'

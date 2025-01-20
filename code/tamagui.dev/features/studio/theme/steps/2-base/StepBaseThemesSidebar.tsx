@@ -19,7 +19,6 @@ import { useBaseThemePreview } from './useBaseThemePreview'
 
 export function StepBaseThemesSidebar() {
   const themeBuilder = useThemeBuilderStore()
-  const hasAccent = true
   const { name: themeNameBase } = useBaseThemePreview()
 
   // force re-render on every change
@@ -28,26 +27,19 @@ export function StepBaseThemesSidebar() {
   return (
     <YStack f={1}>
       {/* fixes some bug in updating first time */}
-      <Contents
-        key={themeBuilder.themeSuiteVersion}
-        themeNameBase={themeNameBase}
-        hasAccent={hasAccent}
-      />
+      <Contents key={themeBuilder.themeSuiteVersion} themeNameBase={themeNameBase} />
     </YStack>
   )
 }
 
 const Contents = ({
   themeNameBase,
-  hasAccent,
 }: {
   themeNameBase: string
-  hasAccent: boolean
 }) => {
   const themeBuilder = useThemeBuilderStore()
-  const { schemes } = themeBuilder
+  const { schemes, accentSetting } = themeBuilder
   const procedureStore = useStore(StudioProcedureStore)
-
   const [showAccent, setShowAccent] = useState(false)
   const themeName = (showAccent ? `${themeNameBase}_accent` : themeNameBase) as ThemeName
 
@@ -58,12 +50,18 @@ const Contents = ({
       </XStack>
 
       <XStack pos="absolute" t="$4" r="$4" zi={1000}>
-        <XStack o={hasAccent ? 1 : 0.5} gap="$2" ml="auto" ai="center" h="$2">
+        <XStack
+          o={accentSetting === 'off' ? 0.5 : 1}
+          gap="$2"
+          ml="auto"
+          ai="center"
+          h="$2"
+        >
           <Label size="$3" color="$color">
             Accent
           </Label>
           <Switch
-            disabled={!hasAccent}
+            disabled={accentSetting === 'off'}
             checked={showAccent}
             onCheckedChange={setShowAccent}
             size="$1"
@@ -87,7 +85,10 @@ const Contents = ({
                   <Separator />
                 </XStack>
                 <YStack br="$9" bg="$background" p="$4" mx="$-2">
-                  <StudioThemesQuickPreviewSection scheme="light" hasAccent={hasAccent} />
+                  <StudioThemesQuickPreviewSection
+                    scheme="light"
+                    hasAccent={accentSetting !== 'off'}
+                  />
                 </YStack>
               </YStack>
             </Theme>
@@ -105,7 +106,10 @@ const Contents = ({
                   <Separator />
                 </XStack>
                 <YStack br="$9" bg="$background" p="$4" mx="$-2">
-                  <StudioThemesQuickPreviewSection scheme="dark" hasAccent={hasAccent} />
+                  <StudioThemesQuickPreviewSection
+                    scheme="dark"
+                    hasAccent={accentSetting !== 'off'}
+                  />
                 </YStack>
               </YStack>
             </Theme>

@@ -5,7 +5,7 @@ import { AnimatePresence, YStack, isClient } from 'tamagui'
 import { useTintSectionIndex } from './TintSection'
 
 const positions = [
-  [-10, 120],
+  [-100, 420],
   [-230, 64],
   [212, 127],
   [-135, 11],
@@ -102,7 +102,7 @@ export const HomeGlow = memo(() => {
         // animation: 'superLazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
-        o: 0.3,
+        o: 0.15,
       })}
       // display={isResizing ? 'none' : 'flex'}
     >

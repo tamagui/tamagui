@@ -1,4 +1,4 @@
-import { SimpleThemesDefinition } from './createThemes'
+import type { SimpleThemesDefinition } from './createThemes'
 
 export const defaultComponentThemes = {
   ListItem: { template: 'surface1' },

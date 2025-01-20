@@ -151,18 +151,6 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     black10: string;
     black11: string;
     black12: string;
-    accent1: string;
-    accent2: string;
-    accent3: string;
-    accent4: string;
-    accent5: string;
-    accent6: string;
-    accent7: string;
-    accent8: string;
-    accent9: string;
-    accent10: string;
-    accent11: string;
-    accent12: string;
     shadow1: string;
     shadow2: string;
     shadow3: string;
@@ -177,8 +165,26 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     color04: string;
     color06: string;
     color08: string;
+    accent0: string;
+    accent2: string;
+    accent1: string;
+    accent3: string;
+    accent4: string;
+    accent5: string;
+    accent6: string;
+    accent7: string;
+    accent8: string;
+    accent9: string;
+    accent10: string;
+    accent11: string;
+    accent12: string;
 }>;
 export type TamaguiThemes = typeof themes;
+/**
+ * This is an optional production optimization: themes JS can get to 20Kb or more.
+ * Tamagui has ~1Kb of logic to hydrate themes from CSS, so you can remove the JS.
+ * So long as you server render your Tamagui CSS, this will save you bundle size:
+ */
 export declare const tamaguiThemes: TamaguiThemes;
 export {};
 //# sourceMappingURL=v4-tamagui.d.ts.map

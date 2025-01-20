@@ -5,14 +5,9 @@ import { NoticeParagraph, StudioNotice } from '~/features/studio/StudioNotice'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { BuildThemeItemFrame } from '../views/BuildThemeItemFrame'
 import { PaletteView } from '../views/PaletteView'
-import { useSteps } from '../views/Stage'
 
 type StepBaseThemesProps = {
   previewMode?: boolean
-}
-
-const useBaseThemesSteps = () => {
-  return useSteps({ id: 'step-base-themes', total: 2 })
 }
 
 export const StepBaseThemes = memo((_props: StepBaseThemesProps) => {
@@ -26,15 +21,7 @@ const Palettes = memo(() => {
     <YStack gap="$3" py="$3" px="$2">
       {Object.entries(store.palettes).map(([name, palette]) => {
         return (
-          <BuildThemeItemFrame
-            key={name}
-            label={name}
-            {...(name !== 'base' && {
-              onDelete: () => {
-                store.deletePalette(name)
-              },
-            })}
-          >
+          <BuildThemeItemFrame key={name} label={name}>
             <PaletteView
               onUpdate={(next) => {
                 store.updatePalette(name, next)

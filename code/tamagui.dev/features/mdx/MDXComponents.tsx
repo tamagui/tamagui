@@ -739,13 +739,17 @@ const componentsIn = {
             significantly improves your app or site performance.
           </IntroParagraph>
 
-          <Paragraph size="$6">
-            Tamagui is more than just a style library - it is a style library, a design
-            system, a UI kit, and an optimizing compiler. You can use them all separately,
-            or together:
-          </Paragraph>
+          <IntroParagraph>
+            Tamagui is more than just a style library - it's a style library, a design
+            system builder, a UI kit, and an optimizing compiler. The good news is, every
+            piece can be used separately or together.
+          </IntroParagraph>
 
-          <UL mt="$4" gap="$2">
+          <Separator o={0.5} my="$5" />
+
+          <H4>Overview</H4>
+
+          <UL mt="$4" pl="$4" gap="$2">
             <ThemeTintAlt>
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
@@ -794,6 +798,8 @@ const componentsIn = {
             </ThemeTintAlt>
           </UL>
         </ThemeTintAlt>
+
+        <Separator o={0.5} mt="$8" />
       </YStack>
     )
   },

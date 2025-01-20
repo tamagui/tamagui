@@ -17,6 +17,7 @@ export function createStudioThemes(props: BuildThemeSuiteProps) {
     palettes,
     templates: defaultTemplates,
     componentThemes: defaultComponentThemes,
+    accentTheme: !!props.palettes.accent,
   })
 }
 
@@ -48,7 +49,7 @@ type SinglePalette = string[]
 type SchemePalette = { light: SinglePalette; dark: SinglePalette }
 type Palette = SinglePalette | SchemePalette
 
-export type createThemesProps<
+export type CreateThemesProps<
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
@@ -77,14 +78,14 @@ export function createThemes<
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
 >(
-  props: createThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes>
+  props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes>
 ) {
   const {
     accent,
     childrenThemes,
     grandChildrenThemes,
     templates = defaultTemplates,
-    componentThemes = defaultComponentThemes as unknown as any,
+    componentThemes,
   } = props
 
   const builder = createSimpleThemeBuilder({
@@ -160,10 +161,15 @@ export function createSimpleThemeBuilder<
           palette?: string
         }
       >,
-  HasAccent extends boolean,
-  ComponentThemes extends SimpleThemesDefinition | false,
+  HasAccent extends boolean = false,
+  ComponentThemes extends SimpleThemesDefinition | false = false,
   FullTheme = {
-    [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string
+    [ThemeKey in
+      | keyof Templates['light_base']
+      | keyof Extra['dark']
+      | (HasAccent extends true
+          ? `accent${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`
+          : never)]: string
   },
   ThemeNames extends string =
     | 'light'
@@ -192,6 +198,7 @@ export function createSimpleThemeBuilder<
     grandChildrenThemes = null as unknown as GrandChildrenThemes,
     templates = defaultTemplates as unknown as Templates,
     palettes = defaultPalettes as unknown as Palettes,
+    accentTheme,
     componentThemes = templates === (defaultTemplates as any)
       ? (defaultComponentThemes as unknown as ComponentThemes)
       : undefined,
@@ -205,12 +212,46 @@ export function createSimpleThemeBuilder<
       light: {
         template: 'base',
         palette: 'light',
-        nonInheritedValues: extra?.light,
+        nonInheritedValues: {
+          ...extra?.light,
+          ...(accentTheme &&
+            palettes.light_accent && {
+              accent1: palettes.light_accent[0],
+              accent2: palettes.light_accent[1],
+              accent3: palettes.light_accent[2],
+              accent4: palettes.light_accent[3],
+              accent5: palettes.light_accent[4],
+              accent6: palettes.light_accent[5],
+              accent7: palettes.light_accent[6],
+              accent8: palettes.light_accent[7],
+              accent9: palettes.light_accent[8],
+              accent10: palettes.light_accent[9],
+              accent11: palettes.light_accent[10],
+              accent12: palettes.light_accent[11],
+            }),
+        },
       },
       dark: {
         template: 'base',
         palette: 'dark',
-        nonInheritedValues: extra?.dark,
+        nonInheritedValues: {
+          ...extra?.dark,
+          ...(accentTheme &&
+            palettes.dark_accent && {
+              accent1: palettes.dark_accent[0],
+              accent2: palettes.dark_accent[1],
+              accent3: palettes.dark_accent[2],
+              accent4: palettes.dark_accent[3],
+              accent5: palettes.dark_accent[4],
+              accent6: palettes.dark_accent[5],
+              accent7: palettes.dark_accent[6],
+              accent8: palettes.dark_accent[7],
+              accent9: palettes.dark_accent[8],
+              accent10: palettes.dark_accent[9],
+              accent11: palettes.dark_accent[10],
+              accent12: palettes.dark_accent[11],
+            }),
+        },
       },
     })
 
@@ -293,7 +334,7 @@ function coerceSimplePaletteToSchemePalette(def: Palette) {
   return Array.isArray(def) ? getSchemePalette(def) : def
 }
 
-function getThemesPalettes(props: createThemesProps<any, any>): BuildPalettes {
+function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
   const base = coerceSimplePaletteToSchemePalette(props.base.palette)
   const accent = props.accent
     ? coerceSimplePaletteToSchemePalette(props.accent.palette)
@@ -355,7 +396,12 @@ export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinition
     Object.entries(palettes).flatMap(([name, palette]) => {
       const palettes = getThemeSuitePalettes(palette)
       const isAccent = name.startsWith('accent')
-      const oppositePalettes = isAccent ? basePalettes : accentPalettes
+      const oppositePalettes = isAccent ? basePalettes : accentPalettes || basePalettes
+
+      if (!oppositePalettes) {
+        return []
+      }
+
       const oppositeLight = oppositePalettes!.light
       const oppositeDark = oppositePalettes!.dark
 
