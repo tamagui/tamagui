@@ -110,7 +110,7 @@ const bentoScreensPerElement = Object.entries(Components)
 
 export function Navigation() {
   return (
-    <Stack.Navigator initialRouteName="home">
+    <Stack.Navigator initialRouteName="bento">
       <Stack.Screen
         name="home"
         component={HomeScreen}
