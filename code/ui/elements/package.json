@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/elements",
-  "version": "1.122.3",
+  "version": "1.122.4",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -34,13 +34,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.122.3"
+    "@tamagui/core": "1.122.4"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.3",
+    "@tamagui/build": "1.122.4",
     "react": "*"
   },
   "publishConfig": {
