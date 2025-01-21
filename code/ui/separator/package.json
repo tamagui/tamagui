@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.122.6",
+  "version": "1.122.7",
   "sideEffects": [
     "*.css"
   ],
@@ -36,11 +36,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.122.6",
-    "@tamagui/core": "1.122.6"
+    "@tamagui/constants": "1.122.7",
+    "@tamagui/core": "1.122.7"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.6",
+    "@tamagui/build": "1.122.7",
     "react": "*"
   },
   "publishConfig": {
