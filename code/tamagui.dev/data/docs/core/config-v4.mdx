@@ -25,9 +25,20 @@ declare module 'tamagui' {
 
 It gives you a robust suite of themes, a few shorthands that mostly align with Tailwind, and default settings that prevent bugs.
 
-If you like it, you can always [copy and paste the source code](https://github.com/tamagui/tamagui/blob/5b0c075e92688ac85737fe97c98cd77322f034b0/code/core/config/src/v4.ts) into your app and customize to your taste.
+If you like it but want to make some changes, you can [copy and paste the source code](https://github.com/tamagui/tamagui/blob/5b0c075e92688ac85737fe97c98cd77322f034b0/code/core/config/src/v4.ts) into your app and customize to your taste.
 
-Let's see how `defaultThemes` is defined so we can learn how `createThemes` works:
+
+<Notice theme="green" title="Custom Themes">
+  If you want to learn to create your own custom theme suite rather than use the included defaults, check out the [Creating Custom Themes Guide](/docs/guides/theme-builder).
+</Notice>
+
+---
+
+### Default Configuration
+
+#### Themes
+
+Let's see how `defaultThemes` is defined:
 
 ```tsx fileName=themes.ts
 import * as Colors from '@tamagui/colors'
@@ -190,5 +201,166 @@ export const themes: TamaguiThemes =
     : (generatedThemes as any)
 ```
 
-This will generate a large amount of themes for you, including component themes.
+This will generate a large amount of themes for you, including some default component themes. If you don't want components like Button and Input to have custom styling, you can remove `componentThemes` and they will default to not having any color styling (you can further add the `unstyled` prop to remove all styling).
 
+We will be adding more to this shortly with a visual guide to your themes.
+
+#### Settings
+
+<PropsTable
+  data={[
+    { name: 'mediaQueryDefaultActive', description: 'See Media' },
+    { name: 'defaultFont', description: 'body', },
+    { name: 'fastSchemeChange', description: true, description: 'On iOS, leverages DynamicColorIOS for fast light/dark theme changes.' },
+    { name: 'shouldAddPrefersColorThemes', description: true, description: 'Generates CSS for prefers-color-scheme, so even with JS off you have proper light/dark styling.' },
+    { name: 'allowedStyleDescriptions', description: 'somewhat-strict-web', description: 'More strict than just a string, but still allows web-only style descriptions like vh, vw.' },
+    { name: 'themeClassNameOnRoot', description: true, description: 'Defaults to putting your root theme className onto the root html tag so you can use your CSS variables on your body tag.' },
+    { name: 'onlyAllowShorthands', description: true, description: 'For any shorthand defined, remove the types for the longhand.' },
+    { name: 'maxDarkLightNesting', description: 1, description: 'To save CSS and bundle size, only allow light and dark to nest once, instead prefer using black/white themes included below the root.' }
+  ]}
+/>
+
+#### Media
+
+The new media queries in v4 are also more simplified and aligned to Tailwind:
+
+<PropsTable
+  data={[
+    { name: '2xl', description: `maxWidth: 1536` },
+    { name: 'xl', description: `maxWidth: 1280` },
+    { name: 'lg', description: `maxWidth: 1024` },
+    { name: 'md', description: `maxWidth: 768` },
+    { name: 'sm', description: `maxWidth: 640` },
+    { name: 'xs', description: `maxWidth: 460` },
+    { name: '2xs', description: `maxWidth: 340` },
+  ]}
+/>
+
+Every media query defaults to `true` to align with [mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design).
+
+#### Shorthands
+
+Config v4 has fewer shorthands, and aligns shorthands to Tailwind for familiarity
+
+<PropsTable
+  data={[
+    { name: 'text', description: 'textAlign', },
+    { name: 'b', description: 'bottom', },
+    { name: 'bg', description: 'backgroundColor', },
+    { name: 'content', description: 'alignContent', },
+    { name: 'flex', description: 'flexDirection', },
+    { name: 'grow', description: 'flexGrow', },
+    { name: 'items', description: 'alignItems', },
+    { name: 'justify', description: 'justifyContent', },
+    { name: 'l', description: 'left', },
+    { name: 'm', description: 'margin', },
+    { name: 'maxH', description: 'maxHeight', },
+    { name: 'maxW', description: 'maxWidth', },
+    { name: 'mb', description: 'marginBottom', },
+    { name: 'minH', description: 'minHeight', },
+    { name: 'minW', description: 'minWidth', },
+    { name: 'ml', description: 'marginLeft', },
+    { name: 'mr', description: 'marginRight', },
+    { name: 'mt', description: 'marginTop', },
+    { name: 'mx', description: 'marginHorizontal', },
+    { name: 'my', description: 'marginVertical', },
+    { name: 'p', description: 'padding', },
+    { name: 'pb', description: 'paddingBottom', },
+    { name: 'pl', description: 'paddingLeft', },
+    { name: 'pr', description: 'paddingRight', },
+    { name: 'pt', description: 'paddingTop', },
+    { name: 'px', description: 'paddingHorizontal', },
+    { name: 'py', description: 'paddingVertical', },
+    { name: 'r', description: 'right', },
+    { name: 'rounded', description: 'borderRadius', },
+    { name: 'select', description: 'userSelect', },
+    { name: 'self', description: 'alignSelf', },
+    { name: 'shrink', description: 'flexShrink', },
+    { name: 't', description: 'top', },
+    { name: 'z', description: 'zIndex', },
+  ]}
+/>
+
+#### Tokens
+
+Tokens are defined as:
+
+```tsx
+export const size = {
+  $0: 0,
+  '$0.25': 2,
+  '$0.5': 4,
+  '$0.75': 8,
+  $1: 20,
+  '$1.5': 24,
+  $2: 28,
+  '$2.5': 32,
+  $3: 36,
+  '$3.5': 40,
+  $4: 44,
+  $true: 44,
+  '$4.5': 48,
+  $5: 52,
+  $6: 64,
+  $7: 74,
+  $8: 84,
+  $9: 94,
+  $10: 104,
+  $11: 124,
+  $12: 144,
+  $13: 164,
+  $14: 184,
+  $15: 204,
+  $16: 224,
+  $17: 224,
+  $18: 244,
+  $19: 264,
+  $20: 284,
+}
+
+export const space = {
+  // ... space is the same as size, but also defines "negative" values for every size, like:
+  '$-1': -20,
+}
+
+export const zIndex = {
+  0: 0,
+  1: 100,
+  2: 200,
+  3: 300,
+  4: 400,
+  5: 500,
+}
+
+export const radius = {
+  0: 0,
+  1: 3,
+  2: 5,
+  3: 7,
+  4: 9,
+  true: 9,
+  5: 10,
+  6: 16,
+  7: 19,
+  8: 22,
+  9: 26,
+  10: 34,
+  11: 42,
+  12: 50,
+}
+```
+
+Note that `color` tokens aren't defined, instead we are just using themes.
+
+#### Fonts
+
+Only a `body` and `heading` font are exported, which both use "system" font families:
+
+<PropsTable 
+  data={[
+    { name: 'web', description: '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' },
+    { name: 'native', description: 'System' },
+  ]}
+/>
+
+You can create your own system font using the exported `createSystemFont` helper.

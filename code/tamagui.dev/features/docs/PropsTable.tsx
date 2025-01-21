@@ -53,7 +53,7 @@ export function PropsTable({
       </XStack>
       {data.map(
         ({ name, type, required, deprecated, default: defaultValue, description }, i) => (
-          <ListItem key={`${name}-${i}`} p={0} bbw={1} bbc="$color4" py="$4">
+          <ListItem key={`${name}-${i}`} p={0} bbw={1} bbc="$color4" py="$3">
             <YStack width="100%">
               <XStack
                 pos="relative"
@@ -146,7 +146,7 @@ export function PropsTable({
               </XStack>
 
               {!!description && (
-                <YStack py="$2" px="$4">
+                <YStack py="$1" px="$4">
                   <Paragraph size="$5" o={0.65}>
                     {description}
                   </Paragraph>

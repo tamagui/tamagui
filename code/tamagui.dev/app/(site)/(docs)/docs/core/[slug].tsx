@@ -31,8 +31,6 @@ export default function DocCorePage() {
   const { code, frontmatter } = useLoader(loader)
   const Component = useMemo(() => getMDXComponent(code), [code])
 
-  console.log('frontmatter', frontmatter)
-
   return (
     <>
       <HeadInfo

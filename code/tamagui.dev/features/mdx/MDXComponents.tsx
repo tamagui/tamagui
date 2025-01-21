@@ -459,7 +459,7 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
+    <LinkHeading pt="$8" mb="$1" id={id}>
       <H3 pos="relative" width={`fit-content` as any} id={id} data-heading {...props}>
         {children}
       </H3>
