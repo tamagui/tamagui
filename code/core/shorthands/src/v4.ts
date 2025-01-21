@@ -8,7 +8,6 @@ export const shorthands = createShorthands({
   b: 'bottom',
   bg: 'backgroundColor',
   content: 'alignContent',
-  flex: 'flexDirection',
   grow: 'flexGrow',
   items: 'alignItems',
   justify: 'justifyContent',
