@@ -8,9 +8,6 @@
       "path": "../compiler/babel-plugin"
     },
     {
-      "path": "../core/animations-reanimated"
-    },
-    {
       "path": "../core/cli"
     },
     {

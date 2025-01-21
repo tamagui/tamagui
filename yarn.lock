@@ -6985,14 +6985,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@npm:1.122.6, @tamagui/animations-reanimated@workspace:code/core/animations-reanimated":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/animations-reanimated@workspace:code/core/animations-reanimated"
-  dependencies:
-    "@tamagui/build": "npm:1.122.6"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/aria-hidden@npm:1.122.6, @tamagui/aria-hidden@workspace:code/core/aria-hidden":
   version: 0.0.0-use.local
   resolution: "@tamagui/aria-hidden@workspace:code/core/aria-hidden"
@@ -7073,7 +7065,6 @@ __metadata:
     "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@rehookify/datepicker": "npm:^6.5.0"
-    "@tamagui/animations-reanimated": "npm:1.122.6"
     "@tamagui/babel-plugin": "npm:1.122.6"
     "@tamagui/build": "npm:1.122.6"
     "@tamagui/cli": "npm:1.122.6"
@@ -8009,7 +8000,6 @@ __metadata:
     "@react-navigation/native": "npm:^7.0.14"
     "@react-navigation/native-stack": "npm:^7.2.0"
     "@shopify/restyle": "npm:^2.4.4"
-    "@tamagui/animations-reanimated": "npm:1.122.6"
     "@tamagui/babel-plugin": "npm:1.122.6"
     "@tamagui/cli": "npm:1.122.6"
     "@tamagui/colors": "npm:1.122.6"

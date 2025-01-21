@@ -69,7 +69,6 @@
     "@hookform/resolvers": "^3.3.4",
     "@ngneat/falso": "^7.2.0",
     "@rehookify/datepicker": "^6.5.0",
-    "@tamagui/animations-reanimated": "1.122.6",
     "@tamagui/cli": "1.122.6",
     "@tamagui/colors": "1.122.6",
     "@tamagui/config": "1.122.6",
