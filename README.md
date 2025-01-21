@@ -2,7 +2,7 @@
   <picture width="572px">
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/logo-black.png">
     <source media="(prefers-color-scheme: light)" srcset="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/logo-white.png">
-    <img alt="Shows a black logo in light color mode and a white one in dark color mode." src="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/logo-words.png">
+    <img alt="Shows a black logo in light color mode and a white one in dark color mode." src="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/social.png">
   </picture>
 </div>
 
