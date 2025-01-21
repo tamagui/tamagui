@@ -260,7 +260,6 @@ export interface TamaguiConfig
     TamaguiCustomConfig {}
 
 type OnlyAllowShorthandsSetting = boolean | undefined
-type DefaultFontSetting = string | undefined
 
 export type CreateTamaguiConfig<
   A extends GenericTokens,
@@ -269,7 +268,6 @@ export type CreateTamaguiConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = {
   fonts: RemoveLanguagePostfixes<F>
@@ -286,7 +284,6 @@ export type CreateTamaguiConfig<
   shorthands: C
   media: D
   animations: AnimationDriver<E>
-  onlyAllowShorthands: G
   settings: H
 }
 
@@ -314,14 +311,13 @@ type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 //   body_en: any
 // }>['fonts']
 
-type ConfProps<A, B, C, D, E, F, G, I> = {
+type ConfProps<A, B, C, D, E, F, I> = {
   tokens?: A
   themes?: B
   shorthands?: C
   media?: D
   animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined
   fonts?: F
-  onlyAllowShorthands?: G
   settings?: I
 }
 
@@ -350,7 +346,6 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer D,
   infer E,
   infer F,
-  infer G,
   infer H
 >
   ? TamaguiInternalConfig<
@@ -360,7 +355,6 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
       D extends GenericMedia ? D : EmptyMedia,
       E extends GenericAnimations ? E : EmptyAnimations,
       F extends GenericFonts ? F : EmptyFonts,
-      G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting,
       H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings
     >
   : unknown
@@ -790,10 +784,9 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   I extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, I>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, I>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -1266,7 +1259,7 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands']
+type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands']
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
