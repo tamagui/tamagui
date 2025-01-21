@@ -5,7 +5,7 @@ export declare const breakpoints: {
     md: number;
     sm: number;
     xs: number;
-    xxs: number;
+    '2xs': number;
 };
 export declare const media: {
     readonly '2xl': {
@@ -26,7 +26,7 @@ export declare const media: {
     readonly xs: {
         readonly maxWidth: number;
     };
-    readonly xxs: {
+    readonly '2xs': {
         readonly maxWidth: number;
     };
 };
@@ -37,6 +37,6 @@ export declare const mediaQueryDefaultActive: {
     md: boolean;
     sm: boolean;
     xs: boolean;
-    xxs: boolean;
+    '2xs': boolean;
 };
 //# sourceMappingURL=v4-media.d.ts.map

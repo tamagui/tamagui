@@ -8,7 +8,7 @@ export const breakpoints = {
   md: 768,
   sm: 640,
   xs: 460,
-  xxs: 320,
+  '2xs': 340,
 }
 
 export const media = {
@@ -19,7 +19,7 @@ export const media = {
   md: { maxWidth: breakpoints.md },
   sm: { maxWidth: breakpoints.sm },
   xs: { maxWidth: breakpoints.xs },
-  xxs: { maxWidth: breakpoints.xxs },
+  '2xs': { maxWidth: breakpoints['2xs'] },
 } as const
 
 // all true to start to match mobile-first
@@ -30,5 +30,5 @@ export const mediaQueryDefaultActive = {
   md: true,
   sm: true,
   xs: true,
-  xxs: true,
+  '2xs': true,
 }

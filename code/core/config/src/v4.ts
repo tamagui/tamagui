@@ -9,10 +9,9 @@ import { media, mediaQueryDefaultActive } from './v4-media'
 
 export { createThemes } from '@tamagui/theme-builder'
 export { shorthands } from '@tamagui/shorthands/v4'
-export { media, mediaQueryDefaultActive } from './media'
+export { media, mediaQueryDefaultActive, breakpoints } from './v4-media'
 export { animations } from './v4-animations'
 export { createSystemFont, fonts } from './v4-fonts'
-
 export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
 
 // Themes:
@@ -207,6 +206,7 @@ export const settings = {
   shouldAddPrefersColorThemes: true,
   allowedStyleValues: 'somewhat-strict-web',
   themeClassNameOnRoot: true,
+  onlyAllowShorthands: true,
   maxDarkLightNesting: 1,
 } satisfies CreateTamaguiProps['settings']
 

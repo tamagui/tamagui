@@ -1,6 +1,6 @@
 export { createThemes } from '@tamagui/theme-builder';
 export { shorthands } from '@tamagui/shorthands/v4';
-export { media, mediaQueryDefaultActive } from './media';
+export { media, mediaQueryDefaultActive, breakpoints } from './v4-media';
 export { animations } from './v4-animations';
 export { createSystemFont, fonts } from './v4-fonts';
 export { tamaguiThemes, tokens } from '@tamagui/themes/v4';
@@ -28,13 +28,14 @@ export declare const settings: {
         md: boolean;
         sm: boolean;
         xs: boolean;
-        xxs: boolean;
+        '2xs': boolean;
     };
     defaultFont: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
     themeClassNameOnRoot: true;
+    onlyAllowShorthands: true;
     maxDarkLightNesting: number;
 };
 export declare const defaultConfig: {
@@ -71,7 +72,7 @@ export declare const defaultConfig: {
         readonly xs: {
             readonly maxWidth: number;
         };
-        readonly xxs: {
+        readonly '2xs': {
             readonly maxWidth: number;
         };
     };
@@ -287,13 +288,14 @@ export declare const defaultConfig: {
             md: boolean;
             sm: boolean;
             xs: boolean;
-            xxs: boolean;
+            '2xs': boolean;
         };
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
         themeClassNameOnRoot: true;
+        onlyAllowShorthands: true;
         maxDarkLightNesting: number;
     };
 };
