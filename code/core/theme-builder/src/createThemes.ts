@@ -1,16 +1,10 @@
-import {
-  createThemeBuilder,
-  PALETTE_BACKGROUND_OFFSET,
-  type ThemeBuilder,
-} from '@tamagui/theme-builder'
+import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
 import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamagui/themes'
 import { parseToHsla } from 'color2k'
 import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes } from './getThemeSuitePalettes'
 import { defaultComponentThemes } from './defaultComponentThemes'
-
-export { defaultTemplates } from './defaultTemplates'
-export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
+import { PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
 
 // for studio
 // allows more detailed configuration, used by studio
