@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-direction",
-  "version": "1.122.2",
+  "version": "1.122.3",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -31,7 +31,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.2",
+    "@tamagui/build": "1.122.3",
     "react": "*"
   },
   "publishConfig": {
