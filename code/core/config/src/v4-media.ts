@@ -13,22 +13,21 @@ export const breakpoints = {
 
 export const media = {
   // for site
-  '2xl': { maxWidth: breakpoints['2xl'] },
-  xl: { maxWidth: breakpoints.xl },
-  lg: { maxWidth: breakpoints.lg },
-  md: { maxWidth: breakpoints.md },
-  sm: { maxWidth: breakpoints.sm },
-  xs: { maxWidth: breakpoints.xs },
-  '2xs': { maxWidth: breakpoints['2xs'] },
+  '2xl': { minWidth: breakpoints['2xl'] },
+  xl: { minWidth: breakpoints.xl },
+  lg: { minWidth: breakpoints.lg },
+  md: { minWidth: breakpoints.md },
+  sm: { minWidth: breakpoints.sm },
+  xs: { minWidth: breakpoints.xs },
+  '2xs': { minWidth: breakpoints['2xs'] },
 } as const
 
-// all true to start to match mobile-first
 export const mediaQueryDefaultActive = {
-  '2xl': true,
-  xl: true,
-  lg: true,
-  md: true,
-  sm: true,
+  '2xl': false,
+  xl: false,
+  lg: false,
+  md: false,
+  sm: false,
   xs: true,
   '2xs': true,
 }
