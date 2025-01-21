@@ -23,15 +23,15 @@ export type CalcVal =
   | FontLineHeightTokens
 
 const operators = {
-  '+': (a: number, b: number) => a + b,
-  '-': (a: number, b: number) => a - b,
-  '/': (a: number, b: number) => a / b,
-  '*': (a: number, b: number) => a * b,
+  '+': (a: number, b: number): number => a + b,
+  '-': (a: number, b: number): number => a - b,
+  '/': (a: number, b: number): number => a / b,
+  '*': (a: number, b: number): number => a * b,
 }
 
 type Operator = keyof typeof operators
 
-export const calc = (...valuesAndOperators: (CalcVal | Operator)[]) => {
+export const calc = (...valuesAndOperators: (CalcVal | Operator)[]): string | number => {
   if (isWeb) {
     let res = 'calc('
     for (const cur of valuesAndOperators) {
@@ -63,7 +63,7 @@ export const calc = (...valuesAndOperators: (CalcVal | Operator)[]) => {
   return res
 }
 
-const convertToVariableOrNumber = (v: any) => {
+const convertToVariableOrNumber = (v: any): string => {
   const varOrVal = getVariableVariable(v)
   if (typeof varOrVal === 'number') {
     return `${varOrVal}px`

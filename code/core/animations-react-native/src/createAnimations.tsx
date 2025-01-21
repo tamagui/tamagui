@@ -1,15 +1,16 @@
-import React from 'react'
-import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
   AnimatedNumberStrategy,
   AnimationDriver,
   AnimationProp,
   UniversalAnimatedNumber,
+  UseAnimatedNumberReaction,
+  UseAnimatedNumberStyle,
 } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
-
-import { Animated } from 'react-native'
+import React from 'react'
+import { Animated, type Text, type View } from 'react-native'
 
 type AnimationsConfig<A extends Object = any> = { [Key in keyof A]: AnimationConfig }
 
@@ -64,8 +65,8 @@ const costlyToAnimateStyleKey = {
   // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
 }
 
-export const AnimatedView = Animated.View
-export const AnimatedText = Animated.Text
+export const AnimatedView: Animated.AnimatedComponent<typeof View> = Animated.View
+export const AnimatedText: Animated.AnimatedComponent<typeof Text> = Animated.Text
 
 export function useAnimatedNumber(
   initial: number
@@ -128,10 +129,12 @@ export function useAnimatedNumber(
   }
 }
 
-export function useAnimatedNumberReaction(
-  { value }: { value: UniversalAnimatedNumber<Animated.Value> },
-  onValue: (current: number) => void
-) {
+type RNAnimatedNum = UniversalAnimatedNumber<Animated.Value>
+
+export const useAnimatedNumberReaction: UseAnimatedNumberReaction<RNAnimatedNum> = (
+  { value },
+  onValue
+) => {
   const onChange = useEvent((current) => {
     onValue(current.value)
   })
@@ -144,10 +147,10 @@ export function useAnimatedNumberReaction(
   }, [value, onChange])
 }
 
-export function useAnimatedNumberStyle<V extends UniversalAnimatedNumber<Animated.Value>>(
-  value: V,
-  getStyle: (value: any) => any
-) {
+export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
+  value,
+  getStyle
+) => {
   return getStyle(value.getInstance())
 }
 

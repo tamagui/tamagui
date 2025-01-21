@@ -28,7 +28,7 @@ import { createThemes } from '@tamagui/theme-builder'
 
 export const themes = createThemes({
   base: {
-    palettes: {
+    palette: {
       dark: ['#000', '#fff'],
       light: ['#fff', '#000'],
     }
@@ -46,7 +46,7 @@ import * as Colors from '@tamagui/colors'
 
 export const themes = createThemes({
   base: {
-    palettes: {
+    palette: {
       dark: ['#000', '#fff',],
       light: ['#fff', '#000'],
     },
@@ -55,7 +55,7 @@ export const themes = createThemes({
   // this sets up both an accent theme, and $accent tokens
   // in this case we're just making them "inverse" of the current theme
   accent: {
-    palettes: {
+    palette: {
       dark: ['#fff', '#000'],
       light: ['#000', '#fff',],
     },
@@ -179,7 +179,7 @@ Here's an example of a blue palette:
 
 <Blog.ThemeBuilder.ExamplePalette showLabels />
 
-You can toggle dark mode in the top left of the site to see that in fact we have _two_ blue palettes: `light_blue` and `dark_blue`.
+You can toggle dark mode in the top left of the site to see that in fact we have _two_ blue palette: `light_blue` and `dark_blue`.
 
 Here's that same palette in code (the `dark_blue` one):
 
