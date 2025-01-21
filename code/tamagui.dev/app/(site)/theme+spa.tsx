@@ -15,7 +15,8 @@ import {
   useThemeName,
 } from 'tamagui'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-
+import { Dialogs } from '~/features/studio/components/Dialogs'
+import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
@@ -25,8 +26,6 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
-import { Dialogs } from '../../features/studio/components/Dialogs'
-// import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 themeBuilderStore.setSteps(steps)
 
@@ -70,6 +69,7 @@ export default function ThemePage() {
       <Dialogs />
 
       <PreviewTheme key={`${loaded}${themeName}`}>
+        <StudioAIBar />
         <StudioPreviewComponentsBar scrollView={document.documentElement} />
         <StudioPreviewComponents />
       </PreviewTheme>

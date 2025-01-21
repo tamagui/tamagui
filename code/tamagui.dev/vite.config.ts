@@ -18,6 +18,8 @@ const resolve = (path: string) => {
 }
 
 const include = [
+  '@ai-sdk/deepseek',
+  'ai',
   '@docsearch/react',
   '@leeoniya/ufuzzy',
   'react-hook-form',

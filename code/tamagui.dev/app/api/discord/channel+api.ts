@@ -9,9 +9,7 @@ import {
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
 } from '~/features/discord/helpers'
-import { getTakeoutPriceInfo } from '~/features/site/purchase/getProductInfo'
-import { getArray } from '~/helpers/getArray'
-import { getSingle } from '~/helpers/getSingle'
+import { ensureSubscription } from '../../../helpers/ensureSubscription'
 
 const roleBitField = '1024' // VIEW_CHANNEL
 
@@ -19,6 +17,7 @@ export type DiscordChannelStatus = {
   discordSeats: number
   currentlyOccupiedSeats: number
 }
+
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
@@ -44,54 +43,19 @@ export default apiRoute(async (req) => {
   const subscriptionId =
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
 
-  const subscription = await supabase
-    .from('subscriptions')
-    .select(
-      'id, metadata, created, subscription_items(id, prices(id, description, products(id, name, metadata)))'
-    )
-    .eq('id', subscriptionId)
-    .single()
-
-  if (subscription.error) {
-    return Response.json(
-      {
-        message: 'no subscription with the provided id found that belongs to your user.',
-      },
-      {
-        status: 404,
-      }
-    )
-  }
-
-  const starterSubItem = getArray(subscription.data.subscription_items).find(
-    (item) =>
-      (getSingle(getSingle(item?.prices)?.products)?.metadata as Record<string, any>)
-        ?.slug === 'universal-starter'
-  )
-  if (!starterSubItem) {
-    return Response.json(
-      {
-        message: 'the provided subscription does not include the takeout starter',
-      },
-      {
-        status: 401,
-      }
-    )
-  }
+  const { subscription, hasDiscordPrivateChannels, discordSeats } =
+    await ensureSubscription(supabase, subscriptionId)
 
   const discordInvites = await supabaseAdmin
     .from('discord_invites')
     .select('*')
     .eq('subscription_id', subscription.data.id)
+
   if (discordInvites.error) {
     throw discordInvites.error
   }
 
-  const pricingDescription = getSingle(starterSubItem.prices)?.description?.toLowerCase()
   const currentlyOccupiedSeats = discordInvites.data.length
-  const { hasDiscordPrivateChannels, discordSeats } = getTakeoutPriceInfo(
-    pricingDescription ?? ''
-  )
 
   if (req.method === 'GET') {
     return Response.json({

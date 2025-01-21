@@ -189,6 +189,16 @@ export class ThemeBuilderStore {
     await this.refreshThemeSuite()
   }
 
+  async updateGenerate(result: { base: any; accent: any }) {
+    this.palettes.base.anchors = result.base
+    this.palettes.accent.anchors = result.accent
+    this.palettes = {
+      ...this.palettes,
+    }
+    this.themeSuiteVersion++
+    await this.refreshThemeSuite()
+  }
+
   async addThemeSuite(next: Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>) {
     const themes = this.state?.themeSuites
     if (!themes) throw new Error(`No themes`)
@@ -223,27 +233,6 @@ export class ThemeBuilderStore {
       ...this.state,
       themeSuites: next,
     }
-  }
-
-  async updateThemeSuite(update: { id: string } & Partial<ThemeSuiteItem>) {
-    const themeSuites = this.state?.themeSuites
-    if (!themeSuites) throw new Error(`No themes`)
-    const next = {
-      ...themeSuites[update.id],
-      ...update,
-      updatedAt: Date.now(),
-    }
-    this.state = {
-      ...this.state,
-      themeSuites: {
-        ...themeSuites,
-        [next.id]: next,
-      },
-    }
-    if (next.id === this.themeSuiteId) {
-      await this.updateCurrentThemeSuite(next)
-    }
-    await this.save()
   }
 
   getPalettesForTheme(theme: BuildTheme, palettes = this.palettes) {
