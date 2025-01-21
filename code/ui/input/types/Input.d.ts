@@ -1,4 +1,5 @@
 import React from 'react';
+import type { InputModeOptions } from 'react-native';
 export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -9,7 +10,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     editable?: import("react-native").TextInputProps["editable"];
     enterKeyHint?: "done" | "go" | "next" | "search" | "send" | "enter" | "previous";
     keyboardType?: import("react-native").TextInputProps["keyboardType"];
-    inputMode?: import("react-native").InputModeOptions;
+    inputMode?: InputModeOptions;
     placeholderTextColor?: import("@tamagui/core").ColorTokens;
     selectionColor?: import("@tamagui/core").ColorTokens;
     tag?: import("@tamagui/core").TamaguiComponentPropsBase["tag"];
@@ -21,7 +22,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     editable?: import("react-native").TextInputProps["editable"];
     enterKeyHint?: "done" | "go" | "next" | "search" | "send" | "enter" | "previous";
     keyboardType?: import("react-native").TextInputProps["keyboardType"];
-    inputMode?: import("react-native").InputModeOptions;
+    inputMode?: InputModeOptions;
     placeholderTextColor?: import("@tamagui/core").ColorTokens;
     selectionColor?: import("@tamagui/core").ColorTokens;
     tag?: import("@tamagui/core").TamaguiComponentPropsBase["tag"];

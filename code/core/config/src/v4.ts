@@ -1,6 +1,6 @@
 import * as Colors from '@tamagui/colors'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
-import { shorthands } from '@tamagui/shorthands/v2'
+import { shorthands } from '@tamagui/shorthands/v4'
 import { tokens } from '@tamagui/themes/v4'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { animations } from './v3-animations'
