@@ -226,17 +226,17 @@ The new media queries in v4 are also more simplified and aligned to Tailwind:
 
 <PropsTable
   data={[
-    { name: '2xl', description: `maxWidth: 1536` },
-    { name: 'xl', description: `maxWidth: 1280` },
-    { name: 'lg', description: `maxWidth: 1024` },
-    { name: 'md', description: `maxWidth: 768` },
-    { name: 'sm', description: `maxWidth: 640` },
-    { name: 'xs', description: `maxWidth: 460` },
-    { name: '2xs', description: `maxWidth: 340` },
+    { name: '2xl', description: `minWidth: 1536` },
+    { name: 'xl', description: `minWidth: 1280` },
+    { name: 'lg', description: `minWidth: 1024` },
+    { name: 'md', description: `minWidth: 768` },
+    { name: 'sm', description: `minWidth: 640` },
+    { name: 'xs', description: `minWidth: 460` },
+    { name: '2xs', description: `minWidth: 340` },
   ]}
 />
 
-Every media query defaults to `true` to align with [mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design).
+On the server, only xs and 2xs default to `true` to align generally give you a [mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design) setup, but of course you can change that. This only really affects non-style properties, like `useMedia()`, because Tamagui generates proper SSR-safe CSS for media queries.
 
 #### Shorthands
 
