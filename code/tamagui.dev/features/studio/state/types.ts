@@ -1,4 +1,4 @@
-import type { StaticConfig, ThemeParsed } from 'tamagui';
+import type { StaticConfig, ThemeParsed } from 'tamagui'
 import { Theme } from 'tamagui'
 
 export type ConfigSubPane =
@@ -90,12 +90,9 @@ export type ThemeVal = {
 
 export type DialogTypes = {
   none: {}
-  'create-workspace': {}
   'create-theme': CreateThemeDialogProps
-  'create-animation': CreateAnimationDialogProps
   'confirm-delete': ConfirmDeleteDialogProps
   alert: StudioAlertDialogProps
-  export: ExportDialogProps
 }
 
 export type StudioDialogProps = DialogTypes[keyof DialogTypes]
@@ -123,10 +120,10 @@ export type ExportDialogProps = {
 export type DeepMutable<T> = T extends (infer R)[]
   ? DeepMutableArray<R>
   : T extends (...args: infer Args) => infer Result
-  ? (...args: Args) => UnwrapReadonly<Result>
-  : T extends object
-  ? DeepMutableObject<T>
-  : T
+    ? (...args: Args) => UnwrapReadonly<Result>
+    : T extends object
+      ? DeepMutableObject<T>
+      : T
 
 export type DeepMutableArray<T> = T extends ReadonlyArray<infer X>
   ? DeepMutable<X>
@@ -139,16 +136,16 @@ export type DeepMutableObject<T> = {
 type UnwrapReadonly<T> = T extends DeepReadonlyArray<infer X>
   ? X
   : T extends DeepReadonlyObject<infer X>
-  ? X
-  : T
+    ? X
+    : T
 
 export type DeepReadonly<T> = T extends (infer R)[]
   ? DeepReadonlyArray<R>
   : T extends Function
-  ? T
-  : T extends object
-  ? DeepReadonlyObject<T>
-  : T
+    ? T
+    : T extends object
+      ? DeepReadonlyObject<T>
+      : T
 
 export interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
 
