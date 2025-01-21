@@ -7079,13 +7079,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@npm:1.122.6, @tamagui/animations-reanimated@workspace:code/core/animations-reanimated":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/animations-reanimated@workspace:code/core/animations-reanimated"
-  dependencies:
-    "@tamagui/build": "npm:1.122.6"
-  languageName: unknown
-  linkType: soft
+"@tamagui/animations-reanimated@npm:1.122.6":
+  version: 1.122.6
+  resolution: "@tamagui/animations-reanimated@npm:1.122.6"
+  checksum: 10/60dded61dda7a2a4c5d8b899cf8a911abdac1498e12593879838362b662c572fa680042a0903f740772349a64b3cbb102a24cb158a8b8e7c514a2417c8e71569
+  languageName: node
+  linkType: hard
 
 "@tamagui/aria-hidden@npm:1.122.6, @tamagui/aria-hidden@workspace:code/core/aria-hidden":
   version: 0.0.0-use.local
