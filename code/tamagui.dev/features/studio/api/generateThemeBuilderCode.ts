@@ -45,7 +45,7 @@ const builtThemes = createThemes({
   ${includeComponentThemes === false ? `componentThemes: defaultComponentThemes,` : ``}
 
   base: {
-    palettes: {
+    palette: {
       dark: darkPalette,
       light: lightPalette,
     },
@@ -69,7 +69,7 @@ const builtThemes = createThemes({
   },
 
   accent: {
-    palettes: {
+    palette: {
       dark: ${arrayToJS(palettesOut.dark_accent)},
       light: ${arrayToJS(palettesOut.light_accent)},
     },
