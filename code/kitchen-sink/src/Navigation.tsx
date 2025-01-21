@@ -40,7 +40,17 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
 }) => {
   //NOTE: Components using Flatlist can't have a ScrollView wrapper. This breaks scrolling on Android.
   if (
-    ['FlatGrid', 'ChatList', 'List', 'IconTitleSwitch', 'IconTitleSwitch'].includes(name)
+    [
+      'FlatGrid',
+      'ChatList',
+      'List',
+      'IconTitleSwitch',
+      'IconTitleSwitch',
+      'AvatarsGrouped',
+      'RoundedAvatars',
+      'CircularAvatarsWithCustomIcons',
+      'RoundedAvatarsWithCustomIcons',
+    ].includes(name)
   ) {
     return (
       <View p="$4" flex={1} bg="$background">
