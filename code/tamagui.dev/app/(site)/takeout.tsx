@@ -1,7 +1,15 @@
 import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image-next'
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { setTintIndex, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Dot,
+  Hammer,
+  PlayCircle,
+  X,
+} from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useLoader } from 'one'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
@@ -19,6 +27,7 @@ import {
   AnimatePresence,
   Button,
   Circle,
+  EnsureFlexed,
   H2,
   Input,
   Paragraph,
@@ -28,6 +37,7 @@ import {
   Stack,
   Tabs,
   Theme,
+  View,
   XStack,
   YStack,
   composeRefs,
@@ -50,6 +60,7 @@ import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
+import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 
 export const loader = async () => {
   try {
@@ -65,6 +76,7 @@ const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 export default function TakeoutPage() {
   const { starter, bento } = useLoader(loader)
   const store = useTakeoutStore()
+  const tint = useTint()
 
   return (
     <YStack maw="100%">
@@ -84,6 +96,8 @@ export default function TakeoutPage() {
           ],
         }}
       />
+
+      <PageThemeCarousel />
 
       <ThemeTintAlt>
         <YStack
@@ -224,12 +238,13 @@ export default function TakeoutPage() {
             <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
               <ThemeTintAlt>
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a production-ready stack that chooses reliable technology and
-                  gives you everything you need for most user-based apps.
+                  Takeout is a production-ready base stack that includes everything you
+                  need for apps with a user-system. It funds the OSS development of
+                  Tamagui.
                 </Paragraph>
 
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  It shares a large percent of code between native and web, while
+                  Takeout shares a high % of code between native and web, while
                   maintaining a high bar for UX and performance. Building off our OSS
                   starter (<CodeInline>npm create tamagui</CodeInline>), we add Supabase,
                   tRPC, Zod, custom themes, screens, a user system and common flows, and

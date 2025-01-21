@@ -178,33 +178,27 @@ const HeroContents = memo(function HeroContents() {
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
           <H1
             ta="left"
-            size="$10"
             // animation="lazy"
             // enterStyle={{
             //   y: -10,
             //   o: 0,
             // }}
+            size="$10"
+            lh={45}
             maw={500}
+            mah={400}
             pos="relative"
-            // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
             $gtSm={{
-              mx: 0,
-              maxWidth: 800,
-              size: '$14',
-              h: 250,
-              ta: 'center',
-              als: 'center',
+              scale: 1.1,
+              m: '10%',
             }}
             $gtMd={{
-              maxWidth: 900,
-              size: '$15',
-              h: 310,
+              scale: 1.2,
+              m: '2%',
             }}
             $gtLg={{
-              size: '$16',
-              lh: 146,
-              maxWidth: 1200,
-              h: 310,
+              scale: 2,
+              my: '5%',
             }}
           >
             <Text
@@ -405,22 +399,22 @@ const Tag = styled(Text, {
   mx: '$-1',
   cursor: 'pointer',
   color: '$color11',
-  bg: '$color4',
+  bg: '$background02',
 
   hoverStyle: {
     color: '$color',
-    bg: '$color4',
+    bg: '$background04',
   },
 
   variants: {
     active: {
       true: {
         color: '$color',
-        bg: '$color4',
+        bg: '$background06',
 
         hoverStyle: {
           color: '$color',
-          bg: '$color5',
+          bg: '$background08',
         },
       },
     },
@@ -432,19 +426,19 @@ const HeroText = styled(Text, {
 
   $sm: {
     t: 0,
-    l: -4,
+    l: -2,
   },
 
   $gtSm: {
-    t: 2,
+    t: 1,
   },
 
   $gtMd: {
-    t: 4,
+    t: 3,
   },
 
   $gtLg: {
-    t: 8,
+    t: 7,
   },
 })
 
@@ -456,7 +450,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
       <YStack fullscreen>
         <HeroText
           className="clip-text rainbow grain"
-          l={-4}
+          l={-3}
           o={0.5}
           $sm={{ l: 0 }}
           dangerouslySetInnerHTML={{
@@ -480,12 +474,12 @@ const TextWithEffects = ({ text }: { text: string }) => {
 
         <ThemeTintAlt offset={3}>
           <HeroText
-            l={-3}
+            l={-2}
             className="mask-gradient-up"
             mixBlendMode="hard-light"
             pe="none"
             col="$color9"
-            $sm={{ l: 1.5 }}
+            $sm={{ l: 1 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}

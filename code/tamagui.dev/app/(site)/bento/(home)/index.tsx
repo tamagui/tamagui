@@ -37,6 +37,7 @@ import { getProductsForServerSideRendering } from '~/features/site/purchase/serv
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { ComponentSection, BentoStore } from '~/components/ComponentSection'
+import { PageThemeCarousel } from '../../../../features/site/PageThemeCarousel'
 
 export const loader = async () => {
   try {
@@ -78,6 +79,8 @@ export default function BentoPage() {
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
       </Theme>
+
+      <PageThemeCarousel />
 
       {/* <BentoFrond /> */}
 

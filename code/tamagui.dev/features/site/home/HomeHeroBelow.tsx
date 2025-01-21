@@ -51,10 +51,12 @@ export const HeroBelowContent = memo(() => {
         }}
       >
         <Section theme="pink" onHoverIn={() => setHovered(0)}>
-          <IconStack>
-            <Code size={16} color="var(--color9)" />
-          </IconStack>
-          <TitleLink href="/docs/core/configuration">Core</TitleLink>
+          <XStack alignItems="center" gap="$4">
+            <IconStack>
+              <Code size={12} color="var(--color9)" />
+            </IconStack>
+            <TitleLink href="/docs/core/configuration">Core</TitleLink>
+          </XStack>
           <Paragraph o={0.7} size="$5">
             A style library for React and/or React Native with a large typed superset of
             the React Native style API, with no outside dependencies in about 24Kb.
@@ -62,10 +64,12 @@ export const HeroBelowContent = memo(() => {
         </Section>
 
         <Section theme="gray" onHoverIn={() => setHovered(1)}>
-          <IconStack>
-            <Cpu size={16} color="var(--color9)" />
-          </IconStack>
-          <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
+          <XStack alignItems="center" gap="$4">
+            <IconStack>
+              <Cpu size={16} color="var(--color9)" />
+            </IconStack>
+            <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
+          </XStack>
           <Paragraph o={0.7} size="$5">
             A smart optimizer that makes your app fast with partial analysis, extracting
             CSS, flattening your tree, and removing code. Next, Webpack, Vite, Babel,
@@ -74,10 +78,12 @@ export const HeroBelowContent = memo(() => {
         </Section>
 
         <Section theme="red" onHoverIn={() => setHovered(2)}>
-          <IconStack>
-            <Layers size={16} color="var(--color9)" />
-          </IconStack>
-          <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
+          <XStack alignItems="center" gap="$4">
+            <IconStack>
+              <Layers size={16} color="var(--color9)" />
+            </IconStack>
+            <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
+          </XStack>
           <Paragraph o={0.7} size="$5">
             All the components you'd want, cross platform and adaptable to each other.
             Compound Component APIs, styled or unstyled, easy to size, theme, and more.
@@ -96,6 +102,8 @@ const TitleLink = ({ href, children, ...props }: any) => {
           cursor="pointer"
           fontFamily="$silkscreen"
           bg="$color2"
+          px="$1.5"
+          py="$1.5"
           hoverStyle={{
             backgroundColor: '$color3',
           }}
