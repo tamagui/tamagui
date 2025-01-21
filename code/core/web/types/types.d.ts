@@ -1578,6 +1578,12 @@ export type UniversalAnimatedNumber<A> = {
     setValue(next: number, config?: AnimatedNumberStrategy, onFinished?: () => void): void;
     stop(): void;
 };
+export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (opts: {
+    value: V;
+    hostRef: RefObject<HTMLElement | View>;
+}, onValue: (current: number) => void) => void;
+export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
+export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
     supportsCSSVars?: boolean;
@@ -1586,12 +1592,9 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     ResetPresence: (props: {
         children?: any;
     }) => JSX.Element;
-    useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
-    useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
-    useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(opts: {
-        value: V;
-        hostRef: RefObject<HTMLElement | View>;
-    }, onValue: (current: number) => void) => void;
+    useAnimatedNumber: UseAnimatedNumber;
+    useAnimatedNumberStyle: UseAnimatedNumberStyle;
+    useAnimatedNumberReaction: UseAnimatedNumberReaction;
     animations: A;
     View?: any;
     Text?: any;
