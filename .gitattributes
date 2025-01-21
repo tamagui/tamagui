@@ -6,4 +6,4 @@ code/takeout/features/** filter=crypt-takeout diff=crypt-takeout merge=crypt-tak
 code/takeout/ui/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
 code/takeout/hooks/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
 code/takeout/helpers/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
-
+code/tamagui.dev/app/api/theme/generate+api.tsx filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
