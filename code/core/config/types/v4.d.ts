@@ -81,7 +81,6 @@ export declare const defaultConfig: {
         b: "bottom";
         bg: "backgroundColor";
         content: "alignContent";
-        flex: "flexDirection";
         grow: "flexGrow";
         items: "alignItems";
         justify: "justifyContent";
