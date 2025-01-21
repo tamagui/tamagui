@@ -1,9 +1,4 @@
-v4 config:
-
-- add new doc page just for it
-  - document createThemes there simply
-  - document shorthands etc
-  - document simple themes setup
+- onlyAllowShorthands regression?
 
 2.0:
   - remove themeBuilder from plugins in favor of just using ENV to tree shake

@@ -182,7 +182,7 @@ export interface TamaguiCustomConfig {
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
 type OnlyAllowShorthandsSetting = boolean | undefined;
-export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
+export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
@@ -194,7 +194,6 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
-    onlyAllowShorthands: G;
     settings: H;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
@@ -203,14 +202,13 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A, B, C, D, E, F, G, I> = {
+type ConfProps<A, B, C, D, E, F, I> = {
     tokens?: A;
     themes?: B;
     shorthands?: C;
     media?: D;
     animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined;
     fonts?: F;
-    onlyAllowShorthands?: G;
     settings?: I;
 };
 type EmptyTokens = {
@@ -229,7 +227,7 @@ type EmptyTamaguiSettings = {
     allowedStyleValues: false;
     autocompleteSpecificTokens: 'except-special';
 };
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -534,7 +532,7 @@ export type GetCSS = (opts?: {
     exclude?: 'themes' | 'design-system' | null;
     sinceLastCall?: boolean;
 }) => string;
-export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, I>, 'tokens'> & {
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, I extends GenericTamaguiSettings = GenericTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, I>, 'tokens'> & {
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
@@ -724,7 +722,7 @@ export type WithThemeValues<T extends object> = {
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
-type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands'];
+type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands'];
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };

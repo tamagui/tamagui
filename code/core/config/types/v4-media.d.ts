@@ -9,25 +9,25 @@ export declare const breakpoints: {
 };
 export declare const media: {
     readonly '2xl': {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly xl: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly lg: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly md: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly sm: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly xs: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly '2xs': {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
 };
 export declare const mediaQueryDefaultActive: {

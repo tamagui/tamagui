@@ -103,7 +103,16 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
     }>, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    Header: React.ForwardRefExoticComponent<any>;
+    Header: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").TextNonStyleProps, "unstyled" | "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }>> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>, "ref"> & React.RefAttributes<import("@tamagui/web").TamaguiTextElement>>;
     Content: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentExtraProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentExtraProps & void, import("@tamagui/web").StackStyleBase, {

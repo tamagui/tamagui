@@ -869,7 +869,7 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
         };
     };
     silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
-}, boolean | undefined, {
+}, {
     mediaQueryDefaultActive: {
         xl: boolean;
         lg: boolean;

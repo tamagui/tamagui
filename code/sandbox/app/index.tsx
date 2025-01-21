@@ -5,7 +5,7 @@ import { getUrlFromPath } from '~/utils/getFromPath'
 
 export function HomePage() {
   return (
-    <ScrollView horizontal minHeight="100%">
+    <ScrollView horizontal mih="100%">
       <XStack>
         <YStack maw={250}>
           <H4>One-off</H4>

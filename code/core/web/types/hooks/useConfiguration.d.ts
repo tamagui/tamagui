@@ -24,6 +24,7 @@ export declare const useConfiguration: () => {
     maxDarkLightNesting?: number | undefined;
     shouldAddPrefersColorThemes?: boolean | undefined;
     themeClassNameOnRoot?: boolean | undefined;
+    onlyAllowShorthands?: boolean | undefined;
     fonts: {
         [x: string]: import("..").GenericFont<string | number | symbol>;
     };
@@ -55,7 +56,6 @@ export declare const useConfiguration: () => {
             [key: string]: string | number;
         };
     };
-    onlyAllowShorthands: boolean | undefined;
     settings: import("..").GenericTamaguiSettings & Omit<import("..").GenericTamaguiSettings, keyof import("..").GenericTamaguiSettings>;
     tokens: Omit<{
         [x: string]: {
