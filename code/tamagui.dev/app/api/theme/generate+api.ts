@@ -35,6 +35,7 @@ export default apiRoute(async (req) => {
 
   const body = await readBodyJSON(req)
   const prompt = body.prompt?.trim()
+  const lastReply = body.lastReply?.trim() || ''
   const scheme = body.scheme?.trim() || 'unknown'
   const model = body.model?.trim() || 'chat'
 
@@ -141,8 +142,8 @@ Then accent would have hue all set to green.
 
 Some notes:
 
+  - Tend to use more colors, if the theme allows it. Having 4-5 different hue's can look nice.
   - Values always go light,dark. Make sure light is first, dark is second.
-  - If you want colorful text, don't make the luminosity too close to the edge, something like 0.6 and 0.7 rather than 0.9 and 0.95.
   - If there are three colors, you can use base background for one, base foreground for another, and accent for the third.
   - For high contrast themes, ensure that the luminosity for 0 index and 9 index are more spread apart.
   - In general the light 0 index luminosity should be close to 1 unless its a very vibrant theme, rule of thumb
@@ -151,7 +152,7 @@ Some notes:
   - For strictly black and white themes, ensure there's no saturation on base or accent.
   - In general for text to look good you need your 10 and 11 index to contrast well the 0 and 9 index, for example a light theme generally wants high luminosity for 0 and 9, and low luminosity for 10 and 11.
   - You almost always want the hue of the 0-9 to match, and the hue of the 10-11 to match, but they can be different from each other.
-  - Ensure the accent foreground is separated a good amount from background, or else it will look bad.
+  - Ensure the accent foreground is separated a little from background for contrast.
 
 Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,
 and adds an anchor at index 3 to make borders a bit more subtle (theme 2):
@@ -268,7 +269,9 @@ ${
     : `After your plan please separate with a "---" before the structured data.`
 }
 
-BE SURE that you return ONLY the structured data after you think, with no english text, just a data with "###" separating base and accent.
+Please respond only with the structured data after your plan.
+
+${lastReply ? `The last user prompt was: "${lastReply}"` : ''}
 
 The user prompt is "${prompt}".
 `,
@@ -276,9 +279,10 @@ The user prompt is "${prompt}".
 
   try {
     console.info(`Generated: ${text}`)
-    const json = outputToJSON(text)
+    const { base, accent, cleaned } = outputToJSON(text)
     return Response.json({
-      result: json,
+      result: { base, accent },
+      reply: cleaned,
     })
   } catch (err) {
     throw Response.json(
@@ -299,17 +303,19 @@ function outputToJSON(text: string) {
     throw new Error(`Invalid format, no i: `)
   }
 
-  const [base, accent] = text
+  const cleaned = text
     .replace(/.*---/, '')
     .replace(/---.*/, '')
     // remove code blocks around it
     .slice(startOfData)
-    .split('###')
+
+  const [base, accent] = cleaned.split('###')
 
   const baseAnchors = parseAnchors(base.trim())
   const accentAnchors = parseAnchors(accent.trim())
 
   return {
+    cleaned,
     base: baseAnchors,
     accent: accentAnchors,
   }
@@ -347,7 +353,6 @@ function parseDarkLight(name: 'h' | 's' | 'l', line: string, index: number) {
       index <= 9 &&
       (name === 'h' || name === 's') && {
         syncLeft: true,
-        sync: true,
       }),
     ...(index === 10 &&
       (name === 'h' || name === 's') && {
@@ -356,7 +361,6 @@ function parseDarkLight(name: 'h' | 's' | 'l', line: string, index: number) {
     ...(index === 11 &&
       (name === 'h' || name === 's') && {
         syncLeft: true,
-        sync: true,
       }),
   }
 }
