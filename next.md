@@ -1,5 +1,6 @@
-2.0:
+v2
 
+  - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
   - remove componentName, just allow setting default theme: ""
@@ -14,14 +15,14 @@
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
 
-- v3
+- v3 - aim for fast follow
+
+  - add animation api
   - tokens => variables (remove nested groups)
   - theme => variables
-  - shorthands can also take values:
-  - {
-    block: { display: 'block' },
-    'inline-block': { display: 'inline-block' },
-  }
+ - remove component themes:
+  - just can set theme="surface2" and have "generic" themes
+  - remove `name` from styled() then too
 
 
 is this a bug? the is_static conditional is odd, maybe backward
@@ -30,10 +31,6 @@ is this a bug? the is_static conditional is odd, maybe backward
 ---
 
 v3
-
-remove component themes:
- - just can set theme="surface2" and have "generic" themes
- - remove `name` from styled() then too
 
 generic function to allow new syntaxes, eg flat mode
 

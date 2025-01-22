@@ -36,9 +36,13 @@ If you like it but want to make some changes, you can [copy and paste the source
 
 ### Default Configuration
 
+You can take or leave as much of the default configuration as you please. Each part is exported separately, or all together as `defaultConfig`.
+
 #### Themes
 
-Let's see how `defaultThemes` is defined:
+Config v4 has a new helper function `createThemes`, an opinionated way to generate a suite of themes. It also comes with default themes that include minimal grayscale light and dark themes, and an inverted "accent" theme.
+
+It's easiest to get a feel for both createThemes the default themes by reading the source for how `defaultThemes` are defined:
 
 ```tsx fileName=themes.ts
 import * as Colors from '@tamagui/colors'
@@ -201,9 +205,15 @@ export const themes: TamaguiThemes =
     : (generatedThemes as any)
 ```
 
-This will generate a large amount of themes for you, including some default component themes. If you don't want components like Button and Input to have custom styling, you can remove `componentThemes` and they will default to not having any color styling (you can further add the `unstyled` prop to remove all styling).
+So what have we done?
 
-We will be adding more to this shortly with a visual guide to your themes.
+- `base` will always generate `light` and `dark` as your root themes. We plan to add support for generating just one base theme, but you can manually remove either light or dark if you please.
+- Our `base` themes are grayscale, defined by their palettes.
+- The `accent` option is an opinionated way to have a "contrasting theme". When set, it generates a few things:
+  - `light_accent` and `dark_accent` themes
+  - `$accent1` through `$accent12` on the base themes
+- `childrenThemes` allows us to set up some sub-themes easily, this is especially useful for when you want to make an area look like an error, success, or warning state. That's why we default to setting `green`, `yellow`, and `red`. Of course, you can swap these out for whatever you like.
+- We also are setting `componentThemes` to `defaultComponentThemes`, which will generate for us default styling for the Tamagui UI components. If you prefer to not have default component themes, you can leave this out.
 
 #### Settings
 
@@ -236,11 +246,11 @@ The new media queries in v4 are also more simplified and aligned to Tailwind:
   ]}
 />
 
-On the server, only xs and 2xs default to `true` to align generally give you a [mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design) setup, but of course you can change that. This only really affects non-style properties, like `useMedia()`, because Tamagui generates proper SSR-safe CSS for media queries.
+On the server, only xs and 2xs default to `true` to align generally give you a [mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design) setup, but of course you can change that. This only really affects `useMedia()`, as Tamagui generates proper SSR-safe CSS for media queries on the server for any style properties.
 
 #### Shorthands
 
-Config v4 has fewer shorthands, and aligns shorthands to Tailwind for familiarity
+Config v4 has fewer shorthands, and aligns shorthands to Tailwind for familiarity:
 
 <PropsTable
   data={[
@@ -283,7 +293,7 @@ Config v4 has fewer shorthands, and aligns shorthands to Tailwind for familiarit
 
 #### Tokens
 
-Tokens are defined as:
+Tokens default tokens are defined as:
 
 ```tsx
 export const size = {
@@ -350,7 +360,7 @@ export const radius = {
 }
 ```
 
-Note that `color` tokens aren't defined, instead we are just using themes.
+Note that `color` tokens aren't defined, instead we are just using themes. This is how Tamagui knows what your default size is, for example `radius` default is "4", as it matches in value. In the next major of Tamagui we are going to remove this behavior in favor of something more intuitive and simple.
 
 #### Fonts
 
@@ -363,4 +373,4 @@ Only a `body` and `heading` font are exported, which both use "system" font fami
   ]}
 />
 
-You can create your own system font using the exported `createSystemFont` helper.
+You can create your own system font using the exported `createSystemFont` helper, or of course swap out your own fonts altogether.
