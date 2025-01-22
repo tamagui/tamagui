@@ -153,6 +153,11 @@ const codinscapeusers = ['NathanBeesley']
 const callstackusers = ['troZee']
 
 export const whitelistBentoUsernames = new Set([
+  // team
+  'baronha',
+  'poteboy',
+  'zetavg',
+
   'Bankilo',
   'meal',
   'Bar-Cet',

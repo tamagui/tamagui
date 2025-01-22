@@ -1,6 +1,6 @@
 import { Input } from '@tamagui/input'
 import { useRef, useState } from 'react'
-import { Button, Spinner, Theme, XStack } from 'tamagui'
+import { Button, Spinner, Theme, useThemeName, XStack } from 'tamagui'
 import { toastController } from '../ToastProvider'
 import { useThemeBuilderStore } from './store/ThemeBuilderStore'
 
@@ -8,6 +8,7 @@ export const StudioAIBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const store = useThemeBuilderStore()
   const [isGenerating, setGenerating] = useState(false)
+  const themeName = useThemeName()
 
   const generate = async () => {
     toastController.show(`Generating...`)
@@ -31,9 +32,12 @@ export const StudioAIBar = () => {
     }, 1000)
 
     try {
+      const prompt = inputRef.current?.value ?? ''
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
-          prompt: inputRef.current?.value ?? '',
+          prompt,
+          scheme: themeName.startsWith('dark') ? 'dark' : 'light',
+          model: prompt[0] === '!' ? 'reasoning' : 'chat',
         }),
         headers: {
           'Content-Type': 'application/json',

@@ -70,44 +70,39 @@ export default function ThemePage() {
 
       <Dialogs />
 
-      <PreviewTheme key={previewKey}>
-        <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
-          <YStack
-            gap="$4"
-            mt="$-4"
-            p="$8"
-            f={1}
-            maw={1300}
-            group="content"
-            $md={{
-              maw: 900,
-              p: '$4',
-            }}
-          >
-            <StudioAIBar />
-            <StudioPreviewComponentsBar scrollView={document.documentElement} />
-            <StudioPreviewComponents />
-          </YStack>
-        </XStack>
-      </PreviewTheme>
+      <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
+        <YStack
+          gap="$4"
+          mt="$-4"
+          p="$7"
+          f={1}
+          maw={1300}
+          group="content"
+          $md={{
+            maw: 900,
+            p: '$4',
+          }}
+        >
+          <StudioAIBar />
+          <PreviewTheme key={previewKey}>
+            <YStack gap="$4">
+              <StudioPreviewComponentsBar scrollView={document.documentElement} />
+              <StudioPreviewComponents />
+            </YStack>
+          </PreviewTheme>
+        </YStack>
+      </XStack>
     </YStack>
   )
 }
 
-const PreviewTheme = (props: { children: any }) => {
-  const { name: baseStepThemeName } = useBaseThemePreview()
+const PreviewTheme = (props: { children: any; noKey?: any }) => {
+  const { name: baseStepThemeName, key } = useBaseThemePreview()
 
   return (
-    <Theme
-      key={baseStepThemeName.replace(/(dark|light)_?/, '')}
-      forceClassName
-      name={baseStepThemeName}
-      debug
-    >
+    <Theme key={props.noKey ? '' : key} forceClassName name={baseStepThemeName}>
       <ThemeNameEffect />
-      <YStack bg="$background" f={1} pt={20 + 60} mt={-60} pb={50}>
-        {props.children}
-      </YStack>
+      <YStack f={1}>{props.children}</YStack>
     </Theme>
   )
 }
