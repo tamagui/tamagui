@@ -40,13 +40,11 @@ export default function ThemePage() {
 
   useEffect(() => {
     // give it a bit to load many dynamic charts that animate etc
-    const tm = setTimeout(() => {
-      store.load(params.state as string | undefined).then(() => {
-        startTransition(() => {
-          setLoaded(true)
-        })
+    store.load(params.state as string | undefined).then(() => {
+      startTransition(() => {
+        setLoaded(true)
       })
-    }, 250)
+    })
 
     const onSave = () => {
       router.setParams({
@@ -66,7 +64,7 @@ export default function ThemePage() {
 
   return (
     <YStack>
-      {loaded && <ThemeBuilderModal />}
+      <ThemeBuilderModal />
 
       <Dialogs />
 
@@ -87,6 +85,7 @@ export default function ThemePage() {
           <PreviewTheme key={previewKey}>
             <YStack gap="$4">
               <StudioPreviewComponentsBar scrollView={document.documentElement} />
+
               <StudioPreviewComponents />
             </YStack>
           </PreviewTheme>
@@ -114,7 +113,7 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
-  const [expanded, setExpanded] = useState(false)
+  // const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack
@@ -126,13 +125,13 @@ const ThemeBuilderModal = memo(() => {
       w={550}
       mah="90vh"
       zi={100_000}
-      $md={{
-        x: expanded ? 0 : 500,
-      }}
-      $sm={{
-        x: expanded ? '90%' : 0,
-        maxWidth: '100%',
-      }}
+      // $md={{
+      //   x: expanded ? 0 : 500,
+      // }}
+      // $sm={{
+      //   x: expanded ? '90%' : 0,
+      //   maxWidth: '100%',
+      // }}
     >
       <YStack
         fullscreen
@@ -147,17 +146,17 @@ const ThemeBuilderModal = memo(() => {
         bc="$color6"
         bg="$color2"
       >
-        <Button
+        {/* <Button
           size="$2"
           t="$-3"
           l="$3"
           circular
-          icon={expanded ? ChevronRight : ChevronLeft}
-          onPress={() => setExpanded(!expanded)}
+          // icon={expanded ? ChevronRight : ChevronLeft}
+          // onPress={() => setExpanded(!expanded)}
           $gtMd={{
             dsp: 'none',
           }}
-        ></Button>
+        ></Button> */}
 
         <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>

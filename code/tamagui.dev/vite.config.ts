@@ -19,6 +19,8 @@ const resolve = (path: string) => {
 
 const include = [
   '@ai-sdk/deepseek',
+  'secure-json-parse',
+  '@supabase/postgres-js',
   'ai',
   '@docsearch/react',
   '@leeoniya/ufuzzy',
@@ -84,7 +86,9 @@ export default {
   plugins: [
     one({
       react: {
-        compiler: optimize,
+        compiler: true,
+        // compiler: optimize,
+        // scan: process.env.NODE_ENV === 'development',
       },
 
       deps: {

@@ -1,10 +1,11 @@
 import { memo } from 'react'
-import { YStack } from 'tamagui'
-
+import { View, XStack, YStack } from 'tamagui'
 import { NoticeParagraph, StudioNotice } from '~/features/studio/StudioNotice'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { BuildThemeItemFrame } from '../views/BuildThemeItemFrame'
+import { Select, SelectItem } from '../../../components/Select'
+import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 import { PaletteView } from '../views/PaletteView'
+import { Theme } from 'tamagui'
 
 type StepBaseThemesProps = {
   previewMode?: boolean
@@ -16,19 +17,83 @@ export const StepBaseThemes = memo((_props: StepBaseThemesProps) => {
 
 const Palettes = memo(() => {
   const store = useThemeBuilderStore()
+  const themeBuilder = useThemeBuilderStore()
 
   return (
-    <YStack gap="$3" py="$3" px="$2">
+    <YStack btrr="$8" btlr="$8" ov="hidden" gap="$3" py="$3" px="$2">
       {Object.entries(store.palettes).map(([name, palette]) => {
+        const isAccent = name === 'accent'
         return (
-          <BuildThemeItemFrame key={name} label={name}>
-            <PaletteView
-              onUpdate={(next) => {
-                store.updatePalette(name, next)
-              }}
-              palette={palette}
-            />
-          </BuildThemeItemFrame>
+          <FieldsetWithLabel
+            key={name}
+            label={name}
+            afterLabel={
+              <XStack gap="$2" ai="center">
+                {isAccent && (
+                  <Select
+                    size="$2"
+                    defaultValue={themeBuilder.accentSetting}
+                    onValueChange={(value) => {
+                      themeBuilder.setAccentSetting(value as any)
+                    }}
+                  >
+                    <SelectItem value="off" index={0}>
+                      Off
+                    </SelectItem>
+                    <SelectItem value="inverse" index={1}>
+                      Inverse
+                    </SelectItem>
+                    <SelectItem value="color" index={2}>
+                      Color
+                    </SelectItem>
+                  </Select>
+                )}
+              </XStack>
+            }
+          >
+            <YStack
+              // {...(Boolean(
+              //   disabled || (isAccent && themeBuilder.accentSetting !== 'color')
+              // ) && {
+              //   o: 0.25,
+              //   pe: 'none',
+              // })}
+              gap="$4"
+            >
+              {/* <Theme name="white">
+                <View
+                  br="$6"
+                  pos="absolute"
+                  t={0}
+                  r={-10}
+                  l={-10}
+                  h={126}
+                  bg="$color1"
+                  zi={0}
+                />
+              </Theme> */}
+
+              <PaletteView
+                onUpdate={(next) => {
+                  store.updatePalette(name, next)
+                }}
+                palette={palette}
+              />
+
+              {/* <Theme name="black">
+                <View
+                  br="$6"
+                  pos="absolute"
+                  b={0}
+                  r={-10}
+                  l={-10}
+                  h={126}
+                  bg="$color1"
+                  zi={-1}
+                />
+              </Theme> */}
+            </YStack>
+          </FieldsetWithLabel>
         )
       })}
     </YStack>

@@ -128,10 +128,10 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
   }
 
   return (
-    <XStack gap="$4" ai="center">
+    <XStack ml={20} gap="$4" ai="center">
       <Popover hoverable>
         <Popover.Trigger>
-          <Stack width="$3" height="$3" ov="hidden" br="$10" bw={1} bc="$color10">
+          <Stack y={4} width={24} height={24} ov="hidden" br="$10" bw={1} bc="$color10">
             <YStack
               userSelect="none"
               pointerEvents="none"
@@ -217,7 +217,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             <Slider.Track
               bw={0.5}
               bc="$color12"
-              width={150}
+              width={160}
               style={{
                 background: hueLinearGradient,
               }}
@@ -248,7 +248,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               <Slider.Track
                 bw={0.5}
                 bc="$color12"
-                width={100}
+                width={120}
                 style={{
                   background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
                 }}
@@ -275,7 +275,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 <Slider.Track
                   bw={0.5}
                   bc="$color12"
-                  width={100}
+                  width={120}
                   style={{
                     background: `linear-gradient(to right, #000, #fff)`,
                   }}

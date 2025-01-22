@@ -117,6 +117,7 @@ export const ChatScreen = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
+      bg="$color3"
     >
       <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
         <XStack jc="space-between">

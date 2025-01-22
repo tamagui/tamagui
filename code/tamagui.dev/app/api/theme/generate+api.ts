@@ -1,17 +1,10 @@
-import { createDeepSeek } from '@ai-sdk/deepseek'
+// import { createDeepSeek } from '@ai-sdk/deepseek'
+import { xai } from '@ai-sdk/xai'
 import { generateText } from 'ai'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
-
-if (!process.env.DEEPSEEK_API_KEY) {
-  console.warn(`No DeepSeek API key!`)
-}
-
-const deepseek = createDeepSeek({
-  apiKey: process.env.DEEPSEEK_API_KEY ?? '',
-})
 
 export default apiRoute(async (req) => {
   const { supabase } = await ensureAuth({ req })
@@ -72,8 +65,12 @@ export default apiRoute(async (req) => {
   console.info(`Generating (scheme: ${scheme}, model: ${model}): ${prompt}...`)
 
   const { text } = await generateText({
-    model: deepseek(`deepseek-${model}`),
+    model: xai('grok-2-1212'),
+    // model: deepseek(`deepseek-${model}`),
     maxTokens: 4_000,
+    onStepFinish(event) {
+      console.info(event.text)
+    },
     prompt: `Help generate a Tamagui theme configuration for us. We need two sets of anchors,
 which are just objects that define index, hue, sat, and lum for both light and dark modes.
 
@@ -145,12 +142,7 @@ Then accent would have hue all set to green.
 Some notes:
 
   - Values always go light,dark. Make sure light is first, dark is second.
-  - Luminosity for base dark themes background (index 0) should generally be low, light should be high.
-  - Luminosity for base light theme foreground (index 10, 11) should generally be high, for dark low.
   - If you want colorful text, don't make the luminosity too close to the edge, something like 0.6 and 0.7 rather than 0.9 and 0.95.
-  - For a more colorful background you also want the lum values at index 0/9 to be more towards the middle.
-  - For example if they said "bright neon" you'd probably set the 0 anchor luminosity to be dark "0.4" and light "0.6" so the background of the background appear brighter.
-  - Don't be afraid to make the base theme have stronger luminosity/sat, for example if the user asks for a sports team, make the background a bit more luminous and saturated to match it exactly, and only make the accent theme use the secondary color.
   - If there are three colors, you can use base background for one, base foreground for another, and accent for the third.
   - For high contrast themes, ensure that the luminosity for 0 index and 9 index are more spread apart.
   - In general the light 0 index luminosity should be close to 1 unless its a very vibrant theme, rule of thumb
@@ -159,9 +151,6 @@ Some notes:
   - For strictly black and white themes, ensure there's no saturation on base or accent.
   - In general for text to look good you need your 10 and 11 index to contrast well the 0 and 9 index, for example a light theme generally wants high luminosity for 0 and 9, and low luminosity for 10 and 11.
   - You almost always want the hue of the 0-9 to match, and the hue of the 10-11 to match, but they can be different from each other.
-  - You never want the 0 and 9 luminosity to be too close together, even low contrast themes should spread luminosity on them at least 0.4 or so.
-  - If the user wants more subtle or more strong border color, then you want to add one additional anchor, at index 2, which is where borders are generally retrieved from. Make it closer or further away from the 0 anchor to make it more subtle or less, respectively.
-  - Generally you want the "9" index to be exact match for specific colors you want to show in the UI. EG if you are doing pink and yellow for easter, try and make 9 index be the strongest pink/green.
   - Ensure the accent foreground is separated a good amount from background, or else it will look bad.
 
 Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,

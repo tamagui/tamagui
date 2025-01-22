@@ -71,51 +71,37 @@ export const ColorPaletteListItem = ({
                 ))}
               </XStack>
             )}
-            <XStack w="100%" h={24}>
+            <XStack o={0} w="100%" h={24}>
               {colors.map((color, index) => {
                 // const color = getColor(palette.curves, scale, index)
                 return (
-                  <Popover key={`${color}${index}`}>
-                    <Popover.Trigger asChild="except-style">
-                      <YStack
-                        f={1}
-                        ai="center"
-                        animation="bouncy"
-                        animateOnly={['transform']}
-                        ov="hidden"
-                        scale={1}
-                        bw={1}
-                        bc={colorToHex(color) as any}
-                        {...(indicateActive === index && {
-                          scale: 1.2,
-                          zi: 100,
-                          elevation: '$2',
-                          bc: '$color',
-                        })}
-                        {...(index === 0 && {
-                          bblr: '$8',
-                          btlr: '$8',
-                        })}
-                        {...(index === colors.length - 1 && {
-                          btrr: '$8',
-                          bbrr: '$8',
-                        })}
-                      >
-                        <YStack backgroundColor={colorToHex(color) as any} fullscreen />
-                      </YStack>
-                    </Popover.Trigger>
-
-                    <Popover.Content>
-                      <XStack space="$2" ai="center">
-                        <ColorPicker
-                          value=""
-                          onChange={(color) => {
-                            // state.colors.setBackgroundColor(color)
-                          }}
-                        />
-                      </XStack>
-                    </Popover.Content>
-                  </Popover>
+                  <YStack
+                    f={1}
+                    key={index}
+                    ai="center"
+                    animation="bouncy"
+                    animateOnly={['transform']}
+                    ov="hidden"
+                    scale={1}
+                    bw={1}
+                    bc={colorToHex(color) as any}
+                    {...(indicateActive === index && {
+                      scale: 1.2,
+                      zi: 100,
+                      elevation: '$2',
+                      bc: '$color',
+                    })}
+                    {...(index === 0 && {
+                      bblr: '$8',
+                      btlr: '$8',
+                    })}
+                    {...(index === colors.length - 1 && {
+                      btrr: '$8',
+                      bbrr: '$8',
+                    })}
+                  >
+                    <YStack backgroundColor={colorToHex(color) as any} fullscreen />
+                  </YStack>
                 )
               })}
             </XStack>

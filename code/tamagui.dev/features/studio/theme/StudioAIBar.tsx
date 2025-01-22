@@ -73,6 +73,9 @@ export const StudioAIBar = () => {
           w="100%"
           f={10}
           size="$6"
+          shadowColor="$shadow3"
+          shadowOffset={{ height: 2, width: 0 }}
+          shadowRadius={20}
           br="$8"
           onSubmit={generate}
           onKeyDown={(e) => {
