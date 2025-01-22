@@ -17,20 +17,22 @@ export type ThemeProviderProps = {
 }
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
+  const disableRootThemeClass =
+    props.disableRootThemeClass ?? getSetting('disableRootThemeClass')
+  const themeClassNameOnRoot =
+    props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+
   // ensure theme is attached to root body node as well to work with modals by default
   if (isClient) {
     React.useLayoutEffect(() => {
-      if (props.disableRootThemeClass) return
+      if (disableRootThemeClass) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
-      const target =
-        (props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot'))
-          ? document.documentElement
-          : document.body
+      const target = themeClassNameOnRoot ? document.documentElement : document.body
       target.classList.add(cn)
       return () => {
         target.classList.remove(cn)
       }
-    }, [props.defaultTheme, props.disableRootThemeClass, props.themeClassNameOnRoot])
+    }, [props.defaultTheme, disableRootThemeClass, themeClassNameOnRoot])
   }
 
   return (
@@ -38,7 +40,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       className={props.className}
       name={props.defaultTheme}
       // if root class disabled, force class here
-      forceClassName={!props.disableRootThemeClass}
+      forceClassName={!disableRootThemeClass && !themeClassNameOnRoot}
       // @ts-expect-error
       _isRoot
     >
