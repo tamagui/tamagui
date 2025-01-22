@@ -62,13 +62,15 @@ export default function ThemePage() {
     }
   }, [])
 
+  const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
+
   return (
     <YStack>
       {loaded && <ThemeBuilderModal />}
 
       <Dialogs />
 
-      <PreviewTheme key={`${loaded}${themeName}`}>
+      <PreviewTheme key={previewKey}>
         <StudioAIBar />
         <StudioPreviewComponentsBar scrollView={document.documentElement} />
         <StudioPreviewComponents />
@@ -81,7 +83,12 @@ const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
 
   return (
-    <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName} debug>
+    <Theme
+      key={baseStepThemeName.replace(/(dark|light)_?/, '')}
+      forceClassName
+      name={baseStepThemeName}
+      debug
+    >
       <ThemeNameEffect />
       <YStack bg="$background" f={1} pt={20 + 60} mt={-60} pb={50}>
         {props.children}

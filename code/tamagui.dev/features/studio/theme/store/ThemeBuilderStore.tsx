@@ -305,6 +305,7 @@ export class ThemeBuilderStore {
         schemes: this.schemes,
       })
     ) {
+      // this.themeSuiteId = `${Math.round(Math.random() * 100_000)}`
       this.themeSuiteVersion++
       this.save()
     }
