@@ -58,21 +58,11 @@ export const StudioAIBar = () => {
   }
 
   return (
-    <XStack
-      zi={1000}
-      data-tauri-drag-region
-      className="all ease-in ms300"
-      my="$4"
-      ml="$6"
-      mr="$12"
-      $gtMd={{
-        mr: 580,
-      }}
-    >
-      <XStack f={1} gap="$6">
+    <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
+      <XStack f={1} gap="$3">
         <Input
           ref={inputRef as any}
-          placeholder="Prompt to generate a custom theme suite with AI..."
+          placeholder="Prompt to generate themes with AI..."
           w="100%"
           f={10}
           size="$6"

@@ -300,15 +300,15 @@ export const PaletteView = memo((props: Props) => {
         />
       </XLabeledItem>
 
-      <YStack my={-12}>
+      <YStack>
         <XLabeledItem label="">
-          <XStack w={115}>
-            <Label pe="none" miw={115} jc="flex-end" size="$1" col="$color10" o={0.5}>
+          <XStack w={34}>
+            <Label pe="none" ml="auto" jc="flex-end" size="$1" col="$color10">
               Sync:
             </Label>
           </XStack>
 
-          <XStack gap="$4" ai="center" ml={10}>
+          <XStack gap="$5" ai="center" ml={35}>
             <XStack jc="space-between" w={100}>
               <SyncButtons
                 anchorKey="hue"
@@ -318,7 +318,8 @@ export const PaletteView = memo((props: Props) => {
                 nextAnchor={nextAnchor}
               />
             </XStack>
-            <XStack jc="space-between" w={80}>
+
+            <XStack jc="space-between" w={80} ml={32}>
               <SyncButtons
                 anchorKey="sat"
                 {...props}
@@ -361,7 +362,7 @@ const SyncButtons = memo(
     return (
       <>
         <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
-          <TooltipSimple label="Sync to last anchor">
+          <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
             <Button
               size={16}
               scaleIcon={1.4}
@@ -419,7 +420,7 @@ const SyncButtons = memo(
         </Theme>
 
         <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
-          <TooltipSimple label="Sync to next anchor">
+          <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
             <Button
               size={16}
               scaleIcon={1.4}
@@ -490,7 +491,7 @@ type PaletteProps = {
 
 export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
   const { colors, size = 'medium' } = props
-  const borderRadius = size === 'medium' ? 10 : 6
+  const borderRadius = size === 'medium' ? 200 : 100
 
   return (
     <XStack f={1} br={borderRadius} bw={1} bc="$color7">
@@ -503,7 +504,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
 
 // add some delay but no delay if moving across
 
-const delay = 360
+const delay = 50
 let hovered = -1
 let tm
 
@@ -551,7 +552,7 @@ const PaletteColor = memo(
     } = props
     const store = usePaletteStore(palette.name)
     const { hoveredColor, selectedColor } = store
-    const borderRadius = size === 'medium' ? 10 : 6
+    const borderRadius = size === 'medium' ? 100 : 100
     const { anchors } = palette
 
     const anchor = anchors.find((x) => x.index === index)

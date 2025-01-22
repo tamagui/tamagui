@@ -183,22 +183,22 @@ const HeroContents = memo(function HeroContents() {
             //   y: -10,
             //   o: 0,
             // }}
-            size="$10"
-            lh={45}
+            size="$11"
+            lh={61}
             maw={500}
             mah={400}
             pos="relative"
             $gtSm={{
-              scale: 1.1,
-              m: '10%',
+              scale: 1.5,
+              m: '5%',
             }}
             $gtMd={{
-              scale: 1.2,
-              m: '2%',
+              scale: 1.6,
+              m: '7%',
             }}
             $gtLg={{
               scale: 2,
-              my: '5%',
+              my: '8%',
             }}
           >
             <Text
@@ -452,7 +452,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
           className="clip-text rainbow grain"
           l={-3}
           o={0.5}
-          $sm={{ l: 0 }}
           dangerouslySetInnerHTML={{
             __html: text,
           }}
@@ -465,7 +464,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
             o={0.5}
             x={-1}
             col="$color9"
-            $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}
@@ -474,12 +472,11 @@ const TextWithEffects = ({ text }: { text: string }) => {
 
         <ThemeTintAlt offset={3}>
           <HeroText
-            l={-2}
+            l={-1}
             className="mask-gradient-up"
             mixBlendMode="hard-light"
             pe="none"
             col="$color9"
-            $sm={{ l: 1 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}
@@ -494,7 +491,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
             pe="none"
             col="$color9"
             o={0.26}
-            $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}
@@ -509,7 +505,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
             className="mask-gradient-right"
             pe="none"
             col="$color8"
-            $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}

@@ -71,9 +71,24 @@ export default function ThemePage() {
       <Dialogs />
 
       <PreviewTheme key={previewKey}>
-        <StudioAIBar />
-        <StudioPreviewComponentsBar scrollView={document.documentElement} />
-        <StudioPreviewComponents />
+        <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
+          <YStack
+            gap="$4"
+            mt="$-4"
+            p="$8"
+            f={1}
+            maw={1300}
+            group="content"
+            $md={{
+              maw: 900,
+              p: '$4',
+            }}
+          >
+            <StudioAIBar />
+            <StudioPreviewComponentsBar scrollView={document.documentElement} />
+            <StudioPreviewComponents />
+          </YStack>
+        </XStack>
       </PreviewTheme>
     </YStack>
   )

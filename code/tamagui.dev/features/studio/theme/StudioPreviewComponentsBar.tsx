@@ -18,17 +18,7 @@ import { optionValues } from './constants/demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
-    <XStack
-      zi={1000}
-      data-tauri-drag-region
-      className="all ease-in ms300"
-      mt="$4"
-      ml="$4"
-      mr="$10"
-      $gtMd={{
-        mr: 560,
-      }}
-    >
+    <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
       <XStack
         fw="wrap"
         f={1}

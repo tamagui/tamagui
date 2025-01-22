@@ -2,6 +2,7 @@ import { hsla, parseToHsla, toHex } from 'color2k'
 import { memo, useEffect, useState } from 'react'
 import {
   Input,
+  Popover,
   Separator,
   SizableText,
   Slider,
@@ -128,44 +129,63 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
 
   return (
     <XStack gap="$4" ai="center">
-      <XGroup bw={1} bc="$borderColor">
-        <Stack width="$3" height="$3" ov="hidden">
-          <YStack
-            userSelect="none"
-            pointerEvents="none"
-            pos="absolute"
-            fullscreen
-            ai="center"
-            jc="center"
-          >
-            {!props.value && <Checkerboard rotate="45deg" />}
-            <YStack fullscreen backgroundColor={hex as any} />
-          </YStack>
-        </Stack>
+      <Popover hoverable>
+        <Popover.Trigger>
+          <Stack width="$3" height="$3" ov="hidden" br="$10" bw={1} bc="$color10">
+            <YStack
+              userSelect="none"
+              pointerEvents="none"
+              pos="absolute"
+              fullscreen
+              ai="center"
+              jc="center"
+            >
+              {!props.value && <Checkerboard rotate="45deg" />}
+              <YStack fullscreen backgroundColor={hex as any} />
+            </YStack>
+          </Stack>
+        </Popover.Trigger>
 
-        {!props.disableLightness && (
-          <>
-            <Separator vertical />
-            <Input
-              disabled={props.disabled}
-              placeholder="Hex"
-              bw={0}
-              size="$3"
-              width={75}
-              als="center"
-              selectTextOnFocus
-              value={hex}
-              fontFamily="$mono"
-              onChangeText={(newText) => {
-                updateHexInput(newText)
-              }}
-              onEndEditing={() => {
-                sendUpdateHexDelayed(hex)
-              }}
-            />
-          </>
-        )}
-      </XGroup>
+        <Popover.Content
+          animation="quick"
+          elevation="$8"
+          bw={1}
+          bc="$color10"
+          padding={0}
+          enterStyle={{
+            y: -10,
+            o: 0,
+          }}
+          exitStyle={{
+            y: -10,
+            o: 0,
+          }}
+        >
+          <Popover.Arrow bw={1} bc="$color10" size="$4" />
+          {!props.disableLightness && (
+            <>
+              <Separator vertical />
+              <Input
+                disabled={props.disabled}
+                placeholder="Hex"
+                bw={0}
+                size="$3"
+                width={75}
+                als="center"
+                selectTextOnFocus
+                value={hex}
+                fontFamily="$mono"
+                onChangeText={(newText) => {
+                  updateHexInput(newText)
+                }}
+                onEndEditing={() => {
+                  sendUpdateHexDelayed(hex)
+                }}
+              />
+            </>
+          )}
+        </Popover.Content>
+      </Popover>
 
       <XStack
         ai="center"
@@ -197,7 +217,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             <Slider.Track
               bw={0.5}
               bc="$color12"
-              width={100}
+              width={150}
               style={{
                 background: hueLinearGradient,
               }}
@@ -228,7 +248,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               <Slider.Track
                 bw={0.5}
                 bc="$color12"
-                width={80}
+                width={100}
                 style={{
                   background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
                 }}
@@ -255,7 +275,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 <Slider.Track
                   bw={0.5}
                   bc="$color12"
-                  width={80}
+                  width={100}
                   style={{
                     background: `linear-gradient(to right, #000, #fff)`,
                   }}
