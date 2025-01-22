@@ -1,5 +1,5 @@
 import { memo, useRef } from 'react'
-import { XStack, YStack, useThemeName } from 'tamagui'
+import { Theme, XStack, YStack, useThemeName } from 'tamagui'
 
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
@@ -47,6 +47,9 @@ export const StudioPreviewComponents = memo(() => {
       <YStack
         f={1}
         display={'grid' as any}
+        scale={0.9}
+        w="110%"
+        transformOrigin="left top"
         $group-content={
           {
             gridTemplateColumns: `50% 50%`,
@@ -67,7 +70,7 @@ export const StudioPreviewComponents = memo(() => {
               `,
           } as any
         }
-        $group-content-gtXs={
+        $group-content-gtXxs={
           {
             gridTemplateColumns: Array(12)
               .fill(`calc(${100 / 12}% - ${extraPad}px)`)
@@ -118,7 +121,7 @@ export const StudioPreviewComponents = memo(() => {
           `,
           } as any
         }
-        $group-content-gtSm={
+        $group-content-gtXs={
           {
             gridTemplateColumns: Array(12)
               .fill(`calc(${100 / 12}% - ${extraPad}px)`)
@@ -184,7 +187,7 @@ const Contents = memo(() => {
         </Panel>
       </div>
       <div style={{ gridArea: 'overview-1' }}>
-        <Panel fileToCopyName="Overviews" initialAccent>
+        <Panel initialInverse fileToCopyName="Overviews" initialAccent>
           <Overview1 />
         </Panel>
       </div>
@@ -194,9 +197,11 @@ const Contents = memo(() => {
         </Panel>
       </div>
       <div style={{ gridArea: 'chat' }}>
-        <Panel fileToCopyName="Chat">
-          <ChatScreen />
-        </Panel>
+        <Theme name="surface3">
+          <Panel fileToCopyName="Chat">
+            <ChatScreen />
+          </Panel>
+        </Theme>
       </div>
       <div style={{ gridArea: 'user-dropdown' }}>
         <Panel fileToCopyName="UserDropdown">

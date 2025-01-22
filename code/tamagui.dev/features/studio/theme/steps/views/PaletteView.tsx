@@ -13,16 +13,18 @@ import type { XStackProps } from 'tamagui'
 import {
   Button,
   Label,
+  Popover,
   Separator,
   SizableText,
   Theme,
+  TooltipGroup,
   TooltipSimple,
   XStack,
   YStack,
   useThemeName,
 } from 'tamagui'
 import type { HSLA } from '~/features/studio/colors/ColorPicker'
-import { ColorPickerContents } from '~/features/studio/colors/ColorPicker'
+import { ColorPicker, ColorPickerContents } from '~/features/studio/colors/ColorPicker'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
@@ -220,9 +222,16 @@ export const PaletteView = memo((props: Props) => {
 
   return (
     <YStack contain="paint" p="$4" mx="$-4" mb="$0" f={1} gap="$4">
+      {/* <Theme name="white"> */}
+      <ColorPickerContents
+        disabled={!anchor}
+        value={lightPalette[hoveredItem?.value ?? 0]}
+        onChange={onChangeAnchorColor('light')}
+        shouldDim={lightDarkSynced && isDark}
+      />
+
       <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
         <StepThemeHoverablePalette
-          isActive={!isDark}
           palette={palette}
           colors={colors.light}
           onSelect={(color, index) => toggleAnchorAt(index)}
@@ -230,15 +239,7 @@ export const PaletteView = memo((props: Props) => {
       </XLabeledItem>
 
       <PaletteIndices />
-
-      <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
-        <StepThemeHoverablePalette
-          isActive={isDark}
-          palette={palette}
-          colors={colors.dark}
-          onSelect={(color, index) => toggleAnchorAt(index)}
-        />
-      </XLabeledItem>
+      {/* </Theme> */}
 
       <XLabeledItem label="">
         <YStack gap="$4">
@@ -290,57 +291,25 @@ export const PaletteView = memo((props: Props) => {
         </YStack>
       </XLabeledItem>
 
-      <XLabeledItem label="Light">
-        <ColorPickerContents
-          isActive={!isDark}
-          disabled={!anchor}
-          value={lightPalette[hoveredItem?.value ?? 0]}
-          onChange={onChangeAnchorColor('light')}
-          shouldDim={lightDarkSynced && isDark}
+      {/* <Theme name="black"> */}
+      <PaletteIndices />
+
+      <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
+        <StepThemeHoverablePalette
+          palette={palette}
+          colors={colors.dark}
+          onSelect={(color, index) => toggleAnchorAt(index)}
         />
       </XLabeledItem>
 
-      <YStack>
-        <XLabeledItem label="">
-          <XStack w={34}>
-            <Label pe="none" ml="auto" jc="flex-end" size="$1" col="$color10">
-              Sync:
-            </Label>
-          </XStack>
-
-          <XStack gap="$5" ai="center" ml={35}>
-            <XStack jc="space-between" w={100}>
-              <SyncButtons
-                anchorKey="hue"
-                {...props}
-                anchor={anchor}
-                prevAnchor={prevAnchor}
-                nextAnchor={nextAnchor}
-              />
-            </XStack>
-
-            <XStack jc="space-between" w={80} ml={32}>
-              <SyncButtons
-                anchorKey="sat"
-                {...props}
-                anchor={anchor}
-                prevAnchor={prevAnchor}
-                nextAnchor={nextAnchor}
-              />
-            </XStack>
-          </XStack>
-        </XLabeledItem>
-      </YStack>
-
-      <XLabeledItem label="Dark">
-        <ColorPickerContents
-          isActive={isDark}
-          disabled={!anchor}
-          value={darkPalette[hoveredItem?.value ?? 0]}
-          onChange={onChangeAnchorColor('dark')}
-          shouldDim={lightDarkSynced && !isDark}
-        />
-      </XLabeledItem>
+      <ColorPickerContents
+        isActive={isDark}
+        disabled={!anchor}
+        value={darkPalette[hoveredItem?.value ?? 0]}
+        onChange={onChangeAnchorColor('dark')}
+        shouldDim={lightDarkSynced && !isDark}
+      />
+      {/* </Theme> */}
     </YStack>
   )
 })
@@ -494,11 +463,13 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
   const borderRadius = size === 'medium' ? 200 : 100
 
   return (
-    <XStack f={1} br={borderRadius} bw={1} bc="$color7">
-      {colors.map((color, i) => {
-        return <PaletteColor {...props} color={color} index={i} key={i} />
-      })}
-    </XStack>
+    <TooltipGroup delay={0}>
+      <XStack f={1} br={borderRadius} bw={1} bc="$color7">
+        {colors.map((color, i) => {
+          return <PaletteColor {...props} color={color} index={i} key={i} />
+        })}
+      </XStack>
+    </TooltipGroup>
   )
 })
 
@@ -555,8 +526,6 @@ const PaletteColor = memo(
     const borderRadius = size === 'medium' ? 100 : 100
     const { anchors } = palette
 
-    const anchor = anchors.find((x) => x.index === index)
-
     const doublePressProps = useDoublePress({
       eagerSingle: true,
       onSinglePress() {
@@ -581,6 +550,7 @@ const PaletteColor = memo(
 
     return (
       <XStack
+        animation="lazy"
         h={isActive ? 42 : 26}
         // size === 'small' ? 32 : 42}
         w={`${(1 / colors.length) * 100}%`}
@@ -591,9 +561,12 @@ const PaletteColor = memo(
         onMouseEnter={() => {
           mouseEnter(index, palette.name)
         }}
+        hoverStyle={{
+          scale: 1.05,
+        }}
         {...(hoveredColor === index && {
           zi: 10000,
-          outlineColor: '$blue10',
+          outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
           shadowColor: '$blue10',
@@ -602,7 +575,7 @@ const PaletteColor = memo(
         })}
         {...(selectedColor === index && {
           zi: 10000,
-          outlineColor: 'color-mix(in srgb, currentColor 60%, transparent)',
+          outlineColor: '$accent1',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}
@@ -622,32 +595,6 @@ const PaletteColor = memo(
           }
         }}
       >
-        {anchor && (
-          <>
-            <XStack
-              pos="absolute"
-              t={1}
-              l={1}
-              r={1}
-              b={1}
-              zi={10}
-              pe="none"
-              {...radiusStyle}
-              bw={1}
-              o={1}
-              bc="$color8"
-            />
-            <XStack
-              fullscreen
-              zi={10}
-              pe="none"
-              {...radiusStyle}
-              bw={1}
-              o={0.5}
-              bc="$background"
-            />
-          </>
-        )}
         <XStack fullscreen bg={color as any} ai="center" jc="center">
           <SizableText
             selectable={false}

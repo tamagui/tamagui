@@ -14,10 +14,6 @@ export const Header = () => {
         <H1 mb="-2%" {...demoProps.headingFontFamilyProps} size="$12" lh="$11">
           {store.themeSuite?.name || 'Design System'}
         </H1>
-        <Paragraph size="$5" col="$color11">
-          Note that the styles used below are just for example, you can customize the
-          theme or components after you copy/paste to your taste.
-        </Paragraph>
       </YStack>
 
       <YStack>

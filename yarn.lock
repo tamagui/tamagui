@@ -123,6 +123,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ai-sdk/xai@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@ai-sdk/xai@npm:1.1.0"
+  dependencies:
+    "@ai-sdk/openai-compatible": "npm:0.1.0"
+    "@ai-sdk/provider": "npm:1.0.4"
+    "@ai-sdk/provider-utils": "npm:2.1.0"
+  peerDependencies:
+    zod: ^3.0.0
+  checksum: 10/a02f69105ff641a75893b5f6b914f63c7d1bc9f092a20d621a61d395c3448e31dfe961bc72c69933f0a0f66a40153ddd10a6a301f0fb27dbccb73bf6907909b1
+  languageName: node
+  linkType: hard
+
 "@alcalzone/ansi-tokenize@npm:^0.1.3":
   version: 0.1.3
   resolution: "@alcalzone/ansi-tokenize@npm:0.1.3"
@@ -7689,6 +7702,7 @@ __metadata:
   resolution: "@tamagui/dot-dev@workspace:code/tamagui.dev"
   dependencies:
     "@ai-sdk/deepseek": "npm:^0.1.0"
+    "@ai-sdk/xai": "npm:1.1.0"
     "@discordjs/core": "npm:^0.6.0"
     "@docsearch/react": "npm:^3.6.1"
     "@github/mini-throttle": "npm:^2.1.0"

@@ -31,11 +31,10 @@ export const FieldsetWithLabel = ({
       tag="fieldset"
       br="$4"
       bc={isActive ? '$color9' : '$color6'}
-      bw={0.5}
+      bw={0}
       px="$3"
-      pt={afterLabel ? '$3' : '$2'}
+      pt="$4"
       mt="$3"
-      gap="$4"
       onPress={onPress}
     >
       <YStack
@@ -86,7 +85,7 @@ export const FieldsetWithLabel = ({
           <Paragraph
             selectable={false}
             tag="label"
-            size="$4"
+            size="$7"
             color="$color12"
             fow="600"
             {...(tooltip && {

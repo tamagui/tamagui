@@ -1,7 +1,9 @@
-import { Dices, Heading } from '@tamagui/lucide-icons'
-import { memo } from 'react'
+import { Dices, Heading, Moon, Sun } from '@tamagui/lucide-icons'
+import { memo, startTransition, useOptimistic, useState } from 'react'
 import {
   Button,
+  Configuration,
+  Fieldset,
   Label,
   SizableText,
   Square,
@@ -10,13 +12,20 @@ import {
   TooltipGroup,
   TooltipSimple,
   XStack,
+  getConfig,
   styled,
 } from 'tamagui'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { optionValues } from './constants/demoOptions'
+import { ThemeToggle } from '../../site/theme/ThemeToggle'
+import { useUserTheme } from '@tamagui/one-theme'
+import { animationsCSS } from '../../../config/animations.css'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
+  const [{ userTheme }, setUserTheme] = useUserTheme()
+  const [checked, setChecked] = useState(userTheme === 'light')
+
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
       <XStack fw="wrap" f={1} className="all ease-in ms300" gap="$3">
@@ -41,6 +50,30 @@ export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: an
 
           <RandomizeButton />
         </TooltipGroup>
+
+        <XStack gap="$3" ai="center">
+          <Moon size={14} />
+          <Configuration animationDriver={animationsCSS}>
+            <Switch
+              checked={checked}
+              pressStyle={{
+                bg: '$color2',
+              }}
+              onCheckedChange={(on) => {
+                setChecked(on)
+                setTimeout(() => {
+                  startTransition(() => {
+                    setUserTheme(on ? 'light' : 'dark')
+                  })
+                })
+              }}
+              size="$3"
+            >
+              <Switch.Thumb animation="75ms" size="$3" />
+            </Switch>
+          </Configuration>
+          <Sun size={14} />
+        </XStack>
       </XStack>
     </XStack>
   )

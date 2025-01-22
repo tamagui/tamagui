@@ -54,7 +54,7 @@ const config = {
   settings: {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    maxDarkLightNesting: 1,
+    maxDarkLightNesting: 2,
     themeClassNameOnRoot: true,
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({

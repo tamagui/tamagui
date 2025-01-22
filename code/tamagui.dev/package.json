@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@ai-sdk/deepseek": "^0.1.0",
+    "@ai-sdk/xai": "1.1.0",
     "@discordjs/core": "^0.6.0",
     "@docsearch/react": "^3.6.1",
     "@github/mini-throttle": "^2.1.0",
