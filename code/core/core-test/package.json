@@ -13,7 +13,8 @@
     "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
     "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native yarn test:run **/*.ios.test.tsx",
     "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",
-    "test": "yarn test:native && yarn test:web"
+    "test": "yarn test:native && yarn test:web",
+    "test:update": "yarn test:native --update && yarn test:web --update"
   },
   "devDependencies": {
     "@tamagui/core": "1.122.7",
