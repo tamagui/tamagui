@@ -6053,12 +6053,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rehookify/datepicker@npm:^6.5.0":
-  version: 6.6.7
-  resolution: "@rehookify/datepicker@npm:6.6.7"
+"@rehookify/datepicker@npm:^6.6.8":
+  version: 6.6.8
+  resolution: "@rehookify/datepicker@npm:6.6.8"
   peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 10/3753633301b6a194bb8563ede1ceeeaf0e3b9aeb51764f5ccf593c56630eab720db5347937de43f247f9fdf7c1e5cc1e461f0ca5acfb1f9ec83fa6e05ef56815
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10/6d52111be2f2d7446eed2815a3ece2ab6a78a9db416cc70460bf050b28cf0dd75d83aa4ddbd986b993a835294a885035ee6b0e6fba4813f5a2f967dc65f25a54
   languageName: node
   linkType: hard
 
@@ -7171,7 +7171,7 @@ __metadata:
     "@ngneat/falso": "npm:^7.2.0"
     "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
-    "@rehookify/datepicker": "npm:^6.5.0"
+    "@rehookify/datepicker": "npm:^6.6.8"
     "@tamagui/babel-plugin": "npm:1.122.7"
     "@tamagui/build": "npm:1.122.7"
     "@tamagui/cli": "npm:1.122.7"
