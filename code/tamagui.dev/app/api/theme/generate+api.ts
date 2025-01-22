@@ -15,12 +15,24 @@ const deepseek = createDeepSeek({
 
 export default apiRoute(async (req) => {
   const { supabase } = await ensureAuth({ req })
-  const { hasTakeoutAccess } = await ensureAccess({ req, supabase })
 
-  if (!hasTakeoutAccess) {
+  try {
+    const { hasTakeoutAccess, hasBentoAccess } = await ensureAccess({ req, supabase })
+
+    if (!(hasTakeoutAccess || hasBentoAccess)) {
+      throw Response.json(
+        {
+          error: `First purchase Takeout or Bento!`,
+        },
+        {
+          status: 400,
+        }
+      )
+    }
+  } catch (err) {
     throw Response.json(
       {
-        error: `Must purchase Takeout to access!`,
+        error: `First purchase Takeout or Bento!`,
       },
       {
         status: 400,
