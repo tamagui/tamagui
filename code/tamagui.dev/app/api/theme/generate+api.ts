@@ -75,7 +75,7 @@ export default apiRoute(async (req) => {
     prompt: `Help generate a Tamagui theme configuration for us. We need two sets of anchors,
 which are just objects that define index, hue, sat, and lum for both light and dark modes.
 
-We have a custom format to save space, it looks like this, this is a well formed example:
+We have a custom format to save space, it looks like this, this is a well formed theme with a grayscale base and blue accent:
 
 ---
 
@@ -161,70 +161,112 @@ Some notes:
   - If the user wants more subtle or more strong border color, then you want to add one additional anchor, at index 2, which is where borders are generally retrieved from. Make it closer or further away from the 0 anchor to make it more subtle or less, respectively.
   - Generally you want the "9" index to be exact match for specific colors you want to show in the UI. EG if you are doing pink and yellow for easter, try and make 9 index be the strongest pink/green.
 
-Here's another example of an "LA Lakers" theme with bright purple/gold, note the accent theme uses the gold for bg and purple for text,
+Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,
 and adds an anchor at index 3 to make borders a bit more subtle:
 
 i: 0
 h: 270,270
 s: 0.8,0.8
-l: 0.05,1
+l: 1,0.05
 
 i: 3
 h: 270,270
 s: 0.8,0.8
-l: 0.1,0.97
+l: 0.97,0.1
 
 i: 9
 h: 270,270
 s: 0.8,0.8
-l: 0.6,0.4
+l: 0.4,0.6
 
 i: 10
 h: 270,270
 s: 0.8,0.8
-l: 0.925,0.15
+l: 0.15,0.925
 
 i: 11
 h: 270,270
 s: 0.8,0.8
-l: 0.96,0.05
+l: 0.05,0.96
 
 ###
 
 i: 0
 h: 55,55
 s: 0.9,0.9
-l: 0.4,0.7
+l: 0.7,0.4
 
 i: 9
 h: 55,55
 s: 0.9,0.9
-l: 0.65,0.4
+l: 0.4,0.65
 
 i: 10
 h: 270,270
 s: 0.9,0.9
-l: 0.4,0.3
+l: 0.3,0.4
 
 i: 11
 h: 270,270
 s: 0.9,0.9
-l: 0.5,0.2
+l: 0.2,0.5
 
-Final notes:
+And here's a final of really bold theme. It has bright neon green base. It makes the accent background black and white, which is a good strategy generally for more bold themes.
+But it uses a final pink foreground in the accent:
+
+i: 0
+h: 100,100
+s: 0.9,0.9
+l: 0.5,0.34
+
+i: 9
+h: 100,100
+s: 0.9,0.9
+l: 0.3,0.5
+
+i: 10
+h: 100,100
+s: 0.9,0.9
+l: 0.1,0.7
+
+i: 11
+h: 100,100
+s: 0.9,0.9
+l: 0,1
+
+###
+
+i: 0
+h: 300,300
+s: 0,0
+l: 1,0
+
+i: 9
+h: 300,300
+s: 0,0
+l: 0.65,0.6
+
+i: 10
+h: 300,300
+s: 0.5,0.5
+l: 0.4,0.6
+
+i: 11
+h: 300,300
+s: 0.5,0.5
+l: 0.3,0.7
+
+Please take four sentences to plan out your design in plain english with minimal formatting before returning structured data.
+First, decide which of the themes above first you feel this one is most like. Then use that as a base but feel free to adjust to your taste,
+you can even add anchors if the theme requires many colors.
   
 ${
   reasoning
-    ? `Please keep your thinking time down, this isn't super complex, just think for a short amount of time before returning results! Only return the data nothing else.`
-    : `
-Please take three sentences to plan out your design in plain english with minimal formatting before returning structured data.
-Pick 2-4 hues to use, and plan where to place them by index.
-After your plan please separate with a "---" before the structured data.`
+    ? `Please don't overthink, reply quickly with just a few short thoughts.`
+    : `After your plan please separate with a "---" before the structured data.`
 }
 
-Ok, lets do this.
-
-BE SURE that you only return the structured data after you think, with no english text, just a "###" separating base and accent.
+BE SURE that you return ONLY the structured data after you think, with no english text, just a data with "###" separating base and accent.
 
 The user prompt is "${prompt}":
 `,
@@ -288,7 +330,7 @@ function parseAnchors(text: string) {
 }
 
 function parseDarkLight(name: 'h' | 's' | 'l', line: string, index: number) {
-  const [dark, light] = line
+  const [light, dark] = line
     .replace(/[a-z]\:\s+/, '')
     .split(',')
     .map((x) => +x)

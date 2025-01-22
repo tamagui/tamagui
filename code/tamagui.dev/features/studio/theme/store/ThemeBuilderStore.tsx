@@ -196,6 +196,8 @@ export class ThemeBuilderStore {
       ...this.palettes,
     }
     this.themeSuiteVersion++
+    // force it to hard refresh
+    this.themeSuiteId = `${this.themeSuiteId}${this.themeSuiteVersion}`
     await this.refreshThemeSuite()
   }
 

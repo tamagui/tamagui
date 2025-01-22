@@ -17,15 +17,15 @@ export const StudioAIBar = () => {
 
     const int = setInterval(() => {
       seconds++
-      if (seconds === 8) {
+      if (seconds === 6) {
         toastController.show(`Thinking about base colors...`)
-      } else if (seconds === 16) {
+      } else if (seconds === 12) {
         toastController.show(`Thinking about accent colors...`)
-      } else if (seconds === 24) {
+      } else if (seconds === 18) {
         toastController.show(`Refining palettes...`)
-      } else if (seconds === 32) {
+      } else if (seconds === 24) {
         toastController.show(`Taking too long...`)
-      } else if (seconds === 48) {
+      } else if (seconds === 32) {
         toastController.show(`It really does take a bit sometimes...`)
       }
     }, 1000)
@@ -42,6 +42,7 @@ export const StudioAIBar = () => {
       })
 
       const data = await res.json()
+      console.info(`got themes`, data)
 
       if (data.error) {
         toastController.show(`Error generating! ${data.error}`)
@@ -52,6 +53,8 @@ export const StudioAIBar = () => {
     } catch (err) {
       toastController.show(`Error: ${err}`)
     } finally {
+      toastController.hide()
+      toastController.show(`Generated!`)
       setGenerating(false)
       clearInterval(int)
     }
