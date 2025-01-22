@@ -32,10 +32,12 @@ export const StudioAIBar = () => {
     }, 1000)
 
     try {
+      const prompt = inputRef.current?.value ?? ''
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
-          prompt: inputRef.current?.value ?? '',
+          prompt,
           scheme: themeName.startsWith('dark') ? 'dark' : 'light',
+          model: prompt[0] === '!' ? 'reasoning' : 'chat',
         }),
         headers: {
           'Content-Type': 'application/json',

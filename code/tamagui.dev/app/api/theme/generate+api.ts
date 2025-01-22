@@ -43,6 +43,7 @@ export default apiRoute(async (req) => {
   const body = await readBodyJSON(req)
   const prompt = body.prompt?.trim()
   const scheme = body.scheme?.trim() || 'unknown'
+  const model = body.model?.trim() || 'chat'
 
   if (!prompt) {
     throw Response.json(
@@ -68,15 +69,15 @@ export default apiRoute(async (req) => {
 
   const reasoning = false
 
-  console.info(`Generating (reasoning: ${reasoning}): ${prompt}...`)
+  console.info(`Generating (scheme: ${scheme}, model: ${model}): ${prompt}...`)
 
   const { text } = await generateText({
-    model: deepseek(reasoning ? 'deepseek-reasoner' : 'deepseek-chat'),
-    maxTokens: 3_000,
+    model: deepseek(`deepseek-${model}`),
+    maxTokens: 4_000,
     prompt: `Help generate a Tamagui theme configuration for us. We need two sets of anchors,
 which are just objects that define index, hue, sat, and lum for both light and dark modes.
 
-We have a custom format to save space, it looks like this, this is a well formed theme with a grayscale base and blue accent:
+We have a custom format to save space, this is a well formed theme with a grayscale base and blue accent (theme 1):
 
 ---
 
@@ -164,7 +165,7 @@ Some notes:
   - Ensure the accent foreground is separated a good amount from background, or else it will look bad.
 
 Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,
-and adds an anchor at index 3 to make borders a bit more subtle:
+and adds an anchor at index 3 to make borders a bit more subtle (theme 2):
 
 i: 0
 h: 270,270
@@ -214,7 +215,7 @@ s: 0.9,0.9
 l: 0.2,0.5
 
 And here's a final of really bold theme. It has bright neon green base. It makes the accent background black and white, which is a good strategy generally for more bold themes.
-But it uses a final pink foreground in the accent:
+But it uses a final pink foreground in the accent (theme 3):
 
 i: 0
 h: 100,100
@@ -259,15 +260,22 @@ s: 0.5,0.5
 l: 0.3,0.7
 
 Here's the current color scheme they are using, which may be relevant: "${scheme}". For example if they say
-"black theme" and are in dark mode, it means generate pure black background for dark, but pure white for light.
+want a "darker background" when in dark mode, just change the dark values.
 
-Please take four sentences to plan out your design in plain english with minimal formatting before returning structured data.
-First, decide which of the themes above first you feel this one is most like. Then use that as a base but feel free to adjust to your taste,
-you can even add anchors if the theme requires many colors.
-  
+Please write a few sentences to plan out your design first in plain english with minimal formatting before returning the structured data.
+
+In your plan, first decide which of the above templates is closest to what you want to generate.
+Then, generally plan the hues you want to use, by anchor.
+Then, plan the saturations by anchor.
+
+An example of a plan if their prompt was just "SUPREME" would be something like:
+
+The SUPREME brand uses bright red backgrounds and white colors, similar to theme 3. We want backgrounds to be closer to middle luminosity,
+high saturation. We want the accent to use pure white for the background in both light and dark, and then a bright red for the foregrounds.
+
 ${
   reasoning
-    ? `Please don't overthink, reply quickly with just a few short thoughts.`
+    ? `Please don't overthink things, reply quickly with just a few short thoughts.`
     : `After your plan please separate with a "---" before the structured data.`
 }
 
