@@ -33,6 +33,7 @@ ARG TRANSCRYPT_PASSWORD
 ARG URL
 ARG ONE_SERVER_URL
 ARG APP_NAME
+ARG DEEPSEEK_API_KEY
 
 # unlock
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common
