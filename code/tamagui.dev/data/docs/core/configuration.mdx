@@ -18,13 +18,10 @@ We made `@tamagui/config` to make it easy to get started. It comes with a
 recommended default configuration and themes, as well as an easy way to create themes with `createThemes`:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig, defaultThemes } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
-export const config = createTamagui({
-  ...defaultConfig,
-  themes: defaultThemes,
-})
+export const config = createTamagui(defaultConfig)
 
 type CustomConfig = typeof config
 
