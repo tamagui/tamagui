@@ -19,15 +19,7 @@ import { optionValues } from './constants/demoOptions'
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
-      <XStack
-        fw="wrap"
-        f={1}
-        className="all ease-in ms300"
-        gap="$3"
-        p="$2"
-        px="$4"
-        br="$10"
-      >
+      <XStack fw="wrap" f={1} className="all ease-in ms300" gap="$3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 

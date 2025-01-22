@@ -42,6 +42,7 @@ export default apiRoute(async (req) => {
 
   const body = await readBodyJSON(req)
   const prompt = body.prompt?.trim()
+  const scheme = body.scheme?.trim() || 'unknown'
 
   if (!prompt) {
     throw Response.json(
@@ -142,7 +143,7 @@ Then accent would have hue all set to green.
 
 Some notes:
 
-  - Values always go dark,light. Make sure dark is first, light is second.
+  - Values always go light,dark. Make sure light is first, dark is second.
   - Luminosity for base dark themes background (index 0) should generally be low, light should be high.
   - Luminosity for base light theme foreground (index 10, 11) should generally be high, for dark low.
   - If you want colorful text, don't make the luminosity too close to the edge, something like 0.6 and 0.7 rather than 0.9 and 0.95.
@@ -160,6 +161,7 @@ Some notes:
   - You never want the 0 and 9 luminosity to be too close together, even low contrast themes should spread luminosity on them at least 0.4 or so.
   - If the user wants more subtle or more strong border color, then you want to add one additional anchor, at index 2, which is where borders are generally retrieved from. Make it closer or further away from the 0 anchor to make it more subtle or less, respectively.
   - Generally you want the "9" index to be exact match for specific colors you want to show in the UI. EG if you are doing pink and yellow for easter, try and make 9 index be the strongest pink/green.
+  - Ensure the accent foreground is separated a good amount from background, or else it will look bad.
 
 Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,
 and adds an anchor at index 3 to make borders a bit more subtle:
@@ -256,6 +258,9 @@ h: 300,300
 s: 0.5,0.5
 l: 0.3,0.7
 
+Here's the current color scheme they are using, which may be relevant: "${scheme}". For example if they say
+"black theme" and are in dark mode, it means generate pure black background for dark, but pure white for light.
+
 Please take four sentences to plan out your design in plain english with minimal formatting before returning structured data.
 First, decide which of the themes above first you feel this one is most like. Then use that as a base but feel free to adjust to your taste,
 you can even add anchors if the theme requires many colors.
@@ -268,7 +273,7 @@ ${
 
 BE SURE that you return ONLY the structured data after you think, with no english text, just a data with "###" separating base and accent.
 
-The user prompt is "${prompt}":
+The user prompt is "${prompt}".
 `,
   })
 
