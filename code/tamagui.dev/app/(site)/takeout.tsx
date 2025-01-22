@@ -1,7 +1,15 @@
 import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image-next'
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { setTintIndex, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Dot,
+  Hammer,
+  PlayCircle,
+  X,
+} from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useLoader } from 'one'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
@@ -19,6 +27,7 @@ import {
   AnimatePresence,
   Button,
   Circle,
+  EnsureFlexed,
   H2,
   Input,
   Paragraph,
@@ -28,6 +37,7 @@ import {
   Stack,
   Tabs,
   Theme,
+  View,
   XStack,
   YStack,
   composeRefs,
@@ -49,6 +59,8 @@ import { getProductsForServerSideRendering } from '~/features/site/purchase/serv
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
+import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
+import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 
 export const loader = async () => {
   try {
@@ -64,9 +76,11 @@ const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 export default function TakeoutPage() {
   const { starter, bento } = useLoader(loader)
   const store = useTakeoutStore()
+  const tint = useTint()
 
   return (
     <YStack maw="100%">
+      <ThemeNameEffect colorKey="$color5" />
       <LoadMunro />
       <LoadCherryBomb />
       <script src="https://cdn.paritydeals.com/banner.js" />
@@ -83,19 +97,9 @@ export default function TakeoutPage() {
         }}
       />
 
-      <YStack
-        pos="absolute"
-        l={0}
-        r={0}
-        t={-100}
-        b={0}
-        // style={{
-        //   background: 'linear-gradient(var(--color6), var(--color2))',
-        // }}
-        zi={-3}
-      />
+      <PageThemeCarousel />
 
-      {/* <ThemeTintAlt offset={0}>
+      <ThemeTintAlt>
         <YStack
           pos="absolute"
           l={0}
@@ -103,21 +107,64 @@ export default function TakeoutPage() {
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(10deg, var(--color2), var(--color1))',
+            background:
+              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
           }}
           zi={-3}
         />
-      </ThemeTintAlt> */}
+      </ThemeTintAlt>
+
+      <YStack
+        className="grain"
+        fullscreen
+        t={-60}
+        b={0}
+        o={0.5}
+        zi={0}
+        style={{
+          imageRendering: 'pixelated',
+        }}
+      />
+
+      <ThemeTintAlt offset={0}>
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          mixBlendMode="color-burn"
+          b={0}
+          style={{
+            background: 'linear-gradient(10deg, var(--color5), var(--color1))',
+          }}
+          zi={-3}
+        />
+      </ThemeTintAlt>
+
+      <ThemeTintAlt offset={3}>
+        <YStack
+          pos="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background:
+              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
+          }}
+          zi={-3}
+        />
+      </ThemeTintAlt>
 
       <YStack
         pe="none"
         pos="absolute"
         t={-950}
         l="50%"
-        x={-500}
-        scale={0.75}
+        x={-300}
+        scale={1}
         rotate="120deg"
-        o={0.01}
+        o={0.02}
         $theme-light={{
           o: 0.12,
         }}
@@ -191,12 +238,13 @@ export default function TakeoutPage() {
             <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
               <ThemeTintAlt>
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a production-ready stack that chooses reliable technology and
-                  gives you everything you need for most user-based apps.
+                  Takeout is a production-ready base stack that includes everything you
+                  need for apps with a user-system. It funds the OSS development of
+                  Tamagui.
                 </Paragraph>
 
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  It shares a large percent of code between native and web, while
+                  Takeout shares a high % of code between native and web, while
                   maintaining a high bar for UX and performance. Building off our OSS
                   starter (<CodeInline>npm create tamagui</CodeInline>), we add Supabase,
                   tRPC, Zod, custom themes, screens, a user system and common flows, and
@@ -651,7 +699,7 @@ const points = {
 const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
 const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'))
 
-const heroHeight = 1000
+const heroHeight = 1050
 
 export type TakeoutPageProps = Awaited<
   ReturnType<typeof getProductsForServerSideRendering>

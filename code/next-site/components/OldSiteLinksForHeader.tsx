@@ -137,7 +137,7 @@ export const HeaderLinks = (props: HeaderProps) => {
             bw={1}
             bc="transparent"
             hoverStyle={{
-              bc: '$color025',
+              bc: '$color02',
             }}
           >
             <SlidingPopoverTrigger id="takeout">
@@ -214,7 +214,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator bc="$color02" o={0.25} my="$2" />
 
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {forceShowAllLinks && (
@@ -540,7 +540,7 @@ const SlidingPopoverContent = () => {
           br="$4"
           zi={0}
           style={{
-            background: `linear-gradient(transparent, var(--color05))`,
+            background: `linear-gradient(transparent, var(--color04))`,
             mixBlendMode: 'color',
           }}
         />

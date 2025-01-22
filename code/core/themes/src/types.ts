@@ -1,18 +1,12 @@
-import type { Template, ThemeDefinitions } from '@tamagui/create-theme'
+import type { Template } from '@tamagui/create-theme'
 
 type ThemeSuiteItem = {
   id: string
   name: string
   createdAt: number
   updatedAt: number
-
   schemes: { light: boolean; dark: boolean }
   palettes: Record<string, BuildPalette>
-  templates: BuildTemplates
-
-  baseTheme: BuildTheme
-  subThemes: BuildSubTheme[]
-  componentThemes: ThemeDefinitions
 }
 
 export type ThemeSuiteItemData = Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>

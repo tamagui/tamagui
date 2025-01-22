@@ -57,5 +57,5 @@ const defaultSizes = {
 
 export const fonts = {
   body: createSystemFont(),
-  heading: createSystemFont({ sizeSize: (n) => n * 2 }),
+  heading: createSystemFont({ sizeSize: (n) => n * 1.4 }),
 }

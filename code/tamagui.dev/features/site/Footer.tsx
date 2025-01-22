@@ -91,8 +91,8 @@ export const Footer = memo(() => {
               <ExternalIcon />
             </XStack>
             <XStack gap="$1" ai="center">
-              <ParagraphLink href="https://twitter.com/tamagui_js" target="_blank">
-                Twitter
+              <ParagraphLink href="https://x.com/tamagui_js" target="_blank">
+                X
               </ParagraphLink>
               <ExternalIcon />
             </XStack>

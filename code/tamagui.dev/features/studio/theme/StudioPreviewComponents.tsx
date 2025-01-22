@@ -17,65 +17,41 @@ import { PieScreen } from './preview/Pie'
 import { PricingCards } from './preview/Pricing'
 import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
 import { UserDropdown } from './preview/UserDropdown'
-import { extraPad } from './views/StudioPreviewFrame'
 
-// const ToggleGroupItem = styled(ToggleGroup.Item, {
-//   height: 28,
-//   w: 30,
-
-//   focusStyle: {
-//     outlineWidth: 0,
-//   },
-// } as any)
+const extraPad = 18
 
 function gridRow(items: Array<[string, number]>) {
   return items.map((item) => Array(item[1]).fill(item[0]).join(' ')).join(' ')
 }
 
 export const StudioPreviewComponents = memo(() => {
-  const previewRef = useRef<HTMLElement>()
   const demoProps = useDemoProps()
 
   return (
-    <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
-      <YStack
-        gap="$4"
-        ref={previewRef as any}
-        mt="$-4"
-        p="$8"
-        f={1}
-        maw={1300}
-        group="content"
-        $md={{
-          maw: 900,
-          p: '$4',
-        }}
-      >
-        <Panel disableSettings m={0} f={0} h="auto" w="calc(100% + 24px)">
-          <YStack
-            {...demoProps.panelProps}
-            {...demoProps.stackOutlineProps}
-            {...demoProps.borderRadiusProps}
-            {...demoProps.panelPaddingProps}
-            backgroundColor="transparent"
-            borderColor="transparent"
-            px={0}
-            gap="$0"
-          >
-            <Header />
-          </YStack>
-        </Panel>
-
-        <PalettePreviewPanels />
-
+    <>
+      <Panel disableSettings m={0} f={0} h="auto" w="calc(100% + 24px)">
         <YStack
-          f={1}
-          display={'grid' as any}
-          $group-content={
-            {
-              gridTemplateColumns: `50% 50%`,
-              gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-              gridTemplateAreas: `
+          {...demoProps.panelProps}
+          {...demoProps.stackOutlineProps}
+          {...demoProps.borderRadiusProps}
+          {...demoProps.panelPaddingProps}
+          backgroundColor="transparent"
+          borderColor="transparent"
+          px={0}
+          gap="$0"
+        >
+          <Header />
+        </YStack>
+      </Panel>
+
+      <YStack
+        f={1}
+        display={'grid' as any}
+        $group-content={
+          {
+            gridTemplateColumns: `50% 50%`,
+            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
+            gridTemplateAreas: `
               'chat chat'
               'statistics-line statistics-line'
               'all-tasks all-tasks'
@@ -89,15 +65,15 @@ export const StudioPreviewComponents = memo(() => {
               'calendar calendar'
               'components components'
               `,
-            } as any
-          }
-          $group-content-gtXs={
-            {
-              gridTemplateColumns: Array(12)
-                .fill(`calc(${100 / 12}% - ${extraPad}px)`)
-                .join(' '),
-              gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-              gridTemplateAreas: `
+          } as any
+        }
+        $group-content-gtXs={
+          {
+            gridTemplateColumns: Array(12)
+              .fill(`calc(${100 / 12}% - ${extraPad}px)`)
+              .join(' '),
+            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
+            gridTemplateAreas: `
               '${gridRow([
                 ['statistics-line', 7],
                 ['pricing', 5],
@@ -140,15 +116,15 @@ export const StudioPreviewComponents = memo(() => {
               ])}'
               '${gridRow([['components', 12]])}'
           `,
-            } as any
-          }
-          $group-content-gtSm={
-            {
-              gridTemplateColumns: Array(12)
-                .fill(`calc(${100 / 12}% - ${extraPad}px)`)
-                .join(' '),
-              gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-              gridTemplateAreas: `
+          } as any
+        }
+        $group-content-gtSm={
+          {
+            gridTemplateColumns: Array(12)
+              .fill(`calc(${100 / 12}% - ${extraPad}px)`)
+              .join(' '),
+            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
+            gridTemplateAreas: `
               '${gridRow([
                 ['chat', 5],
                 ['overview-1', 3],
@@ -180,13 +156,12 @@ export const StudioPreviewComponents = memo(() => {
                 ['all-tasks', 4],
               ])}'
             `,
-            } as any
-          }
-        >
-          <Contents />
-        </YStack>
+          } as any
+        }
+      >
+        <Contents />
       </YStack>
-    </XStack>
+    </>
   )
 })
 
@@ -267,9 +242,6 @@ const PalettePreviewPanels = memo(() => {
   const themeName = useThemeName()
   const isThemeDark = themeName.startsWith('dark')
   const demoProps = useDemoProps()
-  const theme = themeBuilderStore.baseTheme
-
-  if (!theme) return null
 
   const palettes = themeBuilderStore.palettesBuilt
 

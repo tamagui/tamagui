@@ -1,4 +1,4 @@
-import type { Template, ThemeDefinitions } from '@tamagui/create-theme';
+import type { Template } from '@tamagui/create-theme';
 type ThemeSuiteItem = {
     id: string;
     name: string;
@@ -9,10 +9,6 @@ type ThemeSuiteItem = {
         dark: boolean;
     };
     palettes: Record<string, BuildPalette>;
-    templates: BuildTemplates;
-    baseTheme: BuildTheme;
-    subThemes: BuildSubTheme[];
-    componentThemes: ThemeDefinitions;
 };
 export type ThemeSuiteItemData = Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>;
 export type BuildTemplates = Record<string, Template>;

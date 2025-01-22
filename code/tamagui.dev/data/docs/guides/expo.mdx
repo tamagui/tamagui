@@ -82,10 +82,10 @@ module.exports = function (api) {
 Add `@tamagui/config/v3` and `tamagui` to your package.json and install them. Then add a `tamagui.config.ts`:
 
 ```tsx fileName="tamagui.config.ts"
-import { config } from '@tamagui/config/v3'
+import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui'
 
-export const tamaguiConfig = createTamagui(config)
+export const tamaguiConfig = createTamagui(defaultConfig)
 
 export default tamaguiConfig
 

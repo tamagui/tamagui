@@ -63,7 +63,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
 
     stackOutlineProps: {
       backgroundColor:
-        demosOptions.backgroundAccent === 'low' ? '$color1' : '$background025',
+        demosOptions.backgroundAccent === 'low' ? '$color1' : '$background02',
     } as const,
 
     chatFrameProps: {

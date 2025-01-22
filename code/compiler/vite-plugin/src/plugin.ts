@@ -91,6 +91,7 @@ export function tamaguiPlugin({
             client: {
               define: {
                 'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
+                'process.env.TAMAGUI_ENVIRONMENT': '"client"',
               },
             },
           },

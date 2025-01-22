@@ -1,5 +1,5 @@
 ---
-title: Creating Themes with createThemeBuilder
+title: Creating Themes with Tamagui
 description: Learn how to create a suite of themes for a Tamagui app
 demoName: ThemeBuilder
 ---
@@ -9,29 +9,88 @@ demoName: ThemeBuilder
 </HeroContainer>
 
 <IntroParagraph>
-  The new theme-builder package makes creating suites of themes for Tamagui far
-  easier, with some performance benefits to boot.
+  Tamagui themes start simple, but can do some pretty powerful things. To make them easier to generate, we've built a few helpers. You can always just skip themes, or add a single basic theme if you prefer. This guide is for users wanting to generate a more complex suite of themes.
 </IntroParagraph>
 
-Before reading this guide, note that themes can be incredibly simple, and we highly recommend you avoid diving
-into complex themes unless you are on a large team that is willing to invest more effort. You can always
-just create a single `light` or `dark` theme at the root, and be on your way.
+We have two ways to generate themes with `@tamagui/theme-builder`: 
 
-The Tamagui package `@tamagui/theme-builder` makes building complex theme suites easier. It gives you a chainable theme creation API. Because you may not want to bundle the extra overhead of themes, we've also added a `themeBuilder` option to the bundler plugins that lets you pre-generate your themes before runtime.
+- `createThemeBuilder` is a more low-level, chainable API.
+- `createThemes` makes generating a slightly opinonated suite of themes much simpler.
 
-This guide goes into `createThemeBuilder`. If you want to [skip to the API, check here](#createthemebuilder), or you can just copy-paste [a complete example here](#complete-example).
+We've also released [Theme](/theme), a free point-and-click way to create themes that generates copy-paste `createThemes` code for you.
 
-<Notice>
-  You don't need to create your own theme suite from the jump. Try using the built-in themes in @tamagui/config.
-  This guide is for more advanced use cases.
-</Notice>
+## createThemes
+
+At it's simplest, `createThemes` is as simple as:
+
+```tsx
+import { createThemes } from '@tamagui/theme-builder'
+
+export const themes = createThemes({
+  base: {
+    palette: {
+      dark: ['#000', '#fff'],
+      light: ['#fff', '#000'],
+    }
+  },
+})
+```
+
+Which will generate `light` and `dark` themes, spreading your palette colors between 1 and 12, and adding component themes.
+
+But you can go much further, generating a production-grade theme suite like so:
+
+```tsx
+import { createThemes } from '@tamagui/theme-builder'
+import * as Colors from '@tamagui/colors'
+
+export const themes = createThemes({
+  base: {
+    palette: {
+      dark: ['#000', '#fff',],
+      light: ['#fff', '#000'],
+    },
+  },
+
+  // this sets up both an accent theme, and $accent tokens
+  // in this case we're just making them "inverse" of the current theme
+  accent: {
+    palette: {
+      dark: ['#fff', '#000'],
+      light: ['#000', '#fff',],
+    },
+  }
+
+  childrenThemes: {
+    warning: {
+      palette: {
+        dark: Object.values(Colors.yellowDark),
+        light: Object.values(Colors.yellow),
+      },
+    },
+
+    error: {
+      palette: {
+        dark: Object.values(Colors.redDark),
+        light: Object.values(Colors.red),
+      },
+    },
+
+    success: {
+      palette: {
+        dark: Object.values(Colors.greenDark),
+        light: Object.values(Colors.green),
+      },
+    },
+  },
+})
+```
+
+## createThemeBuilder
+
+Under the hood, `createThemes` uses `createThemeBuilder`. It's a very powerful way to generate nested themes, using a chainable API and generating strong types for you. But, it's also quite involved! 99% of projects should start with either hand-made, simple themes, or `createThemes`.
 
 Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, and themes:
-
-<Notice>
-  Note that the @tamagui/theme-builder package requires TypeScript 5 or greater
-  for const generic support.
-</Notice>
 
 ```tsx
 import { createThemeBuilder } from '@tamagui/theme-builder'
@@ -120,7 +179,7 @@ Here's an example of a blue palette:
 
 <Blog.ThemeBuilder.ExamplePalette showLabels />
 
-You can toggle dark mode in the top left of the site to see that in fact we have _two_ blue palettes: `light_blue` and `dark_blue`.
+You can toggle dark mode in the top left of the site to see that in fact we have _two_ blue palette: `light_blue` and `dark_blue`.
 
 Here's that same palette in code (the `dark_blue` one):
 

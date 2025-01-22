@@ -5,7 +5,7 @@ export function useHasAccent() {
 
   let hasAccent = false
   if (rootStore.currentSection?.id === 'base') {
-    hasAccent = !!rootStore.baseTheme.accent
+    hasAccent = true
   } else {
     // no accent now on sub-themes only the root one
     hasAccent = false

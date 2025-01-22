@@ -3,12 +3,12 @@ import '~/app.css'
 import '~/tamagui.css'
 
 import { HydrateTheme, UserThemeProvider, useUserTheme } from '@tamagui/one-theme'
-import { ToastProvider } from '@tamagui/toast'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { LoadProgressBar, Slot, Stack } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
+import { ToastProvider } from '~/features/studio/ToastProvider'
 
 // for navigation container props
 //           theme: {
@@ -153,16 +153,8 @@ function WebsiteTamaguiProvider(props: { children: any }) {
   const [{ resolvedTheme }] = useUserTheme()
 
   return (
-    // react 19 hydration breaks if theres not a single root node, which disableRootThemeClass causes
-    <span style={{ display: 'contents' }}>
-      <TamaguiProvider
-        disableRootThemeClass
-        disableInjectCSS
-        defaultTheme={resolvedTheme}
-        config={tamaConf}
-      >
-        <ToastProvider swipeDirection="horizontal">{props.children}</ToastProvider>
-      </TamaguiProvider>
-    </span>
+    <TamaguiProvider disableInjectCSS defaultTheme={resolvedTheme} config={tamaConf}>
+      <ToastProvider>{props.children}</ToastProvider>
+    </TamaguiProvider>
   )
 }

@@ -1,4 +1,5 @@
 import { Check, X } from '@tamagui/lucide-icons'
+import type { Href } from 'one'
 import { startTransition, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
@@ -7,7 +8,6 @@ import {
   Dialog,
   H3,
   H4,
-  H5,
   Paragraph,
   RadioGroup,
   ScrollView,
@@ -21,7 +21,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import type { Href } from 'one'
 import type { TakeoutPageProps } from '~/app/(site)/takeout'
 import { Link } from '~/components/Link'
 import { useUser } from '~/features/user/useUser'
@@ -138,7 +137,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
   const [currentTab, setCurrentTab] = useState(defaultValue)
 
   return (
-    <Theme name="dark">
+    <Theme name="black">
       <Dialog
         modal
         open={store.showPurchase}
@@ -155,12 +154,13 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
 
         <Dialog.Adapt when="sm">
           <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-            <Sheet.Frame bg="$color2" padding={0} gap="$4">
+            <Sheet.Frame bg="$color3" padding={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
             <Sheet.Overlay
+              bg="$shadow4"
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
@@ -182,7 +182,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
             ov="hidden"
             elevate
             key="content"
-            bg="$color2"
+            bg="$color3"
             animation={[
               'quick',
               {
@@ -394,7 +394,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
                                             : 'Personal'}
                                       </H4>
 
-                                      <Paragraph theme="gray">
+                                      <Paragraph theme="alt2">
                                         {getPriceDescription(price)}
                                       </Paragraph>
                                       {/* <Paragraph theme="alt1" size="$2">
@@ -522,38 +522,40 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
               </Unspaced> */}
 
                   <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
-                    <Link
-                      asChild
-                      target="_blank"
-                      href={
-                        `api/checkout?${(() => {
-                          const params = new URLSearchParams()
-                          if (starterPriceId) {
-                            params.append('product_id', starter.id)
-                            params.append(`price-${starter?.id}`, starterPriceId)
-                          }
-                          if (bentoPriceId) {
-                            params.append('product_id', bento.id)
-                            params.append(`price-${bento?.id}`, bentoPriceId)
-                          }
-                          if (
-                            isUserEligibleForBentoTakeoutDiscount &&
-                            store.disableAutomaticDiscount
-                          ) {
-                            params.append('disable_automatic_discount', '1')
-                          }
+                    <Theme name="white">
+                      <Link
+                        asChild
+                        target="_blank"
+                        href={
+                          `api/checkout?${(() => {
+                            const params = new URLSearchParams()
+                            if (starterPriceId) {
+                              params.append('product_id', starter.id)
+                              params.append(`price-${starter?.id}`, starterPriceId)
+                            }
+                            if (bentoPriceId) {
+                              params.append('product_id', bento.id)
+                              params.append(`price-${bento?.id}`, bentoPriceId)
+                            }
+                            if (
+                              isUserEligibleForBentoTakeoutDiscount &&
+                              store.disableAutomaticDiscount
+                            ) {
+                              params.append('disable_automatic_discount', '1')
+                            }
 
-                          return params.toString()
-                        })()}` as Href
-                      }
-                    >
-                      <PurchaseButton
-                        disabled={noProductSelected}
-                        opacity={noProductSelected ? 0.5 : undefined}
+                            return params.toString()
+                          })()}` as Href
+                        }
                       >
-                        Stripe Checkout
-                      </PurchaseButton>
-                    </Link>
+                        <PurchaseButton
+                          disabled={noProductSelected}
+                          opacity={noProductSelected ? 0.5 : undefined}
+                        >
+                          Checkout
+                        </PurchaseButton>
+                      </Link>
+                    </Theme>
                     <XStack jc="space-between" gap="$4" ai="center" mb="$2">
                       <XStack
                         ai="center"
@@ -679,7 +681,7 @@ function Tab({
         pe="none"
         zi={-1}
         {...(isActive && {
-          bg: '$color2',
+          bg: '$color3',
         })}
         {...(!isActive && {
           bg: '$color1',

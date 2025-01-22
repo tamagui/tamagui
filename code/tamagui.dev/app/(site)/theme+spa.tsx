@@ -1,7 +1,7 @@
-import { ChevronLeft, ChevronRight, X } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
+import { useParams, useRouter } from 'one'
 import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
   Button,
@@ -14,9 +14,9 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
-import { useLocalSearchParams, useRouter } from 'one'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-
+import { Dialogs } from '~/features/studio/components/Dialogs'
+import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
@@ -26,7 +26,6 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
-// import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 themeBuilderStore.setSteps(steps)
 
@@ -37,7 +36,7 @@ export default function ThemePage() {
   const store = useThemeBuilderStore()
   const themeName = useThemeName()
   const router = useRouter()
-  const params = useLocalSearchParams<any>()
+  const params = useParams<any>()
 
   useEffect(() => {
     // give it a bit to load many dynamic charts that animate etc
@@ -63,13 +62,33 @@ export default function ThemePage() {
     }
   }, [])
 
+  const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
+
   return (
     <YStack>
       {loaded && <ThemeBuilderModal />}
 
-      <PreviewTheme key={`${loaded}${themeName}`}>
-        <StudioPreviewComponentsBar scrollView={document.documentElement} />
-        <StudioPreviewComponents />
+      <Dialogs />
+
+      <PreviewTheme key={previewKey}>
+        <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
+          <YStack
+            gap="$4"
+            mt="$-4"
+            p="$8"
+            f={1}
+            maw={1300}
+            group="content"
+            $md={{
+              maw: 900,
+              p: '$4',
+            }}
+          >
+            <StudioAIBar />
+            <StudioPreviewComponentsBar scrollView={document.documentElement} />
+            <StudioPreviewComponents />
+          </YStack>
+        </XStack>
       </PreviewTheme>
     </YStack>
   )
@@ -79,9 +98,14 @@ const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
 
   return (
-    <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName}>
+    <Theme
+      key={baseStepThemeName.replace(/(dark|light)_?/, '')}
+      forceClassName
+      name={baseStepThemeName}
+      debug
+    >
       <ThemeNameEffect />
-      <YStack bg="$background" f={1} pt={20 + 60} my={-60}>
+      <YStack bg="$background" f={1} pt={20 + 60} mt={-60} pb={50}>
         {props.children}
       </YStack>
     </Theme>
@@ -230,6 +254,17 @@ const ThemeStudioStepButtonsBar = () => {
 
   return (
     <XStack gap="$2">
+      <Button
+        size="$3"
+        onPress={() => {
+          if (confirm(`Reset theme builder state?`)) {
+            store.reset()
+          }
+        }}
+      >
+        Reset
+      </Button>
+
       {canGoBackward && (
         <Button
           chromeless

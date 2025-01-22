@@ -5,7 +5,7 @@ import {
   ArrowRight,
   ArrowUpDown,
 } from '@tamagui/lucide-icons'
-import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/themes/v4'
+import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
@@ -15,6 +15,7 @@ import {
   Label,
   Separator,
   SizableText,
+  Theme,
   TooltipSimple,
   XStack,
   YStack,
@@ -74,9 +75,11 @@ export const PaletteView = memo((props: Props) => {
   const hoveredItem = defaultScaleGrouped[activeColor]
 
   const { anchors } = palette
-  const anchorIndex = anchors.findIndex(
-    (x) => x.index === +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
-  )
+
+  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+
+  const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
+
   const anchor = anchors[anchorIndex]
   const nextAnchor = anchors[anchorIndex + 1]
   const prevAnchor = anchors[anchorIndex - 1]
@@ -297,15 +300,15 @@ export const PaletteView = memo((props: Props) => {
         />
       </XLabeledItem>
 
-      <YStack my={-12}>
+      <YStack>
         <XLabeledItem label="">
-          <XStack w={115}>
-            <Label pe="none" miw={115} jc="flex-end" size="$1" col="$color10" o={0.5}>
+          <XStack w={34}>
+            <Label pe="none" ml="auto" jc="flex-end" size="$1" col="$color10">
               Sync:
             </Label>
           </XStack>
 
-          <XStack gap="$4" ai="center" ml={10}>
+          <XStack gap="$5" ai="center" ml={35}>
             <XStack jc="space-between" w={100}>
               <SyncButtons
                 anchorKey="hue"
@@ -315,7 +318,8 @@ export const PaletteView = memo((props: Props) => {
                 nextAnchor={nextAnchor}
               />
             </XStack>
-            <XStack jc="space-between" w={80}>
+
+            <XStack jc="space-between" w={80} ml={32}>
               <SyncButtons
                 anchorKey="sat"
                 {...props}
@@ -357,92 +361,95 @@ const SyncButtons = memo(
   }) => {
     return (
       <>
-        <TooltipSimple label="Sync to last anchor">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowLeft}
-            themeInverse={anchor?.[anchorKey].syncLeft}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === anchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          syncLeft: !a[anchorKey].syncLeft,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-            {...(!prevAnchor
-              ? {
-                  o: 0.1,
-                  disabled: true,
-                }
-              : null)}
-          />
-        </TooltipSimple>
+        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowLeft}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!prevAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
 
-        <TooltipSimple label="Sync light and dark">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowUpDown}
-            themeInverse={anchor?.[anchorKey].sync}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === anchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          sync: !a[anchorKey].sync,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-          />
-        </TooltipSimple>
+        <Theme name={anchor?.[anchorKey].sync ? 'accent' : 'surface1'}>
+          <TooltipSimple label="Sync light and dark">
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowUpDown}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            sync: !a[anchorKey].sync,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+            />
+          </TooltipSimple>
+        </Theme>
 
-        <TooltipSimple label="Sync to next anchor">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowRight}
-            themeInverse={nextAnchor?.[anchorKey].syncLeft}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === nextAnchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          syncLeft: !a[anchorKey].syncLeft,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-            {...(!nextAnchor
-              ? {
-                  o: 0.1,
-                  disabled: true,
-                }
-              : null)}
-          />
-        </TooltipSimple>
+        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowRight}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === nextAnchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!nextAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
       </>
     )
   }
@@ -484,7 +491,7 @@ type PaletteProps = {
 
 export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
   const { colors, size = 'medium' } = props
-  const borderRadius = size === 'medium' ? 10 : 6
+  const borderRadius = size === 'medium' ? 200 : 100
 
   return (
     <XStack f={1} br={borderRadius} bw={1} bc="$color7">
@@ -497,7 +504,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
 
 // add some delay but no delay if moving across
 
-const delay = 360
+const delay = 50
 let hovered = -1
 let tm
 
@@ -545,7 +552,7 @@ const PaletteColor = memo(
     } = props
     const store = usePaletteStore(palette.name)
     const { hoveredColor, selectedColor } = store
-    const borderRadius = size === 'medium' ? 10 : 6
+    const borderRadius = size === 'medium' ? 100 : 100
     const { anchors } = palette
 
     const anchor = anchors.find((x) => x.index === index)

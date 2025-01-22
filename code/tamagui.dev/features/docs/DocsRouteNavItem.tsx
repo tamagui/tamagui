@@ -40,10 +40,10 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         ai="center"
         jc="flex-end"
         px="$4"
-        py="$1"
+        py="$1.5"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
-          backgroundColor: '$color025',
+          backgroundColor: '$color02',
         }}
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         pos="relative"

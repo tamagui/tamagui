@@ -137,11 +137,6 @@ export const ThemeSwitch = memo(() => {
                 rootStore.theme = light ? 'light' : 'dark'
                 themeBuilderStore.themeSwitchOpen = false
               }
-              // const next = light ? 'light' : 'dark'
-              // rootStore.theme = next
-              // themesStore.toggleFocusedThemeItem({
-              //   id: next,
-              // })
             }}
 
             // rotate="-45deg"

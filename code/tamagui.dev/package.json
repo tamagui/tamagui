@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dot-dev",
-  "version": "1.121.12-1737271201540",
+  "version": "1.122.7",
   "type": "module",
   "private": true,
   "sideEffects": false,
@@ -20,6 +20,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@ai-sdk/deepseek": "^0.1.0",
     "@discordjs/core": "^0.6.0",
     "@docsearch/react": "^3.6.1",
     "@github/mini-throttle": "^2.1.0",
@@ -29,21 +30,22 @@
     "@sentry/browser": "^8.17.0",
     "@supabase/ssr": "0.4.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@tamagui/assert": "1.121.12-1737271201540",
-    "@tamagui/bento": "1.121.12-1737271201540",
-    "@tamagui/demos": "1.121.12-1737271201540",
-    "@tamagui/get-token": "1.121.12-1737271201540",
-    "@tamagui/image-next": "1.121.12-1737271201540",
-    "@tamagui/logo": "1.121.12-1737271201540",
-    "@tamagui/lucide-icons": "1.121.12-1737271201540",
-    "@tamagui/mdx-2": "1.121.12-1737271201540",
-    "@tamagui/one-theme": "1.121.12-1737271201540",
-    "@tamagui/use-store": "1.121.12-1737271201540",
+    "@tamagui/assert": "1.122.7",
+    "@tamagui/bento": "1.122.7",
+    "@tamagui/demos": "1.122.7",
+    "@tamagui/get-token": "1.122.7",
+    "@tamagui/image-next": "1.122.7",
+    "@tamagui/logo": "1.122.7",
+    "@tamagui/lucide-icons": "1.122.7",
+    "@tamagui/mdx-2": "1.122.7",
+    "@tamagui/one-theme": "1.122.7",
+    "@tamagui/use-store": "1.122.7",
     "@vercel/og": "^0.5.8",
+    "ai": "^4.0.22",
     "color2k": "^2.0.2",
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
-    "one": "1.1.401",
+    "one": "1.1.402",
     "postmark": "^3.0.18",
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "^0.76.5",
@@ -51,7 +53,7 @@
     "react-native-svg": "15.8.0",
     "stripe": "^9.1.0",
     "swr": "^2.2.5",
-    "tamagui": "1.121.12-1737271201540",
+    "tamagui": "1.122.7",
     "three": "^0.152.2",
     "valibot": "^0.35.0",
     "victory": "^37.0.2",
@@ -59,7 +61,7 @@
     "vite-plugin-inspect": "^0.8.4"
   },
   "devDependencies": {
-    "@tamagui/cli": "1.121.12-1737271201540",
+    "@tamagui/cli": "1.122.7",
     "@testing-library/react-hooks": "^8.0.1",
     "acorn": "^8.11.3",
     "acorn-walk": "^8.3.1",
@@ -67,6 +69,6 @@
     "esbuild-register": "^3.6.0",
     "mdx-bundler": "^10.0.2",
     "vite-bundle-analyzer": "^0.9.4",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.2"
   }
 }

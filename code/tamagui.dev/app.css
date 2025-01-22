@@ -7,7 +7,7 @@ body {
 }
 
 body {
-  background: var(--color2) !important;
+  background: var(--color1) !important;
 }
 
 body {
@@ -210,12 +210,9 @@ pre {
 .rainbow {
   background-image: -webkit-linear-gradient(
     0deg,
-    var(--orange10),
-    var(--yellow10),
+    var(--red10),
     var(--green10),
-    var(--blue10),
-    var(--pink10),
-    var(--red10)
+    var(--blue10)
   );
 }
 
@@ -533,7 +530,7 @@ textarea {
 }
 
 .t_dark .docs-paragraph {
-  opacity: 0.9;
+  opacity: 0.88;
 }
 
 .custom-scroll ::-webkit-scrollbar {
@@ -681,7 +678,7 @@ textarea {
     mask-image: url(./public/takeouticon.svg);
     mask-size: 20% 20%;
     transform: rotate(1deg);
-    animation: clip-fade2 70s infinite alternate;
+    animation: clip-fade2 50s infinite alternate;
     mix-blend-mode: difference !important;
   }
   
@@ -758,18 +755,19 @@ textarea {
     1px 1px var(--color2), 1px 2px 1px var(--color3),
     1px 3px 1px var(--color4), 1px 4px 1px var(--color5),
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
-    1px 7px 1px var(--color7), 1px 8px 1px var(--color7),
-    1px 9px 1px var(--color7), 1px 12px 1px var(--color8),
+    1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
+    1px 9px 1px var(--color8), 1px 12px 1px var(--color9),
     1px 10px 150px rgba(255, 255, 255, 0.3);
 }
 
 .t_dark .bento-shadow {
-  text-shadow: 1px 1px var(--color9), 1px 2px 1px var(--color8),
-    1px 3px 1px var(--color8), 1px 4px 1px var(--color7),
-    1px 5px 1px var(--color7), 1px 6px 1px var(--color6),
-    1px 7px 1px var(--color6), 1px 8px 1px var(--color6),
-    1px 9px 1px var(--color5), 1px 11px 1px var(--color5),
-    1px 10px 40px rgba(255,255,255,0.07);
+  text-shadow: 2px 2px 1px var(--color9), 1px 2px 1px var(--color9),
+    1px 3px 1px var(--color9), 1px 4px 1px var(--color8),
+    1px 5px 1px var(--color8), 1px 6px 1px var(--color8),
+    1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
+    1px 9px 1px var(--color8), 1px 11px 1px var(--color7),
+    1px 10px 40px rgba(255,255,255,0.07),
+    1px 0px 30px var(--color04);
 }
 
 .bento-up-text {

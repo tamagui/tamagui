@@ -332,14 +332,11 @@ export default function Community() {
         </FlatBubbleCard>
 
         <XStack space flexWrap="wrap">
-          <IndividualSponsor
-            name="@barelyreaper"
-            link="https://twitter.com/barelyreaper"
-          />
-          <IndividualSponsor name="@pontusab" link="https://twitter.com/pontusab" />
-          <IndividualSponsor name="@AntelaBrais" link="https://twitter.com/AntelaBrais" />
-          <IndividualSponsor name="Hirbod" link="https://twitter.com/nightstomp" />
-          <IndividualSponsor name="Dimension" link="https://twitter.com/joindimension" />
+          <IndividualSponsor name="@barelyreaper" link="https://x.com/barelyreaper" />
+          <IndividualSponsor name="@pontusab" link="https://x.com/pontusab" />
+          <IndividualSponsor name="@AntelaBrais" link="https://x.com/AntelaBrais" />
+          <IndividualSponsor name="Hirbod" link="https://x.com/nightstomp" />
+          <IndividualSponsor name="Dimension" link="https://x.com/joindimension" />
         </XStack>
       </ContainerLarge>
 

@@ -1,10 +1,20 @@
 <div align="center">
-  <img margin="auto" width="572px" src="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/social.png" alt="Tamagui">
+  <picture width="572px">
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/logo-black.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/logo-white.png">
+    <img alt="Shows a black logo in light color mode and a white one in dark color mode." src="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/social.png">
+  </picture>
 </div>
 
 <h3 align="center">
-  Style and UI for React (web and native) meet an optimizing compiler
+  Style library, design system, composable components, and more.
 </h3>
+
+<h4 align="center">
+  Tamagui is a bunch of libraries for building UIs that share code across React and React Native.
+</h4>
+
+<br />
 
 <div align="center">
   <img alt="NPM downloads" src="https://img.shields.io/npm/dw/@tamagui/core?logo=npm&label=NPM%20downloads&cacheSeconds=3600"/>

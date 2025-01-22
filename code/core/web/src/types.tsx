@@ -159,11 +159,11 @@ export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
   string,
   { [key: GenericKey]: Val }
 > & {
-  color: { [key: GenericKey]: Val }
-  space: { [key: GenericKey]: Val }
-  size: { [key: GenericKey]: Val }
-  radius: { [key: GenericKey]: Val }
-  zIndex: { [key: GenericKey]: Val }
+  color?: { [key: GenericKey]: Val }
+  space?: { [key: GenericKey]: Val }
+  size?: { [key: GenericKey]: Val }
+  radius?: { [key: GenericKey]: Val }
+  zIndex?: { [key: GenericKey]: Val }
 }
 
 export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
@@ -174,11 +174,11 @@ type Tokenify<A extends GenericTokens> = Omit<
   },
   TokenCategories
 > & {
-  color: TokenifyRecord<A['color']>
-  space: TokenifyRecord<A['space']>
-  size: TokenifyRecord<A['size']>
-  radius: TokenifyRecord<A['radius']>
-  zIndex: TokenifyRecord<A['zIndex']>
+  color: TokenifyRecord<A extends { color: any } ? A['color'] : {}>
+  space: TokenifyRecord<A extends { space: any } ? A['space'] : {}>
+  size: TokenifyRecord<A extends { size: any } ? A['size'] : {}>
+  radius: TokenifyRecord<A extends { radius: any } ? A['radius'] : {}>
+  zIndex: TokenifyRecord<A extends { zIndex: any } ? A['zIndex'] : {}>
 }
 
 type TokenifyRecord<A extends Object> = {
@@ -260,7 +260,6 @@ export interface TamaguiConfig
     TamaguiCustomConfig {}
 
 type OnlyAllowShorthandsSetting = boolean | undefined
-type DefaultFontSetting = string | undefined
 
 export type CreateTamaguiConfig<
   A extends GenericTokens,
@@ -269,7 +268,6 @@ export type CreateTamaguiConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = {
   fonts: RemoveLanguagePostfixes<F>
@@ -286,7 +284,6 @@ export type CreateTamaguiConfig<
   shorthands: C
   media: D
   animations: AnimationDriver<E>
-  onlyAllowShorthands: G
   settings: H
 }
 
@@ -314,14 +311,13 @@ type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 //   body_en: any
 // }>['fonts']
 
-type ConfProps<A, B, C, D, E, F, G, I> = {
+type ConfProps<A, B, C, D, E, F, I> = {
   tokens?: A
   themes?: B
   shorthands?: C
   media?: D
   animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined
   fonts?: F
-  onlyAllowShorthands?: G
   settings?: I
 }
 
@@ -350,7 +346,6 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer D,
   infer E,
   infer F,
-  infer G,
   infer H
 >
   ? TamaguiInternalConfig<
@@ -360,7 +355,6 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
       D extends GenericMedia ? D : EmptyMedia,
       E extends GenericAnimations ? E : EmptyAnimations,
       F extends GenericFonts ? F : EmptyFonts,
-      G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting,
       H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings
     >
   : unknown
@@ -394,7 +388,7 @@ export type ThemeParsed = {
 export type Tokens = TamaguiConfig['tokens']
 
 export type TokensParsed = {
-  [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>
+  [Key in keyof Required<Tokens>]: TokenPrefixed<Tokens[Key]>
 }
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
@@ -790,10 +784,9 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   I extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, I>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, I>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -1266,7 +1259,7 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands']
+type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands']
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
@@ -2541,24 +2534,33 @@ export type UniversalAnimatedNumber<A> = {
   stop(): void
 }
 
+export type UseAnimatedNumberReaction<
+  V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (
+  opts: {
+    value: V
+    hostRef: RefObject<HTMLElement | View>
+  },
+  onValue: (current: number) => void
+) => void
+
+export type UseAnimatedNumberStyle<
+  V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (val: V, getStyle: (current: any) => any) => any
+
+export type UseAnimatedNumber<
+  N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (initial: number) => N
+
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
   supportsCSSVars?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   ResetPresence: (props: { children?: any }) => JSX.Element
-  useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>
-  useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(
-    val: V,
-    getStyle: (current: any) => any
-  ) => any
-  useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(
-    opts: {
-      value: V
-      hostRef: RefObject<HTMLElement | View>
-    },
-    onValue: (current: number) => void
-  ) => void
+  useAnimatedNumber: UseAnimatedNumber
+  useAnimatedNumberStyle: UseAnimatedNumberStyle
+  useAnimatedNumberReaction: UseAnimatedNumberReaction
   animations: A
   View?: any
   Text?: any

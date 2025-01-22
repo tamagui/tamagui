@@ -21,7 +21,7 @@ export async function generateThemes(inputFile: string) {
   const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
   purgeCache(inputFilePath)
 
-  let promise: Promise<null | ThemeBuilder<any>> | null = null as any
+  const promises: Array<Promise<null | ThemeBuilder<any>>> = []
 
   // @ts-ignore
   Module.prototype.require = function (id) {
@@ -30,9 +30,10 @@ export async function generateThemes(inputFile: string) {
 
     if (id === '@tamagui/theme-builder') {
       let resolve: Function
-      promise = new Promise((res) => {
+      const promise = new Promise<any>((res) => {
         resolve = res
       })
+      promises.push(promise)
       return createThemeIntercept(out, {
         onComplete: (result) => {
           resolve?.(result.themeBuilder)
@@ -57,9 +58,9 @@ export async function generateThemes(inputFile: string) {
     const generatedThemes = generatedThemesToTypescript(themes)
 
     let tm: any
-    if (promise) {
+    if (promises.length) {
       let finished = false
-      promise.then(() => {
+      await Promise.any(promises).then(() => {
         finished = true
       })
       // handle never finishing promise with nice error
@@ -72,7 +73,7 @@ export async function generateThemes(inputFile: string) {
       }, 2000)
     }
 
-    const themeBuilder = promise ? await promise : null
+    const themeBuilder = await Promise.any(promises)
     clearTimeout(tm)
 
     return {

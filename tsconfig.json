@@ -103,9 +103,6 @@
       "path": "code/core/animations-react-native"
     },
     {
-      "path": "code/core/animations-reanimated"
-    },
-    {
       "path": "code/core/aria-hidden"
     },
     {
@@ -145,13 +142,7 @@
       "path": "code/core/create-context"
     },
     {
-      "path": "code/core/create-tamagui"
-    },
-    {
       "path": "code/core/create-theme"
-    },
-    {
-      "path": "code/core/create-themes"
     },
     {
       "path": "code/core/cubic-bezier-animator"
@@ -304,25 +295,10 @@
       "path": "code/demos"
     },
     {
-      "path": "code/integration"
-    },
-    {
-      "path": "code/kitchen-sink"
-    },
-    {
-      "path": "code/next-site"
-    },
-    {
       "path": "code/packages/babel-plugin-fully-specified"
     },
     {
       "path": "code/packages/bento-get"
-    },
-    {
-      "path": "code/packages/build/__tests__/fixtures/simple-package"
-    },
-    {
-      "path": "code/packages/build/__tests__/fixtures/watch-package"
     },
     {
       "path": "code/packages/cli-color"
@@ -362,12 +338,6 @@
     },
     {
       "path": "code/packages/vite-plugin-internal"
-    },
-    {
-      "path": "code/takeout"
-    },
-    {
-      "path": "code/tamagui.dev"
     },
     {
       "path": "code/ui/accordion"

@@ -108,10 +108,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
                 <Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
-            <Sheet.Overlay
-              zIndex={100}
-              bg={isBento ? 'rgba(0,0,0,0.3)' : '$background'}
-            />
+            <Sheet.Overlay zIndex={100} bg="$shadow4" />
           </Sheet>
         </Adapt>
 

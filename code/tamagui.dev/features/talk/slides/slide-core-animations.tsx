@@ -8,7 +8,7 @@ const highlightCode = createCodeHighlighter()
 
 const snippet1 = highlightCode(
   `import { createAnimations }
-  from '@tamagui/animations-reanimated'
+  from '@tamagui/animations-moti'
 
 const animations = createAnimations({
   slow: {

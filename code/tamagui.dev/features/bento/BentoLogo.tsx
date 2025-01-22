@@ -40,7 +40,7 @@ export const BentoLogo = ({
         backgroundColor: '$background',
       })}
     >
-      <BentoLogoTheme offset={0 + offsetAdjust}>
+      <Theme name="gray">
         <H1
           componentName="span"
           ff="$cherryBomb"
@@ -53,7 +53,7 @@ export const BentoLogo = ({
           }}
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
@@ -64,9 +64,9 @@ export const BentoLogo = ({
         >
           {children}&nbsp;
         </H1>
-      </BentoLogoTheme>
+      </Theme>
 
-      <BentoLogoTheme offset={0 + offsetAdjust}>
+      <BentoLogoTheme offset={7 + offsetAdjust}>
         <H1
           // o={0}
           pos="absolute"
@@ -77,29 +77,65 @@ export const BentoLogo = ({
           ff="$cherryBomb"
           px="$3"
           mx="$-3"
+          o={0.5}
           whiteSpace="pre"
-          color="$color8"
+          color="$color1"
+          $theme-dark={{
+            color: '$color9',
+          }}
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
           ussel="none"
           pe="none"
-          className="clip-text mask-gradient-down"
           style={{
-            backgroundImage: 'linear-gradient(var(--color10), transparent)',
-            // textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.44)`,
-            maskImage: `linear-gradient(transparent 20%, rgba(0, 0, 0, 1))`,
-            // mixBlendMode: 'hard-light',
+            // backgroundImage: 'linear-gradient(var(--color8), transparent)',
+            maskImage: `linear-gradient(transparent 10%, var(--color12))`,
           }}
         >
           {children}&nbsp;
         </H1>
       </BentoLogoTheme>
 
-      <BentoLogoTheme offset={-2 + offsetAdjust}>
+      <BentoLogoTheme offset={-9 + offsetAdjust}>
+        <H1
+          // o={0}
+          pos="absolute"
+          t={0}
+          x={2}
+          l={0}
+          zi={1100}
+          ff="$cherryBomb"
+          o={0.5}
+          px="$3"
+          mx="$-3"
+          whiteSpace="pre"
+          color="$color1"
+          $theme-dark={{
+            color: '$color9',
+          }}
+          maw="100%"
+          f={1}
+          ls={-16}
+          lh={280}
+          my={-45}
+          fos={180}
+          // mixBlendMode="color"
+          ussel="none"
+          pe="none"
+          style={{
+            // backgroundImage: 'linear-gradient(var(--color8), transparent)',
+            maskImage: `linear-gradient(150deg, transparent 10%, #000)`,
+          }}
+        >
+          {children}&nbsp;
+        </H1>
+      </BentoLogoTheme>
+
+      {/* <BentoLogoTheme offset={2 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
@@ -112,45 +148,41 @@ export const BentoLogo = ({
           whiteSpace="pre"
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
-          $theme-dark={{
-            opacity: 1,
-          }}
+          o={0.5}
           ussel="none"
           pe="none"
           className="clip-text mask-gradient-down bento-text-3"
         >
           {children}&nbsp;
         </H1>
-      </BentoLogoTheme>
+      </BentoLogoTheme> */}
 
-      <BentoLogoTheme offset={-2 + offsetAdjust}>
+      <BentoLogoTheme offset={2 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
           l={0}
           x={1}
-          o={0.5}
           zi={1100000000}
           ff="$cherryBomb"
           px="$3"
           mx="$-3"
           whiteSpace="pre"
           color="$color8"
-          className="mix-blend-color-burn-dodge"
           maw="100%"
           f={1}
-          ls={-21}
+          ls={-16}
           lh={280}
           my={-45}
           fos={180}
           ussel="none"
           pe="none"
           style={{
-            maskImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0) 60%)`,
+            maskImage: `linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0) 50%)`,
           }}
         >
           {children}&nbsp;
