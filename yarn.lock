@@ -7131,6 +7131,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/types": "npm:^7.25.4"
+    "@tamagui/build": "npm:1.122.7"
     vitest: "npm:^3.0.2"
   languageName: unknown
   linkType: soft

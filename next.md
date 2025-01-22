@@ -67,6 +67,8 @@ createCore<CustomTypes>({
     - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
   - `<Theme values={{}} />` dynamic override
 
+- remove @tamagui/one-theme see how apps do it in one repo
+
 - perf getState could be cached (weakmap themeManager + stringify props)
 
 - isolatedDeclarations for build perf // TODO: turn on
