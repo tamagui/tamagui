@@ -9,6 +9,7 @@ import {
   Separator,
   SizableText,
   Spacer,
+  Theme,
   XStack,
   YStack,
 } from 'tamagui'
@@ -106,7 +107,7 @@ export const LoginScreen = () => {
         </YStack>
 
         <YStack mt="$4">
-          <>
+          <Theme name="accent">
             <Button
               fontWeight="600"
               size="$5"
@@ -115,7 +116,7 @@ export const LoginScreen = () => {
             >
               Login
             </Button>
-          </>
+          </Theme>
         </YStack>
       </Form>
     </YStack>

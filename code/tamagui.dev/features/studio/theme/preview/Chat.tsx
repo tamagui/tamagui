@@ -22,12 +22,6 @@ const initialMessages = [
     createdAt: new Date(2023, 1, 1, 0, 0, 0),
   },
   {
-    id: 2,
-    userId: 1,
-    content: 'Any updates?',
-    createdAt: new Date(2023, 1, 1, 0, 0, 1),
-  },
-  {
     id: 3,
     userId: 2,
     content: 'Nostrud in cillum...',
@@ -39,54 +33,54 @@ const initialMessages = [
     content: 'Magna cillum consectetur',
     createdAt: new Date(2023, 1, 1, 0, 0, 3),
   },
-  {
-    id: 5,
-    userId: 3,
-    content: 'adipisicing amet officia.',
-    createdAt: new Date(2023, 1, 1, 0, 0, 3),
-  },
+  // {
+  //   id: 5,
+  //   userId: 3,
+  //   content: 'adipisicing amet officia.',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 3),
+  // },
   {
     id: 6,
     userId: 1,
-    content: 'Is that latin?',
+    content: 'Latin?',
     createdAt: new Date(2023, 1, 1, 0, 0, 4),
   },
-  {
-    id: 7,
-    userId: 2,
-    content: 'Exercitation!',
-    createdAt: new Date(2023, 1, 1, 0, 0, 5),
-  },
-  {
-    id: 8,
-    userId: 1,
-    content: 'What?',
-    createdAt: new Date(2023, 1, 1, 0, 0, 6),
-  },
-  {
-    id: 9,
-    userId: 3,
-    content: 'Esse irure laboris deserunt.',
-    createdAt: new Date(2023, 1, 1, 0, 0, 7),
-  },
-  {
-    id: 10,
-    userId: 2,
-    content: 'Lorem ipsum',
-    createdAt: new Date(2023, 1, 1, 0, 0, 10),
-  },
-  {
-    id: 11,
-    userId: 3,
-    content: '+1',
-    createdAt: new Date(2023, 1, 1, 0, 0, 11),
-  },
-  {
-    id: 12,
-    userId: 3,
-    content: 'Magna anim occaecat...',
-    createdAt: new Date(2023, 1, 1, 0, 0, 11),
-  },
+  // {
+  //   id: 7,
+  //   userId: 2,
+  //   content: 'Exercitation!',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 5),
+  // },
+  // {
+  //   id: 8,
+  //   userId: 1,
+  //   content: 'What?',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 6),
+  // },
+  // {
+  //   id: 9,
+  //   userId: 3,
+  //   content: 'Esse irure laboris deserunt.',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 7),
+  // },
+  // {
+  //   id: 10,
+  //   userId: 2,
+  //   content: 'Lorem ipsum',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 10),
+  // },
+  // {
+  //   id: 11,
+  //   userId: 3,
+  //   content: '+1',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 11),
+  // },
+  // {
+  //   id: 12,
+  //   userId: 3,
+  //   content: 'Magna anim occaecat...',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 11),
+  // },
 ]
 
 export const ChatScreen = () => {
@@ -167,7 +161,7 @@ export const ChatScreen = () => {
           <Input
             value={input}
             onChangeText={setInput}
-            placeholder="Enter your message..."
+            placeholder="Message"
             f={1}
             backgroundColor="transparent"
             {...demoProps.borderRadiusProps}

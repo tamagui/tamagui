@@ -29,8 +29,6 @@ import { weakKey } from '~/helpers/weakKey'
 
 themeBuilderStore.setSteps(steps)
 
-export function loader() {}
-
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
   const store = useThemeBuilderStore()
@@ -67,11 +65,15 @@ export default function ThemePage() {
 
       <Dialogs />
 
+      <PreviewTheme key={previewKey}>
+        <YStack fullscreen zi={100000} pe="none" bg="red" />
+      </PreviewTheme>
+
       <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
         <YStack
           gap="$4"
           mt="$-4"
-          p="$7"
+          p="$6"
           f={1}
           maw={1300}
           group="content"
@@ -106,6 +108,8 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
 }
 
 const Empty = () => null
+
+import { Masonry } from 'react-masonry'
 
 const ThemeBuilderModal = memo(() => {
   const store = useThemeBuilderStore()

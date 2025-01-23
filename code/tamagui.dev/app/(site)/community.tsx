@@ -225,15 +225,6 @@ export default function Community() {
             imageWidth={250}
             imageHeight={250}
           />
-
-          <GoldSponsor
-            name="Medbill AI"
-            bg="#888"
-            link="https://www.medbill.ai"
-            image="/sponsors/medbill-ai.png"
-            imageWidth={800 * 0.3}
-            imageHeight={173 * 0.3}
-          />
         </XStack>
 
         <FlatBubbleCard bw={0}>
@@ -243,6 +234,14 @@ export default function Community() {
         </FlatBubbleCard>
 
         <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+          <GoldSponsor
+            name="Medbill AI"
+            bg="#888"
+            link="https://www.medbill.ai"
+            image="/sponsors/medbill-ai.png"
+            imageWidth={150}
+            imageHeight={150}
+          />
           <GoldSponsor
             name="Appfolio"
             link="https://www.appfolio.com/"

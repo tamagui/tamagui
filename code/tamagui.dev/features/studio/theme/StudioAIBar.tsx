@@ -77,7 +77,7 @@ export const StudioAIBar = () => {
       <XStack ai="center" f={1} gap="$3">
         <Input
           ref={inputRef as any}
-          placeholder="Prompt to generate themes with AI..."
+          placeholder={`Prompt to generate a theme...`}
           w="100%"
           f={10}
           size="$6"

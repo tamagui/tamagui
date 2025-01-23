@@ -98,8 +98,8 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
         demosOptions.spacing === 'lg'
           ? ('$7' as const)
           : demosOptions.spacing === 'md'
-            ? ('$6' as const)
-            : ('$5' as const),
+            ? ('$5' as const)
+            : ('$3' as const),
     } as const,
 
     gapPropsMd: {

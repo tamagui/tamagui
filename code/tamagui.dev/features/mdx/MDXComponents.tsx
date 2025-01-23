@@ -809,7 +809,7 @@ const componentsIn = {
 
     return (
       <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
-        <ThemeTintAlt>
+        <>
           <Card f={1}>
             <Card.Header gap="$2">
               <H4 size="$4" color="$color9">
@@ -844,7 +844,7 @@ const componentsIn = {
               </XStack>
             </Card.Footer>
           </Card>
-        </ThemeTintAlt>
+        </>
 
         <Link asChild href="/docs/intro/installation">
           <Card

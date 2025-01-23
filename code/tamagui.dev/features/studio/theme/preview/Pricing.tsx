@@ -59,13 +59,11 @@ export const PricingCards = () => {
                 p="$4"
                 height="unset"
                 display="flex"
-                borderColor={active ? '$color7' : '$color5'}
+                bg="$color2"
                 gap="$4"
                 ai="center"
-                hoverStyle={{
-                  borderColor: active ? '$color10' : '$color7',
-                }}
                 {...demoProps.borderRadiusProps}
+                borderWidth={0}
               >
                 <RadioGroup.Item id={htmlId} size="$3" value={price.value}>
                   <RadioGroup.Indicator />

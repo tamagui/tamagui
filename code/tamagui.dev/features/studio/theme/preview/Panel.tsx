@@ -48,8 +48,10 @@ export function Panel({
 
   return (
     <YStack
-      w="100%"
-      h="100%"
+      // w="100%"
+      // h="100%"
+      // scale={0.95}
+      // transformOrigin="left top"
       onHoverIn={() => setHovered(true)}
       onHoverOut={() => setHovered(false)}
       {...props}

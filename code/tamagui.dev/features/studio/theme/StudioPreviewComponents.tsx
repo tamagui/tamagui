@@ -1,5 +1,5 @@
-import { memo, useRef } from 'react'
-import { Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { memo } from 'react'
+import { YStack, useThemeName } from 'tamagui'
 
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
@@ -16,6 +16,7 @@ import { Panel } from './preview/Panel'
 import { PieScreen } from './preview/Pie'
 import { PricingCards } from './preview/Pricing'
 import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
+import Masonry from 'react-layout-masonry'
 import { UserDropdown } from './preview/UserDropdown'
 
 const extraPad = 18
@@ -28,154 +29,15 @@ export const StudioPreviewComponents = memo(() => {
   const demoProps = useDemoProps()
 
   return (
-    <>
-      <Panel disableSettings m={0} f={0} h="auto" w="calc(100% + 24px)">
-        <YStack
-          {...demoProps.panelProps}
-          {...demoProps.stackOutlineProps}
-          {...demoProps.borderRadiusProps}
-          {...demoProps.panelPaddingProps}
-          backgroundColor="transparent"
-          borderColor="transparent"
-          px={0}
-          gap="$0"
-        >
-          <Header />
-        </YStack>
-      </Panel>
-
-      <YStack
-        f={1}
-        display={'grid' as any}
-        scale={0.9}
-        w="110%"
-        transformOrigin="left top"
-        $group-content={
-          {
-            gridTemplateColumns: `50% 50%`,
-            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-            gridTemplateAreas: `
-              'chat chat'
-              'statistics-line statistics-line'
-              'all-tasks all-tasks'
-              'current-task current-task'
-              'user-dropdown user-dropdown'
-              'pie pie'
-              'overview-1 overview-2'
-              'pricing pricing'
-              'statistics-bar statistics-bar'
-              'login login'
-              'calendar calendar'
-              'components components'
-              `,
-          } as any
-        }
-        $group-content-gtXxs={
-          {
-            gridTemplateColumns: Array(12)
-              .fill(`calc(${100 / 12}% - ${extraPad}px)`)
-              .join(' '),
-            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-            gridTemplateAreas: `
-              '${gridRow([
-                ['statistics-line', 7],
-                ['pricing', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pricing', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pricing', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pie', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pie', 5],
-              ])}'
-              '${gridRow([
-                ['overview-1', 4],
-                ['statistics-bar', 8],
-              ])}'
-              '${gridRow([
-                ['overview-2', 4],
-                ['statistics-bar', 8],
-              ])}'
-              '${gridRow([
-                ['current-task', 6],
-                ['login', 6],
-              ])}'
-              '${gridRow([
-                ['all-tasks', 6],
-                ['login', 6],
-              ])}'
-              '${gridRow([
-                ['calendar', 6],
-                ['user-dropdown', 6],
-              ])}'
-              '${gridRow([['components', 12]])}'
-          `,
-          } as any
-        }
-        $group-content-gtXs={
-          {
-            gridTemplateColumns: Array(12)
-              .fill(`calc(${100 / 12}% - ${extraPad}px)`)
-              .join(' '),
-            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-            gridTemplateAreas: `
-              '${gridRow([
-                ['chat', 5],
-                ['overview-1', 3],
-                ['user-dropdown', 4],
-              ])}'
-              '${gridRow([
-                ['chat', 5],
-                ['overview-2', 3],
-                ['user-dropdown', 4],
-              ])}'
-              '${gridRow([
-                ['chat', 5],
-                ['statistics-line', 3],
-                ['statistics-line', 4],
-              ])}'
-
-              '${gridRow([
-                ['statistics-bar', 6],
-                ['pricing', 6],
-              ])}'
-              '${gridRow([
-                ['login', 4],
-                ['pie', 4],
-                ['current-task', 4],
-              ])}'
-              '${gridRow([
-                ['calendar', 4],
-                ['components', 4],
-                ['all-tasks', 4],
-              ])}'
-            `,
-          } as any
-        }
-      >
-        <Contents />
-      </YStack>
-    </>
+    <YStack>
+      <Contents />
+    </YStack>
   )
 })
 
 const Contents = memo(() => {
   return (
-    <>
-      <div style={{ gridArea: 'login' }}>
-        <Panel fileToCopyName="Login">
-          <LoginScreen />
-        </Panel>
-      </div>
+    <Masonry columns={{ 640: 1, 768: 2, 1024: 3, 1280: 5 }} gap={12}>
       <div style={{ gridArea: 'statistics-bar' }}>
         <Panel fileToCopyName="Statistics">
           <StatisticsBarScreen />
@@ -213,6 +75,11 @@ const Contents = memo(() => {
           <PricingCards />
         </Panel>
       </div>
+      <div style={{ gridArea: 'login' }}>
+        <Panel fileToCopyName="Login">
+          <LoginScreen />
+        </Panel>
+      </div>
       <div style={{ gridArea: 'all-tasks' }}>
         <Panel fileToCopyName="AllTasks">
           <AllTasks />
@@ -238,7 +105,7 @@ const Contents = memo(() => {
           <Calendar />
         </Panel>
       </div>
-    </>
+    </Masonry>
   )
 })
 

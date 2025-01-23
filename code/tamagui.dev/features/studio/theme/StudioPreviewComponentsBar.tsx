@@ -86,7 +86,7 @@ const ToggleGroupItem = styled(ToggleGroup.Item, {
   focusVisibleStyle: {
     outlineWidth: 0,
   },
-} as any)
+})
 
 export function BorderRadiusInput() {
   const store = useThemeBuilderStore()

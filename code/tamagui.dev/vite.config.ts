@@ -56,6 +56,7 @@ export default {
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
+      'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
     },
 
     // todo automate, probably can just dedupe all package.json deps?

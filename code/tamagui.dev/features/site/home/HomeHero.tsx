@@ -296,10 +296,12 @@ const HeroContents = memo(function HeroContents() {
             <Link asChild href="/docs/intro/introduction">
               <Button
                 aria-label="Get started (docs)"
+                group="item"
+                containerType="normal"
                 fontFamily="$silkscreen"
                 componentName=""
                 size="$5"
-                fontSize="$6"
+                fontSize="$2"
                 borderRadius={1000}
                 bordered
                 bw={2}
@@ -309,17 +311,11 @@ const HeroContents = memo(function HeroContents() {
                 pressStyle={{
                   elevation: '$0',
                 }}
-                // TODO this is applying in dark mode...
-                // $theme-light={{
-                //   bg: '$color1',
-                //   hoverStyle: {
-                //     bg: '$color2',
-                //     color: '$color10',
-                //   },
-                // }}
               >
                 Start
-                <LogoIcon downscale={3} />
+                <YStack $group-item-press={{ scaleX: -1 }}>
+                  <LogoIcon downscale={3} />
+                </YStack>
               </Button>
             </Link>
           </Theme>
