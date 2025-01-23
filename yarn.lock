@@ -6912,6 +6912,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:code/compiler/babel-plugin"
   dependencies:
+    "@babel/core": "npm:^7.25.2"
     "@babel/generator": "npm:^7.25.5"
     "@babel/helper-plugin-utils": "npm:^7.24.8"
     "@babel/template": "npm:^7.25.0"

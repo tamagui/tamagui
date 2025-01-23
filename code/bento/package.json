@@ -6,7 +6,7 @@
     "*.css"
   ],
   "source": "index.jsx",
-  "types": "./types/index.d.ts",
+  "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
@@ -21,7 +21,7 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
@@ -31,7 +31,7 @@
         "import": "./dist/esm/data.native.js",
         "require": "./dist/cjs/data.native.js"
       },
-      "types": "./types/data.d.ts",
+      "types": "./src/data.ts",
       "import": "./dist/esm/data.mjs",
       "require": "./dist/cjs/data.cjs"
     },
@@ -40,15 +40,15 @@
         "import": "./dist/esm/components/*.native.js",
         "require": "./dist/cjs/components/*.native.js"
       },
-      "types": "./types/components/*.d.ts",
+      "types": "./src/components/d.ts",
       "import": "./dist/esm/components/*.mjs",
       "require": "./dist/cjs/components/*.cjs"
     }
   },
   "scripts": {
-    "build": "tamagui-build",
+    "build": "tamagui-build --skip-types",
     "typecheck": "tsc",
-    "watch": "tamagui-build --watch",
+    "watch": "tamagui-build --skip-types --watch",
     "clean": "tamagui-build clean",
     "dev:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:web:prod": "NODE_ENV=production webpack serve",
