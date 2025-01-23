@@ -30,7 +30,7 @@ const initialMessages = [
   {
     id: 4,
     userId: 3,
-    content: 'Magna cillum consectetur',
+    content: 'Magna cillum',
     createdAt: new Date(2023, 1, 1, 0, 0, 3),
   },
   // {
@@ -113,7 +113,7 @@ export const ChatScreen = () => {
       {...demoProps.panelPaddingProps}
       bg="$color2"
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
+      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor">
         <XStack jc="space-between">
           <YStack>
             <H4 {...demoProps.headingFontFamilyProps}>Group Chat</H4>

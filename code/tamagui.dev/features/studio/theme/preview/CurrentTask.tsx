@@ -35,12 +35,6 @@ export const CurrentTask = () => {
           <XStack {...demoProps.gapPropsLg}>
             <XStack {...demoProps.gapPropsMd}>
               <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
-                <Avatar.Image src="https://i.pravatar.cc/300?u=johndoe" />
-              </Avatar>
-              <Paragraph size="$3">John Doe</Paragraph>
-            </XStack>
-            <XStack {...demoProps.gapPropsMd}>
-              <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
                 <Avatar.Image src="https://i.pravatar.cc/300?u=janeee" />
               </Avatar>
               <Paragraph size="$3">Jane Doe</Paragraph>

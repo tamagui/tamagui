@@ -16,13 +16,17 @@ import { Moon, Sun } from '@tamagui/lucide-icons'
 import { Switch } from 'tamagui'
 import { useUserTheme } from '@tamagui/one-theme'
 import { animationsCSS } from '../../../config/animations.css'
+import { useUser } from '../../user/useUser'
 
 export const StudioAIBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const store = useThemeBuilderStore()
+  const user = useUser()
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
   const [lastReply, setLastReply] = useState('')
+  const hasAccess =
+    user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
 
   const generate = async (type: 'reply' | 'new') => {
     if (!inputRef.current?.value.trim()) {
@@ -129,10 +133,20 @@ export const StudioAIBar = () => {
             o={isGenerating === 'new' ? 0.2 : 1}
             pe={isGenerating === 'new' ? 'none' : 'auto'}
             icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
-            onPress={() => generate('new')}
+            onPress={() => {
+              toastController.show(
+                `This is mostly an experiment, it's gated behind purchase of Takeout or Bento for now.`
+              )
+              return
+
+              if (hasAccess) {
+                generate('new')
+              } else {
+              }
+            }}
             size="$4"
           >
-            Generate
+            {hasAccess ? 'Generate' : 'Access'}
           </Button>
 
           <RandomizeButton />

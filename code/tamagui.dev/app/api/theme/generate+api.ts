@@ -161,6 +161,9 @@ Some notes:
   - You almost always want the hue of the 0-9 to match, and the hue of the 10-11 to match, but they can be different from each other.
   - Ensure the accent foreground (9-10) lum is far enough from the the accent bg (1) to read.
 
+  - "More bright" to someone in dark mode usually means a anchor 0 that is closer to the middle luminescence, so base would go from l: 1,0 to l: 0.4,0.6
+  - "More bright" to someone in light mode usually means the opposite - so l: 0.92,0.1 would go to l: 0.99,0.18
+
 Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,
 and adds an anchor at index 3 to make borders a bit more subtle (theme 2):
 
@@ -211,7 +214,7 @@ h: 270,270
 s: 0.9,0.9
 l: 0.2,0.5
 
-And here's a final really bold theme. Bright neon green base. Accent background black and white. Final foreground in the accent (theme 3):
+Bright neon green base. Accent background black and white. Final foreground in the accent (theme 3):
 
 i: 0
 h: 100,100
