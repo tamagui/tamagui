@@ -48,6 +48,5 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
     Object.assign(out, themesRaw[parent])
   }
   Object.assign(out, theme)
-  console.log('out', theme)
   return out
 }

@@ -97,7 +97,7 @@
     "upgrade:one": "yarn up 'one'@latest '@vxrn/*'@latest",
     "vercel:build": "yarn build:js && cd code/old-site && yarn ci:build",
     "watch": "npm-run-all --parallel watch:ts watch:packages",
-    "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
+    "watch:packages": "SKIP_INITIAL_BUILD=1 SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_INITIAL_BUILD=1 SKIP_TYPES=1 yarn watch:packages",
     "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
     "next-site": "yarn workspace @tamagui/next-site dev",
