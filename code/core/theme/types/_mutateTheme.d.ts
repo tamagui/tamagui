@@ -20,7 +20,7 @@ export declare function mutateThemes({ themes, batch, insertCSS, ...props }: Omi
 };
 export declare function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps): {
     themeRaw: ThemeParsed;
-    theme: ThemeParsed;
+    theme: {};
     cssRules: string[];
 } | undefined;
 export {};

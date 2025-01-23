@@ -27,6 +27,10 @@ import { getRect } from './helpers/getRect'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
+import { addNativeValidStyles } from './addNativeValidStyles'
+
+// add newer style props based on react native version
+addNativeValidStyles()
 
 // adds extra types to View/Stack/Text:
 

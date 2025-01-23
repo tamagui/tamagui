@@ -12,8 +12,8 @@ import type {
 } from 'react'
 import type {
   Text as RNText,
-  TextProps as ReactTextProps,
   TextStyle as RNTextStyle,
+  TextProps as ReactTextProps,
   View,
   ViewProps,
   ViewStyle,
@@ -22,15 +22,13 @@ import type {
 import type { Variable } from './createVariable'
 import type { StyledContext } from './helpers/createStyledContext'
 import type { CSSColorNames } from './interfaces/CSSColorNames'
+import type { ColorKeys, SizeKeys, SpaceKeys } from './interfaces/KeyTypes'
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes'
-import type { LanguageContextType } from './views/FontLanguage.types'
-import type { ThemeProviderProps } from './views/ThemeProvider'
+import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
 import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
-import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
-import type { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
-import { styled } from './styled'
-import { Text } from './views/Text'
+import type { LanguageContextType } from './views/FontLanguage.types'
+import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export * from './interfaces/KeyTypes'
 export * from './interfaces/TamaguiComponentState'

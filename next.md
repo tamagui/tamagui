@@ -17,6 +17,7 @@ v2
 
 - v3 - aim for fast follow
 
+  - default box-sizing to border-box
   - add animation api
   - tokens => variables (remove nested groups)
   - theme => variables
