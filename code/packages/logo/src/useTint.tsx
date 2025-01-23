@@ -1,7 +1,7 @@
 import React from 'react'
+import type { JSX } from 'react/jsx-runtime'
 import type { ThemeName, ThemeProps } from 'tamagui'
 import { Theme } from 'tamagui'
-
 import { getTints, setNextTintFamily, useTints } from './tints'
 
 // no localstorage because its not important to remember and causes a flicker
@@ -15,21 +15,41 @@ const listeners = new Set<Function>()
 
 export const onTintChange = (listener: (cur: number) => void) => {
   listeners.add(listener)
-  return () => {
+  return (): void => {
     listeners.delete(listener)
   }
 }
 
 const numTints = getTints().tints.length
 
-export const setTintIndex = (next: number) => {
+export const setTintIndex = (next: number): void => {
   const val = next % numTints
   if (val === current) return
   current = val
   listeners.forEach((x) => x(val))
 }
 
-export const useTint = (altOffset = -1) => {
+export const useTint = (
+  altOffset = -1
+): {
+  tints: ThemeName[]
+  tintIndex: number
+  tintAltIndex: number
+  tint: ThemeName
+  tintAlt: ThemeName
+  setTintIndex: (next: number) => void
+  setNextTintFamily: () => void
+  setNextTint: () => void
+  name: string
+  families: {
+    tamagui: string[]
+    xmas: string[]
+    easter: string[]
+    halloween: string[]
+    valentine: string[]
+    lunar: string[]
+  }
+} => {
   const index = React.useSyncExternalStore(
     onTintChange,
     () => current,
@@ -60,7 +80,7 @@ export const ThemeTint = ({
   disable,
   children,
   ...rest
-}: ThemeProps & { disable?: boolean }) => {
+}: ThemeProps & { disable?: boolean }): JSX.Element => {
   const curTint = useTint().tint
   return (
     <Theme {...rest} name={disable ? null : curTint}>
@@ -74,7 +94,7 @@ export const ThemeTintAlt = ({
   disable,
   offset = 1,
   ...rest
-}: ThemeProps & { disable?: boolean; offset?: number }) => {
+}: ThemeProps & { disable?: boolean; offset?: number }): JSX.Element => {
   const curTint = useTint(offset).tintAlt
   const name = disable ? null : curTint
   return (
