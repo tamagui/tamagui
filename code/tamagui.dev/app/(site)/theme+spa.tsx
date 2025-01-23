@@ -56,7 +56,6 @@ export default function ThemePage() {
 
     return () => {
       store.listeners.delete(onSave)
-      clearTimeout(tm)
     }
   }, [])
 
