@@ -10,6 +10,7 @@
     { "path": "code/kitchen-sink" },
     { "path": "code/bento" },
     { "path": "code/demos" },
-    { "path": "code/tamagui.dev" },
+    // this is giving errors because some conflict with bentos tamagui.config
+    // { "path": "code/tamagui.dev" },
   ]
 }

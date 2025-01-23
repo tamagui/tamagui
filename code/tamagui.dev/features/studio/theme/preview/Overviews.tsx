@@ -86,13 +86,29 @@ export const OverviewCard = ({
           fontWeight="400"
           mb="$-2"
           color="$color12"
+          {...(alternative && {
+            color: '$accent1',
+          })}
         >
           {title}
         </Paragraph>
-        <H4 size="$9">{value}</H4>
+        <H4
+          size="$9"
+          {...(alternative && {
+            color: '$accent1',
+          })}
+        >
+          {value}
+        </H4>
         <XStack>
           {!!badgeText && (
-            <Paragraph size="$2" px="$2">
+            <Paragraph
+              size="$2"
+              px="$2"
+              {...(alternative && {
+                color: '$accent1',
+              })}
+            >
               {badgeText}
             </Paragraph>
           )}

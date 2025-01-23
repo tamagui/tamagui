@@ -38,7 +38,7 @@ export const PricingCards = () => {
         pb="$2"
         gap="$1"
       >
-        <H4 {...demoProps.headingFontFamilyProps} ta="center">
+        <H4 {...demoProps.headingFontFamilyProps} size="$4" ta="center">
           Subscribe
         </H4>
         <Paragraph theme="alt2" size="$4" ta="center">
@@ -46,7 +46,7 @@ export const PricingCards = () => {
         </Paragraph>
       </YStack>
 
-      <YStack flex={1}>
+      <YStack mx="$-2" flex={1}>
         <RadioGroup {...demoProps.gapPropsMd} value={val} onValueChange={setVal}>
           {options.map((price) => {
             const active = val === price.value

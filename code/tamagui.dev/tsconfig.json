@@ -5,12 +5,6 @@
     "paths": {
       "~/*": [
         "./*"
-      ],
-      "tamagui": [
-        "../tamagui"
-      ],
-      "@tamagui/*": [
-        "../../packages/*"
       ]
     },
     "outDir": "dist",

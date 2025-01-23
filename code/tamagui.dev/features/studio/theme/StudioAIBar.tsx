@@ -1,5 +1,5 @@
 import { Input } from '@tamagui/input'
-import { startTransition, useRef, useState } from 'react'
+import { startTransition, useEffect, useRef, useState } from 'react'
 import {
   Button,
   Configuration,
@@ -159,6 +159,11 @@ export const StudioAIBar = () => {
 const ThemeToggle = () => {
   const [{ userTheme }, setUserTheme] = useUserTheme()
   const [checked, setChecked] = useState(userTheme === 'light')
+
+  useEffect(() => {
+    setChecked(userTheme === 'light')
+  }, [userTheme === 'light'])
+
   return (
     <XStack gap="$3" ai="center">
       <Configuration animationDriver={animationsCSS}>

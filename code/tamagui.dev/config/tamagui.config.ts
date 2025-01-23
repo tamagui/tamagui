@@ -44,7 +44,7 @@ const fixTypescript55Bug = {
   color: tokens.color,
 }
 
-const config = {
+export const config = {
   fonts,
   animations,
   themes: tamaguiThemes,

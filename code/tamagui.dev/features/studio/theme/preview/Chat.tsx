@@ -118,22 +118,24 @@ export const ChatScreen = () => {
         m={-30}
         mt={-30}
         px={30}
-        py="$4"
+        py="$5"
         br="$4"
         mb="$2"
-        bg="$color4"
+        bg="$color8"
         borderBottomWidth="$0.25"
         borderBottomColor="$borderColor"
       >
         <XStack jc="space-between">
           <YStack>
-            <H4 {...demoProps.headingFontFamilyProps}>Group Chat</H4>
-            <Paragraph {...demoProps.panelDescriptionProps}>
+            <H4 {...demoProps.headingFontFamilyProps} size="$4" color="$accent12">
+              Group Chat
+            </H4>
+            <Paragraph {...demoProps.panelDescriptionProps} color="$accent11">
               3 online &mdash; 5 members
             </Paragraph>
           </YStack>
           <Button
-            color="$color9"
+            color="$accent12"
             als="center"
             chromeless
             size="$5"
