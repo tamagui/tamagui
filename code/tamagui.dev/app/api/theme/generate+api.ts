@@ -1,4 +1,4 @@
-// import { createDeepSeek } from '@ai-sdk/deepseek'
+import { deepseek } from '@ai-sdk/deepseek'
 import { xai } from '@ai-sdk/xai'
 import { generateText } from 'ai'
 import { apiRoute } from '~/features/api/apiRoute'
@@ -37,7 +37,7 @@ export default apiRoute(async (req) => {
   const prompt = body.prompt?.trim()
   const lastReply = body.lastReply?.trim() || ''
   const scheme = body.scheme?.trim() || 'unknown'
-  const model = body.model?.trim() || 'chat'
+  const model = body.model?.trim() || ('reasoner' as 'chat' | 'reasoner')
 
   if (!prompt) {
     throw Response.json(
@@ -66,9 +66,9 @@ export default apiRoute(async (req) => {
   console.info(`Generating (scheme: ${scheme}, model: ${model}): ${prompt}...`)
 
   const { text } = await generateText({
-    model: xai('grok-beta'),
+    // model: xai('grok-beta'),
     // model: xai('grok-2-1212'),
-    // model: deepseek(`deepseek-${model}`),
+    model: deepseek(`deepseek-${model}`),
     maxTokens: 4_000,
     onStepFinish(event) {
       console.info(event.text)
@@ -143,17 +143,21 @@ Then accent would have hue all set to green.
 
 Some notes:
 
-  - Tend to use more colors, if the theme allows it. Having 4-5 different hue's can look nice.
-  - Values always go light,dark. Make sure light is first, dark is second.
-  - If there are three colors, you can use base background for one, base foreground for another, and accent for the third.
-  - For high contrast themes, ensure that the luminosity for 0 index and 9 index are more spread apart.
-  - In general the light 0 index luminosity should be close to 1 unless its a very vibrant theme, rule of thumb
-    - light theme backgrounds look good when they are very light (close to 0.99)
-    - otherwise if vibrant, go way down to 0.5 or so, avoid the "muddy" 0.9"
+  - If there's two main colors, make the base 0-9 the first one, the accent 0-9 the second.
+  - Values always go "light,dark". Make sure your dark bg's are darker than the light bg's.
+  - We automatically spread the hue/sat/lum between anchors.
+  - If b/w, then feel free to just make accent inverse of base and have no hue.
+  - In general don't be afaid to use 3+ hues if the theme allows it.
+  - If using 3 bg colors, add a 7 and a 10 anchors with that hue on base
+  - If using 4 bg colors, add 7 and 10 anchors on accent with a new hue
+  - If adding more hues you can add more anchors at new index
+  - You can vary the 10 and 11 index foreground colors hue, but make sure to keep them distinct enough lum from 0
+  - If you want a more bold visual look, anchors 0 and 9 can be closer to the middle together lum
+  - Light theme backgrounds look good when they are very light (close to 0.99) but you can break this rule for bold themes
   - For strictly black and white themes, ensure there's no saturation on base or accent.
   - In general for text to look good you need your 10 and 11 index to contrast well the 0 and 9 index, for example a light theme generally wants high luminosity for 0 and 9, and low luminosity for 10 and 11.
   - You almost always want the hue of the 0-9 to match, and the hue of the 10-11 to match, but they can be different from each other.
-  - Ensure the accent foreground is separated a little from background for contrast.
+  - Ensure the accent foreground (9-10) lum is far enough from the the accent bg (1) to read.
 
 Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,
 and adds an anchor at index 3 to make borders a bit more subtle (theme 2):
@@ -205,8 +209,7 @@ h: 270,270
 s: 0.9,0.9
 l: 0.2,0.5
 
-And here's a final of really bold theme. It has bright neon green base. It makes the accent background black and white, which is a good strategy generally for more bold themes.
-But it uses a final pink foreground in the accent (theme 3):
+And here's a final really bold theme. Bright neon green base. Accent background black and white. Final foreground in the accent (theme 3):
 
 i: 0
 h: 100,100
@@ -250,31 +253,26 @@ h: 300,300
 s: 0.5,0.5
 l: 0.3,0.7
 
-Here's the current color scheme they are using, which may be relevant: "${scheme}". For example if they say
-want a "darker background" when in dark mode, just change the dark values.
-
 Please write a few sentences to plan out your design first in plain english with minimal formatting before returning the structured data.
 
-In your plan, first decide which of the above templates is closest to what you want to generate.
-Then, generally plan the hues you want to use, by anchor.
-Then, plan the saturations by anchor.
-
-Some good prompt plans:
+Example of good plans:
 
 - Given "Supreme": The SUPREME brand uses bright red backgrounds and white colors like theme 3. In dark mode and light mode base bg is same bright red, up to 9 anchor a still-bright but a bit darker red (in light mode make that go lighter). White fg on both. Accent dark mode is just a darker red scale, with same white fg, light mode accent is a lighter red, with dark red fg.
 - Given "Jungle": Can be more subtle like theme 1. Base dark mode do a medium saturation brown bg, subtle lighter green fg. Base light mode *bg* can be a more pastel mid green, then fg a reserved brown. Dark accent can use an extra rich dark brown bg, pink and yellow fg, light accent can be less saturated brown, with bright purple and red fg.
 
+Here's the current color scheme they are using: "${scheme}". Maybe relevant or not, if they say they want a "darker background" when in dark mode, only change dark values.
+
 ${
   reasoning
-    ? `Please don't overthink things, think only for a paragraph.`
+    ? ``
     : `Be sure to write out your plan then the structured data after, that's it. After your plan please separate with a "---" before the structured data.`
 }
 
-Please respond only with the structured data after your plan.
+Respond only with the structured data after your plan.
 
-${lastReply ? `The last user prompt was: "${lastReply}"` : ''}
+${lastReply && lastReply !== prompt ? `The last user prompt was: "${lastReply}"` : ''}
 
-The user prompt is "${prompt}".
+The user prompt is "${prompt}":
 `,
   })
 

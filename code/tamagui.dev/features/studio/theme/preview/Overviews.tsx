@@ -93,9 +93,7 @@ export const OverviewCard = ({
         <Paragraph {...demoProps.headingFontFamilyProps} fontWeight="400" mb="$-2">
           {title}
         </Paragraph>
-        <H4 my="$-3" size="$9">
-          {value}
-        </H4>
+        <H4 size="$9">{value}</H4>
         <XStack>
           {!!badgeText && (
             <Paragraph size="$2" px="$2">

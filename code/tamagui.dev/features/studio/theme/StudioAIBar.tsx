@@ -165,7 +165,7 @@ const ThemeToggle = () => {
           }}
           size="$3"
         >
-          <Switch.Thumb animation="75ms" size="$3">
+          <Switch.Thumb checked={checked} animation="75ms" size="$3">
             <YStack
               animation="bouncy"
               fullscreen
@@ -175,7 +175,7 @@ const ThemeToggle = () => {
               y={0}
               $theme-light={{ o: 0, y: 3 }}
             >
-              <Sun size={14} />
+              <Moon size={14} />
             </YStack>
             <YStack
               animation="bouncy"
@@ -186,7 +186,7 @@ const ThemeToggle = () => {
               y={0}
               $theme-dark={{ o: 0, y: 3 }}
             >
-              <Moon size={14} />
+              <Sun size={14} />
             </YStack>
           </Switch.Thumb>
         </Switch>
