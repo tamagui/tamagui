@@ -54,9 +54,9 @@ export const StudioAIBar = () => {
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
           prompt,
-          lastReply: type === 'new' ? '' : lastReply,
+          lastReply,
           scheme: themeName.startsWith('dark') ? 'dark' : 'light',
-          model: prompt[0] === '!' ? 'reasoning' : 'chat',
+          // model: prompt[0] === '!' ? 'reasoner' : 'chat',
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export const StudioAIBar = () => {
             }
           }}
         />
-        {lastReply && (
+        {/* {lastReply && (
           <Theme name="surface1">
             <Button
               br="$10"
@@ -121,7 +121,7 @@ export const StudioAIBar = () => {
               Refine
             </Button>
           </Theme>
-        )}
+        )} */}
         <Theme name="accent">
           <Button
             br="$10"
@@ -132,7 +132,7 @@ export const StudioAIBar = () => {
             onPress={() => generate('new')}
             size="$4"
           >
-            New
+            Generate
           </Button>
 
           <RandomizeButton />

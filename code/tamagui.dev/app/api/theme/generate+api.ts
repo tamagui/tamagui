@@ -147,6 +147,8 @@ Some notes:
   - Values always go "light,dark". Make sure your dark bg's are darker than the light bg's.
   - We automatically spread the hue/sat/lum between anchors.
   - If b/w, then feel free to just make accent inverse of base and have no hue.
+  - Make sure accent 0-9 and accent 10/11 have lots of lum separation
+  - If you only have two hues, you can make the accent 0-9 a grey to contrast, or a less saturated or less lum version of base bg.
   - In general don't be afaid to use 3+ hues if the theme allows it.
   - If using 3 bg colors, add a 7 and a 10 anchors with that hue on base
   - If using 4 bg colors, add 7 and 10 anchors on accent with a new hue
@@ -264,7 +266,7 @@ Here's the current color scheme they are using: "${scheme}". Maybe relevant or n
 
 ${
   reasoning
-    ? ``
+    ? `Figure out light and dark plans separately, then combine them at the end.`
     : `Be sure to write out your plan then the structured data after, that's it. After your plan please separate with a "---" before the structured data.`
 }
 
