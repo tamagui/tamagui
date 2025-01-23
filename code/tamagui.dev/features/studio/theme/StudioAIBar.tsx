@@ -134,14 +134,12 @@ export const StudioAIBar = () => {
             pe={isGenerating === 'new' ? 'none' : 'auto'}
             icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
             onPress={() => {
-              toastController.show(
-                `This is mostly an experiment, it's gated behind purchase of Takeout or Bento for now.`
-              )
-              return
-
               if (hasAccess) {
                 generate('new')
               } else {
+                toastController.show(
+                  `This is mostly an experiment, it's gated behind purchase of Takeout or Bento for now.`
+                )
               }
             }}
             size="$4"
