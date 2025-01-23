@@ -103,7 +103,7 @@ export const StudioAIBar = () => {
           }}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              generate(lastReply ? 'reply' : 'new')
+              generate('new')
             }
           }}
         />

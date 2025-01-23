@@ -108,8 +108,6 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
 
 const Empty = () => null
 
-import { Masonry } from 'react-masonry'
-
 const ThemeBuilderModal = memo(() => {
   const store = useThemeBuilderStore()
   const { currentSection } = store
