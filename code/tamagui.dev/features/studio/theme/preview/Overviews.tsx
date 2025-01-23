@@ -1,5 +1,5 @@
 import type { CardProps } from 'tamagui'
-import { Button, Card, H4, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Card, H4, Paragraph, Theme, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'
 
 export const Overview1 = () => {
@@ -90,21 +90,17 @@ export const OverviewCard = ({
   return (
     <Card backgroundColor="transparent" {...props}>
       <Card.Header f={1} jc="space-between" {...demoProps.gapPropsLg}>
-        <Paragraph fontWeight="400" size="$4" lh="$1" mb="$-2">
+        <Paragraph fontWeight="400" size="$4" mb="$-2">
           {title}
         </Paragraph>
-        <H4 size="$9">{value}</H4>
+        <H4 my="$-3" size="$9">
+          {value}
+        </H4>
         <XStack>
           {!!badgeText && (
-            <>
-              <Button
-                size="$2"
-                {...demoProps.borderRadiusProps}
-                {...demoProps.buttonOutlineProps}
-              >
-                {badgeText}
-              </Button>
-            </>
+            <Paragraph size="$2" px="$2">
+              {badgeText}
+            </Paragraph>
           )}
           {badgeAfter && <Paragraph>{badgeAfter}</Paragraph>}
         </XStack>

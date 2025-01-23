@@ -353,6 +353,7 @@ function parseDarkLight(name: 'h' | 's' | 'l', line: string, index: number) {
       index <= 9 &&
       (name === 'h' || name === 's') && {
         syncLeft: true,
+        sync: true,
       }),
     ...(index === 10 &&
       (name === 'h' || name === 's') && {
@@ -361,6 +362,7 @@ function parseDarkLight(name: 'h' | 's' | 'l', line: string, index: number) {
     ...(index === 11 &&
       (name === 'h' || name === 's') && {
         syncLeft: true,
+        sync: true,
       }),
   }
 }

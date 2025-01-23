@@ -26,9 +26,9 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
       borderRadius: demosOptions.borderRadius,
       borderWidth:
         demosOptions.borderWidth === 0
-          ? 0.5
+          ? 0
           : demosOptions.borderWidth === 2
-            ? 1
+            ? 0.5
             : demosOptions.borderWidth,
     } as const,
 
@@ -62,8 +62,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     } as ButtonProps,
 
     stackOutlineProps: {
-      backgroundColor:
-        demosOptions.backgroundAccent === 'low' ? '$color1' : '$background02',
+      backgroundColor: demosOptions.backgroundAccent === 'low' ? '$color1' : '$color2',
     } as const,
 
     chatFrameProps: {
@@ -83,7 +82,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     chatTextProps: {} as const,
 
     chatTextActiveProps: {
-      color: isOutlined ? accentBackground : '$color',
+      color: isOutlined ? accentBackground : '$color1',
     } as const,
 
     outlineTextProps: {
@@ -124,8 +123,8 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     // these ones are just common props - nothing to do with the demo options
     panelProps: {
       shadowColor: 'rgba(0,0,0,0.2)',
-      bw: '$0.5',
-      bc: '$borderColor',
+      bw: 0.5,
+      bc: '$color3',
       gap: '$3',
       py: '$4',
       w: '100%',

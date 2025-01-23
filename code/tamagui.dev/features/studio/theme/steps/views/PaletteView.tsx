@@ -12,8 +12,6 @@ import { memo } from 'react'
 import type { XStackProps } from 'tamagui'
 import {
   Button,
-  Label,
-  Popover,
   Separator,
   SizableText,
   Theme,
@@ -24,7 +22,7 @@ import {
   useThemeName,
 } from 'tamagui'
 import type { HSLA } from '~/features/studio/colors/ColorPicker'
-import { ColorPicker, ColorPickerContents } from '~/features/studio/colors/ColorPicker'
+import { ColorPickerContents } from '~/features/studio/colors/ColorPicker'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
@@ -220,25 +218,53 @@ export const PaletteView = memo((props: Props) => {
 
   const lightDarkSynced = anchors.every((a) => a.hue.sync && a.sat.sync)
 
+  const syncButtons = (
+    <XStack o={0} $group-content-hover={{ o: 1 }} gap="$4" ai="center" ml={60}>
+      <XStack jc="space-between" w={160}>
+        <SyncButtons
+          anchorKey="hue"
+          {...props}
+          anchor={anchor}
+          prevAnchor={prevAnchor}
+          nextAnchor={nextAnchor}
+        />
+      </XStack>
+      <XStack jc="space-between" w={100} ml={10}>
+        <SyncButtons
+          anchorKey="sat"
+          {...props}
+          anchor={anchor}
+          prevAnchor={prevAnchor}
+          nextAnchor={nextAnchor}
+        />
+      </XStack>
+    </XStack>
+  )
+
   return (
     <YStack contain="paint" p="$4" mx="$-4" mb="$0" f={1} gap="$4">
-      {/* <Theme name="white"> */}
-      <ColorPickerContents
-        disabled={!anchor}
-        value={lightPalette[hoveredItem?.value ?? 0]}
-        onChange={onChangeAnchorColor('light')}
-        shouldDim={lightDarkSynced && isDark}
-      />
-
-      <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
-        <StepThemeHoverablePalette
-          palette={palette}
-          colors={colors.light}
-          onSelect={(color, index) => toggleAnchorAt(index)}
+      <YStack group="content" containerType="normal" gap="$4">
+        {/* <Theme name="white"> */}
+        <ColorPickerContents
+          disabled={!anchor}
+          value={lightPalette[hoveredItem?.value ?? 0]}
+          onChange={onChangeAnchorColor('light')}
+          shouldDim={lightDarkSynced && isDark}
         />
-      </XLabeledItem>
 
-      <PaletteIndices />
+        <YStack mt={-15}>{syncButtons}</YStack>
+
+        <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
+          <StepThemeHoverablePalette
+            palette={palette}
+            colors={colors.light}
+            onSelect={(color, index) => toggleAnchorAt(index)}
+          />
+        </XLabeledItem>
+
+        <PaletteIndices />
+      </YStack>
+
       {/* </Theme> */}
 
       <XLabeledItem label="">
@@ -294,21 +320,25 @@ export const PaletteView = memo((props: Props) => {
       {/* <Theme name="black"> */}
       <PaletteIndices />
 
-      <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
-        <StepThemeHoverablePalette
-          palette={palette}
-          colors={colors.dark}
-          onSelect={(color, index) => toggleAnchorAt(index)}
-        />
-      </XLabeledItem>
+      <YStack group="content" containerType="normal" gap="$4">
+        <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
+          <StepThemeHoverablePalette
+            palette={palette}
+            colors={colors.dark}
+            onSelect={(color, index) => toggleAnchorAt(index)}
+          />
+        </XLabeledItem>
 
-      <ColorPickerContents
-        isActive={isDark}
-        disabled={!anchor}
-        value={darkPalette[hoveredItem?.value ?? 0]}
-        onChange={onChangeAnchorColor('dark')}
-        shouldDim={lightDarkSynced && !isDark}
-      />
+        <YStack mb={-15}>{syncButtons}</YStack>
+
+        <ColorPickerContents
+          isActive={isDark}
+          disabled={!anchor}
+          value={darkPalette[hoveredItem?.value ?? 0]}
+          onChange={onChangeAnchorColor('dark')}
+          shouldDim={lightDarkSynced && !isDark}
+        />
+      </YStack>
       {/* </Theme> */}
     </YStack>
   )
@@ -363,7 +393,7 @@ const SyncButtons = memo(
         </Theme>
 
         <Theme name={anchor?.[anchorKey].sync ? 'accent' : 'surface1'}>
-          <TooltipSimple label="Sync light and dark">
+          <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
             <Button
               size={16}
               scaleIcon={1.4}

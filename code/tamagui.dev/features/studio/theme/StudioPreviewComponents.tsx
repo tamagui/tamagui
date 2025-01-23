@@ -197,11 +197,11 @@ const Contents = memo(() => {
         </Panel>
       </div>
       <div style={{ gridArea: 'chat' }}>
-        <Theme name="surface3">
-          <Panel fileToCopyName="Chat">
-            <ChatScreen />
-          </Panel>
-        </Theme>
+        {/* <Theme name="surface2"> */}
+        <Panel fileToCopyName="Chat">
+          <ChatScreen />
+        </Panel>
+        {/* </Theme> */}
       </div>
       <div style={{ gridArea: 'user-dropdown' }}>
         <Panel fileToCopyName="UserDropdown">
