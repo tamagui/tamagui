@@ -15937,12 +15937,12 @@ export declare const tokens: {
     radius: {
         0: import("@tamagui/web").Variable<number>;
         2: import("@tamagui/web").Variable<number>;
-        3: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
         8: import("@tamagui/web").Variable<number>;
         true: import("@tamagui/web").Variable<number>;
         12: import("@tamagui/web").Variable<number>;
+        3: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
         7: import("@tamagui/web").Variable<number>;
         9: import("@tamagui/web").Variable<number>;
@@ -15962,12 +15962,12 @@ export declare const tokens: {
     radius: {
         0: import("@tamagui/web").Variable<number>;
         2: import("@tamagui/web").Variable<number>;
-        3: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
         8: import("@tamagui/web").Variable<number>;
         true: import("@tamagui/web").Variable<number>;
         12: import("@tamagui/web").Variable<number>;
+        3: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
         7: import("@tamagui/web").Variable<number>;
         9: import("@tamagui/web").Variable<number>;

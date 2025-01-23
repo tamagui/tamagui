@@ -1,7 +1,6 @@
 import { createThemeBuilder } from '@tamagui/theme-builder'
-
 import { componentThemeDefinitions } from './componentThemeDefinitions'
-import { masks } from './masks'
+import { masks } from '@tamagui/theme-builder'
 import { palettes } from './palettes'
 import { shadows } from './shadows'
 import { maskOptions, templates } from './templates'

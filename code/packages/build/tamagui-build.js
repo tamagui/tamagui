@@ -221,6 +221,14 @@ async function buildTsc(allFiles) {
       compilerOptions
     )
 
+    // exit on errors
+    if (diagnostics.some((x) => x.code) && !shouldWatch) {
+      console.error(
+        `Error building: ${diagnostics.map((x) => `${x.file.fileName}: ${x.messageText?.messageText ?? x.messageText}`).join('\n')}`
+      )
+      process.exit(1)
+    }
+
     reportDiagnostics(diagnostics)
 
     if (emitResult.emitSkipped) {

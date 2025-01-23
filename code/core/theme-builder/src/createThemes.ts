@@ -1,10 +1,9 @@
-import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
-import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamagui/themes'
 import { parseToHsla } from 'color2k'
-import { defaultTemplates } from './defaultTemplates'
-import { getThemeSuitePalettes } from './getThemeSuitePalettes'
 import { defaultComponentThemes } from './defaultComponentThemes'
-import { PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
+import { defaultTemplates } from './defaultTemplates'
+import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
+import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
+import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
 
 // for studio
 // allows more detailed configuration, used by studio

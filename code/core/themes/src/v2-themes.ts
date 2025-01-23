@@ -1,5 +1,5 @@
 import type { MaskOptions } from '@tamagui/theme-builder'
-import { createThemeBuilder } from '@tamagui/theme-builder'
+import { createThemeBuilder, masks } from '@tamagui/theme-builder'
 import {
   blue,
   blueDark,
@@ -21,9 +21,7 @@ import {
 import type { Variable } from '@tamagui/web'
 import { createTokens } from '@tamagui/web'
 
-import { masks } from './masks'
-
-export { masks } from './masks'
+export { masks } from '@tamagui/theme-builder'
 
 const colorTokens = {
   light: {

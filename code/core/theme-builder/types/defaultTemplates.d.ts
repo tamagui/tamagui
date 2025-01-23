@@ -1,4 +1,4 @@
-export declare const defaultTemplates: Record<"light_base" | "light_surface1" | "light_surface2" | "light_surface3" | "light_alt1" | "light_alt2" | "light_inverse" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_alt1" | "dark_alt2" | "dark_inverse", {
+export declare const defaultTemplates: Record<"light_surface1" | "light_surface3" | "light_surface2" | "light_inverse" | "light_base" | "light_alt1" | "light_alt2" | "dark_surface1" | "dark_surface3" | "dark_surface2" | "dark_inverse" | "dark_base" | "dark_alt1" | "dark_alt2", {
     accentBackground: number;
     accentColor: number;
     background0: number;
