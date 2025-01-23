@@ -50,7 +50,8 @@ export function Panel({
 
   useEffect(() => {
     if (store.randomizeId) {
-      setAccent((x) => Math.random() > 0.5)
+      setAccent((x) => Math.random() > 0.65)
+      setInverse((x) => Math.random() > 0.85)
     }
   }, [store.randomizeId])
 
