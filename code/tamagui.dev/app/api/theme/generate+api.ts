@@ -1,5 +1,7 @@
 import { deepseek } from '@ai-sdk/deepseek'
 import { xai } from '@ai-sdk/xai'
+import { openai } from '@ai-sdk/openai'
+import { anthropic } from '@ai-sdk/anthropic'
 import { generateText } from 'ai'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAccess } from '~/features/api/ensureAccess'
@@ -68,7 +70,9 @@ export default apiRoute(async (req) => {
   const { text } = await generateText({
     // model: xai('grok-beta'),
     // model: xai('grok-2-1212'),
-    model: deepseek(`deepseek-${model}`),
+    // model: deepseek(`deepseek-${model}`),
+    // model: anthropic('claude-3-5-haiku-latest'),
+    model: openai('gpt-4o-mini'),
     maxTokens: 4_000,
     onStepFinish(event) {
       console.info(event.text)
@@ -143,6 +147,7 @@ Then accent would have hue all set to green.
 
 Some notes:
 
+  - Be sure to keep index 9 readable on index 1, if you need a more flat theme, add an anchor on 8 so 9 can change lum more
   - If there's two main colors, make the base 0-9 the first one, the accent 0-9 the second.
   - Values always go "light,dark". Make sure your dark bg's are darker than the light bg's.
   - We automatically spread the hue/sat/lum between anchors.

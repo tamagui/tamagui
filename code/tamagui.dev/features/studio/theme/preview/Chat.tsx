@@ -112,8 +112,19 @@ export const ChatScreen = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
       bg="$color2"
+      ov="hidden"
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor">
+      <YStack
+        m={-30}
+        mt={-30}
+        px={30}
+        py="$4"
+        br="$4"
+        mb="$2"
+        bg="$color4"
+        borderBottomWidth="$0.25"
+        borderBottomColor="$borderColor"
+      >
         <XStack jc="space-between">
           <YStack>
             <H4 {...demoProps.headingFontFamilyProps}>Group Chat</H4>

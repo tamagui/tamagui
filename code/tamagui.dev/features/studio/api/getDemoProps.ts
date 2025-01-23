@@ -95,7 +95,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     chatTextProps: {} as const,
 
     chatTextActiveProps: {
-      color: isOutlined ? accentBackground : '$color1',
+      color: isOutlined ? '$color12' : '$accent1',
     } as const,
 
     outlineTextProps: {
@@ -112,7 +112,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
           ? ('$7' as const)
           : demosOptions.spacing === 'md'
             ? ('$5' as const)
-            : ('$3' as const),
+            : ('$4' as const),
     } as const,
 
     gapPropsMd: {

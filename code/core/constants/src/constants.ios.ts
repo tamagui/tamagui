@@ -1,10 +1,10 @@
-import React from 'react'
+import { useLayoutEffect } from 'react'
 
 export const isWeb: boolean = false
 export const isWindowDefined: boolean = false
 export const isServer: boolean = false
 export const isClient: boolean = false
-export const useIsomorphicLayoutEffect = React.useLayoutEffect
+export const useIsomorphicLayoutEffect: typeof useLayoutEffect = useLayoutEffect
 export const isChrome: boolean = false
 export const isWebTouchable: boolean = false
 export const isTouchable: boolean = true
