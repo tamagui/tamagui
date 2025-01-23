@@ -66,7 +66,8 @@ export default apiRoute(async (req) => {
   console.info(`Generating (scheme: ${scheme}, model: ${model}): ${prompt}...`)
 
   const { text } = await generateText({
-    model: xai('grok-2-1212'),
+    model: xai('grok-beta'),
+    // model: xai('grok-2-1212'),
     // model: deepseek(`deepseek-${model}`),
     maxTokens: 4_000,
     onStepFinish(event) {
