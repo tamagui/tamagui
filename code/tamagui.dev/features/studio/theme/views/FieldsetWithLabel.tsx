@@ -33,22 +33,12 @@ export const FieldsetWithLabel = ({
       bc={isActive ? '$color9' : '$color6'}
       bw={0}
       px="$3"
-      pt="$4"
       mt="$3"
       onPress={onPress}
     >
       <YStack
-        pos="absolute"
-        t={0}
-        y={-12}
-        l="$2.5"
         zi={100}
-        bg="$color2"
-        br="$10"
         px="$3"
-        {...(tooltip && {
-          pr: '$6',
-        })}
         {...(enableEditLabel && {
           cur: 'pointer',
           onPress: () => {
@@ -85,7 +75,7 @@ export const FieldsetWithLabel = ({
           <Paragraph
             selectable={false}
             tag="label"
-            size="$7"
+            size="$8"
             color="$color12"
             fow="600"
             {...(tooltip && {
@@ -127,7 +117,7 @@ export const FieldsetWithLabel = ({
       </YStack>
 
       {!!afterLabel && (
-        <XStack pos="absolute" t={-12} r="$4" zi={100} bg="$color2" br="$4" px="$2">
+        <XStack pos="absolute" t={12} r="$4" zi={100} bg="$color2" br="$4" px="$2">
           {afterLabel}
         </XStack>
       )}

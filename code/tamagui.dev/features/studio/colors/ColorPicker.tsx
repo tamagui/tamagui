@@ -222,7 +222,22 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 background: hueLinearGradient,
               }}
             ></Slider.Track>
-            <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+            <Slider.Thumb
+              focusStyle={{
+                bg: '$color1',
+              }}
+              hoverStyle={{
+                bg: '$color1',
+              }}
+              pressStyle={{
+                bg: '$color1',
+              }}
+              bg="$color1"
+              size="$1"
+              index={0}
+              circular
+              elevate
+            />
           </Slider>
         </YStack>
 
@@ -253,7 +268,22 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                   background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
                 }}
               ></Slider.Track>
-              <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+              <Slider.Thumb
+                focusStyle={{
+                  bg: '$color1',
+                }}
+                hoverStyle={{
+                  bg: '$color1',
+                }}
+                pressStyle={{
+                  bg: '$color1',
+                }}
+                bg="$color1"
+                size="$1"
+                index={0}
+                circular
+                elevate
+              />
             </Slider>
           </YStack>
         </YStack>
@@ -281,7 +311,22 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                   }}
                 />
 
-                <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+                <Slider.Thumb
+                  focusStyle={{
+                    bg: '$color1',
+                  }}
+                  hoverStyle={{
+                    bg: '$color1',
+                  }}
+                  pressStyle={{
+                    bg: '$color1',
+                  }}
+                  bg="$color1"
+                  size="$1"
+                  index={0}
+                  circular
+                  elevate
+                />
               </Slider>
             </YStack>
           </YStack>
