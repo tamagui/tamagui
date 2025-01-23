@@ -121,7 +121,7 @@ export const stylePropsTransform = {
   rotateZ: true,
 }
 
-export const stylePropsView = {
+const stylePropsView = {
   backfaceVisibility: true,
   borderBottomEndRadius: true,
   borderBottomStartRadius: true,
@@ -284,7 +284,7 @@ export const stylePropsView = {
   ...(isAndroid ? { elevationAndroid: true } : {}),
 }
 
-export const stylePropsFont = {
+const stylePropsFont = {
   fontFamily: true,
   fontSize: true,
   fontStyle: true,
