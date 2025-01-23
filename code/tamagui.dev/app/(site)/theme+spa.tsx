@@ -72,8 +72,7 @@ export default function ThemePage() {
       <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
         <YStack
           gap="$4"
-          mt="$-4"
-          p="$6"
+          p="$4"
           f={1}
           maw={1300}
           group="content"

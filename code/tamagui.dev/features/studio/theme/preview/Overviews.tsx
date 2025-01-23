@@ -90,7 +90,7 @@ export const OverviewCard = ({
   return (
     <Card backgroundColor="transparent" {...props}>
       <Card.Header f={1} jc="space-between" {...demoProps.gapPropsLg}>
-        <Paragraph fontWeight="400" size="$4" mb="$-2">
+        <Paragraph {...demoProps.headingFontFamilyProps} fontWeight="400" mb="$-2">
           {title}
         </Paragraph>
         <H4 my="$-3" size="$9">

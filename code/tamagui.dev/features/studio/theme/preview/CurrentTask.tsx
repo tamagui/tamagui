@@ -32,23 +32,19 @@ export const CurrentTask = () => {
 
       <YStack flex={1} gap="$4" separator={<Separator />}>
         <YStack gap="$6">
-          <XStack {...demoProps.gapPropsMd}>
-            <TaskSection title="Assigned By" f={1}>
-              <XStack {...demoProps.gapPropsLg}>
-                <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
-                  <Avatar.Image src="https://i.pravatar.cc/300?u=johndoe" />
-                </Avatar>
-                <Paragraph size="$3">John Doe</Paragraph>
-              </XStack>
-            </TaskSection>
-            <TaskSection title="Lead" f={1}>
-              <XStack {...demoProps.gapPropsLg}>
-                <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
-                  <Avatar.Image src="https://i.pravatar.cc/300?u=janeee" />
-                </Avatar>
-                <Paragraph size="$3">Jane Doe</Paragraph>
-              </XStack>
-            </TaskSection>
+          <XStack {...demoProps.gapPropsLg}>
+            <XStack {...demoProps.gapPropsMd}>
+              <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
+                <Avatar.Image src="https://i.pravatar.cc/300?u=johndoe" />
+              </Avatar>
+              <Paragraph size="$3">John Doe</Paragraph>
+            </XStack>
+            <XStack {...demoProps.gapPropsMd}>
+              <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
+                <Avatar.Image src="https://i.pravatar.cc/300?u=janeee" />
+              </Avatar>
+              <Paragraph size="$3">Jane Doe</Paragraph>
+            </XStack>
           </XStack>
 
           <TaskSection title="This Sprint">

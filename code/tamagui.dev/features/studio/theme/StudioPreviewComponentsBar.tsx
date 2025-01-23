@@ -1,9 +1,8 @@
-import { Dices, Heading, Moon, Sun } from '@tamagui/lucide-icons'
-import { memo, startTransition, useOptimistic, useState } from 'react'
+import { Heading, Moon, Sun } from '@tamagui/lucide-icons'
+import { useUserTheme } from '@tamagui/one-theme'
+import { memo, startTransition, useState } from 'react'
 import {
-  Button,
   Configuration,
-  Fieldset,
   Label,
   SizableText,
   Square,
@@ -12,20 +11,13 @@ import {
   TooltipGroup,
   TooltipSimple,
   XStack,
-  getConfig,
   styled,
 } from 'tamagui'
-
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { optionValues } from './constants/demoOptions'
-import { ThemeToggle } from '../../site/theme/ThemeToggle'
-import { useUserTheme } from '@tamagui/one-theme'
 import { animationsCSS } from '../../../config/animations.css'
+import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
-  const [{ userTheme }, setUserTheme] = useUserTheme()
-  const [checked, setChecked] = useState(userTheme === 'light')
-
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
       <XStack fw="wrap" f={1} className="all ease-in ms300" gap="$3">
@@ -34,7 +26,7 @@ export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: an
 
           <BorderWidthInput />
 
-          {/* <FontFamilyInput /> */}
+          <FontFamilyInput />
 
           <FillStyleInput />
 
@@ -45,35 +37,7 @@ export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: an
           <TextAccentInput />
 
           <BackgroundAccentInput />
-
-          {/* <InverseAccentInput /> */}
-
-          <RandomizeButton />
         </TooltipGroup>
-
-        <XStack gap="$3" ai="center">
-          <Moon size={14} />
-          <Configuration animationDriver={animationsCSS}>
-            <Switch
-              checked={checked}
-              pressStyle={{
-                bg: '$color2',
-              }}
-              onCheckedChange={(on) => {
-                setChecked(on)
-                setTimeout(() => {
-                  startTransition(() => {
-                    setUserTheme(on ? 'light' : 'dark')
-                  })
-                })
-              }}
-              size="$3"
-            >
-              <Switch.Thumb animation="75ms" size="$3" />
-            </Switch>
-          </Configuration>
-          <Sun size={14} />
-        </XStack>
       </XStack>
     </XStack>
   )
@@ -82,6 +46,11 @@ export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: an
 const ToggleGroupItem = styled(ToggleGroup.Item, {
   height: 28,
   w: 30,
+
+  focusStyle: {
+    backgroundColor: '$color10',
+    color: '$color2',
+  },
 
   focusVisibleStyle: {
     outlineWidth: 0,
@@ -204,13 +173,6 @@ export function BorderWidthInput() {
   )
 }
 
-const niceNames = {
-  $heading: 'Inter',
-  $headingNohemi: 'Nohemi',
-  $headingDmSans: 'DM Sans',
-  $headingDmSerifDisplay: 'DM Serif',
-}
-
 export function FontFamilyInput() {
   const store = useThemeBuilderStore()
 
@@ -230,31 +192,18 @@ export function FontFamilyInput() {
         }}
       >
         {optionValues.headingFontFamily.map((font, idx) => {
-          const niceName = niceNames[font as any]
-          const label = `${niceName} Font`
+          const label = `${font} Font`
           return (
-            <TooltipSimple groupId={idx.toString()} key={String(font)} label={niceName}>
+            <TooltipSimple groupId={idx.toString()} key={String(font)} label={`${font}`}>
               <ToggleGroupItem value={font as any} aria-label={label}>
                 <SizableText
+                  color="$color12"
                   fontFamily={font as any}
-                  size="$1"
+                  fontSize={12}
                   textTransform="none"
                   letterSpacing={0}
                   lineHeight={0}
-                  y={0.5}
                   mt={-2}
-                  scale={1.15}
-                  {...(niceName === 'Nohemi' && {
-                    scale: 0.9,
-                    y: 1.5,
-                  })}
-                  {...(niceName === 'DM Sans' && {
-                    scale: 0.95,
-                  })}
-                  {...(niceName === 'DM Serif' && {
-                    y: 0,
-                    scale: 0.85,
-                  })}
                 >
                   Aa
                 </SizableText>
@@ -500,25 +449,5 @@ export function InverseAccentInput() {
         <Switch.Thumb animation="quickest" />
       </Switch>
     </XStack>
-  )
-}
-
-export function RandomizeButton() {
-  const store = useThemeBuilderStore()
-
-  return (
-    <TooltipSimple label="Randomize">
-      <Button
-        aria-label="Randomize"
-        onPress={() => {
-          store.randomizeDemoOptions()
-        }}
-        icon={Dices}
-        size="$2"
-        height={28}
-        scaleIcon={1.4}
-        br="$5"
-      />
-    </TooltipSimple>
   )
 }

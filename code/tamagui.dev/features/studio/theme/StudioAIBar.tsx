@@ -1,8 +1,21 @@
 import { Input } from '@tamagui/input'
-import { useRef, useState } from 'react'
-import { Button, Spinner, Theme, useThemeName, XStack } from 'tamagui'
+import { startTransition, useRef, useState } from 'react'
+import {
+  Button,
+  Configuration,
+  Spinner,
+  Theme,
+  useThemeName,
+  XStack,
+  YStack,
+} from 'tamagui'
 import { toastController } from '../ToastProvider'
 import { useThemeBuilderStore } from './store/ThemeBuilderStore'
+import { RandomizeButton } from './RandomizeButton'
+import { Moon, Sun } from '@tamagui/lucide-icons'
+import { Switch } from 'tamagui'
+import { useUserTheme } from '@tamagui/one-theme'
+import { animationsCSS } from '../../../config/animations.css'
 
 export const StudioAIBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -121,8 +134,63 @@ export const StudioAIBar = () => {
           >
             New
           </Button>
+
+          <RandomizeButton />
         </Theme>
+
+        <ThemeToggle />
       </XStack>
+    </XStack>
+  )
+}
+
+const ThemeToggle = () => {
+  const [{ userTheme }, setUserTheme] = useUserTheme()
+  const [checked, setChecked] = useState(userTheme === 'light')
+  return (
+    <XStack gap="$3" ai="center">
+      <Configuration animationDriver={animationsCSS}>
+        <Switch
+          checked={checked}
+          pressStyle={{
+            bg: '$color2',
+          }}
+          onCheckedChange={(on) => {
+            setChecked(on)
+            setTimeout(() => {
+              startTransition(() => {
+                setUserTheme(on ? 'light' : 'dark')
+              })
+            })
+          }}
+          size="$3"
+        >
+          <Switch.Thumb animation="75ms" size="$3">
+            <YStack
+              animation="bouncy"
+              fullscreen
+              ai="center"
+              jc="center"
+              o={1}
+              y={0}
+              $theme-light={{ o: 0, y: 3 }}
+            >
+              <Sun size={14} />
+            </YStack>
+            <YStack
+              animation="bouncy"
+              fullscreen
+              ai="center"
+              jc="center"
+              o={1}
+              y={0}
+              $theme-dark={{ o: 0, y: 3 }}
+            >
+              <Moon size={14} />
+            </YStack>
+          </Switch.Thumb>
+        </Switch>
+      </Configuration>
     </XStack>
   )
 }

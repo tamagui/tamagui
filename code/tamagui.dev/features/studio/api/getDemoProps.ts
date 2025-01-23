@@ -2,7 +2,7 @@ import type { ButtonProps } from 'tamagui'
 
 import { getTokenRelative } from '@tamagui/get-token'
 import { accentTokenName } from '~/features/studio/accentThemeName'
-import type { DemoOptions } from '../theme/constants/demoOptions'
+import type { DemoOptions } from '../theme/demoOptions'
 
 export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
   const accentToken = hasAccent ? accentTokenName : '$color9'
@@ -46,12 +46,25 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     headingFontFamilyProps: {
       fontFamily: demosOptions.headingFontFamily,
       fontWeight: '500',
+      fontSize: 25,
       color:
         demosOptions.textAccent === 'high'
           ? '$color12'
           : demosOptions.textAccent === 'low'
             ? '$color11'
             : '$color',
+
+      ...(demosOptions.headingFontFamily == '$heading' && {
+        fontSize: 14,
+      }),
+
+      ...(demosOptions.headingFontFamily == '$silkscreen' && {
+        fontSize: 14,
+      }),
+
+      ...(demosOptions.headingFontFamily == '$munro' && {
+        fontSize: 20,
+      }),
     } as const,
 
     buttonOutlineProps: {

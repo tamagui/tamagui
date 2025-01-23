@@ -98,11 +98,11 @@ export const Calendar = () => {
 const LabelCell = ({ children }: { children: React.ReactNode }) => {
   return (
     <YStack
-      width="$4"
-      height="$4"
+      width="$3"
+      height="$3"
       $md={{
-        width: '$3',
-        height: '$3',
+        width: '$2',
+        height: '$2',
       }}
       userSelect="none"
       jc="center"
@@ -119,11 +119,11 @@ const DayCell = ({ day, isDisabled }: { day: number; isDisabled?: boolean }) => 
   const demoProps = useDemoProps()
   return (
     <YStack
-      width="$4"
-      height="$4"
+      width="$3"
+      height="$3"
       $md={{
-        width: '$3',
-        height: '$3',
+        width: '$2',
+        height: '$2',
       }}
       cursor={isDisabled ? 'default' : 'pointer'}
       userSelect="none"

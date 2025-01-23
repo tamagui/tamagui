@@ -2,13 +2,13 @@ import type { TextProps, YStackProps } from 'tamagui'
 
 export const optionValues = {
   inverseAccent: [false, true],
-  borderRadius: ['$0', '$3', '$5', '$8', '$10'] as YStackProps['borderRadius'][],
+  borderRadius: ['$0', '$2', '$4', '$5', '$6'] as YStackProps['borderRadius'][],
   borderWidth: [0 as const, 1 as const, 2 as const],
   headingFontFamily: [
     '$heading',
-    '$headingNohemi',
-    '$headingDmSans',
-    '$headingDmSerifDisplay',
+    '$silkscreen',
+    '$munro',
+    '$cherryBomb',
   ] as TextProps['fontFamily'][],
   fillStyle: ['filled' as const, 'outlined' as const],
   elevation: [0, '$1', '$2'] as YStackProps['elevation'][],

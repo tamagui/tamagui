@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import { YStack, useThemeName } from 'tamagui'
 
+import { Masonry } from 'masonic'
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
@@ -9,14 +10,12 @@ import { Calendar } from './preview/Calendar'
 import { ChatScreen } from './preview/Chat'
 import { Components } from './preview/Components'
 import { CurrentTask } from './preview/CurrentTask'
-import { Header } from './preview/Header'
 import { LoginScreen } from './preview/Login'
 import { Overview1, Overview2 } from './preview/Overviews'
 import { Panel } from './preview/Panel'
 import { PieScreen } from './preview/Pie'
 import { PricingCards } from './preview/Pricing'
 import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
-import Masonry from 'react-layout-masonry'
 import { UserDropdown } from './preview/UserDropdown'
 
 const extraPad = 18
@@ -29,85 +28,97 @@ export const StudioPreviewComponents = memo(() => {
   const demoProps = useDemoProps()
 
   return (
-    <YStack>
+    <>
       <Contents />
-    </YStack>
+    </>
   )
 })
 
 const Contents = memo(() => {
   return (
-    <Masonry columns={{ 640: 1, 768: 2, 1024: 3, 1280: 5 }} gap={12}>
-      <div style={{ gridArea: 'statistics-bar' }}>
-        <Panel fileToCopyName="Statistics">
-          <StatisticsBarScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'statistics-line' }}>
-        <Panel initialAccent fileToCopyName="Statistics">
-          <StatisticsLineScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'overview-1' }}>
-        <Panel initialInverse fileToCopyName="Overviews" initialAccent>
-          <Overview1 />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'overview-2' }}>
-        <Panel fileToCopyName="Overviews">
-          <Overview2 />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'chat' }}>
-        {/* <Theme name="surface2"> */}
-        <Panel fileToCopyName="Chat">
-          <ChatScreen />
-        </Panel>
-        {/* </Theme> */}
-      </div>
-      <div style={{ gridArea: 'user-dropdown' }}>
-        <Panel fileToCopyName="UserDropdown">
-          <UserDropdown />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'pricing' }}>
-        <Panel fileToCopyName="Pricing">
-          <PricingCards />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'login' }}>
-        <Panel fileToCopyName="Login">
-          <LoginScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'all-tasks' }}>
-        <Panel fileToCopyName="AllTasks">
-          <AllTasks />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'pie' }}>
-        <Panel fileToCopyName="Statistics">
-          <PieScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'current-task' }}>
-        <Panel fileToCopyName="CurrentTask">
-          <CurrentTask />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'components' }}>
-        <Panel fileToCopyName="Components">
-          <Components />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'calendar' }}>
-        <Panel fileToCopyName="Calendar" initialAccent>
-          <Calendar />
-        </Panel>
-      </div>
-    </Masonry>
+    <Masonry
+      items={new Array(components.length).fill(0).map((_, id) => ({ id }))}
+      render={ComponentComponent}
+      columnWidth={250}
+      columnGutter={15}
+      rowGutter={15}
+    />
   )
 })
+
+const ComponentComponent = ({ index }) => {
+  return components[index]
+}
+
+const components = [
+  <>
+    <Panel fileToCopyName="Statistics">
+      <StatisticsBarScreen />
+    </Panel>
+  </>,
+  <>
+    <Panel initialAccent fileToCopyName="Statistics">
+      <StatisticsLineScreen />
+    </Panel>
+  </>,
+  <>
+    <Panel initialInverse fileToCopyName="Overviews" initialAccent>
+      <Overview1 />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Overviews">
+      <Overview2 />
+    </Panel>
+  </>,
+  <>
+    {/* <Theme name="surface2"> */}
+    <Panel fileToCopyName="Chat">
+      <ChatScreen />
+    </Panel>
+    {/* </Theme> */}
+  </>,
+  <>
+    <Panel fileToCopyName="UserDropdown">
+      <UserDropdown />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Pricing">
+      <PricingCards />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Login">
+      <LoginScreen />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="AllTasks">
+      <AllTasks />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Statistics">
+      <PieScreen />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="CurrentTask">
+      <CurrentTask />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Components">
+      <Components />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Calendar" initialAccent>
+      <Calendar />
+    </Panel>
+  </>,
+]
 
 const PalettePreviewPanels = memo(() => {
   const themeBuilderStore = useThemeBuilderStore()
