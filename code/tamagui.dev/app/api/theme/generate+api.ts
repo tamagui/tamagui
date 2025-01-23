@@ -258,15 +258,15 @@ In your plan, first decide which of the above templates is closest to what you w
 Then, generally plan the hues you want to use, by anchor.
 Then, plan the saturations by anchor.
 
-An example of a plan if their prompt was just "SUPREME" would be something like:
+Some good prompt plans:
 
-The SUPREME brand uses bright red backgrounds and white colors, similar to theme 3. We want backgrounds to be closer to middle luminosity,
-high saturation. We want the accent to use pure white for the background in both light and dark, and then a bright red for the foregrounds.
+- Given "Supreme": The SUPREME brand uses bright red backgrounds and white colors like theme 3. In dark mode and light mode base bg is same bright red, up to 9 anchor a still-bright but a bit darker red (in light mode make that go lighter). White fg on both. Accent dark mode is just a darker red scale, with same white fg, light mode accent is a lighter red, with dark red fg.
+- Given "Jungle": Can be more subtle like theme 1. Base dark mode do a medium saturation brown bg, subtle lighter green fg. Base light mode *bg* can be a more pastel mid green, then fg a reserved brown. Dark accent can use an extra rich dark brown bg, pink and yellow fg, light accent can be less saturated brown, with bright purple and red fg.
 
 ${
   reasoning
-    ? `Please don't overthink things, reply quickly with just a few short thoughts.`
-    : `After your plan please separate with a "---" before the structured data.`
+    ? `Please don't overthink things, think only for a paragraph.`
+    : `Be sure to write out your plan then the structured data after, that's it. After your plan please separate with a "---" before the structured data.`
 }
 
 Please respond only with the structured data after your plan.
