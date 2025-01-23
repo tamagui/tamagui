@@ -36,15 +36,15 @@ export const StudioAIBar = () => {
 
     const int = setInterval(() => {
       seconds++
-      if (seconds === 6) {
-        toastController.show(`Thinking about base colors...`)
+      if (seconds === 4) {
+        toastController.show(`Thinking about colors...`)
+      } else if (seconds === 8) {
+        toastController.show(`Thinking about more colors...`)
       } else if (seconds === 12) {
-        toastController.show(`Thinking about accent colors...`)
-      } else if (seconds === 18) {
         toastController.show(`Refining palettes...`)
-      } else if (seconds === 24) {
+      } else if (seconds === 16) {
         toastController.show(`Taking too long...`)
-      } else if (seconds === 32) {
+      } else if (seconds === 24) {
         toastController.show(`It really does take a bit sometimes...`)
       }
     }, 1000)

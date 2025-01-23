@@ -24,13 +24,15 @@ export const AllTasks = () => {
 
       <YStack flex={1} {...demoProps.gapPropsMd}>
         <Task>
-          <Paragraph size="$5">Migrate to the new version</Paragraph>
+          <Paragraph size="$5" lh="$3">
+            Migrate to the new version
+          </Paragraph>
           <Paragraph theme="alt1" size="$2" numberOfLines={1}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" textDecorationLine="line-through">
+          <Paragraph size="$5" lh="$3" textDecorationLine="line-through">
             Make a tabs component
           </Paragraph>
           <Paragraph
@@ -43,7 +45,7 @@ export const AllTasks = () => {
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" textDecorationLine="line-through">
+          <Paragraph size="$5" lh="$3" textDecorationLine="line-through">
             Implement the design system
           </Paragraph>
           <Paragraph
