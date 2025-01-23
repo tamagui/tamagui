@@ -53,22 +53,26 @@ async function cleanUpPrevious(dir) {
 }
 
 async function main() {
-  const globPattern = path.join(process.cwd(), 'bento-output', '**/*')
-  await cleanUpPrevious('') // delete everything in the bucket
-  await new Promise((resolve) => {
-    glob(globPattern, { nodir: true }, async (error, matches) => {
-      if (error) {
-        throw error
-      }
+  try {
+    const globPattern = path.join(process.cwd(), 'bento-output', '**/*')
+    await cleanUpPrevious('') // delete everything in the bucket
+    await new Promise((resolve) => {
+      glob(globPattern, { nodir: true }, async (error, matches) => {
+        if (error) {
+          throw error
+        }
 
-      for (const match of matches) {
-        const relativePath = match.split('/bento-output/')[1]
-        await uploadFile(relativePath)
-      }
+        for (const match of matches) {
+          const relativePath = match.split('/bento-output/')[1]
+          await uploadFile(relativePath)
+        }
 
-      resolve()
+        resolve()
+      })
     })
-  })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 main()
