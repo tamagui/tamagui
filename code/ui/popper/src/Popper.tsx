@@ -115,6 +115,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
+    whileElementsMounted: autoUpdate,
     platform:
       (disableRTL ?? setupOptions.disableRTL)
         ? {
@@ -135,27 +136,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     ].filter(Boolean),
   })
 
-  const {
-    refs,
-    middlewareData,
-    // @ts-expect-error this comes from Tooltip for example
-    open,
-  } = floating
-
-  // leaving this here as reference, seems we don't need it anymore at least as used currently
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    useIsomorphicLayoutEffect(() => {
-      if (!open) return
-      if (!(refs.reference.current && refs.floating.current)) {
-        return
-      }
-
-      floating.update()
-
-      // Only call this when the floating element is rendered
-      return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-    }, [open, floating.update, refs.floating, refs.reference])
-  }
+  const { middlewareData } = floating
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     // On Native there's no autoupdate so we call update() when necessary

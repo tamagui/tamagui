@@ -132,10 +132,12 @@ if (shouldClean || shouldCleanBuildOnly) {
     const rebuild = debounce(build, 100)
     const chokidar = require('chokidar')
 
-    // do one js build but not types
-    build({
-      skipTypes: true,
-    })
+    if (!process.env.SKIP_INITIAL_BUILD) {
+      // do one js build but not types
+      build({
+        skipTypes: true,
+      })
+    }
 
     chokidar
       // prevent infinite loop but cause race condition if you just build directly

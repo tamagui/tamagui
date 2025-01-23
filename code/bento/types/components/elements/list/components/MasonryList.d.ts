@@ -27,6 +27,6 @@ interface Props<T> extends Omit<ScrollViewProps, 'refreshControl'> {
     keyExtractor?: ((item: T | any, index: number) => string) | undefined;
     refreshControlProps?: Omit<RefreshControlProps, 'onRefresh' | 'refreshing'>;
 }
-export declare const MasonryList: React.MemoExoticComponent<import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, unknown, import("@tamagui/web").TamaguiComponentPropsBaseBase & Props<unknown>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>>;
+export declare const MasonryList: React.MemoExoticComponent<import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, unknown, import("@tamagui/web").TamaguiComponentPropsBaseBase & Props<any> & React.RefAttributes<ScrollView>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>>;
 export {};
 //# sourceMappingURL=MasonryList.d.ts.map
