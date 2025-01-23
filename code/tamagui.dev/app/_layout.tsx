@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { HydrateTheme, UserThemeProvider, useUserTheme } from '@tamagui/one-theme'
+import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { LoadProgressBar, Slot, Stack } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -111,8 +111,6 @@ export default function Layout() {
 
       <LoadProgressBar />
 
-      <HydrateTheme />
-
       <Providers>
         {isWeb ? (
           <Slot />
@@ -142,18 +140,18 @@ export default function Layout() {
 export const Providers = (props: { children: any }) => {
   return (
     <SearchProvider>
-      <UserThemeProvider>
+      <SchemeProvider>
         <WebsiteTamaguiProvider>{props.children}</WebsiteTamaguiProvider>
-      </UserThemeProvider>
+      </SchemeProvider>
     </SearchProvider>
   )
 }
 
 function WebsiteTamaguiProvider(props: { children: any }) {
-  const [{ resolvedTheme }] = useUserTheme()
+  const [scheme] = useColorScheme()
 
   return (
-    <TamaguiProvider disableInjectCSS defaultTheme={resolvedTheme} config={tamaConf}>
+    <TamaguiProvider disableInjectCSS defaultTheme={scheme} config={tamaConf}>
       <ToastProvider>{props.children}</ToastProvider>
     </TamaguiProvider>
   )

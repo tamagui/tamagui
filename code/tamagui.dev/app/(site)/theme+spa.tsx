@@ -100,6 +100,7 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
 
   return (
     <Theme key={props.noKey ? '' : key} forceClassName name={baseStepThemeName}>
+      <YStack bg="$color1" fullscreen zi={0} scale={2} />
       <ThemeNameEffect />
       <YStack f={1}>{props.children}</YStack>
     </Theme>

@@ -1,8 +1,6 @@
-import { Heading, Moon, Sun } from '@tamagui/lucide-icons'
-import { useUserTheme } from '@tamagui/one-theme'
-import { memo, startTransition, useState } from 'react'
+import { Heading } from '@tamagui/lucide-icons'
+import { memo } from 'react'
 import {
-  Configuration,
   Label,
   SizableText,
   Square,
@@ -15,7 +13,6 @@ import {
   useThemeName,
 } from 'tamagui'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { animationsCSS } from '../../../config/animations.css'
 import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {

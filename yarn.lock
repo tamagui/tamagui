@@ -7499,10 +7499,10 @@ __metadata:
     "@tamagui/logo": "npm:1.122.8"
     "@tamagui/lucide-icons": "npm:1.122.8"
     "@tamagui/mdx-2": "npm:1.122.8"
-    "@tamagui/one-theme": "npm:1.122.8"
     "@tamagui/use-store": "npm:1.122.8"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@vercel/og": "npm:^0.5.8"
+    "@vxrn/color-scheme": "npm:^1.1.409"
     acorn: "npm:^8.11.3"
     acorn-walk: "npm:^8.3.1"
     ai: "npm:^4.1.2"
@@ -8152,20 +8152,6 @@ __metadata:
   dependencies:
     "@react-native/normalize-color": "npm:^2.1.0"
     "@tamagui/build": "npm:1.122.8"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/one-theme@npm:1.122.8, @tamagui/one-theme@workspace:code/packages/one-theme":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/one-theme@workspace:code/packages/one-theme"
-  dependencies:
-    "@tamagui/build": "npm:1.122.8"
-    "@tamagui/use-did-finish-ssr": "npm:1.122.8"
-    react: "npm:*"
-    react-native: "npm:^0.76.5"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 

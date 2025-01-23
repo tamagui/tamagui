@@ -1,22 +1,22 @@
 import { Input } from '@tamagui/input'
-import { startTransition, useEffect, useRef, useState } from 'react'
+import { Moon, Sun } from '@tamagui/lucide-icons'
+import { useColorScheme } from '@vxrn/color-scheme'
+import { useEffect, useRef, useState } from 'react'
 import {
   Button,
   Configuration,
   Spinner,
+  Switch,
   Theme,
   useThemeName,
   XStack,
   YStack,
 } from 'tamagui'
-import { toastController } from '../ToastProvider'
-import { useThemeBuilderStore } from './store/ThemeBuilderStore'
-import { RandomizeButton } from './RandomizeButton'
-import { Moon, Sun } from '@tamagui/lucide-icons'
-import { Switch } from 'tamagui'
-import { useUserTheme } from '@tamagui/one-theme'
 import { animationsCSS } from '../../../config/animations.css'
 import { useUser } from '../../user/useUser'
+import { toastController } from '../ToastProvider'
+import { RandomizeButton } from './RandomizeButton'
+import { useThemeBuilderStore } from './store/ThemeBuilderStore'
 
 export const StudioAIBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -157,12 +157,12 @@ export const StudioAIBar = () => {
 }
 
 const ThemeToggle = () => {
-  const [{ userTheme }, setUserTheme] = useUserTheme()
-  const [checked, setChecked] = useState(userTheme === 'light')
+  const [scheme, setUserTheme] = useColorScheme()
+  const [checked, setChecked] = useState(scheme === 'light')
 
   useEffect(() => {
-    setChecked(userTheme === 'light')
-  }, [userTheme === 'light'])
+    setChecked(scheme === 'light')
+  }, [scheme === 'light'])
 
   return (
     <XStack gap="$3" ai="center">
@@ -175,9 +175,7 @@ const ThemeToggle = () => {
           onCheckedChange={(on) => {
             setChecked(on)
             setTimeout(() => {
-              startTransition(() => {
-                setUserTheme(on ? 'light' : 'dark')
-              })
+              setUserTheme(on ? 'light' : 'dark')
             })
           }}
           size="$3"

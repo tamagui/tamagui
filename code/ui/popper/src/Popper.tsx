@@ -320,6 +320,10 @@ export const PopperContent = React.forwardRef<
     }),
   }
 
+  if (x === 0 && y === 0) {
+    return null
+  }
+
   // outer frame because we explicitly don't want animation to apply to this
   return (
     <Stack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>

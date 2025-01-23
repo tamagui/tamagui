@@ -18,28 +18,12 @@ import { PricingCards } from './preview/Pricing'
 import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
 import { UserDropdown } from './preview/UserDropdown'
 
-const extraPad = 18
-
-function gridRow(items: Array<[string, number]>) {
-  return items.map((item) => Array(item[1]).fill(item[0]).join(' ')).join(' ')
-}
-
 export const StudioPreviewComponents = memo(() => {
-  const demoProps = useDemoProps()
-
-  return (
-    <>
-      <Contents />
-    </>
-  )
-})
-
-const Contents = memo(() => {
   return (
     <Masonry
       items={new Array(components.length).fill(0).map((_, id) => ({ id }))}
       render={ComponentComponent}
-      columnWidth={250}
+      columnWidth={255}
       columnGutter={15}
       rowGutter={15}
     />
