@@ -12,6 +12,10 @@ export const StudioAIBar = () => {
   const [lastReply, setLastReply] = useState('')
 
   const generate = async (type: 'reply' | 'new') => {
+    if (!inputRef.current?.value.trim()) {
+      toastController.show(`Please enter a prompt`)
+      return
+    }
     toastController.show(`Generating...`)
     setGenerating(type)
 
