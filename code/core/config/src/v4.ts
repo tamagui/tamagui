@@ -1,18 +1,18 @@
 import * as Colors from '@tamagui/colors'
-import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { shorthands } from '@tamagui/shorthands/v4'
+import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { tokens } from '@tamagui/themes/v4'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { animations } from './v3-animations'
 import { fonts } from './v4-fonts'
 import { media, mediaQueryDefaultActive } from './v4-media'
 
-export { createThemes } from '@tamagui/theme-builder'
 export { shorthands } from '@tamagui/shorthands/v4'
-export { media, mediaQueryDefaultActive, breakpoints } from './v4-media'
+export { createThemes } from '@tamagui/theme-builder'
+export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
 export { animations } from './v4-animations'
 export { createSystemFont, fonts } from './v4-fonts'
-export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
+export { breakpoints, media, mediaQueryDefaultActive } from './v4-media'
 
 // Themes:
 

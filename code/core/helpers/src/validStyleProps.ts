@@ -121,7 +121,7 @@ export const stylePropsTransform = {
   rotateZ: true,
 }
 
-const stylePropsView = {
+export const stylePropsView = {
   backfaceVisibility: true,
   borderBottomEndRadius: true,
   borderBottomStartRadius: true,

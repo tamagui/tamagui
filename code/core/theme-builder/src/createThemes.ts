@@ -68,7 +68,6 @@ export type CreateThemesProps<
   }) => Record<string, string>
 }
 
-// TODO we moved studio over to mostly just control palette, so the need for this can basically go away
 export function createThemes<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,

@@ -18,7 +18,6 @@ import type {
   ViewProps,
   ViewStyle,
 } from 'react-native'
-
 import type { Variable } from './createVariable'
 import type { StyledContext } from './helpers/createStyledContext'
 import type { CSSColorNames } from './interfaces/CSSColorNames'
