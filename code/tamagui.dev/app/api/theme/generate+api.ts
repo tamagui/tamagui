@@ -1,12 +1,24 @@
-import { deepseek } from '@ai-sdk/deepseek'
-import { xai } from '@ai-sdk/xai'
-import { openai } from '@ai-sdk/openai'
 import { anthropic } from '@ai-sdk/anthropic'
+import { deepseek } from '@ai-sdk/deepseek'
+import { openai } from '@ai-sdk/openai'
+import { xai } from '@ai-sdk/xai'
 import { generateText } from 'ai'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
+
+const models = {
+  'grok-beta': xai('grok-beta'),
+  'grok-2-1212': xai('grok-2-1212'),
+  'deepseek-chat': deepseek(`deepseek-chat`),
+  'deepseek-reasoner': deepseek(`deepseek-reasoner`),
+  'claude-3-5-sonnet-latest': anthropic('claude-3-5-sonnet-latest'),
+  'claude-3-5-haiku-latest': anthropic('claude-3-5-haiku-latest'),
+  'gpt-4o-mini': openai('gpt-4o-mini'),
+  'gpt-4o': openai('gpt-4o'),
+  'gpt-4-turbo': openai('gpt-4-turbo'),
+}
 
 export default apiRoute(async (req) => {
   const { supabase } = await ensureAuth({ req })
@@ -63,26 +75,23 @@ export default apiRoute(async (req) => {
     )
   }
 
-  const reasoning = false
-
   console.info(`Generating (scheme: ${scheme}, model: ${model}): ${prompt}...`)
 
   const { text } = await generateText({
-    // model: xai('grok-beta'),
-    // model: xai('grok-2-1212'),
-    // model: deepseek(`deepseek-${model}`),
-    // model: anthropic('claude-3-5-haiku-latest'),
-    model: openai('gpt-4o-mini'),
+    model: models[model] || models['claude-3-5-sonnet-latest'],
     maxTokens: 4_000,
     onStepFinish(event) {
       console.info(event.text)
     },
-    prompt: `Help generate a Tamagui theme configuration for us. We need two sets of anchors,
-which are just objects that define index, hue, sat, and lum for both light and dark modes.
+    prompt: `Help generate Tamagui themes.
 
-We have a custom format to save space, this is a well formed theme with a grayscale base and blue accent (theme 1):
+The new Tamagui theme system generates basically two themes: base, and accent.
+Each theme has a palette it generates from bg (index 0) to fg (index 11).
+You set anchors at an index, and then Tamagui will handle spreading the colors between any anchors.
 
----
+We define them in a custom format to save space.
+
+This is a well formed theme with a grayscale base and blue accent (theme 1):
 
 i: 0
 h: 0,0
@@ -126,12 +135,9 @@ h: 250,250
 s: 0.5,0.5
 l: 0.95,0.95
 
-Note that "i" = index, "h" = hue, "s" = saturation, "l" = luminosity. And the two values for each are dark, light values.
-
+Note that "i" = index, "h" = hue, "s" = saturation, "l" = luminosity.
+The values are in order of: "light,dark".
 Base is the first section, accent is the second, separated by "###".
-
-This is the way we generate two palettes - accent and base, which are just strings of colors from 0 to 11 index.
-Note that index 0 to 9 are backgrounds, and 11 and 12 are foregrounds (text color).
 
 We generate it for both light and dark mode using comma separation. So for dark mode the lum should be low
 (0 to 0.2 or so) for index 0, medium (0.4 to 0.8 or so) for index 9, and then pretty high for 10, and highest at 11.
@@ -147,6 +153,7 @@ Then accent would have hue all set to green.
 
 Some notes:
 
+  - Index 0 to 9 are backgrounds, and 11 and 12 are foregrounds (text color).
   - Be sure to keep index 9 readable on index 1, if you need a more flat theme, add an anchor on 8 so 9 can change lum more
   - If there's two main colors, make the base 0-9 the first one, the accent 0-9 the second.
   - Values always go "light,dark". Make sure your dark bg's are darker than the light bg's.
@@ -165,7 +172,6 @@ Some notes:
   - In general for text to look good you need your 10 and 11 index to contrast well the 0 and 9 index, for example a light theme generally wants high luminosity for 0 and 9, and low luminosity for 10 and 11.
   - You almost always want the hue of the 0-9 to match, and the hue of the 10-11 to match, but they can be different from each other.
   - Ensure the accent foreground (9-10) lum is far enough from the the accent bg (1) to read.
-
   - "More bright" to someone in dark mode usually means a anchor 0 that is closer to the middle luminescence, so base would go from l: 1,0 to l: 0.4,0.6
   - "More bright" to someone in light mode usually means the opposite - so l: 0.92,0.1 would go to l: 0.99,0.18
 
@@ -270,19 +276,16 @@ Example of good plans:
 - Given "Supreme": The SUPREME brand uses bright red backgrounds and white colors like theme 3. In dark mode and light mode base bg is same bright red, up to 9 anchor a still-bright but a bit darker red (in light mode make that go lighter). White fg on both. Accent dark mode is just a darker red scale, with same white fg, light mode accent is a lighter red, with dark red fg.
 - Given "Jungle": Can be more subtle like theme 1. Base dark mode do a medium saturation brown bg, subtle lighter green fg. Base light mode *bg* can be a more pastel mid green, then fg a reserved brown. Dark accent can use an extra rich dark brown bg, pink and yellow fg, light accent can be less saturated brown, with bright purple and red fg.
 
-Here's the current color scheme they are using: "${scheme}". Maybe relevant or not, if they say they want a "darker background" when in dark mode, only change dark values.
+Here's the current color scheme they are using: "${scheme}".
+It may be relevant or not, if they say they want a "darker background" when in dark mode, only change dark values.
 
-${
-  reasoning
-    ? `Figure out light and dark plans separately, then combine them at the end.`
-    : `Be sure to write out your plan then the structured data after, that's it. After your plan please separate with a "---" before the structured data.`
-}
+Be sure to write out your plan first, then put the structured data after. After your plan separate with a "---".
 
-Respond only with the structured data after your plan.
+${lastReply && lastReply !== prompt ? `The user had a prompt before this, it may or may not be relevant you can decide: "${lastReply}"` : ''}
 
-${lastReply && lastReply !== prompt ? `The last user prompt was: "${lastReply}"` : ''}
+The new user prompt is "${prompt}"
 
-The user prompt is "${prompt}":
+Let's try hard to some nice colors:
 `,
   })
 
