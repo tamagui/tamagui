@@ -1,5 +1,4 @@
-import { ChevronRight } from '@tamagui/lucide-icons'
-import { Button, H4, Paragraph, XStack, YStack } from 'tamagui'
+import { H4, Paragraph, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { BarChart, LineChart } from './Charts'
 
@@ -22,7 +21,7 @@ export const StatisticsBarScreen = () => {
       >
         <XStack jc="space-between">
           <YStack gap="$2">
-            <H4 size="$3" {...demoProps.headingFontFamilyProps} mt="$0" color="$color10">
+            <H4 {...demoProps.headingFontFamilyProps} mt="$0" color="$color11">
               New user sign-ups
             </H4>
             <H4 size="$10">+1,200</H4>

@@ -46,7 +46,7 @@ const components = [
     </Panel>
   </>,
   <>
-    <Panel initialInverse fileToCopyName="Overviews" initialAccent>
+    <Panel fileToCopyName="Overviews" initialAccent>
       <Overview1 />
     </Panel>
   </>,

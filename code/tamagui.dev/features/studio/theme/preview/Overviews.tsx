@@ -87,7 +87,7 @@ export const OverviewCard = ({
           mb="$-2"
           color="$color12"
           {...(alternative && {
-            color: '$accent1',
+            color: '$accent12',
           })}
         >
           {title}
@@ -95,7 +95,7 @@ export const OverviewCard = ({
         <H4
           size="$9"
           {...(alternative && {
-            color: '$accent1',
+            color: '$accent12',
           })}
         >
           {value}
@@ -106,7 +106,7 @@ export const OverviewCard = ({
               size="$2"
               px="$2"
               {...(alternative && {
-                color: '$accent1',
+                color: '$accent12',
               })}
             >
               {badgeText}
