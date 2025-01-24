@@ -8,7 +8,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
-  "module:jsx": "dist/jsx",
   "files": [],
   "scripts": {
     "build": "tamagui-build",
