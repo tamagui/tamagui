@@ -34,7 +34,7 @@ export const StatisticsBarScreen = () => {
       </YStack>
 
       <YStack flex={1} gap="$6" mx="$-4" f={1} jc="space-around">
-        <XStack gap="$4">
+        <XStack maxHeight={200} gap="$4">
           <BarChart />
         </XStack>
       </YStack>
