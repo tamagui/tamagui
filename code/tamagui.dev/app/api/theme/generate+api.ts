@@ -275,6 +275,8 @@ Example of good plans:
 
 - Given "Supreme": The SUPREME brand uses bright red backgrounds and white colors like theme 3. In dark mode and light mode base bg is same bright red, up to 9 anchor a still-bright but a bit darker red (in light mode make that go lighter). White fg on both. Accent dark mode is just a darker red scale, with same white fg, light mode accent is a lighter red, with dark red fg.
 - Given "Jungle": Can be more subtle like theme 1. Base dark mode do a medium saturation brown bg, subtle lighter green fg. Base light mode *bg* can be a more pastel mid green, then fg a reserved brown. Dark accent can use an extra rich dark brown bg, pink and yellow fg, light accent can be less saturated brown, with bright purple and red fg.
+- Given "Halloween": In the spirit of spooky, we'll generate two dark themes basically. The light mode will be a deep purple, with orange fg. Dark will be pitch black, white and yellow fg.
+- Given "Desert tan pastel orange highlight": Lets make sure the 8 and 9 are separated, low contrast tan bg, up to 8, at 9 do the orange highlight, then 10 and 11 we'll throw in contrasting pastel shades.
 
 Here's the current color scheme they are using: "${scheme}".
 It may be relevant or not, if they say they want a "darker background" when in dark mode, only change dark values.
