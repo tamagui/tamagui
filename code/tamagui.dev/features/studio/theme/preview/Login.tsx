@@ -34,23 +34,24 @@ export const LoginScreen = () => {
           borderBottomWidth="$0.25"
           borderBottomColor="$borderColor"
           pb="$4"
+          gap="$3"
           bbw="$0"
         >
-          <H4 {...demoProps.headingFontFamilyProps} ta="center">
+          <H4 size="$4" {...demoProps.headingFontFamilyProps} ta="center">
             Welcome Back!
           </H4>
-          <Paragraph ta="center" {...demoProps.panelDescriptionProps}>
+          <Paragraph ta="center" {...demoProps.panelDescriptionProps} o={0.5} size="$2">
             Connect your git provider
           </Paragraph>
         </YStack>
 
         <YStack flex={1} {...demoProps.gapPropsLg}>
-          <XStack {...demoProps.gapPropsLg}>
+          <XStack {...demoProps.gapPropsMd}>
             <>
               <Button
                 f={1}
                 fb={0}
-                size="$4"
+                size="$3"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -60,7 +61,7 @@ export const LoginScreen = () => {
               <Button
                 f={1}
                 fb={0}
-                size="$4"
+                size="$3"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -83,7 +84,7 @@ export const LoginScreen = () => {
           <Spacer size="$1" />
 
           <YStack {...demoProps.gapPropsMd}>
-            <Fieldset gap="$3">
+            <Fieldset gap="$1">
               <Label>Username</Label>
               <Input
                 placeholder="Username"
@@ -94,7 +95,7 @@ export const LoginScreen = () => {
 
             <Spacer size="$2" />
 
-            <Fieldset gap="$3">
+            <Fieldset gap="$1">
               <Label>Password</Label>
               <Input
                 placeholder="Password"

@@ -23,9 +23,9 @@ export const StudioPreviewComponents = memo(() => {
     <Masonry
       items={new Array(components.length).fill(0).map((_, id) => ({ id }))}
       render={ComponentComponent}
-      columnWidth={255}
-      columnGutter={15}
-      rowGutter={15}
+      columnWidth={260}
+      columnGutter={18}
+      rowGutter={18}
     />
   )
 })

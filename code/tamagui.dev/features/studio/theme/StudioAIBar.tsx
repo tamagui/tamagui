@@ -91,11 +91,11 @@ export const StudioAIBar = () => {
 
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
-      <XStack ai="center" f={1} gap="$3">
+      <XStack fw="wrap" ai="center" f={1} gap="$3">
         <Input
           ref={inputRef as any}
           placeholder={`Prompt to generate a theme...`}
-          w="100%"
+          miw={300}
           f={10}
           size="$6"
           shadowColor="$shadow3"
@@ -126,31 +126,33 @@ export const StudioAIBar = () => {
             </Button>
           </Theme>
         )} */}
-        <Theme name="accent">
-          <Button
-            br="$10"
-            disabled={isGenerating === 'new'}
-            o={isGenerating === 'new' ? 0.2 : 1}
-            pe={isGenerating === 'new' ? 'none' : 'auto'}
-            icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
-            onPress={() => {
-              if (hasAccess) {
-                generate('new')
-              } else {
-                toastController.show(
-                  `This is mostly an experiment, it's gated behind purchase of Takeout or Bento for now.`
-                )
-              }
-            }}
-            size="$4"
-          >
-            {hasAccess ? 'Generate' : 'Access'}
-          </Button>
+        <XStack gap="$3" ai="center" jc="space-between">
+          <Theme name="accent">
+            <Button
+              br="$10"
+              disabled={isGenerating === 'new'}
+              o={isGenerating === 'new' ? 0.2 : 1}
+              pe={isGenerating === 'new' ? 'none' : 'auto'}
+              icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
+              onPress={() => {
+                if (hasAccess) {
+                  generate('new')
+                } else {
+                  toastController.show(
+                    `This is mostly an experiment, it's gated behind purchase of Takeout or Bento for now.`
+                  )
+                }
+              }}
+              size="$4"
+            >
+              {hasAccess ? 'Generate' : 'Access'}
+            </Button>
 
-          <RandomizeButton />
-        </Theme>
+            <RandomizeButton />
+          </Theme>
 
-        <ThemeToggle />
+          <ThemeToggle />
+        </XStack>
       </XStack>
     </XStack>
   )
@@ -169,6 +171,9 @@ const ThemeToggle = () => {
       <Configuration animationDriver={animationsCSS}>
         <Switch
           checked={checked}
+          outlineColor="$accent11"
+          outlineWidth={2}
+          outlineStyle="solid"
           pressStyle={{
             bg: '$color2',
           }}

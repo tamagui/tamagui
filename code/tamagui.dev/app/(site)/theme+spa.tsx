@@ -69,7 +69,7 @@ export default function ThemePage() {
         <YStack fullscreen zi={100000} pe="none" bg="red" />
       </PreviewTheme>
 
-      <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
+      <XStack w="100%" pr={540} $sm={{ pr: 0 }} jc="flex-end">
         <YStack
           gap="$4"
           p="$4"
@@ -83,9 +83,8 @@ export default function ThemePage() {
         >
           <StudioAIBar />
           <PreviewTheme key={previewKey}>
-            <YStack gap="$4">
+            <YStack gap="$6">
               <StudioPreviewComponentsBar scrollView={document.documentElement} />
-
               <StudioPreviewComponents />
             </YStack>
           </PreviewTheme>
@@ -123,16 +122,12 @@ const ThemeBuilderModal = memo(() => {
       t={90}
       r={0}
       b={0}
-      w={550}
+      w={530}
       mah="90vh"
       zi={100_000}
-      // $md={{
-      //   x: expanded ? 0 : 500,
-      // }}
-      // $sm={{
-      //   x: expanded ? '90%' : 0,
-      //   maxWidth: '100%',
-      // }}
+      $sm={{
+        dsp: 'none',
+      }}
     >
       <YStack
         fullscreen

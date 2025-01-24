@@ -24,12 +24,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
   return {
     borderRadiusProps: {
       borderRadius: demosOptions.borderRadius,
-      borderWidth:
-        demosOptions.borderWidth === 0
-          ? 0
-          : demosOptions.borderWidth === 2
-            ? 0.5
-            : demosOptions.borderWidth,
+      borderWidth: demosOptions.borderWidth,
     } as const,
 
     borderRadiusOuterProps: {
@@ -46,6 +41,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     headingFontFamilyProps: {
       fontFamily: demosOptions.headingFontFamily,
       fontWeight: '500',
+      size: '$4',
       fontSize: 25,
       color:
         demosOptions.textAccent === 'high'

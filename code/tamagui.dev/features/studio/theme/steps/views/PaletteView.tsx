@@ -4,6 +4,7 @@ import {
   ArrowLeftRight,
   ArrowRight,
   ArrowUpDown,
+  Lock,
 } from '@tamagui/lucide-icons'
 import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { Store, getStore, useStore } from '@tamagui/use-store'
@@ -555,6 +556,7 @@ const PaletteColor = memo(
     const { hoveredColor, selectedColor } = store
     const borderRadius = size === 'medium' ? 100 : 100
     const { anchors } = palette
+    const isAnchor = anchors.some((a) => a.index === index)
 
     const doublePressProps = useDoublePress({
       eagerSingle: true,
@@ -580,7 +582,6 @@ const PaletteColor = memo(
 
     return (
       <XStack
-        animation="lazy"
         h={isActive ? 42 : 26}
         // size === 'small' ? 32 : 42}
         w={`${(1 / colors.length) * 100}%`}
@@ -594,6 +595,7 @@ const PaletteColor = memo(
         hoverStyle={{
           scale: 1.05,
         }}
+        pos="relative"
         {...(hoveredColor === index && {
           zi: 10000,
           outlineColor: '$accent10',
@@ -603,7 +605,7 @@ const PaletteColor = memo(
           shadowRadius: 5,
           shadowOpacity: 1,
         })}
-        {...(selectedColor === index && {
+        {...((isAnchor || selectedColor === index) && {
           zi: 10000,
           outlineColor: '$accent1',
           outlineStyle: 'solid',
