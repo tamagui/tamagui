@@ -58,7 +58,7 @@ export function Panel({
   return (
     <YStack
       w="100%"
-      h="100%"
+      mah={600}
       f={1}
       // scale={0.95}
       // transformOrigin="left top"

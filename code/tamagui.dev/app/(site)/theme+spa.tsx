@@ -60,24 +60,20 @@ export default function ThemePage() {
   const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
 
   return (
-    <YStack>
+    <>
       <ThemeBuilderModal />
 
       <Dialogs />
 
-      <PreviewTheme key={previewKey}>
-        <YStack fullscreen zi={100000} pe="none" bg="red" />
-      </PreviewTheme>
-
-      <XStack w="100%" pr={540} $sm={{ pr: 0 }} jc="flex-end">
+      <XStack w="100%" h="max-content" pr={540} $sm={{ pr: 0 }} jc="flex-end" ov="hidden">
         <YStack
           gap="$4"
           p="$4"
           f={1}
-          maw={1300}
+          maw="calc(min(100vw, 1300px))"
           group="content"
           $md={{
-            maw: 900,
+            maw: `calc(min(100vw, 900px))`,
             p: '$4',
           }}
         >
@@ -90,7 +86,7 @@ export default function ThemePage() {
           </PreviewTheme>
         </YStack>
       </XStack>
-    </YStack>
+    </>
   )
 }
 

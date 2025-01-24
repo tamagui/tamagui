@@ -52,6 +52,8 @@ export const StatisticsLineScreen = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
+      mah={400}
+      ov="hidden"
     >
       <YStack
         borderBottomWidth="$0.25"
@@ -63,7 +65,6 @@ export const StatisticsLineScreen = () => {
         <XStack jc="space-between">
           <YStack gap="$2">
             <H4
-              size="$3"
               {...demoProps.headingFontFamilyProps}
               mt="$0"
               // color={demoProps.hasAccent ? accentTokenName : '$color10'}
@@ -79,10 +80,8 @@ export const StatisticsLineScreen = () => {
       </YStack>
 
       <YStack flex={1} gap="$6" mx="$-4" f={1} jc="space-around">
-        <XStack gap="$4">
-          {/* <Theme name={'accent' as any}> */}
+        <XStack maxHeight={200} gap="$4">
           <LineChart />
-          {/* </Theme> */}
         </XStack>
       </YStack>
     </YStack>

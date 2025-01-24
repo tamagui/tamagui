@@ -137,6 +137,7 @@ export const LineChart = () => {
         // cornerRadius={{ togglePreviewThemeItem: 12 }}
         data={data}
         labels={({ datum }) => `${datum.y.toLocaleString()} new users`}
+        height={200}
         labelComponent={<VictoryTooltip />}
         // barWidth={40}
         // dataComponent={<Line tabIndex={0} ariaLabel={({ datum }) => `x: ${datum.x}`} />}
