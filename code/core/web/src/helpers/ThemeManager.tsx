@@ -198,7 +198,32 @@ export class ThemeManager {
   }
 }
 
+const cache: Record<string, ThemeManagerState | null> = {}
+
 function getState(
+  props: ThemeProps,
+  manager?: ThemeManager | null
+): ThemeManagerState | null {
+  if (!manager || !getHasThemeUpdatingProps(props)) {
+    return null
+  }
+  let parentsKey = ``
+  let parent = manager.parentManager
+  while (parent) {
+    parentsKey += parent.state?.name
+    parent = parent.parentManager
+  }
+  const cacheKey = `${parentsKey}${props.name || 0}${props.componentName || 1}${props.inverse || 2}${props.reset || 3}`
+  const cached = cache[cacheKey]
+  if (!cached) {
+    const res = getStateUncached(props, manager)
+    cache[cacheKey] = res
+    return res
+  }
+  return cached
+}
+
+function getStateUncached(
   props: ThemeProps,
   manager?: ThemeManager | null
 ): ThemeManagerState | null {
@@ -208,10 +233,6 @@ function getState(
         ? `❌004`
         : 'Cannot reset and set a new name at the same time.'
     )
-  }
-
-  if (!getHasThemeUpdatingProps(props)) {
-    return null
   }
 
   const themes = getThemes()
