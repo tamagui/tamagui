@@ -1,7 +1,16 @@
 import '@tamagui/polyfill-dev'
 
 import type { UseHoverProps } from '@floating-ui/react'
-import { Adapt, AdaptParent, AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
+import {
+  Adapt,
+  AdaptParent,
+  AdaptPortalContents,
+  ProvideAdaptContext,
+  useAdaptContext,
+  useAdaptIsActive,
+  type AdaptParentContextI,
+} from '@tamagui/adapt'
+
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
@@ -286,11 +295,14 @@ function PopoverRepropagateContext(props: {
   context: any
   popperContext: any
   scope: string
+  adaptContext: AdaptParentContextI
 }) {
   return (
     <PopperContext.Provider scope={props.scope} {...props.popperContext}>
       <PopoverContext.Provider {...props.context}>
-        {props.children}
+        <ProvideAdaptContext {...props.adaptContext}>
+          {props.children}
+        </ProvideAdaptContext>
       </PopoverContext.Provider>
     </PopperContext.Provider>
   )
@@ -302,6 +314,7 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
   const context = usePopoverContext(__scopePopover)
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
   const themeName = useThemeName()
+  const adaptContext = useAdaptContext()
 
   let contents = props.children
 
@@ -312,6 +325,7 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
         scope={__scopePopover || POPOVER_SCOPE}
         popperContext={popperContext}
         context={context}
+        adaptContext={adaptContext}
       >
         {props.children}
       </PopoverRepropagateContext>
@@ -406,6 +420,8 @@ const PopoverContentImpl = React.forwardRef<
     setIsFullyHidden?.(true)
   }, [setIsFullyHidden])
 
+  let contents = <ResetPresence>{children}</ResetPresence>
+
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
     // TODO this should be disabled through context
@@ -418,21 +434,38 @@ const PopoverContentImpl = React.forwardRef<
       return child
     })
 
-    let content = <ResetPresence>{childrenWithoutScrollView}</ResetPresence>
-
-    if (Platform.OS === 'android' || Platform.OS === 'ios') {
-      content = (
+    return (
+      <AdaptPortalContents>
         <PopperContext.Provider
           scope={__scopePopover || POPOVER_SCOPE}
           {...popperContext}
         >
           {childrenWithoutScrollView}
         </PopperContext.Provider>
-      )
-    }
+      </AdaptPortalContents>
+    )
+  }
 
-    // doesn't show as popover yet on native, must use as sheet
-    return <AdaptPortalContents>{content}</AdaptPortalContents>
+  if (process.env.TAMAGUI_TARGET !== 'native') {
+    contents = (
+      <RemoveScroll
+        enabled={disableRemoveScroll ? false : open}
+        allowPinchZoom
+        // causes lots of bugs on touch web on site
+        removeScrollBar={false}
+        style={dspContentsStyle}
+      >
+        <FocusScope
+          loop
+          enabled={disableFocusScope ? false : open}
+          trapped={trapFocus}
+          onMountAutoFocus={onOpenAutoFocus}
+          onUnmountAutoFocus={onCloseAutoFocus}
+        >
+          <div style={dspContentsStyle}>{contents}</div>
+        </FocusScope>
+      </RemoveScroll>
+    )
   }
 
   // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
@@ -464,25 +497,7 @@ const PopoverContentImpl = React.forwardRef<
         ref={forwardedRef}
         {...contentProps}
       >
-        <RemoveScroll
-          enabled={disableRemoveScroll ? false : open}
-          allowPinchZoom
-          // causes lots of bugs on touch web on site
-          removeScrollBar={false}
-          style={dspContentsStyle}
-        >
-          <ResetPresence>
-            <FocusScope
-              loop
-              enabled={disableFocusScope ? false : open}
-              trapped={trapFocus}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              {isWeb ? <div style={dspContentsStyle}>{children}</div> : children}
-            </FocusScope>
-          </ResetPresence>
-        </RemoveScroll>
+        {contents}
       </PopperContent>
     </Animate>
   )

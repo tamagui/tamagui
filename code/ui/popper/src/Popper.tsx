@@ -266,18 +266,8 @@ export const PopperContent = React.forwardRef<
   ScopedPopperProps<PopperContentProps>
 >(function PopperContent(props: ScopedPopperProps<PopperContentProps>, forwardedRef) {
   const { __scopePopper, enableAnimationForPositionChange, ...rest } = props
-  const {
-    strategy,
-    placement,
-    refs,
-    x,
-    y,
-    getFloatingProps,
-    size,
-    update,
-    floatingStyles,
-    hasFloating,
-  } = usePopperContext(__scopePopper)
+  const { strategy, placement, refs, x, y, getFloatingProps, size } =
+    usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
   const contents = React.useMemo(() => {

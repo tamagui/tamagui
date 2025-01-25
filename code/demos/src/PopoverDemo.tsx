@@ -58,11 +58,12 @@ export function Demo({
 
       {shouldAdapt && (
         <Adapt when="sm" platform="touch">
-          <Popover.Sheet modal dismissOnSnapToBottom>
+          <Popover.Sheet animation="medium" modal dismissOnSnapToBottom>
             <Popover.Sheet.Frame padding="$4">
               <Adapt.Contents />
             </Popover.Sheet.Frame>
             <Popover.Sheet.Overlay
+              backgroundColor="$shadowColor"
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
