@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { YStack, useThemeName } from 'tamagui'
+import { Theme, YStack, useThemeName } from 'tamagui'
 
 import { Masonry } from 'masonic'
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
@@ -20,13 +20,19 @@ import { UserDropdown } from './preview/UserDropdown'
 
 export const StudioPreviewComponents = memo(() => {
   return (
-    <Masonry
-      items={new Array(components.length).fill(0).map((_, id) => ({ id }))}
-      render={ComponentComponent}
-      columnWidth={260}
-      columnGutter={18}
-      rowGutter={18}
-    />
+    <>
+      <PalettePreviewPanels />
+
+      <YStack mr={-10}>
+        <Masonry
+          items={new Array(components.length).fill(0).map((_, id) => ({ id }))}
+          render={ComponentComponent}
+          columnWidth={260}
+          columnGutter={18}
+          rowGutter={18}
+        />
+      </YStack>
+    </>
   )
 })
 
@@ -68,9 +74,11 @@ const components = [
     </Panel>
   </>,
   <>
+    {/* <Theme name="surface2"> */}
     <Panel fileToCopyName="Pricing">
       <PricingCards />
     </Panel>
+    {/* </Theme> */}
   </>,
   <>
     <Panel fileToCopyName="Login">
@@ -78,9 +86,11 @@ const components = [
     </Panel>
   </>,
   <>
+    {/* <Theme name="surface2"> */}
     <Panel fileToCopyName="AllTasks">
       <AllTasks />
     </Panel>
+    {/* </Theme> */}
   </>,
   <>
     <Panel fileToCopyName="Statistics">

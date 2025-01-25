@@ -97,6 +97,26 @@ const builtThemes = createThemes({
       },
     },
   },
+
+  // optionally add more, can pass palette or template
+
+  // grandChildrenThemes: {
+  //   alt1: {
+  //     template: 'alt1',
+  //   },
+  //   alt2: {
+  //     template: 'alt2',
+  //   },
+  //   surface1: {
+  //     template: 'surface1',
+  //   },
+  //   surface2: {
+  //     template: 'surface2',
+  //   },
+  //   surface3: {
+  //     template: 'surface3',
+  //   },
+  // },
 })
 
 export type Themes = typeof builtThemes

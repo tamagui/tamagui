@@ -43,7 +43,7 @@ export const StudioAIBar = () => {
       if (seconds === 4) {
         toastController.show(`Thinking about colors...`)
       } else if (seconds === 8) {
-        toastController.show(`Thinking about more colors...`)
+        toastController.show(`...`)
       } else if (seconds === 12) {
         toastController.show(`Refining palettes...`)
       } else if (seconds === 16) {
@@ -79,11 +79,10 @@ export const StudioAIBar = () => {
 
       setLastReply(data.reply)
       store.updateGenerate(data.result)
+      toastController.show(`Generated!`)
     } catch (err) {
       toastController.show(`Error: ${err}`)
     } finally {
-      toastController.hide()
-      toastController.show(`Generated!`)
       setGenerating(null)
       clearInterval(int)
     }

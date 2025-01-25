@@ -43,13 +43,13 @@
     "@tamagui/mdx-2": "1.123.0",
     "@tamagui/use-store": "1.123.0",
     "@vercel/og": "^0.5.8",
-    "@vxrn/color-scheme": "^1.1.409",
+    "@vxrn/color-scheme": "^1.1.411",
     "ai": "^4.1.2",
     "color2k": "^2.0.2",
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
     "masonic": "^4.0.1",
-    "one": "1.1.409",
+    "one": "1.1.411",
     "postmark": "^3.0.18",
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "^0.76.5",
@@ -62,7 +62,8 @@
     "valibot": "^0.35.0",
     "victory": "^37.0.2",
     "vite": "^6.0.6",
-    "vite-plugin-inspect": "^0.8.4"
+    "vite-plugin-inspect": "^0.8.4",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@tamagui/cli": "1.123.0",

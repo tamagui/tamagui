@@ -1,1 +1,1 @@
-export const hideOthers = () => {}
+export const hideOthers = (): void => {}

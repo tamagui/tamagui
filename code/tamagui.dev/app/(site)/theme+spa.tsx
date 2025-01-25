@@ -61,9 +61,11 @@ export default function ThemePage() {
 
   return (
     <>
-      <ThemeBuilderModal />
-
       <Dialogs />
+
+      <PreviewTheme>
+        <ThemeBuilderModal />
+      </PreviewTheme>
 
       <XStack w="100%" h="max-content" pr={540} $sm={{ pr: 0 }} jc="flex-end" ov="hidden">
         <YStack

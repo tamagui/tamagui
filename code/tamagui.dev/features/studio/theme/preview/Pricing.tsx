@@ -30,6 +30,7 @@ export const PricingCards = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
+      bg="$background"
     >
       <YStack
         borderBottomWidth="$0.25"

@@ -14,9 +14,12 @@ export const AllTasks = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
+      bg="$background"
     >
       <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
-        <H4 {...demoProps.headingFontFamilyProps}>Tasks</H4>
+        <H4 {...demoProps.headingFontFamilyProps} color="$color">
+          Tasks
+        </H4>
         <Paragraph {...demoProps.panelDescriptionProps}>
           Active task for your team
         </Paragraph>
