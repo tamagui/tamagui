@@ -204,16 +204,11 @@ function getState(
   props: ThemeProps,
   manager?: ThemeManager | null
 ): ThemeManagerState | null {
-  if (!manager || !getHasThemeUpdatingProps(props)) {
+  if (!getHasThemeUpdatingProps(props)) {
     return null
   }
-  let parentsKey = ``
-  let parent = manager.parentManager
-  while (parent) {
-    parentsKey += parent.state?.name
-    parent = parent.parentManager
-  }
-  const cacheKey = `${parentsKey}${props.name || 0}${props.componentName || 1}${props.inverse || 2}${props.reset || 3}`
+  const [allManagers] = getManagers(manager)
+  const cacheKey = `${props.name || ''}${props.componentName || ''}${props.inverse || ''}${props.reset || ''}${allManagers.map((x) => x?.state.name || '.').join('')}`
   const cached = cache[cacheKey]
   if (!cached) {
     const res = getStateUncached(props, manager)
