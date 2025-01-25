@@ -17,14 +17,11 @@ v2
 
 - v3 - aim for fast follow
 
+  - themes => variables, control any property
+  - remove tokens in favor of themes
   - default box-sizing to border-box
-  - add animation api
-  - tokens => variables (remove nested groups)
-  - theme => variables
- - remove component themes:
-  - just can set theme="surface2" and have "generic" themes
+  - remove component themes, instead theme="surface2" etc
   - remove `name` from styled() then too
-
 
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
