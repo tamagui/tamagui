@@ -26,6 +26,15 @@ v2
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
 
+- config v5
+
+  - aligned setting to react native layout mode
+  - tokens aligned to tailwind
+
+- config v6
+
+  - remove tokens in favor of themes having tokens
+
 ---
 
 v3
