@@ -7259,7 +7259,7 @@ __metadata:
     webpack-bundle-analyzer: "npm:^4.9.0"
     webpack-cli: "npm:^4.9.2"
     webpack-dev-server: "npm:^4.8.1"
-    zod: "npm:^3.22.4"
+    zod: "npm:^3.24.1"
   languageName: unknown
   linkType: soft
 
@@ -12177,7 +12177,7 @@ __metadata:
     react-router-dom: "npm:6.4"
     swr: "npm:^2.2.5"
     type-fest: "npm:3.13.1"
-    zod: "npm:^3.22.4"
+    zod: "npm:^3.24.1"
   bin:
     bento-get: dist/cli.js
   languageName: unknown
@@ -30595,13 +30595,6 @@ __metadata:
   peerDependencies:
     zod: ^3.18.0
   checksum: 10/54a9e6aafcb37dd20fe8adbac9e745360c685ea2ff910a815a2916f5028bd95e4c48699db88cc7795dc7b3b578e5f80921b9b3773ffc073a7bcb852725e25d02
-  languageName: node
-  linkType: hard
-
-"zod@npm:^3.22.4":
-  version: 3.23.8
-  resolution: "zod@npm:3.23.8"
-  checksum: 10/846fd73e1af0def79c19d510ea9e4a795544a67d5b34b7e1c4d0425bf6bfd1c719446d94cdfa1721c1987d891321d61f779e8236fde517dc0e524aa851a6eff1
   languageName: node
   linkType: hard
 
