@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-inter",
-  "version": "1.123.0",
+  "version": "1.123.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -61,10 +61,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.123.0"
+    "@tamagui/core": "1.123.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.0",
+    "@tamagui/build": "1.123.1",
     "subset-font": "^2.1.0"
   },
   "publishConfig": {

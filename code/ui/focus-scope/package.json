@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "1.123.0",
+  "version": "1.123.1",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -34,12 +34,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.123.0",
-    "@tamagui/start-transition": "1.123.0",
-    "@tamagui/use-event": "1.123.0"
+    "@tamagui/compose-refs": "1.123.1",
+    "@tamagui/start-transition": "1.123.1",
+    "@tamagui/use-event": "1.123.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.0",
+    "@tamagui/build": "1.123.1",
     "react": "*"
   },
   "publishConfig": {
