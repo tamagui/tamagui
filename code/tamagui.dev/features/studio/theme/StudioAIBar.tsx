@@ -54,13 +54,23 @@ export const StudioAIBar = () => {
     }, 1000)
 
     try {
-      const prompt = inputRef.current?.value ?? ''
+      let prompt = inputRef.current?.value ?? ''
+      let model = ''
+
+      if (prompt[0] === '!') {
+        const space = prompt.indexOf(' ')
+        if (space > 0) {
+          model = prompt.slice(1, space)
+          prompt = prompt.slice(space)
+        }
+      }
+
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
           prompt,
           lastReply,
           scheme: themeName.startsWith('dark') ? 'dark' : 'light',
-          // model: prompt[0] === '!' ? 'reasoner' : 'chat',
+          model,
         }),
         headers: {
           'Content-Type': 'application/json',
