@@ -659,14 +659,16 @@ async function esbuildWriteIfChanged(
     return
   }
 
-  const nativeFilesMap = Object.fromEntries(
-    built.outputFiles.flatMap((p) => {
-      if (p.path.includes('.native.js')) {
-        return [[p.path, true]]
-      }
-      return []
-    })
-  )
+  const nativeFilesMap = {}
+  const webFilesMap = {}
+
+  for (const p of built.outputFiles) {
+    if (p.path.includes('.native.js')) {
+      nativeFilesMap[p.path] = true
+    } else if (p.path.includes('.web.js')) {
+      webFilesMap[p.path] = true
+    }
+  }
 
   const cleanupNonMjsFiles = []
 
@@ -705,6 +707,7 @@ async function esbuildWriteIfChanged(
             if (extPlatform === 'web') {
               return
             }
+
             if (!extPlatform) {
               path = path.replace('.js', '.native.js')
             }
@@ -716,6 +719,15 @@ async function esbuildWriteIfChanged(
               extPlatform === 'android' ||
               extPlatform === 'ios'
             ) {
+              return
+            }
+            if (extPlatform === 'web') {
+              // we move web to just .js
+              path = path.replace('.web.js', '.js')
+            }
+            const webSpecific = webFilesMap[path.replace('.js', '.web.js')]
+            if (!extPlatform && webSpecific) {
+              // swap into the non-web exntesion
               return
             }
           }
