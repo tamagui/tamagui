@@ -1,9 +1,9 @@
 import { validStyles, stylePropsAll } from '@tamagui/helpers'
 
 function getReactNativeVersion() {
-  let version = process.env.REACT_NATIVE_VERSION
+  let version = process.env.REACT_NATIVE_VERSION || ''
 
-  if (!version) {
+  if (!process.env.REACT_NATIVE_VERSION) {
     try {
       const ReactNativeOfficalVersion =
         require('react-native/Libraries/Core/ReactNativeVersion') as
