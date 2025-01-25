@@ -1,15 +1,38 @@
 import { validStyles, stylePropsAll } from '@tamagui/helpers'
 
-// this does exist :/
-import ReactNativeVersion from 'react-native/Libraries/Core/ReactNativeVersion'
+function getReactNativeVersion() {
+  let version = process.env.REACT_NATIVE_VERSION
+
+  if (!version) {
+    try {
+      const ReactNativeOfficalVersion =
+        require('react-native/Libraries/Core/ReactNativeVersion') as
+          | { version: { major: number; minor: number; patch: number } }
+          | undefined
+
+      if (ReactNativeOfficalVersion) {
+        const {
+          version: { major, minor, patch },
+        } = ReactNativeOfficalVersion
+        version = `${major}.${minor}.${patch}`
+      }
+    } catch {
+      // can't win them all
+    } finally {
+      if (!version) {
+        version = '0.77'
+      }
+    }
+  }
+
+  const [major, minor, patch] = version.split('.')
+  return [+major, +minor, +patch] as const
+}
 
 // mutate valid style props based on react native version
 
 export function addNativeValidStyles() {
-  if (!ReactNativeVersion) return
-  const {
-    version: { major, minor },
-  } = ReactNativeVersion as { version: { major: number; minor: number; patch: number } }
+  const [major, minor] = getReactNativeVersion()
 
   if (major === 0 && minor >= 77) {
     const additional = {
