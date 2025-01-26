@@ -72,8 +72,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   const { currentPath, section } = useDocsMenu()
   const items = inMenu ? allItems : section ? sections[section] : allItems
 
-  console.log('items', items, section, sections)
-
   // const [items, setItems] = React.useState(activeItems)
   // const isFiltered = items !== activeItems
 

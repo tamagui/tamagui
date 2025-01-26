@@ -46,7 +46,7 @@ export default function DocsLayout() {
 
   return (
     <ThemeNameEffect theme={themeName} colorKey="$color1">
-      <YStack bg="$color1" y={-54} pt={54}>
+      <YStack y={-54} pt={54}>
         <YStack
           overflow="hidden"
           mx="auto"

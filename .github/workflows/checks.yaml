@@ -7,7 +7,7 @@ on:
       - 'assets/**'
       - '.vscode/**'
     branches:
-      - master
+      - main
 
 jobs:
   checks:

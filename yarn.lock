@@ -8247,6 +8247,7 @@ __metadata:
   resolution: "@tamagui/logo@workspace:code/packages/logo"
   dependencies:
     "@tamagui/build": "npm:1.123.2"
+    one: "npm:1.1.412"
     react: "npm:*"
     tamagui: "npm:1.123.2"
   peerDependencies:
