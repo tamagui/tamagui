@@ -2,7 +2,7 @@ import type { ButtonProps } from 'tamagui'
 
 import { getTokenRelative } from '@tamagui/get-token'
 import { accentTokenName } from '~/features/studio/accentThemeName'
-import type { DemoOptions } from '../theme/constants/demoOptions'
+import type { DemoOptions } from '../theme/demoOptions'
 
 export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
   const accentToken = hasAccent ? accentTokenName : '$color9'
@@ -24,12 +24,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
   return {
     borderRadiusProps: {
       borderRadius: demosOptions.borderRadius,
-      borderWidth:
-        demosOptions.borderWidth === 0
-          ? 0.5
-          : demosOptions.borderWidth === 2
-            ? 1
-            : demosOptions.borderWidth,
+      borderWidth: demosOptions.borderWidth,
     } as const,
 
     borderRadiusOuterProps: {
@@ -46,12 +41,26 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     headingFontFamilyProps: {
       fontFamily: demosOptions.headingFontFamily,
       fontWeight: '500',
+      size: '$4',
+      fontSize: 25,
       color:
         demosOptions.textAccent === 'high'
           ? '$color12'
           : demosOptions.textAccent === 'low'
             ? '$color11'
             : '$color',
+
+      ...(demosOptions.headingFontFamily == '$heading' && {
+        fontSize: 14,
+      }),
+
+      ...(demosOptions.headingFontFamily == '$silkscreen' && {
+        fontSize: 14,
+      }),
+
+      ...(demosOptions.headingFontFamily == '$munro' && {
+        fontSize: 20,
+      }),
     } as const,
 
     buttonOutlineProps: {
@@ -62,8 +71,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     } as ButtonProps,
 
     stackOutlineProps: {
-      backgroundColor:
-        demosOptions.backgroundAccent === 'low' ? '$color1' : '$background025',
+      backgroundColor: demosOptions.backgroundAccent === 'low' ? '$color1' : '$color2',
     } as const,
 
     chatFrameProps: {
@@ -83,7 +91,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     chatTextProps: {} as const,
 
     chatTextActiveProps: {
-      color: isOutlined ? accentBackground : '$color',
+      color: isOutlined ? '$color12' : '$accent12',
     } as const,
 
     outlineTextProps: {
@@ -99,8 +107,8 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
         demosOptions.spacing === 'lg'
           ? ('$7' as const)
           : demosOptions.spacing === 'md'
-            ? ('$6' as const)
-            : ('$5' as const),
+            ? ('$5' as const)
+            : ('$4' as const),
     } as const,
 
     gapPropsMd: {
@@ -124,8 +132,8 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     // these ones are just common props - nothing to do with the demo options
     panelProps: {
       shadowColor: 'rgba(0,0,0,0.2)',
-      bw: '$0.5',
-      bc: '$borderColor',
+      bw: 0.5,
+      bc: '$color3',
       gap: '$3',
       py: '$4',
       w: '100%',

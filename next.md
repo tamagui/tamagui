@@ -2,7 +2,22 @@ v2:
 
 note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
-  - remove theme inverse in favor of sub-theme you can define (v4 helps here)
+  - animation => transition
+  - remove themeBuilder from plugins in favor of just using ENV to tree shake
+  - remove all theme css scanning stuff to separate optional package
+  - remove componentName, just allow setting default theme: ""
+  - remove builders like themebuilder etc from config
+    - do it via plugins automatically
+  - remove inlineProps, usedKeys, partial extraction
+
+  - must pass in colors separately but it exports the defaults still
+  - createSystemFont into package
+  - v4 themes
+    - based on studio, allows passing in custom colors
+  - remove component themes by default instead just do:
+    - "surface1-3" and have components use that instead of name by default when not unstyled
+  - theme inverse only works with sub-themes named _inverse. createThemes.generateInverseSubThemes: boolean 
+    - v4 config can add a boolean to do this by default
   - button-next is mostly ready now to replace button:
     - remove old button, move new button into place, fix issues around the site/bento
     - docs update: we should show "headless" style and non-headless
@@ -57,53 +72,29 @@ stretch
     - @tamagui/style just style({}) export, takes TextProps
 - // TODO: turn on
 
-2.0:
-  - remove all theme css scanning stuff to separate optional package
-  - remove componentName, just allow setting default theme: ""
-  - remove builders like themebuilder etc from config
-    - do it via plugins automatically
-  - remove inlineProps, usedKeys, partial extraction
+- v3 - aim for fast follow
 
-
-- v4 config:
-  - change generate format, automate this in generate:
-
-export type TamaguiThemes = typeof themes
-
-export const tamaguiThemes = // avoid themes only on client bundle
-  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
-    ? (themes as TamaguiThemes)
-    : ({} as TamaguiThemes)
-
-  - focus styles in the default v3 config are kind of wack
-  - must pass in colors separately but it exports the defaults still
-  - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
-  - createSystemFont into package
-  - v4 themes
-    - based on studio, allows passing in custom colors
-  - remove component themes by default instead just do:
-    - "surface1-3" and have components use that instead of name by default when not unstyled
-
-- v3
-  - tokens => variables (remove nested groups)
-  - theme => variables
-  - shorthands can also take values:
-  - {
-    block: { display: 'block' },
-    'inline-block': { display: 'inline-block' },
-  }
-
+  - themes => variables, control any property
+  - remove tokens in favor of themes
+  - default box-sizing to border-box
+  - remove component themes, instead theme="surface2" etc
+  - remove `name` from styled() then too
 
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
 
+- config v5
+
+  - aligned setting to react native layout mode
+  - tokens aligned to tailwind
+
+- config v6
+
+  - remove tokens in favor of themes having tokens
+
 ---
 
 v3
-
-remove component themes:
- - just can set theme="surface2" and have "generic" themes
- - remove `name` from styled() then too
 
 generic function to allow new syntaxes, eg flat mode
 
@@ -137,6 +128,9 @@ createCore<CustomTypes>({
     - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
   - `<Theme values={{}} />` dynamic override
 
+- perf getState could be cached (weakmap themeManager + stringify props)
+
+- isolatedDeclarations for build perf // TODO: turn on
 
 - beef up tests:
   - native
@@ -145,6 +139,8 @@ createCore<CustomTypes>({
   - $group $platform $theme styling
 
 - reanimated animate presence is making me set `opacity: 1` type default values
+
+- Sheet.overlay is memoized incorrectly props dont update it
 
 - popover trigger should send an event to close tooltips automatically on open
   - closeTooltips() helper

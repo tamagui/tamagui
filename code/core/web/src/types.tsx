@@ -18,7 +18,6 @@ import type {
   ViewProps,
   ViewStyle,
 } from 'react-native'
-
 import type { Variable } from './createVariable'
 import type { StyledContext } from './helpers/createStyledContext'
 import type { CSSColorNames } from './interfaces/CSSColorNames'
@@ -155,11 +154,11 @@ export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
   string,
   { [key: GenericKey]: Val }
 > & {
-  color: { [key: GenericKey]: Val }
-  space: { [key: GenericKey]: Val }
-  size: { [key: GenericKey]: Val }
-  radius: { [key: GenericKey]: Val }
-  zIndex: { [key: GenericKey]: Val }
+  color?: { [key: GenericKey]: Val }
+  space?: { [key: GenericKey]: Val }
+  size?: { [key: GenericKey]: Val }
+  radius?: { [key: GenericKey]: Val }
+  zIndex?: { [key: GenericKey]: Val }
 }
 
 export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
@@ -170,11 +169,11 @@ type Tokenify<A extends GenericTokens> = Omit<
   },
   TokenCategories
 > & {
-  color: TokenifyRecord<A['color']>
-  space: TokenifyRecord<A['space']>
-  size: TokenifyRecord<A['size']>
-  radius: TokenifyRecord<A['radius']>
-  zIndex: TokenifyRecord<A['zIndex']>
+  color: TokenifyRecord<A extends { color: any } ? A['color'] : {}>
+  space: TokenifyRecord<A extends { space: any } ? A['space'] : {}>
+  size: TokenifyRecord<A extends { size: any } ? A['size'] : {}>
+  radius: TokenifyRecord<A extends { radius: any } ? A['radius'] : {}>
+  zIndex: TokenifyRecord<A extends { zIndex: any } ? A['zIndex'] : {}>
 }
 
 type TokenifyRecord<A extends Object> = {
@@ -255,6 +254,12 @@ export interface TamaguiConfig
   extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
     TamaguiCustomConfig {}
 
+export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
+  onlyAllowShorthands: infer X
+}
+  ? X
+  : false
+
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
@@ -305,14 +310,14 @@ type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 //   body_en: any
 // }>['fonts']
 
-type ConfProps<A, B, C, D, E, F, G> = {
+type ConfProps<A, B, C, D, E, F, I> = {
   tokens?: A
   themes?: B
   shorthands?: C
   media?: D
   animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined
   fonts?: F
-  settings?: G
+  settings?: I
 }
 
 type EmptyTokens = {
@@ -340,7 +345,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer D,
   infer E,
   infer F,
-  infer G
+  infer H
 >
   ? TamaguiInternalConfig<
       A extends GenericTokens ? A : EmptyTokens,
@@ -349,7 +354,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
       D extends GenericMedia ? D : EmptyMedia,
       E extends GenericAnimations ? E : EmptyAnimations,
       F extends GenericFonts ? F : EmptyFonts,
-      G extends GenericTamaguiSettings ? G : EmptyTamaguiSettings
+      H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings
     >
   : unknown
 
@@ -382,7 +387,7 @@ export type ThemeParsed = {
 export type Tokens = TamaguiConfig['tokens']
 
 export type TokensParsed = {
-  [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>
+  [Key in keyof Required<Tokens>]: TokenPrefixed<Tokens[Key]>
 }
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
@@ -688,9 +693,9 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends GenericTamaguiSettings = GenericTamaguiSettings,
+  I extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, I>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -1165,12 +1170,6 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
-  onlyAllowShorthands: infer X
-}
-  ? X
-  : false
-
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
@@ -1357,6 +1356,224 @@ interface ExtraStyleProps {
     | 'bottom'
     | TwoValueTransformOrigin
     | `${TwoValueTransformOrigin} ${Px}`
+
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  filter?: Properties['filter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  mixBlendMode?: Properties['mixBlendMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundClip?: Properties['backgroundClip']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundBlendMode?: Properties['backgroundBlendMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundAttachment?: Properties['backgroundAttachment']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  clipPath?: Properties['clipPath']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  caretColor?: Properties['caretColor']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  transformStyle?: Properties['transformStyle']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  mask?: Properties['mask']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskImage?: Properties['maskImage']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  textEmphasis?: Properties['textEmphasis']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  borderImage?: Properties['borderImage']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  float?: Properties['float']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  content?: Properties['content']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowBlock?: Properties['overflowBlock']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowInline?: Properties['overflowInline']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorder?: Properties['maskBorder']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderMode?: Properties['maskBorderMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderOutset?: Properties['maskBorderOutset']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderRepeat?: Properties['maskBorderRepeat']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderSlice?: Properties['maskBorderSlice']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderSource?: Properties['maskBorderSource']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderWidth?: Properties['maskBorderWidth']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskClip?: Properties['maskClip']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskComposite?: Properties['maskComposite']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskMode?: Properties['maskMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskOrigin?: Properties['maskOrigin']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskPosition?: Properties['maskPosition']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskRepeat?: Properties['maskRepeat']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskSize?: Properties['maskSize']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskType?: Properties['maskType']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRow?: Properties['gridRow']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRowEnd?: Properties['gridRowEnd']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRowGap?: Properties['gridRowGap']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRowStart?: Properties['gridRowStart']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumn?: Properties['gridColumn']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumnEnd?: Properties['gridColumnEnd']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumnGap?: Properties['gridColumnGap']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumnStart?: Properties['gridColumnStart']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridTemplateColumns?: Properties['gridTemplateColumns']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridTemplateAreas?: Properties['gridTemplateAreas']
+
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backdropFilter?: Properties['backdropFilter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  containerType?: Properties['containerType']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  blockSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  inlineSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  minBlockSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maxBlockSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  objectFit?: Properties['objectFit']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  verticalAlign?: Properties['verticalAlign']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  minInlineSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maxInlineSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  borderInlineColor?: ColorTokens
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  borderInlineStartColor?: ColorTokens
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  borderInlineEndColor?: ColorTokens
 
   // TODO validate these are supported in react native, if so keep, if not deprecate like the above web-only deprecations
   borderBlockWidth?: SpaceTokens | number
@@ -2150,24 +2367,33 @@ export type UniversalAnimatedNumber<A> = {
   stop(): void
 }
 
+export type UseAnimatedNumberReaction<
+  V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (
+  opts: {
+    value: V
+    hostRef: RefObject<HTMLElement | View>
+  },
+  onValue: (current: number) => void
+) => void
+
+export type UseAnimatedNumberStyle<
+  V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (val: V, getStyle: (current: any) => any) => any
+
+export type UseAnimatedNumber<
+  N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (initial: number) => N
+
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
   supportsCSSVars?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   ResetPresence: (props: { children?: any }) => JSX.Element
-  useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>
-  useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(
-    val: V,
-    getStyle: (current: any) => any
-  ) => any
-  useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(
-    opts: {
-      value: V
-      hostRef: RefObject<HTMLElement | View>
-    },
-    onValue: (current: number) => void
-  ) => void
+  useAnimatedNumber: UseAnimatedNumber
+  useAnimatedNumberStyle: UseAnimatedNumberStyle
+  useAnimatedNumberReaction: UseAnimatedNumberReaction
   animations: A
   View?: any
   Text?: any

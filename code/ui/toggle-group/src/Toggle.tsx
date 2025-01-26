@@ -2,8 +2,12 @@ import { composeEventHandlers } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps } from '@tamagui/web'
-import { styled } from '@tamagui/web'
+import { createStyledContext, styled, Text } from '@tamagui/web'
 import * as React from 'react'
+
+export const context = createStyledContext({
+  color: '',
+})
 
 /* -------------------------------------------------------------------------------------------------
  * Toggle
@@ -18,6 +22,7 @@ export type ToggleElement = TamaguiButtonElement
 export const ToggleFrame = styled(YStack, {
   name: NAME,
   tag: 'button',
+  context,
 
   variants: {
     unstyled: {
@@ -44,6 +49,12 @@ export const ToggleFrame = styled(YStack, {
           outlineWidth: 2,
           outlineStyle: 'solid',
         },
+      },
+    },
+
+    color: {
+      '...color': () => {
+        return {}
       },
     },
 

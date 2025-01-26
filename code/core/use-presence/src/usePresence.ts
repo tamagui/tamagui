@@ -25,10 +25,10 @@ export function usePresence(): UsePresenceResult {
  * Similar to `usePresence`, except `useIsPresent` simply returns whether or not the component is present.
  * There is no `safeToRemove` function.
  */
-export function useIsPresent() {
+export function useIsPresent(): boolean {
   return isPresent(React.useContext(PresenceContext))
 }
 
-export function isPresent(context: PresenceContextProps | null) {
+export function isPresent(context: PresenceContextProps | null): boolean {
   return context === null ? true : context.isPresent
 }

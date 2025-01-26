@@ -94,19 +94,19 @@ type GenericKey = string;
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
     [key: GenericKey]: Val;
 }> & {
-    color: {
+    color?: {
         [key: GenericKey]: Val;
     };
-    space: {
+    space?: {
         [key: GenericKey]: Val;
     };
-    size: {
+    size?: {
         [key: GenericKey]: Val;
     };
-    radius: {
+    radius?: {
         [key: GenericKey]: Val;
     };
-    zIndex: {
+    zIndex?: {
         [key: GenericKey]: Val;
     };
 };
@@ -114,11 +114,21 @@ export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex';
 type Tokenify<A extends GenericTokens> = Omit<{
     [Key in keyof A]: TokenifyRecord<A[Key]>;
 }, TokenCategories> & {
-    color: TokenifyRecord<A['color']>;
-    space: TokenifyRecord<A['space']>;
-    size: TokenifyRecord<A['size']>;
-    radius: TokenifyRecord<A['radius']>;
-    zIndex: TokenifyRecord<A['zIndex']>;
+    color: TokenifyRecord<A extends {
+        color: any;
+    } ? A['color'] : {}>;
+    space: TokenifyRecord<A extends {
+        space: any;
+    } ? A['space'] : {}>;
+    size: TokenifyRecord<A extends {
+        size: any;
+    } ? A['size'] : {}>;
+    radius: TokenifyRecord<A extends {
+        radius: any;
+    } ? A['radius'] : {}>;
+    zIndex: TokenifyRecord<A extends {
+        zIndex: any;
+    } ? A['zIndex'] : {}>;
 };
 type TokenifyRecord<A extends Object> = {
     [Key in keyof A]: CoerceToVariable<A[Key]>;
@@ -170,6 +180,10 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
+<<<<<<< HEAD
+=======
+type OnlyAllowShorthandsSetting = boolean | undefined;
+>>>>>>> master
 export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
@@ -190,14 +204,22 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
+<<<<<<< HEAD
 type ConfProps<A, B, C, D, E, F, G> = {
+=======
+type ConfProps<A, B, C, D, E, F, I> = {
+>>>>>>> master
     tokens?: A;
     themes?: B;
     shorthands?: C;
     media?: D;
     animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined;
     fonts?: F;
+<<<<<<< HEAD
     settings?: G;
+=======
+    settings?: I;
+>>>>>>> master
 };
 type EmptyTokens = {
     color: {};
@@ -215,7 +237,11 @@ type EmptyTamaguiSettings = {
     allowedStyleValues: false;
     autocompleteSpecificTokens: 'except-special';
 };
+<<<<<<< HEAD
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, G extends GenericTamaguiSettings ? G : EmptyTamaguiSettings> : unknown;
+=======
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
+>>>>>>> master
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -227,7 +253,7 @@ export type ThemeParsed = {
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
-    [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>;
+    [Key in keyof Required<Tokens>]: TokenPrefixed<Tokens[Key]>;
 };
 type TokenPrefixed<A extends {
     [key: string]: any;
@@ -457,7 +483,11 @@ export type GetCSS = (opts?: {
     exclude?: 'themes' | 'design-system' | null;
     sinceLastCall?: boolean;
 }) => string;
+<<<<<<< HEAD
 export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends GenericTamaguiSettings = GenericTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
+=======
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, I extends GenericTamaguiSettings = GenericTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, I>, 'tokens'> & {
+>>>>>>> master
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
@@ -648,9 +678,13 @@ export type WithThemeValues<T extends object> = {
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
+<<<<<<< HEAD
 export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
     onlyAllowShorthands: infer X;
 } ? X : false;
+=======
+type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands'];
+>>>>>>> master
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -784,6 +818,249 @@ interface ExtraStyleProps {
      * The point at which transforms originate from.
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
+<<<<<<< HEAD
+=======
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    filter?: Properties['filter'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    mixBlendMode?: Properties['mixBlendMode'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundImage?: Properties['backgroundImage'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundOrigin?: Properties['backgroundOrigin'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundPosition?: Properties['backgroundPosition'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundRepeat?: Properties['backgroundRepeat'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundSize?: Properties['backgroundSize'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundClip?: Properties['backgroundClip'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundBlendMode?: Properties['backgroundBlendMode'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundAttachment?: Properties['backgroundAttachment'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    background?: Properties['background'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    clipPath?: Properties['clipPath'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    caretColor?: Properties['caretColor'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    transformStyle?: Properties['transformStyle'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    mask?: Properties['mask'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskImage?: Properties['maskImage'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    textEmphasis?: Properties['textEmphasis'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    borderImage?: Properties['borderImage'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    float?: Properties['float'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    content?: Properties['content'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    overflowBlock?: Properties['overflowBlock'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    overflowInline?: Properties['overflowInline'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskBorder?: Properties['maskBorder'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskBorderMode?: Properties['maskBorderMode'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskBorderOutset?: Properties['maskBorderOutset'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskBorderRepeat?: Properties['maskBorderRepeat'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskBorderSlice?: Properties['maskBorderSlice'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskBorderSource?: Properties['maskBorderSource'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskBorderWidth?: Properties['maskBorderWidth'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskClip?: Properties['maskClip'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskComposite?: Properties['maskComposite'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskMode?: Properties['maskMode'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskOrigin?: Properties['maskOrigin'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskPosition?: Properties['maskPosition'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskRepeat?: Properties['maskRepeat'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskSize?: Properties['maskSize'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maskType?: Properties['maskType'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRow?: Properties['gridRow'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRowEnd?: Properties['gridRowEnd'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRowGap?: Properties['gridRowGap'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRowStart?: Properties['gridRowStart'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumn?: Properties['gridColumn'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumnEnd?: Properties['gridColumnEnd'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumnGap?: Properties['gridColumnGap'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumnStart?: Properties['gridColumnStart'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridTemplateColumns?: Properties['gridTemplateColumns'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridTemplateAreas?: Properties['gridTemplateAreas'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backdropFilter?: Properties['backdropFilter'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    containerType?: Properties['containerType'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    blockSize?: SizeTokens | number;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    inlineSize?: SizeTokens | number;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    minBlockSize?: SizeTokens | number;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maxBlockSize?: SizeTokens | number;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    objectFit?: Properties['objectFit'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    verticalAlign?: Properties['verticalAlign'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    minInlineSize?: SizeTokens | number;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    maxInlineSize?: SizeTokens | number;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    borderInlineColor?: ColorTokens;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    borderInlineStartColor?: ColorTokens;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    borderInlineEndColor?: ColorTokens;
+>>>>>>> master
     borderBlockWidth?: SpaceTokens | number;
     borderBlockStartWidth?: SpaceTokens | number;
     borderBlockEndWidth?: SpaceTokens | number;
@@ -1216,6 +1493,12 @@ export type UniversalAnimatedNumber<A> = {
     setValue(next: number, config?: AnimatedNumberStrategy, onFinished?: () => void): void;
     stop(): void;
 };
+export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (opts: {
+    value: V;
+    hostRef: RefObject<HTMLElement | View>;
+}, onValue: (current: number) => void) => void;
+export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
+export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
     supportsCSSVars?: boolean;
@@ -1224,12 +1507,9 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     ResetPresence: (props: {
         children?: any;
     }) => JSX.Element;
-    useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
-    useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
-    useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(opts: {
-        value: V;
-        hostRef: RefObject<HTMLElement | View>;
-    }, onValue: (current: number) => void) => void;
+    useAnimatedNumber: UseAnimatedNumber;
+    useAnimatedNumberStyle: UseAnimatedNumberStyle;
+    useAnimatedNumberReaction: UseAnimatedNumberReaction;
     animations: A;
     View?: any;
     Text?: any;

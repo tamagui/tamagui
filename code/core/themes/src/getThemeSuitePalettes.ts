@@ -1,5 +1,5 @@
+import type { BuildPalette } from '@tamagui/theme-builder'
 import { hsla, parseToHsla } from 'color2k'
-import type { BuildPalette } from './types'
 
 /**
  * palette generally is:

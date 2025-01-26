@@ -18,12 +18,12 @@ import { ActiveCircle } from '~/components/ActiveCircle'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { MediaPlayer } from './MediaPlayer'
-import { useUserTheme } from '@tamagui/one-theme'
+import { useColorScheme } from '@vxrn/color-scheme'
 
 type Lock = null | 'shouldAnimate' | 'animate' | 'scroll'
 
 export const HomeThemes = memo(function HomeThemes() {
-  const [{ resolvedTheme }, setUserTheme] = useUserTheme()
+  const [resolvedTheme, setUserTheme] = useColorScheme()
 
   const tints = useTints().tints as ThemeName[]
   const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]

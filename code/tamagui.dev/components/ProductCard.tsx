@@ -54,7 +54,7 @@ export function ProductCard({ product, children, ...props }) {
             zi={0}
             br="$4"
             style={{
-              background: `linear-gradient(transparent, var(--color05))`,
+              background: `linear-gradient(transparent, var(--color04))`,
               mixBlendMode: 'color',
             }}
           />

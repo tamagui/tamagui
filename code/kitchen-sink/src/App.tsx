@@ -15,6 +15,7 @@ export default function App() {
   const kitchenSink = new URLSearchParams(window.location.search).get('kitchen')
   const demoComponentName = new URLSearchParams(window.location.search).get('demo')
   const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
+
   const Component = kitchenSink
     ? // solito breaking
       () => null //require('../kitchen-sink/src/features/home/screen').HomeScreen
@@ -27,8 +28,6 @@ export default function App() {
       : useCaseComponentName
         ? TestCases[useCaseComponentName]
         : Sandbox
-
-  console.log('rendering')
 
   return (
     <SandboxFrame centered={!!demoComponentName}>

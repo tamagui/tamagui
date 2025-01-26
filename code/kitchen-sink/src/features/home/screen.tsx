@@ -72,13 +72,17 @@ export function HomeScreen() {
         </YStack>
 
         <YStack gap="$4" maw={600}>
-          {demos.map((group, i) => {
+          {demos.map(({ pages }, i) => {
             return (
-              <YGroup size="$4" key={i} separator={<Separator />}>
-                {group.pages.map((page) => {
+              <YGroup key={i} size="$4" separator={<Separator />}>
+                {pages.map((page) => {
+                  const route = page?.route
+
+                  if (!route) return null
+
                   return (
-                    <YGroup.Item key={page.route}>
-                      <LinkListItem bg="$color1" href={page.route} pressTheme size="$4">
+                    <YGroup.Item key={route}>
+                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>
@@ -106,7 +110,12 @@ export const LinkListItem = ({
     <ListItem
       {...linkProps}
       onPress={(e) => {
-        linkProps.onPress(e)
+        try {
+          linkProps?.onPress?.()
+        } catch (e) {
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+          console.log('error: ', e)
+        }
       }}
       {...props}
       iconAfter={<ChevronRight color="$color10" />}

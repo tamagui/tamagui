@@ -50,37 +50,43 @@ export const HeroBelowContent = memo(() => {
           px: '$6',
         }}
       >
-        <Section theme="green" onHoverIn={() => setHovered(0)}>
-          <IconStack>
-            <Code size={16} color="var(--color9)" />
-          </IconStack>
-          <TitleLink href="/docs/core/configuration">Core</TitleLink>
+        <Section theme="pink" onHoverIn={() => setHovered(0)}>
+          <XStack alignItems="center" gap="$4">
+            <IconStack>
+              <Code size={12} color="var(--color9)" />
+            </IconStack>
+            <TitleLink href="/docs/core/configuration">Core</TitleLink>
+          </XStack>
           <Paragraph o={0.7} size="$5">
             A style library for React and/or React Native with a large typed superset of
             the React Native style API, with no outside dependencies in about 24Kb.
           </Paragraph>
         </Section>
 
-        <Section theme="blue" onHoverIn={() => setHovered(1)}>
-          <IconStack>
-            <Cpu size={16} color="var(--color9)" />
-          </IconStack>
-          <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
+        <Section theme="gray" onHoverIn={() => setHovered(1)}>
+          <XStack alignItems="center" gap="$4">
+            <IconStack>
+              <Cpu size={16} color="var(--color9)" />
+            </IconStack>
+            <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
+          </XStack>
           <Paragraph o={0.7} size="$5">
-            A smart optimizer that makes your app fast with partial analysis, extracts
-            CSS, flattens your tree, and removes code. Next, Webpack, Vite, Babel and
+            A smart optimizer that makes your app fast with partial analysis, extracting
+            CSS, flattening your tree, and removing code. Next, Webpack, Vite, Babel,
             Metro.
           </Paragraph>
         </Section>
 
-        <Section theme="purple" onHoverIn={() => setHovered(2)}>
-          <IconStack>
-            <Layers size={16} color="var(--color9)" />
-          </IconStack>
-          <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
+        <Section theme="red" onHoverIn={() => setHovered(2)}>
+          <XStack alignItems="center" gap="$4">
+            <IconStack>
+              <Layers size={16} color="var(--color9)" />
+            </IconStack>
+            <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
+          </XStack>
           <Paragraph o={0.7} size="$5">
             All the components you'd want, cross platform and adaptable to each other.
-            Compound Component APIs, styled or unstyled, sizable, themeable, and more.
+            Compound Component APIs, styled or unstyled, easy to size, theme, and more.
           </Paragraph>
         </Section>
       </XStack>
@@ -96,6 +102,8 @@ const TitleLink = ({ href, children, ...props }: any) => {
           cursor="pointer"
           fontFamily="$silkscreen"
           bg="$color2"
+          px="$1.5"
+          py="$1.5"
           hoverStyle={{
             backgroundColor: '$color3',
           }}

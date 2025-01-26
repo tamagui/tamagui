@@ -27,7 +27,7 @@ export function AnimationsDemo(props) {
         borderRadius="$9"
         backgroundColor="$color9"
         hoverStyle={{
-          scale: 1.5,
+          scale: 1.01,
         }}
         pressStyle={{
           scale: 0.9,

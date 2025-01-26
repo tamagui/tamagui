@@ -7,7 +7,7 @@ import {
   tokens,
 } from '@tamagui/config/v3'
 import { shorthands } from '@tamagui/shorthands/v2'
-import { createTamagui } from 'tamagui'
+import { createTamagui, TamaguiConfig, TamaguiInternalConfig } from 'tamagui'
 import { animations } from './animations'
 
 export const config = createTamagui({
@@ -24,6 +24,7 @@ export const config = createTamagui({
     maxDarkLightNesting: 1,
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
+    // onlyAllowShorthands: true,
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
@@ -31,7 +32,7 @@ export const config = createTamagui({
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
-  },
+  } as const,
 })
 
 export type Conf = typeof config

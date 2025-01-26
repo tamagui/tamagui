@@ -449,9 +449,8 @@ const componentsIn = {
     <H2
       pos="relative"
       width={`fit-content` as any}
-      pt="$8"
-      mt="$-4"
-      mb="$2"
+      pt="$7"
+      mb="$3"
       data-heading
       {...props}
     >
@@ -460,7 +459,7 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
+    <LinkHeading pt="$8" mb="$1" id={id}>
       <H3 pos="relative" width={`fit-content` as any} id={id} data-heading {...props}>
         {children}
       </H3>
@@ -520,7 +519,7 @@ const componentsIn = {
 
   ul: ({ children }) => {
     return (
-      <UL my="$4">
+      <UL tag="ul" my="$4">
         {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
       </UL>
     )
@@ -530,7 +529,15 @@ const componentsIn = {
 
   li: (props) => {
     return (
-      <LI size="$6" my="$1.5" className="docs-paragraph">
+      <LI
+        tag="li"
+        size="$6"
+        my="$1.5"
+        className="docs-paragraph"
+        style={{
+          listStyleType: 'disc',
+        }}
+      >
         {props.children}
       </LI>
     )
@@ -691,7 +698,7 @@ const componentsIn = {
           <YStack ov="hidden" f={1} o={0.85} gap="$4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
-              <a href="https://twitter.com/natebirdman" target="_blank" rel="noreferrer">
+              <a href="https://x.com/natebirdman" target="_blank" rel="noreferrer">
                 me
               </a>
               .
@@ -732,9 +739,17 @@ const componentsIn = {
             significantly improves your app or site performance.
           </IntroParagraph>
 
-          <Paragraph size="$6">Tamagui is three things:</Paragraph>
+          <IntroParagraph>
+            Tamagui is more than just a style library - it's a style library, a design
+            system builder, a UI kit, and an optimizing compiler. The good news is, every
+            piece can be used separately or together.
+          </IntroParagraph>
 
-          <UL mt="$4" gap="$2">
+          <Separator o={0.5} my="$5" />
+
+          <H4>Overview</H4>
+
+          <UL mt="$4" pl="$4" gap="$2">
             <ThemeTintAlt>
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
@@ -783,6 +798,8 @@ const componentsIn = {
             </ThemeTintAlt>
           </UL>
         </ThemeTintAlt>
+
+        <Separator o={0.5} mt="$8" />
       </YStack>
     )
   },
@@ -792,7 +809,7 @@ const componentsIn = {
 
     return (
       <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
-        <ThemeTintAlt>
+        <>
           <Card f={1}>
             <Card.Header gap="$2">
               <H4 size="$4" color="$color9">
@@ -827,7 +844,7 @@ const componentsIn = {
               </XStack>
             </Card.Footer>
           </Card>
-        </ThemeTintAlt>
+        </>
 
         <Link asChild href="/docs/intro/installation">
           <Card

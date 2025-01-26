@@ -282,7 +282,7 @@ export const stylePropsView = {
   }),
 }
 
-export const stylePropsFont = {
+const stylePropsFont = {
   fontFamily: true,
   fontSize: true,
   fontStyle: true,

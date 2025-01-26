@@ -10,7 +10,7 @@ import { ThemeSettingContext } from './ThemeSettingContext'
 import type { ValueObject } from './types'
 import type { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 
-export const NextThemeProvider = memo(
+export const NextThemeProvider: React.FunctionComponent<ThemeProviderProps> = memo(
   ({
     forcedTheme,
     disableTransitionOnChange = false,
@@ -27,7 +27,7 @@ export const NextThemeProvider = memo(
       light: 't_light',
     },
     children,
-  }: ThemeProviderProps) => {
+  }) => {
     const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme))
     const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
     const attrs = !value ? themes : Object.values(value)

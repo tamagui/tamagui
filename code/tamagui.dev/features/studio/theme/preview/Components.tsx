@@ -46,17 +46,7 @@ export const Components = () => {
         <Spacer flex={1} />
 
         <XStack {...demoProps.gapPropsLg} f={1} flexWrap="wrap">
-          <YStack maxWidth={'47%'}>
-            <SelectDemoItem size="$3" />
-          </YStack>
-          <XGroup {...demoProps.borderRadiusProps} bw={0} maxWidth={'47%'}>
-            <Group.Item>
-              <Input size="$3" placeholder="Search" />
-            </Group.Item>
-            <Group.Item>
-              <Button size="$3" icon={Filter}></Button>
-            </Group.Item>
-          </XGroup>
+          <SelectDemoItem size="$3" />
         </XStack>
       </XStack>
 

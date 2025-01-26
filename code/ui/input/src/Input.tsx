@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { type HTMLInputTypeAttribute, type HTMLAttributes } from 'react'
 import { View, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
+import type { InputModeOptions } from 'react-native'
 
 import { styledBody } from './shared'
 import type { InputProps } from './types'
@@ -94,11 +95,51 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
 
   const finalProps = {
     ...rest,
-    inputMode,
     disabled,
     caretColor,
     id,
     enterKeyHint,
+    ...(process.env.TAMAGUI_TARGET === 'web'
+      ? {
+          type: (() => {
+            if (secureTextEntry) return 'password'
+            switch (keyboardType) {
+              case 'number-pad':
+              case 'numeric':
+                return 'number'
+              case 'email-address':
+                return 'email'
+              case 'phone-pad':
+                return 'tel'
+              case 'url':
+                return 'url'
+              default:
+                return 'text'
+            }
+          })() satisfies HTMLInputTypeAttribute,
+          inputMode: (() => {
+            switch (keyboardType) {
+              case 'number-pad':
+              case 'numeric':
+                return 'numeric'
+              case 'decimal-pad':
+                return 'decimal'
+              case 'email-address':
+                return 'email'
+              case 'phone-pad':
+                return 'tel'
+              case 'url':
+                return 'url'
+              default:
+                return undefined
+            }
+          })() satisfies HTMLAttributes<HTMLInputElement>['inputMode'],
+        }
+      : {
+          keyboardType,
+          secureTextEntry,
+          inputMode,
+        }),
     style: {
       ...(rest.style as any),
       ...(placeholderTextColor && {

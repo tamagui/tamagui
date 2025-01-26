@@ -79,13 +79,16 @@ const COMMAND_MAP = {
 
       try {
         const generated = await generateThemes(inPath)
-        await writeGeneratedThemes(options.paths.dotDir, outPath, generated)
+        if (generated) {
+          await writeGeneratedThemes(options.paths.dotDir, outPath, generated)
+          console.info(`Successfully generated themes to ${outPath}`)
+        } else {
+          process.exit(1)
+        }
       } catch (err) {
         console.error(`Error generating themes: ${err}`)
         return
       }
-
-      console.info(`Successfully generated themes to ${outPath}`)
     },
   },
 

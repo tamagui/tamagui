@@ -4,7 +4,8 @@
     "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts",
+    "src/**/*.tsx",
   ],
   "exclude": [
     "types",
@@ -15,9 +16,6 @@
   "references": [
     {
       "path": "../compiler/babel-plugin"
-    },
-    {
-      "path": "../core/animations-reanimated"
     },
     {
       "path": "../core/cli"

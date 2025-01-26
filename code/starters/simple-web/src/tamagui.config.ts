@@ -1,11 +1,8 @@
+import { media, shorthands, themes, tokens } from '@tamagui/config/v4'
 import { createTamagui } from '@tamagui/core'
-import { shorthands } from '@tamagui/shorthands'
 
 import { animations } from './animations'
 import { fonts } from './fonts'
-import { media } from './media'
-import { themes } from './themes'
-import { tokens } from './tokens'
 
 const config = createTamagui({
   defaultFont: 'body',

@@ -9,15 +9,11 @@ export const Header = () => {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack maw="100%" gap="$6" f={1} jc="space-between" ai="center">
+    <XStack mt={-20} maw="100%" gap="$6" f={1} jc="space-between" ai="center">
       <YStack f={1} maw={700} gap="$5">
         <H1 mb="-2%" {...demoProps.headingFontFamilyProps} size="$12" lh="$11">
           {store.themeSuite?.name || 'Design System'}
         </H1>
-        <Paragraph size="$5" col="$color9">
-          Note that the styles used below are just for example, you can customize the
-          theme or components after you copy/paste to your taste.
-        </Paragraph>
       </YStack>
 
       <YStack>

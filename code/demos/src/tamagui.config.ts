@@ -1,11 +1,13 @@
 import { config } from '@tamagui/config/v3'
-import { createTamagui } from '@tamagui/web'
+import { createTamagui } from 'tamagui'
 
 export { config } from '@tamagui/config/v3'
-export default config
 
-const createdConfig = createTamagui(config)
-export type Conf = typeof createdConfig
+const conf = createTamagui(config)
+
+export default conf
+
+export type Conf = typeof conf
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}

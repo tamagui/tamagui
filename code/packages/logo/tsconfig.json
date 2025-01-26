@@ -2,6 +2,7 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
+    "isolatedDeclarations": true,
     "composite": true
   },
   "references": [

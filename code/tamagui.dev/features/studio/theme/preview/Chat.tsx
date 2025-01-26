@@ -22,12 +22,6 @@ const initialMessages = [
     createdAt: new Date(2023, 1, 1, 0, 0, 0),
   },
   {
-    id: 2,
-    userId: 1,
-    content: 'Any updates?',
-    createdAt: new Date(2023, 1, 1, 0, 0, 1),
-  },
-  {
     id: 3,
     userId: 2,
     content: 'Nostrud in cillum...',
@@ -36,57 +30,57 @@ const initialMessages = [
   {
     id: 4,
     userId: 3,
-    content: 'Magna cillum consectetur',
+    content: 'Magna cillum',
     createdAt: new Date(2023, 1, 1, 0, 0, 3),
   },
-  {
-    id: 5,
-    userId: 3,
-    content: 'adipisicing amet officia.',
-    createdAt: new Date(2023, 1, 1, 0, 0, 3),
-  },
+  // {
+  //   id: 5,
+  //   userId: 3,
+  //   content: 'adipisicing amet officia.',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 3),
+  // },
   {
     id: 6,
     userId: 1,
-    content: 'Is that latin?',
+    content: 'Latin?',
     createdAt: new Date(2023, 1, 1, 0, 0, 4),
   },
-  {
-    id: 7,
-    userId: 2,
-    content: 'Exercitation!',
-    createdAt: new Date(2023, 1, 1, 0, 0, 5),
-  },
-  {
-    id: 8,
-    userId: 1,
-    content: 'What?',
-    createdAt: new Date(2023, 1, 1, 0, 0, 6),
-  },
-  {
-    id: 9,
-    userId: 3,
-    content: 'Esse irure laboris deserunt.',
-    createdAt: new Date(2023, 1, 1, 0, 0, 7),
-  },
-  {
-    id: 10,
-    userId: 2,
-    content: 'Lorem ipsum',
-    createdAt: new Date(2023, 1, 1, 0, 0, 10),
-  },
-  {
-    id: 11,
-    userId: 3,
-    content: '+1',
-    createdAt: new Date(2023, 1, 1, 0, 0, 11),
-  },
-  {
-    id: 12,
-    userId: 3,
-    content: 'Magna anim occaecat...',
-    createdAt: new Date(2023, 1, 1, 0, 0, 11),
-  },
+  // {
+  //   id: 7,
+  //   userId: 2,
+  //   content: 'Exercitation!',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 5),
+  // },
+  // {
+  //   id: 8,
+  //   userId: 1,
+  //   content: 'What?',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 6),
+  // },
+  // {
+  //   id: 9,
+  //   userId: 3,
+  //   content: 'Esse irure laboris deserunt.',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 7),
+  // },
+  // {
+  //   id: 10,
+  //   userId: 2,
+  //   content: 'Lorem ipsum',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 10),
+  // },
+  // {
+  //   id: 11,
+  //   userId: 3,
+  //   content: '+1',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 11),
+  // },
+  // {
+  //   id: 12,
+  //   userId: 3,
+  //   content: 'Magna anim occaecat...',
+  //   createdAt: new Date(2023, 1, 1, 0, 0, 11),
+  // },
 ]
 
 export const ChatScreen = () => {
@@ -117,17 +111,31 @@ export const ChatScreen = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
+      bg="$color2"
+      ov="hidden"
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
+      <YStack
+        m={-30}
+        mt={-30}
+        px={30}
+        py="$5"
+        br="$4"
+        mb="$2"
+        bg="$color8"
+        borderBottomWidth="$0.25"
+        borderBottomColor="$borderColor"
+      >
         <XStack jc="space-between">
           <YStack>
-            <H4 {...demoProps.headingFontFamilyProps}>Group Chat</H4>
-            <Paragraph {...demoProps.panelDescriptionProps}>
+            <H4 {...demoProps.headingFontFamilyProps} size="$4" color="$accent12">
+              Group Chat
+            </H4>
+            <Paragraph {...demoProps.panelDescriptionProps} color="$accent11">
               3 online &mdash; 5 members
             </Paragraph>
           </YStack>
           <Button
-            color="$color9"
+            color="$accent12"
             als="center"
             chromeless
             size="$5"
@@ -166,7 +174,7 @@ export const ChatScreen = () => {
           <Input
             value={input}
             onChangeText={setInput}
-            placeholder="Enter your message..."
+            placeholder="Message"
             f={1}
             backgroundColor="transparent"
             {...demoProps.borderRadiusProps}

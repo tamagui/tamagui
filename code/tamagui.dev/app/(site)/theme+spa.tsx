@@ -1,7 +1,7 @@
-import { ChevronLeft, ChevronRight, X } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
+import { useParams, useRouter } from 'one'
 import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
   Button,
@@ -14,9 +14,9 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
-import { useLocalSearchParams, useRouter } from 'one'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-
+import { Dialogs } from '~/features/studio/components/Dialogs'
+import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
@@ -26,28 +26,23 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
-// import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 themeBuilderStore.setSteps(steps)
-
-export function loader() {}
 
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
   const store = useThemeBuilderStore()
   const themeName = useThemeName()
   const router = useRouter()
-  const params = useLocalSearchParams<any>()
+  const params = useParams<any>()
 
   useEffect(() => {
     // give it a bit to load many dynamic charts that animate etc
-    const tm = setTimeout(() => {
-      store.load(params.state as string | undefined).then(() => {
-        startTransition(() => {
-          setLoaded(true)
-        })
+    store.load(params.state as string | undefined).then(() => {
+      startTransition(() => {
+        setLoaded(true)
       })
-    }, 250)
+    })
 
     const onSave = () => {
       router.setParams({
@@ -59,31 +54,50 @@ export default function ThemePage() {
 
     return () => {
       store.listeners.delete(onSave)
-      clearTimeout(tm)
     }
   }, [])
 
-  return (
-    <YStack>
-      {loaded && <ThemeBuilderModal />}
+  const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
 
-      <PreviewTheme key={`${loaded}${themeName}`}>
-        <StudioPreviewComponentsBar scrollView={document.documentElement} />
-        <StudioPreviewComponents />
-      </PreviewTheme>
-    </YStack>
+  return (
+    <>
+      <Dialogs />
+
+      <ThemeBuilderModal />
+
+      <XStack w="100%" h="max-content" pr={540} $sm={{ pr: 0 }} jc="flex-end" ov="hidden">
+        <YStack
+          gap="$4"
+          p="$4"
+          f={1}
+          maw="calc(min(100vw, 1300px))"
+          group="content"
+          $md={{
+            maw: `calc(min(100vw, 900px))`,
+            p: '$4',
+          }}
+        >
+          <StudioAIBar />
+          <PreviewTheme>
+            <YStack gap="$6">
+              <StudioPreviewComponentsBar scrollView={document.documentElement} />
+              <StudioPreviewComponents />
+            </YStack>
+          </PreviewTheme>
+        </YStack>
+      </XStack>
+    </>
   )
 }
 
-const PreviewTheme = (props: { children: any }) => {
-  const { name: baseStepThemeName } = useBaseThemePreview()
+const PreviewTheme = (props: { children: any; noKey?: any }) => {
+  const { name: baseStepThemeName, key } = useBaseThemePreview()
 
   return (
-    <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName}>
+    <Theme key={props.noKey ? '' : key} forceClassName name={baseStepThemeName}>
+      <YStack bg="$color1" fullscreen zi={0} scale={2} />
       <ThemeNameEffect />
-      <YStack bg="$background" f={1} pt={20 + 60} my={-60}>
-        {props.children}
-      </YStack>
+      <YStack f={1}>{props.children}</YStack>
     </Theme>
   )
 }
@@ -95,7 +109,7 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
-  const [expanded, setExpanded] = useState(false)
+  // const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack
@@ -104,15 +118,11 @@ const ThemeBuilderModal = memo(() => {
       t={90}
       r={0}
       b={0}
-      w={550}
+      w={530}
       mah="90vh"
       zi={100_000}
-      $md={{
-        x: expanded ? 0 : 500,
-      }}
       $sm={{
-        x: expanded ? '90%' : 0,
-        maxWidth: '100%',
+        dsp: 'none',
       }}
     >
       <YStack
@@ -128,17 +138,17 @@ const ThemeBuilderModal = memo(() => {
         bc="$color6"
         bg="$color2"
       >
-        <Button
+        {/* <Button
           size="$2"
           t="$-3"
           l="$3"
           circular
-          icon={expanded ? ChevronRight : ChevronLeft}
-          onPress={() => setExpanded(!expanded)}
+          // icon={expanded ? ChevronRight : ChevronLeft}
+          // onPress={() => setExpanded(!expanded)}
           $gtMd={{
             dsp: 'none',
           }}
-        ></Button>
+        ></Button> */}
 
         <YStack gap="$4" f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
@@ -230,6 +240,17 @@ const ThemeStudioStepButtonsBar = () => {
 
   return (
     <XStack gap="$2">
+      <Button
+        size="$3"
+        onPress={() => {
+          if (confirm(`Reset theme builder state?`)) {
+            store.reset()
+          }
+        }}
+      >
+        Reset
+      </Button>
+
       {canGoBackward && (
         <Button
           chromeless

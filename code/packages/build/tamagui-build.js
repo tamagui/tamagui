@@ -4,7 +4,7 @@
 const { transform } = require('@babel/core')
 const FSE = require('fs-extra')
 const esbuild = require('esbuild')
-const fg = require('fast-glob')
+const fastGlob = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
@@ -132,10 +132,12 @@ if (shouldClean || shouldCleanBuildOnly) {
     const rebuild = debounce(build, 100)
     const chokidar = require('chokidar')
 
-    // do one js build but not types
-    build({
-      skipTypes: true,
-    })
+    if (!process.env.SKIP_INITIAL_BUILD) {
+      // do one js build but not types
+      build({
+        skipTypes: true,
+      })
+    }
 
     chokidar
       // prevent infinite loop but cause race condition if you just build directly
@@ -155,18 +157,24 @@ async function build({ skipTypes } = {}) {
   if (process.env.DEBUG) console.info('🔹', pkg.name)
   try {
     const start = Date.now()
+
+    const allFiles = (await fastGlob(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
+      (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
+    )
+
     await Promise.all([
       //
-      skipTypes ? null : buildTsc(),
-      buildJs(),
+      skipTypes ? null : buildTsc(allFiles.filter((x) => /\.tsx?$/.test(x))),
+      buildJs(allFiles),
     ])
+
     console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     console.error(` ❌ Error building in ${process.cwd()}:\n\n`, error.stack + '\n')
   }
 }
 
-async function buildTsc() {
+async function buildTsc(allFiles) {
   if (!pkgTypes || jsOnly || shouldSkipTypes) return
   if (shouldSkipInitialTypes) {
     shouldSkipInitialTypes = false
@@ -181,10 +189,45 @@ async function buildTsc() {
     if (error) throw error
 
     const compilerOptions = createCompilerOptions(config.options, targetDir)
+
+    if (config.options.isolatedDeclarations) {
+      const oxc = require('oxc-transform')
+
+      await Promise.all(
+        allFiles.map(async (file) => {
+          const source = await FSE.readFile(file, 'utf-8')
+          const { code, map } = oxc.isolatedDeclaration(file, source, {
+            sourcemap: true,
+          })
+
+          const dtsPath = path
+            .join(`types`, ...file.split('/').slice(1))
+            .replace(/\.tsx?$/, '.d.ts')
+          const mapPath = `${dtsPath}.map`
+
+          const output = `${code}\n//# sourceMappingURL=${path.basename(mapPath)}`
+          await Promise.all([
+            FSE.writeFile(dtsPath, output),
+            FSE.writeFile(mapPath, JSON.stringify(map, null, 2)),
+          ])
+        })
+      )
+
+      return
+    }
+
     const { program, emitResult, diagnostics } = await compileTypeScript(
       config.fileNames,
       compilerOptions
     )
+
+    // exit on errors
+    if (diagnostics.some((x) => x.code) && !shouldWatch) {
+      console.error(
+        `Error building: ${diagnostics.map((x) => `${x.file.fileName}: ${x.messageText?.messageText ?? x.messageText}`).join('\n')}`
+      )
+      process.exit(1)
+    }
 
     reportDiagnostics(diagnostics)
 
@@ -295,7 +338,7 @@ function reportDiagnostics(diagnostics) {
   })
 }
 
-async function buildJs() {
+async function buildJs(allFiles) {
   if (skipJS) {
     return
   }
@@ -378,10 +421,6 @@ async function buildJs() {
       : {}
 
   const start = Date.now()
-
-  const allFiles = (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
-    (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
-  )
 
   const entryPoints = shouldBundleFlag ? [pkgSource || './src/index.ts'] : allFiles
 
@@ -620,14 +659,16 @@ async function esbuildWriteIfChanged(
     return
   }
 
-  const nativeFilesMap = Object.fromEntries(
-    built.outputFiles.flatMap((p) => {
-      if (p.path.includes('.native.js')) {
-        return [[p.path, true]]
-      }
-      return []
-    })
-  )
+  const nativeFilesMap = {}
+  const webFilesMap = {}
+
+  for (const p of built.outputFiles) {
+    if (p.path.includes('.native.js')) {
+      nativeFilesMap[p.path] = true
+    } else if (p.path.includes('.web.js')) {
+      webFilesMap[p.path] = true
+    }
+  }
 
   const cleanupNonMjsFiles = []
 
@@ -666,6 +707,7 @@ async function esbuildWriteIfChanged(
             if (extPlatform === 'web') {
               return
             }
+
             if (!extPlatform) {
               path = path.replace('.js', '.native.js')
             }
@@ -677,6 +719,15 @@ async function esbuildWriteIfChanged(
               extPlatform === 'android' ||
               extPlatform === 'ios'
             ) {
+              return
+            }
+            if (extPlatform === 'web') {
+              // we move web to just .js
+              path = path.replace('.web.js', '.js')
+            }
+            const webSpecific = webFilesMap[path.replace('.js', '.web.js')]
+            if (!extPlatform && webSpecific) {
+              // swap into the non-web exntesion
               return
             }
           }

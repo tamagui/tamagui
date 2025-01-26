@@ -1,7 +1,6 @@
-import { Dices, Heading } from '@tamagui/lucide-icons'
+import { Heading } from '@tamagui/lucide-icons'
 import { memo } from 'react'
 import {
-  Button,
   Label,
   SizableText,
   Square,
@@ -10,45 +9,29 @@ import {
   TooltipGroup,
   TooltipSimple,
   XStack,
-  YStack,
   styled,
   useThemeName,
 } from 'tamagui'
-
-import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { StudioPaletteBar } from '../StudioPaletteBar'
-import { optionValues } from './constants/demoOptions'
-import { Panel } from './preview/Panel'
+import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
+  const themeName = useThemeName()
   return (
     <XStack
+      // bugfix not changing in prod light/dark
+      key={themeName.split('_')[0]}
       zi={1000}
       data-tauri-drag-region
       className="all ease-in ms300"
-      mt="$4"
-      ml="$4"
-      mr="$10"
-      $gtMd={{
-        mr: 560,
-      }}
     >
-      <XStack
-        fw="wrap"
-        f={1}
-        className="all ease-in ms300"
-        gap="$3"
-        p="$2"
-        px="$4"
-        br="$10"
-      >
+      <XStack fw="wrap" f={1} className="all ease-in ms300" gap="$3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 
           <BorderWidthInput />
 
-          {/* <FontFamilyInput /> */}
+          <FontFamilyInput />
 
           <FillStyleInput />
 
@@ -59,10 +42,6 @@ export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: an
           <TextAccentInput />
 
           <BackgroundAccentInput />
-
-          {/* <InverseAccentInput /> */}
-
-          <RandomizeButton />
         </TooltipGroup>
       </XStack>
     </XStack>
@@ -73,10 +52,15 @@ const ToggleGroupItem = styled(ToggleGroup.Item, {
   height: 28,
   w: 30,
 
+  focusStyle: {
+    backgroundColor: '$color10',
+    color: '$color2',
+  },
+
   focusVisibleStyle: {
     outlineWidth: 0,
   },
-} as any)
+})
 
 export function BorderRadiusInput() {
   const store = useThemeBuilderStore()
@@ -194,13 +178,6 @@ export function BorderWidthInput() {
   )
 }
 
-const niceNames = {
-  $heading: 'Inter',
-  $headingNohemi: 'Nohemi',
-  $headingDmSans: 'DM Sans',
-  $headingDmSerifDisplay: 'DM Serif',
-}
-
 export function FontFamilyInput() {
   const store = useThemeBuilderStore()
 
@@ -220,31 +197,18 @@ export function FontFamilyInput() {
         }}
       >
         {optionValues.headingFontFamily.map((font, idx) => {
-          const niceName = niceNames[font as any]
-          const label = `${niceName} Font`
+          const label = `${font} Font`
           return (
-            <TooltipSimple groupId={idx.toString()} key={String(font)} label={niceName}>
+            <TooltipSimple groupId={idx.toString()} key={String(font)} label={`${font}`}>
               <ToggleGroupItem value={font as any} aria-label={label}>
                 <SizableText
+                  color="$color12"
                   fontFamily={font as any}
-                  size="$1"
+                  fontSize={12}
                   textTransform="none"
                   letterSpacing={0}
                   lineHeight={0}
-                  y={0.5}
                   mt={-2}
-                  scale={1.15}
-                  {...(niceName === 'Nohemi' && {
-                    scale: 0.9,
-                    y: 1.5,
-                  })}
-                  {...(niceName === 'DM Sans' && {
-                    scale: 0.95,
-                  })}
-                  {...(niceName === 'DM Serif' && {
-                    y: 0,
-                    scale: 0.85,
-                  })}
                 >
                   Aa
                 </SizableText>
@@ -492,75 +456,3 @@ export function InverseAccentInput() {
     </XStack>
   )
 }
-
-export function RandomizeButton() {
-  const store = useThemeBuilderStore()
-
-  return (
-    <TooltipSimple label="Randomize">
-      <Button
-        aria-label="Randomize"
-        onPress={() => {
-          store.randomizeDemoOptions()
-        }}
-        icon={Dices}
-        size="$2"
-        height={28}
-        scaleIcon={1.4}
-        br="$5"
-      />
-    </TooltipSimple>
-  )
-}
-
-const PalettePreviewPanels = memo(() => {
-  const themeBuilderStore = useThemeBuilderStore()
-  const themeName = useThemeName()
-  const isThemeDark = themeName.startsWith('dark_') || themeName === 'dark'
-  const demoProps = useDemoProps()
-  const theme = themeBuilderStore.baseTheme
-
-  if (!theme) return null
-
-  const palettes = themeBuilderStore.palettesBuilt
-
-  if (!palettes) return null
-
-  return (
-    <YStack gap="$2">
-      {[theme.palette, theme.accent?.palette || ''].filter(Boolean).map((name) => {
-        const scheme = isThemeDark ? 'dark' : 'light'
-        const palette = palettes[name] || palettes[`${scheme}_${name}`]
-
-        if (!palette) {
-          return null
-        }
-
-        return (
-          <Panel
-            key={name}
-            disableSettings
-            m={0}
-            f={0}
-            h="auto"
-            w="calc(100% + 24px)"
-            ml={-1}
-          >
-            <YStack
-              {...demoProps.stackOutlineProps}
-              {...demoProps.borderRadiusProps}
-              {...demoProps.elevationProps}
-              {...demoProps.panelPaddingProps}
-              borderWidth={0}
-              gap="$0"
-              p="$0"
-              ov="hidden"
-            >
-              <StudioPaletteBar showLabelIndices colors={palette} />
-            </YStack>
-          </Panel>
-        )
-      })}
-    </YStack>
-  )
-})

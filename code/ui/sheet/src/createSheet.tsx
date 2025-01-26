@@ -83,7 +83,6 @@ export function createSheet<
       return (
         // @ts-ignore
         <Overlay
-          ref={ref}
           {...props}
           onPress={composeEventHandlers(
             props.onPress,
@@ -95,7 +94,7 @@ export function createSheet<
           )}
         />
       )
-    }, [ref, props.onPress, context.dismissOnOverlayPress])
+    }, [props.onPress, props.opacity, context.dismissOnOverlayPress])
 
     useIsomorphicLayoutEffect(() => {
       context.onOverlayComponent?.(element)

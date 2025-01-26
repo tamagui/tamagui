@@ -1,8 +1,4 @@
-declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_orange" | "light_pink" | "light_purple" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_orange" | "dark_pink" | "dark_purple" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_blue_alt1" | "light_blue_alt2" | "light_green_alt1" | "light_green_alt2" | "light_orange_alt1" | "light_orange_alt2" | "light_pink_alt1" | "light_pink_alt2" | "light_purple_alt1" | "light_purple_alt2" | "light_red_alt1" | "light_red_alt2" | "light_yellow_alt1" | "light_yellow_alt2" | "dark_blue_alt1" | "dark_blue_alt2" | "dark_green_alt1" | "dark_green_alt2" | "dark_orange_alt1" | "dark_orange_alt2" | "dark_pink_alt1" | "dark_pink_alt2" | "dark_purple_alt1" | "dark_purple_alt2" | "dark_red_alt1" | "dark_red_alt2" | "dark_yellow_alt1" | "dark_yellow_alt2" | "light_gray_alt1" | "light_gray_alt2" | "dark_gray_alt1" | "dark_gray_alt2" | "light_blue_surface1" | "light_blue_surface2" | "light_blue_surface3" | "light_gray_surface1" | "light_gray_surface2" | "light_gray_surface3" | "light_green_surface1" | "light_green_surface2" | "light_green_surface3" | "light_orange_surface1" | "light_orange_surface2" | "light_orange_surface3" | "light_pink_surface1" | "light_pink_surface2" | "light_pink_surface3" | "light_purple_surface1" | "light_purple_surface2" | "light_purple_surface3" | "light_red_surface1" | "light_red_surface2" | "light_red_surface3" | "light_yellow_surface1" | "light_yellow_surface2" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_blue_surface2" | "dark_blue_surface3" | "dark_gray_surface1" | "dark_gray_surface2" | "dark_gray_surface3" | "dark_green_surface1" | "dark_green_surface2" | "dark_green_surface3" | "dark_orange_surface1" | "dark_orange_surface2" | "dark_orange_surface3" | "dark_pink_surface1" | "dark_pink_surface2" | "dark_pink_surface3" | "dark_purple_surface1" | "dark_purple_surface2" | "dark_purple_surface3" | "dark_red_surface1" | "dark_red_surface2" | "dark_red_surface3" | "dark_yellow_surface1" | "dark_yellow_surface2" | "dark_yellow_surface3" | "light_accent" | "dark_accent" | "light_tan" | "light_tan_alt1" | "light_tan_alt2" | "light_tan_surface1" | "light_tan_surface2" | "light_tan_surface3" | "dark_tan" | "dark_tan_alt1" | "dark_tan_alt2" | "dark_tan_surface1" | "dark_tan_surface2" | "dark_tan_surface3", {
-    borderColor: string;
-    borderColorHover: string;
-    borderColorPress: string;
-    borderColorFocus: string;
+declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_orange" | "light_pink" | "light_purple" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_orange" | "dark_pink" | "dark_purple" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_blue_alt1" | "light_blue_alt2" | "light_green_alt1" | "light_green_alt2" | "light_orange_alt1" | "light_orange_alt2" | "light_pink_alt1" | "light_pink_alt2" | "light_purple_alt1" | "light_purple_alt2" | "light_red_alt1" | "light_red_alt2" | "light_yellow_alt1" | "light_yellow_alt2" | "dark_blue_alt1" | "dark_blue_alt2" | "dark_green_alt1" | "dark_green_alt2" | "dark_orange_alt1" | "dark_orange_alt2" | "dark_pink_alt1" | "dark_pink_alt2" | "dark_purple_alt1" | "dark_purple_alt2" | "dark_red_alt1" | "dark_red_alt2" | "dark_yellow_alt1" | "dark_yellow_alt2" | "light_gray_alt1" | "light_gray_alt2" | "dark_gray_alt1" | "dark_gray_alt2" | "light_blue_surface1" | "light_blue_surface2" | "light_blue_surface3" | "light_gray_surface1" | "light_gray_surface2" | "light_gray_surface3" | "light_green_surface1" | "light_green_surface2" | "light_green_surface3" | "light_orange_surface1" | "light_orange_surface2" | "light_orange_surface3" | "light_pink_surface1" | "light_pink_surface2" | "light_pink_surface3" | "light_purple_surface1" | "light_purple_surface2" | "light_purple_surface3" | "light_red_surface1" | "light_red_surface2" | "light_red_surface3" | "light_yellow_surface1" | "light_yellow_surface2" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_blue_surface2" | "dark_blue_surface3" | "dark_gray_surface1" | "dark_gray_surface2" | "dark_gray_surface3" | "dark_green_surface1" | "dark_green_surface2" | "dark_green_surface3" | "dark_orange_surface1" | "dark_orange_surface2" | "dark_orange_surface3" | "dark_pink_surface1" | "dark_pink_surface2" | "dark_pink_surface3" | "dark_purple_surface1" | "dark_purple_surface2" | "dark_purple_surface3" | "dark_red_surface1" | "dark_red_surface2" | "dark_red_surface3" | "dark_yellow_surface1" | "dark_yellow_surface2" | "dark_yellow_surface3" | "light_accent" | "dark_accent" | "dark_black" | "dark_white" | "dark_tan" | "dark_black_alt1" | "dark_white_alt1" | "dark_tan_alt1" | "dark_black_alt2" | "dark_white_alt2" | "dark_tan_alt2" | "dark_black_surface1" | "dark_white_surface1" | "dark_tan_surface1" | "dark_black_surface2" | "dark_white_surface2" | "dark_tan_surface2" | "dark_black_surface3" | "dark_white_surface3" | "dark_tan_surface3" | "light_black" | "light_white" | "light_tan" | "light_black_alt1" | "light_white_alt1" | "light_tan_alt1" | "light_black_alt2" | "light_white_alt2" | "light_tan_alt2" | "light_black_surface1" | "light_white_surface1" | "light_tan_surface1" | "light_black_surface2" | "light_white_surface2" | "light_tan_surface2" | "light_black_surface3" | "light_white_surface3" | "light_tan_surface3", {
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -101,9 +97,8 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     blue12: string;
     color: string;
     shadowColor: string;
-    shadowColorHover: string;
-    shadowColorPress: string;
-    shadowColorFocus: string;
+    borderColor: string;
+    borderColorHover: string;
     colorHover: string;
     colorFocus: string;
     colorPress: string;
@@ -124,26 +119,72 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     backgroundPress: string;
     backgroundFocus: string;
     colorTransparent: string;
+    borderColorFocus: string;
+    borderColorPress: string;
     placeholderColor: string;
     outlineColor: string;
     accentBackground: string;
     accentColor: string;
     background0: string;
-    background025: string;
-    background05: string;
-    background075: string;
     color0: string;
-    color025: string;
-    color05: string;
-    color075: string;
+    white1: string;
+    white2: string;
+    white3: string;
+    white4: string;
+    white5: string;
+    white6: string;
+    white7: string;
+    white8: string;
+    white9: string;
+    white10: string;
+    white11: string;
+    white12: string;
+    black1: string;
+    black2: string;
+    black3: string;
+    black4: string;
+    black5: string;
+    black6: string;
+    black7: string;
+    black8: string;
+    black9: string;
+    black10: string;
+    black11: string;
+    black12: string;
     shadow1: string;
     shadow2: string;
     shadow3: string;
     shadow4: string;
     shadow5: string;
     shadow6: string;
+    background02: string;
+    background04: string;
+    background06: string;
+    background08: string;
+    color02: string;
+    color04: string;
+    color06: string;
+    color08: string;
+    accent0: string;
+    accent2: string;
+    accent1: string;
+    accent3: string;
+    accent4: string;
+    accent5: string;
+    accent6: string;
+    accent7: string;
+    accent8: string;
+    accent9: string;
+    accent10: string;
+    accent11: string;
+    accent12: string;
 }>;
 export type TamaguiThemes = typeof themes;
+/**
+ * This is an optional production optimization: themes JS can get to 20Kb or more.
+ * Tamagui has ~1Kb of logic to hydrate themes from CSS, so you can remove the JS.
+ * So long as you server render your Tamagui CSS, this will save you bundle size:
+ */
 export declare const tamaguiThemes: TamaguiThemes;
 export {};
 //# sourceMappingURL=v4-tamagui.d.ts.map

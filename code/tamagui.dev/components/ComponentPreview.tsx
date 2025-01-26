@@ -231,7 +231,7 @@ const ComponentPreview = {
         $group-window-sm={{
           marginVertical: '$6',
         }}
-        backgroundColor="$background05"
+        backgroundColor="$background04"
         borderColor="$borderColor"
         borderWidth={1}
         borderRadius="$4"

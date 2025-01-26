@@ -1,7 +1,7 @@
-import { createThemes } from '@tamagui/themes/v4'
+import { createStudioThemes } from '@tamagui/theme-builder'
+import type { BuildThemeSuiteProps } from '@tamagui/themes'
 import type { ThemeName } from 'tamagui'
 import { mutateThemes } from 'tamagui'
-import type { BuildThemeSuiteProps } from './types'
 
 const STUDIO_INTERNAL_THEME_NAME = 'studiodemointernal'
 
@@ -32,8 +32,7 @@ export async function updatePreviewTheme(
   // async lock
   running.set(args.id, cacheKey)
 
-  console.log('args', args)
-  const { themes } = createThemes(args)
+  const { themes } = createStudioThemes(args)
 
   // async stale check
   if (running.get(args.id) !== cacheKey) {
@@ -52,7 +51,7 @@ export async function updatePreviewTheme(
     })
   }
 
-  console.warn(`updatePreviewTheme()`, themes, insertThemes)
+  console.warn(`updatePreviewTheme()`, args.id, { themes, insertThemes })
 
   last.set(args.id, cacheKey)
 

@@ -339,16 +339,6 @@ export declare const stylePropsView: {
     shadowOffset: boolean;
     shadowRadius: boolean;
 };
-export declare const stylePropsFont: {
-    fontFamily: boolean;
-    fontSize: boolean;
-    fontStyle: boolean;
-    fontWeight: boolean;
-    fontVariant: boolean;
-    letterSpacing: boolean;
-    lineHeight: boolean;
-    textTransform: boolean;
-};
 export declare const stylePropsTextOnly: {
     whiteSpace?: boolean | undefined;
     wordWrap?: boolean | undefined;

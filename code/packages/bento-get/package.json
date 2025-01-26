@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.121.12-1737239089067",
+  "version": "1.123.2",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -57,10 +57,10 @@
     "react-router-dom": "6.4",
     "swr": "^2.2.5",
     "type-fest": "3.13.1",
-    "zod": "^3.22.4"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737239089067",
+    "@tamagui/build": "1.123.2",
     "@types/copy-paste": "^1.1.33",
     "@types/ink": "^2.0.3",
     "@types/react": "npm:@types/react@18.2.55"

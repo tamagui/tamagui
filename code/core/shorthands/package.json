@@ -1,17 +1,18 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.121.12-1737239089067",
+  "version": "1.123.2",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist",
     "v2.js",
-    "v2.d.ts"
+    "v2.d.ts",
+    "v4.d.ts",
+    "v4.js"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -42,21 +43,21 @@
       "import": "./dist/esm/v2.mjs",
       "require": "./dist/cjs/v2.cjs"
     },
-    "./v3": {
+    "./v4": {
       "react-native": {
-        "import": "./dist/esm/v3.native.js",
-        "require": "./dist/cjs/v3.native.js"
+        "import": "./dist/esm/v4.native.js",
+        "require": "./dist/cjs/v4.native.js"
       },
-      "types": "./types/v3.d.ts",
-      "import": "./dist/esm/v3.mjs",
-      "require": "./dist/cjs/v3.cjs"
+      "types": "./types/v4.d.ts",
+      "import": "./dist/esm/v4.mjs",
+      "require": "./dist/cjs/v4.cjs"
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.121.12-1737239089067"
+    "@tamagui/web": "1.123.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.12-1737239089067"
+    "@tamagui/build": "1.123.2"
   },
   "publishConfig": {
     "access": "public"

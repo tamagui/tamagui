@@ -1,9 +1,8 @@
+import { tokens } from '@tamagui/config/v3'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
-import { tokens } from '@tamagui/config/v4'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-
 import { createTamagui } from 'tamagui'
 import { animations } from './animations'
 import {
@@ -17,7 +16,6 @@ import {
   nohemiFont,
   silkscreenFont,
 } from './fonts'
-
 // testing tsconfig paths in compiler
 import { media, mediaQueryDefaultActive } from '~/config/media'
 
@@ -46,7 +44,7 @@ const fixTypescript55Bug = {
   color: tokens.color,
 }
 
-const config = {
+export const config = {
   fonts,
   animations,
   themes: tamaguiThemes,
@@ -58,6 +56,7 @@ const config = {
     shouldAddPrefersColorThemes: true,
     addThemeClassName: 'body',
     styleCompat: 'legacy',
+    maxDarkLightNesting: 2,
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,

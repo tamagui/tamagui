@@ -22,7 +22,7 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
 import { HeadInfo } from '~/components/HeadInfo'
 import { useUser } from '~/features/user/useUser'
-import { useUserTheme } from '@tamagui/one-theme'
+import { useColorScheme } from '@vxrn/color-scheme'
 
 export default function StudioSplashPage() {
   const user = useUser()
@@ -159,7 +159,7 @@ export default function StudioSplashPage() {
 }
 
 const StudioScreen1 = memo(() => {
-  const [{ resolvedTheme }] = useUserTheme()
+  const [resolvedTheme] = useColorScheme()
   const isLight = resolvedTheme === 'light'
 
   const glow = useHoverGlow({

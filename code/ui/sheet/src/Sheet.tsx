@@ -17,6 +17,7 @@ export const Handle = styled(XStack, {
   variants: {
     open: {
       true: {
+        opacity: 1,
         pointerEvents: 'auto',
       },
       false: {
@@ -57,11 +58,9 @@ export const Overlay = styled(YStack, {
   variants: {
     open: {
       true: {
-        opacity: 1,
         pointerEvents: 'auto',
       },
       false: {
-        opacity: 0,
         pointerEvents: 'none',
       },
     },

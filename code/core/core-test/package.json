@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.121.12-1737239089067",
+  "version": "1.123.2",
   "module": "dist/esm",
   "type": "module",
   "private": true,
@@ -13,16 +13,17 @@
     "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
     "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native yarn test:run **/*.ios.test.tsx",
     "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",
-    "test": "yarn test:native && yarn test:web"
+    "test": "yarn test:native && yarn test:web",
+    "test:update": "yarn test:native --update && yarn test:web --update"
   },
   "devDependencies": {
-    "@tamagui/core": "1.121.12-1737239089067",
+    "@tamagui/core": "1.123.2",
     "@testing-library/react": "^16.1.0",
     "@testing-library/react-native": "^12.9.0",
     "csstype": "^3.0.10",
     "react": "*",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.2"
   },
   "peerDependencies": {
     "react": "*"

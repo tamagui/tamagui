@@ -1,141 +1,104 @@
-import { Plus } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import { Button, XStack, YGroup, YStack } from 'tamagui'
-
+import { View, XStack, YStack } from 'tamagui'
 import { NoticeParagraph, StudioNotice } from '~/features/studio/StudioNotice'
-import { defaultBaseTheme } from '~/features/studio/theme/constants/defaultBaseTheme'
-import { defaultPalettes } from '../../constants/defaultPalettes'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import type { BuildTheme } from '../../types'
-import { AddDropdown } from '../../views/AddDropdown'
-import { BuildThemeItem } from '../views/BuildThemeItem'
-import { BuildThemeItemFrame } from '../views/BuildThemeItemFrame'
+import { Select, SelectItem } from '../../../components/Select'
+import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 import { PaletteView } from '../views/PaletteView'
-import { Stage, StageButtonBar, useSteps } from '../views/Stage'
+import { Theme } from 'tamagui'
 
 type StepBaseThemesProps = {
   previewMode?: boolean
 }
 
-const useBaseThemesSteps = () => {
-  return useSteps({ id: 'step-base-themes', total: 2 })
-}
-
 export const StepBaseThemes = memo((_props: StepBaseThemesProps) => {
   return <Palettes key={0} />
-
-  const steps = useBaseThemesSteps()
-
-  return (
-    <YStack mx="$-5" f={1}>
-      <StageButtonBar steps={steps} />
-      <Stage
-        current={steps.index}
-        // direction={steps.direction}
-        steps={[
-          //
-          <Palettes key={0} />,
-          //
-          <Themes key={1} />,
-        ]}
-      />
-    </YStack>
-  )
 })
 
 const Palettes = memo(() => {
   const store = useThemeBuilderStore()
+  const themeBuilder = useThemeBuilderStore()
 
   return (
-    <YStack gap="$3" py="$3" px="$2">
+    <YStack btrr="$8" btlr="$8" ov="hidden" gap="$3" py="$3" px="$2">
       {Object.entries(store.palettes).map(([name, palette]) => {
+        const isAccent = name === 'accent'
         return (
-          <BuildThemeItemFrame
+          <FieldsetWithLabel
             key={name}
             label={name}
-            {...(name !== 'base' && {
-              onDelete: () => {
-                store.deletePalette(name)
-              },
-            })}
+            afterLabel={
+              <XStack gap="$2" ai="center">
+                {isAccent && (
+                  <Select
+                    size="$2"
+                    defaultValue={themeBuilder.accentSetting}
+                    onValueChange={(value) => {
+                      themeBuilder.setAccentSetting(value as any)
+                    }}
+                  >
+                    <SelectItem value="off" index={0}>
+                      Off
+                    </SelectItem>
+                    <SelectItem value="inverse" index={1}>
+                      Inverse
+                    </SelectItem>
+                    <SelectItem value="color" index={2}>
+                      Color
+                    </SelectItem>
+                  </Select>
+                )}
+              </XStack>
+            }
           >
-            <PaletteView
-              onUpdate={(next) => {
-                store.updatePalette(name, next)
-              }}
-              palette={palette}
-            />
-          </BuildThemeItemFrame>
+            <YStack
+              // {...(Boolean(
+              //   disabled || (isAccent && themeBuilder.accentSetting !== 'color')
+              // ) && {
+              //   o: 0.25,
+              //   pe: 'none',
+              // })}
+              gap="$4"
+            >
+              {/* <Theme name="white">
+                <View
+                  br="$6"
+                  pos="absolute"
+                  t={0}
+                  r={-10}
+                  l={-10}
+                  h={126}
+                  bg="$color1"
+                  zi={0}
+                />
+              </Theme> */}
+
+              <PaletteView
+                onUpdate={(next) => {
+                  store.updatePalette(name, next)
+                }}
+                palette={palette}
+              />
+
+              {/* <Theme name="black">
+                <View
+                  br="$6"
+                  pos="absolute"
+                  b={0}
+                  r={-10}
+                  l={-10}
+                  h={126}
+                  bg="$color1"
+                  zi={-1}
+                />
+              </Theme> */}
+            </YStack>
+          </FieldsetWithLabel>
         )
       })}
     </YStack>
   )
 })
-
-const Themes = memo(() => {
-  const store = useThemeBuilderStore()
-  const theme = store.baseTheme
-
-  return (
-    <YStack gap="$4" py="$4" px="$2">
-      <BuildThemeItem
-        label="light + dark"
-        paletteNote="For now we automate a few things in palettes. We add transparencies to
-        background/foreground, then attach an accent background and foreground."
-        theme={theme}
-        onUpdate={store.updateBaseTheme}
-      />
-
-      <BuildThemeItem
-        label="accent"
-        paletteNote="This is used for your Accent theme, which you can toggle on the top right of
-          the preview sidebar."
-        theme={
-          theme.accent ||
-          ({
-            id: '',
-            name: '',
-            palette: '',
-            template: '',
-            type: 'theme',
-          } satisfies BuildTheme)
-        }
-        onUpdate={async (next) =>
-          await store.updateBaseTheme({
-            accent: {
-              ...store.baseTheme.accent,
-              ...next,
-            } as BuildTheme,
-          })
-        }
-        disabled={!theme.accent}
-        onDelete={store.deleteAccent}
-        afterLabel={
-          !theme.accent && (
-            <Button
-              icon={Plus}
-              size="$2"
-              br="$10"
-              onPress={async () => {
-                store.updateBaseTheme({
-                  accent: defaultBaseTheme.accent,
-                })
-              }}
-            >
-              Add Accent
-            </Button>
-          )
-        }
-      />
-    </YStack>
-  )
-})
-
-export const StepBaseThemesTray = () => {
-  return null
-  // const store = useStore(StepBaseThemesStore)
-  // return <ThemeTemplate theme={store.baseTheme} />
-}
 
 export const StepLightDarkTip = () => {
   return (
@@ -194,32 +157,4 @@ export const StepLightDarkPreviewThemes = () => {
   const store = useThemeBuilderStore()
   store.themeSuiteVersion
   return <StepBaseThemes previewMode key={store.themeSuiteVersion} />
-}
-
-export function StepBaseThemesActions() {
-  const store = useThemeBuilderStore()
-  const show = store.showAddThemeMenu
-  const setShow = (val: boolean) => (store.showAddThemeMenu = val)
-  const steps = useBaseThemesSteps()
-
-  return (
-    <XStack ai="center" gap="$4">
-      <AddDropdown open={show} onOpenChange={setShow}>
-        <YGroup>
-          {steps.index === 0 && (
-            <>
-              <AddDropdown.Item
-                size="$3"
-                onPress={() => {
-                  store.addPalette(defaultPalettes.accent)
-                  setShow(false)
-                }}
-                title="Add Accent Palette"
-              ></AddDropdown.Item>
-            </>
-          )}
-        </YGroup>
-      </AddDropdown>
-    </XStack>
-  )
 }

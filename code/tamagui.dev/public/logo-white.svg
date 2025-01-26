@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1546px" height="730px" viewBox="0 0 1546 730" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>logo-white</title>
+    <g id="logo-white" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="tamagui-words" transform="translate(519, 327)" fill-rule="nonzero">
+            <polygon id="Path-Copy-6" fill="#6252F8" style="mix-blend-mode: screen;" points="635 72 635 0 607 0 607 72"></polygon>
+            <polygon id="Path-Copy-7" fill="#6BCF1A" style="mix-blend-mode: screen;" points="561.6 72 561.6 57.6 576 57.6 576 0 547.2 0 547.2 57.6 532.8 57.6 532.8 0 504 0 504 57.6 518.4 57.6 518.4 72"></polygon>
+            <polygon id="Path-Copy-8" fill="#ED0F0F" style="mix-blend-mode: screen;" points="458.6 72 458.6 57.6 473 57.6 473 28.8 444.2 28.8 444.2 57.6 429.8 57.6 429.8 14.4 473 14.4 473 0 415.4 0 415.4 14.4 401 14.4 401 57.6 415.4 57.6 415.4 72"></polygon>
+            <path d="M142.6,0 L142.6,14.4 L157,14.4 L157,72 L128.2,72 L128.2,43.2 L113.8,43.2 L113.8,72 L85,72 L85,14.4 L99.4,14.4 L99.4,0 L142.6,0 Z M128.2,14.4 L113.8,14.4 L113.8,28.8 L128.2,28.8 L128.2,14.4 Z" id="Path-9-Copy-2" fill="#000000" style="mix-blend-mode: screen;"></path>
+            <polygon id="Path-Copy-9" fill="#000000" style="mix-blend-mode: screen;" points="219.8 72 219.8 39.6 234.2 39.6 234.2 72 263 72 263 0 241.4 0 241.4 14.4 212.6 14.4 212.6 0 191 0 191 72"></polygon>
+            <path d="M352.6,0 L352.6,14.4 L367,14.4 L367,72 L338.2,72 L338.2,43.2 L323.8,43.2 L323.8,72 L295,72 L295,14.4 L309.4,14.4 L309.4,0 L352.6,0 Z M338.2,14.4 L323.8,14.4 L323.8,28.8 L338.2,28.8 L338.2,14.4 Z" id="Path-10-Copy-2" fill="#000000"></path>
+            <polygon id="Path-Copy-10" fill="#000000" style="mix-blend-mode: screen;" points="43.5 72 43.5 14.4 58 14.4 58 0 0 0 0 14.4 14.5 14.4 14.5 72"></polygon>
+        </g>
+        <g id="duck" transform="translate(359.5, 292.5)">
+            <circle id="Oval" cx="72.5" cy="72.5" r="72.5"></circle>
+            <g id="Group-Copy-5" transform="translate(32.5, 32.5)">
+                <path d="M5,55 L5,50 L10,50 L10,45 L15,45 L15,40 L20,40 L20,15 L25,15 L25,5 L35,5 L35,0 L60,0 L60,5 L65,5 L65,10 L70,10 L70,20 L80,20 L80,25 L75,25 L75,30 L80,30 L80,35 L75,35 L75,40 L70,40 L70,50 L75,50 L75,55 L80,55 L80,70 L75,70 L75,75 L65,75 L65,80 L20,80 L20,75 L10,75 L10,70 L5,70 L5,65 L0,65 L0,55 L5,55 Z M45,20 L40,20 L40,25 L45,25 L45,20 Z M60,15 L55,15 L55,20 L60,20 L60,15 Z" id="Combined-Shape" fill="#ECD20A"></path>
+                <g id="Group" transform="translate(40, 15)" fill="#000000">
+                    <rect id="Rectangle-Copy-117" x="0" y="5" width="5" height="5"></rect>
+                    <rect id="Rectangle-Copy-141" x="15" y="0" width="5" height="5"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

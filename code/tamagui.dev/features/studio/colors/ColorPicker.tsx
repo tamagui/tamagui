@@ -2,6 +2,7 @@ import { hsla, parseToHsla, toHex } from 'color2k'
 import { memo, useEffect, useState } from 'react'
 import {
   Input,
+  Popover,
   Separator,
   SizableText,
   Slider,
@@ -127,45 +128,64 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
   }
 
   return (
-    <XStack gap="$4" ai="center">
-      <XGroup bw={1} bc="$borderColor">
-        <Stack width="$3" height="$3" ov="hidden">
-          <YStack
-            userSelect="none"
-            pointerEvents="none"
-            pos="absolute"
-            fullscreen
-            ai="center"
-            jc="center"
-          >
-            {!props.value && <Checkerboard rotate="45deg" />}
-            <YStack fullscreen backgroundColor={hex as any} />
-          </YStack>
-        </Stack>
+    <XStack ml={20} gap="$4" ai="center">
+      <Popover hoverable>
+        <Popover.Trigger>
+          <Stack y={4} width={24} height={24} ov="hidden" br="$10" bw={1} bc="$color10">
+            <YStack
+              userSelect="none"
+              pointerEvents="none"
+              pos="absolute"
+              fullscreen
+              ai="center"
+              jc="center"
+            >
+              {!props.value && <Checkerboard rotate="45deg" />}
+              <YStack fullscreen backgroundColor={hex as any} />
+            </YStack>
+          </Stack>
+        </Popover.Trigger>
 
-        {!props.disableLightness && (
-          <>
-            <Separator vertical />
-            <Input
-              disabled={props.disabled}
-              placeholder="Hex"
-              bw={0}
-              size="$3"
-              width={75}
-              als="center"
-              selectTextOnFocus
-              value={hex}
-              fontFamily="$mono"
-              onChangeText={(newText) => {
-                updateHexInput(newText)
-              }}
-              onEndEditing={() => {
-                sendUpdateHexDelayed(hex)
-              }}
-            />
-          </>
-        )}
-      </XGroup>
+        <Popover.Content
+          animation="quick"
+          elevation="$8"
+          bw={1}
+          bc="$color10"
+          padding={0}
+          enterStyle={{
+            y: -10,
+            o: 0,
+          }}
+          exitStyle={{
+            y: -10,
+            o: 0,
+          }}
+        >
+          <Popover.Arrow bw={1} bc="$color10" size="$4" />
+          {!props.disableLightness && (
+            <>
+              <Separator vertical />
+              <Input
+                disabled={props.disabled}
+                placeholder="Hex"
+                bw={0}
+                size="$3"
+                width={75}
+                als="center"
+                selectTextOnFocus
+                value={hex}
+                fontFamily="$mono"
+                onChangeText={(newText) => {
+                  updateHexInput(newText)
+                }}
+                onEndEditing={() => {
+                  sendUpdateHexDelayed(hex)
+                }}
+              />
+            </>
+          )}
+        </Popover.Content>
+      </Popover>
 
       <XStack
         ai="center"
@@ -178,7 +198,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
       >
         <YStack
           {...(props.shouldDim && {
-            o: 0.25,
+            o: 0.5,
           })}
           y="$-2"
           gap="$1"
@@ -197,18 +217,33 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             <Slider.Track
               bw={0.5}
               bc="$color12"
-              width={100}
+              width={160}
               style={{
                 background: hueLinearGradient,
               }}
             ></Slider.Track>
-            <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+            <Slider.Thumb
+              focusStyle={{
+                bg: '$color1',
+              }}
+              hoverStyle={{
+                bg: '$color1',
+              }}
+              pressStyle={{
+                bg: '$color1',
+              }}
+              bg="$color1"
+              size="$1"
+              index={0}
+              circular
+              elevate
+            />
           </Slider>
         </YStack>
 
         <YStack
           {...(props.shouldDim && {
-            o: 0.25,
+            o: 0.5,
           })}
           y="$-2"
           gap="$1"
@@ -228,12 +263,27 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               <Slider.Track
                 bw={0.5}
                 bc="$color12"
-                width={80}
+                width={120}
                 style={{
                   background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
                 }}
               ></Slider.Track>
-              <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+              <Slider.Thumb
+                focusStyle={{
+                  bg: '$color1',
+                }}
+                hoverStyle={{
+                  bg: '$color1',
+                }}
+                pressStyle={{
+                  bg: '$color1',
+                }}
+                bg="$color1"
+                size="$1"
+                index={0}
+                circular
+                elevate
+              />
             </Slider>
           </YStack>
         </YStack>
@@ -255,13 +305,28 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 <Slider.Track
                   bw={0.5}
                   bc="$color12"
-                  width={80}
+                  width={120}
                   style={{
                     background: `linear-gradient(to right, #000, #fff)`,
                   }}
                 />
 
-                <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+                <Slider.Thumb
+                  focusStyle={{
+                    bg: '$color1',
+                  }}
+                  hoverStyle={{
+                    bg: '$color1',
+                  }}
+                  pressStyle={{
+                    bg: '$color1',
+                  }}
+                  bg="$color1"
+                  size="$1"
+                  index={0}
+                  circular
+                  elevate
+                />
               </Slider>
             </YStack>
           </YStack>

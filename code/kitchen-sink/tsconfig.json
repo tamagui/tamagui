@@ -8,9 +8,6 @@
       "path": "../compiler/babel-plugin"
     },
     {
-      "path": "../core/animations-reanimated"
-    },
-    {
       "path": "../core/cli"
     },
     {
@@ -36,6 +33,9 @@
     },
     {
       "path": "../demos"
+    },
+    {
+      "path": "../bento"
     },
     {
       "path": "../packages/lucide-icons"

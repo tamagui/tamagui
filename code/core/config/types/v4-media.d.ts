@@ -5,29 +5,29 @@ export declare const breakpoints: {
     md: number;
     sm: number;
     xs: number;
-    xxs: number;
+    '2xs': number;
 };
 export declare const media: {
     readonly '2xl': {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly xl: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly lg: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly md: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly sm: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
     readonly xs: {
-        readonly maxWidth: number;
+        readonly minWidth: number;
     };
-    readonly xxs: {
-        readonly maxWidth: number;
+    readonly '2xs': {
+        readonly minWidth: number;
     };
 };
 export declare const mediaQueryDefaultActive: {
@@ -37,6 +37,6 @@ export declare const mediaQueryDefaultActive: {
     md: boolean;
     sm: boolean;
     xs: boolean;
-    xxs: boolean;
+    '2xs': boolean;
 };
 //# sourceMappingURL=v4-media.d.ts.map

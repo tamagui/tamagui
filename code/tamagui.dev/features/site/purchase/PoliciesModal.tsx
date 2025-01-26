@@ -23,6 +23,7 @@ export const TakeoutPoliciesModal = () => {
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
+            bg="$shadow4"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -101,6 +102,7 @@ export const BentoPoliciesModal = () => {
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
+            bg="$shadow4"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}

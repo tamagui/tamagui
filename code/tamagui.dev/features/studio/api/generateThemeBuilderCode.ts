@@ -1,6 +1,5 @@
-import type { ThemeBuilder } from '@tamagui/theme-builder'
-import type { BuildThemeSuiteProps } from '../theme/types'
-import { createThemes } from '@tamagui/themes/v4'
+import { createPalettes } from '@tamagui/theme-builder'
+import type { BuildThemeSuiteProps } from '@tamagui/themes'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
   includeComponentThemes: boolean
@@ -9,160 +8,133 @@ type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
 
 export async function generateThemeBuilderCode({
   palettes,
-  subThemes,
-  baseTheme,
-  componentThemes,
   schemes,
-  templates,
   includeComponentThemes,
   includeSizeTokens,
 }: GenerateThemeBuilderCodeProps) {
-  const { themeBuilder } = createThemes({
-    templates,
-    componentThemes,
-    palettes,
-    baseTheme,
-    subThemes,
-    schemes,
-  })
-  return `
-  import { defaultSubThemes, defaultComponentThemes } from '@tamagui/themes/v3-themes'
-  import { createThemeBuilder } from '@tamagui/theme-builder'
+  // side effect to getLastBuilder
+  const palettesOut = createPalettes(palettes)
 
-  const palettes = ${stringifyPalettes(themeBuilder)}
-  const templates = ${stringifyTemplates(themeBuilder)}
+  return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``} } from '@tamagui/theme-builder'
+import * as Colors from '@tamagui/colors'
 
-  export const themes = createThemeBuilder()
-    .addPalettes(palettes)
-    .addTemplates(templates)
-    .addThemes({
+const darkPalette = ${arrayToJS(palettesOut.dark_accent)}
+const lightPalette = ${arrayToJS(palettesOut.light_accent)}
+
+const lightShadows = {
+  shadow1: 'rgba(0,0,0,0.04)',
+  shadow2: 'rgba(0,0,0,0.08)',
+  shadow3: 'rgba(0,0,0,0.16)',
+  shadow4: 'rgba(0,0,0,0.24)',
+  shadow5: 'rgba(0,0,0,0.32)',
+  shadow6: 'rgba(0,0,0,0.4)',
+}
+
+const darkShadows = {
+  shadow1: 'rgba(0,0,0,0.2)',
+  shadow2: 'rgba(0,0,0,0.3)',
+  shadow3: 'rgba(0,0,0,0.4)',
+  shadow4: 'rgba(0,0,0,0.5)',
+  shadow5: 'rgba(0,0,0,0.6)',
+  shadow6: 'rgba(0,0,0,0.7)',
+}
+
+// we're adding some example sub-themes for you to show how they are done, "success" "warning", "error":
+
+const builtThemes = createThemes({
+  ${includeComponentThemes === false ? `componentThemes: defaultComponentThemes,` : ``}
+
+  base: {
+    palette: {
+      dark: darkPalette,
+      light: lightPalette,
+    },
+
+    extra: {
       light: {
-        template: 'base',
-        palette: 'light',
+        ...Colors.green,
+        ...Colors.red,
+        ...Colors.yellow,
+        ...lightShadows,
+        shadowColor: lightShadows.shadow1,
       },
       dark: {
-        template: 'base',
-        palette: 'dark',
+        ...Colors.greenDark,
+        ...Colors.redDark,
+        ...Colors.yellowDark,
+        ...darkShadows,
+        shadowColor: darkShadows.shadow1,
       },
-    })
-    .addChildThemes(
-      palettes.light_accent
-        ? {
-            accent: [
-              {
-                parent: 'light',
-                template: 'base',
-                palette: 'light_accent',
-              },
-              {
-                parent: 'dark',
-                template: 'base',
-                palette: 'dark_accent',
-              },
-            ],
-          }
-        : {}
-    )
-    .addChildThemes(defaultSubThemes)
-    ${
-      includeComponentThemes
-        ? `.addComponentThemes(defaultComponentThemes, {
-      avoidNestingWithin: [
-        'alt1',
-        'alt2',
-        'surface1',
-        'surface2',
-        'surface3',
-        'surface4',
-        'active',
-      ],
-    })\n`
-        : ``
-    }
-    .build()
+    },
+  },
+
+  accent: {
+    palette: {
+      dark: ${arrayToJS(palettesOut.dark_accent)},
+      light: ${arrayToJS(palettesOut.light_accent)},
+    },
+  },
+
+  childrenThemes: {
+    warning: {
+      palette: {
+        dark: Object.values(Colors.yellowDark),
+        light: Object.values(Colors.yellow),
+      },
+    },
+
+    error: {
+      palette: {
+        dark: Object.values(Colors.redDark),
+        light: Object.values(Colors.red),
+      },
+    },
+
+    success: {
+      palette: {
+        dark: Object.values(Colors.greenDark),
+        light: Object.values(Colors.green),
+      },
+    },
+  },
+
+  // optionally add more, can pass palette or template
+
+  // grandChildrenThemes: {
+  //   alt1: {
+  //     template: 'alt1',
+  //   },
+  //   alt2: {
+  //     template: 'alt2',
+  //   },
+  //   surface1: {
+  //     template: 'surface1',
+  //   },
+  //   surface2: {
+  //     template: 'surface2',
+  //   },
+  //   surface3: {
+  //     template: 'surface3',
+  //   },
+  // },
+})
+
+export type Themes = typeof builtThemes
+
+// this is optional, but saves client-side JS bundle size by leaving out themes on client.
+// tamagui automatically hydrates themes from css back into JS for you and the tamagui
+// bundler plugins automate setting TAMAGUI_ENVIRONMENT.
+
+export const themes: Themes =
+  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
+  process.env.NODE_ENV === 'production'
+    ? ({} as any)
+    : (builtThemes as any)
 `
 }
 
-function stringifyPalettes(themeBuilder: ThemeBuilder<any>) {
-  if (!themeBuilder.state.palettes) return `{}`
-  return `{
-    ${Object.entries(themeBuilder.state.palettes).map(([key, val]) => {
-      return `
-        "${key}": [${(val as any[]).map((color) => `'${color}'`)}]
-      `
-    })}
-  }`
+function arrayToJS(palette: string[]) {
+  return `[${palette.map((val) => {
+    return `'${val}'`
+  })}]`
 }
-
-function stringifyTemplates(themeBuilder: ThemeBuilder<any>) {
-  if (!themeBuilder.state.templates) return `{}`
-  return `{
-    ${Object.entries(themeBuilder.state.templates).map(([key, val]) => {
-      return `
-        "${key}": ${JSON.stringify(val)}
-      `
-    })}
-  }`
-}
-
-// for accepting dynamic child themes
-
-// const addChildThemes = themeBuilder._addedThemes
-//   .map((addedSection) => {
-//     const callFunction =
-//       addedSection.type === 'childThemes' ? 'addChildThemes' : 'addThemes'
-
-//     const [themes, options] = addedSection.args as [ThemeDefinitions, any]
-
-//     let themesArg = `{`
-
-//     // first loop find common mask options:
-//     for (const [themeName, themeDefinitions] of Object.entries(themes)) {
-//       let children: string[] = []
-
-//       for (const themeDefinition of Array.isArray(themeDefinitions)
-//         ? themeDefinitions
-//         : [themeDefinitions]) {
-//         const { parent, mask, template, palette, ...maskOptions } =
-//           themeDefinition as any
-
-//         let maskOptionsSpread = ``
-
-//         if (Object.keys(maskOptions).length) {
-//           const maskVariableName = (() => {
-//             const maskOptionsKey = JSON.stringify(maskOptions)
-//             if (!maskKeyToName[maskOptionsKey]) {
-//               maskKeyToName[maskOptionsKey] = `maskOptions${maskVersion++}`
-//             }
-//             return maskKeyToName[maskOptionsKey]!
-//           })()
-//           maskOptionsSpread += `...maskOptions.${maskVariableName}`
-//         }
-
-//         children.push(
-//           `{ ${stringifyArgs({
-//             parent,
-//             mask,
-//             template,
-//             palette,
-//           })} ${maskOptionsSpread} },`
-//         )
-//       }
-
-//       themesArg += `  "${themeName}": `
-//       if (children.length === 1) {
-//         themesArg += children[0]
-//       } else {
-//         themesArg += `[ ${children.join('\n')} ],`
-//       }
-//       themesArg += '\n'
-//     }
-
-//     themesArg += `}`
-
-//     return `.${callFunction}(
-//       ${themesArg}
-//       ${options ? `, ${JSON.stringify(options)}` : ''}
-//     )`
-//   })
-//   .join('\n')

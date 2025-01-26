@@ -167,7 +167,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 zi={1000}
               >
                 <Spacer f={1} />
-                <Button onPress={() => setIsCutoff(!isCutoff)} als="center">
+                <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} als="center">
                   Show more
                 </Button>
                 <Spacer size="$4" />
@@ -222,27 +222,12 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
             <AnimatePresence>
               {isLong && !isCutoff && (
-                <Button
-                  position="absolute"
-                  aria-label="Collapse code block"
-                  size="$2"
-                  top={showFileName ? '$3' : '$3.5'}
-                  right="$10"
-                  display="inline-flex"
-                  iconAfter={ChevronsDownUp}
-                  scaleIcon={1.25}
-                  bg="$color1"
-                  o={1}
-                  animation="quickest"
-                  enterStyle={{ x: 5, o: 0 }}
-                  exitStyle={{ x: 5, o: 0 }}
-                  onPress={() => setIsCutoff(true)}
-                  $xs={{
-                    display: 'none',
-                  }}
-                >
-                  Show less
-                </Button>
+                <>
+                  <Spacer />
+                  <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} als="center">
+                    Show less
+                  </Button>
+                </>
               )}
             </AnimatePresence>
 
@@ -260,7 +245,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   $xs={{
                     display: 'none',
                   }}
-                />
+                >
+                  Copy
+                </Button>
               </TooltipSimple>
             )}
           </YStack>

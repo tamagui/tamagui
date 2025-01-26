@@ -21,7 +21,7 @@ export async function generateThemes(inputFile: string) {
   const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
   purgeCache(inputFilePath)
 
-  let promise: Promise<null | ThemeBuilder<any>> | null = null as any
+  const promises: Array<Promise<null | ThemeBuilder<any>>> = []
 
   // @ts-ignore
   Module.prototype.require = function (id) {
@@ -29,26 +29,27 @@ export async function generateThemes(inputFile: string) {
     const out = ogRequire.apply(this, arguments)
 
     if (id === '@tamagui/theme-builder') {
-      if (!promise) {
-        let resolve: Function
-        promise = new Promise((res) => {
-          resolve = res
-        })
-        return createThemeIntercept(out, {
-          onComplete: (result) => {
-            resolve?.(result.themeBuilder)
-          },
-        })
-      }
+      let resolve: Function
+      const promise = new Promise<any>((res) => {
+        resolve = res
+      })
+      promises.push(promise)
+      return createThemeIntercept(out, {
+        onComplete: (result) => {
+          resolve?.(result.themeBuilder)
+        },
+      })
     }
     return out
   }
 
   let og = process.env.TAMAGUI_KEEP_THEMES
   process.env.TAMAGUI_KEEP_THEMES = '1'
+  process.env.TAMAGUI_RUN_THEMEBUILDER = '1'
 
   try {
     const requiredThemes = require(inputFilePath)
+
     const themes =
       requiredThemes['default'] ||
       requiredThemes['themes'] ||
@@ -57,9 +58,9 @@ export async function generateThemes(inputFile: string) {
     const generatedThemes = generatedThemesToTypescript(themes)
 
     let tm: any
-    if (promise) {
+    if (promises.length) {
       let finished = false
-      promise.then(() => {
+      await Promise.any(promises).then(() => {
         finished = true
       })
       // handle never finishing promise with nice error
@@ -72,7 +73,7 @@ export async function generateThemes(inputFile: string) {
       }, 2000)
     }
 
-    const themeBuilder = promise ? await promise : null
+    const themeBuilder = await Promise.any(promises)
     clearTimeout(tm)
 
     return {
@@ -80,7 +81,7 @@ export async function generateThemes(inputFile: string) {
       state: themeBuilder?.state,
     }
   } catch (err) {
-    console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
+    console.warn(` ⚠️ Error running theme builder:\n`, err?.['stack'] || err)
   } finally {
     process.env.TAMAGUI_KEEP_THEMES = og
     Module.prototype.require = ogRequire

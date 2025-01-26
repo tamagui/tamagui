@@ -36,6 +36,7 @@ export default function TamaguiHomePage() {
       />
 
       <ThemeNameEffect colorKey="$color2" />
+
       <HomeGlow />
       <YStack
         fullscreen

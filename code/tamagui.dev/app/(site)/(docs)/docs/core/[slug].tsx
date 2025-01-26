@@ -49,7 +49,7 @@ export default function DocCorePage() {
         }}
       />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
-      <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
+      <SubTitle>{frontmatter.description || ''}</SubTitle>
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>

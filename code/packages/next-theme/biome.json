@@ -3,9 +3,11 @@
   "organizeImports": {
     "enabled": false
   },
+  "files": {
+    "ignore": ["**/*/generated-*.ts", ".tamagui"]
+  },
   "linter": {
     "enabled": true,
-    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"],
     "rules": {
       "correctness": {
         "useExhaustiveDependencies": "off",

@@ -18,7 +18,7 @@ import React, { createContext, useContext, useEffect, useId } from 'react'
 export type AdaptWhen = MediaQueryKeyString | boolean | null
 export type AdaptPlatform = AllPlatforms | 'touch' | null
 
-type AdaptParentContextI = {
+export type AdaptParentContextI = {
   Contents: Component
   scopeName: string
   platform: AdaptPlatform
@@ -179,6 +179,7 @@ export const Adapt = withStaticProperties(
     useIsomorphicLayoutEffect(() => {
       return () => {
         context?.setWhen?.(null)
+        context?.setPlatform?.(null)
       }
     }, [])
 
@@ -193,7 +194,7 @@ export const Adapt = withStaticProperties(
 
     // TODO this isn't ideal using an effect to set children, will cause double-renders
     // on every change
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (typeof children === 'function' && output !== undefined) {
         context?.setChildren(output)
       }

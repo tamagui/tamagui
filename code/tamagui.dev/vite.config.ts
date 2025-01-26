@@ -18,6 +18,10 @@ const resolve = (path: string) => {
 }
 
 const include = [
+  '@ai-sdk/deepseek',
+  'secure-json-parse',
+  '@supabase/postgres-js',
+  'ai',
   '@docsearch/react',
   '@leeoniya/ufuzzy',
   'react-hook-form',
@@ -52,6 +56,7 @@ export default {
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
+      'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -82,7 +87,9 @@ export default {
   plugins: [
     one({
       react: {
-        compiler: optimize,
+        compiler: process.env.NODE_ENV === 'production',
+        // compiler: true,
+        // compiler: optimize,
       },
 
       deps: {

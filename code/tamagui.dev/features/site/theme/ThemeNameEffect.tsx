@@ -1,4 +1,4 @@
-import { memo, startTransition, useLayoutEffect, useState } from 'react'
+import { memo, useLayoutEffect, useState } from 'react'
 import type { ColorTokens } from 'tamagui'
 import { YStack, isClient, useDidFinishSSR, useTheme } from 'tamagui'
 
@@ -24,9 +24,7 @@ export const ThemeNameEffect = memo(
         <YStack
           id="theme-name-effect"
           ref={() => {
-            startTransition(() => {
-              setIsActive(true)
-            })
+            setIsActive(true)
           }}
         />
         <style>

@@ -2,13 +2,13 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { HydrateTheme, UserThemeProvider, useUserTheme } from '@tamagui/one-theme'
-import { ToastProvider } from '@tamagui/toast'
+import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { LoadProgressBar, Slot, Stack } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
+import { ToastProvider } from '~/features/studio/ToastProvider'
 
 // for navigation container props
 //           theme: {
@@ -111,8 +111,6 @@ export default function Layout() {
 
       <LoadProgressBar />
 
-      <HydrateTheme />
-
       <Providers>
         {isWeb ? (
           <Slot />
@@ -142,21 +140,19 @@ export default function Layout() {
 export const Providers = (props: { children: any }) => {
   return (
     <SearchProvider>
-      <UserThemeProvider>
+      <SchemeProvider>
         <WebsiteTamaguiProvider>{props.children}</WebsiteTamaguiProvider>
-      </UserThemeProvider>
+      </SchemeProvider>
     </SearchProvider>
   )
 }
 
 function WebsiteTamaguiProvider(props: { children: any }) {
-  const [{ resolvedTheme }] = useUserTheme()
+  const [scheme] = useColorScheme()
 
   return (
-    <span style={{ display: 'contents' }}>
-      <TamaguiProvider disableInjectCSS defaultTheme={resolvedTheme} config={tamaConf}>
-        <ToastProvider swipeDirection="horizontal">{props.children}</ToastProvider>
-      </TamaguiProvider>
-    </span>
+    <TamaguiProvider disableInjectCSS defaultTheme={scheme} config={tamaConf}>
+      <ToastProvider>{props.children}</ToastProvider>
+    </TamaguiProvider>
   )
 }

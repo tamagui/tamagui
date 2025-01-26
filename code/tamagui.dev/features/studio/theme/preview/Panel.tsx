@@ -1,5 +1,5 @@
-import { Copy, MoreVertical } from '@tamagui/lucide-icons'
-import { createContext, useContext, useState } from 'react'
+import { MoreVertical } from '@tamagui/lucide-icons'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Adapt,
@@ -12,13 +12,9 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
-
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { accentThemeName } from '../../accentThemeName'
 import { useHasAccent } from '../../hooks/useHasAccent'
-import { toastController } from '../../ToastProvider'
-import { callStudioProcedure } from '../callApi'
-import { useDemoProps } from '../hooks/useDemoProps'
+import { useThemeBuilderStore } from '../store/ThemeBuilderStore'
 
 interface IPanelContext {
   inverse: boolean
@@ -50,35 +46,35 @@ export function Panel({
   const [inverse, setInverse] = useState(initialInverse || false)
   const [accent, setAccent] = useState(initialAccent)
   const [hovered, setHovered] = useState(false)
-  // const store = useThemeBuilderStore()
-  async function copyTheme() {
-    if (!fileToCopyName) {
-      return
+  const store = useThemeBuilderStore()
+
+  useEffect(() => {
+    if (store.randomizeId) {
+      setAccent((x) => Math.random() > 0.75)
+      setInverse((x) => Math.random() > 0.95)
     }
-    console.warn('TODO')
-    const compString = ''
-    // await callStudioProcedure('exportDemoComponent', {
-    //   componentName: fileToCopyName,
-    //   options: store.demosOptions,
-    // })
-    await navigator.clipboard.writeText(compString)
-    toastController.show('Copied successfully', {
-      theme: 'green',
-    })
-  }
+  }, [store.randomizeId])
 
   return (
     <YStack
       w="100%"
-      h="100%"
+      mah={600}
+      f={1}
+      // scale={0.95}
+      // transformOrigin="left top"
+      group="card"
+      containerType="normal"
       onHoverIn={() => setHovered(true)}
       onHoverOut={() => setHovered(false)}
       {...props}
     >
       <PanelContext.Provider
-        value={{
-          inverse,
-        }}
+        value={useMemo(
+          () => ({
+            inverse,
+          }),
+          [inverse]
+        )}
       >
         <Theme
           forceClassName

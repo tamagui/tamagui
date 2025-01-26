@@ -26,8 +26,6 @@ const StyledButton = styled(Button, {
   } as const,
 })
 
-console.log('wtf', StyledButton.staticConfig)
-
 const DoubleStyledButtonNoVariants = styled(StyledButton, {})
 
 const StyledButtonVariantTheme = styled(Button, {

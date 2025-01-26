@@ -125,7 +125,7 @@ export const DropTamaguiConfig = () => {
               fullscreen
               pe="none"
               o={dragging ? 1 : 0}
-              bg="$background075"
+              bg="$background06"
               ai="center"
               jc="center"
               zi={1000}

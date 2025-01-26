@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 export declare const TamaguiLogo: React.ForwardRefExoticComponent<{
     showWords?: boolean;
@@ -13,4 +14,17 @@ export declare const TamaguiLogo: React.ForwardRefExoticComponent<{
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }>> & React.RefAttributes<any>>;
+=======
+import type { JSX } from "react/jsx-runtime";
+import type { XStackProps } from "tamagui";
+type LogoProps = {
+	showWords?: boolean;
+	downscale?: number;
+	animated?: boolean;
+	ref?: any;
+} & XStackProps;
+export declare const TamaguiLogo: ({ showWords, downscale, animated, ref,...props }: LogoProps) => JSX.Element;
+export {};
+
+>>>>>>> master
 //# sourceMappingURL=TamaguiLogo.d.ts.map
