@@ -9,12 +9,9 @@ note: can't remove `as const` using const generics, it just doesnt help with the
   - remove componentName, just allow setting default theme: ""
   - remove builders like themebuilder etc from config
     - do it via plugins automatically
+  - inlineProps => `accept: 'number' | 'string' | value<type>()`
   - remove inlineProps, usedKeys, partial extraction
 
-  - must pass in colors separately but it exports the defaults still
-  - createSystemFont into package
-  - v4 themes
-    - based on studio, allows passing in custom colors
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
   - theme inverse only works with sub-themes named _inverse. createThemes.generateInverseSubThemes: boolean 
