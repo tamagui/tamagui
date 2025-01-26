@@ -78,6 +78,7 @@ export const SheetDemo = () => {
         animation="medium"
       >
         <Sheet.Overlay
+          bg="$shadow4"
           animation="lazy"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
