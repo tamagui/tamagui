@@ -14,6 +14,7 @@ v2
     - based on studio, allows passing in custom colors
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
+  - // TODO on inverse theme changes
 
 - v3 - aim for fast follow
 

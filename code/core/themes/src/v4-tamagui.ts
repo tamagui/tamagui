@@ -252,7 +252,7 @@ export type TamaguiThemes = typeof themes
 
 /**
  * This is an optional production optimization: themes JS can get to 20Kb or more.
- * Tamagui has ~1Kb of logic to hydrate themes from CSS, so you can remove the JS.
+ * Tamagui has <1Kb of logic to hydrate themes from CSS, so you can remove the JS.
  * So long as you server render your Tamagui CSS, this will save you bundle size:
  */
 export const tamaguiThemes: TamaguiThemes =
