@@ -14,12 +14,6 @@ const allStores = {
   colorsStore,
   sidePaneStore,
   animationsStore,
-<<<<<<< HEAD
-  tokensStore,
-  previewStore,
-=======
-  settingsStore,
->>>>>>> master
 }
 
 export const useRootStore = (options?: { debug?: boolean }) =>
@@ -30,15 +24,6 @@ export const useSidePaneStore = (options?: { debug?: boolean }) =>
   useGlobalStore(sidePaneStore, options?.debug)
 export const useAnimationsStore = (options?: { debug?: boolean }) =>
   useGlobalStore(animationsStore, options?.debug)
-<<<<<<< HEAD
-export const useTokensStore = (options?: { debug?: boolean }) =>
-  useGlobalStore(tokensStore, options?.debug)
-export const usePreviewStore = (options?: { debug?: boolean }) =>
-  useGlobalStore(previewStore, options?.debug)
-=======
-export const useSettingsStore = (options?: { debug?: boolean }) =>
-  useGlobalStore(settingsStore, options?.debug)
->>>>>>> master
 
 export const useGlobalState = (options?: { debug?: boolean }) => {
   return combineStores({
@@ -46,12 +31,6 @@ export const useGlobalState = (options?: { debug?: boolean }) => {
     colorsStore: useColorsStore(options),
     sidePaneStore: useSidePaneStore(options),
     animationsStore: useAnimationsStore(options),
-<<<<<<< HEAD
-    tokensStore: useTokensStore(options),
-    previewStore: usePreviewStore(options),
-=======
-    settingsStore: useSettingsStore(options),
->>>>>>> master
   })
 }
 
@@ -70,12 +49,6 @@ function combineStores(stores: typeof allStores) {
     colors: ColorsStore
     sidePane: SidePaneStore
     animations: AnimationsStore
-<<<<<<< HEAD
-    tokens: TokensStore
-    preview: PreviewStore
-=======
-    settings: SettingsStore
->>>>>>> master
   }
 }
 

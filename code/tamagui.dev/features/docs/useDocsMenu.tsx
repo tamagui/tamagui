@@ -26,6 +26,17 @@ export const useDocsMenu = () => {
     next = allNotPending[++nextIndex]
   }
 
+  const section =
+    pathname.startsWith('/docs/core') ||
+    pathname === '/docs/intro/introduction' ||
+    pathname === '/docs/intro/installation'
+      ? 'core'
+      : pathname.startsWith('/ui')
+        ? 'ui'
+        : pathname.startsWith('/docs/intro')
+          ? 'compile'
+          : null
+
   // on route change close menu
   useEffect(() => {
     return router.subscribe(() => {
@@ -37,10 +48,12 @@ export const useDocsMenu = () => {
 
   return {
     open,
+    pathname,
     setOpen,
     currentPath,
     next,
     previous,
     documentVersionPath,
+    section,
   }
 }

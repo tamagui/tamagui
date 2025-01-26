@@ -1,13 +1,19 @@
 {
   "name": "@tamagui/button",
-  "version": "1.123.2",
-  "sideEffects": ["*.css"],
+  "version": "1.123.3",
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -30,17 +36,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/font-size": "1.123.2",
-    "@tamagui/get-button-sized": "1.123.2",
-    "@tamagui/helpers": "1.123.2",
-    "@tamagui/helpers-tamagui": "1.123.2",
-    "@tamagui/stacks": "1.123.2",
-    "@tamagui/spacer": "1.123.2",
-    "@tamagui/text": "1.123.2",
-    "@tamagui/web": "1.123.2"
+    "@tamagui/font-size": "1.123.3",
+    "@tamagui/get-button-sized": "1.123.3",
+    "@tamagui/helpers": "1.123.3",
+    "@tamagui/helpers-tamagui": "1.123.3",
+    "@tamagui/spacer": "1.123.3",
+    "@tamagui/stacks": "1.123.3",
+    "@tamagui/text": "1.123.3",
+    "@tamagui/web": "1.123.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.2",
+    "@tamagui/build": "1.123.3",
     "react": "*",
     "vitest": "^3.0.2"
   },

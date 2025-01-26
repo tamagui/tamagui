@@ -21,6 +21,7 @@
     "./code/ui/**/*"
   ],
   "scripts": {
+    "create": "./node_modules/.bin/create-tamagui",
     "docs": "yarn workspace @tamagui/one-docs dev",
     "docs:build": "yarn workspace @tamagui/one-docs build:prod",
     "takeout": "yarn workspace @tamagui/takeout dev",

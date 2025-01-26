@@ -2,6 +2,7 @@ v2:
 
 note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
+  - @tamagui/static and all the plugins => @tamagui/compiler package
   - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
@@ -71,6 +72,7 @@ stretch
     - styled()
     - @tamagui/style just style({}) export, takes TextProps
 - // TODO: turn on
+  - // TODO on inverse theme changes
 
 - v3 - aim for fast follow
 

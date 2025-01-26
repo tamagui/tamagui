@@ -1,11 +1,15 @@
 {
   "name": "@tamagui/spacer",
-  "version": "1.123.2",
+  "version": "1.123.3",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -26,10 +30,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.123.2"
+    "@tamagui/web": "1.123.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.2",
+    "@tamagui/build": "1.123.3",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },

@@ -10,13 +10,18 @@ import { useDocsMenu } from './useDocsMenu'
 // const fuz = new uFuzzy({})
 
 const sections = {
-  docs: docsRoutes
-    .filter((x) => !x.isUI)
+  core: docsRoutes
+    .filter((x) => x.section === 'core')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
   ui: docsRoutes
-    .filter((x) => x.isUI)
+    .filter((x) => x.section === 'ui')
+    .flatMap((section, sectionIndex) =>
+      section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
+    ),
+  compile: docsRoutes
+    .filter((x) => x.section === 'compile')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
@@ -31,7 +36,18 @@ const allItems = [
     ),
   },
 
-  ...sections.docs,
+  ...sections.core,
+
+  {
+    children: (
+      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+        Compile
+      </H4>
+    ),
+  },
+
+  ...sections.compile,
+
   {
     children: (
       <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
@@ -53,15 +69,15 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   inMenu,
 }: { inMenu?: boolean }) {
   // const store = useStore(DocsItemsStore)
-  const { currentPath } = useDocsMenu()
-  const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
-  const items = inMenu ? allItems : sections[activeSection]
+  const { currentPath, section } = useDocsMenu()
+  const items = inMenu ? allItems : section ? sections[section] : allItems
+
   // const [items, setItems] = React.useState(activeItems)
   // const isFiltered = items !== activeItems
 
   // React.useEffect(() => {
   //   setItems(activeItems)
-  // }, [activeSection])
+  // }, [section])
 
   return (
     <>
@@ -122,7 +138,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
             setItems(activeItems)
             return
           }
-          const [indexes] = fuz.search(sectionStrings[activeSection], next)
+          const [indexes] = fuz.search(sectionStrings[section], next)
           if (!indexes?.length) {
             setItems(activeItems)
             return
@@ -136,7 +152,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
       <Spacer />
 
       {/* 
-      {!inMenu && activeSection === 'docs' && (
+      {!inMenu && section === 'docs' && (
         <Link href="/docs/intro/1.0.01" index={-1}>
           <XStack p="$4">
             <SizableText>Tamagui UI</SizableText>

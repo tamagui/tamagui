@@ -1,5 +1,5 @@
 import React from 'react'
-import { LogoIcon } from '@tamagui/logo'
+import { LogoIcon } from '@tamagui/logo/icon'
 
 import { Button, Square, YStack, isWeb } from 'tamagui'
 

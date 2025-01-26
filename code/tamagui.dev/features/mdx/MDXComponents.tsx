@@ -740,17 +740,11 @@ const componentsIn = {
           </IntroParagraph>
 
           <IntroParagraph>
-            Tamagui is more than just a style library - it's a style library, a design
-            system builder, a UI kit, and an optimizing compiler. The good news is, every
-            piece can be used separately or together.
+            Tamagui is an ecosystem open source of libraries, mainly:
           </IntroParagraph>
 
-          <Separator o={0.5} my="$5" />
-
-          <H4>Overview</H4>
-
           <UL mt="$4" pl="$4" gap="$2">
-            <ThemeTintAlt>
+            <Theme name="red">
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/core/introduction">
@@ -758,13 +752,13 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
                   </CodeInline>
                 </Link>
-                &nbsp;is a style library that expands on the React Native style API with
+                &nbsp; - a style library that expands on the React Native style API with
                 many features from CSS - all without any external dependency except for
                 React.
               </LI>
-            </ThemeTintAlt>
+            </Theme>
 
-            <ThemeTintAlt offset={2}>
+            <Theme name="green">
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
@@ -772,7 +766,7 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
                   </CodeInline>
                 </Link>{' '}
-                is an optimizing compiler that{' '}
+                - an optimizing compiler that{' '}
                 <Link
                   // @ts-ignore
                   fontSize="inherit"
@@ -783,9 +777,9 @@ const componentsIn = {
                 by hoisting objects and CSS at build-time, leaving behind flatter React
                 trees.
               </LI>
-            </ThemeTintAlt>
+            </Theme>
 
-            <ThemeTintAlt offset={3}>
+            <Theme name="blue">
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/components/stacks">
@@ -793,13 +787,11 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>tamagui</span>
                   </CodeInline>
                 </Link>{' '}
-                is a large universal component kit in styled and unstyled forms.
+                - a large universal component kit in styled and unstyled forms.
               </LI>
-            </ThemeTintAlt>
+            </Theme>
           </UL>
         </ThemeTintAlt>
-
-        <Separator o={0.5} mt="$8" />
       </YStack>
     )
   },
@@ -810,6 +802,30 @@ const componentsIn = {
     return (
       <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
         <>
+          <Link asChild href="/docs/intro/installation">
+            <Card
+              tag="a"
+              animation="quickest"
+              f={1}
+              y={0}
+              hoverStyle={{ y: -2, bg: '$backgroundHover' }}
+              pressStyle={{ y: 2, bg: '$color2' }}
+            >
+              <Card.Header gap="$2">
+                <H4 size="$4" color="$color8">
+                  Install
+                </H4>
+                <Paragraph size="$6" color="$color9">
+                  Set up an app.
+                </Paragraph>
+              </Card.Header>
+
+              <Card.Footer>
+                <ChevronRight pos="absolute" b="$4" r="$4" color="$color11" />
+              </Card.Footer>
+            </Card>
+          </Link>
+
           <Card f={1}>
             <Card.Header gap="$2">
               <H4 size="$4" color="$color9">
@@ -845,30 +861,6 @@ const componentsIn = {
             </Card.Footer>
           </Card>
         </>
-
-        <Link asChild href="/docs/intro/installation">
-          <Card
-            tag="a"
-            animation="quickest"
-            f={1}
-            y={0}
-            hoverStyle={{ y: -2, bg: '$backgroundHover' }}
-            pressStyle={{ y: 2, bg: '$color2' }}
-          >
-            <Card.Header gap="$2">
-              <H4 size="$4" color="$color8">
-                Install
-              </H4>
-              <Paragraph size="$6" color="$color9">
-                Set up an app.
-              </Paragraph>
-            </Card.Header>
-
-            <Card.Footer>
-              <ChevronRight pos="absolute" b="$4" r="$4" color="$color11" />
-            </Card.Footer>
-          </Card>
-        </Link>
       </XStack>
     )
   },

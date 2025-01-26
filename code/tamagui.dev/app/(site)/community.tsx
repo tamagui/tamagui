@@ -182,7 +182,7 @@ export default function Community() {
               />
 
               <StarterRepoCard
-                url="https://github.com/tamagui/tamagui/tree/master/apps/site"
+                url="https://github.com/tamagui/tamagui/tree/main/apps/site"
                 name="tamagui.dev"
                 author="nate"
               />

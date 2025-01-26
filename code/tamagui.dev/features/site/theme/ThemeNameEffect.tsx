@@ -1,40 +1,77 @@
-import { memo, useLayoutEffect, useState } from 'react'
-import type { ColorTokens } from 'tamagui'
-import { YStack, isClient, useDidFinishSSR, useTheme } from 'tamagui'
+import { ThemeTint, useTint } from '@tamagui/logo'
+import { memo, useEffect, useState } from 'react'
+import type { ColorTokens, ThemeName } from 'tamagui'
+import { YStack, isClient, useDidFinishSSR, useTheme, useThemeName } from 'tamagui'
 
-export const ThemeNameEffect = memo(
-  ({ colorKey = '$color1' }: { colorKey?: ColorTokens }) => {
-    const isHydrated = useDidFinishSSR()
-    const theme = useTheme()
-    const [isActive, setIsActive] = useState(false)
+type Props = { colorKey?: ColorTokens; theme?: ThemeName | null; children?: any }
 
-    const color = theme[colorKey]?.val
+export const ThemeNameEffect = memo((props: Props) => {
+  const Tint = useTint()
 
-    if (isClient) {
-      useLayoutEffect(() => {
-        if (!isHydrated) return
-        if (!isActive) return
-        document.querySelector('#theme-color')?.setAttribute('content', color)
-        document.body.style.setProperty('background-color', color, 'important')
-      }, [isHydrated, isActive, color])
+  useEffect(() => {
+    if (!props.theme) {
+      Tint.setTintIndex(3)
+    } else {
+      Tint.setTintIndex(Tint.tints.findIndex((x) => x === props.theme))
     }
+  }, [props.theme])
 
-    return (
-      <>
-        <YStack
-          id="theme-name-effect"
-          ref={() => {
-            setIsActive(true)
-          }}
-        />
-        <style>
-          {`
+  return (
+    <ThemeTint>
+      <Inner {...props} />
+      {props.children}
+    </ThemeTint>
+  )
+})
+
+const Inner = ({ colorKey = '$color1', theme: ssrTheme }: Props) => {
+  const isHydrated = useDidFinishSSR()
+  const theme = useTheme()
+  const themeName = useThemeName()
+  const [isActive, setIsActive] = useState(false)
+
+  const color = theme[colorKey]?.val
+
+  if (isClient) {
+    useEffect(() => {
+      if (!isHydrated) return
+      if (!isActive) return
+      document.querySelector('#theme-color')?.setAttribute('content', color)
+      // document.body.style.setProperty('background-color', color, 'important')
+    }, [isHydrated, isActive, color])
+  }
+
+  return (
+    <>
+      <YStack
+        id={`theme-name-effect-${ssrTheme}`}
+        ref={() => {
+          setIsActive(true)
+        }}
+      />
+      <style>
+        {ssrTheme
+          ? `
+body:has(#theme-name-effect-red) {
+  background: var(--red${colorKey.replace('$color', '')}) !important;
+}
+body:has(#theme-name-effect-green) {
+  background: var(--green${colorKey.replace('$color', '')}) !important;
+}
+body:has(#theme-name-effect-blue) {
+  background: var(--blue${colorKey.replace('$color', '')}) !important;
+}
+  
+
+`
+          : `
 body {
   background: var(--${colorKey.slice(1)}) !important;
 }
+
+
 `}
-        </style>
-      </>
-    )
-  }
-)
+      </style>
+    </>
+  )
+}

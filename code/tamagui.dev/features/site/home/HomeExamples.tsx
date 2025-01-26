@@ -1,12 +1,13 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import { Button, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
+import { Button, Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { IconStack } from './IconStack'
+import { Theme } from 'tamagui'
 
 const defaultExample = {
   input: {
@@ -180,10 +181,20 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           maw="100%"
         >
           <XStack px="$4" fs={0} gap="$4">
-            <Button disabled size="$2" fontSize="$4" px="$4">
-              {title}
-            </Button>
-            <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
+            <Theme name="accent">
+              <Heading
+                bg="$color1"
+                color="$color12"
+                py="$1"
+                size="$5"
+                px="$4"
+                br="$4"
+                elevation={3}
+              >
+                {title}
+              </Heading>
+            </Theme>
+            <XGroup size="$2" bordered>
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button

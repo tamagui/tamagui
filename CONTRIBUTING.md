@@ -79,19 +79,6 @@ yarn watch
 
 **Note**: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors do not block anything.
 
-### Bugs and Fixing them
-
-To report unexpected behavior, such as components not rendering correctly, unresponsive components, incompatibilities with supported libraries etc.
-
-Thank you for taking the time to let the Tamagui team and community know about the issue.
-
-When making pull requests addressing bug, please make sure that the PR:
-
-- [ ] Gives context to the reviewer, step-by-step if possible on how to reproduce the issue before the code change, and what functionality is broken.
-- [ ] The solution does not regress another part of the code base.
-- [ ] The solution is current with `master` branch.
-- [ ] The solution should have tests (if needed)
-
 ### Testing
 
 It's easiest to use the sandbox project to test and develop things for web:
