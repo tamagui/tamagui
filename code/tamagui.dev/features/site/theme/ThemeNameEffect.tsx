@@ -24,15 +24,13 @@ export const ThemeNameEffect = memo((props: Props) => {
   )
 })
 
-const Inner = ({ colorKey = '$color1' }: Props) => {
+const Inner = ({ colorKey = '$color1', theme: ssrTheme }: Props) => {
   const isHydrated = useDidFinishSSR()
   const theme = useTheme()
   const themeName = useThemeName()
   const [isActive, setIsActive] = useState(false)
 
   const color = theme[colorKey]?.val
-
-  console.info(`theme`, themeName, color, colorKey)
 
   if (isClient) {
     useEffect(() => {
@@ -46,16 +44,32 @@ const Inner = ({ colorKey = '$color1' }: Props) => {
   return (
     <>
       <YStack
-        id={`theme-name-effect`}
+        id={`theme-name-effect-${ssrTheme}`}
         ref={() => {
           setIsActive(true)
         }}
       />
       <style>
-        {`
-body {
-background: var(--${colorKey.slice(1)}) !important;
+        {ssrTheme
+          ? `
+body:has(#theme-name-effect-red) {
+  background: var(--red${colorKey.replace('$color', '')}) !important;
 }
+body:has(#theme-name-effect-green) {
+  background: var(--green${colorKey.replace('$color', '')}) !important;
+}
+body:has(#theme-name-effect-blue) {
+  background: var(--blue${colorKey.replace('$color', '')}) !important;
+}
+  
+
+`
+          : `
+body {
+  background: var(--${colorKey.slice(1)}) !important;
+}
+
+
 `}
       </style>
     </>

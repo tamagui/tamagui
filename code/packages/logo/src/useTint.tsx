@@ -1,15 +1,14 @@
 import React from 'react'
 import type { JSX } from 'react/jsx-runtime'
 import type { ThemeName, ThemeProps } from 'tamagui'
-import { Theme } from 'tamagui'
+import { Theme, useDidFinishSSR } from 'tamagui'
 import { getTints, setNextTintFamily, useTints } from './tints'
+import { usePathname } from 'one'
 
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
 // const tint = tintVal ? +tintVal 0
-export const initialTint = 3
-
-let current = initialTint
+let current = 3
 
 const listeners = new Set<Function>()
 
@@ -50,10 +49,32 @@ export const useTint = (
     lunar: string[]
   }
 } => {
+  const pathname = usePathname()
+  const section =
+    pathname.startsWith('/docs/core') ||
+    pathname === '/docs/intro/introduction' ||
+    pathname === '/docs/intro/installation'
+      ? 'core'
+      : pathname.startsWith('/ui')
+        ? 'ui'
+        : pathname.startsWith('/docs/intro')
+          ? 'compile'
+          : null
+
+  const hydrated = useDidFinishSSR()
+
+  let initial = current
+  if (section) {
+    initial = section === 'compile' ? 5 : section === 'core' ? 4 : 6
+    if (!hydrated) {
+      current = initial
+    }
+  }
+
   const index = React.useSyncExternalStore(
     onTintChange,
     () => current,
-    () => initialTint
+    () => initial
   )
   const tintsContext = useTints()
   const { tints } = tintsContext

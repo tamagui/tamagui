@@ -82,13 +82,13 @@ async function run() {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on master
+    // ensure we are on main
     if (!canary) {
-      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
-        throw new Error(`Not on master`)
+      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'main') {
+        throw new Error(`Not on main`)
       }
       if (!dirty && !rePublish && !finish) {
-        await spawnify(`git pull --rebase origin master`)
+        await spawnify(`git pull --rebase origin main`)
       }
     }
 

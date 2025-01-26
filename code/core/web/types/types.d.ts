@@ -415,6 +415,8 @@ export interface GenericTamaguiSettings {
      * to the actual browser dimensions on initial load. This is only useful for client-only
      * apps.
      *
+     * @default false
+     *
      */
     disableSSR?: boolean;
     /**

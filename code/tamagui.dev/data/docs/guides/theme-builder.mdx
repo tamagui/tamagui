@@ -459,15 +459,3 @@ This is the full API, minus some optional extra props that each function takes. 
   },
 }
 ```
-
-#### Complete Example
-
-To get a better idea of a complete theme suite, check out [the source for the `@tamagui/themes` package](https://github.com/tamagui/tamagui/blob/master/packages/themes/src/themes-new.ts). This is the code that produces the themes for this site. It handles a variety of more complex use cases:
-
-- Adding multiple levels of themes, like `light_orange`, `light_subtle`, and `light_orange_subtle`.
-- Adding component themes like `light_Button`, `light_orange_Button`, and `light_orange_subtle_Button`.
-- Making the base (`light` and `dark`) themes have extra properties that are a superset of their children.
-- Creating and uses custom masks using `combineMasks` and `createMask`.
-- Diverging templates between light and dark by using the optional array syntax.
-- Passing options to some masks to "skip" changing certain values in the templates.
-- Using `avoidNestingWithin` to prevent combinations of sub-themes.

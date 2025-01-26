@@ -2,7 +2,7 @@ name: Test Tamagui Expo Router Setup
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
     branches: ["*"]
   workflow_dispatch:
@@ -12,21 +12,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Install
+        uses: ./.github/actions/install
         with:
-          node-version: "20"
+          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Create Tamagui project
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: dlx create-tamagui@latest --template expo-router my-tamagui-app
+        run: ./node_modules/.bin/create-tamagui --template expo-router my-tamagui-app
         env:
           IS_TEST: true
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
-          COREPACK_ENABLE_STRICT: false
 
       - name: Start Expo project and wait for Metro bundler
         working-directory: ./my-tamagui-app

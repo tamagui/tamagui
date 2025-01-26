@@ -1,6 +1,5 @@
 import type { JSX } from "react/jsx-runtime";
 import type { ThemeName, ThemeProps } from "tamagui";
-export declare const initialTint = 3;
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
 export declare const setTintIndex: (next: number) => void;
 export declare const useTint: (altOffset?: number) => {
