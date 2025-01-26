@@ -31,10 +31,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.123.3"
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3"
+    "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

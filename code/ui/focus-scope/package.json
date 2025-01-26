@@ -34,12 +34,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.123.3",
-    "@tamagui/start-transition": "1.123.3",
-    "@tamagui/use-event": "1.123.3"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/start-transition": "workspace:*",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

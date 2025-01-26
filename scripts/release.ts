@@ -2,8 +2,7 @@ import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 import path from 'node:path'
-
-import fs, { writeJSON } from 'fs-extra'
+import fs, { writeJSON, ensureDir } from 'fs-extra'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
@@ -262,132 +261,40 @@ async function run() {
       }
     }
 
-    if (!finish && !rePublish && !skipPublish) {
-      const erroredPackages: { name: string }[] = []
+    if (!finish && !skipPublish) {
+      const tmpDir = `/tmp/tamagui-publish`
+      await ensureDir(tmpDir)
 
-      // publish with tag
-
+      // if all successful, re-tag as latest
       await pMap(
         packageJsons,
-        async (pkg) => {
-          const { cwd, name } = pkg
+        async ({ name, cwd }) => {
+          const publishOptions = [canary && `--tag canary`].filter(Boolean).join(' ')
 
-          console.info(`Publish ${name}`)
+          const absolutePath = `${tmpDir}/${name.replace('/', '_')}-package.tmp.tgz`
+          await spawnify(`yarn pack --out ${absolutePath}`, {
+            cwd,
+            avoidLog: true,
+          })
 
-          // check if already published first as its way faster for re-runs
-          let versionsOut = ''
-          try {
-            versionsOut = await spawnify(`npm view ${name} versions --json`, {
-              avoidLog: true,
-            })
-            const allVersions = JSON.parse(versionsOut.trim().replaceAll(`\n`, ''))
-            const latest = allVersions[allVersions.length - 1]
+          const publishCommand = [
+            'npm publish',
+            absolutePath, // produced by `yarn pack`
+            publishOptions,
+          ]
+            .filter(Boolean)
+            .join(' ')
 
-            if (latest === nextVersion) {
-              console.info(`Already published, skipping`)
-              return
-            }
-          } catch (err) {
-            if (`${err}`.includes(`404`)) {
-              // fails if never published before, ok
-            } else {
-              if (`${err}`.includes(`Unexpected token`)) {
-                console.info(`Bad JSON? ${versionsOut}`)
-              }
-              throw err
-            }
-          }
+          console.info(`Publishing ${name}: ${publishCommand}`)
 
-          try {
-            await spawnify(`npm publish --tag prepub --access public`, {
-              cwd,
-              avoidLog: true,
-            })
-            console.info(` 📢 pre-published ${name}`)
-          } catch (err: any) {
-            // @ts-ignore
-            if (err.includes(`403`)) {
-              console.info('Already published, skipping')
-              return
-            }
-            console.info(`Error publishing!`, `${err}`)
-          }
+          await spawnify(publishCommand, {
+            cwd: tmpDir,
+          }).catch((err) => console.error(err))
         },
         {
-          concurrency: 5,
+          concurrency: 15,
         }
       )
-
-      console.info(
-        `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`
-      )
-    }
-
-    if (!finish && !skipPublish) {
-      if (confirmFinalPublish) {
-        const { confirmed } = await prompts({
-          type: 'confirm',
-          name: 'confirmed',
-          message: 'Ready to publish?',
-        })
-        if (!confirmed) {
-          console.info(`Not confirmed, can re-run with --republish to try again`)
-          process.exit(0)
-        }
-      }
-    }
-
-    if (!finish) {
-      if (!rePublish) {
-        await sleep(4 * 1000)
-      }
-
-      if (rePublish) {
-        // if all successful, re-tag as latest
-        await pMap(
-          packageJsons,
-          async ({ name, cwd }) => {
-            const tag = canary ? ` --tag canary` : ''
-
-            console.info(`Publishing ${name}${tag}`)
-
-            try {
-              await spawnify(`npm publish${tag}`, {
-                cwd,
-              })
-            } catch (err) {
-              if (`${err}`.includes(`E403`)) {
-                // thats fine its already published
-              } else {
-                throw err
-              }
-            }
-
-            const distTag = canary ? 'canary' : 'latest'
-            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
-              cwd,
-            }).catch((err) => console.error(err))
-          },
-          {
-            concurrency: 15,
-          }
-        )
-      } else {
-        const distTag = canary ? 'canary' : 'latest'
-
-        // if all successful, re-tag as latest (try and be fast)
-        await pMap(
-          packageJsons,
-          async ({ name, cwd }) => {
-            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
-              cwd,
-            }).catch((err) => console.error(err))
-          },
-          {
-            concurrency: 20,
-          }
-        )
-      }
 
       console.info(`✅ Published\n`)
     }

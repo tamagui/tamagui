@@ -35,11 +35,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.123.3",
-    "@tamagui/web": "1.123.3"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

@@ -45,10 +45,10 @@
   },
   "dependencies": {
     "one": "1.1.412",
-    "tamagui": "1.123.3"
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "peerDependencies": {

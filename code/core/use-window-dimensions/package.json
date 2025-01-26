@@ -31,10 +31,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.123.3"
+    "@tamagui/constants": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"
   },
