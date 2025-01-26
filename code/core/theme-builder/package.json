@@ -32,11 +32,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/create-theme": "1.123.3",
+    "@tamagui/create-theme": "workspace:*",
     "color2k": "^2.0.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3"
+    "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

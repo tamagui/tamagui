@@ -36,18 +36,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.123.3",
-    "@tamagui/core": "1.123.3",
-    "@tamagui/create-context": "1.123.3",
-    "@tamagui/get-token": "1.123.3",
-    "@tamagui/helpers": "1.123.3",
-    "@tamagui/stacks": "1.123.3"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/stacks": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"
   },

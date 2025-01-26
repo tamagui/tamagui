@@ -34,14 +34,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.123.3",
-    "@tamagui/core": "1.123.3",
-    "@tamagui/helpers": "1.123.3",
-    "@tamagui/use-escape-keydown": "1.123.3",
-    "@tamagui/use-event": "1.123.3"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/use-escape-keydown": "workspace:*",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

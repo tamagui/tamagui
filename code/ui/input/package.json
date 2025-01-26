@@ -36,18 +36,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.123.3",
-    "@tamagui/focusable": "1.123.3",
-    "@tamagui/font-size": "1.123.3",
-    "@tamagui/get-button-sized": "1.123.3",
-    "@tamagui/helpers": "1.123.3",
-    "@tamagui/helpers-tamagui": "1.123.3",
-    "@tamagui/stacks": "1.123.3",
-    "@tamagui/text": "1.123.3",
-    "@tamagui/web": "1.123.3"
+    "@tamagui/core": "workspace:*",
+    "@tamagui/focusable": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
+    "@tamagui/get-button-sized": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/helpers-tamagui": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/text": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "vitest": "^3.0.2"
   },

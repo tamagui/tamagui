@@ -1,15 +1,10 @@
 {
-  "name": "@tamagui/radio-headless",
+  "name": "@tamagui/spacer",
   "version": "1.123.3",
-  "removeSideEffects": "true",
-  "sideEffects": [
-    "*.css"
-  ],
-  "source": "src/index.ts",
+  "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -23,37 +18,28 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/compose-refs": "workspace:*",
-    "@tamagui/constants": "workspace:*",
-    "@tamagui/create-context": "workspace:*",
-    "@tamagui/focusable": "workspace:*",
-    "@tamagui/helpers": "workspace:*",
-    "@tamagui/label": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-previous": "workspace:*"
-  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native": {
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
+      "react-native-import": "./dist/esm/index.native.js",
+      "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
   },
+  "dependencies": {
+    "@tamagui/web": "workspace:*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "^18.2.0 || ^19.0.0",
+    "react-native": "0.74.1"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
     "react": "*"
   }

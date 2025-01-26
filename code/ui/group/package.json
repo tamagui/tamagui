@@ -36,14 +36,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.123.3",
-    "@tamagui/create-context": "1.123.3",
-    "@tamagui/helpers": "1.123.3",
-    "@tamagui/stacks": "1.123.3",
-    "@tamagui/use-controllable-state": "1.123.3"
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

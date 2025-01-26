@@ -34,13 +34,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.123.3"
+    "@tamagui/core": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

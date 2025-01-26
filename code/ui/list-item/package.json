@@ -36,17 +36,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/font-size": "1.123.3",
-    "@tamagui/get-font-sized": "1.123.3",
-    "@tamagui/get-token": "1.123.3",
-    "@tamagui/helpers": "1.123.3",
-    "@tamagui/helpers-tamagui": "1.123.3",
-    "@tamagui/stacks": "1.123.3",
-    "@tamagui/text": "1.123.3",
-    "@tamagui/web": "1.123.3"
+    "@tamagui/font-size": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/helpers-tamagui": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/text": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.3",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {
