@@ -207,7 +207,9 @@ export const settings = {
   allowedStyleValues: 'somewhat-strict-web',
   themeClassNameOnRoot: true,
   onlyAllowShorthands: true,
-  maxDarkLightNesting: 1,
+  // allow two inverses (tooltips, etc)
+  // TODO on inverse theme changes
+  maxDarkLightNesting: 2,
 } satisfies CreateTamaguiProps['settings']
 
 export const defaultConfig = {
