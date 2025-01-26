@@ -1,4 +1,4 @@
-import { LogoIcon } from '@tamagui/logo'
+import { LogoIcon } from '@tamagui/logo/icon'
 import { Square } from 'tamagui'
 
 export function AnimationsTimingDemo() {
