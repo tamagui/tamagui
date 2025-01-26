@@ -70,29 +70,23 @@ export const compilationCode = [
   {
     name: 'Styles',
     input: {
-      description: 'A powerful `styled` constructor, inline props, shorthands and more.',
+      description: 'Use inline props or the `styled` function:',
       examples: [
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { View } from '@tamagui/core'
+          code: `import { View, Text, styled } from '@tamagui/core'
 import { Heading } from './Heading'
 
 const App = (props) => (
-  <View px="$2" w={550} $gtSm={{ px: '$6' }}>
+  <View px={10} w={550} $gtSm={{ px: 30 }}>
     <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum.</Heading>
   </View>
-)`,
-        },
+)
 
-        {
-          name: 'heading.tsx',
-          language: 'tsx',
-          code: `import { Text, styled } from '@tamagui/core'
-
-export const Heading = styled(Text, {
+const Heading = styled(Text, {
   tag: 'h1',
-  color: '$color',
+  color: 'green',
   backgroundColor: '$background',
 
   variants: {
@@ -107,21 +101,6 @@ export const Heading = styled(Text, {
   },
 })
 `,
-        },
-
-        {
-          name: 'tamagui.config.ts',
-          language: 'tsx',
-          code: `export default createTamagui({
-  shorthands: {
-    px: 'paddingHorizontal',
-    w: 'width',
-    c: 'color',
-    bg: 'backgroundColor',
-    fs: 'fontSize',
-  },
-  // ...the rest of your configuration
-})`,
         },
       ],
     },

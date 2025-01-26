@@ -33,9 +33,10 @@ const HeadAnchor = styled(Paragraph, {
   px: '$3',
   py: '$3',
   cursor: 'pointer',
-  size: '$2',
+  size: '$4',
   color: '$color11',
   tabIndex: -1,
+  letterSpacing: -1,
 
   hoverStyle: {
     color: '$color',
@@ -88,7 +89,19 @@ export const HeaderLinks = (props: HeaderProps) => {
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
-          Docs
+          Core
+        </HeadAnchor>
+      </Link>
+
+      <Link asChild href="/docs/intro/compiler-install">
+        <HeadAnchor
+          // half={forceShowAllLinks}
+          grid={forceShowAllLinks}
+          $sm={{
+            display: forceShowAllLinks ? 'flex' : 'none',
+          }}
+        >
+          Compile
         </HeadAnchor>
       </Link>
 
@@ -210,10 +223,9 @@ export const HeaderLinks = (props: HeaderProps) => {
         <SlidingPopover>
           <Popover.Trigger asChild="except-style">
             <XStack
-              gap="$2"
               br="$10"
-              px="$2"
-              height={44}
+              px="$1"
+              height={40}
               ai="center"
               bw={1}
               bc="transparent"
@@ -228,7 +240,7 @@ export const HeaderLinks = (props: HeaderProps) => {
                   href="/takeout"
                   name="Takeout"
                   description="starter kit"
-                  icon={<TakeoutIcon scale={0.9} />}
+                  icon={<TakeoutIcon scale={0.8} />}
                 />
               </SlidingPopoverTrigger>
 
@@ -240,8 +252,8 @@ export const HeaderLinks = (props: HeaderProps) => {
                   name="Bento"
                   description="starter kit"
                   icon={
-                    <YStack y={1}>
-                      <BentoIcon scale={0.9} />
+                    <YStack>
+                      <BentoIcon scale={0.8} />
                     </YStack>
                   }
                 />
@@ -372,6 +384,7 @@ const CTAHeaderLink = ({
       <HeadAnchor
         grid={forceShowAllLinks}
         fontSize={24}
+        mx={-2}
         $sm={{
           display: 'none',
         }}

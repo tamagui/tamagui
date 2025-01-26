@@ -1,21 +1,92 @@
 ---
 title: Configuration
-description: Custom themes, tokens, shorthands, and media queries.
+description: Set up media queries, tokens, themes, and more.
 ---
 
-All Tamagui configuration is optional, but there are many useful settings accessible with `createTamagui`.
-To use it, create a `tamagui.config.ts` somewhere in your app. In general, you don't want to import this file from
-anywhere else but your root layout, where you'll pass it to `TamaguiProvider`. This avoids circular dependencies that can mess up hot reloading.
+You can set up as much or little of `@tamagui/core` as you like, and just use it out of the box:
+
+```tsx
+import { View, Text, styled } from '@tamagui/core'
+
+export default () => (
+  <View width={200} height={200} backgroundColor="rgba(0,0,0,0.2)">
+    <Text color="#f2f2f2" fontSize={24}>
+      Tamagui can optimize this to div + span or View + Text on React Native.
+    </Text>
+  </View>
+)
+```
+
+Create a `tamagui.config.ts` near the root of your app, and only import it to pass it to your [TamaguiProvider](#tamaguiprovider) near the root of your app. This prevents circular import issues. You can get your config from anywhere with `getConfig`. Here's a simple example of a configuration:
+
+A very simple `@tamagui/core` could look like this:
+
+```tsx fileName=tamagui.config.ts
+import { createTamagui, getConfig } from '@tamagui/core'
+
+export const config = createTamagui({
+  // act like CSS variables at your root
+  tokens: {
+    // width="$sm"
+    size: { sm: 8, md: 12, lg: 20 },
+    // margin="$-sm"
+    space: { '-sm': 8 },
+    // radius="$none"
+    radius: { none: 0, sm: 3 },
+    color: { white: '#fff', black: '#000' },
+  },
+
+  themes: {
+    light: {
+      bg: '#f2f2f2',
+      color: '#fff',
+    },
+    dark: {
+      bg: '#111',
+      color: '#000',
+    },
+  },
+
+  // media query definitions can be used to style,
+  // but also can be used with "groups" to do container queries by size:
+  media: {
+    sm: { maxWidth: 860 },
+    gtSm: { minWidth: 860 + 1 },
+    short: { maxHeight: 820 },
+    hoverNone: { hover: 'none' },
+    pointerCoarse: { pointer: 'coarse' },
+  },
+
+  shorthands: {
+    // <View px={20} />
+    px: 'paddingHorizontal',
+  },
+
+  settings: {
+    disableSSR: true, // for client-side apps gains a bit of performance
+    allowedStyleValues: 'somewhat-strict-web', // if targeting only web
+  },
+})
+
+// in other files use this:
+console.log(`config is`, getConfig())
+
+// get typescript types on @tamagui/core imports:
+type AppConfig = typeof config
+declare module '@tamagui/core' {
+  interface TamaguiCustomConfig extends AppConfig {}
+}
+```
 
 <Notice theme="green">
-  In this guide we import everything from `tamagui`, but if you are only using the lower-level
-`@tamagui/core`, you'll want to import from that instead.
+  In this guide we import everything from `@tamagui/core`, but if you end up using the `tamagui` UI kit, you can just
+  import everything from there instead.
 </Notice>
 
-## Quick Start
+### Quick Start
 
-We made `@tamagui/config` to make it easy to get started. It comes with a
-recommended default configuration and themes, as well as an easy way to create themes with `createThemes`:
+We find most people are best off importing at least some of the default configuration we provide.
+If you use it out of the box, you get a nice set of defaults, and some mostly tailwind-aligned shorthands and media queries. It also comes with and easy way to generate themes with `createThemes`:
 
 ```bash
 npm install @tamagui/config
@@ -23,7 +94,7 @@ npm install @tamagui/config
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui' // or '@tamagui/core'
+import { createTamagui } from '@tamagui/core'
 
 export const config = createTamagui(defaultConfig)
 

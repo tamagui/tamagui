@@ -1,5 +1,6 @@
 v2
 
+  - @tamagui/static and all the plugins => @tamagui/compiler package
   - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package

@@ -1,16 +1,31 @@
 ---
-title: Install the Compiler
+title: Tamagui Compiler
 description: Adding the compiler to your apps
 ---
 
-For more background read the [Compiler About](/docs/intro/why-a-compiler) page,
-for performance see [Benchmarks](/docs/intro/benchmarks).
+<IntroParagraph>
+  The Tamagui Compiler significantly improves performance of both web and native applications
+  through partial analysis and view flattening.
+</IntroParagraph>
 
-It's important to note the compiler is optional, and it's much easier to get
-started by building your app out before you commit to the setup cost.
+See the [Benchmarks](/docs/intro/benchmarks). Note that the Tamagui Compiler is optional.
+It's much easier to start without setting it up, and add it once you're ready for production.
 
-The compiler generates built versions of your components and config into a
+The Compiler is a babel plugin that analyzes JSX and `styled` calls, and attempts to parse out all props and 
+values using some logic for Babel, and the Node `vm` package to pass in context and analyze expressions.
+
+The end result is plain old `div` (and other tag) output on web, or on native, outputting plain old React Native `View` and `Text`:
+
+<br />
+<br />
+<TamaguiExamplesCode />
+
+<Notice>
+  The compiler generates built versions of your components and config into a
 `.tamagui` directory. You'll want to add that directory to your `.gitignore`.
+</Notice>
+
+We have plugins for a variety of bundlers:
 
 ### Webpack
 
