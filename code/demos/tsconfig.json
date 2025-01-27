@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "moduleResolution": "bundler",
+    "module": "Preserve",
     "composite": true
   },
   "references": [

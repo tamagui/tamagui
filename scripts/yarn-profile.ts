@@ -53,13 +53,17 @@ const main = async (name: string) => {
   })
 
   if (profile.applied) {
-    // clear things
-    exec(
-      'git reset HEAD -- package.json && git checkout -- package.json && git reset HEAD -- yarn.lock && git checkout -- yarn.lock',
-      (error, stdout, stderr) => {
-        if (error) console.error(`err2`, error)
-      }
-    )
+    try {
+      // clear things
+      exec(
+        'git reset HEAD -- package.json && git checkout -- package.json && git reset HEAD -- yarn.lock && git checkout -- yarn.lock',
+        (error, stdout, stderr) => {
+          if (error) console.error(`err2`, error)
+        }
+      )
+    } catch {
+      // not in git probably in ci
+    }
   }
 }
 

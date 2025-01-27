@@ -1,7 +1,7 @@
-import React, { startTransition, useEffect } from 'react'
-
-import { allNotPending } from './docsRoutes'
+import { getDocsSection } from '@tamagui/logo'
 import { usePathname, useRouter } from 'one'
+import React, { startTransition, useEffect } from 'react'
+import { allNotPending } from './docsRoutes'
 
 export const useDocsMenu = () => {
   const [open, setOpen] = React.useState(false)
@@ -26,16 +26,7 @@ export const useDocsMenu = () => {
     next = allNotPending[++nextIndex]
   }
 
-  const section =
-    pathname.startsWith('/docs/core') ||
-    pathname === '/docs/intro/introduction' ||
-    pathname === '/docs/intro/installation'
-      ? 'core'
-      : pathname.startsWith('/ui')
-        ? 'ui'
-        : pathname.startsWith('/docs/intro')
-          ? 'compile'
-          : null
+  const section = getDocsSection(pathname)
 
   // on route change close menu
   useEffect(() => {
