@@ -193,7 +193,10 @@ const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
     return <ButtonFrame data-disable-theme {...buttonProps} ref={ref} />
   }
 )
-
+/**
+ * @summary A Button is a clickable element that can be used to trigger actions such as submitting forms, navigating to other pages, or performing other actions.
+ * @see — Docs https://tamagui.dev/ui/button
+ */
 const Button = withStaticProperties(ButtonComponent, {
   Text: ButtonText,
   Icon: ButtonIcon,
