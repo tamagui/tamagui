@@ -299,7 +299,7 @@ export function createSimpleThemeBuilder<
 function getSchemePalette(colors: SinglePalette): SchemePalette {
   return {
     light: colors,
-    dark: colors.toReversed(),
+    dark: [...colors].reverse(),
   }
 }
 
