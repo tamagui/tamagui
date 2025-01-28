@@ -112,7 +112,7 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | "icon" | keyof ThemeableProps | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+}>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | "title" | "icon" | keyof ThemeableProps | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
@@ -172,7 +172,7 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | "icon" | keyof ThemeableProps | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+}>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | "title" | "icon" | keyof ThemeableProps | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
@@ -293,7 +293,7 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         size?: SizeTokens | undefined;
         unstyled?: boolean | undefined;
         active?: boolean | undefined;
-    }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | "icon" | keyof ThemeableProps | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
+    }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | "title" | "icon" | keyof ThemeableProps | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
         /**
          * add icon before, passes color and size automatically if Component
          */

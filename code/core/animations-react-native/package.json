@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-react-native",
-  "version": "1.123.3",
+  "version": "1.123.4",
   "source": "src/index.ts",
   "removeSideEffects": true,
   "sideEffects": [
@@ -29,12 +29,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "workspace:*",
-    "@tamagui/use-presence": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/constants": "1.123.4",
+    "@tamagui/use-presence": "1.123.4",
+    "@tamagui/web": "1.123.4"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*",
+    "@tamagui/build": "1.123.4",
     "react": "*",
     "react-native": "^0.76.5"
   },

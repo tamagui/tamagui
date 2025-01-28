@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "1.123.3",
+  "version": "1.123.4",
   "sideEffects": [
     "*.css"
   ],
@@ -36,11 +36,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "@tamagui/stacks": "workspace:*"
+    "@tamagui/core": "1.123.4",
+    "@tamagui/stacks": "1.123.4"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*",
+    "@tamagui/build": "1.123.4",
     "expo-linear-gradient": "~14.0.1",
     "react": "*"
   },

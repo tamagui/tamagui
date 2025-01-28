@@ -2,6 +2,7 @@ import type { JSX } from "react/jsx-runtime";
 import type { ThemeName, ThemeProps } from "tamagui";
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
 export declare const setTintIndex: (next: number) => void;
+export declare function getDocsSection(pathname: string): "compile" | "ui" | "core" | null;
 export declare const useTint: (altOffset?: number) => {
 	tints: ThemeName[];
 	tintIndex: number;

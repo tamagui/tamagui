@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web",
-  "version": "1.123.3",
+  "version": "1.123.4",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -30,12 +30,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/react-native-use-pressable": "workspace:*",
-    "@tamagui/react-native-use-responder-events": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/react-native-use-pressable": "1.123.4",
+    "@tamagui/react-native-use-responder-events": "1.123.4",
+    "@tamagui/web": "1.123.4"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*",
+    "@tamagui/build": "1.123.4",
     "react": "*"
   },
   "peerDependencies": {

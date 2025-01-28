@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/aria-hidden",
-  "version": "1.123.3",
+  "version": "1.123.4",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -34,7 +34,7 @@
     "aria-hidden": "^1.1.3"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*",
+    "@tamagui/build": "1.123.4",
     "react": "*"
   },
   "publishConfig": {

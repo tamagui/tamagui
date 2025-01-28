@@ -144,7 +144,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     importantForAccessibility?: ("auto" | "yes" | "no" | "no-hide-descendants") | undefined | undefined;
     'aria-hidden'?: boolean | undefined | undefined;
     'aria-modal'?: boolean | undefined | undefined;
-    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "grid" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
+    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "button" | "dialog" | "figure" | "form" | "img" | "main" | "menu" | "meter" | "option" | "summary" | "table" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "grid" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined | undefined;
     'aria-labelledby'?: string | undefined | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined | undefined;
@@ -166,7 +166,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     } | undefined;
     themeShallow?: boolean | undefined;
     themeInverse?: boolean | undefined;
-    tag?: (string & {}) | "address" | "article" | "aside" | "footer" | "header" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "main" | "nav" | "section" | "search" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "figure" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "a" | "abbr" | "p" | "b" | "abbr" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "sup" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "img" | "map" | "track" | "video" | "embed" | "object" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "table" | "thead" | "tbody" | "td" | "th" | "tr" | "button" | "datalist" | "fieldset" | "form" | "input" | "label" | "legend" | "meter" | "optgroup" | "option" | "output" | "progress" | "select" | "textarea" | "details" | "dialog" | "menu" | "summary" | "template" | undefined;
+    tag?: (keyof HTMLElementTagNameMap | (string & {})) | undefined;
     group?: (import("@tamagui/core").GroupNames | boolean) | undefined;
     untilMeasured?: "hide" | "show" | undefined;
     componentName?: string | undefined;
