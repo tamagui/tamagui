@@ -32,10 +32,10 @@
     "lint:fix": "biome check --write src"
   },
   "dependencies": {
-    "@tamagui/core": "1.123.4"
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

@@ -36,26 +36,26 @@
     }
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.123.4",
-    "@tamagui/compose-refs": "1.123.4",
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/create-context": "1.123.4",
-    "@tamagui/dismissable": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/polyfill-dev": "1.123.4",
-    "@tamagui/portal": "1.123.4",
-    "@tamagui/stacks": "1.123.4",
-    "@tamagui/start-transition": "1.123.4",
-    "@tamagui/text": "1.123.4",
-    "@tamagui/use-controllable-state": "1.123.4",
-    "@tamagui/visually-hidden": "1.123.4"
+    "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/dismissable": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
+    "@tamagui/portal": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/start-transition": "workspace:*",
+    "@tamagui/text": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/visually-hidden": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "burnt": "^0.12.2",
     "react": "*"
   },

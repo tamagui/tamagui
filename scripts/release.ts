@@ -167,11 +167,14 @@ async function run() {
         })
       )
     }
+
+    // ensure right user
     if (tamaguiGitUser) {
       await spawnify(`git config --global user.name 'Tamagui'`)
       await spawnify(`git config --global user.email 'tamagui@users.noreply.github.com`)
     }
 
+    // get version
     if (!finish) {
       const answer =
         isCI || skipVersion
@@ -193,12 +196,14 @@ async function run() {
       await spawnify(`yarn install`)
     }
 
+    // build from fresh
     if (!skipBuild && !finish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
       await spawnify(`yarn build:force`)
       await checkDistDirs()
     }
 
+    // run checks
     if (!finish) {
       console.info('run checks')
       if (!skipTest) {
@@ -206,6 +211,7 @@ async function run() {
       }
     }
 
+    // check clean git
     if (!dirty && !dryRun && !rePublish) {
       const out = await exec(`git status --porcelain`)
       if (out.stdout) {
@@ -213,28 +219,12 @@ async function run() {
       }
     }
 
+    // update version
     if (!skipVersion && !finish) {
       await Promise.all(
         allPackageJsons.map(async ({ json, path }) => {
           const next = { ...json }
-
           next.version = version
-
-          for (const field of [
-            'dependencies',
-            'devDependencies',
-            'optionalDependencies',
-            'peerDependencies',
-          ]) {
-            const nextDeps = next[field]
-            if (!nextDeps) continue
-            for (const depName in nextDeps) {
-              if (allPackageJsons.some((p) => p.name === depName)) {
-                nextDeps[depName] = version
-              }
-            }
-          }
-
           await writeJSON(path, next, { spaces: 2 })
         })
       )
@@ -265,7 +255,7 @@ async function run() {
       const tmpDir = `/tmp/tamagui-publish`
       await ensureDir(tmpDir)
 
-      // if all successful, re-tag as latest
+      // pack and publish
       await pMap(
         packageJsons,
         async ({ name, cwd }) => {

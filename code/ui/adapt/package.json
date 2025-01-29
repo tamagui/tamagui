@@ -31,13 +31,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/portal": "1.123.4"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/portal": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4"
+    "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

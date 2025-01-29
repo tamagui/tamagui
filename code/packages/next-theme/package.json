@@ -20,11 +20,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/use-event": "1.123.4"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "peerDependencies": {

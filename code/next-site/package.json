@@ -37,7 +37,7 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@playwright/test": "^1.49.1",
-    "@tamagui/build": "1.123.4",
-    "tamagui-loader": "1.123.4"
+    "@tamagui/build": "workspace:*",
+    "tamagui-loader": "workspace:*"
   }
 }

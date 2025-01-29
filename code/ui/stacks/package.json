@@ -36,11 +36,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.123.4"
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
-    "@tamagui/get-button-sized": "1.123.4",
+    "@tamagui/build": "workspace:*",
+    "@tamagui/get-button-sized": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

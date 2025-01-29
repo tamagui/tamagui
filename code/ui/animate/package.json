@@ -13,10 +13,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animate-presence": "1.123.4"
+    "@tamagui/animate-presence": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4"
+    "@tamagui/build": "workspace:*"
   },
   "scripts": {
     "build": "tamagui-build",

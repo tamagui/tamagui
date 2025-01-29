@@ -37,22 +37,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.123.4",
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/create-context": "1.123.4",
-    "@tamagui/focusable": "1.123.4",
-    "@tamagui/get-token": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/label": "1.123.4",
-    "@tamagui/radio-headless": "1.123.4",
-    "@tamagui/roving-focus": "1.123.4",
-    "@tamagui/stacks": "1.123.4",
-    "@tamagui/use-controllable-state": "1.123.4",
-    "@tamagui/use-previous": "1.123.4"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/focusable": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/label": "workspace:*",
+    "@tamagui/radio-headless": "workspace:*",
+    "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/use-previous": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

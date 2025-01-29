@@ -37,28 +37,28 @@
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.123.4",
-    "@tamagui/animate-presence": "1.123.4",
-    "@tamagui/animations-react-native": "1.123.4",
-    "@tamagui/compose-refs": "1.123.4",
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/create-context": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/portal": "1.123.4",
-    "@tamagui/remove-scroll": "1.123.4",
-    "@tamagui/scroll-view": "1.123.4",
-    "@tamagui/stacks": "1.123.4",
-    "@tamagui/use-constant": "1.123.4",
-    "@tamagui/use-controllable-state": "1.123.4",
-    "@tamagui/use-did-finish-ssr": "1.123.4",
-    "@tamagui/use-keyboard-visible": "1.123.4"
+    "@tamagui/adapt": "workspace:*",
+    "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/portal": "workspace:*",
+    "@tamagui/remove-scroll": "workspace:*",
+    "@tamagui/scroll-view": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/use-constant": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/use-did-finish-ssr": "workspace:*",
+    "@tamagui/use-keyboard-visible": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

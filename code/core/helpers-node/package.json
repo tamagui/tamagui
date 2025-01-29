@@ -16,10 +16,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/types": "1.123.4"
+    "@tamagui/types": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "fs-extra": "^11.2.0"
   },
   "publishConfig": {

@@ -19,10 +19,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/web": "1.123.4"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4"
+    "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

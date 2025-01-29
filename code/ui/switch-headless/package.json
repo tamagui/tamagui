@@ -36,17 +36,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.123.4",
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/label": "1.123.4",
-    "@tamagui/use-previous": "1.123.4"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/label": "workspace:*",
+    "@tamagui/use-previous": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"
   },

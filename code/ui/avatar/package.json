@@ -36,14 +36,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/image": "1.123.4",
-    "@tamagui/shapes": "1.123.4",
-    "@tamagui/text": "1.123.4"
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/image": "workspace:*",
+    "@tamagui/shapes": "workspace:*",
+    "@tamagui/text": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"
   },

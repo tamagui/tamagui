@@ -31,14 +31,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/normalize-css-color": "1.123.4",
-    "@tamagui/react-native-use-pressable": "1.123.4",
-    "@tamagui/react-native-use-responder-events": "1.123.4",
-    "@tamagui/simple-hash": "1.123.4",
-    "@tamagui/web": "1.123.4"
+    "@tamagui/normalize-css-color": "workspace:*",
+    "@tamagui/react-native-use-pressable": "workspace:*",
+    "@tamagui/react-native-use-responder-events": "workspace:*",
+    "@tamagui/simple-hash": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4"
+    "@tamagui/build": "workspace:*"
   },
   "license": "MIT",
   "tags": [

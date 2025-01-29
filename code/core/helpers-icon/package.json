@@ -20,14 +20,14 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "1.123.4"
+    "@tamagui/core": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",
     "react-native-svg": ">=12"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native-svg": "15.8.0"
   }

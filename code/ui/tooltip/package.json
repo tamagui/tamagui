@@ -37,24 +37,24 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.24",
-    "@tamagui/compose-refs": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/create-context": "1.123.4",
-    "@tamagui/floating": "1.123.4",
-    "@tamagui/get-token": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/polyfill-dev": "1.123.4",
-    "@tamagui/popover": "1.123.4",
-    "@tamagui/popper": "1.123.4",
-    "@tamagui/stacks": "1.123.4",
-    "@tamagui/text": "1.123.4",
-    "@tamagui/use-controllable-state": "1.123.4"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/floating": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
+    "@tamagui/popover": "workspace:*",
+    "@tamagui/popper": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/text": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"
   },

@@ -32,15 +32,15 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/stacks": "1.123.4",
-    "@tamagui/start-transition": "1.123.4",
-    "@tamagui/use-did-finish-ssr": "1.123.4",
-    "@tamagui/use-event": "1.123.4"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/start-transition": "workspace:*",
+    "@tamagui/use-did-finish-ssr": "workspace:*",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react-native": "^0.76.5"
   },
   "publishConfig": {

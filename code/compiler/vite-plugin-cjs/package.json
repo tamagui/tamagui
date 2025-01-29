@@ -8,7 +8,7 @@
     "build": "cp -r ../vite-plugin/dist . || true"
   },
   "dependencies": {
-    "@tamagui/vite-plugin": "1.123.4"
+    "@tamagui/vite-plugin": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

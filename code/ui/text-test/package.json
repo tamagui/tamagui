@@ -9,7 +9,7 @@
     "test": "TAMAGUI_TARGET=web vitest --config ../../packages/vite-plugin-internal/src/vite.config.ts --run"
   },
   "devDependencies": {
-    "@tamagui/text": "1.123.4",
+    "@tamagui/text": "workspace:*",
     "vitest": "^3.0.2"
   }
 }

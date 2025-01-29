@@ -14,7 +14,7 @@
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@swc/core": "^1.7.21",
-    "@tamagui/babel-plugin-fully-specified": "1.123.4",
+    "@tamagui/babel-plugin-fully-specified": "workspace:*",
     "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
     "esbuild": "^0.24.2",

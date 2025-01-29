@@ -24,7 +24,7 @@
   "devDependencies": {
     "@expo/package-manager": "^1.1.2",
     "@playwright/test": "^1.49.1",
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "@types/async-retry": "1.4.2",
     "@types/cross-spawn": "^6.0.2",
     "@types/node": "^22.1.0",

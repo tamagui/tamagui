@@ -26,13 +26,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/cubic-bezier-animator": "1.123.4",
-    "@tamagui/use-presence": "1.123.4",
-    "@tamagui/web": "1.123.4"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/cubic-bezier-animator": "workspace:*",
+    "@tamagui/use-presence": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-dom": "*"
   },

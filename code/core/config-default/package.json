@@ -15,12 +15,12 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animations-css": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/shorthands": "1.123.4"
+    "@tamagui/animations-css": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/shorthands": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4"
+    "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

@@ -26,10 +26,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.123.4"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react-native": "^0.76.5"
   },
   "peerDependencies": {
