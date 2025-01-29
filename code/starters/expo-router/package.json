@@ -21,7 +21,6 @@
     "@react-navigation/native": "^6.1.17",
     "@tamagui/config": "^1.123.4",
     "@tamagui/lucide-icons": "^1.123.4",
-    "@tamagui/toast": "^1.123.4",
     "babel-preset-expo": "^11.0.6",
     "burnt": "^0.12.2",
     "expo": "~51.0.32",
@@ -53,5 +52,8 @@
     "@types/react": "~18.2.79",
     "@types/react-native": "^0.73.0",
     "typescript": "^5.5.2"
+  },
+  "dependencies_backup": {
+    "@tamagui/toast": "^1.123.4"
   }
 }
