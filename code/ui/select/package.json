@@ -34,9 +34,9 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.26.24",
+    "@floating-ui/react": "^0.27.3",
     "@floating-ui/react-dom": "^2.1.2",
-    "@floating-ui/react-native": "^0.10.6",
+    "@floating-ui/react-native": "^0.10.7",
     "@tamagui/adapt": "workspace:*",
     "@tamagui/animate-presence": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",

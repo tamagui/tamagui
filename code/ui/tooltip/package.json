@@ -36,7 +36,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.26.24",
+    "@floating-ui/react": "^0.27.3",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
