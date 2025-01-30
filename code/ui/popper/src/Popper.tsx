@@ -270,21 +270,9 @@ export const PopperContent = React.forwardRef<
     usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
-  const contents = React.useMemo(() => {
-    return (
-      <PopperContentFrame
-        key="popper-content-frame"
-        data-placement={placement}
-        data-strategy={strategy}
-        contain="layout"
-        size={size}
-        {...rest}
-      />
-    )
-  }, [placement, strategy, props])
-
   const [needsMeasure, setNeedsMeasure] = React.useState(true)
-  React.useEffect(() => {
+
+  useIsomorphicLayoutEffect(() => {
     if (!enableAnimationForPositionChange) return
     if (x || y) {
       setNeedsMeasure(false)
@@ -320,7 +308,14 @@ export const PopperContent = React.forwardRef<
           }
         : {})}
     >
-      {contents}
+      <PopperContentFrame
+        key="popper-content-frame"
+        data-placement={placement}
+        data-strategy={strategy}
+        contain="layout"
+        size={size}
+        {...rest}
+      />
     </Stack>
   )
 })
