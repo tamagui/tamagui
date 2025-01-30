@@ -270,11 +270,10 @@ export const PopperContent = React.forwardRef<
     usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
-  const [needsMeasure, setNeedsMeasure] = React.useState(true)
+  const [needsMeasure, setNeedsMeasure] = React.useState(enableAnimationForPositionChange)
 
   useIsomorphicLayoutEffect(() => {
-    if (!enableAnimationForPositionChange) return
-    if (x || y) {
+    if (x && y) {
       setNeedsMeasure(false)
     }
   }, [enableAnimationForPositionChange, x, y])
@@ -293,21 +292,19 @@ export const PopperContent = React.forwardRef<
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animation: rest.animation,
-      animateOnly: needsMeasure ? ['none'] : rest.animateOnly,
+      animateOnly: needsMeasure ? [] : rest.animateOnly,
       animatePresence: false,
     }),
+    ...(x === 0 &&
+      y === 0 && {
+        opacity: 0,
+        animateOnly: [],
+      }),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
   return (
-    <Stack
-      {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
-      {...(x === 0 && y === 0
-        ? {
-            opacity: 0,
-          }
-        : {})}
-    >
+    <Stack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
       <PopperContentFrame
         key="popper-content-frame"
         data-placement={placement}
