@@ -360,7 +360,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
             </YStack>
           </YStack>
 
-          <YStack
+          {/* disable - bento-get has a bug atm */}
+          {/* <YStack
             pos="absolute"
             b="6%"
             r="$2"
@@ -416,7 +417,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 />
               </XStack>
             </Theme>
-          </YStack>
+          </YStack> */}
 
           <YStack
             className="ms300 ease-in all"

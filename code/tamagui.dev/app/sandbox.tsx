@@ -1,12 +1,23 @@
-import { styled, Theme, View } from '@tamagui/web'
+import { Theme } from '@tamagui/web'
+import { useEffect } from 'react'
 import { Button } from 'tamagui'
+import { NewPurchaseModal } from '../features/site/purchase/NewPurchaseModal'
+import { useTakeoutStore } from '../features/site/purchase/useTakeoutStore'
 
-export default function Sandbox() {
+export function Sandbox() {
+  const store = useTakeoutStore()
+
+  useEffect(() => {
+    store.showPurchase = true
+  }, [])
+
   return (
     <>
-      <Theme name="accent">
+      {/* <Theme name="accent">
         <Button>Hello</Button>
-      </Theme>
+      </Theme> */}
+
+      <NewPurchaseModal />
 
       {/* <Test
         animation="bouncy"
@@ -24,17 +35,3 @@ export default function Sandbox() {
     </>
   )
 }
-
-const Test = styled(View, {
-  width: 100,
-  height: 100,
-  backgroundColor: 'red',
-
-  $md: {
-    '$platform-web': {
-      position: 'fixed',
-      gridColumnGap: 12,
-      backgroundColor: 'green',
-    },
-  },
-})

@@ -3,7 +3,6 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
 import {
   Select as SelectFrame,
-  Stack,
   XStack,
   YStack,
   useProps,
