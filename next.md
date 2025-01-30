@@ -41,6 +41,8 @@ is this a bug? the is_static conditional is odd, maybe backward
 
 v3
 
+- perspective={1000} broken on web, it shouldnt be in transform()
+
 generic function to allow new syntaxes, eg flat mode
 
 ```tsx

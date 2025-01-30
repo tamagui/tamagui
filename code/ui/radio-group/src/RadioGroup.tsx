@@ -56,7 +56,7 @@ export const RadioGroupItemFrame = styled(ThemeableStack, {
 
         pressStyle: {
           borderColor: '$borderColor',
-          backgroundColor: '$backgroundColor',
+          backgroundColor: '$background',
         },
 
         focusVisibleStyle: {
