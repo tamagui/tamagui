@@ -10,33 +10,42 @@ import {
   Sheet,
   TooltipSimple,
   Unspaced,
+  View,
   XStack,
+  YStack,
 } from 'tamagui'
 import { SelectDemoItem } from './SelectDemo'
 
 export function DialogDemo() {
-  return <DialogInstance />
+  return (
+    <View gap="$4">
+      <DialogInstance />
+      <DialogInstance disableAdapt />
+    </View>
+  )
 }
 
-function DialogInstance() {
+function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>
-        <Button>Show Dialog</Button>
+        <Button>Show Dialog{disableAdapt ? ` (No Adapt)` : ''}</Button>
       </Dialog.Trigger>
 
-      <Adapt when="sm" platform="touch">
-        <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" gap="$4">
-            <Adapt.Contents />
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Adapt>
+      {!disableAdapt && (
+        <Adapt when="sm" platform="touch">
+          <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
+            <Sheet.Frame padding="$4" gap="$4">
+              <Adapt.Contents />
+            </Sheet.Frame>
+            <Sheet.Overlay
+              animation="lazy"
+              enterStyle={{ opacity: 0 }}
+              exitStyle={{ opacity: 0 }}
+            />
+          </Sheet>
+        </Adapt>
+      )}
 
       <Dialog.Portal>
         <Dialog.Overlay
