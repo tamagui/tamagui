@@ -30,6 +30,7 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/stacks": "workspace:*",
+    "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },
   "devDependencies": {
