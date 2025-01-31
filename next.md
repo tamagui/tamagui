@@ -1,5 +1,6 @@
 v2
 
+  - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - @tamagui/static and all the plugins => @tamagui/compiler package
   - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
@@ -40,6 +41,8 @@ is this a bug? the is_static conditional is odd, maybe backward
 ---
 
 v3
+
+- perspective={1000} broken on web, it shouldnt be in transform()
 
 generic function to allow new syntaxes, eg flat mode
 

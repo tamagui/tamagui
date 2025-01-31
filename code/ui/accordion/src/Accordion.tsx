@@ -4,13 +4,11 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
-import type { H3 } from '@tamagui/text'
 import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
-import { View, useEvent } from '@tamagui/web'
-import { createStyledContext, styled } from '@tamagui/web'
+import { View, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
@@ -443,8 +441,8 @@ AccordionItem.displayName = ITEM_NAME
 
 const HEADER_NAME = 'AccordionHeader'
 
-type AccordionHeaderElement = React.ElementRef<typeof H3>
-type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H3>
+type AccordionHeaderElement = React.ElementRef<typeof H1>
+type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H1>
 type AccordionHeaderProps = PrimitiveHeading3Props
 
 /**

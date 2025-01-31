@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image-next",
-  "version": "1.123.4",
+  "version": "1.123.5",
   "sideEffects": [
     "*.css"
   ],
@@ -36,11 +36,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/web": "1.123.4"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"
   },

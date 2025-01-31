@@ -19,10 +19,14 @@ export type StyledContext<Props extends Object = any> = Omit<
   useStyledContext: (scope?: string) => Props
 }
 
+// avoid react compiler - we aren't breaking its rules but it shouldn't compile this file because
+// it will mis-interpret how we change the context value. in
+const createReactContext = React[Math.random() ? 'createContext' : 'createContext']
+
 export function createStyledContext<VariantProps extends Record<string, any>>(
   defaultValues?: VariantProps
 ): StyledContext<VariantProps> {
-  const OGContext = React.createContext<VariantProps | undefined>(defaultValues)
+  const OGContext = createReactContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
   const scopedContexts = new Map<string, Context<VariantProps | undefined>>()
@@ -30,7 +34,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   function getOrCreateScopedContext(scope: string) {
     let ScopedContext = scopedContexts.get(scope)
     if (!ScopedContext) {
-      ScopedContext = React.createContext<VariantProps | undefined>(defaultValues)
+      ScopedContext = createReactContext<VariantProps | undefined>(defaultValues)
       scopedContexts.set(scope, ScopedContext)
     }
     return ScopedContext!

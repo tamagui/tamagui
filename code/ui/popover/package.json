@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.123.4",
+  "version": "1.123.5",
   "sideEffects": [
     "*.css"
   ],
@@ -36,32 +36,32 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.26.24",
-    "@tamagui/adapt": "1.123.4",
-    "@tamagui/animate": "1.123.4",
-    "@tamagui/aria-hidden": "1.123.4",
-    "@tamagui/compose-refs": "1.123.4",
-    "@tamagui/constants": "1.123.4",
-    "@tamagui/core": "1.123.4",
-    "@tamagui/dismissable": "1.123.4",
-    "@tamagui/floating": "1.123.4",
-    "@tamagui/focus-scope": "1.123.4",
-    "@tamagui/helpers": "1.123.4",
-    "@tamagui/polyfill-dev": "1.123.4",
-    "@tamagui/popper": "1.123.4",
-    "@tamagui/portal": "1.123.4",
-    "@tamagui/remove-scroll": "1.123.4",
-    "@tamagui/scroll-view": "1.123.4",
-    "@tamagui/sheet": "1.123.4",
-    "@tamagui/stacks": "1.123.4",
-    "@tamagui/use-controllable-state": "1.123.4",
+    "@floating-ui/react": "^0.27.3",
+    "@tamagui/adapt": "workspace:*",
+    "@tamagui/animate": "workspace:*",
+    "@tamagui/aria-hidden": "workspace:*",
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/dismissable": "workspace:*",
+    "@tamagui/floating": "workspace:*",
+    "@tamagui/focus-scope": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
+    "@tamagui/popper": "workspace:*",
+    "@tamagui/portal": "workspace:*",
+    "@tamagui/remove-scroll": "workspace:*",
+    "@tamagui/scroll-view": "workspace:*",
+    "@tamagui/sheet": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.123.4",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"
   },
