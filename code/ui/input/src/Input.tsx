@@ -117,7 +117,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
               case 'url':
                 return 'url'
               default:
-                return 'text'
+                return rest?.type ?? 'text'
             }
           })() satisfies HTMLInputTypeAttribute,
           inputMode: (() => {
