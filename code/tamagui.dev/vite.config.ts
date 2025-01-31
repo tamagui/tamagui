@@ -76,7 +76,7 @@ export default {
   },
 
   ssr: {
-    external: ['@tamagui/mdx-2'],
+    external: ['@tamagui/mdx-2', ''],
     noExternal: true,
   },
 
@@ -102,6 +102,18 @@ export default {
         octokit: true,
         'node-fetch': true,
         'fetch-blob': true,
+      },
+
+      build: {
+        api: {
+          config: {
+            build: {
+              rollupOptions: {
+                external: ['stripe', '@discordjs/core', 'zlib-sync'],
+              },
+            },
+          },
+        },
       },
 
       web: {

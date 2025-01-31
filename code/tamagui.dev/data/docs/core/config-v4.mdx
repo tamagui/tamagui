@@ -38,6 +38,8 @@ If you like it but want to make some changes, you can [copy and paste the source
   If you want to learn to create your own custom theme suite rather than use the included defaults, check out the [Creating Custom Themes Guide](/docs/guides/theme-builder).
 </Notice>
 
+We recommend adding `settings.styleCompat` to the default config, setting it to be "react-native". This will align the default flexBasis of `flex` to be `0`, not `auto`, matching the default in React Native. This setting will become the default in the upcoming Tamagui v2 release. We left it out of Config v4 because we wanted an easier transition for existing users, but if you are a new user, we recommend this setting.
+
 ---
 
 ### Default Configuration
