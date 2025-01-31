@@ -19,6 +19,12 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 
+if (process.env.NEEDS_UNLOCK) {
+  if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
+    process.exit(0)
+  }
+}
+
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
 const shouldBundleFlag = !!process.argv.includes('--bundle')

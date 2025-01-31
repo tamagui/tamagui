@@ -2,18 +2,12 @@
   "name": "@tamagui/bento",
   "version": "1.123.5",
   "private": true,
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "source": "index.jsx",
   "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -46,9 +40,9 @@
     }
   },
   "scripts": {
-    "build": "tamagui-build --skip-types",
+    "build": "NEEDS_UNLOCK=1 tamagui-build --skip-types",
     "typecheck": "tsc",
-    "watch": "tamagui-build --skip-types --watch",
+    "watch": "NEEDS_UNLOCK=1 tamagui-build --skip-types --watch",
     "clean": "tamagui-build clean",
     "dev:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:web:prod": "NODE_ENV=production webpack serve",
