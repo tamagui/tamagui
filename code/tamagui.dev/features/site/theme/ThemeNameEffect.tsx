@@ -18,16 +18,19 @@ export const ThemeNameEffect = memo((props: Props) => {
 
   return (
     <ThemeTint>
-      <Inner {...props} />
+      <ThemeNameEffectNoTheme {...props} />
       {props.children}
     </ThemeTint>
   )
 })
 
-const Inner = ({ colorKey = '$color1', theme: ssrTheme }: Props) => {
+export const ThemeNameEffectNoTheme = ({
+  colorKey = '$color1',
+  theme: ssrTheme,
+}: Props) => {
   const isHydrated = useDidFinishSSR()
   const theme = useTheme()
-  const themeName = useThemeName()
+  // const themeName = useThemeName()
   const [isActive, setIsActive] = useState(false)
 
   const color = theme[colorKey]?.val
@@ -37,7 +40,7 @@ const Inner = ({ colorKey = '$color1', theme: ssrTheme }: Props) => {
       if (!isHydrated) return
       if (!isActive) return
       document.querySelector('#theme-color')?.setAttribute('content', color)
-      // document.body.style.setProperty('background-color', color, 'important')
+      document.body.style.setProperty('background-color', color, 'important')
     }, [isHydrated, isActive, color])
   }
 

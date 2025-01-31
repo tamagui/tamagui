@@ -1,16 +1,30 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import * as React from 'react'
-import { SizableText, TooltipGroup, XGroup, XStack, YStack, isClient } from 'tamagui'
 import { usePathname } from 'one'
+import * as React from 'react'
+import {
+  Popover,
+  SizableText,
+  TooltipGroup,
+  View,
+  VisuallyHidden,
+  XGroup,
+  XStack,
+  YStack,
+  isClient,
+} from 'tamagui'
 import { Link } from '~/components/Link'
+import { bannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
+import { BentoIcon } from '../../icons/BentoIcon'
+import { TakeoutIcon } from '../../icons/TakeoutIcon'
+import { CTAHeaderLink } from './CTAHeaderLink'
 import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
 import { SearchButton } from './SearchButton'
+import { SlidingPopover, SlidingPopoverTrigger } from './SlidingPopover'
 import type { HeaderProps } from './types'
-import { bannerHeight } from '~/components/PromoBanner'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -135,7 +149,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       ai="center"
       position="relative"
       tag="header"
-      jc="space-between"
       pos="relative"
       py={props.minimal ? '$4' : props.floating ? 0 : '$2'}
       zi={50000}
@@ -173,7 +186,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <SearchButton size="$2" br="$10" elevation="$0.5" />
 
           <Link target="_blank" href="https://github.com/tamagui/tamagui">
-            <XStack group>
+            <XStack group containerType="normal">
               <XStack
                 ai="center"
                 gap="$2"
@@ -182,26 +195,72 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 hoverStyle={{ opacity: 1 }}
               >
                 <GithubIcon width={26} />
-                <SizableText
-                  $md={{ display: 'none' }}
-                  size="$3"
-                  color="$color12"
-                  o={0.5}
-                  $group-hover={{
-                    o: 0.8,
-                  }}
-                >
-                  GitHub
-                </SizableText>
+                <VisuallyHidden>
+                  <SizableText
+                    $md={{ display: 'none' }}
+                    size="$3"
+                    color="$color12"
+                    o={0.5}
+                    $group-hover={{
+                      o: 0.8,
+                    }}
+                  >
+                    GitHub
+                  </SizableText>
+                </VisuallyHidden>
               </XStack>
             </XStack>
           </Link>
+
+          <SlidingPopover>
+            <Popover.Trigger asChild="except-style">
+              <XStack
+                br="$10"
+                px="$1"
+                height={40}
+                ai="center"
+                bw={1}
+                bc="transparent"
+                hoverStyle={{
+                  bc: '$color02',
+                }}
+              >
+                <SlidingPopoverTrigger id="takeout">
+                  <CTAHeaderLink
+                    {...props}
+                    excludeRoutes={['/', '/bento', '/takeout']}
+                    href="/takeout"
+                    name="Takeout"
+                    description="starter kit"
+                    icon={<TakeoutIcon scale={0.8} />}
+                  />
+                </SlidingPopoverTrigger>
+
+                <SlidingPopoverTrigger id="bento">
+                  <CTAHeaderLink
+                    {...props}
+                    excludeRoutes={['*']}
+                    href="/bento"
+                    name="Bento"
+                    description="starter kit"
+                    icon={
+                      <YStack>
+                        <BentoIcon scale={0.8} />
+                      </YStack>
+                    }
+                  />
+                </SlidingPopoverTrigger>
+              </XStack>
+            </Popover.Trigger>
+          </SlidingPopover>
         </XStack>
       )}
 
+      <View flex={1} />
+
       <XStack
         position="absolute"
-        $lg={{
+        $md={{
           opacity: 0,
           pointerEvents: 'none',
         }}

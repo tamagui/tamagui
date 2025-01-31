@@ -108,6 +108,7 @@ export const StudioAIBar = () => {
           f={10}
           size="$6"
           shadowColor="$shadow3"
+          bg="$background06"
           shadowOffset={{ height: 2, width: 0 }}
           shadowRadius={20}
           br="$8"
