@@ -2,12 +2,18 @@
   "name": "@tamagui/bento",
   "version": "1.123.5",
   "private": true,
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "index.jsx",
   "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
