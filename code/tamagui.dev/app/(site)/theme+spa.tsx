@@ -14,7 +14,7 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
@@ -57,7 +57,7 @@ export default function ThemePage() {
     }
   }, [])
 
-  const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
+  // const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
 
   return (
     <>
@@ -96,7 +96,7 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
   return (
     <Theme key={props.noKey ? '' : key} forceClassName name={baseStepThemeName}>
       <YStack bg="$color1" fullscreen zi={0} scale={2} />
-      <ThemeNameEffect />
+      <ThemeNameEffectNoTheme />
       <YStack f={1}>{props.children}</YStack>
     </Theme>
   )
@@ -136,7 +136,8 @@ const ThemeBuilderModal = memo(() => {
         bblr="$6"
         bw={0.5}
         bc="$color6"
-        bg="$color2"
+        bg="$background06"
+        backdropFilter="blur(20px)"
       >
         {/* <Button
           size="$2"
@@ -198,7 +199,7 @@ const StudioThemeBuilderTray = memo(() => {
 
 const StudioThemeBuilderBottomBar = memo(() => {
   return (
-    <XStack p="$4" py="$3" ai="center" bc="$borderColor" btw={1} zi={100} bg="$color2">
+    <XStack p="$4" py="$3" ai="center" zi={100} bg="$background02">
       <CurrentStepActionBar />
       <Spacer flex />
       <ThemeStudioStepButtonsBar />
