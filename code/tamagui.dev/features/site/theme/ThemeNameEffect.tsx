@@ -3,7 +3,12 @@ import { memo, useEffect, useState } from 'react'
 import type { ColorTokens, ThemeName } from 'tamagui'
 import { YStack, isClient, useDidFinishSSR, useTheme, useThemeName } from 'tamagui'
 
-type Props = { colorKey?: ColorTokens; theme?: ThemeName | null; children?: any }
+type Props = {
+  colorKey?: ColorTokens
+  theme?: ThemeName | null
+  children?: any
+  disableTint?: boolean | number
+}
 
 export const ThemeNameEffect = memo((props: Props) => {
   const Tint = useTint()
@@ -16,8 +21,13 @@ export const ThemeNameEffect = memo((props: Props) => {
     }
   }, [props.theme])
 
+  const disable =
+    typeof props.disableTint === 'number'
+      ? Tint.tintIndex === props.disableTint
+      : !!props.disableTint
+
   return (
-    <ThemeTint>
+    <ThemeTint key={disable} disable={disable}>
       <ThemeNameEffectNoTheme {...props} />
       {props.children}
     </ThemeTint>

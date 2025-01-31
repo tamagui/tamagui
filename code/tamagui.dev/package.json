@@ -42,7 +42,7 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/mdx-2": "workspace:*",
     "@tamagui/use-store": "workspace:*",
-    "@vercel/og": "^0.5.8",
+    "@vercel/og": "^0.6.5",
     "@vxrn/color-scheme": "^1.1.417",
     "ai": "^4.1.2",
     "color2k": "^2.0.2",

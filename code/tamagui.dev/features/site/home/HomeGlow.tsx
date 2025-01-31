@@ -77,12 +77,12 @@ export const HomeGlow = memo(() => {
           key={`${i}${tint}${tintAlt}`}
           animation="superLazy"
           enterStyle={{
-            opacity: isOnHeroBelow ? 0.33 : 0,
+            opacity: isOnHeroBelow ? 0.5 : 0,
           }}
           exitStyle={{
             opacity: 0,
           }}
-          o={isOnHeroBelow ? 0.35 : 0.4}
+          o={isOnHeroBelow ? 0.5 : 0.8}
           mixBlendMode={
             i === 0
               ? 'hard-light'
