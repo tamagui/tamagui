@@ -286,7 +286,19 @@ export type UseThemeWithStateProps = ThemeProps & {
     needsUpdate?: () => boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
+<<<<<<< HEAD
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
+=======
+type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;
+export type SpacerUniqueProps = {
+    size?: SpaceValue | number;
+    flex?: boolean | number;
+    direction?: SpaceDirection;
+};
+export interface SpacerStyleProps extends Omit<StackStyleBase, keyof SpacerUniqueProps>, SpacerUniqueProps {
+}
+export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>;
+>>>>>>> main
 type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict' | 'strict-web' | 'somewhat-strict-web';
 type AllowedStyleValuesSettingSize = AllowedValueSettingBase | 'number' | 'percent';
 type AllowedStyleValuesSettingZIndex = AllowedValueSettingBase | 'number';

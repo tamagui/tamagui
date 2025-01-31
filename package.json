@@ -104,6 +104,9 @@
     "next-site": "yarn workspace @tamagui/next-site dev",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
   },
+  "manypkg": {
+    "workspaceProtocol": "require"
+  },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-18": {
@@ -138,9 +141,9 @@
     }
   },
   "packageManager": "yarn@4.5.0",
-  "dependencies": {
+  "devDependencies": {
     "@biomejs/biome": "^1.9.2",
-    "@manypkg/cli": "^0.19.1",
+    "@manypkg/cli": "^0.23.0",
     "@playwright/test": "^1.49.1",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",

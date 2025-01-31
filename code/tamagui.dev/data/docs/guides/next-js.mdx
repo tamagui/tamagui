@@ -27,10 +27,10 @@ yarn add @tamagui/next-plugin
 While you don't have to setup a config, we recommend starting with our default config which gives you media queries and other nice things:
 
 ```tsx fileName="tamagui.config.ts"
-import { config } from '@tamagui/config/v3'
+import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
-const appConfig = createTamagui(config)
+const appConfig = createTamagui(defaultConfig)
 
 export type AppConfig = typeof appConfig
 
@@ -212,10 +212,9 @@ import Head from 'next/head'
 import React, { useMemo } from 'react'
 import { TamaguiProvider, createTamagui } from 'tamagui'
 
-import { config } from '@tamagui/config/v3'
-const tamaguiConfig = createTamagui(config)
 // you usually export this from a tamagui.config.ts file:
-// import tamaguiConfig from '../tamagui.config'
+import { defaultConfig } from '@tamagui/config/v4'
+const tamaguiConfig = createTamagui(defaultConfig)
 
 // make TypeScript type everything based on your config
 type Conf = typeof tamaguiConfig

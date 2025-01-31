@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "1.123.3",
+  "version": "1.123.5",
   "sideEffects": [
     "*.css"
   ],
@@ -30,6 +30,7 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/stacks": "workspace:*",
+    "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },
   "devDependencies": {

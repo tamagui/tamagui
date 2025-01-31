@@ -268,23 +268,10 @@ export const PopperContent = PopperContentFrame.styleable<
     usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
-  const contents = React.useMemo(() => {
-    return (
-      <PopperContentFrame
-        key="popper-content-frame"
-        data-placement={placement}
-        data-strategy={strategy}
-        contain="layout"
-        size={size}
-        {...rest}
-      />
-    )
-  }, [placement, strategy, props])
+  const [needsMeasure, setNeedsMeasure] = React.useState(enableAnimationForPositionChange)
 
-  const [needsMeasure, setNeedsMeasure] = React.useState(true)
-  React.useEffect(() => {
-    if (!enableAnimationForPositionChange) return
-    if (x || y) {
+  useIsomorphicLayoutEffect(() => {
+    if (x && y) {
       setNeedsMeasure(false)
     }
   }, [enableAnimationForPositionChange, x, y])
@@ -303,22 +290,27 @@ export const PopperContent = PopperContentFrame.styleable<
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animation: rest.animation,
-      animateOnly: needsMeasure ? ['none'] : rest.animateOnly,
+      animateOnly: needsMeasure ? [] : rest.animateOnly,
       animatePresence: false,
     }),
+    ...(x === 0 &&
+      y === 0 && {
+        opacity: 0,
+        animateOnly: [],
+      }),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
   return (
-    <Stack
-      {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
-      {...(x === 0 && y === 0
-        ? {
-            opacity: 0,
-          }
-        : {})}
-    >
-      {contents}
+    <Stack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
+      <PopperContentFrame
+        key="popper-content-frame"
+        data-placement={placement}
+        data-strategy={strategy}
+        contain="layout"
+        size={size}
+        {...rest}
+      />
     </Stack>
   )
 })

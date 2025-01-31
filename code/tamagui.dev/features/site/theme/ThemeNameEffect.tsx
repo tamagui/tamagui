@@ -3,7 +3,12 @@ import { memo, useEffect, useState } from 'react'
 import type { ColorTokens, ThemeName } from 'tamagui'
 import { YStack, isClient, useDidFinishSSR, useTheme, useThemeName } from 'tamagui'
 
-type Props = { colorKey?: ColorTokens; theme?: ThemeName | null; children?: any }
+type Props = {
+  colorKey?: ColorTokens
+  theme?: ThemeName | null
+  children?: any
+  disableTint?: boolean | number
+}
 
 export const ThemeNameEffect = memo((props: Props) => {
   const Tint = useTint()
@@ -16,18 +21,26 @@ export const ThemeNameEffect = memo((props: Props) => {
     }
   }, [props.theme])
 
+  const disable =
+    typeof props.disableTint === 'number'
+      ? Tint.tintIndex === props.disableTint
+      : !!props.disableTint
+
   return (
-    <ThemeTint>
-      <Inner {...props} />
+    <ThemeTint key={disable} disable={disable}>
+      <ThemeNameEffectNoTheme {...props} />
       {props.children}
     </ThemeTint>
   )
 })
 
-const Inner = ({ colorKey = '$color1', theme: ssrTheme }: Props) => {
+export const ThemeNameEffectNoTheme = ({
+  colorKey = '$color1',
+  theme: ssrTheme,
+}: Props) => {
   const isHydrated = useDidFinishSSR()
   const theme = useTheme()
-  const themeName = useThemeName()
+  // const themeName = useThemeName()
   const [isActive, setIsActive] = useState(false)
 
   const color = theme[colorKey]?.val
@@ -37,7 +50,7 @@ const Inner = ({ colorKey = '$color1', theme: ssrTheme }: Props) => {
       if (!isHydrated) return
       if (!isActive) return
       document.querySelector('#theme-color')?.setAttribute('content', color)
-      // document.body.style.setProperty('background-color', color, 'important')
+      document.body.style.setProperty('background-color', color, 'important')
     }, [isHydrated, isActive, color])
   }
 

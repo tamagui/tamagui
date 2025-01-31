@@ -203,6 +203,7 @@ export interface PopoverContentTypeProps
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
+
   /** enable animation for content position changing */
   enableAnimationForPositionChange?: boolean
 }

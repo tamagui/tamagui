@@ -28,6 +28,18 @@ export const setTintIndex = (next: number): void => {
   listeners.forEach((x) => x(val))
 }
 
+export function getDocsSection(pathname: string): 'compile' | 'ui' | 'core' | null {
+  return pathname === '/docs/intro/compiler-install' ||
+    pathname === '/docs/intro/benchmarks' ||
+    pathname === '/docs/intro/why-a-compiler'
+    ? 'compile'
+    : pathname.startsWith('/ui/')
+      ? 'ui'
+      : pathname.startsWith('/docs/')
+        ? 'core'
+        : null
+}
+
 export const useTint = (
   altOffset = -1
 ): {
@@ -50,16 +62,7 @@ export const useTint = (
   }
 } => {
   const pathname = usePathname()
-  const section =
-    pathname.startsWith('/docs/core') ||
-    pathname === '/docs/intro/introduction' ||
-    pathname === '/docs/intro/installation'
-      ? 'core'
-      : pathname.startsWith('/ui')
-        ? 'ui'
-        : pathname.startsWith('/docs/intro')
-          ? 'compile'
-          : null
+  const section = getDocsSection(pathname)
 
   const hydrated = useDidFinishSSR()
 

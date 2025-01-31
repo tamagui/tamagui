@@ -105,8 +105,7 @@ const Heading = styled(Text, {
       ],
     },
     output: {
-      description:
-        'Styles extracted, logic evaluated, and a flatter tree with atomic CSS styles per-file.',
+      description: 'Get back perfectly optimized DOM on web (or View/Text on native).',
       examples: [
         {
           name: 'app.js',

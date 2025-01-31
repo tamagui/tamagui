@@ -196,7 +196,7 @@ export function createAnimations<A extends AnimationsConfig>(
       const isThereNoNativeStyleKeys = React.useMemo(() => {
         if (isWeb) return true
         return Object.keys(style).some((key) => {
-          if (animateOnly.length) {
+          if (animateOnly) {
             return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
           }
           return !animatedStyleKey[key]

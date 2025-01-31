@@ -7,7 +7,6 @@ import {
   SizableText,
   Slider,
   Stack,
-  XGroup,
   XStack,
   YStack,
   useDebounce,
@@ -131,7 +130,16 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
     <XStack ml={20} gap="$4" ai="center">
       <Popover hoverable>
         <Popover.Trigger>
-          <Stack y={4} width={24} height={24} ov="hidden" br="$10" bw={1} bc="$color10">
+          <Stack
+            y={4}
+            width={24}
+            height={24}
+            ov="hidden"
+            br={100}
+            rotateX="0.001deg"
+            bw={1}
+            bc="$color10"
+          >
             <YStack
               userSelect="none"
               pointerEvents="none"
@@ -215,14 +223,14 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             onValueChange={(val) => updateHue(val[0])}
           >
             <Slider.Track
-              bw={0.5}
-              bc="$color12"
               width={160}
+              height={3}
               style={{
                 background: hueLinearGradient,
               }}
             ></Slider.Track>
             <Slider.Thumb
+              borderWidth={0}
               focusStyle={{
                 bg: '$color1',
               }}
@@ -251,7 +259,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           <SizableText size="$1" userSelect="none" theme="alt2">
             Saturation
           </SizableText>
-          <YStack bg="$color" br="$2">
+          <YStack>
             <Slider
               orientation="horizontal"
               min={0}
@@ -261,14 +269,14 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               onValueChange={(val) => updateSat(val[0])}
             >
               <Slider.Track
-                bw={0.5}
-                bc="$color12"
+                height={3}
                 width={120}
                 style={{
                   background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
                 }}
               ></Slider.Track>
               <Slider.Thumb
+                borderWidth={0}
                 focusStyle={{
                   bg: '$color1',
                 }}
@@ -303,8 +311,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 onValueChange={(val) => updateLight(val[0])}
               >
                 <Slider.Track
-                  bw={0.5}
-                  bc="$color12"
+                  height={3}
+                  br="$10"
                   width={120}
                   style={{
                     background: `linear-gradient(to right, #000, #fff)`,
@@ -312,6 +320,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 />
 
                 <Slider.Thumb
+                  borderWidth={0}
                   focusStyle={{
                     bg: '$color1',
                   }}

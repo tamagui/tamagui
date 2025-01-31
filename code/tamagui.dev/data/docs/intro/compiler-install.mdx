@@ -8,13 +8,10 @@ description: Adding the compiler to your apps
   through partial analysis and view flattening.
 </IntroParagraph>
 
-See the [Benchmarks](/docs/intro/benchmarks). Note that the Tamagui Compiler is optional.
-It's much easier to start without setting it up, and add it once you're ready for production.
+See the [Benchmarks](/docs/intro/benchmarks) or a more [in-depth background](/docs/intro/why-a-compiler). Note that Tamagui features work at compile-time and runtime, so installing the compiler is optional, and in fact we recommend only setting it up once you're ready for production.
 
-The Compiler is a babel plugin that analyzes JSX and `styled` calls, and attempts to parse out all props and 
-values using some logic for Babel, and the Node `vm` package to pass in context and analyze expressions.
-
-The end result is plain old `div` (and other tag) output on web, or on native, outputting plain old React Native `View` and `Text`:
+The compiler uses Babel to analyze JSX and `styled` functions, then attempts statically analyze them and optimize them down to 
+platform-native primitives. The end result is less abstraction - like a `div` on web, or plain React Native `View` on native:
 
 <br />
 <br />
@@ -25,7 +22,9 @@ The end result is plain old `div` (and other tag) output on web, or on native, o
 `.tamagui` directory. You'll want to add that directory to your `.gitignore`.
 </Notice>
 
-We have plugins for a variety of bundlers:
+## Install
+
+There are plugins for a variety of bundlers:
 
 ### Webpack
 
@@ -203,7 +202,7 @@ to "true" can fix issues with Tamagui being resolved incorrectly.
 See the [Next.js Guide](/docs/guides/next-js) for more details on setting up
 your app.
 
-#### Babel / Metro
+### Babel / Metro
 
 Note that the `@tamagui/babel-plugin` is completely optional, and on native
 Tamagui doesn't optimize as much as on web, so leaving it out is actually
@@ -241,18 +240,12 @@ optimization by adding a new property with the key
 that will make the compiler to flat and extract any theme usage or dynamic
 values.
 
-#### Expo
+### Expo
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up
 Expo.
 
-### Web-only apps
-
-If you want autocompleted imports of `react-native` without having to install
-all the weight of react-native, you can set `react-native` version to `0.0.0`,
-and add `@types/react-native` at the latest version.
-
-### Props
+## Props
 
 All compiler plugins accept the same options:
 
@@ -401,3 +394,9 @@ export default () => (
   <View disableOptimization />
 )
 ```
+
+### Web-only apps
+
+If you want autocompleted imports of `react-native` without having to install
+all the weight of react-native, you can set `react-native` version to `0.0.0`,
+and add `@types/react-native` at the latest version.

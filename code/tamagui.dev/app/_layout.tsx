@@ -3,8 +3,8 @@ import '~/app.css'
 import '~/tamagui.css'
 
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
+import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
-import { LoadProgressBar, Slot, Stack } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
@@ -30,6 +30,9 @@ setupPopper({
 })
 
 export default function Layout() {
+  const path = usePathname()
+  const isIndex = path === '/'
+
   return (
     <html lang="en-US">
       <head>
@@ -109,30 +112,32 @@ export default function Layout() {
         />
       </head>
 
-      <LoadProgressBar />
+      <body className={isIndex ? 'transition' : ''}>
+        <LoadProgressBar />
 
-      <Providers>
-        {isWeb ? (
-          <Slot />
-        ) : (
-          <Stack
-            screenOptions={
-              isWeb
-                ? {
-                    header() {
-                      return null
-                    },
+        <Providers>
+          {isWeb ? (
+            <Slot />
+          ) : (
+            <Stack
+              screenOptions={
+                isWeb
+                  ? {
+                      header() {
+                        return null
+                      },
 
-                    contentStyle: {
-                      position: 'relative',
-                      backgroundColor: 'red',
-                    },
-                  }
-                : {}
-            }
-          />
-        )}
-      </Providers>
+                      contentStyle: {
+                        position: 'relative',
+                        backgroundColor: 'red',
+                      },
+                    }
+                  : {}
+              }
+            />
+          )}
+        </Providers>
+      </body>
     </html>
   )
 }

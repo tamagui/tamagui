@@ -1,4 +1,4 @@
-import { createPalettes } from '@tamagui/theme-builder'
+import { createPalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
 import type { BuildThemeSuiteProps } from '@tamagui/themes'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
@@ -15,11 +15,15 @@ export async function generateThemeBuilderCode({
   // side effect to getLastBuilder
   const palettesOut = createPalettes(palettes)
 
+  function paletteToCreateThemes(pIn: string[]) {
+    return pIn.slice(PALETTE_BACKGROUND_OFFSET, -PALETTE_BACKGROUND_OFFSET)
+  }
+
   return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``} } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
 
-const darkPalette = ${arrayToJS(palettesOut.dark_accent)}
-const lightPalette = ${arrayToJS(palettesOut.light_accent)}
+const darkPalette = ${arrayToJS(paletteToCreateThemes(palettesOut.dark))}
+const lightPalette = ${arrayToJS(paletteToCreateThemes(palettesOut.light))}
 
 const lightShadows = {
   shadow1: 'rgba(0,0,0,0.04)',
@@ -70,8 +74,8 @@ const builtThemes = createThemes({
 
   accent: {
     palette: {
-      dark: ${arrayToJS(palettesOut.dark_accent)},
-      light: ${arrayToJS(palettesOut.light_accent)},
+      dark: ${arrayToJS(paletteToCreateThemes(palettesOut.dark_accent))},
+      light: ${arrayToJS(paletteToCreateThemes(palettesOut.light_accent))},
     },
   },
 

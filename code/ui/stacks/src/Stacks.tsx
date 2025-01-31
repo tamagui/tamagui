@@ -1,4 +1,4 @@
-import type { GetProps, SizeTokens } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
 import { View, styled } from '@tamagui/core'
 
 import { getElevation } from './getElevation'
@@ -24,28 +24,10 @@ const variants = {
   },
 } as const
 
-// compat with older react native versions
-if (process.env.TAMAGUI_TARGET === 'native') {
-  type Insets = {
-    top?: number
-    bottom?: number
-    left?: number
-    right?: number
-  }
-
-  const getInset = (val: number | SizeTokens | Insets | null) =>
-    val && typeof val === 'object'
-      ? val
-      : {
-          top: val,
-          left: val,
-          bottom: val,
-          right: val,
-        }
-
-  variants['inset'] = getInset
-}
-
+/**
+ * @summary A view that arranges its children in a vertical line.
+ * @see — Docs https://tamagui.dev/ui/stacks#xstack-ystack-zstack
+ */
 export const YStack = styled(View, {
   flexDirection: 'column',
   variants,
@@ -53,6 +35,10 @@ export const YStack = styled(View, {
 
 YStack['displayName'] = 'YStack'
 
+/**
+ * @summary A view that arranges its children in a horizontal line.
+ * @see — Docs https://tamagui.dev/ui/stacks#xstack-ystack-zstack
+ */
 export const XStack = styled(View, {
   flexDirection: 'row',
   variants,
@@ -60,6 +46,10 @@ export const XStack = styled(View, {
 
 XStack['displayName'] = 'XStack'
 
+/**
+ * @summary A view that stacks its children on top of each other.
+ * @see — Docs https://tamagui.dev/ui/stacks#xstack-ystack-zstack
+ */
 export const ZStack = styled(
   YStack,
   {

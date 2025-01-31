@@ -56,7 +56,7 @@ export const RadioGroupItemFrame = styled(YStack, {
 
         pressStyle: {
           borderColor: '$borderColor',
-          backgroundColor: '$backgroundColor',
+          backgroundColor: '$background',
         },
 
         focusVisibleStyle: {

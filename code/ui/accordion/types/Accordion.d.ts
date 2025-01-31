@@ -1,6 +1,11 @@
 import { Collapsible } from '@tamagui/collapsible';
+<<<<<<< HEAD
 import type { HeadingProps } from '@tamagui/text';
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/web';
+=======
+import { H1 } from '@tamagui/text';
+import type { GetProps, Stack, TamaguiElement } from '@tamagui/web';
+>>>>>>> main
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
 type ScopedProps<P> = P & {
@@ -86,7 +91,11 @@ interface AccordionItemProps extends Omit<CollapsibleProps, 'open' | 'defaultOpe
      */
     value: string;
 }
+<<<<<<< HEAD
 type PrimitiveHeading3Props = HeadingProps;
+=======
+type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H1>;
+>>>>>>> main
 type AccordionHeaderProps = PrimitiveHeading3Props;
 declare const AccordionTriggerFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
