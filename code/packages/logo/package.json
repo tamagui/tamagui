@@ -44,7 +44,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "one": "1.1.417",
+    "one": "1.1.422",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
