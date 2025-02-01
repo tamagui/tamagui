@@ -777,7 +777,7 @@ const componentsIn = {
             <Theme name="blue">
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
-                <Link fontSize="inherit" href="/docs/components/stacks">
+                <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
                     <span style={{ color: 'var(--color12)' }}>tamagui UI</span>
                   </CodeInline>
