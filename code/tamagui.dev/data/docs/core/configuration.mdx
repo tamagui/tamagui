@@ -3,7 +3,7 @@ title: Configuration
 description: Set up media queries, tokens, themes, and more.
 ---
 
-You can set up as much or little of `@tamagui/core` as you like, and just use it out of the box:
+You can set up as much or little of `@tamagui/core` as you like. In fact you can avoid configuration altogether if just using `@tamagui/core`:
 
 ```tsx
 import { View, Text, styled } from '@tamagui/core'
@@ -17,9 +17,9 @@ export default () => (
 )
 ```
 
-Create a `tamagui.config.ts` near the root of your app, and only import it to pass it to your [TamaguiProvider](#tamaguiprovider) near the root of your app. This prevents circular import issues. You can get your config from anywhere with `getConfig`. Here's a simple example of a configuration:
+But `createConfig` provides a bunch of nice things. Start by making a `tamagui.config.ts` near the root of your app, and only import it once to pass it to a [TamaguiProvider](#tamaguiprovider) near the root of your app. This prevents circular import issues that can mess up hot reloading. You can always get your config later with `getConfig`.
 
-A very simple `@tamagui/core` could look like this:
+You can use our default configuration, but first, let's check out an example of a minimal setup:
 
 ```tsx fileName=tamagui.config.ts
 import { createTamagui, getConfig } from '@tamagui/core'
