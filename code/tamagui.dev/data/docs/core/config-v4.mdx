@@ -368,7 +368,9 @@ export const radius = {
 }
 ```
 
-Note that `color` tokens aren't defined, instead we are just using themes. This is how Tamagui knows what your default size is, for example `radius` default is "4", as it matches in value. In the next major of Tamagui we are going to remove this behavior in favor of something more intuitive and simple.
+Note that `color` tokens aren't defined, instead we are just using themes.
+
+Also note that the "true" value on tokens is the "default" - Tamagui UI for now uses defaults to determine how to size various things out of the box. This isn't mandatory, and in version 2 of Tamagui we are working on a more clear solution.
 
 #### Fonts
 
