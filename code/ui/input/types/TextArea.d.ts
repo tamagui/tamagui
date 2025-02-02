@@ -173,7 +173,6 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         transformStyle?: boolean | undefined;
         boxShadow: boolean;
         filter: boolean;
-        perspective: boolean;
         animationIterationCount: boolean;
         aspectRatio: boolean;
         borderImageOutset: boolean;
@@ -211,6 +210,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         shadowOpacity: boolean;
         x: boolean;
         y: boolean;
+        perspective: boolean;
         skewX: boolean;
         skewY: boolean;
         matrix: boolean;

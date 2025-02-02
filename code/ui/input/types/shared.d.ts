@@ -200,7 +200,6 @@ export declare const styledBody: ({
         transformStyle?: boolean | undefined;
         boxShadow: boolean;
         filter: boolean;
-        perspective: boolean;
         animationIterationCount: boolean;
         aspectRatio: boolean;
         borderImageOutset: boolean;
@@ -238,6 +237,7 @@ export declare const styledBody: ({
         shadowOpacity: boolean;
         x: boolean;
         y: boolean;
+        perspective: boolean;
         skewX: boolean;
         skewY: boolean;
         matrix: boolean;

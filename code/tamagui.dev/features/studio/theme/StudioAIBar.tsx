@@ -89,7 +89,7 @@ export const StudioAIBar = () => {
 
       setLastReply(data.reply)
       store.updateGenerate(data.result)
-      toastController.show(`Generated!`)
+      toastController.hide()
     } catch (err) {
       toastController.show(`Error: ${err}`)
     } finally {
