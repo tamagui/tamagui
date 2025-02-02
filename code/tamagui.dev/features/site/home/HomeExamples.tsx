@@ -1,12 +1,13 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import { Button, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
+import { Button, Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { IconStack } from './IconStack'
+import { Theme } from 'tamagui'
 
 const defaultExample = {
   input: {
@@ -41,9 +42,9 @@ export const HomeExamples = memo(
 
     return (
       <ContainerLarge position="relative">
-        <YStack zi={1} space="$6" mb="$4">
+        <YStack zi={1} gap="$6" mb="$4">
           {!onlyDemo && (
-            <YStack ai="center" space="$3">
+            <YStack ai="center" gap="$3">
               <HomeH2>A powerful style system</HomeH2>
               <HomeH3 ai="center" jc="center">
                 A multi-faceted optimizing compiler enables
@@ -101,7 +102,7 @@ export const HomeExamples = memo(
               {...(onlyDemo && { maxWidth: '100%' })}
               $sm={{ maxWidth: '100%' }}
               px="$2"
-              space
+              gap="$4"
             >
               <Paragraph
                 maw={480}
@@ -140,7 +141,7 @@ export const HomeExamples = memo(
               {...(onlyDemo && { maxWidth: '100%', mt: '$6' })}
               $sm={{ maxWidth: '100%', mt: '$6' }}
               px="$2"
-              space
+              gap="$4"
             >
               <Paragraph
                 maw={480}
@@ -178,10 +179,20 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           mb="$-2.5"
           maw="100%"
         >
-          <XStack px="$4" fs={0} space>
-            <Button disabled size="$2" fontSize="$4" px="$4">
-              {title}
-            </Button>
+          <XStack px="$4" fs={0} gap="$4">
+            <Theme name="accent">
+              <Heading
+                bg="$color1"
+                color="$color12"
+                py="$1"
+                size="$5"
+                px="$4"
+                br="$4"
+                elevation={3}
+              >
+                {title}
+              </Heading>
+            </Theme>
             <XGroup size="$2" bordered>
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>

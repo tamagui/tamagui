@@ -110,9 +110,9 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
         'data-state': getState(checked),
         'data-disabled': disabled ? '' : undefined,
         disabled: disabled,
-        onKeyDown: handleKeyDown,
+        onKeyDown: disabled ? undefined : handleKeyDown,
       }),
-      onPress: handlePress,
+      onPress: disabled ? undefined : handlePress,
     } satisfies CheckboxBaseProps,
   }
 }

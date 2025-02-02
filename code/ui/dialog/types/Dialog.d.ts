@@ -275,13 +275,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     };
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            ({ scope, 
-            /**
-             * @see https://github.com/theKashey/react-remove-scroll#usage
-             */
-            ... /**
-             * @see https://github.com/theKashey/react-remove-scroll#usage
-             */rest }: {
+            ({ scope, ...rest }: {
                 scope?: string;
             }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;

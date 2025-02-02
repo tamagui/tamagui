@@ -323,6 +323,7 @@ const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => (
 
 // goes through specificity finding best matching variant function
 function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalConfig) {
+  if (!variant) return
   if (typeof variant === 'function') {
     return variant
   }

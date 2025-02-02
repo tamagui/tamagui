@@ -6,12 +6,20 @@ type ChangeHandler = (next: TintFamily) => void
 const listeners = new Set<ChangeHandler>()
 
 const familiesValues = {
-  tamagui: ['orange', 'yellow', 'pink', 'gray', 'red', 'green', 'blue'],
-  xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
-  easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'],
-  halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'],
-  valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'],
-  lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'],
+  tamagui: ['orange', 'yellow', 'pink', 'gray', 'red', 'green', 'blue'] as ThemeName[],
+  xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'] as ThemeName[],
+  easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'] as ThemeName[],
+  halloween: [
+    'orange',
+    'gray',
+    'orange',
+    'gray',
+    'orange',
+    'gray',
+    'orange',
+  ] as ThemeName[],
+  valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'] as ThemeName[],
+  lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'] as ThemeName[],
 }
 
 type Family = keyof typeof familiesValues
@@ -20,7 +28,8 @@ const DEFAULT_FAMILY: Family = 'tamagui'
 
 const familiesNames = Object.keys(familiesValues) as any as Family[]
 
-const families = familiesValues as { [key in Family]: ThemeName[] }
+type Families = { [key in Family]: ThemeName[] }
+const families = familiesValues as Families
 
 type TintFamily = keyof typeof families
 
@@ -48,7 +57,11 @@ let fam: TintFamily = DEFAULT_FAMILY
 //   setTintFamily(seasonalTheme)
 // }
 
-export function getTints() {
+export function getTints(): {
+  name: string
+  tints: ThemeName[]
+  families: Families
+} {
   return {
     name: fam || DEFAULT_FAMILY,
     tints: families[fam] || families.tamagui,
@@ -56,7 +69,11 @@ export function getTints() {
   }
 }
 
-export function useTints() {
+export function useTints(): {
+  name: string
+  tints: ThemeName[]
+  families: Families
+} {
   const [val, setVal] = React.useState(getTints())
 
   React.useEffect(() => {
@@ -70,7 +87,7 @@ export function useTints() {
   return val
 }
 
-export function setTintFamily(next: TintFamily) {
+export function setTintFamily(next: TintFamily): void {
   if (!families[next]) throw `impossible`
   fam = next
   React.startTransition(() => {
@@ -78,13 +95,13 @@ export function setTintFamily(next: TintFamily) {
   })
 }
 
-export const setNextTintFamily = () => {
+export const setNextTintFamily = (): void => {
   setTintFamily(familiesNames[(familiesNames.indexOf(fam) + 1) % familiesNames.length])
 }
 
 export const onTintFamilyChange = (cb: ChangeHandler) => {
   listeners.add(cb)
-  return () => {
+  return (): void => {
     listeners.delete(cb)
   }
 }

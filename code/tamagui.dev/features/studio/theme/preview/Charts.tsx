@@ -39,9 +39,9 @@ export const BarChart = () => {
 
   return (
     <VictoryChart
-      width={400}
+      width={300}
       height={200}
-      animate={{ duration: 2000, easing: 'cubic' }}
+      animate={{ duration: 300, easing: 'cubic' }}
       theme={victoryTheme}
       domainPadding={{ x: 0, y: 0 }}
       // width={1}
@@ -70,12 +70,12 @@ export const BarChart = () => {
       />
       <VictoryBar
         padding={0}
-        animate={{ duration: 2000, easing: 'cubic' }}
+        animate={{ duration: 500, easing: 'cubic' }}
         // cornerRadius={{ togglePreviewThemeItem: 12 }}
         data={data}
         labels={({ datum }) => `${datum.y.toLocaleString()} new users`}
         labelComponent={<VictoryTooltip />}
-        barWidth={40}
+        barWidth={30}
         // dataComponent={<Bar tabIndex={0} ariaLabel={({ datum }) => `x: ${datum.x}`} />}
       />
     </VictoryChart>
@@ -104,7 +104,7 @@ export const LineChart = () => {
     <VictoryChart
       width={400}
       height={200}
-      animate={{ duration: 2000, easing: 'cubic' }}
+      animate={{ duration: 300, easing: 'cubic' }}
       theme={victoryTheme}
       domainPadding={{ x: 0, y: 0 }}
       // width={1}
@@ -133,10 +133,11 @@ export const LineChart = () => {
       />
       <VictoryLine
         padding={0}
-        animate={{ duration: 2000, easing: 'cubic' }}
+        animate={{ duration: 500, easing: 'cubic' }}
         // cornerRadius={{ togglePreviewThemeItem: 12 }}
         data={data}
         labels={({ datum }) => `${datum.y.toLocaleString()} new users`}
+        height={200}
         labelComponent={<VictoryTooltip />}
         // barWidth={40}
         // dataComponent={<Line tabIndex={0} ariaLabel={({ datum }) => `x: ${datum.x}`} />}
@@ -152,7 +153,7 @@ export const NewMembersChart = () => {
     <VictoryPie
       key={Math.random()}
       theme={victoryTheme}
-      animate={{ duration: 2000, easing: 'cubic' }}
+      animate={{ duration: 500, easing: 'cubic' }}
       height={200}
       width={200}
       data={useMemo(

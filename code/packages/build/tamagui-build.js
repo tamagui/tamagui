@@ -19,6 +19,12 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 
+if (process.env.NEEDS_UNLOCK) {
+  if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
+    process.exit(0)
+  }
+}
+
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
 const shouldBundleFlag = !!process.argv.includes('--bundle')
@@ -220,6 +226,14 @@ async function buildTsc(allFiles) {
       config.fileNames,
       compilerOptions
     )
+
+    // exit on errors
+    if (diagnostics.some((x) => x.code) && !shouldWatch) {
+      console.error(
+        `Error building: ${diagnostics.map((x) => `${x.file.fileName}: ${x.messageText?.messageText ?? x.messageText}`).join('\n')}`
+      )
+      process.exit(1)
+    }
 
     reportDiagnostics(diagnostics)
 
@@ -651,14 +665,16 @@ async function esbuildWriteIfChanged(
     return
   }
 
-  const nativeFilesMap = Object.fromEntries(
-    built.outputFiles.flatMap((p) => {
-      if (p.path.includes('.native.js')) {
-        return [[p.path, true]]
-      }
-      return []
-    })
-  )
+  const nativeFilesMap = {}
+  const webFilesMap = {}
+
+  for (const p of built.outputFiles) {
+    if (p.path.includes('.native.js')) {
+      nativeFilesMap[p.path] = true
+    } else if (p.path.includes('.web.js')) {
+      webFilesMap[p.path] = true
+    }
+  }
 
   const cleanupNonMjsFiles = []
 
@@ -697,6 +713,7 @@ async function esbuildWriteIfChanged(
             if (extPlatform === 'web') {
               return
             }
+
             if (!extPlatform) {
               path = path.replace('.js', '.native.js')
             }
@@ -708,6 +725,15 @@ async function esbuildWriteIfChanged(
               extPlatform === 'android' ||
               extPlatform === 'ios'
             ) {
+              return
+            }
+            if (extPlatform === 'web') {
+              // we move web to just .js
+              path = path.replace('.web.js', '.js')
+            }
+            const webSpecific = webFilesMap[path.replace('.js', '.web.js')]
+            if (!extPlatform && webSpecific) {
+              // swap into the non-web exntesion
               return
             }
           }

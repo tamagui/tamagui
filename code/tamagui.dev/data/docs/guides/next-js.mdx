@@ -3,8 +3,6 @@ title: Next.js Guide
 description: How to set up Tamagui with Next.js
 ---
 
-Check out the [source for this site](https://github.com/tamagui/tamagui/tree/master/code/tamagui.dev) to see a good example of a full featured Next.js website as well, especially the `next.config.js` and `tamagui.config.ts`.
-
 ## Install
 
 <Notice theme="green">
@@ -29,10 +27,10 @@ yarn add @tamagui/next-plugin
 While you don't have to setup a config, we recommend starting with our default config which gives you media queries and other nice things:
 
 ```tsx fileName="tamagui.config.ts"
-import { config } from '@tamagui/config/v3'
+import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
-const appConfig = createTamagui(config)
+const appConfig = createTamagui(defaultConfig)
 
 export type AppConfig = typeof appConfig
 
@@ -214,10 +212,9 @@ import Head from 'next/head'
 import React, { useMemo } from 'react'
 import { TamaguiProvider, createTamagui } from 'tamagui'
 
-import { config } from '@tamagui/config/v3'
-const tamaguiConfig = createTamagui(config)
 // you usually export this from a tamagui.config.ts file:
-// import tamaguiConfig from '../tamagui.config'
+import { defaultConfig } from '@tamagui/config/v4'
+const tamaguiConfig = createTamagui(defaultConfig)
 
 // make TypeScript type everything based on your config
 type Conf = typeof tamaguiConfig

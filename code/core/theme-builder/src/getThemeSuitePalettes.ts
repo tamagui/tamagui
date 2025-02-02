@@ -1,5 +1,5 @@
 import { hsla, parseToHsla } from 'color2k'
-import type { BuildPalette } from '@tamagui/themes'
+import type { BuildPalette } from './types'
 
 /**
  * palette generally is:
@@ -10,6 +10,7 @@ import type { BuildPalette } from '@tamagui/themes'
 const paletteSize = 12
 
 // how many things come before the actual bg color (transparencies etc)
+// 👋 SYNC WITH tamagui.dev/features/studio/constants
 export const PALETTE_BACKGROUND_OFFSET = 6
 
 const generateColorPalette = ({

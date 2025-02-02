@@ -10,6 +10,7 @@ import type { templates } from '../templates'
 const open = require('opener')
 
 const exec = (cmd: string, options?: Parameters<typeof execSync>[1]) => {
+  console.info(`$ `, cmd)
   return execSync(cmd, {
     stdio: process.env.DEBUG ? 'inherit' : 'ignore',
     ...options,
@@ -46,7 +47,7 @@ export const cloneStarter = async (
   console.info()
 }
 
-async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry = false) {
+async function setupTamaguiDotDir(template: (typeof templates)[number]) {
   console.info(`Setting up ${chalk.blueBright(targetGitDir)}...`)
 
   if (process.env.GITHUB_HEAD_REF) {
@@ -66,65 +67,57 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
   const sourceGitRepo = template.repo.url
   const sourceGitRepoSshFallback = template.repo.sshFallback
 
-  if (isRetry) {
-    if (!(await pathExists(targetGitDir))) {
-      exec(`git clone --branch ${branch} ${sourceGitRepo} "${targetGitDir}"`)
+  if (!(await pathExists(targetGitDir))) {
+    console.info(`Cloning tamagui base directory`)
+    console.info()
+
+    const cmd = `git clone --branch ${branch} ${
+      isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
+    }${sourceGitRepo} "${targetGitDir}"`
+
+    try {
+      try {
+        console.info(`$ ${cmd}`)
+        console.info()
+        exec(cmd)
+      } catch (error) {
+        if (cmd.includes('https://')) {
+          console.info(`https failed - trying with ssh now...`)
+          const sshCmd = cmd.replace(sourceGitRepo, sourceGitRepoSshFallback)
+          console.info(`$ ${sshCmd}`)
+          console.info()
+          exec(sshCmd)
+        } else {
+          throw error
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        if (template.value === 'takeout-starter') {
+          if ((error as any)?.stderr?.includes('Repository not found')) {
+            console.info(
+              chalk.yellow(
+                `You don't have access to this starter. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
+              )
+            )
+            open('https://tamagui.dev/takeout')
+            process.exit(0)
+          }
+        }
+      }
+      throw error
     }
   } else {
-    if (!(await pathExists(targetGitDir))) {
-      console.info(`Cloning tamagui base directory`)
-      console.info()
-
-      const cmd = `git clone --branch ${branch} ${
-        isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
-      }${sourceGitRepo} "${targetGitDir}"`
-
-      try {
-        try {
-          console.info(`$ ${cmd}`)
-          console.info()
-          exec(cmd)
-        } catch (error) {
-          if (cmd.includes('https://')) {
-            console.info(`https failed - trying with ssh now...`)
-            const sshCmd = cmd.replace(sourceGitRepo, sourceGitRepoSshFallback)
-            console.info(`$ ${sshCmd}`)
-            console.info()
-            exec(sshCmd)
-          } else {
-            throw error
-          }
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          if (template.value === 'takeout-starter') {
-            if ((error as any)?.stderr?.includes('Repository not found')) {
-              console.info(
-                chalk.yellow(
-                  `You don't have access to this starter. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
-                )
-              )
-              open('https://tamagui.dev/takeout')
-              process.exit(0)
-            }
-          }
-        }
-        throw error
-      }
-    } else {
-      if (!(await pathExists(join(targetGitDir, '.git')))) {
-        console.error(
-          `Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`
-        )
-        process.exit(1)
-      }
+    if (!(await pathExists(join(targetGitDir, '.git')))) {
+      console.error(`Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`)
+      process.exit(1)
     }
+  }
 
-    if (isInSubDir) {
-      const cmd = `git sparse-checkout set code/starters`
-      exec(cmd, { cwd: targetGitDir })
-      console.info()
-    }
+  if (isInSubDir) {
+    const cmd = `git sparse-checkout set code/starters`
+    exec(cmd, { cwd: targetGitDir })
+    console.info()
   }
 
   try {
@@ -150,17 +143,12 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       )
     }
   } catch (err: any) {
-    console.info(
-      `Error updating: ${err.message} ${err.stack}  ${isRetry ? '' : '\n\nretrying...'}`
-    )
-    if (isRetry) {
-      console.info(
-        `Please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
-      )
-      process.exit(1)
-    }
     await remove(targetGitDir)
-    await setupTamaguiDotDir(template, true)
+    console.info(`Error updating: ${err.message} ${err.stack}`)
+    console.info(
+      `We removed the old template cache, so re-running may fix. If not, please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
+    )
+    process.exit(1)
   }
 }
 

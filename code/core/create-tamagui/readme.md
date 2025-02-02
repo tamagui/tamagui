@@ -4,7 +4,7 @@
 npm create tamagui
 ```
 
-A script that creates a [tamagui monorepo](https://github.com/tamagui/tamagui/tree/master/example-monorepos/blank) for you in seconds.
+A script that creates a [tamagui monorepo](https://github.com/tamagui/tamagui/tree/main/example-monorepos/blank) for you in seconds.
 
 ## Contributing
 

@@ -27,6 +27,10 @@ type ImageType = FC<ImageProps> & {
     abortPrefetch: RNImageType['abortPrefetch'];
     queryCache: RNImageType['queryCache'];
 };
+/**
+ * @summary An image is a component that displays an image.
+ * @see — Docs https://tamagui.dev/ui/image
+ */
 export declare const Image: ImageType;
 export {};
 //# sourceMappingURL=Image.d.ts.map

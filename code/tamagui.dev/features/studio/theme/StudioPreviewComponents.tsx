@@ -1,6 +1,7 @@
-import { memo, useRef } from 'react'
-import { Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { memo } from 'react'
+import { Theme, YStack, useThemeName } from 'tamagui'
 
+import { Masonry } from 'masonic'
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
@@ -9,7 +10,6 @@ import { Calendar } from './preview/Calendar'
 import { ChatScreen } from './preview/Chat'
 import { Components } from './preview/Components'
 import { CurrentTask } from './preview/CurrentTask'
-import { Header } from './preview/Header'
 import { LoginScreen } from './preview/Login'
 import { Overview1, Overview2 } from './preview/Overviews'
 import { Panel } from './preview/Panel'
@@ -18,229 +18,101 @@ import { PricingCards } from './preview/Pricing'
 import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
 import { UserDropdown } from './preview/UserDropdown'
 
-const extraPad = 18
-
-function gridRow(items: Array<[string, number]>) {
-  return items.map((item) => Array(item[1]).fill(item[0]).join(' ')).join(' ')
-}
-
 export const StudioPreviewComponents = memo(() => {
-  const demoProps = useDemoProps()
-
   return (
     <>
-      <Panel disableSettings m={0} f={0} h="auto" w="calc(100% + 24px)">
-        <YStack
-          {...demoProps.panelProps}
-          {...demoProps.stackOutlineProps}
-          {...demoProps.borderRadiusProps}
-          {...demoProps.panelPaddingProps}
-          backgroundColor="transparent"
-          borderColor="transparent"
-          px={0}
-          gap="$0"
-        >
-          <Header />
-        </YStack>
-      </Panel>
+      <PalettePreviewPanels />
 
-      <YStack
-        f={1}
-        display={'grid' as any}
-        scale={0.9}
-        w="110%"
-        transformOrigin="left top"
-        $group-content={
-          {
-            gridTemplateColumns: `50% 50%`,
-            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-            gridTemplateAreas: `
-              'chat chat'
-              'statistics-line statistics-line'
-              'all-tasks all-tasks'
-              'current-task current-task'
-              'user-dropdown user-dropdown'
-              'pie pie'
-              'overview-1 overview-2'
-              'pricing pricing'
-              'statistics-bar statistics-bar'
-              'login login'
-              'calendar calendar'
-              'components components'
-              `,
-          } as any
-        }
-        $group-content-gtXxs={
-          {
-            gridTemplateColumns: Array(12)
-              .fill(`calc(${100 / 12}% - ${extraPad}px)`)
-              .join(' '),
-            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-            gridTemplateAreas: `
-              '${gridRow([
-                ['statistics-line', 7],
-                ['pricing', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pricing', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pricing', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pie', 5],
-              ])}'
-              '${gridRow([
-                ['chat', 7],
-                ['pie', 5],
-              ])}'
-              '${gridRow([
-                ['overview-1', 4],
-                ['statistics-bar', 8],
-              ])}'
-              '${gridRow([
-                ['overview-2', 4],
-                ['statistics-bar', 8],
-              ])}'
-              '${gridRow([
-                ['current-task', 6],
-                ['login', 6],
-              ])}'
-              '${gridRow([
-                ['all-tasks', 6],
-                ['login', 6],
-              ])}'
-              '${gridRow([
-                ['calendar', 6],
-                ['user-dropdown', 6],
-              ])}'
-              '${gridRow([['components', 12]])}'
-          `,
-          } as any
-        }
-        $group-content-gtXs={
-          {
-            gridTemplateColumns: Array(12)
-              .fill(`calc(${100 / 12}% - ${extraPad}px)`)
-              .join(' '),
-            gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
-            gridTemplateAreas: `
-              '${gridRow([
-                ['chat', 5],
-                ['overview-1', 3],
-                ['user-dropdown', 4],
-              ])}'
-              '${gridRow([
-                ['chat', 5],
-                ['overview-2', 3],
-                ['user-dropdown', 4],
-              ])}'
-              '${gridRow([
-                ['chat', 5],
-                ['statistics-line', 3],
-                ['statistics-line', 4],
-              ])}'
-
-              '${gridRow([
-                ['statistics-bar', 6],
-                ['pricing', 6],
-              ])}'
-              '${gridRow([
-                ['login', 4],
-                ['pie', 4],
-                ['current-task', 4],
-              ])}'
-              '${gridRow([
-                ['calendar', 4],
-                ['components', 4],
-                ['all-tasks', 4],
-              ])}'
-            `,
-          } as any
-        }
-      >
-        <Contents />
+      <YStack mr={-10}>
+        <Masonry
+          items={new Array(components.length).fill(0).map((_, id) => ({ id }))}
+          render={ComponentComponent}
+          columnWidth={260}
+          columnGutter={18}
+          rowGutter={18}
+        />
       </YStack>
     </>
   )
 })
 
-const Contents = memo(() => {
-  return (
-    <>
-      <div style={{ gridArea: 'login' }}>
-        <Panel fileToCopyName="Login">
-          <LoginScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'statistics-bar' }}>
-        <Panel fileToCopyName="Statistics">
-          <StatisticsBarScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'statistics-line' }}>
-        <Panel initialAccent fileToCopyName="Statistics">
-          <StatisticsLineScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'overview-1' }}>
-        <Panel initialInverse fileToCopyName="Overviews" initialAccent>
-          <Overview1 />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'overview-2' }}>
-        <Panel fileToCopyName="Overviews">
-          <Overview2 />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'chat' }}>
-        {/* <Theme name="surface2"> */}
-        <Panel fileToCopyName="Chat">
-          <ChatScreen />
-        </Panel>
-        {/* </Theme> */}
-      </div>
-      <div style={{ gridArea: 'user-dropdown' }}>
-        <Panel fileToCopyName="UserDropdown">
-          <UserDropdown />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'pricing' }}>
-        <Panel fileToCopyName="Pricing">
-          <PricingCards />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'all-tasks' }}>
-        <Panel fileToCopyName="AllTasks">
-          <AllTasks />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'pie' }}>
-        <Panel fileToCopyName="Statistics">
-          <PieScreen />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'current-task' }}>
-        <Panel fileToCopyName="CurrentTask">
-          <CurrentTask />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'components' }}>
-        <Panel fileToCopyName="Components">
-          <Components />
-        </Panel>
-      </div>
-      <div style={{ gridArea: 'calendar' }}>
-        <Panel fileToCopyName="Calendar" initialAccent>
-          <Calendar />
-        </Panel>
-      </div>
-    </>
-  )
-})
+const ComponentComponent = ({ index }) => {
+  return components[index]
+}
+
+const components = [
+  <>
+    <Panel fileToCopyName="Statistics">
+      <StatisticsBarScreen />
+    </Panel>
+  </>,
+  <>
+    <Panel initialAccent fileToCopyName="Statistics">
+      <StatisticsLineScreen />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Overviews" initialAccent>
+      <Overview1 />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Overviews">
+      <Overview2 />
+    </Panel>
+  </>,
+  <>
+    {/* <Theme name="surface2"> */}
+    <Panel fileToCopyName="Chat">
+      <ChatScreen />
+    </Panel>
+    {/* </Theme> */}
+  </>,
+  <>
+    <Panel fileToCopyName="UserDropdown">
+      <UserDropdown />
+    </Panel>
+  </>,
+  <>
+    {/* <Theme name="surface2"> */}
+    <Panel fileToCopyName="Pricing">
+      <PricingCards />
+    </Panel>
+    {/* </Theme> */}
+  </>,
+  <>
+    <Panel fileToCopyName="Login">
+      <LoginScreen />
+    </Panel>
+  </>,
+  <>
+    {/* <Theme name="surface2"> */}
+    <Panel fileToCopyName="AllTasks">
+      <AllTasks />
+    </Panel>
+    {/* </Theme> */}
+  </>,
+  <>
+    <Panel fileToCopyName="Statistics">
+      <PieScreen />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="CurrentTask">
+      <CurrentTask />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Components">
+      <Components />
+    </Panel>
+  </>,
+  <>
+    <Panel fileToCopyName="Calendar" initialAccent>
+      <Calendar />
+    </Panel>
+  </>,
+]
 
 const PalettePreviewPanels = memo(() => {
   const themeBuilderStore = useThemeBuilderStore()

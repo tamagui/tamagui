@@ -3,7 +3,6 @@ import {
   useContext,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState,
   type MutableRefObject,
@@ -16,7 +15,6 @@ import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import { isEqualShallow } from '../helpers/createShallowSetState'
 import type {
-  DebugProp,
   ThemeParsed,
   ThemeProps,
   Tokens,
@@ -72,16 +70,6 @@ export type UseThemeResult = {
   [Key in string & {}]?: ThemeGettable<Variable<any>>
 }
 
-// not used by anything but its technically more correct type, but its annoying to have in intellisense so leaving it
-// type SimpleTokens = NonSpecificTokens extends `$${infer Token}` ? Token : never
-// export type UseThemeWithTokens = {
-//   [Key in keyof ThemeParsed | keyof SimpleTokens]: ThemeGettable<
-//     Key extends keyof ThemeParsed
-//       ? ThemeParsed[Key]
-//       : Variable<ThemeValueGet<`$${Key}`> extends never ? any : ThemeValueGet<`$${Key}`>>
-//   >
-// }
-
 export const useTheme = (props: ThemeProps = emptyProps) => {
   const [_, theme] = useThemeWithState(props)
   const res = theme
@@ -92,7 +80,6 @@ export const useThemeWithState = (
   props: UseThemeWithStateProps
 ): [ChangedThemeResponse, ThemeParsed] => {
   const keys = useRef<string[] | null>(null)
-
   const changedThemeState = useChangeThemeEffect(props, false, keys)
 
   // @ts-expect-error
@@ -112,18 +99,7 @@ export const useThemeWithState = (
     }
   }
 
-  const themeProxied = useMemo(() => {
-    // reset keys on new theme
-    if (keys.current) {
-      keys.current = null
-    }
-
-    if (!themeManager || !state?.theme) {
-      return {}
-    }
-
-    return getThemeProxied(state, props.deopt, keys, themeManager, props.debug)
-  }, [state?.theme, themeManager, props.deopt, props.debug])
+  const themeProxied = getThemeProxied(props, state, keys, themeManager)
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed(`  🔹 [${themeManager?.id}] useTheme =>`, state?.name)
@@ -140,141 +116,130 @@ export const useThemeWithState = (
   return [changedThemeState, themeProxied]
 }
 
+const emptyObject = {}
+
+// only proxy each theme one time, after that we know that renders are sync,
+// so we can just change the focus of the proxied theme and it can be re-used
+const ProxiedThemes: Map<ThemeParsed, UseThemeResult> = new Map()
+
+let curKeys: MutableRefObject<string[] | null>
+let curProps: UseThemeWithStateProps
+let curThemeManger: ThemeManager
+
 function getThemeProxied(
-  { theme, name, scheme }: ThemeManagerState,
-  deopt = false,
-  keys: MutableRefObject<string[] | null>,
-  themeManager: ThemeManager,
-  debug?: DebugProp
+  // underscore to prevent accidental usage below
+  _props: UseThemeWithStateProps,
+  state: ThemeManagerState | undefined,
+  _keys: MutableRefObject<string[] | null>,
+  _themeManager?: ThemeManager | null
 ): UseThemeResult {
-  if (!theme) return {}
+  const theme = state?.theme
+
+  if (!theme || !_themeManager) {
+    return emptyObject
+  }
+
+  curKeys = _keys
+  curProps = _props
+  curThemeManger = _themeManager
+
+  if (ProxiedThemes.has(theme)) {
+    const proxied = ProxiedThemes.get(theme)!
+    return proxied
+  }
+
+  // first time running on this theme, create:
+  // from here on only use current*
+
+  const { name, scheme } = state
 
   const config = getConfig()
 
   function track(key: string) {
-    if (!keys.current) {
-      keys.current = []
-
+    if (!curKeys) return
+    if (!curKeys.current) {
+      curKeys.current = []
       // tracking new key for first time, do an update check
-      setTimeout(() => {
-        themeManager?.selfUpdate()
-      })
+      // console.log('check')
+      // setTimeout(() => {
+      //   curThemeManger?.selfUpdate()
+      // })
     }
-    keys.current.push(key)
-    if (process.env.NODE_ENV === 'development' && debug) {
+    curKeys.current.push(key)
+    if (process.env.NODE_ENV === 'development' && curProps.debug) {
       console.info(` 🎨 useTheme() tracking new key: ${key}`)
     }
   }
 
-  return new Proxy(theme, {
-    has(_, key) {
-      if (Reflect.has(theme, key)) {
-        return true
-      }
-      if (typeof key === 'string') {
-        if (key[0] === '$') key = key.slice(1)
-        return themeManager?.allKeys.has(key)
-      }
-    },
-    get(_, key) {
-      if (
-        // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
-        // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
-        key !== 'undefined' &&
-        typeof key === 'string'
-      ) {
-        // auto convert variables to plain
-        const keyString = key[0] === '$' ? key.slice(1) : key
-        const val = theme[keyString]
+  const proxied = Object.fromEntries(
+    Object.entries(theme).flatMap(([key, value]) => {
+      const proxied = {
+        ...value,
+        get val() {
+          // when they touch the actual value we only track it if its a variable (web), its ignored!
+          if (!globalThis.tamaguiAvoidTracking) {
+            // always track .val
+            track(key)
+          }
+          return value.val
+        },
+        get(platform?: 'web') {
+          const outVal = getVariable(value)
 
-        if (val && typeof val === 'object') {
-          // TODO this could definitely be done better by at the very minimum
-          // proxying it up front and just having a listener here
-          return new Proxy(val as any, {
-            // when they touch the actual value we only track it
-            // if its a variable (web), its ignored!
-            get(_, subkey) {
-              if (subkey === 'val') {
-                if (!globalThis.tamaguiAvoidTracking) {
-                  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                    console.info(
-                      ` 🎨 useTheme() tracking new key because of .val access`,
-                      new Error().stack
-                    )
-                  }
-                  // always track .val
-                  track(keyString)
+          if (process.env.TAMAGUI_TARGET === 'native') {
+            // ios can avoid re-rendering in some cases when we are using a root light/dark
+            // disabled in cases where we have animations
+            if (
+              platform !== 'web' &&
+              isIos &&
+              !curProps.deopt &&
+              getSetting('fastSchemeChange') &&
+              !shouldDeoptDueToParentScheme(curThemeManger)
+            ) {
+              if (scheme) {
+                const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'
+                const oppositeName = name.replace(scheme, oppositeScheme)
+                const color = getVariable(config.themes[name]?.[key])
+                const oppositeColor = getVariable(config.themes[oppositeName]?.[key])
+
+                const dynamicVal = {
+                  dynamic: {
+                    [scheme]: color,
+                    [oppositeScheme]: oppositeColor,
+                  },
                 }
-              } else if (subkey === 'get') {
-                return (platform?: 'web') => {
-                  const outVal = getVariable(val)
 
-                  if (process.env.TAMAGUI_TARGET === 'native') {
-                    // ios can avoid re-rendering in some cases when we are using a root light/dark
-                    // disabled in cases where we have animations
-                    if (
-                      platform !== 'web' &&
-                      isIos &&
-                      !deopt &&
-                      getSetting('fastSchemeChange') &&
-                      !shouldDeoptDueToParentScheme(themeManager)
-                    ) {
-                      if (scheme) {
-                        const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'
-                        const oppositeName = name.replace(scheme, oppositeScheme)
-                        const color = getVariable(config.themes[name]?.[keyString])
-                        const oppositeColor = getVariable(
-                          config.themes[oppositeName]?.[keyString]
-                        )
-
-                        const dynamicVal = {
-                          dynamic: {
-                            [scheme]: color,
-                            [oppositeScheme]: oppositeColor,
-                          },
-                        }
-
-                        return dynamicVal
-                      }
-                    }
-
-                    if (process.env.NODE_ENV === 'development' && debug) {
-                      console.info(` 🎨 useTheme() tracking new key because of: 
-                        not web: ${platform !== 'web'}
-                        isIOS: ${isIos}
-                        deopt: ${deopt}
-                        fastScheme: ${getSetting('fastSchemeChange')}
-                        inversed: ${getIsInversed(themeManager)}
-                      `)
-                    }
-
-                    track(keyString)
-                  }
-
-                  return outVal
-                }
+                return dynamicVal
               }
+            }
 
-              return Reflect.get(val as any, subkey)
-            },
-          })
-        }
+            if (process.env.NODE_ENV === 'development' && curProps.debug) {
+              console.info(` 🎨 useTheme() tracking new key because of: 
+                not web: ${platform !== 'web'}
+                isIOS: ${isIos}
+                deopt: ${curProps.deopt}
+                fastScheme: ${getSetting('fastSchemeChange')}
+                inversed: ${getIsInversed(curThemeManger)}
+              `)
+            }
 
-        if (
-          process.env.NODE_ENV === 'development' &&
-          process.env.TAMAGUI_FEAT_THROW_ON_MISSING_THEME_VALUE === '1'
-        ) {
-          throw new Error(
-            `[tamagui] No theme key "${key}" found in theme ${name}. \n  Keys in theme: ${Object.keys(
-              theme
-            ).join(', ')}`
-          )
-        }
+            track(key)
+          }
+
+          return outVal
+        },
       }
 
-      return Reflect.get(_, key)
-    },
-  }) as UseThemeResult
+      return [
+        [key, proxied],
+        [`$${key}`, proxied],
+      ]
+    })
+  ) as UseThemeResult
+
+  ProxiedThemes.set(theme, proxied)
+
+  return proxied
 }
 
 // to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt

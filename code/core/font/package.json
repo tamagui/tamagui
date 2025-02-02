@@ -1,12 +1,11 @@
 {
   "name": "@tamagui/font",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -21,11 +20,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.122.8",
-    "@tamagui/web": "1.122.8"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

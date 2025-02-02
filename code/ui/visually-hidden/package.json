@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "sideEffects": [
     "*.css"
   ],
@@ -8,7 +8,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -36,10 +35,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.122.8"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

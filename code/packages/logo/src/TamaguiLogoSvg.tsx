@@ -1,4 +1,6 @@
-export const TamaguiIconSvg = (props: React.SVGProps<SVGSVGElement>) => (
+import type { JSX } from 'react/jsx-runtime'
+
+export const TamaguiIconSvg = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
   <svg width="160px" height="160px" viewBox="0 0 160 160" {...props}>
     <g id="duck" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <circle id="Oval" cx="80" cy="80" r="145"></circle>

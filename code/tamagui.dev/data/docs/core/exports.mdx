@@ -7,7 +7,7 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 ## Constants
 
-[Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/index.ts):
+[Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/main/code/core/constants/src/constants.ts):
 
 - `isWeb` - True if targeting the web. Will be true both for SSR and client.
 - `isWindowDefined` - `typeof window !== 'undefined'`
@@ -105,7 +105,7 @@ Take props, returns new object with all shorthand props expanded.
 themeable<Comp extends ReactComponentLike>(component: Comp): Comp
 ```
 
-[A higher order component](https://github.com/tamagui/tamagui/blob/master/packages/core/src/helpers/themeable.tsx) that accepts `theme` and `themeInverse`, rendering them onto `Theme` before rendering your component.
+A higher order component that accepts `theme` and `themeInverse`, rendering them onto `Theme` before rendering your component.
 
 ### getVariable
 

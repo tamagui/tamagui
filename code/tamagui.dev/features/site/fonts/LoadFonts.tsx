@@ -77,14 +77,6 @@ export const LoadInter900 = ({ prefetch }: { prefetch?: boolean }) => (
   />
 )
 
-export const LoadGlusp = ({ prefetch }: { prefetch?: boolean }) => (
-  <LoadFont
-    prefetch={prefetch}
-    woff2File="/fonts/glusp.woff2"
-    cssFile="/fonts/glusp.css"
-  />
-)
-
 export const LoadMunro = ({ prefetch }: { prefetch?: boolean }) => (
   <LoadFont
     prefetch={prefetch}

@@ -15,3 +15,5 @@ export { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from './getThemeSuit
 
 // copied from themes to avoid cyclic dep
 export { masks } from './masks'
+
+export type * from './types'

@@ -7,15 +7,15 @@ description: Get Tamagui set up, step by step
 We recommend using `npm create tamagui@latest` to bootstrap one of our starter templates, with examples for many frameworks.
 </IntroParagraph>
 
-The base Tamagui style library, `@tamagui/core`, has only one dependency: React. It's lighter weight than React Native Web, yet gives you a much broader style API.
+The base Tamagui style library, `@tamagui/core` has no dependencies outside of `react`, is smaller than React Native Web. It implements the full React Native View and Text APIs independently, and then adds a large superset of style APIs to support a larger amount of modern CSS styling.
 
-Install it with:
+To install:
 
 ```bash
 yarn add @tamagui/core
 ```
 
-If you plan to use the full UI kit, `tamagui`, you can avoid installing `@tamagui/core` altogether. Instead:
+If you plan to use the full UI kit, `tamagui`, you can avoid installing `@tamagui/core` altogether and instead:
 
 ```bash
 yarn add tamagui
@@ -43,10 +43,10 @@ See the [configuration documentation](/docs/core/configuration) docs for a compr
 If you'd like to get started more quickly with presets, we have `@tamagui/config`:
 
 ```bash
-yarn add @tamagui/config
+yarn add @tamagui/core @tamagui/config
 ```
 
-You can use it like so:
+And then provide it near your root:
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
@@ -57,7 +57,7 @@ const config = createTamagui(defaultConfig)
 
 type Conf = typeof config
 
-// get nice types
+// make imports typed
 declare module '@tamagui/core' {
   interface TamaguiCustomConfig extends Conf {}
 }

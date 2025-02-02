@@ -169,7 +169,39 @@ const Switch = memo(
         }}
         onCheckedChange={disabled ? undefined : onCheckedChange}
         {...rest}
-      ></TamaguiSwitch>
+      >
+        <TamaguiSwitch.Thumb
+          alignItems="center"
+          {...animationProp}
+          backgroundColor={thumbBackgroundColor}
+          justifyContent="center"
+          minHeight={THUMB_HEIGHT}
+          width={24}
+        >
+          <View
+            $group-item-hover={frameActiveStyle}
+            $group-item-press={frameActiveStyle}
+            animation="100ms"
+            opacity={checked ? 1 : 0}
+          >
+            {/* <Check color={iconColor} size={14} /> */}
+          </View>
+
+          {/* fake thumb for width animation */}
+          <View
+            $group-item-hover={outerActiveStyle}
+            $group-item-press={outerActiveStyle}
+            {...animationProp}
+            backgroundColor={thumbBackgroundColor}
+            borderRadius={100}
+            inset={0}
+            minHeight={THUMB_HEIGHT}
+            position="absolute"
+            width={24}
+            zIndex={-2}
+          />
+        </TamaguiSwitch.Thumb>
+      </TamaguiSwitch>
     )
   }
 )

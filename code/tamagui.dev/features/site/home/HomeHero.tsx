@@ -43,20 +43,20 @@ const HeroSubTitle = memo(() => {
 
   return (
     <Subtitle>
-      <Link asChild href="/docs/core/configuration">
-        <Tag theme="pink" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+      <Link asChild href="/docs/introduction">
+        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="gray" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+        <Tag theme="green" onHoverIn={() => setHovered(3)} active={hovered === 3}>
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/ui/stacks">
-        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="blue" onHoverIn={() => setHovered(4)} active={hovered === 4}>
           UI&nbsp;kit
         </Tag>
       </Link>{' '}
@@ -296,10 +296,12 @@ const HeroContents = memo(function HeroContents() {
             <Link asChild href="/docs/intro/introduction">
               <Button
                 aria-label="Get started (docs)"
+                group="item"
+                containerType="normal"
                 fontFamily="$silkscreen"
                 componentName=""
                 size="$5"
-                fontSize="$6"
+                fontSize="$2"
                 borderRadius={1000}
                 bordered
                 bw={2}
@@ -309,17 +311,11 @@ const HeroContents = memo(function HeroContents() {
                 pressStyle={{
                   elevation: '$0',
                 }}
-                // TODO this is applying in dark mode...
-                // $theme-light={{
-                //   bg: '$color1',
-                //   hoverStyle: {
-                //     bg: '$color2',
-                //     color: '$color10',
-                //   },
-                // }}
               >
                 Start
-                <LogoIcon downscale={3} />
+                {/* <YStack $group-item-press={{ scaleX: -1 }}>
+                  <LogoIcon downscale={3} />
+                </YStack> */}
               </Button>
             </Link>
           </Theme>

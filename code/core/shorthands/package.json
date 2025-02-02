@@ -1,11 +1,10 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -55,10 +54,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.122.8"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8"
+    "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

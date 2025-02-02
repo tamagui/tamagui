@@ -24,7 +24,8 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
 declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGroupProps> & React.RefAttributes<HTMLElement>> & {
-    Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "color" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        color?: import("@tamagui/web").ColorTokens | undefined;
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
             top?: number;
@@ -48,6 +49,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         active?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        color?: import("@tamagui/web").ColorTokens | undefined;
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
             top?: number;
@@ -71,6 +73,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         active?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+        color?: import("@tamagui/web").ColorTokens | undefined;
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
             top?: number;

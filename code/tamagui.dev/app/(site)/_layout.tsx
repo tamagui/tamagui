@@ -29,7 +29,7 @@ export default function SiteLayout() {
       <LoadCherryBomb prefetch />
       <LoadMunro prefetch />
       {!isDocs && !isIndex && !isBento && !isTakeout && (
-        <ThemeNameEffect colorKey="$color2" />
+        <ThemeNameEffect colorKey="$color1" />
       )}
       <Slot />
       {!hideFooter && <Footer />}

@@ -135,33 +135,7 @@ export const BentoLogo = ({
         </H1>
       </BentoLogoTheme>
 
-      {/* <BentoLogoTheme offset={2 + offsetAdjust}>
-        <H1
-          pos="absolute"
-          t={0}
-          x={-1}
-          l={0}
-          zi={10}
-          ff="$cherryBomb"
-          px="$3"
-          mx="$-3"
-          whiteSpace="pre"
-          maw="100%"
-          f={1}
-          ls={-16}
-          lh={280}
-          my={-45}
-          fos={180}
-          o={0.5}
-          ussel="none"
-          pe="none"
-          className="clip-text mask-gradient-down bento-text-3"
-        >
-          {children}&nbsp;
-        </H1>
-      </BentoLogoTheme> */}
-
-      <BentoLogoTheme offset={2 + offsetAdjust}>
+      <BentoLogoTheme offset={1 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
@@ -172,7 +146,7 @@ export const BentoLogo = ({
           px="$3"
           mx="$-3"
           whiteSpace="pre"
-          color="$color8"
+          color="$color11"
           maw="100%"
           f={1}
           ls={-16}
@@ -181,9 +155,41 @@ export const BentoLogo = ({
           fos={180}
           ussel="none"
           pe="none"
-          style={{
-            maskImage: `linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0) 50%)`,
+          $theme-light={{
+            dsp: 'none',
           }}
+          style={{
+            maskImage: `linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0) 70%)`,
+          }}
+        >
+          {children}&nbsp;
+        </H1>
+      </BentoLogoTheme>
+
+      <BentoLogoTheme offset={3 + offsetAdjust}>
+        <H1
+          pos="absolute"
+          t={0}
+          zi={10000000000000}
+          x={-1}
+          l={0}
+          ff="$cherryBomb"
+          px="$3"
+          mx="$-3"
+          whiteSpace="pre"
+          maw="100%"
+          f={1}
+          ls={-16}
+          lh={280}
+          bg="$color8"
+          $theme-dark={{
+            dsp: 'none',
+          }}
+          my={-45}
+          fos={180}
+          ussel="none"
+          pe="none"
+          className="clip-text mask-gradient-down"
         >
           {children}&nbsp;
         </H1>

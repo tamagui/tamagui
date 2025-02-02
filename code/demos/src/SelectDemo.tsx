@@ -35,23 +35,14 @@ export function SelectDemoItem(props: SelectProps) {
       </Select.Trigger>
 
       <Adapt when="sm" platform="touch">
-        <Sheet
-          native={!!props.native}
-          modal
-          dismissOnSnapToBottom
-          animationConfig={{
-            type: 'spring',
-            damping: 20,
-            mass: 1.2,
-            stiffness: 250,
-          }}
-        >
+        <Sheet native={!!props.native} modal dismissOnSnapToBottom animation="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
+            bg="$shadowColor"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}

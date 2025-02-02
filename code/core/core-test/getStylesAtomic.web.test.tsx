@@ -5,7 +5,7 @@ import {
   StyleObjectIdentifier,
   StyleObjectRules,
   createTamagui,
-  getStylesAtomic,
+  getCSSStylesAtomic,
 } from '../core/src'
 
 beforeAll(() => {
@@ -14,7 +14,7 @@ beforeAll(() => {
 
 test(`should expand webkit user-select`, () => {
   expect(
-    getStylesAtomic({
+    getCSSStylesAtomic({
       // @ts-ignore
       userSelect: 'none',
     })
@@ -34,7 +34,7 @@ test(`should expand webkit user-select`, () => {
 })
 
 test(`should handle decimal placement differently`, () => {
-  const out = getStylesAtomic({
+  const out = getCSSStylesAtomic({
     left: 1.11,
     right: 11.1,
   })
@@ -44,7 +44,7 @@ test(`should handle decimal placement differently`, () => {
 })
 
 test(`should turn columnGap into gap-column`, () => {
-  const out = getStylesAtomic({
+  const out = getCSSStylesAtomic({
     columnGap: 10,
   })
   expect(out[0][StyleObjectRules].includes(`column-gap:10px`))
@@ -72,7 +72,7 @@ test(`should turn columnGap into gap-column`, () => {
 //   const start = performance.now()
 
 //   function run() {
-//     getStylesAtomic({
+//     getCSSStylesAtomic({
 //       backgroundColor: 'red',
 //       width: 100,
 //       height: 200,

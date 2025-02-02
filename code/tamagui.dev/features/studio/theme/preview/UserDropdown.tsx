@@ -28,17 +28,6 @@ export const UserDropdown = () => {
               </Paragraph>
             </YStack>
           </XStack>
-          <AccentTheme>
-            <Button
-              size="$2"
-              bg={accentTokenName}
-              {...demoProps.borderRadiusProps}
-              {...demoProps.buttonOutlineProps}
-              br="$10"
-            >
-              Gold Tier
-            </Button>
-          </AccentTheme>
         </XStack>
       </YStack>
 

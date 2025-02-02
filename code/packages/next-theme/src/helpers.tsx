@@ -3,7 +3,7 @@ import { MEDIA } from './constants'
 export const helpers = {}
 // Helpers
 
-export const getTheme = (key: string, fallback?: string) => {
+export const getTheme = (key: string, fallback?: string): any => {
   if (typeof window === 'undefined') return undefined
   let theme
   try {
@@ -14,7 +14,7 @@ export const getTheme = (key: string, fallback?: string) => {
   return theme || fallback
 }
 
-export const getSystemTheme = (e?: MediaQueryList) => {
+export const getSystemTheme = (e?: MediaQueryList): 'dark' | 'light' => {
   if (!e) {
     e = window.matchMedia(MEDIA)
   }

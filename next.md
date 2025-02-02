@@ -1,5 +1,11 @@
+- background08 is not bg color
+  - should add 02 etc of all colors and remove background/color
+
 v2
 
+
+  - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
+  - @tamagui/static and all the plugins => @tamagui/compiler package
   - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
@@ -14,23 +20,33 @@ v2
     - based on studio, allows passing in custom colors
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
+  - // TODO on inverse theme changes
 
 - v3 - aim for fast follow
 
-  - add animation api
-  - tokens => variables (remove nested groups)
-  - theme => variables
- - remove component themes:
-  - just can set theme="surface2" and have "generic" themes
+  - themes => variables, control any property
+  - remove tokens in favor of themes
+  - default box-sizing to border-box
+  - remove component themes, instead theme="surface2" etc
   - remove `name` from styled() then too
-
 
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
 
+- config v5
+
+  - aligned setting to react native layout mode
+  - tokens aligned to tailwind
+
+- config v6
+
+  - remove tokens in favor of themes having tokens
+
 ---
 
 v3
+
+- perspective={1000} broken on web, it shouldnt be in transform()
 
 generic function to allow new syntaxes, eg flat mode
 
@@ -63,8 +79,6 @@ createCore<CustomTypes>({
   - zero runtime mode
     - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
   - `<Theme values={{}} />` dynamic override
-
-- remove @tamagui/one-theme see how apps do it in one repo
 
 - perf getState could be cached (weakmap themeManager + stringify props)
 

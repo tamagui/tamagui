@@ -1,12 +1,11 @@
 {
   "name": "@tamagui/font-size",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -33,10 +32,10 @@
     "lint:fix": "biome check --write src"
   },
   "dependencies": {
-    "@tamagui/core": "1.122.8"
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

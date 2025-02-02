@@ -7,6 +7,10 @@ import { styledBody } from './shared'
 import type { InputProps } from './types'
 const StyledInput = styled(View, styledBody[0], styledBody[1])
 
+/**
+ * @summary An input is a text field that allows users to enter text.
+ * @see — Docs https://tamagui.dev/ui/inputs#input
+ */
 export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
   const {
     // some of destructed props are just to avoid passing them to ...rest because they are not in web.

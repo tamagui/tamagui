@@ -1,18 +1,18 @@
 import * as Colors from '@tamagui/colors'
-import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { shorthands } from '@tamagui/shorthands/v4'
+import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { tokens } from '@tamagui/themes/v4'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { animations } from './v3-animations'
 import { fonts } from './v4-fonts'
 import { media, mediaQueryDefaultActive } from './v4-media'
 
-export { createThemes } from '@tamagui/theme-builder'
 export { shorthands } from '@tamagui/shorthands/v4'
-export { media, mediaQueryDefaultActive, breakpoints } from './v4-media'
+export { createThemes } from '@tamagui/theme-builder'
+export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
 export { animations } from './v4-animations'
 export { createSystemFont, fonts } from './v4-fonts'
-export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
+export { breakpoints, media, mediaQueryDefaultActive } from './v4-media'
 
 // Themes:
 
@@ -33,17 +33,17 @@ const darkPalette = [
 
 const lightPalette = [
   '#fff',
-  '#f8f8f8',
-  'hsl(0, 0%, 96.3%)',
-  'hsl(0, 0%, 94.1%)',
-  'hsl(0, 0%, 92.0%)',
-  'hsl(0, 0%, 90.0%)',
-  'hsl(0, 0%, 88.5%)',
-  'hsl(0, 0%, 81.0%)',
-  'hsl(0, 0%, 56.1%)',
-  'hsl(0, 0%, 50.3%)',
-  'hsl(0, 0%, 42.5%)',
-  'hsl(0, 0%, 9.0%)',
+  '#f2f2f2',
+  'hsl(0, 0%, 93%)',
+  'hsl(0, 0%, 91%)',
+  'hsl(0, 0%, 88%)',
+  'hsl(0, 0%, 85%)',
+  'hsl(0, 0%, 82%)',
+  'hsl(0, 0%, 76%)',
+  'hsl(0, 0%, 56%)',
+  'hsl(0, 0%, 50%)',
+  'hsl(0, 0%, 42%)',
+  'hsl(0, 0%, 9%)',
 ]
 
 const lightShadows = {
@@ -207,7 +207,9 @@ export const settings = {
   allowedStyleValues: 'somewhat-strict-web',
   themeClassNameOnRoot: true,
   onlyAllowShorthands: true,
-  maxDarkLightNesting: 1,
+  // allow two inverses (tooltips, etc)
+  // TODO on inverse theme changes
+  maxDarkLightNesting: 2,
 } satisfies CreateTamaguiProps['settings']
 
 export const defaultConfig = {

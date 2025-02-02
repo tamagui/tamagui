@@ -1,5 +1,5 @@
 import { MoreVertical } from '@tamagui/lucide-icons'
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Adapt,
@@ -14,6 +14,7 @@ import {
 } from 'tamagui'
 import { accentThemeName } from '../../accentThemeName'
 import { useHasAccent } from '../../hooks/useHasAccent'
+import { useThemeBuilderStore } from '../store/ThemeBuilderStore'
 
 interface IPanelContext {
   inverse: boolean
@@ -45,11 +46,24 @@ export function Panel({
   const [inverse, setInverse] = useState(initialInverse || false)
   const [accent, setAccent] = useState(initialAccent)
   const [hovered, setHovered] = useState(false)
+  const store = useThemeBuilderStore()
+
+  useEffect(() => {
+    if (store.randomizeId) {
+      setAccent((x) => Math.random() > 0.75)
+      setInverse((x) => Math.random() > 0.95)
+    }
+  }, [store.randomizeId])
 
   return (
     <YStack
       w="100%"
-      h="100%"
+      mah={600}
+      f={1}
+      // scale={0.95}
+      // transformOrigin="left top"
+      group="card"
+      containerType="normal"
       onHoverIn={() => setHovered(true)}
       onHoverOut={() => setHovered(false)}
       {...props}

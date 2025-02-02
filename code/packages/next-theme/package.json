@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -12,19 +12,19 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.122.8",
-    "@tamagui/use-event": "1.122.8"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "peerDependencies": {

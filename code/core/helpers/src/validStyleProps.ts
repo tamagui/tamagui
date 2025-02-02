@@ -284,7 +284,7 @@ export const stylePropsView = {
   ...(isAndroid ? { elevationAndroid: true } : {}),
 }
 
-export const stylePropsFont = {
+const stylePropsFont = {
   fontFamily: true,
   fontSize: true,
   fontStyle: true,

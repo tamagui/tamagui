@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-default",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "types": "./types/index.d.ts",
@@ -15,12 +15,12 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animations-css": "1.122.8",
-    "@tamagui/core": "1.122.8",
-    "@tamagui/shorthands": "1.122.8"
+    "@tamagui/animations-css": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/shorthands": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8"
+    "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

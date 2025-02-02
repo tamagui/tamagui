@@ -1,6 +1,6 @@
 import { Info } from '@tamagui/lucide-icons'
 import { useRef, useState } from 'react'
-import { Button, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Button, Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 
 export type FieldsetWithLabelProps = {
   enableEditLabel?: boolean
@@ -33,7 +33,6 @@ export const FieldsetWithLabel = ({
       bc={isActive ? '$color9' : '$color6'}
       bw={0}
       px="$3"
-      mt="$3"
       onPress={onPress}
     >
       <YStack
@@ -72,17 +71,18 @@ export const FieldsetWithLabel = ({
             }}
           />
         ) : (
-          <Paragraph
+          <Heading
             selectable={false}
             tag="label"
-            size="$8"
-            color="$color12"
-            fow="600"
+            size="$5"
+            color="$color11"
+            ta="center"
             {...(tooltip && {
               pr: '$6',
             })}
           >
-            {label}
+            {label[0].toUpperCase()}
+            {label.slice(1)}
 
             {!!tooltip && (
               <TooltipSimple
@@ -112,7 +112,7 @@ export const FieldsetWithLabel = ({
                 />
               </TooltipSimple>
             )}
-          </Paragraph>
+          </Heading>
         )}
       </YStack>
 

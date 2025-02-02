@@ -500,7 +500,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     if (!USE_NATIVE_PORTAL) {
       const adaptContext = useAdaptContext()
-      contents = <ProvideAdaptContext {...adaptContext}>{contents}</ProvideAdaptContext>
+      contents = (
+        <ProvideAdaptContext {...adaptContext}>
+          {/* @ts-ignore */}
+          {contents}
+        </ProvideAdaptContext>
+      )
     }
 
     // start mounted so we get an accurate measurement the first time

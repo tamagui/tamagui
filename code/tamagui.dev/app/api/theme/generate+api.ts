@@ -1,368 +1,212 @@
-// import { createDeepSeek } from '@ai-sdk/deepseek'
-import { xai } from '@ai-sdk/xai'
-import { generateText } from 'ai'
-import { apiRoute } from '~/features/api/apiRoute'
-import { ensureAccess } from '~/features/api/ensureAccess'
-import { ensureAuth } from '~/features/api/ensureAuth'
-import { readBodyJSON } from '~/features/api/readBodyJSON'
-
-export default apiRoute(async (req) => {
-  const { supabase } = await ensureAuth({ req })
-
-  try {
-    const { hasTakeoutAccess, hasBentoAccess } = await ensureAccess({ req, supabase })
-
-    if (!(hasTakeoutAccess || hasBentoAccess)) {
-      throw Response.json(
-        {
-          error: `First purchase Takeout or Bento!`,
-        },
-        {
-          status: 400,
-        }
-      )
-    }
-  } catch (err) {
-    throw Response.json(
-      {
-        error: `First purchase Takeout or Bento!`,
-      },
-      {
-        status: 400,
-      }
-    )
-  }
-
-  const body = await readBodyJSON(req)
-  const prompt = body.prompt?.trim()
-  const lastReply = body.lastReply?.trim() || ''
-  const scheme = body.scheme?.trim() || 'unknown'
-  const model = body.model?.trim() || 'chat'
-
-  if (!prompt) {
-    throw Response.json(
-      {
-        error: `No prompt!`,
-      },
-      {
-        status: 400,
-      }
-    )
-  }
-
-  if (prompt.length > 1000) {
-    throw Response.json(
-      {
-        error: `Prompt too long!`,
-      },
-      {
-        status: 400,
-      }
-    )
-  }
-
-  const reasoning = false
-
-  console.info(`Generating (scheme: ${scheme}, model: ${model}): ${prompt}...`)
-
-  const { text } = await generateText({
-    model: xai('grok-2-1212'),
-    // model: deepseek(`deepseek-${model}`),
-    maxTokens: 4_000,
-    onStepFinish(event) {
-      console.info(event.text)
-    },
-    prompt: `Help generate a Tamagui theme configuration for us. We need two sets of anchors,
-which are just objects that define index, hue, sat, and lum for both light and dark modes.
-
-We have a custom format to save space, this is a well formed theme with a grayscale base and blue accent (theme 1):
-
----
-
-i: 0
-h: 0,0
-s: 0.2,0.2
-l: 0.99,0.02
-
-i: 9
-h: 0,0
-s: 0.2,0.2
-l: 0.5,0.5
-
-i: 10
-h: 0,0
-s: 0.2,0.2
-l: 0.15,0.925
-
-i: 11
-h: 0,0
-s: 0.2,0.2
-l: 0.03,0.98
-
-###
-
-i: 0
-h: 250,250
-s: 0.5,0.5
-l: 0.4,0.35
-
-i: 9
-h: 250,250
-s: 0.5,0.5
-l: 0.65,0.6
-
-i: 10
-h: 250,250
-s: 0.5,0.5
-l: 0.95,0.9
-
-i: 11
-h: 250,250
-s: 0.5,0.5
-l: 0.95,0.95
-
-Note that "i" = index, "h" = hue, "s" = saturation, "l" = luminosity. And the two values for each are dark, light values.
-
-Base is the first section, accent is the second, separated by "###".
-
-This is the way we generate two palettes - accent and base, which are just strings of colors from 0 to 11 index.
-Note that index 0 to 9 are backgrounds, and 11 and 12 are foregrounds (text color).
-
-We generate it for both light and dark mode using comma separation. So for dark mode the lum should be low
-(0 to 0.2 or so) for index 0, medium (0.4 to 0.8 or so) for index 9, and then pretty high for 10, and highest at 11.
-Likewise for light it should be dark at 0, medium at 9, and then very light at 10 and lightest at 11.
-
-Note that "base" is your low level theme, while "accent" will generate a complimentary theme. So if the user
-wants a black and white theme with a pop of red color, you'd generate "base" no saturation, and you'd generate
-"accent" with hue at red, and high saturation values.
-
-But if the user wanted a black and white theme where the *text* color is yellow, but the *accent* colors are green, you'd
-generate the "base" to have index 0-9 have no saturation, but both 10 and 11 anchors would change the hue to be red.
-Then accent would have hue all set to green.
-
-Some notes:
-
-  - Tend to use more colors, if the theme allows it. Having 4-5 different hue's can look nice.
-  - Values always go light,dark. Make sure light is first, dark is second.
-  - If there are three colors, you can use base background for one, base foreground for another, and accent for the third.
-  - For high contrast themes, ensure that the luminosity for 0 index and 9 index are more spread apart.
-  - In general the light 0 index luminosity should be close to 1 unless its a very vibrant theme, rule of thumb
-    - light theme backgrounds look good when they are very light (close to 0.99)
-    - otherwise if vibrant, go way down to 0.5 or so, avoid the "muddy" 0.9"
-  - For strictly black and white themes, ensure there's no saturation on base or accent.
-  - In general for text to look good you need your 10 and 11 index to contrast well the 0 and 9 index, for example a light theme generally wants high luminosity for 0 and 9, and low luminosity for 10 and 11.
-  - You almost always want the hue of the 0-9 to match, and the hue of the 10-11 to match, but they can be different from each other.
-  - Ensure the accent foreground is separated a little from background for contrast.
-
-Here's a more punchy example of an "LA Lakers" theme with purple/gold, note the accent theme uses the gold for bg and purple for text,
-and adds an anchor at index 3 to make borders a bit more subtle (theme 2):
-
-i: 0
-h: 270,270
-s: 0.8,0.8
-l: 1,0.05
-
-i: 3
-h: 270,270
-s: 0.8,0.8
-l: 0.97,0.1
-
-i: 9
-h: 270,270
-s: 0.8,0.8
-l: 0.4,0.6
-
-i: 10
-h: 270,270
-s: 0.8,0.8
-l: 0.15,0.925
-
-i: 11
-h: 270,270
-s: 0.8,0.8
-l: 0.05,0.96
-
-###
-
-i: 0
-h: 55,55
-s: 0.9,0.9
-l: 0.7,0.4
-
-i: 9
-h: 55,55
-s: 0.9,0.9
-l: 0.4,0.65
-
-i: 10
-h: 270,270
-s: 0.9,0.9
-l: 0.3,0.4
-
-i: 11
-h: 270,270
-s: 0.9,0.9
-l: 0.2,0.5
-
-And here's a final of really bold theme. It has bright neon green base. It makes the accent background black and white, which is a good strategy generally for more bold themes.
-But it uses a final pink foreground in the accent (theme 3):
-
-i: 0
-h: 100,100
-s: 0.9,0.9
-l: 0.5,0.34
-
-i: 9
-h: 100,100
-s: 0.9,0.9
-l: 0.3,0.5
-
-i: 10
-h: 100,100
-s: 0.9,0.9
-l: 0.1,0.7
-
-i: 11
-h: 100,100
-s: 0.9,0.9
-l: 0,1
-
-###
-
-i: 0
-h: 300,300
-s: 0,0
-l: 1,0
-
-i: 9
-h: 300,300
-s: 0,0
-l: 0.65,0.6
-
-i: 10
-h: 300,300
-s: 0.5,0.5
-l: 0.4,0.6
-
-i: 11
-h: 300,300
-s: 0.5,0.5
-l: 0.3,0.7
-
-Here's the current color scheme they are using, which may be relevant: "${scheme}". For example if they say
-want a "darker background" when in dark mode, just change the dark values.
-
-Please write a few sentences to plan out your design first in plain english with minimal formatting before returning the structured data.
-
-In your plan, first decide which of the above templates is closest to what you want to generate.
-Then, generally plan the hues you want to use, by anchor.
-Then, plan the saturations by anchor.
-
-An example of a plan if their prompt was just "SUPREME" would be something like:
-
-The SUPREME brand uses bright red backgrounds and white colors, similar to theme 3. We want backgrounds to be closer to middle luminosity,
-high saturation. We want the accent to use pure white for the background in both light and dark, and then a bright red for the foregrounds.
-
-${
-  reasoning
-    ? `Please don't overthink things, reply quickly with just a few short thoughts.`
-    : `After your plan please separate with a "---" before the structured data.`
-}
-
-Please respond only with the structured data after your plan.
-
-${lastReply ? `The last user prompt was: "${lastReply}"` : ''}
-
-The user prompt is "${prompt}".
-`,
-  })
-
-  try {
-    console.info(`Generated: ${text}`)
-    const { base, accent, cleaned } = outputToJSON(text)
-    return Response.json({
-      result: { base, accent },
-      reply: cleaned,
-    })
-  } catch (err) {
-    throw Response.json(
-      {
-        error: `Invalid JSON returned: ${err}`,
-      },
-      {
-        status: 400,
-      }
-    )
-  }
-})
-
-function outputToJSON(text: string) {
-  const startOfData = text.indexOf('i: ')
-
-  if (startOfData < 0) {
-    throw new Error(`Invalid format, no i: `)
-  }
-
-  const cleaned = text
-    .replace(/.*---/, '')
-    .replace(/---.*/, '')
-    // remove code blocks around it
-    .slice(startOfData)
-
-  const [base, accent] = cleaned.split('###')
-
-  const baseAnchors = parseAnchors(base.trim())
-  const accentAnchors = parseAnchors(accent.trim())
-
-  return {
-    cleaned,
-    base: baseAnchors,
-    accent: accentAnchors,
-  }
-}
-
-function parseAnchors(text: string) {
-  const anchors = text.split('\n\n')
-
-  return anchors.map((a) => {
-    const [i, h, s, l] = a.split('\n')
-    const index = +i.replace('i: ', '')
-
-    return {
-      index,
-      hue: parseDarkLight('h', h, index),
-      sat: parseDarkLight('s', s, index),
-      lum: parseDarkLight('l', l, index),
-    }
-  })
-}
-
-function parseDarkLight(name: 'h' | 's' | 'l', line: string, index: number) {
-  const [light, dark] = line
-    .replace(/[a-z]\:\s+/, '')
-    .split(',')
-    .map((x) => +x)
-  return {
-    dark,
-    light,
-    ...(index === 0 &&
-      (name === 'h' || name === 's') && {
-        sync: true,
-      }),
-    ...(index > 0 &&
-      index <= 9 &&
-      (name === 'h' || name === 's') && {
-        syncLeft: true,
-        sync: true,
-      }),
-    ...(index === 10 &&
-      (name === 'h' || name === 's') && {
-        sync: true,
-      }),
-    ...(index === 11 &&
-      (name === 'h' || name === 's') && {
-        syncLeft: true,
-        sync: true,
-      }),
-  }
-}
+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

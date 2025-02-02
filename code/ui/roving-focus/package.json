@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/roving-focus",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "sideEffects": [
     "*.css"
   ],
@@ -8,7 +8,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -36,18 +35,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/collection": "1.122.8",
-    "@tamagui/compose-refs": "1.122.8",
-    "@tamagui/constants": "1.122.8",
-    "@tamagui/core": "1.122.8",
-    "@tamagui/create-context": "1.122.8",
-    "@tamagui/helpers": "1.122.8",
-    "@tamagui/use-controllable-state": "1.122.8",
-    "@tamagui/use-direction": "1.122.8",
-    "@tamagui/use-event": "1.122.8"
+    "@tamagui/collection": "workspace:*",
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/use-direction": "workspace:*",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

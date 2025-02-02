@@ -6,6 +6,7 @@ import {
   useToastController,
   useToastState,
 } from '@tamagui/toast'
+import { AnimatePresence, Theme } from 'tamagui'
 
 export let toastController: ReturnType<typeof useToastController>
 
@@ -21,7 +22,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
       <ToastHandler />
       {children}
       <ToastImportHandler />
-      <ToastViewport m="$0.5" left="50%" x="-50%" top={0} />
+      <ToastViewport bg="red" m="$0.5" left="50%" x="-50%" bottom={0} />
     </ToastProviderOG>
   )
 }
@@ -31,26 +32,34 @@ const ToastHandler = () => {
   if (!toast) return null
 
   return (
-    <Toast
-      key={toast.id}
-      duration={toast.duration}
-      animation="100ms"
-      enterStyle={{ opacity: 0, scale: 0.5, y: -45 }}
-      exitStyle={{ opacity: 0, scale: 1, y: -40 }}
-      y={0}
-      x={0}
-      opacity={1}
-      scale={1}
-      elevation="$6"
-      m="$4"
-      br="$10"
-      px="$5"
-      py="$2"
-      {...toast.customData}
-    >
-      <Toast.Title o={0.6}>{toast.title}</Toast.Title>
-      <Toast.Description o={0.6}>{toast.message}</Toast.Description>
-    </Toast>
+    <Theme name="accent">
+      <AnimatePresence>
+        <Toast
+          key={toast.title + toast.message}
+          duration={toast.duration}
+          animation="bouncy"
+          enterStyle={{ opacity: 0, scale: 1, y: 15 }}
+          exitStyle={{ opacity: 0, scale: 1, y: -15 }}
+          y={0}
+          position="absolute"
+          bottom={0}
+          left="50%"
+          x="-50%"
+          opacity={1}
+          scale={1}
+          elevation="$6"
+          m="$4"
+          br="$10"
+          bg="$color1"
+          px="$5"
+          py="$2"
+          {...toast.customData}
+        >
+          <Toast.Title whiteSpace="pre">{toast.title}</Toast.Title>
+          <Toast.Description>{toast.message}</Toast.Description>
+        </Toast>
+      </AnimatePresence>
+    </Theme>
   )
 }
 

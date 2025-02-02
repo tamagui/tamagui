@@ -9,7 +9,8 @@
       ],
       "@tamagui/*": [
         "code/core/*",
-        "code/ui/*"
+        "code/ui/*",
+        "code/packages/*"
       ],
       "@tamagui/bento": [
         "code/bento"

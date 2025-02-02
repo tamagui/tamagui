@@ -3,7 +3,7 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 
 export const docsRoutes = [
   {
-    isUI: false,
+    section: 'core',
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
@@ -17,7 +17,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: false,
+    section: 'core',
     title: 'Core',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
@@ -39,18 +39,17 @@ export const docsRoutes = [
   },
 
   {
-    isUI: false,
-    title: 'Compiler',
+    section: 'compile',
     pages: [
-      { title: 'Background', route: '/docs/intro/why-a-compiler' },
       { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
+      { title: 'Background', route: '/docs/intro/why-a-compiler' },
     ],
   },
 
   {
     title: 'Guides',
-    isUI: false,
+    section: 'core',
     pages: [
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
@@ -69,7 +68,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: false,
+    section: 'core',
     title: 'Community',
     pages: [
       { title: `Community`, route: '/community' },
@@ -94,7 +93,7 @@ export const docsRoutes = [
   // UI:
 
   {
-    isUI: true,
+    section: 'ui',
     // title: '@tamagui/ui',
     pages: [
       { title: 'Install', route: '/ui/intro' },
@@ -105,7 +104,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/ui/button' },
@@ -123,7 +122,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/ui/alert-dialog' },
@@ -136,7 +135,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Organize',
     pages: [
       { title: 'Accordion', route: '/ui/accordion' },
@@ -146,7 +145,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Content',
     pages: [
       { title: 'Avatar', route: '/ui/avatar' },
@@ -158,7 +157,7 @@ export const docsRoutes = [
 
   {
     label: 'Visual',
-    isUI: true,
+    section: 'ui',
     pages: [
       { title: 'LinearGradient', route: '/ui/linear-gradient' },
       { title: 'Separator', route: '/ui/separator' },
@@ -168,13 +167,13 @@ export const docsRoutes = [
 
   {
     title: 'Extras',
-    isUI: false,
+    section: 'core',
     pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
   },
 
   {
     label: 'Etc',
-    isUI: true,
+    section: 'ui',
     pages: [
       { title: 'Anchor', route: '/ui/anchor' },
       { title: 'HTML Elements', route: '/ui/html-elements' },

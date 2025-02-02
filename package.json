@@ -21,6 +21,7 @@
     "./code/ui/**/*"
   ],
   "scripts": {
+    "create": "./node_modules/.bin/create-tamagui",
     "docs": "yarn workspace @tamagui/one-docs dev",
     "docs:build": "yarn workspace @tamagui/one-docs build:prod",
     "takeout": "yarn workspace @tamagui/takeout dev",
@@ -37,7 +38,7 @@
     "dev:prod-only-homepage": "yarn dev:build --only index && yarn dev:serve",
     "postinstall": "./scripts/unlock-repo.sh",
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "./scripts/ensure-unlocked.sh && turbo run build --no-cache --force -- --skip-types",
+    "build:js": "./scripts/ensure-unlocked.sh && ./scripts/run.sh build --force --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build",
     "build:verbose": "yarn build -vvv",
@@ -49,9 +50,9 @@
     "check:deps": "manypkg check",
     "check:tamagui": "./node_modules/.bin/tamagui check",
     "ci": "yarn && yarn check && yarn lint && yarn typecheck && yarn build && yarn test",
-    "clean:build": "turbo run clean:build",
+    "clean:build": "./scripts/run.sh clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
-    "clean": "turbo run clean:build",
+    "clean": "./scripts/run.sh clean:build",
     "fix": "yarn lint:fix",
     "fix:deps": "yarn manypkg fix",
     "kitchen-sink:build:android": "yarn workspace @tamagui/kitchen-sink android",
@@ -97,11 +98,14 @@
     "upgrade:one": "yarn up 'one'@latest '@vxrn/*'@latest",
     "vercel:build": "yarn build:js && cd code/old-site && yarn ci:build",
     "watch": "npm-run-all --parallel watch:ts watch:packages",
-    "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
-    "watch:js": "SKIP_INITIAL_BUILD=1 SKIP_TYPES=1 yarn watch:packages",
-    "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
+    "watch:packages": "SKIP_INITIAL_BUILD=1 SKIP_TYPES_INITIAL=1 ./scripts/run.sh watch",
+    "watch:js": "SKIP_TYPES=1 bun run watch:packages",
+    "watch:ts": "bun ./scripts/watch-ts.ts",
     "next-site": "yarn workspace @tamagui/next-site dev",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
+  },
+  "manypkg": {
+    "workspaceProtocol": "require"
   },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
@@ -113,21 +117,7 @@
       }
     },
     "one": {
-      "applied": false,
-      "resolutions": {
-        "@vxrn/react-native-prebuilt": "portal:~/one/packages/react-native-prebuilt",
-        "@vxrn/universal-color-scheme": "portal:~/one/packages/universal-color-scheme",
-        "@vxrn/color-scheme": "portal:~/one/packages/color-scheme",
-        "@vxrn/use-isomorphic-layout-effect": "portal:~/one/packages/use-isomorphic-layout-effect",
-        "@vxrn/safe-area": "portal:~/one/packages/safe-area",
-        "@vxrn/vendor": "portal:~/one/packages/vendor",
-        "@vxrn/vite-flow": "portal:~/one/packages/vite-flow",
-        "@vxrn/vite-native-client": "portal:~/one/packages/vite-native-client",
-        "@vxrn/vite-native-hmr": "portal:~/one/packages/vite-native-hmr",
-        "@vxrn/compiler": "portal:~/one/packages/compiler",
-        "vxrn": "portal:~/one/packages/vxrn",
-        "one": "portal:~/one/packages/one"
-      }
+      "workspace": "~/one"
     }
   },
   "importSort": {
@@ -137,9 +127,9 @@
     }
   },
   "packageManager": "yarn@4.5.0",
-  "dependencies": {
+  "devDependencies": {
     "@biomejs/biome": "^1.9.2",
-    "@manypkg/cli": "^0.19.1",
+    "@manypkg/cli": "^0.23.0",
     "@playwright/test": "^1.49.1",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",

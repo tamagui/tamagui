@@ -56,6 +56,7 @@ export default {
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
+      'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -75,7 +76,7 @@ export default {
   },
 
   ssr: {
-    external: ['@tamagui/mdx-2'],
+    external: ['@tamagui/mdx-2', ''],
     noExternal: true,
   },
 
@@ -86,9 +87,9 @@ export default {
   plugins: [
     one({
       react: {
-        compiler: true,
+        compiler: process.env.NODE_ENV === 'production',
+        // compiler: true,
         // compiler: optimize,
-        // scan: process.env.NODE_ENV === 'development',
       },
 
       deps: {
@@ -101,6 +102,18 @@ export default {
         octokit: true,
         'node-fetch': true,
         'fetch-blob': true,
+      },
+
+      build: {
+        api: {
+          config: {
+            build: {
+              rollupOptions: {
+                external: ['stripe', '@discordjs/core', 'zlib-sync'],
+              },
+            },
+          },
+        },
       },
 
       web: {

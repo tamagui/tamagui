@@ -1,10 +1,9 @@
-import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
-import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from '@tamagui/themes'
 import { parseToHsla } from 'color2k'
-import { defaultTemplates } from './defaultTemplates'
-import { getThemeSuitePalettes } from './getThemeSuitePalettes'
 import { defaultComponentThemes } from './defaultComponentThemes'
-import { PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
+import { defaultTemplates } from './defaultTemplates'
+import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
+import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
+import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
 
 // for studio
 // allows more detailed configuration, used by studio
@@ -68,7 +67,6 @@ export type CreateThemesProps<
   }) => Record<string, string>
 }
 
-// TODO we moved studio over to mostly just control palette, so the need for this can basically go away
 export function createThemes<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
@@ -301,7 +299,7 @@ export function createSimpleThemeBuilder<
 function getSchemePalette(colors: SinglePalette): SchemePalette {
   return {
     light: colors,
-    dark: colors.toReversed(),
+    dark: [...colors].reverse(),
   }
 }
 

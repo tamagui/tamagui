@@ -2,9 +2,9 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { HydrateTheme, UserThemeProvider, useUserTheme } from '@tamagui/one-theme'
+import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
+import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
-import { LoadProgressBar, Slot, Stack } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
@@ -30,6 +30,9 @@ setupPopper({
 })
 
 export default function Layout() {
+  const path = usePathname()
+  const isIndex = path === '/'
+
   return (
     <html lang="en-US">
       <head>
@@ -109,32 +112,32 @@ export default function Layout() {
         />
       </head>
 
-      <LoadProgressBar />
+      <body className={isIndex ? 'transition' : ''}>
+        <LoadProgressBar />
 
-      <HydrateTheme />
+        <Providers>
+          {isWeb ? (
+            <Slot />
+          ) : (
+            <Stack
+              screenOptions={
+                isWeb
+                  ? {
+                      header() {
+                        return null
+                      },
 
-      <Providers>
-        {isWeb ? (
-          <Slot />
-        ) : (
-          <Stack
-            screenOptions={
-              isWeb
-                ? {
-                    header() {
-                      return null
-                    },
-
-                    contentStyle: {
-                      position: 'relative',
-                      backgroundColor: 'red',
-                    },
-                  }
-                : {}
-            }
-          />
-        )}
-      </Providers>
+                      contentStyle: {
+                        position: 'relative',
+                        backgroundColor: 'red',
+                      },
+                    }
+                  : {}
+              }
+            />
+          )}
+        </Providers>
+      </body>
     </html>
   )
 }
@@ -142,18 +145,18 @@ export default function Layout() {
 export const Providers = (props: { children: any }) => {
   return (
     <SearchProvider>
-      <UserThemeProvider>
+      <SchemeProvider>
         <WebsiteTamaguiProvider>{props.children}</WebsiteTamaguiProvider>
-      </UserThemeProvider>
+      </SchemeProvider>
     </SearchProvider>
   )
 }
 
 function WebsiteTamaguiProvider(props: { children: any }) {
-  const [{ resolvedTheme }] = useUserTheme()
+  const [scheme] = useColorScheme()
 
   return (
-    <TamaguiProvider disableInjectCSS defaultTheme={resolvedTheme} config={tamaConf}>
+    <TamaguiProvider disableInjectCSS defaultTheme={scheme} config={tamaConf}>
       <ToastProvider>{props.children}</ToastProvider>
     </TamaguiProvider>
   )

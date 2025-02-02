@@ -1,17 +1,40 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "sideEffects": false,
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
+  "type": "module",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    },
+    "./icon": {
+      "react-native": {
+        "import": "./dist/esm/LogoIcon.native.js",
+        "require": "./dist/cjs/LogoIcon.native.js"
+      },
+      "types": "./types/LogoIcon.d.ts",
+      "import": "./dist/esm/LogoIcon.mjs",
+      "require": "./dist/cjs/LogoIcon.cjs",
+      "default": "./dist/cjs/LogoIcon.native.js"
+    }
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -21,10 +44,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "tamagui": "1.122.8"
+    "one": "1.1.426",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "peerDependencies": {

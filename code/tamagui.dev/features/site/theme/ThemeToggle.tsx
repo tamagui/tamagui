@@ -1,39 +1,24 @@
-import { Monitor, Moon, Sun } from '@tamagui/lucide-icons'
+import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
+import { useSchemeSetting } from '@vxrn/color-scheme'
+import { Appearance } from 'react-native'
 import type { ButtonProps } from 'tamagui'
-import { Button, TooltipSimple } from 'tamagui'
-import { useUserTheme } from '@tamagui/one-theme'
-
-const icons = {
-  system: Monitor,
-  light: Sun,
-  dark: Moon,
-}
+import { Button, isWeb, TooltipSimple } from 'tamagui'
 
 export const ThemeToggle = (props: ButtonProps) => {
-  const [{ userTheme }, setUserTheme] = useUserTheme()
-
-  const Icon = icons[userTheme]
+  const { onPress, Icon, setting } = useToggleTheme()
 
   return (
     <TooltipSimple
       groupId="header-actions-theme"
       label={
-        userTheme === 'system'
+        setting === 'system'
           ? 'System'
-          : `${userTheme[0].toLocaleUpperCase()}${userTheme.slice(1)}`
+          : `${setting[0].toLocaleUpperCase()}${setting.slice(1)}`
       }
     >
       <Button
         size="$3"
-        onPress={() => {
-          if (userTheme === 'dark') {
-            setUserTheme('system')
-          } else if (userTheme === 'light') {
-            setUserTheme('dark')
-          } else {
-            setUserTheme('light')
-          }
-        }}
+        onPress={onPress}
         {...props}
         aria-label="Toggle light/dark color scheme"
         icon={Icon}
@@ -43,4 +28,26 @@ export const ThemeToggle = (props: ButtonProps) => {
       />
     </TooltipSimple>
   )
+}
+
+const schemeSettings = ['light', 'dark', 'system'] as const
+
+export function useToggleTheme() {
+  const [{ setting, scheme }, setSchemeSetting] = useSchemeSetting()
+  const Icon = setting === 'system' ? SunMoon : setting === 'dark' ? Moon : Sun
+
+  return {
+    setting,
+    scheme,
+    Icon,
+    onPress: () => {
+      const next = schemeSettings[(schemeSettings.indexOf(setting) + 1) % 3]
+
+      if (!isWeb) {
+        Appearance.setColorScheme(next === 'system' ? scheme : next)
+      }
+
+      setSchemeSetting(next)
+    },
+  }
 }

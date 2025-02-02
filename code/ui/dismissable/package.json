@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dismissable",
-  "version": "1.122.8",
+  "version": "1.123.8",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -34,14 +34,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.122.8",
-    "@tamagui/core": "1.122.8",
-    "@tamagui/helpers": "1.122.8",
-    "@tamagui/use-escape-keydown": "1.122.8",
-    "@tamagui/use-event": "1.122.8"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/use-escape-keydown": "workspace:*",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

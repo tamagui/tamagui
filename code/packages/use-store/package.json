@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/use-store",
-  "version": "1.122.8",
-  "types": "./types/index.d.ts",
+  "version": "1.123.8",
+  "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
@@ -10,8 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -24,17 +24,17 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/simple-hash": "1.122.8"
+    "@tamagui/simple-hash": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.122.8",
+    "@tamagui/build": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "react": "*",
     "vitest": "^3.0.2"

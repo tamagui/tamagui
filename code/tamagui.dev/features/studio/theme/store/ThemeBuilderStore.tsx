@@ -313,7 +313,9 @@ export class ThemeBuilderStore {
     }
   }
 
+  randomizeId = 0
   randomizeDemoOptions() {
+    this.randomizeId = Math.random()
     this.demosOptions = {
       inverseAccent: this.demosOptions.inverseAccent,
       borderRadius: getRandomElement(optionValues.borderRadius),
