@@ -6,7 +6,7 @@ import {
   useToastController,
   useToastState,
 } from '@tamagui/toast'
-import { AnimatePresence } from 'tamagui'
+import { AnimatePresence, Theme } from 'tamagui'
 
 export let toastController: ReturnType<typeof useToastController>
 
@@ -32,32 +32,34 @@ const ToastHandler = () => {
   if (!toast) return null
 
   return (
-    <AnimatePresence>
-      <Toast
-        key={toast.title + toast.message}
-        duration={toast.duration}
-        animation="bouncy"
-        enterStyle={{ opacity: 0, scale: 1, y: 15 }}
-        exitStyle={{ opacity: 0, scale: 1, y: -15 }}
-        y={0}
-        position="absolute"
-        bottom={0}
-        left="50%"
-        x="-50%"
-        opacity={1}
-        scale={1}
-        elevation="$6"
-        m="$4"
-        br="$10"
-        bg="$black1"
-        px="$5"
-        py="$2"
-        {...toast.customData}
-      >
-        <Toast.Title whiteSpace="pre">{toast.title}</Toast.Title>
-        <Toast.Description>{toast.message}</Toast.Description>
-      </Toast>
-    </AnimatePresence>
+    <Theme name="accent">
+      <AnimatePresence>
+        <Toast
+          key={toast.title + toast.message}
+          duration={toast.duration}
+          animation="bouncy"
+          enterStyle={{ opacity: 0, scale: 1, y: 15 }}
+          exitStyle={{ opacity: 0, scale: 1, y: -15 }}
+          y={0}
+          position="absolute"
+          bottom={0}
+          left="50%"
+          x="-50%"
+          opacity={1}
+          scale={1}
+          elevation="$6"
+          m="$4"
+          br="$10"
+          bg="$color1"
+          px="$5"
+          py="$2"
+          {...toast.customData}
+        >
+          <Toast.Title whiteSpace="pre">{toast.title}</Toast.Title>
+          <Toast.Description>{toast.message}</Toast.Description>
+        </Toast>
+      </AnimatePresence>
+    </Theme>
   )
 }
 
