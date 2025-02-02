@@ -51,6 +51,7 @@ export declare const tokenCategories: {
     };
 };
 export declare const stylePropsUnitless: {
+    perspective: boolean;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
@@ -167,6 +168,7 @@ export declare const stylePropsView: {
     userSelect?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    perspective: boolean;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
@@ -206,7 +208,6 @@ export declare const stylePropsView: {
     shadowOpacity: boolean;
     x: boolean;
     y: boolean;
-    perspective: boolean;
     skewX: boolean;
     skewY: boolean;
     matrix: boolean;
@@ -454,6 +455,7 @@ export declare const stylePropsText: {
     transformStyle?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    perspective: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -491,7 +493,6 @@ export declare const stylePropsText: {
     shadowOpacity: boolean;
     x: boolean;
     y: boolean;
-    perspective: boolean;
     skewX: boolean;
     skewY: boolean;
     matrix: boolean;
@@ -708,6 +709,7 @@ export declare const stylePropsAll: {
     transformStyle?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    perspective: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -745,7 +747,6 @@ export declare const stylePropsAll: {
     shadowOpacity: boolean;
     x: boolean;
     y: boolean;
-    perspective: boolean;
     skewX: boolean;
     skewY: boolean;
     matrix: boolean;
@@ -948,6 +949,7 @@ export declare const validStyles: {
     userSelect?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    perspective: boolean;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
@@ -987,7 +989,6 @@ export declare const validStyles: {
     shadowOpacity: boolean;
     x: boolean;
     y: boolean;
-    perspective: boolean;
     skewX: boolean;
     skewY: boolean;
     matrix: boolean;

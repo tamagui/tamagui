@@ -191,6 +191,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         transformStyle?: boolean | undefined;
         boxShadow: boolean;
         filter: boolean;
+        perspective: boolean;
         animationIterationCount: boolean;
         aspectRatio: boolean;
         borderImageOutset: boolean;
@@ -228,7 +229,6 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         shadowOpacity: boolean;
         x: boolean;
         y: boolean;
-        perspective: boolean;
         skewX: boolean;
         skewY: boolean;
         matrix: boolean;
