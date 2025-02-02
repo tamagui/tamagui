@@ -9,6 +9,7 @@ import {
   Separator,
   Spacer,
   Theme,
+  TooltipSimple,
   XStack,
   YStack,
   styled,
@@ -72,7 +73,7 @@ export default function ThemePage() {
             h="max-content"
             pr={540}
             pt={10}
-            $sm={{ pr: 0 }}
+            $lg={{ pr: 0 }}
             jc="flex-end"
             ov="hidden"
           >
@@ -119,11 +120,11 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
-  // const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack
-      animation="slow"
+      animation="medium"
       pos={'fixed' as any}
       t={70}
       r={0}
@@ -131,8 +132,8 @@ const ThemeBuilderModal = memo(() => {
       w={530}
       mah="90vh"
       zi={100_000}
-      $sm={{
-        dsp: 'none',
+      $lg={{
+        x: expanded ? 0 : '98%',
       }}
     >
       <YStack
@@ -146,20 +147,41 @@ const ThemeBuilderModal = memo(() => {
         bblr="$6"
         bw={0.5}
         bc="$color6"
-        bg="$background02"
-        backdropFilter="blur(50px)"
+        bg="$background06"
+        backdropFilter="blur(60px)"
       >
-        {/* <Button
-          size="$2"
-          t="$-3"
-          l="$3"
-          circular
-          // icon={expanded ? ChevronRight : ChevronLeft}
-          // onPress={() => setExpanded(!expanded)}
-          $gtMd={{
-            dsp: 'none',
-          }}
-        ></Button> */}
+        <TooltipSimple label="Show Drawer">
+          <YStack
+            animation="lazy"
+            px="$2"
+            py="$2"
+            t="$-3"
+            l={-20}
+            br="$10"
+            bg="$color2"
+            bw={0.5}
+            bc="$borderColor"
+            elevation="$2"
+            w={40}
+            h={40}
+            ai="center"
+            jc="center"
+            x={0}
+            opacity={0}
+            pressStyle={{
+              bg: '$color3',
+            }}
+            $lg={{
+              x: expanded ? 30 : -30,
+              opacity: 1,
+            }}
+            onPress={() => {
+              setExpanded(!expanded)
+            }}
+          >
+            {expanded ? <ChevronRight x={0.5} /> : <ChevronLeft x={0.5} />}
+          </YStack>
+        </TooltipSimple>
 
         <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
