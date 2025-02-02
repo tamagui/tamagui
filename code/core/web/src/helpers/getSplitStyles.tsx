@@ -47,7 +47,7 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
-import { getStyleAtomic, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+import { getStyleAtomic, getCSSStylesAtomic, styleToCSS } from './getCSSStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -871,13 +871,13 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          const mediaStyles = getStylesAtomic(mediaStyle)
+          const mediaStyles = getCSSStylesAtomic(mediaStyle)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 
           for (const style of mediaStyles) {
             // handle nested media:
-            // for now we're doing weird stuff, getStylesAtomic will put the
+            // for now we're doing weird stuff, getCSSStylesAtomic will put the
             // $platform-web into property so we can check it here
             const property = style[StyleObjectProperty]
             const isSubStyle = property[0] === '$'
@@ -1153,7 +1153,7 @@ export const getSplitStyles: StyleSplitter = (
       if (styleState.style['$$css']) {
         // avoid re-processing for rnw
       } else {
-        const atomic = getStylesAtomic(styleState.style)
+        const atomic = getCSSStylesAtomic(styleState.style)
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
