@@ -182,7 +182,7 @@ const ThemeToggle = () => {
         <Switch
           checked={checked}
           outlineColor="$accent11"
-          outlineWidth={2}
+          outlineWidth={0}
           outlineStyle="solid"
           pressStyle={{
             bg: '$color2',
