@@ -17,7 +17,7 @@ export function extractMediaStyle(
   importance = 0,
   shouldPrintDebug: boolean | 'verbose' = false
 ) {
-  const { getStylesAtomic, mediaObjectToString } = requireTamaguiCore('web')
+  const { getCSSStylesAtomic, mediaObjectToString } = requireTamaguiCore('web')
   const mt = getMediaQueryTernary(props, ternary, jsxPath, sourcePath)
   if (!mt) {
     return null
@@ -51,7 +51,7 @@ export function extractMediaStyle(
   // this should be done using the same logic as createMediaStyle
 
   for (const { styleObj, negate } of styleOpts) {
-    const styles = getStylesAtomic(styleObj as any)
+    const styles = getCSSStylesAtomic(styleObj as any)
 
     const singleMediaStyles = styles.map((style) => {
       const mediaStyle = core.createMediaStyle(
