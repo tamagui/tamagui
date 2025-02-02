@@ -63,20 +63,21 @@ export default function ThemePage() {
     <>
       <Dialogs />
 
-      <ThemeBuilderModal />
-
       <YStack flexShrink={0} mb="$10">
         <PreviewTheme>
+          <ThemeBuilderModal />
+
           <XStack
             w="100%"
             h="max-content"
             pr={540}
+            pt={10}
             $sm={{ pr: 0 }}
             jc="flex-end"
             ov="hidden"
           >
             <YStack
-              gap="$4"
+              gap="$6"
               p="$4"
               f={1}
               maw="calc(min(100vw, 1300px))"
@@ -124,7 +125,7 @@ const ThemeBuilderModal = memo(() => {
     <YStack
       animation="slow"
       pos={'fixed' as any}
-      t={90}
+      t={70}
       r={0}
       b={0}
       w={530}
@@ -145,8 +146,8 @@ const ThemeBuilderModal = memo(() => {
         bblr="$6"
         bw={0.5}
         bc="$color6"
-        bg="$background06"
-        backdropFilter="blur(20px)"
+        bg="$background02"
+        backdropFilter="blur(50px)"
       >
         {/* <Button
           size="$2"
