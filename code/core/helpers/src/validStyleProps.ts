@@ -66,7 +66,6 @@ export const tokenCategories = {
 }
 
 export const stylePropsUnitless = {
-  perspective: true,
   WebkitLineClamp: true,
   animationIterationCount: true,
   aspectRatio: true,
