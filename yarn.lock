@@ -9418,6 +9418,7 @@ __metadata:
     csstype: "npm:^3.0.10"
     react: "npm:*"
     react-dom: "npm:*"
+    react-native: "npm:^0.76.5"
     typescript: "npm:^5.7.2"
     vitest: "npm:^3.0.2"
   peerDependencies:
