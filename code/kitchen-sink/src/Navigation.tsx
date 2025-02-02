@@ -50,6 +50,10 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'RoundedAvatars',
       'CircularAvatarsWithCustomIcons',
       'RoundedAvatarsWithCustomIcons',
+      'SlidingPopoverDemo',
+      'IosStyleAlert',
+      'AlertDemo',
+      'AlertWithIcon'
     ].includes(name)
   ) {
     return (
