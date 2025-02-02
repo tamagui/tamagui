@@ -1,21 +1,37 @@
+import { ArrowLeft, ArrowLeftRight, ArrowRight, ArrowUpDown } from '@tamagui/lucide-icons'
+import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
+import { getStore, Store, useStore } from '@tamagui/use-store'
+import { parseToHsla } from 'color2k'
 import { memo } from 'react'
-import { View, XStack, YStack } from 'tamagui'
-import { NoticeParagraph, StudioNotice } from '~/features/studio/StudioNotice'
+import type { XStackProps } from 'tamagui'
+import {
+  Anchor,
+  Button,
+  Separator,
+  SizableText,
+  Theme,
+  TooltipGroup,
+  TooltipSimple,
+  useThemeName,
+  XStack,
+  YStack,
+} from 'tamagui'
+import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { type HSLA, ColorPickerContents } from '../../../colors/ColorPicker'
 import { Select, SelectItem } from '../../../components/Select'
+import { rootStore } from '../../../state/RootStore'
+import { toastController } from '../../../ToastProvider'
+import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
+import type { BuildPalette, BuildThemeAnchor } from '../../types'
 import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
-import { PaletteView } from '../views/PaletteView'
-import { Theme } from 'tamagui'
+import { XLabeledItem } from '../../views/XLabeledItem'
 
 type StepBaseThemesProps = {
   previewMode?: boolean
 }
 
-export const StepBaseThemes = memo((_props: StepBaseThemesProps) => {
-  return <Palettes key={0} />
-})
-
-const Palettes = memo(() => {
+export const StepBaseThemes = (_props: StepBaseThemesProps) => {
   const store = useThemeBuilderStore()
   const themeBuilder = useThemeBuilderStore()
 
@@ -51,110 +67,665 @@ const Palettes = memo(() => {
               </XStack>
             }
           >
-            <YStack
-              // {...(Boolean(
-              //   disabled || (isAccent && themeBuilder.accentSetting !== 'color')
-              // ) && {
-              //   o: 0.25,
-              //   pe: 'none',
-              // })}
-              gap="$4"
-            >
-              {/* <Theme name="white">
-                <View
-                  br="$6"
-                  pos="absolute"
-                  t={0}
-                  r={-10}
-                  l={-10}
-                  h={126}
-                  bg="$color1"
-                  zi={0}
-                />
-              </Theme> */}
-
+            <YStack gap="$4">
               <PaletteView
                 onUpdate={(next) => {
                   store.updatePalette(name, next)
                 }}
                 palette={palette}
               />
-
-              {/* <Theme name="black">
-                <View
-                  br="$6"
-                  pos="absolute"
-                  b={0}
-                  r={-10}
-                  l={-10}
-                  h={126}
-                  bg="$color1"
-                  zi={-1}
-                />
-              </Theme> */}
             </YStack>
           </FieldsetWithLabel>
         )
       })}
     </YStack>
   )
+}
+
+type Props = {
+  palette: BuildPalette
+  onUpdate: (next: Partial<BuildPalette>) => void
+}
+
+class PaletteStore extends Store<{ name: string }> {
+  hoveredColor = 0
+  selectedColor = 0
+
+  get activeColor() {
+    return this.hoveredColor === -1 ? this.selectedColor : this.hoveredColor
+  }
+
+  setHoveredColor(index: number) {
+    this.hoveredColor = index
+  }
+
+  setSelectedColor(index: number) {
+    this.selectedColor = index
+    this.hoveredColor = -1
+  }
+}
+
+const usePaletteStore = (name: string) => {
+  return useStore(PaletteStore, { name })
+}
+
+const PaletteView = memo((props: Props) => {
+  const { palette, onUpdate } = props
+  const store = usePaletteStore(palette.name)
+  const isDark = useThemeName().startsWith('dark')
+  const palettes = getThemeSuitePalettes(palette)
+  const darkPalette = palettes['dark']!
+  const lightPalette = palettes['light']!
+
+  const colors = {
+    light: sliceToPalette(lightPalette),
+    dark: sliceToPalette(darkPalette),
+  }
+
+  const { activeColor } = store
+
+  const hoveredItem = defaultScaleGrouped[activeColor]
+
+  const { anchors } = palette
+
+  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+
+  const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
+
+  const anchor = anchors[anchorIndex]
+  const nextAnchor = anchors[anchorIndex + 1]
+  const prevAnchor = anchors[anchorIndex - 1]
+
+  const toggleAnchorAt = async (index: number) => {
+    if (anchor) {
+      // DELETE
+      if (index === 0) {
+        toastController.show(`Can't delete anchor at index 0`)
+        return
+      }
+      if (anchors.length === 2) {
+        await rootStore.confirmDialog('alert', {
+          title: `Can't delete anchor`,
+          message: `You must have at least 2 anchors to create a palette.`,
+        })
+        return
+      }
+
+      if (
+        await rootStore.confirmDialog('confirm-delete', {
+          thingName: `anchor at ${index}`,
+        })
+      ) {
+        onUpdate({
+          anchors: anchors.filter((x) => x !== anchor),
+        })
+      }
+    } else {
+      const [lightHSLA, darkHSLA] = [
+        // adjusts for our transparent indices
+        parseToHsla(lightPalette[index + PALETTE_BACKGROUND_OFFSET]),
+        parseToHsla(darkPalette[index + PALETTE_BACKGROUND_OFFSET]),
+      ]
+
+      const anchor: BuildThemeAnchor = {
+        index,
+        hue: {
+          light: lightHSLA[0],
+          dark: darkHSLA[0],
+        },
+        sat: {
+          light: lightHSLA[1],
+          dark: darkHSLA[1],
+        },
+        lum: {
+          light: lightHSLA[2],
+          dark: darkHSLA[2],
+        },
+      }
+
+      const next = [...anchors]
+      const insertIndex = next.findIndex((x) => x.index > index) ?? next.length - 1
+      next.splice(insertIndex, 0, anchor)
+
+      // ADD
+      onUpdate({
+        anchors: next,
+      })
+    }
+  }
+
+  const onChangeAnchorColor = (scheme: 'light' | 'dark') => (_: string, hsla: HSLA) => {
+    const oppScheme = scheme === 'dark' ? 'light' : 'dark'
+
+    const anchors = palette.anchors.map((a, i) => {
+      if (a !== anchor) return a
+
+      const next = {
+        ...a,
+        hue: {
+          ...a.hue,
+          [scheme]: hsla.hue,
+        },
+        sat: {
+          ...a.sat,
+          [scheme]: hsla.sat,
+        },
+        lum: {
+          ...a.lum,
+          [scheme]: hsla.light,
+        },
+      }
+
+      function syncOppositeSchemeHue(_: BuildThemeAnchor) {
+        if (_.hue.sync) {
+          _.hue[oppScheme] = hsla.hue
+        }
+      }
+
+      function syncOppositeSchemeSat(_: BuildThemeAnchor) {
+        if (_.sat.sync) {
+          _.sat[oppScheme] = hsla.sat
+        }
+      }
+
+      syncOppositeSchemeHue(next)
+      syncOppositeSchemeSat(next)
+
+      // sync left does two way sync technically
+      // since its "syncing" the left one, they should both sync
+
+      // sync left
+      const prevAnchor = palette.anchors[i - 1]
+      if (prevAnchor) {
+        if (a.hue.syncLeft) {
+          prevAnchor.hue[scheme] = hsla.hue
+          syncOppositeSchemeHue(prevAnchor)
+        }
+        if (a.sat.syncLeft) {
+          prevAnchor.sat[scheme] = hsla.sat
+          syncOppositeSchemeSat(prevAnchor)
+        }
+      }
+
+      // sync right
+      const nextAnchor = palette.anchors[i + 1]
+      if (nextAnchor) {
+        if (nextAnchor.hue.syncLeft) {
+          nextAnchor.hue[scheme] = hsla.hue
+          syncOppositeSchemeHue(nextAnchor)
+        }
+        if (nextAnchor.sat.syncLeft) {
+          nextAnchor.sat[scheme] = hsla.sat
+          syncOppositeSchemeSat(nextAnchor)
+        }
+      }
+
+      return next
+    })
+
+    onUpdate({
+      anchors,
+    })
+  }
+
+  const lightDarkSynced = anchors.every((a) => a.hue.sync && a.sat.sync)
+
+  const syncButtons = (
+    <XStack o={0} $group-content-hover={{ o: 1 }} gap="$4" ai="center" ml={60}>
+      <XStack jc="space-between" w={160}>
+        <SyncButtons
+          anchorKey="hue"
+          {...props}
+          anchor={anchor}
+          prevAnchor={prevAnchor}
+          nextAnchor={nextAnchor}
+        />
+      </XStack>
+      <XStack jc="space-between" w={100} ml={10}>
+        <SyncButtons
+          anchorKey="sat"
+          {...props}
+          anchor={anchor}
+          prevAnchor={prevAnchor}
+          nextAnchor={nextAnchor}
+        />
+      </XStack>
+    </XStack>
+  )
+
+  return (
+    <YStack contain="paint" p="$4" mx="$-4" mb="$0" f={1} gap="$4">
+      <YStack group="content" containerType="normal" gap="$4">
+        {/* <Theme name="white"> */}
+        <ColorPickerContents
+          disabled={!anchor}
+          value={lightPalette[hoveredItem?.value ?? 0]}
+          onChange={onChangeAnchorColor('light')}
+          shouldDim={lightDarkSynced && isDark}
+        />
+
+        <YStack mt={-18} mb={-8}>
+          {syncButtons}
+        </YStack>
+
+        <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
+          <StepThemeHoverablePalette
+            palette={palette}
+            colors={colors.light}
+            onSelect={(color, index) => toggleAnchorAt(index)}
+          />
+        </XLabeledItem>
+
+        <PaletteIndices />
+      </YStack>
+
+      {/* </Theme> */}
+
+      <XLabeledItem label="">
+        <YStack gap="$4">
+          <XStack gap="$4" separator={<Separator vertical />}>
+            <DataItem
+              width={50}
+              labelTop=""
+              labelBottom={
+                <SizableText
+                  userSelect="none"
+                  textAlign="right"
+                  miw={60}
+                  px="$2"
+                  display="block"
+                  size="$9"
+                  fow="bold"
+                >
+                  {activeColor + 1}
+                </SizableText>
+              }
+            />
+
+            <DataItem
+              width={200}
+              labelTop={hoveredItem?.name ?? '-'}
+              labelBottom={hoveredItem?.keys.join(', ') ?? '-'}
+            />
+
+            <DataItem
+              labelTop={anchor ? 'Anchor' : 'Sync'}
+              labelBottom={
+                <XStack w={50} ov="hidden" ai="center" jc="center">
+                  <Button
+                    chromeless
+                    size="$2"
+                    scaleIcon={1.4}
+                    circular
+                    icon={anchor ? <Anchor /> : <ArrowLeftRight />}
+                    onPress={() => {
+                      toggleAnchorAt(activeColor)
+                    }}
+                  />
+                </XStack>
+              }
+            />
+
+            {/* {!anchor && <DataItem top="" bottom={<Button size="$2">Edit</Button>} />} */}
+          </XStack>
+        </YStack>
+      </XLabeledItem>
+
+      {/* <Theme name="black"> */}
+      <PaletteIndices />
+
+      <YStack group="content" containerType="normal" gap="$4">
+        <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
+          <StepThemeHoverablePalette
+            palette={palette}
+            colors={colors.dark}
+            onSelect={(color, index) => toggleAnchorAt(index)}
+          />
+        </XLabeledItem>
+
+        <YStack mt={-10} mb={-18}>
+          {syncButtons}
+        </YStack>
+
+        <ColorPickerContents
+          isActive={isDark}
+          disabled={!anchor}
+          value={darkPalette[hoveredItem?.value ?? 0]}
+          onChange={onChangeAnchorColor('dark')}
+          shouldDim={lightDarkSynced && !isDark}
+        />
+      </YStack>
+      {/* </Theme> */}
+    </YStack>
+  )
 })
 
-export const StepLightDarkTip = () => {
+const SyncButtons = memo(
+  ({
+    anchorKey,
+    onUpdate,
+    anchor,
+    prevAnchor,
+    nextAnchor,
+    palette,
+  }: Props & {
+    anchorKey: 'hue' | 'sat'
+    anchor: BuildThemeAnchor
+    prevAnchor: BuildThemeAnchor
+    nextAnchor: BuildThemeAnchor
+  }) => {
+    return (
+      <>
+        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowLeft}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!prevAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
+
+        <Theme name={anchor?.[anchorKey].sync ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowUpDown}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            sync: !a[anchorKey].sync,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+            />
+          </TooltipSimple>
+        </Theme>
+
+        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowRight}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === nextAnchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!nextAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
+      </>
+    )
+  }
+)
+
+const DataItem = ({
+  labelTop,
+  labelBottom,
+  width,
+}: { labelTop: any; labelBottom: any; width?: any }) => {
   return (
-    <StudioNotice
-      chromeless
-      mih={320}
-      miw={400}
-      title="Base and Accent"
-      steps={[
-        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-        <>
-          <NoticeParagraph>
-            This is a multi-step theme generator. This first step sets up your base theme
-            and accent color - which then syncs to a separate accent theme, but it doesn't
-            deal with component themes which for now are set to defaults, so if you don't
-            like palette selections by the switch or button, you can customize those along
-            with all the other components on step three.
-          </NoticeParagraph>
-
-          <NoticeParagraph>
-            The base + accent setup is useful because lets you use a brand color or
-            contrasting color for one-off cases with the default tokens set on your base
-            theme ($accent, $accent1...12), but also lets you re-theme areas with that
-            accent color.
-          </NoticeParagraph>
-
-          <NoticeParagraph>
-            Note that using the light/dark mode toggle shows you the final result for each
-            in the Theme tab.
-          </NoticeParagraph>
-        </>,
-
-        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-        <>
-          <NoticeParagraph>
-            We start you with a theme template that we find useful. Beyond the color steps
-            from your palette ($color1 to $color12) it includes "generic" styles that
-            Tamagui components will use ($background, $color, $colorHover...), as well as
-            translucencies ($color0 and $background0 025 05 075).
-          </NoticeParagraph>
-
-          <NoticeParagraph>
-            Since it's common to have an accent color and really theme to make areas "pop"
-            we sync your Accent theme color here to a few base theme tokens ($accent and
-            $accentBackground, $accent1 to 12). This way you can both &lt;Button
-            theme="accent" /&gt; to change the whole look and feel of an area, or use the
-            one-off accent as needed.
-          </NoticeParagraph>
-        </>,
-      ]}
-    />
+    <YStack w={width} maw={width}>
+      <SizableText lh="$1" userSelect="none">
+        {labelTop}
+      </SizableText>
+      <SizableText
+        userSelect="none"
+        size="$2"
+        theme={typeof labelBottom === 'string' ? 'alt2' : null}
+      >
+        {labelBottom}
+      </SizableText>
+    </YStack>
   )
 }
 
-export const StepLightDarkPreviewThemes = () => {
-  const store = useThemeBuilderStore()
-  store.themeSuiteVersion
-  return <StepBaseThemes previewMode key={store.themeSuiteVersion} />
+// get the center 12 items:
+const sliceToPalette = (colors: string[]) => {
+  const toRemove = colors.length - 12
+  return colors.slice(toRemove / 2, colors.length - toRemove / 2)
 }
+
+type PaletteProps = {
+  colors: string[]
+  size?: 'small' | 'medium'
+  children?: (color: string, index: number) => JSX.Element
+  palette: BuildPalette
+  onSelect?: (color: string, index: number) => void
+  isActive?: boolean
+}
+
+export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
+  const { colors, size = 'medium' } = props
+  const borderRadius = size === 'medium' ? 200 : 100
+
+  return (
+    <TooltipGroup delay={0}>
+      <XStack f={1} br={borderRadius} bw={1} bc="$color7">
+        {colors.map((color, i) => {
+          return <PaletteColor {...props} color={color} index={i} key={i} />
+        })}
+      </XStack>
+    </TooltipGroup>
+  )
+})
+
+// add some delay but no delay if moving across
+
+const delay = 50
+let hovered = -1
+let tm
+
+const mouseEnter = (i: number, name: string) => {
+  clearTimeout(tm)
+  const alreadyHovered = hovered !== -1
+  const paletteStore = getStore(PaletteStore, { name })
+  if (alreadyHovered) {
+    // right away
+    hovered = i
+    paletteStore.setHoveredColor(i)
+    return
+  }
+  tm = setTimeout(() => {
+    hovered = i
+    paletteStore.setHoveredColor(i)
+  }, delay)
+}
+
+const mouseLeave = (i: number) => {
+  clearTimeout(tm)
+  if (hovered === i) {
+    tm = setTimeout(() => {
+      hovered = -1
+    }, delay / 2)
+  }
+}
+
+const PaletteColor = memo(
+  (
+    props: PaletteProps & {
+      color: string
+      index: number
+    }
+  ) => {
+    const {
+      color,
+      index,
+      colors,
+      size = 'medium',
+      children,
+      palette,
+      onSelect,
+      isActive,
+    } = props
+    const store = usePaletteStore(palette.name)
+    const { hoveredColor, selectedColor } = store
+    const borderRadius = size === 'medium' ? 100 : 100
+    const { anchors } = palette
+    const isAnchor = anchors.some((a) => a.index === index)
+
+    const doublePressProps = useDoublePress({
+      eagerSingle: true,
+      onSinglePress() {
+        store.setSelectedColor(index)
+        store.setHoveredColor(index)
+      },
+      onDoublePress() {
+        onSelect?.(color, index)
+      },
+    })
+
+    const radiusStyle = {
+      ...(index === 0 && {
+        bblr: borderRadius - 1.333,
+        btlr: borderRadius - 1.333,
+      }),
+      ...(index === colors.length - 1 && {
+        btrr: borderRadius - 1.333,
+        bbrr: borderRadius - 1.333,
+      }),
+    } satisfies XStackProps
+
+    return (
+      <XStack
+        h={isActive ? 42 : 26}
+        // size === 'small' ? 32 : 42}
+        w={`${(1 / colors.length) * 100}%`}
+        ov="hidden"
+        borderWidth={2}
+        // @ts-expect-error
+        borderColor={color}
+        onMouseEnter={() => {
+          mouseEnter(index, palette.name)
+        }}
+        hoverStyle={{
+          scale: 1.05,
+        }}
+        pos="relative"
+        {...(hoveredColor === index && {
+          zi: 10000,
+          outlineColor: '$accent10',
+          outlineStyle: 'solid',
+          outlineWidth: 1.5,
+          shadowColor: '$blue10',
+          shadowRadius: 5,
+          shadowOpacity: 1,
+        })}
+        {...((isAnchor || selectedColor === index) && {
+          zi: 10000,
+          outlineColor: '$accent10',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+        })}
+        {...(selectedColor === index && {
+          outlineColor: '$accent1',
+        })}
+        {...(selectedColor === hoveredColor &&
+          hoveredColor === index && {
+            shadowColor: '$blue10',
+            shadowRadius: 10,
+            shadowOpacity: 1,
+            zi: 100000,
+          })}
+        {...radiusStyle}
+        {...doublePressProps}
+        onMouseLeave={() => {
+          mouseLeave(index)
+          doublePressProps.onMouseLeave()
+          if (store.hoveredColor === index) {
+            store.hoveredColor = store.selectedColor
+          }
+        }}
+      >
+        <XStack fullscreen bg={color as any} ai="center" jc="center">
+          <SizableText
+            selectable={false}
+            color={index > 4 ? '$background' : '$color'}
+            size="$1"
+            scale={size === 'small' ? 0.8 : 1}
+          >
+            {children?.(color, index)}
+          </SizableText>
+        </XStack>
+      </XStack>
+    )
+  }
+)
+
+const PaletteIndices = () => (
+  <YStack my="$-3">
+    <XLabeledItem label="">
+      <XStack f={1}>
+        {new Array(12).fill(0).map((_, i) => {
+          return (
+            <SizableText
+              w={`${1 / 12}%`}
+              f={1}
+              key={i}
+              size="$1"
+              o={0.6}
+              scale={0.65}
+              ff="$mono"
+              color="$color12"
+              als="center"
+              ta="center"
+            >
+              {i + 1}
+            </SizableText>
+          )
+        })}
+      </XStack>
+    </XLabeledItem>
+  </YStack>
+)
