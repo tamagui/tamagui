@@ -91,7 +91,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     chatTextProps: {} as const,
 
     chatTextActiveProps: {
-      color: isOutlined ? '$color1' : '$accent12',
+      color: isOutlined ? '$color1' : '$color2',
     } as const,
 
     outlineTextProps: {
