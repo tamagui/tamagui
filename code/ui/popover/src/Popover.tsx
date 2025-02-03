@@ -262,10 +262,16 @@ export const PopoverContent = PopperContentFrame.extractable(
             // (closed !== unmounted when animating out)
             trapFocus={trapFocus ?? context.open}
             disableOutsidePointerEvents
-            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-              event.preventDefault()
-              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-            })}
+            onCloseAutoFocus={
+              props.onCloseAutoFocus === false
+                ? undefined
+                : composeEventHandlers(props.onCloseAutoFocus, (event) => {
+                    if (event.defaultPrevented) return
+                    event.preventDefault()
+                    if (!isRightClickOutsideRef.current)
+                      context.triggerRef.current?.focus()
+                  })
+            }
             onPointerDownOutside={composeEventHandlers(
               props.onPointerDownOutside,
               (event) => {
@@ -379,7 +385,7 @@ export interface PopoverContentImplProps
    * Event handler called when auto-focusing on close.
    * Can be prevented.
    */
-  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false
 
   disableRemoveScroll?: boolean
 
@@ -461,7 +467,7 @@ const PopoverContentImpl = React.forwardRef<
           enabled={disableFocusScope ? false : open}
           trapped={trapFocus}
           onMountAutoFocus={onOpenAutoFocus}
-          onUnmountAutoFocus={onCloseAutoFocus}
+          onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
         >
           <div style={dspContentsStyle}>{contents}</div>
         </FocusScope>
