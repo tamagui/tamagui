@@ -68,8 +68,8 @@ const generateColorPalette = ({
   }
 
   // add transparent values
-  const background = palette[3]
-  const foreground = palette[palette.length - 3]
+  const background = palette[0]
+  const foreground = palette[palette.length - 1]
 
   const transparentValues = [background, foreground].map((color) => {
     const [h, s, l] = parseToHsla(color)
