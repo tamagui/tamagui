@@ -1,6 +1,5 @@
 import {
   CheckCircle,
-  ChevronsDownUp,
   Code2,
   Copy,
   FileCode2,
@@ -9,7 +8,6 @@ import {
 } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
-import { ScrollView } from 'react-native'
 import {
   AnimatePresence,
   Button,
@@ -21,7 +19,6 @@ import {
   useEvent,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import { Code } from '~/components/Code'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
 import { RovingTabs } from '~/components/RovingTabs'
@@ -70,18 +67,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const { hasCopied, onCopy } = useClipboard(code)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
-  const {
-    isTerminalCommand,
-    isCreateCommand,
-    isInstallCommand,
-    isExecCommand,
-    showTabs,
-    commandType,
-    transformedCommand,
-    originalPackageManager,
-    selectedPackageManager,
-    setPackageManager,
-  } = useBashCommand(children, className)
+  const { isTerminalCommand, showTabs, transformedCommand } = useBashCommand(
+    children,
+    className
+  )
 
   const showFileName = fileName || isTerminalCommand
 
@@ -90,14 +79,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const onCommandChange = useEvent(() => {
     try {
       const codeElement = preRef.current.querySelector('code')
-      if (codeElement) {
-        // remove double line breaks
-        const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
-        setCode(transformedCommand)
-      }
+      if (codeElement) setCode(transformedCommand)
     } catch (err) {
       console.warn('err', err)
-      // ok
     }
   })
 
@@ -184,6 +168,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               // @ts-ignore
               id={id}
               jc="center"
+              bg="$color2"
             >
               {showFileName && (
                 <XStack
@@ -192,10 +177,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   pl="$4"
                   h="$5"
                   py="$4"
-                  bg="$color3"
-                  bw="$1.5"
-                  bc="$background"
-                  br="$5"
+                  borderBottomWidth="$0.5"
+                  borderBottomColor="$color3"
                 >
                   {isTerminalCommand ? (
                     <TerminalSquare size="$1" col="$color11" />

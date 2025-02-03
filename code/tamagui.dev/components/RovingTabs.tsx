@@ -157,6 +157,7 @@ function Tab({
       gap="$1.5"
       value={pkgManager}
       onInteraction={onInteraction}
+      cursor='pointer'
     >
       <XStack gap="$1.5" ai="center" jc="center">
         <Image
