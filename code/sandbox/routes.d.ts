@@ -1,3 +1,6 @@
+// deno-lint-ignore-file
+/* eslint-disable */
+// biome-ignore: needed import
 import type { OneRouter } from 'one'
 
 declare module 'one' {

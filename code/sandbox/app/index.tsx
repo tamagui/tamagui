@@ -5,9 +5,9 @@ import { getUrlFromPath } from '~/utils/getFromPath'
 
 export function HomePage() {
   return (
-    <ScrollView horizontal mih="100%">
+    <ScrollView horizontal minH="100%">
       <XStack>
-        <YStack maw={250}>
+        <YStack maxW={250}>
           <H4>One-off</H4>
 
           <Link href="/sandbox">
@@ -19,7 +19,7 @@ export function HomePage() {
           </Link>
         </YStack>
 
-        <YStack maw={250}>
+        <YStack maxW={250}>
           <H4>Test Cases</H4>
           {Object.keys(AllTests).map((path) => {
             return (

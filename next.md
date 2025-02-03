@@ -1,11 +1,4 @@
-- button with shadow breaking:
-  shadowColor="$shadow6"
-  shadowRadius={4}
-  shadowOffset={{ height: 2, width: 0 }}
-
-  causes it to be turned to boxShadow `0px 2px 4px $shadow6`
-  we should just make `boxShadow` with $ work
-
+- we should just make `boxShadow` with $ work
 - configv4 theme blue background02 no opacity set
 - background08 is not bg color
   - should add 02 etc of all colors and remove background/color
