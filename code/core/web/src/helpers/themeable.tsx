@@ -95,9 +95,5 @@ export function themeable<ComponentType extends (props: any) => any>(
     ? (props: Omit<P, 'theme' | 'themeInverse'> & ThemeableProps) => R
     : unknown
 
-  if (optimize) {
-    return withTheme as FinalComponentType
-  }
-
   return React.forwardRef(withTheme) as FinalComponentType
 }
