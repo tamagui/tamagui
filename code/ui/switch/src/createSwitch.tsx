@@ -178,7 +178,7 @@ export function createSwitch<
         )
       }
 
-      const disabled = switchProps.disabled
+      const disabled = props.disabled
       const value = React.useMemo(
         () => ({ checked, disabled, frameWidth }),
         [checked, disabled, frameWidth]
