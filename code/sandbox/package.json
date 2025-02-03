@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "1.123.9",
+  "version": "1.123.10",
   "private": true,
   "type": "module",
   "scripts": {
