@@ -1,6 +1,6 @@
 {
   "name": "tamagui-loader",
-  "version": "1.123.9",
+  "version": "1.123.10",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
