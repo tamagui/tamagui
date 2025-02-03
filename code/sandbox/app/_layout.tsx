@@ -30,12 +30,12 @@ export default function Layout() {
       <SchemeProvider>
         <ToastProvider swipeDirection="horizontal">
           <TamaguiRootProvider>
-            <YStack bg="$color1" mih="100%" gap="$4" f={1}>
+            <YStack bg="$color1" minH="100%" gap="$4" f={1}>
               <SafeAreaView>
                 <ToastViewport portalToRoot top={0} left={0} right={0} />
                 <CustomToast />
 
-                <XStack ai="center" jc="center" gap="$4" py="$4">
+                <XStack items="center" justify="center" gap="$4" py="$4">
                   <Image src={oneBall} width={42} height={42} />
                   <ToggleThemeButton />
                 </XStack>
