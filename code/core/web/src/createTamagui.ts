@@ -190,6 +190,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
               names,
               theme,
             })
+
             themeRuleSets = [...themeRuleSets, ...nextRules]
           }
         }
