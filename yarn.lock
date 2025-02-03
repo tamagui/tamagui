@@ -7220,7 +7220,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/types": "npm:^7.25.4"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   languageName: unknown
   linkType: soft
 
@@ -7306,7 +7306,7 @@ __metadata:
     lodash.debounce: "npm:^4.0.8"
     oxc-transform: "npm:^0.47.1"
     typescript: "npm:^5.7.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   bin:
     tamagui-build: tamagui-build.js
     teesx: ./teesx.sh
@@ -7324,7 +7324,7 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7343,7 +7343,7 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7539,7 +7539,7 @@ __metadata:
     jsdom: "npm:^25.0.1"
     react: "npm:*"
     typescript: "npm:^5.7.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
     vitest-axe: "npm:^0.1.0"
   peerDependencies:
     react: "*"
@@ -7615,7 +7615,7 @@ __metadata:
     csstype: "npm:^3.0.10"
     react: "npm:*"
     typescript: "npm:^5.7.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7634,7 +7634,7 @@ __metadata:
     "@testing-library/react": "npm:^16.1.0"
     csstype: "npm:^3.0.10"
     typescript: "npm:^5.7.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   languageName: unknown
   linkType: soft
 
@@ -7797,7 +7797,7 @@ __metadata:
     vite: "npm:^6.0.6"
     vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
     zod: "npm:^3.24.1"
   languageName: unknown
   linkType: soft
@@ -8091,7 +8091,7 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8150,7 +8150,7 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8359,7 +8359,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/monorepo-test@workspace:code/core/monorepo-test"
   dependencies:
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
     zx: "npm:^7.2.3"
   languageName: unknown
   linkType: soft
@@ -8898,7 +8898,7 @@ __metadata:
     react-test-renderer: "npm:^19.0.0"
     style-loader: "npm:^3.3.3"
     typescript: "npm:^5.7.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
     webpack: "npm:^5.88.2"
   peerDependencies:
     react: "*"
@@ -9035,7 +9035,7 @@ __metadata:
   resolution: "@tamagui/text-test@workspace:code/ui/text-test"
   dependencies:
     "@tamagui/text": "workspace:*"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   languageName: unknown
   linkType: soft
 
@@ -9095,7 +9095,7 @@ __metadata:
     "@tamagui/theme-builder": "workspace:*"
     "@tamagui/web": "workspace:*"
     color2k: "npm:^2.0.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   languageName: unknown
   linkType: soft
 
@@ -9325,7 +9325,7 @@ __metadata:
     "@tamagui/simple-hash": "workspace:*"
     "@testing-library/react": "npm:^16.1.0"
     react: "npm:*"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9373,7 +9373,7 @@ __metadata:
     "@tamagui/vite-plugin": "workspace:*"
     "@vitejs/plugin-react-swc": "npm:^3.7.2"
     happy-dom: "npm:^10.11.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
     vitest-axe: "npm:^0.1.0"
     vitest-mock-process: "npm:^1.0.4"
     vitest-react-native: "npm:^0.1.5"
@@ -9420,7 +9420,7 @@ __metadata:
     react-dom: "npm:*"
     react-native: "npm:^0.76.5"
     typescript: "npm:^5.7.2"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -10634,23 +10634,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/expect@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@vitest/expect@npm:3.0.2"
+"@vitest/expect@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@vitest/expect@npm:3.0.5"
   dependencies:
-    "@vitest/spy": "npm:3.0.2"
-    "@vitest/utils": "npm:3.0.2"
+    "@vitest/spy": "npm:3.0.5"
+    "@vitest/utils": "npm:3.0.5"
     chai: "npm:^5.1.2"
     tinyrainbow: "npm:^2.0.0"
-  checksum: 10/0dd4e0e269d0f3890b5767ccc376c6ba2511cfd303169ed2aaa1ff1b33cace5257d1a18a2b5d04e4dccaf8235c95428973f5450ce121ce6a0094236d2286259e
+  checksum: 10/e9dfaed51e3a2952306fa621b4fe6c4323b367c8b731fc57d661d971628df89d1bfa163be79e4de3004d6e2e32c99b496efb8d065db6cf41d6be01dc2b833f8d
   languageName: node
   linkType: hard
 
-"@vitest/mocker@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@vitest/mocker@npm:3.0.2"
+"@vitest/mocker@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@vitest/mocker@npm:3.0.5"
   dependencies:
-    "@vitest/spy": "npm:3.0.2"
+    "@vitest/spy": "npm:3.0.5"
     estree-walker: "npm:^3.0.3"
     magic-string: "npm:^0.30.17"
   peerDependencies:
@@ -10661,57 +10661,57 @@ __metadata:
       optional: true
     vite:
       optional: true
-  checksum: 10/91f4315d1fec10e670e3cf4165a8b108c651af0f4f2089dc6de8e3f7739f3f3d08335cbec31865ea866a47434e5c879fb6348465efa90e24673197525f6459ce
+  checksum: 10/84f3f8bbefdde91467d4bb6e5ea62227fdd86dce5567d0a2a04329033e1ed6cffe140d5b1cd58d323792d4116ba67562539d22c80910d60310eede940c94eb8b
   languageName: node
   linkType: hard
 
-"@vitest/pretty-format@npm:3.0.2, @vitest/pretty-format@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@vitest/pretty-format@npm:3.0.2"
+"@vitest/pretty-format@npm:3.0.5, @vitest/pretty-format@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@vitest/pretty-format@npm:3.0.5"
   dependencies:
     tinyrainbow: "npm:^2.0.0"
-  checksum: 10/4c8d044df5af71ae6d01b8391a8d6422f252bc4b04da2a4ec0fa45dea86a2b259bec279a42ecd30bdae792fb517eb373d517f4292bc5025631850edccfdcae1e
+  checksum: 10/1ffbee16e9aa2cd7862bc6b83c30b7b53031d29ddae0302d09e6b1f6bfa0e4338e5c74a2dfaeed1bab317aff300c4fd309004dbaa69baf9ebe71f6806b132e96
   languageName: node
   linkType: hard
 
-"@vitest/runner@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@vitest/runner@npm:3.0.2"
+"@vitest/runner@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@vitest/runner@npm:3.0.5"
   dependencies:
-    "@vitest/utils": "npm:3.0.2"
-    pathe: "npm:^2.0.1"
-  checksum: 10/4cdf25a878ec9a253544addda25e8a16c4661fde73ea83036dab1c9f34d67f48a48b0e13b633afca182623be89d246b84ad83cd73d77318bf5fa33dff5b4b843
+    "@vitest/utils": "npm:3.0.5"
+    pathe: "npm:^2.0.2"
+  checksum: 10/7aedf5d445aec3da83790cc94e135f64a1c407e437276694ca5a0567db055f49481b2622ab24faabb4482a1829d18dbc5cae31738b5a015669651cda8e0e7238
   languageName: node
   linkType: hard
 
-"@vitest/snapshot@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@vitest/snapshot@npm:3.0.2"
+"@vitest/snapshot@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@vitest/snapshot@npm:3.0.5"
   dependencies:
-    "@vitest/pretty-format": "npm:3.0.2"
+    "@vitest/pretty-format": "npm:3.0.5"
     magic-string: "npm:^0.30.17"
-    pathe: "npm:^2.0.1"
-  checksum: 10/1daec6ec52bc4c4f859f0222a6c9dfad22ebcfedfb2ceb13e23fed06e54a5307c950f595973882d9ca9fdc647a08c975d21f1883764a82a8b9f178022e59f2c5
+    pathe: "npm:^2.0.2"
+  checksum: 10/3c6a3165556dc4a3fc50c9532dc047b5bf57df1bbad657ca7e34ca65e9aeb61740a0eaebe9eb6200a30d92f457a402ce3d22b21700a1763a5ec4bddf81733709
   languageName: node
   linkType: hard
 
-"@vitest/spy@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@vitest/spy@npm:3.0.2"
+"@vitest/spy@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@vitest/spy@npm:3.0.5"
   dependencies:
     tinyspy: "npm:^3.0.2"
-  checksum: 10/19fe5b04f58d31074fd19086f239a84db437f3b816c0180bd7584a3ce47a77d2593546d8f2a62b33ba93c5a61045681d60cb2f840f08f0fee192a108e7c33620
+  checksum: 10/ed85319cd03f3f35121e84ce31721316daf94a7c01d493dff746ff5469d12e40b218cc728d57c5a71612c5a3882e8e66d9cefe82b82c2044d5f257954ec7e9d8
   languageName: node
   linkType: hard
 
-"@vitest/utils@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@vitest/utils@npm:3.0.2"
+"@vitest/utils@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@vitest/utils@npm:3.0.5"
   dependencies:
-    "@vitest/pretty-format": "npm:3.0.2"
+    "@vitest/pretty-format": "npm:3.0.5"
     loupe: "npm:^3.1.2"
     tinyrainbow: "npm:^2.0.0"
-  checksum: 10/d66fa335eb9690267db9dd66911804f688f5d3c1c28f48122304819b9d9d9ba450a767dad6de92bf4cf030248b8adfb1255a88538ea7bf899d50d1cdd1032bff
+  checksum: 10/4e85a7514592df63870eb4ec27c434034cc91c9e63c052bcb2304c4cc2f4fbb49350099280480313e93526247d020b42bea52436cf7f93fee0bd98cfac51a644
   languageName: node
   linkType: hard
 
@@ -13761,7 +13761,7 @@ __metadata:
     tempy: "npm:^3.1.0"
     update-check: "npm:1.5.4"
     validate-npm-package-name: "npm:3.0.0"
-    vitest: "npm:^3.0.2"
+    vitest: "npm:^3.0.5"
     wait-port: "npm:^0.3.0"
     zx: "npm:^7.2.3"
   bin:
@@ -23341,7 +23341,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:^2.0.1":
+"pathe@npm:^2.0.2":
   version: 2.0.2
   resolution: "pathe@npm:2.0.2"
   checksum: 10/027dd246720ec6d3b5567e2b0201f1a815b6a69f2912a4dcafed59620afc729af15b4aff4bc780504c88d11dfb081c051e37327b928a093e714c3e09bf35aff3
@@ -29216,18 +29216,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-node@npm:3.0.2":
-  version: 3.0.2
-  resolution: "vite-node@npm:3.0.2"
+"vite-node@npm:3.0.5":
+  version: 3.0.5
+  resolution: "vite-node@npm:3.0.5"
   dependencies:
     cac: "npm:^6.7.14"
     debug: "npm:^4.4.0"
     es-module-lexer: "npm:^1.6.0"
-    pathe: "npm:^2.0.1"
+    pathe: "npm:^2.0.2"
     vite: "npm:^5.0.0 || ^6.0.0"
   bin:
     vite-node: vite-node.mjs
-  checksum: 10/e07d8626865327ceff73fc6b0c7996a3f0da33c40c9c2985ae881618887805693497d6d7565c374983c6d3b5bc9a0bcfe33a2169bd788ae5a31c91e670c2b412
+  checksum: 10/804d3a4a794f9fa7d5c7b433e96b0813eee39b8c0d4da5c8fe28c9a2aa226702ec711e272a66a5208944f26a35e46d931fc09b1404b04db1cf607f58af1baf6b
   languageName: node
   linkType: hard
 
@@ -29484,39 +29484,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "vitest@npm:3.0.2"
+"vitest@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "vitest@npm:3.0.5"
   dependencies:
-    "@vitest/expect": "npm:3.0.2"
-    "@vitest/mocker": "npm:3.0.2"
-    "@vitest/pretty-format": "npm:^3.0.2"
-    "@vitest/runner": "npm:3.0.2"
-    "@vitest/snapshot": "npm:3.0.2"
-    "@vitest/spy": "npm:3.0.2"
-    "@vitest/utils": "npm:3.0.2"
+    "@vitest/expect": "npm:3.0.5"
+    "@vitest/mocker": "npm:3.0.5"
+    "@vitest/pretty-format": "npm:^3.0.5"
+    "@vitest/runner": "npm:3.0.5"
+    "@vitest/snapshot": "npm:3.0.5"
+    "@vitest/spy": "npm:3.0.5"
+    "@vitest/utils": "npm:3.0.5"
     chai: "npm:^5.1.2"
     debug: "npm:^4.4.0"
     expect-type: "npm:^1.1.0"
     magic-string: "npm:^0.30.17"
-    pathe: "npm:^2.0.1"
+    pathe: "npm:^2.0.2"
     std-env: "npm:^3.8.0"
     tinybench: "npm:^2.9.0"
     tinyexec: "npm:^0.3.2"
     tinypool: "npm:^1.0.2"
     tinyrainbow: "npm:^2.0.0"
     vite: "npm:^5.0.0 || ^6.0.0"
-    vite-node: "npm:3.0.2"
+    vite-node: "npm:3.0.5"
     why-is-node-running: "npm:^2.3.0"
   peerDependencies:
     "@edge-runtime/vm": "*"
+    "@types/debug": ^4.1.12
     "@types/node": ^18.0.0 || ^20.0.0 || >=22.0.0
-    "@vitest/browser": 3.0.2
-    "@vitest/ui": 3.0.2
+    "@vitest/browser": 3.0.5
+    "@vitest/ui": 3.0.5
     happy-dom: "*"
     jsdom: "*"
   peerDependenciesMeta:
     "@edge-runtime/vm":
+      optional: true
+    "@types/debug":
       optional: true
     "@types/node":
       optional: true
@@ -29530,7 +29533,7 @@ __metadata:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: 10/4f93c2ef845ad08a10300a30833b583490988811d3d841947103a480899f2fdf0671a16db064fd382508b2b5199e5abd617dbcf533f5612a30233260cb3c6b75
+  checksum: 10/63bf6474d314e0694489d23236a6aebd4f2173b40e47f861824668fe4b3dde5b6b95d30134acc7b1a0694c0b82b4996deb7ebc7c0ae62cb58823ff51cdcadbe1
   languageName: node
   linkType: hard
 

@@ -76,6 +76,6 @@
     "esbuild-register": "^3.6.0",
     "mdx-bundler": "^10.0.2",
     "vite-bundle-analyzer": "^0.9.4",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.5"
   }
 }
