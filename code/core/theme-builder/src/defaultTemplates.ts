@@ -29,6 +29,15 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   const darken = -lighten
   const borderColor = bgIndex + 3
 
+  const baseColors = {
+    color: -bgIndex,
+    colorHover: -bgIndex - 1,
+    colorPress: -bgIndex,
+    colorFocus: -bgIndex - 1,
+    placeholderColor: -bgIndex - 3,
+    outlineColor: -2,
+  }
+
   // templates use the palette and specify index
   // negative goes backwards from end so -1 is the last item
   const base = {
@@ -69,16 +78,12 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     borderColorHover: borderColor + lighten,
     borderColorPress: borderColor + darken,
     borderColorFocus: borderColor,
-    color: -bgIndex,
-    colorHover: -bgIndex - 1,
-    colorPress: -bgIndex,
-    colorFocus: -bgIndex - 1,
+    ...baseColors,
     colorTransparent: -1,
-    placeholderColor: -bgIndex - 3,
-    outlineColor: -2,
   }
 
   const surface1 = {
+    ...baseColors,
     background: base.background + 1,
     backgroundHover: base.backgroundHover + 1,
     backgroundPress: base.backgroundPress + 1,
@@ -90,6 +95,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   }
 
   const surface2 = {
+    ...baseColors,
     background: base.background + 2,
     backgroundHover: base.backgroundHover + 2,
     backgroundPress: base.backgroundPress + 2,
@@ -101,6 +107,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   }
 
   const surface3 = {
+    ...baseColors,
     background: base.background + 3,
     backgroundHover: base.backgroundHover + 3,
     backgroundPress: base.backgroundPress + 3,

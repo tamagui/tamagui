@@ -283,7 +283,6 @@ export function createSimpleThemeBuilder<
   if (componentThemes) {
     themeBuilder = themeBuilder.addComponentThemes(getComponentThemes(componentThemes), {
       avoidNestingWithin: [
-        'accent',
         // ...Object.keys(childrenThemes || {}),
         ...Object.keys(grandChildrenThemes || {}),
       ],
