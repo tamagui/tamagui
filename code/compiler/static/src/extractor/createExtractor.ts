@@ -2052,12 +2052,14 @@ export function createExtractor(
                   ...styleProps,
                   noClass: true,
                   fallbackProps: completeProps,
+                  ...(options.experimentalFlattenThemesOnNative && {
+                    resolveValues: 'except-theme',
+                  }),
                 },
                 undefined,
                 undefined,
                 undefined,
                 debugPropValue || shouldPrintDebug
-                // options.experimentalFlattenThemesOnNative
               )
 
               let outProps = {

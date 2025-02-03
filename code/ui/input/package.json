@@ -49,7 +49,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.5"
   },
   "publishConfig": {
     "access": "public"

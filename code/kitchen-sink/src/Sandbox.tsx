@@ -1,3 +1,4 @@
+// debug
 import { memo, useEffect, useState } from 'react'
 import {
   Button,
@@ -24,217 +25,228 @@ export const Sandbox = () => {
 
   return (
     <>
-      <Button onPress={() => setK(Math.random())}>render</Button>
-      <TimedRender key={k}>
-        <Switch />
-      </TimedRender>
+      <View width={250} height={200} bg="$color" />
     </>
   )
   // return <UndefinedThemeBug />
 }
 
-function TestButton() {
-  const [isDisabled, setIsDisabled] = useState(false)
+// // export const Sandbox = () => {
+// //   const [k, setK] = useState(0)
 
-  return (
-    <>
-      <Button onPress={() => setIsDisabled(!isDisabled)}>
-        {isDisabled ? 'Enable' : 'Disable'}
-      </Button>
+// //   return (
+// //     <>
+// //       <Button onPress={() => setK(Math.random())}>render</Button>
+// //       <TimedRender key={k}>
+// //         <Switch />
+// //       </TimedRender>
+// //     </>
+// //   )
+// //   // return <UndefinedThemeBug />
+// // }
 
-      <StyledButton onPress={() => setIsDisabled(!isDisabled)} disabled={isDisabled}>
-        State: {isDisabled ? 'Disabled' : 'Enabled'}
-      </StyledButton>
-    </>
-  )
-}
+// function TestButton() {
+//   const [isDisabled, setIsDisabled] = useState(false)
 
-function UndefinedThemeBug() {
-  const [theme, setTheme] = useState<ThemeName | undefined>('red')
+//   return (
+//     <>
+//       <Button onPress={() => setIsDisabled(!isDisabled)}>
+//         {isDisabled ? 'Enable' : 'Disable'}
+//       </Button>
 
-  return (
-    <YStack f={1} ai="center" gap="$8" px="$10" pt="$5" bg="$background">
-      <Paragraph>Current Theme: {`${theme}`}</Paragraph>
-      <XStack gap="$3">
-        <Button onPress={() => setTheme(undefined)} size="$3">
-          Undefined
-        </Button>
-        <Button onPress={() => setTheme('red')} size="$3">
-          Red
-        </Button>
-        <Button onPress={() => setTheme('blue')} size="$3">
-          Blue
-        </Button>
-      </XStack>
-      <View theme={theme}>
-        <View bw={2} bc="$borderColor" backgroundColor="$background" p="$4" br="$3">
-          <Button>Button!</Button>
-        </View>
-        <Label>Test label</Label>
-      </View>
-    </YStack>
-  )
-}
+//       <StyledButton onPress={() => setIsDisabled(!isDisabled)} disabled={isDisabled}>
+//         State: {isDisabled ? 'Disabled' : 'Enabled'}
+//       </StyledButton>
+//     </>
+//   )
+// }
 
-export type SwitchProps = TamaguiSwitchProps & {
-  variant?: any
-}
+// function UndefinedThemeBug() {
+//   const [theme, setTheme] = useState<ThemeName | undefined>('red')
 
-const animationProp = {
-  animation: [
-    'bouncy',
-    {
-      backgroundColor: {
-        overshootClamping: true,
-      },
-    },
-  ] as YStackProps['animation'],
-}
+//   return (
+//     <YStack f={1} ai="center" gap="$8" px="$10" pt="$5" bg="$background">
+//       <Paragraph>Current Theme: {`${theme}`}</Paragraph>
+//       <XStack gap="$3">
+//         <Button onPress={() => setTheme(undefined)} size="$3">
+//           Undefined
+//         </Button>
+//         <Button onPress={() => setTheme('red')} size="$3">
+//           Red
+//         </Button>
+//         <Button onPress={() => setTheme('blue')} size="$3">
+//           Blue
+//         </Button>
+//       </XStack>
+//       <View theme={theme}>
+//         <View bw={2} bc="$borderColor" backgroundColor="$background" p="$4" br="$3">
+//           <Button>Button!</Button>
+//         </View>
+//         <Label>Test label</Label>
+//       </View>
+//     </YStack>
+//   )
+// }
 
-const Switch = memo(
-  ({
-    checked: checkedProp,
-    onCheckedChange: onCheckedChangeProp,
-    disabled,
-    variant,
-    disabledStyle,
-    ...rest
-  }: SwitchProps): JSX.Element => {
-    const [checked, setChecked] = useState(checkedProp)
-    // const colors = useTheme()
+// export type SwitchProps = TamaguiSwitchProps & {
+//   variant?: any
+// }
 
-    console.log('render!')
+// const animationProp = {
+//   animation: [
+//     'bouncy',
+//     {
+//       backgroundColor: {
+//         overshootClamping: true,
+//       },
+//     },
+//   ] as YStackProps['animation'],
+// }
 
-    const isBranded = variant === 'branded'
+// const Switch = memo(
+//   ({
+//     checked: checkedProp,
+//     onCheckedChange: onCheckedChangeProp,
+//     disabled,
+//     variant,
+//     disabledStyle,
+//     ...rest
+//   }: SwitchProps): JSX.Element => {
+//     const [checked, setChecked] = useState(checkedProp)
+//     // const colors = useTheme()
 
-    useEffect(() => {
-      setChecked(checkedProp)
-    }, [checkedProp])
+//     console.log('render!')
 
-    const onCheckedChange = (val: boolean): void => {
-      // If the checked prop is undefined, we are in an uncontrolled state
-      // and should update the internal state
-      // Otherwise, we are in a controlled state and should not update the internal state
-      // (because the checked prop will be updated from the outside)
-      if (typeof checkedProp === 'undefined') {
-        setChecked(val)
-      }
-      onCheckedChangeProp?.(val)
-    }
+//     const isBranded = variant === 'branded'
 
-    const THUMB_HEIGHT = 24
-    const THUMB_PADDING = 6
-    const TRACK_HEIGHT = THUMB_HEIGHT + THUMB_PADDING * 2
+//     useEffect(() => {
+//       setChecked(checkedProp)
+//     }, [checkedProp])
 
-    const isDisabledStyling = disabled && !checked
+//     const onCheckedChange = (val: boolean): void => {
+//       // If the checked prop is undefined, we are in an uncontrolled state
+//       // and should update the internal state
+//       // Otherwise, we are in a controlled state and should not update the internal state
+//       // (because the checked prop will be updated from the outside)
+//       if (typeof checkedProp === 'undefined') {
+//         setChecked(val)
+//       }
+//       onCheckedChangeProp?.(val)
+//     }
 
-    const frameBackgroundColor = ((): ColorTokens => {
-      if (isDisabledStyling) {
-        return '$color3'
-      }
-      if (isBranded) {
-        return checked ? '$color1' : '$red3'
-      }
-      return checked ? '$color3' : '$red3'
-    })()
+//     const THUMB_HEIGHT = 24
+//     const THUMB_PADDING = 6
+//     const TRACK_HEIGHT = THUMB_HEIGHT + THUMB_PADDING * 2
 
-    const thumbBackgroundColor = ((): ColorTokens => {
-      if (isDisabledStyling) {
-        if (isBranded) {
-          return checked ? '$red2' : '$red3'
-        }
-        return checked ? '$red2' : '$red3'
-      }
-      if (isBranded) {
-        return checked ? '$green1' : '$red1'
-      }
-      return checked ? '$color1' : '$red1'
-    })()
+//     const isDisabledStyling = disabled && !checked
 
-    const iconColor = ((): string => {
-      return '#ff0000'
-      // if (isDisabledStyling) {
-      //   return colors.green1.val
-      // }
-      // return isBranded ? colors.color1.val : colors.red1.val
-    })()
+//     const frameBackgroundColor = ((): ColorTokens => {
+//       if (isDisabledStyling) {
+//         return '$color3'
+//       }
+//       if (isBranded) {
+//         return checked ? '$color1' : '$red3'
+//       }
+//       return checked ? '$color3' : '$red3'
+//     })()
 
-    // Switch is a bit performance sensitive on native, memo to help here
-    const frameActiveStyle = {
-      x: checked ? -2 : 0,
-    }
+//     const thumbBackgroundColor = ((): ColorTokens => {
+//       if (isDisabledStyling) {
+//         if (isBranded) {
+//           return checked ? '$red2' : '$red3'
+//         }
+//         return checked ? '$red2' : '$red3'
+//       }
+//       if (isBranded) {
+//         return checked ? '$green1' : '$red1'
+//       }
+//       return checked ? '$color1' : '$red1'
+//     })()
 
-    const outerActiveStyle = {
-      width: 28,
-      x: checked ? -4 : 0,
-    }
+//     const iconColor = ((): string => {
+//       return '#ff0000'
+//       // if (isDisabledStyling) {
+//       //   return colors.green1.val
+//       // }
+//       // return isBranded ? colors.color1.val : colors.red1.val
+//     })()
 
-    return (
-      <TamaguiSwitch
-        alignItems="center"
-        {...animationProp}
-        aria-disabled={disabled}
-        aria-selected={checked}
-        backgroundColor={frameBackgroundColor}
-        borderWidth={0}
-        checked={checked}
-        defaultChecked={checked}
-        // debug="profile"
-        group="testy"
-        hoverStyle={{
-          backgroundColor: isBranded
-            ? checked
-              ? '$color3'
-              : '$red4'
-            : checked
-              ? '$color5'
-              : '$red4',
-          cursor: 'pointer',
-        }}
-        justifyContent="center"
-        minHeight={TRACK_HEIGHT}
-        minWidth={60}
-        p={4}
-        pointerEvents={disabled ? 'none' : 'auto'}
-        disabledStyle={{
-          ...(checked && { opacity: 0.6 }),
-          ...disabledStyle,
-        }}
-        onCheckedChange={disabled ? undefined : onCheckedChange}
-        {...rest}
-      >
-        <TamaguiSwitch.Thumb
-          alignItems="center"
-          {...animationProp}
-          backgroundColor={thumbBackgroundColor}
-          justifyContent="center"
-          minHeight={THUMB_HEIGHT}
-          width={24}
-        >
-          <View
-            $group-item-hover={frameActiveStyle}
-            $group-item-press={frameActiveStyle}
-            animation="100ms"
-            opacity={checked ? 1 : 0}
-          >
-            {/* <Check color={iconColor} size={14} /> */}
-          </View>
+//     // Switch is a bit performance sensitive on native, memo to help here
+//     const frameActiveStyle = {
+//       x: checked ? -2 : 0,
+//     }
 
-          {/* fake thumb for width animation */}
-          <View
-            $group-item-hover={outerActiveStyle}
-            $group-item-press={outerActiveStyle}
-            {...animationProp}
-            backgroundColor={thumbBackgroundColor}
-            borderRadius={100}
-            inset={0}
-            minHeight={THUMB_HEIGHT}
-            position="absolute"
-            width={24}
-            zIndex={-2}
-          />
-        </TamaguiSwitch.Thumb>
-      </TamaguiSwitch>
-    )
-  }
-)
+//     const outerActiveStyle = {
+//       width: 28,
+//       x: checked ? -4 : 0,
+//     }
+
+//     return (
+//       <TamaguiSwitch
+//         alignItems="center"
+//         {...animationProp}
+//         aria-disabled={disabled}
+//         aria-selected={checked}
+//         backgroundColor={frameBackgroundColor}
+//         borderWidth={0}
+//         checked={checked}
+//         defaultChecked={checked}
+//         // debug="profile"
+//         group="testy"
+//         hoverStyle={{
+//           backgroundColor: isBranded
+//             ? checked
+//               ? '$color3'
+//               : '$red4'
+//             : checked
+//               ? '$color5'
+//               : '$red4',
+//           cursor: 'pointer',
+//         }}
+//         justifyContent="center"
+//         minHeight={TRACK_HEIGHT}
+//         minWidth={60}
+//         p={4}
+//         pointerEvents={disabled ? 'none' : 'auto'}
+//         disabledStyle={{
+//           ...(checked && { opacity: 0.6 }),
+//           ...disabledStyle,
+//         }}
+//         onCheckedChange={disabled ? undefined : onCheckedChange}
+//         {...rest}
+//       >
+//         <TamaguiSwitch.Thumb
+//           alignItems="center"
+//           {...animationProp}
+//           backgroundColor={thumbBackgroundColor}
+//           justifyContent="center"
+//           minHeight={THUMB_HEIGHT}
+//           width={24}
+//         >
+//           <View
+//             $group-item-hover={frameActiveStyle}
+//             $group-item-press={frameActiveStyle}
+//             animation="100ms"
+//             opacity={checked ? 1 : 0}
+//           >
+//             {/* <Check color={iconColor} size={14} /> */}
+//           </View>
+
+//           {/* fake thumb for width animation */}
+//           <View
+//             $group-item-hover={outerActiveStyle}
+//             $group-item-press={outerActiveStyle}
+//             {...animationProp}
+//             backgroundColor={thumbBackgroundColor}
+//             borderRadius={100}
+//             inset={0}
+//             minHeight={THUMB_HEIGHT}
+//             position="absolute"
+//             width={24}
+//             zIndex={-2}
+//           />
+//         </TamaguiSwitch.Thumb>
+//       </TamaguiSwitch>
+//     )
+//   }
+// )

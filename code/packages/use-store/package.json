@@ -37,7 +37,7 @@
     "@tamagui/build": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "react": "*",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.5"
   },
   "publishConfig": {
     "access": "public"

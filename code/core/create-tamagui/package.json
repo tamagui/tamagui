@@ -49,7 +49,7 @@
     "tempy": "^3.1.0",
     "update-check": "1.5.4",
     "validate-npm-package-name": "3.0.0",
-    "vitest": "^3.0.2",
+    "vitest": "^3.0.5",
     "wait-port": "^0.3.0",
     "zx": "^7.2.3"
   },
