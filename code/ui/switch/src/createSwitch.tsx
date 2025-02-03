@@ -184,9 +184,12 @@ export function createSwitch<
         [checked, disabled, frameWidth]
       )
 
-      const handleLayout = React.useCallback((e: LayoutChangeEvent) => {
-        setFrameWidth(e.nativeEvent.layout.width)
-      }, [])
+      const handleLayout = React.useCallback(
+        (e: LayoutChangeEvent) => {
+          setFrameWidth(e.nativeEvent.layout.width)
+        },
+        [setFrameWidth]
+      )
 
       const unstyled = styledContext.unstyled ?? props.unstyled ?? false
 
