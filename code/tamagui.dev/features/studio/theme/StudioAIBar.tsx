@@ -89,7 +89,7 @@ export const StudioAIBar = () => {
 
       setLastReply(data.reply)
       store.updateGenerate(data.result)
-      toastController.show(`Generated!`)
+      toastController.hide()
     } catch (err) {
       toastController.show(`Error: ${err}`)
     } finally {
@@ -108,6 +108,7 @@ export const StudioAIBar = () => {
           f={10}
           size="$6"
           shadowColor="$shadow3"
+          bg="$background06"
           shadowOffset={{ height: 2, width: 0 }}
           shadowRadius={20}
           br="$8"
@@ -181,7 +182,7 @@ const ThemeToggle = () => {
         <Switch
           checked={checked}
           outlineColor="$accent11"
-          outlineWidth={2}
+          outlineWidth={0}
           outlineStyle="solid"
           pressStyle={{
             bg: '$color2',

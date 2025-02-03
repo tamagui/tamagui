@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "1.123.5",
+  "version": "1.123.8",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -47,7 +47,7 @@
     "@tamagui/themes": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "@vxrn/vendor": "^1.1.417",
+    "@vxrn/vendor": "^1.1.426",
     "burnt": "^0.12.2",
     "expo": "^52.0.23",
     "expo-constants": "^17.0.3",
@@ -79,7 +79,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.1.417",
+    "one": "1.1.426",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
     "webpack": "^5.88.2",

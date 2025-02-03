@@ -18,7 +18,7 @@ import { isMediaKey } from '../hooks/useMedia'
 
 // refactor this file away next...
 
-export function getStylesAtomic(style: ViewStyleWithPseudos) {
+export function getCSSStylesAtomic(style: ViewStyleWithPseudos) {
   styleToCSS(style)
   const out: StyleObject[] = []
   for (const key in style) {

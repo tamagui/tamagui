@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.123.5",
+  "version": "1.123.8",
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"

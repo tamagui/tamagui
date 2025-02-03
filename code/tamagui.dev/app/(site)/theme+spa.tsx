@@ -9,12 +9,13 @@ import {
   Separator,
   Spacer,
   Theme,
+  TooltipSimple,
   XStack,
   YStack,
   styled,
   useThemeName,
 } from 'tamagui'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
@@ -57,35 +58,45 @@ export default function ThemePage() {
     }
   }, [])
 
-  const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
+  // const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
 
   return (
     <>
       <Dialogs />
 
-      <ThemeBuilderModal />
+      <YStack flexShrink={0} mb="$10">
+        <PreviewTheme>
+          <ThemeBuilderModal />
 
-      <XStack w="100%" h="max-content" pr={540} $sm={{ pr: 0 }} jc="flex-end" ov="hidden">
-        <YStack
-          gap="$4"
-          p="$4"
-          f={1}
-          maw="calc(min(100vw, 1300px))"
-          group="content"
-          $md={{
-            maw: `calc(min(100vw, 900px))`,
-            p: '$4',
-          }}
-        >
-          <StudioAIBar />
-          <PreviewTheme>
-            <YStack gap="$6">
-              <StudioPreviewComponentsBar scrollView={document.documentElement} />
-              <StudioPreviewComponents />
+          <XStack
+            w="100%"
+            h="max-content"
+            pr={540}
+            pt={10}
+            $lg={{ pr: 0 }}
+            jc="flex-end"
+            ov="hidden"
+          >
+            <YStack
+              gap="$6"
+              p="$4"
+              f={1}
+              maw="calc(min(100vw, 1300px))"
+              group="content"
+              $md={{
+                maw: `calc(min(100vw, 900px))`,
+                p: '$4',
+              }}
+            >
+              <StudioAIBar />
+              <YStack gap="$6">
+                <StudioPreviewComponentsBar scrollView={document.documentElement} />
+                <StudioPreviewComponents />
+              </YStack>
             </YStack>
-          </PreviewTheme>
-        </YStack>
-      </XStack>
+          </XStack>
+        </PreviewTheme>
+      </YStack>
     </>
   )
 }
@@ -96,7 +107,7 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
   return (
     <Theme key={props.noKey ? '' : key} forceClassName name={baseStepThemeName}>
       <YStack bg="$color1" fullscreen zi={0} scale={2} />
-      <ThemeNameEffect />
+      <ThemeNameEffectNoTheme />
       <YStack f={1}>{props.children}</YStack>
     </Theme>
   )
@@ -109,20 +120,20 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
-  // const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack
-      animation="slow"
+      animation="medium"
       pos={'fixed' as any}
-      t={90}
+      t={70}
       r={0}
       b={0}
       w={530}
       mah="90vh"
       zi={100_000}
-      $sm={{
-        dsp: 'none',
+      $lg={{
+        x: expanded ? 0 : '98%',
       }}
     >
       <YStack
@@ -136,19 +147,41 @@ const ThemeBuilderModal = memo(() => {
         bblr="$6"
         bw={0.5}
         bc="$color6"
-        bg="$color2"
+        bg="$background06"
+        backdropFilter="blur(60px)"
       >
-        {/* <Button
-          size="$2"
-          t="$-3"
-          l="$3"
-          circular
-          // icon={expanded ? ChevronRight : ChevronLeft}
-          // onPress={() => setExpanded(!expanded)}
-          $gtMd={{
-            dsp: 'none',
-          }}
-        ></Button> */}
+        <TooltipSimple label="Show Drawer">
+          <YStack
+            animation="lazy"
+            px="$2"
+            py="$2"
+            t="$-3"
+            l={-20}
+            br="$10"
+            bg="$color2"
+            bw={0.5}
+            bc="$borderColor"
+            elevation="$2"
+            w={40}
+            h={40}
+            ai="center"
+            jc="center"
+            x={0}
+            opacity={0}
+            pressStyle={{
+              bg: '$color3',
+            }}
+            $lg={{
+              x: expanded ? 30 : -30,
+              opacity: 1,
+            }}
+            onPress={() => {
+              setExpanded(!expanded)
+            }}
+          >
+            {expanded ? <ChevronRight x={0.5} /> : <ChevronLeft x={0.5} />}
+          </YStack>
+        </TooltipSimple>
 
         <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
@@ -198,7 +231,7 @@ const StudioThemeBuilderTray = memo(() => {
 
 const StudioThemeBuilderBottomBar = memo(() => {
   return (
-    <XStack p="$4" py="$3" ai="center" bc="$borderColor" btw={1} zi={100} bg="$color2">
+    <XStack p="$4" py="$3" ai="center" zi={100} bg="$background02">
       <CurrentStepActionBar />
       <Spacer flex />
       <ThemeStudioStepButtonsBar />

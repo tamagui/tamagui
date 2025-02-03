@@ -272,7 +272,7 @@ export type UseThemeWithStateProps = ThemeProps & {
     needsUpdate?: () => boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
-type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
+type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;
 export type SpacerUniqueProps = {
     size?: SpaceValue | number;
     flex?: boolean | number;

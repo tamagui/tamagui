@@ -11,6 +11,12 @@ const RenderNull = (props: any) => {
   return null
 }
 
+export const TooltipGroup = () => null
+
+export const closeOpenTooltips = () => {
+  /* noop */
+}
+
 export const Tooltip = withStaticProperties(RenderChildren, {
   Anchor: RenderChildren,
   Arrow: RenderNull,

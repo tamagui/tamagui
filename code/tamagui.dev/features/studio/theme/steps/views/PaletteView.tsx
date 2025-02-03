@@ -607,15 +607,19 @@ const PaletteColor = memo(
         })}
         {...((isAnchor || selectedColor === index) && {
           zi: 10000,
-          outlineColor: '$accent1',
+          outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 2,
+        })}
+        {...(selectedColor === index && {
+          outlineColor: '$accent1',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {
             shadowColor: '$blue10',
             shadowRadius: 10,
             shadowOpacity: 1,
+            zi: 100000,
           })}
         {...radiusStyle}
         {...doublePressProps}

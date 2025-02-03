@@ -734,13 +734,10 @@ const componentsIn = {
       <YStack gap="$1">
         <ThemeTintAlt offset={2}>
           <IntroParagraph mt="$4">
-            Tamagui makes styling React easy and fast on web, Android, and iOS. It focuses
-            on platform-native output, with an optional optimizing compiler that
-            significantly improves your app or site performance.
-          </IntroParagraph>
-
-          <IntroParagraph>
-            Tamagui is an ecosystem open source of libraries, mainly:
+            Tamagui is a bunch of libraries that make sharing styling between React web
+            and React Native much more performant, while bringing many features from CSS
+            to React Native. It has an optional optimizing compiler that significantly
+            improves performance.
           </IntroParagraph>
 
           <UL mt="$4" pl="$4" gap="$2">
@@ -752,9 +749,8 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
                   </CodeInline>
                 </Link>
-                &nbsp; - a style library that expands on the React Native style API with
-                many features from CSS - all without any external dependency except for
-                React.
+                &nbsp; is the core style library, it expands on the React Native style API
+                with many features from CSS all without any external dependency.
               </LI>
             </Theme>
 
@@ -766,7 +762,7 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
                   </CodeInline>
                 </Link>{' '}
-                - an optimizing compiler that{' '}
+                is an optimizing compiler that{' '}
                 <Link
                   // @ts-ignore
                   fontSize="inherit"
@@ -774,20 +770,20 @@ const componentsIn = {
                 >
                   significantly improves performance
                 </Link>{' '}
-                by hoisting objects and CSS at build-time, leaving behind flatter React
-                trees.
+                through partial analysis, hoisting, and flattening.
               </LI>
             </Theme>
 
             <Theme name="blue">
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
-                <Link fontSize="inherit" href="/docs/components/stacks">
+                <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
-                    <span style={{ color: 'var(--color12)' }}>tamagui</span>
+                    <span style={{ color: 'var(--color12)' }}>tamagui UI</span>
                   </CodeInline>
                 </Link>{' '}
-                - a large universal component kit in styled and unstyled forms.
+                is a bunch of unstyled and styled compound components for building common
+                UI elements that adapt to each platform.
               </LI>
             </Theme>
           </UL>
@@ -802,64 +798,66 @@ const componentsIn = {
     return (
       <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
         <>
-          <Link asChild href="/docs/intro/installation">
-            <Card
-              tag="a"
-              animation="quickest"
-              f={1}
-              y={0}
-              hoverStyle={{ y: -2, bg: '$backgroundHover' }}
-              pressStyle={{ y: 2, bg: '$color2' }}
-            >
+          <ThemeTintAlt offset={-2}>
+            <Link asChild href="/docs/intro/installation">
+              <Card
+                tag="a"
+                animation="quickest"
+                f={1}
+                y={0}
+                hoverStyle={{ y: -2, bg: '$backgroundHover' }}
+                pressStyle={{ y: 2, bg: '$color2' }}
+              >
+                <Card.Header gap="$2">
+                  <H4 size="$4" color="$color8">
+                    Install
+                  </H4>
+                  <Paragraph size="$6" color="$color9">
+                    Set up an app.
+                  </Paragraph>
+                </Card.Header>
+
+                <Card.Footer>
+                  <ChevronRight pos="absolute" b="$4" r="$4" color="$color11" />
+                </Card.Footer>
+              </Card>
+            </Link>
+
+            <Card f={1}>
               <Card.Header gap="$2">
-                <H4 size="$4" color="$color8">
-                  Install
+                <H4 size="$4" color="$color9">
+                  Quick start
                 </H4>
-                <Paragraph size="$6" color="$color9">
-                  Set up an app.
+                <Paragraph size="$4" color="$color11">
+                  Choose from a few starters:
                 </Paragraph>
               </Card.Header>
 
-              <Card.Footer>
-                <ChevronRight pos="absolute" b="$4" r="$4" color="$color11" />
+              <Card.Footer p="$6" pt={0}>
+                <XStack ai="center" gap="$4" f={1}>
+                  <Code f={1} bg="$color4" p="$3" br="$4" size="$5">
+                    npm create tamagui@latest
+                  </Code>
+                  <Button
+                    position="absolute"
+                    aria-label="Copy code to clipboard"
+                    size="$2"
+                    right="$3"
+                    display="inline-flex"
+                    icon={clipBoard.hasCopied ? CheckCircle : Copy}
+                    onPress={() => {
+                      clipBoard.onCopy()
+                    }}
+                    $xs={{
+                      display: 'none',
+                    }}
+                  >
+                    Copy
+                  </Button>
+                </XStack>
               </Card.Footer>
             </Card>
-          </Link>
-
-          <Card f={1}>
-            <Card.Header gap="$2">
-              <H4 size="$4" color="$color9">
-                Quick start
-              </H4>
-              <Paragraph size="$4" color="$color11">
-                Choose from a few starters:
-              </Paragraph>
-            </Card.Header>
-
-            <Card.Footer p="$6" pt={0}>
-              <XStack ai="center" gap="$4" f={1}>
-                <Code f={1} bg="$color4" p="$3" br="$4" size="$5">
-                  npm create tamagui@latest
-                </Code>
-                <Button
-                  position="absolute"
-                  aria-label="Copy code to clipboard"
-                  size="$2"
-                  right="$3"
-                  display="inline-flex"
-                  icon={clipBoard.hasCopied ? CheckCircle : Copy}
-                  onPress={() => {
-                    clipBoard.onCopy()
-                  }}
-                  $xs={{
-                    display: 'none',
-                  }}
-                >
-                  Copy
-                </Button>
-              </XStack>
-            </Card.Footer>
-          </Card>
+          </ThemeTintAlt>
         </>
       </XStack>
     )

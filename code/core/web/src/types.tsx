@@ -440,7 +440,7 @@ export type UseThemeWithStateProps = ThemeProps & {
 type ArrayIntersection<A extends any[]> = A[keyof A]
 
 type GetAltThemeNames<S> =
-  | (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S)
+  | (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S)
   | S
 
 export type SpacerUniqueProps = {

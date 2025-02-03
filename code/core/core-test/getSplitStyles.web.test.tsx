@@ -106,6 +106,28 @@ describe('getSplitStyles', () => {
     ).toEqual('var(--f-size-1)')
   })
 
+  test(`perspective transform`, () => {
+    expect(
+      Object.values(
+        simplifiedGetSplitStyles(Text, {
+          perspective: 1000,
+        }).rulesToInsert
+      )
+    ).toMatchInlineSnapshot(`
+      [
+        [
+          "transform",
+          "perspective(1000px)",
+          "_transform-perspective1343953606",
+          undefined,
+          [
+            ":root ._transform-perspective1343953606{transform:perspective(1000px);}",
+          ],
+        ],
+      ]
+    `)
+  })
+
   test(`z-index resolves to respective tokens`, () => {
     const styles = simplifiedGetSplitStyles(Text, {
       zIndex: '$1',

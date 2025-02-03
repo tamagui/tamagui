@@ -313,9 +313,9 @@ const HeroContents = memo(function HeroContents() {
                 }}
               >
                 Start
-                <YStack $group-item-press={{ scaleX: -1 }}>
+                {/* <YStack $group-item-press={{ scaleX: -1 }}>
                   <LogoIcon downscale={3} />
-                </YStack>
+                </YStack> */}
               </Button>
             </Link>
           </Theme>
