@@ -106,7 +106,7 @@ export interface PopoverContentImplProps extends PopperContentProps, Omit<Dismis
      * Event handler called when auto-focusing on close.
      * Can be prevented.
      */
-    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
+    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false;
     disableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
     setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>;

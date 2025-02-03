@@ -14,6 +14,12 @@ export { animations } from './v4-animations'
 export { createSystemFont, fonts } from './v4-fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './v4-media'
 
+/**
+ * This is the default config v4 definitions.
+ *   - uses shorthands v4
+ *   - uses tokens v4 which are mostly the same as v3
+ */
+
 // Themes:
 
 const darkPalette = [
