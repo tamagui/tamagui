@@ -105,6 +105,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     ...(process.env.TAMAGUI_TARGET === 'web'
       ? {
           type: (() => {
+            if (rest?.type) return rest.type
             if (secureTextEntry) return 'password'
             switch (keyboardType) {
               case 'number-pad':
@@ -117,7 +118,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
               case 'url':
                 return 'url'
               default:
-                return rest?.type ?? 'text'
+                return 'text'
             }
           })() satisfies HTMLInputTypeAttribute,
           inputMode: (() => {
