@@ -1,8 +1,3 @@
-- we should just make `boxShadow` with $ work
-- configv4 theme blue background02 no opacity set
-- background08 is not bg color
-  - should add 02 etc of all colors and remove background/color
-
 v2
 
 
@@ -48,7 +43,7 @@ is this a bug? the is_static conditional is odd, maybe backward
 
 v3
 
-- perspective={1000} broken on web, it shouldnt be in transform()
+- perspective={1000} can be on either transform OR on flat, need to figure that out
 
 generic function to allow new syntaxes, eg flat mode
 
