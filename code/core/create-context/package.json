@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-context",
-  "version": "1.123.12",
+  "version": "1.123.13",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
