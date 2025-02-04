@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "1.123.9",
+  "version": "1.123.14",
   "private": true,
   "type": "module",
   "scripts": {
@@ -25,9 +25,9 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@vxrn/color-scheme": "^1.1.429",
+    "@vxrn/color-scheme": "^1.1.430",
     "expo": "^52.0.23",
-    "one": "1.1.429",
+    "one": "1.1.430",
     "react": "*",
     "react-native": "^0.76.5",
     "react-native-reanimated": "~3.16.1",

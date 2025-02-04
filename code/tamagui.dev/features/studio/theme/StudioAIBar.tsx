@@ -103,12 +103,12 @@ export const StudioAIBar = () => {
       <XStack fw="wrap" ai="center" f={1} gap="$3">
         <Input
           ref={inputRef as any}
-          placeholder={`Prompt to generate a theme...`}
+          placeholder={`Generate a theme`}
           miw={300}
           f={10}
           size="$6"
           shadowColor="$shadow3"
-          bg="$background06"
+          bg="$color4"
           shadowOffset={{ height: 2, width: 0 }}
           shadowRadius={20}
           br="$8"
