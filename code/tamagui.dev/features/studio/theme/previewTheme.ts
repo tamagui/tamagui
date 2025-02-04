@@ -13,6 +13,7 @@ const last = new Map()
 const running = new Map()
 
 export const builtThemes: Record<string, any> = {}
+export let lastInserted = null as any
 
 if (process.env.NODE_ENV === 'development') {
   globalThis['builtThemes'] = builtThemes
@@ -58,6 +59,8 @@ export async function updatePreviewTheme(
   if (process.env.NODE_ENV === 'development') {
     builtThemes[args.id] = themes
   }
+
+  lastInserted = themes
 
   mutateThemes({
     themes: insertThemes,
