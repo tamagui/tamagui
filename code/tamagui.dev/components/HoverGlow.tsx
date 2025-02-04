@@ -315,11 +315,11 @@ export const useRelativePositionedItem = (
     }
 
     const width = Math.min(
-      limitToParentSize ? bounds.width : Infinity,
+      limitToParentSize ? bounds.width : Number.POSITIVE_INFINITY,
       scale * (full ? bounds.width : size || propWidth)
     )
     const height = Math.min(
-      limitToParentSize ? bounds.height : Infinity,
+      limitToParentSize ? bounds.height : Number.POSITIVE_INFINITY,
       scale * (full ? bounds.height : size || propHeight)
     )
     return {

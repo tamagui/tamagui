@@ -4,7 +4,7 @@
     "enabled": false
   },
   "files": {
-    "ignore": ["**/*/generated-*.ts", ".tamagui"]
+    "ignore": ["**/*/generated-*.ts", ".tamagui", "dist", ".turbo", "node_modules"]
   },
   "linter": {
     "enabled": true,

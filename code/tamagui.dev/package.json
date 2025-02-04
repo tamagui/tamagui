@@ -9,6 +9,8 @@
     "dev": "one dev",
     "dev:clean": "one dev --clean",
     "clean": "one clean",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
     "serve": "one serve --port 8081",
     "build:prod": "one build",
     "prod": "yarn build:prod && yarn serve",
@@ -68,6 +70,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@tamagui/cli": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",
     "acorn": "^8.11.3",

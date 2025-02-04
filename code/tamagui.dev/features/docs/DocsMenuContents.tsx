@@ -162,8 +162,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
       <div
         style={{ width: '100%' }}
-        tabIndex={0}
-        role="listbox"
+        aria-label="Docs Menu"
         onMouseEnter={() => {
           getStore(DocsItemsStore).hovered = true
         }}
