@@ -87,7 +87,7 @@ export default {
   plugins: [
     one({
       react: {
-        compiler: process.env.NODE_ENV === 'production',
+        compiler: true,
         // compiler: true,
         // compiler: optimize,
       },
