@@ -182,7 +182,7 @@ const SlideInner = (props: SlideProps) => {
     props.stepsStrategy === 'replace'
       ? getStep(props.steps[step - 1])
       : props.steps
-          .slice(0, showAllSteps ? Infinity : step)
+          .slice(0, showAllSteps ? Number.POSITIVE_INFINITY : step)
           .map((s, i) => <React.Fragment key={i}>{getStep(s)}</React.Fragment>)
 
   const nextStepPreload = getStep(props.steps[step])

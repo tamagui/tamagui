@@ -69,10 +69,10 @@ export const RulerLine = ({
         disableColorDiff
           ? '$color6'
           : active
-          ? prominent
-            ? '$color11'
-            : '$color10'
-          : '$color6'
+            ? prominent
+              ? '$color11'
+              : '$color10'
+            : '$color6'
       }
       width={orientation === 'horizontal' ? 1 : size}
       height={orientation === 'vertical' ? 1 : size}

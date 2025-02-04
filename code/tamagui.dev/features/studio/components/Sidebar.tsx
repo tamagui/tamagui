@@ -1,4 +1,5 @@
-import React, { memo } from 'react'
+import type React from 'react'
+import { memo } from 'react'
 import type { YStackProps } from 'tamagui'
 import { H4, H5, ScrollView, Spacer, XStack, YStack, styled } from 'tamagui'
 
