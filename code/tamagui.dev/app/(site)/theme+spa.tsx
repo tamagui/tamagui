@@ -9,7 +9,6 @@ import {
   Separator,
   Spacer,
   Theme,
-  TooltipSimple,
   View,
   XStack,
   YStack,
@@ -122,7 +121,6 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
-  const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack

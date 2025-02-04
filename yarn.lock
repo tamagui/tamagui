@@ -19995,6 +19995,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lllink@npm:^1.1.430":
+  version: 1.1.430
+  resolution: "lllink@npm:1.1.430"
+  bin:
+    lllink: dist/index.mjs
+  checksum: 10/ec729b573523c84e54a909f873dfcac6850533070d9fded8bb96e5e95619579139fb49bb9075b015cc1d5931b8a5eedb78b05bf6405c6bf4a445713105e62356
+  languageName: node
+  linkType: hard
+
 "load-json-file@npm:^4.0.0":
   version: 4.0.0
   resolution: "load-json-file@npm:4.0.0"
@@ -27112,6 +27121,7 @@ __metadata:
     h3: "npm:1.11.1"
     import-sort-style-module: "npm:^6.0.0"
     json5: "npm:^2.2.3"
+    lllink: "npm:^1.1.430"
     npm-run-all: "npm:^4.1.5"
     p-map: "npm:^5.5.0"
     prompts: "npm:2.1.0"
