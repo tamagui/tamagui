@@ -334,7 +334,6 @@ const GithubConnection = () => {
       provider,
       options: {
         redirectTo: `${window.location.origin}/account`,
-        scopes: 'read:org',
       },
     })
     if (error) {
