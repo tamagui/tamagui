@@ -169,8 +169,8 @@ export function createSwitch<
         const estRightPad = getShorthandValue(props, 'paddingRight') ?? estPad ?? 0
         estimatedInitialWidth =
           estWidth -
-          (estLeftPad ? getVariableValue(estLeftPad) : 0) -
-          (estRightPad ? getVariableValue(estRightPad) : 0)
+          (estLeftPad ? getVariableValue(estLeftPad, 'size') : 0) -
+          (estRightPad ? getVariableValue(estRightPad, 'size') : 0)
       }
 
       // this is actually inner width
