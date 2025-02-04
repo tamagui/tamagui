@@ -2,6 +2,7 @@ import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
+import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 import {
   StyleObjectIdentifier,
   StyleObjectRules,
@@ -13,7 +14,6 @@ import {
 } from '@tamagui/web'
 import { basename, relative } from 'node:path'
 import type { ViewStyle } from 'react-native'
-import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -206,11 +206,13 @@ export function createExtractor(
     if (disable === true || (Array.isArray(disable) && disable.includes(sourcePath))) {
       return null
     }
+
     if (!isFullyDisabled(options)) {
       if (!components) {
         throw new Error(`Must provide components`)
       }
     }
+
     if (
       sourcePath &&
       includeExtensions &&

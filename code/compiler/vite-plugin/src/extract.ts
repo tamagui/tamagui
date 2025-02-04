@@ -12,12 +12,24 @@ import {
   tamaguiOptions,
 } from './loadTamagui'
 
+import { createHash } from 'node:crypto'
+
 export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
   if (optionsIn?.disable) {
     return {
       name: 'tamagui-extract',
     }
   }
+
+  const getHash = (input: string) => createHash('sha1').update(input).digest('base64')
+
+  const clearCompilerCache = () => {
+    memoryCache = {}
+    cacheSize = 0
+  }
+
+  let memoryCache = {}
+  let cacheSize = 0
 
   const cssMap = new Map<string, string>()
 
@@ -131,22 +143,25 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         // only optimize on client - server should produce identical styles anyway!
         return
       }
+
       if (isVite6Native(this.environment)) {
         return
       }
+
       if (
         tamaguiOptions?.disableServerOptimization &&
         isVite6AndNotClient(this.environment)
       ) {
         return
       }
+
       const [validId] = id.split('?')
       return cssMap.get(validId)
     },
 
     transform: {
       order: 'pre',
-      async handler(code, id, ssrParam) {
+      async handler(code, id) {
         if (disableStatic) {
           // only optimize on client - server should produce identical styles anyway!
           return
@@ -155,6 +170,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         if (isVite6Native(this.environment)) {
           return
         }
+
         if (
           tamaguiOptions?.disableServerOptimization &&
           isVite6AndNotClient(this.environment)
@@ -180,6 +196,17 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
 
         if (shouldDisable) {
           return
+        }
+
+        const cacheEnv =
+          this.environment.name === 'client' || this.environment.name === 'ssr'
+            ? // same cache key for ssr and web since they are the same
+              'web'
+            : this.environment.name
+        const cacheKey = getHash(`${cacheEnv}${code}${id}`)
+        const cached = memoryCache[cacheKey]
+        if (cached) {
+          return cached
         }
 
         const extracted = await Static!.extractToClassNames({
@@ -210,10 +237,20 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
           cssMap.set(absoluteId, extracted.styles)
         }
 
-        return {
-          code: source.toString(),
+        const codeOut = source.toString()
+        const out = {
+          code: codeOut,
           map: extracted.map,
         }
+
+        cacheSize += codeOut.length
+        // ~50Mb cache for recently compiler files
+        if (cacheSize > 26214400) {
+          clearCompilerCache()
+        }
+        memoryCache[cacheKey] = out
+
+        return out
       },
     },
   }
