@@ -1,33 +1,31 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, use } from 'react'
 import { Spinner, View } from 'tamagui'
 
-function getLazyComponent(importFunc: any) {
-  return lazy(async () => {
-    return {
-      default: await importFunc(),
-    }
-  })
+const cached: any = {}
+
+function getLazyComponent<Import extends Function>(importFunc: Import): Import {
+  if (cached[importFunc]) {
+    return cached[importFunc]
+  }
+
+  cached[importFunc] = importFunc()
+
+  return cached[importFunc]
+  // return lazy(async () => {
+  //   return {
+  //     default: await importFunc(),
+  //   }
+  // })
 }
 
 export function lazyDemo(importFunc: any) {
   return () => {
-    const Component = getLazyComponent(importFunc)
-
-    const [isMounted, setMounted] = useState(false)
-
-    useEffect(() => {
-      if (!isMounted) {
-        setMounted(true)
-      }
-    }, [isMounted])
-
-    if (!isMounted) {
-      return null
-    }
+    const Component = use(getLazyComponent(importFunc))
 
     return (
       <Suspense fallback={<Spinner />}>
         <View display="contents" id="demo">
+          {/* @ts-ignore */}
           <Component />
         </View>
       </Suspense>
