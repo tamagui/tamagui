@@ -90,8 +90,6 @@ const Switch = memo(
     const [checked, setChecked] = useState(checkedProp)
     // const colors = useTheme()
 
-    console.log('render!')
-
     const isBranded = true
 
     useEffect(() => {
@@ -158,6 +156,7 @@ const Switch = memo(
 
     return (
       <TamaguiSwitch
+        width={100}
         alignItems="center"
         animation={[
           'bouncy',
@@ -187,7 +186,7 @@ const Switch = memo(
         }}
         justifyContent="center"
         minHeight={TRACK_HEIGHT}
-        minWidth={60}
+        minWidth={100}
         p={4}
         pointerEvents={disabled ? 'none' : 'auto'}
         disabledStyle={{
