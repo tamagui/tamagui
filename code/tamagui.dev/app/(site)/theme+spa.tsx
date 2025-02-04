@@ -67,37 +67,37 @@ export default function ThemePage() {
       <Dialogs />
 
       <YStack flexShrink={0} mb="$10">
-        <PreviewTheme>
-          <ThemeBuilderModal />
+        <ThemeBuilderModal />
 
-          <XStack
-            w="100%"
-            h="max-content"
-            pr={540}
-            pt={10}
-            $lg={{ pr: 0 }}
-            jc="flex-end"
-            ov="hidden"
+        <XStack
+          w="100%"
+          h="max-content"
+          pr={540}
+          pt={10}
+          $lg={{ pr: 0 }}
+          jc="flex-end"
+          ov="hidden"
+        >
+          <YStack
+            gap="$6"
+            p="$4"
+            f={1}
+            maw="calc(min(100vw, 1300px))"
+            group="content"
+            $md={{
+              maw: `calc(min(100vw, 900px))`,
+              p: '$4',
+            }}
           >
-            <YStack
-              gap="$6"
-              p="$4"
-              f={1}
-              maw="calc(min(100vw, 1300px))"
-              group="content"
-              $md={{
-                maw: `calc(min(100vw, 900px))`,
-                p: '$4',
-              }}
-            >
-              <StudioAIBar />
+            <StudioAIBar />
+            <PreviewTheme>
               <YStack gap="$6">
                 <StudioPreviewComponentsBar scrollView={document.documentElement} />
                 <StudioPreviewComponents />
               </YStack>
-            </YStack>
-          </XStack>
-        </PreviewTheme>
+            </PreviewTheme>
+          </YStack>
+        </XStack>
       </YStack>
     </>
   )
