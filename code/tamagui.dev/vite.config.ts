@@ -88,6 +88,7 @@ export default {
     one({
       react: {
         compiler: true,
+        scan: true,
         // compiler: true,
         // compiler: optimize,
       },
