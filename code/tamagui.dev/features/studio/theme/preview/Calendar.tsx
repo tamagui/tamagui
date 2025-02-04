@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
-import React from 'react'
+import type React from 'react'
 import { Button, H4, SizableText, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'
 const weekdays = [

@@ -344,7 +344,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                         </sup>
                         {(mainProduct?.prices.sort(
                           (a, b) =>
-                            (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                            (a.unit_amount || Number.POSITIVE_INFINITY) -
+                            (b.unit_amount || Number.POSITIVE_INFINITY)
                         )[0].unit_amount || 0) / 100}
                       </Button.Text>
                     </Button>

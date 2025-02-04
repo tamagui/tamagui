@@ -93,4 +93,3 @@ export const ContainerBento = styled(YStack, {
 
   zi: 100,
 })
-
