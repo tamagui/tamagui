@@ -144,73 +144,77 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       return cssMap.get(validId)
     },
 
-    async transform(code, id, ssrParam) {
-      if (disableStatic) {
-        // only optimize on client - server should produce identical styles anyway!
-        return
-      }
-      if (isVite6Native(this.environment)) {
-        return
-      }
-      if (
-        tamaguiOptions?.disableServerOptimization &&
-        isVite6AndNotClient(this.environment)
-      ) {
-        return
-      }
-
-      const [validId] = id.split('?')
-      if (!validId.endsWith('.tsx')) {
-        return
-      }
-
-      const firstCommentIndex = code.indexOf('// ')
-      const { shouldDisable, shouldPrintDebug } = Static!.getPragmaOptions({
-        source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
-        path: validId,
-      })
-
-      if (shouldPrintDebug) {
-        console.trace(`Debugging file: ${id} in environment: ${this.environment?.name}`)
-        console.info(`\n\nOriginal source:\n${code}\n\n`)
-      }
-
-      if (shouldDisable) {
-        return
-      }
-
-      const extracted = await Static!.extractToClassNames({
-        extractor: extractor!,
-        source: code,
-        sourcePath: validId,
-        options: tamaguiOptions!,
-        shouldPrintDebug,
-      })
-
-      if (!extracted) {
-        return
-      }
-
-      const rootRelativeId = `${validId}${virtualExt}`
-      const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
-
-      let source = extracted.js
-
-      if (extracted.styles) {
-        this.addWatchFile(rootRelativeId)
-
-        if (server && cssMap.has(absoluteId)) {
-          invalidateModule(rootRelativeId)
+    transform: {
+      order: 'pre',
+      async handler(code, id, ssrParam) {
+        if (disableStatic) {
+          // only optimize on client - server should produce identical styles anyway!
+          return
         }
 
-        source = `${source}\nimport "${rootRelativeId}";`
-        cssMap.set(absoluteId, extracted.styles)
-      }
+        if (isVite6Native(this.environment)) {
+          return
+        }
+        if (
+          tamaguiOptions?.disableServerOptimization &&
+          isVite6AndNotClient(this.environment)
+        ) {
+          return
+        }
 
-      return {
-        code: source.toString(),
-        map: extracted.map,
-      }
+        const [validId] = id.split('?')
+        if (!validId.endsWith('.tsx')) {
+          return
+        }
+
+        const firstCommentIndex = code.indexOf('// ')
+        const { shouldDisable, shouldPrintDebug } = Static!.getPragmaOptions({
+          source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
+          path: validId,
+        })
+
+        if (shouldPrintDebug) {
+          console.trace(`Debugging file: ${id} in environment: ${this.environment?.name}`)
+          console.info(`\n\nOriginal source:\n${code}\n\n`)
+        }
+
+        if (shouldDisable) {
+          return
+        }
+
+        const extracted = await Static!.extractToClassNames({
+          extractor: extractor!,
+          source: code,
+          sourcePath: validId,
+          options: tamaguiOptions!,
+          shouldPrintDebug,
+        })
+
+        if (!extracted) {
+          return
+        }
+
+        const rootRelativeId = `${validId}${virtualExt}`
+        const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
+
+        let source = extracted.js
+
+        if (extracted.styles) {
+          this.addWatchFile(rootRelativeId)
+
+          if (server && cssMap.has(absoluteId)) {
+            invalidateModule(rootRelativeId)
+          }
+
+          source = `${source}\nimport "${rootRelativeId}";`
+          cssMap.set(absoluteId, extracted.styles)
+        }
+
+        return {
+          code: source.toString(),
+          map: extracted.map,
+        }
+      },
     },
   }
 }
