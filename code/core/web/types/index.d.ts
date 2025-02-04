@@ -23,6 +23,7 @@ export * from './constants/constants';
 export * from './contexts/ComponentContext';
 export * from './_withStableStyle';
 export * from './helpers/createMediaStyle';
+export * from './helpers/getShorthandValue';
 export * from './helpers/createShallowSetState';
 export * from './helpers/createStyledContext';
 export * from './helpers/expandStyles';

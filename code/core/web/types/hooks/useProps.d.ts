@@ -6,6 +6,10 @@ type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noCla
         staticConfig: StaticConfig;
     };
     noClass?: boolean;
+    /**
+     * Disable watching for media queries
+     */
+    noMedia?: boolean;
 };
 export type PropsWithoutMediaStyles<A> = {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
