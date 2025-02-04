@@ -8,7 +8,10 @@ export function themeable<ComponentType extends (props: any) => any>(
   staticConfig?: Partial<StaticConfig>,
   optimize = false
 ) {
-  const withThemeComponent = function WithTheme(props: ThemeableProps, ref) {
+  const withThemeComponent = React.forwardRef(function WithTheme(
+    props: ThemeableProps,
+    ref
+  ) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
     let overriddenContextProps: Object | undefined
@@ -84,7 +87,7 @@ export function themeable<ComponentType extends (props: any) => any>(
     }
 
     return contents
-  }
+  })
 
   const withTheme: any = withThemeComponent
   withTheme.displayName = `Themed(${
@@ -95,5 +98,5 @@ export function themeable<ComponentType extends (props: any) => any>(
     ? (props: Omit<P, 'theme' | 'themeInverse'> & ThemeableProps) => R
     : unknown
 
-  return React.forwardRef(withTheme) as FinalComponentType
+  return withTheme as FinalComponentType
 }
