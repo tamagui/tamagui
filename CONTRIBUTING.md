@@ -38,8 +38,12 @@ Is a bit easier but runs on One, it should work with Expo Go.
 If you are ok to build the native apps, then:
 
 ```bash
+yarn profile react-18
 yarn kitchen-sink
 ```
+
+Note that kitchen-sink needs react 18 so you do this profile switch first.
+But if you're working on the sandbox you'll want to run `yarn` again to clear it.
 
 But that requires building the native apps:
 
