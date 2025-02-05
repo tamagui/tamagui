@@ -58,7 +58,7 @@ const emptyObject = {}
 export function getThemeProxied(
   // underscore to prevent accidental usage below
   _props: UseThemeWithStateProps,
-  state: ThemeState | undefined,
+  state: ThemeState | null,
   _keys: MutableRefObject<string[] | null>
 ): ThemeProxied {
   const theme = state?.theme
@@ -116,12 +116,14 @@ export function getThemeProxied(
           if (process.env.TAMAGUI_TARGET === 'native') {
             // ios can avoid re-rendering in some cases when we are using a root light/dark
             // disabled in cases where we have animations
+            console.warn('TODO', shouldDeoptDueToParentScheme)
             if (
               platform !== 'web' &&
               isIos &&
               !curProps.deopt &&
-              getSetting('fastSchemeChange') &&
-              !shouldDeoptDueToParentScheme(curThemeManger)
+              getSetting('fastSchemeChange')
+              // &&
+              // !shouldDeoptDueToParentScheme(curThemeManger)
             ) {
               if (scheme) {
                 const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'

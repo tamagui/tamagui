@@ -78,7 +78,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   opts?: UsePropsOptions
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
   const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
-  const [themeState, theme] = useThemeWithState({
+  const [theme, name] = useThemeWithState({
     componentName: staticConfig.componentName,
     name: 'theme' in props ? props.theme : undefined,
     inverse: 'themeInverse' in props ? props.themeInverse : undefined,

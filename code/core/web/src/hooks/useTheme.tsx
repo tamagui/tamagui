@@ -4,8 +4,6 @@ import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import type { ThemeState } from './useThemeState'
 import { useThemeState } from './useThemeState'
 
-export type ChangedThemeResponse = {}
-
 export const useTheme = (props: ThemeProps = {}) => {
   const [theme] = useThemeWithState(props)
   const res = theme
@@ -22,7 +20,7 @@ export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState
   if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme-change-effect`
 
   if (process.env.NODE_ENV === 'development') {
-    if (!state?.theme) {
+    if (!themeState?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
         console.error(
           `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
@@ -36,9 +34,7 @@ export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState
   const themeProxied = getThemeProxied(props, themeState, keys)
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed(`  🔹 [${themeManager?.id}] useTheme =>`, state?.name)
-    console.info('returning state', themeState[1], 'from props', props)
-    console.groupEnd()
+    console.info(`  🔹 [${themeState?.id}] useTheme =>`, themeState?.name)
   }
 
   return [themeProxied, themeState]
