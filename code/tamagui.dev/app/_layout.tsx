@@ -31,7 +31,7 @@ setupPopper({
 })
 
 export default function Layout() {
-  console.log('render root', useId())
+  console.log('Layout()', useId())
 
   return (
     <html lang="en-US">
