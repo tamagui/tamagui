@@ -36,7 +36,7 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (props.debug === 'visualize') {
+    if (true) {
       finalChildren = (
         <ThemeDebug themeState={themeState} themeProps={props}>
           {finalChildren}

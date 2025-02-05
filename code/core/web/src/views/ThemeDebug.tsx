@@ -1,6 +1,6 @@
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import type { ThemeState } from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
@@ -18,8 +18,11 @@ export function ThemeDebug({
     const rerender = useForceUpdate()
     const id = React.useId()
 
+    let shouldInsert = false
+
     if (process.env.NODE_ENV === 'development' && typeof document !== 'undefined') {
       if (!node) {
+        shouldInsert = true
         node = document.createElement('div')
         node.style.height = '200px'
         node.style.overflowY = 'scroll'
@@ -32,9 +35,12 @@ export function ThemeDebug({
         node.style.border = '1px solid #888'
         node.style.flexDirection = 'row'
         node.style.background = 'var(--background)'
-        document.body.appendChild(node)
       }
     }
+
+    useEffect(() => {
+      document.body.appendChild(node)
+    }, [])
 
     // React.useEffect(() => {
     //   themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
@@ -70,10 +76,10 @@ export function ThemeDebug({
             &lt;Theme {id} /&gt;&nbsp;
             {JSON.stringify(
               {
-                ...themeState,
-                propsName: themeProps.name,
-                inverse: themeProps.inverse,
-                forceClassName: themeProps.forceClassName,
+                name: themeState.name,
+                parentId: themeState.parentId,
+                isNew: themeState.isNew,
+                themeProps,
                 onChangeCount,
               },
               null,

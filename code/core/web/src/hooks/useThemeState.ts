@@ -80,16 +80,16 @@ export const useThemeState = (
       scheme: getScheme(name),
       parentId,
       inversed: props.inverse,
-      isNew: true,
     } satisfies ThemeState
 
-    console.warn('SET', id, nextState)
     states.set(id, nextState)
 
     return nextState
   }
 
-  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+
+  return state.id === id ? { ...state, isNew: true } : state
 }
 
 const validSchemes = {
