@@ -21,8 +21,6 @@ export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState
   // @ts-expect-error
   if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme-change-effect`
 
-  const { themeManager, state } = themeState
-
   if (process.env.NODE_ENV === 'development') {
     if (!state?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
@@ -35,7 +33,7 @@ export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState
     }
   }
 
-  const themeProxied = getThemeProxied(props, state, keys, themeManager)
+  const themeProxied = getThemeProxied(props, themeState, keys)
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed(`  🔹 [${themeManager?.id}] useTheme =>`, state?.name)
