@@ -1062,7 +1062,6 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`group-context`
 
     // disable theme prop is deterministic so conditional hook ok here
-    console.log('render component', staticConfig.componentName, themeState)
     content = disableTheme
       ? content
       : getThemedChildren(themeState, content, themeStateProps, false, stateRef)

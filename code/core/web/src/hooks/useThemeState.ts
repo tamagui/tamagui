@@ -46,17 +46,18 @@ export const useThemeState = (
   keys?: MutableRefObject<string[] | null>
 ): ThemeState => {
   const { disable } = props
+  const id = useId()
+  const { themes } = getConfig()
 
   if (disable) {
-    console.warn('?????')
-    // return {
-
-    // }
+    return {
+      id,
+      name: 'light',
+      theme: themes.light,
+    }
   }
 
-  const id = useId()
   const parentId = useContext(ThemeStateContext)
-  const { themes } = getConfig()
 
   const getSnapshot = (): ThemeState => {
     const parentState = states.get(parentId)
@@ -79,8 +80,6 @@ export const useThemeState = (
         ? 'parent'
         : undefined
 
-    console.log('wtf', id, props.name, parentState, scheme, parentInversed)
-
     const nextState = {
       id,
       name,
@@ -89,6 +88,10 @@ export const useThemeState = (
       parentId,
       inversed: props.inverse === true ? props.inverse : parentInversed,
     } satisfies ThemeState
+
+    if (process.env.NODE_ENV === 'development' && props.debug) {
+      console.info(` 🎨 useTheme() new theme: ${name}`)
+    }
 
     states.set(id, nextState)
 
@@ -129,7 +132,7 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
   }
 
   const { themes } = getConfig()
-  const parentParts = ['', ...parentName.split('_')]
+  const parentParts = parentName.split('_')
 
   // always remove component theme if it exists, we never sub a component theme
   const lastName = parentParts[parentParts.length - 1]
@@ -141,26 +144,28 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
 
   let found: string | null = null
 
-  while (parentParts.length) {
-    const base = parentParts.join('_')
+  const max = parentParts.length
+
+  // if (props.componentName === 'Circle' && parentName.includes('dark_red')) {
+  //   debugger
+  // }
+
+  for (let i = 0; i <= max; i++) {
+    const base = (i === 0 ? parentParts : parentParts.slice(0, -i)).join('_')
+
     for (const subName of subNames) {
       const potential = base ? `${base}_${subName}` : subName
+
       if (potential in themes) {
         found = potential
         break
       }
     }
-    parentParts.pop()
+
+    if (found) break
   }
 
-  if (!found) {
-    return null
-    // console.error(`not found theme info`, parentName, props, themes)
-    // debugger
-    // throw new Error(`theme not found!`)
-  }
-
-  if (props.inverse) {
+  if (found && props.inverse) {
     const scheme = found.split('_')[0]
     return found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
   }

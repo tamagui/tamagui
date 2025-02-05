@@ -28,7 +28,7 @@ const Circles = () => {
       </Theme>
 
       <Theme name="red">
-        <Circle size={100} bg="$color10" />
+        <Circle debug="visualize" size={100} bg="$color10" />
       </Theme>
 
       <Theme name="surface3">
