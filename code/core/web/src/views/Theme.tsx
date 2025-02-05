@@ -36,7 +36,7 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (true) {
+    if (props.debug === 'visualize') {
       finalChildren = (
         <ThemeDebug themeState={themeState} themeProps={props}>
           {finalChildren}
@@ -189,7 +189,9 @@ function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
       }
     : undefined
 
-  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeState.name}`
+  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeState.name.replace(schemePrefix, '')}`
 
   return { style, className }
 }
+
+const schemePrefix = /^(dark|light)_/
