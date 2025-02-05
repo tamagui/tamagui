@@ -31,13 +31,14 @@ const subscribe = (cb: Function) => {
   }
 }
 
-const states: Record<ID, ThemeState | undefined> = {}
+// TODO this will gain memory over time but its not going to be a ton
+const states: Map<ID, ThemeState | undefined> = new Map()
 
 export const forceUpdateThemes = () => {
   listeners.forEach((cb) => cb())
 }
 
-export const getThemeState = (id: ID) => states[id]
+export const getThemeState = (id: ID) => states.get(id)
 
 export const useThemeState = (
   props: UseThemeWithStateProps,
@@ -50,18 +51,20 @@ export const useThemeState = (
   const { themes } = getConfig()
 
   const getSnapshot = (): ThemeState => {
-    const parentState = states[parentId]
+    const parentState = states.get(parentId)
+
     const name = getNextThemeName(parentState?.name, props)
 
-    console.log('GOT', props, name)
+    console.warn('gotem', id, name)
 
     if (!name) {
       if (!parentState) throw new Error(`‼️`)
       return parentState
     }
 
-    if (states[id]?.name === name) {
-      return states[id]!
+    const found = states.get(id)
+    if (found?.name === name) {
+      return found
     }
 
     const nextState = {
@@ -71,14 +74,13 @@ export const useThemeState = (
       scheme: getScheme(name),
       parentId,
       inversed: props.inverse,
+      isNew: true,
     } satisfies ThemeState
 
-    states[id] = nextState
+    console.warn('SET', id, nextState)
+    states.set(id, nextState)
 
-    return {
-      ...nextState,
-      isNew: true,
-    }
+    return nextState
   }
 
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
@@ -117,23 +119,32 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
 
   // always remove component theme if it exists, we never sub a component theme
   const lastName = parentParts[parentParts.length - 1]
-  if (lastName && lastName[0].toLowerCase() === lastName[0]) {
+  if (lastName && lastName[0].toLowerCase() !== lastName[0]) {
     parentParts.pop()
   }
 
-  const subNames = [props.name, props.componentName].filter(Boolean)
+  const subNames = [props.name, props.componentName].filter(Boolean) as string[]
 
-  let found = parentName
+  let found: string | null = null
 
   while (parentParts.length) {
     const base = parentParts.join('_')
     for (const subName of subNames) {
-      const potential = `${base}_${subName}`
+      const potential = base ? `${base}_${subName}` : subName
       if (potential in themes) {
+        console.warn('FPUND', potential)
         found = potential
         break
       }
     }
+    parentParts.pop()
+  }
+
+  if (!found) {
+    return null
+    // console.error(`not found theme info`, parentName, props, themes)
+    // debugger
+    // throw new Error(`theme not found!`)
   }
 
   if (props.inverse) {
@@ -141,6 +152,5 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
     return found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
   }
 
-  console.warn(`theme not found!`, parentName, props)
   return found
 }

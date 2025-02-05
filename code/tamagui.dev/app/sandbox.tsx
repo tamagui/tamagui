@@ -1,27 +1,31 @@
 import { styled, Theme, View } from '@tamagui/web'
-import { Button } from 'tamagui'
+import { Circle, XStack } from 'tamagui'
 
 export default function Sandbox() {
   return (
-    <>
+    <XStack gap="$2">
+      <Circle size={100} bg="red" />
+
       <Theme name="accent">
-        <Button>Hello</Button>
+        <Circle size={100} bg="$color1" />
       </Theme>
 
-      {/* <Test
-        animation="bouncy"
-        debug="verbose"
-        pressStyle={{
-          scale: 2,
-        }}
-        hoverStyle={{
-          scale: 1.5,
-        }}
-        $platform-web={{
-          position: 'fixed',
-        }}
-      /> */}
-    </>
+      <Theme name="red">
+        <Circle size={100} bg="$color1" />
+      </Theme>
+
+      <Theme name="surface3">
+        <Circle size={100} bg="$background" />
+      </Theme>
+
+      <Theme name="surface2">
+        <Circle size={100} bg="$background" />
+      </Theme>
+
+      <Theme name="surface1">
+        <Circle size={100} bg="$background" />
+      </Theme>
+    </XStack>
   )
 }
 
