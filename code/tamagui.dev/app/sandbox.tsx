@@ -1,10 +1,12 @@
 import { Theme, useTheme, useThemeName } from '@tamagui/web'
-import { memo, useState } from 'react'
+import { memo, useId, useState } from 'react'
 import { Button, Circle, XStack, YStack } from 'tamagui'
 import { ThemeToggle } from '../features/site/theme/ThemeToggle'
 
 export default function Sandbox() {
   const [name, setName] = useState('dark')
+
+  console.log('Sandbox', useId())
 
   return (
     <YStack gap="$2">
@@ -22,6 +24,8 @@ export default function Sandbox() {
 }
 
 const Circles = memo(() => {
+  console.log('circled', useId())
+
   return (
     <XStack bg="$color1">
       <Theme debug="visualize" name="accent">

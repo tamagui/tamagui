@@ -18,7 +18,8 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
   }
 
   const isRoot = !!props['_isRoot']
-  const [_, themeState] = useThemeWithState(props)
+  const [_, themeState] = useThemeWithState(props, isRoot)
+
   const disableDirectChildTheme = props['disable-child-theme']
 
   let finalChildren = disableDirectChildTheme
@@ -123,10 +124,6 @@ export function getThemedChildren(
     }
   }
 
-  // if (props.debug) {
-  console.log('WTF', themeState.id, state.hasEverThemed, props)
-  // }
-
   if (forceClassName === false) {
     return children
   }
@@ -180,7 +177,7 @@ function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
 
   const maxInverses = getSetting('maxDarkLightNesting') || 3
   const themeClassName =
-    themeState.inverses >= maxInverses
+    themeState.inverses > maxInverses
       ? themeState.name
       : themeState.name.replace(schemePrefix, '')
 

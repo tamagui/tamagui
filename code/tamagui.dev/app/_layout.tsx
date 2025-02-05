@@ -31,8 +31,6 @@ setupPopper({
 })
 
 export default function Layout() {
-  console.log('Layout()', useId())
-
   return (
     <html lang="en-US">
       <head>
@@ -156,8 +154,6 @@ export const Providers = (props: { children: any }) => {
 
 function WebsiteTamaguiProvider(props: { children: any }) {
   const [scheme] = useColorScheme()
-
-  console.warn('PROVIDING ', useId())
 
   return (
     <TamaguiProvider disableInjectCSS defaultTheme={scheme} config={tamaConf}>

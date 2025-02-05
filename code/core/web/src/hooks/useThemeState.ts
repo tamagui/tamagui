@@ -33,6 +33,8 @@ const listenersByParent: Record<ID, Set<ID>> = {}
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
 
+globalThis['themeStates'] = states
+
 export const forceUpdateThemes = () => {
   allListeners.forEach((cb) => cb())
   console.warn('UPDATE')
@@ -66,13 +68,13 @@ export const useThemeState = (
   const parentId = useContext(ThemeStateContext)
   const propsKey = `${props.componentName || ''}${props.name || ''}${props.inverse || ''}${props.reset || ''}`
 
-  useLayoutEffect(() => {
-    if (!propsKey) return
-    if (process.env.NODE_ENV === 'development' && props.debug) {
-      console.info(` · useTheme(${id}) new props detected, triggering snapshot`)
-    }
-    allListeners.get(id)?.()
-  }, [id, propsKey])
+  // useLayoutEffect(() => {
+  //   if (!propsKey) return
+  //   if (process.env.NODE_ENV === 'development' && props.debug) {
+  //     console.info(` · useTheme(${id}) new props detected ${propsKey}`)
+  //   }
+  //   allListeners.get(id)?.()
+  // }, [id, propsKey])
 
   const getSnapshot = (): ThemeState => {
     const currentKeys = keys?.current
@@ -98,6 +100,7 @@ export const useThemeState = (
     const shouldSkipUpdate =
       lastState &&
       parentState?.name === lastState.parentName &&
+      !isRoot &&
       (!currentKeys || !currentKeys.size)
 
     if (shouldSkipUpdate) {
@@ -123,7 +126,9 @@ export const useThemeState = (
     } satisfies ThemeState
 
     if (process.env.NODE_ENV === 'development' && props.debug) {
-      console.info(` · useTheme(${id}) new theme: ${name}`)
+      console.groupCollapsed(` · useTheme(${id}) ⏭️ ${name}`)
+      console.info(nextState)
+      console.groupEnd()
     }
 
     states.set(id, nextState)
@@ -155,7 +160,7 @@ export const useThemeState = (
 
 function notifyChildren(id: string) {
   const children = listenersByParent[id]
-  children.forEach((id) => {
+  children?.forEach((id) => {
     allListeners.get(id)?.()
   })
 }

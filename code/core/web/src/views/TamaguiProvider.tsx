@@ -32,8 +32,6 @@ export function TamaguiProvider({
     }
   }
 
-  console.warn('provigind tamagui', useId())
-
   return (
     <>
       <UnmountedClassName>

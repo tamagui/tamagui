@@ -31,19 +31,19 @@ export default function Layout() {
         <ToastProvider swipeDirection="horizontal">
           <TamaguiRootProvider>
             <YStack bg="$color1" minH="100%" gap="$4" f={1}>
-              {/* <SafeAreaView> */}
-              <ToastViewport portalToRoot top={0} left={0} right={0} />
-              <CustomToast />
+              <SafeAreaView>
+                <ToastViewport portalToRoot top={0} left={0} right={0} />
+                <CustomToast />
 
-              <XStack items="center" justify="center" gap="$4" py="$4">
-                <Image src={oneBall} width={42} height={42} />
-                <ToggleThemeButton />
-              </XStack>
+                <XStack items="center" justify="center" gap="$4" py="$4">
+                  <Image src={oneBall} width={42} height={42} />
+                  <ToggleThemeButton />
+                </XStack>
 
-              <YStack>
-                <Slot />
-              </YStack>
-              {/* </SafeAreaView> */}
+                <YStack>
+                  <Slot />
+                </YStack>
+              </SafeAreaView>
             </YStack>
           </TamaguiRootProvider>
         </ToastProvider>

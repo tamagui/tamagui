@@ -45,8 +45,6 @@ export const ThemeNameEffectNoTheme = ({
 
   const color = theme[colorKey]?.val
 
-  console.log('wtf', colorKey, color, themeName)
-
   if (isClient) {
     useEffect(() => {
       if (!isHydrated) return

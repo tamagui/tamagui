@@ -17,9 +17,12 @@ const time = (globalThis as any).time
 /**
  * Adds a proxy around themeState that tracks update keys
  */
-export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState => {
+export const useThemeWithState = (
+  props: UseThemeWithStateProps,
+  isRoot = false
+): ThemeWithState => {
   const keys = useRef<Set<string> | null>(null)
-  const themeState = useThemeState(props, false, keys)
+  const themeState = useThemeState(props, isRoot, keys)
 
   if (process.env.NODE_ENV === 'development' && time) time`useThemeState`
 
