@@ -14,12 +14,14 @@ export type ThemeState = {
   id: ID
   name: string
   theme: ThemeParsed
+  isNew?: boolean
+  parentId?: ID
   scheme?: 'light' | 'dark'
 }
 
 export const ThemeStateContext = createContext<ID>('')
 
-const listeners = new Set()
+const listeners = new Set<Function>()
 
 const subscribe = (cb: Function) => {
   listeners.add(cb)
@@ -30,28 +32,35 @@ const subscribe = (cb: Function) => {
 
 const states: Record<ID, ThemeState | undefined> = {}
 
+export const forceUpdateThemes = () => {
+  listeners.forEach((cb) => cb())
+}
+
+export const getThemeState = (id: ID) => states[id]
+
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
   keys?: MutableRefObject<string[] | null>
-): ThemeState | null => {
+): ThemeState => {
   const { disable } = props
   const id = useId()
-  const parentID = useContext(ThemeStateContext)
+  const parentId = useContext(ThemeStateContext)
   const { themes } = getConfig()
 
-  const getSnapshot = (): ThemeState | null => {
-    const parentState = states[parentID]
+  const getSnapshot = (): ThemeState => {
+    const parentState = states[parentId]
     const name = getNextThemeName(parentState?.name, props)
 
     console.log('GOT', props, name)
 
     if (!name) {
-      return null
+      if (!parentState) throw new Error(`‼️`)
+      return parentState
     }
 
     if (states[id]?.name === name) {
-      return states[id]
+      return states[id]!
     }
 
     const nextState = {
@@ -59,10 +68,15 @@ export const useThemeState = (
       name,
       theme: themes[name],
       scheme: getScheme(name),
+      parentId,
     } satisfies ThemeState
 
     states[id] = nextState
-    return nextState
+
+    return {
+      ...nextState,
+      isNew: true,
+    }
   }
 
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot)

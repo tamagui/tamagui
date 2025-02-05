@@ -1,8 +1,8 @@
-import React from 'react'
 import { isServer } from '@tamagui/constants'
+import { startTransition } from '@tamagui/start-transition'
 import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 import {
-  activeThemeManagers,
+  // activeThemeManagers,
   ensureThemeVariable,
   getConfig,
   getThemeCSSRules,
@@ -10,7 +10,7 @@ import {
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
-import { startTransition } from '@tamagui/start-transition'
+import { forceUpdateThemes } from '@tamagui/web/types/hooks/useThemeState'
 
 type MutateThemeOptions = {
   mutationType: 'replace' | 'update' | 'add'
@@ -140,17 +140,7 @@ function updateThemeConfig(themeName: string, theme: ThemeParsed) {
 }
 
 function notifyThemeManagersOfUpdate(themeName: string, theme: ThemeParsed) {
-  activeThemeManagers.forEach((manager) => {
-    if (manager.state.name === themeName) {
-      manager.updateStateFromProps(
-        {
-          name: themeName,
-          forceTheme: theme,
-        },
-        true
-      )
-    }
-  })
+  forceUpdateThemes()
 }
 
 function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = false) {

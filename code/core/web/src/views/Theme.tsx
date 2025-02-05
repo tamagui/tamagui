@@ -3,9 +3,8 @@ import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 import { variableToString } from '../createVariable'
 import { log } from '../helpers/log'
-import { ThemeContext } from '../helpers/ThemeContext'
-import type { ChangedThemeResponse } from '../hooks/useTheme'
-import { useChangeThemeEffect } from '../hooks/useTheme'
+import { useThemeWithState } from '../hooks/useTheme'
+import { getThemeState, ThemeStateContext, type ThemeState } from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
@@ -16,7 +15,7 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   }
 
   const isRoot = !!props['_isRoot']
-  const themeState = useChangeThemeEffect(props, isRoot)
+  const [_, themeState] = useThemeWithState(props)
   const disableDirectChildTheme = props['disable-child-theme']
 
   let finalChildren = disableDirectChildTheme
@@ -54,18 +53,17 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
 Theme['avoidForwardRef'] = true
 
 export function getThemedChildren(
-  themeState: ChangedThemeResponse,
+  themeState: ThemeState,
   children: any,
   props: ThemeProps,
   isRoot = false,
   stateRef: MutableRefObject<{ hasEverThemed?: boolean }>
 ) {
-  const { themeManager, isNewTheme } = themeState
   const { shallow, forceClassName } = props
 
   // always be true if ever themed so we avoid re-parenting
   let shouldRenderChildrenWithTheme =
-    isNewTheme ||
+    themeState.isNew ||
     isRoot ||
     'inverse' in props ||
     'name' in props ||
@@ -84,7 +82,7 @@ export function getThemedChildren(
   if (process.env.NODE_ENV === 'development') {
     if (shouldRenderChildrenWithTheme && props.debug === 'verbose') {
       log(
-        `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${isNewTheme}, hasEver ${stateRef.current.hasEverThemed}`,
+        `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${themeState.isNew}, hasEver ${stateRef.current.hasEverThemed}`,
         props
       )
     }
@@ -94,21 +92,22 @@ export function getThemedChildren(
 
   // each children of these children wont get the theme
   if (shallow) {
+    if (!themeState.parentId) throw new Error(`‼️`)
+    const parentState = getThemeState(themeState.parentId)
+    if (!parentState) throw new Error(`‼️`)
     next = Children.toArray(children).map((child) => {
       return isValidElement(child)
         ? cloneElement(
             child,
             undefined,
-            <Theme name={themeManager.state.parentName}>
-              {(child as any).props.children}
-            </Theme>
+            <Theme name={parentState.name}>{(child as any).props.children}</Theme>
           )
         : child
     })
   }
 
   const elementsWithContext = (
-    <ThemeContext.Provider value={themeManager}>{next}</ThemeContext.Provider>
+    <ThemeStateContext.Provider value={themeState.id}>{next}</ThemeStateContext.Provider>
   )
 
   if (forceClassName === false) {
@@ -134,7 +133,7 @@ function wrapThemeElements({
   isRoot,
 }: {
   children?: React.ReactNode
-  themeState: ChangedThemeResponse
+  themeState: ThemeState
   forceClassName?: boolean
   isRoot?: boolean
 }) {
@@ -174,16 +173,14 @@ function wrapThemeElements({
 
 const emptyObj = {}
 
-function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = false) {
-  if (!themeState.isNewTheme) {
+function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
+  if (!themeState.isNew) {
     return { className: '', style: emptyObj }
   }
 
   // in order to provide currentColor, set color by default
   const themeColor =
-    themeState.state?.theme && themeState.isNewTheme
-      ? variableToString(themeState.state.theme.color)
-      : ''
+    themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
 
   const style = themeColor
     ? {
@@ -191,9 +188,7 @@ function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = fa
       }
     : undefined
 
-  let className = themeState.state?.className || ''
-  if (isRoot) {
-    className = className.replace('t_sub_theme', '')
-  }
+  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeState.name}`
+
   return { style, className }
 }
