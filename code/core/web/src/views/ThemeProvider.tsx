@@ -23,17 +23,17 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
 
   // ensure theme is attached to root body node as well to work with modals by default
-  if (isClient) {
-    React.useLayoutEffect(() => {
-      if (disableRootThemeClass) return
-      const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
-      const target = themeClassNameOnRoot ? document.documentElement : document.body
-      target.classList.add(cn)
-      return () => {
-        target.classList.remove(cn)
-      }
-    }, [props.defaultTheme, disableRootThemeClass, themeClassNameOnRoot])
-  }
+  // if (isClient) {
+  //   React.useLayoutEffect(() => {
+  //     if (disableRootThemeClass) return
+  //     const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
+  //     const target = themeClassNameOnRoot ? document.documentElement : document.body
+  //     target.classList.add(cn)
+  //     return () => {
+  //       target.classList.remove(cn)
+  //     }
+  //   }, [props.defaultTheme, disableRootThemeClass, themeClassNameOnRoot])
+  // }
 
   return (
     <Theme

@@ -56,6 +56,7 @@ export const config = {
     shouldAddPrefersColorThemes: true,
     maxDarkLightNesting: 2,
     themeClassNameOnRoot: true,
+    disableRootThemeClass: true,
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
