@@ -42,6 +42,9 @@ export const forceUpdateThemes = () => {
 
 export const getThemeState = (id: ID) => states.get(id)
 
+let rootThemeState: ThemeState | null = null
+export const getRootThemeState = () => rootThemeState
+
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -112,7 +115,7 @@ export const useThemeState = (
 
     const scheme = getScheme(name)
     const parentInverses = parentState?.inverses ?? 0
-    const isInverse = scheme !== parentState?.scheme
+    const isInverse = parentState && scheme !== parentState.scheme
 
     const nextState = {
       id,
@@ -132,6 +135,9 @@ export const useThemeState = (
     }
 
     states.set(id, nextState)
+    if (isRoot) {
+      rootThemeState = nextState
+    }
 
     if (lastState) {
       notifyChildren(id)

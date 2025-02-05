@@ -15,6 +15,7 @@ export type ThemeState = {
 export declare const ThemeStateContext: import("react").Context<string>;
 export declare const forceUpdateThemes: () => void;
 export declare const getThemeState: (id: ID) => ThemeState | undefined;
+export declare const getRootThemeState: () => ThemeState | null;
 export declare const useThemeState: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: MutableRefObject<Set<string> | null>) => ThemeState;
 export {};
 //# sourceMappingURL=useThemeState.d.ts.map

@@ -177,7 +177,7 @@ function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
 
   const maxInverses = getSetting('maxDarkLightNesting') || 3
   const themeClassName =
-    themeState.inverses > maxInverses
+    themeState.inverses >= maxInverses
       ? themeState.name
       : themeState.name.replace(schemePrefix, '')
 

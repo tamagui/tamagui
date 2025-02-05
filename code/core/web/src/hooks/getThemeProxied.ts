@@ -10,7 +10,7 @@ import type {
   VariableVal,
   VariableValGeneric,
 } from '../types'
-import { shouldDeoptDueToParentScheme } from './shouldDeoptDueToParentScheme'
+import { doesRootSchemeMatchSystem } from './doesRootSchemeMatchSystem'
 import type { ThemeState } from './useThemeState'
 
 export type ThemeProxied = {
@@ -111,30 +111,29 @@ export function getThemeProxied(
           if (process.env.TAMAGUI_TARGET === 'native') {
             // ios can avoid re-rendering in some cases when we are using a root light/dark
             // disabled in cases where we have animations
-            console.warn('TODO', shouldDeoptDueToParentScheme)
-            if (
+            const shouldOptimize =
+              scheme &&
               platform !== 'web' &&
               isIos &&
               !curProps.deopt &&
-              getSetting('fastSchemeChange')
-              // &&
-              // !shouldDeoptDueToParentScheme(curThemeManger)
-            ) {
-              if (scheme) {
-                const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'
-                const oppositeName = name.replace(scheme, oppositeScheme)
-                const color = getVariable(config.themes[name]?.[key])
-                const oppositeColor = getVariable(config.themes[oppositeName]?.[key])
+              getSetting('fastSchemeChange') &&
+              state.inverses === 0 &&
+              doesRootSchemeMatchSystem()
 
-                const dynamicVal = {
-                  dynamic: {
-                    [scheme]: color,
-                    [oppositeScheme]: oppositeColor,
-                  },
-                }
+            if (shouldOptimize) {
+              const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'
+              const oppositeName = name.replace(scheme, oppositeScheme)
+              const color = getVariable(config.themes[name]?.[key])
+              const oppositeColor = getVariable(config.themes[oppositeName]?.[key])
 
-                return dynamicVal
+              const dynamicVal = {
+                dynamic: {
+                  [scheme]: color,
+                  [oppositeScheme]: oppositeColor,
+                },
               }
+
+              return dynamicVal
             }
 
             if (process.env.NODE_ENV === 'development' && curProps.debug) {
