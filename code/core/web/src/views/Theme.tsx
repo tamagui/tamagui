@@ -7,6 +7,7 @@ import { useThemeWithState } from '../hooks/useTheme'
 import { getThemeState, ThemeStateContext, type ThemeState } from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
+import { getSetting } from '../config'
 
 export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProps, ref) {
   // @ts-expect-error only for internal views
@@ -137,8 +138,8 @@ function wrapThemeElements({
   forceClassName?: boolean
   isRoot?: boolean
 }) {
-  const inverse = themeState.inversed
-  const requiresExtraWrapper = typeof inverse === 'boolean' || forceClassName
+  const { isInverse } = themeState
+  const requiresExtraWrapper = isInverse || forceClassName
 
   const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
@@ -158,7 +159,7 @@ function wrapThemeElements({
         : ''
 
     themedChildren = (
-      <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
+      <span className={`${isInverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}
       </span>
     )
@@ -185,8 +186,9 @@ function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
       }
     : undefined
 
+  const maxInverses = getSetting('maxDarkLightNesting') || 3
   const themeClassName =
-    themeState.inversed === 'parent'
+    themeState.inverses > maxInverses
       ? themeState.name
       : themeState.name.replace(schemePrefix, '')
 

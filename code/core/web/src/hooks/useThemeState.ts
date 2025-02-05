@@ -14,10 +14,11 @@ export type ThemeState = {
   id: ID
   name: string
   theme: ThemeParsed
+  inverses: number
+  isInverse?: boolean
   isNew?: boolean
   parentId?: ID
   scheme?: 'light' | 'dark'
-  inversed?: boolean | 'parent'
 }
 
 export const ThemeStateContext = createContext<ID>('')
@@ -54,6 +55,7 @@ export const useThemeState = (
       id,
       name: 'light',
       theme: themes.light,
+      inverses: 0,
     }
   }
 
@@ -75,10 +77,8 @@ export const useThemeState = (
     }
 
     const scheme = getScheme(name)
-    const parentInversed =
-      parentState && (parentState?.inversed || scheme !== parentState?.scheme)
-        ? 'parent'
-        : undefined
+    const parentInverses = parentState?.inverses ?? 0
+    const isInverse = scheme !== parentState?.scheme
 
     const nextState = {
       id,
@@ -86,7 +86,8 @@ export const useThemeState = (
       theme: themes[name],
       scheme,
       parentId,
-      inversed: props.inverse === true ? props.inverse : parentInversed,
+      inverses: parentInverses + (isInverse ? 1 : 0),
+      isInverse,
     } satisfies ThemeState
 
     if (process.env.NODE_ENV === 'development' && props.debug) {

@@ -5,10 +5,11 @@ export type ThemeState = {
     id: ID;
     name: string;
     theme: ThemeParsed;
+    inverses: number;
+    isInverse?: boolean;
     isNew?: boolean;
     parentId?: ID;
     scheme?: 'light' | 'dark';
-    inversed?: boolean | 'parent';
 };
 export declare const ThemeStateContext: import("react").Context<string>;
 export declare const forceUpdateThemes: () => void;
