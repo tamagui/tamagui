@@ -25,8 +25,8 @@ export type ThemeState = {
 
 export const ThemeStateContext = createContext<ID>('')
 
-const allListeners = new Set<Function>()
-const listenersByParent: Record<ID, Set<Function>> = {}
+const allListeners = new Map<ID, Function>()
+const listenersByParent: Record<ID, Set<ID>> = {}
 
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
@@ -105,7 +105,25 @@ export const useThemeState = (
     states.set(id, nextState)
 
     if (lastState) {
-      listenersByParent[id]?.forEach((cb) => cb())
+      // gather all children
+      const all = new Set<Function>()
+      const queue = [id]
+
+      while (queue.length) {
+        const currentId = queue.shift()!
+        const children = listenersByParent[currentId]
+        if (!children) continue
+
+        for (const childId of children) {
+          const childCb = allListeners.get(childId)
+          if (childCb) {
+            all.add(childCb)
+          }
+          queue.push(childId)
+        }
+      }
+
+      all.forEach((cb) => cb())
     }
 
     return nextState
@@ -114,11 +132,11 @@ export const useThemeState = (
   const subscribe = useCallback(
     (cb: Function) => {
       listenersByParent[parentId] ||= new Set()
-      listenersByParent[parentId].add(cb)
-      allListeners.add(cb)
+      listenersByParent[parentId].add(id)
+      allListeners.set(id, cb)
       return () => {
-        allListeners.delete(cb)
-        listenersByParent[parentId].delete(cb)
+        allListeners.delete(id)
+        listenersByParent[parentId].delete(id)
       }
     },
     [parentId]

@@ -81,6 +81,12 @@ export function getThemedChildren(
     return children
   }
 
+  const id = themeState.isNew ? themeState.id : themeState.parentId || themeState.id
+
+  children = (
+    <ThemeStateContext.Provider value={id}>{children}</ThemeStateContext.Provider>
+  )
+
   const { isInverse, name } = themeState
   const requiresExtraWrapper = isInverse || forceClassName
 
@@ -92,47 +98,35 @@ export function getThemedChildren(
     state.hasEverThemed = 'wrapped'
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    if (shouldRenderChildrenWithTheme && props.debug === 'verbose') {
-      log(
-        `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${themeState.isNew}, hasEver ${state.hasEverThemed}`,
-        props
-      )
+  // each children of these children wont get the theme
+  if (shallow) {
+    if (!themeState.parentId) {
+      console.warn('SHALLOW 🐞 how?', themeState)
+    } else {
+      const parentState = getThemeState(themeState.parentId)
+      if (!parentState) throw new Error(`‼️010`)
+      children = Children.toArray(children).map((child) => {
+        return isValidElement(child)
+          ? cloneElement(
+              child,
+              undefined,
+              <Theme name={parentState.name}>{(child as any).props.children}</Theme>
+            )
+          : child
+      })
     }
   }
 
-  let next = children
-
-  // each children of these children wont get the theme
-  if (shallow) {
-    if (!themeState.parentId) throw new Error(`‼️`)
-    const parentState = getThemeState(themeState.parentId)
-    if (!parentState) throw new Error(`‼️`)
-    next = Children.toArray(children).map((child) => {
-      return isValidElement(child)
-        ? cloneElement(
-            child,
-            undefined,
-            <Theme name={parentState.name}>{(child as any).props.children}</Theme>
-          )
-        : child
-    })
-  }
-
-  const elementsWithContext = (
-    <ThemeStateContext.Provider value={themeState.id}>{next}</ThemeStateContext.Provider>
-  )
-
   if (forceClassName === false) {
-    return elementsWithContext
+    return children
   }
 
   if (isWeb) {
     const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
-    let themedChildren = (
+    children = (
       <span className={`${className} _dsp_contents is_Theme`} style={style}>
-        {elementsWithContext}
+        {children}
       </span>
     )
 
@@ -150,10 +144,10 @@ export function getThemedChildren(
               : ''
           } _dsp_contents`
         : `_dsp_contents`
-      themedChildren = <span className={className}>{themedChildren}</span>
+      children = <span className={className}>{children}</span>
     }
 
-    return themedChildren
+    return children
   }
 
   function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
@@ -184,7 +178,7 @@ export function getThemedChildren(
     return { style, className }
   }
 
-  return elementsWithContext
+  return children
 }
 
 const schemePrefix = /^(dark|light)_/

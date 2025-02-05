@@ -11,11 +11,6 @@ function getLazyComponent<Import extends Function>(importFunc: Import): Import {
   cached[importFunc] = importFunc?.()
 
   return cached[importFunc]
-  // return lazy(async () => {
-  //   return {
-  //     default: await importFunc(),
-  //   }
-  // })
 }
 
 export function lazyDemo(importFunc: any) {
