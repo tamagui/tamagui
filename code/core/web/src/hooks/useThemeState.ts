@@ -17,7 +17,7 @@ export type ThemeState = {
   isNew?: boolean
   parentId?: ID
   scheme?: 'light' | 'dark'
-  inversed?: boolean
+  inversed?: boolean | 'parent'
 }
 
 export const ThemeStateContext = createContext<ID>('')
@@ -73,13 +73,21 @@ export const useThemeState = (
       return found
     }
 
+    const scheme = getScheme(name)
+    const parentInversed =
+      parentState && (parentState?.inversed || scheme !== parentState?.scheme)
+        ? 'parent'
+        : undefined
+
+    console.log('wtf', id, props.name, parentState, scheme, parentInversed)
+
     const nextState = {
       id,
       name,
       theme: themes[name],
-      scheme: getScheme(name),
+      scheme,
       parentId,
-      inversed: props.inverse,
+      inversed: props.inverse === true ? props.inverse : parentInversed,
     } satisfies ThemeState
 
     states.set(id, nextState)
@@ -121,7 +129,7 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
   }
 
   const { themes } = getConfig()
-  const parentParts = parentName.split('_')
+  const parentParts = ['', ...parentName.split('_')]
 
   // always remove component theme if it exists, we never sub a component theme
   const lastName = parentParts[parentParts.length - 1]

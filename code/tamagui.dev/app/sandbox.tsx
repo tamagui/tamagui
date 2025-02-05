@@ -9,7 +9,7 @@ export default function Sandbox() {
     <YStack gap="$2">
       <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button>
 
-      <Circles />
+      {/* <Circles /> */}
 
       {name}
 

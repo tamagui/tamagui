@@ -78,6 +78,7 @@ export function ThemeDebug({
               {
                 name: themeState.name,
                 parentId: themeState.parentId,
+                inversed: themeState.inversed,
                 isNew: themeState.isNew,
                 themeProps,
                 onChangeCount,

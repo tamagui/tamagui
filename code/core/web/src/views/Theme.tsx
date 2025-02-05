@@ -140,8 +140,6 @@ function wrapThemeElements({
   const inverse = themeState.inversed
   const requiresExtraWrapper = typeof inverse === 'boolean' || forceClassName
 
-  console.log('requiresExtraWrapper', requiresExtraWrapper, { inverse, forceClassName })
-
   const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
   let themedChildren = (
@@ -187,7 +185,12 @@ function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
       }
     : undefined
 
-  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeState.name.replace(schemePrefix, '')}`
+  const themeClassName =
+    themeState.inversed === 'parent'
+      ? themeState.name
+      : themeState.name.replace(schemePrefix, '')
+
+  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
 
   return { style, className }
 }
