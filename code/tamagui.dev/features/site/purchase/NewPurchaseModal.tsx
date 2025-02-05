@@ -55,7 +55,17 @@ const PurchaseModalContents = () => {
   const [lastTab, setLastTab] = useState<Tab>('purchase')
   const [currentTab, setCurrentTab] = useState<Tab>('purchase')
   const [disableAutoRenew, setDisableAutoRenew] = useState(false)
+  const [chatSupport, setChatSupport] = useState(false)
+  const [supportTier, setSupportTier] = useState('0')
+
+  // Calculate direction for animation
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
+
+  // Calculate total price
+  const basePrice = 200 // yearly
+  const chatSupportPrice = chatSupport ? 1200 : 0 // $100/month -> yearly
+  const supportTierPrice = Number(supportTier) * 12000 // $1000/month per tier -> yearly
+  const totalPrice = basePrice + chatSupportPrice + supportTierPrice
 
   function changeTab(next: Tab) {
     setCurrentTab(next)
@@ -64,7 +74,14 @@ const PurchaseModalContents = () => {
 
   const tabContents = {
     purchase: PurchaseTabContent,
-    support: SupportTabContent,
+    support: () => (
+      <SupportTabContent
+        chatSupport={chatSupport}
+        setChatSupport={setChatSupport}
+        supportTier={supportTier}
+        setSupportTier={setSupportTier}
+      />
+    ),
     faq: FaqTabContent,
   }
 
@@ -204,7 +221,7 @@ const PurchaseModalContents = () => {
                 >
                   <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
                     <XStack>
-                      <H3 size="$11">$200</H3>
+                      <H3 size="$11">${totalPrice.toLocaleString()}</H3>
                       <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
                         {disableAutoRenew ? `total` : `/year`}
                       </Paragraph>
@@ -415,7 +432,17 @@ const FaqTabContent = () => {
   )
 }
 
-const SupportTabContent = () => {
+const SupportTabContent = ({
+  chatSupport,
+  setChatSupport,
+  supportTier,
+  setSupportTier,
+}: {
+  chatSupport: boolean
+  setChatSupport: (value: boolean) => void
+  supportTier: string
+  setSupportTier: (value: string) => void
+}) => {
   return (
     <>
       <Paragraph theme="yellow" color="$color9" ff="$mono" size="$7" lh="$9">
@@ -431,7 +458,12 @@ const SupportTabContent = () => {
             </Label>
 
             <XStack maw={100}>
-              <Checkbox size="$6" id="chat-support">
+              <Checkbox
+                size="$6"
+                id="chat-support"
+                checked={chatSupport}
+                onCheckedChange={(checked) => setChatSupport(!!checked)}
+              >
                 <Checkbox.Indicator>
                   <Check />
                 </Checkbox.Indicator>
@@ -448,35 +480,33 @@ const SupportTabContent = () => {
         <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="support-tier">
-              <P>Support ($1000/mo)</P>
+              <P>Support ($1000/mo per tier)</P>
             </Label>
 
             <XStack maw={150}>
               <Select
                 id="support-tier"
                 size="$4"
-                defaultValue="0"
-                onValueChange={(value) => {
-                  // themeBuilder.setAccentSetting(value as any)
-                }}
+                value={supportTier}
+                onValueChange={setSupportTier}
               >
                 <Select.Item value="0" index={0}>
                   None
                 </Select.Item>
                 <Select.Item value="1" index={1}>
-                  Tier 1
+                  Tier 1 ($1,000/mo)
                 </Select.Item>
                 <Select.Item value="2" index={2}>
-                  Tier 2
+                  Tier 2 ($2,000/mo)
                 </Select.Item>
-                <Select.Item value="3" index={2}>
-                  Tier 3
+                <Select.Item value="3" index={3}>
+                  Tier 3 ($3,000/mo)
                 </Select.Item>
-                <Select.Item value="4" index={2}>
-                  Tier 4
+                <Select.Item value="4" index={4}>
+                  Tier 4 ($4,000/mo)
                 </Select.Item>
-                <Select.Item value="5" index={2}>
-                  Tier 5
+                <Select.Item value="5" index={5}>
+                  Tier 5 ($5,000/mo)
                 </Select.Item>
               </Select>
             </XStack>
@@ -538,7 +568,6 @@ const AnimatedYStack = styled(YStack, {
 
   animation: '100ms',
   variants: {
-    // 1 = right, 0 = nowhere, -1 = left
     direction: {
       ':number': (direction) => ({
         enterStyle: {
