@@ -42,6 +42,7 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/mdx-2": "workspace:*",
     "@tamagui/use-store": "workspace:*",
+    "@tanstack/react-query": "^5.66.0",
     "@vercel/og": "^0.6.5",
     "@vxrn/color-scheme": "^1.1.417",
     "ai": "^4.1.2",

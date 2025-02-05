@@ -1,15 +1,8 @@
-import type { Database } from '~/features/supabase/types'
-import { getArray } from '~/helpers/getArray'
+import { apiRoute } from '~/features/api/apiRoute'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { getArray } from '~/helpers/getArray'
 
-export const getProductsForServerSideRendering = async (): Promise<{
-  starter: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  bento: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-}> => {
+export default apiRoute(async () => {
   try {
     const products = await Promise.all([
       supabaseAdmin
@@ -25,24 +18,29 @@ export const getProductsForServerSideRendering = async (): Promise<{
     ])
 
     if (!products.length) {
-      throw new Error(`No products found`)
+      return Response.json({ error: 'No products found' }, { status: 404 })
     }
 
     for (const product of products) {
-      if (product.error) throw product.error
+      if (product.error) {
+        return Response.json({ error: product.error }, { status: 500 })
+      }
       if (
         !product.data.prices ||
         !Array.isArray(product.data.prices) ||
         product.data.prices.length === 0
       ) {
-        throw new Error('No prices are attached to the product.')
+        return Response.json(
+          { error: 'No prices are attached to the product.' },
+          { status: 404 }
+        )
       }
     }
 
-    return {
+    return Response.json({
       starter: {
         ...products[0].data!,
-        name: `Takeout`,
+        name: 'Takeout',
         prices: uniqueDescription(
           getArray(products[0].data!.prices!).filter(
             (p) => p.active && (p.metadata as Record<string, any>).is_live
@@ -57,15 +55,14 @@ export const getProductsForServerSideRendering = async (): Promise<{
           )
         ),
       },
-    }
+    })
   } catch (err) {
-    // supabase returns a weird ass non-standard err
-    if (!(err instanceof Error)) {
-      throw new Error(`Supabase error: ${(err as any)['details']}`)
-    }
-    throw err
+    return Response.json(
+      { error: err instanceof Error ? err.message : 'Unknown error' },
+      { status: 500 }
+    )
   }
-}
+})
 
 const uniqueDescription = <A extends { description?: string | null }>(
   prices: A[]

@@ -24,8 +24,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useLoader } from 'one'
-import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
@@ -33,26 +31,19 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import type { ProComponentsProps } from '~/features/bento/types'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
-import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
+import { useProducts } from '~/features/site/purchase/useProducts'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { ComponentSection, BentoStore } from '~/components/ComponentSection'
 import { PageThemeCarousel } from '../../../../features/site/PageThemeCarousel'
 
-export const loader = async () => {
-  try {
-    const products = await getProductsForServerSideRendering()
-    return products
-  } catch (err) {
-    assertIsError(err)
-    console.error(`Error getting props`, err.message)
-    return { bento: null, fontsPack: null, iconsPack: null, starter: null }
-  }
-}
-
 export default function BentoPage() {
-  const data = useLoader(loader)
+  const { data, isLoading, error } = useProducts()
   const store = useStore(BentoStore)
+
+  if (error) {
+    console.error('Error loading products:', error)
+  }
 
   return (
     <>
@@ -72,7 +63,7 @@ export default function BentoPage() {
         }}
       />
 
-      {data.bento && (
+      {data?.bento && (
         <PurchaseModal bento={data.bento} defaultValue="bento" starter={data.starter} />
       )}
 
@@ -112,7 +103,7 @@ export default function BentoPage() {
           }}
         >
           <Theme name="tan">
-            <Hero mainProduct={data.bento!} />
+            <Hero mainProduct={data?.bento!} />
 
             {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
@@ -344,7 +335,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                         </sup>
                         {(mainProduct?.prices.sort(
                           (a, b) =>
-                            (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                            (a.unit_amount || Number.POSITIVE_INFINITY) -
+                            (b.unit_amount || Number.POSITIVE_INFINITY)
                         )[0].unit_amount || 0) / 100}
                       </Button.Text>
                     </Button>
