@@ -26,7 +26,7 @@ export default function Sandbox() {
 const Circles = memo(() => {
   return (
     <XStack bg="$color1">
-      <Theme name="accent">
+      <Theme debug="visualize" name="accent">
         <Circle size={100} bg="$color10">
           <Nothing />
         </Circle>
@@ -52,7 +52,7 @@ const Circles = memo(() => {
 })
 
 const Nothing = () => {
-  const theme = useTheme()
+  const theme = useTheme({ debug: true })
 
   console.log('theme.background.val', theme.background.val)
 

@@ -50,7 +50,7 @@ type ThemeGettable<Val> = Val & {
 // so we can just change the focus of the proxied theme and it can be re-used
 const cache: Map<ThemeParsed, ThemeProxied> = new Map()
 
-let curKeys: MutableRefObject<string[] | null>
+let curKeys: MutableRefObject<Set<string> | null>
 let curProps: UseThemeWithStateProps
 
 const emptyObject = {}
@@ -59,7 +59,7 @@ export function getThemeProxied(
   // underscore to prevent accidental usage below
   _props: UseThemeWithStateProps,
   state: ThemeState | null,
-  _keys: MutableRefObject<string[] | null>
+  _keys: MutableRefObject<Set<string> | null>
 ): ThemeProxied {
   const theme = state?.theme
 
@@ -85,14 +85,14 @@ export function getThemeProxied(
   function track(key: string) {
     if (!curKeys) return
     if (!curKeys.current) {
-      curKeys.current = []
+      curKeys.current = new Set()
       // tracking new key for first time, do an update check
       // console.log('check')
       // setTimeout(() => {
       //   curThemeManger?.selfUpdate()
       // })
     }
-    curKeys.current.push(key)
+    curKeys.current.add(key)
     if (process.env.NODE_ENV === 'development' && curProps.debug) {
       console.info(` 🎨 useTheme() tracking new key: ${key}`)
     }

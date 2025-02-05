@@ -261,7 +261,7 @@ export interface ThemeProps {
     componentName?: string;
     children?: any;
     reset?: boolean;
-    debug?: DebugProp | any;
+    debug?: DebugProp;
     inverse?: boolean;
     forceClassName?: boolean;
     shallow?: boolean;

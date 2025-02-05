@@ -16,6 +16,7 @@ export type ThemeState = {
   name: string
   theme: ThemeParsed
   inverses: number
+  parentName?: string
   isInverse?: boolean
   isNew?: boolean
   parentId?: ID
@@ -39,7 +40,7 @@ export const getThemeState = (id: ID) => states.get(id)
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
-  keys?: MutableRefObject<string[] | null>
+  keys?: MutableRefObject<Set<string> | null>
 ): ThemeState => {
   const { disable } = props
   const id = useId()
@@ -57,13 +58,9 @@ export const useThemeState = (
   const parentId = useContext(ThemeStateContext)
 
   const getSnapshot = (): ThemeState => {
+    const currentKeys = keys?.current
     const lastState = states.get(id)
     const parentState = states.get(parentId)
-    const shouldSkipUpdate = lastState && !keys?.current
-
-    if (shouldSkipUpdate) {
-      return lastState
-    }
 
     const name = getNewThemeName(parentState?.name, props)
 
@@ -77,6 +74,15 @@ export const useThemeState = (
       return lastState
     }
 
+    const shouldSkipUpdate =
+      lastState &&
+      parentState?.name === lastState.parentName &&
+      (!currentKeys || !currentKeys.size)
+
+    if (shouldSkipUpdate) {
+      return lastState
+    }
+
     const scheme = getScheme(name)
     const parentInverses = parentState?.inverses ?? 0
     const isInverse = scheme !== parentState?.scheme
@@ -87,6 +93,7 @@ export const useThemeState = (
       theme: themes[name],
       scheme,
       parentId,
+      parentName: parentState?.name,
       inverses: parentInverses + (isInverse ? 1 : 0),
       isInverse,
     } satisfies ThemeState
@@ -98,7 +105,6 @@ export const useThemeState = (
     states.set(id, nextState)
 
     if (lastState) {
-      debugger
       listenersByParent[id]?.forEach((cb) => cb())
     }
 

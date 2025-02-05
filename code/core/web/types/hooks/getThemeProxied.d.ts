@@ -20,6 +20,6 @@ type ThemeGettable<Val> = Val & {
      */
     get: (platform?: 'web') => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
 };
-export declare function getThemeProxied(_props: UseThemeWithStateProps, state: ThemeState | null, _keys: MutableRefObject<string[] | null>): ThemeProxied;
+export declare function getThemeProxied(_props: UseThemeWithStateProps, state: ThemeState | null, _keys: MutableRefObject<Set<string> | null>): ThemeProxied;
 export {};
 //# sourceMappingURL=getThemeProxied.d.ts.map

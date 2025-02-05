@@ -132,7 +132,7 @@ export function getThemedChildren(
 
     let themedChildren = (
       <span className={`${className} _dsp_contents is_Theme`} style={style}>
-        {children}
+        {elementsWithContext}
       </span>
     )
 

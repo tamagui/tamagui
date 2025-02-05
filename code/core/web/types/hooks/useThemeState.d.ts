@@ -6,6 +6,7 @@ export type ThemeState = {
     name: string;
     theme: ThemeParsed;
     inverses: number;
+    parentName?: string;
     isInverse?: boolean;
     isNew?: boolean;
     parentId?: ID;
@@ -14,6 +15,6 @@ export type ThemeState = {
 export declare const ThemeStateContext: import("react").Context<string>;
 export declare const forceUpdateThemes: () => void;
 export declare const getThemeState: (id: ID) => ThemeState | undefined;
-export declare const useThemeState: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: MutableRefObject<string[] | null>) => ThemeState;
+export declare const useThemeState: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: MutableRefObject<Set<string> | null>) => ThemeState;
 export {};
 //# sourceMappingURL=useThemeState.d.ts.map

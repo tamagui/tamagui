@@ -13,7 +13,7 @@ export const useTheme = (props: ThemeProps = {}) => {
 export type ThemeWithState = [ThemeParsed, ThemeState]
 
 export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState => {
-  const keys = useRef<string[] | null>(null)
+  const keys = useRef<Set<string> | null>(null)
   const themeState = useThemeState(props, false, keys)
 
   // @ts-expect-error
