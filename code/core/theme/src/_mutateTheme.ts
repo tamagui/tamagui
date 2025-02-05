@@ -10,7 +10,7 @@ import {
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
-import { forceUpdateThemes } from '@tamagui/web/types/hooks/useThemeState'
+import { forceUpdateThemes } from '@tamagui/web'
 
 type MutateThemeOptions = {
   mutationType: 'replace' | 'update' | 'add'
