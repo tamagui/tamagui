@@ -1,12 +1,15 @@
 import { styled, Theme, View } from '@tamagui/web'
 import { useState } from 'react'
 import { Button, Circle, XStack, YStack } from 'tamagui'
+import { ThemeToggle } from '../features/site/theme/ThemeToggle'
 
 export default function Sandbox() {
   const [name, setName] = useState('dark')
 
   return (
     <YStack gap="$2">
+      <ThemeToggle />
+
       <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button>
 
       {/* <Circles /> */}
