@@ -1,10 +1,10 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React from 'react'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import { ThemeContext } from '../helpers/ThemeContext'
 import type { ThemeName } from '../types'
 
 export function useThemeName(opts?: { parent?: true }): ThemeName {
-  const manager = React.useContext(ThemeManagerContext)!
+  const manager = React.useContext(ThemeContext)!
   const [name, setName] = React.useState(manager?.state.name || '')
 
   useIsomorphicLayoutEffect(() => {

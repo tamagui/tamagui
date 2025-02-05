@@ -1,4 +1,4 @@
-import React from 'react';
-import type { ThemeManager } from './ThemeManager';
-export declare const ThemeManagerContext: React.Context<ThemeManager | null>;
-//# sourceMappingURL=ThemeManagerContext.d.ts.map
+import React from 'react'
+import type { ThemeManager } from './ThemeManager'
+export declare const ThemeContext: React.Context<ThemeManager | null>
+//# sourceMappingURL=ThemeContext.d.ts.map

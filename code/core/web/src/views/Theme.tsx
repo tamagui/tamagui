@@ -3,7 +3,7 @@ import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 import { variableToString } from '../createVariable'
 import { log } from '../helpers/log'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import { ThemeContext } from '../helpers/ThemeContext'
 import type { ChangedThemeResponse } from '../hooks/useTheme'
 import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
@@ -61,17 +61,6 @@ export function getThemedChildren(
   stateRef: MutableRefObject<{ hasEverThemed?: boolean }>
 ) {
   const { themeManager, isNewTheme } = themeState
-
-  // its always there.. should fix type
-  if (!themeManager) {
-    return children
-    // throw new Error(
-    //   process.env.NODE_ENV === 'development'
-    //     ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
-    //     : `❌ 005`
-    // )
-  }
-
   const { shallow, forceClassName } = props
 
   // always be true if ever themed so we avoid re-parenting
@@ -119,9 +108,7 @@ export function getThemedChildren(
   }
 
   const elementsWithContext = (
-    <ThemeManagerContext.Provider value={themeManager}>
-      {next}
-    </ThemeManagerContext.Provider>
+    <ThemeContext.Provider value={themeManager}>{next}</ThemeContext.Provider>
   )
 
   if (forceClassName === false) {
