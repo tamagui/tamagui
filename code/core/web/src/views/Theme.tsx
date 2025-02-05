@@ -18,8 +18,6 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   const [_, themeState] = useThemeWithState(props)
   const disableDirectChildTheme = props['disable-child-theme']
 
-  console.log('got', isRoot, props, themeState)
-
   let finalChildren = disableDirectChildTheme
     ? Children.map(children, (child) =>
         cloneElement(child, { ['data-disable-theme']: true })

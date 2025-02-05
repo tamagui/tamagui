@@ -1,29 +1,46 @@
 import { styled, Theme, View } from '@tamagui/web'
-import { Circle, XStack } from 'tamagui'
+import { useState } from 'react'
+import { Button, Circle, XStack, YStack } from 'tamagui'
 
 export default function Sandbox() {
-  return (
-    <XStack gap="$2">
-      <Circle size={100} bg="red" />
+  const [name, setName] = useState('dark')
 
+  return (
+    <YStack gap="$2">
+      <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button>
+
+      <Circles />
+
+      {name}
+
+      <Theme name={name as any}>
+        <Circles />
+      </Theme>
+    </YStack>
+  )
+}
+
+const Circles = () => {
+  return (
+    <XStack bg="$color1">
       <Theme name="accent">
-        <Circle size={100} bg="$color1" />
+        <Circle size={100} bg="$color10" />
       </Theme>
 
       <Theme name="red">
-        <Circle size={100} bg="$color1" />
+        <Circle size={100} bg="$color10" />
       </Theme>
 
       <Theme name="surface3">
-        <Circle size={100} bg="$background" />
+        <Circle size={100} bg="$borderColor" />
       </Theme>
 
       <Theme name="surface2">
-        <Circle size={100} bg="$background" />
+        <Circle size={100} bg="$borderColor" />
       </Theme>
 
       <Theme name="surface1">
-        <Circle size={100} bg="$background" />
+        <Circle size={100} bg="$borderColor" />
       </Theme>
     </XStack>
   )
