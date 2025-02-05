@@ -14,7 +14,7 @@ export const SeasonTogglePopover = (props: { children: any }) => {
   const { name, tint, setNextTint } = useTint()
 
   return (
-    <Popover hoverable offset={20}>
+    <Popover hoverable={{ delay: 1200, restMs: 1200 }} offset={20}>
       <Popover.Trigger>
         <View>
           {props.children}

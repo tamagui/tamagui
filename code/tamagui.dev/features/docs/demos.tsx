@@ -8,7 +8,7 @@ function getLazyComponent<Import extends Function>(importFunc: Import): Import {
     return cached[importFunc]
   }
 
-  cached[importFunc] = importFunc()
+  cached[importFunc] = importFunc?.()
 
   return cached[importFunc]
   // return lazy(async () => {

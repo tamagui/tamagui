@@ -175,7 +175,7 @@ export function getThemedChildren(
 
     const maxInverses = getSetting('maxDarkLightNesting') || 3
     const themeClassName =
-      themeState.inverses > maxInverses
+      themeState.inverses >= maxInverses
         ? themeState.name
         : themeState.name.replace(schemePrefix, '')
 

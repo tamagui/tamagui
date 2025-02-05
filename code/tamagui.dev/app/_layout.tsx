@@ -112,7 +112,9 @@ export default function Layout() {
         />
       </head>
 
-      <body className={isIndex ? 'transition' : ''}>
+      <body
+      // className={isIndex ? 'transition' : ''}
+      >
         <LoadProgressBar />
 
         <Providers>

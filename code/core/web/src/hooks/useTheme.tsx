@@ -12,12 +12,16 @@ export const useTheme = (props: ThemeProps = {}) => {
 
 export type ThemeWithState = [ThemeParsed, ThemeState]
 
+const time = (globalThis as any).time
+
+/**
+ * Adds a proxy around themeState that tracks update keys
+ */
 export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState => {
   const keys = useRef<Set<string> | null>(null)
   const themeState = useThemeState(props, false, keys)
 
-  // @ts-expect-error
-  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme-change-effect`
+  if (process.env.NODE_ENV === 'development' && time) time`useThemeState`
 
   if (process.env.NODE_ENV === 'development') {
     if (!themeState?.theme) {
@@ -39,22 +43,3 @@ export const useThemeWithState = (props: UseThemeWithStateProps): ThemeWithState
 
   return [themeProxied, themeState]
 }
-
-// // to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt
-// function getIsInversed(manager?: ThemeManager) {
-//   if (process.env.TAMAGUI_TARGET === 'native') {
-//     let isInversed = false
-
-//     let cur: ThemeManager | null | undefined = manager
-
-//     while (cur) {
-//       if (!cur.parentState) return isInversed
-//       if (cur.parentState.state.scheme !== cur.state.scheme) {
-//         isInversed = !isInversed
-//       }
-//       cur = cur.parentState
-//     }
-//   }
-
-//   return false
-// }
