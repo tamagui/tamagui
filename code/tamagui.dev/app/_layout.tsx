@@ -155,6 +155,8 @@ export const Providers = (props: { children: any }) => {
 function WebsiteTamaguiProvider(props: { children: any }) {
   const [scheme] = useColorScheme()
 
+  console.log('scheme', scheme)
+
   return (
     <TamaguiProvider disableInjectCSS defaultTheme={scheme} config={tamaConf}>
       <ToastProvider>{props.children}</ToastProvider>

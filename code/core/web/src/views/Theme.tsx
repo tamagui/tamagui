@@ -18,7 +18,7 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   const [_, themeState] = useThemeWithState(props)
   const disableDirectChildTheme = props['disable-child-theme']
 
-  console.log('got', props, themeState)
+  console.log('got', isRoot, props, themeState)
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(children, (child) =>
@@ -139,12 +139,10 @@ function wrapThemeElements({
   forceClassName?: boolean
   isRoot?: boolean
 }) {
-  if (isRoot && forceClassName === false) {
-    return children
-  }
-
   const inverse = themeState.inversed
   const requiresExtraWrapper = typeof inverse === 'boolean' || forceClassName
+
+  console.log('requiresExtraWrapper', requiresExtraWrapper, { inverse, forceClassName })
 
   const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
@@ -174,10 +172,11 @@ function wrapThemeElements({
 }
 
 const emptyObj = {}
+const empty = { className: '', style: emptyObj }
 
 function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
   if (!themeState.isNew) {
-    return { className: '', style: emptyObj }
+    return empty
   }
 
   // in order to provide currentColor, set color by default

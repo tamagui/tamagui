@@ -46,6 +46,14 @@ export const useThemeState = (
   keys?: MutableRefObject<string[] | null>
 ): ThemeState => {
   const { disable } = props
+
+  if (disable) {
+    console.warn('?????')
+    // return {
+
+    // }
+  }
+
   const id = useId()
   const parentId = useContext(ThemeStateContext)
   const { themes } = getConfig()
@@ -54,8 +62,6 @@ export const useThemeState = (
     const parentState = states.get(parentId)
 
     const name = getNextThemeName(parentState?.name, props)
-
-    console.warn('gotem', id, name)
 
     if (!name) {
       if (!parentState) throw new Error(`‼️`)
@@ -132,7 +138,6 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
     for (const subName of subNames) {
       const potential = base ? `${base}_${subName}` : subName
       if (potential in themes) {
-        console.warn('FPUND', potential)
         found = potential
         break
       }
