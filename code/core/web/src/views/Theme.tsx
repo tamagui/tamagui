@@ -11,10 +11,10 @@ import { getSetting } from '../config'
 
 const empty = { className: '', style: {} }
 
-export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProps, ref) {
+export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
   // @ts-expect-error only for internal views
   if (props.disable) {
-    return children
+    return props.children
   }
 
   const isRoot = !!props['_isRoot']
@@ -22,10 +22,10 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   const disableDirectChildTheme = props['disable-child-theme']
 
   let finalChildren = disableDirectChildTheme
-    ? Children.map(children, (child) =>
+    ? Children.map(props.children, (child) =>
         cloneElement(child, { ['data-disable-theme']: true })
       )
-    : children
+    : props.children
 
   if (ref) {
     try {
@@ -94,7 +94,13 @@ export function getThemedChildren(
   if (!state.hasEverThemed) {
     state.hasEverThemed = true
   }
-  if (requiresExtraWrapper) {
+  if (
+    requiresExtraWrapper ||
+    // if the theme is exactly dark or light, its likely to change between dark/light
+    // and that would require wrapping which would re-parent, so to avoid re-parenting do this
+    themeState.name === 'dark' ||
+    themeState.name === 'light'
+  ) {
     state.hasEverThemed = 'wrapped'
   }
 
@@ -116,6 +122,10 @@ export function getThemedChildren(
       })
     }
   }
+
+  // if (props.debug) {
+  console.log('WTF', themeState.id, state.hasEverThemed, props)
+  // }
 
   if (forceClassName === false) {
     return children
@@ -150,35 +160,33 @@ export function getThemedChildren(
     return children
   }
 
-  function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
-    if (!themeState.isNew) {
-      return empty
-    }
+  return children
+}
 
-    // in order to provide currentColor, set color by default
-    const themeColor =
-      themeState?.theme && themeState.isNew
-        ? variableToString(themeState.theme.color)
-        : ''
-
-    const style = themeColor
-      ? {
-          color: themeColor,
-        }
-      : undefined
-
-    const maxInverses = getSetting('maxDarkLightNesting') || 3
-    const themeClassName =
-      themeState.inverses >= maxInverses
-        ? themeState.name
-        : themeState.name.replace(schemePrefix, '')
-
-    const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
-
-    return { style, className }
+function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
+  if (!themeState.isNew) {
+    return empty
   }
 
-  return children
+  // in order to provide currentColor, set color by default
+  const themeColor =
+    themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
+
+  const style = themeColor
+    ? {
+        color: themeColor,
+      }
+    : undefined
+
+  const maxInverses = getSetting('maxDarkLightNesting') || 3
+  const themeClassName =
+    themeState.inverses >= maxInverses
+      ? themeState.name
+      : themeState.name.replace(schemePrefix, '')
+
+  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
+
+  return { style, className }
 }
 
 const schemePrefix = /^(dark|light)_/

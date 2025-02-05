@@ -40,9 +40,12 @@ export const ThemeNameEffectNoTheme = ({
 }: Props) => {
   const isHydrated = useDidFinishSSR()
   const theme = useTheme()
+  const themeName = useThemeName()
   const [isActive, setIsActive] = useState(false)
 
   const color = theme[colorKey]?.val
+
+  console.log('wtf', colorKey, color, themeName)
 
   if (isClient) {
     useEffect(() => {

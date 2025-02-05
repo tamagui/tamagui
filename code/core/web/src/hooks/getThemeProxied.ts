@@ -86,11 +86,6 @@ export function getThemeProxied(
     if (!curKeys) return
     if (!curKeys.current) {
       curKeys.current = new Set()
-      // tracking new key for first time, do an update check
-      // console.log('check')
-      // setTimeout(() => {
-      //   curThemeManger?.selfUpdate()
-      // })
     }
     curKeys.current.add(key)
     if (process.env.NODE_ENV === 'development' && curProps.debug) {

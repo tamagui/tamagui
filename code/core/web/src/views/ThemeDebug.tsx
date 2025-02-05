@@ -16,13 +16,9 @@ export function ThemeDebug({
     const isHydrated = useDidFinishSSR()
     const [onChangeCount, setOnChangeCount] = React.useState(0)
     const rerender = useForceUpdate()
-    const id = React.useId()
-
-    let shouldInsert = false
 
     if (process.env.NODE_ENV === 'development' && typeof document !== 'undefined') {
       if (!node) {
-        shouldInsert = true
         node = document.createElement('div')
         node.style.height = '200px'
         node.style.overflowY = 'scroll'
@@ -73,14 +69,19 @@ export function ThemeDebug({
               padding: 5,
             }}
           >
-            &lt;Theme {id} /&gt;&nbsp;
+            &lt;Theme {themeState.id} /&gt;&nbsp;
             {JSON.stringify(
               {
                 name: themeState.name,
                 parentId: themeState.parentId,
                 inverses: themeState.inverses,
                 isNew: themeState.isNew,
-                themeProps,
+                themeProps: {
+                  name: themeProps.name,
+                  componentName: themeProps.componentName,
+                  reset: themeProps.reset,
+                  inverse: themeProps.inverse,
+                },
                 onChangeCount,
               },
               null,
@@ -90,7 +91,7 @@ export function ThemeDebug({
           node
         )}
 
-        <div style={{ color: 'red' }}>{id}</div>
+        <div style={{ color: 'red' }}>{themeState.id}</div>
 
         {children}
       </>

@@ -1,4 +1,4 @@
-import { styled, Theme, useTheme, View } from '@tamagui/web'
+import { Theme, useTheme, useThemeName } from '@tamagui/web'
 import { memo, useState } from 'react'
 import { Button, Circle, XStack, YStack } from 'tamagui'
 import { ThemeToggle } from '../features/site/theme/ThemeToggle'
@@ -14,9 +14,7 @@ export default function Sandbox() {
 
       {/* <Circles /> */}
 
-      {name}
-
-      <Theme debug="verbose" name={name as any}>
+      <Theme debug="visualize" name={name as any}>
         <Circles />
       </Theme>
     </YStack>
@@ -53,8 +51,9 @@ const Circles = memo(() => {
 
 const Nothing = () => {
   const theme = useTheme({ debug: true })
+  const name = useThemeName()
 
-  console.log('theme.background.val', theme.background.val)
+  console.log('theme.background.val', name, theme.background.val)
 
   return <Circle size={50} bg={theme.background.val as any} />
 }

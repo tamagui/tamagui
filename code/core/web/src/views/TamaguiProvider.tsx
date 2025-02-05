@@ -1,5 +1,5 @@
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import React from 'react'
+import React, { useId } from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
@@ -31,6 +31,8 @@ export function TamaguiProvider({
       }, [config, disableInjectCSS])
     }
   }
+
+  console.warn('provigind tamagui', useId())
 
   return (
     <>

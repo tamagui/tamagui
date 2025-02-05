@@ -64,7 +64,7 @@
     "three": "^0.152.2",
     "valibot": "^0.35.0",
     "victory": "^37.0.2",
-    "vite": "^6.0.6",
+    "vite": "^6.1.0",
     "vite-plugin-inspect": "^0.8.4",
     "zod": "^3.24.1"
   },

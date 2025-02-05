@@ -9,6 +9,7 @@ import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'
+import { useId } from 'react'
 
 // for navigation container props
 //           theme: {
@@ -30,8 +31,7 @@ setupPopper({
 })
 
 export default function Layout() {
-  const path = usePathname()
-  const isIndex = path === '/'
+  console.log('render root', useId())
 
   return (
     <html lang="en-US">
@@ -156,6 +156,8 @@ export const Providers = (props: { children: any }) => {
 
 function WebsiteTamaguiProvider(props: { children: any }) {
   const [scheme] = useColorScheme()
+
+  console.warn('PROVIDING ', useId())
 
   return (
     <TamaguiProvider disableInjectCSS defaultTheme={scheme} config={tamaConf}>

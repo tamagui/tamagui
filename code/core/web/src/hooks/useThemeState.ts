@@ -2,7 +2,9 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useId,
+  useLayoutEffect,
   useSyncExternalStore,
   type MutableRefObject,
 } from 'react'
@@ -33,6 +35,7 @@ const states: Map<ID, ThemeState | undefined> = new Map()
 
 export const forceUpdateThemes = () => {
   allListeners.forEach((cb) => cb())
+  console.warn('UPDATE')
 }
 
 export const getThemeState = (id: ID) => states.get(id)
@@ -44,6 +47,11 @@ export const useThemeState = (
 ): ThemeState => {
   const { disable } = props
   const id = useId()
+
+  if (process.env.NODE_ENV === 'development' && props.debug) {
+    console.info(` · useTheme(${id}) render`)
+  }
+
   const { themes } = getConfig()
 
   if (disable) {
@@ -56,13 +64,26 @@ export const useThemeState = (
   }
 
   const parentId = useContext(ThemeStateContext)
+  const propsKey = `${props.componentName || ''}${props.name || ''}${props.inverse || ''}${props.reset || ''}`
+
+  useLayoutEffect(() => {
+    if (!propsKey) return
+    if (process.env.NODE_ENV === 'development' && props.debug) {
+      console.info(` · useTheme(${id}) new props detected, triggering snapshot`)
+    }
+    allListeners.get(id)?.()
+  }, [id, propsKey])
 
   const getSnapshot = (): ThemeState => {
     const currentKeys = keys?.current
     const lastState = states.get(id)
     const parentState = states.get(parentId)
 
-    const name = getNewThemeName(parentState?.name, props)
+    const name = getNewThemeName(parentState?.name, propsKey, props)
+
+    if (process.env.NODE_ENV === 'development' && props.debug) {
+      console.info(` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`)
+    }
 
     if (!name) {
       states.delete(id)
@@ -80,6 +101,9 @@ export const useThemeState = (
       (!currentKeys || !currentKeys.size)
 
     if (shouldSkipUpdate) {
+      if (process.env.NODE_ENV === 'development' && props.debug) {
+        console.info(` · useTheme(${id}) skip update`)
+      }
       return lastState
     }
 
@@ -99,31 +123,13 @@ export const useThemeState = (
     } satisfies ThemeState
 
     if (process.env.NODE_ENV === 'development' && props.debug) {
-      console.info(` 🎨 useTheme() new theme: ${name}`)
+      console.info(` · useTheme(${id}) new theme: ${name}`)
     }
 
     states.set(id, nextState)
 
     if (lastState) {
-      // gather all children
-      const all = new Set<Function>()
-      const queue = [id]
-
-      while (queue.length) {
-        const currentId = queue.shift()!
-        const children = listenersByParent[currentId]
-        if (!children) continue
-
-        for (const childId of children) {
-          const childCb = allListeners.get(childId)
-          if (childCb) {
-            all.add(childCb)
-          }
-          queue.push(childId)
-        }
-      }
-
-      all.forEach((cb) => cb())
+      notifyChildren(id)
     }
 
     return nextState
@@ -147,6 +153,13 @@ export const useThemeState = (
   return state.id === id ? { ...state, isNew: true } : state
 }
 
+function notifyChildren(id: string) {
+  const children = listenersByParent[id]
+  children.forEach((id) => {
+    allListeners.get(id)?.()
+  })
+}
+
 const validSchemes = {
   light: 'light',
   dark: 'dark',
@@ -156,7 +169,11 @@ function getScheme(name: string) {
   return validSchemes[name.split('_')[0]]
 }
 
-function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string | null {
+function getNewThemeName(
+  parentName = '',
+  propsKey: string,
+  props: UseThemeWithStateProps
+): string | null {
   if (props.name && props.reset) {
     throw new Error(
       process.env.NODE_ENV === 'production'
@@ -165,7 +182,7 @@ function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string
     )
   }
 
-  if (!props.componentName && !props.name && !props.inverse && !props.reset) {
+  if (!propsKey) {
     return null
   }
 
