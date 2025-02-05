@@ -12,6 +12,7 @@ export const GET = apiRoute(async (req) => {
   const query = getQuery(req)
   const product_id = query.product_id
   const disable_automatic_discount = query.disable_automatic_discount
+  const autoRenewQuery = query.auto_renew // expected to be "true" or "false"
 
   if (typeof product_id === 'undefined') {
     return Response.json({ error: 'no `product_id` provided' }, { status: 400 })
@@ -30,12 +31,6 @@ export const GET = apiRoute(async (req) => {
 
   let couponId: string | undefined
   const userAccessInfo = await getUserAccessInfo(supabase, user)
-  const purchaseContainsBento = products.data.some(
-    (product) => product.metadata.slug === 'bento'
-  )
-  const purchaseContainsTakeout = products.data.some(
-    (product) => product.metadata.slug === 'universal-starter'
-  )
 
   // if (!disable_automatic_discount) {
   //   if (
@@ -63,6 +58,10 @@ export const GET = apiRoute(async (req) => {
 
   console.info(`Creating stripe session for checkout`)
 
+  // Determine if auto-renew should be disabled (cancel at period end)
+  const cancelAtPeriodEnd =
+    typeof autoRenewQuery === 'string' && autoRenewQuery.toLowerCase() === 'false'
+
   // if stripe customer doesn't exist, create one and insert it into supabase
   const stripeSession = await stripe.checkout.sessions.create({
     line_items: products.data.map((product) => {
@@ -81,7 +80,7 @@ export const GET = apiRoute(async (req) => {
       }
     }),
     customer: stripeCustomerId,
-    mode: 'payment',
+    mode: 'subscription', // Changed to subscription mode for recurring payments
     success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
     discounts: couponId ? [{ coupon: couponId }] : undefined,
@@ -101,6 +100,12 @@ export const GET = apiRoute(async (req) => {
       },
     },
   })
+
+  if (cancelAtPeriodEnd && typeof stripeSession.subscription === 'string') {
+    await stripe.subscriptions.update(stripeSession.subscription, {
+      cancel_at_period_end: true,
+    })
+  }
 
   console.info(
     `Stripe checkout, redirect: ${stripeSession.url}\n  internal url ${getURL()}`
