@@ -7,6 +7,14 @@ module.exports.Data = {
   },
 }
 
-module.exports.Components = {}
+module.exports.Components = new Proxy(
+  {},
+  {
+    get(target, key) {
+      return {}
+    },
+  }
+)
+
 module.exports.listingData = []
 module.exports.CurrentRouteProvider = (props) => props.children
