@@ -7755,6 +7755,7 @@ __metadata:
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/mdx-2": "workspace:*"
     "@tamagui/use-store": "workspace:*"
+    "@tanstack/react-query": "npm:^5.66.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@vercel/og": "npm:^0.6.5"
     "@vxrn/color-scheme": "npm:^1.1.417"
@@ -9411,6 +9412,24 @@ __metadata:
     react-dom: "*"
   languageName: unknown
   linkType: soft
+
+"@tanstack/query-core@npm:5.66.0":
+  version: 5.66.0
+  resolution: "@tanstack/query-core@npm:5.66.0"
+  checksum: 10/ba8623c0272e36d3ce616afa024d43e07e6b69170219b32eb4f60156fee9ac4ffa74d2fbb999739b6dea757b75966e76129271f4224f06c59deee24a72944da4
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.66.0":
+  version: 5.66.0
+  resolution: "@tanstack/react-query@npm:5.66.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.66.0"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/482decc02664e756c66c9ff46279b5eb3f0fb29fcdcb51b96319e8487a2b2e8b151319d6a5d9ef1180523a1792d6449cec2e9bfa87f37a4f755fc9d95534585d
+  languageName: node
+  linkType: hard
 
 "@tanstack/react-table@npm:^8.11.2":
   version: 8.20.5

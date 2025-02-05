@@ -11,7 +11,7 @@ import {
   X,
 } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useLoader } from 'one'
+import { useProducts, type ProductsResponse } from '~/features/site/purchase/useProducts'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {
   FontSizeTokens,
@@ -55,28 +55,22 @@ import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
-import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 
-export const loader = async () => {
-  try {
-    return await getProductsForServerSideRendering()
-  } catch (err) {
-    console.error(`Error loading prices`, err)
-    return { starter: null, fontsPack: null, iconsPack: null, bento: null }
-  }
-}
-
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
 export default function TakeoutPage() {
-  const { starter, bento } = useLoader(loader)
+  const { data, isLoading, error } = useProducts()
   const store = useTakeoutStore()
   const tint = useTint()
+
+  if (error) {
+    console.error('Error loading products:', error)
+  }
 
   return (
     <YStack maw="100%">
@@ -175,7 +169,9 @@ export default function TakeoutPage() {
 
       {/* <Glow /> */}
 
-      <PurchaseModal defaultValue="takeout" starter={starter!} bento={bento!} />
+      {data?.starter && (
+        <PurchaseModal starter={data.starter} bento={data.bento} defaultValue="takeout" />
+      )}
 
       {/* gradient on the end of the page */}
       <ThemeTint>
@@ -232,7 +228,7 @@ export default function TakeoutPage() {
             }}
           >
             <YStack mt={-700} $md={{ mt: 0 }} ml={20} mr={0}>
-              {starter && <StarterCard product={starter} />}
+              {data?.starter && <StarterCard product={data.starter} />}
             </YStack>
 
             <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
@@ -701,9 +697,7 @@ const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'
 
 const heroHeight = 1050
 
-export type TakeoutPageProps = Awaited<
-  ReturnType<typeof getProductsForServerSideRendering>
->
+export type TakeoutPageProps = ProductsResponse
 
 const TakeoutCard2Frame = styled(YStack, {
   minWidth: 282,
