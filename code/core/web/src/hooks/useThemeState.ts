@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useId,
   useSyncExternalStore,
@@ -23,20 +24,14 @@ export type ThemeState = {
 
 export const ThemeStateContext = createContext<ID>('')
 
-const listeners = new Set<Function>()
-
-const subscribe = (cb: Function) => {
-  listeners.add(cb)
-  return () => {
-    listeners.delete(cb)
-  }
-}
+const allListeners = new Set<Function>()
+const listenersByParent: Record<ID, Set<Function>> = {}
 
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
 
 export const forceUpdateThemes = () => {
-  listeners.forEach((cb) => cb())
+  allListeners.forEach((cb) => cb())
 }
 
 export const getThemeState = (id: ID) => states.get(id)
@@ -62,18 +57,24 @@ export const useThemeState = (
   const parentId = useContext(ThemeStateContext)
 
   const getSnapshot = (): ThemeState => {
+    const lastState = states.get(id)
     const parentState = states.get(parentId)
+    const shouldSkipUpdate = lastState && !keys?.current
 
-    const name = getNextThemeName(parentState?.name, props)
+    if (shouldSkipUpdate) {
+      return lastState
+    }
+
+    const name = getNewThemeName(parentState?.name, props)
 
     if (!name) {
+      states.delete(id)
       if (!parentState) throw new Error(`‼️`)
       return parentState
     }
 
-    const found = states.get(id)
-    if (found?.name === name) {
-      return found
+    if (lastState?.name === name) {
+      return lastState
     }
 
     const scheme = getScheme(name)
@@ -94,16 +95,28 @@ export const useThemeState = (
       console.info(` 🎨 useTheme() new theme: ${name}`)
     }
 
-    const lastState = states.get(id)
+    states.set(id, nextState)
 
     if (lastState) {
-      console.warn('this one updated', lastState.name, name)
+      debugger
+      listenersByParent[id]?.forEach((cb) => cb())
     }
-
-    states.set(id, nextState)
 
     return nextState
   }
+
+  const subscribe = useCallback(
+    (cb: Function) => {
+      listenersByParent[parentId] ||= new Set()
+      listenersByParent[parentId].add(cb)
+      allListeners.add(cb)
+      return () => {
+        allListeners.delete(cb)
+        listenersByParent[parentId].delete(cb)
+      }
+    },
+    [parentId]
+  )
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
@@ -119,7 +132,7 @@ function getScheme(name: string) {
   return validSchemes[name.split('_')[0]]
 }
 
-function getNextThemeName(parentName = '', props: UseThemeWithStateProps): string | null {
+function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string | null {
   if (props.name && props.reset) {
     throw new Error(
       process.env.NODE_ENV === 'production'
@@ -153,10 +166,6 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
 
   const max = parentParts.length
 
-  // if (props.componentName === 'Circle' && parentName.includes('dark_red')) {
-  //   debugger
-  // }
-
   for (let i = 0; i <= max; i++) {
     const base = (i === 0 ? parentParts : parentParts.slice(0, -i)).join('_')
 
@@ -174,7 +183,11 @@ function getNextThemeName(parentName = '', props: UseThemeWithStateProps): strin
 
   if (found && props.inverse) {
     const scheme = found.split('_')[0]
-    return found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
+    found = found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
+  }
+
+  if (found === parentName) {
+    return null
   }
 
   return found
