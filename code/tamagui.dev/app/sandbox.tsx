@@ -1,5 +1,5 @@
-import { styled, Theme, View } from '@tamagui/web'
-import { useState } from 'react'
+import { styled, Theme, useTheme, View } from '@tamagui/web'
+import { memo, useState } from 'react'
 import { Button, Circle, XStack, YStack } from 'tamagui'
 import { ThemeToggle } from '../features/site/theme/ThemeToggle'
 
@@ -16,22 +16,24 @@ export default function Sandbox() {
 
       {name}
 
-      <Theme name={name as any}>
+      <Theme debug="verbose" name={name as any}>
         <Circles />
       </Theme>
     </YStack>
   )
 }
 
-const Circles = () => {
+const Circles = memo(() => {
   return (
     <XStack bg="$color1">
       <Theme name="accent">
-        <Circle size={100} bg="$color10" />
+        <Circle size={100} bg="$color10">
+          <Nothing />
+        </Circle>
       </Theme>
 
       <Theme name="red">
-        <Circle debug="visualize" size={100} bg="$color10" />
+        <Circle size={100} bg="$color10" />
       </Theme>
 
       <Theme name="surface3">
@@ -47,18 +49,12 @@ const Circles = () => {
       </Theme>
     </XStack>
   )
-}
-
-const Test = styled(View, {
-  width: 100,
-  height: 100,
-  backgroundColor: 'red',
-
-  $md: {
-    '$platform-web': {
-      position: 'fixed',
-      gridColumnGap: 12,
-      backgroundColor: 'green',
-    },
-  },
 })
+
+const Nothing = () => {
+  const theme = useTheme()
+
+  console.log('theme.background.val', theme.background.val)
+
+  return <Circle size={50} bg={theme.background.val as any} />
+}

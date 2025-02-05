@@ -94,6 +94,12 @@ export const useThemeState = (
       console.info(` 🎨 useTheme() new theme: ${name}`)
     }
 
+    const lastState = states.get(id)
+
+    if (lastState) {
+      console.warn('this one updated', lastState.name, name)
+    }
+
     states.set(id, nextState)
 
     return nextState

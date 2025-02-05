@@ -27,7 +27,7 @@ export const ThemeNameEffect = memo((props: Props) => {
       : !!props.disableTint
 
   return (
-    <ThemeTint key={disable} disable={disable}>
+    <ThemeTint key={disable ? 1 : 0} disable={disable}>
       <ThemeNameEffectNoTheme {...props} />
       {props.children}
     </ThemeTint>
@@ -40,7 +40,6 @@ export const ThemeNameEffectNoTheme = ({
 }: Props) => {
   const isHydrated = useDidFinishSSR()
   const theme = useTheme()
-  // const themeName = useThemeName()
   const [isActive, setIsActive] = useState(false)
 
   const color = theme[colorKey]?.val

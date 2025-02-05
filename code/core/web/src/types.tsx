@@ -2520,7 +2520,7 @@ export type TamaguiComponentStateRef = {
   hasMeasured?: boolean
   hasAnimated?: boolean
   themeShallow?: boolean
-  hasEverThemed?: boolean
+  hasEverThemed?: boolean | 'wrapped'
   isListeningToTheme?: boolean
   unPress?: Function
   group?: {

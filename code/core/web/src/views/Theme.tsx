@@ -9,6 +9,8 @@ import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 import { getSetting } from '../config'
 
+const empty = { className: '', style: {} }
+
 export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProps, ref) {
   // @ts-expect-error only for internal views
   if (props.disable) {
@@ -58,32 +60,42 @@ export function getThemedChildren(
   children: any,
   props: ThemeProps,
   isRoot = false,
-  stateRef: MutableRefObject<{ hasEverThemed?: boolean }>
+  stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>
 ) {
   const { shallow, forceClassName } = props
 
   // always be true if ever themed so we avoid re-parenting
+  const state = stateRef.current
+  let hasEverThemed = state.hasEverThemed
+
   let shouldRenderChildrenWithTheme =
+    hasEverThemed ||
     themeState.isNew ||
     isRoot ||
     'inverse' in props ||
     'name' in props ||
     'reset' in props ||
-    'forceClassName' in props ||
-    stateRef.current.hasEverThemed
-
-  if (shouldRenderChildrenWithTheme) {
-    stateRef.current.hasEverThemed = true
-  }
+    'forceClassName' in props
 
   if (!shouldRenderChildrenWithTheme) {
     return children
   }
 
+  const { isInverse, name } = themeState
+  const requiresExtraWrapper = isInverse || forceClassName
+
+  // it only ever progresses from false => true => 'wrapped'
+  if (!state.hasEverThemed) {
+    state.hasEverThemed = true
+  }
+  if (requiresExtraWrapper) {
+    state.hasEverThemed = 'wrapped'
+  }
+
   if (process.env.NODE_ENV === 'development') {
     if (shouldRenderChildrenWithTheme && props.debug === 'verbose') {
       log(
-        `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${themeState.isNew}, hasEver ${stateRef.current.hasEverThemed}`,
+        `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${themeState.isNew}, hasEver ${state.hasEverThemed}`,
         props
       )
     }
@@ -116,85 +128,63 @@ export function getThemedChildren(
   }
 
   if (isWeb) {
-    return wrapThemeElements({
-      children: elementsWithContext,
-      themeState,
-      forceClassName,
-      isRoot,
-    })
+    const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
+
+    let themedChildren = (
+      <span className={`${className} _dsp_contents is_Theme`} style={style}>
+        {children}
+      </span>
+    )
+
+    // to prevent tree structure changes always render this if inverse is true or false
+    if (state.hasEverThemed === 'wrapped') {
+      // but still calculate if we need the classnames
+      const className = requiresExtraWrapper
+        ? `${
+            isInverse
+              ? name.startsWith('light')
+                ? 't_light is_inversed'
+                : name.startsWith('dark')
+                  ? 't_dark is_inversed'
+                  : ''
+              : ''
+          } _dsp_contents`
+        : `_dsp_contents`
+      themedChildren = <span className={className}>{themedChildren}</span>
+    }
+
+    return themedChildren
+  }
+
+  function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
+    if (!themeState.isNew) {
+      return empty
+    }
+
+    // in order to provide currentColor, set color by default
+    const themeColor =
+      themeState?.theme && themeState.isNew
+        ? variableToString(themeState.theme.color)
+        : ''
+
+    const style = themeColor
+      ? {
+          color: themeColor,
+        }
+      : undefined
+
+    const maxInverses = getSetting('maxDarkLightNesting') || 3
+    const themeClassName =
+      themeState.inverses > maxInverses
+        ? themeState.name
+        : themeState.name.replace(schemePrefix, '')
+
+    const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
+
+    return { style, className }
   }
 
   return elementsWithContext
-}
-
-function wrapThemeElements({
-  children,
-  themeState,
-  forceClassName,
-  isRoot,
-}: {
-  children?: React.ReactNode
-  themeState: ThemeState
-  forceClassName?: boolean
-  isRoot?: boolean
-}) {
-  const { isInverse } = themeState
-  const requiresExtraWrapper = isInverse || forceClassName
-
-  const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
-
-  let themedChildren = (
-    <span className={`${className} _dsp_contents is_Theme`} style={style}>
-      {children}
-    </span>
-  )
-
-  // to prevent tree structure changes always render this if inverse is true or false
-  if (requiresExtraWrapper) {
-    const name = themeState?.name || ''
-    const inverseClassName = name.startsWith('light')
-      ? 't_light is_inversed'
-      : name.startsWith('dark')
-        ? 't_dark is_inversed'
-        : ''
-
-    themedChildren = (
-      <span className={`${isInverse ? inverseClassName : ''} _dsp_contents`}>
-        {themedChildren}
-      </span>
-    )
-  }
-
-  return themedChildren
-}
-
-const emptyObj = {}
-const empty = { className: '', style: emptyObj }
-
-function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
-  if (!themeState.isNew) {
-    return empty
-  }
-
-  // in order to provide currentColor, set color by default
-  const themeColor =
-    themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
-
-  const style = themeColor
-    ? {
-        color: themeColor,
-      }
-    : undefined
-
-  const maxInverses = getSetting('maxDarkLightNesting') || 3
-  const themeClassName =
-    themeState.inverses > maxInverses
-      ? themeState.name
-      : themeState.name.replace(schemePrefix, '')
-
-  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
-
-  return { style, className }
 }
 
 const schemePrefix = /^(dark|light)_/
