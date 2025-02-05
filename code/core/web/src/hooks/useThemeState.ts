@@ -17,6 +17,7 @@ export type ThemeState = {
   isNew?: boolean
   parentId?: ID
   scheme?: 'light' | 'dark'
+  inversed?: boolean
 }
 
 export const ThemeStateContext = createContext<ID>('')
@@ -69,6 +70,7 @@ export const useThemeState = (
       theme: themes[name],
       scheme: getScheme(name),
       parentId,
+      inversed: props.inverse,
     } satisfies ThemeState
 
     states[id] = nextState

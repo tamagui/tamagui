@@ -154,7 +154,7 @@ function wrapThemeElements({
 
   // to prevent tree structure changes always render this if inverse is true or false
   if (requiresExtraWrapper) {
-    const name = themeState.state?.name || ''
+    const name = themeState?.name || ''
     const inverseClassName = name.startsWith('light')
       ? 't_light is_inversed'
       : name.startsWith('dark')

@@ -1,3 +1,2 @@
-import type { ThemeManager } from '../helpers/ThemeManager';
-export declare function shouldDeoptDueToParentScheme(manager?: ThemeManager): boolean;
+export declare function shouldDeoptDueToParentScheme(manager: any): boolean;
 //# sourceMappingURL=shouldDeoptDueToParentScheme.d.ts.map

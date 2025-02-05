@@ -1,11 +1,11 @@
 import { Appearance } from 'react-native'
-import type { ThemeManager } from '../helpers/ThemeManager'
+// import type { ThemeManager } from '../helpers/ThemeManager'
 
 // on iOS for fast scheme change, we assume the root theme name is matching the system
 // but if any intermediate theme is "fixed" to light or dark, we need to opt out
 // optimizing no-rerenders, because it could change by the end-user at any time in the tree
 // but also theres no point in doing a dynamic color in the first place since scheme is fixed one way
-export function shouldDeoptDueToParentScheme(manager?: ThemeManager) {
+export function shouldDeoptDueToParentScheme(manager) {
   // reverse so we get it from root => child (easier to check)
   const parents = (manager?.getParents() || []).reverse()
   const rootScheme = parents[0]?.state.scheme

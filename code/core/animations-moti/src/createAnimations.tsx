@@ -49,7 +49,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
         }
       }
 
-      const [{ state }] = useThemeWithState({})
+      const [_, state] = useThemeWithState({})
 
       // get styles but only inline style
       const result = getSplitStyles(

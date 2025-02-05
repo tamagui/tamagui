@@ -8,6 +8,7 @@ export type ThemeState = {
     isNew?: boolean;
     parentId?: ID;
     scheme?: 'light' | 'dark';
+    inversed?: boolean;
 };
 export declare const ThemeStateContext: import("react").Context<string>;
 export declare const forceUpdateThemes: () => void;

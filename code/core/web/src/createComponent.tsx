@@ -462,7 +462,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-theme-media`
 
-    const [themeState, theme] = useThemeWithState(themeStateProps)
+    const [theme, themeState] = useThemeWithState(themeStateProps)
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
@@ -492,7 +492,7 @@ export function createComponent<
       styledContextProps,
     } as const
 
-    const themeName = themeState?.state?.name || ''
+    const themeName = themeState?.name || ''
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles-prepare`
 
@@ -602,7 +602,7 @@ export function createComponent<
         presence,
         componentState: state,
         styleProps,
-        theme: themeState.state?.theme!,
+        theme,
         pseudos: pseudos || null,
         staticConfig,
         stateRef,
