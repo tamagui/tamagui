@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-internals",
-  "version": "1.123.17-1738816646757",
+  "version": "1.123.17-1738819995860",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",

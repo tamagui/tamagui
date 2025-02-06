@@ -22,6 +22,18 @@ export const Sandbox = () => {
       <Button onPress={() => setK(Math.random())}>render</Button>
       <TimedRender key={k}>
         <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
       </TimedRender>
     </>
   )
@@ -115,12 +127,12 @@ const Switch = memo(
 
     const frameBackgroundColor = ((): ColorTokens => {
       if (isDisabledStyling) {
-        return '$color3'
+        return '$color10'
       }
       if (isBranded) {
-        return checked ? '$color1' : '$red3'
+        return checked ? '$color10' : '$red10'
       }
-      return checked ? '$color3' : '$red3'
+      return checked ? '$color10' : '$red10'
     })()
 
     const thumbBackgroundColor = ((): ColorTokens => {
@@ -177,7 +189,7 @@ const Switch = memo(
         hoverStyle={{
           backgroundColor: isBranded
             ? checked
-              ? '$color3'
+              ? '$color10'
               : '$red4'
             : checked
               ? '$color5'

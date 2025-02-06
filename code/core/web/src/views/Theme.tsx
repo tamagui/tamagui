@@ -106,7 +106,7 @@ export function getThemedChildren(
   // each children of these children wont get the theme
   if (shallow) {
     if (!themeState.parentId) {
-      console.warn('SHALLOW 🐞 how?', themeState)
+      // they are doing shallow but didnt change actually change a theme theme?
     } else {
       const parentState = getThemeState(themeState.parentId)
       if (!parentState) throw new Error(`‼️010`)
