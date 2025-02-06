@@ -85,6 +85,11 @@ export default {
   },
 
   plugins: [
+    tamaguiPlugin({
+      optimize,
+      // useReactNativeWebLite: true,
+    }),
+
     one({
       react: {
         compiler: true,
@@ -157,11 +162,6 @@ export default {
     }),
 
     // removeReactNativeWebAnimatedPlugin(),
-
-    tamaguiPlugin({
-      optimize,
-      // useReactNativeWebLite: true,
-    }),
   ],
 } satisfies UserConfig
 

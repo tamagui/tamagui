@@ -1,9 +1,9 @@
+import { usePathname } from 'one'
 import React from 'react'
 import type { JSX } from 'react/jsx-runtime'
 import type { ThemeName, ThemeProps } from 'tamagui'
-import { Theme, useDidFinishSSR } from 'tamagui'
+import { Theme } from 'tamagui'
 import { getTints, setNextTintFamily, useTints } from './tints'
-import { usePathname } from 'one'
 
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
@@ -64,14 +64,9 @@ export const useTint = (
   const pathname = usePathname()
   const section = getDocsSection(pathname)
 
-  const hydrated = useDidFinishSSR()
-
   let initial = current
   if (section) {
     initial = section === 'compile' ? 5 : section === 'core' ? 4 : 6
-    if (!hydrated) {
-      current = initial
-    }
   }
 
   const index = React.useSyncExternalStore(
@@ -120,6 +115,7 @@ export const ThemeTintAlt = ({
   ...rest
 }: ThemeProps & { disable?: boolean; offset?: number }): JSX.Element => {
   const curTint = useTint(offset).tintAlt
+  console.log('wtf', curTint, offset, disable)
   const name = disable ? null : curTint
   return (
     <Theme name={name} {...rest}>
