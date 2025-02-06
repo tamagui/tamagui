@@ -339,14 +339,12 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
     )
   }
 
-  console.log('themeName', themeName)
-
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
     <Portal zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme debug="visualize" forceClassName name={themeName}>
+      <Theme forceClassName name={themeName}>
         {!!context.open && !context.breakpointActive && (
           <YStack
             fullscreen

@@ -32,8 +32,6 @@ const listenersByParent: Record<ID, Set<ID>> = {}
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
 
-globalThis['themeStates'] = states
-
 export const forceUpdateThemes = () => {
   allListeners.forEach((cb) => cb())
 }

@@ -13,7 +13,6 @@ import {
   XStack,
   YStack,
   isTouchable,
-  useThemeName,
 } from 'tamagui'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
@@ -32,7 +31,6 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
 
   return (
     <HeaderMenuTheme>
-      <X />
       <Popover
         disableRTL
         // Note: turning this on seems to break the HomeGlow (shockingly, maybe a React bug)
@@ -126,11 +124,6 @@ const HeaderMenuTheme = (props: { children: any }) => {
   return (
     <Theme name={isTakeout ? 'gray' : isBento ? 'tan' : curTint}>{props.children}</Theme>
   )
-}
-
-const X = () => {
-  console.warn('WHAT IS IT?', useThemeName())
-  return null
 }
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent({
