@@ -50,7 +50,7 @@ export const ThemeNameEffectNoTheme = ({
       if (!isHydrated) return
       if (!isActive) return
       document.querySelector('#theme-color')?.setAttribute('content', color)
-      document.body.style.setProperty('background-color', color, 'important')
+      // document.body.style.setProperty('background-color', color, 'important')
     }, [isHydrated, isActive, color])
   }
 
@@ -65,16 +65,7 @@ export const ThemeNameEffectNoTheme = ({
       <style>
         {ssrTheme
           ? `
-body:has(#theme-name-effect-red) {
-  background: var(--red${colorKey.replace('$color', '')}) !important;
-}
-body:has(#theme-name-effect-green) {
-  background: var(--green${colorKey.replace('$color', '')}) !important;
-}
-body:has(#theme-name-effect-blue) {
-  background: var(--blue${colorKey.replace('$color', '')}) !important;
-}
-  
+
 
 `
           : `

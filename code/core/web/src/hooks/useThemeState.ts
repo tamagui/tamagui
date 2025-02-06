@@ -8,7 +8,7 @@ import {
   type MutableRefObject,
 } from 'react'
 import { getConfig } from '../config'
-import type { ThemeParsed, ThemeProps, Themes, UseThemeWithStateProps } from '../types'
+import type { ThemeParsed, ThemeProps, UseThemeWithStateProps } from '../types'
 
 type ID = string
 
@@ -111,14 +111,15 @@ const getSnapshotFrom = (
   keys: MutableRefObject<Set<string> | null> | undefined
 ): ThemeState => {
   const hasKeys = keys?.current?.size
-  const cacheKey = `${propsKey}${hasKeys}${parentId}${isRoot}`
-  if (cache.has(cacheKey)) {
-    return cache.get(cacheKey)!
-  }
+  const parentState = states.get(parentId)
+  // const cacheKey = `${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
+  // // console.log('wtf', props, cacheKey)
+  // if (cache.has(cacheKey)) {
+  //   return cache.get(cacheKey)!
+  // }
 
   const { themes } = getConfig()
   const lastState = states.get(id)
-  const parentState = states.get(parentId)
 
   const name = !propsKey ? null : getNewThemeName(parentState?.name, props)
 
@@ -126,7 +127,7 @@ const getSnapshotFrom = (
     console.groupCollapsed(
       ` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`
     )
-    console.info({ lastState, parentState })
+    console.info({ lastState, parentState, props, propsKey, id, keys })
     console.groupEnd()
   }
 
@@ -135,7 +136,7 @@ const getSnapshotFrom = (
       return lastState
     }
     states.set(id, parentState)
-    cache.set(cacheKey, parentState!)
+    // cache.set(cacheKey, parentState!)
     return parentState!
   }
 
@@ -144,6 +145,7 @@ const getSnapshotFrom = (
     lastState.name === name &&
     (!parentState || parentState.name === lastState.parentName)
   ) {
+    // cache.set(cacheKey, lastState!)
     return lastState
   }
 
@@ -170,7 +172,7 @@ const getSnapshotFrom = (
   }
 
   states.set(id, nextState)
-  cache.set(cacheKey, nextState)
+  // cache.set(cacheKey, nextState)
 
   if (isRoot) {
     rootThemeState = nextState
@@ -211,8 +213,11 @@ function getScheme(name: string) {
   return validSchemes[name.split('_')[0]]
 }
 
-function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string | null {
-  if (props.name && props.reset) {
+function getNewThemeName(
+  parentName = '',
+  { name, reset, componentName, inverse }: UseThemeWithStateProps
+): string | null {
+  if (name && reset) {
     throw new Error(
       process.env.NODE_ENV === 'production'
         ? `❌004`
@@ -220,7 +225,7 @@ function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string
     )
   }
 
-  if (props.reset) {
+  if (reset) {
     if (!parentName) throw new Error(`‼️`)
     const lastPartIndex = parentName.lastIndexOf('_')
     return lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
@@ -235,7 +240,7 @@ function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string
     parentParts.pop()
   }
 
-  const subNames = [props.name, props.componentName].filter(Boolean) as string[]
+  const subNames = [name, componentName].filter(Boolean) as string[]
 
   let found: string | null = null
 
@@ -256,7 +261,7 @@ function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string
     if (found) break
   }
 
-  if (found && props.inverse) {
+  if (found && inverse) {
     const scheme = found.split('_')[0]
     found = found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
   }
@@ -273,8 +278,14 @@ function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string
   return found
 }
 
-const getPropsKey = (props: ThemeProps) =>
-  `${props.name || ''}${props.inverse || ''}${props.reset || ''}${props.forceClassName || ''}`
+const getPropsKey = ({
+  name,
+  reset,
+  inverse,
+  forceClassName,
+  componentName,
+}: ThemeProps) =>
+  `${name || ''}${inverse || ''}${reset || ''}${forceClassName || ''}${componentName || ''}`
 
 export const hasThemeUpdatingProps = (props: ThemeProps) =>
   'inverse' in props || 'name' in props || 'reset' in props || 'forceClassName' in props

@@ -13,15 +13,15 @@ export default function Sandbox() {
     <YStack gap="$2">
       <ThemeToggle />
 
-      <Link href="/sandbox2">Go to sandbox2</Link>
+      {/* <Link href="/sandbox2">Go to sandbox2</Link> */}
 
-      <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button>
+      {/* <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button> */}
 
       {/* <Circles /> */}
 
-      <Theme name={name as any}>
+      {/* <Theme name={name as any}>
         <Circles />
-      </Theme>
+      </Theme> */}
 
       {/* <Theme inverse>
         <Circles />

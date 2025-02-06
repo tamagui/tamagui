@@ -76,6 +76,8 @@ export function getThemedChildren(
   let shouldRenderChildrenWithTheme =
     hasEverThemed || themeState.isNew || isRoot || hasThemeUpdatingProps(props)
 
+  // if (props.componentName === 'Tooltip') debugger
+
   if (!shouldRenderChildrenWithTheme) {
     return children
   }

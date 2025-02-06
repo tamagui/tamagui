@@ -446,7 +446,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
       <YStack fullscreen>
         <HeroText
           className="clip-text rainbow grain"
-          l={-3}
+          l={-2}
           o={0.5}
           dangerouslySetInnerHTML={{
             __html: text,
