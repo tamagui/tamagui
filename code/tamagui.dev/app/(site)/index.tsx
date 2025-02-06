@@ -24,6 +24,8 @@ export async function loader() {
 export default function TamaguiHomePage() {
   const { compilationExamples, animationCode } = useLoader(loader)
 
+  return null
+
   if (!compilationExamples) {
     return null
   }

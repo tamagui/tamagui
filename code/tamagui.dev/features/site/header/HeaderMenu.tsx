@@ -125,9 +125,7 @@ const HeaderMenuTheme = (props: { children: any }) => {
   return <Theme name={name}>{props.children}</Theme>
 }
 
-const HeaderMenuContent = React.memo(function HeaderMenuContent({
-  open,
-}: { open: boolean }) {
+const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
     <Popover.Content
       mt={-5}

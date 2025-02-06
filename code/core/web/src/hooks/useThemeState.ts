@@ -97,7 +97,7 @@ export const useThemeState = (
       props.debug &&
       props.debug !== 'profile'
     ) {
-      console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey)
+      console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
     }
     scheduleUpdate(id)
   }, [keys, propsKey])
@@ -154,15 +154,23 @@ const getSnapshotFrom = (
     props.debug &&
     props.debug !== 'profile'
   ) {
-    console.groupCollapsed(
-      ` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`
-    )
-    console.info({ lastState, parentState, props, propsKey, id, keys })
-    console.groupEnd()
+    const message = ` · useTheme(${id}) snapshot ${name}, parent ${parentState?.id} needsUpdate ${needsUpdate}`
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      console.info(message)
+    } else {
+      console.groupCollapsed(message)
+      console.info({ lastState, parentState, props, propsKey, id, keys })
+      console.groupEnd()
+    }
+  }
+
+  const isSameAsParent = !name && propsKey // name = null if matching parent and has props
+  if (parentState && isSameAsParent) {
+    return parentState
   }
 
   if (!name) {
-    if (lastState && !needsUpdate && lastState.name === parentState?.name) {
+    if (lastState && !needsUpdate) {
       return lastState
     }
     states.set(id, parentState)
@@ -172,8 +180,9 @@ const getSnapshotFrom = (
 
   if (
     lastState &&
-    lastState.name === name &&
-    (!parentState || parentState.name === lastState.parentName)
+    lastState.name === name
+    //  &&
+    // (!parentState || parentState.name === lastState.parentName)
   ) {
     // cache.set(cacheKey, lastState!)
     return lastState

@@ -115,7 +115,6 @@ export const ThemeTintAlt = ({
   ...rest
 }: ThemeProps & { disable?: boolean; offset?: number }): JSX.Element => {
   const curTint = useTint(offset).tintAlt
-  console.log('wtf', curTint, offset, disable)
   const name = disable ? null : curTint
   return (
     <Theme name={name} {...rest}>

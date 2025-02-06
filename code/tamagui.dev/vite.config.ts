@@ -95,7 +95,9 @@ export default {
         compiler: true,
         // scan: {
         //   options: {
-        //     log: true,
+        //     showToolbar: true,
+        //     enabled: true,
+        //     // log: true,
         //   },
         // },
       },

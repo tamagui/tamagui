@@ -7,6 +7,7 @@ import {
   Switch as TamaguiSwitch,
   type SwitchProps as TamaguiSwitchProps,
   View,
+  XStack,
 } from 'tamagui'
 import { TimedRender } from './components/TimedRender'
 
@@ -17,27 +18,46 @@ const StyledButton = styled(Button, {
 export const Sandbox = () => {
   const [k, setK] = useState(0)
 
+  console.warn('re rendering sandbox')
+
   return (
     <>
       <Button onPress={() => setK(Math.random())}>render</Button>
-      <TimedRender key={k}>
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-        <Switch />
-      </TimedRender>
+      <XStack
+        debug="verbose"
+        width={200}
+        height={200}
+        borderWidth={1}
+        borderColor="$borderColor"
+      />
     </>
   )
 }
+
+// const SwitchPerformance = () => {
+//   const [k, setK] = useState(0)
+
+//   return (
+//     <>
+//       <Button onPress={() => setK(Math.random())}>render</Button>
+//       <TimedRender key={k}>
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//         <Switch />
+//       </TimedRender>
+//     </>
+//   )
+// }
 
 // // export const Sandbox = () => {
 

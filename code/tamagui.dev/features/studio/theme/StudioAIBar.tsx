@@ -2,7 +2,7 @@ import { Input } from '@tamagui/input'
 import { Moon, Sun } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,
   Configuration,
@@ -18,7 +18,7 @@ import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
 import { useThemeBuilderStore } from './store/ThemeBuilderStore'
 
-export const StudioAIBar = () => {
+export const StudioAIBar = memo(() => {
   const inputRef = useRef<HTMLInputElement>(null)
   const store = useThemeBuilderStore()
   const user = useUser()
@@ -98,6 +98,8 @@ export const StudioAIBar = () => {
     }
   }
 
+  console.warn('re-render')
+
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
       <XStack fw="wrap" ai="center" f={1} gap="$3">
@@ -121,21 +123,7 @@ export const StudioAIBar = () => {
             }
           }}
         />
-        {/* {lastReply && (
-          <Theme name="surface1">
-            <Button
-              br="$10"
-              disabled={isGenerating === 'reply'}
-              o={isGenerating === 'reply' ? 0.2 : 1}
-              pe={isGenerating === 'reply' ? 'none' : 'auto'}
-              icon={isGenerating === 'reply' ? <Spinner size="small" /> : null}
-              onPress={() => generate('reply')}
-              size="$4"
-            >
-              Refine
-            </Button>
-          </Theme>
-        )} */}
+
         <XStack gap="$3" ai="center" jc="space-between">
           <Theme name="accent">
             <Button
@@ -166,7 +154,7 @@ export const StudioAIBar = () => {
       </XStack>
     </XStack>
   )
-}
+})
 
 const ThemeToggle = () => {
   const [scheme, setUserTheme] = useColorScheme()
