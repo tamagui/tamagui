@@ -253,6 +253,20 @@ export function createComponent<
       }
     }
 
+    const debugProp = propsIn['debug'] as DebugProp
+
+    if (
+      !process.env.TAMAGUI_IS_CORE_NODE &&
+      process.env.NODE_ENV === 'development' &&
+      debugProp === 'profile' &&
+      !time
+    ) {
+      const timer = require('@tamagui/timer').timer()
+      time = timer.start()
+      globalThis['time'] = time
+    }
+    if (process.env.NODE_ENV === 'development' && time) time`non-tamagui time (ignore)`
+
     // context overrides defaults but not props
     const curDefaultProps = styledContextProps
       ? { ...defaultProps, ...styledContextProps }
@@ -265,7 +279,6 @@ export function createComponent<
       props = mergeProps(curDefaultProps, propsIn)
     }
 
-    const debugProp = props['debug'] as DebugProp
     const componentName = props.componentName || staticConfig.componentName
 
     if (process.env.NODE_ENV === 'development' && isClient) {
@@ -316,26 +329,6 @@ export function createComponent<
         }
       }, [componentName])
     }
-
-    if (
-      !process.env.TAMAGUI_IS_CORE_NODE &&
-      process.env.NODE_ENV === 'development' &&
-      debugProp === 'profile' &&
-      !time
-    ) {
-      const timer = require('@tamagui/timer').timer()
-      time = timer.start()
-      globalThis['time'] = time
-      // prevent console logs to avoid slowdowns
-      time.ogConsoleInfo = console.info
-      time.ogConsoleGroupCollapsed = console.groupCollapsed
-      time.ogConsoleGroup = console.group
-      const empty = () => {}
-      console.info = empty
-      console.group = empty
-      console.groupCollapsed = empty
-    }
-    if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
 
     /**
      * Component state for tracking animations, pseudos
@@ -1190,9 +1183,6 @@ export function createComponent<
         setTimeout(() => {
           delete globalThis['willPrint']
           time.print()
-          console.info = time.ogConsoleInfo
-          console.group = time.ogConsoleGroupCollapsed
-          console.groupCollapsed = time.ogConsoleGroup
           time = null
         }, 50)
       }

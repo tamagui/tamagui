@@ -12,8 +12,6 @@ export const useTheme = (props: ThemeProps = {}) => {
 
 export type ThemeWithState = [ThemeParsed, ThemeState]
 
-const time = (globalThis as any).time
-
 /**
  * Adds a proxy around themeState that tracks update keys
  */
@@ -23,8 +21,6 @@ export const useThemeWithState = (
 ): ThemeWithState => {
   const keys = useRef<Set<string> | null>(null)
   const themeState = useThemeState(props, isRoot, keys)
-
-  if (process.env.NODE_ENV === 'development' && time) time`useThemeState`
 
   if (process.env.NODE_ENV === 'development') {
     if (!themeState?.theme) {
