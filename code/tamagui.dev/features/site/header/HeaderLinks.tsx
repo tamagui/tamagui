@@ -11,8 +11,8 @@ import type { HeaderProps } from './types'
 export const HeadAnchor = styled(Paragraph, {
   tag: 'a',
   fontFamily: '$silkscreen',
-  px: '$3',
-  py: '$3',
+  px: '$4',
+  py: '$4',
   cursor: 'pointer',
   fontSize: 14,
   color: '$color11',

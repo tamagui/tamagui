@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { useLoader } from 'one'
+import { useLoader, usePathname } from 'one'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
@@ -31,6 +31,7 @@ export async function loader({ params }) {
 
 export default function DocIntroPage() {
   const { code, frontmatter, examples } = useLoader(loader)
+  const pathname = usePathname()
 
   if (!frontmatter || !code) {
     console.warn(`No frontmatter/code?`)

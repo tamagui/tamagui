@@ -8,7 +8,7 @@ import {
   type MutableRefObject,
 } from 'react'
 import { getConfig } from '../config'
-import type { ThemeParsed, ThemeProps, UseThemeWithStateProps } from '../types'
+import type { ThemeParsed, ThemeProps, Themes, UseThemeWithStateProps } from '../types'
 
 type ID = string
 
@@ -100,6 +100,8 @@ export const useThemeState = (
   return state.id === id ? { ...state, isNew: true } : state
 }
 
+const cache = new Map<string, ThemeState>()
+
 const getSnapshotFrom = (
   props: UseThemeWithStateProps,
   propsKey: string,
@@ -108,6 +110,12 @@ const getSnapshotFrom = (
   parentId: string,
   keys: MutableRefObject<Set<string> | null> | undefined
 ): ThemeState => {
+  const hasKeys = keys?.current?.size
+  const cacheKey = `${propsKey}${hasKeys}${parentId}${isRoot}`
+  if (cache.has(cacheKey)) {
+    return cache.get(cacheKey)!
+  }
+
   const { themes } = getConfig()
   const lastState = states.get(id)
   const parentState = states.get(parentId)
@@ -123,10 +131,11 @@ const getSnapshotFrom = (
   }
 
   if (!name) {
-    if (lastState && !keys?.current?.size) {
+    if (lastState && !hasKeys) {
       return lastState
     }
     states.set(id, parentState)
+    cache.set(cacheKey, parentState!)
     return parentState!
   }
 
@@ -142,19 +151,6 @@ const getSnapshotFrom = (
   const parentInverses = parentState?.inverses ?? 0
   const isInverse = parentState && scheme !== parentState.scheme
   const inverses = parentInverses + (isInverse ? 1 : 0)
-
-  // if (
-  //   lastState &&
-  //   !lastState.isNew &&
-  //   (!keys?.current || keys.current.size === 0) &&
-  //   !isInverse &&
-  //   !inverses &&
-  //   // in the case its light/dark directly we can't optimize because it may start not inversed
-  //   // but then change to be inversed, and that wouldn't then trigger updates
-  //   !validSchemes[name]
-  // ) {
-  //   return lastState
-  // }
 
   const nextState = {
     id,
@@ -174,6 +170,8 @@ const getSnapshotFrom = (
   }
 
   states.set(id, nextState)
+  cache.set(cacheKey, nextState)
+
   if (isRoot) {
     rootThemeState = nextState
   }
