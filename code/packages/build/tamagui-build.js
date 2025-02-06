@@ -19,12 +19,6 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 
-if (process.env.NEEDS_UNLOCK) {
-  if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
-    process.exit(0)
-  }
-}
-
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
 const shouldBundleFlag = !!process.argv.includes('--bundle')
@@ -32,6 +26,13 @@ const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
+
+if (process.env.NEEDS_UNLOCK) {
+  if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
+    process.exit(shouldWatch ? 0 : 1)
+  }
+}
+
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')

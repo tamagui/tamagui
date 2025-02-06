@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dot-dev",
-  "version": "1.123.9",
+  "version": "1.123.17",
   "type": "module",
   "private": true,
   "sideEffects": false,
@@ -9,6 +9,8 @@
     "dev": "one dev",
     "dev:clean": "one dev --clean",
     "clean": "one clean",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
     "serve": "one serve --port 8081",
     "build:prod": "one build",
     "prod": "yarn build:prod && yarn serve",
@@ -44,13 +46,13 @@
     "@tamagui/mdx-2": "workspace:*",
     "@tamagui/use-store": "workspace:*",
     "@vercel/og": "^0.6.5",
-    "@vxrn/color-scheme": "^1.1.429",
+    "@vxrn/color-scheme": "^1.1.432",
     "ai": "^4.1.16",
     "color2k": "^2.0.2",
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
     "masonic": "^4.0.1",
-    "one": "1.1.429",
+    "one": "1.1.432",
     "postmark": "^3.0.18",
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "^0.76.5",
@@ -67,6 +69,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@tamagui/cli": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",
     "acorn": "^8.11.3",
@@ -75,6 +78,6 @@
     "esbuild-register": "^3.6.0",
     "mdx-bundler": "^10.0.2",
     "vite-bundle-analyzer": "^0.9.4",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.5"
   }
 }

@@ -180,7 +180,7 @@ export class ColorsStore {
     const scale = this.scale
     try {
       const color = index
-        ? getColor(palette.curves, scale, parseInt(index, 10))
+        ? getColor(palette.curves, scale, Number.parseInt(index, 10))
         : undefined
       val = color ? colorToHex(color) : undefined
     } catch (error) {}
@@ -354,19 +354,15 @@ export class ColorsStore {
     Object.values(palette.scales).forEach((scale) => {
       ;(Object.entries(scale.curves) as [Curve['type'], string | undefined][]).forEach(
         ([type, curveId]) => {
-          // wtf is oging on here
-          // biome-ignore lint/nursery/noConstantCondition: <explanation>
-          if (true) {
-            // if (curveId === curveId) {
-            // Update color values
-            scale.colors = scale.colors.map((color, index) => ({
-              ...color,
-              [type]: this.curve().values[index] + color[type],
-            }))
+          // if (curveId === curveId) {
+          // Update color values
+          scale.colors = scale.colors.map((color, index) => ({
+            ...color,
+            [type]: this.curve().values[index] + color[type],
+          }))
 
-            // Delete curve from scale
-            delete scale.curves[type]
-          }
+          // Delete curve from scale
+          delete scale.curves[type]
         }
       )
     })

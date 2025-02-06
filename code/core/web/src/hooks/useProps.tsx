@@ -7,7 +7,7 @@ import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '
 import { Stack } from '../views/Stack'
 import type { ViewProps, ViewStyle } from '../views/View'
 import { useComponentState } from './useComponentState'
-import { useMedia } from './useMedia'
+import { mediaState, useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
 
 type UsePropsOptions = Pick<
@@ -17,6 +17,11 @@ type UsePropsOptions = Pick<
   disableExpandShorthands?: boolean
   forComponent?: { staticConfig: StaticConfig }
   noClass?: boolean
+
+  /**
+   * Disable watching for media queries
+   */
+  noMedia?: boolean
 }
 
 export type PropsWithoutMediaStyles<A> = {
@@ -86,7 +91,11 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     getConfig()
   )
 
-  const mediaState = useMedia()
+  const mediaStateNow = opts?.noMedia
+    ? // not safe to use mediaState but really marginal to hit this
+      mediaState
+    : useMedia()
+
   const splitStyles = useSplitStyles(
     props,
     staticConfig,
@@ -95,7 +104,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     state,
     {
       isAnimated: false,
-      mediaState,
+      mediaState: mediaStateNow,
       noSkip: true,
       noMergeStyle: true,
       noClass: true,

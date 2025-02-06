@@ -135,8 +135,6 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
-  if (props.reddish) debug = 'verbose'
-
   conf = conf || getConfig()
 
   // a bit icky, we need no normalize but not fully

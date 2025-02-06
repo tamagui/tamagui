@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin-fully-specified",
-  "version": "1.123.9",
+  "version": "1.123.17",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.25.4",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.5"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

@@ -1,5 +1,5 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { useLocalStorage } from 'foxact/use-local-storage'
 import {
   Button,
@@ -172,23 +172,20 @@ export const DropTamaguiConfig = () => {
 
                     <Features
                       items={[
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                        <>
+                        <React.Fragment key="">
                           Create a <CodeInline>tamagui.build.ts</CodeInline> at the root
                           of your app and move your build configuration into it as a
                           default export. All of the bundler plugins load from this file
                           on startup.
-                        </>,
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                        <>
+                        </React.Fragment>,
+                        <React.Fragment key="">
                           If not using a compiler plugin, run generate —{' '}
                           <Code>npx @tamagui/cli generate</Code>
-                        </>,
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                        <>
+                        </React.Fragment>,
+                        <React.Fragment key="">
                           Drop the generated <Code>.tamagui/tamagui.config.json</Code> on
                           this window.
-                        </>,
+                        </React.Fragment>,
                       ]}
                     />
                   </>

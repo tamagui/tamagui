@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/card",
-  "version": "1.123.9",
+  "version": "1.123.17",
   "sideEffects": [
     "*.css"
   ],
@@ -42,6 +42,7 @@
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.76.5"

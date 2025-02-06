@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/remove-scroll",
-  "version": "1.123.9",
+  "version": "1.123.17",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

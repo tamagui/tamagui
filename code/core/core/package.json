@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.123.9",
+  "version": "1.123.17",
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -46,7 +46,7 @@
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "typescript": "^5.7.2",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.5"
   },
   "exports": {
     "./package.json": "./package.json",

@@ -23,12 +23,15 @@ function TabsComponent(props: TabsProps) {
 
     const params = Object.fromEntries(url.searchParams?.entries() ?? [])
 
-    router.replace({
-      pathname: location.pathname,
-      params,
-    } as Href, {
-      scroll: false,
-    })
+    router.replace(
+      {
+        pathname: location.pathname,
+        params,
+      } as Href,
+      {
+        scroll: false,
+      }
+    )
   }
 
   const value = typeof query[id] === 'string' ? (query[id] as string) : props.defaultValue

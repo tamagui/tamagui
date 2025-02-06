@@ -9,7 +9,7 @@ import {
   Separator,
   Spacer,
   Theme,
-  TooltipSimple,
+  View,
   XStack,
   YStack,
   styled,
@@ -27,6 +27,7 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
+import { lastInserted } from '../../features/studio/theme/previewTheme'
 
 themeBuilderStore.setSteps(steps)
 
@@ -65,37 +66,37 @@ export default function ThemePage() {
       <Dialogs />
 
       <YStack flexShrink={0} mb="$10">
-        <PreviewTheme>
-          <ThemeBuilderModal />
+        <ThemeBuilderModal />
 
-          <XStack
-            w="100%"
-            h="max-content"
-            pr={540}
-            pt={10}
-            $lg={{ pr: 0 }}
-            jc="flex-end"
-            ov="hidden"
+        <XStack
+          w="100%"
+          h="max-content"
+          pr={540}
+          pt={10}
+          $lg={{ pr: 0 }}
+          jc="flex-end"
+          ov="hidden"
+        >
+          <YStack
+            gap="$6"
+            p="$4"
+            f={1}
+            maw="calc(min(100vw, 1300px))"
+            group="content"
+            $md={{
+              maw: `calc(min(100vw, 900px))`,
+              p: '$4',
+            }}
           >
-            <YStack
-              gap="$6"
-              p="$4"
-              f={1}
-              maw="calc(min(100vw, 1300px))"
-              group="content"
-              $md={{
-                maw: `calc(min(100vw, 900px))`,
-                p: '$4',
-              }}
-            >
-              <StudioAIBar />
+            <StudioAIBar />
+            <PreviewTheme>
               <YStack gap="$6">
                 <StudioPreviewComponentsBar scrollView={document.documentElement} />
                 <StudioPreviewComponents />
               </YStack>
-            </YStack>
-          </XStack>
-        </PreviewTheme>
+            </PreviewTheme>
+          </YStack>
+        </XStack>
       </YStack>
     </>
   )
@@ -120,11 +121,10 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
-  const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack
-      animation="medium"
+      // animation="medium"
       pos={'fixed' as any}
       t={70}
       r={0}
@@ -133,7 +133,7 @@ const ThemeBuilderModal = memo(() => {
       mah="90vh"
       zi={100_000}
       $lg={{
-        x: expanded ? 0 : '98%',
+        x: '98%',
       }}
     >
       <YStack
@@ -150,7 +150,7 @@ const ThemeBuilderModal = memo(() => {
         bg="$background06"
         backdropFilter="blur(60px)"
       >
-        <TooltipSimple label="Show Drawer">
+        {/* <TooltipSimple label="Show Drawer">
           <YStack
             animation="lazy"
             px="$2"
@@ -175,13 +175,13 @@ const ThemeBuilderModal = memo(() => {
               x: expanded ? 30 : -30,
               opacity: 1,
             }}
-            onPress={() => {
-              setExpanded(!expanded)
-            }}
+            // onPress={() => {
+            //   setExpanded(!expanded)
+            // }}
           >
             {expanded ? <ChevronRight x={0.5} /> : <ChevronLeft x={0.5} />}
           </YStack>
-        </TooltipSimple>
+        </TooltipSimple> */}
 
         <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
@@ -273,6 +273,15 @@ const ThemeStudioStepButtonsBar = () => {
 
   return (
     <XStack gap="$2">
+      {location.hostname === 'localhost' && lastInserted && (
+        <>
+          <a href={`one-chat://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
+            <Button size="$3">Chat</Button>
+          </a>
+          <View flex={1} />
+        </>
+      )}
+
       <Button
         size="$3"
         onPress={() => {

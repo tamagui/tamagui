@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bento",
-  "version": "1.123.9",
+  "version": "1.123.17",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -46,7 +46,7 @@
     }
   },
   "scripts": {
-    "build": "NEEDS_UNLOCK=1 tamagui-build --skip-types",
+    "build": "NEEDS_UNLOCK=1 tamagui-build --skip-types || ./setup-unencrypted.sh",
     "typecheck": "tsc",
     "watch": "NEEDS_UNLOCK=1 tamagui-build --skip-types --watch",
     "clean": "tamagui-build clean",

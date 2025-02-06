@@ -8,6 +8,7 @@ import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { getShorthandValue } from './helpers/getShorthandValue'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
@@ -230,9 +231,8 @@ export function createComponent<
           log(` 👇 contextValue`, contextValue)
         }
 
-        const shorthands = config?.shorthands
         for (const key in context.props) {
-          const propVal = propsIn[key] || propsIn[shorthands?.[propsIn as any]]
+          const propVal = getShorthandValue(propsIn, key)
 
           // if not set, use context
           if (propVal === undefined) {
@@ -1238,7 +1238,7 @@ export function createComponent<
 
     const extendedConfig = extendStyledConfig(options?.staticConfig)
 
-    out = options?.disableTheme ? out : (themeable(out, extendedConfig) as any)
+    out = options?.disableTheme ? out : (themeable(out, extendedConfig, true) as any)
 
     if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
       out = React.memo(out)

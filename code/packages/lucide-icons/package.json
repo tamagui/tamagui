@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/lucide-icons",
-  "version": "1.123.9",
+  "version": "1.123.17",
   "sideEffects": false,
   "description": "React Native components for Lucide icons - native and web",
   "source": "src/index.ts",
@@ -29,7 +29,7 @@
     "react-native-svg": ">=12"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.2",
+    "@biomejs/biome": "^1.9.4",
     "@tamagui/build": "workspace:*",
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",

@@ -12,12 +12,24 @@ import {
   tamaguiOptions,
 } from './loadTamagui'
 
+import { createHash } from 'node:crypto'
+
 export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
   if (optionsIn?.disable) {
     return {
       name: 'tamagui-extract',
     }
   }
+
+  const getHash = (input: string) => createHash('sha1').update(input).digest('base64')
+
+  const clearCompilerCache = () => {
+    memoryCache = {}
+    cacheSize = 0
+  }
+
+  let memoryCache = {}
+  let cacheSize = 0
 
   const cssMap = new Map<string, string>()
 
@@ -131,86 +143,115 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         // only optimize on client - server should produce identical styles anyway!
         return
       }
+
       if (isVite6Native(this.environment)) {
         return
       }
+
       if (
         tamaguiOptions?.disableServerOptimization &&
         isVite6AndNotClient(this.environment)
       ) {
         return
       }
+
       const [validId] = id.split('?')
       return cssMap.get(validId)
     },
 
-    async transform(code, id, ssrParam) {
-      if (disableStatic) {
-        // only optimize on client - server should produce identical styles anyway!
-        return
-      }
-      if (isVite6Native(this.environment)) {
-        return
-      }
-      if (
-        tamaguiOptions?.disableServerOptimization &&
-        isVite6AndNotClient(this.environment)
-      ) {
-        return
-      }
-
-      const [validId] = id.split('?')
-      if (!validId.endsWith('.tsx')) {
-        return
-      }
-
-      const firstCommentIndex = code.indexOf('// ')
-      const { shouldDisable, shouldPrintDebug } = Static!.getPragmaOptions({
-        source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
-        path: validId,
-      })
-
-      if (shouldPrintDebug) {
-        console.trace(`Debugging file: ${id} in environment: ${this.environment?.name}`)
-        console.info(`\n\nOriginal source:\n${code}\n\n`)
-      }
-
-      if (shouldDisable) {
-        return
-      }
-
-      const extracted = await Static!.extractToClassNames({
-        extractor: extractor!,
-        source: code,
-        sourcePath: validId,
-        options: tamaguiOptions!,
-        shouldPrintDebug,
-      })
-
-      if (!extracted) {
-        return
-      }
-
-      const rootRelativeId = `${validId}${virtualExt}`
-      const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
-
-      let source = extracted.js
-
-      if (extracted.styles) {
-        this.addWatchFile(rootRelativeId)
-
-        if (server && cssMap.has(absoluteId)) {
-          invalidateModule(rootRelativeId)
+    transform: {
+      order: 'pre',
+      async handler(code, id) {
+        if (disableStatic) {
+          // only optimize on client - server should produce identical styles anyway!
+          return
         }
 
-        source = `${source}\nimport "${rootRelativeId}";`
-        cssMap.set(absoluteId, extracted.styles)
-      }
+        if (isVite6Native(this.environment)) {
+          return
+        }
 
-      return {
-        code: source.toString(),
-        map: extracted.map,
-      }
+        if (
+          tamaguiOptions?.disableServerOptimization &&
+          isVite6AndNotClient(this.environment)
+        ) {
+          return
+        }
+
+        const [validId] = id.split('?')
+        if (!validId.endsWith('.tsx')) {
+          return
+        }
+
+        const firstCommentIndex = code.indexOf('// ')
+        const { shouldDisable, shouldPrintDebug } = Static!.getPragmaOptions({
+          source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
+          path: validId,
+        })
+
+        if (shouldPrintDebug) {
+          console.trace(`Debugging file: ${id} in environment: ${this.environment?.name}`)
+          console.info(`\n\nOriginal source:\n${code}\n\n`)
+        }
+
+        if (shouldDisable) {
+          return
+        }
+
+        const cacheEnv =
+          this.environment.name === 'client' || this.environment.name === 'ssr'
+            ? // same cache key for ssr and web since they are the same
+              'web'
+            : this.environment.name
+        const cacheKey = getHash(`${cacheEnv}${code}${id}`)
+        const cached = memoryCache[cacheKey]
+        if (cached) {
+          return cached
+        }
+
+        const extracted = await Static!.extractToClassNames({
+          extractor: extractor!,
+          source: code,
+          sourcePath: validId,
+          options: tamaguiOptions!,
+          shouldPrintDebug,
+        })
+
+        if (!extracted) {
+          return
+        }
+
+        const rootRelativeId = `${validId}${virtualExt}`
+        const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
+
+        let source = extracted.js
+
+        if (extracted.styles) {
+          this.addWatchFile(rootRelativeId)
+
+          if (server && cssMap.has(absoluteId)) {
+            invalidateModule(rootRelativeId)
+          }
+
+          source = `${source}\nimport "${rootRelativeId}";`
+          cssMap.set(absoluteId, extracted.styles)
+        }
+
+        const codeOut = source.toString()
+        const out = {
+          code: codeOut,
+          map: extracted.map,
+        }
+
+        cacheSize += codeOut.length
+        // ~50Mb cache for recently compiler files
+        if (cacheSize > 26214400) {
+          clearCompilerCache()
+        }
+        memoryCache[cacheKey] = out
+
+        return out
+      },
     },
   }
 }

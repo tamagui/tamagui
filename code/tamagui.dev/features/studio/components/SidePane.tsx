@@ -1,6 +1,7 @@
 import { ArrowLeft, X } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import React, { memo, useEffect } from 'react'
+import type React from 'react'
+import { memo, useEffect } from 'react'
 import { Button, H4, PortalHost, ScrollView, Spacer, XStack, YStack } from 'tamagui'
 import { SidePaneStore } from '../state/SidePaneStore'
 // import { init, redo, sidePaneController, undo } from '../actions'
