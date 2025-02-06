@@ -38,22 +38,6 @@ export function ThemeDebug({
       document.body.appendChild(node)
     }, [])
 
-    // React.useEffect(() => {
-    //   themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
-    //     setOnChangeCount((p) => ++p)
-    //     console.warn(
-    //       `theme changed for ${themeState.themeManager?.id} from parent ${themeState.themeManager?.parentManager?.id} to new name`,
-    //       name
-    //     )
-    //   })
-    // }, [themeState.themeManager])
-
-    // React.useEffect(() => {
-    //   // to refresh _listeningIds every so often
-    //   const tm = setInterval(rerender, 1000)
-    //   return () => clearTimeout(tm as any)
-    // }, [])
-
     if (themeProps['disable-child-theme'] || !isHydrated) {
       return children
     }
