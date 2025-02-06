@@ -1,5 +1,6 @@
 import { Theme, useTheme, useThemeName } from '@tamagui/web'
-import { memo, useId, useState } from 'react'
+import { Link } from 'one'
+import { memo, useState } from 'react'
 import { Button, Circle, XStack, YStack } from 'tamagui'
 import { ThemeToggle } from '../features/site/theme/ThemeToggle'
 
@@ -10,11 +11,17 @@ export default function Sandbox() {
     <YStack gap="$2">
       <ThemeToggle />
 
+      <Link href="/sandbox2">Go to sandbox2</Link>
+
       <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button>
 
       {/* <Circles /> */}
 
       <Theme debug="visualize" name={name as any}>
+        <Circles />
+      </Theme>
+
+      <Theme inverse>
         <Circles />
       </Theme>
     </YStack>
@@ -24,7 +31,7 @@ export default function Sandbox() {
 const Circles = memo(() => {
   return (
     <XStack bg="$color1">
-      <Theme debug="visualize" name="accent">
+      <Theme name="accent">
         <Circle size={100} bg="$color10">
           <Nothing />
         </Circle>
