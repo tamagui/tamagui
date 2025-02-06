@@ -6,8 +6,6 @@ import { ThemeToggle } from '../features/site/theme/ThemeToggle'
 export default function Sandbox() {
   const [name, setName] = useState('dark')
 
-  console.log('Sandbox', useId())
-
   return (
     <YStack gap="$2">
       <ThemeToggle />
@@ -24,8 +22,6 @@ export default function Sandbox() {
 }
 
 const Circles = memo(() => {
-  console.log('circled', useId())
-
   return (
     <XStack bg="$color1">
       <Theme debug="visualize" name="accent">

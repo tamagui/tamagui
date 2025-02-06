@@ -36,7 +36,6 @@ globalThis['themeStates'] = states
 
 export const forceUpdateThemes = () => {
   allListeners.forEach((cb) => cb())
-  console.warn('UPDATE')
 }
 
 export const getThemeState = (id: ID) => states.get(id)
