@@ -1,6 +1,5 @@
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useForceUpdate } from '@tamagui/use-force-update'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import type { ThemeState } from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
@@ -14,8 +13,6 @@ export function ThemeDebug({
 }: { themeState: ThemeState; themeProps: ThemeProps; children: any }) {
   if (process.env.NODE_ENV === 'development') {
     const isHydrated = useDidFinishSSR()
-    const [onChangeCount, setOnChangeCount] = React.useState(0)
-    const rerender = useForceUpdate()
 
     if (process.env.NODE_ENV === 'development' && typeof document !== 'undefined') {
       if (!node) {
@@ -66,7 +63,6 @@ export function ThemeDebug({
                   reset: themeProps.reset,
                   inverse: themeProps.inverse,
                 },
-                onChangeCount,
               },
               null,
               2

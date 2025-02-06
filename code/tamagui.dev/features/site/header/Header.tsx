@@ -6,7 +6,6 @@ import {
   SizableText,
   TooltipGroup,
   View,
-  VisuallyHidden,
   XGroup,
   XStack,
   YStack,

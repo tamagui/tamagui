@@ -102,8 +102,22 @@ export const useThemeState = (
     scheduleUpdate(id)
   }, [keys, propsKey])
 
-  if (process.env.NODE_ENV === 'development' && props.debug)
-    console.info(` useTheme getSnapshot result`, id, state.id)
+  if (process.env.NODE_ENV === 'development' && props.debug) {
+    console.groupCollapsed(
+      ` · useTheme(${id}) =>`,
+      state.name,
+      id === state.id ? '🎉' : '⏭️'
+    )
+    console.info({
+      state,
+      parentId,
+      props,
+      propsKey,
+      id,
+      parentState: states.get(parentId),
+    })
+    console.groupEnd()
+  }
 
   return state.id === id ? { ...state, isNew: true } : state
 }
@@ -119,10 +133,10 @@ const getSnapshotFrom = (
   parentId: string,
   keys: MutableRefObject<Set<string> | null> | undefined
 ): ThemeState => {
-  const hasKeys = keys?.current?.size
+  const needsUpdate = keys?.current?.size || props.needsUpdate?.()
   const parentState = states.get(parentId)
 
-  // const cacheKey = `${id}${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
+  // const cacheKey = `${id}${propsKey}${needsUpdate}${parentState?.name || ''}${isRoot}`
   // if (cache.has(cacheKey)) {
   //   return cache.get(cacheKey)!
   // }
@@ -148,7 +162,7 @@ const getSnapshotFrom = (
   }
 
   if (!name) {
-    if (lastState && !hasKeys) {
+    if (lastState && !needsUpdate && lastState.name === parentState?.name) {
       return lastState
     }
     states.set(id, parentState)

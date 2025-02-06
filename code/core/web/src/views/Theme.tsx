@@ -57,7 +57,7 @@ export function getThemedChildren(
   isRoot = false,
   stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>
 ) {
-  const { shallow, forceClassName, debug } = props
+  const { shallow, forceClassName } = props
 
   // always be true if ever themed so we avoid re-parenting
   const state = stateRef.current
@@ -70,10 +70,12 @@ export function getThemedChildren(
     return children
   }
 
-  const id = themeState.isNew ? themeState.id : themeState.parentId || themeState.id
+  // from here on out we have to be careful not to re-parent
 
   children = (
-    <ThemeStateContext.Provider value={id}>{children}</ThemeStateContext.Provider>
+    <ThemeStateContext.Provider value={themeState.id}>
+      {children}
+    </ThemeStateContext.Provider>
   )
 
   const { isInverse, name } = themeState
@@ -118,7 +120,8 @@ export function getThemedChildren(
         requiresExtraWrapper,
         forceClassName,
         themeState,
-        ...getThemeClassNameAndStyle(themeState, isRoot),
+        state,
+        ...getThemeClassNameAndStyle(themeState, props, isRoot),
       })
       children = (
         <ThemeDebug themeState={themeState} themeProps={props}>
@@ -133,7 +136,7 @@ export function getThemedChildren(
   }
 
   if (isWeb) {
-    const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
+    const { className, style } = getThemeClassNameAndStyle(themeState, props, isRoot)
 
     children = (
       <span className={`${className} _dsp_contents is_Theme`} style={style}>
@@ -164,8 +167,12 @@ export function getThemedChildren(
   return children
 }
 
-function getThemeClassNameAndStyle(themeState: ThemeState, isRoot = false) {
-  if (!themeState.isNew) {
+function getThemeClassNameAndStyle(
+  themeState: ThemeState,
+  props: ThemeProps,
+  isRoot = false
+) {
+  if (!themeState.isNew && !props.forceClassName) {
     return empty
   }
 

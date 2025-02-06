@@ -11,10 +11,10 @@ export const seasons = {
 }
 
 export const SeasonTogglePopover = (props: { children: any }) => {
-  const { name, tint, setNextTint } = useTint()
+  const { name } = useTint()
 
   return (
-    <Popover hoverable={{ delay: { open: 1200, close: 100 }, restMs: 1200 }} offset={20}>
+    <Popover hoverable={{ delay: { open: 1000, close: 100 }, restMs: 1000 }} offset={20}>
       <Popover.Trigger>
         <View>
           {props.children}

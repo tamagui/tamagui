@@ -121,9 +121,8 @@ const HeaderMenuTheme = (props: { children: any }) => {
   const isBento = usePathname().startsWith('/bento')
   const isTakeout = usePathname().startsWith('/takeout')
   const curTint = useTint().tint
-  return (
-    <Theme name={isTakeout ? 'gray' : isBento ? 'tan' : curTint}>{props.children}</Theme>
-  )
+  const name = isTakeout ? 'gray' : isBento ? 'tan' : curTint
+  return <Theme name={name}>{props.children}</Theme>
 }
 
 const HeaderMenuContent = React.memo(function HeaderMenuContent({

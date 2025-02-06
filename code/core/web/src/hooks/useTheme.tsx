@@ -36,9 +36,5 @@ export const useThemeWithState = (
 
   const themeProxied = getThemeProxied(props, themeState, keys)
 
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.info(`  🔹 [${themeState?.id}] useTheme =>`, themeState?.name)
-  }
-
   return [themeProxied, themeState]
 }
