@@ -31,9 +31,9 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "@tamagui/themes": "workspace:*",
-    "@tamagui/core": "workspace:*"
+    "@tamagui/themes": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

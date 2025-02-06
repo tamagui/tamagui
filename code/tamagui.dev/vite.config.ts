@@ -95,6 +95,12 @@ export default {
         // },
       },
 
+      ssr: {
+        autoDepsOptimization: {
+          include: /.*/,
+        },
+      },
+
       deps: {
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,

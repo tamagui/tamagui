@@ -95,6 +95,7 @@
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
     "upgrade:one": "yarn up 'one'@latest '@vxrn/*'@latest",
+    "upgrade:one:canary": "yarn up 'one'@canary '@vxrn/*'@canary",
     "upgrade:starters:expo-router": "cd code/starters/expo-router && yarn && yarn upgrade:tamagui",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
     "upgrade:starters:remix": "cd code/starters/remix && yarn && yarn upgrade:tamagui",
