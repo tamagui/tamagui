@@ -6920,6 +6920,7 @@ __metadata:
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/mdx-2": "workspace:*"
+    "@tamagui/tamagui-dev-config": "workspace:*"
     "@tamagui/use-store": "workspace:*"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@vercel/og": "npm:^0.6.5"
@@ -7647,6 +7648,7 @@ __metadata:
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-did-finish-ssr": "workspace:*"
     "@tamagui/use-event": "workspace:*"
+    "@types/react-dom": "npm:^19.0.3"
     react-native: "npm:^0.76.5"
   languageName: unknown
   linkType: soft
@@ -8175,6 +8177,19 @@ __metadata:
     "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/tamagui-dev-config@workspace:*, @tamagui/tamagui-dev-config@workspace:code/packages/tamagui-dev-config":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tamagui-dev-config@workspace:code/packages/tamagui-dev-config"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    one: "npm:1.1.434"
+    react: "npm:*"
+    tamagui: "workspace:*"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9421,6 +9436,15 @@ __metadata:
   version: 1.2.7
   resolution: "@types/range-parser@npm:1.2.7"
   checksum: 10/95640233b689dfbd85b8c6ee268812a732cf36d5affead89e806fe30da9a430767af8ef2cd661024fd97e19d61f3dec75af2df5e80ec3bea000019ab7028629a
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:^19.0.3":
+  version: 19.0.3
+  resolution: "@types/react-dom@npm:19.0.3"
+  peerDependencies:
+    "@types/react": ^19.0.0
+  checksum: 10/815907f7adaa078acbf1d1ae7b6bf69cebe86bd301b8b9744e392bc0f16feb31bfb9fe0bfa2681d7d86678c83d52dedba5ed9bc7776736d4050cdd426b8b2d2b
   languageName: node
   linkType: hard
 

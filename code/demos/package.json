@@ -45,6 +45,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/avatar": "workspace:*",
     "@tamagui/button": "workspace:*",
     "@tamagui/config": "workspace:*",

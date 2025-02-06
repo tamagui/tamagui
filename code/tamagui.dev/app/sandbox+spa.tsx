@@ -1,8 +1,7 @@
-import { Theme, useTheme, useThemeName, useThemeWithState } from '@tamagui/web'
-import { Link } from 'one'
+import { DialogDemo } from '@tamagui/demos'
+import { Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
-import { Button, Circle, Text, XStack, YStack } from 'tamagui'
-import { ThemeToggle } from '../features/site/theme/ThemeToggle'
+import { Circle, Text, XStack, YStack } from 'tamagui'
 
 export default function Sandbox() {
   const [name, setName] = useState('dark')
@@ -11,7 +10,9 @@ export default function Sandbox() {
 
   return (
     <YStack gap="$2">
-      <ThemeToggle />
+      <DialogDemo />
+
+      {/* <ThemeToggle /> */}
 
       {/* <Link href="/sandbox2">Go to sandbox2</Link> */}
 

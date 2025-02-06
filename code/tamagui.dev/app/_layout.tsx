@@ -31,31 +31,6 @@ setupPopper({
 
 export default function Layout() {
   return (
-    <Providers>
-      {isWeb ? (
-        <Slot />
-      ) : (
-        <Stack
-          screenOptions={
-            isWeb
-              ? {
-                  header() {
-                    return null
-                  },
-
-                  contentStyle: {
-                    position: 'relative',
-                    backgroundColor: 'red',
-                  },
-                }
-              : {}
-          }
-        />
-      )}
-    </Providers>
-  )
-
-  return (
     <html lang="en-US">
       <head>
         <meta charSet="utf-8" />

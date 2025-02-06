@@ -1,0 +1,48 @@
+{
+  "name": "@tamagui/tamagui-dev-config",
+  "version": "1.123.17-1738863858128",
+  "sideEffects": false,
+  "source": "src/index.tsx",
+  "types": "./src/index.ts",
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-types --skip-native",
+    "watch": "tamagui-build --skip-types --skip-native --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/themes": "workspace:*",
+    "@tamagui/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

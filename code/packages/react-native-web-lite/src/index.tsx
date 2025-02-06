@@ -25,9 +25,7 @@ export {
   flattenStyle,
 } from '@tamagui/react-native-web-internals'
 export { default as render } from './render/index'
-export { unmountComponentAtNode } from 'react-dom'
 export { default as NativeModules } from './NativeModules/index'
-export { findNodeHandle } from './findNodeHandle'
 
 // animated
 export { default as Easing } from './vendor/react-native/Animated/Easing'

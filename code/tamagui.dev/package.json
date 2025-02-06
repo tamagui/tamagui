@@ -44,6 +44,7 @@
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/mdx-2": "workspace:*",
+    "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/use-store": "workspace:*",
     "@vercel/og": "^0.6.5",
     "@vxrn/color-scheme": "^1.1.434",

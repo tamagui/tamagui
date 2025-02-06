@@ -1,14 +1,9 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "removeComments": false
+    "jsx": "react-jsx",
+    "composite": true
   },
-  "references": [
-    {
-      "path": "../../core/use-did-finish-ssr"
-    }
-  ],
   "exclude": [
     "types",
     "dist",

@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "@types/react-dom": "^19.0.3",
     "react-native": "^0.76.5"
   },
   "publishConfig": {
