@@ -48,11 +48,11 @@ export function ThemeDebug({
     //   })
     // }, [themeState.themeManager])
 
-    React.useEffect(() => {
-      // to refresh _listeningIds every so often
-      const tm = setInterval(rerender, 1000)
-      return () => clearTimeout(tm as any)
-    }, [])
+    // React.useEffect(() => {
+    //   // to refresh _listeningIds every so often
+    //   const tm = setInterval(rerender, 1000)
+    //   return () => clearTimeout(tm as any)
+    // }, [])
 
     if (themeProps['disable-child-theme'] || !isHydrated) {
       return children

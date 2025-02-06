@@ -3,13 +3,12 @@ import '~/app.css'
 import '~/tamagui.css'
 
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
-import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
+import { LoadProgressBar, Slot, Stack } from 'one'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'
-import { useId } from 'react'
 
 // for navigation container props
 //           theme: {
@@ -31,6 +30,31 @@ setupPopper({
 })
 
 export default function Layout() {
+  return (
+    <Providers>
+      {isWeb ? (
+        <Slot />
+      ) : (
+        <Stack
+          screenOptions={
+            isWeb
+              ? {
+                  header() {
+                    return null
+                  },
+
+                  contentStyle: {
+                    position: 'relative',
+                    backgroundColor: 'red',
+                  },
+                }
+              : {}
+          }
+        />
+      )}
+    </Providers>
+  )
+
   return (
     <html lang="en-US">
       <head>

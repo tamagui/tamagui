@@ -1,8 +1,8 @@
 import { isWeb } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
+import { getSetting } from '../config'
 import { variableToString } from '../createVariable'
-import { log } from '../helpers/log'
 import { useThemeWithState } from '../hooks/useTheme'
 import {
   getThemeState,
@@ -12,7 +12,6 @@ import {
 } from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
-import { getSetting } from '../config'
 
 const empty = { className: '', style: {} }
 

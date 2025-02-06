@@ -43,7 +43,7 @@ export const getThemeState = (id: ID) => states.get(id)
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
 
-const hasRenderedOnce = new WeakMap<any, boolean>()
+const HasRenderedOnce = new WeakMap<any, boolean>()
 
 export const useThemeState = (
   props: UseThemeWithStateProps,
@@ -52,10 +52,6 @@ export const useThemeState = (
 ): ThemeState => {
   const { disable } = props
   const id = useId()
-
-  if (process.env.NODE_ENV === 'development' && props.debug) {
-    console.info(` · useTheme(${id}) render`)
-  }
 
   if (disable) {
     return {
@@ -78,24 +74,26 @@ export const useThemeState = (
         listenersByParent[parentId].delete(id)
       }
     },
-    [parentId]
+    [id, parentId, keys]
   )
 
   const propsKey = getPropsKey(props)
 
   const getSnapshot = () => {
-    return getSnapshotFrom(props, propsKey, isRoot, id, keys, parentId)
+    return getSnapshotFrom(props, propsKey, isRoot, id, parentId, keys)
   }
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
   useLayoutEffect(() => {
     if (!propsKey) return
-    if (!hasRenderedOnce.has(keys)) {
-      hasRenderedOnce.set(keys, true)
+    if (!HasRenderedOnce.has(keys)) {
+      HasRenderedOnce.set(keys, true)
       return
     }
-    console.warn('now should update children', id)
+    if (process.env.NODE_ENV === 'development' && props.debug) {
+      console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey)
+    }
     scheduleUpdate(id)
   }, [keys, propsKey])
 
@@ -107,9 +105,8 @@ const getSnapshotFrom = (
   propsKey: string,
   isRoot = false,
   id: string,
-  keys: MutableRefObject<Set<string> | null> | undefined,
   parentId: string,
-  onChange?: () => void
+  keys: MutableRefObject<Set<string> | null> | undefined
 ): ThemeState => {
   const { themes } = getConfig()
   const lastState = states.get(id)
@@ -118,38 +115,46 @@ const getSnapshotFrom = (
   const name = !propsKey ? null : getNewThemeName(parentState?.name, props)
 
   if (process.env.NODE_ENV === 'development' && props.debug) {
-    console.info(` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`)
+    console.groupCollapsed(
+      ` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`
+    )
+    console.info({ lastState, parentState })
+    console.groupEnd()
   }
 
   if (!name) {
-    states.delete(id)
-    if (!parentState) throw new Error(`‼️`)
-    return parentState
-  }
-
-  if (lastState?.name === name) {
-    return lastState
-  }
-
-  const currentKeys = keys?.current
-  const shouldSkipUpdate =
-    lastState &&
-    parentState?.name === lastState.parentName &&
-    !isRoot &&
-    (!currentKeys || !currentKeys.size) &&
-    // if its a direct scheme, always update
-    !validSchemes[name]
-
-  if (shouldSkipUpdate) {
-    if (process.env.NODE_ENV === 'development' && props.debug) {
-      console.info(` · useTheme(${id}) skip update`)
+    if (lastState && !keys?.current?.size) {
+      return lastState
     }
+    states.set(id, parentState)
+    return parentState!
+  }
+
+  if (
+    lastState &&
+    lastState.name === name &&
+    (!parentState || parentState.name === lastState.parentName)
+  ) {
     return lastState
   }
 
   const scheme = getScheme(name)
   const parentInverses = parentState?.inverses ?? 0
   const isInverse = parentState && scheme !== parentState.scheme
+  const inverses = parentInverses + (isInverse ? 1 : 0)
+
+  // if (
+  //   lastState &&
+  //   !lastState.isNew &&
+  //   (!keys?.current || keys.current.size === 0) &&
+  //   !isInverse &&
+  //   !inverses &&
+  //   // in the case its light/dark directly we can't optimize because it may start not inversed
+  //   // but then change to be inversed, and that wouldn't then trigger updates
+  //   !validSchemes[name]
+  // ) {
+  //   return lastState
+  // }
 
   const nextState = {
     id,
@@ -158,13 +163,13 @@ const getSnapshotFrom = (
     scheme,
     parentId,
     parentName: parentState?.name,
-    inverses: parentInverses + (isInverse ? 1 : 0),
+    inverses,
     isInverse,
   } satisfies ThemeState
 
   if (process.env.NODE_ENV === 'development' && props.debug) {
     console.groupCollapsed(` · useTheme(${id}) ⏭️ ${name}`)
-    console.info(nextState)
+    console.info('state', nextState)
     console.groupEnd()
   }
 
@@ -173,16 +178,12 @@ const getSnapshotFrom = (
     rootThemeState = nextState
   }
 
-  if (lastState) {
-    onChange?.()
-  }
-
   return nextState
 }
 
 function scheduleUpdate(id: string) {
   const queue = [id]
-  const visited = new Set<string>(queue)
+  const visited = new Set<string>()
 
   while (queue.length) {
     const parent = queue.shift()!
@@ -197,10 +198,10 @@ function scheduleUpdate(id: string) {
     }
   }
 
-  visited.delete(id)
-  for (const childId of visited) {
-    allListeners.get(childId)?.()
-  }
+  visited.forEach((childId) => {
+    const cb = allListeners.get(childId)
+    cb?.()
+  })
 }
 
 const validSchemes = {
