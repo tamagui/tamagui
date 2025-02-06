@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useId,
+  useLayoutEffect,
   useSyncExternalStore,
   type MutableRefObject,
 } from 'react'
@@ -43,7 +44,7 @@ export const getThemeState = (id: ID) => states.get(id)
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
 
-const isFirstRender = new WeakMap<any, boolean>()
+const hasRenderedOnce = new WeakMap<any, boolean>()
 
 export const useThemeState = (
   props: UseThemeWithStateProps,
@@ -81,23 +82,30 @@ export const useThemeState = (
     [parentId]
   )
 
+  const propsKey = getPropsKey(props)
+
   const getSnapshot = () => {
-    return getSnapshotFrom(props, isRoot, id, keys, parentId, () => {
-      if (!isFirstRender.has(keys)) {
-        isFirstRender.set(keys, true)
-      } else {
-        scheduleUpdate(id)
-      }
-    })
+    return getSnapshotFrom(props, propsKey, isRoot, id, keys, parentId)
   }
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+
+  useLayoutEffect(() => {
+    if (!propsKey) return
+    if (!hasRenderedOnce.has(keys)) {
+      hasRenderedOnce.set(keys, true)
+      return
+    }
+    console.warn('now should update children', id)
+    scheduleUpdate(id)
+  }, [keys, propsKey])
 
   return state.id === id ? { ...state, isNew: true } : state
 }
 
 const getSnapshotFrom = (
   props: UseThemeWithStateProps,
+  propsKey: string,
   isRoot = false,
   id: string,
   keys: MutableRefObject<Set<string> | null> | undefined,
@@ -105,11 +113,10 @@ const getSnapshotFrom = (
   onChange?: () => void
 ): ThemeState => {
   const { themes } = getConfig()
-  const currentKeys = keys?.current
   const lastState = states.get(id)
   const parentState = states.get(parentId)
 
-  const name = getNewThemeName(parentState?.name, props)
+  const name = !propsKey ? null : getNewThemeName(parentState?.name, props)
 
   if (process.env.NODE_ENV === 'development' && props.debug) {
     console.info(` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`)
@@ -125,11 +132,14 @@ const getSnapshotFrom = (
     return lastState
   }
 
+  const currentKeys = keys?.current
   const shouldSkipUpdate =
     lastState &&
     parentState?.name === lastState.parentName &&
     !isRoot &&
-    (!currentKeys || !currentKeys.size)
+    (!currentKeys || !currentKeys.size) &&
+    // if its a direct scheme, always update
+    !validSchemes[name]
 
   if (shouldSkipUpdate) {
     if (process.env.NODE_ENV === 'development' && props.debug) {
@@ -172,14 +182,26 @@ const getSnapshotFrom = (
 }
 
 function scheduleUpdate(id: string) {
-  // console.warn('notify')
-  // const children = listenersByParent[id]
-  // children?.forEach((id) => {
-  //   allListeners.get(id)?.()
-  // })
-  // instead of this ^
-  // we are going to gather all children recursively using listenersByParent and a queue
-  // at each step though we can run getSnapshotFrom()
+  const queue = [id]
+  const visited = new Set<string>(queue)
+
+  while (queue.length) {
+    const parent = queue.shift()!
+    const children = listenersByParent[parent]
+    if (children) {
+      for (const childId of children) {
+        if (!visited.has(childId)) {
+          visited.add(childId)
+          queue.push(childId)
+        }
+      }
+    }
+  }
+
+  visited.delete(id)
+  for (const childId of visited) {
+    allListeners.get(childId)?.()
+  }
 }
 
 const validSchemes = {
@@ -198,10 +220,6 @@ function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string
         ? `❌004`
         : 'Cannot reset and set a new name at the same time.'
     )
-  }
-
-  if (!hasThemeUpdatingProps(props)) {
-    return null
   }
 
   if (props.reset) {
@@ -245,12 +263,20 @@ function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string
     found = found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
   }
 
-  if (found === parentName) {
+  if (
+    found === parentName &&
+    // if its a scheme only sub-theme, we always consider it "new" because it likely inverses
+    // and we want to avoid reparenting
+    !validSchemes[found]
+  ) {
     return null
   }
 
   return found
 }
+
+const getPropsKey = (props: ThemeProps) =>
+  `${props.name || ''}${props.inverse || ''}${props.reset || ''}${props.forceClassName || ''}`
 
 export const hasThemeUpdatingProps = (props: ThemeProps) =>
   'inverse' in props || 'name' in props || 'reset' in props || 'forceClassName' in props
