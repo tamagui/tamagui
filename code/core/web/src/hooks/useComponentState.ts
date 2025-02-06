@@ -123,10 +123,6 @@ export const useComponentState = (
     curStateRef.willHydrate = true
   }
 
-  if (props.debug) {
-    console.warn('??', disabled, state.disabled)
-  }
-
   // immediately update disabled state and reset component state
   if (disabled !== state.disabled) {
     state.disabled = disabled
@@ -134,7 +130,6 @@ export const useComponentState = (
     if (disabled) {
       Object.assign(state, defaultComponentStateMounted)
     }
-    console.warn('setting disabled')
     setState({ ...state })
   }
 

@@ -1,3 +1,4 @@
+import { createTamagui } from 'tamagui'
 import { config } from '@tamagui/tamagui-dev-config'
 
 const tamaConf = createTamagui(config)

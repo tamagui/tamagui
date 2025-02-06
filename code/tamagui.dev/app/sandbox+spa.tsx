@@ -6,8 +6,6 @@ import { Circle, Text, XStack, YStack } from 'tamagui'
 export default function Sandbox() {
   const [name, setName] = useState('dark')
 
-  console.warn('render', useId())
-
   return (
     <YStack gap="$2">
       <DialogDemo />

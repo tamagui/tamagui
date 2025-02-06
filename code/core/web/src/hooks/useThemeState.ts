@@ -104,6 +104,9 @@ export const useThemeState = (
     scheduleUpdate(id)
   }, [keys, propsKey])
 
+  if (process.env.NODE_ENV === 'development' && props.debug)
+    console.info(` useTheme getSnapshot result`, id, state.id)
+
   return state.id === id ? { ...state, isNew: true } : state
 }
 
@@ -121,7 +124,7 @@ const getSnapshotFrom = (
   const hasKeys = keys?.current?.size
   const parentState = states.get(parentId)
 
-  const cacheKey = `${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
+  const cacheKey = `${id}${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
   if (cache.has(cacheKey)) {
     return cache.get(cacheKey)!
   }

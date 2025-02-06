@@ -168,7 +168,7 @@ export function registerRequire(
     unregister: () => {
       if (hasWarnedForModules.size) {
         console.info(
-          `  tamagui: skipped loading ${hasWarnedForModules.size}, could be fine, or cause less optimization. see: https://tamagui.dev/docs/intro/errors#warning-001`
+          `  [tamagui] skipped loading ${hasWarnedForModules.size} module, see: https://tamagui.dev/docs/intro/errors#warning-001`
         )
         hasWarnedForModules.clear()
       }

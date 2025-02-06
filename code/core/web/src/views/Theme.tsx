@@ -67,7 +67,7 @@ export function getThemedChildren(
   isRoot = false,
   stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>
 ) {
-  const { shallow, forceClassName } = props
+  const { shallow, forceClassName, debug } = props
 
   // always be true if ever themed so we avoid re-parenting
   const state = stateRef.current
@@ -75,8 +75,6 @@ export function getThemedChildren(
 
   let shouldRenderChildrenWithTheme =
     hasEverThemed || themeState.isNew || isRoot || hasThemeUpdatingProps(props)
-
-  // if (props.componentName === 'Tooltip') debugger
 
   if (!shouldRenderChildrenWithTheme) {
     return children

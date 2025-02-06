@@ -12,7 +12,6 @@ import {
   Unspaced,
   View,
   XStack,
-  YStack,
 } from 'tamagui'
 import { SelectDemoItem } from './SelectDemo'
 
