@@ -97,13 +97,17 @@ const TabsListFrame = styled(XStack, {
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List size="$4" width="100%" {...props} />
+      <Tabs.List size="$4" width="100%" borderWidth={1.5} borderColor="$background08" {...props} />
     </TabsListFrame>
   )
 }
 
+const Content = styled(Tabs.Content, {
+  backgroundColor: '$background',
+})
+
 export const CustomTabs = withStaticProperties(TabsComponent, {
   List: TabsList,
   Tab,
-  Content: Tabs.Content,
+  Content,
 })

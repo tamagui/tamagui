@@ -26,6 +26,7 @@ import {
   Separator,
   SizableText,
   Spacer,
+  Tabs,
   Text,
   Theme,
   ThemeableStack,
@@ -61,7 +62,7 @@ import { BenchmarkChartWeb } from '~/features/site/benchmarks/BenchmarkChartWeb'
 import { MediaPlayer } from '~/features/site/home/MediaPlayer'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { unwrapText } from '~/helpers/unwrapText'
-import { pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
+import { PACKAGE_MANAGERS, pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
 import { HeroContainer } from '../docs/HeroContainer'
@@ -70,6 +71,8 @@ import { InlineTabs } from '../docs/InlineTabs'
 import { PropsTable } from '../docs/PropsTable'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
+import { TabsTabProps } from 'tamagui'
+import { Tab } from '~/components/RovingTabs'
 
 if (!React.version.startsWith('19')) {
   console.error(`\n\n\n\Not on React 19 ❌\n\n\n\n`)
@@ -266,63 +269,50 @@ const componentsIn = {
     const CopyIcon2 = tamaguiCmdClip.hasCopied ? Check : Copy
 
     return (
-      <XStack fw="wrap" ai="center" gap="$4">
-        {name && (
-          <ThemeTint>
-            <TooltipSimple
-              restMs={1200}
-              delay={{
-                open: 1200,
-                close: 0,
-              }}
-              label={hasCopied ? 'Copied' : 'Copy to clipboard'}
+      <YStack gap="$2">
+        <XStack gap="$2">
+          <Tabs
+            activationMode="manual"
+            orientation="horizontal"
+            size="$4"
+            br="$4"
+            value={selectedPackageManager}
+            onPress={(e) => e.stopPropagation()}
+            onValueChange={setPackageManager}
+            group
+          >
+            <Tabs.List
+              disablePassBorderRadius
+              loop={false}
+              aria-label="package manager"
+              gap="$2"
             >
-              <XStack
-                ai="center"
-                gap="$2"
-                my="$1"
-                py="$1"
-                px="$2"
-                als="flex-start"
-                bg="$color3"
-                br="$3"
-                cur="pointer"
-                onPress={onCopy}
-              >
-                <SizableText color="$color11">{transformedCommand}</SizableText>
+              <>
+                {PACKAGE_MANAGERS.map((pkgManager) => (
+                  <Tab
+                    key={pkgManager}
+                    active={selectedPackageManager === pkgManager}
+                    pkgManager={pkgManager}
+                    onInteraction={() => {
+                      //
+                    }}
+                  />
+                ))}
+              </>
+            </Tabs.List>
+          </Tabs>
+        </XStack>
 
-                <CopyIcon
-                  p="$0.5"
-                  size={16}
-                  color="$color10"
-                  hoverStyle={{
-                    color: '$color2',
-                  }}
-                />
-              </XStack>
-            </TooltipSimple>
-          </ThemeTint>
-        )}
-
-        {(isInstallCommand || isExecCommand || isCreateCommand) && (
-          <>
-            <TooltipSimple label="« Individually or all-in-one »">
-              <XStack ai="center">
-                <SizableText pe="none" size="$3">
-                  or
-                </SizableText>
-                <Asterisk size={12} y={-8} />
-              </XStack>
-            </TooltipSimple>
-
-            <ThemeTintAlt>
+        <XStack fw="wrap" ai="center" gap="$4">
+          {name && (
+            <ThemeTint>
               <TooltipSimple
                 restMs={1200}
                 delay={{
                   open: 1200,
                   close: 0,
                 }}
-                label={tamaguiCmdClip.hasCopied ? 'Copied' : 'Copy to clipboard'}
+                label={hasCopied ? 'Copied' : 'Copy to clipboard'}
               >
                 <XStack
                   ai="center"
@@ -334,11 +324,18 @@ const componentsIn = {
                   bg="$color3"
                   br="$3"
                   cur="pointer"
-                  onPress={tamaguiCmdClip.onCopy}
+                  onPress={onCopy}
                 >
-                  <SizableText color="$color11">{tamaguiCommand}</SizableText>
+                  <Image
+                    width={16}
+                    height={16}
+                    scale={selectedPackageManager === 'pnpm' ? 0.7 : 0.8}
+                    y={selectedPackageManager === 'pnpm' ? 0 : 0}
+                    src={`/logos/${selectedPackageManager}.svg`}
+                  />
+                  <SizableText color="$color11">{transformedCommand}</SizableText>
 
-                  <CopyIcon2
+                  <CopyIcon
                     p="$0.5"
                     size={16}
                     color="$color10"
@@ -348,32 +345,66 @@ const componentsIn = {
                   />
                 </XStack>
               </TooltipSimple>
-            </ThemeTintAlt>
-          </>
-        )}
+            </ThemeTint>
+          )}
 
-        <XStack gap="$2">
-          {Object.keys(pkgCommands).map((c) => {
-            const isActive = selectedPackageManager === c
-            return (
-              <SizableText
-                cur="pointer"
-                onPress={() => {
-                  setPackageManager(c)
-                }}
-                color="$color12"
-                o={isActive ? 0.8 : 0.5}
-                hoverStyle={{
-                  o: 0.8,
-                }}
-                key={c}
-              >
-                {c}
-              </SizableText>
-            )
-          })}
+          {(isInstallCommand || isExecCommand || isCreateCommand) && (
+            <>
+              <TooltipSimple label="« Individually or all-in-one »">
+                <XStack ai="center">
+                  <SizableText pe="none" size="$3">
+                    or
+                  </SizableText>
+                  <Asterisk size={12} y={-8} />
+                </XStack>
+              </TooltipSimple>
+
+              <ThemeTintAlt>
+                <TooltipSimple
+                  restMs={1200}
+                  delay={{
+                    open: 1200,
+                    close: 0,
+                  }}
+                  label={tamaguiCmdClip.hasCopied ? 'Copied' : 'Copy to clipboard'}
+                >
+                  <XStack
+                    ai="center"
+                    gap="$2"
+                    my="$1"
+                    py="$1"
+                    px="$2"
+                    als="flex-start"
+                    bg="$color3"
+                    br="$3"
+                    cur="pointer"
+                    onPress={tamaguiCmdClip.onCopy}
+                  >
+                    <Image
+                      width={16}
+                      height={16}
+                      scale={selectedPackageManager === 'pnpm' ? 0.7 : 0.8}
+                      y={selectedPackageManager === 'pnpm' ? 0 : 0}
+                      src={`/logos/${selectedPackageManager}.svg`}
+                    />
+
+                    <SizableText color="$color11">{tamaguiCommand}</SizableText>
+
+                    <CopyIcon2
+                      p="$0.5"
+                      size={16}
+                      color="$color10"
+                      hoverStyle={{
+                        color: '$color2',
+                      }}
+                    />
+                  </XStack>
+                </TooltipSimple>
+              </ThemeTintAlt>
+            </>
+          )}
         </XStack>
-      </XStack>
+      </YStack>
     )
   },
 
