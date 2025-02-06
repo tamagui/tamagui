@@ -1,5 +1,4 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { ThemeTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import { type Href, Slot } from 'one'
 import type { ReactNode } from 'react'

@@ -54,16 +54,6 @@ export const ThemeNameEffectNoTheme = ({
     }, [isHydrated, isActive, color])
   }
 
-  // body:has(#theme-name-effect-red) {
-  //   background: var(--red${colorKey.replace('$color', '')}) !important;
-  // }
-  // body:has(#theme-name-effect-green) {
-  //   background: var(--green${colorKey.replace('$color', '')}) !important;
-  // }
-  // body:has(#theme-name-effect-blue) {
-  //   background: var(--blue${colorKey.replace('$color', '')}) !important;
-  // }
-
   return (
     <>
       <YStack
@@ -75,7 +65,16 @@ export const ThemeNameEffectNoTheme = ({
       <style>
         {ssrTheme
           ? `
-
+body:has(#theme-name-effect-red) {
+  background: var(--red${colorKey.replace('$color', '')}) !important;
+}
+body:has(#theme-name-effect-green) {
+  background: var(--green${colorKey.replace('$color', '')}) !important;
+}
+body:has(#theme-name-effect-blue) {
+  background: var(--blue${colorKey.replace('$color', '')}) !important;
+}
+  
 
 `
           : `

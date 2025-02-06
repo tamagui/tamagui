@@ -124,10 +124,10 @@ const getSnapshotFrom = (
   const hasKeys = keys?.current?.size
   const parentState = states.get(parentId)
 
-  const cacheKey = `${id}${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
-  if (cache.has(cacheKey)) {
-    return cache.get(cacheKey)!
-  }
+  // const cacheKey = `${id}${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
+  // if (cache.has(cacheKey)) {
+  //   return cache.get(cacheKey)!
+  // }
 
   if (!themes) {
     themes = getConfig().themes
@@ -154,7 +154,7 @@ const getSnapshotFrom = (
       return lastState
     }
     states.set(id, parentState)
-    cache.set(cacheKey, parentState!)
+    // cache.set(cacheKey, parentState!)
     return parentState!
   }
 
@@ -163,7 +163,7 @@ const getSnapshotFrom = (
     lastState.name === name &&
     (!parentState || parentState.name === lastState.parentName)
   ) {
-    cache.set(cacheKey, lastState!)
+    // cache.set(cacheKey, lastState!)
     return lastState
   }
 
@@ -194,7 +194,7 @@ const getSnapshotFrom = (
   }
 
   states.set(id, nextState)
-  cache.set(cacheKey, nextState)
+  // cache.set(cacheKey, nextState)
 
   if (isRoot) {
     rootThemeState = nextState
