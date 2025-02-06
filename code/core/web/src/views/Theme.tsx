@@ -41,16 +41,6 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    if (props.debug === 'visualize') {
-      finalChildren = (
-        <ThemeDebug themeState={themeState} themeProps={props}>
-          {finalChildren}
-        </ThemeDebug>
-      )
-    }
-  }
-
   const stateRef = useRef({
     hasEverThemed: false,
   })
@@ -119,6 +109,22 @@ export function getThemedChildren(
             )
           : child
       })
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    if (props.debug === 'visualize') {
+      console.warn(` getThemedChildren`, {
+        requiresExtraWrapper,
+        forceClassName,
+        themeState,
+        ...getThemeClassNameAndStyle(themeState, isRoot),
+      })
+      children = (
+        <ThemeDebug themeState={themeState} themeProps={props}>
+          {children}
+        </ThemeDebug>
+      )
     }
   }
 

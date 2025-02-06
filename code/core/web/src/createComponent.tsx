@@ -46,7 +46,6 @@ import type {
 } from './types'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
-import { ThemeDebug } from './views/ThemeDebug'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -1067,14 +1066,6 @@ export function createComponent<
       : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
-
-    if (process.env.NODE_ENV === 'development' && props['debug'] === 'visualize') {
-      content = (
-        <ThemeDebug themeState={themeState} themeProps={props}>
-          {content}
-        </ThemeDebug>
-      )
-    }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (isReactNative && !asChild) {

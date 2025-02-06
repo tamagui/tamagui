@@ -110,7 +110,7 @@ export const useThemeState = (
   return state.id === id ? { ...state, isNew: true } : state
 }
 
-const cache = new Map<string, ThemeState>()
+// const cache = new Map<string, ThemeState>()
 let themes: Record<string, ThemeParsed> | null = null
 
 const getSnapshotFrom = (
