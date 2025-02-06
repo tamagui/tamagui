@@ -1,6 +1,5 @@
-import { ExternalLink, Figma, LogIn, Paintbrush } from '@tamagui/lucide-icons'
-import * as React from 'react'
-import { H2, Paragraph, Separator, SizableText, XStack, YStack, styled } from 'tamagui'
+import { ExternalLink, Figma, LogIn } from '@tamagui/lucide-icons'
+import { Paragraph, Separator, SizableText, XStack, YStack, styled } from 'tamagui'
 import { Link } from '~/components/Link'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 import { GithubIcon } from '~/features/icons/GithubIcon'

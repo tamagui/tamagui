@@ -659,18 +659,6 @@ textarea {
   filter: invert(100%);
 }
 
-@media (min-resolution: 160dpi) {
-  .pixelate {
-    image-rendering: pixelated;
-    -webkit-font-smoothing: none;
-  }
-
-  .font_silkscreen {
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: grayscale;
-  }
-}
-
 @media (hover: hover) {
   .clip-slice {
     mask-image: url(./public/takeouticon.svg);

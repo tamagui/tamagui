@@ -13,7 +13,7 @@ function getLazyComponent<Import extends Function>(importFunc: Import): Import {
   return cached[importFunc]
 }
 
-export function lazyDemo(importFunc: any) {
+export function lazyDemo(importFunc: () => Promise<any>) {
   return () => {
     const Component = use(getLazyComponent(importFunc))
 
@@ -81,7 +81,7 @@ export const ImageDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/ImageDemo').then((x) => x.ImageDemo)
 )
 
-export const WebNativeImageDemo = lazyDemo(
+export const WebNativeImageDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/WebNativeImageDemo').then((x) => x.WebNativeImageDemo)
 )
 
@@ -196,12 +196,12 @@ export const CheckboxUnstyledDemo = lazyDemo(() =>
 export const RadioGroupDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/RadioGroupDemo').then((x) => x.RadioGroupDemo)
 )
-export const RadioGroupHeadlessDemo = lazyDemo(
+export const RadioGroupHeadlessDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then(
     (x) => x.RadioGroupHeadlessDemo
   )
 )
-export const RadioGroupUnstyledDemo = lazyDemo(
+export const RadioGroupUnstyledDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
     (x) => x.RadioGroupUnstyledDemo
   )
