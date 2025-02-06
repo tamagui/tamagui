@@ -40,7 +40,7 @@ export const ThemeNameEffectNoTheme = ({
 }: Props) => {
   const isHydrated = useDidFinishSSR()
   const theme = useTheme()
-  const themeName = useThemeName()
+  // const themeName = useThemeName()
   const [isActive, setIsActive] = useState(false)
 
   const color = theme[colorKey]?.val
@@ -50,9 +50,19 @@ export const ThemeNameEffectNoTheme = ({
       if (!isHydrated) return
       if (!isActive) return
       document.querySelector('#theme-color')?.setAttribute('content', color)
-      // document.body.style.setProperty('background-color', color, 'important')
+      document.body.style.setProperty('background-color', color, 'important')
     }, [isHydrated, isActive, color])
   }
+
+  // body:has(#theme-name-effect-red) {
+  //   background: var(--red${colorKey.replace('$color', '')}) !important;
+  // }
+  // body:has(#theme-name-effect-green) {
+  //   background: var(--green${colorKey.replace('$color', '')}) !important;
+  // }
+  // body:has(#theme-name-effect-blue) {
+  //   background: var(--blue${colorKey.replace('$color', '')}) !important;
+  // }
 
   return (
     <>
