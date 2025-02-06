@@ -2,7 +2,7 @@
   "name": "@tamagui/tamagui-dev-config",
   "version": "1.123.17-1738863858128",
   "sideEffects": false,
-  "source": "src/index.tsx",
+  "source": "src/index.ts",
   "types": "./src/index.ts",
   "type": "module",
   "main": "dist/cjs",

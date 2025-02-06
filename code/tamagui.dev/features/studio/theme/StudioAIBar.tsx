@@ -1,5 +1,6 @@
 import { Input } from '@tamagui/input'
 import { Moon, Sun } from '@tamagui/lucide-icons'
+import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useColorScheme } from '@vxrn/color-scheme'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -12,7 +13,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { animationsCSS } from '../../../config/animations.css'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
