@@ -83,6 +83,9 @@ export const useThemeState = (
     return getSnapshotFrom(props, propsKey, isRoot, id, parentId, keys)
   }
 
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`theme-prep-uses`
+
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
   useLayoutEffect(() => {
@@ -91,7 +94,11 @@ export const useThemeState = (
       HasRenderedOnce.set(keys, true)
       return
     }
-    if (process.env.NODE_ENV === 'development' && props.debug) {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      props.debug &&
+      props.debug !== 'profile'
+    ) {
       console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey)
     }
     scheduleUpdate(id)
@@ -101,6 +108,7 @@ export const useThemeState = (
 }
 
 const cache = new Map<string, ThemeState>()
+let themes: Record<string, ThemeParsed> | null = null
 
 const getSnapshotFrom = (
   props: UseThemeWithStateProps,
@@ -112,18 +120,25 @@ const getSnapshotFrom = (
 ): ThemeState => {
   const hasKeys = keys?.current?.size
   const parentState = states.get(parentId)
-  // const cacheKey = `${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
-  // // console.log('wtf', props, cacheKey)
-  // if (cache.has(cacheKey)) {
-  //   return cache.get(cacheKey)!
-  // }
 
-  const { themes } = getConfig()
+  const cacheKey = `${propsKey}${hasKeys}${parentState?.name || ''}${isRoot}`
+  if (cache.has(cacheKey)) {
+    return cache.get(cacheKey)!
+  }
+
+  if (!themes) {
+    themes = getConfig().themes
+  }
+
   const lastState = states.get(id)
 
   const name = !propsKey ? null : getNewThemeName(parentState?.name, props)
 
-  if (process.env.NODE_ENV === 'development' && props.debug) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    props.debug &&
+    props.debug !== 'profile'
+  ) {
     console.groupCollapsed(
       ` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`
     )
@@ -136,7 +151,7 @@ const getSnapshotFrom = (
       return lastState
     }
     states.set(id, parentState)
-    // cache.set(cacheKey, parentState!)
+    cache.set(cacheKey, parentState!)
     return parentState!
   }
 
@@ -145,7 +160,7 @@ const getSnapshotFrom = (
     lastState.name === name &&
     (!parentState || parentState.name === lastState.parentName)
   ) {
-    // cache.set(cacheKey, lastState!)
+    cache.set(cacheKey, lastState!)
     return lastState
   }
 
@@ -165,14 +180,18 @@ const getSnapshotFrom = (
     isInverse,
   } satisfies ThemeState
 
-  if (process.env.NODE_ENV === 'development' && props.debug) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    props.debug &&
+    props.debug !== 'profile'
+  ) {
     console.groupCollapsed(` · useTheme(${id}) ⏭️ ${name}`)
     console.info('state', nextState)
     console.groupEnd()
   }
 
   states.set(id, nextState)
-  // cache.set(cacheKey, nextState)
+  cache.set(cacheKey, nextState)
 
   if (isRoot) {
     rootThemeState = nextState
