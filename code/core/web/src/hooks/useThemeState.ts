@@ -147,7 +147,7 @@ const getSnapshotFrom = (
 
   const lastState = states.get(id)
 
-  const name = !propsKey ? null : getNewThemeName(parentState?.name, props)
+  const name = !propsKey ? null : getNewThemeName(parentState?.name, props, !!needsUpdate)
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -249,7 +249,8 @@ function getScheme(name: string) {
 
 function getNewThemeName(
   parentName = '',
-  { name, reset, componentName, inverse }: UseThemeWithStateProps
+  { name, reset, componentName, inverse }: UseThemeWithStateProps,
+  forceUpdate = false
 ): string | null {
   if (name && reset) {
     throw new Error(
@@ -301,6 +302,7 @@ function getNewThemeName(
   }
 
   if (
+    !forceUpdate &&
     found === parentName &&
     // if its a scheme only sub-theme, we always consider it "new" because it likely inverses
     // and we want to avoid reparenting
