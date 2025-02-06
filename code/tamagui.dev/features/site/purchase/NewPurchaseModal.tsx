@@ -1,6 +1,6 @@
 import { Check, X } from '@tamagui/lucide-icons'
 import type { Href } from 'one'
-import { startTransition, useEffect, useState } from 'react'
+import { startTransition, useEffect, useState, useMemo } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -61,11 +61,44 @@ const PurchaseModalContents = () => {
   // Calculate direction for animation
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
 
-  // Calculate total price
-  const basePrice = 200 // yearly
-  const chatSupportPrice = chatSupport ? 1200 : 0 // $100/month -> yearly
-  const supportTierPrice = Number(supportTier) * 12000 // $1000/month per tier -> yearly
-  const totalPrice = basePrice + chatSupportPrice + supportTierPrice
+  // Calculate prices
+  const basePrice = 200 // yearly base price
+  const chatSupportMonthly = chatSupport ? 100 : 0 // $100/month for chat support
+  const supportTierMonthly = Number(supportTier) * 1000 // $1000/month per tier
+
+  // Keep yearly and monthly totals separate
+  const yearlyTotal = basePrice
+  const monthlyTotal = chatSupportMonthly + supportTierMonthly
+
+  // Determine subscription message based on selected options
+  const subscriptionMessage = useMemo(() => {
+    const hasChat = chatSupport
+    const hasSupportTier = Number(supportTier) > 0
+
+    if (disableAutoRenew) {
+      if (hasChat && hasSupportTier) {
+        return 'One-time payment for yearly base, monthly billing for chat and support tier'
+      }
+      if (hasChat) {
+        return 'One-time payment for yearly base, monthly billing for chat support'
+      }
+      if (hasSupportTier) {
+        return 'One-time payment for yearly base, monthly billing for support tier'
+      }
+      return 'One-time payment, cancels after a year'
+    } else {
+      if (hasChat && hasSupportTier) {
+        return 'Yearly base + monthly chat and support tier, 1-click cancel anytime'
+      }
+      if (hasChat) {
+        return 'Yearly base + monthly chat support, 1-click cancel anytime'
+      }
+      if (hasSupportTier) {
+        return 'Yearly base + monthly support tier, 1-click cancel anytime'
+      }
+      return 'Yearly subscription, 1-click cancel anytime'
+    }
+  }, [chatSupport, supportTier, disableAutoRenew])
 
   function changeTab(next: Tab) {
     setCurrentTab(next)
@@ -221,16 +254,24 @@ const PurchaseModalContents = () => {
                 >
                   <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
                     <XStack>
-                      <H3 size="$11">${totalPrice.toLocaleString()}</H3>
-                      <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
-                        {disableAutoRenew ? `total` : `/year`}
-                      </Paragraph>
+                      <H3 size="$11">
+                        ${yearlyTotal}
+                        <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
+                          /year
+                        </Paragraph>
+                        {monthlyTotal > 0 && (
+                          <>
+                            <Paragraph> + </Paragraph>${monthlyTotal}
+                            <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
+                              /month
+                            </Paragraph>
+                          </>
+                        )}
+                      </H3>
                     </XStack>
 
                     <Paragraph theme="alt1" ellipse size="$4" mb="$3">
-                      {disableAutoRenew
-                        ? `One-time payment, cancels after a year`
-                        : `Yearly subscription, 1-click cancel anytime.`}
+                      {subscriptionMessage}
                     </Paragraph>
 
                     <XStack alignItems="center" gap="$4">
@@ -454,7 +495,7 @@ const SupportTabContent = ({
         <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="chat-support">
-              <P>Chat ($100/mo)</P>
+              <P>Chat Support ($100/month)</P>
             </Label>
 
             <XStack maw={100}>
@@ -480,7 +521,7 @@ const SupportTabContent = ({
         <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="support-tier">
-              <P>Support ($1000/mo per tier)</P>
+              <P>Support Tier ($1,000/month per tier)</P>
             </Label>
 
             <XStack maw={150}>
