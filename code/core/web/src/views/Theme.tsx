@@ -4,7 +4,12 @@ import React, { Children, cloneElement, forwardRef, isValidElement, useRef } fro
 import { variableToString } from '../createVariable'
 import { log } from '../helpers/log'
 import { useThemeWithState } from '../hooks/useTheme'
-import { getThemeState, ThemeStateContext, type ThemeState } from '../hooks/useThemeState'
+import {
+  getThemeState,
+  hasThemeUpdatingProps,
+  ThemeStateContext,
+  type ThemeState,
+} from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 import { getSetting } from '../config'
@@ -70,13 +75,7 @@ export function getThemedChildren(
   let hasEverThemed = state.hasEverThemed
 
   let shouldRenderChildrenWithTheme =
-    hasEverThemed ||
-    themeState.isNew ||
-    isRoot ||
-    'inverse' in props ||
-    'name' in props ||
-    'reset' in props ||
-    'forceClassName' in props
+    hasEverThemed || themeState.isNew || isRoot || hasThemeUpdatingProps(props)
 
   if (!shouldRenderChildrenWithTheme) {
     return children

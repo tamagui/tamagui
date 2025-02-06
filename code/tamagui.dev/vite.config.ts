@@ -88,7 +88,11 @@ export default {
     one({
       react: {
         compiler: true,
-        // scan: true,
+        // scan: {
+        //   options: {
+        //     log: true,
+        //   },
+        // },
       },
 
       deps: {

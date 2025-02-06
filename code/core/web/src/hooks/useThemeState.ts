@@ -2,14 +2,12 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useId,
-  useLayoutEffect,
   useSyncExternalStore,
   type MutableRefObject,
 } from 'react'
 import { getConfig } from '../config'
-import type { ThemeParsed, UseThemeWithStateProps } from '../types'
+import type { ThemeParsed, ThemeProps, UseThemeWithStateProps } from '../types'
 
 type ID = string
 
@@ -45,10 +43,12 @@ export const getThemeState = (id: ID) => states.get(id)
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
 
+const isFirstRender = new WeakMap<any, boolean>()
+
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
-  keys?: MutableRefObject<Set<string> | null>
+  keys: MutableRefObject<Set<string> | null>
 ): ThemeState => {
   const { disable } = props
   const id = useId()
@@ -57,94 +57,16 @@ export const useThemeState = (
     console.info(` · useTheme(${id}) render`)
   }
 
-  const { themes } = getConfig()
-
   if (disable) {
     return {
       id,
       name: 'light',
-      theme: themes.light,
+      theme: getConfig().themes.light,
       inverses: 0,
     }
   }
 
   const parentId = useContext(ThemeStateContext)
-  const propsKey = `${props.componentName || ''}${props.name || ''}${props.inverse || ''}${props.reset || ''}`
-
-  // useLayoutEffect(() => {
-  //   if (!propsKey) return
-  //   if (process.env.NODE_ENV === 'development' && props.debug) {
-  //     console.info(` · useTheme(${id}) new props detected ${propsKey}`)
-  //   }
-  //   allListeners.get(id)?.()
-  // }, [id, propsKey])
-
-  const getSnapshot = (): ThemeState => {
-    const currentKeys = keys?.current
-    const lastState = states.get(id)
-    const parentState = states.get(parentId)
-
-    const name = getNewThemeName(parentState?.name, propsKey, props)
-
-    if (process.env.NODE_ENV === 'development' && props.debug) {
-      console.info(` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`)
-    }
-
-    if (!name) {
-      states.delete(id)
-      if (!parentState) throw new Error(`‼️`)
-      return parentState
-    }
-
-    if (lastState?.name === name) {
-      return lastState
-    }
-
-    const shouldSkipUpdate =
-      lastState &&
-      parentState?.name === lastState.parentName &&
-      !isRoot &&
-      (!currentKeys || !currentKeys.size)
-
-    if (shouldSkipUpdate) {
-      if (process.env.NODE_ENV === 'development' && props.debug) {
-        console.info(` · useTheme(${id}) skip update`)
-      }
-      return lastState
-    }
-
-    const scheme = getScheme(name)
-    const parentInverses = parentState?.inverses ?? 0
-    const isInverse = parentState && scheme !== parentState.scheme
-
-    const nextState = {
-      id,
-      name,
-      theme: themes[name],
-      scheme,
-      parentId,
-      parentName: parentState?.name,
-      inverses: parentInverses + (isInverse ? 1 : 0),
-      isInverse,
-    } satisfies ThemeState
-
-    if (process.env.NODE_ENV === 'development' && props.debug) {
-      console.groupCollapsed(` · useTheme(${id}) ⏭️ ${name}`)
-      console.info(nextState)
-      console.groupEnd()
-    }
-
-    states.set(id, nextState)
-    if (isRoot) {
-      rootThemeState = nextState
-    }
-
-    if (lastState) {
-      notifyChildren(id)
-    }
-
-    return nextState
-  }
 
   const subscribe = useCallback(
     (cb: Function) => {
@@ -159,16 +81,105 @@ export const useThemeState = (
     [parentId]
   )
 
+  const getSnapshot = () => {
+    return getSnapshotFrom(props, isRoot, id, keys, parentId, () => {
+      if (!isFirstRender.has(keys)) {
+        isFirstRender.set(keys, true)
+      } else {
+        scheduleUpdate(id)
+      }
+    })
+  }
+
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
   return state.id === id ? { ...state, isNew: true } : state
 }
 
-function notifyChildren(id: string) {
-  const children = listenersByParent[id]
-  children?.forEach((id) => {
-    allListeners.get(id)?.()
-  })
+const getSnapshotFrom = (
+  props: UseThemeWithStateProps,
+  isRoot = false,
+  id: string,
+  keys: MutableRefObject<Set<string> | null> | undefined,
+  parentId: string,
+  onChange?: () => void
+): ThemeState => {
+  const { themes } = getConfig()
+  const currentKeys = keys?.current
+  const lastState = states.get(id)
+  const parentState = states.get(parentId)
+
+  const name = getNewThemeName(parentState?.name, props)
+
+  if (process.env.NODE_ENV === 'development' && props.debug) {
+    console.info(` · useTheme(${id}) getSnapshot ${name}, parent ${parentState?.id}`)
+  }
+
+  if (!name) {
+    states.delete(id)
+    if (!parentState) throw new Error(`‼️`)
+    return parentState
+  }
+
+  if (lastState?.name === name) {
+    return lastState
+  }
+
+  const shouldSkipUpdate =
+    lastState &&
+    parentState?.name === lastState.parentName &&
+    !isRoot &&
+    (!currentKeys || !currentKeys.size)
+
+  if (shouldSkipUpdate) {
+    if (process.env.NODE_ENV === 'development' && props.debug) {
+      console.info(` · useTheme(${id}) skip update`)
+    }
+    return lastState
+  }
+
+  const scheme = getScheme(name)
+  const parentInverses = parentState?.inverses ?? 0
+  const isInverse = parentState && scheme !== parentState.scheme
+
+  const nextState = {
+    id,
+    name,
+    theme: themes[name],
+    scheme,
+    parentId,
+    parentName: parentState?.name,
+    inverses: parentInverses + (isInverse ? 1 : 0),
+    isInverse,
+  } satisfies ThemeState
+
+  if (process.env.NODE_ENV === 'development' && props.debug) {
+    console.groupCollapsed(` · useTheme(${id}) ⏭️ ${name}`)
+    console.info(nextState)
+    console.groupEnd()
+  }
+
+  states.set(id, nextState)
+  if (isRoot) {
+    rootThemeState = nextState
+  }
+
+  if (lastState) {
+    onChange?.()
+  }
+
+  return nextState
+}
+
+function scheduleUpdate(id: string) {
+  // console.warn('notify')
+  // const children = listenersByParent[id]
+  // children?.forEach((id) => {
+  //   allListeners.get(id)?.()
+  // })
+  // instead of this ^
+  // we are going to gather all children recursively using listenersByParent and a queue
+  // at each step though we can run getSnapshotFrom()
 }
 
 const validSchemes = {
@@ -180,11 +191,7 @@ function getScheme(name: string) {
   return validSchemes[name.split('_')[0]]
 }
 
-function getNewThemeName(
-  parentName = '',
-  propsKey: string,
-  props: UseThemeWithStateProps
-): string | null {
+function getNewThemeName(parentName = '', props: UseThemeWithStateProps): string | null {
   if (props.name && props.reset) {
     throw new Error(
       process.env.NODE_ENV === 'production'
@@ -193,7 +200,7 @@ function getNewThemeName(
     )
   }
 
-  if (!propsKey) {
+  if (!hasThemeUpdatingProps(props)) {
     return null
   }
 
@@ -244,3 +251,6 @@ function getNewThemeName(
 
   return found
 }
+
+export const hasThemeUpdatingProps = (props: ThemeProps) =>
+  'inverse' in props || 'name' in props || 'reset' in props || 'forceClassName' in props
