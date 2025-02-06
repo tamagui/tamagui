@@ -326,6 +326,14 @@ export function createComponent<
       const timer = require('@tamagui/timer').timer()
       time = timer.start()
       globalThis['time'] = time
+      // prevent console logs to avoid slowdowns
+      time.ogConsoleInfo = console.info
+      time.ogConsoleGroupCollapsed = console.groupCollapsed
+      time.ogConsoleGroup = console.group
+      const empty = () => {}
+      console.info = empty
+      console.group = empty
+      console.groupCollapsed = empty
     }
     if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
 
@@ -1182,6 +1190,9 @@ export function createComponent<
         setTimeout(() => {
           delete globalThis['willPrint']
           time.print()
+          console.info = time.ogConsoleInfo
+          console.group = time.ogConsoleGroupCollapsed
+          console.groupCollapsed = time.ogConsoleGroup
           time = null
         }, 50)
       }
