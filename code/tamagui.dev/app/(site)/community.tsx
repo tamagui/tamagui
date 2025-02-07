@@ -443,11 +443,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
 
 function CommunityLayout({ children }: { children: any }) {
   const { tint } = useTint()
-  return (
-    <YStack debug="verbose" theme={tint as any}>
-      {useMemo(() => children, [children])}
-    </YStack>
-  )
+  return <YStack theme={tint as any}>{useMemo(() => children, [children])}</YStack>
 }
 
 // export function getStaticProps() {
