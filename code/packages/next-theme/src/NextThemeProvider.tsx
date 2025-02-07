@@ -118,7 +118,7 @@ export const NextThemeProvider: React.FunctionComponent<ThemeProviderProps> = me
 
       const colorScheme =
         // If theme is forced to light or dark, use that
-        forcedTheme && colorSchemes.includes(forcedTheme as "light" | "dark")
+        forcedTheme && colorSchemes.includes(forcedTheme as 'light' | 'dark')
           ? forcedTheme
           : // If regular theme is light or dark
             theme && colorSchemes.includes(theme)
@@ -167,7 +167,7 @@ export const NextThemeProvider: React.FunctionComponent<ThemeProviderProps> = me
         toggle,
         forcedTheme,
         resolvedTheme: theme === 'system' ? resolvedTheme : theme,
-        themes: enableSystem ? [...themes, 'system'] : themes as string[],
+        themes: enableSystem ? [...themes, 'system'] : (themes as string[]),
         systemTheme,
       } as const
       return value
