@@ -142,9 +142,6 @@ export function registerRequire(
           // ignore
         } else {
           hasWarnedForModules.add(path)
-          console.info(
-            `  tamagui: skipping ${path} tamagui.dev/docs/intro/errors#warning-001`
-          )
         }
       } else {
         /**
@@ -169,6 +166,13 @@ export function registerRequire(
   return {
     tamaguiRequire,
     unregister: () => {
+      if (hasWarnedForModules.size) {
+        console.info(
+          `  [tamagui] skipped loading ${hasWarnedForModules.size} module, see: https://tamagui.dev/docs/intro/errors#warning-001`
+        )
+        hasWarnedForModules.clear()
+      }
+
       unregister()
       isRegistered = false
       Module.prototype.require = og
