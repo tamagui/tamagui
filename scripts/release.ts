@@ -207,6 +207,9 @@ async function run() {
     if (!shouldFinish) {
       console.info('run checks')
       if (!skipTest) {
+        await spawnify(`yarn lint`)
+        await spawnify(`yarn check`)
+        await spawnify(`yarn typecheck`)
         await spawnify(`yarn test`)
       }
     }
