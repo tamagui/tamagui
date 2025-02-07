@@ -5522,7 +5522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.29.1, @rollup/rollup-linux-x64-gnu@npm:^4.9.5":
+"@rollup/rollup-linux-x64-gnu@npm:4.29.1":
   version: 4.29.1
   resolution: "@rollup/rollup-linux-x64-gnu@npm:4.29.1"
   conditions: os=linux & cpu=x64 & libc=glibc
@@ -5801,21 +5801,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-js@npm:2.65.0":
-  version: 2.65.0
-  resolution: "@supabase/auth-js@npm:2.65.0"
+"@supabase/auth-js@npm:2.67.3":
+  version: 2.67.3
+  resolution: "@supabase/auth-js@npm:2.67.3"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10/6cf69717877e6c3826b63c544066e3dea392d336679d6599662270ab133394760171ff28d639c4e5fb74962d6006debad9ab8fe5a9d15b035eba522e130d70e8
+  checksum: 10/47471d6492b4f8431eb1c2fcbf514e76ad4340b993864869ece9ada180ee0b07ebf958ff5adabc7e354e41e75825498d95afcd708c13e6ba1b7e876e468bdadf
   languageName: node
   linkType: hard
 
-"@supabase/functions-js@npm:2.4.1":
-  version: 2.4.1
-  resolution: "@supabase/functions-js@npm:2.4.1"
+"@supabase/functions-js@npm:2.4.4":
+  version: 2.4.4
+  resolution: "@supabase/functions-js@npm:2.4.4"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10/5514f5d7d597a0003c5425b61e3e40bf866eadce364fd88eb4f5b25ceef2141e74453cdc9f3dfe02833e6e9dbac85d09f2298088889f1b74187c644e09025426
+  checksum: 10/cd4a40f7febdd1eab6a2c1c7894eee183058a051e5a807fa73971872b693f796808374130acc35b00c9a91e06373db7cd893f773293e1270fd823fec53f004b0
   languageName: node
   linkType: hard
 
@@ -5828,62 +5828,59 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/postgrest-js@npm:1.16.1":
-  version: 1.16.1
-  resolution: "@supabase/postgrest-js@npm:1.16.1"
+"@supabase/postgrest-js@npm:1.18.1":
+  version: 1.18.1
+  resolution: "@supabase/postgrest-js@npm:1.18.1"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10/245c40282a50b6b51b8891bb5e10b7f5d39c00181d832a4c5f917235cb172c5b9d2b6d69c18f577935bd26296997e1052553289683bf4795b13cb41e789d2876
+  checksum: 10/c45ad2eac026d29b7d4ce00e5e68be02295eb6b7b8769541cd97c9030ac36ebbca21eb0729326365c002d97c66f77c1977d1cc86a71a5e7b29af74559a56bcdf
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:2.10.2":
-  version: 2.10.2
-  resolution: "@supabase/realtime-js@npm:2.10.2"
+"@supabase/realtime-js@npm:2.11.2":
+  version: 2.11.2
+  resolution: "@supabase/realtime-js@npm:2.11.2"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
     "@types/phoenix": "npm:^1.5.4"
     "@types/ws": "npm:^8.5.10"
-    ws: "npm:^8.14.2"
-  checksum: 10/e0eb9a666419341be6f1b497ff9f1ce1088b25a3b7ec4bdaac6ab35d00e0684d2a79c8bf1553777fe9caa3a1c793c44a86d14cac7adcad50c759031bd280f370
+    ws: "npm:^8.18.0"
+  checksum: 10/de8ddbda47c057ae3e8090172f90f410c077849856250988b8c4ed3c8a78107849d90940ef795606a10c4d2d1ed795c6d0c51f7147252df04b86c6aae14f8338
   languageName: node
   linkType: hard
 
-"@supabase/ssr@npm:0.4.0":
-  version: 0.4.0
-  resolution: "@supabase/ssr@npm:0.4.0"
+"@supabase/ssr@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "@supabase/ssr@npm:0.5.2"
   dependencies:
-    "@rollup/rollup-linux-x64-gnu": "npm:^4.9.5"
-    cookie: "npm:^0.6.0"
+    "@types/cookie": "npm:^0.6.0"
+    cookie: "npm:^0.7.0"
   peerDependencies:
     "@supabase/supabase-js": ^2.43.4
-  dependenciesMeta:
-    "@rollup/rollup-linux-x64-gnu":
-      optional: true
-  checksum: 10/8b0a3b88f60451c527272b8ee8281cc75d4d81eb9b9650d0843701f9fd0099fede5c781b2e472c91bf315d4fc5eb92e04c51615baf0635418e1c4c1528b6e5c1
+  checksum: 10/240804cacdea6a42faea5e89964656206beec42abed1651269efde68aed43b4af2aa7632a0f0482ef89941521cf21b0508fbf34047f69ab3a6ecba810c5e23da
   languageName: node
   linkType: hard
 
-"@supabase/storage-js@npm:2.7.0":
-  version: 2.7.0
-  resolution: "@supabase/storage-js@npm:2.7.0"
+"@supabase/storage-js@npm:2.7.1":
+  version: 2.7.1
+  resolution: "@supabase/storage-js@npm:2.7.1"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10/3c4c256225d34bf21715f01e259c771a182c63f4a19f5ecb21006800bf77a221d549f047dd354a7f8bdbecd03aa27e6a47e8e0ee84a4ced6f7432e8706e32605
+  checksum: 10/f3f07e841cbad648afc0a82387609f951c8f59da849d927d26dfb81ef66a4f9343375c132fcb29edf8d51c9c13fcb9b0cfe64e13e9f1bbe1c1aa5a1d365d6716
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.44.4":
-  version: 2.45.4
-  resolution: "@supabase/supabase-js@npm:2.45.4"
+"@supabase/supabase-js@npm:^2.48.1":
+  version: 2.48.1
+  resolution: "@supabase/supabase-js@npm:2.48.1"
   dependencies:
-    "@supabase/auth-js": "npm:2.65.0"
-    "@supabase/functions-js": "npm:2.4.1"
+    "@supabase/auth-js": "npm:2.67.3"
+    "@supabase/functions-js": "npm:2.4.4"
     "@supabase/node-fetch": "npm:2.6.15"
-    "@supabase/postgrest-js": "npm:1.16.1"
-    "@supabase/realtime-js": "npm:2.10.2"
-    "@supabase/storage-js": "npm:2.7.0"
-  checksum: 10/bea7dc9332714441178fc24c082f03cc92fc17f53d3c716659eb5a54a66dc4483e0eda44b0549ab11e4a11497c9d6fd13d303fcba61330caf5d3b0f401f9505e
+    "@supabase/postgrest-js": "npm:1.18.1"
+    "@supabase/realtime-js": "npm:2.11.2"
+    "@supabase/storage-js": "npm:2.7.1"
+  checksum: 10/15fb731c31f9d1973cb26f9408b72b335900932ea8326ef46f8cb3548a3a136d4efa585d1e9cee6d1e14acce075f67c9e364d6243505e2c652f5d660b261165e
   languageName: node
   linkType: hard
 
@@ -6910,8 +6907,8 @@ __metadata:
     "@react-three/drei": "npm:^9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
     "@sentry/browser": "npm:^8.17.0"
-    "@supabase/ssr": "npm:0.4.0"
-    "@supabase/supabase-js": "npm:^2.44.4"
+    "@supabase/ssr": "npm:^0.5.2"
+    "@supabase/supabase-js": "npm:^2.48.1"
     "@tamagui/assert": "workspace:*"
     "@tamagui/bento": "workspace:*"
     "@tamagui/cli": "workspace:*"
@@ -8900,6 +8897,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10/7eb1bc5342a9604facd57598a6c62621e244822442976c443efb84ff745246b10d06e8b309b6e80130026a396f19bf6793b7cecd7380169f369dac3bfc46fb99
+  languageName: node
+  linkType: hard
+
+"@types/cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@types/cookie@npm:0.6.0"
+  checksum: 10/b883348d5bf88695fbc2c2276b1c49859267a55cae3cf11ea1dccc1b3be15b466e637ce3242109ba27d616c77c6aa4efe521e3d557110b4fdd9bc332a12445c2
   languageName: node
   linkType: hard
 
@@ -11360,7 +11364,7 @@ __metadata:
   resolution: "bento-get@workspace:code/packages/bento-get"
   dependencies:
     "@inkjs/ui": "npm:^1.0.0"
-    "@supabase/supabase-js": "npm:^2.44.4"
+    "@supabase/supabase-js": "npm:^2.48.1"
     "@tamagui/build": "workspace:*"
     "@types/copy-paste": "npm:^1.1.33"
     "@types/ink": "npm:^2.0.3"
@@ -12741,10 +12745,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "cookie@npm:0.6.0"
-  checksum: 10/c1f8f2ea7d443b9331680598b0ae4e6af18a618c37606d1bbdc75bec8361cce09fe93e727059a673f2ba24467131a9fb5a4eec76bb1b149c1b3e1ccb268dc583
+"cookie@npm:^0.7.0":
+  version: 0.7.2
+  resolution: "cookie@npm:0.7.2"
+  checksum: 10/24b286c556420d4ba4e9bc09120c9d3db7d28ace2bd0f8ccee82422ce42322f73c8312441271e5eefafbead725980e5996cc02766dbb89a90ac7f5636ede608f
   languageName: node
   linkType: hard
 
@@ -29182,7 +29186,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.12.0, ws@npm:^8.12.1, ws@npm:^8.13.0, ws@npm:^8.14.2, ws@npm:^8.18.0":
+"ws@npm:^8.12.0, ws@npm:^8.12.1, ws@npm:^8.13.0, ws@npm:^8.18.0":
   version: 8.18.0
   resolution: "ws@npm:8.18.0"
   peerDependencies:

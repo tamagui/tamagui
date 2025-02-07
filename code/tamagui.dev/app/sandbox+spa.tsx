@@ -65,7 +65,7 @@ const Circles = memo(() => {
   )
 })
 
-const MemoTest = memo(() => <Circle debug="verbose" size={100} bg="$color" />)
+const MemoTest = memo(() => <Circle size={100} bg="$color" />)
 
 const Slow = () => {
   const [theme, state] = useThemeWithState({ debug: true })

@@ -1,14 +1,5 @@
-import { memo, useEffect, useLayoutEffect, useState } from 'react'
-import {
-  Button,
-  type ColorTokens,
-  Switch as TamaguiSwitch,
-  type SwitchProps as TamaguiSwitchProps,
-  Text,
-  View,
-  YStack,
-  type YStackProps,
-} from 'tamagui'
+import { useLayoutEffect, useState } from 'react'
+import { Button, Text, View, YStack } from 'tamagui'
 
 export default function Sandbox() {
   const [x, setX] = useState(Date.now())
