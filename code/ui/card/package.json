@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/card",
-  "version": "1.124.1",
+  "version": "1.124.2",
   "sideEffects": [
     "*.css"
   ],

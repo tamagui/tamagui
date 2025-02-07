@@ -20,6 +20,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "5": {}
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -32,12 +33,12 @@ export function Test() {
         </>;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
   }, [..._expressions]);
 });
 const _ReactNativeViewWrapper2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]];
   }, [..._expressions]);
 });"
@@ -110,6 +111,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -118,7 +120,7 @@ export function Test(isLoading) {
   return <_ReactNativeViewWrapper expressions={[isLoading]} />;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
   }, [..._expressions]);
 });"
@@ -150,6 +152,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     "flexDirection": "column"
   }
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -158,7 +161,7 @@ export function Test(props) {
   return <_ReactNativeViewWrapper />;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "backgroundColor": theme.color.get()
     }];
@@ -222,6 +225,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     "lineHeight": 23
   }
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -230,7 +234,7 @@ export function Test() {
   return <_ReactNativeTextWrapper>hello world</_ReactNativeTextWrapper>;
 }
 const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "color": theme.color.get()
     }];
