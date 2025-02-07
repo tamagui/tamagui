@@ -1,7 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
@@ -46,7 +46,6 @@ import type {
 } from './types'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
-import { ThemeDebug } from './views/ThemeDebug'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -253,6 +252,20 @@ export function createComponent<
       }
     }
 
+    const debugProp = propsIn['debug'] as DebugProp
+
+    if (
+      !process.env.TAMAGUI_IS_CORE_NODE &&
+      process.env.NODE_ENV === 'development' &&
+      debugProp === 'profile' &&
+      !time
+    ) {
+      const timer = require('@tamagui/timer').timer()
+      time = timer.start()
+      globalThis['time'] = time
+    }
+    if (process.env.NODE_ENV === 'development' && time) time`non-tamagui time (ignore)`
+
     // context overrides defaults but not props
     const curDefaultProps = styledContextProps
       ? { ...defaultProps, ...styledContextProps }
@@ -265,7 +278,6 @@ export function createComponent<
       props = mergeProps(curDefaultProps, propsIn)
     }
 
-    const debugProp = props['debug'] as DebugProp
     const componentName = props.componentName || staticConfig.componentName
 
     if (process.env.NODE_ENV === 'development' && isClient) {
@@ -316,18 +328,6 @@ export function createComponent<
         }
       }, [componentName])
     }
-
-    if (
-      !process.env.TAMAGUI_IS_CORE_NODE &&
-      process.env.NODE_ENV === 'development' &&
-      debugProp === 'profile' &&
-      !time
-    ) {
-      const timer = require('@tamagui/timer').timer()
-      time = timer.start()
-      globalThis['time'] = time
-    }
-    if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
 
     /**
      * Component state for tracking animations, pseudos
@@ -462,7 +462,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-theme-media`
 
-    const [themeState, theme] = useThemeWithState(themeStateProps)
+    const [theme, themeState] = useThemeWithState(themeStateProps)
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
@@ -492,7 +492,7 @@ export function createComponent<
       styledContextProps,
     } as const
 
-    const themeName = themeState?.state?.name || ''
+    const themeName = themeState?.name || ''
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles-prepare`
 
@@ -602,7 +602,7 @@ export function createComponent<
         presence,
         componentState: state,
         styleProps,
-        theme: themeState.state?.theme!,
+        theme,
         pseudos: pseudos || null,
         staticConfig,
         stateRef,
@@ -1047,7 +1047,7 @@ export function createComponent<
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
-    if ((groupName && subGroupContext) || propsIn.focusWithinStyle) {
+    if (groupName || propsIn.focusWithinStyle) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
@@ -1061,20 +1061,11 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`group-context`
 
-    // disable theme prop is deterministic so conditional hook ok here
     content = disableTheme
       ? content
       : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
-
-    if (process.env.NODE_ENV === 'development' && props['debug'] === 'visualize') {
-      content = (
-        <ThemeDebug themeState={themeState} themeProps={props}>
-          {content}
-        </ThemeDebug>
-      )
-    }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (isReactNative && !asChild) {

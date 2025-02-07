@@ -133,7 +133,32 @@ export const useComponentState = (
     setState({ ...state })
   }
 
-  let setStateShallow = createShallowSetState(setState, disabled, false, props.debug)
+  const groupName = props.group as any as string
+  let setStateWrapper: ((next: any) => void) | undefined
+
+  if (groupName) {
+    // when we set state we also set our group state and emit an event for children listening:
+    const groupContextState = groups.state
+    setStateWrapper = (state) => {
+      curStateRef.group!.emit(groupName, {
+        pseudo: state,
+      })
+      // and mutate the current since its concurrent safe (children throw it in useState on mount)
+      const next = {
+        ...groupContextState[groupName],
+        ...state,
+      }
+      groupContextState[groupName] = next
+    }
+  }
+
+  let setStateShallow = createShallowSetState(
+    setState,
+    disabled,
+    false,
+    props.debug,
+    setStateWrapper
+  )
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
@@ -190,8 +215,6 @@ export const useComponentState = (
     }
   }
 
-  const groupName = props.group as any as string
-
   if (groupName && !curStateRef.group) {
     const listeners = new Set<GroupStateListener>()
     curStateRef.group = {
@@ -205,24 +228,6 @@ export const useComponentState = (
           listeners.delete(cb)
         }
       },
-    }
-  }
-
-  if (groupName) {
-    // when we set state we also set our group state and emit an event for children listening:
-    const groupContextState = groups.state
-    const og = setStateShallow
-    setStateShallow = (state) => {
-      og(state)
-      curStateRef.group!.emit(groupName, {
-        pseudo: state,
-      })
-      // and mutate the current since its concurrent safe (children throw it in useState on mount)
-      const next = {
-        ...groupContextState[groupName],
-        ...state,
-      }
-      groupContextState[groupName] = next
     }
   }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useId } from 'react'
 import { isClient } from '@tamagui/constants'
 
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
@@ -42,7 +42,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       // if root class disabled, force class here
       forceClassName={!disableRootThemeClass && !themeClassNameOnRoot}
       // @ts-expect-error
-      _isRoot
+      _isRoot={useId}
     >
       {props.children}
     </Theme>

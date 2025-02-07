@@ -1,8 +1,6 @@
 import * as Helpers from '@tamagui/helpers';
 export declare const Tamagui: {
     Helpers: typeof Helpers;
-    getThemeManager: (id: number) => import("./helpers/ThemeManager").ThemeManager | undefined;
-    readonly activeThemeManagers: Set<import("./helpers/ThemeManager").ThemeManager>;
     readonly mediaState: {
         [x: string]: boolean;
         [x: number]: boolean;
