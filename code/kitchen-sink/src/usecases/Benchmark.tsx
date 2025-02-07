@@ -1,7 +1,6 @@
-// debug
 import React from 'react'
-import { Button, RefreshControlBase, StyleSheet, View } from 'react-native'
-import { Stack, Text, XStack, styled } from 'tamagui'
+import { Button, StyleSheet, View } from 'react-native'
+import { Stack, Text, styled } from 'tamagui'
 
 // 123
 

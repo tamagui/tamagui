@@ -12,7 +12,6 @@ import {
   Unspaced,
   View,
   XStack,
-  YStack,
 } from 'tamagui'
 import { SelectDemoItem } from './SelectDemo'
 
@@ -39,6 +38,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
+              backgroundColor="$shadow6"
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
@@ -50,8 +50,8 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
+          backgroundColor="$shadow6"
           animation="slow"
-          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -96,7 +96,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             <DialogInstance />
 
             <Dialog.Close displayWhenAdapted asChild>
-              <Button theme="active" aria-label="Close">
+              <Button disabled theme="accent" aria-label="Close">
                 Save changes
               </Button>
             </Dialog.Close>

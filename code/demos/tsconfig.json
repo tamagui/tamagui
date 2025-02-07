@@ -19,6 +19,9 @@
       "path": "../packages/lucide-icons"
     },
     {
+      "path": "../packages/tamagui-dev-config"
+    },
+    {
       "path": "../ui/avatar"
     },
     {

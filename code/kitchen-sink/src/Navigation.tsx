@@ -85,6 +85,9 @@ const bentoScreenSections = bentoScreenNames.map((screenName) => {
       component={BentoPartScreenItem}
       options={{
         title: screenName,
+        headerRight() {
+          return <ColorSchemeToggle />
+        },
       }}
     />
   )
@@ -103,6 +106,9 @@ const bentoScreensPerElement = Object.entries(Components)
         name={name}
         options={{
           title: name,
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       >
         {() => (
@@ -122,6 +128,9 @@ export function Navigation() {
         component={HomeScreen}
         options={{
           title: 'Home',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -129,6 +138,9 @@ export function Navigation() {
         component={Sandbox}
         options={{
           title: 'Sandbox',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -136,6 +148,9 @@ export function Navigation() {
         component={DemoScreen}
         options={{
           title: 'Demo',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -143,6 +158,9 @@ export function Navigation() {
         component={TestCasesScreen}
         options={{
           title: 'Test Cases',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -160,6 +178,9 @@ export function Navigation() {
         component={BentoScreen}
         options={{
           title: 'Bento',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       {bentoScreensPerElement}
