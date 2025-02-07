@@ -16,11 +16,10 @@ import {
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
-import { useThemeBuilderStore } from './store/ThemeBuilderStore'
+import { themeBuilderStore } from './store/ThemeBuilderStore'
 
 export const StudioAIBar = memo(() => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const store = useThemeBuilderStore()
   const user = useUser()
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
@@ -88,7 +87,7 @@ export const StudioAIBar = memo(() => {
       }
 
       setLastReply(data.reply)
-      store.updateGenerate(data.result)
+      themeBuilderStore.updateGenerate(data.result)
       toastController.hide()
     } catch (err) {
       toastController.show(`Error: ${err}`)
@@ -97,8 +96,6 @@ export const StudioAIBar = memo(() => {
       clearInterval(int)
     }
   }
-
-  console.warn('re-render')
 
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">

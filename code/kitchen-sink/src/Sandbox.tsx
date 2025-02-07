@@ -1,4 +1,3 @@
-// debug
 import { memo, useEffect, useState } from 'react'
 import {
   Button,
@@ -9,7 +8,6 @@ import {
   View,
   XStack,
 } from 'tamagui'
-import { TimedRender } from './components/TimedRender'
 
 const StyledButton = styled(Button, {
   animation: 'quick',
@@ -190,21 +188,20 @@ const Switch = memo(
       <TamaguiSwitch
         width={100}
         alignItems="center"
-        // animation={[
-        //   'bouncy',
-        //   {
-        //     backgroundColor: {
-        //       overshootClamping: true,
-        //     },
-        //   },
-        // ]}
+        animation={[
+          'bouncy',
+          {
+            backgroundColor: {
+              overshootClamping: true,
+            },
+          },
+        ]}
         aria-disabled={disabled}
         aria-selected={checked}
         backgroundColor={frameBackgroundColor}
         borderWidth={0}
         checked={checked}
         defaultChecked={checked}
-        // debug="profile"
         group="testy"
         hoverStyle={{
           backgroundColor: isBranded
@@ -230,14 +227,14 @@ const Switch = memo(
       >
         <TamaguiSwitch.Thumb
           alignItems="center"
-          // animation={[
-          //   'bouncy',
-          //   {
-          //     backgroundColor: {
-          //       overshootClamping: true,
-          //     },
-          //   },
-          // ]}
+          animation={[
+            'bouncy',
+            {
+              backgroundColor: {
+                overshootClamping: true,
+              },
+            },
+          ]}
           backgroundColor={thumbBackgroundColor}
           justifyContent="center"
           minHeight={THUMB_HEIGHT}
@@ -256,14 +253,14 @@ const Switch = memo(
           <View
             $group-item-hover={outerActiveStyle}
             $group-item-press={outerActiveStyle}
-            // animation={[
-            //   'bouncy',
-            //   {
-            //     backgroundColor: {
-            //       overshootClamping: true,
-            //     },
-            //   },
-            // ]}
+            animation={[
+              'bouncy',
+              {
+                backgroundColor: {
+                  overshootClamping: true,
+                },
+              },
+            ]}
             backgroundColor={thumbBackgroundColor}
             borderRadius={100}
             inset={0}

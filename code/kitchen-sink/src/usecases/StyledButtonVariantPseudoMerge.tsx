@@ -1,4 +1,3 @@
-// debug
 import { Button, Theme, YStack, styled } from 'tamagui'
 
 const StyledButton = styled(Button, {

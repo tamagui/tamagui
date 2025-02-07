@@ -1,7 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
@@ -1047,7 +1047,15 @@ export function createComponent<
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
-    if ((groupName && subGroupContext) || propsIn.focusWithinStyle) {
+    if (groupName || propsIn.focusWithinStyle) {
+      useEffect(() => {
+        console.log('changed groups', componentContext.groups)
+      }, [componentContext.groups])
+
+      useEffect(() => {
+        console.log('subGroupContext', subGroupContext)
+      }, [subGroupContext])
+
       content = (
         <ComponentContext.Provider
           {...componentContext}

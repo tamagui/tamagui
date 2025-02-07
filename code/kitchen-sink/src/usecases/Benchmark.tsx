@@ -1,4 +1,3 @@
-// debug
 import React from 'react'
 import { Button, StyleSheet, View } from 'react-native'
 import { Stack, Text, styled } from 'tamagui'

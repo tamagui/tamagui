@@ -1,6 +1,13 @@
 import { isWeb } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
-import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
+import React, {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useEffect,
+  useRef,
+} from 'react'
 import { getSetting } from '../config'
 import { variableToString } from '../createVariable'
 import { useThemeWithState } from '../hooks/useTheme'
