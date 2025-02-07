@@ -90,7 +90,6 @@ export default function ThemePage() {
             <StudioPreviewComponentsBar scrollView={document.documentElement} />
             <PreviewTheme>
               <YStack gap="$6">
-                <StudioPreviewComponentsBar scrollView={document.documentElement} />
                 <StudioPreviewComponents />
               </YStack>
             </PreviewTheme>
