@@ -1,9 +1,9 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createContext,
   useCallback,
   useContext,
   useId,
-  useLayoutEffect,
   useSyncExternalStore,
   type MutableRefObject,
 } from 'react'
@@ -87,7 +87,7 @@ export const useThemeState = (
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!propsKey) return
     if (!HasRenderedOnce.has(keys)) {
       HasRenderedOnce.set(keys, true)

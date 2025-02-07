@@ -1,9 +1,9 @@
-import React, { useId } from 'react'
-import { isClient } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useId } from 'react'
 
+import { getSetting } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { Theme } from './Theme'
-import { getSetting } from '../config'
 
 export type ThemeProviderProps = {
   className?: string
@@ -23,17 +23,15 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
 
   // ensure theme is attached to root body node as well to work with modals by default
-  if (isClient) {
-    React.useLayoutEffect(() => {
-      if (disableRootThemeClass) return
-      const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
-      const target = themeClassNameOnRoot ? document.documentElement : document.body
-      target.classList.add(cn)
-      return () => {
-        target.classList.remove(cn)
-      }
-    }, [props.defaultTheme, disableRootThemeClass, themeClassNameOnRoot])
-  }
+  useIsomorphicLayoutEffect(() => {
+    if (disableRootThemeClass) return
+    const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
+    const target = themeClassNameOnRoot ? document.documentElement : document.body
+    target.classList.add(cn)
+    return () => {
+      target.classList.remove(cn)
+    }
+  }, [props.defaultTheme, disableRootThemeClass, themeClassNameOnRoot])
 
   return (
     <Theme
