@@ -81,7 +81,6 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
       tag="p"
       size={large ? '$9' : '$8'}
       mb="$4"
-      fow={large ? '200' : '300'}
       $sm={{
         size: '$7',
       }}
@@ -798,11 +797,12 @@ const componentsIn = {
     return (
       <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
         <>
-          <ThemeTintAlt offset={-2}>
+          <ThemeTint>
             <Link asChild href="/docs/intro/installation">
               <Card
                 tag="a"
                 animation="quickest"
+                animateOnly={['transform']}
                 f={1}
                 y={0}
                 hoverStyle={{ y: -2, bg: '$backgroundHover' }}
@@ -857,7 +857,7 @@ const componentsIn = {
                 </XStack>
               </Card.Footer>
             </Card>
-          </ThemeTintAlt>
+          </ThemeTint>
         </>
       </XStack>
     )

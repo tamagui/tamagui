@@ -27,7 +27,6 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
     viaAt: Date.now(),
   })
   const userSwr = useUser()
-  const isBento = usePathname().startsWith('/bento')
   const isPressOpened = state.via === 'press' && open
 
   return (
@@ -122,14 +121,11 @@ const HeaderMenuTheme = (props: { children: any }) => {
   const isBento = usePathname().startsWith('/bento')
   const isTakeout = usePathname().startsWith('/takeout')
   const curTint = useTint().tint
-  return (
-    <Theme name={isTakeout ? 'gray' : isBento ? 'tan' : curTint}>{props.children}</Theme>
-  )
+  const name = isTakeout ? 'gray' : isBento ? 'tan' : curTint
+  return <Theme name={name}>{props.children}</Theme>
 }
 
-const HeaderMenuContent = React.memo(function HeaderMenuContent({
-  open,
-}: { open: boolean }) {
+const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
     <Popover.Content
       mt={-5}
