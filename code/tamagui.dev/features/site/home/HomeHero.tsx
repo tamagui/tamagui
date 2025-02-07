@@ -446,7 +446,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
       <YStack fullscreen>
         <HeroText
           className="clip-text rainbow grain"
-          l={-3}
+          l={-2}
           o={0.5}
           dangerouslySetInnerHTML={{
             __html: text,
@@ -483,7 +483,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
           <HeroText
             l={0}
             className="mask-gradient-right"
-            y={1}
             pe="none"
             col="$color9"
             o={0.26}
@@ -496,7 +495,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
         <ThemeTintAlt offset={-3}>
           <HeroText
             l={0}
-            y={-1}
             // filter="blur(3px)"
             className="mask-gradient-right"
             pe="none"

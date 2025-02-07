@@ -1,5 +1,5 @@
 import type { CardProps } from 'tamagui'
-import { Card, H4, Paragraph, Theme, XStack, YStack } from 'tamagui'
+import { Card, H4, Paragraph, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'
 
 export const Overview1 = () => {
@@ -15,15 +15,13 @@ export const Overview1 = () => {
       ov="hidden"
     >
       <YStack flex={1}>
-        <Theme name="surface2">
-          <OverviewCard
-            // alternative
-            title="ARR"
-            value="$204,010"
-            badgeText="+40.5%"
-            badgeState="success"
-          />
-        </Theme>
+        <OverviewCard
+          // alternative
+          title="ARR"
+          value="$204,010"
+          badgeText="+40.5%"
+          badgeState="success"
+        />
       </YStack>
     </YStack>
   )

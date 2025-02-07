@@ -200,7 +200,7 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            {/* <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
               <XGroup.Item>
                 <Theme name={colorName}>
                   <XStack>
@@ -219,7 +219,7 @@ export const HomeThemes = memo(function HomeThemes() {
                   </XStack>
                 </Theme>
               </XGroup.Item>
-            </XGroup>
+            </XGroup> */}
           </XStack>
         </XStack>
 
