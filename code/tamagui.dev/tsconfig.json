@@ -58,13 +58,13 @@
       "path": "../packages/logo"
     },
     {
+      "path": "../packages/tamagui-dev-config"
+    },
+    {
       "path": "../packages/lucide-icons"
     },
     {
       "path": "../packages/mdx"
-    },
-    {
-      "path": "../packages/one-theme"
     },
     {
       "path": "../packages/use-store"

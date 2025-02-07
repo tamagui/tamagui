@@ -1,9 +1,7 @@
-import React from 'react'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useForceUpdate } from '@tamagui/use-force-update'
+import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
-
-import type { ChangedThemeResponse } from '../hooks/useTheme'
+import type { ThemeState } from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
 
 let node
@@ -12,12 +10,9 @@ export function ThemeDebug({
   themeState,
   themeProps,
   children,
-}: { themeState: ChangedThemeResponse; themeProps: ThemeProps; children: any }) {
+}: { themeState: ThemeState; themeProps: ThemeProps; children: any }) {
   if (process.env.NODE_ENV === 'development') {
     const isHydrated = useDidFinishSSR()
-    const [onChangeCount, setOnChangeCount] = React.useState(0)
-    const rerender = useForceUpdate()
-    const id = React.useId()
 
     if (process.env.NODE_ENV === 'development' && typeof document !== 'undefined') {
       if (!node) {
@@ -33,24 +28,11 @@ export function ThemeDebug({
         node.style.border = '1px solid #888'
         node.style.flexDirection = 'row'
         node.style.background = 'var(--background)'
-        document.body.appendChild(node)
       }
     }
 
-    React.useEffect(() => {
-      themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
-        setOnChangeCount((p) => ++p)
-        console.warn(
-          `theme changed for ${themeState.themeManager?.id} from parent ${themeState.themeManager?.parentManager?.id} to new name`,
-          name
-        )
-      })
-    }, [themeState.themeManager])
-
-    React.useEffect(() => {
-      // to refresh _listeningIds every so often
-      const tm = setInterval(rerender, 1000)
-      return () => clearTimeout(tm as any)
+    useEffect(() => {
+      document.body.appendChild(node)
     }, [])
 
     if (themeProps['disable-child-theme'] || !isHydrated) {
@@ -68,23 +50,19 @@ export function ThemeDebug({
               padding: 5,
             }}
           >
-            &lt;Theme {id} /&gt;&nbsp;
+            &lt;Theme {themeState.id} /&gt;&nbsp;
             {JSON.stringify(
               {
-                propsName: themeProps.name,
-                name: themeState?.state?.name,
-                className: themeState?.state?.className,
-                inverse: themeProps.inverse,
-                forceClassName: themeProps.forceClassName,
-                parent: themeState.themeManager?.state.parentName,
-                id: themeState.themeManager?.id,
-                parentId: themeState.themeManager?.parentManager?.id,
-                isNew: themeState.isNewTheme,
-                onChangeCount,
-                listening: [...(themeState.themeManager?.['_listeningIds'] || [])].join(
-                  ','
-                ),
-                _numChangeEventsSent: themeState.themeManager?.['_numChangeEventsSent'],
+                name: themeState.name,
+                parentId: themeState.parentId,
+                inverses: themeState.inverses,
+                isNew: themeState.isNew,
+                themeProps: {
+                  name: themeProps.name,
+                  componentName: themeProps.componentName,
+                  reset: themeProps.reset,
+                  inverse: themeProps.inverse,
+                },
               },
               null,
               2
@@ -93,7 +71,7 @@ export function ThemeDebug({
           node
         )}
 
-        <div style={{ color: 'red' }}>{id}</div>
+        <div style={{ color: 'red' }}>{themeState.id}</div>
 
         {children}
       </>

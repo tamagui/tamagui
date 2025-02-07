@@ -261,7 +261,7 @@ export interface ThemeProps {
     componentName?: string;
     children?: any;
     reset?: boolean;
-    debug?: DebugProp | any;
+    debug?: DebugProp;
     inverse?: boolean;
     forceClassName?: boolean;
     shallow?: boolean;
@@ -1549,7 +1549,7 @@ export type TamaguiComponentStateRef = {
     hasMeasured?: boolean;
     hasAnimated?: boolean;
     themeShallow?: boolean;
-    hasEverThemed?: boolean;
+    hasEverThemed?: boolean | 'wrapped';
     isListeningToTheme?: boolean;
     unPress?: Function;
     group?: {

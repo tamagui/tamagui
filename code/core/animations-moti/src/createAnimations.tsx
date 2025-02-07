@@ -13,7 +13,7 @@ import {
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'
-import React, { forwardRef, useRef } from 'react'
+import React, { forwardRef, useMemo, useRef } from 'react'
 import type { TextStyle } from 'react-native'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
@@ -49,7 +49,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
         }
       }
 
-      const [{ state }] = useThemeWithState({})
+      const [_, state] = useThemeWithState({})
 
       // get styles but only inline style
       const result = getSplitStyles(
@@ -227,78 +227,85 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
-
-      let animate = {}
-      let dontAnimate = {}
-
-      if (disableAnimation) {
-        dontAnimate = style
-      } else {
-        const animateOnly = props.animateOnly as string[]
-        for (const key in style) {
-          const value = style[key]
-          if (
-            !onlyAnimateKeys[key] ||
-            value === 'auto' ||
-            (typeof value === 'string' && value.startsWith('calc')) ||
-            (animateOnly && !animateOnly.includes(key))
-          ) {
-            dontAnimate[key] = value
-          } else {
-            animate[key] = value
-          }
-        }
-      }
-
-      // if we don't do this moti seems to flicker a frame before applying animation
-      if (componentState.unmounted === 'should-enter') {
-        dontAnimate = style
-      }
-
-      const styles = animate
-      const isExiting = Boolean(presence?.[1])
       const presenceContext = React.useContext(PresenceContext)
-      const usePresenceValue = (presence || undefined) as any
 
-      type UseMotiProps = Parameters<typeof useMotify>[0]
+      // this memo is very important for performance, there's a big cost to
+      // updating these values every render
+      const { dontAnimate, motiProps } = useMemo(() => {
+        let animate = {}
+        let dontAnimate = {}
 
-      // TODO moti is giving us type troubles, but this should work
-      let transition = isHydrating
-        ? { type: 'transition', duration: 0 }
-        : (animations[animationKey as keyof typeof animations] as any)
-
-      let hasClonedTransition = false
-
-      if (Array.isArray(props.animation)) {
-        const config = props.animation[1]
-        if (config && typeof config === 'object') {
-          for (const key in config) {
-            const val = config[key]
-
-            // performance - this seems to have (strangely) huge performance effect in uniswap
-            // so instead of cloning up front, we clone only when we absolutely have to
-            if (!hasClonedTransition) {
-              transition = Object.assign({}, transition)
-              hasClonedTransition = true
-            }
-
-            // referencing a pre-defined config
-            if (typeof val === 'string') {
-              transition[key] = animations[val]
+        if (disableAnimation) {
+          dontAnimate = style
+        } else {
+          const animateOnly = props.animateOnly as string[]
+          for (const key in style) {
+            const value = style[key]
+            if (
+              !onlyAnimateKeys[key] ||
+              value === 'auto' ||
+              (typeof value === 'string' && value.startsWith('calc')) ||
+              (animateOnly && !animateOnly.includes(key))
+            ) {
+              dontAnimate[key] = value
             } else {
-              transition[key] = val
+              animate[key] = value
             }
           }
         }
-      }
 
-      const motiProps = {
-        animate: isExiting || componentState.unmounted === true ? {} : styles,
-        transition: componentState.unmounted ? { duration: 0 } : transition,
-        usePresenceValue,
-        presenceContext,
-        exit: isExiting ? styles : undefined,
-      } satisfies UseMotiProps
+        // if we don't do this moti seems to flicker a frame before applying animation
+        if (componentState.unmounted === 'should-enter') {
+          dontAnimate = style
+        }
+
+        const styles = animate
+        const isExiting = Boolean(presence?.[1])
+        const usePresenceValue = (presence || undefined) as any
+
+        type UseMotiProps = Parameters<typeof useMotify>[0]
+
+        // TODO moti is giving us type troubles, but this should work
+        let transition = isHydrating
+          ? { type: 'transition', duration: 0 }
+          : (animations[animationKey as keyof typeof animations] as any)
+
+        let hasClonedTransition = false
+
+        if (Array.isArray(props.animation)) {
+          const config = props.animation[1]
+          if (config && typeof config === 'object') {
+            for (const key in config) {
+              const val = config[key]
+
+              // performance - this seems to have (strangely) huge performance effect in uniswap
+              // so instead of cloning up front, we clone only when we absolutely have to
+              if (!hasClonedTransition) {
+                transition = Object.assign({}, transition)
+                hasClonedTransition = true
+              }
+
+              // referencing a pre-defined config
+              if (typeof val === 'string') {
+                transition[key] = animations[val]
+              } else {
+                transition[key] = val
+              }
+            }
+          }
+        }
+
+        return {
+          dontAnimate,
+          motiProps: {
+            animate: isExiting || componentState.unmounted === true ? {} : styles,
+            transition: componentState.unmounted ? { duration: 0 } : transition,
+            usePresenceValue,
+            presenceContext,
+            exit: isExiting ? styles : undefined,
+          } satisfies UseMotiProps,
+        }
+      }, [animationKey, componentState.unmounted, JSON.stringify(style), presenceContext])
 
       const moti = useMotify(motiProps)
 

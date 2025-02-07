@@ -1,5 +1,17 @@
 import * as Colors from '@tamagui/colors'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
+import { desaturate } from 'color2k'
+
+const desat = (colors: Record<string, string>, amount: number) => {
+  return Object.fromEntries(
+    Object.entries(colors).map(([key, value]) => [key, desaturate(value, amount)])
+  )
+}
+
+const colorsGreenDark = desat(Colors.greenDark, 0.2)
+const colorsGreen = desat(Colors.green, 0.2)
+
+// with color2k:
 
 /**
  * Default themes for the tamagui.dev site
@@ -98,7 +110,7 @@ const themes = createThemes({
       light: {
         ...Colors.blue,
         ...Colors.gray,
-        ...Colors.green,
+        ...colorsGreen,
         ...Colors.orange,
         ...Colors.pink,
         ...Colors.purple,
@@ -112,7 +124,7 @@ const themes = createThemes({
       dark: {
         ...Colors.blueDark,
         ...Colors.grayDark,
-        ...Colors.greenDark,
+        ...colorsGreenDark,
         ...Colors.orangeDark,
         ...Colors.pinkDark,
         ...Colors.purpleDark,
@@ -179,8 +191,8 @@ const themes = createThemes({
     },
     green: {
       palette: {
-        dark: Object.values(Colors.greenDark),
-        light: Object.values(Colors.green),
+        dark: Object.values(colorsGreenDark),
+        light: Object.values(colorsGreen),
       },
     },
     purple: {

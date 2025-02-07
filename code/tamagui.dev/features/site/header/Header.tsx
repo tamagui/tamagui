@@ -6,7 +6,6 @@ import {
   SizableText,
   TooltipGroup,
   View,
-  VisuallyHidden,
   XGroup,
   XStack,
   YStack,
@@ -194,8 +193,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 opacity={0.9}
                 hoverStyle={{ opacity: 1 }}
               >
-                <GithubIcon width={26} />
-                <VisuallyHidden>
+                <GithubIcon width={22} />
+                <>
                   <SizableText
                     $md={{ display: 'none' }}
                     size="$3"
@@ -207,7 +206,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                   >
                     GitHub
                   </SizableText>
-                </VisuallyHidden>
+                </>
               </XStack>
             </XStack>
           </Link>
@@ -216,8 +215,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             <Popover.Trigger asChild="except-style">
               <XStack
                 br="$10"
-                px="$1"
-                height={40}
+                px="$2"
+                height={44}
                 ai="center"
                 bw={1}
                 bc="transparent"

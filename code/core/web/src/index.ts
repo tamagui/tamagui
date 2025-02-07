@@ -77,6 +77,7 @@ export {
   mediaQueryConfig,
 } from './hooks/useMedia'
 export * from './hooks/useTheme'
+export { forceUpdateThemes } from './hooks/useThemeState'
 export * from './hooks/useThemeName'
 export * from './hooks/useConfiguration'
 export * from './hooks/useIsTouchDevice'

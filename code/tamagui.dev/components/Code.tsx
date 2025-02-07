@@ -26,7 +26,7 @@ export const CodeInline = styled(Paragraph, {
   tag: 'code',
   fontFamily: '$mono',
   color: '$color12',
-  backgroundColor: '$color02',
+  backgroundColor: '$background08',
   cursor: 'inherit',
   br: '$3',
   // @ts-ignore

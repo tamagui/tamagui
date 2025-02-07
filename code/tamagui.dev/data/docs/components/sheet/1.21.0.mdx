@@ -42,33 +42,6 @@ export default () => (
 )
 ```
 
-### Native support
-
-Sheets now support rendering to a native iOS sheet, while still rendering any of your React Native content inside of them.
-
-Because Metro doesn't support conditional imports and we don't want to make `tamagui` enforce installing native dependencies in order to get started, there's an install step:
-
-```sh
-yarn add react-native-ios-modal
-pod install
-# rebuild your app (expo ios, or use react-native cli)
-```
-
-And set it up as follows:
-
-```tsx
-import { Sheet, setupNativeSheet } from '@tamagui/sheet'
-import { ModalView } from 'react-native-ios-modal'
-
-setupNativeSheet('ios', ModalView)
-
-export default (
-  <Sheet native>
-    {/* The rest of your sheet views, see Anatomy, example and props API */}
-  </Sheet>
-)
-```
-
 ### API
 
 #### &lt;Sheet /&gt;

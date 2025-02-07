@@ -1,22 +1,10 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import React from 'react'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ThemeName } from '../types'
+import { useThemeState } from './useThemeState'
 
-export function useThemeName(opts?: { parent?: true }): ThemeName {
-  const manager = React.useContext(ThemeManagerContext)!
-  const [name, setName] = React.useState(manager?.state.name || '')
+// can probably simplify this way down
+const forceUpdateState = { forceClassName: true, deopt: true, needsUpdate: () => true }
+const forceKeys = { current: new Set(['']) }
 
-  useIsomorphicLayoutEffect(() => {
-    if (!manager) return
-    setName(manager.state.name)
-    return manager.onChangeTheme((next, manager) => {
-      const name = opts?.parent ? manager.state.parentName || next : next
-      if (!name) return
-
-      setName(name)
-    })
-  }, [manager?.state.name])
-
-  return name
+export function useThemeName(): ThemeName {
+  return useThemeState(forceUpdateState, false, forceKeys)?.name || ''
 }

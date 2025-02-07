@@ -1,16 +1,14 @@
-import { Button, TooltipSimple } from 'tamagui'
-import { useThemeBuilderStore } from './store/ThemeBuilderStore'
 import { Dices } from '@tamagui/lucide-icons'
+import { Button, TooltipSimple } from 'tamagui'
+import { themeBuilderStore } from './store/ThemeBuilderStore'
 
 export function RandomizeButton() {
-  const store = useThemeBuilderStore()
-
   return (
     <TooltipSimple label="Shuffle Display">
       <Button
         aria-label="Variations"
         onPress={() => {
-          store.randomizeDemoOptions()
+          themeBuilderStore.randomizeDemoOptions()
         }}
         icon={Dices}
         size="$2"

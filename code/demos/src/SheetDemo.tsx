@@ -79,6 +79,7 @@ export const SheetDemo = () => {
       >
         <Sheet.Overlay
           animation="lazy"
+          backgroundColor="$shadow6"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -127,7 +128,7 @@ function InnerSheet(props: SheetProps) {
       <Sheet.Handle />
       <Sheet.Frame flex={1} justifyContent="center" alignItems="center" gap="$5">
         <Sheet.ScrollView>
-          <YStack p="$5" gap="$8">
+          <YStack padding="$5" gap="$8">
             <Button
               size="$6"
               circular

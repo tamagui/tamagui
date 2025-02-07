@@ -26,6 +26,9 @@ export const useUser = () => {
       return null
     },
     refreshInterval: 0,
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    refreshWhenHidden: false,
   })
   return {
     ...response,

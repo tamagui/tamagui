@@ -33,14 +33,12 @@ themeBuilderStore.setSteps(steps)
 
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
-  const store = useThemeBuilderStore()
-  const themeName = useThemeName()
   const router = useRouter()
   const params = useParams<any>()
 
   useEffect(() => {
     // give it a bit to load many dynamic charts that animate etc
-    store.load(params.state as string | undefined).then(() => {
+    themeBuilderStore.load(params.state as string | undefined).then(() => {
       startTransition(() => {
         setLoaded(true)
       })
@@ -48,14 +46,14 @@ export default function ThemePage() {
 
     const onSave = () => {
       router.setParams({
-        state: store.serializedState,
+        state: themeBuilderStore.serializedState,
       })
     }
 
-    store.listeners.add(onSave)
+    themeBuilderStore.listeners.add(onSave)
 
     return () => {
-      store.listeners.delete(onSave)
+      themeBuilderStore.listeners.delete(onSave)
     }
   }, [])
 
@@ -89,9 +87,9 @@ export default function ThemePage() {
             }}
           >
             <StudioAIBar />
+            <StudioPreviewComponentsBar scrollView={document.documentElement} />
             <PreviewTheme>
               <YStack gap="$6">
-                <StudioPreviewComponentsBar scrollView={document.documentElement} />
                 <StudioPreviewComponents />
               </YStack>
             </PreviewTheme>
@@ -106,8 +104,12 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
   const { name: baseStepThemeName, key } = useBaseThemePreview()
 
   return (
-    <Theme key={props.noKey ? '' : key} forceClassName name={baseStepThemeName}>
-      <YStack bg="$color1" fullscreen zi={0} scale={2} />
+    <Theme
+      // key={props.noKey ? '' : key}
+      forceClassName
+      name={baseStepThemeName}
+    >
+      {/* <YStack bg="$color1" fullscreen zi={0} scale={2} /> */}
       <ThemeNameEffectNoTheme />
       <YStack f={1}>{props.children}</YStack>
     </Theme>

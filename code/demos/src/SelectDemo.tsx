@@ -42,7 +42,7 @@ export function SelectDemoItem(props: SelectProps) {
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
-            bg="$shadowColor"
+            backgroundColor="$shadowColor"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}

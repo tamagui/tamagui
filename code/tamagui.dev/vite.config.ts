@@ -76,7 +76,7 @@ export default {
   },
 
   ssr: {
-    external: ['@tamagui/mdx-2', ''],
+    external: ['@tamagui/mdx-2'],
     noExternal: true,
   },
 
@@ -85,12 +85,27 @@ export default {
   },
 
   plugins: [
+    tamaguiPlugin({
+      optimize,
+      // useReactNativeWebLite: true,
+    }),
+
     one({
       react: {
         compiler: true,
-        scan: true,
-        // compiler: true,
-        // compiler: optimize,
+        // scan: {
+        //   options: {
+        //     showToolbar: true,
+        //     enabled: true,
+        //     // log: true,
+        //   },
+        // },
+      },
+
+      ssr: {
+        autoDepsOptimization: {
+          include: /.*/,
+        },
       },
 
       deps: {
@@ -149,11 +164,6 @@ export default {
     }),
 
     // removeReactNativeWebAnimatedPlugin(),
-
-    tamaguiPlugin({
-      optimize,
-      // useReactNativeWebLite: true,
-    }),
   ],
 } satisfies UserConfig
 

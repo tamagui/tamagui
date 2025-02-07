@@ -32,6 +32,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "6": {}
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -42,7 +43,7 @@ export function Test(isLoading) {
   return <_ReactNativeViewWrapper expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"], _expressions[2] ? _sheet["5"] : _sheet["6"]];
   }, [..._expressions]);
 });"
@@ -54,6 +55,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "0": {},
   "1": {}
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -62,7 +64,7 @@ export function Test() {
   return <_ReactNativeViewWrapper expressions={[showBackground]} />;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], _sheet["1"], _expressions[0] ? {
       "backgroundColor": theme.color1.get()
     } : {
@@ -86,6 +88,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -94,7 +97,7 @@ export function Test(isLoading) {
   return <_ReactNativeViewWrapper />;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "backgroundColor": theme.background.get()
     }];
