@@ -29,37 +29,6 @@ export class ThemeBuilderStore {
     return `${this.themeSuiteId}`
   }
 
-  // using up to date data from unsaved state
-  get themeSuite(): ThemeSuiteItem | undefined {
-    return this.state && this.themeSuiteId
-      ? {
-          ...this.state.themeSuites[this.themeSuiteId],
-          ...this.getWorkingThemeSuite(),
-        }
-      : undefined
-  }
-
-  // sorted, using up to date data from unsaved state
-  get themeSuites() {
-    if (!this.state) {
-      throw new Error(`No state`)
-    }
-    if (!this.state.themeSuites) {
-      console.warn(`No theme suites?`)
-      return []
-    }
-    return Object.values(this.state.themeSuites)
-      .toSorted((a, b) => {
-        return a.updatedAt > b.updatedAt ? -1 : 1
-      })
-      .map((x) => {
-        if (x.id === this.themeSuiteId && this.themeSuite) {
-          return this.themeSuite
-        }
-        return x
-      })
-  }
-
   // "working state" => directly derived from this.themeSuite values
   // never mutate `this.state`, instead mutate these and then `this.save` to persist it
   // we should improve this to be less verbose/brittle, reasons for it now:
@@ -116,6 +85,7 @@ export class ThemeBuilderStore {
   async load(serializedState?: string) {
     if (serializedState) {
       const state = this.deserializeState(serializedState)
+      console.info(`deserialized`, state)
       for (const key in state) {
         this[key] = state[key]
       }
@@ -163,32 +133,6 @@ export class ThemeBuilderStore {
     })
   }
 
-  private async updateCurrentThemeSuite(next: Partial<ThemeSuiteItem>) {
-    if (!this.themeSuite) {
-      throw new Error(`No data`)
-    }
-    const row = {
-      ...this.themeSuite,
-      ...next,
-    }
-    if (
-      this.themeSuiteVersion > 1 &&
-      JSON.stringify(row) === JSON.stringify(this.themeSuite)
-    ) {
-      // avoid update if it can
-      return
-    }
-    // sync to working data:
-    for (const key in row) {
-      if (key in defaultThemeSuiteItem) {
-        this[key] = row[key] || defaultThemeSuiteItem[key]
-      }
-    }
-    this.updateDisabledState()
-    this.themeSuiteVersion++
-    await this.refreshThemeSuite()
-  }
-
   async updateGenerate(result: { base: any; accent: any }) {
     this.palettes.base.anchors = result.base
     this.palettes.accent.anchors = result.accent
@@ -220,21 +164,6 @@ export class ThemeBuilderStore {
       },
     }
     this.save()
-  }
-
-  deleteTheme(id: string) {
-    const toDeleteId = this.themeSuites.find((x) => x.id === id)?.id
-    if (!toDeleteId) {
-      throw new Error(`No theme ${id}`)
-    }
-    const next = {
-      ...this.state!.themeSuites,
-    }
-    delete next[toDeleteId]
-    this.state = {
-      ...this.state,
-      themeSuites: next,
-    }
   }
 
   getPalettesForTheme(theme: BuildTheme, palettes = this.palettes) {
