@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-media-driver",
-  "version": "1.124.0",
+  "version": "1.124.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "main": "dist/cjs",
