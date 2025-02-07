@@ -1,5 +1,3 @@
 import type { ThemeName } from '../types';
-export declare function useThemeName(opts?: {
-    parent?: true;
-}): ThemeName;
+export declare function useThemeName(): ThemeName;
 //# sourceMappingURL=useThemeName.d.ts.map

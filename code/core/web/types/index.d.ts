@@ -50,6 +50,7 @@ export * from './helpers/transformsToString';
 export * from './helpers/wrapStyleTags';
 export { configureMedia, mediaState, mediaKeyMatch, useMedia, _disableMediaTouch, getMedia, mediaObjectToString, mediaQueryConfig, } from './hooks/useMedia';
 export * from './hooks/useTheme';
+export { forceUpdateThemes } from './hooks/useThemeState';
 export * from './hooks/useThemeName';
 export * from './hooks/useConfiguration';
 export * from './hooks/useIsTouchDevice';
