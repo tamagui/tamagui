@@ -1,14 +1,18 @@
-import { DialogDemo } from '@tamagui/demos'
+import { SwitchDemo } from '@tamagui/demos'
 import { Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
-import { Circle, Text, XStack, YStack } from 'tamagui'
+import { Circle, Switch, Text, XStack, YStack } from 'tamagui'
 
 export default function Sandbox() {
   const [name, setName] = useState('dark')
 
   return (
     <YStack gap="$2">
-      <DialogDemo />
+      <Theme name="blue">
+        <Switch debug="visualize">
+          <Switch.Thumb animation="quicker" />
+        </Switch>
+      </Theme>
 
       {/* <ThemeToggle /> */}
 

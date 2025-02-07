@@ -49,19 +49,20 @@ export const useThemeState = (
   keys: MutableRefObject<Set<string> | null>
 ): ThemeState => {
   const { disable } = props
-  const id = useId()
-
-  if (disable) {
-    return {
-      id,
-      name: 'light',
-      theme: getConfig().themes.light,
-      inverses: 0,
-    }
-  }
-
   const parentId = useContext(ThemeStateContext)
 
+  if (disable) {
+    return (
+      states.get(parentId) || {
+        id: '',
+        name: 'light',
+        theme: getConfig().themes.light,
+        inverses: 0,
+      }
+    )
+  }
+
+  const id = useId()
   const subscribe = useCallback(
     (cb: Function) => {
       listenersByParent[parentId] ||= new Set()

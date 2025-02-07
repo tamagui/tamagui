@@ -107,7 +107,9 @@ export function getThemedChildren(
     if (!themeState.parentId) {
       // they are doing shallow but didnt change actually change a theme theme?
     } else {
-      const parentState = getThemeState(themeState.parentId)
+      const parentState = getThemeState(
+        themeState.isNew ? themeState.id : themeState.parentId
+      )
       if (!parentState) throw new Error(`‼️010`)
       children = Children.toArray(children).map((child) => {
         return isValidElement(child)
@@ -122,7 +124,7 @@ export function getThemedChildren(
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (props.debug === 'visualize') {
+    if (props.debug) {
       console.warn(` getThemedChildren`, {
         requiresExtraWrapper,
         forceClassName,

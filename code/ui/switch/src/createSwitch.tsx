@@ -234,7 +234,6 @@ export function createSwitch<
             {...(!disableActiveTheme &&
               !props.unstyled && {
                 theme: checked ? 'active' : null,
-                themeShallow: true,
               })}
             // expected variants
             checked={checked}
