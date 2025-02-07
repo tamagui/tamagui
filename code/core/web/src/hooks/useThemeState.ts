@@ -285,7 +285,11 @@ function getNewThemeName(
     parentParts.pop()
   }
 
-  const subNames = [name, componentName].filter(Boolean) as string[]
+  const subNames = [
+    name && componentName ? `${name}_${componentName}` : undefined,
+    name,
+    componentName,
+  ].filter(Boolean) as string[]
 
   let found: string | null = null
 
