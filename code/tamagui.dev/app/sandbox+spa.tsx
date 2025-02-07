@@ -1,4 +1,3 @@
-import { SwitchDemo } from '@tamagui/demos'
 import { Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
 import { Circle, Switch, Text, XStack, YStack } from 'tamagui'
@@ -9,7 +8,7 @@ export default function Sandbox() {
   return (
     <YStack gap="$2">
       <Theme name="blue">
-        <Switch debug="visualize">
+        <Switch>
           <Switch.Thumb animation="quicker" />
         </Switch>
       </Theme>
