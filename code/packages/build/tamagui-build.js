@@ -66,14 +66,12 @@ const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 const avoidCJS = pkgMain?.endsWith('.js')
 
 const replaceRNWeb = {
-  esm: {
-    from: 'from "react-native"',
-    to: 'from "react-native-web"',
-  },
-  cjs: {
-    from: 'require("react-native")',
-    to: 'require("react-native-web")',
-  },
+  esm: (content) =>
+    content
+      .replaceAll('from "react-native"', 'from "react-native-web"')
+      .replaceAll('import "react-native";', ''),
+  cjs: (content) =>
+    content.replaceAll('require("react-native")', 'require("react-native-web")'),
 }
 
 let cachedConfig = null
@@ -745,7 +743,7 @@ async function esbuildWriteIfChanged(
         if (platform === 'web') {
           const rnWebReplacer = replaceRNWeb[opts.format]
           if (rnWebReplacer) {
-            contents = contents.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
+            contents = rnWebReplacer(contents)
           }
         }
 
