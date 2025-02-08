@@ -10,6 +10,7 @@ import type { BuildPalette } from './types'
 const paletteSize = 12
 
 // how many things come before the actual bg color (transparencies etc)
+// 👋 SYNC WITH tamagui.dev/features/studio/constants
 export const PALETTE_BACKGROUND_OFFSET = 6
 
 const generateColorPalette = ({
