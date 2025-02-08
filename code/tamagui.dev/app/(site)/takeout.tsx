@@ -185,7 +185,7 @@ export default function TakeoutPage() {
                 }}
                 size="$4"
               >
-                Get Access
+                Buy
               </PurchaseButton>
             </Theme>
           </YStack>
