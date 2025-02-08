@@ -57,6 +57,7 @@ function transformFile(file, options) {
       transform: {
         react: {
           runtime: 'automatic',
+          throwIfNamespace: false,
           development: false,
         },
       },
