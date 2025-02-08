@@ -1,73 +1,29 @@
-import { Dot, Paintbrush } from '@tamagui/lucide-icons'
-import { createShallowSetState } from '@tamagui/web'
+import { Dot, MessageCircle, PaintBucket } from '@tamagui/lucide-icons'
 import type { Href } from 'one'
 import { Link } from 'one'
 import * as React from 'react'
-import type { LayoutRectangle } from 'react-native'
 import {
   type PopoverProps,
-  AnimatePresence,
-  debounce,
+  Adapt,
   H2,
   H5,
+  isTouchable,
   Paragraph,
   Popover,
   styled,
-  Theme,
-  useComposedRefs,
   XStack,
   YStack,
 } from 'tamagui'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
-
-const StudioIcon = () => (
-  <YStack h={24} w={24} mx={-4} y={-0.5}>
-    <Paintbrush />
-  </YStack>
-)
-
-const TooltipLabelLarge = ({
-  title,
-  subtitle,
-  icon,
-  href,
-}: { href: string; icon: any; title: string; subtitle: string }) => {
-  return (
-    <Link asChild href={href as Href}>
-      <YStack cur="pointer" f={1} ai="center" p="$4" br="$4" gap="$2">
-        <H2 ff="$silkscreen" f={1} fow="600" size="$5" ls={1}>
-          {title}
-        </H2>
-
-        <Paragraph px="$2" theme="alt1" f={1} size="$4" lh="$2">
-          {subtitle}
-        </Paragraph>
-
-        <YStack pos="absolute" t={-5} r={-5} scale={1} rotate="-10deg">
-          {icon}
-        </YStack>
-      </YStack>
-    </Link>
-  )
-}
+import { Sheet } from 'tamagui'
 
 export const UpgradePopover = (props: PopoverProps) => {
-  const popoverRef = React.useRef<Popover>(null)
-  const [active, setActive] = React.useState('')
-
-  const val = React.useMemo(() => {
-    return {
-      setActive(id: string, layout: LayoutRectangle) {
-        popoverRef.current?.anchorTo(layout)
-        setActive(id)
-      },
-      close: () => {
-        setActive('')
-        popoverRef.current?.close()
-      },
-    }
-  }, [active])
+  const [open, setOpen] = React.useState(false)
+  const [state, setState] = React.useState({
+    via: undefined as 'hover' | 'press' | undefined,
+    viaAt: Date.now(),
+  })
 
   return (
     <Popover
@@ -77,215 +33,194 @@ export const UpgradePopover = (props: PopoverProps) => {
         restMs: 340,
         move: false,
       }}
-      onOpenChange={(val, event) => {
-        if (!val) {
-          setActive('')
+      open={open}
+      onOpenChange={(next, via) => {
+        if (open && state.via === 'press' && via === 'hover') {
+          return
         }
+        setState({ ...state, via, viaAt: Date.now() })
+        setOpen(next)
       }}
-      ref={popoverRef}
       {...props}
     >
-      <SlidingPopoverContext.Provider value={val}>
-        <Content active={active} />
-        <Popover.Trigger asChild="except-style">
-          <XStack
-            br="$10"
-            px="$2"
-            height={44}
-            ai="center"
-            bw={1}
-            bc="transparent"
-            hoverStyle={{
-              bc: '$color02',
-            }}
+      <Popover.Anchor asChild>
+        <XStack
+          br="$10"
+          px="$2"
+          height={44}
+          ai="center"
+          bw={1}
+          bc="transparent"
+          hoverStyle={{
+            bc: '$color02',
+          }}
+          onPress={() => {
+            if (isTouchable) {
+              setOpen(!open)
+              return
+            }
+            if (open && state.via === 'hover') {
+              setState({ ...state, via: 'press', viaAt: Date.now() })
+              return
+            }
+            if (open) {
+              setOpen(false)
+              return
+            }
+            // hover handles this
+          }}
+        >
+          <YStack cur="pointer" f={1} ai="center" px="$3" ov="hidden">
+            <H2
+              ff="$silkscreen"
+              f={1}
+              fow="600"
+              size="$7"
+              style={{
+                fontFamily: '"PP Supply Mono"',
+                fontSize: 14,
+                fontWeight: '700',
+                letterSpacing: 0,
+              }}
+            >
+              {/* <Ellipsis /> */}
+              Start
+            </H2>
+          </YStack>
+        </XStack>
+      </Popover.Anchor>
+
+      <Adapt platform="touch" when="sm">
+        <Sheet
+          zIndex={100000000}
+          modal
+          dismissOnSnapToBottom
+          animation="bouncy"
+          animationConfig={{
+            type: 'spring',
+            damping: 25,
+            mass: 1.2,
+            stiffness: 200,
+          }}
+        >
+          <Sheet.Frame>
+            <Sheet.ScrollView>
+              <Adapt.Contents />
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay zIndex={100} bg="$shadow4" />
+        </Sheet>
+      </Adapt>
+
+      <Popover.Content
+        enableAnimationForPositionChange
+        animation="quick"
+        bg="$background08"
+        backdropFilter="blur(40px)"
+        elevation="$8"
+        padding={0}
+        br="$6"
+        borderWidth={0}
+        enterStyle={{
+          y: 3,
+          opacity: 0,
+        }}
+        exitStyle={{
+          y: 5,
+          opacity: 0,
+        }}
+      >
+        <Popover.Arrow bg="$background08" size="$3.5" />
+
+        <YStack p="$3" width={280} height={600} ov="hidden" br="$6" gap="$2">
+          <Paragraph
+            bg="$color2"
+            p="$4"
+            br="$4"
+            theme="green"
+            lh="$2"
+            mb="$2"
+            color="$color11"
+            bw={0.5}
+            bc="$color3"
+            cur="pointer"
           >
-            <SlidingPopoverTrigger id="takeout">
-              <YStack cur="pointer" f={1} ai="center" px="$3" ov="hidden">
-                <H2
-                  ff="$silkscreen"
-                  f={1}
-                  fow="600"
-                  size="$7"
-                  style={{
-                    fontFamily: '"PP Supply Mono"',
-                    fontSize: 14,
-                    fontWeight: '700',
-                    letterSpacing: 0,
-                  }}
-                >
-                  {/* <Ellipsis /> */}
-                  Start
-                </H2>
-              </YStack>
-            </SlidingPopoverTrigger>
-          </XStack>
-        </Popover.Trigger>
-      </SlidingPopoverContext.Provider>
+            Start is how we fund the independent development of Tamagui and the One
+            framework. <a href="s">Learn more</a>.
+          </Paragraph>
+
+          <Card>
+            <TooltipLabelLarge
+              icon={<TakeoutIcon />}
+              href="/takeout"
+              title="Takeout"
+              subtitle="Starter kit for making universal apps fast."
+            />
+          </Card>
+
+          <Card>
+            <TooltipLabelLarge
+              href="/bento"
+              icon={
+                <YStack y={-2}>
+                  <BentoIcon />
+                </YStack>
+              }
+              title="Bento"
+              subtitle="OSS and paid copy-paste components and screens."
+            />
+          </Card>
+
+          <Card>
+            <TooltipLabelLarge
+              href="/bento"
+              icon={
+                <YStack y={-2}>
+                  <MessageCircle />
+                </YStack>
+              }
+              title="Chat"
+              subtitle="A new AI chat agent that's an expert in Tamagui."
+            />
+          </Card>
+
+          <Card>
+            <TooltipLabelLarge
+              href="/theme"
+              icon={<PaintBucket />}
+              title="Theme"
+              subtitle="Use our AI designed to generate great theme suites."
+            />
+          </Card>
+        </YStack>
+      </Popover.Content>
     </Popover>
   )
 }
-const SlidingPopoverContext = React.createContext({
-  setActive(id: string, layout: LayoutRectangle) {},
-  close() {},
-})
 
-export const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
-  ({ id, ...props }, ref) => {
-    const context = React.useContext(SlidingPopoverContext)
-    const [layout, setLayout_] = React.useState<LayoutRectangle>()
-    const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
-    const triggerRef = React.useRef<HTMLElement>(null)
-    const combinedRef = useComposedRefs(ref)
-
-    React.useEffect(() => {
-      const handleMove = debounce(() => {
-        const layout = triggerRef.current?.getBoundingClientRect()
-        if (layout) {
-          setLayout(layout)
-        }
-      }, 32)
-      window.addEventListener('resize', handleMove)
-      return () => {
-        window.removeEventListener('resize', handleMove)
-      }
-    }, [])
-
-    return (
-      <YStack
-        onMouseEnter={() => {
-          if (layout) {
-            context.setActive(id, layout)
-          }
-        }}
-        onPress={() => {
-          setTimeout(() => {
-            context.close()
-          }, 400)
-        }}
-        onLayout={(e) => {
-          React.startTransition(() => {
-            setLayout({
-              ...e.nativeEvent.layout,
-              // @ts-ignore
-              x: e.nativeEvent.layout.left,
-              // @ts-ignore
-              y: e.nativeEvent.layout.top,
-            })
-          })
-        }}
-        ref={combinedRef}
-        {...props}
-      />
-    )
-  }
-)
-const order = ['', 'takeout', 'bento', 'studio']
-
-const Content = React.memo(({ active }: { active: string }) => {
-  const context = React.useContext(SlidingPopoverContext)
-  const last = React.useRef(active)
-
-  const curI = order.indexOf(active)
-  const lastI = order.indexOf(last.current)
-  const going = curI > lastI ? 1 : -1
-
-  React.useEffect(() => {
-    last.current = active
-  }, [active])
-
+const TooltipLabelLarge = ({
+  title,
+  subtitle,
+  icon,
+  href,
+}: { href: string; icon: any; title: string; subtitle: string }) => {
   return (
-    <Popover.Content
-      theme={active === 'takeout' ? 'black' : 'tan'}
-      enableAnimationForPositionChange
-      animation={
-        active
-          ? 'quick'
-          : [
-              'slowest',
-              {
-                x: '100ms',
-              },
-            ]
-      }
-      bg="$background08"
-      backdropFilter="blur(40px)"
-      elevation="$8"
-      padding={0}
-      br="$6"
-      borderWidth={0}
-      enterStyle={{
-        y: 3,
-        opacity: 0,
-      }}
-      exitStyle={{
-        y: 5,
-        opacity: 0,
-      }}
-    >
-      {active === 'bento' ? (
-        <Theme name="tan">
-          <Popover.Arrow bg="$color6" size="$3.5" />
-        </Theme>
-      ) : (
-        <Popover.Arrow bg="$background08" size="$3.5" />
-      )}
+    <Link asChild href={href as Href}>
+      <YStack cur="pointer" f={1} p="$3" br="$4" gap="$2">
+        <XStack ai="center" gap="$2">
+          <YStack scale={0.7}>{icon}</YStack>
+          <H2 ff="$mono" f={1} fow="600" size="$5" ls={1}>
+            {title}
+          </H2>
+        </XStack>
 
-      <YStack
-        onPressOut={() => {
-          context.close()
-        }}
-        width={280}
-        height={600}
-        ov="hidden"
-        br="$6"
-      >
-        <AnimatePresence custom={{ going }} initial={false}>
-          {active === 'takeout' && (
-            <Frame key="takeout" p="$3" gap="$2">
-              <H5 als="center">Start</H5>
-
-              <Paragraph theme="alt1" lh="$2" px="$2" mb="$2">
-                Start is how we fund the independent development of Tamagui and the One
-                framework.
-              </Paragraph>
-
-              <Card>
-                <TooltipLabelLarge
-                  icon={<TakeoutIcon />}
-                  href="/takeout"
-                  title="Takeout"
-                  subtitle="Starter kit for making universal apps fast."
-                />
-              </Card>
-
-              <Card>
-                <TooltipLabelLarge
-                  href="/bento"
-                  icon={
-                    <YStack y={-2}>
-                      <BentoIcon />
-                    </YStack>
-                  }
-                  title="Bento"
-                  subtitle="OSS and paid copy-paste components and screens."
-                />
-              </Card>
-
-              <Card>
-                <TooltipLabelLarge
-                  href="/theme"
-                  icon={<Dot />}
-                  title="Theme"
-                  subtitle="A smart LLM-based bot that generates themes."
-                />
-              </Card>
-            </Frame>
-          )}
-        </AnimatePresence>
+        <Paragraph px="$2" theme="alt1" f={1} size="$4" lh="$2">
+          {subtitle}
+        </Paragraph>
       </YStack>
-    </Popover.Content>
+    </Link>
   )
-})
+}
 
 const Card = styled(YStack, {
   maxHeight: 120,
@@ -295,7 +230,7 @@ const Card = styled(YStack, {
 })
 
 const Frame = styled(YStack, {
-  animation: 'slow',
+  animation: 'medium',
   br: '$5',
   ov: 'hidden',
   fullscreen: true,

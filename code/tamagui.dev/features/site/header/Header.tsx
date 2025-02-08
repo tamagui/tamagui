@@ -282,7 +282,7 @@ const HeaderMenuButton = () => {
       <SlidingPopoverTarget id="menu">
         <Button
           size="$3"
-          ml="$2"
+          my={10}
           bg={isPressOpened ? '$color5' : 'rgba(0,0,0,0.02)'}
           noTextWrap
           br="$10"
@@ -494,13 +494,21 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     last.current = active
   }, [active])
 
+  const heights = {
+    core: 1400,
+    compiler: 130,
+    ui: 1400,
+    theme: 200,
+    menu: 300,
+  }
+
   return (
     <Popover.Content
       enableAnimationForPositionChange
       animation="medium"
       bg="$background08"
       backdropFilter="blur(40px)"
-      maxHeight="80vh"
+      maxHeight="90vh"
       maxWidth={360}
       elevation="$8"
       padding={0}
@@ -523,8 +531,9 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         onPressOut={() => {
           context.close()
         }}
-        width={280}
-        mih="calc(min(500px, 80vh))"
+        width={290}
+        transition="all ease-in 200ms"
+        mih={`calc(min(${heights[active]}px, 80vh))`}
         ov="hidden"
         flex={1}
         br="$6"
@@ -563,7 +572,7 @@ const HeaderMenuMoreContents = () => {
   const userSwr = useUser()
 
   return (
-    <YStack aria-label="Home menu contents">
+    <YStack gap="$2" aria-label="Home menu contents">
       <XStack fw="wrap" f={1} gap="$2" w="100%" $gtSm={{ dsp: 'none' }}>
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
