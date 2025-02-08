@@ -1,4 +1,12 @@
-import { Dot, MessageCircle, PaintBucket } from '@tamagui/lucide-icons'
+import {
+  Box,
+  DoorClosed,
+  Dot,
+  Lock,
+  LockKeyhole,
+  MessageCircle,
+  PaintBucket,
+} from '@tamagui/lucide-icons'
 import type { Href } from 'one'
 import { Link } from 'one'
 import * as React from 'react'
@@ -17,6 +25,7 @@ import {
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { Sheet } from 'tamagui'
+import { purchaseModal } from '../purchase/NewPurchaseModal'
 
 export const UpgradePopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
@@ -84,7 +93,7 @@ export const UpgradePopover = (props: PopoverProps) => {
               }}
             >
               {/* <Ellipsis /> */}
-              Start
+              Pro
             </H2>
           </YStack>
         </XStack>
@@ -132,69 +141,110 @@ export const UpgradePopover = (props: PopoverProps) => {
       >
         <Popover.Arrow bg="$background08" size="$3.5" />
 
-        <YStack p="$3" width={280} height={600} ov="hidden" br="$6" gap="$2">
-          <Paragraph
-            bg="$color2"
-            p="$4"
-            br="$4"
-            theme="green"
-            lh="$2"
-            mb="$2"
-            color="$color11"
-            bw={0.5}
-            bc="$color3"
-            cur="pointer"
-          >
-            Start is how we fund the independent development of Tamagui and the One
-            framework. <a href="s">Learn more</a>.
-          </Paragraph>
-
-          <Card>
-            <TooltipLabelLarge
-              icon={<TakeoutIcon />}
-              href="/takeout"
-              title="Takeout"
-              subtitle="Starter kit for making universal apps fast."
-            />
-          </Card>
-
-          <Card>
-            <TooltipLabelLarge
-              href="/bento"
-              icon={
-                <YStack y={-2}>
-                  <BentoIcon />
-                </YStack>
-              }
-              title="Bento"
-              subtitle="OSS and paid copy-paste components and screens."
-            />
-          </Card>
-
-          <Card>
-            <TooltipLabelLarge
-              href="/bento"
-              icon={
-                <YStack y={-2}>
-                  <MessageCircle />
-                </YStack>
-              }
-              title="Chat"
-              subtitle="A new AI chat agent that's an expert in Tamagui."
-            />
-          </Card>
-
-          <Card>
-            <TooltipLabelLarge
-              href="/theme"
-              icon={<PaintBucket />}
-              title="Theme"
-              subtitle="Use our AI designed to generate great theme suites."
-            />
-          </Card>
+        <YStack mah="80vh" p="$3" width={280} ov="hidden" br="$6">
+          <Popover.ScrollView>
+            <YStack gap="$2">
+              <Paragraph
+                bg="$color2"
+                p="$4"
+                br="$4"
+                theme="green"
+                lh="$2"
+                mb="$2"
+                color="$color11"
+                bw={0.5}
+                bc="$color3"
+                cur="pointer"
+                animation="lazy"
+                hoverStyle={{
+                  y: -2,
+                  color: '$color12',
+                }}
+                pressStyle={{
+                  animation: '100ms',
+                  y: -2,
+                }}
+                onPress={() => {
+                  purchaseModal.show = true
+                  setOpen(false)
+                }}
+              >
+                Pro is how we fund the independent development of Tamagui.
+              </Paragraph>
+              <PromoCards />
+            </YStack>
+          </Popover.ScrollView>
         </YStack>
       </Popover.Content>
     </Popover>
+  )
+}
+
+export const PromoCards = () => {
+  return (
+    <>
+      <Card>
+        <TooltipLabelLarge
+          href="/bento"
+          icon={
+            <YStack y={-2}>
+              <MessageCircle />
+            </YStack>
+          }
+          title="Chat"
+          subtitle="A new AI chat agent that's an expert in Tamagui."
+        />
+      </Card>
+
+      <Card>
+        <TooltipLabelLarge
+          icon={<TakeoutIcon />}
+          href="/takeout"
+          title="Takeout"
+          subtitle="Starter kit for making universal apps fast."
+        />
+      </Card>
+
+      <Card>
+        <TooltipLabelLarge
+          href="/bento"
+          icon={
+            <YStack y={-2}>
+              <BentoIcon />
+            </YStack>
+          }
+          title="Bento"
+          subtitle="OSS and paid copy-paste components and screens."
+        />
+      </Card>
+
+      <Card>
+        <TooltipLabelLarge
+          href="/theme"
+          icon={<PaintBucket />}
+          title="Theme"
+          subtitle="Use our AI designed to generate great theme suites."
+        />
+      </Card>
+
+      <Card>
+        <TooltipLabelLarge
+          href="/theme"
+          icon={<Box />}
+          title="Assets"
+          subtitle="Scripts to easily add fonts and icon packs."
+        />
+      </Card>
+
+      <Card>
+        <TooltipLabelLarge
+          href="/theme"
+          icon={<DoorClosed />}
+          title="Access"
+          subtitle="Early access to new features."
+        />
+      </Card>
+    </>
   )
 }
 
@@ -224,9 +274,11 @@ const TooltipLabelLarge = ({
 
 const Card = styled(YStack, {
   maxHeight: 120,
+  maxWidth: 'calc(min(100%, 257px))',
+  flex: 1,
   br: '$4',
   borderWidth: 0.5,
-  borderColor: '$color2',
+  borderColor: '$color4',
 })
 
 const Frame = styled(YStack, {

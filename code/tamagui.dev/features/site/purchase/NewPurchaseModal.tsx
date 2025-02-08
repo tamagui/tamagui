@@ -1,6 +1,7 @@
 import { Check, X } from '@tamagui/lucide-icons'
+import { createStore, createUseStore } from '@tamagui/use-store'
 import type { Href } from 'one'
-import { startTransition, useEffect, useState, useMemo } from 'react'
+import { startTransition, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -15,6 +16,7 @@ import {
   Sheet,
   SizableText,
   Spacer,
+  styled,
   Tabs,
   Theme,
   Unspaced,
@@ -22,13 +24,17 @@ import {
   YStack,
 } from 'tamagui'
 import { Link } from '~/components/Link'
+import { Select } from '../../../components/Select'
+import { PromoCards } from '../header/UpgradePopover'
 import { PurchaseButton } from './helpers'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
-import { useTakeoutStore } from './useTakeoutStore'
-import { UL } from '../../../components/UL'
-import { LI } from '../../../components/LI'
-import { Select } from '../../../components/Select'
-import { styled } from 'tamagui'
+
+class PurchaseModal {
+  show = false
+}
+
+export const purchaseModal = createStore(PurchaseModal)
+export const usePurchaseModal = createUseStore(PurchaseModal)
 
 export const NewPurchaseModal = () => {
   const [mounted, setMounted] = useState(false)
@@ -51,7 +57,7 @@ const tabOrder = ['purchase', 'support', 'faq'] as const
 type Tab = (typeof tabOrder)[number]
 
 const PurchaseModalContents = () => {
-  const store = useTakeoutStore()
+  const store = usePurchaseModal()
   const [lastTab, setLastTab] = useState<Tab>('purchase')
   const [currentTab, setCurrentTab] = useState<Tab>('purchase')
   const [disableAutoRenew, setDisableAutoRenew] = useState(false)
@@ -124,9 +130,9 @@ const PurchaseModalContents = () => {
     <>
       <Dialog
         modal
-        open={store.showPurchase}
+        open={store.show}
         onOpenChange={(val) => {
-          store.showPurchase = val
+          store.show = val
         }}
       >
         {/* <BentoPoliciesModal />
@@ -154,9 +160,10 @@ const PurchaseModalContents = () => {
 
         <Dialog.Portal>
           <Dialog.Overlay
+            backdropFilter="blur(50px)"
             key="overlay"
             animation="medium"
-            bg="$shadowColor"
+            bg="$shadow6"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -196,7 +203,7 @@ const PurchaseModalContents = () => {
                     isActive={currentTab === 'purchase'}
                     value="purchase"
                   >
-                    Start
+                    Pro
                   </Tab>
                 </YStack>
                 <YStack width={'33.3333%'} f={1}>
@@ -220,7 +227,7 @@ const PurchaseModalContents = () => {
                 </YStack>
               </Tabs.List>
 
-              <YStack f={1} group="takeoutBody" p="$6">
+              <YStack f={1} group="takeoutBody" p="$8">
                 <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
@@ -228,10 +235,10 @@ const PurchaseModalContents = () => {
                       forceMount
                       flex={1}
                       minHeight={400}
-                      height="calc(100vh - 400px)"
+                      height="calc(min(100vh - 400px, 480px))"
                     >
                       <ScrollView>
-                        <YStack gap="$5">
+                        <YStack gap="$6">
                           <CurrentTabContents />
                         </YStack>
                       </ScrollView>
@@ -285,7 +292,7 @@ const PurchaseModalContents = () => {
                         </Checkbox.Indicator>
                       </Checkbox>
                       <Label htmlFor="auto-renew">
-                        <Paragraph ff="$mono" size="$5">
+                        <Paragraph theme="yellow" color="$color10" ff="$mono" size="$5">
                           Disable auto-renew
                         </Paragraph>
                       </Label>
@@ -394,8 +401,8 @@ const PurchaseModalContents = () => {
 
 const P = styled(Paragraph, {
   ff: '$mono',
-  size: '$7',
-  lh: '$9',
+  size: '$6',
+  lh: '$6',
 })
 
 const Question = styled(P, {
@@ -486,10 +493,10 @@ const SupportTabContent = ({
 }) => {
   return (
     <>
-      <Paragraph theme="yellow" color="$color9" ff="$mono" size="$7" lh="$9">
+      <BigP>
         Support is great way for teams using Tamagui to ensure bugs get fixed, questions
         are answered, and Tamagui stays healthy and up to date.
-      </Paragraph>
+      </BigP>
 
       <YStack gap="$6" p="$4">
         <YStack gap="$3">
@@ -563,41 +570,36 @@ const SupportTabContent = ({
   )
 }
 
+const BigP = styled(P, {
+  px: '$8',
+  size: '$8',
+  lh: '$9',
+  color: '$green10',
+})
+
 const PurchaseTabContent = () => {
   return (
     <>
-      <P theme="yellow" color="$color9" size="$7" lh="$9">
-        Tamagui is over 300 OSS libraries developed by a small, self-funded team, and
-        Start is how we keep the lights on.
-      </P>
+      <BigP>
+        Tamagui Pro is a single subscription that gives you access to a variety of helpful
+        resources.
+      </BigP>
 
-      <P>It's a single subscription for:</P>
+      <XStack fw="wrap" gap="$3">
+        <PromoCards />
+      </XStack>
 
-      <UL>
-        <LI my={-3}>
-          <P>Takeout</P>
-        </LI>
-        <LI my={-3}>
-          <P>Bento</P>
-        </LI>
-        <LI my={-3}>
-          <P>Theme AI</P>
-        </LI>
-        <LI my={-3}>
-          <P>Chat AI</P>
-        </LI>
-        <LI my={-3}>
-          <P>Discord #support private channel</P>
-        </LI>
-        <LI my={-3}>
-          <P>Early access to new features</P>
-        </LI>
-      </UL>
+      <Separator o={0.25} />
 
-      <P>
-        You own rights for life and can use it in as many commercial projects as you want.
-        Only updates, APIs, and private Github/Discord are gated by the subscription.
-      </P>
+      <YStack gap="$3">
+        <P color="$color10">
+          The subscription gets you updates, Github and Discord access for a year.
+        </P>
+
+        <P color="$color10">
+          You get lifetime rights to all code and assets, even after subscription expires.
+        </P>
+      </YStack>
     </>
   )
 }
@@ -640,15 +642,13 @@ function Tab({
       ov="hidden"
       py="$1"
       bg="$color1"
-      btrr={end ? '$3' : 0}
-      btlr={!end ? '$3' : 0}
-      height={70}
+      height={60}
       value=""
       disableActiveTheme
       bbw={1}
       bbc="transparent"
       {...(!isActive && {
-        bg: '$color3',
+        bg: '$color2',
       })}
       {...props}
     >
@@ -667,7 +667,12 @@ function Tab({
           },
         })}
       />
-      <Paragraph ff="$mono" size="$7" fow="bold">
+      <Paragraph
+        ff="$mono"
+        size="$7"
+        color={isActive ? '$color12' : '$color10'}
+        fow={isActive ? 'bold' : 'normal'}
+      >
         {children}
       </Paragraph>
     </Tabs.Tab>
