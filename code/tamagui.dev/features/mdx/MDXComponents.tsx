@@ -31,6 +31,7 @@ import {
   Theme,
   ThemeableStack,
   TooltipSimple,
+  View,
   XGroup,
   XStack,
   YStack,
@@ -287,16 +288,24 @@ const componentsIn = {
               gap="$2"
             >
               <>
-                {PACKAGE_MANAGERS.map((pkgManager) => (
-                  <Tab
-                    key={pkgManager}
-                    active={selectedPackageManager === pkgManager}
-                    pkgManager={pkgManager}
-                    onInteraction={() => {
-                      //
-                    }}
-                  />
-                ))}
+                {PACKAGE_MANAGERS.map((pkgManager) => {
+                  const active = selectedPackageManager === pkgManager
+                  return (
+                    <View
+                      key={pkgManager}
+                      br="$2"
+                      bg={active ? '$color3' : '$colorTransparent'}
+                    >
+                      <Tab
+                        active={active}
+                        pkgManager={pkgManager}
+                        onInteraction={() => {
+                          //
+                        }}
+                      />
+                    </View>
+                  )
+                })}
               </>
             </Tabs.List>
           </Tabs>
@@ -434,7 +443,7 @@ const componentsIn = {
       theme="pink"
       pos="absolute"
       t={-15}
-      r={-75}
+      r={-25}
       rotate="5deg"
     >
       Beta

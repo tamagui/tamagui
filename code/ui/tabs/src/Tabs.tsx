@@ -84,12 +84,18 @@ const TabsTriggerFrame = styled(ThemeableStack, {
 
     active: {
       true: {
+        backgroundColor: '$color3',
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
+
         hoverStyle: {
-          backgroundColor: '$background',
+          backgroundColor: '$backgroundHover',
         },
 
         focusStyle: {
-          backgroundColor: '$background',
+          backgroundColor: '$color3',
         },
       },
     },
@@ -164,6 +170,7 @@ const TabsTrigger = TabsTriggerFrame.styleable<ScopedProps<TabsTabProps>>(
     const triggerId = makeTriggerId(context.baseId, value)
     const contentId = makeContentId(context.baseId, value)
     const isSelected = value === context.value
+
     const [layout, setLayout] = React.useState<TabLayout | null>(null)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const groupItemProps = useGroupItem({ disabled: !!disabled })
@@ -233,6 +240,7 @@ const TabsTrigger = TabsTriggerFrame.styleable<ScopedProps<TabsTabProps>>(
             id={triggerId}
             {...(!props.unstyled && {
               size: context.size,
+              active: isSelected,
             })}
             {...groupItemProps}
             {...triggerProps}
