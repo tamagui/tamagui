@@ -136,7 +136,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
   )
 }
 
-function Tab({
+export function Tab({
   active,
   pkgManager,
   logo,

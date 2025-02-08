@@ -1,8 +1,9 @@
 import { useStore, useStoreSelector } from '@tamagui/use-store'
-import { forwardRef } from 'react'
+import { useEffect, forwardRef } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, styled, Tabs, withStaticProperties, XStack } from 'tamagui'
-import { type Href, useLocalSearchParams, useRouter } from 'one'
+import { type Href, useRouter } from 'one'
+import { useParams } from 'one'
 
 class TabsStore {
   active = 'styled'
@@ -10,7 +11,7 @@ class TabsStore {
 
 function TabsComponent(props: TabsProps) {
   const router = useRouter()
-  const query = useLocalSearchParams()
+  const query = useParams()
   const store = useStore(TabsStore)
 
   const id = props.id || 'value'
@@ -20,11 +21,19 @@ function TabsComponent(props: TabsProps) {
     const url = new URL(location.href)
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
-    router.replace(url as Href, {
-      scroll: false,
-    })
-  }
 
+    const params = Object.fromEntries(url.searchParams?.entries() ?? [])
+
+    router.replace(
+      {
+        pathname: location.pathname,
+        params,
+      } as Href,
+      {
+        scroll: false,
+      }
+    )
+  }
   const value = typeof query[id] === 'string' ? (query[id] as string) : props.defaultValue
 
   return (
