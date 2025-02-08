@@ -1,8 +1,8 @@
 import type { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from '@discordjs/core'
 import { Copy, Eye, EyeOff, RefreshCcw, Search } from '@tamagui/lucide-icons'
+import { useLocalSearchParams, useRouter } from 'one'
 import { useState } from 'react'
-import useSWR, { mutate, useSWRConfig } from 'swr'
-import { useClipboard } from '~/hooks/useClipboard'
+import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
 import {
   Avatar,
@@ -22,7 +22,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useLocalSearchParams, useRouter } from 'one'
 import type { DiscordChannelStatus } from '~/app/api/discord/channel+api'
 import { Container } from '~/components/Containers'
 import { ButtonLink, Link } from '~/components/Link'
@@ -32,6 +31,7 @@ import type { Database, Json } from '~/features/supabase/types'
 import { UserGuard, useUser } from '~/features/user/useUser'
 import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
+import { useClipboard } from '~/hooks/useClipboard'
 
 export default function AccountItemsPage() {
   return (
