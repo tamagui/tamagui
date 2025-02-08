@@ -20,8 +20,8 @@ const sections = {
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
-  compile: docsRoutes
-    .filter((x) => x.section === 'compile')
+  compiler: docsRoutes
+    .filter((x) => x.section === 'compiler')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
@@ -41,12 +41,12 @@ const allItems = [
   {
     children: (
       <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
-        Compile
+        Compiler
       </H4>
     ),
   },
 
-  ...sections.compile,
+  ...sections.compiler,
 
   {
     children: (
@@ -66,11 +66,13 @@ const allItems = [
 // }
 
 export const DocsMenuContents = React.memo(function DocsMenuContents({
+  section: propsSection,
   inMenu,
-}: { inMenu?: boolean }) {
+}: { inMenu?: boolean; section?: keyof typeof sections }) {
   // const store = useStore(DocsItemsStore)
-  const { currentPath, section } = useDocsMenu()
-  const items = inMenu ? allItems : section ? sections[section] : allItems
+  const { currentPath, section: docsSection } = useDocsMenu()
+  const section = propsSection ?? docsSection
+  const items = section ? sections[section] : allItems
 
   // const [items, setItems] = React.useState(activeItems)
   // const isFiltered = items !== activeItems
@@ -148,8 +150,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
           store.index = 0
         }}
       /> */}
-
-      <Spacer />
 
       {/* 
       {!inMenu && section === 'docs' && (

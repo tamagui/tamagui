@@ -1,4 +1,3 @@
-import { ThemeTintAlt } from '@tamagui/logo'
 import { Dot, Paintbrush } from '@tamagui/lucide-icons'
 import { createShallowSetState } from '@tamagui/web'
 import type { Href } from 'one'
@@ -16,12 +15,11 @@ import {
   styled,
   Theme,
   useComposedRefs,
+  XStack,
   YStack,
 } from 'tamagui'
-import { BentoPageFrame } from '../../bento/BentoPageFrame'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
-import { CTAHeaderLink } from './CTAHeaderLink'
 
 const StudioIcon = () => (
   <YStack h={24} w={24} mx={-4} y={-0.5}>
@@ -54,7 +52,7 @@ const TooltipLabelLarge = ({
   )
 }
 
-export const SlidingPopover = (props: PopoverProps) => {
+export const UpgradePopover = (props: PopoverProps) => {
   const popoverRef = React.useRef<Popover>(null)
   const [active, setActive] = React.useState('')
 
@@ -67,14 +65,6 @@ export const SlidingPopover = (props: PopoverProps) => {
       close: () => {
         setActive('')
         popoverRef.current?.close()
-      },
-      setInactive(id: string) {
-        setActive((cur) => {
-          if (!cur || cur === id) {
-            return ''
-          }
-          return id
-        })
       },
     }
   }, [active])
@@ -96,15 +86,46 @@ export const SlidingPopover = (props: PopoverProps) => {
       {...props}
     >
       <SlidingPopoverContext.Provider value={val}>
-        <SlidingPopoverContent active={active} />
-        {props.children}
+        <Content active={active} />
+        <Popover.Trigger asChild="except-style">
+          <XStack
+            br="$10"
+            px="$2"
+            height={44}
+            ai="center"
+            bw={1}
+            bc="transparent"
+            hoverStyle={{
+              bc: '$color02',
+            }}
+          >
+            <SlidingPopoverTrigger id="takeout">
+              <YStack cur="pointer" f={1} ai="center" px="$3" ov="hidden">
+                <H2
+                  ff="$silkscreen"
+                  f={1}
+                  fow="600"
+                  size="$7"
+                  style={{
+                    fontFamily: '"PP Supply Mono"',
+                    fontSize: 14,
+                    fontWeight: '700',
+                    letterSpacing: 0,
+                  }}
+                >
+                  {/* <Ellipsis /> */}
+                  Start
+                </H2>
+              </YStack>
+            </SlidingPopoverTrigger>
+          </XStack>
+        </Popover.Trigger>
       </SlidingPopoverContext.Provider>
     </Popover>
   )
 }
 const SlidingPopoverContext = React.createContext({
   setActive(id: string, layout: LayoutRectangle) {},
-  setInactive(id: string) {},
   close() {},
 })
 
@@ -136,9 +157,6 @@ export const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
             context.setActive(id, layout)
           }
         }}
-        // onMouseLeave={() => {
-        //   context.setInactive(id)
-        // }}
         onPress={() => {
           setTimeout(() => {
             context.close()
@@ -162,7 +180,8 @@ export const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
   }
 )
 const order = ['', 'takeout', 'bento', 'studio']
-const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
+
+const Content = React.memo(({ active }: { active: string }) => {
   const context = React.useContext(SlidingPopoverContext)
   const last = React.useRef(active)
 
