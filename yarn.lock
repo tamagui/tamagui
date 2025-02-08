@@ -6453,8 +6453,8 @@ __metadata:
     url: "npm:^0.11.0"
     vite: "npm:^6.1.0"
   bin:
-    tama: ./dist/index.cjs
-    tamagui: ./dist/index.cjs
+    tama: ./run.cjs
+    tamagui: ./run.cjs
   languageName: unknown
   linkType: soft
 

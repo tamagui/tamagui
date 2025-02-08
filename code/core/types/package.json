@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/types",
-  "version": "1.124.3",
+  "version": "1.124.4",
   "types": "./types.ts",
   "files": [
     "types.ts"
