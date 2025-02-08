@@ -105,7 +105,8 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
 
   return (
     <Theme
-      // key={props.noKey ? '' : key}
+      // key just fixes ThemeNameEffectNoTheme we need to better notify hooks on mutate
+      key={props.noKey ? '' : key}
       forceClassName
       name={baseStepThemeName}
     >

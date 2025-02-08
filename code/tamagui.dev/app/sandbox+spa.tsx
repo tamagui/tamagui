@@ -65,12 +65,12 @@ const Circles = memo(() => {
   )
 })
 
-const MemoTest = memo(() => <Circle debug="verbose" size={100} bg="$color" />)
+const MemoTest = memo(() => <Circle size={100} bg="$color" />)
 
 const Slow = () => {
   const [theme, state] = useThemeWithState({ debug: true })
 
-  console.log('theme.background.val', theme.background.val, state)
+  console.info('theme.background.val', theme.background.val, state)
 
   return (
     <Circle size={50} bg={theme.background.val as any}>
@@ -82,7 +82,7 @@ const Slow = () => {
 const Fast = () => {
   const [theme, state] = useThemeWithState({})
 
-  console.log('theme.background.get()', theme.background.get(), state)
+  console.info('theme.background.get()', theme.background.get(), state)
 
   return (
     <Circle size={50} bg={theme.background.get() as any}>

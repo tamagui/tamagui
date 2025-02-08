@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/button",
-  "version": "1.124.1",
+  "version": "1.124.3",
   "sideEffects": [
     "*.css"
   ],
