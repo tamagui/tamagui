@@ -2,6 +2,8 @@ import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { usePathname } from 'one'
 import * as React from 'react'
 import {
+  H2,
+  Paragraph,
   Popover,
   SizableText,
   TooltipGroup,
@@ -225,29 +227,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 }}
               >
                 <SlidingPopoverTrigger id="takeout">
-                  <CTAHeaderLink
-                    {...props}
-                    excludeRoutes={['/', '/bento', '/takeout']}
-                    href="/takeout"
-                    name="Takeout"
-                    description="starter kit"
-                    icon={<TakeoutIcon scale={0.8} />}
-                  />
-                </SlidingPopoverTrigger>
-
-                <SlidingPopoverTrigger id="bento">
-                  <CTAHeaderLink
-                    {...props}
-                    excludeRoutes={['*']}
-                    href="/bento"
-                    name="Bento"
-                    description="starter kit"
-                    icon={
-                      <YStack>
-                        <BentoIcon scale={0.8} />
-                      </YStack>
-                    }
-                  />
+                  <YStack cur="pointer" f={1} ai="center" px="$3" ov="hidden">
+                    <H2 ff="$silkscreen" f={1} fow="600" size="$7">
+                      +
+                    </H2>
+                  </YStack>
                 </SlidingPopoverTrigger>
               </XStack>
             </Popover.Trigger>

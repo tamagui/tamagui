@@ -23,8 +23,9 @@ export const CTAHeaderLink = ({
     <Link asChild href={href}>
       <HeadAnchor
         grid={forceShowAllLinks}
-        fontSize={24}
+        // fontSize={24}
         mx={-2}
+        ls={2}
         $sm={{
           display: 'none',
         }}

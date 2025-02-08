@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { Paintbrush } from '@tamagui/lucide-icons'
+import { Dot, Paintbrush } from '@tamagui/lucide-icons'
 import { createShallowSetState } from '@tamagui/web'
 import type { Href } from 'one'
 import { Link } from 'one'
@@ -10,6 +10,7 @@ import {
   AnimatePresence,
   debounce,
   H2,
+  H5,
   Paragraph,
   Popover,
   styled,
@@ -20,6 +21,7 @@ import {
 import { BentoPageFrame } from '../../bento/BentoPageFrame'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
+import { CTAHeaderLink } from './CTAHeaderLink'
 
 const StudioIcon = () => (
   <YStack h={24} w={24} mx={-4} y={-0.5}>
@@ -35,16 +37,16 @@ const TooltipLabelLarge = ({
 }: { href: string; icon: any; title: string; subtitle: string }) => {
   return (
     <Link asChild href={href as Href}>
-      <YStack cur="pointer" f={1} ai="center" p="$7" br="$4" ov="hidden">
-        <H2 ff="$silkscreen" f={1} fow="600" size="$7">
+      <YStack cur="pointer" f={1} ai="center" p="$4" br="$4" gap="$2">
+        <H2 ff="$silkscreen" f={1} fow="600" size="$5" ls={1}>
           {title}
         </H2>
 
-        <Paragraph theme="alt1" f={1} size="$5">
+        <Paragraph px="$2" theme="alt1" f={1} size="$4" lh="$2">
           {subtitle}
         </Paragraph>
 
-        <YStack pos="absolute" b={15} r={17} scale={2.25} rotate="-10deg">
+        <YStack pos="absolute" t={-5} r={-5} scale={1} rotate="-10deg">
           {icon}
         </YStack>
       </YStack>
@@ -81,8 +83,8 @@ export const SlidingPopover = (props: PopoverProps) => {
     <Popover
       disableRTL
       hoverable={{
-        delay: 50,
-        restMs: 40,
+        delay: 200,
+        restMs: 340,
         move: false,
       }}
       onOpenChange={(val, event) => {
@@ -174,85 +176,70 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
 
   return (
     <Popover.Content
-      theme={active === 'takeout' ? 'gray' : 'tan'}
+      theme={active === 'takeout' ? 'black' : 'tan'}
       enableAnimationForPositionChange
       animation={
         active
-          ? 'quicker'
+          ? 'quick'
           : [
-              'quicker',
+              'slowest',
               {
                 x: '100ms',
               },
             ]
       }
-      bg={active === 'takeout' ? '$color7' : '$background'}
+      bg="$background08"
+      backdropFilter="blur(40px)"
       elevation="$8"
       padding={0}
       br="$6"
+      borderWidth={0}
       enterStyle={{
-        y: -10,
-        o: 0,
+        y: 3,
+        opacity: 0,
       }}
       exitStyle={{
-        y: -10,
-        o: 0,
+        y: 5,
+        opacity: 0,
       }}
     >
       {active === 'bento' ? (
         <Theme name="tan">
-          <Popover.Arrow bg="$color6" size="$4" />
+          <Popover.Arrow bg="$color6" size="$3.5" />
         </Theme>
       ) : (
-        <Popover.Arrow bg="$color4" size="$4" />
+        <Popover.Arrow bg="$background08" size="$3.5" />
       )}
 
       <YStack
         onPressOut={() => {
           context.close()
         }}
-        w={280}
-        h={200}
+        width={280}
+        height={600}
         ov="hidden"
         br="$6"
       >
         <AnimatePresence custom={{ going }} initial={false}>
           {active === 'takeout' && (
-            <Frame key="takeout">
-              <ThemeTintAlt>
-                <YStack
-                  fullscreen
-                  br="$6"
-                  zi={0}
-                  style={{
-                    background: `linear-gradient(45deg, transparent, var(--color3))`,
-                    mixBlendMode: 'color',
-                  }}
-                />
-              </ThemeTintAlt>
-              <ThemeTintAlt offset={-1}>
-                <YStack
-                  fullscreen
-                  br="$6"
-                  zi={0}
-                  style={{
-                    background: `linear-gradient(-125deg, transparent, var(--color3))`,
-                    mixBlendMode: 'color',
-                  }}
-                />
-              </ThemeTintAlt>
-              <TooltipLabelLarge
-                icon={<TakeoutIcon />}
-                href="/takeout"
-                title="Takeout"
-                subtitle="Starter kit for making universal apps fast."
-              />
-            </Frame>
-          )}
+            <Frame key="takeout" p="$3" gap="$2">
+              <H5 als="center">Start</H5>
 
-          {active === 'bento' && (
-            <Frame key="bento">
-              <BentoPageFrame simpler>
+              <Paragraph theme="alt1" lh="$2" px="$2" mb="$2">
+                Start is how we fund the independent development of Tamagui and the One
+                framework.
+              </Paragraph>
+
+              <Card>
+                <TooltipLabelLarge
+                  icon={<TakeoutIcon />}
+                  href="/takeout"
+                  title="Takeout"
+                  subtitle="Starter kit for making universal apps fast."
+                />
+              </Card>
+
+              <Card>
                 <TooltipLabelLarge
                   href="/bento"
                   icon={
@@ -263,18 +250,16 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
                   title="Bento"
                   subtitle="OSS and paid copy-paste components and screens."
                 />
-              </BentoPageFrame>
-            </Frame>
-          )}
+              </Card>
 
-          {active === 'studio' && (
-            <Frame key="takeout">
-              <TooltipLabelLarge
-                href="/studio"
-                icon={<StudioIcon />}
-                title="Studio"
-                subtitle="Create complete theme suites with a visual step-by-step studio."
-              />
+              <Card>
+                <TooltipLabelLarge
+                  href="/theme"
+                  icon={<Dot />}
+                  title="Theme"
+                  subtitle="A smart LLM-based bot that generates themes."
+                />
+              </Card>
             </Frame>
           )}
         </AnimatePresence>
@@ -283,8 +268,15 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
   )
 })
 
+const Card = styled(YStack, {
+  maxHeight: 120,
+  br: '$4',
+  borderWidth: 0.5,
+  borderColor: '$color2',
+})
+
 const Frame = styled(YStack, {
-  animation: 'medium',
+  animation: 'slow',
   br: '$5',
   ov: 'hidden',
   fullscreen: true,
