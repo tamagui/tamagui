@@ -56,13 +56,31 @@ const HorizontalTabs = () => {
         disablePassBorderRadius="bottom"
         aria-label="Manage your account"
       >
-        <Tabs.Tab flex={1} value="tab1">
-          <SizableText fontFamily="$body">Profile</SizableText>
+        <Tabs.Tab
+          focusStyle={{
+            backgroundColor: '$color3',
+          }}
+          flex={1}
+          value="tab1"
+        >
+          <SizableText fontFamily="$body">Profile ne</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab flex={1} value="tab2">
+        <Tabs.Tab
+          focusStyle={{
+            backgroundColor: '$color3',
+          }}
+          flex={1}
+          value="tab2"
+        >
           <SizableText fontFamily="$body">Connections</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab flex={1} value="tab3">
+        <Tabs.Tab
+          focusStyle={{
+            backgroundColor: '$color3',
+          }}
+          flex={1}
+          value="tab3"
+        >
           <SizableText fontFamily="$body">Notifications</SizableText>
         </Tabs.Tab>
       </Tabs.List>
