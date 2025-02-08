@@ -39,7 +39,7 @@ export default function DocsLayout() {
       ? 'red'
       : section === 'ui'
         ? 'blue'
-        : section === 'compile'
+        : section === 'compiler'
           ? 'green'
           : null
 

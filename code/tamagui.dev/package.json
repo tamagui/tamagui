@@ -72,6 +72,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "subset-font": "^2.1.0",
     "@biomejs/biome": "^1.9.4",
     "@tamagui/cli": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",

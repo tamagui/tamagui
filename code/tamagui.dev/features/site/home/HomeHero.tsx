@@ -43,7 +43,7 @@ const HeroSubTitle = memo(() => {
 
   return (
     <Subtitle>
-      <Link asChild href="/docs/introduction">
+      <Link asChild href="/docs/intro/introduction">
         <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>

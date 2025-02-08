@@ -1,4 +1,6 @@
+import { setTintIndex } from '@tamagui/logo'
 import { useLoader } from 'one'
+import { useEffect } from 'react'
 import { YStack } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
@@ -26,6 +28,10 @@ export async function loader() {
 
 export default function TamaguiHomePage() {
   const { compilationExamples, animationCode } = useLoader(loader)
+
+  useEffect(() => {
+    setTintIndex(3)
+  }, [])
 
   if (!compilationExamples) {
     return null

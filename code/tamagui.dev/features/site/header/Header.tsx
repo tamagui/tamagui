@@ -198,7 +198,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               <GithubIcon width={22} />
               <>
                 <SizableText
-                  $md={{ display: 'none' }}
+                  $xl={{ display: 'none' }}
                   size="$3"
                   color="$color12"
                   o={0.5}
@@ -710,7 +710,7 @@ const HeaderMenuMoreContents = () => {
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
-  fontFamily: '$silkscreen',
+  fontFamily: '$mono',
   px: '$4',
   py: '$4',
   cursor: 'pointer',
@@ -725,13 +725,6 @@ const HeadAnchor = styled(Paragraph, {
 
   pressStyle: {
     opacity: 0.25,
-  },
-
-  style: {
-    fontFamily: '"PP Supply Mono"',
-    fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: 0,
   },
 
   variants: {

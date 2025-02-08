@@ -70,19 +70,7 @@ export const UpgradePopover = (props: PopoverProps) => {
           }}
         >
           <YStack cur="pointer" f={1} ai="center" px="$3" ov="hidden">
-            <H2
-              ff="$silkscreen"
-              f={1}
-              fow="600"
-              size="$7"
-              style={{
-                fontFamily: '"PP Supply Mono"',
-                fontSize: 14,
-                fontWeight: '700',
-                letterSpacing: 0,
-              }}
-            >
-              {/* <Ellipsis /> */}
+            <H2 ff="$mono" f={1} fow="600" size="$5">
               Pro
             </H2>
           </YStack>

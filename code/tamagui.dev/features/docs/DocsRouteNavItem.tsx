@@ -74,6 +74,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           />
         )}
         <SizableText
+          ff="$mono"
           size="$4"
           lh="$3"
           cursor="pointer"
