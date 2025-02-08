@@ -49,6 +49,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ai-sdk/groq@npm:^1.1.7":
+  version: 1.1.7
+  resolution: "@ai-sdk/groq@npm:1.1.7"
+  dependencies:
+    "@ai-sdk/provider": "npm:1.0.7"
+    "@ai-sdk/provider-utils": "npm:2.1.6"
+  peerDependencies:
+    zod: ^3.0.0
+  checksum: 10/26a42cfdb92aa575f5a0c76cc4c07d66a8b40e4a43d4b151bafcde80f12bd86aeabb372f11fe9f886125513a82a3659c3a64f81b2d0b4209036525388f1901fa
+  languageName: node
+  linkType: hard
+
 "@ai-sdk/openai-compatible@npm:0.1.8":
   version: 0.1.8
   resolution: "@ai-sdk/openai-compatible@npm:0.1.8"
@@ -6896,6 +6908,7 @@ __metadata:
   dependencies:
     "@ai-sdk/anthropic": "npm:^1.1.6"
     "@ai-sdk/deepseek": "npm:^0.1.8"
+    "@ai-sdk/groq": "npm:^1.1.7"
     "@ai-sdk/openai": "npm:^1.1.9"
     "@ai-sdk/xai": "npm:^1.1.8"
     "@biomejs/biome": "npm:^1.9.4"
