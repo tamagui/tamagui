@@ -120,9 +120,9 @@ export function Header(props: HeaderProps) {
               }}
             />
             <YStack mx="auto" px="$4" w="100%">
-              <ThemeTint>
-                <HeaderContents floating {...props} />
-              </ThemeTint>
+              {/* <ThemeTint> */}
+              <HeaderContents floating {...props} />
+              {/* </ThemeTint> */}
             </YStack>
           </XStack>
           {/* do shadow separate so we can contain paint because its causing perf issues */}

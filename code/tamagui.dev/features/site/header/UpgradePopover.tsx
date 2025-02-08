@@ -64,18 +64,8 @@ export const UpgradePopover = (props: PopoverProps) => {
             bc: '$color02',
           }}
           onPress={() => {
-            if (isTouchable) {
-              setOpen(!open)
-              return
-            }
-            if (open && state.via === 'hover') {
-              setState({ ...state, via: 'press', viaAt: Date.now() })
-              return
-            }
-            if (open) {
-              setOpen(false)
-              return
-            }
+            purchaseModal.show = true
+            setOpen(false)
             // hover handles this
           }}
         >
@@ -126,7 +116,9 @@ export const UpgradePopover = (props: PopoverProps) => {
         animation="quick"
         bg="$background08"
         backdropFilter="blur(40px)"
-        elevation="$8"
+        shadowRadius={50}
+        shadowColor="$shadow4"
+        shadowOffset={{ height: 30, width: 0 }}
         padding={0}
         br="$6"
         borderWidth={0}

@@ -581,8 +581,8 @@ const PurchaseTabContent = () => {
   return (
     <>
       <BigP>
-        Tamagui Pro is a single subscription that gives you access to a variety of helpful
-        resources.
+        Tamagui Pro is a single plan that gives you access to all sorts of helpful
+        resources to build better apps faster.
       </BigP>
 
       <XStack fw="wrap" gap="$3">
