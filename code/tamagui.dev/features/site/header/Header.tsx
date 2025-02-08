@@ -755,7 +755,7 @@ const HeadAnchor = styled(Paragraph, {
 })
 
 const Frame = styled(YStack, {
-  animation: 'quick',
+  animation: 'medium',
   br: '$5',
   ov: 'hidden',
   position: 'absolute',
@@ -772,12 +772,12 @@ const Frame = styled(YStack, {
     going: {
       ':number': (going) => ({
         enterStyle: {
-          x: going > 0 ? 20 : -20,
+          x: going > 0 ? 50 : -50,
           opacity: 0,
         },
         exitStyle: {
           zIndex: 0,
-          x: going < 0 ? 20 : -20,
+          x: going < 0 ? 50 : -50,
           opacity: 0,
         },
       }),

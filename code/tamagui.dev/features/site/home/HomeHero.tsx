@@ -369,12 +369,12 @@ const Subtitle = styled(Paragraph, {
 
   $gtSm: {
     ta: 'center',
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 
   $gtMd: {
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 

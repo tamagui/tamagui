@@ -227,7 +227,7 @@ const PurchaseModalContents = () => {
                 </YStack>
               </Tabs.List>
 
-              <YStack f={1} group="takeoutBody" p="$8">
+              <YStack f={1} group="takeoutBody">
                 <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
@@ -235,10 +235,10 @@ const PurchaseModalContents = () => {
                       forceMount
                       flex={1}
                       minHeight={400}
-                      height="calc(min(100vh - 400px, 480px))"
+                      height="calc(min(100vh - 400px, 580px))"
                     >
                       <ScrollView>
-                        <YStack gap="$6">
+                        <YStack p="$8" gap="$6">
                           <CurrentTabContents />
                         </YStack>
                       </ScrollView>
@@ -580,9 +580,8 @@ const BigP = styled(P, {
 const PurchaseTabContent = () => {
   return (
     <>
-      <BigP>
-        Tamagui Pro is a single plan that gives you access to all sorts of helpful
-        resources to build better apps faster.
+      <BigP mb="$3">
+        Tamagui Pro is a bundle that helps you launch your next idea much faster. You get:
       </BigP>
 
       <XStack fw="wrap" gap="$3">

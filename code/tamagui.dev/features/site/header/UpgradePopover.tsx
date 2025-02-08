@@ -55,7 +55,9 @@ export const UpgradePopover = (props: PopoverProps) => {
       <Popover.Anchor asChild>
         <XStack
           br="$10"
-          px="$2"
+          px="$4"
+          animation="quick"
+          cur="pointer"
           height={44}
           ai="center"
           bw={1}
@@ -63,17 +65,19 @@ export const UpgradePopover = (props: PopoverProps) => {
           hoverStyle={{
             bc: '$color02',
           }}
+          pressStyle={{
+            bg: '$background02',
+            bc: '$color04',
+          }}
           onPress={() => {
             purchaseModal.show = true
             setOpen(false)
             // hover handles this
           }}
         >
-          <YStack cur="pointer" f={1} ai="center" px="$3" ov="hidden">
-            <H2 ff="$mono" f={1} fow="600" size="$5">
-              Pro
-            </H2>
-          </YStack>
+          <H2 ff="$mono" f={1} fow="600" size="$4">
+            Pro
+          </H2>
         </XStack>
       </Popover.Anchor>
 
@@ -236,15 +240,15 @@ const TooltipLabelLarge = ({
 }: { href: string; icon: any; title: string; subtitle: string }) => {
   return (
     <Link asChild href={href as Href}>
-      <YStack cur="pointer" f={1} p="$3" br="$4" gap="$2">
+      <YStack cur="pointer" f={1} p="$3" br="$4" gap="$1">
         <XStack ai="center" gap="$2">
           <YStack scale={0.7}>{icon}</YStack>
-          <H2 ff="$mono" f={1} fow="600" size="$5" ls={1}>
+          <H2 ff="$mono" f={1} fow="600" size="$6" ls={1}>
             {title}
           </H2>
         </XStack>
 
-        <Paragraph px="$2" theme="alt1" f={1} size="$4" lh="$2">
+        <Paragraph ff="$mono" px="$2" theme="alt1" f={1} size="$3" ls={-0.5}>
           {subtitle}
         </Paragraph>
       </YStack>
