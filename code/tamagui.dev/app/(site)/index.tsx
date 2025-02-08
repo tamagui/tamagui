@@ -35,7 +35,7 @@ export default function TamaguiHomePage() {
         description="React style library and UI kit that unifies React Native and React web"
       />
 
-      <ThemeNameEffect disableTint={3} colorKey="$color2" />
+      {/* <ThemeNameEffect disableTint={3} colorKey="$color2" /> */}
 
       <HomeGlow />
       <YStack
