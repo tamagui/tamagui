@@ -21,14 +21,7 @@ export const CTAHeaderLink = ({
   // disabling for now it clutters things
   return (
     <Link asChild href={href}>
-      <HeadAnchor
-        grid={forceShowAllLinks}
-        fontSize={24}
-        mx={-2}
-        $sm={{
-          display: 'none',
-        }}
-      >
+      <HeadAnchor grid={forceShowAllLinks} fontSize={24} mx={-2}>
         {icon}
       </HeadAnchor>
     </Link>

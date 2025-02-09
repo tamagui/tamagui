@@ -214,6 +214,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <SlidingPopover>
             <Popover.Trigger asChild="except-style">
               <XStack
+                $sm={{
+                  display: 'none',
+                }}
                 br="$10"
                 px="$2"
                 height={44}

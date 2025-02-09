@@ -143,11 +143,11 @@ export default function Layout() {
 
 export const Providers = (props: { children: any }) => {
   return (
-    <SearchProvider>
-      <SchemeProvider>
-        <WebsiteTamaguiProvider>{props.children}</WebsiteTamaguiProvider>
-      </SchemeProvider>
-    </SearchProvider>
+    <SchemeProvider>
+      <WebsiteTamaguiProvider>
+        <SearchProvider>{props.children}</SearchProvider>
+      </WebsiteTamaguiProvider>
+    </SchemeProvider>
   )
 }
 
