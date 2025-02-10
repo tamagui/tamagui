@@ -1,6 +1,6 @@
 import { Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
-import { Button, Circle, CircleProps, Switch, Text, XStack, YStack } from 'tamagui'
+import { Button, Circle, type CircleProps, Switch, Text, XStack, YStack } from 'tamagui'
 
 export default function Sandbox() {
   const [name, setName] = useState('dark')
