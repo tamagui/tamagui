@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-did-finish-ssr",
-  "version": "1.124.4",
+  "version": "1.124.5",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
