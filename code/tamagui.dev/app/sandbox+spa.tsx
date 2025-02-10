@@ -1,29 +1,29 @@
 import { Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
-import { Circle, Switch, Text, XStack, YStack } from 'tamagui'
+import { Button, Circle, CircleProps, Switch, Text, XStack, YStack } from 'tamagui'
 
 export default function Sandbox() {
   const [name, setName] = useState('dark')
 
   return (
     <YStack gap="$2">
-      <Theme name="blue">
+      {/* <Theme name="blue">
         <Switch>
           <Switch.Thumb animation="quicker" />
         </Switch>
-      </Theme>
+      </Theme> */}
 
       {/* <ThemeToggle /> */}
 
       {/* <Link href="/sandbox2">Go to sandbox2</Link> */}
 
-      {/* <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button> */}
+      <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button>
 
       {/* <Circles /> */}
 
-      {/* <Theme name={name as any}>
+      <Theme debug="visualize" name={name as any}>
         <Circles />
-      </Theme> */}
+      </Theme>
 
       {/* <Theme inverse>
         <Circles />
@@ -38,36 +38,39 @@ const Circles = memo(() => {
   return (
     <XStack bg="$color1">
       <Theme name="accent">
-        <Circle size={100} bg="$color10">
+        <MemoTestCircle size={100} bg="$color10">
           <Slow />
           <Fast />
-        </Circle>
+        </MemoTestCircle>
       </Theme>
 
-      {/* <Theme name="red">
-        <Circle size={100} bg="$color10" />
-      </Theme> */}
+      <Theme name="red">
+        <MemoTestCircle size={100} bg="$color10" />
+      </Theme>
 
-      {/* <Theme name="surface3">
-        <Circle size={100} bg="$borderColor" />
-      </Theme> */}
+      <Theme name="surface3">
+        <MemoTestCircle size={100} bg="$borderColor" />
+      </Theme>
 
-      {/* <Theme name="surface2">
-        <Circle size={100} bg="$borderColor" />
-      </Theme> */}
+      <Theme name="surface2">
+        <MemoTestCircle size={100} bg="$borderColor" />
+      </Theme>
 
       <Theme name="surface1">
-        <Circle size={100} bg="$borderColor" />
+        <MemoTestCircle debug size={100} bg="$borderColor" />
       </Theme>
 
-      <MemoTest />
+      <MemoTestCircle />
     </XStack>
   )
 })
 
-const MemoTest = memo(() => <Circle size={100} bg="$color" />)
+const MemoTestCircle = memo((props: CircleProps) => {
+  return <Circle size={100} bg="$color" {...props} />
+})
 
 const Slow = () => {
+  console.warn('rendering Slow')
   const [theme, state] = useThemeWithState({ debug: true })
 
   console.info('theme.background.val', theme.background.val, state)

@@ -43,7 +43,7 @@ const include = [
   '@discordjs/core',
 ]
 
-const optimize = process.env.DISABLE_OPTIMIZATION
+const disableExtraction = process.env.DISABLE_OPTIMIZATION
   ? false
   : process.env.NODE_ENV === 'production'
 
@@ -86,7 +86,8 @@ export default {
 
   plugins: [
     tamaguiPlugin({
-      optimize,
+      optimize: true,
+      disableExtraction,
       // useReactNativeWebLite: true,
     }),
 

@@ -104,16 +104,15 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
   const { name: baseStepThemeName, key } = useBaseThemePreview()
 
   return (
-    <Theme
-      // key just fixes ThemeNameEffectNoTheme we need to better notify hooks on mutate
-      key={props.noKey ? '' : key}
-      forceClassName
-      name={baseStepThemeName}
-    >
-      {/* <YStack bg="$color1" fullscreen zi={0} scale={2} /> */}
-      <ThemeNameEffectNoTheme />
-      <YStack f={1}>{props.children}</YStack>
-    </Theme>
+    <>
+      {/* some bug with the useTheme hook here needing a key: */}
+      <Theme name={baseStepThemeName} forceClassName key={props.noKey ? '' : key}>
+        <ThemeNameEffectNoTheme />
+      </Theme>
+      <Theme forceClassName name={baseStepThemeName}>
+        <YStack f={1}>{props.children}</YStack>
+      </Theme>
+    </>
   )
 }
 
