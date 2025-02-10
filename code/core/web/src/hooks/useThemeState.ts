@@ -351,7 +351,8 @@ function getNewThemeName(
     if (found) break
   }
 
-  if (found && inverse) {
+  if (inverse) {
+    found ||= parentName
     const scheme = found.split('_')[0]
     found = found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
   }
