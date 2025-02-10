@@ -31,18 +31,23 @@ export const keysToId = new WeakMap()
 const allListeners = new Map<ID, Function>()
 const listenersByParent: Record<ID, Set<ID>> = {}
 const hasRenderedOnce = new WeakMap<any, boolean>()
-const pendingUpdate = new Map<any, boolean>()
+const pendingUpdate = new Map<any, boolean | 'force'>()
 
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
 
+let shouldForce = false
 export const forceUpdateThemes = () => {
+  cacheVersion++
+  shouldForce = true
   allListeners.forEach((cb) => cb())
 }
 
 export const getThemeState = (id: ID) => states.get(id)
 
 const cache = new Map<string, ThemeState>()
+let cacheVersion = 0
+
 let themes: Record<string, ThemeParsed> | null = null
 
 let rootThemeState: ThemeState | null = null
@@ -74,7 +79,7 @@ export const useThemeState = (
       listenersByParent[parentId] ||= new Set()
       listenersByParent[parentId].add(id)
       allListeners.set(id, () => {
-        pendingUpdate.set(id, true)
+        pendingUpdate.set(id, shouldForce ? 'force' : true)
         cb()
       })
       return () => {
@@ -99,7 +104,7 @@ export const useThemeState = (
             : props.needsUpdate?.()
 
     const parentState = states.get(parentId)
-    const cacheKey = `${id}${propsKey}${parentState?.name || ''}${isRoot}`
+    const cacheKey = `${cacheVersion}${id}${propsKey}${parentState?.name || ''}${isRoot}`
 
     if (!needsUpdate) {
       if (cache.has(cacheKey)) {
@@ -166,7 +171,7 @@ const getSnapshotFrom = (
   id: string,
   parentId: string,
   needsUpdate: boolean | undefined,
-  pendingUpdate = false
+  pendingUpdate: boolean | 'force' | undefined
 ): ThemeState => {
   const parentState = states.get(parentId)
 
@@ -174,9 +179,16 @@ const getSnapshotFrom = (
     themes = getConfig().themes
   }
 
-  const name = !propsKey ? null : getNewThemeName(parentState?.name, props, !!needsUpdate)
+  const name =
+    !propsKey && pendingUpdate !== 'force'
+      ? null
+      : getNewThemeName(
+          parentState?.name,
+          props,
+          pendingUpdate === 'force' ? true : !!needsUpdate
+        )
 
-  const isSameAsParent = !name && propsKey // name = null if matching parent and has props
+  const isSameAsParent = Boolean(!name && propsKey) // name = null if matching parent and has props
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -208,7 +220,7 @@ const getSnapshotFrom = (
     return next
   }
 
-  if (lastState && lastState.name === name) {
+  if (pendingUpdate !== 'force' && lastState && lastState.name === name) {
     return lastState
   }
 
@@ -244,9 +256,11 @@ const getSnapshotFrom = (
 
   // we still update the state (not changing identity), that way children can properly resolve the right state
   // but this one wont trigger an update
-  if (lastState && !needsUpdate) {
-    Object.assign(lastState, nextState)
-    return lastState
+  if (pendingUpdate !== 'force') {
+    if (lastState && !needsUpdate) {
+      Object.assign(lastState, nextState)
+      return lastState
+    }
   }
 
   return nextState
@@ -286,7 +300,7 @@ function getScheme(name: string) {
 
 function getNewThemeName(
   parentName = '',
-  { name, reset, componentName, inverse }: UseThemeWithStateProps,
+  { name, reset, componentName, inverse, debug }: UseThemeWithStateProps,
   forceUpdate = false
 ): string | null {
   if (name && reset) {

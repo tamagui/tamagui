@@ -63,8 +63,8 @@ export function mutateThemes({
     for (const themeName in allThemesProxied) {
       const theme = allThemesProxied[themeName]
       updateThemeConfig(themeName, theme)
-      updateThemeStates(themeName, theme)
     }
+    updateThemeStates()
   })
 
   return {
@@ -127,7 +127,7 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
   }
 
   updateThemeConfig(themeName, themeProxied)
-  updateThemeStates(themeName, themeProxied)
+  updateThemeStates()
 
   return response
 }
@@ -138,7 +138,7 @@ function updateThemeConfig(themeName: string, theme: ThemeParsed) {
   updateConfig('themes', config.themes)
 }
 
-function updateThemeStates(themeName: string, theme: ThemeParsed) {
+function updateThemeStates() {
   forceUpdateThemes()
 }
 

@@ -13,7 +13,6 @@ import {
   XStack,
   YStack,
   styled,
-  useThemeName,
 } from 'tamagui'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
@@ -21,15 +20,13 @@ import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
-import { steps } from '~/features/studio/theme/steps/steps'
+
 import {
   themeBuilderStore,
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
 import { lastInserted } from '../../features/studio/theme/previewTheme'
-
-themeBuilderStore.setSteps(steps)
 
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
@@ -101,15 +98,12 @@ export default function ThemePage() {
 }
 
 const PreviewTheme = (props: { children: any; noKey?: any }) => {
-  const { name: baseStepThemeName, key } = useBaseThemePreview()
+  const { name: baseStepThemeName } = useBaseThemePreview()
 
   return (
     <>
-      {/* some bug with the useTheme hook here needing a key: */}
-      <Theme name={baseStepThemeName} forceClassName key={props.noKey ? '' : key}>
+      <Theme forceClassName name={baseStepThemeName}>
         <ThemeNameEffectNoTheme />
-      </Theme>
-      <Theme forceClassName name={baseStepThemeName} key={props.noKey ? '' : key}>
         <YStack f={1}>{props.children}</YStack>
       </Theme>
     </>
