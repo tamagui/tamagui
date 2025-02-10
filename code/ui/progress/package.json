@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/progress",
-  "version": "1.124.5",
+  "version": "1.124.6",
   "sideEffects": [
     "*.css"
   ],
