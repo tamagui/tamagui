@@ -32,13 +32,17 @@ export function useControllableState<T>({
 
   const transitionFn = transition ? startTransition : emptyCallbackFn
 
-  React.useEffect(() => {
-    if (prop === undefined) return
-    previous.current = prop
+  if (prop !== state) {
     transitionFn(() => {
-      setState(prop)
+      // @ts-expect-error if user passes undefined thats on them
+      setState((prev) => {
+        if (prev !== prop) {
+          previous.current = prop
+          return prop
+        }
+      })
     })
-  }, [prop])
+  }
 
   React.useEffect(() => {
     if (propWins) return
