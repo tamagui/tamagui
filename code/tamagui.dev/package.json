@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dot-dev",
-  "version": "1.124.3",
+  "version": "1.124.4",
   "type": "module",
   "private": true,
   "sideEffects": false,
@@ -47,7 +47,6 @@
     "@tamagui/mdx-2": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/use-store": "workspace:*",
-    "@tanstack/react-query": "^5.66.0",
     "@vercel/og": "^0.6.5",
     "@vxrn/color-scheme": "^1.1.436",
     "ai": "^4.1.16",
@@ -72,7 +71,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "subset-font": "^2.1.0",
     "@biomejs/biome": "^1.9.4",
     "@tamagui/cli": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",
@@ -81,6 +79,7 @@
     "archiver": "^7.0.1",
     "esbuild-register": "^3.6.0",
     "mdx-bundler": "^10.0.2",
+    "subset-font": "^2.1.0",
     "vite-bundle-analyzer": "^0.9.4",
     "vitest": "^3.0.5"
   }

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import useSWR from 'swr'
 import type { Database } from '~/features/supabase/types'
 
 type Product = Database['public']['Tables']['products']['Row'] & {
@@ -11,9 +11,8 @@ export type ProductsResponse = {
 }
 
 export const useProducts = () => {
-  return useQuery({
-    queryKey: ['products'],
-    queryFn: async () => {
+  return useSWR('products', {
+    fetcher: async () => {
       const response = await fetch('/api/products')
       if (!response.ok) {
         throw new Error('Failed to fetch products')

@@ -9,7 +9,6 @@ import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // for navigation container props
 //           theme: {
@@ -153,24 +152,13 @@ export default function Layout() {
   )
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      refetchOnWindowFocus: false,
-    },
-  },
-})
-
 export const Providers = (props: { children: any }) => {
   return (
-    <SearchProvider>
-      <SchemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <WebsiteTamaguiProvider>{props.children}</WebsiteTamaguiProvider>
-        </QueryClientProvider>
-      </SchemeProvider>
-    </SearchProvider>
+    <SchemeProvider>
+      <WebsiteTamaguiProvider>
+        <SearchProvider>{props.children}</SearchProvider>
+      </WebsiteTamaguiProvider>
+    </SchemeProvider>
   )
 }
 

@@ -26,8 +26,12 @@ export type ThemeState = {
 
 export const ThemeStateContext = createContext<ID>('')
 
+export const keysToId = new WeakMap()
+
 const allListeners = new Map<ID, Function>()
 const listenersByParent: Record<ID, Set<ID>> = {}
+const hasRenderedOnce = new WeakMap<any, boolean>()
+const pendingUpdate = new Map<any, boolean>()
 
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
@@ -38,10 +42,11 @@ export const forceUpdateThemes = () => {
 
 export const getThemeState = (id: ID) => states.get(id)
 
+const cache = new Map<string, ThemeState>()
+let themes: Record<string, ThemeParsed> | null = null
+
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
-
-const HasRenderedOnce = new WeakMap<any, boolean>()
 
 export const useThemeState = (
   props: UseThemeWithStateProps,
@@ -67,19 +72,65 @@ export const useThemeState = (
     (cb: Function) => {
       listenersByParent[parentId] ||= new Set()
       listenersByParent[parentId].add(id)
-      allListeners.set(id, cb)
+      allListeners.set(id, () => {
+        pendingUpdate.set(id, true)
+        cb()
+      })
       return () => {
         allListeners.delete(id)
         listenersByParent[parentId].delete(id)
       }
     },
-    [id, parentId, keys]
+    [id, parentId]
   )
 
   const propsKey = getPropsKey(props)
 
   const getSnapshot = () => {
-    return getSnapshotFrom(props, propsKey, isRoot, id, parentId, keys)
+    const last = states.get(id)
+    const needsUpdate =
+      props.name === 'light' || props.name === 'dark'
+        ? true
+        : !hasRenderedOnce.get(keys)
+          ? true
+          : keys?.current?.size
+            ? true
+            : props.needsUpdate?.()
+
+    const parentState = states.get(parentId)
+    const cacheKey = `${id}${propsKey}${parentState?.name || ''}${isRoot}`
+
+    if (!needsUpdate) {
+      if (cache.has(cacheKey)) {
+        return cache.get(cacheKey)!
+      }
+    }
+
+    const next = getSnapshotFrom(
+      last,
+      props,
+      propsKey,
+      isRoot,
+      id,
+      parentId,
+      needsUpdate,
+      pendingUpdate.get(id)
+    )
+
+    if (last !== next) {
+      pendingUpdate.delete(id)
+      states.set(id, next)
+      cache.set(id, next)
+      if (
+        process.env.NODE_ENV === 'development' &&
+        props.debug &&
+        props.debug !== 'profile'
+      ) {
+        console.warn(` · useTheme(${id}) UPDATE from`, last, 'to', next)
+      }
+    }
+
+    return next
   }
 
   if (process.env.NODE_ENV === 'development' && globalThis.time)
@@ -88,11 +139,11 @@ export const useThemeState = (
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
   useIsomorphicLayoutEffect(() => {
-    if (!propsKey) return
-    if (!HasRenderedOnce.has(keys)) {
-      HasRenderedOnce.set(keys, true)
+    if (!hasRenderedOnce.get(keys)) {
+      hasRenderedOnce.set(keys, true)
       return
     }
+    if (!propsKey) return
     if (
       process.env.NODE_ENV === 'development' &&
       props.debug &&
@@ -103,52 +154,28 @@ export const useThemeState = (
     scheduleUpdate(id)
   }, [keys, propsKey])
 
-  if (process.env.NODE_ENV === 'development' && props.debug) {
-    console.groupCollapsed(
-      ` · useTheme(${id}) =>`,
-      state.name,
-      id === state.id ? '🎉' : '⏭️'
-    )
-    console.info({
-      state,
-      parentId,
-      props,
-      propsKey,
-      id,
-      parentState: states.get(parentId),
-    })
-    console.groupEnd()
-  }
-
   return state.id === id ? { ...state, isNew: true } : state
 }
 
-// const cache = new Map<string, ThemeState>()
-let themes: Record<string, ThemeParsed> | null = null
-
 const getSnapshotFrom = (
+  lastState: ThemeState | undefined,
   props: UseThemeWithStateProps,
   propsKey: string,
   isRoot = false,
   id: string,
   parentId: string,
-  keys: MutableRefObject<Set<string> | null> | undefined
+  needsUpdate: boolean | undefined,
+  pendingUpdate = false
 ): ThemeState => {
-  const needsUpdate = keys?.current?.size || props.needsUpdate?.()
   const parentState = states.get(parentId)
-
-  // const cacheKey = `${id}${propsKey}${needsUpdate}${parentState?.name || ''}${isRoot}`
-  // if (cache.has(cacheKey)) {
-  //   return cache.get(cacheKey)!
-  // }
 
   if (!themes) {
     themes = getConfig().themes
   }
 
-  const lastState = states.get(id)
-
   const name = !propsKey ? null : getNewThemeName(parentState?.name, props, !!needsUpdate)
+
+  const isSameAsParent = !name && propsKey // name = null if matching parent and has props
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -160,32 +187,27 @@ const getSnapshotFrom = (
       console.info(message)
     } else {
       console.groupCollapsed(message)
-      console.info({ lastState, parentState, props, propsKey, id, keys })
+      console.trace({ name, lastState, parentState, props, propsKey, id, isSameAsParent })
       console.groupEnd()
     }
   }
 
-  const isSameAsParent = !name && propsKey // name = null if matching parent and has props
   if (parentState && isSameAsParent) {
     return parentState
   }
 
   if (!name) {
-    if (lastState && !needsUpdate) {
-      return lastState
+    const next = lastState ?? parentState!
+
+    if (needsUpdate && pendingUpdate) {
+      const updated = { ...(parentState || lastState)! }
+      return updated
     }
-    states.set(id, parentState)
-    // cache.set(cacheKey, parentState!)
-    return parentState!
+
+    return next
   }
 
-  if (
-    lastState &&
-    lastState.name === name
-    //  &&
-    // (!parentState || parentState.name === lastState.parentName)
-  ) {
-    // cache.set(cacheKey, lastState!)
+  if (lastState && lastState.name === name) {
     return lastState
   }
 
@@ -210,16 +232,20 @@ const getSnapshotFrom = (
     props.debug &&
     props.debug !== 'profile'
   ) {
-    console.groupCollapsed(` · useTheme(${id}) ⏭️ ${name}`)
+    console.groupCollapsed(` · useTheme(${id}) ⏭️2 ${name}`)
     console.info('state', nextState)
     console.groupEnd()
   }
 
-  states.set(id, nextState)
-  // cache.set(cacheKey, nextState)
-
   if (isRoot) {
     rootThemeState = nextState
+  }
+
+  // we still update the state (not changing identity), that way children can properly resolve the right state
+  // but this one wont trigger an update
+  if (lastState && !needsUpdate) {
+    Object.assign(lastState, nextState)
+    return lastState
   }
 
   return nextState

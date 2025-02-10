@@ -7,12 +7,10 @@ export declare const webPropsToSkip: {
     contain: number;
     boxSizing: number;
     touchAction: number;
-    boxShadow: number;
     outlineStyle: number;
     outlineOffset: number;
     outlineWidth: number;
     outlineColor: number;
-    filter: number;
     backdropFilter: number;
     backgroundImage: number;
     mixBlendMode: number;

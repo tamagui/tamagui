@@ -16,10 +16,7 @@ import { HomeResponsive } from '~/features/site/home/HomeResponsive'
 import { HomeThemes } from '~/features/site/home/HomeThemes'
 import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
-import {
-  ThemeNameEffect,
-  ThemeNameEffectNoTheme,
-} from '~/features/site/theme/ThemeNameEffect'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export async function loader() {
   const { getCompilationExamples } = await import('@tamagui/mdx-2')
