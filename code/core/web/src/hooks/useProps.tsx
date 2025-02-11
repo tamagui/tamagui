@@ -120,7 +120,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (disabled) {
       return
     }
