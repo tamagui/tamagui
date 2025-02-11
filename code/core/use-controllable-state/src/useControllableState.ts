@@ -25,7 +25,7 @@ export function useControllableState<T>(props: {
     preventUpdate,
     transition,
   } = props
-  const [state, setState] = React.useState(prop ?? defaultProp)
+  const [state, setState] = React.useState(prop === undefined ? defaultProp : prop)
   const previous = React.useRef<any>(state)
   const propWins = strategy === 'prop-wins' && prop !== undefined
   const value = propWins ? prop : state
@@ -34,18 +34,16 @@ export function useControllableState<T>(props: {
   const transitionFn = transition ? startTransition : emptyCallbackFn
 
   React.useEffect(() => {
-    if ('prop' in props) {
-      if (prop !== state) {
-        transitionFn(() => {
-          // @ts-expect-error if user passes undefined thats on them
-          setState((prev) => {
-            if (prev !== prop) {
-              previous.current = prop
-              return prop
-            }
-          })
+    if (prop !== state) {
+      transitionFn(() => {
+        // @ts-expect-error if user passes undefined thats on them
+        setState((prev) => {
+          if (prev !== prop) {
+            previous.current = prop
+            return prop == undefined ? defaultProp : props
+          }
         })
-      }
+      })
     }
   }, [prop])
 
