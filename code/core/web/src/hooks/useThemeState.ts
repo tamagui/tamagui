@@ -210,7 +210,11 @@ const getSnapshotFrom = (
   }
 
   if (!name) {
-    const next = lastState ?? parentState!
+    const next = lastState ?? parentState
+
+    if (!next) {
+      throw new Error(`No theme and no parent?`)
+    }
 
     if (needsUpdate && pendingUpdate) {
       const updated = { ...(parentState || lastState)! }
