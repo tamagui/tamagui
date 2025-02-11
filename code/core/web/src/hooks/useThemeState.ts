@@ -1,4 +1,4 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createContext,
   useCallback,
@@ -173,6 +173,7 @@ const getSnapshotFrom = (
   needsUpdate: boolean | undefined,
   pendingUpdate: boolean | 'force' | undefined
 ): ThemeState => {
+  const { debug } = props
   const parentState = states.get(parentId)
 
   if (!themes) {
@@ -190,11 +191,7 @@ const getSnapshotFrom = (
 
   const isSameAsParent = Boolean(!name && propsKey) // name = null if matching parent and has props
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    props.debug &&
-    props.debug !== 'profile'
-  ) {
+  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
     const message = ` · useTheme(${id}) snapshot ${name}, parent ${parentState?.id} needsUpdate ${needsUpdate}`
     if (process.env.TAMAGUI_TARGET === 'native') {
       console.info(message)
@@ -244,27 +241,29 @@ const getSnapshotFrom = (
     isInverse,
   } satisfies ThemeState
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    props.debug &&
-    props.debug !== 'profile'
-  ) {
-    console.groupCollapsed(` · useTheme(${id}) ⏭️2 ${name}`)
-    console.info('state', nextState)
-    console.groupEnd()
-  }
-
   if (isRoot) {
     rootThemeState = nextState
   }
 
+  const shouldAvoidRerender =
+    pendingUpdate !== 'force' &&
+    lastState &&
+    !needsUpdate &&
+    nextState.name === lastState.name
+
+  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+    console.groupCollapsed(
+      ` · useTheme(${id}) ⏭️ ${name} shouldAvoidRerender: ${shouldAvoidRerender}`
+    )
+    console.info({ lastState, needsUpdate, nextState, pendingUpdate })
+    console.groupEnd()
+  }
+
   // we still update the state (not changing identity), that way children can properly resolve the right state
   // but this one wont trigger an update
-  if (pendingUpdate !== 'force') {
-    if (lastState && !needsUpdate) {
-      Object.assign(lastState, nextState)
-      return lastState
-    }
+  if (shouldAvoidRerender) {
+    Object.assign(lastState, nextState)
+    return lastState
   }
 
   return nextState

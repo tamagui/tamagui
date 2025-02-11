@@ -1,7 +1,7 @@
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import type { ThemeState } from '../hooks/useThemeState'
+import { getThemeState, type ThemeState } from '../hooks/useThemeState'
 import type { ThemeProps } from '../types'
 
 let node
@@ -39,6 +39,10 @@ export function ThemeDebug({
       return children
     }
 
+    const parentState = themeState.parentId ? getThemeState(themeState.parentId) : null
+
+    // hsla(0, 0%, 9%, 1)
+
     return (
       <>
         {createPortal(
@@ -54,6 +58,7 @@ export function ThemeDebug({
             {JSON.stringify(
               {
                 name: themeState.name,
+                color1: themeState.theme.color1.val,
                 parentId: themeState.parentId,
                 inverses: themeState.inverses,
                 isNew: themeState.isNew,
@@ -62,6 +67,10 @@ export function ThemeDebug({
                   componentName: themeProps.componentName,
                   reset: themeProps.reset,
                   inverse: themeProps.inverse,
+                },
+                parentState: {
+                  name: parentState?.name,
+                  isNew: parentState?.isNew,
                 },
               },
               null,
