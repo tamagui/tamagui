@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.124.7",
+  "version": "1.124.8",
   "sideEffects": [
     "*.css"
   ],
