@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-moti",
-  "version": "1.124.8",
+  "version": "1.124.9",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
