@@ -9,7 +9,14 @@ type ChangeCb<T> = ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>
 
 const emptyCallbackFn = (_) => _()
 
-export function useControllableState<T>(props: {
+export function useControllableState<T>({
+  prop,
+  defaultProp,
+  onChange,
+  strategy = 'prop-wins',
+  preventUpdate,
+  transition,
+}: {
   prop?: T | undefined
   defaultProp: T
   onChange?: ChangeCb<T>
@@ -17,15 +24,7 @@ export function useControllableState<T>(props: {
   preventUpdate?: boolean
   transition?: boolean
 }): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const {
-    prop,
-    defaultProp,
-    onChange,
-    strategy = 'prop-wins',
-    preventUpdate,
-    transition,
-  } = props
-  const [state, setState] = React.useState(prop === undefined ? defaultProp : prop)
+  const [state, setState] = React.useState(prop ?? defaultProp)
   const previous = React.useRef<any>(state)
   const propWins = strategy === 'prop-wins' && prop !== undefined
   const value = propWins ? prop : state
@@ -34,17 +33,11 @@ export function useControllableState<T>(props: {
   const transitionFn = transition ? startTransition : emptyCallbackFn
 
   React.useEffect(() => {
-    if (prop !== state) {
-      transitionFn(() => {
-        // @ts-expect-error if user passes undefined thats on them
-        setState((prev) => {
-          if (prev !== prop) {
-            previous.current = prop
-            return prop == undefined ? defaultProp : props
-          }
-        })
-      })
-    }
+    if (prop === undefined) return
+    previous.current = prop
+    transitionFn(() => {
+      setState(prop)
+    })
   }, [prop])
 
   React.useEffect(() => {
