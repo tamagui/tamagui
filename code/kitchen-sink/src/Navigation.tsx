@@ -50,6 +50,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'RoundedAvatars',
       'CircularAvatarsWithCustomIcons',
       'RoundedAvatarsWithCustomIcons',
+      'Fullpage',
     ].includes(name)
   ) {
     return (
@@ -122,7 +123,7 @@ const bentoScreensPerElement = Object.entries(Components)
 
 export function Navigation() {
   return (
-    <Stack.Navigator initialRouteName="home">
+    <Stack.Navigator initialRouteName="bento">
       <Stack.Screen
         name="home"
         component={HomeScreen}
