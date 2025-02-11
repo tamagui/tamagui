@@ -5,9 +5,6 @@
   "repository": {
     "url": "https://github.com/tamagui/tamagui"
   },
-  "resolutions": {
-    "vite": "6.1.0"
-  },
   "workspaces": [
     "./code/bento",
     "./code/compiler/**/*",
