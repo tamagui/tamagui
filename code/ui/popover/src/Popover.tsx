@@ -251,7 +251,7 @@ export const PopoverContent = PopperContentFrame.extractable(
 
     return (
       <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
-        <Stack {...(!context.open && { pointerEvents: 'none' })}>
+        <Stack pointerEvents={context.open ? 'auto' : 'none'}>
           <PopoverContentImpl
             {...contentImplProps}
             disableRemoveScroll={disableRemoveScroll}
