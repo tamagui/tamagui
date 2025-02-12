@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-window-dimensions",
-  "version": "1.124.10",
+  "version": "1.124.11",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
