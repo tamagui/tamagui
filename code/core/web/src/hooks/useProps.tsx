@@ -1,3 +1,4 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React from 'react'
 import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
@@ -120,7 +121,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (disabled) {
       return
     }
