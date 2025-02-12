@@ -19,18 +19,18 @@
     "@remix-run/node": "^2.12.1",
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
-    "@tamagui/config": "^1.124.14",
-    "@tamagui/core": "^1.124.14",
-    "@tamagui/vite-plugin": "^1.124.14",
+    "@tamagui/config": "^1.124.15",
+    "@tamagui/core": "^1.124.15",
+    "@tamagui/vite-plugin": "^1.124.15",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "^1.124.14"
+    "tamagui": "^1.124.15"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.2",
     "@remix-run/dev": "^2.12.1",
-    "@tamagui/cli": "^1.124.14",
+    "@tamagui/cli": "^1.124.15",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
