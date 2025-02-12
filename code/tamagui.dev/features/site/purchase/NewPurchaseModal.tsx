@@ -17,6 +17,7 @@ import {
   SizableText,
   Spacer,
   styled,
+  Switch,
   Tabs,
   Theme,
   Unspaced,
@@ -68,7 +69,7 @@ const PurchaseModalContents = () => {
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
 
   // Calculate prices
-  const basePrice = 200 // yearly base price
+  const basePrice = disableAutoRenew ? 400 : 240 // yearly base price
   const chatSupportMonthly = chatSupport ? 100 : 0 // $100/month for chat support
   const supportTierMonthly = Number(supportTier) * 1000 // $1000/month per tier
 
@@ -91,18 +92,18 @@ const PurchaseModalContents = () => {
       if (hasSupportTier) {
         return 'One-time payment for yearly base, monthly billing for support tier'
       }
-      return 'One-time payment, cancels after a year'
+      return 'One-time payment, no renewal'
     } else {
       if (hasChat && hasSupportTier) {
-        return 'Yearly base + monthly chat and support tier, 1-click cancel anytime'
+        return 'Yearly base + monthly chat and support tier, easy 1-click cancel'
       }
       if (hasChat) {
-        return 'Yearly base + monthly chat support, 1-click cancel anytime'
+        return 'Yearly base + monthly chat support, easy 1-click cancel'
       }
       if (hasSupportTier) {
-        return 'Yearly base + monthly support tier, 1-click cancel anytime'
+        return 'Yearly base + monthly support tier, easy 1-click cancel'
       }
-      return 'Yearly subscription, 1-click cancel anytime'
+      return 'Paid by year, easy 1-click cancel'
     }
   }, [chatSupport, supportTier, disableAutoRenew])
 
@@ -262,9 +263,9 @@ const PurchaseModalContents = () => {
                   <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
                     <XStack>
                       <H3 size="$11">
-                        ${yearlyTotal}
+                        ${disableAutoRenew ? yearlyTotal : Math.ceil(yearlyTotal / 12)}
                         <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
-                          /year
+                          {disableAutoRenew ? `/year` : `/month`}
                         </Paragraph>
                         {monthlyTotal > 0 && (
                           <>
@@ -282,18 +283,21 @@ const PurchaseModalContents = () => {
                     </Paragraph>
 
                     <XStack alignItems="center" gap="$4">
-                      <Checkbox
-                        onCheckedChange={(x) => setDisableAutoRenew(!!x)}
-                        size="$4"
+                      <Switch
+                        onCheckedChange={(x) => setDisableAutoRenew(!disableAutoRenew)}
+                        checked={!disableAutoRenew}
+                        size="$3"
                         id="auto-renew"
                       >
-                        <Checkbox.Indicator>
-                          <Check />
-                        </Checkbox.Indicator>
-                      </Checkbox>
+                        <Switch.Thumb
+                          animation="quickest"
+                          alignItems="center"
+                          justifyContent="center"
+                        ></Switch.Thumb>
+                      </Switch>
                       <Label htmlFor="auto-renew">
-                        <Paragraph theme="yellow" color="$color10" ff="$mono" size="$5">
-                          Disable auto-renew
+                        <Paragraph theme="green" color="$color10" ff="$mono" size="$5">
+                          {disableAutoRenew ? `One-time` : `Subscription`}
                         </Paragraph>
                       </Label>
                     </XStack>
@@ -592,7 +596,7 @@ const PurchaseTabContent = () => {
 
       <YStack gap="$3">
         <P color="$color10">
-          The subscription gets you updates, Github and Discord access for a year.
+          You get updates across all products and access to Github and Discord for a year.
         </P>
 
         <P color="$color10">
