@@ -88,6 +88,8 @@ export default {
     tamaguiPlugin({
       optimize: true,
       disableExtraction,
+      config: '@tamagui/tamagui-dev-config',
+      outputCSS: './tamagui.css',
       // useReactNativeWebLite: true,
     }),
 
