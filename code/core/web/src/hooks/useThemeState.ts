@@ -1,4 +1,4 @@
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createContext,
   useCallback,
@@ -35,6 +35,25 @@ const pendingUpdate = new Map<any, boolean | 'force'>()
 
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
+const localStates: Map<ID, ThemeState | undefined> = new Map()
+
+if (process.env.NODE_ENV === 'development') {
+  globalThis.getTamaguiThemes = () => {
+    function buildTree(id: ID) {
+      const node = states.get(id)
+      if (!node) return null
+      const children = Array.from(states.values())
+        .filter((child) => child?.parentId === id)
+        .map((child) => buildTree(child!.id))
+        .filter(Boolean)
+      return { ...node, children }
+    }
+
+    if (rootThemeState) {
+      console.info(buildTree(rootThemeState.id))
+    }
+  }
+}
 
 let shouldForce = false
 export const forceUpdateThemes = () => {
@@ -45,7 +64,7 @@ export const forceUpdateThemes = () => {
 
 export const getThemeState = (id: ID) => states.get(id)
 
-const cache = new Map<string, ThemeState>()
+// const cache = new Map<string, ThemeState>()
 let cacheVersion = 0
 
 let themes: Record<string, ThemeParsed> | null = null
@@ -60,6 +79,10 @@ export const useThemeState = (
 ): ThemeState => {
   const { disable } = props
   const parentId = useContext(ThemeStateContext)
+
+  if (!parentId && !isRoot) {
+    throw new Error(`No parent?`)
+  }
 
   if (disable) {
     return (
@@ -85,6 +108,9 @@ export const useThemeState = (
       return () => {
         allListeners.delete(id)
         listenersByParent[parentId].delete(id)
+        localStates.delete(id)
+        states.delete(id)
+        pendingUpdate.delete(id)
       }
     },
     [id, parentId]
@@ -93,9 +119,10 @@ export const useThemeState = (
   const propsKey = getPropsKey(props)
 
   const getSnapshot = () => {
-    const last = states.get(id)
+    let local = localStates.get(id)
+
     const needsUpdate =
-      props.name === 'light' || props.name === 'dark'
+      isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
         ? true
         : !hasRenderedOnce.get(keys)
           ? true
@@ -103,17 +130,16 @@ export const useThemeState = (
             ? true
             : props.needsUpdate?.()
 
-    const parentState = states.get(parentId)
-    const cacheKey = `${cacheVersion}${id}${propsKey}${parentState?.name || ''}${isRoot}`
+    // const parentState = states.get(parentId)
+    // const cacheKey = `${cacheVersion}${id}${propsKey}${parentState?.name || ''}${isRoot}`
+    // if (!needsUpdate) {
+    //   if (cache.has(cacheKey)) {
+    //     return cache.get(cacheKey)!
+    //   }
+    // }
 
-    if (!needsUpdate) {
-      if (cache.has(cacheKey)) {
-        return cache.get(cacheKey)!
-      }
-    }
-
-    const next = getSnapshotFrom(
-      last,
+    const [rerender, next] = getNextState(
+      local,
       props,
       propsKey,
       isRoot,
@@ -123,20 +149,32 @@ export const useThemeState = (
       pendingUpdate.get(id)
     )
 
-    if (last !== next) {
-      pendingUpdate.delete(id)
-      states.set(id, next)
-      cache.set(id, next)
-      if (
-        process.env.NODE_ENV === 'development' &&
-        props.debug &&
-        props.debug !== 'profile'
-      ) {
-        console.warn(` · useTheme(${id}) UPDATE from`, last, 'to', next)
-      }
+    pendingUpdate.delete(id)
+
+    // we always create a new localState for every component
+    // that way we can use it to de-opt and avoid renders granularly
+    // we always return the localState object in each component
+    // the global state (states) should always be up to date with the latest
+    if (!local || rerender) {
+      local = { ...next }
+      localStates.set(id, local)
     }
 
-    return next
+    if (
+      process.env.NODE_ENV === 'development' &&
+      props.debug &&
+      props.debug !== 'profile'
+    ) {
+      console.groupCollapsed(` ${id} 🪄 ${rerender}`, local.name, '>', next.name)
+      console.info({ props, propsKey, isRoot, parentId, local, next, needsUpdate })
+      console.groupEnd()
+    }
+
+    Object.assign(local, next)
+    local.id = id
+    states.set(id, next)
+
+    return local
   }
 
   if (process.env.NODE_ENV === 'development' && globalThis.time)
@@ -160,10 +198,10 @@ export const useThemeState = (
     scheduleUpdate(id)
   }, [keys, propsKey])
 
-  return state.id === id ? { ...state, isNew: true } : state
+  return state
 }
 
-const getSnapshotFrom = (
+const getNextState = (
   lastState: ThemeState | undefined,
   props: UseThemeWithStateProps,
   propsKey: string,
@@ -172,7 +210,7 @@ const getSnapshotFrom = (
   parentId: string,
   needsUpdate: boolean | undefined,
   pendingUpdate: boolean | 'force' | undefined
-): ThemeState => {
+): [boolean, ThemeState] => {
   const { debug } = props
   const parentState = states.get(parentId)
 
@@ -181,7 +219,7 @@ const getSnapshotFrom = (
   }
 
   const name =
-    !propsKey && pendingUpdate !== 'force'
+    !propsKey && (!lastState || !lastState?.isNew)
       ? null
       : getNewThemeName(
           parentState?.name,
@@ -189,10 +227,13 @@ const getSnapshotFrom = (
           pendingUpdate === 'force' ? true : !!needsUpdate
         )
 
-  const isSameAsParent = Boolean(!name && propsKey) // name = null if matching parent and has props
+  const isSameAsParent = parentState && (!name || name === parentState.name)
+  const shouldRerender = Boolean(
+    needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
+  )
 
   if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
-    const message = ` · useTheme(${id}) snapshot ${name}, parent ${parentState?.id} needsUpdate ${needsUpdate}`
+    const message = ` · useTheme(${id}) => ${name} needsUpdate ${needsUpdate} shouldRerender ${shouldRerender}`
     if (process.env.TAMAGUI_TARGET === 'native') {
       console.info(message)
     } else {
@@ -202,8 +243,8 @@ const getSnapshotFrom = (
     }
   }
 
-  if (parentState && isSameAsParent) {
-    return parentState
+  if (isSameAsParent) {
+    return [shouldRerender, { ...parentState, isNew: false }]
   }
 
   if (!name) {
@@ -213,16 +254,12 @@ const getSnapshotFrom = (
       throw new Error(`No theme and no parent?`)
     }
 
-    if (needsUpdate && pendingUpdate) {
+    if (shouldRerender) {
       const updated = { ...(parentState || lastState)! }
-      return updated
+      return [true, updated]
     }
 
-    return next
-  }
-
-  if (pendingUpdate !== 'force' && lastState && lastState.name === name) {
-    return lastState
+    return [false, next]
   }
 
   const scheme = getScheme(name)
@@ -239,10 +276,15 @@ const getSnapshotFrom = (
     parentName: parentState?.name,
     inverses,
     isInverse,
+    isNew: true,
   } satisfies ThemeState
 
   if (isRoot) {
     rootThemeState = nextState
+  }
+
+  if (pendingUpdate !== 'force' && lastState && lastState.name === name) {
+    return [false, nextState]
   }
 
   const shouldAvoidRerender =
@@ -262,12 +304,13 @@ const getSnapshotFrom = (
   // we still update the state (not changing identity), that way children can properly resolve the right state
   // but this one wont trigger an update
   if (shouldAvoidRerender) {
-    Object.assign(lastState, nextState)
-    return lastState
+    return [false, nextState]
   }
 
-  return nextState
+  return [true, nextState]
 }
+
+const regexParentScheme = /^(light|dark)_/
 
 function scheduleUpdate(id: string) {
   const queue = [id]

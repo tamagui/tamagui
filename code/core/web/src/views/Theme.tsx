@@ -1,13 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
-import React, {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 import { getSetting } from '../config'
 import { variableToString } from '../createVariable'
 import { useThemeWithState } from '../hooks/useTheme'
@@ -29,6 +22,7 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
   }
 
   const isRoot = !!props['_isRoot']
+
   const [_, themeState] = useThemeWithState(props, isRoot)
 
   const disableDirectChildTheme = props['disable-child-theme']
@@ -74,12 +68,19 @@ export function getThemedChildren(
   let shouldRenderChildrenWithTheme =
     hasEverThemed || themeState.isNew || isRoot || hasThemeUpdatingProps(props)
 
+  if (process.env.NODE_ENV === 'development' && props.debug) {
+    children = (
+      <ThemeDebug themeState={themeState} themeProps={props}>
+        {children}
+      </ThemeDebug>
+    )
+  }
+
   if (!shouldRenderChildrenWithTheme) {
     return children
   }
 
   // from here on out we have to be careful not to re-parent
-
   children = (
     <ThemeStateContext.Provider value={themeState.id}>
       {children}
@@ -133,11 +134,6 @@ export function getThemedChildren(
         state,
         ...getThemeClassNameAndStyle(themeState, props, isRoot),
       })
-      children = (
-        <ThemeDebug themeState={themeState} themeProps={props}>
-          {children}
-        </ThemeDebug>
-      )
     }
   }
 
@@ -149,7 +145,13 @@ export function getThemedChildren(
     const { className, style } = getThemeClassNameAndStyle(themeState, props, isRoot)
 
     children = (
-      <span className={`${className} _dsp_contents is_Theme`} style={style}>
+      <span
+        {...(process.env.NODE_ENV === 'development' && {
+          'data-theme-id': themeState.id,
+        })}
+        className={`${className} _dsp_contents is_Theme`}
+        style={style}
+      >
         {children}
       </span>
     )
