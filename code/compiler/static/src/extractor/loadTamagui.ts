@@ -128,6 +128,13 @@ export function loadTamaguiBuildConfigSync(
       if (!out) {
         throw new Error(`No default export found in ${buildFilePath}: ${out}`)
       }
+
+      if (tamaguiOptions?.config && out.config) {
+        throw new Error(
+          `You're configuring tamagui from both the plugin and tamagui.build.ts, please choose one or the other.`
+        )
+      }
+
       tamaguiOptions = {
         ...tamaguiOptions,
         ...out,
