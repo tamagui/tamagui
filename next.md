@@ -1,6 +1,7 @@
 v2
 
 
+  - onMouseMove and other web props
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - @tamagui/static and all the plugins => @tamagui/compiler package
   - animation => transition

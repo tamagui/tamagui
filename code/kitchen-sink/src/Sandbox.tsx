@@ -15,6 +15,18 @@ const StyledButton = styled(Button, {
 })
 
 export const Sandbox = () => {
+  const [x, setX] = useState(false)
+
+  return (
+    <>
+      <Button onPress={() => setX(!x)}>set disbaled</Button>
+
+      <Button disabledStyle={{ bg: 'red' }} disabled={x}>
+        Hiii {x}
+      </Button>
+    </>
+  )
+
   return <SwitchPerformance />
   // const [k, setK] = useState(0)
 

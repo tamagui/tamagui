@@ -9,6 +9,7 @@ import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'
+import { Suspense } from 'react'
 
 // for navigation container props
 //           theme: {

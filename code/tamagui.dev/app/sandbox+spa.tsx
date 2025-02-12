@@ -1,6 +1,6 @@
 import { Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
-import { Button, Circle, CircleProps, Switch, Text, XStack, YStack } from 'tamagui'
+import { Button, Circle, type CircleProps, Text, XStack, YStack } from 'tamagui'
 
 export default function Sandbox() {
   const [name, setName] = useState('dark')
@@ -17,20 +17,34 @@ export default function Sandbox() {
 
       {/* <Link href="/sandbox2">Go to sandbox2</Link> */}
 
-      <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>change</Button>
+      <Button onPress={() => setName(name === 'dark' ? 'light' : 'dark')}>
+        change {name}
+      </Button>
 
       {/* <Circles /> */}
+      <SwitchBetweenNull />
 
-      <Theme debug="visualize" name={name as any}>
+      <Theme name={name as any}>
+        {/* <TooltipSimple open label="test test">
+          <Circle size={10} />
+        </TooltipSimple> */}
+
         <Circles />
       </Theme>
-
-      {/* <Theme inverse>
-        <Circles />
-      </Theme> */}
     </YStack>
   )
 }
+
+const SwitchBetweenNull = memo(() => {
+  const [x, setX] = useState(false)
+
+  return (
+    <Theme name={x ? 'red' : null}>
+      <Button onPress={() => setX(!x)}>Toggle {x ? 'on' : 'off'}</Button>
+      <Circle size={50} bg="$color10" />
+    </Theme>
+  )
+})
 
 const Circles = memo(() => {
   console.warn('cirlcers', useId())
@@ -57,7 +71,7 @@ const Circles = memo(() => {
       </Theme>
 
       <Theme name="surface1">
-        <MemoTestCircle debug size={100} bg="$borderColor" />
+        <MemoTestCircle size={100} bg="$borderColor" />
       </Theme>
 
       <MemoTestCircle />
@@ -71,7 +85,9 @@ const MemoTestCircle = memo((props: CircleProps) => {
 
 const Slow = () => {
   console.warn('rendering Slow')
-  const [theme, state] = useThemeWithState({ debug: true })
+  const [theme, state] = useThemeWithState({
+    // debug: true,
+  })
 
   console.info('theme.background.val', theme.background.val, state)
 

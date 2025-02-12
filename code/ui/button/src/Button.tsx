@@ -190,6 +190,7 @@ const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
   function Button(props, ref) {
     // @ts-ignore
     const { props: buttonProps } = useButton(props)
+
     return <ButtonFrame data-disable-theme {...buttonProps} ref={ref} />
   }
 )

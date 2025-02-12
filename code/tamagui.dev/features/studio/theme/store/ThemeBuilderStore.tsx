@@ -8,6 +8,7 @@ import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/ty
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
 import { updatePreviewTheme } from '../previewTheme'
+import { steps } from '~/features/studio/theme/steps/steps'
 import type {
   BuildPalette,
   BuildTheme,
@@ -51,6 +52,42 @@ export class ThemeBuilderStore {
     }
   }
 
+  // using up to date data from unsaved state
+  get themeSuite(): ThemeSuiteItem | undefined {
+    return this.state && this.themeSuiteId
+      ? {
+          ...this.state.themeSuites[this.themeSuiteId],
+          ...this.getWorkingThemeSuite(),
+        }
+      : undefined
+  }
+
+  private async updateCurrentThemeSuite(next: Partial<ThemeSuiteItem>) {
+    if (!this.themeSuite) {
+      throw new Error(`No data`)
+    }
+    const row = {
+      ...this.themeSuite,
+      ...next,
+    }
+    if (
+      this.themeSuiteVersion > 1 &&
+      JSON.stringify(row) === JSON.stringify(this.themeSuite)
+    ) {
+      // avoid update if it can
+      return
+    }
+    // sync to working data:
+    for (const key in row) {
+      if (key in defaultThemeSuiteItem) {
+        this[key] = row[key] || defaultThemeSuiteItem[key]
+      }
+    }
+    this.updateDisabledState()
+    this.themeSuiteVersion++
+    await this.refreshThemeSuite()
+  }
+
   async reset() {
     this.name = defaultThemeSuiteItem.name
     this.palettes = defaultThemeSuiteItem.palettes
@@ -62,7 +99,7 @@ export class ThemeBuilderStore {
   // state:
   step = 0
   direction = 0
-  steps: ThemeStudioSection[] = []
+  steps: ThemeStudioSection[] = steps
   // @persist
   showExplanationSteps = true
   hasUnsavedChanges = false
@@ -181,11 +218,6 @@ export class ThemeBuilderStore {
       }
     }
     return getThemeSuitePalettes(palette)
-  }
-
-  setSteps(steps: ThemeStudioSection[]) {
-    this.steps = steps
-    this.setStep(this.step)
   }
 
   async setSelectedScheme(scheme: 'dark' | 'light', val: boolean) {
@@ -358,8 +390,6 @@ export class ThemeBuilderStore {
     this.setStep(this.step - 1)
   }
 
-  hasSetStepOnce = false
-
   setStep(next: number) {
     if (next === this.step) {
       return
@@ -386,7 +416,6 @@ export class ThemeBuilderStore {
 
     this.direction = dir
     this.step = next
-    this.hasSetStepOnce = true
 
     setTimeout(() => this.updateDisabledState(), 1)
   }

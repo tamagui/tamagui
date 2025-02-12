@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "1.124.4",
+  "version": "1.124.13",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
