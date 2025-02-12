@@ -61,7 +61,7 @@ export const useTint = (
 
   let initial = current
   if (section) {
-    initial = section === 'compile' ? 5 : section === 'core' ? 4 : 6
+    initial = section === 'compiler' ? 5 : section === 'core' ? 4 : 6
   }
 
   const index = React.useSyncExternalStore(
