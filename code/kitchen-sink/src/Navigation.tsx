@@ -13,7 +13,6 @@ import { ColorSchemeToggle } from './features/home/ColorSchemeListItem'
 
 const bentoScreenNames = Data.listingData.sections.map(({ sectionName }) => sectionName)
 
-
 type BentoScreens = {
   [K in (typeof bentoScreenNames)[number]]: {
     id: string
@@ -52,6 +51,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'CircularAvatarsWithCustomIcons',
       'RoundedAvatarsWithCustomIcons',
       'Fullpage',
+      'ProductWithReview',
     ].includes(name)
   ) {
     return (

@@ -7,6 +7,7 @@ import { Separator, YGroup } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 
 const { useParam } = createParam<{ id: string }>()
+
 export function BentoPartScreenItem({ navigation }) {
   const [id] = useParam('id')
   const name = id!
@@ -22,13 +23,12 @@ export function BentoPartScreenItem({ navigation }) {
     })
   }, [name, navigation])
 
-  const removeComponentsThatAreNotPublic = (component: any) =>
-    ![
-      'AvatarWithTitle',
-      'CircularAvatars',
-      'VerticalCheckboxes',
-      'useMouseEnter',
-    ].includes(component.name)
+  const removeComponentsThatAreNotPublic = (component: any) => {
+    return (
+      component.displayName !== 'SizableText' &&
+      !['CircularAvatars', 'VerticalCheckboxes', 'useMouseEnter'].includes(component.name)
+    )
+  }
 
   const renderItem = ({ item: Component }) => (
     <YGroup.Item key={Component.name}>

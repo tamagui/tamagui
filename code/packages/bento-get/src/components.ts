@@ -335,7 +335,7 @@ export const componentsList: ComponentSchema[] = [
     name: 'Product with Review',
     fileName: 'ProductWithReview',
     category: 'ecommerce',
-    categorySection: 'product_page',
+    categorySection: 'productpage',
     moveFilesToFolder: [{ file: 'ProductWithReview', to: '' }],
   },
   // {
