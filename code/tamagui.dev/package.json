@@ -35,6 +35,8 @@
     "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6",
     "@sentry/browser": "^8.17.0",
+    "@stripe/react-stripe-js": "^3.1.1",
+    "@stripe/stripe-js": "^5.6.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
     "@tamagui/assert": "workspace:*",
@@ -72,7 +74,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "subset-font": "^2.1.0",
     "@biomejs/biome": "^1.9.4",
     "@tamagui/cli": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",
@@ -81,6 +82,7 @@
     "archiver": "^7.0.1",
     "esbuild-register": "^3.6.0",
     "mdx-bundler": "^10.0.2",
+    "subset-font": "^2.1.0",
     "vite-bundle-analyzer": "^0.9.4",
     "vitest": "^3.0.5"
   }

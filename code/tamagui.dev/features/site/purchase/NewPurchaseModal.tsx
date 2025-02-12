@@ -1,7 +1,7 @@
 import { Check, X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import type { Href } from 'one'
-import { startTransition, useEffect, useMemo, useState } from 'react'
+import { startTransition, use, useCallback, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -22,12 +22,15 @@ import {
   Unspaced,
   XStack,
   YStack,
+  Spinner,
 } from 'tamagui'
 import { Link } from '~/components/Link'
 import { Select } from '../../../components/Select'
 import { PromoCards } from '../header/UpgradePopover'
 import { PurchaseButton } from './helpers'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
+import { StripeElementsForm } from './StripeElements'
+import { useSubscription } from './useSubscription'
 
 class PurchaseModal {
   show = false
@@ -125,6 +128,58 @@ const PurchaseModalContents = () => {
   }
 
   const CurrentTabContents = tabContents[currentTab]
+
+  const buildCheckoutQueryParams = useCallback(
+    ({
+      disableAutoRenew,
+      chatSupport,
+      supportTier,
+    }: {
+      /**
+       * if true, subscription will not auto-renew
+       */
+      disableAutoRenew: boolean
+      /**
+       * if true, chat support will be enabled
+       */
+      chatSupport: boolean
+      /**
+       * the support tier to enable
+       * @param 0 - none
+       * @param 1 - tier 1
+       * @param 2 - tier 2
+       * @param 3 - tier 3
+       * @param 4 - tier 4
+       * @param 5 - tier 5
+       */
+      supportTier: string
+    }) => {
+      const params = new URLSearchParams()
+      const productIds: string[] = []
+
+      // Add base product
+      productIds.push('prod_tamagui_pro')
+
+      // Add chat support if selected
+      if (chatSupport) {
+        productIds.push('prod_tamagui_chat')
+      }
+
+      // Add support tier if selected
+      if (Number(supportTier) > 0) {
+        productIds.push('prod_tamagui_support_tier')
+        params.append('support_tier', supportTier)
+      }
+
+      // Add all product IDs as an array
+      params.append('product_ids', productIds.join(','))
+
+      params.append('auto_renew', disableAutoRenew ? 'false' : 'true')
+
+      return params.toString()
+    },
+    []
+  )
 
   return (
     <>
@@ -305,26 +360,11 @@ const PurchaseModalContents = () => {
                         asChild
                         target="_blank"
                         href={
-                          `api/checkout?${(() => {
-                            return ''
-                            // const params = new URLSearchParams()
-                            // if (starterPriceId) {
-                            //   params.append('product_id', starter.id)
-                            //   params.append(`price-${starter?.id}`, starterPriceId)
-                            // }
-                            // if (bentoPriceId) {
-                            //   params.append('product_id', bento.id)
-                            //   params.append(`price-${bento?.id}`, bentoPriceId)
-                            // }
-                            // if (
-                            //   isUserEligibleForBentoTakeoutDiscount &&
-                            //   store.disableAutomaticDiscount
-                            // ) {
-                            //   params.append('disable_automatic_discount', '1')
-                            // }
-
-                            // return params.toString()
-                          })()}` as Href
+                          `api/checkout?${buildCheckoutQueryParams({
+                            disableAutoRenew,
+                            chatSupport,
+                            supportTier,
+                          })}` as Href
                         }
                       >
                         <PurchaseButton
@@ -485,15 +525,30 @@ const SupportTabContent = ({
   setChatSupport,
   supportTier,
   setSupportTier,
+  onUpgrade,
+  isLoading,
+  error,
 }: {
   chatSupport: boolean
   setChatSupport: (value: boolean) => void
   supportTier: string
   setSupportTier: (value: string) => void
+  onUpgrade?: (options: { chatSupport: boolean; supportTier: number }) => Promise<void>
+  isLoading?: boolean
+  error?: Error | null
 }) => {
+  const handleUpgrade = async () => {
+    if (onUpgrade) {
+      await onUpgrade({
+        chatSupport,
+        supportTier: Number.parseInt(supportTier, 10),
+      })
+    }
+  }
+
   return (
     <>
-      <BigP>
+      <BigP theme="alt2">
         Support is great way for teams using Tamagui to ensure bugs get fixed, questions
         are answered, and Tamagui stays healthy and up to date.
       </BigP>
@@ -565,6 +620,15 @@ const SupportTabContent = ({
             messages higher in our response queue.
           </P>
         </YStack>
+
+        {onUpgrade && (
+          <YStack gap="$4">
+            <Button themeInverse onPress={handleUpgrade} disabled={isLoading}>
+              {isLoading ? <Spinner /> : 'Add Support Options'}
+            </Button>
+            {error && <Paragraph color="$red10">{error.message}</Paragraph>}
+          </YStack>
+        )}
       </YStack>
     </>
   )
@@ -578,27 +642,88 @@ const BigP = styled(P, {
 })
 
 const PurchaseTabContent = () => {
+  const { createSubscription, upgradeSubscription, clientSecret, error, isLoading } =
+    useSubscription()
+  const [step, setStep] = useState<'initial' | 'payment' | 'upgrade'>('initial')
+  const [subscriptionId, setSubscriptionId] = useState<string | null>(null)
+  const [chatSupport, setChatSupport] = useState(false)
+  const [supportTier, setSupportTier] = useState('0')
+
+  const handleInitialPurchase = async () => {
+    try {
+      const { subscriptionId } = await createSubscription({
+        priceId: 'price_tamagui_pro_yearly',
+        disableAutoRenew: false,
+      })
+      setSubscriptionId(subscriptionId)
+      setStep('payment')
+    } catch (error) {
+      console.error('Failed to create subscription:', error)
+    }
+  }
+
+  const handlePaymentSuccess = async (paymentIntentId: string) => {
+    // After successful payment, show upgrade options
+    setStep('upgrade')
+  }
+
+  const handleUpgrade = async (options: {
+    chatSupport: boolean
+    supportTier: number
+  }) => {
+    if (!subscriptionId) return
+
+    try {
+      await upgradeSubscription({
+        subscriptionId,
+        ...options,
+      })
+      // Handle successful upgrade
+    } catch (error) {
+      console.error('Failed to upgrade subscription:', error)
+    }
+  }
+
   return (
     <>
-      <BigP mb="$3">
-        Tamagui Pro is a bundle that helps you launch your next idea much faster. You get:
-      </BigP>
+      {step === 'initial' && (
+        <YStack gap="$4">
+          <BigP mb="$3">
+            Tamagui Pro is a bundle that helps you launch your next idea much faster. You
+            get:
+          </BigP>
+          <XStack fw="wrap" gap="$3">
+            <PromoCards />
+          </XStack>
+          <Button themeInverse onPress={handleInitialPurchase} disabled={isLoading}>
+            {isLoading ? <Spinner /> : 'Continue to Payment'}
+          </Button>
+          {error && <Paragraph color="$red10">{error.message}</Paragraph>}
+        </YStack>
+      )}
 
-      <XStack fw="wrap" gap="$3">
-        <PromoCards />
-      </XStack>
+      {step === 'payment' && clientSecret && (
+        <YStack gap="$4">
+          <BigP>Enter your payment details</BigP>
+          <StripeElementsForm
+            clientSecret={clientSecret}
+            onSuccess={handlePaymentSuccess}
+            onError={(error) => console.error('Payment error:', error)}
+          />
+        </YStack>
+      )}
 
-      <Separator o={0.25} />
-
-      <YStack gap="$3">
-        <P color="$color10">
-          The subscription gets you updates, Github and Discord access for a year.
-        </P>
-
-        <P color="$color10">
-          You get lifetime rights to all code and assets, even after subscription expires.
-        </P>
-      </YStack>
+      {step === 'upgrade' && (
+        <SupportTabContent
+          chatSupport={chatSupport}
+          setChatSupport={setChatSupport}
+          supportTier={supportTier}
+          setSupportTier={setSupportTier}
+          onUpgrade={handleUpgrade}
+          isLoading={isLoading}
+          error={error}
+        />
+      )}
     </>
   )
 }
