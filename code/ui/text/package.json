@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.124.11",
+  "version": "1.124.12",
   "sideEffects": [
     "*.css"
   ],

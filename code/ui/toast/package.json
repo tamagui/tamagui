@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "1.124.11",
+  "version": "1.124.12",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
