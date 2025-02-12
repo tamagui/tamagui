@@ -27,10 +27,11 @@ import {
 import { Link } from '~/components/Link'
 import { Select } from '../../../components/Select'
 import { PromoCards } from '../header/UpgradePopover'
-import { PurchaseButton } from './helpers'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { StripeElementsForm } from './StripeElements'
 import { useSubscription } from './useSubscription'
+import type { StripeError } from '@stripe/stripe-js'
+import { useProducts } from './useProducts'
 
 class PurchaseModal {
   show = false
@@ -66,6 +67,30 @@ const PurchaseModalContents = () => {
   const [disableAutoRenew, setDisableAutoRenew] = useState(false)
   const [chatSupport, setChatSupport] = useState(false)
   const [supportTier, setSupportTier] = useState('0')
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [error, setError] = useState<Error | StripeError | null>(null)
+  const { data: products } = useProducts()
+
+  function changeTab(next: string) {
+    if (next === 'purchase' || next === 'support' || next === 'faq') {
+      if (currentTab === 'purchase' && next === 'support') {
+        setLastTab(currentTab)
+        setCurrentTab(next)
+      } else if (!isProcessing) {
+        setLastTab(currentTab)
+        setCurrentTab(next)
+      }
+    }
+  }
+
+  const handlePaymentError = (error: Error | StripeError) => {
+    setError(error)
+    setIsProcessing(false)
+  }
+
+  const handlePaymentSuccess = async () => {
+    window.location.href = '/payment-finished'
+  }
 
   // Calculate direction for animation
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
@@ -109,11 +134,6 @@ const PurchaseModalContents = () => {
     }
   }, [chatSupport, supportTier, disableAutoRenew])
 
-  function changeTab(next: Tab) {
-    setCurrentTab(next)
-    setLastTab(currentTab)
-  }
-
   const tabContents = {
     purchase: PurchaseTabContent,
     support: () => (
@@ -129,58 +149,6 @@ const PurchaseModalContents = () => {
 
   const CurrentTabContents = tabContents[currentTab]
 
-  const buildCheckoutQueryParams = useCallback(
-    ({
-      disableAutoRenew,
-      chatSupport,
-      supportTier,
-    }: {
-      /**
-       * if true, subscription will not auto-renew
-       */
-      disableAutoRenew: boolean
-      /**
-       * if true, chat support will be enabled
-       */
-      chatSupport: boolean
-      /**
-       * the support tier to enable
-       * @param 0 - none
-       * @param 1 - tier 1
-       * @param 2 - tier 2
-       * @param 3 - tier 3
-       * @param 4 - tier 4
-       * @param 5 - tier 5
-       */
-      supportTier: string
-    }) => {
-      const params = new URLSearchParams()
-      const productIds: string[] = []
-
-      // Add base product
-      productIds.push('prod_tamagui_pro')
-
-      // Add chat support if selected
-      if (chatSupport) {
-        productIds.push('prod_tamagui_chat')
-      }
-
-      // Add support tier if selected
-      if (Number(supportTier) > 0) {
-        productIds.push('prod_tamagui_support_tier')
-        params.append('support_tier', supportTier)
-      }
-
-      // Add all product IDs as an array
-      params.append('product_ids', productIds.join(','))
-
-      params.append('auto_renew', disableAutoRenew ? 'false' : 'true')
-
-      return params.toString()
-    },
-    []
-  )
-
   return (
     <>
       <Dialog
@@ -188,6 +156,10 @@ const PurchaseModalContents = () => {
         open={store.show}
         onOpenChange={(val) => {
           store.show = val
+          if (!val) {
+            setIsProcessing(false)
+            setError(null)
+          }
         }}
       >
         {/* <BentoPoliciesModal />
@@ -250,40 +222,28 @@ const PurchaseModalContents = () => {
               defaultValue="purchase"
               size="$6"
               value={currentTab}
+              onValueChange={changeTab}
             >
               <Tabs.List disablePassBorderRadius>
                 <YStack width={'33.3333%'} f={1}>
-                  <Tab
-                    onPress={() => changeTab('purchase')}
-                    isActive={currentTab === 'purchase'}
-                    value="purchase"
-                  >
+                  <Tab isActive={currentTab === 'purchase'} value="purchase">
                     Pro
                   </Tab>
                 </YStack>
                 <YStack width={'33.3333%'} f={1}>
-                  <Tab
-                    onPress={() => changeTab('support')}
-                    isActive={currentTab === 'support'}
-                    value="support"
-                  >
+                  <Tab isActive={currentTab === 'support'} value="support">
                     Support
                   </Tab>
                 </YStack>
                 <YStack width={'33.3333%'} f={1}>
-                  <Tab
-                    onPress={() => changeTab('faq')}
-                    isActive={currentTab === 'faq'}
-                    value="bento"
-                    end
-                  >
+                  <Tab isActive={currentTab === 'faq'} value="faq" end>
                     FAQ
                   </Tab>
                 </YStack>
               </Tabs.List>
 
               <YStack f={1} group="takeoutBody">
-                <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
+                <AnimatePresence exitBeforeEnter initial={false}>
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
                       value={currentTab}
@@ -356,29 +316,18 @@ const PurchaseModalContents = () => {
 
                   <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
                     <Theme name="accent">
-                      <Link
-                        asChild
-                        target="_blank"
-                        href={
-                          `api/checkout?${buildCheckoutQueryParams({
-                            disableAutoRenew,
-                            chatSupport,
-                            supportTier,
-                          })}` as Href
-                        }
-                      >
-                        <PurchaseButton
-                          onPress={(e) => {
-                            if (currentTab === 'purchase') {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              setCurrentTab('support')
-                            }
-                          }}
-                        >
-                          {currentTab === 'purchase' ? 'Next' : 'Checkout'}
-                        </PurchaseButton>
-                      </Link>
+                      <StripeElementsForm
+                        onSuccess={handlePaymentSuccess}
+                        onError={handlePaymentError}
+                        autoRenew={!disableAutoRenew}
+                        chatSupport={chatSupport}
+                        supportTier={Number(supportTier)}
+                        priceId={products?.starter.prices[0].id || ''}
+                        isProcessing={isProcessing}
+                        setIsProcessing={setIsProcessing}
+                        buttonText={currentTab === 'purchase' ? 'Next' : 'Checkout'}
+                        onNext={() => changeTab('support')}
+                      />
                     </Theme>
                     <XStack jc="space-between" gap="$4" ai="center" mb="$2">
                       <XStack ai="center" gap="$2">
@@ -525,27 +474,12 @@ const SupportTabContent = ({
   setChatSupport,
   supportTier,
   setSupportTier,
-  onUpgrade,
-  isLoading,
-  error,
 }: {
   chatSupport: boolean
   setChatSupport: (value: boolean) => void
   supportTier: string
   setSupportTier: (value: string) => void
-  onUpgrade?: (options: { chatSupport: boolean; supportTier: number }) => Promise<void>
-  isLoading?: boolean
-  error?: Error | null
 }) => {
-  const handleUpgrade = async () => {
-    if (onUpgrade) {
-      await onUpgrade({
-        chatSupport,
-        supportTier: Number.parseInt(supportTier, 10),
-      })
-    }
-  }
-
   return (
     <>
       <BigP theme="alt2">
@@ -620,15 +554,6 @@ const SupportTabContent = ({
             messages higher in our response queue.
           </P>
         </YStack>
-
-        {onUpgrade && (
-          <YStack gap="$4">
-            <Button themeInverse onPress={handleUpgrade} disabled={isLoading}>
-              {isLoading ? <Spinner /> : 'Add Support Options'}
-            </Button>
-            {error && <Paragraph color="$red10">{error.message}</Paragraph>}
-          </YStack>
-        )}
       </YStack>
     </>
   )
@@ -638,93 +563,36 @@ const BigP = styled(P, {
   px: '$8',
   size: '$8',
   lh: '$9',
-  color: '$green10',
+  color: '$color12',
 })
 
 const PurchaseTabContent = () => {
-  const { createSubscription, upgradeSubscription, clientSecret, error, isLoading } =
-    useSubscription()
-  const [step, setStep] = useState<'initial' | 'payment' | 'upgrade'>('initial')
-  const [subscriptionId, setSubscriptionId] = useState<string | null>(null)
-  const [chatSupport, setChatSupport] = useState(false)
-  const [supportTier, setSupportTier] = useState('0')
-
-  const handleInitialPurchase = async () => {
-    try {
-      const { subscriptionId } = await createSubscription({
-        priceId: 'price_tamagui_pro_yearly',
-        disableAutoRenew: false,
-      })
-      setSubscriptionId(subscriptionId)
-      setStep('payment')
-    } catch (error) {
-      console.error('Failed to create subscription:', error)
-    }
-  }
-
-  const handlePaymentSuccess = async (paymentIntentId: string) => {
-    // After successful payment, show upgrade options
-    setStep('upgrade')
-  }
-
-  const handleUpgrade = async (options: {
-    chatSupport: boolean
-    supportTier: number
-  }) => {
-    if (!subscriptionId) return
-
-    try {
-      await upgradeSubscription({
-        subscriptionId,
-        ...options,
-      })
-      // Handle successful upgrade
-    } catch (error) {
-      console.error('Failed to upgrade subscription:', error)
-    }
-  }
-
   return (
-    <>
-      {step === 'initial' && (
-        <YStack gap="$4">
-          <BigP mb="$3">
-            Tamagui Pro is a bundle that helps you launch your next idea much faster. You
-            get:
-          </BigP>
-          <XStack fw="wrap" gap="$3">
-            <PromoCards />
-          </XStack>
-          <Button themeInverse onPress={handleInitialPurchase} disabled={isLoading}>
-            {isLoading ? <Spinner /> : 'Continue to Payment'}
-          </Button>
-          {error && <Paragraph color="$red10">{error.message}</Paragraph>}
-        </YStack>
-      )}
+    <YStack gap="$4" pb="$4">
+      <YStack gap="$4">
+        <BigP mb="$3">
+          Tamagui Pro is a bundle that helps you launch your next idea much faster. You
+          get:
+        </BigP>
 
-      {step === 'payment' && clientSecret && (
-        <YStack gap="$4">
-          <BigP>Enter your payment details</BigP>
-          <StripeElementsForm
-            clientSecret={clientSecret}
-            onSuccess={handlePaymentSuccess}
-            onError={(error) => console.error('Payment error:', error)}
-          />
-        </YStack>
-      )}
+        <XStack fw="wrap" gap="$3">
+          <PromoCards />
+        </XStack>
 
-      {step === 'upgrade' && (
-        <SupportTabContent
-          chatSupport={chatSupport}
-          setChatSupport={setChatSupport}
-          supportTier={supportTier}
-          setSupportTier={setSupportTier}
-          onUpgrade={handleUpgrade}
-          isLoading={isLoading}
-          error={error}
-        />
-      )}
-    </>
+        <Separator o={0.25} />
+
+        <YStack gap="$3">
+          <P color="$color10">
+            The subscription gets you updates, Github and Discord access for a year.
+          </P>
+
+          <P color="$color10">
+            You get lifetime rights to all code and assets, even after subscription
+            expires.
+          </P>
+        </YStack>
+      </YStack>
+    </YStack>
   )
 }
 

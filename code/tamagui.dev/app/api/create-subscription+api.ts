@@ -1,12 +1,15 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
-import { getQuery } from '~/features/api/getQuery'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
 
+const CHAT_SUPPORT_PRICE_ID = 'price_1NqKJ3FQGtHoG6xcQ8Y9X8X8'
+const SUPPORT_TIER_PRICE_ID = 'price_1NqKJFFQGtHoG6xcY2X9X8X8'
+
 export const POST = apiRoute(async (req) => {
   const { user } = await ensureAuth({ req })
-  const { paymentMethodId, priceId, disableAutoRenew } = await req.json()
+  const { paymentMethodId, priceId, disableAutoRenew, chatSupport, supportTier } =
+    await req.json()
 
   if (!paymentMethodId || !priceId) {
     return Response.json(
@@ -38,10 +41,29 @@ export const POST = apiRoute(async (req) => {
       },
     })
 
-    // Create the subscription
+    // Prepare subscription items
+    const items = [{ price: priceId, quantity: 1 }]
+
+    // Add chat support if selected
+    if (chatSupport) {
+      items.push({
+        price: CHAT_SUPPORT_PRICE_ID,
+        quantity: 1,
+      })
+    }
+
+    // Add support tier if selected
+    if (supportTier > 0) {
+      items.push({
+        price: SUPPORT_TIER_PRICE_ID,
+        quantity: supportTier,
+      })
+    }
+
+    // Create the subscription with all items
     const subscription = await stripe.subscriptions.create({
       customer: stripeCustomerId,
-      items: [{ price: priceId }],
+      items,
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent'],
