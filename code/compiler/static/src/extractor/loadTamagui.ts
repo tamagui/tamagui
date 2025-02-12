@@ -61,6 +61,11 @@ export async function loadTamagui(
     // this affects the bundled config so run it first
     await generateThemesAndLog(props)
 
+    if (bundleInfo.tamaguiConfig) {
+      const { createTamagui } = requireTamaguiCore(props.platform || 'web')
+      createTamagui(bundleInfo.tamaguiConfig as any)
+    }
+
     if (!hasBundledConfigChanged()) {
       resolvePromise(bundleInfo)
       return bundleInfo
@@ -150,7 +155,7 @@ export function loadTamaguiBuildConfigSync(
   }
   return {
     config: 'tamagui.config.ts',
-    components: ['@tamagui/core'],
+    components: ['tamagui', '@tamagui/core'],
     ...tamaguiOptions,
   } as TamaguiOptions
 }
