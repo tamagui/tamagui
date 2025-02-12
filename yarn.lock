@@ -5677,26 +5677,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/react-stripe-js@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@stripe/react-stripe-js@npm:3.1.1"
-  dependencies:
-    prop-types: "npm:^15.7.2"
-  peerDependencies:
-    "@stripe/stripe-js": ^1.44.1 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
-    react: ">=16.8.0 <20.0.0"
-    react-dom: ">=16.8.0 <20.0.0"
-  checksum: 10/af955aec702851dd3eec082e4f0dfdadd4b4137dbcc67294bbd022853a01dfe2edf6ab3767400e76aad66fa191187c7167430f67ac82b3084dbcff4f00e60cd7
-  languageName: node
-  linkType: hard
-
-"@stripe/stripe-js@npm:^5.6.0":
-  version: 5.6.0
-  resolution: "@stripe/stripe-js@npm:5.6.0"
-  checksum: 10/6e7392344964e9b0f0690a1b8a807f02fbe0bcf3e51797829961407645c3cdae947449608d46d7c62daf1a9ab28f57346b649fd2f3eb1dd819fff48f712a8955
-  languageName: node
-  linkType: hard
-
 "@supabase/auth-js@npm:2.67.3":
   version: 2.67.3
   resolution: "@supabase/auth-js@npm:2.67.3"
@@ -6770,8 +6750,6 @@ __metadata:
     "@react-three/drei": "npm:^9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
     "@sentry/browser": "npm:^8.17.0"
-    "@stripe/react-stripe-js": "npm:^3.1.1"
-    "@stripe/stripe-js": "npm:^5.6.0"
     "@supabase/ssr": "npm:^0.5.2"
     "@supabase/supabase-js": "npm:^2.48.1"
     "@tamagui/assert": "workspace:*"

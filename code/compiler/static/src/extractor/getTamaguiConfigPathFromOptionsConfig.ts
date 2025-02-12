@@ -9,5 +9,9 @@ export function getTamaguiConfigPathFromOptionsConfig(
     return config
   }
 
-  return require.resolve(config)
+  try {
+    return require.resolve(config)
+  } catch {
+    return join(process.cwd(), config)
+  }
 }
