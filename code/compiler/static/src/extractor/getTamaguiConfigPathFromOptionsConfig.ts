@@ -1,4 +1,4 @@
-import { isAbsolute, join } from 'node:path'
+import { isAbsolute, join, resolve } from 'node:path'
 
 import type { TamaguiOptions } from '../types'
 
@@ -9,5 +9,5 @@ export function getTamaguiConfigPathFromOptionsConfig(
     return config
   }
 
-  return join(process.cwd(), config)
+  return require.resolve(config)
 }
