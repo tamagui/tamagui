@@ -10,10 +10,7 @@ import {
 import { Button, Paragraph, Spinner, YStack, Theme } from 'tamagui'
 import { PurchaseButton } from './helpers'
 
-const stripePromise = loadStripe(
-  process.env.STRIPE_SECRET_KEY_LIVEY! ||
-    'pk_test_51MlzkhAbFJBp9fF3vTNUO7QGC7hapWqnrcISDb5SPJa5I9VWVLIN2vamVCOsO4kkbHFm9mteyCS1qZjpHjcshRb100npI0m0cK'
-)
+const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY_LIVEY!)
 
 type StripeElementsProps = {
   onSuccess: (subscriptionId: string) => void
