@@ -2637,15 +2637,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/cli@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/cli@npm:1.124.13"
-=======
 "@tamagui/cli@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/cli@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/create-theme": "npm:1.124.17"
     "@tamagui/generate-themes": "npm:1.124.17"
@@ -2744,15 +2738,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/config@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/config@npm:1.124.13"
-=======
 "@tamagui/config@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/config@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/animations-css": "npm:1.124.17"
     "@tamagui/animations-moti": "npm:1.124.17"
@@ -2777,15 +2765,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/core@npm:1.124.13, @tamagui/core@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/core@npm:1.124.13"
-=======
 "@tamagui/core@npm:1.124.17, @tamagui/core@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/core@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/react-native-media-driver": "npm:1.124.17"
     "@tamagui/react-native-use-pressable": "npm:1.124.17"
@@ -3336,17 +3318,10 @@ __metadata:
     "@remix-run/node": "npm:^2.12.1"
     "@remix-run/react": "npm:^2.12.1"
     "@remix-run/serve": "npm:^2.12.1"
-<<<<<<< HEAD
-    "@tamagui/cli": "npm:^1.124.3"
-    "@tamagui/config": "npm:^1.124.3"
-    "@tamagui/core": "npm:^1.124.3"
-    "@tamagui/vite-plugin": "npm:^1.124.3"
-=======
     "@tamagui/cli": "npm:^1.124.17"
     "@tamagui/config": "npm:^1.124.17"
     "@tamagui/core": "npm:^1.124.17"
     "@tamagui/vite-plugin": "npm:^1.124.17"
->>>>>>> main
     "@types/react": "npm:^18.2.20"
     "@types/react-dom": "npm:^18.2.7"
     "@typescript-eslint/eslint-plugin": "npm:^6.7.4"
@@ -3363,11 +3338,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     tailwindcss: "npm:^3.4.4"
-<<<<<<< HEAD
-    tamagui: "npm:^1.124.3"
-=======
     tamagui: "npm:^1.124.17"
->>>>>>> main
     typescript: "npm:^5.1.6"
     vite: "npm:^5.1.0"
     vite-tsconfig-paths: "npm:^4.2.1"
@@ -3896,15 +3867,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/vite-plugin@npm:1.124.13, @tamagui/vite-plugin@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/vite-plugin@npm:1.124.13"
-=======
 "@tamagui/vite-plugin@npm:1.124.17, @tamagui/vite-plugin@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/vite-plugin@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/fake-react-native": "npm:1.124.17"
     "@tamagui/proxy-worm": "npm:1.124.17"
@@ -12047,15 +12012,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"tamagui@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "tamagui@npm:1.124.13"
-=======
 "tamagui@npm:^1.124.17":
   version: 1.124.17
   resolution: "tamagui@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/accordion": "npm:1.124.17"
     "@tamagui/adapt": "npm:1.124.17"

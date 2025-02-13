@@ -1866,15 +1866,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/animations-css@npm:1.124.13, @tamagui/animations-css@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/animations-css@npm:1.124.13"
-=======
 "@tamagui/animations-css@npm:1.124.17, @tamagui/animations-css@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/animations-css@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/constants": "npm:1.124.17"
     "@tamagui/cubic-bezier-animator": "npm:1.124.17"
@@ -2104,15 +2098,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/core@npm:1.124.13, @tamagui/core@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/core@npm:1.124.13"
-=======
 "@tamagui/core@npm:1.124.17, @tamagui/core@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/core@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/react-native-media-driver": "npm:1.124.17"
     "@tamagui/react-native-use-pressable": "npm:1.124.17"
@@ -2132,15 +2120,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/create-theme@npm:1.124.13, @tamagui/create-theme@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/create-theme@npm:1.124.13"
-=======
 "@tamagui/create-theme@npm:1.124.17, @tamagui/create-theme@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/create-theme@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/web": "npm:1.124.17"
   checksum: 10/2ed890712a19c3c2eeb1b28b8ae2e7dd6b0f3c0ce9683afa1d4f86add31dc904b1e56be50c1913a052a679ecf311d1af11266ab5c793c264dbfd290560f48b60
@@ -2589,17 +2571,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/react-native-svg@npm:1.124.13, @tamagui/react-native-svg@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/react-native-svg@npm:1.124.13"
-  checksum: 10/c1cba3a5cae65f54cbf2bff214bb2e0365b5a8fb535c90f43112f4f5b3e047702090f2e05322e07e48f6665604d8ea05f779ed8103b39b6a22c81001d4601f55
-=======
 "@tamagui/react-native-svg@npm:1.124.17, @tamagui/react-native-svg@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/react-native-svg@npm:1.124.17"
   checksum: 10/3221cd5844c63075c899328697197e7ca1bf43399c8fc607e5b520b4e8f198ca299d53956b2922b138ec1e427cb2e9e5232df132cbda6827736429fc314e469e
->>>>>>> main
   languageName: node
   linkType: hard
 
@@ -3158,15 +3133,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/vite-plugin@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/vite-plugin@npm:1.124.13"
-=======
 "@tamagui/vite-plugin@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/vite-plugin@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/fake-react-native": "npm:1.124.17"
     "@tamagui/proxy-worm": "npm:1.124.17"
@@ -8301,19 +8270,11 @@ __metadata:
   resolution: "simple-web-starter@workspace:."
   dependencies:
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.11"
-<<<<<<< HEAD
-    "@tamagui/animations-css": "npm:^1.124.3"
-    "@tamagui/core": "npm:^1.124.3"
-    "@tamagui/create-theme": "npm:^1.124.3"
-    "@tamagui/react-native-svg": "npm:^1.124.3"
-    "@tamagui/vite-plugin": "npm:^1.124.3"
-=======
     "@tamagui/animations-css": "npm:^1.124.17"
     "@tamagui/core": "npm:^1.124.17"
     "@tamagui/create-theme": "npm:^1.124.17"
     "@tamagui/react-native-svg": "npm:^1.124.17"
     "@tamagui/vite-plugin": "npm:^1.124.17"
->>>>>>> main
     "@vitejs/plugin-react-swc": "npm:^3.6.0"
     async-retry: "npm:1.3.3"
     babel-polyfill: "npm:^6.26.0"
@@ -8329,13 +8290,8 @@ __metadata:
     react-native-web: "npm:^0.19.10"
     react-refresh: "npm:^0.14.0"
     style-loader: "npm:^3.3.4"
-<<<<<<< HEAD
-    tamagui: "npm:^1.124.3"
-    tamagui-loader: "npm:^1.124.3"
-=======
     tamagui: "npm:^1.124.17"
     tamagui-loader: "npm:^1.124.17"
->>>>>>> main
     thread-loader: "npm:^4.0.2"
     url-loader: "npm:^4.1.1"
     vite: "npm:^6.0.6"
@@ -8642,15 +8598,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"tamagui-loader@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "tamagui-loader@npm:1.124.13"
-=======
 "tamagui-loader@npm:^1.124.17":
   version: 1.124.17
   resolution: "tamagui-loader@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/cli-color": "npm:1.124.17"
     "@tamagui/core": "npm:1.124.17"
@@ -8665,15 +8615,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"tamagui@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "tamagui@npm:1.124.13"
-=======
 "tamagui@npm:^1.124.17":
   version: 1.124.17
   resolution: "tamagui@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/accordion": "npm:1.124.17"
     "@tamagui/adapt": "npm:1.124.17"

@@ -3576,15 +3576,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/babel-plugin@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/babel-plugin@npm:1.124.13"
-=======
 "@tamagui/babel-plugin@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/babel-plugin@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/generator": "npm:^7.25.5"
@@ -3701,15 +3695,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/cli@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/cli@npm:1.124.13"
-=======
 "@tamagui/cli@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/cli@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/create-theme": "npm:1.124.17"
     "@tamagui/generate-themes": "npm:1.124.17"
@@ -3808,15 +3796,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/config@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/config@npm:1.124.13"
-=======
 "@tamagui/config@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/config@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/animations-css": "npm:1.124.17"
     "@tamagui/animations-moti": "npm:1.124.17"
@@ -4191,15 +4173,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/lucide-icons@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/lucide-icons@npm:1.124.13"
-=======
 "@tamagui/lucide-icons@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/lucide-icons@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/core": "npm:1.124.17"
     "@tamagui/helpers-icon": "npm:1.124.17"
@@ -4210,15 +4186,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/metro-plugin@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/metro-plugin@npm:1.124.13"
-=======
 "@tamagui/metro-plugin@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/metro-plugin@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/static": "npm:1.124.17"
     fs-extra: "npm:^11.2.0"
@@ -4771,15 +4741,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tamagui/toast@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "@tamagui/toast@npm:1.124.13"
-=======
 "@tamagui/toast@npm:^1.124.17":
   version: 1.124.17
   resolution: "@tamagui/toast@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/animate-presence": "npm:1.124.17"
     "@tamagui/compose-refs": "npm:1.124.17"
@@ -7666,21 +7630,12 @@ __metadata:
     "@expo/metro-config": "npm:~0.18.4"
     "@expo/metro-runtime": "npm:~3.2.1"
     "@react-navigation/native": "npm:^6.1.17"
-<<<<<<< HEAD
-    "@tamagui/babel-plugin": "npm:^1.124.3"
-    "@tamagui/cli": "npm:^1.124.3"
-    "@tamagui/config": "npm:^1.124.3"
-    "@tamagui/lucide-icons": "npm:^1.124.3"
-    "@tamagui/metro-plugin": "npm:^1.124.3"
-    "@tamagui/toast": "npm:^1.124.3"
-=======
     "@tamagui/babel-plugin": "npm:^1.124.17"
     "@tamagui/cli": "npm:^1.124.17"
     "@tamagui/config": "npm:^1.124.17"
     "@tamagui/lucide-icons": "npm:^1.124.17"
     "@tamagui/metro-plugin": "npm:^1.124.17"
     "@tamagui/toast": "npm:^1.124.17"
->>>>>>> main
     "@types/react": "npm:~18.2.79"
     "@types/react-native": "npm:^0.73.0"
     babel-preset-expo: "npm:^11.0.6"
@@ -7702,11 +7657,7 @@ __metadata:
     react-native-screens: "npm:~3.34.0"
     react-native-svg: "npm:15.6.0"
     react-native-web: "npm:^0.19.0"
-<<<<<<< HEAD
-    tamagui: "npm:^1.124.3"
-=======
     tamagui: "npm:^1.124.17"
->>>>>>> main
     typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
@@ -13303,15 +13254,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"tamagui@npm:^1.124.3":
-  version: 1.124.13
-  resolution: "tamagui@npm:1.124.13"
-=======
 "tamagui@npm:^1.124.17":
   version: 1.124.17
   resolution: "tamagui@npm:1.124.17"
->>>>>>> main
   dependencies:
     "@tamagui/accordion": "npm:1.124.17"
     "@tamagui/adapt": "npm:1.124.17"
