@@ -17,6 +17,7 @@
     "serve:railway": "one serve --host 0.0.0.0",
     "build:bento": "node ./scripts/build-bento.cjs",
     "upload:bento": "node ./scripts/upload-bento.cjs",
+    "cancel-all-subscriptions": "node ./scripts/cancel-all-subscriptions.mjs",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve",
     "test": "vitest run",
     "test:watch": "vitest"
