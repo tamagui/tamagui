@@ -72,7 +72,6 @@ export function BentoScreen() {
       <List
         stickyHeaderHiddenOnScroll
         sections={filteredDemos}
-        // data={filteredDemos}
         stickySectionHeadersEnabled
         renderItem={({ item }: any) => <Item item={item} />}
         renderSectionHeader={({ section: { title } }: any) => (
