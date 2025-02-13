@@ -84,7 +84,6 @@ export default {
 
   plugins: [
     tamaguiPlugin({
-      config: '@tamagui/tamagui-dev-config',
       components: ['tamagui'],
       logTimings: true,
       optimize: true,
