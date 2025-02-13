@@ -43,9 +43,7 @@ const include = [
   '@discordjs/core',
 ]
 
-const optimize = process.env.DISABLE_OPTIMIZATION
-  ? false
-  : process.env.NODE_ENV === 'production'
+const disableExtraction = false
 
 export default {
   envPrefix: 'NEXT_PUBLIC_',
@@ -76,7 +74,7 @@ export default {
   },
 
   ssr: {
-    external: ['@tamagui/mdx-2', ''],
+    external: ['@tamagui/mdx-2'],
     noExternal: true,
   },
 
@@ -85,11 +83,31 @@ export default {
   },
 
   plugins: [
+    tamaguiPlugin({
+      config: '@tamagui/tamagui-dev-config',
+      components: ['tamagui'],
+      logTimings: true,
+      optimize: true,
+      disableExtraction,
+      // useReactNativeWebLite: true,
+    }),
+
     one({
       react: {
-        compiler: process.env.NODE_ENV === 'production',
-        // compiler: true,
-        // compiler: optimize,
+        compiler: true,
+        // scan: {
+        //   options: {
+        //     showToolbar: true,
+        //     enabled: true,
+        //     // log: true,
+        //   },
+        // },
+      },
+
+      ssr: {
+        autoDepsOptimization: {
+          include: /.*/,
+        },
       },
 
       deps: {
@@ -148,11 +166,6 @@ export default {
     }),
 
     // removeReactNativeWebAnimatedPlugin(),
-
-    tamaguiPlugin({
-      optimize,
-      // useReactNativeWebLite: true,
-    }),
   ],
 } satisfies UserConfig
 

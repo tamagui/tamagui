@@ -1,6 +1,6 @@
 import { Info } from '@tamagui/lucide-icons'
 import { useRef, useState } from 'react'
-import { Button, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Button, Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 
 export type FieldsetWithLabelProps = {
   enableEditLabel?: boolean
@@ -71,12 +71,12 @@ export const FieldsetWithLabel = ({
             }}
           />
         ) : (
-          <Paragraph
+          <Heading
             userSelect="none"
             tag="label"
-            size="$6"
-            color="$color12"
-            fow="600"
+            size="$5"
+            color="$color11"
+            ta="center"
             {...(tooltip && {
               pr: '$6',
             })}
@@ -112,7 +112,7 @@ export const FieldsetWithLabel = ({
                 />
               </TooltipSimple>
             )}
-          </Paragraph>
+          </Heading>
         )}
       </YStack>
 

@@ -93,7 +93,6 @@ function SignIn() {
       provider,
       options: {
         redirectTo,
-        scopes: 'read:org',
       },
     })
     if (error) {
@@ -126,11 +125,6 @@ function SignIn() {
           >
             Continue with GitHub
           </Button>
-
-          <Paragraph ta="center" color="$color8">
-            Note: If part of a sponsoring organization, you'll need to grant access to
-            your org when logging in to access sponsor benefits.
-          </Paragraph>
 
           {!emailAuthDisabledFlag && (
             <>

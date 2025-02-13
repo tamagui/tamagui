@@ -1,6 +1,7 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/lucide-icons'
-import React, { useRef, useState } from 'react'
+import type React from 'react'
+import { useRef, useState } from 'react'
 import type { ScrollViewProps, XStackProps } from 'tamagui'
 import {
   AnimatePresence,

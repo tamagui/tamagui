@@ -3,12 +3,13 @@ import '~/app.css'
 import '~/tamagui.css'
 
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
-import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
+import { LoadProgressBar, Slot, Stack } from 'one'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'
+import { Suspense } from 'react'
 
 // for navigation container props
 //           theme: {
@@ -30,9 +31,6 @@ setupPopper({
 })
 
 export default function Layout() {
-  const path = usePathname()
-  const isIndex = path === '/'
-
   return (
     <html lang="en-US">
       <head>
@@ -112,7 +110,9 @@ export default function Layout() {
         />
       </head>
 
-      <body className={isIndex ? 'transition' : ''}>
+      <body
+      // className={isIndex ? 'transition' : ''}
+      >
         <LoadProgressBar />
 
         <Providers>
@@ -144,11 +144,11 @@ export default function Layout() {
 
 export const Providers = (props: { children: any }) => {
   return (
-    <SearchProvider>
-      <SchemeProvider>
-        <WebsiteTamaguiProvider>{props.children}</WebsiteTamaguiProvider>
-      </SchemeProvider>
-    </SearchProvider>
+    <SchemeProvider>
+      <WebsiteTamaguiProvider>
+        <SearchProvider>{props.children}</SearchProvider>
+      </WebsiteTamaguiProvider>
+    </SchemeProvider>
   )
 }
 

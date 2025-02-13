@@ -13,9 +13,7 @@ export {
   ImageLoader,
 } from '@tamagui/react-native-web-internals'
 export { default as render } from './render/index'
-export { unmountComponentAtNode } from 'react-dom'
 export { default as NativeModules } from './NativeModules/index'
-export { findNodeHandle } from './findNodeHandle'
 
 // react-native
 export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index'

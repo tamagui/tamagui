@@ -39,6 +39,11 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
   name,
 }) => {
   //NOTE: Components using Flatlist can't have a ScrollView wrapper. This breaks scrolling on Android.
+
+  if (['ProductWithReview'].includes(name)) {
+    return children
+  }
+
   if (
     [
       'FlatGrid',
@@ -50,6 +55,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'RoundedAvatars',
       'CircularAvatarsWithCustomIcons',
       'RoundedAvatarsWithCustomIcons',
+      'Fullpage',
     ].includes(name)
   ) {
     return (
@@ -58,6 +64,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       </View>
     )
   }
+
   return (
     <ScrollView p="$4" flex={1} bg="$background" keyboardShouldPersistTaps="always">
       {children}
@@ -66,8 +73,11 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
 }
 const filterCamelCaseOnly = ([key, _]: [string, unknown]) =>
   /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key)
+
 const sectionModuleToTuple = ([, sectionModules]) => Object.entries(sectionModules as any)
+
 const flatArray = (acc, curr) => acc.concat(curr)
+
 const filterOutComponents = ([key]: [string]) =>
   ![
     'default',
@@ -85,6 +95,9 @@ const bentoScreenSections = bentoScreenNames.map((screenName) => {
       component={BentoPartScreenItem}
       options={{
         title: screenName,
+        headerRight() {
+          return <ColorSchemeToggle />
+        },
       }}
     />
   )
@@ -97,12 +110,16 @@ const bentoScreensPerElement = Object.entries(Components)
   .filter(filterOutComponents)
   .map(([name, _Component]: [string, any]) => {
     const Component = _Component as React.ComponentType<any>
+
     return (
       <Stack.Screen
         key={name}
         name={name}
         options={{
           title: name,
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       >
         {() => (
@@ -122,6 +139,9 @@ export function Navigation() {
         component={HomeScreen}
         options={{
           title: 'Home',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -129,6 +149,9 @@ export function Navigation() {
         component={Sandbox}
         options={{
           title: 'Sandbox',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -136,6 +159,9 @@ export function Navigation() {
         component={DemoScreen}
         options={{
           title: 'Demo',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -143,6 +169,9 @@ export function Navigation() {
         component={TestCasesScreen}
         options={{
           title: 'Test Cases',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen
@@ -160,6 +189,9 @@ export function Navigation() {
         component={BentoScreen}
         options={{
           title: 'Bento',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       {bentoScreensPerElement}

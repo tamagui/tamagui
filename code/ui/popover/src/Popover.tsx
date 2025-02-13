@@ -245,6 +245,19 @@ export const PopoverContent = PopperContentFrame.styleable<
     }
   }
 
+  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+  React.useEffect(() => {
+    if (!context.open) return
+    const content = contentRef.current
+    if (content) return hideOthers(content)
+  }, [context.open])
+
+  if (!context.keepChildrenMounted) {
+    if (isFullyHidden) {
+      return null
+    }
+  }
+
   return (
     <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
       <Stack pointerEvents={context.open ? 'auto' : 'none'}>
@@ -258,10 +271,15 @@ export const PopoverContent = PopperContentFrame.styleable<
           // (closed !== unmounted when animating out)
           trapFocus={trapFocus ?? context.open}
           disableOutsidePointerEvents
-          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-            event.preventDefault()
-            if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-          })}
+          onCloseAutoFocus={
+            props.onCloseAutoFocus === false
+              ? undefined
+              : composeEventHandlers(props.onCloseAutoFocus, (event) => {
+                  if (event.defaultPrevented) return
+                  event.preventDefault()
+                  if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+                })
+          }
           onPointerDownOutside={composeEventHandlers(
             props.onPointerDownOutside,
             (event) => {
@@ -373,7 +391,7 @@ export interface PopoverContentExtraProps
    * Event handler called when auto-focusing on close.
    * Can be prevented.
    */
-  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false
 
   disableRemoveScroll?: boolean
 
@@ -459,7 +477,7 @@ const PopoverContentImpl = React.forwardRef<
           enabled={disableFocusScope ? false : open}
           trapped={trapFocus}
           onMountAutoFocus={onOpenAutoFocus}
-          onUnmountAutoFocus={onCloseAutoFocus}
+          onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
         >
           <div style={dspContentsStyle}>{contents}</div>
         </FocusScope>

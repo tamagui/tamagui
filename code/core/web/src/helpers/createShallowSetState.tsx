@@ -1,30 +1,48 @@
 import type React from 'react'
 import type { DebugProp } from '../types'
-import { startTransition } from 'react'
+import { startTransition, useCallback } from 'react'
 
 const callImmediate = (cb) => cb()
 
 export function createShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>,
-  isDisabled?: boolean,
+  onlyAllow?: string[],
   transition?: boolean,
-  debug?: DebugProp
+  debug?: DebugProp,
+  callback?: (nextState: any) => void
 ) {
-  return (next?: Partial<State>) => {
-    const wrap = transition ? startTransition : callImmediate
-    wrap(() => {
-      setter((prev) => mergeIfNotShallowEqual(prev, next, isDisabled, debug))
-    })
-  }
+  // this must be memoized or it ruins performance in components
+  return useCallback(
+    (next?: Partial<State>) => {
+      const wrap = transition ? startTransition : callImmediate
+      wrap(() => {
+        setter((prev) => {
+          const out = mergeIfNotShallowEqual(prev, next, onlyAllow, debug)
+          callback?.(out)
+          return out
+        })
+      })
+    },
+    [setter, onlyAllow ? onlyAllow.join('') : '', transition, debug]
+  )
 }
 
 export function mergeIfNotShallowEqual(
   prev: any,
   next: any,
-  isDisabled?: boolean,
+  onlyAllow?: string[],
   debug?: DebugProp
 ) {
-  if (isDisabled || !prev || !next || isEqualShallow(prev, next)) {
+  if (onlyAllow) {
+    let allowed = {}
+    for (const key in next) {
+      if (onlyAllow.includes(key)) {
+        allowed[key] = next[key]
+      }
+    }
+    next = allowed
+  }
+  if (!prev || !next || isEqualShallow(prev, next)) {
     if (!prev) return next
     return prev
   }

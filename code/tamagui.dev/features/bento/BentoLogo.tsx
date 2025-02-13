@@ -81,7 +81,7 @@ export const BentoLogo = ({
           whiteSpace="pre"
           color="$color1"
           $theme-dark={{
-            color: '$color9',
+            color: '$color12',
           }}
           maw="100%"
           f={1}

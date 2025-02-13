@@ -1,16 +1,15 @@
-import React from 'react'
 import { isServer } from '@tamagui/constants'
+import { startTransition } from '@tamagui/start-transition'
 import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 import {
-  activeThemeManagers,
   ensureThemeVariable,
+  forceUpdateThemes,
   getConfig,
   getThemeCSSRules,
   proxyThemeToParents,
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
-import { startTransition } from '@tamagui/start-transition'
 
 type MutateThemeOptions = {
   mutationType: 'replace' | 'update' | 'add'
@@ -64,8 +63,8 @@ export function mutateThemes({
     for (const themeName in allThemesProxied) {
       const theme = allThemesProxied[themeName]
       updateThemeConfig(themeName, theme)
-      notifyThemeManagersOfUpdate(themeName, theme)
     }
+    updateThemeStates()
   })
 
   return {
@@ -128,7 +127,7 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
   }
 
   updateThemeConfig(themeName, themeProxied)
-  notifyThemeManagersOfUpdate(themeName, themeProxied)
+  updateThemeStates()
 
   return response
 }
@@ -139,18 +138,8 @@ function updateThemeConfig(themeName: string, theme: ThemeParsed) {
   updateConfig('themes', config.themes)
 }
 
-function notifyThemeManagersOfUpdate(themeName: string, theme: ThemeParsed) {
-  activeThemeManagers.forEach((manager) => {
-    if (manager.state.name === themeName) {
-      manager.updateStateFromProps(
-        {
-          name: themeName,
-          forceTheme: theme,
-        },
-        true
-      )
-    }
-  })
+function updateThemeStates() {
+  forceUpdateThemes()
 }
 
 function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = false) {

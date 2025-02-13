@@ -2,6 +2,8 @@ v2:
 
 note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
+
+  - onMouseMove and other web props
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - @tamagui/static and all the plugins => @tamagui/compiler package
   - animation => transition
@@ -96,7 +98,7 @@ is this a bug? the is_static conditional is odd, maybe backward
 
 v3
 
-- perspective={1000} broken on web, it shouldnt be in transform()
+- perspective={1000} can be on either transform OR on flat, need to figure that out
 
 generic function to allow new syntaxes, eg flat mode
 
@@ -129,8 +131,6 @@ createCore<CustomTypes>({
   - zero runtime mode
     - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
   - `<Theme values={{}} />` dynamic override
-
-- perf getState could be cached (weakmap themeManager + stringify props)
 
 - isolatedDeclarations for build perf // TODO: turn on
 

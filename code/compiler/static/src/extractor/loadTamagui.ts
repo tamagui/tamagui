@@ -61,6 +61,13 @@ export async function loadTamagui(
     // this affects the bundled config so run it first
     await generateThemesAndLog(props)
 
+    // if they accidently pass in a config without createTamagui called,call it
+    const maybeTamaguiConfig = bundleInfo.tamaguiConfig as TamaguiInternalConfig
+    if (maybeTamaguiConfig && !maybeTamaguiConfig.parsed) {
+      const { createTamagui } = requireTamaguiCore(props.platform || 'web')
+      bundleInfo.tamaguiConfig = createTamagui(bundleInfo.tamaguiConfig as any)
+    }
+
     if (!hasBundledConfigChanged()) {
       resolvePromise(bundleInfo)
       return bundleInfo
@@ -128,6 +135,13 @@ export function loadTamaguiBuildConfigSync(
       if (!out) {
         throw new Error(`No default export found in ${buildFilePath}: ${out}`)
       }
+
+      if (tamaguiOptions?.config && out.config) {
+        throw new Error(
+          `You're configuring tamagui from both the plugin and tamagui.build.ts, please choose one or the other.`
+        )
+      }
+
       tamaguiOptions = {
         ...tamaguiOptions,
         ...out,
@@ -143,7 +157,7 @@ export function loadTamaguiBuildConfigSync(
   }
   return {
     config: 'tamagui.config.ts',
-    components: ['@tamagui/core'],
+    components: ['tamagui', '@tamagui/core'],
     ...tamaguiOptions,
   } as TamaguiOptions
 }

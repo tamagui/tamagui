@@ -86,7 +86,7 @@ const NativeOptions = ({
       <Switch
         id="native-toggle"
         nativeID="native-toggle"
-        theme="active"
+        theme="accent"
         size="$1"
         checked={!!native}
         onCheckedChange={(val) => setNative(val)}

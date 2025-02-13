@@ -6,12 +6,12 @@ export function TimedRender(props) {
   const [end, setEnd] = React.useState(0)
 
   React.useLayoutEffect(() => {
-    setEnd(performance.now())
-  }, [])
+    setEnd(performance.now() - start)
+  }, [start])
 
   return (
     <View style={{ maxWidth: '100%' }}>
-      {!!end && <Text>Took {end - start}ms</Text>}
+      {!!end && <Text>Took {end}ms</Text>}
       <View style={{ flexDirection: 'column' }}>{props.children}</View>
     </View>
   )

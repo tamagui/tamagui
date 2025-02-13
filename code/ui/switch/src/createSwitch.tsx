@@ -1,23 +1,26 @@
 import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
 import {
-  Stack,
   composeEventHandlers,
+  getShorthandValue,
+  getVariableValue,
   isWeb,
   shouldRenderNativePlatform,
-  useProps,
   withStaticProperties,
 } from '@tamagui/core'
+import { registerFocusable } from '@tamagui/focusable'
 import type {
   SwitchExtraProps as HeadlessSwitchExtraProps,
   SwitchState,
 } from '@tamagui/switch-headless'
-import { registerFocusable } from '@tamagui/focusable'
 import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import type { SwitchProps as NativeSwitchProps, ViewProps } from 'react-native'
-import { Switch as NativeSwitch } from 'react-native'
-
+import type {
+  LayoutChangeEvent,
+  SwitchProps as NativeSwitchProps,
+  ViewStyle,
+} from 'react-native'
+import { Switch as NativeSwitch, View } from 'react-native'
 import { SwitchStyledContext } from './StyledContext'
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
 
@@ -89,7 +92,6 @@ export function createSwitch<
       const { size: sizeProp, unstyled: unstyledProp, ...thumbProps } = props
       const context = React.useContext(SwitchContext)
       const { checked, disabled, frameWidth } = context
-      // __scope?
       const styledContext = SwitchStyledContext.useStyledContext()
       const { unstyled: unstyledContext, size: sizeContext } = styledContext
       const unstyled =
@@ -100,9 +102,13 @@ export function createSwitch<
 
       const initialChecked = React.useRef(checked).current
 
-      const [thumbWidth, setThumbWidth] = React.useState(0)
+      const initialWidth = getVariableValue(props.width, 'size')
+      const [thumbWidth, setThumbWidth] = React.useState(
+        typeof initialWidth === 'number' ? initialWidth : 0
+      )
       const distance = frameWidth - thumbWidth
       const x = initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0
+
       return (
         <Thumb
           ref={forwardedRef}
@@ -116,10 +122,12 @@ export function createSwitch<
           })}
           alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
           x={x}
-          // TODO: remove ViewProps cast
-          onLayout={composeEventHandlers((props as ViewProps).onLayout, (e) =>
-            setThumbWidth(e.nativeEvent.layout.width)
-          )}
+          onLayout={composeEventHandlers(props.onLayout, (e) => {
+            const next = e.nativeEvent.layout.width
+            if (next !== thumbWidth) {
+              setThumbWidth(next)
+            }
+          })}
           // expected variants
           checked={checked}
           disabled={disabled}
@@ -148,24 +156,29 @@ export function createSwitch<
 
       const styledContext = React.useContext(SwitchStyledContext.context)
 
-      const [frameWidth, setFrameWidth] = React.useState(0)
+      let estimatedInitialWidth = 0
 
-      const propsActive = useProps(props, {
-        noNormalize: true,
-        noExpand: true,
-        resolveValues: 'none',
-        forComponent: Frame,
-      })
+      const estWidth = getVariableValue(getShorthandValue(props, 'width'), 'size')
+
+      if (estWidth) {
+        const estPad =
+          getShorthandValue(props, 'paddingHorizontal') ??
+          getShorthandValue(props, 'padding') ??
+          0
+        const estLeftPad = getShorthandValue(props, 'paddingLeft') ?? estPad ?? 0
+        const estRightPad = getShorthandValue(props, 'paddingRight') ?? estPad ?? 0
+        estimatedInitialWidth =
+          estWidth -
+          (estLeftPad ? getVariableValue(estLeftPad, 'size') : 0) -
+          (estRightPad ? getVariableValue(estRightPad, 'size') : 0)
+      }
+
+      // this is actually inner width
+      const [frameWidth, setFrameInnerWidth] = React.useState(estimatedInitialWidth)
 
       const { switchProps, bubbleInput, switchRef } = useSwitch(
         // @ts-ignore
-        Object.assign(
-          {
-            size: styledContext.size ?? props.size ?? '$true',
-            unstyled: styledContext.unstyled ?? props.unstyled ?? false,
-          },
-          propsActive
-        ),
+        props as any,
         [checked, setChecked],
         forwardedRef
       )
@@ -191,33 +204,44 @@ export function createSwitch<
         )
       }
 
+      const disabled = props.disabled
+      const value = React.useMemo(
+        () => ({ checked, disabled, frameWidth }),
+        [checked, disabled, frameWidth]
+      )
+
+      const handleLayout = (e: LayoutChangeEvent) => {
+        const next = e.nativeEvent.layout.width
+        if (next !== frameWidth) {
+          setFrameInnerWidth(next)
+        }
+      }
+
+      const unstyled = styledContext.unstyled ?? props.unstyled ?? false
+
       return (
-        <SwitchContext.Provider
-          value={{ checked, disabled: switchProps.disabled, frameWidth }}
-        >
+        <SwitchContext.Provider value={value}>
           <Frame
             ref={switchRef}
             tag="button"
             {...(isWeb && { type: 'button' })}
+            {...(!unstyled && {
+              size: styledContext.size ?? props.size ?? '$true',
+            })}
+            unstyled={unstyled}
+            {...props}
             {...(switchProps as any)}
             {...(!disableActiveTheme &&
               !props.unstyled && {
                 theme: checked ? 'active' : null,
-                themeShallow: true,
               })}
             // expected variants
             checked={checked}
-            disabled={switchProps.disabled}
+            disabled={disabled}
           >
-            <Stack
-              alignSelf="stretch"
-              flex={1}
-              onLayout={(e) => {
-                setFrameWidth(e.nativeEvent.layout.width)
-              }}
-            >
-              {switchProps.children}
-            </Stack>
+            <View style={measureContainerStyle} onLayout={handleLayout}>
+              {!frameWidth ? null : props.children}
+            </View>
           </Frame>
 
           {bubbleInput}
@@ -233,3 +257,8 @@ export function createSwitch<
     Thumb: SwitchThumbComponent,
   })
 }
+
+const measureContainerStyle = {
+  alignSelf: 'stretch',
+  flex: 1,
+} satisfies ViewStyle

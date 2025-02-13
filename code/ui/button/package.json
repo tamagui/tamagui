@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/button",
-  "version": "1.123.5",
+  "version": "1.124.17",
   "sideEffects": [
     "*.css"
   ],
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.5"
   },
   "publishConfig": {
     "access": "public"

@@ -101,6 +101,7 @@ function createGroup(verticalDefault: boolean) {
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
         defaultProp: forceUseItem ? 1 : 0,
       })
+
       const isUsingItems = itemChildrenCount > 0
 
       // 1 off given border to adjust for border radius? This should be user controllable

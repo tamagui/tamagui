@@ -7,6 +7,7 @@ import type {
   GetStyleState,
   PropMapper,
   ResolveVariableAs,
+  SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
@@ -63,7 +64,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
 
   if (value != null) {
     if (value[0] === '$') {
-      value = getTokenForKey(key, value, styleProps.resolveValues, styleState)
+      value = getTokenForKey(key, value, styleProps, styleState)
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
     }
@@ -169,6 +170,7 @@ const resolveVariants: StyleResolver = (
 
   if (variantValue) {
     const expanded = normalizeStyle(variantValue, !!styleProps.noNormalize)
+
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.info(`   expanding styles from `, variantValue, `to`, expanded)
     }
@@ -207,9 +209,6 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
 
 const variableToFontNameCache = new WeakMap<Variable, string>()
 
-// special helper for special font family
-const fontFamilyCache = new WeakMap()
-
 const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead
   value,
@@ -242,9 +241,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
         if (parentVariantKey && parentVariantKey === key) {
           res[subKey] =
             // SYNC WITH *1
-            val[0] === '$'
-              ? getTokenForKey(subKey, val, styleProps.resolveValues, styleState)
-              : val
+            val[0] === '$' ? getTokenForKey(subKey, val, styleProps, styleState) : val
         } else {
           const variantOut = resolveVariants(subKey, val, styleProps, styleState, key)
 
@@ -267,6 +264,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
 
     if (isVariable(val)) {
       res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
+
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.info(`variable`, subKey, res[subKey])
       }
@@ -276,9 +274,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     if (typeof val === 'string') {
       const fVal =
         // SYNC WITH *1
-        val[0] === '$'
-          ? getTokenForKey(subKey, val, styleProps.resolveValues, styleState)
-          : val
+        val[0] === '$' ? getTokenForKey(subKey, val, styleProps, styleState) : val
 
       res[subKey] = fVal
       continue
@@ -357,14 +353,18 @@ let lastFontFamilyToken: any = null
 export const getTokenForKey = (
   key: string,
   value: string,
-  resolveAs: ResolveVariableAs = 'none',
+  styleProps: SplitStyleProps,
   styleState: Partial<GetStyleState>
 ) => {
+  let resolveAs = styleProps.resolveValues || 'none'
+
   if (resolveAs === 'none') {
     return value
   }
 
   const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
+
+  const themeValue = theme ? theme[value] || theme[value.slice(1)] : undefined
 
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
@@ -372,7 +372,7 @@ export const getTokenForKey = (
 
   const customTokenAccept = staticConfig?.accept?.[key]
   if (customTokenAccept) {
-    const val = theme?.[value] ?? tokensParsed[customTokenAccept][value]
+    const val = themeValue ?? tokensParsed[customTokenAccept][value]
     if (val != null) {
       resolveAs = 'value' // always resolve custom tokens as values
       valOrVar = val
@@ -380,8 +380,12 @@ export const getTokenForKey = (
     }
   }
 
-  if (theme && value in theme) {
-    valOrVar = theme[value]
+  if (themeValue) {
+    if (resolveAs === 'except-theme') {
+      return value
+    }
+
+    valOrVar = themeValue
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
       globalThis.tamaguiAvoidTracking = true
       console.info(

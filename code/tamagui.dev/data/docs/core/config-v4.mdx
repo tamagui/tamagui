@@ -38,6 +38,8 @@ If you like it but want to make some changes, you can [copy and paste the source
   If you want to learn to create your own custom theme suite rather than use the included defaults, check out the [Creating Custom Themes Guide](/docs/guides/theme-builder).
 </Notice>
 
+We recommend adding `settings.styleCompat` to the default config, setting it to be "react-native". This will align the default flexBasis of `flex` to be `0`, not `auto`, matching the default in React Native. This setting will become the default in the upcoming Tamagui v2 release. We left it out of Config v4 because we wanted an easier transition for existing users, but if you are a new user, we recommend this setting.
+
 ---
 
 ### Default Configuration
@@ -366,7 +368,9 @@ export const radius = {
 }
 ```
 
-Note that `color` tokens aren't defined, instead we are just using themes. This is how Tamagui knows what your default size is, for example `radius` default is "4", as it matches in value. In the next major of Tamagui we are going to remove this behavior in favor of something more intuitive and simple.
+Note that `color` tokens aren't defined, instead we are just using themes.
+
+Also note that the "true" value on tokens is the "default" - Tamagui UI for now uses defaults to determine how to size various things out of the box. This isn't mandatory, and in version 2 of Tamagui we are working on a more clear solution.
 
 #### Fonts
 

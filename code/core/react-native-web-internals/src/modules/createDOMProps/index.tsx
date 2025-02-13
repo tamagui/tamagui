@@ -8,7 +8,7 @@
  */
 
 import AccessibilityUtil from '../AccessibilityUtil/index'
-import { getStylesAtomic, wrapStyleTags } from '@tamagui/web'
+import { getCSSStylesAtomic, wrapStyleTags } from '@tamagui/web'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -338,7 +338,7 @@ const createDOMProps = (elementType, props, options?) => {
     className += ` ${props.className}`
   }
 
-  const stylesAtomic = getStylesAtomic(flat)
+  const stylesAtomic = getCSSStylesAtomic(flat)
 
   stylesFromProps.set(domProps, stylesAtomic)
 

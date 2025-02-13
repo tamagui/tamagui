@@ -9,10 +9,10 @@ import {
   Separator,
   Spacer,
   Theme,
+  View,
   XStack,
   YStack,
   styled,
-  useThemeName,
 } from 'tamagui'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
@@ -20,25 +20,22 @@ import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
-import { steps } from '~/features/studio/theme/steps/steps'
+
 import {
   themeBuilderStore,
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
-
-themeBuilderStore.setSteps(steps)
+import { lastInserted } from '../../features/studio/theme/previewTheme'
 
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
-  const store = useThemeBuilderStore()
-  const themeName = useThemeName()
   const router = useRouter()
   const params = useParams<any>()
 
   useEffect(() => {
     // give it a bit to load many dynamic charts that animate etc
-    store.load(params.state as string | undefined).then(() => {
+    themeBuilderStore.load(params.state as string | undefined).then(() => {
       startTransition(() => {
         setLoaded(true)
       })
@@ -46,14 +43,14 @@ export default function ThemePage() {
 
     const onSave = () => {
       router.setParams({
-        state: store.serializedState,
+        state: themeBuilderStore.serializedState,
       })
     }
 
-    store.listeners.add(onSave)
+    themeBuilderStore.listeners.add(onSave)
 
     return () => {
-      store.listeners.delete(onSave)
+      themeBuilderStore.listeners.delete(onSave)
     }
   }, [])
 
@@ -63,42 +60,53 @@ export default function ThemePage() {
     <>
       <Dialogs />
 
-      <ThemeBuilderModal />
+      <YStack flexShrink={0} mb="$10">
+        <ThemeBuilderModal />
 
-      <XStack w="100%" h="max-content" pr={540} $sm={{ pr: 0 }} jc="flex-end" ov="hidden">
-        <YStack
-          gap="$4"
-          p="$4"
-          f={1}
-          maw="calc(min(100vw, 1300px))"
-          group="content"
-          $md={{
-            maw: `calc(min(100vw, 900px))`,
-            p: '$4',
-          }}
+        <XStack
+          w="100%"
+          h="max-content"
+          pr={540}
+          pt={10}
+          $lg={{ pr: 0 }}
+          jc="flex-end"
+          ov="hidden"
         >
-          <StudioAIBar />
-          <PreviewTheme>
-            <YStack gap="$6">
-              <StudioPreviewComponentsBar scrollView={document.documentElement} />
-              <StudioPreviewComponents />
-            </YStack>
-          </PreviewTheme>
-        </YStack>
-      </XStack>
+          <YStack
+            gap="$6"
+            p="$4"
+            f={1}
+            maw="calc(min(100vw, 1300px))"
+            group="content"
+            $md={{
+              maw: `calc(min(100vw, 900px))`,
+              p: '$4',
+            }}
+          >
+            <StudioAIBar />
+            <StudioPreviewComponentsBar scrollView={document.documentElement} />
+            <PreviewTheme>
+              <YStack gap="$6">
+                <StudioPreviewComponents />
+              </YStack>
+            </PreviewTheme>
+          </YStack>
+        </XStack>
+      </YStack>
     </>
   )
 }
 
 const PreviewTheme = (props: { children: any; noKey?: any }) => {
-  const { name: baseStepThemeName, key } = useBaseThemePreview()
+  const { name: baseStepThemeName } = useBaseThemePreview()
 
   return (
-    <Theme key={props.noKey ? '' : key} forceClassName name={baseStepThemeName}>
-      <YStack bg="$color1" fullscreen zi={0} scale={2} />
-      <ThemeNameEffectNoTheme />
-      <YStack f={1}>{props.children}</YStack>
-    </Theme>
+    <>
+      <Theme forceClassName name={baseStepThemeName}>
+        <ThemeNameEffectNoTheme />
+        <YStack f={1}>{props.children}</YStack>
+      </Theme>
+    </>
   )
 }
 
@@ -109,20 +117,19 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
-  // const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack
-      animation="slow"
+      // animation="medium"
       pos={'fixed' as any}
-      t={90}
+      t={70}
       r={0}
       b={0}
       w={530}
       mah="90vh"
       zi={100_000}
-      $sm={{
-        dsp: 'none',
+      $lg={{
+        x: '98%',
       }}
     >
       <YStack
@@ -137,19 +144,40 @@ const ThemeBuilderModal = memo(() => {
         bw={0.5}
         bc="$color6"
         bg="$background06"
-        backdropFilter="blur(20px)"
+        backdropFilter="blur(60px)"
       >
-        {/* <Button
-          size="$2"
-          t="$-3"
-          l="$3"
-          circular
-          // icon={expanded ? ChevronRight : ChevronLeft}
-          // onPress={() => setExpanded(!expanded)}
-          $gtMd={{
-            dsp: 'none',
-          }}
-        ></Button> */}
+        {/* <TooltipSimple label="Show Drawer">
+          <YStack
+            animation="lazy"
+            px="$2"
+            py="$2"
+            t="$-3"
+            l={-20}
+            br="$10"
+            bg="$color2"
+            bw={0.5}
+            bc="$borderColor"
+            elevation="$2"
+            w={40}
+            h={40}
+            ai="center"
+            jc="center"
+            x={0}
+            opacity={0}
+            pressStyle={{
+              bg: '$color3',
+            }}
+            $lg={{
+              x: expanded ? 30 : -30,
+              opacity: 1,
+            }}
+            // onPress={() => {
+            //   setExpanded(!expanded)
+            // }}
+          >
+            {expanded ? <ChevronRight x={0.5} /> : <ChevronLeft x={0.5} />}
+          </YStack>
+        </TooltipSimple> */}
 
         <YStack gap="$4" f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
@@ -241,6 +269,15 @@ const ThemeStudioStepButtonsBar = () => {
 
   return (
     <XStack gap="$2">
+      {location.hostname === 'localhost' && lastInserted && (
+        <>
+          <a href={`one-chat://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
+            <Button size="$3">Chat</Button>
+          </a>
+          <View flex={1} />
+        </>
+      )}
+
       <Button
         size="$3"
         onPress={() => {

@@ -144,7 +144,7 @@ export {
   createVariable,
   getConfig,
   getMedia,
-  getStylesAtomic,
+  getCSSStylesAtomic,
   getThemes,
   getToken,
   getTokenValue,

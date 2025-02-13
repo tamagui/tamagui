@@ -1,9 +1,9 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.123.5",
+  "version": "1.124.17",
   "sideEffects": false,
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
+  "types": "./src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [

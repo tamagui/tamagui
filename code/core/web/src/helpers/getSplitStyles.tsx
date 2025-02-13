@@ -45,8 +45,8 @@ import type {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
+import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
 import { getGroupPropParts } from './getGroupPropParts'
-import { getStyleAtomic, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -134,8 +134,6 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
-  if (props.reddish) debug = 'verbose'
-
   conf = conf || getConfig()
 
   // a bit icky, we need no normalize but not fully
@@ -823,13 +821,13 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldDoClasses) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
-          const mediaStyles = getStylesAtomic(mediaStyle)
+          const mediaStyles = getCSSStylesAtomic(mediaStyle)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 
           for (const style of mediaStyles) {
             // handle nested media:
-            // for now we're doing weird stuff, getStylesAtomic will put the
+            // for now we're doing weird stuff, getCSSStylesAtomic will put the
             // $platform-web into property so we can check it here
             const property = style[StyleObjectProperty]
             const isSubStyle = property[0] === '$'
@@ -1035,9 +1033,11 @@ export const getSplitStyles: StyleSplitter = (
     if (styleState.style) {
       fixStyles(styleState.style)
 
-      // shouldn't this be better? but breaks some tests weirdly, need to check
-      if (isWeb && !isReactNative) {
-        styleToCSS(styleState.style)
+      if (!styleProps.noExpand && !styleProps.noMergeStyle) {
+        // shouldn't this be better? but breaks some tests weirdly, need to check
+        if (isWeb && !isReactNative) {
+          styleToCSS(styleState.style)
+        }
       }
     }
 
@@ -1097,14 +1097,14 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (styleState.style && shouldDoClasses) {
+    if (!styleProps.noMergeStyle && styleState.style && shouldDoClasses) {
       let retainedStyles: ViewStyleWithPseudos | undefined
       let shouldRetain = false
 
       if (styleState.style['$$css']) {
         // avoid re-processing for rnw
       } else {
-        const atomic = getStylesAtomic(styleState.style)
+        const atomic = getCSSStylesAtomic(styleState.style)
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
@@ -1175,7 +1175,7 @@ export const getSplitStyles: StyleSplitter = (
   // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
   const styleProp = props.style
 
-  if (styleProp) {
+  if (!styleProps.noMergeStyle && styleProp) {
     if (isHOC) {
       viewProps.style = normalizeStyle(styleProp)
     } else {
@@ -1238,64 +1238,56 @@ export const getSplitStyles: StyleSplitter = (
   const asChildExceptStyleLike =
     asChild === 'except-style' || asChild === 'except-style-web'
 
-  if (!asChildExceptStyleLike) {
-    const style = styleState.style
+  if (!styleProps.noMergeStyle) {
+    if (!asChildExceptStyleLike) {
+      const style = styleState.style
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // merge className and style back into viewProps:
-      let fontFamily =
-        isText || isInput
-          ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
-          : null
-      if (fontFamily && fontFamily[0] === '$') {
-        fontFamily = fontFamily.slice(1)
-      }
-      const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
-      const groupClassName = props.group ? `t_group_${props.group}` : ''
-      const componentNameFinal = props.componentName || staticConfig.componentName
-      const componentClassName =
-        props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        // merge className and style back into viewProps:
+        let fontFamily =
+          isText || isInput
+            ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
+            : null
+        if (fontFamily && fontFamily[0] === '$') {
+          fontFamily = fontFamily.slice(1)
+        }
+        const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
+        const groupClassName = props.group ? `t_group_${props.group}` : ''
+        const componentNameFinal = props.componentName || staticConfig.componentName
+        const componentClassName =
+          props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
 
-      let classList: string[] = []
-      if (componentClassName) classList.push(componentClassName)
-      if (fontFamilyClassName) classList.push(fontFamilyClassName)
-      if (classNames) classList.push(Object.values(classNames).join(' '))
-      if (groupClassName) classList.push(groupClassName)
-      if (props.className) classList.push(props.className)
-      const finalClassName = classList.join(' ')
+        let classList: string[] = []
+        if (componentClassName) classList.push(componentClassName)
+        if (fontFamilyClassName) classList.push(fontFamilyClassName)
+        if (classNames) classList.push(Object.values(classNames).join(' '))
+        if (groupClassName) classList.push(groupClassName)
+        if (props.className) classList.push(props.className)
+        const finalClassName = classList.join(' ')
 
-      if (styleProps.noMergeStyle) {
-        // this is passed in by useProps() and we want to avoid all .style setting then
-        if (finalClassName) {
-          viewProps.className = finalClassName
+        if (styleProps.isAnimated && !conf.animations.supportsCSSVars && isReactNative) {
+          if (style) {
+            viewProps.style = style as any
+          }
+        } else if (isReactNative) {
+          const cnStyles = { $$css: true }
+          for (const name of finalClassName.split(' ')) {
+            cnStyles[name] = name
+          }
+          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
+        } else {
+          if (finalClassName) {
+            viewProps.className = finalClassName
+          }
+          if (style) {
+            viewProps.style = style as any
+          }
         }
-      } else if (
-        styleProps.isAnimated &&
-        !conf.animations.supportsCSSVars &&
-        isReactNative
-      ) {
-        if (style) {
-          viewProps.style = style as any
-        }
-      } else if (isReactNative) {
-        const cnStyles = { $$css: true }
-        for (const name of finalClassName.split(' ')) {
-          cnStyles[name] = name
-        }
-        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
       } else {
-        if (finalClassName) {
-          viewProps.className = finalClassName
-        }
         if (style) {
+          // native assign styles
           viewProps.style = style as any
         }
-      }
-    } else {
-      // this is passed in by useProps() and we want to avoid all .style setting then
-      if (style && !styleProps.noMergeStyle) {
-        // native assign styles
-        viewProps.style = style as any
       }
     }
   }

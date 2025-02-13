@@ -423,7 +423,7 @@ export interface ThemeProps {
   componentName?: string
   children?: any
   reset?: boolean
-  debug?: DebugProp | any
+  debug?: DebugProp
   inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
@@ -2295,7 +2295,13 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
  * --------------------------------------------
  */
 
-export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web'
+export type ResolveVariableAs =
+  | 'auto'
+  | 'value'
+  | 'variable'
+  | 'none'
+  | 'web'
+  | 'except-theme'
 
 export type SplitStyleProps = {
   styledContextProps?: Record<string, any>
@@ -2410,7 +2416,7 @@ export type TamaguiComponentStateRef = {
   hasMeasured?: boolean
   hasAnimated?: boolean
   themeShallow?: boolean
-  hasEverThemed?: boolean
+  hasEverThemed?: boolean | 'wrapped'
   isListeningToTheme?: boolean
   unPress?: Function
   group?: {

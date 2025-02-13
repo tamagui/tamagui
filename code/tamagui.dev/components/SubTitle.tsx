@@ -36,7 +36,6 @@ export const SubTitle = ({ children, ...props }) => {
       size="$8"
       lh="$7"
       ls={-0.5}
-      fontWeight="300"
       tag="p"
       mb="$3"
       mt="$0"

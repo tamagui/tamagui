@@ -2,6 +2,7 @@ import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
+import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 import {
   StyleObjectIdentifier,
   StyleObjectRules,
@@ -13,7 +14,6 @@ import {
 } from '@tamagui/web'
 import { basename, relative } from 'node:path'
 import type { ViewStyle } from 'react-native'
-import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -110,9 +110,7 @@ export function createExtractor(
     !process.env.npm_package_dependencies_next &&
     process.env.TAMAGUI_TARGET !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
-    (process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG ||
-      process.env.IDENTIFY_TAGS)
+    (process.env.NODE_ENV === 'development' || process.env.IDENTIFY_TAGS)
 
   let projectInfo: TamaguiProjectInfo | null = null
 
@@ -144,10 +142,12 @@ export function createExtractor(
       return projectInfo?.tamaguiConfig
     },
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
+      globalThis.expo ||= {} // expo-modules-core checks this and avoids loading "native" modules if exists
       const projectInfo = loadSync(props)
       return parseWithConfig(projectInfo || {}, f, props)
     },
     parse: async (f: FileOrPath, props: ExtractorParseProps) => {
+      globalThis.expo ||= {} // expo-modules-core checks this and avoids loading "native" modules if exists
       const projectInfo = await load(props)
       return parseWithConfig(projectInfo || {}, f, props)
     },
@@ -206,11 +206,13 @@ export function createExtractor(
     if (disable === true || (Array.isArray(disable) && disable.includes(sourcePath))) {
       return null
     }
+
     if (!isFullyDisabled(options)) {
       if (!components) {
         throw new Error(`Must provide components`)
       }
     }
+
     if (
       sourcePath &&
       includeExtensions &&
@@ -2050,12 +2052,15 @@ export function createExtractor(
                   ...styleProps,
                   noClass: true,
                   fallbackProps: completeProps,
+                  ...(options.experimentalFlattenThemesOnNative &&
+                    platform === 'native' && {
+                      resolveValues: 'except-theme',
+                    }),
                 },
                 undefined,
                 undefined,
                 undefined,
                 debugPropValue || shouldPrintDebug
-                // options.experimentalFlattenThemesOnNative
               )
 
               let outProps = {

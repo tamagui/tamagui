@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.123.5",
+  "version": "1.124.17",
   "module": "dist/esm/index.js",
   "private": true,
   "scripts": {
@@ -47,7 +47,7 @@
     "react-test-renderer": "^19.0.0",
     "style-loader": "^3.3.3",
     "typescript": "^5.7.2",
-    "vitest": "^3.0.2",
+    "vitest": "^3.0.5",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {

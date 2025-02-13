@@ -11,7 +11,7 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
   const cur = allPortalHosts.get(props.hostName)
   const [node, setNode] = useState(cur)
 
-  if (cur && !node) {
+  if (cur && node !== cur) {
     setNode(cur)
   }
 

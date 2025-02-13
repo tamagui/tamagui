@@ -19,12 +19,6 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 
-if (process.env.NEEDS_UNLOCK) {
-  if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
-    process.exit(0)
-  }
-}
-
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
 const shouldBundleFlag = !!process.argv.includes('--bundle')
@@ -32,6 +26,13 @@ const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
+
+if (process.env.NEEDS_UNLOCK) {
+  if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
+    process.exit(shouldWatch ? 0 : 1)
+  }
+}
+
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
@@ -65,14 +66,12 @@ const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 const avoidCJS = pkgMain?.endsWith('.js')
 
 const replaceRNWeb = {
-  esm: {
-    from: 'from "react-native"',
-    to: 'from "react-native-web"',
-  },
-  cjs: {
-    from: 'require("react-native")',
-    to: 'require("react-native-web")',
-  },
+  esm: (content) =>
+    content
+      .replaceAll('from "react-native"', 'from "react-native-web"')
+      .replaceAll('import "react-native";', ''),
+  cjs: (content) =>
+    content.replaceAll('require("react-native")', 'require("react-native-web")'),
 }
 
 let cachedConfig = null
@@ -744,7 +743,7 @@ async function esbuildWriteIfChanged(
         if (platform === 'web') {
           const rnWebReplacer = replaceRNWeb[opts.format]
           if (rnWebReplacer) {
-            contents = contents.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
+            contents = rnWebReplacer(contents)
           }
         }
 

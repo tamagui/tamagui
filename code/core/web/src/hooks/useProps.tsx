@@ -1,3 +1,4 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React from 'react'
 import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
@@ -7,7 +8,7 @@ import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '
 import { Stack } from '../views/Stack'
 import type { ViewProps, ViewStyle } from '../views/View'
 import { useComponentState } from './useComponentState'
-import { useMedia } from './useMedia'
+import { mediaState, useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
 
 type UsePropsOptions = Pick<
@@ -17,6 +18,11 @@ type UsePropsOptions = Pick<
   disableExpandShorthands?: boolean
   forComponent?: { staticConfig: StaticConfig }
   noClass?: boolean
+
+  /**
+   * Disable watching for media queries
+   */
+  noMedia?: boolean
 }
 
 export type PropsWithoutMediaStyles<A> = {
@@ -73,10 +79,13 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   opts?: UsePropsOptions
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
   const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
-  const [themeState, theme] = useThemeWithState({
+  const [theme, themeState] = useThemeWithState({
     componentName: staticConfig.componentName,
     name: 'theme' in props ? props.theme : undefined,
     inverse: 'themeInverse' in props ? props.themeInverse : undefined,
+    needsUpdate() {
+      return true
+    },
   })
   const componentContext = React.useContext(ComponentContext as any) as any
   const { state, disabled, setStateShallow } = useComponentState(
@@ -86,16 +95,20 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     getConfig()
   )
 
-  const mediaState = useMedia()
+  const mediaStateNow = opts?.noMedia
+    ? // not safe to use mediaState but really marginal to hit this
+      mediaState
+    : useMedia()
+
   const splitStyles = useSplitStyles(
     props,
     staticConfig,
     theme,
-    themeState.state?.name || '',
+    themeState?.name || '',
     state,
     {
       isAnimated: false,
-      mediaState,
+      mediaState: mediaStateNow,
       noSkip: true,
       noMergeStyle: true,
       noClass: true,
@@ -108,7 +121,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  React.useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (disabled) {
       return
     }

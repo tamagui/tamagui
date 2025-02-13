@@ -1,7 +1,7 @@
-import type { ChangedThemeResponse } from '../hooks/useTheme';
+import { type ThemeState } from '../hooks/useThemeState';
 import type { ThemeProps } from '../types';
 export declare function ThemeDebug({ themeState, themeProps, children, }: {
-    themeState: ChangedThemeResponse;
+    themeState: ThemeState;
     themeProps: ThemeProps;
     children: any;
 }): any;

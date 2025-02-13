@@ -1,7 +1,6 @@
 // import { getAllFrontmatter } from '@lib/mdx'
-import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { useMemo } from 'react'
+import type { Href } from 'one'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -16,8 +15,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-
-import type { Href } from 'one'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'
@@ -29,8 +26,7 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function Community() {
   return (
-    <CommunityLayout>
-      <ThemeNameEffect />
+    <ThemeNameEffect>
       <HeadInfo title="Community" />
 
       <Spacer size="$4" />
@@ -340,7 +336,7 @@ export default function Community() {
       </ContainerLarge>
 
       <Spacer size="$10" />
-    </CommunityLayout>
+    </ThemeNameEffect>
   )
 }
 
@@ -439,15 +435,6 @@ function IndividualSponsor(props: { name: string; link: string }) {
         </XStack>
       </YStack>
     </FlatBubbleCard>
-  )
-}
-
-function CommunityLayout({ children }: { children: any }) {
-  const { tint } = useTint()
-  return (
-    <YStack debug="verbose" theme={tint as any}>
-      {useMemo(() => children, [children])}
-    </YStack>
   )
 }
 

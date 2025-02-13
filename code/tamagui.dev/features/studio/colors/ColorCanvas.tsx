@@ -240,10 +240,10 @@ export const ColorCanvas = memo(function ColorCanvas() {
         {index ? (
           <>
             {Object.values(palette.scales)
-              .filter((scale) => scale.colors.length > parseInt(index))
+              .filter((scale) => scale.colors.length > Number.parseInt(index))
               .map((currentScale, i) => {
                 const numScales = Object.values(palette.scales).filter(
-                  (scale) => scale.colors.length > parseInt(index)
+                  (scale) => scale.colors.length > Number.parseInt(index)
                 ).length
                 return (
                   <YStack
@@ -254,7 +254,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                     f={1}
                     backgroundColor={
                       colorToHex(
-                        getColor(palette.curves, currentScale, parseInt(index))
+                        getColor(palette.curves, currentScale, Number.parseInt(index))
                       ) as any
                     }
                     borderTopLeftRadius={i === 0 ? 2 : 0}

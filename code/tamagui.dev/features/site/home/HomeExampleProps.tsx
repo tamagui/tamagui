@@ -42,13 +42,15 @@ export const HomeExampleProps = () => {
           <Features
             gap="$4"
             items={[
-              <FeatureItem label="Press & hover events">
+              <FeatureItem key="" label="Press & hover events">
                 onHoverIn, onHoverOut, onPressIn, and onPressOut.
               </FeatureItem>,
-              <FeatureItem label="Pseudo styles">
+              <FeatureItem key="" label="Pseudo styles">
                 Style hover, press, and focus, in combination with media queries.
               </FeatureItem>,
-              <FeatureItem label="Media queries">For every style/variant.</FeatureItem>,
+              <FeatureItem key="" label="Media queries">
+                For every style/variant.
+              </FeatureItem>,
             ]}
           />
         </YStack>
@@ -56,11 +58,13 @@ export const HomeExampleProps = () => {
           <Features
             gap="$4"
             items={[
-              <FeatureItem label="Themes">Change theme on any component.</FeatureItem>,
-              <FeatureItem label="Animations">
+              <FeatureItem key="" label="Themes">
+                Change theme on any component.
+              </FeatureItem>,
+              <FeatureItem key="" label="Animations">
                 Animate every component, enter and exit styling, works with pseudo states.
               </FeatureItem>,
-              <FeatureItem label="DOM escape hatches">
+              <FeatureItem key="" label="DOM escape hatches">
                 Support for className and other HTML attributes.
               </FeatureItem>,
             ]}

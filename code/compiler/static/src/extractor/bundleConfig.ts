@@ -172,7 +172,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       colorLog(
         Color.FgYellow,
         `
-    ➡ [tamagui] built config and components (${Date.now() - start}ms)`
+  ➡ [tamagui] built config and components (${Date.now() - start}ms)`
       )
 
       if (process.env.DEBUG?.startsWith('tamagui')) {
@@ -287,7 +287,7 @@ export async function bundleConfig(props: TamaguiOptions) {
 
 export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig) {
   const flush = async () => {
-    colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}`)
+    colorLog(Color.FgYellow, `  ➡ [tamagui] output css: ${outputCSS}`)
     await FS.writeFile(outputCSS, css)
   }
   const css = config.getCSS()

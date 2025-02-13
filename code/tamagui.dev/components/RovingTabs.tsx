@@ -136,7 +136,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
   )
 }
 
-function Tab({
+export function Tab({
   active,
   pkgManager,
   logo,
@@ -157,6 +157,7 @@ function Tab({
       gap="$1.5"
       value={pkgManager}
       onInteraction={onInteraction}
+      cursor="pointer"
     >
       <XStack gap="$1.5" ai="center" jc="center">
         <Image

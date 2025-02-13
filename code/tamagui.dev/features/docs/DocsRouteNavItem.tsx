@@ -1,7 +1,7 @@
 import { getStore, useStoreSelector } from '@tamagui/use-store'
+import type { Href } from 'one'
 import { createElement, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
-import type { Href } from 'one'
 import { Link } from '~/components/Link'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
 import type { NavItemProps } from './DocsPage'

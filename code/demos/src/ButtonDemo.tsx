@@ -10,7 +10,7 @@ export function ButtonDemo(props) {
         Large
       </Button>
       <XStack gap="$2" justifyContent="center">
-        <Button size="$3" theme="active">
+        <Button size="$3" theme="accent">
           Active
         </Button>
         <Button size="$3" variant="outlined">

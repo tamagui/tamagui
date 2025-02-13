@@ -75,9 +75,9 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
 
   const updateHue = (newHue: number) => {
     const newState = { ...state, hue: newHue }
-    if (state.sat <= 0.1) {
-      // when setting a hue without any sat, set sat up to half
-      state.sat = 0.5
+    if (state.sat === 0) {
+      // when setting a hue without any sat, set up
+      state.sat = 1
     }
     setState(newState)
     sendOnChangeDelayed(newState)

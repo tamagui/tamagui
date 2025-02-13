@@ -112,7 +112,7 @@ export interface PopoverContentExtraProps extends Omit<DismissableProps, 'onDism
      * Event handler called when auto-focusing on close.
      * Can be prevented.
      */
-    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
+    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false;
     disableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
     setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -274,7 +274,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
-            fullscreen? /** enable animation for content position changing */: boolean | undefined;
+            fullscreen?: boolean | undefined;
         } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {

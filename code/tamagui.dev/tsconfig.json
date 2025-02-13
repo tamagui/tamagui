@@ -3,9 +3,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ]
+      "~/*": ["./*"]
     },
     "outDir": "dist",
     "importHelpers": true,
@@ -33,23 +31,10 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "es2020",
-    "types": [
-      "node",
-      "react",
-      "vite/client"
-    ],
-    "lib": [
-      "dom",
-      "esnext"
-    ]
+    "types": ["node", "react", "vite/client"],
+    "lib": ["dom", "esnext"]
   },
-  "exclude": [
-    "**/test",
-    "**/dist",
-    "**/types",
-    "**/__tests__",
-    "**/bento-output"
-  ],
+  "exclude": ["**/test", "**/dist", "**/types", "**/__tests__", "**/bento-output"],
   "typeAcquisition": {
     "enable": true
   },
@@ -73,13 +58,13 @@
       "path": "../packages/logo"
     },
     {
+      "path": "../packages/tamagui-dev-config"
+    },
+    {
       "path": "../packages/lucide-icons"
     },
     {
       "path": "../packages/mdx"
-    },
-    {
-      "path": "../packages/one-theme"
     },
     {
       "path": "../packages/use-store"

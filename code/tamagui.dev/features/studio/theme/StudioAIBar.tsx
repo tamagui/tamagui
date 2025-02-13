@@ -1,7 +1,8 @@
 import { Input } from '@tamagui/input'
 import { Moon, Sun } from '@tamagui/lucide-icons'
+import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,
   Configuration,
@@ -12,15 +13,13 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { animationsCSS } from '../../../config/animations.css'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
-import { useThemeBuilderStore } from './store/ThemeBuilderStore'
+import { themeBuilderStore } from './store/ThemeBuilderStore'
 
-export const StudioAIBar = () => {
+export const StudioAIBar = memo(() => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const store = useThemeBuilderStore()
   const user = useUser()
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
@@ -88,8 +87,8 @@ export const StudioAIBar = () => {
       }
 
       setLastReply(data.reply)
-      store.updateGenerate(data.result)
-      toastController.show(`Generated!`)
+      themeBuilderStore.updateGenerate(data.result)
+      toastController.hide()
     } catch (err) {
       toastController.show(`Error: ${err}`)
     } finally {
@@ -103,12 +102,12 @@ export const StudioAIBar = () => {
       <XStack fw="wrap" ai="center" f={1} gap="$3">
         <Input
           ref={inputRef as any}
-          placeholder={`Prompt to generate a theme...`}
+          placeholder={`Generate a theme`}
           miw={300}
           f={10}
           size="$6"
           shadowColor="$shadow3"
-          bg="$background06"
+          bg="$color4"
           shadowOffset={{ height: 2, width: 0 }}
           shadowRadius={20}
           br="$8"
@@ -121,21 +120,7 @@ export const StudioAIBar = () => {
             }
           }}
         />
-        {/* {lastReply && (
-          <Theme name="surface1">
-            <Button
-              br="$10"
-              disabled={isGenerating === 'reply'}
-              o={isGenerating === 'reply' ? 0.2 : 1}
-              pe={isGenerating === 'reply' ? 'none' : 'auto'}
-              icon={isGenerating === 'reply' ? <Spinner size="small" /> : null}
-              onPress={() => generate('reply')}
-              size="$4"
-            >
-              Refine
-            </Button>
-          </Theme>
-        )} */}
+
         <XStack gap="$3" ai="center" jc="space-between">
           <Theme name="accent">
             <Button
@@ -166,7 +151,7 @@ export const StudioAIBar = () => {
       </XStack>
     </XStack>
   )
-}
+})
 
 const ThemeToggle = () => {
   const [scheme, setUserTheme] = useColorScheme()
@@ -182,7 +167,7 @@ const ThemeToggle = () => {
         <Switch
           checked={checked}
           outlineColor="$accent11"
-          outlineWidth={2}
+          outlineWidth={0}
           outlineStyle="solid"
           pressStyle={{
             bg: '$color2',

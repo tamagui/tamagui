@@ -20,6 +20,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "5": {}
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -32,12 +33,12 @@ export function Test() {
         </>;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
   }, [..._expressions]);
 });
 const _ReactNativeViewWrapper2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]];
   }, [..._expressions]);
 });"
@@ -110,6 +111,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
@@ -118,7 +120,7 @@ export function Test(isLoading) {
   return <_ReactNativeViewWrapper expressions={[isLoading]} />;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
   }, [..._expressions]);
 });"
@@ -147,16 +149,24 @@ exports[`normalize dynamic values with theme access only 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   "0": {
-    "flexDirection": "column",
-    "backgroundColor": "hsl(0, 0%, 9.0%)"
+    "flexDirection": "column"
   }
 });
+const __ReactUseMemo = require('react').useMemo;
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(props) {
-  return <__ReactNativeView style={_sheet["0"]} />;
-}"
+  return <_ReactNativeViewWrapper />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["0"], {
+      "backgroundColor": theme.color.get()
+    }];
+  }, [..._expressions]);
+});"
 `;
 
 exports[`normalize ternaries flips the conditional properly 1`] = `
@@ -212,14 +222,22 @@ const _sheet = __ReactNativeStyleSheet.create({
     "fontFamily": "Inter",
     "letterSpacing": 0,
     "fontSize": 14,
-    "lineHeight": 23,
-    "color": "hsl(0, 0%, 9.0%)"
+    "lineHeight": 23
   }
 });
+const __ReactUseMemo = require('react').useMemo;
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';
 export function Test() {
-  return <__ReactNativeText style={_sheet["0"]}>hello world</__ReactNativeText>;
-}"
+  return <_ReactNativeTextWrapper>hello world</_ReactNativeTextWrapper>;
+}
+const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["0"], {
+      "color": theme.color.get()
+    }];
+  }, [..._expressions]);
+});"
 `;

@@ -42,73 +42,73 @@ const ComponentComponent = ({ index }) => {
 
 const components = [
   <>
-    <Panel fileToCopyName="Statistics">
+    <Panel key="" fileToCopyName="Statistics">
       <StatisticsBarScreen />
     </Panel>
   </>,
   <>
-    <Panel initialAccent fileToCopyName="Statistics">
+    <Panel key="" initialAccent fileToCopyName="Statistics">
       <StatisticsLineScreen />
     </Panel>
   </>,
   <>
-    <Panel fileToCopyName="Overviews" initialAccent>
+    <Panel key="" fileToCopyName="Overviews" initialAccent>
       <Overview1 />
     </Panel>
   </>,
   <>
-    <Panel fileToCopyName="Overviews">
+    <Panel key="" fileToCopyName="Overviews">
       <Overview2 />
     </Panel>
   </>,
   <>
     {/* <Theme name="surface2"> */}
-    <Panel fileToCopyName="Chat">
+    <Panel key="" fileToCopyName="Chat">
       <ChatScreen />
     </Panel>
     {/* </Theme> */}
   </>,
   <>
-    <Panel fileToCopyName="UserDropdown">
+    <Panel key="" fileToCopyName="UserDropdown">
       <UserDropdown />
     </Panel>
   </>,
   <>
     {/* <Theme name="surface2"> */}
-    <Panel fileToCopyName="Pricing">
+    <Panel key="" fileToCopyName="Pricing">
       <PricingCards />
     </Panel>
     {/* </Theme> */}
   </>,
   <>
-    <Panel fileToCopyName="Login">
+    <Panel key="" fileToCopyName="Login">
       <LoginScreen />
     </Panel>
   </>,
   <>
     {/* <Theme name="surface2"> */}
-    <Panel fileToCopyName="AllTasks">
+    <Panel key="" fileToCopyName="AllTasks">
       <AllTasks />
     </Panel>
     {/* </Theme> */}
   </>,
   <>
-    <Panel fileToCopyName="Statistics">
+    <Panel key="" fileToCopyName="Statistics">
       <PieScreen />
     </Panel>
   </>,
   <>
-    <Panel fileToCopyName="CurrentTask">
+    <Panel key="" fileToCopyName="CurrentTask">
       <CurrentTask />
     </Panel>
   </>,
   <>
-    <Panel fileToCopyName="Components">
+    <Panel key="" fileToCopyName="Components">
       <Components />
     </Panel>
   </>,
   <>
-    <Panel fileToCopyName="Calendar" initialAccent>
+    <Panel key="" fileToCopyName="Calendar" initialAccent>
       <Calendar />
     </Panel>
   </>,

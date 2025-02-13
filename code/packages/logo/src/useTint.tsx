@@ -1,13 +1,8 @@
-import React from 'react'
-import type { JSX } from 'react/jsx-runtime'
-import type { ThemeName, ThemeProps } from 'tamagui'
-import { Theme, useDidFinishSSR } from 'tamagui'
-import { getTints, setNextTintFamily, useTints } from './tints'
 import { usePathname } from 'one'
+import React from 'react'
+import type { ThemeName } from 'tamagui'
+import { getTints, setNextTintFamily, useTints } from './tints'
 
-// no localstorage because its not important to remember and causes a flicker
-// const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
-// const tint = tintVal ? +tintVal 0
 let current = 3
 
 const listeners = new Set<Function>()
@@ -64,14 +59,9 @@ export const useTint = (
   const pathname = usePathname()
   const section = getDocsSection(pathname)
 
-  const hydrated = useDidFinishSSR()
-
   let initial = current
   if (section) {
     initial = section === 'compile' ? 5 : section === 'core' ? 4 : 6
-    if (!hydrated) {
-      current = initial
-    }
   }
 
   const index = React.useSyncExternalStore(
@@ -98,32 +88,4 @@ export const useTint = (
       })
     },
   } as const
-}
-
-export const ThemeTint = ({
-  disable,
-  children,
-  ...rest
-}: ThemeProps & { disable?: boolean }): JSX.Element => {
-  const curTint = useTint().tint
-  return (
-    <Theme {...rest} name={disable ? null : curTint}>
-      {children}
-    </Theme>
-  )
-}
-
-export const ThemeTintAlt = ({
-  children,
-  disable,
-  offset = 1,
-  ...rest
-}: ThemeProps & { disable?: boolean; offset?: number }): JSX.Element => {
-  const curTint = useTint(offset).tintAlt
-  const name = disable ? null : curTint
-  return (
-    <Theme name={name} {...rest}>
-      {children}
-    </Theme>
-  )
 }

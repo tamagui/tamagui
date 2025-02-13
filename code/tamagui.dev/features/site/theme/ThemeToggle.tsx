@@ -47,7 +47,9 @@ export function useToggleTheme() {
         Appearance.setColorScheme(next === 'system' ? scheme : next)
       }
 
-      setSchemeSetting(next)
+      setTimeout(() => {
+        setSchemeSetting(next)
+      })
     },
   }
 }

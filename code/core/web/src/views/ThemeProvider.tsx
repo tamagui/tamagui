@@ -1,9 +1,9 @@
-import React from 'react'
-import { isClient } from '@tamagui/constants'
+import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useId } from 'react'
 
+import { getSetting } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { Theme } from './Theme'
-import { getSetting } from '../config'
 
 export type ThemeProviderProps = {
   className?: string
@@ -17,7 +17,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
 
   // ensure theme is attached to root body node as well to work with modals by default
   if (isClient) {
-    React.useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (addThemeClassName === false) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
       const target =
@@ -40,7 +40,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       // if its undefined, then the default behavior applies and we use the className here
       forceClassName={addThemeClassName === undefined}
       // @ts-expect-error
-      _isRoot
+      _isRoot={useId}
     >
       {props.children}
     </Theme>

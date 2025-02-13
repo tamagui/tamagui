@@ -2,16 +2,11 @@ import { memo, useEffect, useState } from 'react'
 import {
   Button,
   type ColorTokens,
-  Label,
-  Paragraph,
   styled,
   Switch as TamaguiSwitch,
   type SwitchProps as TamaguiSwitchProps,
-  type ThemeName,
   View,
   XStack,
-  YStack,
-  type YStackProps,
 } from 'tamagui'
 import { TimedRender } from './components/TimedRender'
 
@@ -20,6 +15,38 @@ const StyledButton = styled(Button, {
 })
 
 export const Sandbox = () => {
+  const [x, setX] = useState(false)
+
+  return (
+    <>
+      <Button onPress={() => setX(!x)}>set disbaled</Button>
+
+      <Button disabledStyle={{ bg: 'red' }} disabled={x}>
+        Hiii {x}
+      </Button>
+    </>
+  )
+
+  return <SwitchPerformance />
+  // const [k, setK] = useState(0)
+
+  // console.warn('re rendering sandbox')
+
+  // return (
+  //   <>
+  //     <Button onPress={() => setK(Math.random())}>render</Button>
+  //     <XStack
+  //       debug="verbose"
+  //       width={200}
+  //       height={200}
+  //       borderWidth={1}
+  //       borderColor="$borderColor"
+  //     />
+  //   </>
+  // )
+}
+
+const SwitchPerformance = () => {
   const [k, setK] = useState(0)
 
   return (
@@ -27,68 +54,73 @@ export const Sandbox = () => {
       <Button onPress={() => setK(Math.random())}>render</Button>
       <TimedRender key={k}>
         <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
+        <Switch />
       </TimedRender>
     </>
   )
-  // return <UndefinedThemeBug />
 }
 
-function TestButton() {
-  const [isDisabled, setIsDisabled] = useState(false)
+// // export const Sandbox = () => {
 
-  return (
-    <>
-      <Button onPress={() => setIsDisabled(!isDisabled)}>
-        {isDisabled ? 'Enable' : 'Disable'}
-      </Button>
+// //   // return <UndefinedThemeBug />
+// // }
 
-      <StyledButton onPress={() => setIsDisabled(!isDisabled)} disabled={isDisabled}>
-        State: {isDisabled ? 'Disabled' : 'Enabled'}
-      </StyledButton>
-    </>
-  )
-}
+// function TestButton() {
+//   const [isDisabled, setIsDisabled] = useState(false)
 
-function UndefinedThemeBug() {
-  const [theme, setTheme] = useState<ThemeName | undefined>('red')
+//   return (
+//     <>
+//       <Button onPress={() => setIsDisabled(!isDisabled)}>
+//         {isDisabled ? 'Enable' : 'Disable'}
+//       </Button>
 
-  return (
-    <YStack f={1} ai="center" gap="$8" px="$10" pt="$5" bg="$background">
-      <Paragraph>Current Theme: {`${theme}`}</Paragraph>
-      <XStack gap="$3">
-        <Button onPress={() => setTheme(undefined)} size="$3">
-          Undefined
-        </Button>
-        <Button onPress={() => setTheme('red')} size="$3">
-          Red
-        </Button>
-        <Button onPress={() => setTheme('blue')} size="$3">
-          Blue
-        </Button>
-      </XStack>
-      <View theme={theme}>
-        <View bw={2} bc="$borderColor" backgroundColor="$background" p="$4" br="$3">
-          <Button>Button!</Button>
-        </View>
-        <Label>Test label</Label>
-      </View>
-    </YStack>
-  )
-}
+//       <StyledButton onPress={() => setIsDisabled(!isDisabled)} disabled={isDisabled}>
+//         State: {isDisabled ? 'Disabled' : 'Enabled'}
+//       </StyledButton>
+//     </>
+//   )
+// }
+
+// function UndefinedThemeBug() {
+//   const [theme, setTheme] = useState<ThemeName | undefined>('red')
+
+//   return (
+//     <YStack f={1} ai="center" gap="$8" px="$10" pt="$5" bg="$background">
+//       <Paragraph>Current Theme: {`${theme}`}</Paragraph>
+//       <XStack gap="$3">
+//         <Button onPress={() => setTheme(undefined)} size="$3">
+//           Undefined
+//         </Button>
+//         <Button onPress={() => setTheme('red')} size="$3">
+//           Red
+//         </Button>
+//         <Button onPress={() => setTheme('blue')} size="$3">
+//           Blue
+//         </Button>
+//       </XStack>
+//       <View theme={theme}>
+//         <View bw={2} bc="$borderColor" backgroundColor="$background" p="$4" br="$3">
+//           <Button>Button!</Button>
+//         </View>
+//         <Label>Test label</Label>
+//       </View>
+//     </YStack>
+//   )
+// }
 
 export type SwitchProps = TamaguiSwitchProps & {
   variant?: any
-}
-
-const animationProp = {
-  animation: [
-    'bouncy',
-    {
-      backgroundColor: {
-        overshootClamping: true,
-      },
-    },
-  ] as YStackProps['animation'],
 }
 
 const Switch = memo(
@@ -96,16 +128,13 @@ const Switch = memo(
     checked: checkedProp,
     onCheckedChange: onCheckedChangeProp,
     disabled,
-    variant,
     disabledStyle,
     ...rest
   }: SwitchProps): JSX.Element => {
     const [checked, setChecked] = useState(checkedProp)
     // const colors = useTheme()
 
-    console.log('render!')
-
-    const isBranded = variant === 'branded'
+    const isBranded = true
 
     useEffect(() => {
       setChecked(checkedProp)
@@ -130,12 +159,12 @@ const Switch = memo(
 
     const frameBackgroundColor = ((): ColorTokens => {
       if (isDisabledStyling) {
-        return '$color3'
+        return '$color10'
       }
       if (isBranded) {
-        return checked ? '$color1' : '$red3'
+        return checked ? '$color10' : '$red10'
       }
-      return checked ? '$color3' : '$red3'
+      return checked ? '$color10' : '$red10'
     })()
 
     const thumbBackgroundColor = ((): ColorTokens => {
@@ -171,20 +200,27 @@ const Switch = memo(
 
     return (
       <TamaguiSwitch
+        width={100}
         alignItems="center"
-        {...animationProp}
+        animation={[
+          'bouncy',
+          {
+            backgroundColor: {
+              overshootClamping: true,
+            },
+          },
+        ]}
         aria-disabled={disabled}
         aria-selected={checked}
         backgroundColor={frameBackgroundColor}
         borderWidth={0}
         checked={checked}
         defaultChecked={checked}
-        // debug="profile"
         group="testy"
         hoverStyle={{
           backgroundColor: isBranded
             ? checked
-              ? '$color3'
+              ? '$color10'
               : '$red4'
             : checked
               ? '$color5'
@@ -193,7 +229,7 @@ const Switch = memo(
         }}
         justifyContent="center"
         minHeight={TRACK_HEIGHT}
-        minWidth={60}
+        minWidth={100}
         p={4}
         pointerEvents={disabled ? 'none' : 'auto'}
         disabledStyle={{
@@ -205,7 +241,14 @@ const Switch = memo(
       >
         <TamaguiSwitch.Thumb
           alignItems="center"
-          {...animationProp}
+          animation={[
+            'bouncy',
+            {
+              backgroundColor: {
+                overshootClamping: true,
+              },
+            },
+          ]}
           backgroundColor={thumbBackgroundColor}
           justifyContent="center"
           minHeight={THUMB_HEIGHT}
@@ -224,7 +267,14 @@ const Switch = memo(
           <View
             $group-item-hover={outerActiveStyle}
             $group-item-press={outerActiveStyle}
-            {...animationProp}
+            animation={[
+              'bouncy',
+              {
+                backgroundColor: {
+                  overshootClamping: true,
+                },
+              },
+            ]}
             backgroundColor={thumbBackgroundColor}
             borderRadius={100}
             inset={0}

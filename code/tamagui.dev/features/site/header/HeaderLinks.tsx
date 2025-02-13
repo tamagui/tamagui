@@ -1,6 +1,5 @@
-import { ExternalLink, Figma, LogIn, Paintbrush } from '@tamagui/lucide-icons'
-import * as React from 'react'
-import { H2, Paragraph, Separator, SizableText, XStack, YStack, styled } from 'tamagui'
+import { ExternalLink, Figma, LogIn } from '@tamagui/lucide-icons'
+import { Paragraph, Separator, SizableText, XStack, YStack, styled } from 'tamagui'
 import { Link } from '~/components/Link'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -12,8 +11,8 @@ import type { HeaderProps } from './types'
 export const HeadAnchor = styled(Paragraph, {
   tag: 'a',
   fontFamily: '$silkscreen',
-  px: '$3',
-  py: '$3',
+  px: '$4',
+  py: '$4',
   cursor: 'pointer',
   fontSize: 14,
   color: '$color11',

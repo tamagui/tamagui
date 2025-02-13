@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-default",
-  "version": "1.123.5",
+  "version": "1.124.17",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "types": "./types/index.d.ts",

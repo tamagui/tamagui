@@ -1,15 +1,7 @@
 import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image-next'
-import { setTintIndex, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import {
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Dot,
-  Hammer,
-  PlayCircle,
-  X,
-} from '@tamagui/lucide-icons'
+import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useLoader } from 'one'
 import type React from 'react'
@@ -28,7 +20,6 @@ import {
   AnimatePresence,
   Button,
   Circle,
-  EnsureFlexed,
   H2,
   Input,
   Paragraph,
@@ -38,7 +29,6 @@ import {
   Stack,
   Tabs,
   Theme,
-  View,
   XStack,
   YStack,
   composeRefs,
@@ -60,8 +50,8 @@ import { getProductsForServerSideRendering } from '~/features/site/purchase/serv
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
-import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
+import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
 export const loader = async () => {
   try {

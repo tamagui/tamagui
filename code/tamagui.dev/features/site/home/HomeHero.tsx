@@ -175,9 +175,9 @@ const HeroContents = memo(function HeroContents() {
           </XGroup>
         </>
 
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
+        <YStack ai="center" gap="$4">
           <H1
-            ta="left"
+            ta="center"
             // animation="lazy"
             // enterStyle={{
             //   y: -10,
@@ -364,11 +364,10 @@ const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
-  ta: 'left',
+  ta: 'center',
   ls: -1,
 
   $gtSm: {
-    ta: 'center',
     size: '$8',
     ls: -1,
   },
@@ -446,7 +445,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
       <YStack fullscreen>
         <HeroText
           className="clip-text rainbow grain"
-          l={-3}
+          l={-2}
           o={0.5}
           dangerouslySetInnerHTML={{
             __html: text,
@@ -483,7 +482,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
           <HeroText
             l={0}
             className="mask-gradient-right"
-            y={1}
             pe="none"
             col="$color9"
             o={0.26}
@@ -496,7 +494,6 @@ const TextWithEffects = ({ text }: { text: string }) => {
         <ThemeTintAlt offset={-3}>
           <HeroText
             l={0}
-            y={-1}
             // filter="blur(3px)"
             className="mask-gradient-right"
             pe="none"
