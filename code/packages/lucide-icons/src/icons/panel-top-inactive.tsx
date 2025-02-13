@@ -30,4 +30,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'PanelTopInactive'
 
-export const PanelTopInactive = React.memo<IconProps>(themed(Icon))
+export const PanelTopInactive: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

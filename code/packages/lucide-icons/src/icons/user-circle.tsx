@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'UserCircle'
 
-export const UserCircle = React.memo<IconProps>(themed(Icon))
+export const UserCircle: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

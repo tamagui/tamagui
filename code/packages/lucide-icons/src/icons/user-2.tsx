@@ -27,4 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'User2'
 
-export const User2 = React.memo<IconProps>(themed(Icon))
+export const User2: NamedExoticComponent<IconProps> = React.memo<IconProps>(themed(Icon))

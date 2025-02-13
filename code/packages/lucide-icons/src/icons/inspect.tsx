@@ -31,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Inspect'
 
-export const Inspect = React.memo<IconProps>(themed(Icon))
+export const Inspect: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

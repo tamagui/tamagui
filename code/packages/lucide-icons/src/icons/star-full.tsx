@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'StarFull'
 
-export const StarFull = React.memo<IconProps>(themed(Icon))
+export const StarFull: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

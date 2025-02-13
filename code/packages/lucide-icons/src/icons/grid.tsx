@@ -30,4 +30,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Grid'
 
-export const Grid = React.memo<IconProps>(themed(Icon))
+export const Grid: NamedExoticComponent<IconProps> = React.memo<IconProps>(themed(Icon))

@@ -35,4 +35,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileSignature'
 
-export const FileSignature = React.memo<IconProps>(themed(Icon))
+export const FileSignature: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

@@ -31,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Verified'
 
-export const Verified = React.memo<IconProps>(themed(Icon))
+export const Verified: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

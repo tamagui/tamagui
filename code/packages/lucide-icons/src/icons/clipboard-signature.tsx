@@ -38,4 +38,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ClipboardSignature'
 
-export const ClipboardSignature = React.memo<IconProps>(themed(Icon))
+export const ClipboardSignature: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

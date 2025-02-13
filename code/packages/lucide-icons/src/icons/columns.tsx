@@ -27,4 +27,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Columns'
 
-export const Columns = React.memo<IconProps>(themed(Icon))
+export const Columns: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

@@ -32,4 +32,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileEdit'
 
-export const FileEdit = React.memo<IconProps>(themed(Icon))
+export const FileEdit: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

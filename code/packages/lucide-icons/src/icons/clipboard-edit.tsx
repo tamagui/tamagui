@@ -33,4 +33,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ClipboardEdit'
 
-export const ClipboardEdit = React.memo<IconProps>(themed(Icon))
+export const ClipboardEdit: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

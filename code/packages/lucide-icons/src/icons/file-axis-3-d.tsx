@@ -32,4 +32,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileAxis3d'
 
-export const FileAxis3d = React.memo<IconProps>(themed(Icon))
+export const FileAxis3d: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

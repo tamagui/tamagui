@@ -38,4 +38,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileCog2'
 
-export const FileCog2 = React.memo<IconProps>(themed(Icon))
+export const FileCog2: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

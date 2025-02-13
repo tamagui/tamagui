@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'GitCommit'
 
-export const GitCommit = React.memo<IconProps>(themed(Icon))
+export const GitCommit: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ShieldClose'
 
-export const ShieldClose = React.memo<IconProps>(themed(Icon))
+export const ShieldClose: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)
