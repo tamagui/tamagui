@@ -225,7 +225,7 @@ export const PromoCards = () => {
           href="/theme"
           icon={<DoorClosed />}
           title="Access"
-          subtitle="Early access to new features."
+          subtitle="Private chat room and early access to new features."
         />
       </Card>
     </>
@@ -243,7 +243,7 @@ const TooltipLabelLarge = ({
       <YStack cur="pointer" f={1} p="$3" br="$4" gap="$1">
         <XStack ai="center" gap="$2">
           <YStack scale={0.7}>{icon}</YStack>
-          <H2 ff="$mono" f={1} fow="600" size="$6" ls={1}>
+          <H2 ff="$mono" f={1} fow="600" size="$5" ls={1}>
             {title}
           </H2>
         </XStack>

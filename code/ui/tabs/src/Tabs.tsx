@@ -234,6 +234,9 @@ const TabsTrigger = TabsTriggerFrame.styleable<ScopedProps<TabsTabProps>>(
             {...(!props.unstyled && {
               size: context.size,
             })}
+            {...(isSelected && {
+              forceStyle: 'focus',
+            })}
             {...groupItemProps}
             {...triggerProps}
             ref={composeRefs(forwardedRef, triggerRef)}

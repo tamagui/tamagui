@@ -5,7 +5,10 @@ export const IS_FABRIC =
   Boolean(global._IS_FABRIC ?? global.nativeFabricUIManager)
 
 export const USE_NATIVE_PORTAL =
-  !isAndroid && process.env.TAMAGUI_USE_NATIVE_PORTAL !== 'false' && !IS_FABRIC
+  process.env.TAMAGUI_USE_NATIVE_PORTAL &&
+  process.env.TAMAGUI_USE_NATIVE_PORTAL !== 'false'
+    ? true
+    : !isAndroid && !IS_FABRIC
 
 export const allPortalHosts = new Map<string, HTMLElement>()
 export const portalListeners: Record<string, Set<Function>> = {}

@@ -13,6 +13,7 @@ export type ThemeState = {
     scheme?: 'light' | 'dark';
 };
 export declare const ThemeStateContext: import("react").Context<string>;
+export declare const keysToId: WeakMap<WeakKey, any>;
 export declare const forceUpdateThemes: () => void;
 export declare const getThemeState: (id: ID) => ThemeState | undefined;
 export declare const getRootThemeState: () => ThemeState | null;

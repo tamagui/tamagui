@@ -144,10 +144,12 @@ export function createExtractor(
       return projectInfo?.tamaguiConfig
     },
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
+      globalThis.expo ||= {} // expo-modules-core checks this and avoids loading "native" modules if exists
       const projectInfo = loadSync(props)
       return parseWithConfig(projectInfo || {}, f, props)
     },
     parse: async (f: FileOrPath, props: ExtractorParseProps) => {
+      globalThis.expo ||= {} // expo-modules-core checks this and avoids loading "native" modules if exists
       const projectInfo = await load(props)
       return parseWithConfig(projectInfo || {}, f, props)
     },

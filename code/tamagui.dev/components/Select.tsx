@@ -107,12 +107,7 @@ const SelectComponent = (
           />
         </SelectFrame.ScrollUpButton>
 
-        <SelectFrame.Viewport
-          bg="transparent"
-          className="blur-medium"
-          bw={1}
-          bc="transparent"
-        >
+        <SelectFrame.Viewport bg="transparent" className="blur-medium" bw={1}>
           <XStack fullscreen zi={0} bg="$background" o={0.7} />
           {children}
         </SelectFrame.Viewport>

@@ -175,14 +175,9 @@ const HeroContents = memo(function HeroContents() {
           </XGroup>
         </>
 
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
+        <YStack ai="center" gap="$4">
           <H1
-            ta="left"
-            // animation="lazy"
-            // enterStyle={{
-            //   y: -10,
-            //   o: 0,
-            // }}
+            ta="center"
             size="$11"
             lh={61}
             maw={500}
@@ -364,11 +359,10 @@ const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
-  ta: 'left',
+  ta: 'center',
   ls: -1,
 
   $gtSm: {
-    ta: 'center',
     size: '$7',
     ls: -1,
   },
@@ -419,6 +413,7 @@ const Tag = styled(Text, {
 
 const HeroText = styled(Text, {
   position: 'absolute',
+  ta: 'center',
 
   $sm: {
     t: 0,

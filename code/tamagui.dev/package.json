@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dot-dev",
-  "version": "1.124.3",
+  "version": "1.124.13",
   "type": "module",
   "private": true,
   "sideEffects": false,
@@ -49,7 +49,6 @@
     "@tamagui/mdx-2": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/use-store": "workspace:*",
-    "@tanstack/react-query": "^5.66.0",
     "@vercel/og": "^0.6.5",
     "@vxrn/color-scheme": "^1.1.436",
     "ai": "^4.1.16",

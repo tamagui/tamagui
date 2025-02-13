@@ -13,6 +13,7 @@ import { ColorSchemeToggle } from './features/home/ColorSchemeListItem'
 
 const bentoScreenNames = Data.listingData.sections.map(({ sectionName }) => sectionName)
 
+
 type BentoScreens = {
   [K in (typeof bentoScreenNames)[number]]: {
     id: string
@@ -50,6 +51,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'RoundedAvatars',
       'CircularAvatarsWithCustomIcons',
       'RoundedAvatarsWithCustomIcons',
+      'Fullpage',
     ].includes(name)
   ) {
     return (
@@ -66,8 +68,11 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
 }
 const filterCamelCaseOnly = ([key, _]: [string, unknown]) =>
   /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key)
+
 const sectionModuleToTuple = ([, sectionModules]) => Object.entries(sectionModules as any)
+
 const flatArray = (acc, curr) => acc.concat(curr)
+
 const filterOutComponents = ([key]: [string]) =>
   ![
     'default',
@@ -100,6 +105,7 @@ const bentoScreensPerElement = Object.entries(Components)
   .filter(filterOutComponents)
   .map(([name, _Component]: [string, any]) => {
     const Component = _Component as React.ComponentType<any>
+
     return (
       <Stack.Screen
         key={name}

@@ -1,12 +1,16 @@
-import { Check, X } from '@tamagui/lucide-icons'
+import type { StripeError } from '@stripe/stripe-js'
+import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
+<<<<<<< HEAD
 import type { Href } from 'one'
 import { startTransition, use, useCallback, useEffect, useMemo, useState } from 'react'
+=======
+import { startTransition, useEffect, useMemo, useState } from 'react'
+>>>>>>> 98b80bc549616566420720a3964dd07c70cdad20
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
-  Checkbox,
   Dialog,
   H3,
   Label,
@@ -24,13 +28,16 @@ import {
   YStack,
   Spinner,
 } from 'tamagui'
-import { Link } from '~/components/Link'
 import { Select } from '../../../components/Select'
+import { Switch } from '../../../components/Switch'
 import { PromoCards } from '../header/UpgradePopover'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { StripeElementsForm } from './StripeElements'
+<<<<<<< HEAD
 import { useSubscription } from './useSubscription'
 import type { StripeError } from '@stripe/stripe-js'
+=======
+>>>>>>> 98b80bc549616566420720a3964dd07c70cdad20
 import { useProducts } from './useProducts'
 
 class PurchaseModal {
@@ -96,7 +103,7 @@ const PurchaseModalContents = () => {
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
 
   // Calculate prices
-  const basePrice = 200 // yearly base price
+  const basePrice = disableAutoRenew ? 400 : 240 // yearly base price
   const chatSupportMonthly = chatSupport ? 100 : 0 // $100/month for chat support
   const supportTierMonthly = Number(supportTier) * 1000 // $1000/month per tier
 
@@ -119,18 +126,18 @@ const PurchaseModalContents = () => {
       if (hasSupportTier) {
         return 'One-time payment for yearly base, monthly billing for support tier'
       }
-      return 'One-time payment, cancels after a year'
+      return 'One-time payment, no renewal'
     } else {
       if (hasChat && hasSupportTier) {
-        return 'Yearly base + monthly chat and support tier, 1-click cancel anytime'
+        return 'Yearly base + monthly chat and support tier, easy 1-click cancel'
       }
       if (hasChat) {
-        return 'Yearly base + monthly chat support, 1-click cancel anytime'
+        return 'Yearly base + monthly chat support, easy 1-click cancel'
       }
       if (hasSupportTier) {
-        return 'Yearly base + monthly support tier, 1-click cancel anytime'
+        return 'Yearly base + monthly support tier, easy 1-click cancel'
       }
-      return 'Yearly subscription, 1-click cancel anytime'
+      return 'Paid by year, easy 1-click cancel'
     }
   }, [chatSupport, supportTier, disableAutoRenew])
 
@@ -147,7 +154,7 @@ const PurchaseModalContents = () => {
     faq: FaqTabContent,
   }
 
-  const CurrentTabContents = tabContents[currentTab]
+  const currentTabContents = tabContents[currentTab]()
 
   return (
     <>
@@ -243,7 +250,7 @@ const PurchaseModalContents = () => {
               </Tabs.List>
 
               <YStack f={1} group="takeoutBody">
-                <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
+                <AnimatePresence exitBeforeEnter initial={false} custom={{ direction }}>
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
                       value={currentTab}
@@ -254,7 +261,7 @@ const PurchaseModalContents = () => {
                     >
                       <ScrollView>
                         <YStack p="$8" gap="$6">
-                          <CurrentTabContents />
+                          {currentTabContents}
                         </YStack>
                       </ScrollView>
                     </Tabs.Content>
@@ -277,9 +284,9 @@ const PurchaseModalContents = () => {
                   <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
                     <XStack>
                       <H3 size="$11">
-                        ${yearlyTotal}
+                        ${disableAutoRenew ? yearlyTotal : Math.ceil(yearlyTotal / 12)}
                         <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
-                          /year
+                          {disableAutoRenew ? `/year` : `/month`}
                         </Paragraph>
                         {monthlyTotal > 0 && (
                           <>
@@ -297,18 +304,14 @@ const PurchaseModalContents = () => {
                     </Paragraph>
 
                     <XStack alignItems="center" gap="$4">
-                      <Checkbox
-                        onCheckedChange={(x) => setDisableAutoRenew(!!x)}
-                        size="$4"
+                      <Switch
+                        onCheckedChange={(x) => setDisableAutoRenew(!disableAutoRenew)}
+                        checked={!disableAutoRenew}
                         id="auto-renew"
-                      >
-                        <Checkbox.Indicator>
-                          <Check />
-                        </Checkbox.Indicator>
-                      </Checkbox>
+                      />
                       <Label htmlFor="auto-renew">
-                        <Paragraph theme="yellow" color="$color10" ff="$mono" size="$5">
-                          Disable auto-renew
+                        <Paragraph theme="green" color="$color10" ff="$mono" size="$5">
+                          {disableAutoRenew ? `One-time` : `Subscription`}
                         </Paragraph>
                       </Label>
                     </XStack>
@@ -391,12 +394,12 @@ const PurchaseModalContents = () => {
 const P = styled(Paragraph, {
   ff: '$mono',
   size: '$6',
-  lh: '$6',
+  lh: '$7',
 })
 
 const Question = styled(P, {
   fontWeight: 'bold',
-  color: '$yellow9',
+  color: '$orange9',
 })
 
 const FaqTabContent = () => {
@@ -404,7 +407,11 @@ const FaqTabContent = () => {
     <>
       <Question>Do I have to subscribe?</Question>
 
-      <P>Nope. There's a checkbox at the bottom to disable auto-renew.</P>
+      <P>
+        Nope. There's a checkbox at the bottom to disable auto-renew. It raises the price
+        a bit and you lose access to the private community Discord, but otherwise is
+        identical.
+      </P>
 
       <Question>Do I own the code? Can I publish it publically?</Question>
 
@@ -495,20 +502,15 @@ const SupportTabContent = ({
             </Label>
 
             <XStack maw={100}>
-              <Checkbox
-                size="$6"
-                id="chat-support"
+              <Switch
                 checked={chatSupport}
                 onCheckedChange={(checked) => setChatSupport(!!checked)}
-              >
-                <Checkbox.Indicator>
-                  <Check />
-                </Checkbox.Indicator>
-              </Checkbox>
+                id="chat-support"
+              />
             </XStack>
           </XStack>
 
-          <P maw={500} size="$5" o={0.8}>
+          <P maw={500} size="$5" lineHeight="$6" o={0.8}>
             A private Discord room just for your team, with responses prioritized over our
             community chat.
           </P>
@@ -517,7 +519,7 @@ const SupportTabContent = ({
         <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="support-tier">
-              <P>Support Tier ($1,000/month per tier)</P>
+              <P>Support Tier ($800/month per tier)</P>
             </Label>
 
             <XStack maw={150}>
@@ -531,25 +533,19 @@ const SupportTabContent = ({
                   None
                 </Select.Item>
                 <Select.Item value="1" index={1}>
-                  Tier 1 ($1,000/mo)
+                  Tier 1 - $800/mo
                 </Select.Item>
                 <Select.Item value="2" index={2}>
-                  Tier 2 ($2,000/mo)
+                  Tier 2 - $1,600/mo
                 </Select.Item>
                 <Select.Item value="3" index={3}>
-                  Tier 3 ($3,000/mo)
-                </Select.Item>
-                <Select.Item value="4" index={4}>
-                  Tier 4 ($4,000/mo)
-                </Select.Item>
-                <Select.Item value="5" index={5}>
-                  Tier 5 ($5,000/mo)
+                  Tier 3 - $3,000/mo
                 </Select.Item>
               </Select>
             </XStack>
           </XStack>
 
-          <P size="$5" maw={500} o={0.8}>
+          <P size="$5" lineHeight="$6" maw={500} o={0.8}>
             Each tier adds 2 hours of prioritized development each month, and puts your
             messages higher in our response queue.
           </P>
@@ -560,10 +556,11 @@ const SupportTabContent = ({
 }
 
 const BigP = styled(P, {
+  theme: 'green',
   px: '$8',
   size: '$8',
   lh: '$9',
-  color: '$color12',
+  color: '$color11',
 })
 
 const PurchaseTabContent = () => {
@@ -583,7 +580,8 @@ const PurchaseTabContent = () => {
 
         <YStack gap="$3">
           <P color="$color10">
-            The subscription gets you updates, Github and Discord access for a year.
+            You get updates across all products and access to Github and Discord for a
+            year.
           </P>
 
           <P color="$color10">

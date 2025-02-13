@@ -16,9 +16,9 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { Select, SelectItem } from '~/components/Select'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { Select, SelectItem } from '../../../../../components/Select'
 import { type HSLA, ColorPickerContents } from '../../../colors/ColorPicker'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'

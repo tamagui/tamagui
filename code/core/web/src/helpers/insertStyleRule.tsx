@@ -397,7 +397,6 @@ const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
 export function shouldInsertStyleRules(identifier: string) {
   if (process.env.TAMAGUI_REACT_19) {
     return true
-    // biome-ignore lint/style/noUselessElse: <explanation>
   } else {
     if (process.env.IS_STATIC === 'is_static') {
       return true

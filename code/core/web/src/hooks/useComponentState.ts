@@ -154,7 +154,7 @@ export const useComponentState = (
 
   let setStateShallow = createShallowSetState(
     setState,
-    disabled,
+    disabled ? ['disabled'] : undefined,
     false,
     props.debug,
     setStateWrapper

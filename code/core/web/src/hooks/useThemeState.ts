@@ -26,22 +26,51 @@ export type ThemeState = {
 
 export const ThemeStateContext = createContext<ID>('')
 
+export const keysToId = new WeakMap()
+
 const allListeners = new Map<ID, Function>()
 const listenersByParent: Record<ID, Set<ID>> = {}
+const hasRenderedOnce = new WeakMap<any, boolean>()
+const pendingUpdate = new Map<any, boolean | 'force'>()
 
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
+const localStates: Map<ID, ThemeState | undefined> = new Map()
 
+if (process.env.NODE_ENV === 'development') {
+  globalThis.getTamaguiThemes = () => {
+    function buildTree(id: ID) {
+      const node = states.get(id)
+      if (!node) return null
+      const children = Array.from(states.values())
+        .filter((child) => child?.parentId === id)
+        .map((child) => buildTree(child!.id))
+        .filter(Boolean)
+      return { ...node, children }
+    }
+
+    if (rootThemeState) {
+      console.info(buildTree(rootThemeState.id))
+    }
+  }
+}
+
+let shouldForce = false
 export const forceUpdateThemes = () => {
+  cacheVersion++
+  shouldForce = true
   allListeners.forEach((cb) => cb())
 }
 
 export const getThemeState = (id: ID) => states.get(id)
 
+// const cache = new Map<string, ThemeState>()
+let cacheVersion = 0
+
+let themes: Record<string, ThemeParsed> | null = null
+
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
-
-const HasRenderedOnce = new WeakMap<any, boolean>()
 
 export const useThemeState = (
   props: UseThemeWithStateProps,
@@ -50,6 +79,10 @@ export const useThemeState = (
 ): ThemeState => {
   const { disable } = props
   const parentId = useContext(ThemeStateContext)
+
+  if (!parentId && !isRoot) {
+    throw new Error(`No parent?`)
+  }
 
   if (disable) {
     return (
@@ -67,19 +100,80 @@ export const useThemeState = (
     (cb: Function) => {
       listenersByParent[parentId] ||= new Set()
       listenersByParent[parentId].add(id)
-      allListeners.set(id, cb)
+      allListeners.set(id, () => {
+        pendingUpdate.set(id, shouldForce ? 'force' : true)
+        cb()
+      })
       return () => {
         allListeners.delete(id)
         listenersByParent[parentId].delete(id)
+        localStates.delete(id)
+        states.delete(id)
+        pendingUpdate.delete(id)
       }
     },
-    [id, parentId, keys]
+    [id, parentId]
   )
 
   const propsKey = getPropsKey(props)
 
   const getSnapshot = () => {
-    return getSnapshotFrom(props, propsKey, isRoot, id, parentId, keys)
+    let local = localStates.get(id)
+
+    const needsUpdate =
+      isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
+        ? true
+        : !hasRenderedOnce.get(keys)
+          ? true
+          : keys?.current?.size
+            ? true
+            : props.needsUpdate?.()
+
+    // const parentState = states.get(parentId)
+    // const cacheKey = `${cacheVersion}${id}${propsKey}${parentState?.name || ''}${isRoot}`
+    // if (!needsUpdate) {
+    //   if (cache.has(cacheKey)) {
+    //     return cache.get(cacheKey)!
+    //   }
+    // }
+
+    const [rerender, next] = getNextState(
+      local,
+      props,
+      propsKey,
+      isRoot,
+      id,
+      parentId,
+      needsUpdate,
+      pendingUpdate.get(id)
+    )
+
+    pendingUpdate.delete(id)
+
+    // we always create a new localState for every component
+    // that way we can use it to de-opt and avoid renders granularly
+    // we always return the localState object in each component
+    // the global state (states) should always be up to date with the latest
+    if (!local || rerender) {
+      local = { ...next }
+      localStates.set(id, local)
+    }
+
+    if (
+      process.env.NODE_ENV === 'development' &&
+      props.debug &&
+      props.debug !== 'profile'
+    ) {
+      console.groupCollapsed(` ${id} 🪄 ${rerender}`, local.name, '>', next.name)
+      console.info({ props, propsKey, isRoot, parentId, local, next, needsUpdate })
+      console.groupEnd()
+    }
+
+    Object.assign(local, next)
+    local.id = id
+    states.set(id, next)
+
+    return local
   }
 
   if (process.env.NODE_ENV === 'development' && globalThis.time)
@@ -88,11 +182,11 @@ export const useThemeState = (
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
   useIsomorphicLayoutEffect(() => {
-    if (!propsKey) return
-    if (!HasRenderedOnce.has(keys)) {
-      HasRenderedOnce.set(keys, true)
+    if (!hasRenderedOnce.get(keys)) {
+      hasRenderedOnce.set(keys, true)
       return
     }
+    if (!propsKey) return
     if (
       process.env.NODE_ENV === 'development' &&
       props.debug &&
@@ -103,90 +197,68 @@ export const useThemeState = (
     scheduleUpdate(id)
   }, [keys, propsKey])
 
-  if (process.env.NODE_ENV === 'development' && props.debug) {
-    console.groupCollapsed(
-      ` · useTheme(${id}) =>`,
-      state.name,
-      id === state.id ? '🎉' : '⏭️'
-    )
-    console.info({
-      state,
-      parentId,
-      props,
-      propsKey,
-      id,
-      parentState: states.get(parentId),
-    })
-    console.groupEnd()
-  }
-
-  return state.id === id ? { ...state, isNew: true } : state
+  return state
 }
 
-// const cache = new Map<string, ThemeState>()
-let themes: Record<string, ThemeParsed> | null = null
-
-const getSnapshotFrom = (
+const getNextState = (
+  lastState: ThemeState | undefined,
   props: UseThemeWithStateProps,
   propsKey: string,
   isRoot = false,
   id: string,
   parentId: string,
-  keys: MutableRefObject<Set<string> | null> | undefined
-): ThemeState => {
-  const needsUpdate = keys?.current?.size || props.needsUpdate?.()
+  needsUpdate: boolean | undefined,
+  pendingUpdate: boolean | 'force' | undefined
+): [boolean, ThemeState] => {
+  const { debug } = props
   const parentState = states.get(parentId)
-
-  // const cacheKey = `${id}${propsKey}${needsUpdate}${parentState?.name || ''}${isRoot}`
-  // if (cache.has(cacheKey)) {
-  //   return cache.get(cacheKey)!
-  // }
 
   if (!themes) {
     themes = getConfig().themes
   }
 
-  const lastState = states.get(id)
+  const name =
+    !propsKey && (!lastState || !lastState?.isNew)
+      ? null
+      : getNewThemeName(
+          parentState?.name,
+          props,
+          pendingUpdate === 'force' ? true : !!needsUpdate
+        )
 
-  const name = !propsKey ? null : getNewThemeName(parentState?.name, props, !!needsUpdate)
+  const isSameAsParent = parentState && (!name || name === parentState.name)
+  const shouldRerender = Boolean(
+    needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
+  )
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    props.debug &&
-    props.debug !== 'profile'
-  ) {
-    const message = ` · useTheme(${id}) snapshot ${name}, parent ${parentState?.id} needsUpdate ${needsUpdate}`
+  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+    const message = ` · useTheme(${id}) => ${name} needsUpdate ${needsUpdate} shouldRerender ${shouldRerender}`
     if (process.env.TAMAGUI_TARGET === 'native') {
       console.info(message)
     } else {
       console.groupCollapsed(message)
-      console.info({ lastState, parentState, props, propsKey, id, keys })
+      console.trace({ name, lastState, parentState, props, propsKey, id, isSameAsParent })
       console.groupEnd()
     }
   }
 
-  const isSameAsParent = !name && propsKey // name = null if matching parent and has props
-  if (parentState && isSameAsParent) {
-    return parentState
+  if (isSameAsParent) {
+    return [shouldRerender, { ...parentState, isNew: false }]
   }
 
   if (!name) {
-    if (lastState && !needsUpdate) {
-      return lastState
-    }
-    states.set(id, parentState)
-    // cache.set(cacheKey, parentState!)
-    return parentState!
-  }
+    const next = lastState ?? parentState
 
-  if (
-    lastState &&
-    lastState.name === name
-    //  &&
-    // (!parentState || parentState.name === lastState.parentName)
-  ) {
-    // cache.set(cacheKey, lastState!)
-    return lastState
+    if (!next) {
+      throw new Error(`No theme and no parent?`)
+    }
+
+    if (shouldRerender) {
+      const updated = { ...(parentState || lastState)! }
+      return [true, updated]
+    }
+
+    return [false, next]
   }
 
   const scheme = getScheme(name)
@@ -203,27 +275,41 @@ const getSnapshotFrom = (
     parentName: parentState?.name,
     inverses,
     isInverse,
+    isNew: true,
   } satisfies ThemeState
-
-  if (
-    process.env.NODE_ENV === 'development' &&
-    props.debug &&
-    props.debug !== 'profile'
-  ) {
-    console.groupCollapsed(` · useTheme(${id}) ⏭️ ${name}`)
-    console.info('state', nextState)
-    console.groupEnd()
-  }
-
-  states.set(id, nextState)
-  // cache.set(cacheKey, nextState)
 
   if (isRoot) {
     rootThemeState = nextState
   }
 
-  return nextState
+  if (pendingUpdate !== 'force' && lastState && lastState.name === name) {
+    return [false, nextState]
+  }
+
+  const shouldAvoidRerender =
+    pendingUpdate !== 'force' &&
+    lastState &&
+    !needsUpdate &&
+    nextState.name === lastState.name
+
+  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+    console.groupCollapsed(
+      ` · useTheme(${id}) ⏭️ ${name} shouldAvoidRerender: ${shouldAvoidRerender}`
+    )
+    console.info({ lastState, needsUpdate, nextState, pendingUpdate })
+    console.groupEnd()
+  }
+
+  // we still update the state (not changing identity), that way children can properly resolve the right state
+  // but this one wont trigger an update
+  if (shouldAvoidRerender) {
+    return [false, nextState]
+  }
+
+  return [true, nextState]
 }
+
+const regexParentScheme = /^(light|dark)_/
 
 function scheduleUpdate(id: string) {
   const queue = [id]
@@ -259,7 +345,7 @@ function getScheme(name: string) {
 
 function getNewThemeName(
   parentName = '',
-  { name, reset, componentName, inverse }: UseThemeWithStateProps,
+  { name, reset, componentName, inverse, debug }: UseThemeWithStateProps,
   forceUpdate = false
 ): string | null {
   if (name && reset) {
@@ -310,7 +396,8 @@ function getNewThemeName(
     if (found) break
   }
 
-  if (found && inverse) {
+  if (inverse) {
+    found ||= parentName
     const scheme = found.split('_')[0]
     found = found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
   }

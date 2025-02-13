@@ -752,8 +752,8 @@ p {
     1px 5px 1px var(--color8), 1px 6px 1px var(--color8),
     1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
     1px 9px 1px var(--color8), 1px 11px 1px var(--color7),
-    1px 10px 40px rgba(255, 255, 255, 0.07),
-    1px 0px 30px var(--color04);
+    1px 10px 40px rgba(255, 255, 255, 0.01),
+    1px 0px 30px var(--color02);
 }
 
 .bento-up-text {

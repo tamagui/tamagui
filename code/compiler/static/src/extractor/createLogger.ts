@@ -24,7 +24,7 @@ export function createLogger(sourcePath: string, options: TamaguiOptions) {
       .replace(/\.[jt]sx?$/, '')
       .slice(0, 22)
       .trim()
-      .padStart(24)
+      .padEnd(24)
 
     const numOptimized = `${res.optimized + res.styled}`.padStart(3)
     const numFound = `${res.found + res.styled}`.padStart(3)

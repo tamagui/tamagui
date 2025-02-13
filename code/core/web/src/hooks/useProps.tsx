@@ -82,6 +82,9 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     componentName: staticConfig.componentName,
     name: 'theme' in props ? props.theme : undefined,
     inverse: 'themeInverse' in props ? props.themeInverse : undefined,
+    needsUpdate() {
+      return true
+    },
   })
   const componentContext = React.useContext(ComponentContext as any) as any
   const { state, disabled, setStateShallow } = useComponentState(
@@ -117,7 +120,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (disabled) {
       return
     }

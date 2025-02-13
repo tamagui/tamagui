@@ -11,7 +11,7 @@ import type {
   VariableValGeneric,
 } from '../types'
 import { doesRootSchemeMatchSystem } from './doesRootSchemeMatchSystem'
-import type { ThemeState } from './useThemeState'
+import { keysToId, type ThemeState } from './useThemeState'
 
 export type ThemeProxied = {
   [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<
@@ -52,33 +52,31 @@ const cache: Map<ThemeParsed, ThemeProxied> = new Map()
 
 let curKeys: MutableRefObject<Set<string> | null>
 let curProps: UseThemeWithStateProps
+let curState: ThemeState | null
 
 const emptyObject = {}
 
 export function getThemeProxied(
   // underscore to prevent accidental usage below
   _props: UseThemeWithStateProps,
-  state: ThemeState | null,
+  _state: ThemeState | null,
   _keys: MutableRefObject<Set<string> | null>
 ): ThemeProxied {
-  const theme = state?.theme
-
-  if (!theme) {
+  if (!_state?.theme) {
     return emptyObject
   }
 
   curKeys = _keys
   curProps = _props
+  curState = _state
 
-  if (cache.has(theme)) {
-    const proxied = cache.get(theme)!
+  if (cache.has(curState.theme)) {
+    const proxied = cache.get(curState.theme)!
     return proxied
   }
 
   // first time running on this theme, create:
   // from here on only use current*
-
-  const { name, scheme } = state
 
   const config = getConfig()
 
@@ -89,12 +87,17 @@ export function getThemeProxied(
     }
     curKeys.current.add(key)
     if (process.env.NODE_ENV === 'development' && curProps.debug) {
-      console.info(` 🎨 useTheme() tracking new key: ${key}`)
+      const realId = keysToId.get(curKeys)
+      console.info(
+        ` 🎨 useTheme(${realId}) tracking new key: ${key}`,
+        curKeys,
+        globalThis['states']?.get(realId + 1)
+      )
     }
   }
 
   const proxied = Object.fromEntries(
-    Object.entries(theme).flatMap(([key, value]) => {
+    Object.entries(_state.theme).flatMap(([key, value]) => {
       const proxied = {
         ...value,
         get val() {
@@ -106,7 +109,10 @@ export function getThemeProxied(
           return value.val
         },
         get(platform?: 'web') {
+          if (!curState) return
+
           const outVal = getVariable(value)
+          const { name, scheme, inverses } = curState
 
           if (process.env.TAMAGUI_TARGET === 'native') {
             // ios can avoid re-rendering in some cases when we are using a root light/dark
@@ -117,7 +123,7 @@ export function getThemeProxied(
               isIos &&
               !curProps.deopt &&
               getSetting('fastSchemeChange') &&
-              state.inverses === 0 &&
+              inverses === 0 &&
               doesRootSchemeMatchSystem()
 
             if (shouldOptimize) {
@@ -159,7 +165,7 @@ export function getThemeProxied(
     })
   ) as ThemeProxied
 
-  cache.set(theme, proxied)
+  cache.set(_state.theme, proxied)
 
   return proxied
 }

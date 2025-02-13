@@ -166,15 +166,10 @@ export const docsRoutes = [
   },
 
   {
-    title: 'Extras',
-    section: 'core',
-    pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
-  },
-
-  {
     label: 'Etc',
     section: 'ui',
     pages: [
+      { title: 'Lucide Icons', route: '/ui/lucide-icons' },
       { title: 'Anchor', route: '/ui/anchor' },
       { title: 'HTML Elements', route: '/ui/html-elements' },
       { title: 'ScrollView', route: '/ui/scroll-view' },
