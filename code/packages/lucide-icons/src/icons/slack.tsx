@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import type { NamedExoticComponent } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { Svg, Path, Rect } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
@@ -31,4 +32,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Slack'
 
-export const Slack = memo<IconProps>(themed(Icon))
+export const Slack: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))

@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const BluetoothConnected: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const BluetoothConnected: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=bluetooth-connected.d.ts.map

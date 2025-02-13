@@ -1,2 +1,3 @@
-export * from './getFontSize';
+export * from "./getFontSize";
+
 //# sourceMappingURL=index.d.ts.map

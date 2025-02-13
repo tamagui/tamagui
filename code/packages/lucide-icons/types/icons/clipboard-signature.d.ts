@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ClipboardSignature: React.NamedExoticComponent<IconProps>;
+export declare const ClipboardSignature: unknown;
+
 //# sourceMappingURL=clipboard-signature.d.ts.map

@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ShieldClose: React.NamedExoticComponent<IconProps>;
+export declare const ShieldClose: unknown;
+
 //# sourceMappingURL=shield-close.d.ts.map

@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const PanelBottomInactive: React.NamedExoticComponent<IconProps>;
+export declare const PanelBottomInactive: unknown;
+
 //# sourceMappingURL=panel-bottom-inactive.d.ts.map

@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import type { NamedExoticComponent } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { Svg, Path, Rect } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
@@ -35,4 +36,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'QrCode'
 
-export const QrCode = memo<IconProps>(themed(Icon))
+export const QrCode: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))

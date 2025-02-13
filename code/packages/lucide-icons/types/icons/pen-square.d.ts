@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const PenSquare: React.NamedExoticComponent<IconProps>;
+export declare const PenSquare: unknown;
+
 //# sourceMappingURL=pen-square.d.ts.map

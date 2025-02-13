@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const BadgeIndianRupee: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const BadgeIndianRupee: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=badge-indian-rupee.d.ts.map

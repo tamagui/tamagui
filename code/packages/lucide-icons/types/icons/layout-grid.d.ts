@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const LayoutGrid: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const LayoutGrid: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=layout-grid.d.ts.map

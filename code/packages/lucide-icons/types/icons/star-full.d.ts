@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const StarFull: React.NamedExoticComponent<IconProps>;
+export declare const StarFull: unknown;
+
 //# sourceMappingURL=star-full.d.ts.map

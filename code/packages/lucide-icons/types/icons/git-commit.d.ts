@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const GitCommit: React.NamedExoticComponent<IconProps>;
+export declare const GitCommit: unknown;
+
 //# sourceMappingURL=git-commit.d.ts.map

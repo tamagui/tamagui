@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Verified: React.NamedExoticComponent<IconProps>;
+export declare const Verified: unknown;
+
 //# sourceMappingURL=verified.d.ts.map

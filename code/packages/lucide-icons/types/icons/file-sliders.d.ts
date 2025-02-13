@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const FileSliders: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const FileSliders: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=file-sliders.d.ts.map

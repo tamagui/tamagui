@@ -1,4 +1,3 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Rows: React.NamedExoticComponent<IconProps>;
+export declare const Rows: unknown;
+
 //# sourceMappingURL=rows.d.ts.map

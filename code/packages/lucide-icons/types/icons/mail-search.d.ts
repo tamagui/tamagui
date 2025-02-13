@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const MailSearch: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const MailSearch: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=mail-search.d.ts.map

@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import type { NamedExoticComponent } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { Svg, Line, Polyline } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
@@ -26,4 +27,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'SeparatorHorizontal'
 
-export const SeparatorHorizontal = memo<IconProps>(themed(Icon))
+export const SeparatorHorizontal: NamedExoticComponent<IconProps> = memo<IconProps>(
+  themed(Icon)
+)

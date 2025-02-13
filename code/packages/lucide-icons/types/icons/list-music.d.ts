@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ListMusic: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const ListMusic: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=list-music.d.ts.map
