@@ -186,10 +186,10 @@ const PurchaseModalContents = () => {
 
         <Dialog.Portal>
           <Dialog.Overlay
-            backdropFilter="blur(50px)"
+            backdropFilter="blur(15px)"
             key="overlay"
             animation="medium"
-            bg="$shadow6"
+            bg="$shadow2"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -278,7 +278,7 @@ const PurchaseModalContents = () => {
                       <H3 size="$11">
                         ${disableAutoRenew ? yearlyTotal : Math.ceil(yearlyTotal / 12)}
                         <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
-                          {disableAutoRenew ? `/year` : `/month`}
+                          {disableAutoRenew ? ` once` : `/month`}
                         </Paragraph>
                         {monthlyTotal > 0 && (
                           <>
