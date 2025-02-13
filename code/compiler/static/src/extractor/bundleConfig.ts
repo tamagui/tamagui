@@ -212,6 +212,8 @@ export async function bundleConfig(props: TamaguiOptions) {
       unregister()
     }
 
+    console.log('loading', out)
+
     // try and find .config, even if on .default
     let config = out.default || out || out.config
     if (config && config.config && !config.tokens) {
