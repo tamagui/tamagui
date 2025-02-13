@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join } from 'node:path'
 
 import { pathExists } from 'fs-extra'
 
@@ -11,7 +11,7 @@ export async function getDefaultTamaguiConfigPath({
   cwd?: string
   // TODO this isn't passed down / could avoid
   cache?: boolean
-}) {
+}): Promise<string> {
   if (cache && cachedPath) {
     return cachedPath
   }

@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const WalletMinimal: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const WalletMinimal: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=wallet-minimal.d.ts.map

@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Clipboard: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const Clipboard: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=clipboard.d.ts.map

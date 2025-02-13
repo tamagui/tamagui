@@ -28,16 +28,16 @@ export class NativeMediaQueryList implements MediaQueryList {
     })
   }
 
-  addListener(listener: Listener) {
+  addListener(listener: Listener): void {
     this.listeners.push(listener)
   }
 
-  removeListener(listener: Listener) {
+  removeListener(listener: Listener): void {
     const index = this.listeners.indexOf(listener)
     if (index !== -1) this.listeners.splice(index, 1)
   }
 
-  match(query: string, { width, height }: { width: number; height: number }) {
+  match(query: string, { width, height }: { width: number; height: number }): boolean {
     return matchQuery(query, {
       type: 'screen',
       orientation: height > width ? 'portrait' : 'landscape',

@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Monitor: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const Monitor: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=monitor.d.ts.map

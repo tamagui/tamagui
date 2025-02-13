@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const SquarePi: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const SquarePi: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=square-pi.d.ts.map

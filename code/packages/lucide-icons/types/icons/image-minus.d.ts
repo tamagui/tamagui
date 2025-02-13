@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ImageMinus: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const ImageMinus: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=image-minus.d.ts.map

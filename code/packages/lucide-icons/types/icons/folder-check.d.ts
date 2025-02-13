@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const FolderCheck: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const FolderCheck: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=folder-check.d.ts.map

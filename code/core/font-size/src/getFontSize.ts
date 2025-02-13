@@ -1,4 +1,4 @@
-import type { FontSizeTokens, FontTokens } from '@tamagui/core'
+import type { FontSizeTokens, FontTokens, Variable } from '@tamagui/core'
 import { getConfig, isVariable } from '@tamagui/core'
 
 type GetFontSizeOpts = {
@@ -20,14 +20,14 @@ export const getFontSize = (
 export const getFontSizeVariable = (
   inSize: FontSizeTokens | null | undefined,
   opts?: GetFontSizeOpts
-) => {
+): FontSizeTokens | Variable<string> | null | undefined => {
   const token = getFontSizeToken(inSize, opts)
   if (!token) {
     return inSize
   }
   const conf = getConfig()
   const font = conf.fontsParsed[opts?.font || conf.defaultFontToken]
-  return font?.size[token]
+  return font?.size[token] as Variable<string>
 }
 
 export const getFontSizeToken = (

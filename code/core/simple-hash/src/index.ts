@@ -1,9 +1,9 @@
-const cache = new Map()
+const cache = new Map<string, string>()
 let cacheSize = 0
 
-export const simpleHash = (strIn: string, hashMin: number | 'strict' = 10) => {
+export const simpleHash = (strIn: string, hashMin: number | 'strict' = 10): string => {
   if (cache.has(strIn)) {
-    return cache.get(strIn)
+    return cache.get(strIn)!
   }
 
   let str = strIn

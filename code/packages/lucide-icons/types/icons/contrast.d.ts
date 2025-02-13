@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Contrast: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const Contrast: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=contrast.d.ts.map

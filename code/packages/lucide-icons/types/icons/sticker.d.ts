@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Sticker: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const Sticker: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=sticker.d.ts.map
