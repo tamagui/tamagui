@@ -1,7 +1,8 @@
 import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { startTransition, useEffect, useMemo, useState } from 'react'
+import type { Href } from 'one'
+import { startTransition, use, useCallback, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -21,12 +22,14 @@ import {
   Unspaced,
   XStack,
   YStack,
+  Spinner,
 } from 'tamagui'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
 import { PromoCards } from '../header/UpgradePopover'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { StripeElementsForm } from './StripeElements'
+import { useSubscription } from './useSubscription'
 import { useProducts } from './useProducts'
 
 class PurchaseModal {
@@ -478,7 +481,7 @@ const SupportTabContent = ({
 }) => {
   return (
     <>
-      <BigP>
+      <BigP theme="alt2">
         Support is great way for teams using Tamagui to ensure bugs get fixed, questions
         are answered, and Tamagui stays healthy and up to date.
       </BigP>
@@ -561,7 +564,7 @@ const PurchaseTabContent = () => {
           get:
         </BigP>
 
-        <XStack fw="wrap" gap="$3">
+        <XStack fw="wrap" gap="$3" ai="center" justifyContent="center">
           <PromoCards />
         </XStack>
 

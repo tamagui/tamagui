@@ -3,10 +3,14 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
 
-const CHAT_SUPPORT_PRICE_ID = 'price_1NqKJ3FQGtHoG6xcQ8Y9X8X8'
-const SUPPORT_TIER_PRICE_ID = 'price_1NqKJFFQGtHoG6xcY2X9X8X8'
+const CHAT_SUPPORT_PRICE_ID = 'price_1QrukQFQGtHoG6xcMpB125IR'
+const SUPPORT_TIER_PRICE_ID = 'price_1QrulKFQGtHoG6xcDs9OYTFu'
 
-export const POST = apiRoute(async (req) => {
+export default apiRoute(async (req) => {
+  if (req.method !== 'POST') {
+    return Response.json({ error: 'Method not allowed' }, { status: 405 })
+  }
+
   const { user } = await ensureAuth({ req })
   const { paymentMethodId, priceId, disableAutoRenew, chatSupport, supportTier } =
     await req.json()

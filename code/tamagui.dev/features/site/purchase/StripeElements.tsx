@@ -10,112 +10,7 @@ import {
 import { Button, Paragraph, Spinner, YStack, Theme } from 'tamagui'
 import { PurchaseButton } from './helpers'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
-
-type CheckoutFormProps = {
-  clientSecret: string
-  onSuccess: (subscriptionId: string) => void
-  onError: (error: Error | StripeError) => void
-  isProcessing: boolean
-  setIsProcessing: (value: boolean) => void
-  autoRenew?: boolean
-  chatSupport?: boolean
-  supportTier?: number
-  priceId: string
-}
-
-const CheckoutForm = ({
-  clientSecret,
-  onSuccess,
-  onError,
-  isProcessing,
-  setIsProcessing,
-  autoRenew = true,
-  chatSupport = false,
-  supportTier = 0,
-  priceId,
-}: CheckoutFormProps) => {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [errorMessage, setErrorMessage] = useState<string>()
-
-  const handlePayment = async () => {
-    if (!stripe || !elements) {
-      return
-    }
-
-    setIsProcessing(true)
-
-    try {
-      // 1. Create PaymentMethod
-      const cardElement = elements.getElement(CardElement)
-      if (!cardElement) {
-        throw new Error('Card element not found')
-      }
-
-      const { error: pmError, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-      })
-      if (pmError) throw pmError
-
-      // 2. Create annual subscription
-      const annualRes = await fetch('/api/create-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          paymentMethodId: paymentMethod.id,
-          priceId,
-          disableAutoRenew: !autoRenew,
-        }),
-      })
-      const annualData = await annualRes.json()
-      if (!annualRes.ok) throw new Error(annualData.error)
-
-      // 3. Create monthly subscription if needed
-      if (chatSupport || supportTier > 0) {
-        const upgradeRes = await fetch('/api/upgrade-subscription', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            subscriptionId: annualData.subscriptionId,
-            chatSupport,
-            supportTier,
-            disableAutoRenew: !autoRenew,
-          }),
-        })
-        const upgradeData = await upgradeRes.json()
-        if (!upgradeRes.ok) throw new Error(upgradeData.error)
-      }
-
-      // Success - pass back the annual subscription ID
-      onSuccess(annualData.subscriptionId)
-    } catch (e) {
-      const error = e as Error | StripeError
-      setErrorMessage(error.message)
-      onError(error)
-    } finally {
-      setIsProcessing(false)
-    }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    handlePayment()
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <YStack gap="$4">
-        <CardElement />
-        {errorMessage && <Paragraph color="$red10">{errorMessage}</Paragraph>}
-        <Button themeInverse disabled={!stripe || isProcessing} onPress={handlePayment}>
-          {isProcessing ? <Spinner /> : 'Pay now'}
-        </Button>
-      </YStack>
-    </form>
-  )
-}
+const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY_LIVEY!)
 
 type StripeElementsProps = {
   onSuccess: (subscriptionId: string) => void
@@ -130,7 +25,15 @@ type StripeElementsProps = {
   onNext?: () => void
 }
 
-export const StripeElementsForm = ({
+export const StripeElementsForm = (props: StripeElementsProps) => {
+  return (
+    <Elements stripe={stripePromise}>
+      <StripeElementsFormContent {...props} />
+    </Elements>
+  )
+}
+
+export const StripeElementsFormContent = ({
   onSuccess,
   onError,
   autoRenew,
@@ -143,6 +46,8 @@ export const StripeElementsForm = ({
   onNext,
 }: StripeElementsProps) => {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const stripe = useStripe()
+  const elements = useElements()
 
   const handleSubmit = async () => {
     if (buttonText === 'Next' && onNext) {
@@ -153,6 +58,18 @@ export const StripeElementsForm = ({
     setIsProcessing(true)
 
     try {
+      // Create PaymentMethod first
+      const cardElement = elements?.getElement(CardElement)
+      if (!cardElement) {
+        throw new Error('Card element not found')
+      }
+
+      const { error: pmError, paymentMethod } = await stripe!.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+      })
+      if (pmError) throw pmError
+
       // Create initial subscription with yearly plan
       const response = await fetch('/api/create-subscription', {
         method: 'POST',
@@ -160,6 +77,7 @@ export const StripeElementsForm = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          paymentMethodId: paymentMethod.id,
           priceId,
           disableAutoRenew: !autoRenew,
         }),
@@ -202,6 +120,7 @@ export const StripeElementsForm = ({
 
   return (
     <Theme name="accent">
+      <CardElement />
       <PurchaseButton onPress={handleSubmit} disabled={isProcessing}>
         {isProcessing ? 'Processing...' : buttonText}
       </PurchaseButton>
