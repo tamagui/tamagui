@@ -3,7 +3,7 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function LinearGradientDemo() {
   return (
-    <XStack space>
+    <XStack gap="$4">
       {/* tokens */}
       <LinearGradient
         width="$6"

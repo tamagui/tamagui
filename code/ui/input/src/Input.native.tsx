@@ -23,6 +23,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     step,
     disabled,
     id,
+    // @ts-ignore
     caretColor,
     onChange,
     onInput,

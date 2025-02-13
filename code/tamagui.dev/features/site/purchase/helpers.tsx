@@ -117,7 +117,7 @@ export const RadioGroupItem = ({
       borderWidth="$0.25"
       borderColor={active ? '$color9' : '$color5'}
       borderRadius="$4"
-      space="$4"
+      gap="$4"
       ai="center"
       hoverStyle={{
         borderColor: active ? '$color10' : '$color7',
@@ -159,12 +159,7 @@ export function BentoTable({
   const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (
-    <YStack
-      separator={<Separator bc="$color5" />}
-      borderWidth="$0.5"
-      borderRadius="$4"
-      bc="$color5"
-    >
+    <YStack borderWidth="$0.5" borderRadius="$4" bc="$color5">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fow="bold">
@@ -207,12 +202,7 @@ export const TakeoutTable = ({
   const price = product?.prices.find((price) => price.id === selectedPriceId)
   const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
-    <YStack
-      separator={<Separator o={0.35} />}
-      borderWidth="$0.5"
-      borderRadius="$4"
-      borderColor="$borderColor"
-    >
+    <YStack borderWidth="$0.5" borderRadius="$4" borderColor="$borderColor">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fow="bold">

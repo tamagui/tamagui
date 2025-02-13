@@ -66,10 +66,9 @@ export const SidebarPanel = ({
   children,
   title,
   controls,
-  space,
   scrollable,
-  separator,
   maxHeight,
+  gap,
   ...props
 }: SidebarPanelProps) => {
   return (
@@ -89,15 +88,15 @@ export const SidebarPanel = ({
             </H5>
           )}
 
-          <Spacer flex />
+          <Spacer flex={1} />
 
-          <XStack ai="center" space="$2">
+          <XStack ai="center" gap="$2">
             {controls}
           </XStack>
         </XStack>
       )}
 
-      <YStack space={space} separator={separator}>
+      <YStack gap={gap}>
         {scrollable ? (
           <ScrollView maxHeight={maxHeight} showsVerticalScrollIndicator={false}>
             {children}

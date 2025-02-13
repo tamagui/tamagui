@@ -430,7 +430,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
                     <XStack>
                       <H3 size="$11">{formatPrice(sum! / 100, 'usd')}</H3>
                     </XStack>
-                    <Paragraph theme="alt1" ellipse size="$4">
+                    <Paragraph theme="alt1" ellipsis size="$4">
                       {(() => {
                         const items: string[] = []
                         const starterPrice = starterPriceId
@@ -557,11 +557,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
                       </Link>
                     </Theme>
                     <XStack jc="space-between" gap="$4" ai="center" mb="$2">
-                      <XStack
-                        ai="center"
-                        separator={<Separator vertical bg="$color8" my="$2" />}
-                        gap="$2"
-                      >
+                      <XStack ai="center" gap="$2">
                         {/* currently no FAQ for bento - to add, just remove the condition and add the FAQ modal like the takeout one. */}
                         {currentTab === 'takeout' && (
                           <SizableText

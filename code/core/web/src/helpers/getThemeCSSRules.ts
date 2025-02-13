@@ -122,7 +122,8 @@ export function getThemeCSSRules(props: {
     const selectorsString =
       selectors
         .map((x) => {
-          const rootSep = isBaseTheme(x) && getSetting('themeClassNameOnRoot') ? '' : ' '
+          const rootSep =
+            isBaseTheme(x) && getSetting('addThemeClassName') !== false ? '' : ' '
           return `:root${rootSep}${x}`
         })
         .join(', ') + `, .tm_xxt`

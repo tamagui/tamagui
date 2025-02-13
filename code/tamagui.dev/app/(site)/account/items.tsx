@@ -72,7 +72,7 @@ const Items = () => {
             </YStack>
           ) : (
             <YStack borderColor="$color2" borderWidth="$1" borderRadius="$4">
-              <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
+              <YStack p="$4" gap="$6">
                 {productOwnerships.map((ownership) => {
                   return (
                     <ItemDetails key={ownership.id} type="owned_item" item={ownership} />
@@ -195,7 +195,6 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
       borderRadius="$4"
       key={subscription.id}
       id={subscription.id}
-      separator={<Separator />}
     >
       <YStack
         p="$4"
@@ -204,7 +203,7 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
         // separator={<Separator />}
         flexWrap="wrap"
       >
-        <XStack gap="$2" separator={<Separator vertical my="$1" />} flexWrap="wrap">
+        <XStack gap="$2" flexWrap="wrap">
           <SizableText>Started at {dateFormatter.format(startDate)}</SizableText>
           <SizableText>
             Current period ends at {dateFormatter.format(periodEnd)}
@@ -236,7 +235,7 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
           )}
         </XStack>
 
-        <XStack gap="$4" separator={<Separator vertical my="$1" />} flexWrap="wrap">
+        <XStack gap="$4" flexWrap="wrap">
           <SizableText>Sub ID: {subscription.id}</SizableText>
           <SizableText>
             <SizableText>Status: </SizableText>
@@ -250,7 +249,7 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
         </XStack>
       </YStack>
 
-      <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
+      <YStack p="$4" gap="$6">
         {items.map((item) => {
           const product = getSingle(item.price?.products)
           if (!item.price || !product) return null
@@ -392,7 +391,7 @@ const ItemDetails = (
         </Paragraph>
       </YStack>
 
-      <YStack gap="$6" separator={<Separator o={0.5} />}>
+      <YStack gap="$6">
         {installInstructions && (
           <Paragraph size="$5" theme="alt1">
             {installInstructions}

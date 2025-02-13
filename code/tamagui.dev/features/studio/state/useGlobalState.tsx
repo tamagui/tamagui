@@ -6,8 +6,6 @@ import type { ColorsStore } from './ColorsStore'
 import { colorsStore } from './ColorsStore'
 import type { RootStore } from './RootStore'
 import { rootStore } from './RootStore'
-import type { SettingsStore } from './SettingsStore'
-import { settingsStore } from './SettingsStore'
 import type { SidePaneStore } from './SidePaneStore'
 import { sidePaneStore } from './SidePaneStore'
 
@@ -16,7 +14,6 @@ const allStores = {
   colorsStore,
   sidePaneStore,
   animationsStore,
-  settingsStore,
 }
 
 export const useRootStore = (options?: { debug?: boolean }) =>
@@ -27,8 +24,6 @@ export const useSidePaneStore = (options?: { debug?: boolean }) =>
   useGlobalStore(sidePaneStore, options?.debug)
 export const useAnimationsStore = (options?: { debug?: boolean }) =>
   useGlobalStore(animationsStore, options?.debug)
-export const useSettingsStore = (options?: { debug?: boolean }) =>
-  useGlobalStore(settingsStore, options?.debug)
 
 export const useGlobalState = (options?: { debug?: boolean }) => {
   return combineStores({
@@ -36,7 +31,6 @@ export const useGlobalState = (options?: { debug?: boolean }) => {
     colorsStore: useColorsStore(options),
     sidePaneStore: useSidePaneStore(options),
     animationsStore: useAnimationsStore(options),
-    settingsStore: useSettingsStore(options),
   })
 }
 
@@ -55,7 +49,6 @@ function combineStores(stores: typeof allStores) {
     colors: ColorsStore
     sidePane: SidePaneStore
     animations: AnimationsStore
-    settings: SettingsStore
   }
 }
 

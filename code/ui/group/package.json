@@ -39,6 +39,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },

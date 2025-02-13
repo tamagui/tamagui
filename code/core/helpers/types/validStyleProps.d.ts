@@ -105,7 +105,6 @@ export declare const stylePropsTransform: {
     rotateZ: boolean;
 };
 export declare const stylePropsView: {
-    elevationAndroid?: boolean | undefined;
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
@@ -167,6 +166,7 @@ export declare const stylePropsView: {
     userSelect?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    elevationAndroid?: boolean | undefined;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
@@ -350,7 +350,6 @@ export declare const stylePropsTextOnly: {
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
-    selectable: boolean;
     verticalAlign: boolean;
     color: boolean;
     textDecorationColor: boolean;
@@ -378,7 +377,6 @@ export declare const stylePropsText: {
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
-    selectable: boolean;
     verticalAlign: boolean;
     color: boolean;
     textDecorationColor: boolean;
@@ -394,7 +392,6 @@ export declare const stylePropsText: {
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
-    elevationAndroid?: boolean | undefined;
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
@@ -454,6 +451,7 @@ export declare const stylePropsText: {
     transformStyle?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    elevationAndroid?: boolean | undefined;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -632,7 +630,6 @@ export declare const stylePropsAll: {
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
-    selectable: boolean;
     verticalAlign: boolean;
     color: boolean;
     textDecorationColor: boolean;
@@ -648,7 +645,6 @@ export declare const stylePropsAll: {
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
-    elevationAndroid?: boolean | undefined;
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
@@ -708,6 +704,7 @@ export declare const stylePropsAll: {
     transformStyle?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    elevationAndroid?: boolean | undefined;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -886,7 +883,6 @@ export declare const validPseudoKeys: {
     focusWithinStyle: boolean;
 };
 export declare const validStyles: {
-    elevationAndroid?: boolean | undefined;
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
@@ -948,6 +944,7 @@ export declare const validStyles: {
     userSelect?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    elevationAndroid?: boolean | undefined;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;

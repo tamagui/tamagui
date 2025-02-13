@@ -11,7 +11,7 @@ export const ToastDemo = () => {
   const [native, setNative] = React.useState(false)
 
   return (
-    <YStack space alignItems="center">
+    <YStack gap="$4" alignItems="center">
       <ToastControl native={native} />
       <CurrentToast />
 

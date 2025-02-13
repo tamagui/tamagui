@@ -1,5 +1,6 @@
 import './setup'
 
+export * from '@tamagui/spacer'
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'
 export * from '@tamagui/alert-dialog'
@@ -90,7 +91,6 @@ export type {
   RadiusTokens,
   Shorthands,
   SizeTokens,
-  SpacerProps,
   SpaceTokens,
   SpecificTokens,
   StackNonStyleProps,
@@ -133,16 +133,13 @@ export {
   ComponentContext,
   FontLanguage,
   // components
-  Spacer,
   Stack,
   Theme,
-  Unspaced,
   View,
   createComponent,
   createFont,
   createShorthands,
   createStyledContext,
-  createTheme,
   createTokens,
   createVariable,
   getConfig,
@@ -153,7 +150,6 @@ export {
   getTokenValue,
   getTokens,
   getVariable,
-  setupReactNative,
   getVariableName,
   getVariableValue,
   insertFont,
@@ -173,7 +169,6 @@ export {
   mediaObjectToString,
   mediaQueryConfig,
   mediaState,
-  spacedChildren,
   styled,
   themeable,
   // hooks

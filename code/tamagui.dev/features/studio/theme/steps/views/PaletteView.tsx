@@ -270,7 +270,7 @@ export const PaletteView = memo((props: Props) => {
 
       <XLabeledItem label="">
         <YStack gap="$4">
-          <XStack gap="$4" separator={<Separator vertical />}>
+          <XStack gap="$4">
             <DataItem
               width={50}
               labelTop=""
@@ -633,7 +633,7 @@ const PaletteColor = memo(
       >
         <XStack fullscreen bg={color as any} ai="center" jc="center">
           <SizableText
-            selectable={false}
+            userSelect="none"
             color={index > 4 ? '$background' : '$color'}
             size="$1"
             scale={size === 'small' ? 0.8 : 1}

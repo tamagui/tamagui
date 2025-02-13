@@ -9,6 +9,7 @@ import {
   File,
   Link as LinkIcon,
 } from '@tamagui/lucide-icons'
+import type { Href } from 'one'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps } from 'tamagui'
@@ -29,7 +30,6 @@ import {
   Tabs,
   Text,
   Theme,
-  ThemeableStack,
   TooltipSimple,
   View,
   XGroup,
@@ -38,7 +38,6 @@ import {
   styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import type { Href } from 'one'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -95,8 +94,9 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
   )
 }
 
-const TableFrame = styled(ThemeableStack, {
-  bordered: true,
+const TableFrame = styled(YStack, {
+  borderWidth: 1,
+  borderColor: '$borderColor',
   br: '$4',
   ov: 'hidden',
   my: '$4',
@@ -162,7 +162,7 @@ const TableCell = styled(Paragraph, {
   p: '$2',
   px: '$3',
   size: '$5',
-  ellipse: true,
+  ellipsis: true,
 
   variants: {
     head: {
@@ -178,7 +178,7 @@ const TableCell = styled(Paragraph, {
   } as const,
 })
 
-const TableCol = styled(ThemeableStack, {
+const TableCol = styled(YStack, {
   brw: 1,
   brc: '$borderColor',
   f: 1,
@@ -730,11 +730,11 @@ const componentsIn = {
   SponsorNotice: () => {
     return (
       <NoticeFrame theme="red">
-        <YStack maw="100%" space>
+        <YStack maw="100%" gap="$4">
           <H4 color="$color10" fontFamily="$silkscreen">
             👋 Hey! Listen!
           </H4>
-          <YStack ov="hidden" f={1} o={0.85} space>
+          <YStack ov="hidden" f={1} o={0.85} gap="$4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
               <a href="https://x.com/natebirdman" target="_blank" rel="noreferrer">
@@ -1009,12 +1009,13 @@ export const components = Object.fromEntries(
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
     tag="a"
+    // @ts-expect-error
     href={`#${id}`}
     id={id}
     data-id={id}
     display="inline-flex"
     ai="center"
-    space
+    gap="$4"
     {...props}
   >
     {children}

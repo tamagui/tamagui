@@ -211,7 +211,7 @@ export const settings = {
   fastSchemeChange: true,
   shouldAddPrefersColorThemes: true,
   allowedStyleValues: 'somewhat-strict-web',
-  themeClassNameOnRoot: true,
+  addThemeClassName: 'html',
   onlyAllowShorthands: true,
   // allow two inverses (tooltips, etc)
   // TODO on inverse theme changes

@@ -213,14 +213,13 @@ export const stylePropsView = {
   ...tokenCategories.radius,
   ...stylePropsTransform,
   ...stylePropsUnitless,
+  ...(isAndroid ? { elevationAndroid: true } : {}),
 
   boxShadow: true,
   filter: true,
 
-  // allow a few web only ones
-
   ...(process.env.TAMAGUI_TARGET === 'web' && {
-    // RN doesn't support specific border styles per-edge
+    // web-only for convenience
     transition: true,
     textWrap: true,
     backdropFilter: true,
@@ -281,7 +280,6 @@ export const stylePropsView = {
     transformStyle: true,
     userSelect: true,
   }),
-  ...(isAndroid ? { elevationAndroid: true } : {}),
 }
 
 const stylePropsFont = {
@@ -304,7 +302,6 @@ export const stylePropsTextOnly = {
   textShadowOffset: true,
   textShadowRadius: true,
   userSelect: true,
-  selectable: true,
   verticalAlign: true,
 
   // allow some web only ones

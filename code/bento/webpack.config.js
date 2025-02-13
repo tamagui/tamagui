@@ -95,14 +95,6 @@ module.exports = {
       importsWhitelist: ['constants.js'],
       // enableDynamicEvaluation: true,
       disableExtraction,
-      themeBuilder: {
-        input: '../core/themes/src/themes-new.ts',
-        output: path.join(
-          require.resolve('@tamagui/themes/src/themes-new.ts'),
-          '..',
-          'generated-new.ts'
-        ),
-      },
       // disable: true,
     }),
     // new BundleAnalyzerPlugin(),

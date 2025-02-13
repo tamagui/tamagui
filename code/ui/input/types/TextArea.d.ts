@@ -97,7 +97,6 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         textShadowOffset: boolean;
         textShadowRadius: boolean;
         userSelect: boolean;
-        selectable: boolean;
         verticalAlign: boolean;
         color: boolean;
         textDecorationColor: boolean;
@@ -113,7 +112,6 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         letterSpacing: boolean;
         lineHeight: boolean;
         textTransform: boolean;
-        elevationAndroid?: boolean | undefined;
         transition?: boolean | undefined;
         textWrap?: boolean | undefined;
         backdropFilter?: boolean | undefined;
@@ -173,6 +171,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         transformStyle?: boolean | undefined;
         boxShadow: boolean;
         filter: boolean;
+        elevationAndroid?: boolean | undefined;
         animationIterationCount: boolean;
         aspectRatio: boolean;
         borderImageOutset: boolean;
