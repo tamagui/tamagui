@@ -1,12 +1,8 @@
 import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
-<<<<<<< HEAD
 import type { Href } from 'one'
 import { startTransition, use, useCallback, useEffect, useMemo, useState } from 'react'
-=======
-import { startTransition, useEffect, useMemo, useState } from 'react'
->>>>>>> 98b80bc549616566420720a3964dd07c70cdad20
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -33,11 +29,7 @@ import { Switch } from '../../../components/Switch'
 import { PromoCards } from '../header/UpgradePopover'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { StripeElementsForm } from './StripeElements'
-<<<<<<< HEAD
 import { useSubscription } from './useSubscription'
-import type { StripeError } from '@stripe/stripe-js'
-=======
->>>>>>> 98b80bc549616566420720a3964dd07c70cdad20
 import { useProducts } from './useProducts'
 
 class PurchaseModal {
