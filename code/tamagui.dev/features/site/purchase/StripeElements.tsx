@@ -1,10 +1,9 @@
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
 import { loadStripe, type StripeError } from '@stripe/stripe-js'
 import { useState } from 'react'
-import { Theme } from 'tamagui'
 import { PurchaseButton } from './helpers'
 
-const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY_LIVEY!)
+const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY_LIVE!)
 
 type StripeElementsProps = {
   onSuccess: (subscriptionId: string) => void
