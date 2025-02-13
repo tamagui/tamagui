@@ -321,7 +321,7 @@ const HeaderMenuButton = () => {
 
 export const HeaderLinksPopover = (props: PopoverProps) => {
   const popoverRef = React.useRef<Popover>(null)
-  const [active, setActive] = React.useState<ID | ''>('menu')
+  const [active, setActive] = React.useState<ID | ''>('')
 
   const val = React.useMemo(() => {
     return {
@@ -714,7 +714,7 @@ const HeadAnchor = styled(Paragraph, {
   px: '$4',
   py: '$4',
   cursor: 'pointer',
-  fontSize: 14,
+  fontSize: 16,
   color: '$color11',
   tabIndex: -1,
 

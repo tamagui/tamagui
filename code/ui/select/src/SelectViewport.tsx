@@ -16,6 +16,7 @@ import type {
   SelectViewportExtraProps,
   SelectViewportProps,
 } from './types'
+import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport
@@ -100,6 +101,8 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       forwardedRef,
       context.floatingContext?.refs.setFloating
     )
+
+    console.log('animate', context.open, useId())
 
     return (
       <>

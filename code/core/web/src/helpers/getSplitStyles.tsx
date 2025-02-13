@@ -634,8 +634,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        consoleGroupCollapsed('  💠 expanded', keyInit, '=>', key)
-        log(val)
+        consoleGroupCollapsed('  💠 expanded', keyInit, '=>', key, val)
         console.groupEnd()
       }
 

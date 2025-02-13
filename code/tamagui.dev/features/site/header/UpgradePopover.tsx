@@ -1,21 +1,17 @@
-import { Box, DoorClosed, MessageCircle, PaintBucket } from '@tamagui/lucide-icons'
-import type { Href } from 'one'
-import { Link } from 'one'
 import * as React from 'react'
 import {
   type PopoverProps,
   Adapt,
   H2,
+  H5,
   Paragraph,
   Popover,
   Sheet,
-  styled,
   XStack,
   YStack,
 } from 'tamagui'
-import { BentoIcon } from '../../icons/BentoIcon'
-import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { purchaseModal } from '../purchase/NewPurchaseModal'
+import { PromoCards } from './PromoCards'
 
 export const UpgradePopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
@@ -65,8 +61,8 @@ export const UpgradePopover = (props: PopoverProps) => {
             // hover handles this
           }}
         >
-          <H2 ff="$mono" f={1} fow="600" size="$4">
-            Pro
+          <H2 ff="$mono" f={1} fow="600" size="$5">
+            Start
           </H2>
         </XStack>
       </Popover.Anchor>
@@ -118,11 +114,13 @@ export const UpgradePopover = (props: PopoverProps) => {
         <YStack mah="80vh" p="$3" width={280} ov="hidden" br="$6">
           <Popover.ScrollView>
             <YStack gap="$2">
+              <H5 ta="center">Tamagui Start</H5>
+              <PromoCards less />
               <Paragraph
-                bg="$color2"
+                bg="$color3"
                 p="$4"
                 br="$4"
-                theme="green"
+                // theme="red"
                 lh="$2"
                 mb="$2"
                 color="$color11"
@@ -143,9 +141,8 @@ export const UpgradePopover = (props: PopoverProps) => {
                   setOpen(false)
                 }}
               >
-                Pro is how we fund the independent development of Tamagui.
+                Start is how we fund the OSS development of Tamagui.
               </Paragraph>
-              <PromoCards />
             </YStack>
           </Popover.ScrollView>
         </YStack>
@@ -153,131 +150,3 @@ export const UpgradePopover = (props: PopoverProps) => {
     </Popover>
   )
 }
-
-export const PromoCards = () => {
-  return (
-    <>
-      <Card>
-        <TooltipLabelLarge
-          href="/bento"
-          icon={
-            <YStack y={-2}>
-              <MessageCircle />
-            </YStack>
-          }
-          title="Chat"
-          subtitle="A new AI chat agent that's an expert in Tamagui."
-        />
-      </Card>
-
-      <Card>
-        <TooltipLabelLarge
-          icon={<TakeoutIcon />}
-          href="/takeout"
-          title="Takeout"
-          subtitle="Starter kit for making universal apps fast."
-        />
-      </Card>
-
-      <Card>
-        <TooltipLabelLarge
-          href="/bento"
-          icon={
-            <YStack y={-2}>
-              <BentoIcon />
-            </YStack>
-          }
-          title="Bento"
-          subtitle="OSS and paid copy-paste components and screens."
-        />
-      </Card>
-
-      <Card>
-        <TooltipLabelLarge
-          href="/theme"
-          icon={<PaintBucket />}
-          title="Theme"
-          subtitle="Use our AI designed to generate great theme suites."
-        />
-      </Card>
-
-      <Card>
-        <TooltipLabelLarge
-          href="/theme"
-          icon={<Box />}
-          title="Assets"
-          subtitle="Scripts to easily add fonts and icon packs."
-        />
-      </Card>
-
-      <Card>
-        <TooltipLabelLarge
-          href="/theme"
-          icon={<DoorClosed />}
-          title="Access"
-          subtitle="Private chat room and early access to new features."
-        />
-      </Card>
-    </>
-  )
-}
-
-const TooltipLabelLarge = ({
-  title,
-  subtitle,
-  icon,
-  href,
-}: { href: string; icon: any; title: string; subtitle: string }) => {
-  return (
-    <Link asChild href={href as Href}>
-      <YStack cur="pointer" f={1} p="$3" br="$4" gap="$1">
-        <XStack ai="center" gap="$2">
-          <YStack scale={0.7}>{icon}</YStack>
-          <H2 ff="$mono" f={1} fow="600" size="$5" ls={1}>
-            {title}
-          </H2>
-        </XStack>
-
-        <Paragraph ff="$mono" px="$2" theme="alt1" f={1} size="$3" ls={-0.5}>
-          {subtitle}
-        </Paragraph>
-      </YStack>
-    </Link>
-  )
-}
-
-const Card = styled(YStack, {
-  maxHeight: 120,
-  maxWidth: 'calc(min(100%, 257px))',
-  flex: 1,
-  br: '$4',
-  borderWidth: 0.5,
-  borderColor: '$color4',
-})
-
-const Frame = styled(YStack, {
-  animation: 'medium',
-  br: '$5',
-  ov: 'hidden',
-  fullscreen: true,
-  zIndex: 1,
-  x: 0,
-  opacity: 1,
-
-  variants: {
-    // 1 = right, 0 = nowhere, -1 = left
-    going: {
-      ':number': (going) => ({
-        enterStyle: {
-          x: going > 0 ? 20 : -20,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 20 : -20,
-          opacity: 0,
-        },
-      }),
-    },
-  } as const,
-})

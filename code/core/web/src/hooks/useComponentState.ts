@@ -1,6 +1,6 @@
 import { isServer, isWeb } from '@tamagui/constants'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -70,6 +70,8 @@ export const useComponentState = (
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
+  console.log('presenceState', presenceState)
+
   const hasEnterStyle = !!props.enterStyle
 
   const hasAnimationThatNeedsHydrate =
@@ -134,23 +136,26 @@ export const useComponentState = (
   }
 
   const groupName = props.group as any as string
-  let setStateWrapper: ((next: any) => void) | undefined
+  const groupContextState = groups.state
 
-  if (groupName) {
-    // when we set state we also set our group state and emit an event for children listening:
-    const groupContextState = groups.state
-    setStateWrapper = (state) => {
-      curStateRef.group!.emit(groupName, {
-        pseudo: state,
-      })
-      // and mutate the current since its concurrent safe (children throw it in useState on mount)
-      const next = {
-        ...groupContextState[groupName],
-        ...state,
+  const setStateWrapper = useMemo(():
+    | undefined
+    | ((nextState: Record<string, any>) => void) => {
+    if (groupName) {
+      // when we set state we also set our group state and emit an event for children listening:
+      return (state) => {
+        curStateRef.group!.emit(groupName, {
+          pseudo: state,
+        })
+        // and mutate the current since its concurrent safe (children throw it in useState on mount)
+        const next = {
+          ...groupContextState[groupName],
+          ...state,
+        }
+        groupContextState[groupName] = next
       }
-      groupContextState[groupName] = next
     }
-  }
+  }, [groupContextState, curStateRef, groupName])
 
   let setStateShallow = createShallowSetState(
     setState,

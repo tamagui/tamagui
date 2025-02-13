@@ -1,8 +1,7 @@
 import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import type { Href } from 'one'
-import { startTransition, use, useCallback, useEffect, useMemo, useState } from 'react'
+import { startTransition, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -22,15 +21,14 @@ import {
   Unspaced,
   XStack,
   YStack,
-  Spinner,
 } from 'tamagui'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
-import { PromoCards } from '../header/UpgradePopover'
+import { PromoCards } from '../header/PromoCards'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { StripeElementsForm } from './StripeElements'
-import { useSubscription } from './useSubscription'
 import { useProducts } from './useProducts'
+import { useTakeoutStore } from './useTakeoutStore'
 
 class PurchaseModal {
   show = false
@@ -487,7 +485,7 @@ const SupportTabContent = ({
       </BigP>
 
       <YStack gap="$6" p="$4">
-        <YStack gap="$3">
+        {/* <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="chat-support">
               <P>Chat Support ($100/month)</P>
@@ -506,12 +504,12 @@ const SupportTabContent = ({
             A private Discord room just for your team, with responses prioritized over our
             community chat.
           </P>
-        </YStack>
+        </YStack> */}
 
         <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="support-tier">
-              <P>Support Tier ($800/month per tier)</P>
+              <P>Level</P>
             </Label>
 
             <XStack maw={150}>
@@ -526,13 +524,13 @@ const SupportTabContent = ({
                   None
                 </Select.Item>
                 <Select.Item value="1" index={1}>
-                  Tier 1 - $800/mo
+                  1 · $800/mo
                 </Select.Item>
                 <Select.Item value="2" index={2}>
-                  Tier 2 - $1,600/mo
+                  2 · $1,600/mo
                 </Select.Item>
                 <Select.Item value="3" index={3}>
-                  Tier 3 - $3,000/mo
+                  3 · $3,000/mo
                 </Select.Item>
               </Select>
             </XStack>
@@ -559,27 +557,21 @@ const BigP = styled(P, {
 const PurchaseTabContent = () => {
   return (
     <YStack gap="$4" pb="$4">
-      <YStack gap="$4">
-        <BigP mb="$3">
-          Tamagui Pro is a bundle that helps you launch your next idea much faster. You
-          get:
+      <YStack gap="$7">
+        <BigP>
+          We've put together a few tools that make starting and building a universal app
+          easier and better.
         </BigP>
 
-        <XStack fw="wrap" gap="$3" ai="center" justifyContent="center">
+        <XStack mx="$-4" fw="wrap" gap="$3" ai="center" justifyContent="center">
           <PromoCards />
         </XStack>
 
-        <Separator o={0.25} />
-
         <YStack gap="$3">
           <P color="$color10">
-            You get updates across all products and access to Github and Discord for a
-            year.
-          </P>
-
-          <P color="$color10">
-            You get lifetime rights to all code and assets, even after subscription
-            expires.
+            For a one year term you get access to the private Takeout Github repo, Bento
+            UI, and the private community chat room. You get lifetime rights to all code
+            and assets, even after subscription expires.
           </P>
         </YStack>
       </YStack>
