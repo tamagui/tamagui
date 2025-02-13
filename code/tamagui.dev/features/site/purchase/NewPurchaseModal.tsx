@@ -129,7 +129,7 @@ const PurchaseModalContents = () => {
       if (hasSupportTier) {
         return 'Yearly base + monthly support tier, easy 1-click cancel'
       }
-      return 'Paid by year, easy 1-click cancel'
+      return 'Yearly subscription'
     }
   }, [chatSupport, supportTier, disableAutoRenew])
 
@@ -310,20 +310,20 @@ const PurchaseModalContents = () => {
                   </YStack>
 
                   <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
-                    <Theme name="accent">
-                      <StripeElementsForm
-                        onSuccess={handlePaymentSuccess}
-                        onError={handlePaymentError}
-                        autoRenew={!disableAutoRenew}
-                        chatSupport={chatSupport}
-                        supportTier={Number(supportTier)}
-                        priceId={products?.starter.prices[0].id || ''}
-                        isProcessing={isProcessing}
-                        setIsProcessing={setIsProcessing}
-                        buttonText={currentTab === 'purchase' ? 'Next' : 'Checkout'}
-                        onNext={() => changeTab('support')}
-                      />
-                    </Theme>
+                    {/* <Theme name="accent"> */}
+                    <StripeElementsForm
+                      onSuccess={handlePaymentSuccess}
+                      onError={handlePaymentError}
+                      autoRenew={!disableAutoRenew}
+                      chatSupport={chatSupport}
+                      supportTier={Number(supportTier)}
+                      priceId={products?.starter.prices[0].id || ''}
+                      isProcessing={isProcessing}
+                      setIsProcessing={setIsProcessing}
+                      buttonText={currentTab === 'purchase' ? 'Next' : 'Checkout'}
+                      onNext={() => changeTab('support')}
+                    />
+                    {/* </Theme> */}
                     <XStack jc="space-between" gap="$4" ai="center" mb="$2">
                       <XStack ai="center" gap="$2">
                         <SizableText
@@ -517,6 +517,7 @@ const SupportTabContent = ({
             <XStack maw={150}>
               <Select
                 id="support-tier"
+                miw={200}
                 size="$4"
                 value={supportTier}
                 onValueChange={setSupportTier}

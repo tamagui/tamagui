@@ -1,12 +1,4 @@
-import {
-  Box,
-  DoorClosed,
-  Dot,
-  Lock,
-  LockKeyhole,
-  MessageCircle,
-  PaintBucket,
-} from '@tamagui/lucide-icons'
+import { Box, DoorClosed, MessageCircle, PaintBucket } from '@tamagui/lucide-icons'
 import type { Href } from 'one'
 import { Link } from 'one'
 import * as React from 'react'
@@ -14,17 +6,15 @@ import {
   type PopoverProps,
   Adapt,
   H2,
-  H5,
-  isTouchable,
   Paragraph,
   Popover,
+  Sheet,
   styled,
   XStack,
   YStack,
 } from 'tamagui'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
-import { Sheet } from 'tamagui'
 import { purchaseModal } from '../purchase/NewPurchaseModal'
 
 export const UpgradePopover = (props: PopoverProps) => {

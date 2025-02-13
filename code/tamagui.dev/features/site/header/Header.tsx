@@ -1,4 +1,4 @@
-import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
+import { LogoWords, TamaguiLogo, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { createShallowSetState, isTouchable } from '@tamagui/web'
 import { usePathname } from 'one'
