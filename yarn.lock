@@ -3211,7 +3211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react@npm:^0.27.3":
+"@floating-ui/react@npm:^0.27.4":
   version: 0.27.4
   resolution: "@floating-ui/react@npm:0.27.4"
   dependencies:
@@ -7453,7 +7453,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:code/ui/popover"
   dependencies:
-    "@floating-ui/react": "npm:^0.27.3"
+    "@floating-ui/react": "npm:^0.27.4"
     "@tamagui/adapt": "workspace:*"
     "@tamagui/animate": "workspace:*"
     "@tamagui/aria-hidden": "workspace:*"
@@ -7747,7 +7747,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:code/ui/select"
   dependencies:
-    "@floating-ui/react": "npm:^0.27.3"
+    "@floating-ui/react": "npm:^0.27.4"
     "@floating-ui/react-dom": "npm:^2.1.2"
     "@floating-ui/react-native": "npm:^0.10.7"
     "@tamagui/adapt": "workspace:*"
@@ -8194,7 +8194,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:code/ui/tooltip"
   dependencies:
-    "@floating-ui/react": "npm:^0.27.3"
+    "@floating-ui/react": "npm:^0.27.4"
     "@tamagui/build": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/core": "workspace:*"

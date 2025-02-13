@@ -41,7 +41,7 @@ export function formatPrice(amount: number, currency: string) {
 export function PurchaseButton(props: ButtonProps) {
   return (
     <Button size="$5" borderWidth={2} {...props}>
-      <Button.Text size="$4" ff="$silkscreen">
+      <Button.Text size="$4" ff="$mono">
         {props.children}
       </Button.Text>
     </Button>
