@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image-next",
-  "version": "1.124.16",
+  "version": "1.124.17",
   "sideEffects": [
     "*.css"
   ],
