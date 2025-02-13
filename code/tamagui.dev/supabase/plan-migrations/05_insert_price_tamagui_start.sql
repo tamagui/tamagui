@@ -4,12 +4,12 @@
 INSERT INTO prices (id, product_id, active, unit_amount, currency, type, interval, interval_count, trial_period_days, metadata)
 VALUES (
   'price_1QrujmFQGtHoG6xc4UIilvAy',
-  'prod_RlRd2DVrG0frHe', -- Tamagui Start
+  'prod_RlRd2DVrG0frHe', -- Tamagui Pro
   true,
-  20000,  -- equivalent to $200
+  2000,  -- equivalent to $20
   'usd',
   'recurring',
-  'year',
+  'month',
   1,
   NULL,
   '{"auto_renew": true}'
