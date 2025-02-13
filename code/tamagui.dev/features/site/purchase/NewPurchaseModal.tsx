@@ -243,7 +243,7 @@ const PurchaseModalContents = () => {
               </Tabs.List>
 
               <YStack f={1} group="takeoutBody">
-                <AnimatePresence exitBeforeEnter initial={false}>
+                <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
                       value={currentTab}
@@ -575,7 +575,7 @@ const PurchaseTabContent = () => {
           get:
         </BigP>
 
-        <XStack fw="wrap" gap="$3">
+        <XStack fw="wrap" gap="$3" ai="center" justifyContent="center">
           <PromoCards />
         </XStack>
 
