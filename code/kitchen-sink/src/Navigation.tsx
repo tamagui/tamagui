@@ -13,7 +13,6 @@ import { ColorSchemeToggle } from './features/home/ColorSchemeListItem'
 
 const bentoScreenNames = Data.listingData.sections.map(({ sectionName }) => sectionName)
 
-
 type BentoScreens = {
   [K in (typeof bentoScreenNames)[number]]: {
     id: string
@@ -40,6 +39,11 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
   name,
 }) => {
   //NOTE: Components using Flatlist can't have a ScrollView wrapper. This breaks scrolling on Android.
+
+  if (['ProductWithReview'].includes(name)) {
+    return children
+  }
+
   if (
     [
       'FlatGrid',
@@ -60,6 +64,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       </View>
     )
   }
+
   return (
     <ScrollView p="$4" flex={1} bg="$background" keyboardShouldPersistTaps="always">
       {children}

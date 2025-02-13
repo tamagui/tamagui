@@ -170,6 +170,7 @@ const resolveVariants: StyleResolver = (
 
   if (variantValue) {
     const expanded = normalizeStyle(variantValue, !!styleProps.noNormalize)
+
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.info(`   expanding styles from `, variantValue, `to`, expanded)
     }
@@ -263,6 +264,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
 
     if (isVariable(val)) {
       res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
+
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.info(`variable`, subKey, res[subKey])
       }
@@ -362,13 +364,15 @@ export const getTokenForKey = (
 
   const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
 
+  const themeValue = theme ? theme[value] || theme[value.slice(1)] : undefined
+
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false
 
   const customTokenAccept = staticConfig?.accept?.[key]
   if (customTokenAccept) {
-    const val = theme?.[value] ?? tokensParsed[customTokenAccept][value]
+    const val = themeValue ?? tokensParsed[customTokenAccept][value]
     if (val != null) {
       resolveAs = 'value' // always resolve custom tokens as values
       valOrVar = val
@@ -376,12 +380,12 @@ export const getTokenForKey = (
     }
   }
 
-  if (theme && value in theme) {
+  if (themeValue) {
     if (resolveAs === 'except-theme') {
       return value
     }
 
-    valOrVar = theme[value]
+    valOrVar = themeValue
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
       globalThis.tamaguiAvoidTracking = true
       console.info(

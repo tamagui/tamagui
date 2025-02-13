@@ -110,9 +110,7 @@ export function createExtractor(
     !process.env.npm_package_dependencies_next &&
     process.env.TAMAGUI_TARGET !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
-    (process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG ||
-      process.env.IDENTIFY_TAGS)
+    (process.env.NODE_ENV === 'development' || process.env.IDENTIFY_TAGS)
 
   let projectInfo: TamaguiProjectInfo | null = null
 
@@ -2056,9 +2054,10 @@ export function createExtractor(
                   ...styleProps,
                   noClass: true,
                   fallbackProps: completeProps,
-                  ...(options.experimentalFlattenThemesOnNative && {
-                    resolveValues: 'except-theme',
-                  }),
+                  ...(options.experimentalFlattenThemesOnNative &&
+                    platform === 'native' && {
+                      resolveValues: 'except-theme',
+                    }),
                 },
                 undefined,
                 undefined,

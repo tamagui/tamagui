@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "1.124.13",
+  "version": "1.124.17",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

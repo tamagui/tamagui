@@ -43,9 +43,7 @@ const include = [
   '@discordjs/core',
 ]
 
-const disableExtraction = process.env.DISABLE_OPTIMIZATION
-  ? false
-  : process.env.NODE_ENV === 'production'
+const disableExtraction = false
 
 export default {
   envPrefix: 'NEXT_PUBLIC_',
@@ -86,6 +84,9 @@ export default {
 
   plugins: [
     tamaguiPlugin({
+      config: '@tamagui/tamagui-dev-config',
+      components: ['tamagui'],
+      logTimings: true,
       optimize: true,
       disableExtraction,
       config: '@tamagui/tamagui-dev-config',
