@@ -2054,9 +2054,10 @@ export function createExtractor(
                   ...styleProps,
                   noClass: true,
                   fallbackProps: completeProps,
-                  ...(options.experimentalFlattenThemesOnNative && {
-                    resolveValues: 'except-theme',
-                  }),
+                  ...(options.experimentalFlattenThemesOnNative &&
+                    platform === 'native' && {
+                      resolveValues: 'except-theme',
+                    }),
                 },
                 undefined,
                 undefined,

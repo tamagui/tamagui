@@ -61,9 +61,11 @@ export async function loadTamagui(
     // this affects the bundled config so run it first
     await generateThemesAndLog(props)
 
-    if (bundleInfo.tamaguiConfig) {
+    // if they accidently pass in a config without createTamagui called,call it
+    const maybeTamaguiConfig = bundleInfo.tamaguiConfig as TamaguiInternalConfig
+    if (maybeTamaguiConfig && !maybeTamaguiConfig.parsed) {
       const { createTamagui } = requireTamaguiCore(props.platform || 'web')
-      createTamagui(bundleInfo.tamaguiConfig as any)
+      bundleInfo.tamaguiConfig = createTamagui(bundleInfo.tamaguiConfig as any)
     }
 
     if (!hasBundledConfigChanged()) {

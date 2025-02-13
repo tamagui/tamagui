@@ -43,9 +43,7 @@ const include = [
   '@discordjs/core',
 ]
 
-const disableExtraction = process.env.DISABLE_OPTIMIZATION
-  ? false
-  : process.env.NODE_ENV === 'development'
+const disableExtraction = false
 
 export default {
   envPrefix: 'NEXT_PUBLIC_',
