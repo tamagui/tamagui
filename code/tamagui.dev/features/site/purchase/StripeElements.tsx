@@ -1,7 +1,13 @@
-import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
-import { loadStripe, type StripeError } from '@stripe/stripe-js'
-import { useState } from 'react'
-import { Theme } from 'tamagui'
+import { useEffect, useState } from 'react'
+import { loadStripe, type StripeError, type Appearance } from '@stripe/stripe-js'
+import {
+  Elements,
+  PaymentElement,
+  useStripe,
+  useElements,
+  CardElement,
+} from '@stripe/react-stripe-js'
+import { Button, Paragraph, Spinner, YStack, Theme } from 'tamagui'
 import { PurchaseButton } from './helpers'
 
 const stripePromise = loadStripe(
@@ -116,11 +122,11 @@ export const StripeElementsFormContent = ({
   }
 
   return (
-    <>
+    <Theme name="accent">
       <CardElement />
       <PurchaseButton onPress={handleSubmit} disabled={isProcessing}>
         {isProcessing ? 'Processing...' : buttonText}
       </PurchaseButton>
-    </>
+    </Theme>
   )
 }
