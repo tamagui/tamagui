@@ -76,8 +76,6 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<import("@ta
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverContentProps = PopoverContentTypeProps;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
-    /** Separate from the shorthand or style prop, this zIndex is passed to the portal that renders the popover */
-    zIndex?: number;
     /**
      * @see https://github.com/theKashey/react-remove-scroll#usage
      */
