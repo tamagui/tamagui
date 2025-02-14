@@ -29,6 +29,8 @@ import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { StripeElementsForm } from './StripeElements'
 import { useProducts } from './useProducts'
 import { useTakeoutStore } from './useTakeoutStore'
+import { StripePaymentModal, paymentModal } from './StripePaymentModal'
+import { PurchaseButton } from './helpers'
 
 class PurchaseModal {
   show = false
@@ -308,20 +310,16 @@ const PurchaseModalContents = () => {
                   </YStack>
 
                   <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
-                    {/* <Theme name="accent"> */}
-                    <StripeElementsForm
-                      onSuccess={handlePaymentSuccess}
-                      onError={handlePaymentError}
-                      autoRenew={!disableAutoRenew}
-                      chatSupport={chatSupport}
-                      supportTier={Number(supportTier)}
-                      priceId={products?.starter.prices[0].id || ''}
-                      isProcessing={isProcessing}
-                      setIsProcessing={setIsProcessing}
-                      buttonText={currentTab === 'purchase' ? 'Next' : 'Checkout'}
-                      onNext={() => changeTab('support')}
-                    />
-                    {/* </Theme> */}
+                    <Theme name="accent">
+                      <PurchaseButton
+                        onPress={() => {
+                          paymentModal.show = true
+                        }}
+                        disabled={isProcessing}
+                      >
+                        {isProcessing ? 'Processing...' : 'Checkout'}
+                      </PurchaseButton>
+                    </Theme>
                     <XStack jc="space-between" gap="$4" ai="center" mb="$2">
                       <XStack ai="center" gap="$2">
                         <SizableText
@@ -377,6 +375,16 @@ const PurchaseModalContents = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog>
+      <StripePaymentModal
+        yearlyTotal={yearlyTotal}
+        monthlyTotal={monthlyTotal}
+        disableAutoRenew={disableAutoRenew}
+        chatSupport={chatSupport}
+        supportTier={Number(supportTier)}
+        priceId={products?.starter.prices[0].id || ''}
+        onSuccess={handlePaymentSuccess}
+        onError={handlePaymentError}
+      />
     </>
   )
 }
