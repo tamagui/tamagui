@@ -25,7 +25,7 @@ import { useUser } from '~/features/user/useUser'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+const stripePromise = loadStripe(process.env.VITE_STRIPE_SECRET_KEY_LIVE!)
 
 class PaymentModal {
   show = false
