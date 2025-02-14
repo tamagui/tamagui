@@ -1,8 +1,42 @@
+import { DialogDemo, PopoverDemo } from '@tamagui/demos'
 import { Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
-import { Button, Circle, type CircleProps, Text, XStack, YStack } from 'tamagui'
+import { Button, Circle, type CircleProps, Popover, Text, XStack, YStack } from 'tamagui'
 
 export default function Sandbox() {
+  return (
+    <>
+      <Popover size="$5" allowFlip>
+        <Popover.Trigger asChild>
+          <Button>toggle</Button>
+        </Popover.Trigger>
+
+        <Popover.Content
+          zIndex={100}
+          borderWidth={1}
+          borderColor="$borderColor"
+          enterStyle={{ y: -10, opacity: 0 }}
+          exitStyle={{ y: -10, opacity: 0 }}
+          elevate
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+        >
+          <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+
+          <YStack gap="$3"></YStack>
+        </Popover.Content>
+      </Popover>
+    </>
+  )
+}
+
+export function TextThemes() {
   const [name, setName] = useState('dark')
 
   return (

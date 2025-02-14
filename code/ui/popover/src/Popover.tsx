@@ -201,6 +201,9 @@ type PopoverContentTypeElement = PopoverContentImplElement
 
 export interface PopoverContentTypeProps
   extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
+  /** Separate from the shorthand or style prop, this zIndex is passed to the portal that renders the popover */
+  zIndex?: number
+
   /**
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
@@ -250,7 +253,7 @@ export const PopoverContent = PopperContentFrame.extractable(
     }
 
     return (
-      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
+      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={zIndex}>
         <Stack
           pointerEvents={
             context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
