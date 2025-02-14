@@ -31,6 +31,7 @@ import { useProducts } from './useProducts'
 import { useTakeoutStore } from './useTakeoutStore'
 import { StripePaymentModal, paymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
+import { useUser } from '~/features/user/useUser'
 
 class PurchaseModal {
   show = false
@@ -69,6 +70,7 @@ const PurchaseModalContents = () => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<Error | StripeError | null>(null)
   const { data: products } = useProducts()
+  const { data: userData } = useUser()
 
   function changeTab(next: string) {
     if (next === 'purchase' || next === 'support' || next === 'faq') {
@@ -89,6 +91,10 @@ const PurchaseModalContents = () => {
 
   const handlePaymentSuccess = async () => {
     window.location.href = '/payment-finished'
+  }
+
+  const handleCheckout = () => {
+    paymentModal.show = true
   }
 
   // Calculate direction for animation
@@ -311,12 +317,7 @@ const PurchaseModalContents = () => {
 
                   <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
                     <Theme name="accent">
-                      <PurchaseButton
-                        onPress={() => {
-                          paymentModal.show = true
-                        }}
-                        disabled={isProcessing}
-                      >
+                      <PurchaseButton onPress={handleCheckout} disabled={isProcessing}>
                         {isProcessing ? 'Processing...' : 'Checkout'}
                       </PurchaseButton>
                     </Theme>

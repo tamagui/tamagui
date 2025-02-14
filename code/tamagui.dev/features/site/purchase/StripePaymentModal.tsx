@@ -1,4 +1,14 @@
-import { Dialog, XStack, YStack, Paragraph, Separator, H3, Button, Theme } from 'tamagui'
+import {
+  Dialog,
+  XStack,
+  YStack,
+  Paragraph,
+  Separator,
+  H3,
+  Button,
+  Theme,
+  Spinner,
+} from 'tamagui'
 import {
   CardElement,
   Elements,
@@ -11,6 +21,9 @@ import { createStore, createUseStore } from '@tamagui/use-store'
 import { loadStripe } from '@stripe/stripe-js'
 import { StripeElementsForm } from './StripeElements'
 import { useEffect, useState } from 'react'
+import { useUser } from '~/features/user/useUser'
+import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
+import { GithubIcon } from '~/features/icons/GithubIcon'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -187,6 +200,170 @@ export const StripePaymentModal = ({
 }: StripePaymentModalProps) => {
   const store = usePaymentModal()
   const [isProcessing, setIsProcessing] = useState(false)
+  const { data: userData, isLoading, refresh } = useUser()
+  const supabaseClient = useSupabaseClient()
+  const [authInterval, setAuthInterval] = useState<NodeJS.Timeout | null>(null)
+
+  const handleLogin = async () => {
+    if (!supabaseClient) return
+
+    // Open popup for GitHub auth
+    const width = 600
+    const height = 800
+    const left = window.screenX + (window.innerWidth - width) / 2
+    const top = window.screenY + (window.innerHeight - height) / 2
+
+    // Get the auth URL first
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        skipBrowserRedirect: true,
+        redirectTo: `${window.location.origin}/api/auth/callback`,
+      },
+    })
+
+    if (error) {
+      console.error('Login error:', error)
+      return
+    }
+
+    // Open popup with the auth URL
+    const popup = window.open(
+      data.url,
+      'Login with GitHub',
+      `width=${width},height=${height},left=${left},top=${top}`
+    )
+
+    if (popup) {
+      // Poll for authentication status
+      const interval = setInterval(async () => {
+        if (popup.closed) {
+          clearInterval(interval)
+          return
+        }
+
+        const {
+          data: { session },
+        } = await supabaseClient.auth.getSession()
+        if (session) {
+          clearInterval(interval)
+          popup.close()
+          await refresh()
+        }
+      }, 1000)
+
+      setAuthInterval(interval)
+    }
+  }
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (authInterval) {
+        clearInterval(authInterval)
+      }
+    }
+  }, [authInterval])
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <YStack f={1} ai="center" jc="center" p="$4">
+          <Spinner size="large" />
+        </YStack>
+      )
+    }
+
+    if (!userData?.user) {
+      return (
+        <YStack gap="$4" ai="center" p="$4">
+          <H3>Sign in to continue</H3>
+          <Paragraph ta="center">
+            Please sign in with GitHub to continue your purchase.
+          </Paragraph>
+          <Button
+            size="$4"
+            theme="accent"
+            onPress={handleLogin}
+            icon={GithubIcon}
+            disabled={!supabaseClient}
+          >
+            Continue with GitHub
+          </Button>
+        </YStack>
+      )
+    }
+
+    return (
+      <XStack gap="$6">
+        {/* 左側: Stripe支払いフォーム */}
+        <YStack f={1} gap="$4">
+          <H3>Payment details</H3>
+          <Separator />
+          <Elements stripe={stripePromise}>
+            <PaymentForm
+              onSuccess={(subscriptionId) => {
+                store.show = false
+                onSuccess(subscriptionId)
+              }}
+              onError={onError}
+              autoRenew={!disableAutoRenew}
+              chatSupport={chatSupport}
+              supportTier={supportTier}
+              priceId={priceId}
+              isProcessing={isProcessing}
+              setIsProcessing={setIsProcessing}
+              yearlyTotal={yearlyTotal}
+              monthlyTotal={monthlyTotal}
+            />
+          </Elements>
+        </YStack>
+
+        {/* 右側: 注文サマリー */}
+        <YStack f={1} gap="$4" backgroundColor="$color2" p="$4" br="$4">
+          <H3>Order summary</H3>
+          <Separator />
+
+          <XStack jc="space-between">
+            <Paragraph>Monthly subscription</Paragraph>
+            <Paragraph>${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
+          </XStack>
+
+          {monthlyTotal > 0 && (
+            <>
+              {chatSupport && (
+                <XStack jc="space-between">
+                  <Paragraph>Chat support</Paragraph>
+                  <Paragraph>$100/month</Paragraph>
+                </XStack>
+              )}
+
+              {supportTier > 0 && (
+                <XStack jc="space-between">
+                  <Paragraph>Support tier ({supportTier})</Paragraph>
+                  <Paragraph>${supportTier * 800}/month</Paragraph>
+                </XStack>
+              )}
+            </>
+          )}
+
+          <Separator />
+
+          <XStack jc="space-between">
+            <H3>Total</H3>
+            <YStack ai="flex-end">
+              <H3>${Math.ceil(yearlyTotal / 12) + monthlyTotal}/month</H3>
+              {!disableAutoRenew && (
+                <Paragraph size="$3" o={0.8}>
+                  Billed monthly
+                </Paragraph>
+              )}
+            </YStack>
+          </XStack>
+        </YStack>
+      </XStack>
+    )
+  }
 
   return (
     <Dialog
@@ -204,84 +381,16 @@ export const StripePaymentModal = ({
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-
         <Dialog.Content
           bordered
           elevate
           key="content"
           animation="quick"
           w="90%"
-          maw={1000}
+          maw={!userData?.user ? 500 : 1000}
           p="$6"
         >
-          <XStack gap="$6">
-            {/* 左側: Stripe支払いフォーム */}
-            <YStack f={1} gap="$4">
-              <H3>Payment details</H3>
-              <Separator />
-              <Elements stripe={stripePromise}>
-                <PaymentForm
-                  onSuccess={(subscriptionId) => {
-                    store.show = false
-                    onSuccess(subscriptionId)
-                  }}
-                  onError={onError}
-                  autoRenew={!disableAutoRenew}
-                  chatSupport={chatSupport}
-                  supportTier={supportTier}
-                  priceId={priceId}
-                  isProcessing={isProcessing}
-                  setIsProcessing={setIsProcessing}
-                  yearlyTotal={yearlyTotal}
-                  monthlyTotal={monthlyTotal}
-                />
-              </Elements>
-            </YStack>
-
-            {/* 右側: 注文サマリー */}
-            <YStack f={1} gap="$4" backgroundColor="$color2" p="$4" br="$4">
-              <H3>Order summary</H3>
-              <Separator />
-
-              <XStack jc="space-between">
-                <Paragraph>Monthly subscription</Paragraph>
-                <Paragraph>${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
-              </XStack>
-
-              {monthlyTotal > 0 && (
-                <>
-                  {chatSupport && (
-                    <XStack jc="space-between">
-                      <Paragraph>Chat support</Paragraph>
-                      <Paragraph>$100/month</Paragraph>
-                    </XStack>
-                  )}
-
-                  {supportTier > 0 && (
-                    <XStack jc="space-between">
-                      <Paragraph>Support tier ({supportTier})</Paragraph>
-                      <Paragraph>${supportTier * 800}/month</Paragraph>
-                    </XStack>
-                  )}
-                </>
-              )}
-
-              <Separator />
-
-              <XStack jc="space-between">
-                <H3>Total</H3>
-                <YStack ai="flex-end">
-                  <H3>${Math.ceil(yearlyTotal / 12) + monthlyTotal}/month</H3>
-                  {!disableAutoRenew && (
-                    <Paragraph size="$3" o={0.8}>
-                      Billed monthly
-                    </Paragraph>
-                  )}
-                </YStack>
-              </XStack>
-            </YStack>
-          </XStack>
-
+          {renderContent()}
           <Dialog.Close asChild>
             <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
           </Dialog.Close>

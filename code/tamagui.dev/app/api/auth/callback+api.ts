@@ -21,12 +21,16 @@ export const GET: Endpoint = async (req) => {
   const headers = new Headers()
   headers.set('content-type', 'text/html')
 
+  // Add login_success=true to the redirect URL
+  const redirectUrl = new URL(next, url.origin)
+  redirectUrl.searchParams.set('login_success', 'true')
+
   // this will get the cookies added in getSupabaseServerClient thanks to one
   return new Response(
     `<html>
         <head>
           <script>
-            window.location.href = "${next}?login_success=true"
+            window.location.href = "${redirectUrl.toString()}"
           </script>
         </head>
       </html>`,
