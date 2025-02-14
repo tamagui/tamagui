@@ -6793,6 +6793,7 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/text": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-native: "npm:^0.76.5"
   peerDependencies:
@@ -7534,6 +7535,7 @@ __metadata:
     "@tamagui/sheet": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-freeze: "npm:^1.0.3"
     react-native: "npm:^0.76.5"
