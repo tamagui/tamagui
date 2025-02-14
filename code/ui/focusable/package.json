@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focusable",
-  "version": "1.124.17",
+  "version": "1.124.18",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
