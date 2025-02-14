@@ -53,10 +53,6 @@
     "wait-port": "^0.3.0",
     "zx": "^7.2.3"
   },
-  "engines": {
-    "node": ">=20.22.0",
-    "yarn": ">=4.4.0"
-  },
   "publishConfig": {
     "access": "public"
   },
