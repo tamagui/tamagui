@@ -26621,6 +26621,7 @@ __metadata:
     "@tamagui/use-force-update": "workspace:*"
     "@tamagui/use-window-dimensions": "workspace:*"
     "@tamagui/visually-hidden": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-native-web: "npm:^0.19.0"
   peerDependencies:

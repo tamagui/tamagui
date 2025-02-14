@@ -1,5 +1,5 @@
 export declare const useStackedZIndex: (props: {
     zIndex?: number;
-    stackZIndex?: number;
-}) => number | undefined;
+    stackZIndex?: boolean | number;
+}) => number;
 //# sourceMappingURL=useStackedZIndex.d.ts.map

@@ -54,9 +54,9 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { Platform, ScrollView } from 'react-native'
-
 import { useFloatingContext } from './useFloatingContext'
 
 // adapted from radix-ui popover
@@ -324,7 +324,7 @@ function PopoverRepropagateContext(props: {
 
 function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>) {
   const { __scopePopover } = props
-  const zIndex = props.zIndex ?? 150_000
+  const zIndex = props.zIndex
   const context = usePopoverContext(__scopePopover)
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
   const themeName = useThemeName()
@@ -348,7 +348,7 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
 
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
-    <Portal zIndex={zIndex}>
+    <Portal stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
       <Theme forceClassName name={themeName}>
@@ -358,7 +358,7 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
           />
         )}
-        {contents}
+        <StackZIndexContext>{contents}</StackZIndexContext>
       </Theme>
     </Portal>
   )

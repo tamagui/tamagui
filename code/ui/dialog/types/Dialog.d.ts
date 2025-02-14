@@ -264,17 +264,26 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             fullscreen?: boolean | undefined;
         } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
-        }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
+        }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core" /**
+         * Used to force mounting when more control is needed. Useful when
+         * controlling animation with React animation libraries.
+         */).WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }, {
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
-    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime" /**
+     * Used to disable the remove scroll functionality when open
+     */).JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {
                 scope?: string;
-            }): React.FunctionComponentElement<any>;
+            }): 
+            /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */
+            React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };
