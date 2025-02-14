@@ -1,11 +1,16 @@
 import { Dialog, XStack, YStack, Paragraph, Separator, H3, Button, Theme } from 'tamagui'
-import { CardElement, Elements } from '@stripe/react-stripe-js'
-import type { StripeError } from '@stripe/stripe-js'
+import {
+  CardElement,
+  Elements,
+  PaymentRequestButtonElement,
+  useStripe,
+} from '@stripe/react-stripe-js'
+import type { StripeError, PaymentRequest } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { loadStripe } from '@stripe/stripe-js'
 import { StripeElementsForm } from './StripeElements'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -25,6 +30,149 @@ type StripePaymentModalProps = {
   priceId: string
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
+}
+
+const PaymentForm = ({
+  onSuccess,
+  onError,
+  autoRenew,
+  chatSupport,
+  supportTier,
+  priceId,
+  isProcessing,
+  setIsProcessing,
+  yearlyTotal,
+  monthlyTotal,
+}: {
+  onSuccess: (subscriptionId: string) => void
+  onError: (error: Error | StripeError) => void
+  autoRenew: boolean
+  chatSupport: boolean
+  supportTier: number
+  priceId: string
+  isProcessing: boolean
+  setIsProcessing: (value: boolean) => void
+  yearlyTotal: number
+  monthlyTotal: number
+}) => {
+  const stripe = useStripe()
+  const [paymentRequest, setPaymentRequest] = useState<PaymentRequest | null>(null)
+
+  useEffect(() => {
+    if (!stripe) return
+
+    const initializePaymentRequest = async () => {
+      const pr = stripe.paymentRequest({
+        country: 'US',
+        currency: 'usd',
+        total: {
+          label: 'Tamagui Pro Subscription',
+          amount: Math.ceil((yearlyTotal / 12 + monthlyTotal) * 100), // Convert to monthly and cents
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
+      })
+
+      // Check if the browser can make the payment
+      const result = await pr.canMakePayment()
+
+      if (result) {
+        setPaymentRequest(pr)
+      }
+
+      // Setup payment handler
+      pr.on('paymentmethod', async (e) => {
+        setIsProcessing(true)
+        try {
+          // Create subscription with the payment method from Apple Pay
+          const response = await fetch('/api/create-subscription', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              paymentMethodId: e.paymentMethod.id,
+              priceId,
+              disableAutoRenew: !autoRenew,
+            }),
+          })
+
+          const data = await response.json()
+          if (!response.ok) {
+            throw new Error(data.error || 'Failed to create subscription')
+          }
+
+          // Complete the payment
+          await e.complete('success')
+
+          // Handle additional subscriptions if needed
+          if (chatSupport || supportTier > 0) {
+            const upgradeRes = await fetch('/api/upgrade-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscriptionId: data.subscriptionId,
+                chatSupport,
+                supportTier,
+                disableAutoRenew: !autoRenew,
+              }),
+            })
+
+            if (!upgradeRes.ok) {
+              throw new Error('Failed to upgrade subscription')
+            }
+          }
+
+          onSuccess(data.subscriptionId)
+        } catch (error) {
+          await e.complete('fail')
+          onError(error as Error)
+        } finally {
+          setIsProcessing(false)
+        }
+      })
+    }
+
+    initializePaymentRequest().catch(console.error)
+  }, [stripe]) // Only re-run when stripe instance changes
+
+  return (
+    <YStack gap="$4">
+      {paymentRequest && (
+        <>
+          <PaymentRequestButtonElement
+            options={{
+              paymentRequest,
+              style: {
+                paymentRequestButton: {
+                  type: 'buy',
+                  theme: 'dark',
+                  height: '48px',
+                },
+              },
+            }}
+          />
+          <Separator />
+          <Paragraph size="$3" o={0.5} ta="center">
+            Or pay with card
+          </Paragraph>
+        </>
+      )}
+      <StripeElementsForm
+        onSuccess={onSuccess}
+        onError={onError}
+        autoRenew={autoRenew}
+        chatSupport={chatSupport}
+        supportTier={supportTier}
+        priceId={priceId}
+        isProcessing={isProcessing}
+        setIsProcessing={setIsProcessing}
+        buttonText="Complete purchase"
+      />
+    </YStack>
+  )
 }
 
 export const StripePaymentModal = ({
@@ -72,7 +220,7 @@ export const StripePaymentModal = ({
               <H3>Payment details</H3>
               <Separator />
               <Elements stripe={stripePromise}>
-                <StripeElementsForm
+                <PaymentForm
                   onSuccess={(subscriptionId) => {
                     store.show = false
                     onSuccess(subscriptionId)
@@ -84,7 +232,8 @@ export const StripePaymentModal = ({
                   priceId={priceId}
                   isProcessing={isProcessing}
                   setIsProcessing={setIsProcessing}
-                  buttonText="Complete purchase"
+                  yearlyTotal={yearlyTotal}
+                  monthlyTotal={monthlyTotal}
                 />
               </Elements>
             </YStack>
