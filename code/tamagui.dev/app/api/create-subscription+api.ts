@@ -30,20 +30,33 @@ export default apiRoute(async (req) => {
     })
 
     if (!stripeCustomerId) {
-      throw new Error('Failed to get or create customer')
+      return Response.json({ error: 'Failed to get or create customer' }, { status: 500 })
     }
 
     // Attach payment method to customer
-    await stripe.paymentMethods.attach(paymentMethodId, {
-      customer: stripeCustomerId,
-    })
+    await stripe.paymentMethods
+      .attach(paymentMethodId, {
+        customer: stripeCustomerId,
+      })
+      .catch((error) => {
+        console.error('Error attaching payment method:', error)
+        return Response.json(
+          { error: 'Failed to attach payment method' },
+          { status: 500 }
+        )
+      })
 
     // Set as default payment method
-    await stripe.customers.update(stripeCustomerId, {
-      invoice_settings: {
-        default_payment_method: paymentMethodId,
-      },
-    })
+    await stripe.customers
+      .update(stripeCustomerId, {
+        invoice_settings: {
+          default_payment_method: paymentMethodId,
+        },
+      })
+      .catch((error) => {
+        console.error('Error updating customer:', error)
+        return Response.json({ error: 'Failed to update customer' }, { status: 500 })
+      })
 
     // Prepare subscription items
     const items = [{ price: priceId, quantity: 1 }]

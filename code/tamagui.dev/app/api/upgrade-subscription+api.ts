@@ -5,7 +5,7 @@ import { stripe } from '~/features/stripe/stripe'
 const CHAT_SUPPORT_PRICE_ID = 'price_1NqKJ3FQGtHoG6xcQ8Y9X8X8'
 const SUPPORT_TIER_PRICE_ID = 'price_1NqKJFFQGtHoG6xcY2X9X8X8'
 
-export const POST = apiRoute(async (req) => {
+export default apiRoute(async (req) => {
   const { user } = await ensureAuth({ req })
   const { subscriptionId, chatSupport, supportTier, disableAutoRenew } = await req.json()
 
