@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const SlidersHorizontal: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const SlidersHorizontal: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=sliders-horizontal.d.ts.map

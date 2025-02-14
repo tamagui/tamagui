@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const PowerOff: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const PowerOff: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=power-off.d.ts.map

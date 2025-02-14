@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const HousePlug: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const HousePlug: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=house-plug.d.ts.map

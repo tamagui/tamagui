@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import type { NamedExoticComponent } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { Svg, Polygon } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
@@ -25,4 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'FastForward'
 
-export const FastForward = memo<IconProps>(themed(Icon))
+export const FastForward: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))

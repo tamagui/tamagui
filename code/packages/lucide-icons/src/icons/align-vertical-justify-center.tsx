@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import type { NamedExoticComponent } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { Svg, Path, Rect } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
@@ -26,4 +27,5 @@ const Icon = (props) => {
 
 Icon.displayName = 'AlignVerticalJustifyCenter'
 
-export const AlignVerticalJustifyCenter = memo<IconProps>(themed(Icon))
+export const AlignVerticalJustifyCenter: NamedExoticComponent<IconProps> =
+  memo<IconProps>(themed(Icon))

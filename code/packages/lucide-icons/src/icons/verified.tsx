@@ -1,4 +1,5 @@
 import React from 'react'
+import type { NamedExoticComponent } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { themed } from '@tamagui/helpers-icon'
 
@@ -30,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Verified'
 
-export const Verified = React.memo<IconProps>(themed(Icon))
+export const Verified: NamedExoticComponent<IconProps> = React.memo<IconProps>(
+  themed(Icon)
+)

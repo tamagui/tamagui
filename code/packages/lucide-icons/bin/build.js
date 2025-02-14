@@ -1,8 +1,8 @@
-const fs = require('fs')
+const fs = require('node:fs')
 const glob = require('glob')
 const camelcase = require('camelcase')
 const uppercamelcase = require('uppercamelcase')
-const path = require('path')
+const path = require('node:path')
 const cheerio = require('cheerio')
 const lucideDir = require.resolve('lucide-static')
 
@@ -77,6 +77,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     const out = `
       import React, { memo } from 'react'
       import PropTypes from 'prop-types'
+      import type { NamedExoticComponent } from 'react'
       import type { IconProps } from '@tamagui/helpers-icon'
       import {
         Svg,
@@ -147,7 +148,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
 
       Icon.displayName = '${cname}'
 
-      export const ${cname} = memo<IconProps>(themed(Icon))
+      export const ${cname}: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
     `
 
     fs.writeFileSync(location, out, 'utf-8')
