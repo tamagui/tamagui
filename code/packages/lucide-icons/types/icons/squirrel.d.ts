@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Squirrel: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const Squirrel: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=squirrel.d.ts.map

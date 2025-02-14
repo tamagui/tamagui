@@ -176,16 +176,13 @@ export interface DialogCloseExtraProps {
 }
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps;
 declare const DialogClose: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-declare const DialogWarningProvider: {
-    (props: {
-        contentName: string;
-        titleName: string;
-        docsSlug: string;
-    } & {
-        children: React.ReactNode;
-    }): import("react/jsx-runtime").JSX.Element;
-    displayName: string;
-};
+declare const DialogWarningProvider: (props: {
+    contentName: string;
+    titleName: string;
+    docsSlug: string;
+} & {
+    children: React.ReactNode;
+}) => JSX.Element;
 export type DialogHandle = {
     open: (val: boolean) => void;
 };

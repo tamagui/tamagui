@@ -60,6 +60,11 @@ async function cancelAllSubscriptions() {
         cancelledSubscriptions.push(sub.id)
         console.info(`Cancelled subscription: ${sub.id}`)
       } catch (e) {
+        if (`${e}`.includes(`A canceled subscription can only update its cancellation`)) {
+          console.info(`Error cancelling but continuing: ${sub.id}`)
+          continue
+        }
+
         console.error(`Failed to cancel subscription ${sub.id}:`, e)
         // if error, rollback all cancellations
         await rollbackCancellations(cancelledSubscriptions)

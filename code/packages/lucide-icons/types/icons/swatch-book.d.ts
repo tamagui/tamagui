@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const SwatchBook: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const SwatchBook: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=swatch-book.d.ts.map

@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const UserCog: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const UserCog: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=user-cog.d.ts.map

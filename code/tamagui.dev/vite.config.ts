@@ -127,7 +127,7 @@ export default {
           config: {
             build: {
               rollupOptions: {
-                external: ['stripe', '@discordjs/core', 'zlib-sync'],
+                external: ['stripe', '@discordjs/core', 'zlib-sync', '@vercel/og'],
               },
             },
           },

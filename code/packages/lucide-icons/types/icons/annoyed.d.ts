@@ -1,3 +1,5 @@
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Annoyed: import("react").NamedExoticComponent<IconProps>;
+import type { NamedExoticComponent } from "react";
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const Annoyed: NamedExoticComponent<IconProps>;
+
 //# sourceMappingURL=annoyed.d.ts.map

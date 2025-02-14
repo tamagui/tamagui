@@ -186,7 +186,7 @@ async function buildTsc(allFiles) {
     return
   }
 
-  const targetDir = 'types'
+  const targetDir = './types'
   await FSE.ensureDir(targetDir)
 
   try {
@@ -211,6 +211,7 @@ async function buildTsc(allFiles) {
           const mapPath = `${dtsPath}.map`
 
           const output = `${code}\n//# sourceMappingURL=${path.basename(mapPath)}`
+          await FSE.ensureDir(dirname(dtsPath))
           await Promise.all([
             FSE.writeFile(dtsPath, output),
             FSE.writeFile(mapPath, JSON.stringify(map, null, 2)),
