@@ -7573,6 +7573,7 @@ __metadata:
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-did-finish-ssr": "workspace:*"
     "@tamagui/use-event": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     "@types/react-dom": "npm:^19.0.3"
     react-native: "npm:^0.76.5"
   languageName: unknown
@@ -8518,6 +8519,14 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/z-index-stack@workspace:*, @tamagui/z-index-stack@workspace:code/ui/z-index-stack":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/z-index-stack@workspace:code/ui/z-index-stack"
+  dependencies:
+    "@tamagui/build": "workspace:*"
   languageName: unknown
   linkType: soft
 

@@ -1,9 +1,8 @@
 import { useEffect, useId, useMemo } from 'react'
-import type { PortalProps } from './PortalProps'
 
 const CurrentPortalZIndices: Record<string, number> = {}
 
-export const useStackedZIndex = (props: Pick<PortalProps, 'zIndex' | 'stackZIndex'>) => {
+export const useStackedZIndex = (props: { zIndex?: number; stackZIndex?: number }) => {
   const { stackZIndex, zIndex: zIndexProp = 1000 } = props
   const id = useId()
 
