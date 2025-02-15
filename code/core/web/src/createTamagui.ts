@@ -29,12 +29,19 @@ import type {
   TokensParsed,
 } from './types'
 
-// config is re-run by the @tamagui/static, dont double validate
+// config is re-run by @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
+  if (process.env.NODE_ENV === 'test' && globalThis.__tamaguiConfig) {
+    console.warn(
+      `Warning: You somehow have duplicate Tamagui dependencies, this can cause issues. Tamagui is working around this by loading a previously loaded config in test mode. `
+    )
+    return globalThis.__tamaguiConfig
+  }
+
   if (createdConfigs.has(configIn)) {
     return configIn as any
   }
@@ -303,6 +310,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   configureMedia(config)
 
   createdConfigs.set(config, true)
+
+  if (process.env.NODE_ENV === 'test') {
+    globalThis.__tamaguiConfig = config
+  }
 
   if (configListeners.size) {
     configListeners.forEach((cb) => cb(config))
