@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.124.18",
+  "version": "1.125.0",
   "sideEffects": [
     "*.css"
   ],
@@ -55,6 +55,7 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*",
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {

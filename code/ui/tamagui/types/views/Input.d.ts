@@ -92,6 +92,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     debug?: import("@tamagui/core").DebugProp | undefined;
     children?: any | any[];
     className?: string | undefined;
+    value?: string | undefined | undefined;
     onPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined | undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined | undefined;
@@ -236,7 +237,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
         end?: number | undefined;
     } | undefined | undefined;
     inputAccessoryViewID?: string | undefined | undefined;
-    value?: string | undefined | undefined;
     clearButtonMode?: "never" | "while-editing" | "unless-editing" | "always" | undefined | undefined;
     clearTextOnFocus?: boolean | undefined | undefined;
     dataDetectorTypes?: import("react-native").DataDetectorTypes | import("react-native").DataDetectorTypes[] | undefined;

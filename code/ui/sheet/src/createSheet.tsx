@@ -9,13 +9,14 @@ import type {
 } from '@tamagui/core'
 import { Stack } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
+import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
 import { forwardRef, memo, useMemo } from 'react'
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
-
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
 import { useSheetContext } from './SheetContext'
@@ -148,20 +149,22 @@ export function createSheet<
 
         const sheetContents = useMemo(() => {
           return (
-            // @ts-ignore
-            <Frame
-              ref={composedContentRef}
-              flex={hasFit ? 0 : 1}
-              height={hasFit ? undefined : frameSize}
-              pointerEvents={open ? 'auto' : 'none'}
-              {...props}
-            >
-              {children}
+            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+              {/* @ts-expect-error */}
+              <Frame
+                ref={composedContentRef}
+                flex={hasFit ? 0 : 1}
+                height={hasFit ? undefined : frameSize}
+                pointerEvents={open ? 'auto' : 'none'}
+                {...props}
+              >
+                {children}
 
-              {adjustPaddingForOffscreenContent && (
-                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-              )}
-            </Frame>
+                {adjustPaddingForOffscreenContent && (
+                  <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+                )}
+              </Frame>
+            </StackZIndexContext>
           )
         }, [
           open,

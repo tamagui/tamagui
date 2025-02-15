@@ -12,13 +12,14 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { Portal } from '@tamagui/portal'
+import { Portal, resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 
 const DIALOG_NAME = 'Dialog'
@@ -134,7 +135,6 @@ export const DialogPortalFrame = styled(YStack, {
         alignItems: 'center',
         justifyContent: 'center',
         fullscreen: true,
-        zIndex: 100_000,
         ...(isWeb && {
           maxHeight: '100vh',
           position: 'fixed' as any,
@@ -197,9 +197,11 @@ const DialogPortal: React.FC<DialogPortalProps> = (
 
   if (context.modal) {
     const contents = (
-      <AnimatePresence onExitComplete={handleExitComplete}>
-        {isShowing || isAdapted ? children : null}
-      </AnimatePresence>
+      <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+        <AnimatePresence onExitComplete={handleExitComplete}>
+          {isShowing || isAdapted ? children : null}
+        </AnimatePresence>
+      </StackZIndexContext>
     )
 
     if (isFullyHidden && !isAdapted) {
@@ -215,9 +217,13 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     )
 
     if (isWeb) {
-      // no need for portal nonsense on web
       return (
-        <Portal zIndex={props.zIndex ?? 100_000}>
+        <Portal
+          zIndex={props.zIndex}
+          // set to 1000 which "boosts" it 1000 above baseline for current context
+          // this makes sure its above (this first 1k) popovers on the same layer
+          stackZIndex={1000}
+        >
           <PassthroughTheme>{framedContents}</PassthroughTheme>
         </Portal>
       )
@@ -346,10 +352,14 @@ const DialogContent = DialogContentFrame.extractable(
     const { forceMount = portalContext.forceMount, ...contentProps } = props
     const context = useDialogContext(CONTENT_NAME, __scopeDialog)
 
-    const contents = context.modal ? (
-      <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
-    ) : (
-      <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+    const contents = (
+      <>
+        {context.modal ? (
+          <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
+        ) : (
+          <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+        )}
+      </>
     )
 
     if (!isWeb || context.disableRemoveScroll) {

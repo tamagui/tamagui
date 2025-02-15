@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.124.18",
+  "version": "1.125.0",
   "sideEffects": [
     "*.css"
   ],
@@ -52,7 +52,8 @@
     "@tamagui/use-constant": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-did-finish-ssr": "workspace:*",
-    "@tamagui/use-keyboard-visible": "workspace:*"
+    "@tamagui/use-keyboard-visible": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"

@@ -6793,6 +6793,7 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/text": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-native: "npm:^0.76.5"
   peerDependencies:
@@ -7534,6 +7535,7 @@ __metadata:
     "@tamagui/sheet": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-freeze: "npm:^1.0.3"
     react-native: "npm:^0.76.5"
@@ -7573,6 +7575,7 @@ __metadata:
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-did-finish-ssr": "workspace:*"
     "@tamagui/use-event": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     "@types/react-dom": "npm:^19.0.3"
     react-native: "npm:^0.76.5"
   languageName: unknown
@@ -7887,6 +7890,7 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-did-finish-ssr": "workspace:*"
     "@tamagui/use-keyboard-visible": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -8518,6 +8522,14 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/z-index-stack@workspace:*, @tamagui/z-index-stack@workspace:code/ui/z-index-stack":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/z-index-stack@workspace:code/ui/z-index-stack"
+  dependencies:
+    "@tamagui/build": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -26610,6 +26622,7 @@ __metadata:
     "@tamagui/use-force-update": "workspace:*"
     "@tamagui/use-window-dimensions": "workspace:*"
     "@tamagui/visually-hidden": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-native-web: "npm:^0.19.0"
   peerDependencies:

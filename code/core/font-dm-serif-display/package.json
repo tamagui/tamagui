@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-dm-serif-display",
-  "version": "1.124.18",
+  "version": "1.125.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

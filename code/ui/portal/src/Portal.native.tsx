@@ -1,10 +1,11 @@
 import { YStack } from '@tamagui/stacks'
+import { useStackedZIndex } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { RootTagContext } from 'react-native'
 import { IS_FABRIC, USE_NATIVE_PORTAL } from './constants'
-import type { PortalProps } from './PortalProps'
-import { useStackedZIndex } from './useStackedZIndex'
 import { GorhomPortalItem } from './GorhomPortalItem'
+import { getStackedZIndexProps } from './helpers'
+import type { PortalProps } from './PortalProps'
 
 const createPortal = (() => {
   if (IS_FABRIC) {
@@ -27,7 +28,7 @@ export const Portal = (propsIn: PortalProps) => {
   const { stackZIndex, ...props } = propsIn
 
   const rootTag = React.useContext(RootTagContext)
-  const zIndex = useStackedZIndex(propsIn)
+  const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
   const contents = (
     <YStack

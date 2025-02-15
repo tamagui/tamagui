@@ -22,7 +22,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
       <ToastHandler />
       {children}
       <ToastImportHandler />
-      <ToastViewport bg="red" m="$0.5" left="50%" x="-50%" bottom={0} />
+      <ToastViewport m="$0.5" left="50%" x="-50%" bottom={0} />
     </ToastProviderOG>
   )
 }
