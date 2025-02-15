@@ -53,6 +53,8 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
   const isOffline = useOfflineMode()
   const user = data?.user
 
+  console.log('user', user)
+
   useEffect(() => {
     if (isOffline) {
       return

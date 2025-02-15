@@ -22,16 +22,15 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { useUser } from '~/features/user/useUser'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
 import { PromoCards } from '../header/PromoCards'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
-import { StripeElementsForm } from './StripeElements'
-import { useProducts } from './useProducts'
-import { useTakeoutStore } from './useTakeoutStore'
-import { StripePaymentModal, paymentModal } from './StripePaymentModal'
+import { paymentModal, StripePaymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
-import { useUser } from '~/features/user/useUser'
+import { useProducts } from './useProducts'
+import { BigP, P } from './BigP'
 
 class PurchaseModal {
   show = false
@@ -324,11 +323,16 @@ const PurchaseModalContents = () => {
                   <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
                     <XStack>
                       <H3 size="$11">
-                        ${disableAutoRenew ? yearlyTotal : Math.ceil(yearlyTotal / 12)}
+                        $
+                        {Intl.NumberFormat('en-US').format(
+                          disableAutoRenew
+                            ? yearlyTotal
+                            : monthlyTotal + Math.ceil(yearlyTotal / 12)
+                        )}
                         <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
                           {disableAutoRenew ? ` once` : `/month`}
                         </Paragraph>
-                        {monthlyTotal > 0 && (
+                        {disableAutoRenew && monthlyTotal > 0 && (
                           <>
                             <Paragraph> + </Paragraph>${monthlyTotal}
                             <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
@@ -432,12 +436,6 @@ const PurchaseModalContents = () => {
   )
 }
 
-const P = styled(Paragraph, {
-  ff: '$mono',
-  size: '$6',
-  lh: '$7',
-})
-
 const Question = styled(P, {
   fontWeight: 'bold',
   color: '$orange9',
@@ -530,7 +528,7 @@ const SupportTabContent = ({
 }) => {
   return (
     <>
-      <BigP theme="alt2">
+      <BigP>
         Support is great way for teams using Tamagui to ensure bugs get fixed, questions
         are answered, and Tamagui stays healthy and up to date.
       </BigP>
@@ -558,15 +556,14 @@ const SupportTabContent = ({
         </YStack> */}
 
         <YStack gap="$3">
-          <XStack alignItems="center">
+          <XStack ov="hidden" alignItems="center">
             <Label f={1} htmlFor="support-tier">
               <P>Level</P>
             </Label>
 
-            <XStack maw={150}>
+            <XStack f={1} maw={200}>
               <Select
                 id="support-tier"
-                miw={200}
                 size="$4"
                 value={supportTier}
                 onValueChange={setSupportTier}
@@ -596,14 +593,6 @@ const SupportTabContent = ({
     </>
   )
 }
-
-const BigP = styled(P, {
-  theme: 'green',
-  px: '$8',
-  size: '$8',
-  lh: '$9',
-  color: '$color11',
-})
 
 const PurchaseTabContent = () => {
   return (

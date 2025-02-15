@@ -36,7 +36,6 @@ export function useControllableState<T>({
     if (prop === undefined) return
     previous.current = prop
     transitionFn(() => {
-      console.log('set', prop)
       setState(prop)
     })
   }, [prop])
@@ -53,11 +52,9 @@ export function useControllableState<T>({
     if (preventUpdate) return
     if (propWins) {
       const nextValue = typeof next === 'function' ? next(previous.current) : next
-      console.log('nextValue', nextValue)
       onChangeCb(nextValue)
     } else {
       transitionFn(() => {
-        console.log('settt', next)
         setState(next)
       })
     }

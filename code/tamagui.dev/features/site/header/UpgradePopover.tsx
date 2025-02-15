@@ -62,7 +62,7 @@ export const UpgradePopover = (props: PopoverProps) => {
           }}
         >
           <H2 ff="$mono" f={1} fow="600" size="$5">
-            Start
+            Pro
           </H2>
         </XStack>
       </Popover.Anchor>
@@ -113,9 +113,13 @@ export const UpgradePopover = (props: PopoverProps) => {
 
         <YStack mah="80vh" p="$3" width={280} ov="hidden" br="$6">
           <Popover.ScrollView>
-            <YStack gap="$2">
-              <H5 ta="center">Tamagui Start</H5>
+            <YStack gap="$3">
+              <H5 ff="$mono" size="$5" ta="center">
+                Tamagui Pro
+              </H5>
+
               <PromoCards less />
+
               <Paragraph
                 bg="$color3"
                 p="$4"
@@ -141,7 +145,7 @@ export const UpgradePopover = (props: PopoverProps) => {
                   setOpen(false)
                 }}
               >
-                Start is how we fund the OSS development of Tamagui.
+                Pro is how we fund the OSS development of Tamagui.
               </Paragraph>
             </YStack>
           </Popover.ScrollView>

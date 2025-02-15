@@ -8,6 +8,8 @@ import {
   Button,
   Theme,
   Spinner,
+  useTheme,
+  useThemeName,
 } from 'tamagui'
 import { PaymentElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js'
 import type { StripeError, Appearance } from '@stripe/stripe-js'
@@ -18,24 +20,12 @@ import { useEffect, useState } from 'react'
 import { useUser } from '~/features/user/useUser'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
+import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||
     'pk_test_51MlzkhAbFJBp9fF3vTNUO7QGC7hapWqnrcISDb5SPJa5I9VWVLIN2vamVCOsO4kkbHFm9mteyCS1qZjpHjcshRb100npI0m0cK'
 )
-
-const appearance: Appearance = {
-  theme: 'stripe',
-  variables: {
-    colorPrimary: '#0A84FF',
-    colorBackground: '#ffffff',
-    colorText: '#1A1A1A',
-    colorDanger: '#FF3B30',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
-    spacingUnit: '4px',
-    borderRadius: '8px',
-  },
-}
 
 class PaymentModal {
   show = false
@@ -175,8 +165,18 @@ const PaymentForm = ({
             },
           }}
         />
+
+        <XStack h={23} als="flex-end">
+          <PoweredByStripeIcon />
+        </XStack>
+
         <Theme name="accent">
-          <Button disabled={isProcessing || !stripe || !elements}>
+          <Button
+            fontFamily="$mono"
+            br="$10"
+            als="flex-end"
+            disabled={isProcessing || !stripe || !elements}
+          >
             {isProcessing ? 'Processing...' : 'Complete purchase'}
           </Button>
         </Theme>
@@ -262,6 +262,9 @@ export const StripePaymentModal = ({
     }
   }, [authInterval])
 
+  const theme = useTheme()
+  const themeName = useThemeName()
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -291,11 +294,25 @@ export const StripePaymentModal = ({
       )
     }
 
+    const appearance: Appearance = {
+      theme: themeName.startsWith('dark') ? 'night' : 'stripe',
+      variables: {
+        colorPrimary: theme.blue9.val,
+        colorBackground: theme.background.val,
+        colorText: theme.color.val,
+        colorDanger: theme.red9.val,
+        fontFamily: '"Berkeley Mono", system-ui, -apple-system, sans-serif',
+        spacingUnit: '4px',
+        gridRowSpacing: '20px',
+        gridColumnSpacing: '15px',
+        borderRadius: '8px',
+      },
+    }
+
     return (
       <XStack gap="$6">
-        {/* 左側: Stripe支払いフォーム */}
         <YStack f={1} gap="$4">
-          <H3>Payment details</H3>
+          <H3 ff="$mono">Payment details</H3>
           <Separator />
           <Elements
             stripe={stripePromise}
@@ -326,29 +343,28 @@ export const StripePaymentModal = ({
           </Elements>
         </YStack>
 
-        {/* 右側: 注文サマリー */}
         <YStack f={1} gap="$4" backgroundColor="$color2" p="$4" br="$4">
-          <H3>Order summary</H3>
+          <H3 fontFamily="$mono">Order summary</H3>
           <Separator />
 
           <XStack jc="space-between">
-            <Paragraph>Monthly subscription</Paragraph>
-            <Paragraph>${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
+            <Paragraph ff="$mono">Monthly subscription</Paragraph>
+            <Paragraph ff="$mono">${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
           </XStack>
 
           {monthlyTotal > 0 && (
             <>
               {chatSupport && (
                 <XStack jc="space-between">
-                  <Paragraph>Chat support</Paragraph>
-                  <Paragraph>$100/month</Paragraph>
+                  <Paragraph ff="$mono">Chat support</Paragraph>
+                  <Paragraph ff="$mono">$100/month</Paragraph>
                 </XStack>
               )}
 
               {supportTier > 0 && (
                 <XStack jc="space-between">
-                  <Paragraph>Support tier ({supportTier})</Paragraph>
-                  <Paragraph>${supportTier * 800}/month</Paragraph>
+                  <Paragraph ff="$mono">Support tier ({supportTier})</Paragraph>
+                  <Paragraph ff="$mono">${supportTier * 800}/month</Paragraph>
                 </XStack>
               )}
             </>
@@ -357,11 +373,11 @@ export const StripePaymentModal = ({
           <Separator />
 
           <XStack jc="space-between">
-            <H3>Total</H3>
+            <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
-              <H3>${Math.ceil(yearlyTotal / 12) + monthlyTotal}/month</H3>
+              <H3 ff="$mono">${Math.ceil(yearlyTotal / 12) + monthlyTotal}/month</H3>
               {!disableAutoRenew && (
-                <Paragraph size="$3" o={0.8}>
+                <Paragraph ff="$mono" size="$3" o={0.8}>
                   Billed monthly
                 </Paragraph>
               )}
@@ -396,6 +412,14 @@ export const StripePaymentModal = ({
           w="90%"
           maw={!userData?.user ? 500 : 1000}
           p="$6"
+          enterStyle={{
+            opacity: 0,
+            y: -5,
+          }}
+          exitStyle={{
+            opacity: 0,
+            y: 5,
+          }}
         >
           {renderContent()}
           <Dialog.Close asChild>

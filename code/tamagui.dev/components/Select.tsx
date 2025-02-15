@@ -17,12 +17,6 @@ export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
       hoverStyle={{
         backgroundColor: 'rgba(0,0,0,0.1)',
       }}
-      $theme-dark={{
-        backgroundColor: 'rgba(0,0,0,0.2)',
-      }}
-      $theme-active={{
-        backgroundColor: 'red',
-      }}
       {...props}
     >
       <TamaguiSelect.ItemText>{children}</TamaguiSelect.ItemText>

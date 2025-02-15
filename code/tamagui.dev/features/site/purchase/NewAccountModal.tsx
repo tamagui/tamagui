@@ -1,25 +1,25 @@
-import { LogOut } from '@tamagui/lucide-icons'
+import { LogOut, X } from '@tamagui/lucide-icons'
+import { createStore, createUseStore } from '@tamagui/use-store'
 import { useState } from 'react'
 import {
   Avatar,
   Button,
   Dialog,
   H3,
-  Label,
   Paragraph,
+  ScrollView,
   Separator,
   Sheet,
-  SizableText,
-  Spinner,
+  Spacer,
   Tabs,
   XStack,
   YStack,
 } from 'tamagui'
+import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
-import { createStore, createUseStore } from '@tamagui/use-store'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
-import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
+import { BigP } from './BigP'
 
 class AccountModal {
   show = false
@@ -35,7 +35,7 @@ export const NewAccountModal = () => {
   const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage'>('plan')
 
   if (isLoading || !data) {
-    return <Spinner my="$10" />
+    return null
   }
 
   const { userDetails, user, subscriptions } = data
@@ -85,47 +85,20 @@ export const NewAccountModal = () => {
               },
             },
           ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.95 }}
+          exitStyle={{ x: 0, y: 5, opacity: 0, scale: 0.95 }}
           width="90%"
           maw={800}
-          p="$8"
+          p={0}
+          br="$4"
+          ov="hidden"
+          height="85%"
+          maxHeight="calc(min(85vh, 800px))"
+          minHeight={500}
         >
-          <YStack gap="$4" f={1}>
-            <XStack gap="$4">
-              <Avatar circular size="$10">
-                <Avatar.Image
-                  source={{
-                    width: 104,
-                    height: 104,
-                    uri:
-                      userDetails?.avatar_url ??
-                      getDefaultAvatarImage(
-                        userDetails?.full_name ?? user?.email ?? 'User'
-                      ),
-                  }}
-                />
-              </Avatar>
-
-              <YStack gap="$3" ai="flex-start" jc="center" f={1}>
-                <XStack jc="space-between" space ai="center">
-                  <YStack f={1}>
-                    <H3
-                      style={{
-                        wordBreak: 'break-word',
-                      }}
-                    >
-                      {userDetails?.full_name}
-                    </H3>
-                    <Paragraph theme="alt1">{user?.email}</Paragraph>
-                  </YStack>
-                </XStack>
-              </YStack>
-            </XStack>
-
-            <Separator />
-
+          <YStack f={1}>
             <Tabs
+              flex={1}
               value={currentTab}
               onValueChange={(val: any) => setCurrentTab(val)}
               orientation="horizontal"
@@ -150,48 +123,90 @@ export const NewAccountModal = () => {
                 </YStack>
               </Tabs.List>
 
-              <YStack f={1} p="$4">
-                {currentTab === 'plan' && (
-                  <PlanTab
-                    subscription={currentSubscription}
-                    setCurrentTab={setCurrentTab}
-                  />
-                )}
-                {currentTab === 'upgrade' && (
-                  <UpgradeTab subscription={currentSubscription} />
-                )}
-                {currentTab === 'manage' && (
-                  <ManageTab subscription={currentSubscription} />
-                )}
+              <YStack overflow="hidden" f={1}>
+                <ScrollView>
+                  <YStack p="$6">
+                    {currentTab === 'plan' && (
+                      <PlanTab
+                        subscription={currentSubscription}
+                        setCurrentTab={setCurrentTab}
+                      />
+                    )}
+                    {currentTab === 'upgrade' && (
+                      <UpgradeTab subscription={currentSubscription} />
+                    )}
+                    {currentTab === 'manage' && (
+                      <ManageTab subscription={currentSubscription} />
+                    )}
+                  </YStack>
+                </ScrollView>
               </YStack>
             </Tabs>
 
-            <Button
-              onPress={() => {
-                location.href = '/api/logout'
-              }}
-              icon={<LogOut />}
-              size="$2"
-              alignSelf="flex-end"
-              accessibilityLabel="Logout"
-            >
-              Logout
-            </Button>
+            <Separator />
+
+            <AccountHeader />
           </YStack>
 
           <Dialog.Close asChild>
-            <Button
-              position="absolute"
-              top="$3"
-              right="$3"
-              size="$3"
-              circular
-              icon={LogOut}
-            />
+            <Button position="absolute" top="$3" right="$3" size="$3" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
+  )
+}
+
+const AccountHeader = () => {
+  const { isLoading, data } = useUser()
+
+  if (isLoading || !data) {
+    return null
+  }
+  const { userDetails, user } = data
+
+  return (
+    <XStack pb="$4" gap="$4" p="$5">
+      <Avatar circular size="$5">
+        <Avatar.Image
+          source={{
+            width: 50,
+            height: 50,
+            uri:
+              userDetails?.avatar_url ??
+              getDefaultAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
+          }}
+        />
+      </Avatar>
+
+      <YStack gap="$3" ai="flex-start" jc="center" f={1}>
+        <XStack jc="space-between" space ai="center">
+          <YStack f={1}>
+            <H3
+              mt={-5}
+              style={{
+                wordBreak: 'break-word',
+              }}
+            >
+              {userDetails?.full_name}
+            </H3>
+            <Paragraph theme="alt1">{user?.email}</Paragraph>
+          </YStack>
+        </XStack>
+      </YStack>
+
+      <Button
+        onPress={() => {
+          location.href = '/api/logout'
+        }}
+        icon={<LogOut />}
+        size="$2"
+        alignSelf="flex-end"
+        accessibilityLabel="Logout"
+      >
+        Logout
+      </Button>
+    </XStack>
   )
 }
 
@@ -264,14 +279,18 @@ const ServiceCard = ({
     <YStack
       borderWidth={1}
       borderColor="$color3"
-      borderRadius="$4"
+      borderRadius="$6"
       p="$4"
-      gap="$3"
+      gap="$2"
       width={300}
+      flex={1}
     >
-      <H3>{title}</H3>
+      <H3 fontFamily="$mono" size="$6">
+        {title}
+      </H3>
       <Paragraph theme="alt1">{description}</Paragraph>
-      <Button themeInverse onPress={onAction}>
+
+      <Button br="$10" als="flex-end" mt="$4" size="$3" theme="accent" onPress={onAction}>
         {actionLabel}
       </Button>
     </YStack>
@@ -288,11 +307,10 @@ const PlanTab = ({
   return (
     <YStack gap="$6">
       <YStack gap="$4">
-        <H3>Current Access</H3>
-        <XStack fw="wrap" gap="$4">
+        <XStack fw="wrap" gap="$3">
           <ServiceCard
-            title="Tamagui Pro"
-            description="Access to Takeout repository and updates"
+            title="Takeout"
+            description="Access to repository and updates."
             actionLabel={subscription ? 'View Repository' : 'Purchase'}
             onAction={() => {
               if (!subscription) {
@@ -302,10 +320,29 @@ const PlanTab = ({
               }
             }}
           />
+
           <ServiceCard
-            title="Bento UI"
-            description="Download the Bento UI kit"
+            title="Bento"
+            description="Download the entire suite of Bento components."
             actionLabel="Download"
+            onAction={() => {
+              // Add download logic
+            }}
+          />
+
+          <ServiceCard
+            title="Theme AI"
+            description="Prompt an LLM to generate themes."
+            actionLabel="Go"
+            onAction={() => {
+              // Add download logic
+            }}
+          />
+
+          <ServiceCard
+            title="start.chat"
+            description="Talk to a chatbot that's an expert in Tamagui."
+            actionLabel="Go"
             onAction={() => {
               // Add download logic
             }}
@@ -365,24 +402,31 @@ const UpgradeTab = ({ subscription }: { subscription?: any }) => {
 
   return (
     <YStack gap="$6">
-      <H3>Support Options</H3>
-      <YStack gap="$4" p="$4">
-        <SupportTabContent
-          currentTier={currentTier}
-          supportTier={supportTier}
-          setSupportTier={setSupportTier}
-        />
+      <SupportTabContent
+        currentTier={currentTier}
+        supportTier={supportTier}
+        setSupportTier={setSupportTier}
+      />
 
-        <Button
-          themeInverse
-          onPress={() => {
-            paymentModal.show = true
-          }}
-          disabled={supportTier === currentTier}
-        >
-          {getActionLabel()}
-        </Button>
-      </YStack>
+      <Button
+        fontFamily="$mono"
+        theme="accent"
+        br="$10"
+        als="flex-end"
+        onPress={() => {
+          paymentModal.show = true
+        }}
+        disabled={supportTier === currentTier}
+      >
+        {getActionLabel()}
+      </Button>
+
+      <Separator />
+
+      <Paragraph ff="$mono" size="$5" lineHeight="$6" o={0.8}>
+        Each tier adds 2 hours of prioritized development each month, and puts your
+        messages higher in our response queue.
+      </Paragraph>
     </YStack>
   )
 }
@@ -405,30 +449,24 @@ const SupportTabContent = ({
 
   return (
     <YStack gap="$6">
-      <Paragraph size="$5" lineHeight="$6" maw={500} o={0.8}>
-        Each tier adds 2 hours of prioritized development each month, and puts your
-        messages higher in our response queue.
-      </Paragraph>
-
-      <YStack gap="$4">
+      <YStack gap="$2">
         {tiers.map((tier) => (
           <YStack
             key={tier.value}
             borderWidth={1}
-            borderColor={supportTier === tier.value ? '$blue8' : '$color3'}
-            backgroundColor={supportTier === tier.value ? '$blue2' : undefined}
+            borderColor={supportTier === tier.value ? '$blue3' : '$color3'}
+            backgroundColor={supportTier === tier.value ? '$blue1' : undefined}
             borderRadius="$4"
             p="$4"
-            pressStyle={{
-              scale: 0.98,
-            }}
             cursor="pointer"
             opacity={currentTier === tier.value ? 1 : 0.8}
             onPress={() => setSupportTier(tier.value)}
           >
             <XStack jc="space-between" ai="center">
-              <YStack gap="$2">
-                <H3>{tier.label}</H3>
+              <YStack gap="$1">
+                <H3 fontFamily="$mono" size="$6">
+                  {tier.label}
+                </H3>
                 <Paragraph theme="alt1">
                   {tier.price === 0 ? 'Basic Support' : `${tier.price}/month`}
                 </Paragraph>

@@ -39,6 +39,7 @@ import { SearchButton } from './SearchButton'
 import { UpgradePopover } from './UpgradePopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
+import { accountModal } from '../purchase/NewAccountModal'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -289,6 +290,10 @@ const HeaderMenuButton = () => {
           bw={2}
           px="$2"
           onPress={() => {
+            if (!open && userSwr.data?.user) {
+              accountModal.show = true
+              return
+            }
             if (isTouchable) {
               setOpen(!open)
               return
@@ -611,17 +616,20 @@ const HeaderMenuMoreContents = () => {
       )}
 
       {userSwr.data?.userDetails && (
-        <Link asChild href="/login">
-          <HeadAnchor grid>
-            <XStack ai="center" jc="center">
-              Account
-              <YStack flex={10} />
-              <YStack dsp={'inline-block' as any} y={-2} my={-3} als="flex-end">
-                <UserAvatar size={22} />
-              </YStack>
-            </XStack>
-          </HeadAnchor>
-        </Link>
+        <HeadAnchor
+          grid
+          onPress={() => {
+            accountModal.show = true
+          }}
+        >
+          <XStack ai="center" jc="center">
+            Account
+            <YStack flex={10} />
+            <YStack dsp={'inline-block' as any} y={-2} my={-3} als="flex-end">
+              <UserAvatar size={22} />
+            </YStack>
+          </XStack>
+        </HeadAnchor>
       )}
 
       <Separator bc="$color02" o={0.25} my="$2" />

@@ -70,8 +70,6 @@ export const useComponentState = (
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
-  console.log('presenceState', presenceState)
-
   const hasEnterStyle = !!props.enterStyle
 
   const hasAnimationThatNeedsHydrate =
@@ -136,11 +134,12 @@ export const useComponentState = (
   }
 
   const groupName = props.group as any as string
-  const groupContextState = groups.state
+  const groupContextState = groups?.state
 
   const setStateWrapper = useMemo(():
     | undefined
     | ((nextState: Record<string, any>) => void) => {
+    if (!groupContextState) return
     if (groupName) {
       // when we set state we also set our group state and emit an event for children listening:
       return (state) => {
