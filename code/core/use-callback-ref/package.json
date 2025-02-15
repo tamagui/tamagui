@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-callback-ref",
-  "version": "1.125.0",
+  "version": "1.125.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

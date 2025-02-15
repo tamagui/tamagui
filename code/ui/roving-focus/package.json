@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/roving-focus",
-  "version": "1.125.0",
+  "version": "1.125.1",
   "sideEffects": [
     "*.css"
   ],
