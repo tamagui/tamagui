@@ -1,4 +1,4 @@
-import { LogoWords, TamaguiLogo, useTint } from '@tamagui/logo'
+import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { createShallowSetState, isTouchable } from '@tamagui/web'
 import { usePathname } from 'one'
@@ -121,9 +121,9 @@ export function Header(props: HeaderProps) {
               }}
             />
             <YStack mx="auto" px="$4" w="100%">
-              {/* <ThemeTint> */}
-              <HeaderContents floating {...props} />
-              {/* </ThemeTint> */}
+              <ThemeTint>
+                <HeaderContents floating {...props} />
+              </ThemeTint>
             </YStack>
           </XStack>
           {/* do shadow separate so we can contain paint because its causing perf issues */}

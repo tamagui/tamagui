@@ -233,7 +233,7 @@ const PurchaseModalContents = () => {
 
         <Dialog.Portal>
           <Dialog.Overlay
-            backdropFilter="blur(15px)"
+            backdropFilter="blur(35px)"
             key="overlay"
             animation="medium"
             bg="$shadow2"

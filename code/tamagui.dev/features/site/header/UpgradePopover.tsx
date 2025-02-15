@@ -7,11 +7,13 @@ import {
   Paragraph,
   Popover,
   Sheet,
+  Theme,
   XStack,
   YStack,
 } from 'tamagui'
 import { PromoCards } from './PromoCards'
 import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
+import { ThemeTintAlt } from '@tamagui/logo'
 
 export const UpgradePopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
@@ -24,6 +26,7 @@ export const UpgradePopover = (props: PopoverProps) => {
   return (
     <Popover
       disableRTL
+      offset={20}
       hoverable={{
         delay: 200,
         restMs: 340,
@@ -39,33 +42,40 @@ export const UpgradePopover = (props: PopoverProps) => {
       }}
       {...props}
     >
-      <Popover.Anchor asChild>
+      {/* <Theme name="pink"> */}
+      <Popover.Anchor asChild="except-style">
         <XStack
           br="$10"
-          px="$4"
-          animation="quick"
+          px="$3"
+          animation="medium"
           cur="pointer"
-          height={44}
+          height={36}
           ai="center"
           bw={1}
           bc="transparent"
+          bg="$color5"
+          shac="$shadow1"
+          shadowRadius={3}
+          shadowOffset={{ height: 2, width: 0 }}
           hoverStyle={{
-            bc: '$color02',
+            bc: '$color7',
+            bg: '$color6',
           }}
           pressStyle={{
             bg: '$background02',
-            bc: '$color04',
+            bc: '$color2',
           }}
           onPress={() => {
             showAppropriateModal()
             setOpen(false)
           }}
         >
-          <H2 ff="$mono" f={1} fow="600" size="$5">
+          <H2 ff="$mono" f={1} fow="600" size="$4">
             Pro
           </H2>
         </XStack>
       </Popover.Anchor>
+      {/* </Theme> */}
 
       <Adapt platform="touch" when="sm">
         <Sheet
@@ -109,12 +119,12 @@ export const UpgradePopover = (props: PopoverProps) => {
           opacity: 0,
         }}
       >
-        <Popover.Arrow bg="$background08" size="$3.5" />
+        <Popover.Arrow bg="$background08" size="$4" />
 
         <YStack mah="80vh" p="$3" width={280} ov="hidden" br="$6">
           <Popover.ScrollView>
             <YStack gap="$3">
-              <H5 ff="$mono" size="$5" ta="center">
+              <H5 pe="none" ff="$mono" size="$5" ta="center">
                 Tamagui Pro
               </H5>
 

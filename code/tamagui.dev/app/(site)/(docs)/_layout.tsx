@@ -45,6 +45,19 @@ export default function DocsLayout() {
 
   return (
     <ThemeNameEffect theme={themeName} colorKey="$color1">
+      <LinearGradient
+        pos="absolute"
+        t={0}
+        r={0}
+        l={0}
+        height="100%"
+        maxHeight={1000}
+        zi={0}
+        colors={['$color1', '$accent12']}
+      />
+
+      <YStack zi={-1} fullscreen bg="$accent12" />
+
       <YStack y={-54} pt={54}>
         <YStack
           overflow="hidden"
@@ -92,7 +105,7 @@ export default function DocsLayout() {
                   display: 'block',
                   p: '$0.5',
                   pr: '$3',
-                  mt: 92,
+                  mt: 110,
                   pb: '$18',
                 }}
               >
