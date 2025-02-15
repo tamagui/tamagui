@@ -259,7 +259,9 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
 
     return () => {
       dispose()
-      clearTimeout(tm)
+      if (tm) {
+        clearTimeout(tm)
+      }
     }
   }, [setState])
 

@@ -728,20 +728,28 @@ export function createComponent<
           setStateShallow({ unmounted: false })
         })
 
-        return () => clearTimeout(tm)
+        return () => {
+          if (tm) {
+            clearTimeout(tm)
+          }
+        }
       }
 
-      const dispose = subscribeToContextGroup({
-        disabled,
-        componentContext,
-        setStateShallow,
-        state,
-        mediaGroups,
-        pseudoGroups,
-      })
+      const dispose =
+        pseudoGroups || mediaGroups
+          ? subscribeToContextGroup({
+              componentContext,
+              setStateShallow,
+              state,
+              mediaGroups,
+              pseudoGroups,
+            })
+          : null
 
       return () => {
-        clearTimeout(tm)
+        if (tm) {
+          clearTimeout(tm)
+        }
         dispose?.()
         componentSetStates.delete(setState)
       }
