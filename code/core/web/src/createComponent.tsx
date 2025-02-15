@@ -528,13 +528,13 @@ export function createComponent<
       (noClass && splitStyles.hasMedia === true)
 
     const mediaListeningKeys = hasRuntimeMediaKeys
-      ? (splitStyles.hasMedia as Record<string, boolean>)
+      ? (splitStyles.hasMedia as Set<string>)
       : null
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
-    setMediaShouldUpdate(stateRef, shouldListenForMedia, mediaListeningKeys)
+    setMediaShouldUpdate(componentContext, shouldListenForMedia, mediaListeningKeys)
 
     const {
       viewProps: viewPropsIn,

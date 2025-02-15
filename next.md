@@ -1,3 +1,22 @@
+bug:
+
+As an example, we have a Button that has a variant, default.
+its pressStyle is
+pressStyle: {
+  backgroundColor: '$accent3Hovered',
+},
+1:48
+however, doing this
+<Button
+  variant="default"
+  {...props}
+  pressStyle={{
+    backgroundColor: 'red',
+  }}
+>
+does not give the Button a red background when pressed
+
+
 v2
 
 
