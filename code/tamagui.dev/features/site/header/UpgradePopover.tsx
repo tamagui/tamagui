@@ -10,8 +10,8 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { purchaseModal } from '../purchase/NewPurchaseModal'
 import { PromoCards } from './PromoCards'
+import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
 
 export const UpgradePopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
@@ -19,6 +19,7 @@ export const UpgradePopover = (props: PopoverProps) => {
     via: undefined as 'hover' | 'press' | undefined,
     viaAt: Date.now(),
   })
+  const { showAppropriateModal } = useSubscriptionModal()
 
   return (
     <Popover
@@ -56,9 +57,8 @@ export const UpgradePopover = (props: PopoverProps) => {
             bc: '$color04',
           }}
           onPress={() => {
-            purchaseModal.show = true
+            showAppropriateModal()
             setOpen(false)
-            // hover handles this
           }}
         >
           <H2 ff="$mono" f={1} fow="600" size="$5">
@@ -137,7 +137,7 @@ export const UpgradePopover = (props: PopoverProps) => {
                   y: -2,
                 }}
                 onPress={() => {
-                  purchaseModal.show = true
+                  showAppropriateModal()
                   setOpen(false)
                 }}
               >

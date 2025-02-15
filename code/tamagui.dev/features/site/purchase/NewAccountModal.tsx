@@ -1,7 +1,4 @@
-import type { Provider } from '@supabase/supabase-js'
-import { ThemeTint } from '@tamagui/logo'
-import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
-import { useRouter } from 'one'
+import { LogOut } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import {
   Avatar,
@@ -11,128 +8,190 @@ import {
   Label,
   Paragraph,
   Separator,
+  Sheet,
   SizableText,
-  Select,
   Spinner,
   Tabs,
   XStack,
   YStack,
 } from 'tamagui'
-import { Container } from '~/components/Containers'
-import { ButtonLink, Link } from '~/components/Link'
-import { Notice } from '~/components/Notice'
-import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
-import { GithubIcon } from '~/features/icons/GithubIcon'
-import { StudioQueueCard } from '~/features/studio/StudioQueueCard'
-import type { Database } from '~/features/supabase/types'
+import { useUser } from '~/features/user/useUser'
+import { createStore, createUseStore } from '@tamagui/use-store'
+import { paymentModal } from './StripePaymentModal'
+import { useProducts } from './useProducts'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
-import { UserGuard, useUser } from '~/features/user/useUser'
-import { paymentModal } from '~/features/site/purchase/StripePaymentModal'
-import { useProducts } from '~/features/site/purchase/useProducts'
 
-export default function AccountPage() {
-  return (
-    <>
-      <UserGuard>
-        <Account />
-      </UserGuard>
-    </>
-  )
+class AccountModal {
+  show = false
 }
 
-const Account = () => {
+export const accountModal = createStore(AccountModal)
+export const useAccountModal = createUseStore(AccountModal)
+
+export const NewAccountModal = () => {
+  const [mounted, setMounted] = useState(false)
+  const store = useAccountModal()
   const { isLoading, data } = useUser()
   const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage'>('plan')
-  const { data: products } = useProducts()
 
   if (isLoading || !data) {
     return <Spinner my="$10" />
   }
 
   const { userDetails, user, subscriptions } = data
-
   const currentSubscription = subscriptions?.[0]
 
   return (
-    <Container gap="$4" f={1}>
-      <XStack mt="$10" gap="$4">
-        <Avatar circular size="$10">
-          <Avatar.Image
-            source={{
-              width: 104,
-              height: 104,
-              uri:
-                userDetails?.avatar_url ??
-                getDefaultAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
-            }}
+    <Dialog
+      modal
+      open={store.show}
+      onOpenChange={(val) => {
+        store.show = val
+      }}
+    >
+      <Dialog.Adapt when="sm">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
+          <Sheet.Frame bg="$color3" padding={0} gap="$4">
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
           />
-        </Avatar>
+        </Sheet>
+      </Dialog.Adapt>
 
-        <YStack gap="$3" ai="flex-start" jc="center" f={1}>
-          <XStack jc="space-between" space ai="center">
-            <YStack f={1}>
-              <H3
-                style={{
-                  wordBreak: 'break-word',
-                }}
-              >
-                {userDetails?.full_name}
-              </H3>
-              <Paragraph theme="alt1">{user?.email}</Paragraph>
-            </YStack>
-          </XStack>
-        </YStack>
-      </XStack>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="medium"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
 
-      <Separator />
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          width="90%"
+          maw={800}
+          p="$8"
+        >
+          <YStack gap="$4" f={1}>
+            <XStack gap="$4">
+              <Avatar circular size="$10">
+                <Avatar.Image
+                  source={{
+                    width: 104,
+                    height: 104,
+                    uri:
+                      userDetails?.avatar_url ??
+                      getDefaultAvatarImage(
+                        userDetails?.full_name ?? user?.email ?? 'User'
+                      ),
+                  }}
+                />
+              </Avatar>
 
-      <Tabs
-        value={currentTab}
-        onValueChange={(val: any) => setCurrentTab(val)}
-        orientation="horizontal"
-        flexDirection="column"
-        size="$6"
-      >
-        <Tabs.List>
-          <YStack width={'33.3333%'} f={1}>
-            <Tab isActive={currentTab === 'plan'} value="plan">
-              Plan
-            </Tab>
+              <YStack gap="$3" ai="flex-start" jc="center" f={1}>
+                <XStack jc="space-between" space ai="center">
+                  <YStack f={1}>
+                    <H3
+                      style={{
+                        wordBreak: 'break-word',
+                      }}
+                    >
+                      {userDetails?.full_name}
+                    </H3>
+                    <Paragraph theme="alt1">{user?.email}</Paragraph>
+                  </YStack>
+                </XStack>
+              </YStack>
+            </XStack>
+
+            <Separator />
+
+            <Tabs
+              value={currentTab}
+              onValueChange={(val: any) => setCurrentTab(val)}
+              orientation="horizontal"
+              flexDirection="column"
+              size="$6"
+            >
+              <Tabs.List disablePassBorderRadius>
+                <YStack width={'33.3333%'} f={1}>
+                  <Tab isActive={currentTab === 'plan'} value="plan">
+                    Plan
+                  </Tab>
+                </YStack>
+                <YStack width={'33.3333%'} f={1}>
+                  <Tab isActive={currentTab === 'upgrade'} value="upgrade">
+                    Upgrade
+                  </Tab>
+                </YStack>
+                <YStack width={'33.3333%'} f={1}>
+                  <Tab isActive={currentTab === 'manage'} value="manage">
+                    Manage
+                  </Tab>
+                </YStack>
+              </Tabs.List>
+
+              <YStack f={1} p="$4">
+                {currentTab === 'plan' && (
+                  <PlanTab
+                    subscription={currentSubscription}
+                    setCurrentTab={setCurrentTab}
+                  />
+                )}
+                {currentTab === 'upgrade' && (
+                  <UpgradeTab subscription={currentSubscription} />
+                )}
+                {currentTab === 'manage' && (
+                  <ManageTab subscription={currentSubscription} />
+                )}
+              </YStack>
+            </Tabs>
+
+            <Button
+              onPress={() => {
+                location.href = '/api/logout'
+              }}
+              icon={<LogOut />}
+              size="$2"
+              alignSelf="flex-end"
+              accessibilityLabel="Logout"
+            >
+              Logout
+            </Button>
           </YStack>
-          <YStack width={'33.3333%'} f={1}>
-            <Tab isActive={currentTab === 'upgrade'} value="upgrade">
-              Upgrade
-            </Tab>
-          </YStack>
-          <YStack width={'33.3333%'} f={1}>
-            <Tab isActive={currentTab === 'manage'} value="manage">
-              Manage
-            </Tab>
-          </YStack>
-        </Tabs.List>
 
-        <YStack f={1} p="$4">
-          {currentTab === 'plan' && (
-            <PlanTab subscription={currentSubscription} setCurrentTab={setCurrentTab} />
-          )}
-          {currentTab === 'upgrade' && <UpgradeTab subscription={currentSubscription} />}
-          {currentTab === 'manage' && <ManageTab subscription={currentSubscription} />}
-        </YStack>
-      </Tabs>
-
-      <Button
-        f={1}
-        onPress={() => {
-          location.href = '/api/logout'
-        }}
-        icon={<LogOut />}
-        size="$2"
-        alignSelf="flex-end"
-        accessibilityLabel="Logout"
-      >
-        Logout
-      </Button>
-    </Container>
+          <Dialog.Close asChild>
+            <Button
+              position="absolute"
+              top="$3"
+              right="$3"
+              size="$3"
+              circular
+              icon={LogOut}
+            />
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
   )
 }
 
@@ -187,6 +246,35 @@ const Tab = ({
         {children}
       </Paragraph>
     </Tabs.Tab>
+  )
+}
+
+const ServiceCard = ({
+  title,
+  description,
+  actionLabel,
+  onAction,
+}: {
+  title: string
+  description: string
+  actionLabel: string
+  onAction: () => void
+}) => {
+  return (
+    <YStack
+      borderWidth={1}
+      borderColor="$color3"
+      borderRadius="$4"
+      p="$4"
+      gap="$3"
+      width={300}
+    >
+      <H3>{title}</H3>
+      <Paragraph theme="alt1">{description}</Paragraph>
+      <Button themeInverse onPress={onAction}>
+        {actionLabel}
+      </Button>
+    </YStack>
   )
 }
 
@@ -252,35 +340,6 @@ const PlanTab = ({
   )
 }
 
-const ServiceCard = ({
-  title,
-  description,
-  actionLabel,
-  onAction,
-}: {
-  title: string
-  description: string
-  actionLabel: string
-  onAction: () => void
-}) => {
-  return (
-    <YStack
-      borderWidth={1}
-      borderColor="$color3"
-      borderRadius="$4"
-      p="$4"
-      gap="$3"
-      width={300}
-    >
-      <H3>{title}</H3>
-      <Paragraph theme="alt1">{description}</Paragraph>
-      <Button themeInverse onPress={onAction}>
-        {actionLabel}
-      </Button>
-    </YStack>
-  )
-}
-
 const UpgradeTab = ({ subscription }: { subscription?: any }) => {
   // Get current support tier from subscription if it exists
   const getCurrentSupportTier = () => {
@@ -328,7 +387,6 @@ const UpgradeTab = ({ subscription }: { subscription?: any }) => {
   )
 }
 
-// Reuse the SupportTabContent from NewPurchaseModal
 const SupportTabContent = ({
   currentTier,
   supportTier,

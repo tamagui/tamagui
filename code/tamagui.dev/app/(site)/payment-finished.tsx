@@ -3,6 +3,7 @@ import { Spinner, YStack } from 'tamagui'
 import { useRouter } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { UserGuard } from '~/features/user/useUser'
+import { accountModal } from '~/features/site/purchase/NewAccountModal'
 
 export default function PaymentFinishedPage() {
   const router = useRouter()
@@ -10,7 +11,7 @@ export default function PaymentFinishedPage() {
   useEffect(() => {
     // take some time for stripe to hit our webhook
     const id = setTimeout(() => {
-      router.replace('/account/items')
+      accountModal.show = true
     }, 5_000)
     return () => {
       clearTimeout(id)
