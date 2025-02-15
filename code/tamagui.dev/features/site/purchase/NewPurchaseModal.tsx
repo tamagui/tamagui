@@ -69,6 +69,13 @@ const PurchaseModalContents = () => {
   const [supportTier, setSupportTier] = useState('0')
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<Error | StripeError | null>(null)
+  const [selectedPrices, setSelectedPrices] = useState<{
+    proPriceId: string
+    supportPriceIds: string[]
+  }>({
+    proPriceId: '',
+    supportPriceIds: [],
+  })
   const { data: products } = useProducts()
   const { data: userData } = useUser()
 
@@ -94,6 +101,41 @@ const PurchaseModalContents = () => {
   }
 
   const handleCheckout = () => {
+    // Find the appropriate price IDs based on user selection
+    const selectedPrices = {
+      proPriceId: '',
+      supportPriceIds: [] as string[],
+    }
+
+    // Add Pro price based on auto-renew setting
+    const proPrice = disableAutoRenew
+      ? products?.pro.prices.find((p) => p.type === 'one_time')
+      : products?.pro.prices.find((p) => p.type === 'recurring')
+    if (proPrice) {
+      selectedPrices.proPriceId = proPrice.id
+    }
+
+    // Add support tier if selected
+    if (supportTier !== '0') {
+      const supportPrice = products?.support.prices.find(
+        (p) => p.description === `Tier ${supportTier}`
+      )
+      if (supportPrice) {
+        selectedPrices.supportPriceIds.push(supportPrice.id)
+      }
+    }
+
+    // Add chat support if selected
+    if (chatSupport) {
+      const chatSupportPrice = products?.support.prices.find(
+        (p) => p.description === 'Chat Support'
+      )
+      if (chatSupportPrice) {
+        selectedPrices.supportPriceIds.push(chatSupportPrice.id)
+      }
+    }
+
+    setSelectedPrices(selectedPrices)
     paymentModal.show = true
   }
 
@@ -382,7 +424,7 @@ const PurchaseModalContents = () => {
         disableAutoRenew={disableAutoRenew}
         chatSupport={chatSupport}
         supportTier={Number(supportTier)}
-        priceId={products?.starter.prices[0].id || ''}
+        selectedPrices={selectedPrices}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
       />

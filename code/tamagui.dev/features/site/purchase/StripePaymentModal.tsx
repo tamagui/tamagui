@@ -9,23 +9,33 @@ import {
   Theme,
   Spinner,
 } from 'tamagui'
-import {
-  CardElement,
-  Elements,
-  PaymentRequestButtonElement,
-  useStripe,
-} from '@stripe/react-stripe-js'
-import type { StripeError, PaymentRequest } from '@stripe/stripe-js'
+import { PaymentElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js'
+import type { StripeError, Appearance } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { loadStripe } from '@stripe/stripe-js'
-import { StripeElementsForm } from './StripeElements'
 import { useEffect, useState } from 'react'
 import { useUser } from '~/features/user/useUser'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 
-const stripePromise = loadStripe(process.env.VITE_STRIPE_SECRET_KEY_LIVE!)
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||
+    'pk_test_51MlzkhAbFJBp9fF3vTNUO7QGC7hapWqnrcISDb5SPJa5I9VWVLIN2vamVCOsO4kkbHFm9mteyCS1qZjpHjcshRb100npI0m0cK'
+)
+
+const appearance: Appearance = {
+  theme: 'stripe',
+  variables: {
+    colorPrimary: '#0A84FF',
+    colorBackground: '#ffffff',
+    colorText: '#1A1A1A',
+    colorDanger: '#FF3B30',
+    fontFamily: 'system-ui, -apple-system, sans-serif',
+    spacingUnit: '4px',
+    borderRadius: '8px',
+  },
+}
 
 class PaymentModal {
   show = false
@@ -40,7 +50,10 @@ type StripePaymentModalProps = {
   disableAutoRenew: boolean
   chatSupport: boolean
   supportTier: number
-  priceId: string
+  selectedPrices: {
+    proPriceId: string
+    supportPriceIds: string[]
+  }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
 }
@@ -51,140 +64,124 @@ const PaymentForm = ({
   autoRenew,
   chatSupport,
   supportTier,
-  priceId,
+  selectedPrices,
   isProcessing,
   setIsProcessing,
-  yearlyTotal,
-  monthlyTotal,
+  userData,
 }: {
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
   autoRenew: boolean
   chatSupport: boolean
   supportTier: number
-  priceId: string
+  selectedPrices: {
+    proPriceId: string
+    supportPriceIds: string[]
+  }
   isProcessing: boolean
   setIsProcessing: (value: boolean) => void
-  yearlyTotal: number
-  monthlyTotal: number
+  userData: any
 }) => {
   const stripe = useStripe()
-  const [paymentRequest, setPaymentRequest] = useState<PaymentRequest | null>(null)
+  const elements = useElements()
+  const [paymentMethod, setPaymentMethod] = useState<string>()
 
-  useEffect(() => {
-    if (!stripe) return
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
 
-    const initializePaymentRequest = async () => {
-      const pr = stripe.paymentRequest({
-        country: 'US',
-        currency: 'usd',
-        total: {
-          label: 'Tamagui Pro Subscription',
-          amount: Math.ceil((yearlyTotal / 12 + monthlyTotal) * 100), // Convert to monthly and cents
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-      })
-
-      // Check if the browser can make the payment
-      const result = await pr.canMakePayment()
-
-      if (result) {
-        setPaymentRequest(pr)
-      }
-
-      // Setup payment handler
-      pr.on('paymentmethod', async (e) => {
-        setIsProcessing(true)
-        try {
-          // Create subscription with the payment method from Apple Pay
-          const response = await fetch('/api/create-subscription', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              paymentMethodId: e.paymentMethod.id,
-              priceId,
-              disableAutoRenew: !autoRenew,
-            }),
-          })
-
-          const data = await response.json()
-          if (!response.ok) {
-            throw new Error(data.error || 'Failed to create subscription')
-          }
-
-          // Complete the payment
-          await e.complete('success')
-
-          // Handle additional subscriptions if needed
-          if (chatSupport || supportTier > 0) {
-            const upgradeRes = await fetch('/api/upgrade-subscription', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                subscriptionId: data.subscriptionId,
-                chatSupport,
-                supportTier,
-                disableAutoRenew: !autoRenew,
-              }),
-            })
-
-            if (!upgradeRes.ok) {
-              throw new Error('Failed to upgrade subscription')
-            }
-          }
-
-          onSuccess(data.subscriptionId)
-        } catch (error) {
-          await e.complete('fail')
-          onError(error as Error)
-        } finally {
-          setIsProcessing(false)
-        }
-      })
+    if (!stripe || !elements) {
+      return
     }
 
-    initializePaymentRequest().catch(console.error)
-  }, [stripe]) // Only re-run when stripe instance changes
+    setIsProcessing(true)
+
+    try {
+      // Submit the form first
+      const { error: submitError } = await elements.submit()
+      if (submitError) {
+        onError(submitError)
+        return
+      }
+
+      // Create payment method
+      const { error: paymentMethodError, paymentMethod } =
+        await stripe.createPaymentMethod({
+          elements,
+        })
+
+      if (paymentMethodError) {
+        onError(paymentMethodError)
+        return
+      }
+
+      // Create subscription with the payment method
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          paymentMethodId: paymentMethod.id,
+          proPriceId: selectedPrices.proPriceId,
+          supportPriceIds: selectedPrices.supportPriceIds,
+          disableAutoRenew: !autoRenew,
+        }),
+      })
+
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create subscription')
+      }
+
+      // If we get here, the payment was successful
+      if (chatSupport || supportTier > 0) {
+        const upgradeRes = await fetch('/api/upgrade-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            subscriptionId: data.subscriptionId,
+            chatSupport,
+            supportTier,
+            disableAutoRenew: !autoRenew,
+          }),
+        })
+
+        if (!upgradeRes.ok) {
+          throw new Error('Failed to upgrade subscription')
+        }
+      }
+
+      onSuccess(data.subscriptionId)
+    } catch (error) {
+      onError(error as Error)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
 
   return (
-    <YStack gap="$4">
-      {paymentRequest && (
-        <>
-          <PaymentRequestButtonElement
-            options={{
-              paymentRequest,
-              style: {
-                paymentRequestButton: {
-                  type: 'buy',
-                  theme: 'dark',
-                  height: '48px',
-                },
+    <form onSubmit={handleSubmit}>
+      <YStack gap="$4">
+        <PaymentElement
+          options={{
+            layout: 'accordion',
+            defaultValues: {
+              billingDetails: {
+                name: userData?.userDetails?.full_name || '',
+                email: userData?.user?.email || '',
               },
-            }}
-          />
-          <Separator />
-          <Paragraph size="$3" o={0.5} ta="center">
-            Or pay with card
-          </Paragraph>
-        </>
-      )}
-      <StripeElementsForm
-        onSuccess={onSuccess}
-        onError={onError}
-        autoRenew={autoRenew}
-        chatSupport={chatSupport}
-        supportTier={supportTier}
-        priceId={priceId}
-        isProcessing={isProcessing}
-        setIsProcessing={setIsProcessing}
-        buttonText="Complete purchase"
-      />
-    </YStack>
+            },
+          }}
+        />
+        <Theme name="accent">
+          <Button disabled={isProcessing || !stripe || !elements}>
+            {isProcessing ? 'Processing...' : 'Complete purchase'}
+          </Button>
+        </Theme>
+      </YStack>
+    </form>
   )
 }
 
@@ -194,7 +191,7 @@ export const StripePaymentModal = ({
   disableAutoRenew,
   chatSupport,
   supportTier,
-  priceId,
+  selectedPrices,
   onSuccess,
   onError,
 }: StripePaymentModalProps) => {
@@ -300,7 +297,18 @@ export const StripePaymentModal = ({
         <YStack f={1} gap="$4">
           <H3>Payment details</H3>
           <Separator />
-          <Elements stripe={stripePromise}>
+          <Elements
+            stripe={stripePromise}
+            options={{
+              appearance,
+              mode: 'payment',
+              currency: 'usd',
+              amount: Math.ceil((yearlyTotal / 12 + monthlyTotal) * 100),
+              paymentMethodTypes: ['card', 'link'],
+              payment_method_types: ['card', 'link'],
+              paymentMethodCreation: 'manual',
+            }}
+          >
             <PaymentForm
               onSuccess={(subscriptionId) => {
                 store.show = false
@@ -310,11 +318,10 @@ export const StripePaymentModal = ({
               autoRenew={!disableAutoRenew}
               chatSupport={chatSupport}
               supportTier={supportTier}
-              priceId={priceId}
+              selectedPrices={selectedPrices}
               isProcessing={isProcessing}
               setIsProcessing={setIsProcessing}
-              yearlyTotal={yearlyTotal}
-              monthlyTotal={monthlyTotal}
+              userData={userData}
             />
           </Elements>
         </YStack>

@@ -3,21 +3,22 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
 
-const CHAT_SUPPORT_PRICE_ID = 'price_1QrukQFQGtHoG6xcMpB125IR'
-const SUPPORT_TIER_PRICE_ID = 'price_1QrulKFQGtHoG6xcDs9OYTFu'
-
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
   const { user } = await ensureAuth({ req })
-  const { paymentMethodId, priceId, disableAutoRenew, chatSupport, supportTier } =
-    await req.json()
+  const {
+    paymentMethodId,
+    proPriceId,
+    supportPriceIds = [],
+    disableAutoRenew,
+  } = await req.json()
 
-  if (!paymentMethodId || !priceId) {
+  if (!paymentMethodId || !proPriceId) {
     return Response.json(
-      { error: 'Payment method ID and price ID are required' },
+      { error: 'Payment method ID and Pro plan price ID are required' },
       { status: 400 }
     )
   }
@@ -58,34 +59,36 @@ export default apiRoute(async (req) => {
         return Response.json({ error: 'Failed to update customer' }, { status: 500 })
       })
 
-    // Prepare subscription items
-    const items = [{ price: priceId, quantity: 1 }]
-
-    // Add chat support if selected
-    if (chatSupport) {
-      items.push({
-        price: CHAT_SUPPORT_PRICE_ID,
-        quantity: 1,
-      })
+    // Get the Pro plan price details and verify it's recurring
+    const priceDetails = await stripe.prices.retrieve(proPriceId)
+    if (priceDetails.type !== 'recurring') {
+      return Response.json(
+        { error: 'Pro plan price must be recurring type' },
+        { status: 400 }
+      )
     }
 
-    // Add support tier if selected
-    if (supportTier > 0) {
-      items.push({
-        price: SUPPORT_TIER_PRICE_ID,
-        quantity: supportTier,
-      })
-    }
-
-    // Create the subscription with all items
+    // Create the subscription with Pro plan
     const subscription = await stripe.subscriptions.create({
       customer: stripeCustomerId,
-      items,
+      items: [{ price: proPriceId }],
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent'],
       cancel_at_period_end: disableAutoRenew || false,
     })
+
+    // If there are support prices, create a separate subscription for them
+    if (supportPriceIds.length > 0) {
+      const supportSubscription = await stripe.subscriptions.create({
+        customer: stripeCustomerId,
+        items: supportPriceIds.map((priceId) => ({ price: priceId })),
+        payment_behavior: 'default_incomplete',
+        payment_settings: { save_default_payment_method: 'on_subscription' },
+        expand: ['latest_invoice.payment_intent'],
+        cancel_at_period_end: disableAutoRenew || false,
+      })
+    }
 
     return Response.json({
       subscriptionId: subscription.id,

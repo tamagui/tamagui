@@ -8,12 +8,12 @@ export default apiRoute(async () => {
       supabaseAdmin
         .from('products')
         .select('*, prices(*)')
-        .eq('metadata->>slug', 'universal-starter')
+        .eq('name', 'Tamagui Pro')
         .single(),
       supabaseAdmin
         .from('products')
         .select('*, prices(*)')
-        .eq('metadata->>slug', 'bento')
+        .eq('name', 'Tamagui Support')
         .single(),
     ])
 
@@ -38,21 +38,16 @@ export default apiRoute(async () => {
     }
 
     return Response.json({
-      starter: {
+      pro: {
         ...products[0].data!,
-        name: 'Takeout',
         prices: uniqueDescription(
-          getArray(products[0].data!.prices!).filter(
-            (p) => p.active && (p.metadata as Record<string, any>).is_live
-          )
+          getArray(products[0].data!.prices!).filter((p) => p.active)
         ),
       },
-      bento: {
+      support: {
         ...products[1].data!,
         prices: uniqueDescription(
-          getArray(products[1].data!.prices!).filter(
-            (p) => p.active && (p.metadata as Record<string, any>).is_live
-          )
+          getArray(products[1].data!.prices!).filter((p) => p.active)
         ),
       },
     })
