@@ -1,5 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import { RNTamaguiViewNonStyleProps } from '@tamagui/core/types'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import type { GroupProps } from '@tamagui/group'
 import { Group, useGroupItem } from '@tamagui/group'
@@ -8,7 +9,16 @@ import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web'
+import type {
+  GetProps,
+  GetStyledVariants,
+  SizeTokens,
+  StackStyleBase,
+  StaticConfigPublic,
+  TamaDefer,
+  TamaguiComponent,
+  TamaguiElement,
+} from '@tamagui/web'
 import { Theme, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
@@ -384,13 +394,13 @@ type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGr
 
 type TabsFrameProps = GetProps<typeof TabsFrame>
 
-type TabsExtraProps = {
+type TabsExtraProps<Tab = string> = {
   /** The value for the selected tab, if controlled */
   value?: string
   /** The value of the tab to select by default, if uncontrolled */
-  defaultValue?: string
+  defaultValue?: Tab
   /** A function called when a new tab is selected */
-  onValueChange?: (value: string) => void
+  onValueChange?: (value: Tab) => void
   /**
    * The orientation the tabs are layed out.
    * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
@@ -408,10 +418,10 @@ type TabsExtraProps = {
   activationMode?: 'automatic' | 'manual'
 }
 
-type TabsProps = TabsFrameProps & TabsExtraProps
+type TabsProps<Tab = string> = TabsFrameProps & TabsExtraProps<Tab>
 
 const TabsComponent = TabsFrame.styleable<TabsExtraProps>(
-  (props: ScopedProps<TabsProps>, forwardedRef) => {
+  function Tabs(props: ScopedProps<TabsProps>, forwardedRef) {
     const {
       __scopeTabs,
       value: valueProp,
@@ -457,7 +467,10 @@ const TabsComponent = TabsFrame.styleable<TabsExtraProps>(
       </TabsProvider>
     )
   }
-)
+  // make it so it can accept a generic
+) as <Tab = string>(
+  props: TabsProps<Tab> & { ref?: React.Ref<TamaguiElement> }
+) => JSX.Element
 
 export const Tabs = withStaticProperties(TabsComponent, {
   List: TabsList,
@@ -468,7 +481,6 @@ export const Tabs = withStaticProperties(TabsComponent, {
   Tab: TabsTrigger,
   Content: TabsContent,
 })
-Tabs.displayName = TABS_NAME
 
 /* ---------------------------------------------------------------------------------------------- */
 
