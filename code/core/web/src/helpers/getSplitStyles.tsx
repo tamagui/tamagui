@@ -692,6 +692,85 @@ export const getSplitStyles: StyleSplitter = (
         // (note: can't because we need to set defaults on enter/exit or else enforce that they should)
         const pseudoStyleObject = getSubStyle(styleState, key, val, styleProps.noClass)
 
+        /**
+         * Here we merge transform values and avoid override when pseudoStyleObject.transform exist.
+         */
+        if (
+          (props?.x || props?.y) &&
+          pseudoStyleObject?.transform &&
+          Array.isArray(pseudoStyleObject.transform)
+        ) {
+          const pseudoTransformKeys = new Set()
+          const pseudoTransformValues: { [key: string]: any } = {}
+
+          const transform: { [key: string]: any }[] = pseudoStyleObject.transform as any
+
+          for (const curr of transform) {
+            if (curr && typeof curr === 'object' && !Array.isArray(curr)) {
+              const key = Object.keys(curr)[0]
+              pseudoTransformKeys.add(key)
+              pseudoTransformValues[key] = curr[key]
+            }
+          }
+
+          const addTransform = (key: string, value: number) => {
+            transform?.push({ [key]: value })
+          }
+
+          const moveTransformToEnd = (key: string) => {
+            const index = transform.findIndex(
+              (item) =>
+                typeof item === 'object' &&
+                !Array.isArray(item) &&
+                Object.keys(item)[0] === key
+            )
+            if (index !== -1) {
+              transform.push(transform.splice(index, 1)[0])
+            }
+          }
+
+          const hasX = !!props?.x
+          const hasY = !!props?.y
+          const isScale = pseudoTransformKeys.has('scale')
+          const isScaleX = pseudoTransformKeys.has('scaleX')
+          const isScaleY = pseudoTransformKeys.has('scaleY')
+          const isSkewX = pseudoTransformKeys.has('skewX')
+          const isSkewY = pseudoTransformKeys.has('skewY')
+
+          let translateX = props.x
+          let translateY = props.y
+
+          if (isScale && (hasX || hasY)) {
+            const scaleVal = pseudoTransformValues.scale
+            if (hasX) {
+              translateX = props.x / scaleVal
+            }
+            if (hasY) {
+              translateY = props.y / scaleVal
+            }
+          }
+
+          if (isScaleX && hasX) {
+            translateX = props.x / pseudoTransformValues.scaleX
+          }
+
+          if (isScaleY && hasY) {
+            translateY = props.y / pseudoTransformValues.scaleY
+          }
+
+          if (hasX && !pseudoTransformKeys.has('translateX')) {
+            addTransform('translateX', translateX)
+          }
+
+          if (hasY && !pseudoTransformKeys.has('translateY')) {
+            addTransform('translateY', translateY)
+          }
+
+          // This reorder the skew in transform, if the skew comes before translate it ignore the translate.
+          if (isSkewX) moveTransformToEnd('skewX')
+          if (isSkewY) moveTransformToEnd('skewY')
+        }
+
         if (!shouldDoClasses || process.env.IS_STATIC === 'is_static') {
           pseudos ||= {}
           pseudos[key] ||= {}
