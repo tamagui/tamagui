@@ -1,11 +1,15 @@
-import { LogOut, X } from '@tamagui/lucide-icons'
+import { LogOut, Search, X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useState } from 'react'
 import {
   Avatar,
   Button,
   Dialog,
+  Form,
   H3,
+  H4,
+  Input,
+  Label,
   Paragraph,
   ScrollView,
   Separator,
@@ -14,6 +18,7 @@ import {
   Tabs,
   XStack,
   YStack,
+  Fieldset,
 } from 'tamagui'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
@@ -21,6 +26,13 @@ import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
 import { BigP } from './BigP'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
+import useSWR, { mutate } from 'swr'
+import useSWRMutation from 'swr/mutation'
+import type {
+  APIGuildMember,
+  RESTGetAPIGuildMembersSearchResult,
+} from 'discord-api-types/v10'
+import { Link } from 'one'
 
 class AccountModal {
   show = false
@@ -298,6 +310,218 @@ const ServiceCard = ({
   )
 }
 
+const DiscordAccessDialog = ({
+  subscription,
+  onClose,
+}: { subscription: any; onClose: () => void }) => {
+  return (
+    <Dialog modal open onOpenChange={onClose}>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="medium"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation="quick"
+          w="90%"
+          maw={600}
+          p="$6"
+        >
+          <DiscordPanel subscriptionId={subscription.id} />
+          <Dialog.Close asChild>
+            <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+
+const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
+  const groupInfoSwr = useSWR<any>(
+    `/api/discord/channel?${new URLSearchParams({ subscription_id: subscriptionId })}`,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      ),
+    { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
+  )
+  const [draftQuery, setDraftQuery] = useState('')
+  const [query, setQuery] = useState(draftQuery)
+  const searchSwr = useSWR<RESTGetAPIGuildMembersSearchResult>(
+    query
+      ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}`
+      : null,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      )
+  )
+
+  const resetChannelMutation = useSWRMutation(
+    [`/api/discord/channel`, 'DELETE', subscriptionId],
+    (url) =>
+      fetch(`/api/discord/channel`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+        }),
+      }).then((res) => res.json()),
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/channel?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+        setDraftQuery('')
+        setQuery('')
+      },
+    }
+  )
+
+  const handleSearch = async () => {
+    setQuery(draftQuery)
+  }
+
+  return (
+    <YStack gap="$3">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H4>
+          Discord Access{' '}
+          {!!groupInfoSwr.data &&
+            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
+        </H4>
+
+        <Button
+          size="$2"
+          onPress={() => resetChannelMutation.trigger()}
+          disabled={resetChannelMutation.isMutating}
+        >
+          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+        </Button>
+      </XStack>
+
+      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
+        <Fieldset>
+          <Label size="$3" theme="alt1" htmlFor="discord-username">
+            Username / Nickname
+          </Label>
+          <Input
+            miw={200}
+            placeholder="Your username..."
+            id="discord-username"
+            value={draftQuery}
+            onChangeText={setDraftQuery}
+          />
+        </Fieldset>
+
+        <Form.Trigger>
+          <Button icon={Search}>Search</Button>
+        </Form.Trigger>
+      </Form>
+
+      <XStack tag="article">
+        <Paragraph size="$3" theme="alt1">
+          Note: You must{' '}
+          <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
+            join the Discord server
+          </Link>{' '}
+          first so we can find your username.
+        </Paragraph>
+      </XStack>
+
+      <YStack gap="$2">
+        {searchSwr.data?.map((member) => (
+          <DiscordMember
+            key={member.user?.id}
+            member={member}
+            subscriptionId={subscriptionId}
+          />
+        ))}
+      </YStack>
+    </YStack>
+  )
+}
+
+const DiscordMember = ({
+  member,
+  subscriptionId,
+}: {
+  member: APIGuildMember
+  subscriptionId: string
+}) => {
+  const { data, error, isMutating, trigger } = useSWRMutation(
+    ['/api/discord/channel', 'POST', member.user?.id],
+    async () => {
+      const res = await fetch('/api/discord/channel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+          discord_id: member.user?.id,
+        }),
+      })
+
+      if (res.status < 200 || res.status > 299) {
+        throw await res.json()
+      }
+      return await res.json()
+    },
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/channel?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+      },
+    }
+  )
+
+  const name = member.nick || member.user?.global_name
+  const username = `${member.user?.username}${
+    member.user?.discriminator !== '0' ? `#${member.user?.discriminator}` : ''
+  }`
+  const avatarSrc = member.user?.avatar
+    ? `https://cdn.discordapp.com/avatars/${member.user?.id}/${member.user?.avatar}.png`
+    : null
+
+  return (
+    <XStack gap="$2" ai="center" flexWrap="wrap">
+      <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+        {isMutating ? 'Inviting...' : 'Add'}
+      </Button>
+      <Avatar circular size="$2">
+        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Fallback backgroundColor="$blue10" />
+      </Avatar>
+      <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
+      {data && (
+        <Paragraph size="$1" theme="green">
+          {data.message}
+        </Paragraph>
+      )}
+      {error && (
+        <Paragraph size="$1" theme="red">
+          {error.message}
+        </Paragraph>
+      )}
+    </XStack>
+  )
+}
+
 const PlanTab = ({
   subscription,
   setCurrentTab,
@@ -306,6 +530,7 @@ const PlanTab = ({
   setCurrentTab: (value: 'plan' | 'upgrade' | 'manage') => void
 }) => {
   const supabase = useSupabaseClient()
+  const [showDiscordAccess, setShowDiscordAccess] = useState(false)
 
   const handleBentoDownload = async () => {
     if (!supabase) {
@@ -375,6 +600,20 @@ const PlanTab = ({
           />
 
           <ServiceCard
+            title="Discord Access"
+            description="Manage your Discord server access and invites."
+            actionLabel={subscription ? 'Manage Access' : 'Purchase'}
+            onAction={() => {
+              if (!subscription) {
+                // Unreachable but just in case
+                paymentModal.show = true
+              } else {
+                setShowDiscordAccess(true)
+              }
+            }}
+          />
+
+          <ServiceCard
             title="Theme AI"
             description="Prompt an LLM to generate themes."
             actionLabel="Go"
@@ -416,6 +655,13 @@ const PlanTab = ({
             />
           </XStack>
         </YStack>
+      )}
+
+      {showDiscordAccess && subscription && (
+        <DiscordAccessDialog
+          subscription={subscription}
+          onClose={() => setShowDiscordAccess(false)}
+        />
       )}
     </YStack>
   )
