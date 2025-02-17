@@ -1,9 +1,10 @@
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import React, { useId } from 'react'
+import React from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
+import { updateMediaListeners } from '../hooks/useMedia'
 
 export function TamaguiProvider({
   children,
@@ -31,6 +32,10 @@ export function TamaguiProvider({
       }, [config, disableInjectCSS])
     }
   }
+
+  useIsomorphicLayoutEffect(() => {
+    updateMediaListeners()
+  }, [])
 
   return (
     <>

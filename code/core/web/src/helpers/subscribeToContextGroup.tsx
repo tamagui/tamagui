@@ -3,14 +3,12 @@ import { getMediaState } from '../hooks/useMedia'
 import type { TamaguiComponentState, ComponentContextI, GroupState } from '../types'
 
 export const subscribeToContextGroup = ({
-  disabled = false,
   setStateShallow,
   pseudoGroups,
   mediaGroups,
   componentContext,
   state,
 }: {
-  disabled?: boolean
   setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>

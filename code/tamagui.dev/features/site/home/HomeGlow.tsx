@@ -63,6 +63,11 @@ export const HomeGlow = memo(() => {
       tints[(tintIndex + 1) % tints.length],
       tints[(tintIndex + 2) % tints.length],
     ].map((curTint, i) => {
+      if (!curTint) {
+        // TODO this is being hit on quick move to T
+        return null
+      }
+
       const isOpposing = tintIndex % 2 === 0
       const isAlt = i === 1
       const xRand = isOnHeroBelow ? 1 : positions[isOpposing ? 2 - i : i][0]

@@ -1,6 +1,5 @@
-import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import React from 'react'
+import { isServer, isWeb } from '@tamagui/constants'
+import { useRef, useSyncExternalStore } from 'react'
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
@@ -15,7 +14,6 @@ import type {
   TamaguiInternalConfig,
   UseMediaState,
 } from '../types'
-import { getDisableSSR } from './useDisableSSR'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -134,31 +132,21 @@ export function setupMediaListeners() {
       match.removeListener(update)
     })
 
-    update()
-
     function update() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState = { ...mediaState, [key]: next }
-      updateCurrentState()
+      updateMediaListeners()
     }
+
+    update()
   }
 }
 
 const listeners = new Set<any>()
-let flushing = false
-let flushVersion = -1
-function updateCurrentState() {
-  // only avoid flush if they haven't re-configured media queries since
-  if (flushing && flushVersion === mediaVersion) {
-    return
-  }
-  flushVersion = mediaVersion
-  flushing = true
-  Promise.resolve().then(() => {
-    flushing = false
-    listeners.forEach((cb) => cb(mediaState))
-  })
+
+export function updateMediaListeners() {
+  listeners.forEach((cb) => cb(mediaState))
 }
 
 type MediaKeysState = {
@@ -166,9 +154,8 @@ type MediaKeysState = {
 }
 
 type MediaState = {
-  prev?: MediaKeysState
   enabled?: boolean
-  keys?: Record<string, boolean> | null
+  keys?: Set<string> | null
 }
 
 const States = new WeakMap<any, MediaState>()
@@ -189,7 +176,7 @@ export function setMediaShouldUpdate(
   }
 }
 
-function subscribe(subscriber: any) {
+function subscribe(subscriber: () => void) {
   listeners.add(subscriber)
   return () => {
     listeners.delete(subscriber)
@@ -200,94 +187,64 @@ type ComponentMediaKeys = Set<string>
 
 type ComponentMediaQueryState = MediaKeysState
 
-const CurrentKeysMap = new WeakMap<any, ComponentMediaKeys>()
-
 export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
-  // performance boost to avoid using context twice
-  const disableSSR = getSetting('disableSSR') || getDisableSSR(cc)
-  const isHydrated = useDidFinishSSR()
-  const initialState = isHydrated || disableSSR || !isWeb ? mediaState : initState
-  const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
+  const componentState = cc ? States.get(cc) : null
 
-  if (!CurrentKeysMap.get(setState)) {
-    CurrentKeysMap.set(setState, new Set())
+  const internalRef = useRef<{ keys: Set<string>; lastState?: MediaQueryState }>()
+  if (!internalRef.current) {
+    internalRef.current = {
+      keys: new Set(),
+    }
   }
 
-  const currentKeys = CurrentKeysMap.get(setState)!
+  const { keys, lastState = getSetting('disableSSR') ? mediaState : initState } =
+    internalRef.current
 
   // clear each render to track only rendered touched keys
-  // if (currentKeys.size) currentKeys.clear()
-
-  function getSnapshot(cur: ComponentMediaQueryState) {
-    if (!currentKeys) return cur
-
-    for (const key of currentKeys) {
-      if (mediaState[key] !== cur[key]) {
-        if (process.env.NODE_ENV === 'development' && debug) {
-          console.warn(`useMedia()✍️`, key, cur[key], '>', mediaState[key])
-        }
-        return mediaState
-      }
-    }
-
-    return cur
+  if (keys.size) {
+    keys.clear()
   }
 
-  let isRendering = true
-  const isInitialState = state === initialState
-
-  useIsomorphicLayoutEffect(() => {
-    isRendering = false
-  })
-
-  useIsomorphicLayoutEffect(() => {
-    const update = () =>
-      setState((prev) => {
-        const next = getSnapshot(prev)
-        return next
-      })
-
-    update()
-
-    const tm = setTimeout(() => {
-      if (currentKeys.size) {
-        update()
+  const state = useSyncExternalStore(
+    subscribe,
+    () => {
+      if (componentState?.enabled) {
+        internalRef.current!.lastState = mediaState
+        return mediaState
       }
-    })
 
-    const dispose = subscribe(update)
+      const curKeys = componentState?.keys || keys
 
-    return () => {
-      dispose()
-      clearTimeout(tm)
-    }
-  }, [setState])
+      if (!curKeys.size) {
+        return lastState
+      }
+
+      for (const key of curKeys) {
+        if (mediaState[key] !== lastState[key]) {
+          if (process.env.NODE_ENV === 'development' && debug) {
+            console.warn(`useMedia() ✍️`, key, lastState[key], '=>', mediaState[key])
+          }
+          internalRef.current!.lastState = mediaState
+          return mediaState
+        }
+      }
+
+      return lastState
+    },
+    getServerSnapshot
+  )
 
   return new Proxy(state, {
     get(_, key) {
-      if (isRendering && !disableMediaTouch && typeof key === 'string') {
-        currentKeys.add(key)
-
-        const shouldUpdate = state[key] !== mediaState[key]
-
-        if (shouldUpdate) {
-          if (process.env.NODE_ENV === 'development' && debug) {
-            console.info(`useMedia() TOUCH`, key)
-          }
-
-          // the first update() will get this in an ssr safe way in the useLayoutEffect
-          if (!isInitialState) {
-            const next = getSnapshot(state)
-            if (next !== state) {
-              setState(next)
-            }
-          }
-        }
+      if (!disableMediaTouch && typeof key === 'string') {
+        keys.add(key)
       }
       return Reflect.get(state, key)
     },
   })
 }
+
+const getServerSnapshot = () => initState
 
 let disableMediaTouch = false
 export function _disableMediaTouch(val: boolean) {
