@@ -49,13 +49,7 @@ import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
 import { getGroupPropParts } from './getGroupPropParts'
-import {
-  insertStyleRules,
-  insertedTransforms,
-  scanAllSheets,
-  shouldInsertStyleRules,
-  updateRules,
-} from './insertStyleRule'
+import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isActivePlatform } from './isActivePlatform'
 import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
@@ -163,9 +157,6 @@ export const getSplitStyles: StyleSplitter = (
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
-  // we need to gather these specific to each media query / pseudo
-  // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
-  const transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
   let pseudos: PseudoStyles | null = null
   let space: SpaceTokens | null = props.space
@@ -660,7 +651,12 @@ export const getSplitStyles: StyleSplitter = (
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
         // (note: can't because we need to set defaults on enter/exit or else enforce that they should)
-        const pseudoStyleObject = getSubStyle(styleState, key, val, styleProps.noClass)
+        const pseudoStyleObject = getSubStyle(
+          styleState,
+          key,
+          val,
+          styleProps.noClass && !(process.env.IS_STATIC === 'is_static')
+        )
 
         if (!shouldDoClasses || process.env.IS_STATIC === 'is_static') {
           pseudos ||= {}
@@ -684,9 +680,6 @@ export const getSplitStyles: StyleSplitter = (
 
         // on server only generate classes for enterStyle
         if (shouldDoClasses && !isExit) {
-          if (styleState.flatTransforms) {
-            mergeFlatTransforms(pseudoStyleObject, styleState.flatTransforms)
-          }
           const pseudoStyles = getStyleAtomic(pseudoStyleObject, descriptor)
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -696,16 +689,8 @@ export const getSplitStyles: StyleSplitter = (
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle[StyleObjectProperty]}${PROP_SPLIT}${descriptor.name}`
             if (fullKey in usedKeys) continue
-
             addStyleToInsertRules(rulesToInsert, psuedoStyle)
-            mergeClassName(
-              transforms,
-              classNames,
-              fullKey,
-              psuedoStyle[StyleObjectIdentifier],
-              isMediaOrPseudo,
-              true
-            )
+            classNames[fullKey] = psuedoStyle[StyleObjectIdentifier]
           }
         }
 
@@ -874,14 +859,7 @@ export const getSplitStyles: StyleSplitter = (
 
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
-            mergeClassName(
-              transforms,
-              classNames,
-              fullKey,
-              out[StyleObjectIdentifier],
-              true,
-              true
-            )
+            classNames[fullKey] = out[StyleObjectIdentifier]
           }
         } else {
           const isThemeMedia = isMedia === 'theme'
@@ -1029,7 +1007,6 @@ export const getSplitStyles: StyleSplitter = (
       try {
         log(` ✔️ expand complete`, keyInit)
         log('style', { ...styleState.style })
-        log('transforms', { ...transforms })
         log('viewProps', { ...viewProps })
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
@@ -1143,7 +1120,7 @@ export const getSplitStyles: StyleSplitter = (
             shouldRetain = true
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
-            mergeClassName(transforms, classNames, key, identifier, false, true)
+            classNames[key] = identifier
           }
         }
 
@@ -1157,30 +1134,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
           styleState.style = retainedStyles || {}
-        }
-      }
-
-      if (transforms) {
-        for (const namespace in transforms) {
-          if (!transforms[namespace]) {
-            if (process.env.NODE_ENV === 'development') {
-              log('Error no transform', transforms, namespace)
-            }
-            continue
-          }
-          const [hash, val] = transforms[namespace]
-          const identifier = `_transform${hash}`
-          if (isClient && !insertedTransforms[identifier]) {
-            const rule = `.${identifier} { transform: ${val}; }`
-            addStyleToInsertRules(rulesToInsert, [
-              namespace,
-              val,
-              identifier,
-              undefined,
-              [rule],
-            ] satisfies StyleObject)
-          }
-          classNames[namespace] = identifier
         }
       }
     }
@@ -1365,7 +1318,6 @@ export const getSplitStyles: StyleSplitter = (
           ...result,
           className,
           componentState,
-          transforms,
           viewProps,
           rulesToInsert,
           parentSplitStyles,
@@ -1396,50 +1348,14 @@ function mergeFlatTransforms(target: TextStyle, flatTransforms: Record<string, a
     })
 }
 
-function mergeClassName(
-  transforms: Record<string, any[]>,
-  classNames: Record<string, string>,
-  key: string,
-  val: string,
-  isMediaOrPseudo = false,
-  isInsertingNow = false
-) {
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    // empty classnames passed by compiler sometimes
-    if (!val) return
-    if (!isInsertingNow && val[0] === '_' && val.startsWith('_transform-')) {
-      const ns: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
-      let transform = insertedTransforms[val]
-      if (isClient && !transform) {
-        scanAllSheets() // HMR or loaded a new chunk
-        transform = insertedTransforms[val]
-        if (!transform && isWeb && val[0] !== '_') {
-          transform = val // runtime insert
-        }
-      }
-      transforms[ns] ||= ['', '']
-      transforms[ns][0] += val.replace('_transform', '')
-      // ssr doesn't need to do anything just make the right classname
-      if (transform) {
-        transforms[ns][1] += transform
-      }
-    } else {
-      classNames[key] = val
-    }
-  }
-}
-
 function mergeStyle(
   styleState: GetStyleState,
   key: string,
   val: any,
   disableNormalize = false
 ) {
-  const { classNames, viewProps, usedKeys, styleProps, staticConfig } = styleState
-  if (isWeb && val?.[0] === '_') {
-    classNames[key] = val
-    usedKeys[key] ||= 1
-  } else if (key in stylePropsTransform) {
+  const { viewProps, styleProps, staticConfig } = styleState
+  if (key in stylePropsTransform) {
     styleState.flatTransforms ||= {}
     styleState.flatTransforms[key] = val
   } else {
@@ -1453,7 +1369,10 @@ function mergeStyle(
       viewProps[key] = out
     } else {
       styleState.style ||= {}
-      styleState.style[key] = out
+      styleState.style[key] =
+        // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
+        // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)
+        key === 'transform' && Array.isArray(out) ? [...out] : out
     }
   }
 }
@@ -1491,10 +1410,15 @@ export const getSubStyle = (
     })
   }
 
-  if (Array.isArray(styleOut.transform)) {
-    const parentTransform = styleState.style?.transform
-    if (parentTransform) {
-      styleOut.transform = [...parentTransform, ...styleOut.transform]
+  if (!avoidMergeTransform) {
+    if (Array.isArray(styleOut.transform)) {
+      const parentTransform = styleState.style?.transform
+      if (parentTransform) {
+        styleOut.transform = [...parentTransform, ...styleOut.transform]
+      }
+    }
+    if (styleState.flatTransforms) {
+      mergeFlatTransforms(styleOut, styleState.flatTransforms)
     }
   }
 

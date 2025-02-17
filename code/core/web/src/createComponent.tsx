@@ -1,13 +1,14 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { groupCollapsed, groupEnd } from './helpers/consoleLog'
 import { getShorthandValue } from './helpers/getShorthandValue'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
@@ -46,7 +47,6 @@ import type {
 } from './types'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
-import { groupCollapsed, groupEnd } from './helpers/consoleLog'
 
 /**
  * All things that need one-time setup after createTamagui is called

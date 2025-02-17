@@ -1,12 +1,14 @@
-// debug
+// debug 123
 import { Configuration, Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
 import {
+  AnimatePresence,
   Button,
   Circle,
   type CircleProps,
   Dialog,
   Popover,
+  Square,
   Text,
   XStack,
   YStack,
@@ -14,12 +16,15 @@ import {
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 
 export default function Sandbox() {
+  const [show, setShow] = useState(false)
+
   return (
     <>
+      <Button onPress={() => setShow(!show)}>show</Button>
+      {/* TODO these are all is a really good test case: compiler on and off */}
       <Circle
         size={100}
         bg="red"
-        debug="verbose"
         transform={[{ scale: 0.9 }]}
         x={100}
         y={0}
@@ -28,6 +33,44 @@ export default function Sandbox() {
           // scale: 1.02,
         }}
       />
+
+      {/* test case: ensure hoverStyle animates because it gets default aniamtable styles */}
+      <Square
+        animation="bouncy"
+        backgroundColor="$color9"
+        size={104}
+        debug="verbose"
+        borderRadius="$9"
+        hoverStyle={{
+          scale: 1.2,
+        }}
+        pressStyle={{
+          scale: 0.9,
+        }}
+      ></Square>
+
+      {/* test case: ensure enter/exit style animate */}
+      <AnimatePresence>
+        {show && (
+          <Circle
+            bg="$shadow4"
+            size={100}
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        )}
+      </AnimatePresence>
+
+      {show && (
+        <Circle
+          bg="$shadow4"
+          size={100}
+          animation="lazy"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+      )}
     </>
   )
 }
