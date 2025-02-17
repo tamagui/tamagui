@@ -67,7 +67,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'AlertDemo',
       'AlertWithIcon',
       'IosStyleAlert',
-      'SlidingPopoverDemo'
+      'SlidingPopoverDemo',
     ].includes(name)
   ) {
     return (
@@ -124,16 +124,7 @@ const bentoScreensPerElement = Object.entries(Components)
     const Component = _Component as React.ComponentType<any>
 
     return (
-      <Stack.Screen
-        key={name}
-        name={name}
-        options={{
-          title: name,
-          headerRight() {
-            return <ColorSchemeToggle />
-          },
-        }}
-      >
+      <Stack.Screen key={name} name={name} options={{ title: name }}>
         {() => (
           <BentoScreenContainer name={name}>
             <Component />
