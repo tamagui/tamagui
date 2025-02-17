@@ -8,5 +8,5 @@ VALUES (
   'Tamagui Pro',
   'Unified plan including Takeout, Bento, Theme AI, Chat AI, Discord #support and early access to new features.',
   '', -- TODO: Add image
-  '{"features": ["Takeout", "Bento", "Theme AI", "Chat AI", "Discord #support", "Early access"]}'
+  '{"features": ["Takeout", "Bento", "Theme AI", "Chat AI", "Discord #support", "Early access"], "claim_type": "repo_access", "repository_name": "unistack"}'
 );

@@ -531,6 +531,45 @@ const PlanTab = ({
 }) => {
   const supabase = useSupabaseClient()
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
+  const { data: products } = useProducts()
+  const [isGrantingAccess, setIsGrantingAccess] = useState(false)
+
+  const handleTakeoutAccess = async () => {
+    if (!subscription || !products) return
+
+    const takeoutProduct = products.pro
+    if (!takeoutProduct) {
+      alert('Product information not found')
+      return
+    }
+
+    setIsGrantingAccess(true)
+    try {
+      const res = await fetch(`/api/claim`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscription.id,
+          product_id: takeoutProduct.id,
+        }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        alert(data?.error || `Error: ${res.status} ${res.statusText}`)
+      } else {
+        if (data.url) {
+          window.location.href = data.url
+        } else if (data.message) {
+          alert(data.message)
+        }
+      }
+    } finally {
+      setIsGrantingAccess(false)
+    }
+  }
 
   const handleBentoDownload = async () => {
     if (!supabase) {
@@ -582,12 +621,18 @@ const PlanTab = ({
           <ServiceCard
             title="Takeout"
             description="Access to repository and updates."
-            actionLabel={subscription ? 'View Repository' : 'Purchase'}
+            actionLabel={
+              subscription
+                ? isGrantingAccess
+                  ? 'Granting Access...'
+                  : 'View Repository'
+                : 'Purchase'
+            }
             onAction={() => {
               if (!subscription) {
                 paymentModal.show = true
               } else {
-                window.open('https://github.com/tamagui/tamagui-pro')
+                handleTakeoutAccess()
               }
             }}
           />
