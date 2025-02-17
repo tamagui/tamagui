@@ -21,7 +21,7 @@ export const UpgradePopover = (props: PopoverProps) => {
     via: undefined as 'hover' | 'press' | undefined,
     viaAt: Date.now(),
   })
-  const { showAppropriateModal } = useSubscriptionModal()
+  const { showAppropriateModal, isProUser } = useSubscriptionModal()
 
   return (
     <Popover
@@ -71,7 +71,7 @@ export const UpgradePopover = (props: PopoverProps) => {
           }}
         >
           <H2 ff="$mono" f={1} fow="600" size="$4">
-            Pro
+            {isProUser ? 'Account' : 'Pro'}
           </H2>
         </XStack>
       </Popover.Anchor>
