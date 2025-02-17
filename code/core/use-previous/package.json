@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-previous",
-  "version": "1.124.17",
+  "version": "1.125.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

@@ -1,8 +1,43 @@
-import { Theme, useThemeWithState } from '@tamagui/web'
+import { Configuration, Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
-import { Button, Circle, type CircleProps, Text, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Circle,
+  type CircleProps,
+  Dialog,
+  Popover,
+  Text,
+  XStack,
+  YStack,
+} from 'tamagui'
+import { animationsCSS } from '@tamagui/tamagui-dev-config'
 
 export default function Sandbox() {
+  return (
+    <>
+      <Configuration animationDriver={animationsCSS}>
+        <Circle
+          animation="bouncy"
+          size={100}
+          bg="red"
+          opacity={1}
+          enterStyle={{ opacity: 0, y: 100 }}
+        />
+      </Configuration>
+
+      <YStack
+        disableClassName
+        w={200}
+        h={200}
+        bg="red"
+        $sm={{ bg: 'green' }}
+        $md={{ bg: 'yellow' }}
+      />
+    </>
+  )
+}
+
+export function TextThemes() {
   const [name, setName] = useState('dark')
 
   return (

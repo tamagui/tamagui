@@ -60,6 +60,7 @@ const TooltipContent = PopperContentFrame.extractable(
           disableFocusScope
           {...(!props.unstyled && {
             padding,
+            pointerEvents: 'none',
           })}
           ref={ref}
           {...props}

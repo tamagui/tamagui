@@ -17,6 +17,10 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
     const child = React.Children.only(children)
 
+    if (!label) {
+      return children
+    }
+
     return (
       <Tooltip
         disableRTL

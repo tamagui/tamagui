@@ -1,4 +1,5 @@
 import { throttle } from '@github/mini-throttle'
+import { Image } from '@tamagui/image-next'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/tamagui-dev-config'
@@ -30,14 +31,11 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
-import { Image } from '@tamagui/image-next'
 import { LinearGradient } from 'tamagui/linear-gradient'
-
-import { useOnIntersecting } from '~/hooks/useOnIntersecting'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
-import { HomeH2, HomeH3 } from './HomeHeaders'
 import favicon from '~/public/favicon.svg'
+import { HomeH2, HomeH3 } from './HomeHeaders'
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
@@ -45,6 +43,7 @@ const breakpoints = [
   { name: 'md', at: demoMedia[2] },
   { name: 'lg', at: demoMedia[3] },
 ]
+
 const browserHeight = 485
 
 const IS_SAFARI =
@@ -162,6 +161,7 @@ export const HomeResponsive = memo(() => {
   }, [])
 
   const media = useMedia()
+
   const [smIndex, setSmIndex] = useState(0)
   const [width, setWidth] = useState(initialWidth)
   const isSmall = initialWidth + Math.max(0, move) < 680

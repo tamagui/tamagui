@@ -5,8 +5,9 @@ import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 
+import { useStackedZIndex } from '@tamagui/z-index-stack'
+import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
-import { useStackedZIndex } from './useStackedZIndex'
 
 // web only version
 
@@ -15,8 +16,8 @@ export const Portal = React.memo((propsIn: PortalProps) => {
     return null
   }
 
-  const { host = globalThis.document?.body, stackZIndex, ...props } = propsIn
-  const zIndex = useStackedZIndex(propsIn)
+  const { host = globalThis.document?.body, stackZIndex, children, ...props } = propsIn
+  const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
   return createPortal(
     <YStack
@@ -29,7 +30,9 @@ export const Portal = React.memo((propsIn: PortalProps) => {
       pointerEvents="none"
       {...props}
       zIndex={zIndex}
-    />,
+    >
+      {children}
+    </YStack>,
     host
   ) as any
 })

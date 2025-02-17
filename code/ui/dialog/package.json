@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.124.17",
+  "version": "1.125.2",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -53,7 +53,8 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"

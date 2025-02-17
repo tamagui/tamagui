@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui",
-  "version": "1.124.17",
+  "version": "1.125.2",
   "bin": "./run.js",
   "main": "dist/index.cjs",
   "files": [
@@ -52,10 +52,6 @@
     "vitest": "^3.0.5",
     "wait-port": "^0.3.0",
     "zx": "^7.2.3"
-  },
-  "engines": {
-    "node": ">=20.22.0",
-    "yarn": ">=4.4.0"
   },
   "publishConfig": {
     "access": "public"
