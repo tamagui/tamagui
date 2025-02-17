@@ -46,6 +46,7 @@ import type {
 } from './types'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
+import { groupCollapsed, groupEnd } from './helpers/consoleLog'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -440,7 +441,7 @@ export function createComponent<
           log({ noClass, isAnimated, isWeb, supportsCSSVars })
         } else {
           // if strict mode or something messes with our nesting this fixes:
-          console.groupEnd()
+          groupEnd()
 
           const ch = propsIn.children
           let childLog =
@@ -449,13 +450,13 @@ export function createComponent<
             childLog = `(children: ${childLog})`
           }
 
-          console.groupCollapsed(`${childLog} Props:`)
+          groupCollapsed(`${childLog} Props:`)
           log('props in:', propsIn)
           log('final props:', props)
           log({ state, staticConfig, elementType, themeStateProps })
           log({ contextProps: styledContextProps, overriddenContextProps })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
-          console.groupEnd()
+          groupEnd()
         }
       }
     }
@@ -701,10 +702,10 @@ export function createComponent<
           const computed = cssStyleDeclarationToObject(
             getComputedStyle(stateRef.current.host! as any)
           )
-          console.groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
+          groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
           console.warn(computed)
-          console.groupEnd()
+          groupEnd()
         }
       })
     }
@@ -1115,7 +1116,7 @@ export function createComponent<
             log(key, splitStylesStyle[key])
           }
         } else {
-          console.groupCollapsed(title)
+          groupCollapsed(title)
           try {
             log('viewProps', viewProps)
             log('children', content)
@@ -1151,7 +1152,7 @@ export function createComponent<
           } catch {
             // RN can run into PayloadTooLargeError: request entity too large
           } finally {
-            console.groupEnd()
+            groupEnd()
           }
         }
         if (debugProp === 'break') {
