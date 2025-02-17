@@ -5,9 +5,9 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
   DEFAULT_ROLE_ID,
   getDiscordClient,
+  TAKEOUT_GROUP_ID,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
-  TAKEOUT_GENERAL_CHANNEL,
 } from '~/features/discord/helpers'
 import { ensureSubscription } from '../../../helpers/ensureSubscription'
 
@@ -46,15 +46,15 @@ export default apiRoute(async (req) => {
   const { subscription, hasDiscordPrivateChannels, discordSeats } =
     await ensureSubscription(supabase, subscriptionId)
 
-  // Check if user has Support tier - if yes, redirect to support API
+  // Get subscription tier information and verify it's a Support tier
   const supportItem = subscription.data.subscription_items?.find(
     (item: any) => item.prices?.[0]?.products?.[0]?.name === 'Tamagui Support'
   )
   const supportTier =
     supportItem?.prices?.[0]?.products?.[0]?.description?.match(/Tier (\d)/)?.[1] || '0'
-  if (supportTier !== '0') {
+  if (supportTier === '0') {
     return Response.json(
-      { message: 'Please use the support API for Support tier subscriptions' },
+      { message: 'Please use the channel API for Pro plan subscriptions' },
       { status: 400 }
     )
   }
@@ -83,20 +83,43 @@ export default apiRoute(async (req) => {
     (subscription.data.metadata as Record<string, any>)?.discord_channel || null
 
   if (hasDiscordPrivateChannels && !discordChannelId) {
-    // Pro users get access to the general channel
-    const channels = await discordClient.api.guilds.getChannels(TAMAGUI_DISCORD_GUILD_ID)
-    const generalChannel = channels.find((c: any) => c.name === TAKEOUT_GENERAL_CHANNEL)
+    // Create private channel for Support tier user
+    let channelName = `${user.email?.split('@')[0] || 'user'}-tier-${supportTier}`
+    try {
+      const githubData = await fetch('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${userPrivate.data.github_token}`,
+        },
+      }).then((res) => res.json())
+      channelName = `${githubData.login}-tier-${supportTier}`
+    } catch (error) {}
 
-    if (generalChannel) {
-      discordChannelId = generalChannel.id
-      await supabaseAdmin
-        .from('subscriptions')
-        .update({ metadata: { discord_channel: generalChannel.id } })
-        .eq('id', subscription.data.id)
-    }
+    const discordChannel = await discordClient.api.guilds.createChannel(
+      TAMAGUI_DISCORD_GUILD_ID,
+      {
+        name: channelName,
+        parent_id: TAKEOUT_GROUP_ID,
+        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
+        topic: `Support Tier ${supportTier} - Created at ${subscription.data.created} - ID: ${subscription.data.id}`,
+      }
+    )
+
+    await discordClient.api.channels.createMessage(discordChannel.id, {
+      content: `Welcome to your private support channel! The Tamagui team is here to help with any questions or issues you have.`,
+    })
+
+    discordChannelId = discordChannel.id
+
+    await supabaseAdmin
+      .from('subscriptions')
+      .update({ metadata: { discord_channel: discordChannel.id } })
+      .eq('id', subscription.data.id)
   }
 
   if (req.method === 'DELETE') {
+    if (discordChannelId) {
+      await discordClient.api.channels.delete(discordChannelId)
+    }
     await Promise.allSettled(
       discordInvites.data.map((inv) =>
         discordClient.api.guilds.removeRoleFromMember(
@@ -135,6 +158,17 @@ export default apiRoute(async (req) => {
       )
     }
 
+    if (discordChannelId) {
+      const channel = await discordClient.api.channels.get(discordChannelId)
+
+      await discordClient.api.channels.edit(discordChannelId, {
+        permission_overwrites: [
+          ...(channel as any).permission_overwrites,
+          { id: userDiscordId, type: 1, allow: roleBitField },
+        ],
+      })
+    }
+
     await supabaseAdmin.from('discord_invites').insert({
       discord_user_id: userDiscordId,
       subscription_id: subscription.data.id,
@@ -146,7 +180,7 @@ export default apiRoute(async (req) => {
       TAKEOUT_ROLE_ID
     )
 
-    return Response.json({ message: 'Added to the Takeout general channel!' })
+    return Response.json({ message: 'Added to your private support channel!' })
   }
 
   return Response.json({ message: 'Done!' })
