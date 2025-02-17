@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "1.125.2",
+  "version": "1.125.3",
   "sideEffects": [
     "*.css"
   ],
