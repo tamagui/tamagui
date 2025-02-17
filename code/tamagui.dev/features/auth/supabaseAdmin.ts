@@ -543,3 +543,16 @@ export async function populateStripeData() {
     console.info('populated price ', price.nickname)
   }
 }
+
+export const getBentoBundleZip = async () => {
+  const { data, error } = await supabaseAdmin.storage
+    .from('bento')
+    .download('bento-bundle.zip')
+
+  if (error) {
+    console.error('Error downloading Bento bundle:', error)
+    throw new Error('Failed to download Bento bundle')
+  }
+
+  return data
+}

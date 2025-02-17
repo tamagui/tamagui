@@ -20,6 +20,7 @@ import { useUser } from '~/features/user/useUser'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
 import { BigP } from './BigP'
+import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 
 class AccountModal {
   show = false
@@ -304,6 +305,51 @@ const PlanTab = ({
   subscription?: any
   setCurrentTab: (value: 'plan' | 'upgrade' | 'manage') => void
 }) => {
+  const supabase = useSupabaseClient()
+
+  const handleBentoDownload = async () => {
+    if (!supabase) {
+      alert('Authentication required')
+      return
+    }
+
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (!session) {
+        alert('Please sign in to download Bento components')
+        return
+      }
+
+      const response = await fetch('/api/bento/zip-download', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to download Bento components')
+      }
+
+      // Create a blob from the response
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'bento-bundle.zip'
+      document.body.appendChild(a)
+      a.click()
+
+      // Cleanup
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch (error) {
+      alert('Failed to download Bento components. Please try again later.')
+    }
+  }
+
   return (
     <YStack gap="$6">
       <YStack gap="$4">
@@ -325,9 +371,7 @@ const PlanTab = ({
             title="Bento"
             description="Download the entire suite of Bento components."
             actionLabel="Download"
-            onAction={() => {
-              // Add download logic
-            }}
+            onAction={handleBentoDownload}
           />
 
           <ServiceCard
