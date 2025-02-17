@@ -112,6 +112,7 @@ export default {
       },
 
       deps: {
+        url: false,
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
         postmark: true,

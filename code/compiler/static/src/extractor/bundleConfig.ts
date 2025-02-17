@@ -301,6 +301,7 @@ export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternal
     colorLog(Color.FgYellow, `  ➡ [tamagui] output css: ${outputCSS}`)
     await FS.writeFile(outputCSS, css)
   }
+
   const css = config.getCSS()
   if (typeof css !== 'string') {
     throw new Error(`Invalid CSS: ${typeof css} ${css}`)

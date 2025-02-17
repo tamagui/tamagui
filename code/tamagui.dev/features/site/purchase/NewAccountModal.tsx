@@ -316,7 +316,7 @@ const DiscordAccessDialog = ({
 }: { subscription: any; onClose: () => void }) => {
   return (
     <Dialog modal open onOpenChange={onClose}>
-      <Dialog.Portal>
+      <Dialog.Portal zIndex={100_000}>
         <Dialog.Overlay
           key="overlay"
           animation="medium"
