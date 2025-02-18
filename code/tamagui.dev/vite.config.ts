@@ -1,4 +1,5 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { join } from 'node:path'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
 
@@ -41,6 +42,7 @@ const include = [
   'reading-time',
   'unified',
   '@discordjs/core',
+  'discord-api-types',
 ]
 
 const disableExtraction = false
@@ -55,6 +57,13 @@ export default {
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
       'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
+      'discord-api-types': join(
+        __dirname,
+        '..',
+        '..',
+        'node_modules',
+        'discord-api-types'
+      ),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -130,7 +139,6 @@ export default {
             build: {
               rollupOptions: {
                 external: [
-                  '@discordjs/core',
                   '@discordjs/rest',
                   '@discordjs/ws',
                   '@vercel/og',
