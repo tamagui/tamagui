@@ -95,16 +95,21 @@ const MIGRATION_LOG_FILE = join(process.cwd(), 'migration_logs.json')
  */
 
 /**
- * Retrieves all active subscriptions that need to be migrated.
- * This includes subscriptions that are:
- * - Not canceled
- * - In 'active' or 'trialing' status
- * - Associated with old product IDs (Bento/Takeout)
+ * Retrieves all subscriptions that need to be migrated, including deleted ones.
+ * This includes:
+ * 1. Active subscriptions from Supabase
+ * 2. Recently cancelled subscriptions from Supabase
+ * 3. Recently deleted subscriptions from Stripe
  *
  * @returns {Promise<any[]>} Array of subscriptions that need migration
  */
 async function getActiveSubscriptions() {
-  const { data: subscriptions, error } = await supabaseAdmin
+  const oneWeekAgo = new Date()
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+  const oneWeekAgoUnix = Math.floor(oneWeekAgo.getTime() / 1000)
+
+  // Get subscriptions from Supabase
+  const { data: supabaseSubscriptions, error } = await supabaseAdmin
     .from('subscriptions')
     .select(`
       *,
@@ -116,17 +121,116 @@ async function getActiveSubscriptions() {
         )
       )
     `)
-    .is('canceled_at', null)
-    .filter('status', 'in', '("active","trialing")')
+    .or(
+      `status.eq.active,status.eq.trialing,and(canceled_at.gt.${oneWeekAgo.toISOString()},cancel_at_period_end.eq.true)`
+    )
 
   if (error) throw error
 
-  return subscriptions.filter((sub) =>
+  // Get recently deleted subscriptions from Stripe
+  const stripeSubscriptions = await stripe.subscriptions.list({
+    limit: 100,
+    status: 'canceled',
+    created: {
+      gte: oneWeekAgoUnix,
+    },
+    expand: ['data.customer', 'data.items.data.price.product'],
+  })
+
+  // Filter Stripe subscriptions to only include ones with old product IDs
+  const deletedSubscriptions = stripeSubscriptions.data
+    .filter((sub) =>
+      sub.items.data.some((item) => {
+        const product = /** @type {Stripe.Product} */ (item.price.product)
+        return OLD_PRODUCT_IDS.includes(product.id)
+      })
+    )
+    .map((sub) => ({
+      id: sub.id,
+      status: sub.status,
+      user_id: typeof sub.customer === 'string' ? sub.customer : sub.customer.id,
+      subscription_items: sub.items.data.map((item) => ({
+        id: item.id,
+        subscription_id: sub.id,
+        price_id: item.price.id,
+        prices: {
+          id: item.price.id,
+          active: true,
+          currency: item.price.currency,
+          interval: item.price.recurring?.interval || null,
+          interval_count: item.price.recurring?.interval_count || null,
+          description: item.price.nickname || null,
+          metadata: item.price.metadata || {},
+          product_id: /** @type {Stripe.Product} */ (item.price.product).id,
+          trial_period_days: item.price.recurring?.trial_period_days || null,
+          type: item.price.type,
+          unit_amount: item.price.unit_amount,
+          products: {
+            id: /** @type {Stripe.Product} */ (item.price.product).id,
+            name: /** @type {Stripe.Product} */ (item.price.product).name || null,
+            active: /** @type {Stripe.Product} */ (item.price.product).active || null,
+            description: /** @type {Stripe.Product} */ (item.price.product).description,
+            image: /** @type {Stripe.Product} */ (item.price.product).images?.[0] || null,
+            metadata: /** @type {Stripe.Product} */ (item.price.product).metadata || {},
+          },
+        },
+      })),
+      metadata: sub.metadata,
+      current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+      current_period_start: new Date(sub.current_period_start * 1000).toISOString(),
+      cancel_at: sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null,
+      canceled_at: sub.canceled_at
+        ? new Date(sub.canceled_at * 1000).toISOString()
+        : null,
+      created: new Date(sub.created * 1000).toISOString(),
+      ended_at: sub.ended_at ? new Date(sub.ended_at * 1000).toISOString() : null,
+      trial_end: sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null,
+      trial_start: sub.trial_start
+        ? new Date(sub.trial_start * 1000).toISOString()
+        : null,
+      cancel_at_period_end: sub.cancel_at_period_end,
+      quantity: sub.items.data[0]?.quantity || null,
+    }))
+
+  // Combine and deduplicate subscriptions
+  const supabaseSubs = supabaseSubscriptions.filter((sub) =>
     sub.subscription_items?.some(
       (item) =>
         item.prices?.products?.id && OLD_PRODUCT_IDS.includes(item.prices.products.id)
     )
   )
+
+  const allSubscriptions = [...supabaseSubs]
+
+  // Add deleted subscriptions that aren't in Supabase
+  for (const deletedSub of deletedSubscriptions) {
+    if (!allSubscriptions.some((sub) => sub.id === deletedSub.id)) {
+      allSubscriptions.push(deletedSub)
+    }
+  }
+
+  console.info(`Found ${supabaseSubs.length} active/cancelled subscriptions in Supabase`)
+  console.info(`Found ${deletedSubscriptions.length} deleted subscriptions in Stripe`)
+  console.info(`Total unique subscriptions to migrate: ${allSubscriptions.length}`)
+
+  return allSubscriptions
+}
+
+/**
+ * Retrieves the Stripe subscription details, including cancelled ones
+ * @param {string} subscriptionId - The ID of the subscription to retrieve
+ * @returns {Promise<Stripe.Subscription>} The subscription details
+ */
+async function getStripeSubscription(subscriptionId) {
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
+      expand: ['customer', 'latest_invoice'],
+    })
+    return subscription
+  } catch (error) {
+    console.error(`Failed to retrieve subscription ${subscriptionId}:`, error)
+    throw error
+  }
 }
 
 /**
@@ -134,8 +238,7 @@ async function getActiveSubscriptions() {
  * The process includes:
  * 1. Creating a new subscription with the Pro plan
  * 2. Setting up a trial period until the current period ends
- * 3. Canceling the old subscription
- * 4. Updating metadata and database records
+ * 3. Updating metadata and database records
  *
  * @param {any} subscription - The subscription to migrate
  * @returns {Promise<MigrationResult>} Result of the migration attempt
@@ -145,31 +248,32 @@ async function migrateSubscription(subscription) {
 
   try {
     // Get the current subscription from Stripe to ensure we have the latest data
-    const stripeSubscription = await stripe.subscriptions.retrieve(subscription.id)
+    const stripeSubscription = await getStripeSubscription(subscription.id)
+
+    // If the subscription was cancelled, we'll use its end date as the trial end
+    const trialEnd = stripeSubscription.cancel_at || stripeSubscription.current_period_end
 
     // Create a new subscription with the new price
-    // Set trial_end to the current subscription's current period end
-    // This ensures no charges until the current period ends
     const newSubscription = await stripe.subscriptions.create({
       customer:
         typeof stripeSubscription.customer === 'string'
           ? stripeSubscription.customer
           : stripeSubscription.customer.id,
       items: [{ price: NEW_PRICE_ID }],
-      trial_end: stripeSubscription.current_period_end,
+      trial_end: trialEnd,
       metadata: {
         migrated_from: subscription.id,
         original_product:
           subscription.subscription_items?.[0]?.prices?.products?.id || 'unknown',
+        original_cancel_at: stripeSubscription.cancel_at?.toString() || null,
+        original_period_end: stripeSubscription.current_period_end.toString(),
       },
     })
 
-    // Cancel the old subscription immediately since we're using trial_end for the transition
-    await stripe.subscriptions.cancel(subscription.id)
-
-    // Update the old subscription's metadata separately
+    // Update the old subscription's metadata
     await stripe.subscriptions.update(subscription.id, {
       metadata: {
+        ...stripeSubscription.metadata,
         migrated_to: newSubscription.id,
       },
     })
@@ -181,8 +285,9 @@ async function migrateSubscription(subscription) {
         metadata: {
           ...subscription.metadata,
           migrated_to: newSubscription.id,
+          original_cancel_at: stripeSubscription.cancel_at?.toString() || null,
+          original_period_end: stripeSubscription.current_period_end.toString(),
         },
-        canceled_at: new Date().toISOString(),
       })
       .eq('id', subscription.id)
 
