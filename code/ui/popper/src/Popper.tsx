@@ -377,8 +377,6 @@ export const PopperContent = React.forwardRef<
     ? getFloatingProps(frameProps)
     : frameProps
 
-  console.warn('style', style)
-
   return (
     <Stack {...floatingProps}>
       <PopperContentFrame
