@@ -344,8 +344,9 @@ const DiscordAccessDialog = ({
 }
 
 const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
+  const [activeApi, setActiveApi] = useState<'channel' | 'support'>('channel')
   const groupInfoSwr = useSWR<any>(
-    `/api/discord/channel?${new URLSearchParams({ subscription_id: subscriptionId })}`,
+    `/api/discord/${activeApi}?${new URLSearchParams({ subscription_id: subscriptionId })}`,
     (url) =>
       fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
         res.json()
@@ -365,9 +366,9 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
   )
 
   const resetChannelMutation = useSWRMutation(
-    [`/api/discord/channel`, 'DELETE', subscriptionId],
+    [`/api/discord/${activeApi}`, 'DELETE', subscriptionId],
     (url) =>
-      fetch(`/api/discord/channel`, {
+      fetch(`/api/discord/${activeApi}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -379,7 +380,7 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
     {
       onSuccess: async () => {
         await mutate(
-          `/api/discord/channel?${new URLSearchParams({
+          `/api/discord/${activeApi}?${new URLSearchParams({
             subscription_id: subscriptionId,
           })}`
         )
@@ -393,24 +394,18 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
     setQuery(draftQuery)
   }
 
-  return (
-    <YStack gap="$3">
-      <XStack jc="space-between" gap="$2" ai="center">
-        <H4>
-          Discord Access{' '}
-          {!!groupInfoSwr.data &&
-            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
-        </H4>
+  // Get subscription details to determine available access types
+  const { data: subscriptionData } = useSWR<any>(
+    subscriptionId ? `/api/products?subscription_id=${subscriptionId}` : null,
+    (url) => fetch(url).then((res) => res.json())
+  )
 
-        <Button
-          size="$2"
-          onPress={() => resetChannelMutation.trigger()}
-          disabled={resetChannelMutation.isMutating}
-        >
-          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
-        </Button>
-      </XStack>
+  const hasSupportTier = subscriptionData?.subscription?.subscription_items?.some(
+    (item: any) => item.prices?.[0]?.products?.[0]?.name === 'Tamagui Support'
+  )
 
+  const SearchForm = () => (
+    <>
       <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
         <Fieldset>
           <Label size="$3" theme="alt1" htmlFor="discord-username">
@@ -446,9 +441,76 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
             key={member.user?.id}
             member={member}
             subscriptionId={subscriptionId}
+            apiType={activeApi}
           />
         ))}
       </YStack>
+    </>
+  )
+
+  return (
+    <YStack gap="$3">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H4>
+          Discord Access{' '}
+          {!!groupInfoSwr.data &&
+            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
+        </H4>
+
+        <Button
+          size="$2"
+          onPress={() => resetChannelMutation.trigger()}
+          disabled={resetChannelMutation.isMutating}
+        >
+          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+        </Button>
+      </XStack>
+
+      <Tabs
+        value={activeApi}
+        onValueChange={(val: 'channel' | 'support') => setActiveApi(val)}
+        orientation="horizontal"
+        flexDirection="column"
+        size="$4"
+      >
+        <Tabs.List mb="$4">
+          <Tabs.Tab value="channel" f={1}>
+            <Paragraph>General Channel</Paragraph>
+          </Tabs.Tab>
+          <Tabs.Tab value="support" f={1}>
+            <Paragraph>Support Channel</Paragraph>
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Content value="channel">
+          <YStack gap="$4">
+            <Paragraph theme="alt2">
+              Join the #takeout-general channel to discuss Tamagui with other Pro users.
+            </Paragraph>
+            <SearchForm />
+          </YStack>
+        </Tabs.Content>
+
+        <Tabs.Content value="support">
+          <YStack gap="$4">
+            {hasSupportTier ? (
+              <>
+                <Paragraph theme="alt2">
+                  Get access to your private support channel where you can directly
+                  communicate with the Tamagui team.
+                </Paragraph>
+                <SearchForm />
+              </>
+            ) : (
+              <YStack gap="$4" p="$4" backgroundColor="$color2" br="$4">
+                <Paragraph theme="alt2" ta="center">
+                  You need a Support tier subscription to access private support channels.
+                </Paragraph>
+              </YStack>
+            )}
+          </YStack>
+        </Tabs.Content>
+      </Tabs>
     </YStack>
   )
 }
@@ -456,14 +518,16 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
 const DiscordMember = ({
   member,
   subscriptionId,
+  apiType,
 }: {
   member: APIGuildMember
   subscriptionId: string
+  apiType: 'channel' | 'support'
 }) => {
   const { data, error, isMutating, trigger } = useSWRMutation(
-    ['/api/discord/channel', 'POST', member.user?.id],
+    [`/api/discord/${apiType}`, 'POST', member.user?.id],
     async () => {
-      const res = await fetch('/api/discord/channel', {
+      const res = await fetch(`/api/discord/${apiType}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -482,7 +546,7 @@ const DiscordMember = ({
     {
       onSuccess: async () => {
         await mutate(
-          `/api/discord/channel?${new URLSearchParams({
+          `/api/discord/${apiType}?${new URLSearchParams({
             subscription_id: subscriptionId,
           })}`
         )
