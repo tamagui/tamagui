@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/elements",
-  "version": "1.125.2",
+  "version": "1.125.6",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

@@ -42,6 +42,7 @@ export type {
   UseFloatingOptions,
   VirtualElement,
 } from './Floating'
+
 export {
   arrow,
   autoPlacement,
@@ -56,6 +57,7 @@ export {
   shift,
   size,
 } from './Floating'
+
 export {
   useFloating,
   FloatingOverrideContext,

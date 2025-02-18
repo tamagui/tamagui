@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-cjs",
-  "version": "1.125.2",
+  "version": "1.125.6",
   "types": "./types/index.d.ts",
   "main": "./index.js",
   "license": "MIT",
