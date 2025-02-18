@@ -46,19 +46,6 @@ export default apiRoute(async (req) => {
   const { subscription, hasDiscordPrivateChannels, discordSeats } =
     await ensureSubscription(supabase, subscriptionId)
 
-  // Check if user has Support tier - if yes, redirect to support API
-  const supportItem = subscription.data.subscription_items?.find(
-    (item: any) => item.prices?.[0]?.products?.[0]?.name === 'Tamagui Support'
-  )
-  const supportTier =
-    supportItem?.prices?.[0]?.products?.[0]?.description?.match(/Tier (\d)/)?.[1] || '0'
-  if (supportTier !== '0') {
-    return Response.json(
-      { message: 'Please use the support API for Support tier subscriptions' },
-      { status: 400 }
-    )
-  }
-
   const discordInvites = await supabaseAdmin
     .from('discord_invites')
     .select('*')

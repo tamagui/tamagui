@@ -38,15 +38,13 @@ export async function ensureSubscription(
   }
 
   const subscriptionData = getArray(subscription.data.subscription_items).find(
-    (item) =>
-      (getSingle(getSingle(item?.prices)?.products)?.metadata as Record<string, any>)
-        ?.slug === 'universal-starter'
+    (item) => getSingle(getSingle(item?.prices)?.products).name === 'Tamagui Pro'
   )
 
   if (!subscriptionData) {
     throw Response.json(
       {
-        message: 'the provided subscription does not include the takeout starter',
+        message: 'the provided subscription does not include the Tamagui Pro',
       },
       {
         status: 401,
