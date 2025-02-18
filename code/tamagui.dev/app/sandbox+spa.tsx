@@ -14,6 +14,7 @@ import {
   YStack,
 } from 'tamagui'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
+import { PopoverDemo } from '@tamagui/demos'
 
 export default function Sandbox() {
   const [show, setShow] = useState(false)

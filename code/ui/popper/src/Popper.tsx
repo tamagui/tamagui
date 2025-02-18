@@ -16,6 +16,7 @@ import type {
   Placement,
   Strategy,
   UseFloatingReturn,
+  SizeOptions,
 } from '@tamagui/floating'
 import {
   arrow,
@@ -25,6 +26,7 @@ import {
   platform,
   shift,
   useFloating,
+  size as sizeMiddleware,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
@@ -60,11 +62,41 @@ export const { useStyledContext: usePopperContext, Provider: PopperProvider } =
 export type PopperProps = {
   size?: SizeTokens
   children?: React.ReactNode
+
+  /**
+   * Determine the preferred placement of the content in relation to the trigger
+   */
   placement?: Placement
+
+  /**
+   * Attempts to shift the content to stay within the windiw
+   * @see https://floating-ui.com/docs/shift
+   */
   stayInFrame?: ShiftProps | boolean
+
+  /**
+   * Allows content to switch sides when space is limited.
+   * @see https://floating-ui.com/docs/flip
+   */
   allowFlip?: FlipProps | boolean
+
+  /**
+   * Resizes the content to fix inside the screen when space is limited
+   * @see https://floating-ui.com/docs/size
+   */
+  resize?: boolean | Omit<SizeOptions, 'apply'>
+
+  /**
+   * Choose between absolute or fixed positioning
+   */
   strategy?: Strategy
+
+  /**
+   * Move the content away from the trigger
+   * @see https://floating-ui.com/docs/offset
+   */
   offset?: OffsetOptions
+
   disableRTL?: boolean
 }
 
@@ -104,14 +136,16 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     allowFlip,
     offset,
     disableRTL,
+    resize,
     __scopePopper,
   } = props
 
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
+  const floatingStyle = React.useRef({})
 
-  const floating = useFloating({
+  let floating = useFloating({
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
@@ -133,8 +167,43 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
       checkFloating,
+      process.env.TAMAGUI_TARGET !== 'native' && resize
+        ? sizeMiddleware({
+            apply({ availableHeight, availableWidth }) {
+              Object.assign(floatingStyle.current, {
+                maxHeight: `${availableHeight}px`,
+                maxWidth: `${availableWidth}px`,
+              })
+              // we wrap PopperContent with one container stack so we need to account for it
+              const floatingChild = floating.refs.floating.current?.firstChild
+              if (floatingChild && floatingChild instanceof HTMLElement) {
+                Object.assign(floatingChild.style, floatingStyle.current)
+              }
+            },
+            ...(typeof resize === 'object' && resize),
+          })
+        : (null as any),
     ].filter(Boolean),
   })
+
+  if (process.env.TAMAGUI_TARGET !== 'native') {
+    // add our size middleware here
+    floating = React.useMemo(() => {
+      const og = floating.getFloatingProps
+      if (resize && og) {
+        floating.getFloatingProps = (props) => {
+          return og({
+            ...props,
+            style: {
+              ...props.style,
+              ...floatingStyle.current,
+            },
+          })
+        }
+      }
+      return floating
+    }, [floating, resize ? JSON.stringify(resize) : null])
+  }
 
   const { middlewareData } = floating
 
@@ -303,14 +372,22 @@ export const PopperContent = React.forwardRef<
   }
 
   // outer frame because we explicitly don't want animation to apply to this
+
+  const { style, ...floatingProps } = getFloatingProps
+    ? getFloatingProps(frameProps)
+    : frameProps
+
+  console.warn('style', style)
+
   return (
-    <Stack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
+    <Stack {...floatingProps}>
       <PopperContentFrame
         key="popper-content-frame"
         data-placement={placement}
         data-strategy={strategy}
         contain="layout"
         size={size}
+        {...style}
         {...rest}
       />
     </Stack>
