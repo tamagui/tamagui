@@ -6,7 +6,7 @@ VALUES (
   'price_1QrulKFQGtHoG6xcDs9OYTFu',
   'prod_RlRebXO307MLoH', -- Tamagui Support
   true,
-  100000,  -- equivalent to $1000 per tier
+  80000,  -- equivalent to $800 per tier
   'usd',
   'recurring',
   'month',
