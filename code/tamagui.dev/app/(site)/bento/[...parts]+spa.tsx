@@ -135,7 +135,7 @@ export const DetailHeader = (props: { children: string }) => {
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
-    <YStack gap="$4" $sm={{ px: '$4' }} pb="$4">
+    <YStack position={"sticky" as any} top={0} gap="$4" $sm={{ px: '$4' }} pb="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
           <Theme name="gray">
