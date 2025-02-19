@@ -68,7 +68,7 @@ export function getThemedChildren(
   let shouldRenderChildrenWithTheme =
     hasEverThemed || themeState.isNew || isRoot || hasThemeUpdatingProps(props)
 
-  if (process.env.NODE_ENV === 'development' && props.debug) {
+  if (process.env.NODE_ENV === 'development' && props.debug === 'visualize') {
     children = (
       <ThemeDebug themeState={themeState} themeProps={props}>
         {children}

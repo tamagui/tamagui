@@ -1,5 +1,5 @@
 import type { ScopedProps, SizeTokens } from '@tamagui/core';
-import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn } from '@tamagui/floating';
+import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, SizeOptions } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
@@ -24,10 +24,33 @@ export declare const usePopperContext: (scope?: string) => PopperContextValue, P
 export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
+    /**
+     * Determine the preferred placement of the content in relation to the trigger
+     */
     placement?: Placement;
+    /**
+     * Attempts to shift the content to stay within the windiw
+     * @see https://floating-ui.com/docs/shift
+     */
     stayInFrame?: ShiftProps | boolean;
+    /**
+     * Allows content to switch sides when space is limited.
+     * @see https://floating-ui.com/docs/flip
+     */
     allowFlip?: FlipProps | boolean;
+    /**
+     * Resizes the content to fix inside the screen when space is limited
+     * @see https://floating-ui.com/docs/size
+     */
+    resize?: boolean | Omit<SizeOptions, 'apply'>;
+    /**
+     * Choose between absolute or fixed positioning
+     */
     strategy?: Strategy;
+    /**
+     * Move the content away from the trigger
+     * @see https://floating-ui.com/docs/offset
+     */
     offset?: OffsetOptions;
     disableRTL?: boolean;
 };

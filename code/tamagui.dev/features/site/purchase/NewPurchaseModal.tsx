@@ -144,7 +144,7 @@ const PurchaseModalContents = () => {
   // Calculate prices
   const basePrice = disableAutoRenew ? 400 : 240 // yearly base price
   const chatSupportMonthly = chatSupport ? 100 : 0 // $100/month for chat support
-  const supportTierMonthly = Number(supportTier) * 1000 // $1000/month per tier
+  const supportTierMonthly = Number(supportTier) * 800 // $800/month per tier
 
   // Keep yearly and monthly totals separate
   const yearlyTotal = basePrice
@@ -526,6 +526,13 @@ const SupportTabContent = ({
   supportTier: string
   setSupportTier: (value: string) => void
 }) => {
+  const tiers = [
+    { value: '0', label: 'None', price: 0 },
+    { value: '1', label: 'Tier 1', price: 800 },
+    { value: '2', label: 'Tier 2', price: 1600 },
+    { value: '3', label: 'Tier 3', price: 2400 },
+  ]
+
   return (
     <>
       <BigP>
@@ -568,18 +575,17 @@ const SupportTabContent = ({
                 value={supportTier}
                 onValueChange={setSupportTier}
               >
-                <Select.Item value="0" index={0}>
-                  None
-                </Select.Item>
-                <Select.Item value="1" index={1}>
-                  1 · $800/mo
-                </Select.Item>
-                <Select.Item value="2" index={2}>
-                  2 · $1,600/mo
-                </Select.Item>
-                <Select.Item value="3" index={3}>
-                  3 · $3,000/mo
-                </Select.Item>
+                {tiers.map((tier) => (
+                  <Select.Item
+                    key={tier.value}
+                    value={tier.value}
+                    index={Number(tier.value)}
+                  >
+                    {tier.value === '0'
+                      ? tier.label
+                      : `${tier.label} · $${tier.price}/mo`}
+                  </Select.Item>
+                ))}
               </Select>
             </XStack>
           </XStack>
