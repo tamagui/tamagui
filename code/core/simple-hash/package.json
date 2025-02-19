@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/simple-hash",
-  "version": "1.125.6",
+  "version": "1.125.7",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
