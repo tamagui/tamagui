@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-keyboard-visible",
-  "version": "1.125.7",
+  "version": "1.125.8",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
