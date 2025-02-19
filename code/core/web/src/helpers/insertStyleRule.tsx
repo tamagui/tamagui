@@ -298,7 +298,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   } satisfies DedupedTheme
 }
 
-const tamaguiSelectorRegex = /^:root\s?\.t_[A-Za-z0-9_\,\s\:\.]+\s+\.tm_xxt\s?$/
+const tamaguiSelectorRegex = /\.tm_xxt/
 
 function getTamaguiSelector(
   rule: CSSRule | null,
@@ -309,7 +309,10 @@ function getTamaguiSelector(
 
     // only matches t_ starting selector chains
     if (text[0] === ':' && text[1] === 'r' && tamaguiSelectorRegex.test(text)) {
-      const id = getIdentifierFromTamaguiSelector(text)
+      const id = getIdentifierFromTamaguiSelector(
+        // next.js minifies it so its in front
+        text.replace(tamaguiSelectorRegex, '')
+      )
       return collectThemes ? [id, rule, true] : [id, rule]
     }
   } else if (rule instanceof CSSMediaRule) {
