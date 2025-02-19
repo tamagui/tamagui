@@ -1,13 +1,14 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { groupCollapsed, groupEnd } from './helpers/consoleLog'
 import { getShorthandValue } from './helpers/getShorthandValue'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
@@ -440,7 +441,7 @@ export function createComponent<
           log({ noClass, isAnimated, isWeb, supportsCSSVars })
         } else {
           // if strict mode or something messes with our nesting this fixes:
-          console.groupEnd()
+          groupEnd()
 
           const ch = propsIn.children
           let childLog =
@@ -449,13 +450,13 @@ export function createComponent<
             childLog = `(children: ${childLog})`
           }
 
-          console.groupCollapsed(`${childLog} Props:`)
+          groupCollapsed(`${childLog} Props:`)
           log('props in:', propsIn)
           log('final props:', props)
           log({ state, staticConfig, elementType, themeStateProps })
           log({ contextProps: styledContextProps, overriddenContextProps })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
-          console.groupEnd()
+          groupEnd()
         }
       }
     }
@@ -701,10 +702,10 @@ export function createComponent<
           const computed = cssStyleDeclarationToObject(
             getComputedStyle(stateRef.current.host! as any)
           )
-          console.groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
+          groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
           console.warn(computed)
-          console.groupEnd()
+          groupEnd()
         }
       })
     }
@@ -1115,7 +1116,7 @@ export function createComponent<
             log(key, splitStylesStyle[key])
           }
         } else {
-          console.groupCollapsed(title)
+          groupCollapsed(title)
           try {
             log('viewProps', viewProps)
             log('children', content)
@@ -1151,7 +1152,7 @@ export function createComponent<
           } catch {
             // RN can run into PayloadTooLargeError: request entity too large
           } finally {
-            console.groupEnd()
+            groupEnd()
           }
         }
         if (debugProp === 'break') {

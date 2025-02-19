@@ -420,57 +420,62 @@ type TabsExtraProps<Tab = string> = {
 
 type TabsProps<Tab = string> = TabsFrameProps & TabsExtraProps<Tab>
 
-const TabsComponent = TabsFrame.styleable<TabsExtraProps>(
-  function Tabs(props: ScopedProps<TabsProps>, forwardedRef) {
-    const {
-      __scopeTabs,
-      value: valueProp,
-      onValueChange,
-      defaultValue,
-      orientation = 'horizontal',
-      dir,
-      activationMode = 'automatic',
-      size = '$true',
-      ...tabsProps
-    } = props
-    const direction = useDirection(dir)
-    const [value, setValue] = useControllableState({
-      prop: valueProp,
-      onChange: onValueChange,
-      defaultProp: defaultValue ?? '',
-    })
-    const [triggersCount, setTriggersCount] = React.useState(0)
-    const registerTrigger = useEvent(() => setTriggersCount((v) => v + 1))
-    const unregisterTrigger = useEvent(() => setTriggersCount((v) => v - 1))
+const TabsComponent = TabsFrame.styleable<TabsExtraProps>(function Tabs(
+  props: ScopedProps<TabsProps>,
+  forwardedRef
+) {
+  const {
+    __scopeTabs,
+    value: valueProp,
+    onValueChange,
+    defaultValue,
+    orientation = 'horizontal',
+    dir,
+    activationMode = 'automatic',
+    size = '$true',
+    ...tabsProps
+  } = props
+  const direction = useDirection(dir)
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    onChange: onValueChange,
+    defaultProp: defaultValue ?? '',
+  })
+  const [triggersCount, setTriggersCount] = React.useState(0)
+  const registerTrigger = useEvent(() => setTriggersCount((v) => v + 1))
+  const unregisterTrigger = useEvent(() => setTriggersCount((v) => v - 1))
 
-    return (
-      <TabsProvider
-        scope={__scopeTabs}
-        baseId={React.useId()}
-        value={value}
-        onChange={setValue}
-        orientation={orientation}
-        dir={direction}
-        activationMode={activationMode}
-        size={size}
-        registerTrigger={registerTrigger}
-        triggersCount={triggersCount}
-        unregisterTrigger={unregisterTrigger}
-      >
-        <TabsFrame
-          direction={direction}
-          //   dir={direction}
-          data-orientation={orientation}
-          {...tabsProps}
-          ref={forwardedRef}
-        />
-      </TabsProvider>
-    )
-  }
-  // make it so it can accept a generic
-) as <Tab = string>(
-  props: TabsProps<Tab> & { ref?: React.Ref<TamaguiElement> }
-) => JSX.Element
+  return (
+    <TabsProvider
+      scope={__scopeTabs}
+      baseId={React.useId()}
+      value={value}
+      onChange={setValue}
+      orientation={orientation}
+      dir={direction}
+      activationMode={activationMode}
+      size={size}
+      registerTrigger={registerTrigger}
+      triggersCount={triggersCount}
+      unregisterTrigger={unregisterTrigger}
+    >
+      <TabsFrame
+        direction={direction}
+        //   dir={direction}
+        data-orientation={orientation}
+        {...tabsProps}
+        ref={forwardedRef}
+      />
+    </TabsProvider>
+  )
+})
+
+// make it so it can accept a generic
+// this broke things outside our repo, but not sure why, all non style props were missing
+// like onPress etc
+// as <Tab = string>(
+//   props: TabsProps<Tab> & { ref?: React.Ref<TamaguiElement> }
+// ) => React.JSX.Element
 
 export const Tabs = withStaticProperties(TabsComponent, {
   List: TabsList,

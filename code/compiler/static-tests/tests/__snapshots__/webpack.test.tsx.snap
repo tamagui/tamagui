@@ -7,7 +7,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
     style="display: contents;"
   >
     <div
-      class="  _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-0px0px10pxr538535358 _scale-0hover-2  test1"
+      class="  _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-0px0px10pxr538535358 _transform-0hover-scale21281  test1"
     >
       <span
         class="  _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color font_body "

@@ -172,7 +172,7 @@ const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalPr
           <Dialog.Overlay
             key="overlay"
             animation="medium"
-            bg="$shadowColor"
+            bg="$shadow6"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />

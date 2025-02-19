@@ -145,9 +145,94 @@ type TabsExtraProps<Tab = string> = {
     activationMode?: 'automatic' | 'manual';
 };
 type TabsProps<Tab = string> = TabsFrameProps & TabsExtraProps<Tab>;
-export declare const Tabs: (<Tab = string>(props: TabsProps<Tab> & {
-    ref?: React.Ref<TamaguiElement>;
-}) => JSX.Element) & {
+export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<RNTamaguiViewNonStyleProps, StackStyleBase, {
+    size?: import("@tamagui/core/types").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core/types").SizeTokens | undefined;
+    inset?: number | import("@tamagui/core/types").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    unstyled?: boolean | undefined;
+}>, keyof TabsExtraProps<string>> & TabsExtraProps<string> & React.RefAttributes<TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<RNTamaguiViewNonStyleProps, StackStyleBase, {
+    size?: import("@tamagui/core/types").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core/types").SizeTokens | undefined;
+    inset?: number | import("@tamagui/core/types").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    unstyled?: boolean | undefined;
+}>, keyof TabsExtraProps<string>> & TabsExtraProps<string>, TamaguiElement, RNTamaguiViewNonStyleProps & TabsExtraProps<string>, StackStyleBase, {
+    size?: import("@tamagui/core/types").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core/types").SizeTokens | undefined;
+    inset?: number | import("@tamagui/core/types").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    unstyled?: boolean | undefined;
+}, StaticConfigPublic> & Omit<StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+    __tama: [Omit<import("@tamagui/web").GetFinalProps<RNTamaguiViewNonStyleProps, StackStyleBase, {
+        size?: import("@tamagui/core/types").SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core/types").SizeTokens | undefined;
+        inset?: number | import("@tamagui/core/types").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        unstyled?: boolean | undefined;
+    }>, keyof TabsExtraProps<string>> & TabsExtraProps<string>, TamaguiElement, RNTamaguiViewNonStyleProps & TabsExtraProps<string>, StackStyleBase, {
+        size?: import("@tamagui/core/types").SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core/types").SizeTokens | undefined;
+        inset?: number | import("@tamagui/core/types").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        unstyled?: boolean | undefined;
+    }, StaticConfigPublic];
+} & {
     List: React.ForwardRefExoticComponent<Omit<RNTamaguiViewNonStyleProps, "elevation" | keyof StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "size" | "unstyled"> & import("@tamagui/web").WithThemeValues<StackStyleBase> & {
         elevation?: number | import("@tamagui/core/types").SizeTokens | undefined;
         inset?: number | import("@tamagui/core/types").SizeTokens | {
