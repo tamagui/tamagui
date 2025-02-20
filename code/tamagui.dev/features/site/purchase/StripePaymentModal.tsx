@@ -29,6 +29,15 @@ const stripePromise = loadStripe(
 
 class PaymentModal {
   show = false
+  yearlyTotal = 0
+  monthlyTotal = 0
+  disableAutoRenew = false
+  chatSupport = false
+  supportTier = 0
+  selectedPrices = {
+    proPriceId: '',
+    supportPriceIds: [] as string[],
+  }
 }
 
 export const paymentModal = createStore(PaymentModal)
@@ -104,43 +113,41 @@ const PaymentForm = ({
         return
       }
 
-      // Create subscription with the payment method
-      const response = await fetch('/api/create-subscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          paymentMethodId: paymentMethod.id,
-          proPriceId: selectedPrices.proPriceId,
-          supportPriceIds: selectedPrices.supportPriceIds,
-          disableAutoRenew: !autoRenew,
-        }),
-      })
-
-      const data = await response.json()
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create subscription')
-      }
-
-      // If we get here, the payment was successful
-      if (chatSupport || supportTier > 0) {
-        const upgradeRes = await fetch('/api/upgrade-subscription', {
+      // Determine which API to call based on the selected prices
+      let response
+      if (selectedPrices.proPriceId) {
+        // Creating new Pro subscription
+        response = await fetch('/api/create-subscription', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            subscriptionId: data.subscriptionId,
+            paymentMethodId: paymentMethod.id,
+            proPriceId: selectedPrices.proPriceId,
+            supportPriceIds: selectedPrices.supportPriceIds,
+            disableAutoRenew: !autoRenew,
+          }),
+        })
+      } else {
+        // Upgrading existing subscription with Support tier
+        response = await fetch('/api/upgrade-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            subscriptionId: userData.subscriptions[0].id, // Get current subscription ID
             chatSupport,
             supportTier,
             disableAutoRenew: !autoRenew,
           }),
         })
+      }
 
-        if (!upgradeRes.ok) {
-          throw new Error('Failed to upgrade subscription')
-        }
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to process subscription')
       }
 
       onSuccess(data.subscriptionId)
@@ -186,12 +193,12 @@ const PaymentForm = ({
 }
 
 export const StripePaymentModal = ({
-  yearlyTotal,
-  monthlyTotal,
-  disableAutoRenew,
-  chatSupport,
-  supportTier,
-  selectedPrices,
+  yearlyTotal: propYearlyTotal,
+  monthlyTotal: propMonthlyTotal,
+  disableAutoRenew: propDisableAutoRenew,
+  chatSupport: propChatSupport,
+  supportTier: propSupportTier,
+  selectedPrices: propSelectedPrices,
   onSuccess,
   onError,
 }: StripePaymentModalProps) => {
@@ -265,6 +272,16 @@ export const StripePaymentModal = ({
   const theme = useTheme()
   const themeName = useThemeName()
 
+  // Use store values if available, otherwise use props
+  const yearlyTotal = store.yearlyTotal || propYearlyTotal
+  const monthlyTotal = store.monthlyTotal || propMonthlyTotal
+  const disableAutoRenew = store.disableAutoRenew || propDisableAutoRenew
+  const chatSupport = store.chatSupport || propChatSupport
+  const supportTier = store.supportTier || propSupportTier
+  const selectedPrices = store.selectedPrices.proPriceId
+    ? store.selectedPrices
+    : propSelectedPrices
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -320,17 +337,14 @@ export const StripePaymentModal = ({
               appearance,
               mode: 'payment',
               currency: 'usd',
-              amount: Math.ceil((yearlyTotal / 12 + monthlyTotal) * 100),
+              amount: Math.ceil(monthlyTotal * 100),
               paymentMethodTypes: ['card', 'link'],
               payment_method_types: ['card', 'link'],
               paymentMethodCreation: 'manual',
             }}
           >
             <PaymentForm
-              onSuccess={(subscriptionId) => {
-                store.show = false
-                onSuccess(subscriptionId)
-              }}
+              onSuccess={onSuccess}
               onError={onError}
               autoRenew={!disableAutoRenew}
               chatSupport={chatSupport}
@@ -347,20 +361,15 @@ export const StripePaymentModal = ({
           <H3 fontFamily="$mono">Order summary</H3>
           <Separator />
 
-          <XStack jc="space-between">
-            <Paragraph ff="$mono">Monthly subscription</Paragraph>
-            <Paragraph ff="$mono">${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
-          </XStack>
+          {yearlyTotal > 0 && !store.show && (
+            <XStack jc="space-between">
+              <Paragraph ff="$mono">Monthly subscription</Paragraph>
+              <Paragraph ff="$mono">${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
+            </XStack>
+          )}
 
           {monthlyTotal > 0 && (
             <>
-              {chatSupport && (
-                <XStack jc="space-between">
-                  <Paragraph ff="$mono">Chat support</Paragraph>
-                  <Paragraph ff="$mono">$100/month</Paragraph>
-                </XStack>
-              )}
-
               {supportTier > 0 && (
                 <XStack jc="space-between">
                   <Paragraph ff="$mono">Support tier ({supportTier})</Paragraph>
@@ -375,7 +384,7 @@ export const StripePaymentModal = ({
           <XStack jc="space-between">
             <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
-              <H3 ff="$mono">${Math.ceil(yearlyTotal / 12) + monthlyTotal}/month</H3>
+              <H3 ff="$mono">${monthlyTotal}/month</H3>
               {!disableAutoRenew && (
                 <Paragraph ff="$mono" size="$3" o={0.8}>
                   Billed monthly

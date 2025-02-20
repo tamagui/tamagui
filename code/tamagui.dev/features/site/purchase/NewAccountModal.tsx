@@ -33,6 +33,8 @@ import type {
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { Link } from 'one'
+import { StripePaymentModal } from './StripePaymentModal'
+import type { UserContextType } from '~/features/auth/types'
 
 class AccountModal {
   show = false
@@ -52,7 +54,24 @@ export const NewAccountModal = () => {
   }
 
   const { userDetails, user, subscriptions } = data
-  const currentSubscription = subscriptions?.[0]
+
+  // Get active subscriptions
+  const activeSubscriptions = subscriptions?.filter(
+    (sub) =>
+      sub.status === 'active' || sub.status === 'trialing' || sub.status === 'incomplete'
+  )
+
+  // Find Pro subscription
+  const proSubscription = activeSubscriptions?.find((sub) =>
+    sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
+  )
+
+  // Find Support subscription
+  const supportSubscription = activeSubscriptions?.find((sub) =>
+    sub.subscription_items?.some(
+      (item) => item.price?.product?.name === 'Tamagui Support'
+    )
+  )
 
   return (
     <Dialog
@@ -141,15 +160,19 @@ export const NewAccountModal = () => {
                   <YStack p="$6">
                     {currentTab === 'plan' && (
                       <PlanTab
-                        subscription={currentSubscription}
+                        subscription={proSubscription}
+                        supportSubscription={supportSubscription}
                         setCurrentTab={setCurrentTab}
                       />
                     )}
                     {currentTab === 'upgrade' && (
-                      <UpgradeTab subscription={currentSubscription} />
+                      <UpgradeTab subscription={supportSubscription} />
                     )}
                     {currentTab === 'manage' && (
-                      <ManageTab subscription={currentSubscription} />
+                      <ManageTab
+                        subscription={proSubscription}
+                        supportSubscription={supportSubscription}
+                      />
                     )}
                   </YStack>
                 </ScrollView>
@@ -313,7 +336,10 @@ const ServiceCard = ({
 const DiscordAccessDialog = ({
   subscription,
   onClose,
-}: { subscription: any; onClose: () => void }) => {
+}: {
+  subscription: NonNullable<UserContextType['subscriptions']>[number]
+  onClose: () => void
+}) => {
   return (
     <Dialog modal open onOpenChange={onClose}>
       <Dialog.Portal zIndex={100_000}>
@@ -333,7 +359,7 @@ const DiscordAccessDialog = ({
           maw={600}
           p="$6"
         >
-          <DiscordPanel subscriptionId={subscription.id} />
+          <DiscordPanel subscription={subscription} apiType="channel" />
           <Dialog.Close asChild>
             <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
           </Dialog.Close>
@@ -343,9 +369,35 @@ const DiscordAccessDialog = ({
   )
 }
 
-const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
+const DiscordPanel = ({
+  subscription,
+  apiType,
+}: {
+  subscription: any
+  apiType: 'channel' | 'support'
+}) => {
+  const hasSupportTier = () => {
+    const supportItem = subscription.subscription_items?.find((item) => {
+      return item.price?.product?.name === 'Tamagui Support'
+    })
+
+    if (!supportItem) {
+      return false
+    }
+
+    // Calculate tier from unit_amount (80000 cents = $800 = Tier 1)
+    const unitAmount = supportItem.price?.unit_amount
+    if (!unitAmount) {
+      return false
+    }
+
+    // If unit_amount is at least 80000 (Tier 1 or higher)
+    return unitAmount >= 80000
+  }
+
+  const [activeApi, setActiveApi] = useState<'channel' | 'support'>('channel')
   const groupInfoSwr = useSWR<any>(
-    `/api/discord/channel?${new URLSearchParams({ subscription_id: subscriptionId })}`,
+    `/api/discord/${activeApi}?${new URLSearchParams({ subscription_id: subscription.id })}`,
     (url) =>
       fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
         res.json()
@@ -365,22 +417,22 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
   )
 
   const resetChannelMutation = useSWRMutation(
-    [`/api/discord/channel`, 'DELETE', subscriptionId],
+    [`/api/discord/${activeApi}`, 'DELETE', subscription.id],
     (url) =>
-      fetch(`/api/discord/channel`, {
+      fetch(`/api/discord/${activeApi}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          subscription_id: subscriptionId,
+          subscription_id: subscription.id,
         }),
       }).then((res) => res.json()),
     {
       onSuccess: async () => {
         await mutate(
-          `/api/discord/channel?${new URLSearchParams({
-            subscription_id: subscriptionId,
+          `/api/discord/${activeApi}?${new URLSearchParams({
+            subscription_id: subscription.id,
           })}`
         )
         setDraftQuery('')
@@ -393,24 +445,14 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
     setQuery(draftQuery)
   }
 
-  return (
-    <YStack gap="$3">
-      <XStack jc="space-between" gap="$2" ai="center">
-        <H4>
-          Discord Access{' '}
-          {!!groupInfoSwr.data &&
-            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
-        </H4>
+  // Get subscription details to determine available access types
+  const { data: subscriptionData } = useSWR<any>(
+    subscription.id ? `/api/products?subscription_id=${subscription.id}` : null,
+    (url) => fetch(url).then((res) => res.json())
+  )
 
-        <Button
-          size="$2"
-          onPress={() => resetChannelMutation.trigger()}
-          disabled={resetChannelMutation.isMutating}
-        >
-          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
-        </Button>
-      </XStack>
-
+  const SearchForm = () => (
+    <>
       <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
         <Fieldset>
           <Label size="$3" theme="alt1" htmlFor="discord-username">
@@ -445,10 +487,77 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
           <DiscordMember
             key={member.user?.id}
             member={member}
-            subscriptionId={subscriptionId}
+            subscriptionId={subscription.id}
+            apiType={activeApi}
           />
         ))}
       </YStack>
+    </>
+  )
+
+  return (
+    <YStack gap="$3">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H4>
+          Discord Access{' '}
+          {!!groupInfoSwr.data &&
+            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
+        </H4>
+
+        <Button
+          size="$2"
+          onPress={() => resetChannelMutation.trigger()}
+          disabled={resetChannelMutation.isMutating}
+        >
+          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+        </Button>
+      </XStack>
+
+      <Tabs
+        value={activeApi}
+        onValueChange={(val: string) => setActiveApi(val as 'channel' | 'support')}
+        orientation="horizontal"
+        flexDirection="column"
+        size="$4"
+      >
+        <Tabs.List mb="$4">
+          <Tabs.Tab value="channel" f={1}>
+            <Paragraph>General Channel</Paragraph>
+          </Tabs.Tab>
+          <Tabs.Tab value="support" f={1}>
+            <Paragraph>Support Channel</Paragraph>
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Content value="channel">
+          <YStack gap="$4">
+            <Paragraph theme="alt2">
+              Join the #takeout-general channel to discuss Tamagui with other Pro users.
+            </Paragraph>
+            <SearchForm />
+          </YStack>
+        </Tabs.Content>
+
+        <Tabs.Content value="support">
+          <YStack gap="$4">
+            {hasSupportTier() ? (
+              <>
+                <Paragraph theme="alt2">
+                  Get access to your private support channel where you can directly
+                  communicate with the Tamagui team.
+                </Paragraph>
+                <SearchForm />
+              </>
+            ) : (
+              <YStack gap="$4" p="$4" backgroundColor="$color2" br="$4">
+                <Paragraph theme="alt2" ta="center">
+                  You need a Support tier subscription to access private support channels.
+                </Paragraph>
+              </YStack>
+            )}
+          </YStack>
+        </Tabs.Content>
+      </Tabs>
     </YStack>
   )
 }
@@ -456,14 +565,16 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
 const DiscordMember = ({
   member,
   subscriptionId,
+  apiType,
 }: {
   member: APIGuildMember
   subscriptionId: string
+  apiType: 'channel' | 'support'
 }) => {
   const { data, error, isMutating, trigger } = useSWRMutation(
-    ['/api/discord/channel', 'POST', member.user?.id],
+    [`/api/discord/${apiType}`, 'POST', member.user?.id],
     async () => {
-      const res = await fetch('/api/discord/channel', {
+      const res = await fetch(`/api/discord/${apiType}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -482,7 +593,7 @@ const DiscordMember = ({
     {
       onSuccess: async () => {
         await mutate(
-          `/api/discord/channel?${new URLSearchParams({
+          `/api/discord/${apiType}?${new URLSearchParams({
             subscription_id: subscriptionId,
           })}`
         )
@@ -524,9 +635,11 @@ const DiscordMember = ({
 
 const PlanTab = ({
   subscription,
+  supportSubscription,
   setCurrentTab,
 }: {
-  subscription?: any
+  subscription?: NonNullable<UserContextType['subscriptions']>[number]
+  supportSubscription?: NonNullable<UserContextType['subscriptions']>[number]
   setCurrentTab: (value: 'plan' | 'upgrade' | 'manage') => void
 }) => {
   const supabase = useSupabaseClient()
@@ -704,7 +817,7 @@ const PlanTab = ({
 
       {showDiscordAccess && subscription && (
         <DiscordAccessDialog
-          subscription={subscription}
+          subscription={supportSubscription || subscription}
           onClose={() => setShowDiscordAccess(false)}
         />
       )}
@@ -712,19 +825,31 @@ const PlanTab = ({
   )
 }
 
-const UpgradeTab = ({ subscription }: { subscription?: any }) => {
-  // Get current support tier from subscription if it exists
+const UpgradeTab = ({
+  subscription,
+}: { subscription?: NonNullable<UserContextType['subscriptions']>[number] }) => {
   const getCurrentSupportTier = () => {
-    if (!subscription) return '0'
-    const supportItem = subscription.subscription_items?.find(
-      (item) => item.price?.product?.name === 'Tamagui Support'
-    )
-    if (!supportItem) return '0'
-    const description = supportItem.price?.description
-    if (!description) return '0'
-    // Extract tier number from description like "Tier 1"
-    const match = description.match(/Tier (\d)/)
-    return match ? match[1] : '0'
+    if (!subscription) {
+      return '0'
+    }
+
+    const supportItem = subscription.subscription_items?.find((item) => {
+      return item.price?.product?.name === 'Tamagui Support'
+    })
+
+    if (!supportItem) {
+      return '0'
+    }
+
+    // Calculate tier from unit_amount (80000 cents = $800 = Tier 1)
+    const unitAmount = supportItem.price?.unit_amount
+    if (!unitAmount) {
+      return '0'
+    }
+
+    // Convert cents to dollars and divide by 800 to get tier
+    const tier = Math.floor(unitAmount / 80000)
+    return tier.toString()
   }
 
   const [supportTier, setSupportTier] = useState(getCurrentSupportTier())
@@ -733,6 +858,26 @@ const UpgradeTab = ({ subscription }: { subscription?: any }) => {
   const getActionLabel = () => {
     if (supportTier === currentTier) return 'Current Plan'
     return Number(supportTier) > Number(currentTier) ? 'Upgrade Plan' : 'Downgrade Plan'
+  }
+
+  const handleUpgrade = () => {
+    // Calculate the monthly total based on support tier
+    const monthlyTotal = Number(supportTier) * 800
+
+    // Get the support price ID for the selected tier
+    const supportPriceId = `price_1QrulKFQGtHoG6xcDs9OYTFu`
+
+    // Set payment modal properties
+    paymentModal.show = true
+    paymentModal.yearlyTotal = 0 // No yearly component for support upgrade
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = false // Support is always monthly
+    paymentModal.chatSupport = false
+    paymentModal.supportTier = Number(supportTier)
+    paymentModal.selectedPrices = {
+      proPriceId: '', // No pro price for support upgrade
+      supportPriceIds: [supportPriceId],
+    }
   }
 
   return (
@@ -748,9 +893,7 @@ const UpgradeTab = ({ subscription }: { subscription?: any }) => {
         theme="accent"
         br="$10"
         als="flex-end"
-        onPress={() => {
-          paymentModal.show = true
-        }}
+        onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
         {getActionLabel()}
@@ -817,7 +960,13 @@ const SupportTabContent = ({
   )
 }
 
-const ManageTab = ({ subscription }: { subscription?: any }) => {
+const ManageTab = ({
+  subscription,
+  supportSubscription,
+}: {
+  subscription?: any
+  supportSubscription?: any
+}) => {
   const [isLoading, setIsLoading] = useState(false)
   const { refresh } = useUser()
   const { data: products } = useProducts()
