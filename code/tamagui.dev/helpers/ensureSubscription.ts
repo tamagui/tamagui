@@ -37,8 +37,10 @@ export async function ensureSubscription(
     )
   }
 
-  const subscriptionData = getArray(subscription.data.subscription_items).find(
-    (item) => getSingle(getSingle(item?.prices)?.products).name === 'Tamagui Pro'
+  const validProducts = ['Tamagui Pro', 'Tamagui Support']
+
+  const subscriptionData = getArray(subscription.data.subscription_items).find((item) =>
+    validProducts.includes(getSingle(getSingle(item?.prices)?.products).name)
   )
 
   if (!subscriptionData) {
