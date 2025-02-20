@@ -1,5 +1,5 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
+import { Brush, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { createShallowSetState, isTouchable } from '@tamagui/web'
 import { usePathname } from 'one'
 import * as React from 'react'
@@ -35,11 +35,11 @@ import { useDocsMenu } from '../../docs/useDocsMenu'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
+import { accountModal } from '../purchase/NewAccountModal'
 import { SearchButton } from './SearchButton'
 import { UpgradePopover } from './UpgradePopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
-import { accountModal } from '../purchase/NewAccountModal'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -501,10 +501,10 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 
   const heights = {
     core: 1400,
-    compiler: 130,
+    compiler: 117,
     ui: 1400,
     theme: 200,
-    menu: 300,
+    menu: 390,
   }
 
   return (
@@ -557,7 +557,11 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return <HeaderMenuMoreContents />
     }
     if (props.id === 'theme') {
-      return null
+      return (
+        <YStack>
+          <Brush />
+        </YStack>
+      )
     }
     return <DocsMenuContents inMenu section={props.id} />
   })()
@@ -665,53 +669,47 @@ const HeaderMenuMoreContents = () => {
       </XStack>
       <Separator bc="$color02" o={0.25} my="$2" />
 
-      <XStack fw="wrap" f={1} gap="$2" w="100%">
-        <Link asChild href="/community">
-          <HeadAnchor grid tag="a">
-            Community
-          </HeadAnchor>
-        </Link>
-      </XStack>
+      <Link asChild href="/community">
+        <HeadAnchor grid tag="a">
+          Community
+        </HeadAnchor>
+      </Link>
 
       <Separator bc="$color02" o={0.25} my="$2" />
 
-      <XStack fw="wrap" f={1} gap="$2" w="100%">
-        <Link asChild href="https://github.com/tamagui/tamagui">
-          <HeadAnchor target="_blank" half grid>
-            Github{' '}
-            <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
-              <GithubIcon width={14} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
+      <Link asChild href="https://github.com/tamagui/tamagui">
+        <HeadAnchor target="_blank" grid>
+          Github{' '}
+          <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
+            <GithubIcon width={14} />
+          </YStack>
+        </HeadAnchor>
+      </Link>
 
-        <Link
-          asChild
-          href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
-        >
-          <HeadAnchor target="_blank" half grid>
-            Figma{' '}
-            <YStack dsp={'inline-block' as any} y={2} my={-20} o={0.8}>
-              <Figma size={14} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
+      <Link
+        asChild
+        href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
+      >
+        <HeadAnchor target="_blank" grid>
+          Figma{' '}
+          <YStack dsp={'inline-block' as any} y={2} my={-20} o={0.8}>
+            <Figma size={14} />
+          </YStack>
+        </HeadAnchor>
+      </Link>
 
-        <Link asChild href="/blog">
-          <HeadAnchor half grid>
-            Blog
-          </HeadAnchor>
-        </Link>
+      <Link asChild href="/blog">
+        <HeadAnchor grid>Blog</HeadAnchor>
+      </Link>
 
-        <Link asChild href="https://github.com/sponsors/natew">
-          <HeadAnchor half target="_blank" grid>
-            Sponsor
-            <YStack dsp={'inline-block' as any} y={0} my={-20} ml={12} o={0.8}>
-              <ExternalLink size={10} o={0.5} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
-      </XStack>
+      <Link asChild href="https://github.com/sponsors/natew">
+        <HeadAnchor grid target="_blank">
+          Sponsor
+          <YStack dsp={'inline-block' as any} y={0} my={-20} ml={12} o={0.8}>
+            <ExternalLink size={10} o={0.5} />
+          </YStack>
+        </HeadAnchor>
+      </Link>
     </YStack>
   )
 }

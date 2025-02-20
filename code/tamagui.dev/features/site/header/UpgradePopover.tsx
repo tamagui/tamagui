@@ -2,17 +2,17 @@ import * as React from 'react'
 import {
   type PopoverProps,
   Adapt,
+  Button,
   H2,
   H5,
   Paragraph,
   Popover,
   Sheet,
-  Theme,
   XStack,
   YStack,
 } from 'tamagui'
-import { PromoCards } from './PromoCards'
 import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
+import { PromoCards } from './PromoCards'
 import { ThemeTintAlt } from '@tamagui/logo'
 
 export const UpgradePopover = (props: PopoverProps) => {
@@ -136,7 +136,6 @@ export const UpgradePopover = (props: PopoverProps) => {
                 br="$4"
                 // theme="red"
                 lh="$2"
-                mb="$2"
                 color="$color11"
                 bw={0.5}
                 bc="$color3"
@@ -157,6 +156,21 @@ export const UpgradePopover = (props: PopoverProps) => {
               >
                 Pro is how we fund the OSS development of Tamagui.
               </Paragraph>
+
+              {!isProUser && (
+                <ThemeTintAlt offset={-2}>
+                  <Button
+                    br="$10"
+                    fontFamily="$mono"
+                    onPress={() => {
+                      showAppropriateModal()
+                      setOpen(false)
+                    }}
+                  >
+                    More info
+                  </Button>
+                </ThemeTintAlt>
+              )}
             </YStack>
           </Popover.ScrollView>
         </YStack>

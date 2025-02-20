@@ -932,12 +932,12 @@ const SupportTabContent = ({
           <YStack
             key={tier.value}
             borderWidth={1}
-            borderColor={supportTier === tier.value ? '$blue3' : '$color3'}
-            backgroundColor={supportTier === tier.value ? '$blue1' : undefined}
+            theme={supportTier === tier.value ? 'accent' : null}
             borderRadius="$4"
+            borderColor="$color4"
             p="$4"
+            bg="$color1"
             cursor="pointer"
-            opacity={currentTier === tier.value ? 1 : 0.8}
             onPress={() => setSupportTier(tier.value)}
           >
             <XStack jc="space-between" ai="center">
@@ -949,9 +949,7 @@ const SupportTabContent = ({
                   {tier.price === 0 ? 'Basic Support' : `${tier.price}/month`}
                 </Paragraph>
               </YStack>
-              {currentTier === tier.value && (
-                <Paragraph theme="blue">Current Plan</Paragraph>
-              )}
+              {currentTier === tier.value && <Paragraph>Current Plan</Paragraph>}
             </XStack>
           </YStack>
         ))}

@@ -1,4 +1,4 @@
-import { Box, Brush, DoorClosed, MessageCircle, PaintBucket } from '@tamagui/lucide-icons'
+import { Box, Brush } from '@tamagui/lucide-icons'
 import { styled, YStack } from 'tamagui'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
@@ -16,15 +16,6 @@ const Card = styled(YStack, {
 export const PromoCards = ({ less }: { less?: boolean }) => {
   return (
     <>
-      <Card>
-        <TooltipLabelLarge
-          href="https://start.chat"
-          icon={null as any}
-          title="start.chat"
-          subtitle="A new AI chat agent that's an expert in Tamagui."
-        />
-      </Card>
-
       <Card>
         <TooltipLabelLarge
           icon={<TakeoutIcon />}
