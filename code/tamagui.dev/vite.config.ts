@@ -41,8 +41,6 @@ const include = [
   'glob',
   'reading-time',
   'unified',
-  '@discordjs/core',
-  'discord-api-types',
 ]
 
 const disableExtraction = false
@@ -57,13 +55,6 @@ export default {
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
       'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
-      'discord-api-types': join(
-        __dirname,
-        '..',
-        '..',
-        'node_modules',
-        'discord-api-types'
-      ),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -121,6 +112,7 @@ export default {
       },
 
       deps: {
+        ws: true,
         url: false,
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
@@ -131,6 +123,8 @@ export default {
         octokit: true,
         'node-fetch': true,
         'fetch-blob': true,
+        'discord-api-types/v10': true,
+        'magic-bytes.js': true,
       },
 
       build: {
