@@ -25,8 +25,8 @@
   "dependencies": {
     "@tamagui/static": "workspace:*",
     "fs-extra": "^11.2.0",
-    "metro-config": "^0.80.4",
-    "metro-transform-worker": "^0.80.4",
+    "metro-config": "*",
+    "metro-transform-worker": "*",
     "react-native-css-interop": "^0.1.22"
   },
   "devDependencies": {
