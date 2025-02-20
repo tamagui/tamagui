@@ -914,6 +914,16 @@ export const componentsList: ComponentSchema[] = [
     dependencies: ['@tamagui/lucide-icons'],
     moveFilesToFolder: [{ file: 'IconTitleSwitch', to: '' }],
   },
+
+  {
+    name: 'Theme Switch',
+    fileName: 'ThemeSwitch',
+    category: 'forms',
+    categorySection: 'switches',
+    dependencies: ['@tamagui/lucide-icons'],
+    moveFilesToFolder: [{ file: 'ThemeSwitch', to: '' }],
+  },
+
   {
     name: 'Comment Box with Preview',
     fileName: 'WritePreviewAction',

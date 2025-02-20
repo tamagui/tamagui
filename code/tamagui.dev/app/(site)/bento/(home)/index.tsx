@@ -3,7 +3,6 @@ import { LocationNotification } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
-  ChevronDown,
   Globe,
   Leaf,
   Puzzle,

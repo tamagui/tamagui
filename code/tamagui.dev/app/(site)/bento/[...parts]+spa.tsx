@@ -25,8 +25,6 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { listingData } from '@tamagui/bento/data'
 import { Text } from 'tamagui'
 
-import { ScrollView } from 'react-native'
-
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
     parts: `${x.params.section}/${x.params.part}`,
@@ -135,7 +133,7 @@ export const DetailHeader = (props: { children: string }) => {
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
-    <YStack position={"sticky" as any} top={0} gap="$4" $sm={{ px: '$4' }} pb="$4">
+    <YStack position={'sticky' as any} top={0} gap="$4" $sm={{ px: '$4' }} pb="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
           <Theme name="gray">
