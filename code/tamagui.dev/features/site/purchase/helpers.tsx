@@ -135,6 +135,9 @@ export const RadioGroupItem = ({
 }
 
 const bentoDefaults = {
+  price_1QPzlaFQGtHoG6xcdRzFfWL8: {
+    seats: 1,
+  },
   price_1Pe0UKFQGtHoG6xcntaCw9k1: {
     seats: 1,
   },
