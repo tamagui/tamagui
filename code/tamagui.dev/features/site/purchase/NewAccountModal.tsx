@@ -33,6 +33,7 @@ import type {
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { Link } from 'one'
+import { StripePaymentModal } from './StripePaymentModal'
 
 class AccountModal {
   show = false
@@ -468,7 +469,7 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
 
       <Tabs
         value={activeApi}
-        onValueChange={(val: 'channel' | 'support') => setActiveApi(val)}
+        onValueChange={(val: string) => setActiveApi(val as 'channel' | 'support')}
         orientation="horizontal"
         flexDirection="column"
         size="$4"
@@ -799,6 +800,26 @@ const UpgradeTab = ({ subscription }: { subscription?: any }) => {
     return Number(supportTier) > Number(currentTier) ? 'Upgrade Plan' : 'Downgrade Plan'
   }
 
+  const handleUpgrade = () => {
+    // Calculate the monthly total based on support tier
+    const monthlyTotal = Number(supportTier) * 800
+
+    // Get the support price ID for the selected tier
+    const supportPriceId = `price_1QrulKFQGtHoG6xcDs9OYTFu`
+
+    // Set payment modal properties
+    paymentModal.show = true
+    paymentModal.yearlyTotal = 0 // No yearly component for support upgrade
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = false // Support is always monthly
+    paymentModal.chatSupport = false
+    paymentModal.supportTier = Number(supportTier)
+    paymentModal.selectedPrices = {
+      proPriceId: '', // No pro price for support upgrade
+      supportPriceIds: [supportPriceId],
+    }
+  }
+
   return (
     <YStack gap="$6">
       <SupportTabContent
@@ -812,9 +833,7 @@ const UpgradeTab = ({ subscription }: { subscription?: any }) => {
         theme="accent"
         br="$10"
         als="flex-end"
-        onPress={() => {
-          paymentModal.show = true
-        }}
+        onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
         {getActionLabel()}
