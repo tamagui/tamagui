@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli-color",
-  "version": "1.125.9",
+  "version": "1.125.10",
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
