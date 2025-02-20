@@ -105,7 +105,8 @@
     "watch:ts": "bun ./scripts/watch-ts.ts",
     "next-site": "yarn workspace @tamagui/next-site dev",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
-    "bento:web": "yarn workspace @tamagui/bento dev:web"
+    "bento:web": "yarn workspace @tamagui/bento dev:web",
+    "bento:start": "yarn profile react-18 && yarn workspace @tamagui/bento start"
   },
   "manypkg": {
     "workspaceProtocol": "require"
