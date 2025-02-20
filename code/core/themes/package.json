@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.125.8",
+  "version": "1.125.9",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
