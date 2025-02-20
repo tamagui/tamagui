@@ -193,7 +193,7 @@ const PurchaseModalContents = () => {
     faq: FaqTabContent,
   }
 
-  const currentTabContents = tabContents[currentTab]()
+  const currentTabContents = tabContents[currentTab]
 
   return (
     <>
@@ -300,7 +300,7 @@ const PurchaseModalContents = () => {
                     >
                       <ScrollView>
                         <YStack p="$8" gap="$6">
-                          {currentTabContents}
+                          {currentTabContents()}
                         </YStack>
                       </ScrollView>
                     </Tabs.Content>
