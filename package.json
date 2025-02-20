@@ -104,7 +104,8 @@
     "watch:js": "SKIP_TYPES=1 bun run watch:packages",
     "watch:ts": "bun ./scripts/watch-ts.ts",
     "next-site": "yarn workspace @tamagui/next-site dev",
-    "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
+    "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
+    "bento:web": "yarn workspace @tamagui/bento dev:web"
   },
   "manypkg": {
     "workspaceProtocol": "require"
