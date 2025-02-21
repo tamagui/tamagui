@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 /**
  * @summary An input is a text field that allows users to enter text.
  * @see — Docs https://tamagui.dev/ui/inputs#input

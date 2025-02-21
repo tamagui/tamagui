@@ -1,6 +1,6 @@
 import { withTamagui } from '@tamagui/next-plugin'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 // process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'

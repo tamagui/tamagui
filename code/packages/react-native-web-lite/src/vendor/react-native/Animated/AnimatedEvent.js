@@ -1,13 +1,4 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *
- * @format
- */
-'use strict'
+
 
 import { invariant } from '@tamagui/react-native-web-internals'
 
@@ -147,12 +138,11 @@ export class AnimatedEvent {
   }
 
   __getHandler() {
-    var _this = this
 
     if (this.__isNative) {
       if (__DEV__) {
         var _validatedMapping = false
-        return function () {
+        return () => {
           for (
             var _len = arguments.length, args = new Array(_len), _key2 = 0;
             _key2 < _len;
@@ -162,11 +152,11 @@ export class AnimatedEvent {
           }
 
           if (!_validatedMapping) {
-            validateMapping(_this._argMapping, args)
+            validateMapping(this._argMapping, args)
             _validatedMapping = true
           }
 
-          _this._callListeners(...args)
+          this._callListeners(...args)
         }
       } else {
         return this._callListeners
@@ -174,7 +164,7 @@ export class AnimatedEvent {
     }
 
     var validatedMapping = false
-    return function () {
+    return () => {
       for (
         var _len2 = arguments.length, args = new Array(_len2), _key3 = 0;
         _key3 < _len2;
@@ -184,7 +174,7 @@ export class AnimatedEvent {
       }
 
       if (__DEV__ && !validatedMapping) {
-        validateMapping(_this._argMapping, args)
+        validateMapping(this._argMapping, args)
         validatedMapping = true
       }
 
@@ -203,11 +193,11 @@ export class AnimatedEvent {
         }
       }
 
-      _this._argMapping.forEach((mapping, idx) => {
+      this._argMapping.forEach((mapping, idx) => {
         traverse(mapping, args[idx], 'arg' + idx)
       })
 
-      _this._callListeners(...args)
+      this._callListeners(...args)
     }
   }
 

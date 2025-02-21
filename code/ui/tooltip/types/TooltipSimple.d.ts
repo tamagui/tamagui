@@ -1,5 +1,5 @@
 import type { SizableStackProps } from '@tamagui/stacks';
-import * as React from 'react';
+import type * as React from 'react';
 import type { TooltipProps } from './Tooltip';
 export type TooltipSimpleProps = TooltipProps & {
     disabled?: boolean;

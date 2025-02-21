@@ -1,19 +1,4 @@
-/**
- * Portions Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *
- * @format
- */
 
-/**
- * BezierEasing - use bezier curve for transition easing function
- * https://github.com/gre/bezier-easing
- * @copyright 2014-2015 Gaëtan Renaudeau. MIT License.
- */
-'use strict' // These values are established by empiricism with tests (tradeoff: performance VS precision)
 
 var NEWTON_ITERATIONS = 4
 var NEWTON_MIN_SLOPE = 0.001

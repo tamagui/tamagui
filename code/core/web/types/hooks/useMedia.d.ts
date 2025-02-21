@@ -23,5 +23,4 @@ export declare function mediaKeyMatch(key: string, dimensions: {
     width: number;
     height: number;
 }): boolean;
-export {};
 //# sourceMappingURL=useMedia.d.ts.map

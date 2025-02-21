@@ -190,5 +190,4 @@ export type TamaguiThemes = typeof themes;
  * So long as you server render your Tamagui CSS, this will save you bundle size:
  */
 export declare const tamaguiThemes: TamaguiThemes;
-export {};
 //# sourceMappingURL=v4-tamagui.d.ts.map

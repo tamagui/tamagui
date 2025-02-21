@@ -227,14 +227,12 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
         // added by `usePlatformMethods`. This is temporarily until an API like
         // `TextInput.clear(hostRef)` is added to React Native.
         if (hostNode != null) {
-          hostNode.clear = function () {
+          hostNode.clear = () => {
             if (hostNode != null) {
               hostNode.value = ''
             }
           }
-          hostNode.isFocused = function () {
-            return hostNode != null && TextInputState.currentlyFocusedField() === hostNode
-          }
+          hostNode.isFocused = () => hostNode != null && TextInputState.currentlyFocusedField() === hostNode
           handleContentSizeChange(hostNode)
         }
       },

@@ -40,6 +40,5 @@ type UnionableString = string & {};
 export type ThemeDefinitions<Masks extends string = string> = { [key: string]: ThemeDefinition<Masks | UnionableString> };
 export type TemplateDefinitions = { [key: string]: Template };
 export type MaskDefinitions = { [key: string]: CreateMask | CreateMask["mask"] };
-export {};
 
 //# sourceMappingURL=createThemeTypes.d.ts.map

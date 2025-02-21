@@ -44,7 +44,7 @@ var eventListenerAnimationFinishedCallbacks = {}
 var globalEventEmitterGetValueListener = null
 var globalEventEmitterAnimationFinishedListener = null
 var nativeOps = useSingleOpBatching
-  ? (function () {
+  ? (() => {
       var apis = [
         'createAnimatedNode', // 1
         'updateAnimatedNodeConfig', // 2
@@ -296,7 +296,7 @@ var API = {
 function setupGlobalEventEmitterListeners() {
   globalEventEmitterGetValueListener = RCTDeviceEventEmitter.addListener(
     'onNativeAnimatedModuleGetValue',
-    function (params) {
+    (params) => {
       var tag = params.tag
       var callback = eventListenerGetValueCallbacks[tag]
 
@@ -310,7 +310,7 @@ function setupGlobalEventEmitterListeners() {
   )
   globalEventEmitterAnimationFinishedListener = RCTDeviceEventEmitter.addListener(
     'onNativeAnimatedModuleAnimationFinished',
-    function (params) {
+    (params) => {
       var animationId = params.animationId
       var callback = eventListenerAnimationFinishedCallbacks[animationId]
 
@@ -498,7 +498,7 @@ function transformDataType(value) {
   }
 
   if (/deg$/.test(value)) {
-    var degrees = parseFloat(value) || 0
+    var degrees = Number.parseFloat(value) || 0
     var radians = (degrees * Math.PI) / 180.0
     return radians
   } else {

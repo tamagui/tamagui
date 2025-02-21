@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 export type ScopedProps<
 	P,
 	K extends string
@@ -17,6 +17,5 @@ export declare function createContextScope(scopeName: string, createContextScope
 	warn?: boolean;
 	fallback?: Partial<ContextValueType>;
 }) => ContextValueType], CreateScope];
-export {};
 
 //# sourceMappingURL=create-context.d.ts.map

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { PressableProps, View, ViewProps } from 'react-native';
 export type CheckedState = boolean | 'indeterminate';
 type CheckboxBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
@@ -39,5 +39,4 @@ export declare function useCheckbox<R extends View, P extends CheckboxProps>(pro
         onKeyDown?: import("@tamagui/core").EventHandler<React.KeyboardEvent<HTMLButtonElement>> | undefined;
     };
 };
-export {};
 //# sourceMappingURL=useCheckbox.d.ts.map

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { LinkProps } from 'solito/link';
 import type { AnchorProps } from 'tamagui';
 export type TextLinkProps = Pick<LinkProps, 'href' | 'target'> & AnchorProps;

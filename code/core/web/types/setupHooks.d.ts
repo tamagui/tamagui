@@ -16,5 +16,4 @@ type InternalHooks = {
         TextAncestor: any;
     };
 };
-export {};
 //# sourceMappingURL=setupHooks.d.ts.map

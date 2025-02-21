@@ -77,7 +77,7 @@ export default function useHover(targetRef: any, config: HoverEventsConfig): voi
       /**
        * End the hover gesture
        */
-      const hoverEnd = function (e) {
+      const hoverEnd = (e) => {
         if (onHoverEnd != null) {
           onHoverEnd(e)
         }
@@ -92,7 +92,7 @@ export default function useHover(targetRef: any, config: HoverEventsConfig): voi
       /**
        * Leave element
        */
-      const leaveListener = function (e) {
+      const leaveListener = (e) => {
         const target = targetRef.current
         if (target != null && getPointerType(e) !== 'touch') {
           if (contain) {
@@ -105,7 +105,7 @@ export default function useHover(targetRef: any, config: HoverEventsConfig): voi
       /**
        * Move within element
        */
-      const moveListener = function (e) {
+      const moveListener = (e) => {
         if (getPointerType(e) !== 'touch') {
           if (onHoverUpdate != null) {
             // Not all browsers have these properties
@@ -123,7 +123,7 @@ export default function useHover(targetRef: any, config: HoverEventsConfig): voi
       /**
        * Start the hover gesture
        */
-      const hoverStart = function (e) {
+      const hoverStart = (e) => {
         if (onHoverStart != null) {
           onHoverStart(e)
         }
@@ -140,19 +140,19 @@ export default function useHover(targetRef: any, config: HoverEventsConfig): voi
       /**
        * Enter element
        */
-      const enterListener = function (e) {
+      const enterListener = (e) => {
         const target = targetRef.current
         if (target != null && getPointerType(e) !== 'touch') {
           if (contain) {
             dispatchCustomEvent(target, lockEventType)
           }
           hoverStart(e)
-          const lockListener = function (lockEvent) {
+          const lockListener = (lockEvent) => {
             if (lockEvent.target !== target) {
               hoverEnd(e)
             }
           }
-          const unlockListener = function (lockEvent) {
+          const unlockListener = (lockEvent) => {
             if (lockEvent.target !== target) {
               hoverStart(e)
             }

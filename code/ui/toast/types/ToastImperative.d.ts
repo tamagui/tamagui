@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { NativePlatform, NativeValue } from '@tamagui/core';
 import type { CreateNativeToastOptions, NativeToastRef } from './types';
 export interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {

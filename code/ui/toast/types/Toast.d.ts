@@ -1,5 +1,5 @@
 import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core';
-import * as React from 'react';
+import type * as React from 'react';
 import type { CustomData } from './ToastImperative';
 import { useToast, useToastController, useToastState } from './ToastImperative';
 import type { ToastExtraProps, ToastProps } from './ToastImpl';

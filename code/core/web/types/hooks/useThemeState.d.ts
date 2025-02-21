@@ -1,4 +1,4 @@
-import { type MutableRefObject } from 'react';
+import type { MutableRefObject } from 'react';
 import type { ThemeParsed, ThemeProps, UseThemeWithStateProps } from '../types';
 type ID = string;
 export type ThemeState = {
@@ -18,5 +18,4 @@ export declare const getThemeState: (id: ID) => ThemeState | undefined;
 export declare const getRootThemeState: () => ThemeState | null;
 export declare const useThemeState: (props: UseThemeWithStateProps, isRoot: boolean | undefined, keys: MutableRefObject<Set<string> | null>) => ThemeState;
 export declare const hasThemeUpdatingProps: (props: ThemeProps) => boolean;
-export {};
 //# sourceMappingURL=useThemeState.d.ts.map

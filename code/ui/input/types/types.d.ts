@@ -35,5 +35,4 @@ export type InputProps = StackProps & Omit<DetailedInputProps, 'className' | 'ch
      */
     numberOfLines?: number;
 };
-export {};
 //# sourceMappingURL=types.d.ts.map

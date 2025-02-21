@@ -1304,5 +1304,4 @@ export declare const tokens: {
     };
 }, "color" | "space" | "size" | "radius" | "zIndex">;
 export type hello = 'asdad';
-export {};
 //# sourceMappingURL=tokens.d.ts.map

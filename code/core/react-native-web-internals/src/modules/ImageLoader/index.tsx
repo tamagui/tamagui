@@ -9,6 +9,7 @@
 
 const dataUriPattern = /^data:/
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class ImageUriCache {
   static _maximumEntries = 256
   static _entries = {}

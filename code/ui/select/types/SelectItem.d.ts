@@ -1,5 +1,5 @@
 import type { ListItemProps } from '@tamagui/list-item';
-import * as React from 'react';
+import type * as React from 'react';
 type SelectItemContextValue = {
     value: string;
     textId: string;
@@ -69,5 +69,4 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-export {};
 //# sourceMappingURL=SelectItem.d.ts.map

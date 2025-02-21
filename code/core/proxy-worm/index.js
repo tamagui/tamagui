@@ -7,7 +7,7 @@ function worm(root = false) {
           return worm()
         },
       }
-    : function () {
+    : (() => {
         //  dev warning in debug mode
         if (
           process.env.NODE_ENV === 'development' &&
@@ -24,7 +24,7 @@ ${new Error().stack}
         }
 
         return worm()
-      }
+      })
 
   obj.displayName = `ProxyWorm - Check excludeReactNativeWebExports`
   obj._isProxyWorm = true

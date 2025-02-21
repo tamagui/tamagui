@@ -9,5 +9,4 @@ type MenuProps = {
 export declare const Menu: (({ children, open: openProp, defaultOpen, trigger, onOpenChange }: MenuProps) => null) & {
     Item: (props: any) => any;
 };
-export {};
 //# sourceMappingURL=Menu.d.ts.map

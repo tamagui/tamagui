@@ -15,6 +15,5 @@ export declare class NativeMediaQueryList implements MediaQueryList {
 	}): boolean;
 	get matches(): boolean;
 }
-export {};
 
 //# sourceMappingURL=mediaQueryList.d.ts.map

@@ -1,5 +1,5 @@
-import { defaultTemplates } from './defaultTemplates';
-import { type ThemeBuilder } from './ThemeBuilder';
+import type { defaultTemplates } from './defaultTemplates';
+import type { ThemeBuilder } from './ThemeBuilder';
 import type { BuildPalettes, BuildTemplates } from './types';
 /**
  * TODO
@@ -73,5 +73,4 @@ export declare const getComponentThemes: (components: SimpleThemesDefinition) =>
     };
 };
 export declare function createPalettes(palettes: BuildPalettes): SimplePaletteDefinitions;
-export {};
 //# sourceMappingURL=createThemes.d.ts.map

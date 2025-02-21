@@ -331,19 +331,15 @@ Image.displayName = 'Image'
 const ImageWithStatics = Image
 
 // @ts-ignore
-ImageWithStatics.getSize = function (uri, success, failure) {
+ImageWithStatics.getSize = (uri, success, failure) => {
   ImageLoader.getSize(uri, success, failure)
 }
 
 // @ts-ignore
-ImageWithStatics.prefetch = function (uri) {
-  return ImageLoader.prefetch(uri)
-}
+ImageWithStatics.prefetch = (uri) => ImageLoader.prefetch(uri)
 
 // @ts-ignore
-ImageWithStatics.queryCache = function (uris) {
-  return ImageLoader.queryCache(uris)
-}
+ImageWithStatics.queryCache = (uris) => ImageLoader.queryCache(uris)
 
 const styles = StyleSheet.create({
   root: {

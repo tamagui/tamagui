@@ -1,14 +1,4 @@
-// @ts-nocheck
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- */
 
-'use strict'
 
 import canUseDOM from '../canUseDOM'
 
@@ -79,7 +69,7 @@ export default function createEventHandle(
 ): EventHandle {
   const opts = getOptions(options)
 
-  return function (target: EventTarget, listener: Listener | null) {
+  return (target: EventTarget, listener: Listener | null) => {
     if (target == null || typeof target.addEventListener !== 'function') {
       throw new Error('createEventHandle: called on an invalid target.')
     }

@@ -1,6 +1,6 @@
 import type { GetProps, TamaguiElement } from '@tamagui/core';
-import { VisuallyHidden } from '@tamagui/visually-hidden';
-import * as React from 'react';
+import type { VisuallyHidden } from '@tamagui/visually-hidden';
+import type * as React from 'react';
 import type { ScopedProps } from './ToastProvider';
 declare const ToastAnnounceExcludeFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 type ToastAnnounceExcludeFrameProps = GetProps<typeof ToastAnnounceExcludeFrame>;

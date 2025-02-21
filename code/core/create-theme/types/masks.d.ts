@@ -8,6 +8,5 @@ export declare const createShiftMask: ({ inverse }?: ShiftMaskOptions, defaultOp
 export declare const createWeakenMask: (defaultOptions?: MaskOptions) => CreateMask;
 export declare const createSoftenMask: (defaultOptions?: MaskOptions) => CreateMask;
 export declare const createStrengthenMask: (defaultOptions?: MaskOptions) => CreateMask;
-export {};
 
 //# sourceMappingURL=masks.d.ts.map

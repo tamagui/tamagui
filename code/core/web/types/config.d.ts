@@ -56,5 +56,4 @@ type DevConfig = {
 };
 export declare let devConfig: DevConfig | undefined;
 export declare function setupDev(conf: DevConfig): void;
-export {};
 //# sourceMappingURL=config.d.ts.map

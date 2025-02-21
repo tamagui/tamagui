@@ -19,6 +19,5 @@ export declare function addChildren<
 	Themes extends { [key: string]: GenericTheme },
 	GetChildren extends ChildGetter<keyof Themes, Themes[keyof Themes]>
 >(themes: Themes, getChildren: GetChildren): Themes & { [key in SubThemeKeys<keyof Themes, keyof ReturnType<GetChildren>>] : Themes[keyof Themes] };
-export {};
 
 //# sourceMappingURL=createTheme.d.ts.map

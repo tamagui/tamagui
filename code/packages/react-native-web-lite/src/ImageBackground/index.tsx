@@ -7,7 +7,7 @@
  * @flow
  */
 
-import * as React from 'react'
+import type * as React from 'react'
 import { forwardRef } from 'react'
 import { StyleSheet } from '@tamagui/react-native-web-internals'
 

@@ -5,5 +5,4 @@ interface TamaguiJsTransformerConfig extends JsTransformerConfig {
     tamagui: TamaguiOptions;
 }
 export declare function transform(config: TamaguiJsTransformerConfig, projectRoot: string, filename: string, data: Buffer, options: JsTransformOptions): Promise<TransformResponse>;
-export {};
 //# sourceMappingURL=transformer.d.ts.map

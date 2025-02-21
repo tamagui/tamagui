@@ -108,5 +108,4 @@ export interface SelectScrollButtonImplProps extends YStackProps {
 }
 export interface SelectScrollButtonProps extends Omit<SelectScrollButtonImplProps, 'dir' | 'componentName'> {
 }
-export {};
 //# sourceMappingURL=types.d.ts.map

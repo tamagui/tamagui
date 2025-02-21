@@ -45,5 +45,4 @@ export declare const ZStack: import("@tamagui/core").TamaguiComponent<import("@t
     neverFlatten: true;
     isZStack: true;
 }>;
-export {};
 //# sourceMappingURL=Stacks.d.ts.map

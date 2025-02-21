@@ -5,7 +5,7 @@ import { rainbowColors } from './rainbowChalk'
 export const tamaguiAsciiArt = `▀█▀ ▄▀█ █▀▄▀█ ▄▀█ █▀▀ █ █ █
  █  █▀█ █ ▀ █ █▀█ █▄█ █▄█ █`
 
-export const tamaguiRainbowAsciiArt = (function () {
+export const tamaguiRainbowAsciiArt = (() => {
   const char0_1 = chalk.hex(rainbowColors[0])('▀█▀')
   const char0_2 = chalk.hex(rainbowColors[0])(' █ ')
 

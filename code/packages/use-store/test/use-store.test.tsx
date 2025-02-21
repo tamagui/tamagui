@@ -14,7 +14,7 @@ import { last } from 'lodash'
 import { StrictMode } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // configureUseStore({
 //   logLevel: 'debug',

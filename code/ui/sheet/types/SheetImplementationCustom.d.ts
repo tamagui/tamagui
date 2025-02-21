@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import type React from 'react';
+import type { View } from 'react-native';
 import type { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: React.ForwardRefExoticComponent<{
     open?: boolean;

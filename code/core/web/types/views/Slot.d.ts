@@ -9,5 +9,4 @@ export declare const Slottable: {
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
-export {};
 //# sourceMappingURL=Slot.d.ts.map

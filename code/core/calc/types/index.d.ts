@@ -13,6 +13,5 @@ declare const operators: {
 };
 type Operator = keyof typeof operators;
 export declare const calc: (...valuesAndOperators: (CalcVal | Operator)[]) => string | number;
-export {};
 
 //# sourceMappingURL=index.d.ts.map

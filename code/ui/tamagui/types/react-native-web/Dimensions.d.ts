@@ -18,5 +18,4 @@ export declare const Dimensions: {
     };
     removeEventListener(type: DimensionEventListenerType, handler: (dimensionsValue: DimensionsValue) => void): void;
 };
-export {};
 //# sourceMappingURL=Dimensions.d.ts.map

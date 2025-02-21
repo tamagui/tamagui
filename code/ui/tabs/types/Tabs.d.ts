@@ -1,8 +1,8 @@
-import { RNTamaguiViewNonStyleProps } from '@tamagui/core/types';
+import type { RNTamaguiViewNonStyleProps } from '@tamagui/core/types';
 import type { GroupProps } from '@tamagui/group';
-import { RovingFocusGroup } from '@tamagui/roving-focus';
+import type { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { GetProps, SizeTokens, StackStyleBase, StaticConfigPublic, TamaDefer, TamaguiComponent, TamaguiElement } from '@tamagui/web';
-import * as React from 'react';
+import type * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
 type TabsListFrameProps = GroupProps;
 type TabsListProps = TabsListFrameProps & {

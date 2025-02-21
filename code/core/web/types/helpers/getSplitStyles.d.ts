@@ -9,5 +9,4 @@ export declare const PROP_SPLIT = "-";
 export declare const getSplitStyles: StyleSplitter;
 export declare const getSubStyle: (styleState: GetStyleState, subKey: string, styleIn: Object, avoidMergeTransform?: boolean) => TextStyle;
 export declare const useSplitStyles: StyleSplitter;
-export {};
 //# sourceMappingURL=getSplitStyles.d.ts.map

@@ -7,5 +7,4 @@ export declare let extractor: ReturnType<StaticI['createExtractor']> | null;
 export declare let disableStatic: boolean;
 export declare const getStatic: () => Promise<typeof import("@tamagui/static/types/exports")>;
 export declare function loadTamaguiBuildConfig(optionsIn?: Partial<TamaguiOptions>, logger?: Logger): Promise<void>;
-export {};
 //# sourceMappingURL=loadTamagui.d.ts.map

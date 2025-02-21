@@ -23,5 +23,4 @@ export declare const FormTrigger: import("@tamagui/core").TamaguiComponent<impor
 export declare const Form: (({ onSubmit, ...props }: ScopedProps<FormProps>) => import("react/jsx-runtime").JSX.Element) & {
     Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 };
-export {};
 //# sourceMappingURL=Form.d.ts.map

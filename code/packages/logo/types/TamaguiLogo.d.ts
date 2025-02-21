@@ -7,6 +7,5 @@ type LogoProps = {
 	ref?: any;
 } & XStackProps;
 export declare const TamaguiLogo: ({ showWords, downscale, animated, ref,...props }: LogoProps) => JSX.Element;
-export {};
 
 //# sourceMappingURL=TamaguiLogo.d.ts.map

@@ -1,5 +1,5 @@
 import type { GetProps } from '@tamagui/web';
-import * as React from 'react';
+import type * as React from 'react';
 export declare const context: import("@tamagui/web").StyledContext<{
     color: string;
 }>;
@@ -112,5 +112,4 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     active?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>> & ToggleItemExtraProps & React.RefAttributes<HTMLButtonElement>>;
-export {};
 //# sourceMappingURL=Toggle.d.ts.map

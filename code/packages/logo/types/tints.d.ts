@@ -25,6 +25,5 @@ export declare function useTints(): {
 export declare function setTintFamily(next: TintFamily): void;
 export declare const setNextTintFamily: () => void;
 export declare const onTintFamilyChange: (cb: ChangeHandler) => () => void;
-export {};
 
 //# sourceMappingURL=tints.d.ts.map

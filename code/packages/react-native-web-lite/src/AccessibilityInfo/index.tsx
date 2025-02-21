@@ -68,7 +68,7 @@ const AccessibilityInfo = {
   /**
    * Add an event handler. Supported events: reduceMotionChanged
    */
-  addEventListener: function (eventName: string, handler: Function): any {
+  addEventListener: (eventName: string, handler: Function): any => {
     if (eventName === 'reduceMotionChanged') {
       if (!prefersReducedMotionMedia) {
         return
@@ -89,17 +89,17 @@ const AccessibilityInfo = {
   /**
    * Set accessibility focus to a react component.
    */
-  setAccessibilityFocus: function (reactTag: number): void {},
+  setAccessibilityFocus: (reactTag: number): void => {},
 
   /**
    * Post a string to be announced by the screen reader.
    */
-  announceForAccessibility: function (announcement: string): void {},
+  announceForAccessibility: (announcement: string): void => {},
 
   /**
    * Remove an event handler.
    */
-  removeEventListener: function (eventName: string, handler: Function): void {
+  removeEventListener: (eventName: string, handler: Function): void => {
     if (eventName === 'reduceMotionChanged') {
       // @ts-ignore
       const listener = handlers[handler]

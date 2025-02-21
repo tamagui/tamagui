@@ -13,5 +13,4 @@ export declare function useFocusable({ isInput, props, ref, }: {
     ref: (node: any) => void;
     onChangeText: (value: any) => void;
 };
-export {};
 //# sourceMappingURL=focusableInputHOC.d.ts.map

@@ -37,6 +37,7 @@ export const InteractionManager = {
       })
     })
     return {
+      // biome-ignore lint/suspicious/noThenProperty: <explanation>
       then: promise.then.bind(promise),
       done: promise.then.bind(promise),
       cancel: () => {

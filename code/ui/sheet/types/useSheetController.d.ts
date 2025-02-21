@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 export declare const useSheetController: () => {
     controller: SheetControllerContextValue | null;
     isHidden: boolean | undefined;

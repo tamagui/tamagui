@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import type { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native';
 type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
 export type SwitchExtraProps = {
@@ -36,5 +36,4 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
      */
     bubbleInput: import("react/jsx-runtime").JSX.Element | null;
 };
-export {};
 //# sourceMappingURL=useSwitch.d.ts.map

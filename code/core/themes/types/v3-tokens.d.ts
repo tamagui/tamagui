@@ -180,5 +180,4 @@ export declare const tokens: {
         $20: number;
     };
 };
-export {};
 //# sourceMappingURL=v3-tokens.d.ts.map

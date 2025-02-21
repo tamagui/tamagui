@@ -7,5 +7,4 @@ export type LanguageContextType = Partial<{
 export type FontLanguageProps = LanguageContextType & {
     children?: React.ReactNode;
 };
-export {};
 //# sourceMappingURL=FontLanguage.types.d.ts.map

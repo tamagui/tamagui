@@ -1,13 +1,4 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @format
- *
- */
-'use strict'
+
 
 /**
  * This is a helper function for when a component needs to be able to forward a ref

@@ -39,5 +39,4 @@ export declare const Button: import("react").ForwardRefExoticComponent<import("@
         variant?: ButtonVariant;
     }, import("@tamagui/web").StaticConfigPublic>;
 };
-export {};
 //# sourceMappingURL=Button.d.ts.map

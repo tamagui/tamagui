@@ -59,7 +59,7 @@ export type ViewabilityConfig = {
  */
 class ViewabilityHelper {
   _config: ViewabilityConfig
-  _hasInteracted: boolean = false
+  _hasInteracted = false
   _timers: Set<number> = new Set()
   _viewableIndices: number[] = []
   _viewableItems: Map<string, ViewToken> = new Map()

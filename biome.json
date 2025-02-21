@@ -4,7 +4,15 @@
     "enabled": false
   },
   "files": {
-    "ignore": ["**/*/generated-*.ts", ".tamagui"]
+    "ignore": [
+      "**/*/generated-*.ts",
+      ".tamagui",
+      "node_modules",
+      "dist",
+      "build",
+      "scripts",
+      "**/*.json"
+    ]
   },
   "linter": {
     "enabled": true,
@@ -61,7 +69,8 @@
         "useMediaCaption": "off",
         "noHeaderScope": "off",
         "useAltText": "off",
-        "useButtonType": "off"
+        "useButtonType": "off",
+        "useSemanticElements": "off"
       }
     }
   },

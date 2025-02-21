@@ -1,6 +1,6 @@
 import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
 import type { SwitchExtraProps as HeadlessSwitchExtraProps, SwitchState } from '@tamagui/switch-headless';
-import * as React from 'react';
+import type * as React from 'react';
 import type { SwitchProps as NativeSwitchProps } from 'react-native';
 type SwitchSharedProps = {
     size?: SizeTokens | number;
@@ -151,5 +151,4 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
         checked?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-export {};
 //# sourceMappingURL=createSwitch.d.ts.map

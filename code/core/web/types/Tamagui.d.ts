@@ -1,4 +1,4 @@
-import * as Helpers from '@tamagui/helpers';
+import type * as Helpers from '@tamagui/helpers';
 export declare const Tamagui: {
     Helpers: typeof Helpers;
     readonly mediaState: {

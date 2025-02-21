@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { execSync } from 'child_process'
+import { execSync } from 'node:child_process'
 
 export function updateTemplate(templateUrl: string, ignoredPatterns: string[] = []) {
   const templateName = templateUrl.split('/').pop()?.split('.')[0] || 'template'

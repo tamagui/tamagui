@@ -28,5 +28,4 @@ export interface RNTextProps extends RNExtraProps {
     dir?: 'ltr' | 'rtl' | 'auto';
 }
 export type RNOnlyProps = 'onStartShouldSetResponder' | 'dataSet' | 'onScrollShouldSetResponder' | 'onScrollShouldSetResponderCapture' | 'onSelectionChangeShouldSetResponder' | 'onSelectionChangeShouldSetResponderCapture' | 'onLayout' | 'href' | 'hrefAttrs' | 'elevationAndroid' | 'rel' | 'download' | 'dir' | 'focusable' | 'onStartShouldSetResponder' | 'onMoveShouldSetResponder' | 'onResponderEnd' | 'onResponderGrant' | 'onResponderReject' | 'onResponderMove' | 'onResponderRelease' | 'onResponderStart' | 'onResponderTerminationRequest' | 'onResponderTerminate' | 'onStartShouldSetResponderCapture' | 'onMoveShouldSetResponderCapture';
-export {};
 //# sourceMappingURL=RNExclusiveTypes.d.ts.map

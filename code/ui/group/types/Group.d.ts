@@ -1,6 +1,6 @@
 import type { GetProps } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
-import React from 'react';
+import type React from 'react';
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
 export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -436,5 +436,4 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         __scopeGroup?: Scope;
     } & React.RefAttributes<unknown>>;
 };
-export {};
 //# sourceMappingURL=Group.d.ts.map

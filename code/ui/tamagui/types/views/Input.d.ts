@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 import type { GetProps } from '@tamagui/core';
-import { TextInput } from 'react-native';
+import type { TextInput } from 'react-native';
 export declare const defaultStyles: {
     readonly borderColor: "$borderColor";
     readonly backgroundColor: "$background";

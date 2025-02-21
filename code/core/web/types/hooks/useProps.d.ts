@@ -37,5 +37,4 @@ export declare function useStyle<A extends StyleLikeObject>(props: A, opts?: Use
  *
  * */
 export declare function usePropsAndStyle<A extends PropsLikeObject>(props: A, opts?: UsePropsOptions): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState];
-export {};
 //# sourceMappingURL=useProps.d.ts.map

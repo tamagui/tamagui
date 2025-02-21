@@ -102,8 +102,6 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       context.floatingContext?.refs.setFloating
     )
 
-    console.log('animate', context.open, useId())
-
     return (
       <>
         {!disableScroll && !props.unstyled && (

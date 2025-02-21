@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import type { DismissableBranchProps, DismissableProps } from './DismissableProps';
 export declare function dispatchDiscreteCustomEvent<E extends CustomEvent>(target: E['target'], event: E): void;
 declare const Dismissable: React.ForwardRefExoticComponent<DismissableProps & React.RefAttributes<HTMLDivElement>>;

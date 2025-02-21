@@ -10,5 +10,4 @@ type ProviderProps = {
 export declare function getLocaleDirection(locale: Locale): WritingDirection;
 export declare function LocaleProvider(props: ProviderProps): any;
 export declare function useLocaleContext(): LocaleValue;
-export {};
 //# sourceMappingURL=index.d.ts.map

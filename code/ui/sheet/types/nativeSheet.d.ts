@@ -6,5 +6,4 @@ export declare function setupNativeSheet(platform: SheetNativePlatforms, RNIOSMo
     ModalSheetView: any;
     ModalSheetViewMainContent: any;
 }): void;
-export {};
 //# sourceMappingURL=nativeSheet.d.ts.map

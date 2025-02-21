@@ -1,8 +1,8 @@
 import type { NodePath } from '@babel/traverse';
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
 import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types';
 import type { TamaguiProjectInfo } from './bundleConfig';
-import { cleanupBeforeExit } from './getStaticBindingsForScope';
+import type { cleanupBeforeExit } from './getStaticBindingsForScope';
 export type Extractor = ReturnType<typeof createExtractor>;
 type FileOrPath = NodePath<t.Program> | t.File;
 export declare function createExtractor({ logger, platform }?: ExtractorOptions): {
@@ -28,5 +28,4 @@ export declare function createExtractor({ logger, platform }?: ExtractorOptions)
         found: number;
     } | null>;
 };
-export {};
 //# sourceMappingURL=createExtractor.d.ts.map

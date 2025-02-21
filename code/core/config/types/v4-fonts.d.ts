@@ -27,5 +27,4 @@ export declare const fonts: {
     body: FillInFont<GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     heading: FillInFont<GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 };
-export {};
 //# sourceMappingURL=v4-fonts.d.ts.map

@@ -16,5 +16,4 @@ export type EventOptions = {
  *
  */
 export default function createEventHandle(type: string, options?: EventOptions | null): EventHandle;
-export {};
 //# sourceMappingURL=index.d.ts.map

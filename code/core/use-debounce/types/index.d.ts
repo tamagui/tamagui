@@ -9,6 +9,5 @@ export declare function useDebounce<
 * Note: you may need to memo or this will keep re-rendering
 */
 export declare function useDebounceValue<A>(val: A, amt?: number): A;
-export {};
 
 //# sourceMappingURL=index.d.ts.map

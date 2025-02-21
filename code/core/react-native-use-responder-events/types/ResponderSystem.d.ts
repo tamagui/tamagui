@@ -43,5 +43,4 @@ export declare function terminateResponder(): void;
  * FOR TESTING ONLY.
  */
 export declare function getResponderNode(): any;
-export {};
 //# sourceMappingURL=ResponderSystem.d.ts.map

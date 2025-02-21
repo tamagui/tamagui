@@ -1,5 +1,5 @@
-import React from 'react';
-import { TextInput } from 'react-native';
+import type React from 'react';
+import type { TextInput } from 'react-native';
 export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;

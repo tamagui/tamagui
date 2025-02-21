@@ -96,5 +96,4 @@ export declare function useRadioGroupItemIndicator(params: UseRadioGroupItemIndi
     'data-state': string;
     'data-disabled': string | undefined;
 };
-export {};
 //# sourceMappingURL=useRadioGroup.d.ts.map

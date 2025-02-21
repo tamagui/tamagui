@@ -158,18 +158,18 @@ workspaces.forEach((workspace) => {
         console.log(`Skipping file in code/bento: ${file}`)
         return
       }
-      console.log(`Processing file: ${file}`)
+      console.info(`Processing file: ${file}`)
       const source = fs.readFileSync(file, 'utf-8')
       if (source.includes("import * as React from 'react'")) {
-        console.log(`Skipping file (namespace import): ${file}`)
+        console.info(`Skipping file (namespace import): ${file}`)
         return
       }
       if (source.includes("import React from 'react'")) {
-        console.log(`Skipping file (correct React import): ${file}`)
+        console.info(`Skipping file (correct React import): ${file}`)
         return
       }
       if (!source.includes("from 'react'")) {
-        console.log(`Skipping file (no React import): ${file}`)
+        console.info(`Skipping file (no React import): ${file}`)
         return
       }
       if (source.includes('import type')) {
@@ -178,7 +178,7 @@ workspaces.forEach((workspace) => {
           (line) => line.startsWith('import type') && line.includes("from 'react'")
         )
         if (reactImports.length > 0) {
-          console.log(`Skipping file (only type imports): ${file}`)
+          console.info(`Skipping file (only type imports): ${file}`)
           return
         }
       }
@@ -186,9 +186,9 @@ workspaces.forEach((workspace) => {
         const transformed = transform(source)
         if (transformed !== source) {
           fs.writeFileSync(file, transformed)
-          console.log(`File transformed successfully: ${file}`)
+          console.info(`File transformed successfully: ${file}`)
         } else {
-          console.log(`Skipping file (no transformations needed): ${file}`)
+          console.info(`Skipping file (no transformations needed): ${file}`)
         }
       } catch (error) {
         console.error(`Error processing file ${file}:`, error)
@@ -198,6 +198,6 @@ workspaces.forEach((workspace) => {
       }
     })
   } else {
-    console.log(`No src directory found in ${workspace.name}`)
+    console.error(`No src directory found in ${workspace.name}`)
   }
 })

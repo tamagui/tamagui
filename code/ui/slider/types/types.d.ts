@@ -68,5 +68,4 @@ export type SliderContextValue = {
     thumbs: Map<TamaguiElement, number>;
     orientation: SliderProps['orientation'];
 };
-export {};
 //# sourceMappingURL=types.d.ts.map

@@ -6,8 +6,8 @@ import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
 import type { RemoveScrollProps } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
-import * as React from 'react';
-import { ScrollView } from 'react-native';
+import type * as React from 'react';
+import type { ScrollView } from 'react-native';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
@@ -352,5 +352,4 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
 };
-export {};
 //# sourceMappingURL=Popover.d.ts.map

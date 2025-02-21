@@ -18,6 +18,5 @@ declare const size: {
 	readonly 15: 114;
 	readonly 16: 124;
 };
-export {};
 
 //# sourceMappingURL=index.d.ts.map

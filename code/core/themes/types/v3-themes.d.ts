@@ -16300,5 +16300,4 @@ export declare const tokens: {
         black12: import("@tamagui/web").Variable<string>;
     };
 }, "color" | "space" | "size" | "radius" | "zIndex">;
-export {};
 //# sourceMappingURL=v3-themes.d.ts.map

@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 import type { GetProps } from '@tamagui/core';
-import { RadioGroupFrame, RadioGroupIndicatorFrame, RadioGroupItemFrame } from './RadioGroup';
+import type { RadioGroupFrame, RadioGroupIndicatorFrame, RadioGroupItemFrame } from './RadioGroup';
 type RadioIndicatorProps = GetProps<typeof RadioGroupIndicatorFrame> & {
     forceMount?: boolean;
     unstyled?: boolean;
@@ -975,5 +975,4 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-export {};
 //# sourceMappingURL=createRadioGroup.d.ts.map

@@ -22,6 +22,5 @@ declare const defaultSizes: {
 	readonly 15: 114;
 	readonly 16: 134;
 };
-export {};
 
 //# sourceMappingURL=index.d.ts.map

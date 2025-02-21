@@ -35,5 +35,4 @@ export declare function inline(originalStyle: Style, isRTL?: boolean): {
  * output.
  */
 export declare function stringifyValueWithProperty(value: Value, property: string | null): string;
-export {};
 //# sourceMappingURL=index.d.ts.map

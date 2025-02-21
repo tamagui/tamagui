@@ -1,4 +1,4 @@
-import esbuild from 'esbuild';
+import type esbuild from 'esbuild';
 import type { TamaguiPlatform } from '../types';
 export declare const esbuildLoaderConfig: {
     readonly '.js': "jsx";
@@ -35,5 +35,4 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
     resolvePlatformSpecificEntries?: boolean;
 };
 export declare function esbundleTamaguiConfig(props: Props, platform: TamaguiPlatform, aliases?: Record<string, string>): Promise<esbuild.BuildResult<esbuild.BuildOptions>>;
-export {};
 //# sourceMappingURL=bundle.d.ts.map

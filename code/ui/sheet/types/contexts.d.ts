@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 export declare const ParentSheetContext: React.Context<{
     zIndex: number;
 }>;

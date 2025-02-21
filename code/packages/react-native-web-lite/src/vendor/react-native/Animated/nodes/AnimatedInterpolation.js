@@ -1,15 +1,4 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *
- * @format
- */
 
-/* eslint no-bitwise: 0 */
-'use strict'
 
 import normalizeColor from '@tamagui/normalize-css-color'
 import { invariant } from '@tamagui/react-native-web-internals'
@@ -127,9 +116,9 @@ function interpolate(
     return outputMax
   } // Input Range
 
-  if (inputMin === -Infinity) {
+  if (inputMin === Number.NEGATIVE_INFINITY) {
     result = -result
-  } else if (inputMax === Infinity) {
+  } else if (inputMax === Number.POSITIVE_INFINITY) {
     result = result - inputMin
   } else {
     result = (result - inputMin) / (inputMax - inputMin)
@@ -137,9 +126,9 @@ function interpolate(
 
   result = easing(result) // Output Range
 
-  if (outputMin === -Infinity) {
+  if (outputMin === Number.NEGATIVE_INFINITY) {
     result = -result
-  } else if (outputMax === Infinity) {
+  } else if (outputMax === Number.POSITIVE_INFINITY) {
     result = result + outputMin
   } else {
     result = result * (outputMax - outputMin) + outputMin
@@ -269,7 +258,7 @@ function checkValidInputRange(arr) {
 function checkInfiniteRange(name, arr) {
   invariant(arr.length >= 2, name + ' must have at least 2 elements')
   invariant(
-    arr.length !== 2 || arr[0] !== -Infinity || arr[1] !== Infinity,
+    arr.length !== 2 || arr[0] !== Number.NEGATIVE_INFINITY || arr[1] !== Number.POSITIVE_INFINITY,
     /* $FlowFixMe[incompatible-type] (>=0.13.0) - In the addition expression
      * below this comment, one or both of the operands may be something that
      * doesn't cleanly convert to a string, like undefined, null, and object,

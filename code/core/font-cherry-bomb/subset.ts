@@ -1,5 +1,5 @@
-import { mkdir, readFile, writeFile } from 'fs/promises'
-import { basename, join } from 'path'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { basename, join } from 'node:path'
 
 import subsetFont from 'subset-font'
 

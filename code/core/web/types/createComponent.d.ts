@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 import type { DebugProp, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StaticConfig, TamaguiComponent, TamaguiElement } from './types';
 type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentState>>;
@@ -22,5 +22,4 @@ export type SpacedChildrenProps = {
     debug?: DebugProp;
 };
 export declare function spacedChildren(props: SpacedChildrenProps): React.ReactNode;
-export {};
 //# sourceMappingURL=createComponent.d.ts.map

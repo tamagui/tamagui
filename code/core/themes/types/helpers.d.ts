@@ -20,5 +20,4 @@ type MergeIntersectingObjects<ObjT> = {
 };
 type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<UnionToIntersection<UnionObjectFromArrayOfPairs<ARR_T>>>;
 export declare function objectFromEntries<ARR_T extends EntriesType>(arr: ARR_T): EntriesToObject<ARR_T>;
-export {};
 //# sourceMappingURL=helpers.d.ts.map

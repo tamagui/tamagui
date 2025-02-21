@@ -13,6 +13,5 @@ type UnionObjectFromArrayOfPairs<ARR_T extends EntriesType> = DeepWritable<ARR_T
 type MergeIntersectingObjects<ObjT> = { [key in keyof ObjT] : ObjT[key] };
 type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<UnionToIntersection<UnionObjectFromArrayOfPairs<ARR_T>>>;
 export declare function objectFromEntries<ARR_T extends EntriesType>(arr: ARR_T): EntriesToObject<ARR_T>;
-export {};
 
 //# sourceMappingURL=helpers.d.ts.map

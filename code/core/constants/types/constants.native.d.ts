@@ -1,4 +1,4 @@
-import { type useEffect } from "react";
+import type { useEffect } from "react";
 export declare const isWeb: boolean;
 export declare const isWindowDefined: boolean;
 export declare const isServer: boolean;

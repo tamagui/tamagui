@@ -54,5 +54,4 @@ export declare class ThemeBuilder<State extends ThemeBuilderInternalState = Them
     build(): ThemeBuilderBuildResult<State>;
 }
 export declare function createThemeBuilder(): ThemeBuilder<{}>;
-export {};
 //# sourceMappingURL=ThemeBuilder.d.ts.map

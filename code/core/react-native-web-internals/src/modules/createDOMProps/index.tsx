@@ -11,6 +11,7 @@ import AccessibilityUtil from '../AccessibilityUtil/index'
 import { getCSSStylesAtomic, wrapStyleTags } from '@tamagui/web'
 
 const emptyObject = {}
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 const hasOwnProperty = Object.prototype.hasOwnProperty
 const isArray = Array.isArray
 

@@ -13,5 +13,4 @@ interface AnimateProps {
     cubicBezier?: CubicBuzier;
 }
 export declare function animate(param: AnimateProps): void;
-export {};
 //# sourceMappingURL=index.d.ts.map

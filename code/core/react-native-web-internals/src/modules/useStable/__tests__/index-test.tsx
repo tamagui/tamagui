@@ -7,7 +7,7 @@
  * @flow
  */
 
-import * as React from 'react'
+import type * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { act } from 'react-dom/test-utils'
 

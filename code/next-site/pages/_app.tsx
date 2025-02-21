@@ -14,7 +14,7 @@ import config from '../tamagui.config'
 
 // import '../lib/wdyr'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {

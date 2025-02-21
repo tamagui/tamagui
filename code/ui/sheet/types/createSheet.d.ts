@@ -133,5 +133,4 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
         fullscreen?: boolean | undefined;
     }>> & RefAttributes<import("react-native").ScrollView>>;
 };
-export {};
 //# sourceMappingURL=createSheet.d.ts.map

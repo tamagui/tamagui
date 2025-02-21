@@ -23,5 +23,4 @@ export declare function _mutateTheme(props: MutateThemeOptions & MutateOneThemeP
     theme: {};
     cssRules: string[];
 } | undefined;
-export {};
 //# sourceMappingURL=_mutateTheme.d.ts.map

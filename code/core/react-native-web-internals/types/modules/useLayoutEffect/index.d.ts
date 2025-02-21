@@ -1,4 +1,4 @@
-import React from "react"; /**
+import type React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  *
  * This source code is licensed under the MIT license found in the

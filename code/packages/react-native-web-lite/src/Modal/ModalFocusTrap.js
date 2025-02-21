@@ -127,10 +127,10 @@ var ModalFocusTrap = (_ref) => {
   }, [active]) // To be fully compliant with WCAG we need to refocus element that triggered opening modal
   // after closing it
 
-  React.useEffect(function () {
+  React.useEffect(() => {
     if (canUseDOM) {
       var lastFocusedElementOutsideTrap = document.activeElement
-      return function () {
+      return () => {
         if (
           lastFocusedElementOutsideTrap &&
           document.contains(lastFocusedElementOutsideTrap)

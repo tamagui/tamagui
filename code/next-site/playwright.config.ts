@@ -1,4 +1,4 @@
-import { type PlaywrightTestConfig } from '@playwright/test'
+import type { PlaywrightTestConfig } from '@playwright/test'
 
 const isProd = process.env.RUN_ENV === 'production'
 const port = isProd ? 3333 : 5005

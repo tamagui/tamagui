@@ -69,7 +69,7 @@
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "llink": "lllink ~/one",
     "lint:fix": "ultra -r --no-pretty lint:fix",
-    "lint": "ultra -r --no-pretty lint",
+    "lint": "biome lint --write",
     "profile": "node -r esbuild-register ./scripts/yarn-profile.ts",
     "release:canary": "yarn release --canary --ci",
     "release": "node -r esbuild-register ./scripts/release.ts",

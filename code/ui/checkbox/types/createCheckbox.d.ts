@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { CheckedState, CheckboxExtraProps as HeadlessCheckboxExtraProps } from '@tamagui/checkbox-headless';
 import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
 type CheckboxExpectingVariantProps = {
@@ -224,5 +224,4 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-export {};
 //# sourceMappingURL=createCheckbox.d.ts.map

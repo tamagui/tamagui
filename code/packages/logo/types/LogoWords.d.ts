@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import type { XStackProps } from "tamagui";
 export declare const LogoWords: React.MemoExoticComponent<({ downscale, animated,...props }: XStackProps & {
 	downscale?: number;

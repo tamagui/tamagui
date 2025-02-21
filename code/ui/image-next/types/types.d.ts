@@ -25,5 +25,4 @@ export type ImageType = React.FC<Partial<ImageProps>> & {
     abortPrefetch: RNImageType['abortPrefetch'];
     queryCache: RNImageType['queryCache'];
 };
-export {};
 //# sourceMappingURL=types.d.ts.map

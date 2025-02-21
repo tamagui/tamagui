@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev';
 import type { SizeTokens } from '@tamagui/core';
 import type { PopperProps } from '@tamagui/popper';
-import * as React from 'react';
+import type * as React from 'react';
 export type TooltipProps = PopperProps & {
     open?: boolean;
     unstyled?: boolean;
@@ -116,5 +116,4 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         __scopeTooltip?: string | undefined;
     } & React.RefAttributes<unknown>>;
 };
-export {};
 //# sourceMappingURL=Tooltip.d.ts.map

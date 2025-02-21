@@ -1,5 +1,5 @@
 import type { NativeValue, TamaguiElement } from '@tamagui/core';
-import * as React from 'react';
+import type * as React from 'react';
 import type { ToastImperativeOptions } from './ToastImperative';
 import type { BurntToastOptions } from './types';
 declare const Collection: {

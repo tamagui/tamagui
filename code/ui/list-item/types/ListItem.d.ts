@@ -400,5 +400,4 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };
-export {};
 //# sourceMappingURL=ListItem.d.ts.map

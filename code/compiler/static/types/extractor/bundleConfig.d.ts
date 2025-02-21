@@ -1,4 +1,4 @@
-import { type StaticConfig, type TamaguiInternalConfig } from '@tamagui/web';
+import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web';
 import type { TamaguiOptions } from '../types';
 type NameToPaths = {
     [key: string]: Set<string>;
@@ -32,5 +32,4 @@ export declare function bundleConfig(props: TamaguiOptions): Promise<any>;
 export declare function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig): Promise<void>;
 export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
 export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
-export {};
 //# sourceMappingURL=bundleConfig.d.ts.map

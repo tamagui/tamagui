@@ -1,5 +1,5 @@
 import type { AllPlatforms, MediaQueryKey } from '@tamagui/core';
-import React from 'react';
+import type React from 'react';
 /**
  * Interfaces
  */
@@ -62,5 +62,4 @@ export declare const AdaptPortalContents: (props: {
     scope?: string;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
-export {};
 //# sourceMappingURL=Adapt.d.ts.map

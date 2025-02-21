@@ -207,5 +207,4 @@ export type TransformStyles = {
     transformOrigin?: string | null;
     transformStyle?: 'flat' | 'preserve-3d' | null;
 };
-export {};
 //# sourceMappingURL=styleTypes.d.ts.map

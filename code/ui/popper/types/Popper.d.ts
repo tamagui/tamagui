@@ -1,8 +1,8 @@
 import type { ScopedProps, SizeTokens } from '@tamagui/core';
 import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, SizeOptions } from '@tamagui/floating';
-import { flip, shift } from '@tamagui/floating';
+import type { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
-import * as React from 'react';
+import type * as React from 'react';
 import type { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
@@ -206,5 +206,4 @@ export declare const PopperArrow: import("@tamagui/core").TamaguiComponent<Omit<
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export {};
 //# sourceMappingURL=Popper.d.ts.map

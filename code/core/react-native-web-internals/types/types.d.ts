@@ -42,5 +42,4 @@ export interface PlatformMethods {
     measureLayout: (relativeToNativeNode: {}, onSuccess: LayoutCallback, onFail: () => void) => void;
     setNativeProps: (nativeProps: {}) => void;
 }
-export {};
 //# sourceMappingURL=types.d.ts.map

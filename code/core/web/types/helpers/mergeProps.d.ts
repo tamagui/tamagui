@@ -13,5 +13,4 @@
  */
 type AnyRecord = Record<string, any>;
 export declare const mergeProps: (a: Object, b?: Object, inverseShorthands?: AnyRecord) => AnyRecord;
-export {};
 //# sourceMappingURL=mergeProps.d.ts.map

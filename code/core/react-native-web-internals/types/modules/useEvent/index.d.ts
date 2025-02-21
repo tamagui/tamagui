@@ -20,5 +20,4 @@ export default function useEvent(event: string, options?: {
     capture?: boolean;
     passive?: boolean;
 } | null): AddListener;
-export {};
 //# sourceMappingURL=index.d.ts.map

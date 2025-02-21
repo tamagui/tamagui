@@ -1,13 +1,4 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *
- * @format
- */
-'use strict'
+
 
 import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
 import DecayAnimation from './animations/DecayAnimation'
@@ -53,7 +44,7 @@ var diffClamp = function diffClamp(a, min, max) {
 
 var _combineCallbacks = function _combineCallbacks(callback, config) {
   if (callback && config.onComplete) {
-    return function () {
+    return () => {
       config.onComplete && config.onComplete(...arguments)
       callback && callback(...arguments)
     }
@@ -462,7 +453,7 @@ function forkEvent(event, listener) {
 
     return event
   } else {
-    return function () {
+    return () => {
       typeof event === 'function' && event(...arguments)
       listener(...arguments)
     }

@@ -60,5 +60,4 @@ export type ScrollBridge = {
     scrollLock: boolean;
     onFinishAnimate?: () => void;
 };
-export {};
 //# sourceMappingURL=types.d.ts.map

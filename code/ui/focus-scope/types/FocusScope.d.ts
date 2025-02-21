@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import type { FocusScopeProps } from './FocusScopeProps';
 type FocusScopeElement = HTMLDivElement;
 declare const FocusScope: React.ForwardRefExoticComponent<FocusScopeProps & React.RefAttributes<HTMLDivElement>>;

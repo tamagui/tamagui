@@ -19,5 +19,4 @@ type MakeTokens<T extends CreateTokens> = T extends {
 } & Omit<{
     [key in keyof T]: NormalizeTokens<T[key]>;
 }, 'color' | 'space' | 'size' | 'radius' | 'zIndex'> : never;
-export {};
 //# sourceMappingURL=createTokens.d.ts.map

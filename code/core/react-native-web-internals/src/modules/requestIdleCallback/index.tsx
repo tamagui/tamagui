@@ -8,8 +8,7 @@
  */
 import canUseDOM from '../canUseDOM'
 
-const _requestIdleCallback = function (cb: Function, options?: Object) {
-  return setTimeout(() => {
+const _requestIdleCallback = (cb: Function, options?: Object) => setTimeout(() => {
     const start = Date.now()
     cb({
       didTimeout: false,
@@ -18,9 +17,8 @@ const _requestIdleCallback = function (cb: Function, options?: Object) {
       },
     })
   }, 1)
-}
 
-const _cancelIdleCallback = function (id) {
+const _cancelIdleCallback = (id) => {
   clearTimeout(id)
 }
 

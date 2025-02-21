@@ -33,5 +33,4 @@ export type TouchHistory = {
     numberActiveTouches: number;
     touchBank: Array<TouchRecord>;
 };
-export {};
 //# sourceMappingURL=ResponderTouchHistoryStore.d.ts.map

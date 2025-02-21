@@ -33,5 +33,4 @@ export declare class CDVC {
     getDependency(name: string): Dependency;
     get hasMismatchingDependencies(): boolean;
 }
-export {};
 //# sourceMappingURL=check-dep-versions.d.ts.map

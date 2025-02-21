@@ -1,13 +1,4 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *
- * @format
- */
-'use strict'
+
 
 import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
 import AnimatedImplementation from './AnimatedImplementation'
@@ -33,7 +24,7 @@ function mockAnimationStart(start) {
     var guardedCallback =
       callback == null
         ? callback
-        : function () {
+        : (() => {
             if (inAnimationCallback) {
               console.warn(
                 'Ignoring recursive animation callback when running mock animations'
@@ -48,7 +39,7 @@ function mockAnimationStart(start) {
             } finally {
               inAnimationCallback = false
             }
-          }
+          })
     start(guardedCallback)
   }
 }
