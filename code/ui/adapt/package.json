@@ -31,6 +31,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/z-index-stack": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/helpers": "workspace:*",

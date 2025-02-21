@@ -1,3 +1,4 @@
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import {
   isAndroid,
   isIos,
@@ -201,9 +202,11 @@ export const Adapt = withStaticProperties(
     }, [output])
 
     return (
-      <CurrentAdaptContextScope.Provider value={scopeName}>
-        {!enabled ? null : output}
-      </CurrentAdaptContextScope.Provider>
+      <StackZIndexContext>
+        <CurrentAdaptContextScope.Provider value={scopeName}>
+          {!enabled ? null : output}
+        </CurrentAdaptContextScope.Provider>
+      </StackZIndexContext>
     )
   },
   {
