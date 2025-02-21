@@ -241,9 +241,24 @@ export const ProAgreementModal = () => {
                 </Paragraph>
 
                 <Paragraph>
-                  Tamagui Pro License grants the same permissions to all Employees and
-                  Contractors of the Licensee to access and use the Pro features within
-                  their organization.
+                  Tamagui Pro License grants permission to one individual to access the
+                  Takeout Github repository and the Bento components via tamagui.dev. You
+                  are free to use Takeout to build as many apps as you please, and to use
+                  Bento components in as many projects as you please.
+                </Paragraph>
+
+                <Paragraph>
+                  For Bento - you are free to use and the source code in unlimited
+                  projects and publish it publicly, but we ask you do not re-publish the
+                  majority of the components in one place. Other developers may
+                  collaborate on the source code without a license.
+                </Paragraph>
+
+                <Paragraph>
+                  For Takeout - you cannot re-publish any of the source code publicly. If
+                  you are collaborating on the source code with other developers, then all
+                  developers who commit to the repository within the last 3 months must
+                  also have a license.
                 </Paragraph>
 
                 <H3>License Terms</H3>
@@ -253,8 +268,8 @@ export const ProAgreementModal = () => {
                 <Paragraph>
                   <Ul>
                     <Li>
-                      Use all Pro features including Theme Builder, advanced components,
-                      and priority updates in your projects.
+                      Use all Pro features including Theme Builder, Bento, and Takeout, in
+                      your projects.
                     </Li>
                     <Li>
                       Use Pro features in both commercial and non-commercial projects.
@@ -270,10 +285,7 @@ export const ProAgreementModal = () => {
 
                 <Paragraph>
                   <Ul>
-                    <Li>
-                      Share your Pro account credentials with individuals outside your
-                      organization.
-                    </Li>
+                    <Li>Share your Pro account credentials with any other individual.</Li>
                     <Li>
                       Redistribute or resell Pro features or components as standalone
                       products.
