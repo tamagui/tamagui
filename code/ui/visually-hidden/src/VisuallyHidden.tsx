@@ -1,6 +1,23 @@
-import { Text, styled } from '@tamagui/web'
+import {
+  type TamaDefer,
+  type TamaguiComponent,
+  type TamaguiTextElement,
+  Text,
+  type TextNonStyleProps,
+  type TextStylePropsBase,
+  styled,
+} from '@tamagui/web'
 
-export const VisuallyHidden = styled(Text, {
+export const VisuallyHidden: TamaguiComponent<
+  TamaDefer,
+  TamaguiTextElement,
+  TextNonStyleProps,
+  TextStylePropsBase,
+  {
+    visible?: boolean | undefined
+    preserveDimensions?: boolean | undefined
+  }
+> = styled(Text, {
   position: 'absolute',
   width: 1,
   height: 1,

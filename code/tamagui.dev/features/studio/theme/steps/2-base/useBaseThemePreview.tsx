@@ -1,5 +1,5 @@
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { getStudioInternalThemeName } from '../../previewTheme'
+import { getStudioInternalThemeName } from '../../updatePreviewTheme'
 
 export const useBaseThemePreview = () => {
   const store = useThemeBuilderStore()

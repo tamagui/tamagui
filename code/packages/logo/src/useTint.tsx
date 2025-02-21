@@ -23,11 +23,11 @@ export const setTintIndex = (next: number): void => {
   listeners.forEach((x) => x(val))
 }
 
-export function getDocsSection(pathname: string): 'compile' | 'ui' | 'core' | null {
+export function getDocsSection(pathname: string): 'compiler' | 'ui' | 'core' | null {
   return pathname === '/docs/intro/compiler-install' ||
     pathname === '/docs/intro/benchmarks' ||
     pathname === '/docs/intro/why-a-compiler'
-    ? 'compile'
+    ? 'compiler'
     : pathname.startsWith('/ui/')
       ? 'ui'
       : pathname.startsWith('/docs/')
@@ -61,7 +61,7 @@ export const useTint = (
 
   let initial = current
   if (section) {
-    initial = section === 'compile' ? 5 : section === 'core' ? 4 : 6
+    initial = section === 'compiler' ? 5 : section === 'core' ? 4 : 6
   }
 
   const index = React.useSyncExternalStore(

@@ -305,7 +305,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             exit: isExiting ? styles : undefined,
           } satisfies UseMotiProps,
         }
-      }, [animationKey, componentState.unmounted, JSON.stringify(style), presenceContext])
+      }, [
+        presenceContext,
+        presence,
+        animationKey,
+        componentState.unmounted,
+        JSON.stringify(style),
+        presenceContext,
+      ])
 
       const moti = useMotify(motiProps)
 

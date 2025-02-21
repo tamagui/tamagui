@@ -67,7 +67,7 @@
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
-    "link-repos": "lllink ~/one",
+    "llink": "lllink ~/one",
     "lint:fix": "ultra -r --no-pretty lint:fix",
     "lint": "ultra -r --no-pretty lint",
     "profile": "node -r esbuild-register ./scripts/yarn-profile.ts",
@@ -104,9 +104,7 @@
     "watch:js": "SKIP_TYPES=1 bun run watch:packages",
     "watch:ts": "bun ./scripts/watch-ts.ts",
     "next-site": "yarn workspace @tamagui/next-site dev",
-    "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
-    "bento:web": "yarn workspace @tamagui/bento dev:web",
-    "bento:start": "yarn profile react-18 && yarn workspace @tamagui/bento start"
+    "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
   },
   "manypkg": {
     "workspaceProtocol": "require"

@@ -5,9 +5,9 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
   DEFAULT_ROLE_ID,
   getDiscordClient,
-  TAKEOUT_GROUP_ID,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
+  TAKEOUT_GENERAL_CHANNEL,
 } from '~/features/discord/helpers'
 import { ensureSubscription } from '../../../helpers/ensureSubscription'
 
@@ -68,45 +68,22 @@ export default apiRoute(async (req) => {
 
   let discordChannelId: string | null =
     (subscription.data.metadata as Record<string, any>)?.discord_channel || null
+
   if (hasDiscordPrivateChannels && !discordChannelId) {
-    let channelName = subscription.data.id
-    try {
-      const githubData = await fetch('https://api.github.com/user', {
-        headers: {
-          Authorization: `Bearer ${userPrivate.data.github_token}`,
-        },
-      }).then((res) => res.json())
-      channelName = githubData.data.login
-    } catch (error) {}
+    // Pro users get access to the general channel
+    const channels = await discordClient.api.guilds.getChannels(TAMAGUI_DISCORD_GUILD_ID)
+    const generalChannel = channels.find((c: any) => c.name === TAKEOUT_GENERAL_CHANNEL)
 
-    const discordChannel = await discordClient.api.guilds.createChannel(
-      TAMAGUI_DISCORD_GUILD_ID,
-      {
-        name: channelName,
-        parent_id: TAKEOUT_GROUP_ID,
-        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-        topic: `Sub Created at ${subscription.data.created} - ID: ${subscription.data.id}`,
-      }
-    )
-
-    await discordClient.api.channels.createMessage(discordChannel.id, {
-      content: `Hello and welcome to your private Takeout channel! The creators of Takeout are here as well, so feel free to ask any questions and give us feedback as you go.`,
-    })
-
-    discordChannelId = discordChannel.id
-
-    await supabaseAdmin
-      .from('subscriptions')
-      .update({ metadata: { discord_channel: discordChannel.id } })
-      .eq('id', subscription.data.id)
+    if (generalChannel) {
+      discordChannelId = generalChannel.id
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({ metadata: { discord_channel: generalChannel.id } })
+        .eq('id', subscription.data.id)
+    }
   }
 
   if (req.method === 'DELETE') {
-    if (discordChannelId) {
-      await discordClient.api.channels.edit(discordChannelId, {
-        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-      })
-    }
     await Promise.allSettled(
       discordInvites.data.map((inv) =>
         discordClient.api.guilds.removeRoleFromMember(
@@ -120,7 +97,7 @@ export default apiRoute(async (req) => {
       .from('discord_invites')
       .delete()
       .eq('subscription_id', subscription.data.id)
-    return Response.json({ message: 'discord invites reset' })
+    return Response.json({ message: 'discord access reset' })
   }
 
   const userDiscordId = body.discord_id
@@ -145,17 +122,6 @@ export default apiRoute(async (req) => {
       )
     }
 
-    if (discordChannelId) {
-      const channel = await discordClient.api.channels.get(discordChannelId)
-
-      await discordClient.api.channels.edit(discordChannelId, {
-        permission_overwrites: [
-          ...(channel as any).permission_overwrites, // other permissions
-          { id: userDiscordId, type: 1, allow: roleBitField },
-        ],
-      })
-    }
-
     await supabaseAdmin.from('discord_invites').insert({
       discord_user_id: userDiscordId,
       subscription_id: subscription.data.id,
@@ -166,7 +132,9 @@ export default apiRoute(async (req) => {
       userDiscordId,
       TAKEOUT_ROLE_ID
     )
+
+    return Response.json({ message: 'Added to the Takeout general channel!' })
   }
 
-  return Response.json({ message: `Done!` })
+  return Response.json({ message: 'Done!' })
 })

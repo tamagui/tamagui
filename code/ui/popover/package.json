@@ -36,7 +36,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.27.3",
+    "@floating-ui/react": "^0.27.4",
     "@tamagui/adapt": "workspace:*",
     "@tamagui/animate": "workspace:*",
     "@tamagui/aria-hidden": "workspace:*",
@@ -55,7 +55,6 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/z-index-stack": "workspace:*",
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {

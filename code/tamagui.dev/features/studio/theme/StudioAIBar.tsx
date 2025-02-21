@@ -17,6 +17,7 @@ import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
+import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
 
 export const StudioAIBar = memo(() => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -133,9 +134,7 @@ export const StudioAIBar = memo(() => {
                 if (hasAccess) {
                   generate('new')
                 } else {
-                  toastController.show(
-                    `This is mostly an experiment, it's gated behind purchase of Takeout or Bento for now.`
-                  )
+                  purchaseModal.show = true
                 }
               }}
               size="$4"

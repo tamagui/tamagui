@@ -8,6 +8,10 @@ class TakeoutStore {
   showBentoAgreement = false
   showTakeoutPolicies = false
   showBentoPolicies = false
+
+  showProAgreement = false
+  showProPolicies = false
+
   disableAutomaticDiscount = false
 }
 

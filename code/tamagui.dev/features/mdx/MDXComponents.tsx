@@ -482,7 +482,9 @@ const componentsIn = {
 
   Notice,
 
-  h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
+  h1: (props) => (
+    <H1 fontFamily="$mono" width="max-content" pos="relative" mb="$2" {...props} />
+  ),
 
   h2: ({ children, ...props }) => (
     <H2

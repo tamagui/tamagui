@@ -4,6 +4,8 @@ import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
+import { NewPurchaseModal } from '../../features/site/purchase/NewPurchaseModal'
+import { NewAccountModal } from '../../features/site/purchase/NewAccountModal'
 
 export default function SiteLayout() {
   const path = usePathname()
@@ -26,6 +28,8 @@ export default function SiteLayout() {
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />
       <LoadMunro prefetch />
+      <NewPurchaseModal />
+      <NewAccountModal />
       <Slot />
       {!hideFooter && <Footer />}
       <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />

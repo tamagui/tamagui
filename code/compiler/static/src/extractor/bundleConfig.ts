@@ -5,7 +5,11 @@ import { existsSync, readFileSync } from 'node:fs'
 import { basename, dirname, extname, join, relative, sep } from 'node:path'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
-import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
+import {
+  createTamagui,
+  type StaticConfig,
+  type TamaguiInternalConfig,
+} from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 import { readFile } from 'node:fs/promises'
@@ -14,6 +18,7 @@ import type { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -224,6 +229,12 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     loadedConfig = config
 
+    if (!config.parsed) {
+      const { createTamagui } = requireTamaguiCore(props.platform || 'web')
+      // need to create it
+      config = createTamagui(config)
+    }
+
     if (props.outputCSS) {
       await writeTamaguiCSS(props.outputCSS, config)
     }
@@ -290,6 +301,7 @@ export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternal
     colorLog(Color.FgYellow, `  ➡ [tamagui] output css: ${outputCSS}`)
     await FS.writeFile(outputCSS, css)
   }
+
   const css = config.getCSS()
   if (typeof css !== 'string') {
     throw new Error(`Invalid CSS: ${typeof css} ${css}`)

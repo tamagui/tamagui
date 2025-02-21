@@ -37,7 +37,7 @@ export const Footer = memo(() => {
             flex={1.5}
             gap="$3"
           >
-            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
+            <H4 mb="$3" fontFamily="$mono" size="$4" ls={0.5} o={0.5}>
               Overview
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
@@ -57,7 +57,7 @@ export const Footer = memo(() => {
             flex={1.5}
             gap="$3"
           >
-            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
+            <H4 mb="$3" fontFamily="$mono" size="$4" ls={0.5} o={0.5}>
               Docs
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
@@ -75,7 +75,7 @@ export const Footer = memo(() => {
             flex={1.5}
             gap="$3"
           >
-            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
+            <H4 mb="$3" fontFamily="$mono" size="$4" ls={0.5} o={0.5}>
               Community
             </H4>
             <XStack gap="$1" ai="center">

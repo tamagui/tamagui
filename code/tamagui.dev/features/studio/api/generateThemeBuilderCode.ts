@@ -8,9 +8,8 @@ type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
 
 export async function generateThemeBuilderCode({
   palettes,
-  schemes,
   includeComponentThemes,
-  includeSizeTokens,
+  templateStrategy,
 }: GenerateThemeBuilderCodeProps) {
   // side effect to getLastBuilder
   const palettesOut = createPalettes(palettes)
@@ -19,7 +18,22 @@ export async function generateThemeBuilderCode({
     return pIn.slice(PALETTE_BACKGROUND_OFFSET, -PALETTE_BACKGROUND_OFFSET)
   }
 
-  return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``} } from '@tamagui/theme-builder'
+  const templatesIdentifier = !templateStrategy
+    ? ''
+    : templateStrategy === 'stronger'
+      ? 'defaultTemplatesStronger'
+      : 'defaultTemplatesStrongest'
+  const importTemplates = templatesIdentifier ? `, ${templatesIdentifier}` : ''
+
+  const templatesProp = templatesIdentifier
+    ? `\n  templates: ${templatesIdentifier},\n`
+    : ''
+  const componentsProp =
+    includeComponentThemes === false
+      ? `\n  componentThemes: defaultComponentThemes,\n`
+      : ``
+
+  return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``}${importTemplates} } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
 
 const darkPalette = ${arrayToJS(paletteToCreateThemes(palettesOut.dark))}
@@ -45,9 +59,7 @@ const darkShadows = {
 
 // we're adding some example sub-themes for you to show how they are done, "success" "warning", "error":
 
-const builtThemes = createThemes({
-  ${includeComponentThemes === false ? `componentThemes: defaultComponentThemes,` : ``}
-
+const builtThemes = createThemes({${templatesProp}${componentsProp}
   base: {
     palette: {
       dark: darkPalette,
