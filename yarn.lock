@@ -3965,7 +3965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ngneat/falso@npm:^7.2.0":
+"@ngneat/falso@npm:^7.3.0":
   version: 7.3.0
   resolution: "@ngneat/falso@npm:7.3.0"
   dependencies:
@@ -6319,7 +6319,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@hookform/resolvers": "npm:^3.3.4"
-    "@ngneat/falso": "npm:^7.2.0"
+    "@ngneat/falso": "npm:^7.3.0"
     "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@rehookify/datepicker": "npm:^6.6.8"
