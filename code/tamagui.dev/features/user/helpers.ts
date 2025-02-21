@@ -124,9 +124,12 @@ function checkAccessToProduct(
   const hasActiveSubscription = subscriptions.some(
     (subscription) =>
       (subscription.status === 'trialing' || subscription.status === 'active') &&
-      subscription.subscription_items.some(
+      (subscription.subscription_items.some(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
-      )
+      ) ||
+        subscription.subscription_items.some(
+          (item) => item.price.product?.name === 'Tamagui Pro'
+        ))
   )
   if (hasActiveSubscription) {
     return {

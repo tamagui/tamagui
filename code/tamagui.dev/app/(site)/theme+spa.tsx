@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
 import { useParams, useRouter } from 'one'
 import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
+import type { ComponentType } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -20,13 +21,14 @@ import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
-
 import {
   themeBuilderStore,
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
 import { lastInserted } from '../../features/studio/theme/previewTheme'
+import { useUser } from '~/features/user/useUser'
+import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
@@ -226,11 +228,101 @@ const StudioThemeBuilderTray = memo(() => {
 })
 
 const StudioThemeBuilderBottomBar = memo(() => {
+  const store = useThemeBuilderStore()
+  const userSwr = useUser()
+  const supabase = useSupabaseClient()
+
+  const handleSaveTheme = async () => {
+    if (!userSwr.data?.user) {
+      alert('Please login to save themes')
+      return
+    }
+
+    const themeName = store.currentTheme?.name
+    if (!themeName) {
+      alert('No theme selected')
+      return
+    }
+
+    const name = themeName.replace(/(dark|light)_?/, '')
+    const isDark = themeName.startsWith('dark')
+
+    try {
+      const { error } = await supabase.from('themes').upsert(
+        {
+          user_id: userSwr.data.user.id,
+          name,
+          is_dark: isDark,
+          query: window.location.search,
+          theme_data: lastInserted,
+        },
+        {
+          onConflict: 'user_id,name,is_dark',
+        }
+      )
+
+      if (error) throw error
+      alert('Theme saved successfully!')
+    } catch (error) {
+      console.error('Error saving theme:', error)
+      alert('Error saving theme')
+    }
+  }
+
   return (
     <XStack p="$4" py="$3" ai="center" zi={100} bg="$background02">
       <CurrentStepActionBar />
       <Spacer flex />
-      <ThemeStudioStepButtonsBar />
+      <XStack gap="$2">
+        {location.hostname === 'localhost' && lastInserted && (
+          <>
+            <a href={`one-chat://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
+              <Button size="$3">Chat</Button>
+            </a>
+            <Button size="$3" onPress={handleSaveTheme}>
+              Save Theme
+            </Button>
+            <View flex={1} />
+          </>
+        )}
+
+        <Button
+          size="$3"
+          onPress={() => {
+            if (confirm(`Reset theme builder state?`)) {
+              store.reset()
+            }
+          }}
+        >
+          Reset
+        </Button>
+
+        {store.canGoBackward && (
+          <Button chromeless size="$3" icon={ChevronLeft} onPress={store.backward}>
+            {store.currentSection?.prevTitle || 'Back'}
+          </Button>
+        )}
+
+        {store.canGoForward && (
+          <Button
+            themeInverse={!store.disableForward}
+            size="$3"
+            disabled={store.disableForward}
+            opacity={store.disableForward ? 0.5 : 1}
+            cursor={store.disableForward ? 'not-allowed' : undefined}
+            iconAfter={store.canGoForward ? ChevronRight : null}
+            onPress={() => {
+              if (!store.canGoForward) {
+                console.warn('done')
+              } else {
+                store.forward()
+              }
+            }}
+          >
+            {store.currentSection?.nextTitle || 'Next'}
+          </Button>
+        )}
+      </XStack>
     </XStack>
   )
 })
@@ -244,79 +336,6 @@ const CurrentStepActionBar = () => {
   }
 
   return <ActionComponent />
-}
-
-const ThemeStudioStepButtonsBar = () => {
-  const store = useThemeBuilderStore()
-  const {
-    canGoBackward,
-    canGoForward,
-    backward,
-    forward,
-    currentSection,
-    disableForward,
-  } = store
-  const forwardOrFinish = () => {
-    if (!canGoForward) {
-      console.warn('done')
-    } else {
-      forward()
-    }
-  }
-
-  // useHotkeys('left', backward)
-  // useHotkeys('right', forward)
-
-  return (
-    <XStack gap="$2">
-      {location.hostname === 'localhost' && lastInserted && (
-        <>
-          <a href={`one-chat://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
-            <Button size="$3">Chat</Button>
-          </a>
-          <View flex={1} />
-        </>
-      )}
-
-      <Button
-        size="$3"
-        onPress={() => {
-          if (confirm(`Reset theme builder state?`)) {
-            store.reset()
-          }
-        }}
-      >
-        Reset
-      </Button>
-
-      {canGoBackward && (
-        <Button
-          chromeless
-          size="$3"
-          // disabled={disableBackward}
-          // opacity={disableBackward ? 0.5 : 1}
-          icon={ChevronLeft}
-          onPress={backward}
-        >
-          {currentSection.prevTitle || 'Back'}
-        </Button>
-      )}
-
-      {canGoForward && (
-        <Button
-          themeInverse={!disableForward}
-          size="$3"
-          disabled={disableForward}
-          opacity={disableForward ? 0.5 : 1}
-          cursor={disableForward ? 'not-allowed' : undefined}
-          iconAfter={canGoForward ? ChevronRight : null}
-          onPress={forwardOrFinish}
-        >
-          {currentSection.nextTitle || 'Next'}
-        </Button>
-      )}
-    </XStack>
-  )
 }
 
 const Section = styled(YStack, {

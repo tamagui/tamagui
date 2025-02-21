@@ -327,6 +327,7 @@ const HeaderMenuButton = () => {
 export const HeaderLinksPopover = (props: PopoverProps) => {
   const popoverRef = React.useRef<Popover>(null)
   const [active, setActive] = React.useState<ID | ''>('')
+  const [isSticky, setIsSticky] = React.useState(false) // Stickかどうかの状態
 
   const val = React.useMemo(() => {
     return {
@@ -337,14 +338,28 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
         })
       },
       close: () => {
-        setActive('')
-        popoverRef.current?.close()
+        if (!isSticky) {
+          setActive('')
+          popoverRef.current?.close()
+        }
+      },
+      togglePress: () => {
+        if (!active) {
+          setActive('menu')
+          setIsSticky(true)
+        } else if (isSticky) {
+          setActive('')
+          setIsSticky(false)
+        } else {
+          setIsSticky(true)
+        }
       },
     }
-  }, [])
+  }, [active, isSticky])
 
   return (
     <Popover
+      ref={popoverRef}
       disableRTL
       hoverable={{
         delay: 0,
@@ -355,40 +370,17 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
         padding: 20,
       }}
       open={!!active}
-      onOpenChange={(val, event) => {
-        if (!val) {
+      onOpenChange={(next) => {
+        if (!next && !isSticky) {
           setActive('')
         }
       }}
-      ref={popoverRef}
       {...props}
     >
       <SlidingPopoverContext.Provider value={val}>
         {props.children}
         <HeaderLinksPopoverContent active={active} />
       </SlidingPopoverContext.Provider>
-
-      <Adapt platform="touch" when="sm">
-        <Sheet
-          zIndex={100000000}
-          modal
-          dismissOnSnapToBottom
-          animation="bouncy"
-          animationConfig={{
-            type: 'spring',
-            damping: 25,
-            mass: 1.2,
-            stiffness: 200,
-          }}
-        >
-          <Sheet.Frame>
-            <Sheet.ScrollView>
-              <Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay zIndex={100} bg="$shadow4" />
-        </Sheet>
-      </Adapt>
     </Popover>
   )
 }
@@ -418,6 +410,7 @@ export const HeaderLink = (props: {
 const SlidingPopoverContext = React.createContext({
   setActive(id: ID, layout: LayoutRectangle) {},
   close() {},
+  togglePress() {},
 })
 
 export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
@@ -429,21 +422,6 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
     const combinedRef = useComposedRefs(ref)
     const [hovered, setHovered] = React.useState(false)
 
-    React.useEffect(() => {
-      if (!hovered) return
-
-      const handleMove = debounce(() => {
-        const layout = triggerRef.current?.getBoundingClientRect()
-        if (layout) {
-          setLayout(layout)
-        }
-      }, 32)
-      window.addEventListener('resize', handleMove)
-      return () => {
-        window.removeEventListener('resize', handleMove)
-      }
-    }, [hovered])
-
     return (
       <YStack
         onMouseEnter={() => {
@@ -453,12 +431,13 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
           setHovered(true)
         }}
         onMouseLeave={() => {
-          setHovered(false)
+          context.close()
         }}
         onPress={() => {
-          setTimeout(() => {
-            context.close()
-          }, 400)
+          if (layout) {
+            context.setActive(id, layout)
+            context.togglePress()
+          }
         }}
         onLayout={(e) => {
           React.startTransition(() => {
