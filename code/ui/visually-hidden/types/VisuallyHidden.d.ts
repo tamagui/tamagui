@@ -1,5 +1,7 @@
-export declare const VisuallyHidden: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    visible?: boolean | undefined;
-    preserveDimensions?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+import { type TamaDefer, type TamaguiComponent, type TamaguiTextElement, type TextNonStyleProps, type TextStylePropsBase } from "@tamagui/web";
+export declare const VisuallyHidden: TamaguiComponent<TamaDefer, TamaguiTextElement, TextNonStyleProps, TextStylePropsBase, {
+	visible?: boolean | undefined;
+	preserveDimensions?: boolean | undefined;
+}>;
+
 //# sourceMappingURL=VisuallyHidden.d.ts.map

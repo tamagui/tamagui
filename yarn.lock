@@ -6202,6 +6202,7 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/portal": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
   languageName: unknown
   linkType: soft
 
