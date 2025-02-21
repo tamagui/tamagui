@@ -43,7 +43,7 @@ const HeroSubTitle = memo(() => {
 
   return (
     <Subtitle>
-      <Link asChild href="/docs/introduction">
+      <Link asChild href="/docs/intro/introduction">
         <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>
@@ -178,11 +178,6 @@ const HeroContents = memo(function HeroContents() {
         <YStack ai="center" gap="$4">
           <H1
             ta="center"
-            // animation="lazy"
-            // enterStyle={{
-            //   y: -10,
-            //   o: 0,
-            // }}
             size="$11"
             lh={61}
             maw={500}
@@ -368,12 +363,12 @@ const Subtitle = styled(Paragraph, {
   ls: -1,
 
   $gtSm: {
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 
   $gtMd: {
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 
@@ -418,6 +413,7 @@ const Tag = styled(Text, {
 
 const HeroText = styled(Text, {
   position: 'absolute',
+  ta: 'center',
 
   $sm: {
     t: 0,

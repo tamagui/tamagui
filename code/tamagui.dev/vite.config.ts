@@ -1,4 +1,5 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { join } from 'node:path'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
 
@@ -40,7 +41,6 @@ const include = [
   'glob',
   'reading-time',
   'unified',
-  '@discordjs/core',
 ]
 
 const disableExtraction = false
@@ -84,11 +84,12 @@ export default {
 
   plugins: [
     tamaguiPlugin({
-      config: '@tamagui/tamagui-dev-config',
       components: ['tamagui'],
       logTimings: true,
       optimize: true,
       disableExtraction,
+      config: '@tamagui/tamagui-dev-config',
+      outputCSS: './tamagui.css',
       // useReactNativeWebLite: true,
     }),
 
@@ -111,6 +112,8 @@ export default {
       },
 
       deps: {
+        ws: true,
+        url: false,
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
         postmark: true,
@@ -120,6 +123,8 @@ export default {
         octokit: true,
         'node-fetch': true,
         'fetch-blob': true,
+        'discord-api-types/v10': true,
+        'magic-bytes.js': true,
       },
 
       build: {
@@ -128,12 +133,11 @@ export default {
             build: {
               rollupOptions: {
                 external: [
-                  'stripe',
-                  '@discordjs/core',
-                  'zlib-sync',
-                  '@vercel/og',
                   '@discordjs/rest',
                   '@discordjs/ws',
+                  '@vercel/og',
+                  'stripe',
+                  'zlib-sync',
                 ],
               },
             },

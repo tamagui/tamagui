@@ -8,8 +8,8 @@ const desat = (colors: Record<string, string>, amount: number) => {
   )
 }
 
-const colorsGreenDark = desat(Colors.greenDark, 0.2)
-const colorsGreen = desat(Colors.green, 0.2)
+const colorsGreenDark = desat(Colors.greenDark, 0.2) as typeof Colors.greenDark
+const colorsGreen = desat(Colors.green, 0.2) as typeof Colors.green
 
 // with color2k:
 
@@ -55,6 +55,10 @@ const lightShadows = {
   shadow4: 'rgba(0,0,0,0.24)',
   shadow5: 'rgba(0,0,0,0.32)',
   shadow6: 'rgba(0,0,0,0.4)',
+  shadow7: 'rgba(0,0,0,0.5)',
+  shadow8: 'rgba(0,0,0,0.6)',
+  shadow9: 'rgba(0,0,0,0.7)',
+  shadow10: 'rgba(0,0,0,0.8)',
 }
 
 const darkShadows = {
@@ -63,7 +67,11 @@ const darkShadows = {
   shadow3: 'rgba(0,0,0,0.4)',
   shadow4: 'rgba(0,0,0,0.5)',
   shadow5: 'rgba(0,0,0,0.6)',
-  shadow6: 'rgba(0,0,0,0.7)',
+  shadow6: 'rgba(0,0,0,0.65)',
+  shadow7: 'rgba(0,0,0,0.75)',
+  shadow8: 'rgba(0,0,0,0.8)',
+  shadow9: 'rgba(0,0,0,0.85)',
+  shadow10: 'rgba(0,0,0,0.9)',
 }
 
 const blackColors = {

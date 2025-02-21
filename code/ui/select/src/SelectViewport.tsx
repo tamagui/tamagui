@@ -16,6 +16,7 @@ import type {
   SelectViewportExtraProps,
   SelectViewportProps,
 } from './types'
+import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport

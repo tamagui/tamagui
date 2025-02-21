@@ -53,6 +53,17 @@ export default function Layout() {
         <meta name="twitter:creator" content="@natebirdman" />
         <meta name="robots" content="index,follow" />
 
+        <link crossOrigin="anonymous" href="/fonts/berkeley.css" rel="stylesheet" />
+        <link
+          rel="stylesheet preload prefetch"
+          href="/fonts/berkeley.woff2"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/woff2"
+          // @ts-ignore
+          precedence="default"
+        />
+
         <link crossOrigin="anonymous" href="/fonts/inter-700.css" rel="stylesheet" />
         <link
           rel="stylesheet preload prefetch"

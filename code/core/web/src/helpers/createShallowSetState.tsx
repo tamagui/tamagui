@@ -8,9 +8,10 @@ export function createShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>,
   onlyAllow?: string[],
   transition?: boolean,
-  debug?: DebugProp,
-  callback?: (nextState: any) => void
+  debugIn?: DebugProp,
+  callback?: (nextState: Record<string, any>) => void
 ) {
+  const debug = true
   // this must be memoized or it ruins performance in components
   return useCallback(
     (next?: Partial<State>) => {
@@ -23,7 +24,7 @@ export function createShallowSetState<State extends Object>(
         })
       })
     },
-    [setter, onlyAllow ? onlyAllow.join('') : '', transition, debug]
+    [setter, onlyAllow ? onlyAllow.join('') : '', transition, debug, callback]
   )
 }
 

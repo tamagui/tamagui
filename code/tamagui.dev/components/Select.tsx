@@ -2,8 +2,7 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
 import {
-  Select as SelectFrame,
-  Stack,
+  Select as TamaguiSelect,
   XStack,
   YStack,
   useProps,
@@ -12,22 +11,16 @@ import {
 
 export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
   return (
-    <SelectFrame.Item
+    <TamaguiSelect.Item
       index={index + 1}
       bc="transparent"
       hoverStyle={{
         backgroundColor: 'rgba(0,0,0,0.1)',
       }}
-      $theme-dark={{
-        backgroundColor: 'rgba(0,0,0,0.2)',
-      }}
-      $theme-active={{
-        backgroundColor: 'red',
-      }}
       {...props}
     >
-      <SelectFrame.ItemText>{children}</SelectFrame.ItemText>
-    </SelectFrame.Item>
+      <TamaguiSelect.ItemText>{children}</TamaguiSelect.ItemText>
+    </TamaguiSelect.Item>
   )
 }
 
@@ -68,8 +61,8 @@ const SelectComponent = (
     size,
   }
   return (
-    <SelectFrame {...selectProps}>
-      <SelectFrame.Trigger
+    <TamaguiSelect {...selectProps}>
+      <TamaguiSelect.Trigger
         iconAfter={ChevronDown}
         {...selectTriggerProps}
         {...(variant === 'pill' && {
@@ -80,16 +73,16 @@ const SelectComponent = (
           color: '$color9',
         })}
       >
-        <SelectFrame.Value
+        <TamaguiSelect.Value
           placeholder={placeholder}
           {...(variant === 'pill' && {
             theme: 'alt1',
           })}
         />
-      </SelectFrame.Trigger>
+      </TamaguiSelect.Trigger>
 
-      <SelectFrame.Content zIndex={1_000_000}>
-        <SelectFrame.ScrollUpButton
+      <TamaguiSelect.Content zIndex={1_000_000}>
+        <TamaguiSelect.ScrollUpButton
           alignItems="center"
           justifyContent="center"
           position="relative"
@@ -106,19 +99,29 @@ const SelectComponent = (
             colors={['$background', '$background0']}
             borderRadius="$4"
           />
-        </SelectFrame.ScrollUpButton>
+        </TamaguiSelect.ScrollUpButton>
 
-        <SelectFrame.Viewport
+        <TamaguiSelect.Viewport
+          animation="quicker"
+          opacity={1}
+          y={0}
+          enterStyle={{
+            opacity: 0,
+            scale: 0.98,
+          }}
+          exitStyle={{
+            opacity: 0,
+            scale: 0.98,
+          }}
           bg="transparent"
           className="blur-medium"
           bw={1}
-          bc="transparent"
         >
           <XStack fullscreen zi={0} bg="$background" o={0.7} />
           {children}
-        </SelectFrame.Viewport>
+        </TamaguiSelect.Viewport>
 
-        <SelectFrame.ScrollDownButton
+        <TamaguiSelect.ScrollDownButton
           alignItems="center"
           justifyContent="center"
           position="relative"
@@ -135,15 +138,15 @@ const SelectComponent = (
             colors={['$background0', '$background']}
             borderRadius="$4"
           />
-        </SelectFrame.ScrollDownButton>
-      </SelectFrame.Content>
-    </SelectFrame>
+        </TamaguiSelect.ScrollDownButton>
+      </TamaguiSelect.Content>
+    </TamaguiSelect>
   )
 }
 
 export const Select = withStaticProperties(SelectComponent, {
   Item: SelectItem,
-  ItemText: SelectFrame.ItemText,
-  Group: SelectFrame.Group,
-  Label: SelectFrame.Label,
+  ItemText: TamaguiSelect.ItemText,
+  Group: TamaguiSelect.Group,
+  Label: TamaguiSelect.Label,
 })

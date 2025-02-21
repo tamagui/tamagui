@@ -1,10 +1,9 @@
 import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { H4, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
-import { docsRoutes } from './docsRoutes'
-
+import { H4, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
+import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
 
 // const fuz = new uFuzzy({})
@@ -20,8 +19,8 @@ const sections = {
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
-  compile: docsRoutes
-    .filter((x) => x.section === 'compile')
+  compiler: docsRoutes
+    .filter((x) => x.section === 'compiler')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
@@ -41,12 +40,12 @@ const allItems = [
   {
     children: (
       <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
-        Compile
+        Compiler
       </H4>
     ),
   },
 
-  ...sections.compile,
+  ...sections.compiler,
 
   {
     children: (
@@ -66,11 +65,13 @@ const allItems = [
 // }
 
 export const DocsMenuContents = React.memo(function DocsMenuContents({
+  section: propsSection,
   inMenu,
-}: { inMenu?: boolean }) {
+}: { inMenu?: boolean; section?: keyof typeof sections }) {
   // const store = useStore(DocsItemsStore)
-  const { currentPath, section } = useDocsMenu()
-  const items = inMenu ? allItems : section ? sections[section] : allItems
+  const { currentPath, section: docsSection } = useDocsMenu()
+  const section = propsSection ?? docsSection
+  const items = section ? sections[section] : allItems
 
   // const [items, setItems] = React.useState(activeItems)
   // const isFiltered = items !== activeItems
@@ -149,8 +150,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         }}
       /> */}
 
-      <Spacer />
-
       {/* 
       {!inMenu && section === 'docs' && (
         <Link href="/docs/intro/1.0.01" index={-1}>
@@ -224,7 +223,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                         >
                           <Separator bc="$color02" o={0.25} my="$2" />
                           <Theme name="gray">
-                            <Paragraph size="$4" fow="600" color="$color10">
+                            <Paragraph ff="$mono" size="$4" fow="600" color="$color10">
                               {section.title}
                             </Paragraph>
                           </Theme>

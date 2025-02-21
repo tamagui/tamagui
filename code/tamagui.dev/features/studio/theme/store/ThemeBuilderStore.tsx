@@ -1,4 +1,8 @@
-import { createPalettes, getThemeSuitePalettes } from '@tamagui/theme-builder'
+import {
+  createPalettes,
+  getThemeSuitePalettes,
+  type TemplateStrategy,
+} from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
@@ -7,7 +11,7 @@ import { getUniqueId } from '~/features/studio/theme/helpers/getUniqueId'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
-import { updatePreviewTheme } from '../previewTheme'
+import { updatePreviewTheme } from '../updatePreviewTheme'
 import { steps } from '~/features/studio/theme/steps/steps'
 import type {
   BuildPalette,
@@ -39,6 +43,7 @@ export class ThemeBuilderStore {
   palettes: Record<string, BuildPalette> = defaultThemeSuiteItem.palettes
   schemes = defaultThemeSuiteItem.schemes
   accentSetting: AccentSetting = 'color'
+  templateStrategy: TemplateStrategy = 'base'
 
   private async sync(state: ThemeBuilderState) {
     if (!this.themeSuiteId) {
@@ -93,6 +98,7 @@ export class ThemeBuilderStore {
     this.palettes = defaultThemeSuiteItem.palettes
     this.schemes = defaultThemeSuiteItem.schemes
     this.accentSetting = 'color'
+    this.templateStrategy = 'base'
     await this.refreshThemeSuite()
   }
 
@@ -161,6 +167,7 @@ export class ThemeBuilderStore {
       name: this.name,
       palettes: this.palettes,
       schemes: this.schemes,
+      templateStrategy: this.templateStrategy,
     }
   }
 
@@ -266,6 +273,7 @@ export class ThemeBuilderStore {
         id: this.themeSuiteUID,
         palettes,
         schemes: this.schemes,
+        templateStrategy: this.templateStrategy,
       })
     ) {
       // this.themeSuiteId = `${Math.round(Math.random() * 100_000)}`

@@ -49,6 +49,9 @@
       "path": "../core/cli"
     },
     {
+      "path": "../core/theme-builder"
+    },
+    {
       "path": "../core/get-token"
     },
     {

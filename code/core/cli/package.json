@@ -2,11 +2,11 @@
   "name": "@tamagui/cli",
   "version": "1.125.10",
   "source": "src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./types/index.d.ts",
   "main": "dist/index.cjs",
   "bin": {
-    "tama": "./run.cjs",
-    "tamagui": "./run.cjs"
+    "tama": "./dist/index.cjs",
+    "tamagui": "./dist/index.cjs"
   },
   "publishConfig": {
     "access": "public"
@@ -17,7 +17,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-types",
+    "build": "tamagui-build",
     "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"

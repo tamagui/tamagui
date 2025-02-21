@@ -77,7 +77,6 @@ export const useThemeState = (
   }
 
   const id = useId()
-
   const subscribe = useCallback(
     (cb: Function) => {
       listenersByParent[parentId] ||= new Set()

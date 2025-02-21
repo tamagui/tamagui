@@ -1,6 +1,5 @@
 {
   "workbench.preferredDarkColorTheme": "Monochrome Dark",
-  "workbench.preferredLightColorTheme": "Min Light",
   "typescript.tsdk": "node_modules/typescript/lib",
   "[json]": {
     "editor.defaultFormatter": "biomejs.biome"

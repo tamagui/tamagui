@@ -38,7 +38,7 @@ export const PageThemeCarousel = () => {
             }}
           >
             <ChevronLeft
-              size={48}
+              size={22}
               color="$color08"
               hoverStyle={{
                 color: '$color12',
@@ -60,7 +60,7 @@ export const PageThemeCarousel = () => {
               tint.setTintIndex((tint.tintIndex + 1) % tint.tints.length)
             }}
           >
-            <ChevronRight size={48} color="$color08" />
+            <ChevronRight size={22} color="$color08" />
           </View>
         </XStack>
       </XStack>

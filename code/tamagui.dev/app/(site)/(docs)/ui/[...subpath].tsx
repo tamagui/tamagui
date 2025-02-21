@@ -10,6 +10,8 @@ import { MDXTabs } from '~/features/docs/MDXTabs'
 import { useIsDocsTinted } from '~/features/docs/docsTint'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
+import { nbspLastWord, SubTitle } from '../../../../components/SubTitle'
+import { HomeH1 } from '../../../../features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('@tamagui/mdx-2')
@@ -93,6 +95,10 @@ export default function DocComponentsPage() {
           href={`/primitives/docs/components/${frontmatter.subpath.replace(frontmatter.version, '')}`}
         />
       )} */}
+
+      <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
+      <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
+
       <MDXProvider frontmatter={frontmatter}>
         <DocsThemeTint>
           <MDXTabs id="type" defaultValue="styled">
