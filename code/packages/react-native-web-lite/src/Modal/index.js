@@ -79,7 +79,7 @@ var Modal = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
       onDismiss()
     }
   }, [modalId, onDismiss])
-  var onShowCallback = React.useCallback(() => {
+  const onShowCallback = React.useCallback(() => {
     addActiveModal(modalId, setIsActive)
 
     if (onShow) {
@@ -114,10 +114,10 @@ var Modal = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
             ref: forwardedRef,
             transparent: transparent,
           },
-          children,
-        ),
-      ),
-    ),
+          children
+        )
+      )
+    )
   )
 })
 export default Modal

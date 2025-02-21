@@ -14,8 +14,8 @@ import { canUseDOM, invariant } from '@tamagui/react-native-web-internals'
 const isPrefixed =
   // eslint-disable-next-line no-prototype-builtins
   canUseDOM &&
-  !document.hasOwnProperty('hidden') &&
-  document.hasOwnProperty('webkitHidden')
+  !Object.hasOwn(document, 'hidden') &&
+  Object.hasOwn(document, 'webkitHidden')
 
 const EVENT_TYPES = ['change', 'memoryWarning']
 const VISIBILITY_CHANGE_EVENT = isPrefixed ? 'webkitvisibilitychange' : 'visibilitychange'
@@ -47,6 +47,7 @@ let hasBoundVisibilityChangeEvent = false
 
 const changeEmitter = new EventEmitter()
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export default class AppState {
   static isAvailable = canUseDOM && document[VISIBILITY_STATE_PROPERTY]
 

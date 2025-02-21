@@ -10,8 +10,11 @@
       "node_modules",
       "dist",
       "build",
+      "out",
       "scripts",
-      "**/*.json"
+      "react-native-web-lite",
+      "**/*.json",
+      "**/*.d.ts"
     ]
   },
   "linter": {
@@ -45,7 +48,8 @@
         "useTemplate": "off",
         "useSelfClosingElements": "off",
         "useImportType": "error",
-        "noUselessElse": "off"
+        "noUselessElse": "off",
+        "useSingleVarDeclarator": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off",
@@ -62,7 +66,8 @@
         "noUselessFragments": "off",
         "useLiteralKeys": "off",
         "useSimplifiedLogicExpression": "off",
-        "useOptionalChain": "off"
+        "useOptionalChain": "off",
+        "noStaticOnlyClass": "off"
       },
       "a11y": {
         "noSvgWithoutTitle": "off",

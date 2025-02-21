@@ -12,12 +12,12 @@ import { StyleSheet, canUseDOM } from '@tamagui/react-native-web-internals'
 
 import View from '../View'
 
-var ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
+const ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
   const { active, children, onRequestClose, transparent, ...rest } = props
 
   React.useEffect(() => {
     if (canUseDOM) {
-      var closeOnEscape = (e) => {
+      const closeOnEscape = (e) => {
         if (active && e.key === 'Escape') {
           e.stopPropagation()
 
@@ -31,7 +31,7 @@ var ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
       return () => document.removeEventListener('keyup', closeOnEscape, false)
     }
   }, [active, onRequestClose])
-  var style = React.useMemo(() => {
+  const style = React.useMemo(() => {
     return [styles.modal, transparent ? styles.modalTransparent : styles.modalOpaque]
   }, [transparent])
   return /*#__PURE__*/ React.createElement(
@@ -52,7 +52,7 @@ var ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
     )
   )
 })
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   modal: {
     position: 'fixed',
     top: 0,

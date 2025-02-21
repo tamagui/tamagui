@@ -12,7 +12,7 @@ const CSS_UNIT_RE = /^[+-]?\d*(?:\.\d+)?(?:[Ee][+-]?\d+)?(%|\w*)/
 const getUnit = (str) => str.match(CSS_UNIT_RE)[1]
 
 const isNumeric = (n) => {
-  return !isNaN(Number.parseFloat(n)) && isFinite(n)
+  return !Number.isNaN(Number.parseFloat(n)) && Number.isFinite(n)
 }
 
 const multiplyStyleLengthValue = (value: string | number, multiple) => {

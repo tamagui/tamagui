@@ -30,4 +30,5 @@ const Icon = (props) => {
 
 Icon.displayName = 'Map'
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export const Map: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))

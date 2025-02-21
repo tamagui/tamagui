@@ -26,6 +26,7 @@ export const Rect = forwardRef((p, ref) => createElement('rect', { ...p, ref }))
 export const Shape = forwardRef((p, ref) => createElement('shape', { ...p, ref }))
 export const Stop = forwardRef((p, ref) => createElement('stop', { ...p, ref }))
 export const Svg = forwardRef((p, ref) => createElement('svg', { ...p, ref }))
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export const Symbol = forwardRef((p, ref) => createElement('symbol', { ...p, ref }))
 export const Text = forwardRef((p, ref) => createElement('text', { ...p, ref }))
 export const TextPath = forwardRef((p, ref) => createElement('clipPath', { ...p, ref }))

@@ -24,7 +24,7 @@ async function run() {
       })
     `)
 
-  console.log(output?.code)
+  console.info(output?.code)
 }
 
 run()

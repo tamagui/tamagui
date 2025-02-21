@@ -161,5 +161,5 @@ setTimeout(() => {
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), iconExports.join('\n'), 'utf-8')
 
   // run biome:
-  require('child_process').execSync(`biome check --write src`)
+  require('node:child_process').execSync(`biome check --write src`)
 }, 1000)

@@ -60,7 +60,6 @@ const ActivityIndicator = React.forwardRef<any, ActivityIndicatorProps>(
         style={[styles.container, style]}
       >
         <View
-          children={svg}
           style={[
             typeof size === 'number'
               ? { height: size, width: size }
@@ -69,7 +68,9 @@ const ActivityIndicator = React.forwardRef<any, ActivityIndicatorProps>(
             !animating && styles.animationPause,
             !animating && hidesWhenStopped && styles.hidesWhenStopped,
           ]}
-        />
+        >
+          {svg}
+        </View>
       </View>
     )
   }

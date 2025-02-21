@@ -12,7 +12,7 @@ import { StyleSheet } from '@tamagui/react-native-web-internals'
 
 import createElement from '../createElement/index'
 
-var ANIMATION_DURATION = 300
+const ANIMATION_DURATION = 300
 
 function getAnimationStyle(animationType, visible) {
   if (animationType === 'slide') {
@@ -27,19 +27,17 @@ function getAnimationStyle(animationType, visible) {
 }
 
 function ModalAnimation(props) {
-  var animationType = props.animationType,
-    children = props.children,
-    onDismiss = props.onDismiss,
-    onShow = props.onShow,
-    visible = props.visible
+  const animationType = props.animationType
+  const children = props.children
+  const onDismiss = props.onDismiss
+  const onShow = props.onShow
+  const visible = props.visible
 
-  var _React$useState = React.useState(false),
-    isRendering = _React$useState[0],
-    setIsRendering = _React$useState[1]
+  const [isRendering, setIsRendering] = React.useState(false)
 
-  var wasVisible = React.useRef(false)
-  var isAnimated = animationType && animationType !== 'none'
-  var animationEndCallback = React.useCallback(
+  const wasVisible = React.useRef(false)
+  const isAnimated = animationType && animationType !== 'none'
+  const animationEndCallback = React.useCallback(
     (e) => {
       if (e && e.currentTarget !== e.target) {
         // If the event was generated for something NOT this element we
@@ -82,7 +80,7 @@ function ModalAnimation(props) {
     : null
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     position: 'fixed',
     top: 0,
@@ -172,8 +170,8 @@ var styles = StyleSheet.create({
     opacity: 0,
   },
 })
-var animatedSlideInStyles = [styles.container, styles.animatedIn, styles.slideIn]
-var animatedSlideOutStyles = [styles.container, styles.animatedOut, styles.slideOut]
-var animatedFadeInStyles = [styles.container, styles.animatedIn, styles.fadeIn]
-var animatedFadeOutStyles = [styles.container, styles.animatedOut, styles.fadeOut]
+const animatedSlideInStyles = [styles.container, styles.animatedIn, styles.slideIn]
+const animatedSlideOutStyles = [styles.container, styles.animatedOut, styles.slideOut]
+const animatedFadeInStyles = [styles.container, styles.animatedIn, styles.fadeIn]
+const animatedFadeOutStyles = [styles.container, styles.animatedOut, styles.fadeOut]
 export default ModalAnimation

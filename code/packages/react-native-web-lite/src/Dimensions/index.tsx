@@ -107,7 +107,7 @@ export default class Dimensions {
 
     return {
       remove: () => {
-        this.removeEventListener(type, handler)
+        Dimensions.removeEventListener(type, handler)
       },
     }
   }

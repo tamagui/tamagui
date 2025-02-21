@@ -116,7 +116,7 @@ export default class AppRegistry {
     return appKey
   }
 
-  static runApplication(appKey: string, appParameters: Record<string, any>): void {
+  static runApplication(appKey: string, appParameters: Record<string, any>) {
     const isDevelopment =
       process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test'
     if (isDevelopment) {

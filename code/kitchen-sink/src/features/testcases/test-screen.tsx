@@ -24,7 +24,7 @@ export function TestScreen() {
     })
     .join('')
 
-  console.log(`Showing test ${name}`)
+  console.info(`Showing test ${name}`)
 
   const testName = `${nameMap[name] || name}`
   const DemoComponent = UseCases[testName] ?? NotFound

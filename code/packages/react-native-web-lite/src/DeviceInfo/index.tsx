@@ -34,6 +34,7 @@ const DeviceInfo = {
     },
   },
 
+  // biome-ignore lint/suspicious/useGetterReturn: <explanation>
   get locale(): string | void {
     if (canUseDOM) {
       if (navigator.languages) {

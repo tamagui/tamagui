@@ -22,7 +22,7 @@ import dangerousStyleValue from './dangerousStyleValue'
 function setValueForStyles(node, styles) {
   const style = node.style
   for (let styleName in styles) {
-    if (!styles.hasOwnProperty(styleName)) {
+    if (!Object.hasOwn(styles, styleName)) {
       continue
     }
     const isCustomProperty = styleName.indexOf('--') === 0

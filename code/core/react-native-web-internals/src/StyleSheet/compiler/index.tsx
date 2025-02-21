@@ -290,7 +290,7 @@ export function inline(
       nextStyle[prop] = value
     }
 
-    if (PROPERTIES_I18N.hasOwnProperty(originalProp)) {
+    if (Object.hasOwn(PROPERTIES_I18N, originalProp)) {
       frozenProps[prop] = true
     }
   }

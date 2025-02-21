@@ -21,7 +21,7 @@ import View from '../View'
  * even if the modal is at the start or end of a document.
  */
 
-var FocusBracket = () => {
+const FocusBracket = () => {
   return createElement('div', {
     accessibilityRole: 'none',
     tabIndex: 0,
@@ -44,8 +44,8 @@ function attemptFocus(element) {
 }
 
 function focusFirstDescendant(element) {
-  for (var i = 0; i < element.childNodes.length; i++) {
-    var child = element.childNodes[i]
+  for (let i = 0; i < element.childNodes.length; i++) {
+    const child = element.childNodes[i]
 
     if (attemptFocus(child) || focusFirstDescendant(child)) {
       return true
@@ -56,8 +56,8 @@ function focusFirstDescendant(element) {
 }
 
 function focusLastDescendant(element) {
-  for (var i = element.childNodes.length - 1; i >= 0; i--) {
-    var child = element.childNodes[i]
+  for (let i = element.childNodes.length - 1; i >= 0; i--) {
+    const child = element.childNodes[i]
 
     if (attemptFocus(child) || focusLastDescendant(child)) {
       return true
@@ -67,17 +67,17 @@ function focusLastDescendant(element) {
   return false
 }
 
-var ModalFocusTrap = (_ref) => {
-  var active = _ref.active,
-    children = _ref.children
-  var trapElementRef = React.useRef()
-  var focusRef = React.useRef({
+const ModalFocusTrap = (_ref) => {
+  const active = _ref.active
+  const children = _ref.children
+  const trapElementRef = React.useRef()
+  const focusRef = React.useRef({
     trapFocusInProgress: false,
     lastFocusedElement: null,
   })
   React.useEffect(() => {
     if (canUseDOM) {
-      var trapFocus = () => {
+      const trapFocus = () => {
         // We should not trap focus if:
         // - The modal hasn't fully initialized with an HTMLElement ref
         // - Focus is already in the process of being trapped (e.g., we're refocusing)
@@ -103,7 +103,7 @@ var ModalFocusTrap = (_ref) => {
             // If the previously selected element is the "first" descendant
             // and we're leaving it - this means that we should be looping
             // around to the other side of the modal.
-            var hasFocused = focusFirstDescendant(trapElementRef.current)
+            let hasFocused = focusFirstDescendant(trapElementRef.current)
 
             if (focusRef.current.lastFocusedElement === document.activeElement) {
               hasFocused = focusLastDescendant(trapElementRef.current)
@@ -129,7 +129,7 @@ var ModalFocusTrap = (_ref) => {
 
   React.useEffect(() => {
     if (canUseDOM) {
-      var lastFocusedElementOutsideTrap = document.activeElement
+      const lastFocusedElementOutsideTrap = document.activeElement
       return () => {
         if (
           lastFocusedElementOutsideTrap &&
@@ -156,7 +156,7 @@ var ModalFocusTrap = (_ref) => {
 }
 
 export default ModalFocusTrap
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   focusBracket: {
     outlineStyle: 'none',
   },

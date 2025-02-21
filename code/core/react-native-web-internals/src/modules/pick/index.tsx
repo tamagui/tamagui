@@ -15,7 +15,7 @@ export default function pick(
 ): Object {
   const nextObj = {}
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.hasOwn(obj, key)) {
       if (list[key] === true) {
         nextObj[key] = obj[key]
       }

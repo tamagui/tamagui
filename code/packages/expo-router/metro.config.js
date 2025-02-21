@@ -25,8 +25,8 @@ module.exports = config
 console.info(`Starting metro`)
 if (process.env.IS_TAMAGUI_DEV && __dirname.includes('tamagui')) {
   console.info('🧑‍💻 using monorepo packages')
-  const fs = require('fs')
-  const path = require('path')
+  const fs = require('node:fs')
+  const path = require('node:path')
   const projectRoot = __dirname
   const monorepoRoot = path.resolve(projectRoot, '../..')
   config.watchFolders = [monorepoRoot]

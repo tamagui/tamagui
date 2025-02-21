@@ -28,4 +28,5 @@ const Icon = (props) => {
 
 Icon.displayName = 'Infinity'
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export const Infinity: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))

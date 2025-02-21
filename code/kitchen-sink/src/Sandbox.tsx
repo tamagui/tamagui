@@ -27,7 +27,7 @@ export const Sandbox = () => {
     </>
   )
 
-  return <SwitchPerformance />
+  // return <SwitchPerformance />
   // const [k, setK] = useState(0)
 
   // console.warn('re rendering sandbox')
