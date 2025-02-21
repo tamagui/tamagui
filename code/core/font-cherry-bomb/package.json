@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-cherry-bomb",
-  "version": "1.125.11",
+  "version": "1.125.12",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

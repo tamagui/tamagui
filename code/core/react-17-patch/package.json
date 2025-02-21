@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-17-patch",
-  "version": "1.125.11",
+  "version": "1.125.12",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
