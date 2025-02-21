@@ -1,4 +1,3 @@
-// debug 123
 import { Configuration, styled, Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
 import {
