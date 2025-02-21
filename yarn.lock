@@ -49,6 +49,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ai-sdk/google@npm:^1.1.16":
+  version: 1.1.16
+  resolution: "@ai-sdk/google@npm:1.1.16"
+  dependencies:
+    "@ai-sdk/provider": "npm:1.0.8"
+    "@ai-sdk/provider-utils": "npm:2.1.9"
+  peerDependencies:
+    zod: ^3.0.0
+  checksum: 10/0bd80134ab5c49c96f17814b15e6baaf8a5fc299e28b53c52c12d899ffc378d2d3afef4f88c65b035b3cb24b243b25ad417a14566584eb95d95f208ad9d19d15
+  languageName: node
+  linkType: hard
+
 "@ai-sdk/groq@npm:^1.1.7":
   version: 1.1.7
   resolution: "@ai-sdk/groq@npm:1.1.7"
@@ -119,6 +131,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ai-sdk/provider-utils@npm:2.1.9":
+  version: 2.1.9
+  resolution: "@ai-sdk/provider-utils@npm:2.1.9"
+  dependencies:
+    "@ai-sdk/provider": "npm:1.0.8"
+    eventsource-parser: "npm:^3.0.0"
+    nanoid: "npm:^3.3.8"
+    secure-json-parse: "npm:^2.7.0"
+  peerDependencies:
+    zod: ^3.0.0
+  peerDependenciesMeta:
+    zod:
+      optional: true
+  checksum: 10/5f875f02ca7134fbfafb554a3e1d189e36a973c66de07a2d73711a14fce92d741d988a9ab28a2b295d82b848497c5f8af65a33d6d9f8508c944e521cffdadffd
+  languageName: node
+  linkType: hard
+
 "@ai-sdk/provider@npm:1.0.6":
   version: 1.0.6
   resolution: "@ai-sdk/provider@npm:1.0.6"
@@ -134,6 +163,15 @@ __metadata:
   dependencies:
     json-schema: "npm:^0.4.0"
   checksum: 10/75b56a82a1d837e40fd5c35fecf0bf74f1b05e2d0f93cc6a57f90defd4d8eb6f903c170e37644f4271c27cac59bb65716369c94c07de4269d54b1d53f50431a4
+  languageName: node
+  linkType: hard
+
+"@ai-sdk/provider@npm:1.0.8":
+  version: 1.0.8
+  resolution: "@ai-sdk/provider@npm:1.0.8"
+  dependencies:
+    json-schema: "npm:^0.4.0"
+  checksum: 10/2fb2621390941a0018ea800927ed3b31a398dd4d54de9693773e6aae3b6a751debcaac3b9624ee5c1cd03b2a962aba372b3d6e8922a627fd171f1c4e1d42d507
   languageName: node
   linkType: hard
 
@@ -6837,6 +6875,7 @@ __metadata:
   dependencies:
     "@ai-sdk/anthropic": "npm:^1.1.6"
     "@ai-sdk/deepseek": "npm:^0.1.8"
+    "@ai-sdk/google": "npm:^1.1.16"
     "@ai-sdk/groq": "npm:^1.1.7"
     "@ai-sdk/openai": "npm:^1.1.9"
     "@ai-sdk/xai": "npm:^1.1.8"

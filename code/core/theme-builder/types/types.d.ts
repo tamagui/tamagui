@@ -1,5 +1,6 @@
 import type { Template } from '@tamagui/create-theme';
-type ThemeSuiteItem = {
+export type TemplateStrategy = 'base' | 'stronger' | 'strongest';
+export type ThemeSuiteItem = {
     id: string;
     name: string;
     createdAt: number;
@@ -9,6 +10,7 @@ type ThemeSuiteItem = {
         dark: boolean;
     };
     palettes: Record<string, BuildPalette>;
+    templateStrategy?: TemplateStrategy;
 };
 export type ThemeSuiteItemData = Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>;
 export type BuildTemplates = Record<string, Template>;
@@ -51,18 +53,10 @@ export type BuildThemeAnchor = {
         dark: number;
     };
 };
-export type BuildPaletteAnchors = BuildThemeAnchor[];
 export type BuildTheme = BuildThemeBase & {
     type: 'theme';
     template: string;
     palette: string;
     accent?: BuildTheme;
 };
-export type ThemeStepProps = {
-    theme: BuildTheme;
-    isAccent?: boolean;
-    vertical?: boolean;
-    onUpdate: (val: Partial<BuildTheme>) => void;
-};
-export {};
 //# sourceMappingURL=types.d.ts.map

@@ -8,6 +8,7 @@ import {
   Paragraph,
   Popover,
   Sheet,
+  Theme,
   XStack,
   YStack,
 } from 'tamagui'
@@ -123,12 +124,10 @@ export const UpgradePopover = (props: PopoverProps) => {
 
         <YStack mah="80vh" p="$3" width={280} ov="hidden" br="$6">
           <Popover.ScrollView>
-            <YStack gap="$3">
-              <H5 pe="none" ff="$mono" size="$5" ta="center">
+            <YStack gap="$2">
+              <H5 py="$2" pe="none" ff="$mono" size="$5" ta="center">
                 Tamagui Pro
               </H5>
-
-              <PromoCards less />
 
               <Paragraph
                 bg="$color3"
@@ -157,10 +156,13 @@ export const UpgradePopover = (props: PopoverProps) => {
                 Pro is how we fund the OSS development of Tamagui.
               </Paragraph>
 
+              <PromoCards less />
+
               {!isProUser && (
-                <ThemeTintAlt offset={-2}>
+                <Theme name="accent">
                   <Button
                     br="$10"
+                    my="$3"
                     fontFamily="$mono"
                     onPress={() => {
                       showAppropriateModal()
@@ -169,7 +171,7 @@ export const UpgradePopover = (props: PopoverProps) => {
                   >
                     More info
                   </Button>
-                </ThemeTintAlt>
+                </Theme>
               )}
             </YStack>
           </Popover.ScrollView>

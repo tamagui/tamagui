@@ -26,7 +26,7 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
-import { lastInserted } from '../../features/studio/theme/previewTheme'
+import { lastInserted } from '../../features/studio/theme/updatePreviewTheme'
 
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
@@ -271,7 +271,7 @@ const ThemeStudioStepButtonsBar = () => {
     <XStack gap="$2">
       {location.hostname === 'localhost' && lastInserted && (
         <>
-          <a href={`one-chat://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
+          <a href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
             <Button size="$3">Chat</Button>
           </a>
           <View flex={1} />

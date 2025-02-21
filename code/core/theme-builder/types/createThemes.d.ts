@@ -1,12 +1,6 @@
 import { defaultTemplates } from './defaultTemplates';
 import { type ThemeBuilder } from './ThemeBuilder';
-import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types';
-export declare function createStudioThemes(props: BuildThemeSuiteProps): {
-    themeBuilder: ThemeBuilder<any>;
-    themes: Record<"dark" | "light" | `dark_${string}` | `light_${string}`, {
-        [x: string]: string;
-    }>;
-};
+import type { BuildPalettes, BuildTemplates } from './types';
 /**
  * TODO
  *

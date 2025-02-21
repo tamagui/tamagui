@@ -11,6 +11,7 @@ import {
   Button,
   Circle,
   debounce,
+  H3,
   isClient,
   Paragraph,
   Popover,
@@ -40,6 +41,7 @@ import { SearchButton } from './SearchButton'
 import { UpgradePopover } from './UpgradePopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
+import { PromoCards, PromoCardTheme } from './PromoCards'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -503,7 +505,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: 1400,
     compiler: 117,
     ui: 1400,
-    theme: 200,
+    theme: 140,
     menu: 390,
   }
 
@@ -559,7 +561,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
     if (props.id === 'theme') {
       return (
         <YStack>
-          <Brush />
+          <PromoCardTheme />
         </YStack>
       )
     }

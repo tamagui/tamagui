@@ -605,8 +605,8 @@ const PurchaseTabContent = () => {
     <YStack gap="$4" pb="$4">
       <YStack gap="$7">
         <BigP>
-          We've put together a few tools that make starting and building a universal app
-          easier and better.
+          We've put together tools that make starting and building a universal app as good
+          as it gets.
         </BigP>
 
         <XStack mx="$-4" fw="wrap" gap="$3" ai="center" justifyContent="center">

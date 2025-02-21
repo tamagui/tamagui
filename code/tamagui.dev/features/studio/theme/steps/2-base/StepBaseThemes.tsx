@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowLeftRight, ArrowRight, ArrowUpDown } from '@tamagui/lucide-icons'
+import type { BuildPalette, BuildThemeAnchor } from '@tamagui/theme-builder'
 import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
@@ -23,7 +24,6 @@ import { type HSLA, ColorPickerContents } from '../../../colors/ColorPicker'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
-import type { BuildPalette, BuildThemeAnchor } from '../../types'
 import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 import { XLabeledItem } from '../../views/XLabeledItem'
 

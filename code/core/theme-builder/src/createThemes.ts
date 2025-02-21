@@ -3,20 +3,7 @@ import { defaultComponentThemes } from './defaultComponentThemes'
 import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
 import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
-import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
-
-// for studio
-// allows more detailed configuration, used by studio
-// eventually we should merge this down into simple and have it handle what we need
-export function createStudioThemes(props: BuildThemeSuiteProps) {
-  const palettes = createPalettes(props.palettes)
-  return createSimpleThemeBuilder({
-    palettes,
-    templates: defaultTemplates,
-    componentThemes: defaultComponentThemes,
-    accentTheme: !!props.palettes.accent,
-  })
-}
+import type { BuildPalettes, BuildTemplates } from './types'
 
 /**
  * TODO

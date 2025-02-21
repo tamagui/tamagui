@@ -39,25 +39,11 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
       </Card>
 
       <Card>
-        <TooltipLabelLarge
-          href="/theme"
-          icon={<Brush />}
-          title="Theme"
-          subtitle="Use our AI designed to generate great theme suites."
-        />
+        <PromoCardTheme />
       </Card>
 
       {!less && (
         <>
-          <Card>
-            <TooltipLabelLarge
-              href="/theme"
-              icon={<Box />}
-              title="Assets"
-              subtitle="Scripts to easily add fonts and icon packs."
-            />
-          </Card>
-
           <Card>
             <TooltipLabelLarge
               href="/theme"
@@ -66,8 +52,28 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
               subtitle="Access to private start.chat community chat room."
             />
           </Card>
+
+          <Card>
+            <TooltipLabelLarge
+              href="/takeout"
+              icon={<Box />}
+              title="Assets"
+              subtitle="Scripts to easily add fonts and icon packs."
+            />
+          </Card>
         </>
       )}
     </>
+  )
+}
+
+export const PromoCardTheme = () => {
+  return (
+    <TooltipLabelLarge
+      href="/theme"
+      icon={<Brush size={20} />}
+      title="Theme"
+      subtitle="Customize and use generative AI to create theme suites."
+    />
   )
 }
