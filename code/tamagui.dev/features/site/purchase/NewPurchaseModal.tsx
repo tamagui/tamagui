@@ -31,6 +31,9 @@ import { paymentModal, StripePaymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
 import { useProducts } from './useProducts'
 import { BigP, P } from './BigP'
+import { ProPoliciesModal } from './PoliciesModal'
+import { ProAgreementModal } from './AgreementModal'
+import { useTakeoutStore } from './useTakeoutStore'
 
 class PurchaseModal {
   show = false
@@ -61,6 +64,7 @@ type Tab = (typeof tabOrder)[number]
 
 const PurchaseModalContents = () => {
   const store = usePurchaseModal()
+  const takeoutStore = useTakeoutStore()
   const [lastTab, setLastTab] = useState<Tab>('purchase')
   const [currentTab, setCurrentTab] = useState<Tab>('purchase')
   const [disableAutoRenew, setDisableAutoRenew] = useState(false)
@@ -193,7 +197,7 @@ const PurchaseModalContents = () => {
     faq: FaqTabContent,
   }
 
-  const currentTabContents = tabContents[currentTab]
+  const CurrentTabContents: () => JSX.Element = tabContents[currentTab]
 
   return (
     <>
@@ -208,12 +212,8 @@ const PurchaseModalContents = () => {
           }
         }}
       >
-        {/* <BentoPoliciesModal />
-        <BentoAgreementModal />
-
-        <TakeoutPoliciesModal />
-        <TakeoutAgreementModal />
-        <TakeoutFaqModal /> */}
+        <ProPoliciesModal />
+        <ProAgreementModal />
 
         <Dialog.Adapt when="sm">
           <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
@@ -300,7 +300,7 @@ const PurchaseModalContents = () => {
                     >
                       <ScrollView>
                         <YStack p="$8" gap="$6">
-                          {currentTabContents()}
+                          <CurrentTabContents />
                         </YStack>
                       </ScrollView>
                     </Tabs.Content>
@@ -373,7 +373,7 @@ const PurchaseModalContents = () => {
                           theme="alt1"
                           cursor="pointer"
                           onPress={() => {
-                            // todo
+                            takeoutStore.showProAgreement = true
                           }}
                           style={{ textDecorationLine: 'underline' }}
                           hoverStyle={{
@@ -388,7 +388,7 @@ const PurchaseModalContents = () => {
                           theme="alt1"
                           cursor="pointer"
                           onPress={() => {
-                            // todo
+                            takeoutStore.showProPolicies = true
                           }}
                           style={{ textDecorationLine: 'underline' }}
                           hoverStyle={{
