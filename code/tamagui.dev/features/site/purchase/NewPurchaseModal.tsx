@@ -192,7 +192,31 @@ const PurchaseModalContents = () => {
   }, [chatSupport, supportTier, disableAutoRenew])
 
   const tabContents = {
-    purchase: PurchaseTabContent,
+    purchase: () => {
+      return (
+        <YStack gap="$4" pb="$4">
+          <YStack gap="$7">
+            <BigP>
+              We've put together tools that make starting and building a universal app as
+              good as it gets.
+            </BigP>
+
+            <XStack mx="$-4" fw="wrap" gap="$3" ai="center" justifyContent="center">
+              <PromoCards disableAutoRenew={disableAutoRenew} />
+            </XStack>
+
+            <YStack gap="$3">
+              <P color="$color10">
+                For a one year term you get access to the private Takeout Github repo,
+                Bento components
+                {disableAutoRenew ? `` : `, and the private community chat room`}. You get
+                lifetime rights to all code and assets, even after subscription expires.
+              </P>
+            </YStack>
+          </YStack>
+        </YStack>
+      )
+    },
     support: () => (
       <SupportTabContent
         chatSupport={chatSupport}
@@ -224,7 +248,7 @@ const PurchaseModalContents = () => {
 
         <Dialog.Adapt when="sm">
           <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-            <Sheet.Frame bg="$color3" padding={0} gap="$4">
+            <Sheet.Frame bg="$color1" padding={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
@@ -607,31 +631,6 @@ const SupportTabContent = ({
   )
 }
 
-const PurchaseTabContent = () => {
-  return (
-    <YStack gap="$4" pb="$4">
-      <YStack gap="$7">
-        <BigP>
-          We've put together tools that make starting and building a universal app as good
-          as it gets.
-        </BigP>
-
-        <XStack mx="$-4" fw="wrap" gap="$3" ai="center" justifyContent="center">
-          <PromoCards />
-        </XStack>
-
-        <YStack gap="$3">
-          <P color="$color10">
-            For a one year term you get access to the private Takeout Github repo, Bento
-            UI, and the private community chat room. You get lifetime rights to all code
-            and assets, even after subscription expires.
-          </P>
-        </YStack>
-      </YStack>
-    </YStack>
-  )
-}
-
 const AnimatedYStack = styled(YStack, {
   flex: 1,
   x: 0,
@@ -685,7 +684,7 @@ function Tab({
         pe="none"
         zi={-1}
         {...(isActive && {
-          bg: '$color3',
+          bg: '$color1',
         })}
         {...(!isActive && {
           bg: '$color1',

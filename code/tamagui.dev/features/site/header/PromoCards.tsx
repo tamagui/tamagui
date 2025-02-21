@@ -13,7 +13,10 @@ const Card = styled(YStack, {
   borderColor: '$color4',
 })
 
-export const PromoCards = ({ less }: { less?: boolean }) => {
+export const PromoCards = ({
+  less,
+  disableAutoRenew,
+}: { less?: boolean; disableAutoRenew?: boolean }) => {
   return (
     <>
       <Card>
@@ -44,12 +47,12 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
 
       {!less && (
         <>
-          <Card>
+          <Card opacity={disableAutoRenew ? 0.1 : 1}>
             <TooltipLabelLarge
               href="/theme"
               icon={null as any}
               title="#takeout"
-              subtitle="Access to private start.chat community chat room."
+              subtitle="Access to private Discord chat room."
             />
           </Card>
 
@@ -73,7 +76,7 @@ export const PromoCardTheme = () => {
       href="/theme"
       icon={<Brush size={20} />}
       title="Theme"
-      subtitle="Customize and use generative AI to create theme suites."
+      subtitle="Generate themes using a custom AI."
     />
   )
 }

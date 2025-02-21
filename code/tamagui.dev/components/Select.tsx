@@ -102,7 +102,7 @@ const SelectComponent = (
         </TamaguiSelect.ScrollUpButton>
 
         <TamaguiSelect.Viewport
-          animation="quicker"
+          // animation="quicker"
           opacity={1}
           y={0}
           enterStyle={{

@@ -20,7 +20,7 @@ export const TooltipLabelLarge = ({
           </YStack>
         </XStack>
 
-        <Paragraph ff="$mono" px="$2" theme="alt1" f={1} size="$3" ls={-0.5}>
+        <Paragraph ff="$mono" px="$2" theme="alt1" f={1} size="$4" ls={-0.5}>
           {subtitle}
         </Paragraph>
       </YStack>
