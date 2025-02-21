@@ -6,6 +6,7 @@ import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
 import { NewPurchaseModal } from '../../features/site/purchase/NewPurchaseModal'
 import { NewAccountModal } from '../../features/site/purchase/NewAccountModal'
+import { useEffect } from 'react'
 
 export default function SiteLayout() {
   const path = usePathname()

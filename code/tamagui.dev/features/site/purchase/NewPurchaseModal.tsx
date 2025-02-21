@@ -82,6 +82,13 @@ const PurchaseModalContents = () => {
   const { data: products } = useProducts()
   const { data: userData } = useUser()
 
+  useEffect(() => {
+    if (window.opener && userData) {
+      window.opener.postMessage({ type: 'login-success' }, window.location.origin)
+      window.close()
+    }
+  }, [])
+
   function changeTab(next: string) {
     if (next === 'purchase' || next === 'support' || next === 'faq') {
       if (currentTab === 'purchase' && next === 'support') {

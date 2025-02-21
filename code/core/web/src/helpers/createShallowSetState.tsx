@@ -11,20 +11,19 @@ export function createShallowSetState<State extends Object>(
   debugIn?: DebugProp,
   callback?: (nextState: Record<string, any>) => void
 ) {
-  const debug = true
   // this must be memoized or it ruins performance in components
   return useCallback(
     (next?: Partial<State>) => {
       const wrap = transition ? startTransition : callImmediate
       wrap(() => {
         setter((prev) => {
-          const out = mergeIfNotShallowEqual(prev, next, onlyAllow, debug)
+          const out = mergeIfNotShallowEqual(prev, next, onlyAllow, debugIn)
           callback?.(out)
           return out
         })
       })
     },
-    [setter, onlyAllow ? onlyAllow.join('') : '', transition, debug, callback]
+    [setter, onlyAllow ? onlyAllow.join('') : '', transition, debugIn, callback]
   )
 }
 

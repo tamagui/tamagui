@@ -207,6 +207,31 @@ export const StripePaymentModal = ({
   const { data: userData, isLoading, refresh } = useUser()
   const supabaseClient = useSupabaseClient()
   const [authInterval, setAuthInterval] = useState<NodeJS.Timeout | null>(null)
+  const [authURL, setAuthURL] = useState('')
+
+  useEffect(() => {
+    if (!supabaseClient) return
+    if (isLoading) return
+    if (!userData?.user) {
+      supabaseClient.auth
+        .signInWithOAuth({
+          provider: 'github',
+          options: {
+            skipBrowserRedirect: true,
+            redirectTo: `${window.location.origin}/api/auth/callback`,
+          },
+        })
+        .then(({ data, error }) => {
+          if (error) {
+            console.error('supabase err:', error)
+            return
+          }
+          if (data.url) {
+            setAuthURL(data.url)
+          }
+        })
+    }
+  }, [supabaseClient, userData?.user])
 
   const handleLogin = async () => {
     if (!supabaseClient) return
@@ -217,23 +242,9 @@ export const StripePaymentModal = ({
     const left = window.screenX + (window.innerWidth - width) / 2
     const top = window.screenY + (window.innerHeight - height) / 2
 
-    // Get the auth URL first
-    const { data, error } = await supabaseClient.auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        skipBrowserRedirect: true,
-        redirectTo: `${window.location.origin}/api/auth/callback`,
-      },
-    })
-
-    if (error) {
-      console.error('Login error:', error)
-      return
-    }
-
     // Open popup with the auth URL
     const popup = window.open(
-      data.url,
+      authURL,
       'Login with GitHub',
       `width=${width},height=${height},left=${left},top=${top}`
     )
@@ -252,7 +263,7 @@ export const StripePaymentModal = ({
         if (session) {
           clearInterval(interval)
           popup.close()
-          await refresh()
+          refresh()
         }
       }, 1000)
 
@@ -326,35 +337,39 @@ export const StripePaymentModal = ({
       },
     }
 
+    const amount = Math.ceil(monthlyTotal * 100)
+
     return (
       <XStack gap="$6">
         <YStack f={1} gap="$4">
           <H3 ff="$mono">Payment details</H3>
           <Separator />
-          <Elements
-            stripe={stripePromise}
-            options={{
-              appearance,
-              mode: 'payment',
-              currency: 'usd',
-              amount: Math.ceil(monthlyTotal * 100),
-              paymentMethodTypes: ['card', 'link'],
-              payment_method_types: ['card', 'link'],
-              paymentMethodCreation: 'manual',
-            }}
-          >
-            <PaymentForm
-              onSuccess={onSuccess}
-              onError={onError}
-              autoRenew={!disableAutoRenew}
-              chatSupport={chatSupport}
-              supportTier={supportTier}
-              selectedPrices={selectedPrices}
-              isProcessing={isProcessing}
-              setIsProcessing={setIsProcessing}
-              userData={userData}
-            />
-          </Elements>
+          {amount > 0 && (
+            <Elements
+              stripe={stripePromise}
+              options={{
+                appearance,
+                mode: 'payment',
+                currency: 'usd',
+                amount,
+                paymentMethodTypes: ['card', 'link'],
+                payment_method_types: ['card', 'link'],
+                paymentMethodCreation: 'manual',
+              }}
+            >
+              <PaymentForm
+                onSuccess={onSuccess}
+                onError={onError}
+                autoRenew={!disableAutoRenew}
+                chatSupport={chatSupport}
+                supportTier={supportTier}
+                selectedPrices={selectedPrices}
+                isProcessing={isProcessing}
+                setIsProcessing={setIsProcessing}
+                userData={userData}
+              />
+            </Elements>
+          )}
         </YStack>
 
         <YStack f={1} gap="$4" backgroundColor="$color2" p="$4" br="$4">
