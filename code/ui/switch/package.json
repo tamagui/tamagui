@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.125.8",
+  "version": "1.125.10",
   "removeSideEffects": true,
   "sideEffects": [
     "*.css"

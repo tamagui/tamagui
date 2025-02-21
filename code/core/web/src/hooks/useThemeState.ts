@@ -26,34 +26,15 @@ export type ThemeState = {
 
 export const ThemeStateContext = createContext<ID>('')
 
-export const keysToId = new WeakMap()
-
 const allListeners = new Map<ID, Function>()
 const listenersByParent: Record<ID, Set<ID>> = {}
-const hasRenderedOnce = new WeakMap<any, boolean>()
-const pendingUpdate = new Map<any, boolean | 'force'>()
+const HasRenderedOnce = new WeakMap<Object, boolean>()
+const HadTheme = new WeakMap<Object, boolean>()
+const PendingUpdate = new Map<any, boolean | 'force'>()
 
 // TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
 const localStates: Map<ID, ThemeState | undefined> = new Map()
-
-if (process.env.NODE_ENV === 'development') {
-  globalThis.getTamaguiThemes = () => {
-    function buildTree(id: ID) {
-      const node = states.get(id)
-      if (!node) return null
-      const children = Array.from(states.values())
-        .filter((child) => child?.parentId === id)
-        .map((child) => buildTree(child!.id))
-        .filter(Boolean)
-      return { ...node, children }
-    }
-
-    if (rootThemeState) {
-      console.info(buildTree(rootThemeState.id))
-    }
-  }
-}
 
 let shouldForce = false
 export const forceUpdateThemes = () => {
@@ -102,7 +83,7 @@ export const useThemeState = (
       listenersByParent[parentId] ||= new Set()
       listenersByParent[parentId].add(id)
       allListeners.set(id, () => {
-        pendingUpdate.set(id, shouldForce ? 'force' : true)
+        PendingUpdate.set(id, shouldForce ? 'force' : true)
         cb()
       })
       return () => {
@@ -110,7 +91,7 @@ export const useThemeState = (
         listenersByParent[parentId].delete(id)
         localStates.delete(id)
         states.delete(id)
-        pendingUpdate.delete(id)
+        PendingUpdate.delete(id)
       }
     },
     [id, parentId]
@@ -124,7 +105,7 @@ export const useThemeState = (
     const needsUpdate =
       isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
         ? true
-        : !hasRenderedOnce.get(keys)
+        : !HasRenderedOnce.get(keys)
           ? true
           : keys?.current?.size
             ? true
@@ -146,10 +127,10 @@ export const useThemeState = (
       id,
       parentId,
       needsUpdate,
-      pendingUpdate.get(id)
+      PendingUpdate.get(id)
     )
 
-    pendingUpdate.delete(id)
+    PendingUpdate.delete(id)
 
     // we always create a new localState for every component
     // that way we can use it to de-opt and avoid renders granularly
@@ -183,11 +164,18 @@ export const useThemeState = (
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
   useIsomorphicLayoutEffect(() => {
-    if (!hasRenderedOnce.get(keys)) {
-      hasRenderedOnce.set(keys, true)
+    if (!HasRenderedOnce.get(keys)) {
+      HasRenderedOnce.set(keys, true)
       return
     }
-    if (!propsKey) return
+    if (!propsKey) {
+      if (HadTheme.get(keys)) {
+        // we're removing the last theme, make sure to notify
+        scheduleUpdate(id)
+      }
+      HadTheme.set(keys, false)
+      return
+    }
     if (
       process.env.NODE_ENV === 'development' &&
       props.debug &&
@@ -196,6 +184,7 @@ export const useThemeState = (
       console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
     }
     scheduleUpdate(id)
+    HadTheme.set(keys, true)
   }, [keys, propsKey])
 
   return state

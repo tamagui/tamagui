@@ -11,7 +11,7 @@ import type {
   VariableValGeneric,
 } from '../types'
 import { doesRootSchemeMatchSystem } from './doesRootSchemeMatchSystem'
-import { keysToId, type ThemeState } from './useThemeState'
+import type { ThemeState } from './useThemeState'
 
 export type ThemeProxied = {
   [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<
@@ -87,12 +87,7 @@ export function getThemeProxied(
     }
     curKeys.current.add(key)
     if (process.env.NODE_ENV === 'development' && curProps.debug) {
-      const realId = keysToId.get(curKeys)
-      console.info(
-        ` 🎨 useTheme(${realId}) tracking new key: ${key}`,
-        curKeys,
-        globalThis['states']?.get(realId + 1)
-      )
+      console.info(` 🎨 useTheme() tracking new key: ${key}`, curKeys)
     }
   }
 

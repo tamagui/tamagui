@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.125.8",
+  "version": "1.125.10",
   "source": "src/index.ts",
   "types": "./src/index.ts",
   "main": "dist/index.cjs",

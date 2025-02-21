@@ -1,5 +1,5 @@
 // debug 123
-import { Configuration, Theme, useThemeWithState } from '@tamagui/web'
+import { Configuration, styled, Theme, useThemeWithState } from '@tamagui/web'
 import { memo, useId, useState } from 'react'
 import {
   AnimatePresence,
@@ -7,9 +7,11 @@ import {
   Circle,
   type CircleProps,
   Dialog,
+  Input,
   Popover,
   Square,
   Text,
+  View,
   XStack,
   YStack,
 } from 'tamagui'
@@ -17,6 +19,27 @@ import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { PopoverDemo } from '@tamagui/demos'
 
 export default function Sandbox() {
+  const [x, setX] = useState(false)
+
+  return (
+    <>
+      <Button onPress={() => setX(!x)}>go</Button>
+
+      <Theme name={x ? 'red' : null}>
+        <Y debug="visualize" />
+      </Theme>
+    </>
+  )
+}
+
+const Y = styled(View, {
+  name: 'Button',
+  bg: '$color5',
+  width: 500,
+  height: 500,
+})
+
+export function MergeStylesTests() {
   const [show, setShow] = useState(false)
 
   return (
