@@ -43,7 +43,6 @@ import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
-import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
@@ -55,13 +54,7 @@ import { useSubscriptionModal } from '../../features/site/purchase/useSubscripti
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
 export default function TakeoutPage() {
-  const { data, isLoading, error } = useProducts()
   const { showAppropriateModal, isProUser } = useSubscriptionModal()
-  const tint = useTint()
-
-  if (error) {
-    console.error('Error loading products:', error)
-  }
 
   return (
     <YStack maw="100%">
@@ -160,10 +153,6 @@ export default function TakeoutPage() {
 
       {/* <Glow /> */}
 
-      {data?.starter && (
-        <PurchaseModal starter={data.starter} bento={data.bento} defaultValue="takeout" />
-      )}
-
       {/* gradient on the end of the page */}
       <ThemeTint>
         <YStack
@@ -219,7 +208,7 @@ export default function TakeoutPage() {
             }}
           >
             <YStack mt={-700} $md={{ mt: 0 }} ml={20} mr={0}>
-              {data?.starter && <StarterCard product={data.starter} />}
+              <StarterCard />
             </YStack>
 
             <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
@@ -977,7 +966,7 @@ const IconFrame = styled(Stack, {
   bg: 'rgba(255, 255, 255, 0.035)',
 })
 
-const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] }) => {
+const StarterCard = memo(() => {
   const [ref, setRef] = useState<any>()
 
   const store = useTakeoutStore()
