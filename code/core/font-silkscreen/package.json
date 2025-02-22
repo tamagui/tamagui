@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-silkscreen",
-  "version": "1.125.12",
+  "version": "1.125.13",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

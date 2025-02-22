@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.17",
-    "@tamagui/config": "^1.125.12",
-    "@tamagui/lucide-icons": "^1.125.12",
-    "@tamagui/toast": "^1.125.12",
+    "@tamagui/config": "^1.125.13",
+    "@tamagui/lucide-icons": "^1.125.13",
+    "@tamagui/toast": "^1.125.13",
     "babel-preset-expo": "^11.0.6",
     "burnt": "^0.12.2",
     "expo": "~51.0.32",
@@ -41,15 +41,15 @@
     "react-native-screens": "~3.34.0",
     "react-native-svg": "15.6.0",
     "react-native-web": "^0.19.0",
-    "tamagui": "^1.125.12"
+    "tamagui": "^1.125.13"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",
     "@expo/metro-config": "~0.18.4",
     "@expo/metro-runtime": "~3.2.1",
-    "@tamagui/babel-plugin": "^1.125.12",
-    "@tamagui/cli": "^1.125.12",
-    "@tamagui/metro-plugin": "^1.125.12",
+    "@tamagui/babel-plugin": "^1.125.13",
+    "@tamagui/cli": "^1.125.13",
+    "@tamagui/metro-plugin": "^1.125.13",
     "@types/react": "~18.2.79",
     "@types/react-native": "^0.73.0",
     "typescript": "^5.5.2"
