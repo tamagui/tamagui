@@ -5,64 +5,57 @@ import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { stripe } from '~/features/stripe/stripe'
 
 export default apiRoute(async (req) => {
-  const { supabase } = await ensureAuth({ req })
+  if (req.method !== 'POST') {
+    return Response.json({ error: 'Method not allowed' }, { status: 405 })
+  }
+
+  const { supabase, user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
 
   const subId = body['subscription_id']
-  if (typeof subId === 'undefined') {
+  if (!subId || typeof subId !== 'string') {
     return Response.json(
-      {
-        error: 'subscription_id is required',
-      },
-      {
-        status: 400,
-      }
+      { error: 'subscription_id is required and must be a string' },
+      { status: 400 }
     )
   }
 
-  if (typeof subId !== 'string') {
-    return Response.json(
-      {
-        error: 'Invalid subscription_id',
-      },
-      {
-        status: 400,
-      }
-    )
-  }
-
-  const { error } = await supabase
+  const { data: subscription, error } = await supabase
     .from('subscriptions')
-    .select('id')
+    .select('id, status')
     .eq('id', subId)
+    .eq('user_id', user.id)
     .single()
 
-  if (error) {
-    console.error(error)
+  if (error || !subscription) {
     return Response.json(
-      { message: 'no subscription found with the provided id that belongs to you' },
-      {
-        status: 404,
-      }
+      { error: 'Subscription not found or unauthorized' },
+      { status: 404 }
     )
   }
 
   try {
-    const data = await stripe.subscriptions.update(subId, {
+    const updatedSubscription = await stripe.subscriptions.update(subId, {
       cancel_at_period_end: true,
     })
-    if (data) {
-      return Response.json({ message: 'The subscription is cancelled.' })
-    }
+
+    await supabase
+      .from('subscriptions')
+      .update({
+        cancel_at_period_end: true,
+        canceled_at: new Date().toISOString(),
+      })
+      .eq('id', subId)
+
+    return Response.json({
+      message: 'Subscription will be canceled at the end of the billing period',
+      subscription: updatedSubscription,
+    })
   } catch (error) {
     if (error instanceof Stripe.errors.StripeError) {
-      return Response.json(
-        { message: error.message },
-        {
-          status: error.statusCode || 500,
-        }
-      )
+      return Response.json({ error: error.message }, { status: error.statusCode || 500 })
     }
-    throw error
+    console.error('Error canceling subscription:', error)
+    return Response.json({ error: 'Failed to cancel subscription' }, { status: 500 })
   }
 })
