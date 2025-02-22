@@ -192,16 +192,17 @@ const PaymentForm = ({
   )
 }
 
-export const StripePaymentModal = ({
-  yearlyTotal: propYearlyTotal,
-  monthlyTotal: propMonthlyTotal,
-  disableAutoRenew: propDisableAutoRenew,
-  chatSupport: propChatSupport,
-  supportTier: propSupportTier,
-  selectedPrices: propSelectedPrices,
-  onSuccess,
-  onError,
-}: StripePaymentModalProps) => {
+export const StripePaymentModal = (props: StripePaymentModalProps) => {
+  const {
+    yearlyTotal: propYearlyTotal,
+    monthlyTotal: propMonthlyTotal,
+    disableAutoRenew: propDisableAutoRenew,
+    chatSupport: propChatSupport,
+    supportTier: propSupportTier,
+    selectedPrices: propSelectedPrices,
+    onSuccess,
+    onError,
+  } = props
   const store = usePaymentModal()
   const [isProcessing, setIsProcessing] = useState(false)
   const { data: userData, isLoading, refresh } = useUser()
@@ -337,7 +338,7 @@ export const StripePaymentModal = ({
       },
     }
 
-    const amount = Math.ceil(monthlyTotal * 100)
+    const amount = Math.ceil(monthlyTotal * 100 + yearlyTotal * 100)
 
     return (
       <XStack gap="$6">
@@ -376,10 +377,14 @@ export const StripePaymentModal = ({
           <H3 fontFamily="$mono">Order summary</H3>
           <Separator />
 
-          {yearlyTotal > 0 && !store.show && (
+          {yearlyTotal > 0 && (
             <XStack jc="space-between">
-              <Paragraph ff="$mono">Monthly subscription</Paragraph>
-              <Paragraph ff="$mono">${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
+              <Paragraph ff="$mono">Pro subscription</Paragraph>
+              <Paragraph textAlign="right" ff="$mono">
+                ${Math.ceil(yearlyTotal / 12)}/month
+                <br />
+                paid yearly
+              </Paragraph>
             </XStack>
           )}
 
@@ -399,12 +404,7 @@ export const StripePaymentModal = ({
           <XStack jc="space-between">
             <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
-              <H3 ff="$mono">${monthlyTotal}/month</H3>
-              {!disableAutoRenew && (
-                <Paragraph ff="$mono" size="$3" o={0.8}>
-                  Billed monthly
-                </Paragraph>
-              )}
+              <H3 ff="$mono">${yearlyTotal}</H3>
             </YStack>
           </XStack>
         </YStack>

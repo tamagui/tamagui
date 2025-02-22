@@ -238,8 +238,8 @@ export const ProPoliciesModal = () => {
 
                 <Paragraph>
                   Tamagui LLC will deliver to you access to Tamagui Pro features including
-                  Theme Builder, advanced components, and priority updates. You also get
-                  access to our Discord community for support and discussions.
+                  Takeout and Bento. If subscribed, you also get access to our Discord
+                  community for support and discussions.
                 </Paragraph>
 
                 <H3>Returns and Refunds</H3>
@@ -253,7 +253,8 @@ export const ProPoliciesModal = () => {
                 <Paragraph>
                   Within the first 48 hours of your purchase, email us at
                   support@tamagui.dev with any issues you have with Pro features not
-                  working as advertised.
+                  working as advertised and we will refund up to 80%. We don't support
+                  Windows for development of native apps.
                 </Paragraph>
 
                 <H3>Cancellation</H3>
