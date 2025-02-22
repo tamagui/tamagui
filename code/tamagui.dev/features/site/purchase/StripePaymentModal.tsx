@@ -379,11 +379,27 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
           {yearlyTotal > 0 && (
             <XStack jc="space-between">
-              <Paragraph ff="$mono">Pro subscription</Paragraph>
+              <Paragraph ff="$mono" lineHeight={24}>
+                {disableAutoRenew ? (
+                  <>
+                    Pro - One year
+                    <br />
+                    One-time payment
+                  </>
+                ) : (
+                  'Pro subscription'
+                )}
+              </Paragraph>
               <Paragraph textAlign="right" ff="$mono">
-                ${Math.ceil(yearlyTotal / 12)}/month
-                <br />
-                paid yearly
+                {disableAutoRenew ? (
+                  `$${Math.ceil(yearlyTotal)}`
+                ) : (
+                  <>
+                    ${Math.ceil(yearlyTotal / 12)}/month
+                    <br />
+                    paid yearly
+                  </>
+                )}
               </Paragraph>
             </XStack>
           )}
