@@ -35,6 +35,7 @@ import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { ComponentSection, BentoStore } from '~/components/ComponentSection'
 import { PageThemeCarousel } from '../../../../features/site/PageThemeCarousel'
+import { useSubscriptionModal } from '../../../../features/site/purchase/useSubscriptionModal'
 
 export default function BentoPage() {
   const { data, isLoading, error } = useProducts()
@@ -185,7 +186,7 @@ const IntermediateCard = ({
 }
 
 const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => {
-  const store = useTakeoutStore()
+  const { showAppropriateModal, isProUser } = useSubscriptionModal()
 
   return (
     <YStack pos="relative" zi={10}>
@@ -289,7 +290,6 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                   <Theme name="green">
                     {/* $199 */}
                     <Button
-                      iconAfter={<ShoppingCart y={-0.5} x={-1} />}
                       className="box-3d all ease-in-out ms100"
                       size="$3"
                       scaleSpace={0.75}
@@ -311,32 +311,11 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                         outlineColor: '$background06',
                       }}
                       onPress={() => {
-                        store.showPurchase = true
+                        showAppropriateModal()
                       }}
                     >
-                      <Button.Text
-                        fontFamily="$silkscreen"
-                        size="$6"
-                        ls={-2}
-                        y={-0.5}
-                        x={-1}
-                      >
-                        <sup
-                          style={{
-                            fontSize: '60%',
-                            display: 'inline-flex',
-                            marginTop: -12,
-                            transform: `translateY(2px)`,
-                            marginRight: 5,
-                          }}
-                        >
-                          $
-                        </sup>
-                        {(mainProduct?.prices.sort(
-                          (a, b) =>
-                            (a.unit_amount || Number.POSITIVE_INFINITY) -
-                            (b.unit_amount || Number.POSITIVE_INFINITY)
-                        )[0].unit_amount || 0) / 100}
+                      <Button.Text fontFamily="$mono" size="$4">
+                        Pro
                       </Button.Text>
                     </Button>
                   </Theme>

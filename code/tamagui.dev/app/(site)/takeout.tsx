@@ -50,12 +50,13 @@ import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
+import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
 export default function TakeoutPage() {
   const { data, isLoading, error } = useProducts()
-  const store = useTakeoutStore()
+  const { showAppropriateModal, isProUser } = useSubscriptionModal()
   const tint = useTint()
 
   if (error) {
@@ -181,11 +182,11 @@ export default function TakeoutPage() {
               <PurchaseButton
                 // icon={ShoppingCart}
                 onPress={() => {
-                  store.showPurchase = true
+                  showAppropriateModal()
                 }}
                 size="$4"
               >
-                Buy
+                {isProUser ? 'Access' : 'Buy'}
               </PurchaseButton>
             </Theme>
           </YStack>
