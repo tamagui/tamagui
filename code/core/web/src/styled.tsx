@@ -113,7 +113,8 @@ export function styled<
     }
   }
 
-  const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
+  const parentStaticConfig = (ComponentIn['staticConfig'] ||
+    ComponentIn?.['type']?.['staticConfig']) as StaticConfig | undefined
 
   const isPlainStyledComponent =
     !!parentStaticConfig &&
