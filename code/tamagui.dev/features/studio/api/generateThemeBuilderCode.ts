@@ -18,18 +18,20 @@ export async function generateThemeBuilderCode({
     return pIn.slice(PALETTE_BACKGROUND_OFFSET, -PALETTE_BACKGROUND_OFFSET)
   }
 
-  const templatesIdentifier = !templateStrategy
-    ? ''
-    : templateStrategy === 'stronger'
-      ? 'defaultTemplatesStronger'
-      : 'defaultTemplatesStrongest'
+  const templatesIdentifier =
+    !templateStrategy || templateStrategy === 'base'
+      ? ''
+      : templateStrategy === 'stronger'
+        ? 'defaultTemplatesStronger'
+        : 'defaultTemplatesStrongest'
+
   const importTemplates = templatesIdentifier ? `, ${templatesIdentifier}` : ''
 
   const templatesProp = templatesIdentifier
     ? `\n  templates: ${templatesIdentifier},\n`
     : ''
   const componentsProp =
-    includeComponentThemes === false
+    includeComponentThemes === true
       ? `\n  componentThemes: defaultComponentThemes,\n`
       : ``
 
