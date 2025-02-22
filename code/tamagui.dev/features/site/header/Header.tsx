@@ -325,24 +325,41 @@ const HeaderMenuButton = () => {
   )
 }
 
+let isOnMenu = false
+const isOnLink = new Set<string>()
+
 export const HeaderLinksPopover = (props: PopoverProps) => {
   const popoverRef = React.useRef<Popover>(null)
   const [active, setActive] = React.useState<ID | ''>('')
 
+  const close = () => {
+    setActive('')
+    popoverRef.current?.close()
+  }
+
   const val = React.useMemo(() => {
     return {
       setActive(id: ID, layout: LayoutRectangle) {
-        React.startTransition(() => {
-          popoverRef.current?.anchorTo(layout)
-          setActive(id)
-        })
+        popoverRef.current?.anchorTo(layout)
+        setActive(id)
       },
-      close: () => {
-        setActive('')
-        popoverRef.current?.close()
-      },
+      close,
     }
   }, [])
+
+  const check = React.useRef<any>()
+
+  const checkForClose = () => {
+    check.current = setInterval(() => {
+      if (!isOnMenu && !isOnLink.size) {
+        close()
+      }
+    }, 500)
+  }
+
+  const cancelCheckForClose = () => {
+    clearInterval(check.current)
+  }
 
   return (
     <Popover
@@ -365,7 +382,9 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
       {...props}
     >
       <SlidingPopoverContext.Provider value={val}>
-        {props.children}
+        <XStack onMouseEnter={cancelCheckForClose} onMouseLeave={checkForClose}>
+          {props.children}
+        </XStack>
         <HeaderLinksPopoverContent active={active} />
       </SlidingPopoverContext.Provider>
 
@@ -449,11 +468,13 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
       <YStack
         onMouseEnter={() => {
           if (layout) {
+            isOnLink.add(id)
             context.setActive(id, layout)
           }
           setHovered(true)
         }}
         onMouseLeave={() => {
+          isOnLink.delete(id)
           setHovered(false)
         }}
         onPress={() => {
@@ -510,6 +531,12 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 
   return (
     <Popover.Content
+      onMouseEnter={() => {
+        isOnMenu = true
+      }}
+      onMouseLeave={() => {
+        isOnMenu = false
+      }}
       enableAnimationForPositionChange
       animation="medium"
       bg="$background08"
