@@ -16,7 +16,7 @@ import type { StripeError, Appearance } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { loadStripe } from '@stripe/stripe-js'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { useUser } from '~/features/user/useUser'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -193,16 +193,19 @@ const PaymentForm = ({
 }
 
 export const StripePaymentModal = ({
-  yearlyTotal: propYearlyTotal,
-  monthlyTotal: propMonthlyTotal,
-  disableAutoRenew: propDisableAutoRenew,
-  chatSupport: propChatSupport,
-  supportTier: propSupportTier,
-  selectedPrices: propSelectedPrices,
+  yearlyTotal: propYearlyTotal = 0,
+  monthlyTotal: propMonthlyTotal = 0,
+  disableAutoRenew: propDisableAutoRenew = false,
+  chatSupport: propChatSupport = false,
+  supportTier: propSupportTier = 0,
+  selectedPrices: propSelectedPrices = { proPriceId: '', supportPriceIds: [] },
   onSuccess,
   onError,
 }: StripePaymentModalProps) => {
   const store = usePaymentModal()
+
+  console.log('store', store.yearlyTotal)
+
   const [isProcessing, setIsProcessing] = useState(false)
   const { data: userData, isLoading, refresh } = useUser()
   const supabaseClient = useSupabaseClient()
@@ -273,14 +276,32 @@ export const StripePaymentModal = ({
   const themeName = useThemeName()
 
   // Use store values if available, otherwise use props
-  const yearlyTotal = store.yearlyTotal || propYearlyTotal
-  const monthlyTotal = store.monthlyTotal || propMonthlyTotal
-  const disableAutoRenew = store.disableAutoRenew || propDisableAutoRenew
-  const chatSupport = store.chatSupport || propChatSupport
-  const supportTier = store.supportTier || propSupportTier
-  const selectedPrices = store.selectedPrices.proPriceId
-    ? store.selectedPrices
-    : propSelectedPrices
+  const yearlyTotal = store.yearlyTotal
+  const monthlyTotal = store.monthlyTotal
+  const disableAutoRenew = store.disableAutoRenew
+  const chatSupport = store.chatSupport
+  const supportTier = store.supportTier
+  const selectedPrices = store.selectedPrices
+
+  // Calculate total amount in cents
+  const totalAmountPerMonth = monthlyTotal + (disableAutoRenew ? 0 : yearlyTotal / 12)
+
+  // Add safety checks
+  useLayoutEffect(() => {
+    if (store.show) {
+      if (totalAmountPerMonth <= 0) {
+        console.warn('StripePaymentModal opened with zero amount')
+        store.show = false
+        return
+      }
+
+      if (!selectedPrices.proPriceId && selectedPrices.supportPriceIds.length === 0) {
+        console.warn('StripePaymentModal opened without any valid price IDs')
+        store.show = false
+        return
+      }
+    }
+  }, [totalAmountPerMonth, selectedPrices, store.show])
 
   const renderContent = () => {
     if (isLoading) {
@@ -337,7 +358,7 @@ export const StripePaymentModal = ({
               appearance,
               mode: 'payment',
               currency: 'usd',
-              amount: Math.ceil(monthlyTotal * 100),
+              amount: Math.max(Math.ceil(totalAmountPerMonth * 100), 100),
               paymentMethodTypes: ['card', 'link'],
               payment_method_types: ['card', 'link'],
               paymentMethodCreation: 'manual',
@@ -361,10 +382,12 @@ export const StripePaymentModal = ({
           <H3 fontFamily="$mono">Order summary</H3>
           <Separator />
 
-          {yearlyTotal > 0 && !store.show && (
+          {yearlyTotal > 0 && (
             <XStack jc="space-between">
-              <Paragraph ff="$mono">Monthly subscription</Paragraph>
-              <Paragraph ff="$mono">${Math.ceil(yearlyTotal / 12)}/month</Paragraph>
+              <Paragraph ff="$mono">
+                Pro Plan {disableAutoRenew ? '(one-time)' : '(yearly)'}
+              </Paragraph>
+              <Paragraph ff="$mono">${yearlyTotal}/year</Paragraph>
             </XStack>
           )}
 
@@ -384,11 +407,11 @@ export const StripePaymentModal = ({
           <XStack jc="space-between">
             <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
-              <H3 ff="$mono">${monthlyTotal}/month</H3>
-              {!disableAutoRenew && (
-                <Paragraph ff="$mono" size="$3" o={0.8}>
-                  Billed monthly
-                </Paragraph>
+              {monthlyTotal >= 0 && <H3 ff="$mono">${monthlyTotal}/month</H3>}
+              {yearlyTotal > 0 && (
+                <H3 ff="$mono" o={0.8}>
+                  + ${yearlyTotal} {disableAutoRenew ? 'once' : '/year'}
+                </H3>
               )}
             </YStack>
           </XStack>

@@ -33,7 +33,6 @@ import type {
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { Link } from 'one'
-import { StripePaymentModal } from './StripePaymentModal'
 import type { UserContextType } from '~/features/auth/types'
 
 class AccountModal {

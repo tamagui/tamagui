@@ -138,7 +138,13 @@ const PurchaseModalContents = () => {
       }
     }
 
-    setSelectedPrices(selectedPrices)
+    // Update payment modal store directly instead of using props
+    paymentModal.yearlyTotal = yearlyTotal
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = disableAutoRenew
+    paymentModal.chatSupport = chatSupport
+    paymentModal.supportTier = Number(supportTier)
+    paymentModal.selectedPrices = selectedPrices
     paymentModal.show = true
   }
 
