@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.125.13",
+  "version": "1.125.14",
   "sideEffects": false,
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",

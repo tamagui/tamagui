@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/start-transition",
-  "version": "1.125.13",
+  "version": "1.125.14",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
