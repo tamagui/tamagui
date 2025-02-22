@@ -443,12 +443,8 @@ export interface SliderThumbExtraProps {
 
 export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {}
 
-// since it doesn't take children usually we can memoize
-const SliderThumb = React.memo(
-  SliderThumbFrame.styleable<SliderThumbExtraProps>(function SliderThumb(
-    props: ScopedProps<SliderThumbProps>,
-    forwardedRef
-  ) {
+const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
+  function SliderThumb(props: ScopedProps<SliderThumbProps>, forwardedRef) {
     const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(THUMB_NAME, __scopeSlider)
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
@@ -535,7 +531,12 @@ const SliderThumb = React.memo(
         })}
       />
     )
-  })
+  },
+  {
+    staticConfig: {
+      memo: true,
+    },
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
