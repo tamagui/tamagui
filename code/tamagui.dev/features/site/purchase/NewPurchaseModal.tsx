@@ -500,7 +500,7 @@ const FaqTabContent = () => {
         great looking themes based on your input. It's quite fun and generates some great
         themes.
       </P>
-
+      {/* 
       <Question>What is Chat AI?</Question>
 
       <P>
@@ -514,7 +514,7 @@ const FaqTabContent = () => {
         We've given the chatbot a huge amount of context on Tamagui, Bento, Takeout, React
         Native, and the ecosystem of common libraries. It has access to our entire
         Discord, docs, and many examples of configurations and demos.
-      </P>
+      </P> */}
 
       <Question>What support do I get in the base plan?</Question>
 
