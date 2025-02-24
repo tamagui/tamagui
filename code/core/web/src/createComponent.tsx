@@ -632,8 +632,10 @@ export function createComponent<
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
+          const layout = e.nativeEvent.layout
+          stateRef.current.group!.layout = layout
           stateRef.current.group!.emit(groupName, {
-            layout: e.nativeEvent.layout,
+            layout,
           })
 
           // force re-render if measure strategy is hide
@@ -746,6 +748,23 @@ export function createComponent<
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
+
+    useIsomorphicLayoutEffect(() => {
+      if (!groupName) return
+      curStateRef.group!.emit(groupName, {
+        pseudo: state,
+        layout: curStateRef.group?.layout,
+      })
+      const groupContextState = componentContext?.groups
+      if (groupContextState) {
+        // and mutate the current since its concurrent safe (children throw it in useState on mount)
+        const next = {
+          ...groupContextState[groupName],
+          ...state,
+        }
+        groupContextState[groupName] = next
+      }
+    }, [groupName, state])
 
     // if its a group its gotta listen for pseudos to emit them to children
 
@@ -1042,7 +1061,7 @@ export function createComponent<
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
-    if (groupName || propsIn.focusWithinStyle) {
+    if ('group' in props || propsIn.focusWithinStyle) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
