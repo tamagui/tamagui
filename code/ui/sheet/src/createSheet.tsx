@@ -149,22 +149,22 @@ export function createSheet<
 
         const sheetContents = useMemo(() => {
           return (
-            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
-              {/* @ts-expect-error */}
-              <Frame
-                ref={composedContentRef}
-                flex={hasFit ? 0 : 1}
-                height={hasFit ? undefined : frameSize}
-                pointerEvents={open ? 'auto' : 'none'}
-                {...props}
-              >
+            // @ts-expect-error
+            <Frame
+              ref={composedContentRef}
+              flex={hasFit ? 0 : 1}
+              height={hasFit ? undefined : frameSize}
+              pointerEvents={open ? 'auto' : 'none'}
+              {...props}
+            >
+              <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
                 {children}
+              </StackZIndexContext>
 
-                {adjustPaddingForOffscreenContent && (
-                  <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-                )}
-              </Frame>
-            </StackZIndexContext>
+              {adjustPaddingForOffscreenContent && (
+                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+              )}
+            </Frame>
           )
         }, [
           open,
