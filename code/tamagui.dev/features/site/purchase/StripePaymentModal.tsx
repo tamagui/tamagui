@@ -24,8 +24,6 @@ import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 
 const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
-console.log('wtf', process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-
 if (!key) {
   console.warn(`No stripe key!`)
 }
