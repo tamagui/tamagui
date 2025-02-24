@@ -1,25 +1,25 @@
-import {
-  Dialog,
-  XStack,
-  YStack,
-  Paragraph,
-  Separator,
-  H3,
-  Button,
-  Theme,
-  Spinner,
-  useTheme,
-  useThemeName,
-} from 'tamagui'
-import { PaymentElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js'
-import type { StripeError, Appearance } from '@stripe/stripe-js'
+import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import type { Appearance, StripeError } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { loadStripe } from '@stripe/stripe-js'
 import { useEffect, useState } from 'react'
-import { useUser } from '~/features/user/useUser'
+import {
+  Button,
+  Dialog,
+  H3,
+  Paragraph,
+  Separator,
+  Spinner,
+  Theme,
+  useTheme,
+  useThemeName,
+  XStack,
+  YStack,
+} from 'tamagui'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
+import { useUser } from '~/features/user/useUser'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 
 const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY

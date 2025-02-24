@@ -95,9 +95,11 @@ function SignIn() {
         redirectTo,
       },
     })
+
     if (error) {
       setMessage({ type: 'error', content: error.message })
     }
+
     setLoading(false)
   }
 
