@@ -1,6 +1,6 @@
-import { mergeIfNotShallowEqual } from './createShallowSetState'
 import { getMediaState } from '../hooks/useMedia'
-import type { TamaguiComponentState, ComponentContextI, GroupState } from '../types'
+import type { ComponentContextI, GroupState, TamaguiComponentState } from '../types'
+import { mergeIfNotShallowEqual } from './createShallowSetState'
 
 export const subscribeToContextGroup = ({
   setStateShallow,
@@ -17,25 +17,25 @@ export const subscribeToContextGroup = ({
 }) => {
   // parent group pseudo listening
   if (pseudoGroups || mediaGroups) {
-    const current = {
-      pseudo: {},
-      media: {},
-    } satisfies GroupState
-
     if (process.env.NODE_ENV === 'development' && !componentContext.groups) {
       console.debug(`No context group found`)
     }
 
     return componentContext.groups?.subscribe?.((name, { layout, pseudo }) => {
+      const current: GroupState = state.group?.[name] || {
+        pseudo: {},
+        media: {},
+      }
+
       if (pseudo && pseudoGroups?.has(String(name))) {
         // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
-        Object.assign(current.pseudo, pseudo)
+        Object.assign(current.pseudo!, pseudo)
         persist()
       } else if (layout && mediaGroups) {
         const mediaState = getMediaState(mediaGroups, layout)
         const next = mergeIfNotShallowEqual(current.media, mediaState)
         if (next !== current.media) {
-          Object.assign(current.media, next)
+          Object.assign(current.media!, next)
           persist()
         }
       }
