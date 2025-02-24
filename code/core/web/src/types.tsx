@@ -2529,6 +2529,7 @@ export type TamaguiComponentStateRef = {
   unPress?: Function
   group?: {
     listeners: Set<GroupStateListener>
+    layout?: LayoutValue
     emit: GroupStateListener
     subscribe: (cb: GroupStateListener) => () => void
   }

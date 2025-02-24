@@ -895,6 +895,7 @@ export const getSplitStyles: StyleSplitter = (
 
             // $group-x
             const groupContext = context?.groups.state[groupName]
+
             if (!groupContext) {
               if (process.env.NODE_ENV === 'development' && debug) {
                 log(`No parent with group prop, skipping styles: ${groupName}`)
@@ -911,10 +912,12 @@ export const getSplitStyles: StyleSplitter = (
               mediaGroups.add(groupMediaKey)
               const mediaState = componentGroupState?.media
               let isActive = mediaState?.[groupMediaKey]
+
               // use parent styles if width and height hardcoded we can do an inline media match and avoid double render
               if (!mediaState && groupContext.layout) {
                 isActive = mediaKeyMatch(groupMediaKey, groupContext.layout)
               }
+
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 log(` 🏘️ GROUP media ${groupMediaKey} active? ${isActive}`)
               }
@@ -937,8 +940,10 @@ export const getSplitStyles: StyleSplitter = (
                 // fallback to context initially
                 context.groups.state[groupName]
               ).pseudo
+
               const isActive = componentGroupPseudoState?.[groupPseudoKey]
               const priority = pseudoPriorities[groupPseudoKey]
+
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 log(
                   ` 🏘️ GROUP pseudo ${groupMediaKey} active? ${isActive}, priority ${priority}`

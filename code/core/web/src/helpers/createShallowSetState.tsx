@@ -8,8 +8,7 @@ export function createShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>,
   onlyAllow?: string[],
   transition?: boolean,
-  debugIn?: DebugProp,
-  callback?: (nextState: Record<string, any>) => void
+  debugIn?: DebugProp
 ) {
   // this must be memoized or it ruins performance in components
   return useCallback(
@@ -17,13 +16,11 @@ export function createShallowSetState<State extends Object>(
       const wrap = transition ? startTransition : callImmediate
       wrap(() => {
         setter((prev) => {
-          const out = mergeIfNotShallowEqual(prev, next, onlyAllow, debugIn)
-          callback?.(out)
-          return out
+          return mergeIfNotShallowEqual(prev, next, onlyAllow, debugIn)
         })
       })
     },
-    [setter, onlyAllow ? onlyAllow.join('') : '', transition, debugIn, callback]
+    [setter, onlyAllow ? onlyAllow.join('') : '', transition, debugIn]
   )
 }
 

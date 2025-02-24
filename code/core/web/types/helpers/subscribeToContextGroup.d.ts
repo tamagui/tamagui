@@ -1,4 +1,4 @@
-import type { TamaguiComponentState, ComponentContextI } from '../types';
+import type { ComponentContextI, TamaguiComponentState } from '../types';
 export declare const subscribeToContextGroup: ({ setStateShallow, pseudoGroups, mediaGroups, componentContext, state, }: {
     setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void;
     pseudoGroups?: Set<string>;

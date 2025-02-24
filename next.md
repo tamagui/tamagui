@@ -1,3 +1,9 @@
+- make group props require the prop key to be stable like animations
+  - saves 2 hooks in every component
+  - in dev mode add a extra component around every component
+    - make it so it automatically handles animation/group changes without breaking
+    - but make it error in the console
+
 bug:
 
 As an example, we have a Button that has a variant, default.

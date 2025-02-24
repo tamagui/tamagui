@@ -23,7 +23,7 @@ import type {
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
-  { animationDriver, groups }: ComponentContextI,
+  { animationDriver }: ComponentContextI,
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
@@ -134,34 +134,12 @@ export const useComponentState = (
   }
 
   const groupName = props.group as any as string
-  const groupContextState = groups?.state
-
-  const setStateWrapper = useMemo(():
-    | undefined
-    | ((nextState: Record<string, any>) => void) => {
-    if (!groupContextState) return
-    if (groupName) {
-      // when we set state we also set our group state and emit an event for children listening:
-      return (state) => {
-        curStateRef.group!.emit(groupName, {
-          pseudo: state,
-        })
-        // and mutate the current since its concurrent safe (children throw it in useState on mount)
-        const next = {
-          ...groupContextState[groupName],
-          ...state,
-        }
-        groupContextState[groupName] = next
-      }
-    }
-  }, [groupContextState, curStateRef, groupName])
 
   let setStateShallow = createShallowSetState(
     setState,
     disabled ? ['disabled'] : undefined,
     false,
-    props.debug,
-    setStateWrapper
+    props.debug
   )
 
   // set enter/exit variants onto our new props object
