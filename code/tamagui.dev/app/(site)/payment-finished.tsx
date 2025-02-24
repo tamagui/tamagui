@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
-import { Spinner, YStack } from 'tamagui'
 import { useRouter } from 'one'
+import { useEffect } from 'react'
+import { H1, H4, Paragraph, YStack } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
-import { UserGuard } from '~/features/user/useUser'
 import { accountModal } from '~/features/site/purchase/NewAccountModal'
+import { ContainerLarge } from '../../components/Containers'
 
 export default function PaymentFinishedPage() {
   const router = useRouter()
@@ -22,11 +22,23 @@ export default function PaymentFinishedPage() {
     <>
       <HeadInfo title="Account" />
 
-      <UserGuard>
-        <YStack ai="center" flex={1} jc="center">
-          <Spinner size="large" />
+      <ContainerLarge>
+        <YStack gap="$2">
+          <H1 ff="$mono">Payment complete! 🎉</H1>
+
+          <H4 ff="$mono">We appreciate your support</H4>
+
+          <Paragraph>
+            Your account and all assets are always available to access and manage via the
+            account modal.
+          </Paragraph>
+
+          <Paragraph>
+            We're checking for the Stripe webhook, once complete your Account modal should
+            open and you can access your assets.
+          </Paragraph>
         </YStack>
-      </UserGuard>
+      </ContainerLarge>
     </>
   )
 }
