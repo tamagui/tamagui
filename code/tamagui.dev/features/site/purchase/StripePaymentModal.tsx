@@ -22,10 +22,7 @@ import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||
-    'pk_test_51MlzkhAbFJBp9fF3vTNUO7QGC7hapWqnrcISDb5SPJa5I9VWVLIN2vamVCOsO4kkbHFm9mteyCS1qZjpHjcshRb100npI0m0cK'
-)
+const stripePromise = loadStripe(process.env.VITE_STRIPE_SECRET_KEY || '')
 
 class PaymentModal {
   show = false
