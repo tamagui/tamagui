@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-direction",
-  "version": "1.125.15",
+  "version": "1.125.16",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

@@ -17,7 +17,6 @@ const exec = promisify(proc.exec)
 export const spawn = proc.spawn
 
 // for failed publishes that need to re-run
-const confirmFinalPublish = process.argv.includes('--confirm-final-publish')
 const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
 const shouldFinish = process.argv.includes('--finish')
