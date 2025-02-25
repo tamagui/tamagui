@@ -1,4 +1,10 @@
-import { Configuration, styled, Theme, useThemeWithState } from '@tamagui/web'
+import {
+  Configuration,
+  createStyledContext,
+  styled,
+  Theme,
+  useThemeWithState,
+} from '@tamagui/web'
 import { memo, useId, useState } from 'react'
 import {
   AnimatePresence,
@@ -17,18 +23,40 @@ import {
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { PopoverDemo } from '@tamagui/demos'
 
+const context = createStyledContext({
+  customProp: 'ok',
+})
+
+const StyledText = styled(Text, {
+  context,
+
+  variants: {
+    customProp: {
+      ok: {
+        background: 'red',
+      },
+    },
+  } as const,
+})
+
 export default function Sandbox() {
-  const [x, setX] = useState(false)
-
   return (
-    <>
-      <Button onPress={() => setX(!x)}>go</Button>
-
-      <Theme name={x ? 'red' : null}>
-        <Y debug="visualize" />
-      </Theme>
-    </>
+    <StyledText debug="verbose" customProp="ok">
+      hello world
+    </StyledText>
   )
+
+  // const [x, setX] = useState(false)
+
+  // return (
+  //   <>
+  //     <Button onPress={() => setX(!x)}>go</Button>
+
+  //     <Theme name={x ? 'red' : null}>
+  //       <Y debug="visualize" />
+  //     </Theme>
+  //   </>
+  // )
 }
 
 const Y = styled(View, {
