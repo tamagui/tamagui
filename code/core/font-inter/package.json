@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-inter",
-  "version": "1.125.16",
+  "version": "1.125.17",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

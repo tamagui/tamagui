@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-headless",
-  "version": "1.125.16",
+  "version": "1.125.17",
   "removeSideEffects": "true",
   "sideEffects": [
     "*.css"
