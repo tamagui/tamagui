@@ -317,6 +317,19 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     const left = window.screenX + (window.innerWidth - width) / 2
     const top = window.screenY + (window.innerHeight - height) / 2
 
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        skipBrowserRedirect: true,
+        redirectTo: `${window.location.origin}/api/auth/callback`,
+      },
+    })
+
+    if (error) {
+      console.error('Login error:', error)
+      return
+    }
+
     // Open popup with the auth URL
     const popup = window.open(
       authURL,
@@ -340,7 +353,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           popup.close()
           refresh()
         }
-      }, 1000)
+      }, 500)
 
       setAuthInterval(interval)
     }
@@ -377,25 +390,25 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       )
     }
 
-    if (!userData?.user) {
-      return (
-        <YStack gap="$4" ai="center" p="$4">
-          <H3>Sign in to continue</H3>
-          <Paragraph ta="center">
-            Please sign in with GitHub to continue your purchase.
-          </Paragraph>
-          <Button
-            size="$4"
-            theme="accent"
-            onPress={handleLogin}
-            icon={GithubIcon}
-            disabled={!supabaseClient}
-          >
-            Continue with GitHub
-          </Button>
-        </YStack>
-      )
-    }
+    // if (!userData?.user) {
+    //   return (
+    //     <YStack gap="$4" ai="center" p="$4">
+    //       <H3>Sign in to continue</H3>
+    //       <Paragraph ta="center">
+    //         Please sign in with GitHub to continue your purchase.
+    //       </Paragraph>
+    //       <Button
+    //         size="$4"
+    //         theme="accent"
+    //         onPress={handleLogin}
+    //         icon={GithubIcon}
+    //         disabled={!supabaseClient}
+    //       >
+    //         Continue with GitHub
+    //       </Button>
+    //     </YStack>
+    //   )
+    // }
 
     const appearance: Appearance = {
       theme: themeName.startsWith('dark') ? 'night' : 'stripe',
