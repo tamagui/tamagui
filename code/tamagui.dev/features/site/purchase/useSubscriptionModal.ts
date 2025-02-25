@@ -9,10 +9,7 @@ export const useSubscriptionModal = () => {
   const isProUser = useMemo(() => {
     return (
       userData?.subscriptions?.some(
-        (sub) =>
-          sub.status === 'active' ||
-          sub.status === 'trialing' ||
-          sub.status === 'incomplete'
+        (sub) => sub.status === 'active' || sub.status === 'trialing'
       ) &&
       userData?.subscriptions?.some((sub) =>
         sub.subscription_items?.some(

@@ -89,7 +89,9 @@ export default apiRoute(async (req) => {
         cancel_at_period_end: disableAutoRenew || false,
       })
     }
-
+    /**
+     * On the client side, if we don’t explicitly confirm the PaymentIntent using clientSecret, the subscription will remain incomplete.
+     */
     return Response.json({
       subscriptionId: subscription.id,
       clientSecret: (subscription.latest_invoice as any).payment_intent?.client_secret,

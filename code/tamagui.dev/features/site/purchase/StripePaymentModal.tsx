@@ -185,12 +185,25 @@ const PaymentForm = ({
           }),
         })
       }
-
       const data = await response.json()
       if (!response.ok) {
         const error = new Error(JSON.stringify(data))
         setError(error)
         onError(error)
+        return
+      }
+
+      const result = await stripe.confirmPayment({
+        elements,
+        redirect: 'if_required',
+        confirmParams: {
+          payment_method: paymentMethod.id,
+        },
+        clientSecret: data.clientSecret,
+      })
+      if (result.error) {
+        setError(result.error)
+        onError(result.error)
         return
       }
 
