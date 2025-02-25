@@ -63,6 +63,8 @@
     "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink start:web",
     "kitchen-sink": "yarn profile react-18 && yarn workspace @tamagui/kitchen-sink start",
+    "bento": "yarn profile react-18 && yarn workspace @tamagui/bento start",
+    "bento:ios": "yarn workspace @tamagui/bento ios",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
@@ -147,5 +149,9 @@
     "typescript": "^5.7.2",
     "ultra-runner": "^3.10.5",
     "zx": "^7.2.3"
+  },
+  "resolutions": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   }
 }
