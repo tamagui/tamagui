@@ -178,13 +178,14 @@ const PaymentForm = ({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            subscriptionId: userData.subscriptions[0].id, // Get current subscription ID
+            subscriptionId: userData.subscriptions[0].id,
             chatSupport,
             supportTier,
             disableAutoRenew: !autoRenew,
           }),
         })
       }
+
       const data = await response.json()
       if (!response.ok) {
         const error = new Error(JSON.stringify(data))
@@ -201,7 +202,19 @@ const PaymentForm = ({
         },
         clientSecret: data.clientSecret,
       })
+
       if (result.error) {
+        // Payment failed, cancel the subscription
+        await fetch('/api/handle-failed-payment-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            subscriptionId: data.subscriptionId,
+          }),
+        })
+
         setError(result.error)
         onError(result.error)
         return
