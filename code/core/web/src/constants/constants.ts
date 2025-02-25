@@ -11,9 +11,9 @@ export const webViewFlexCompatStyles: StackStyle = {
   alignItems: 'stretch',
   flexDirection: 'column',
   flexBasis: 'auto',
-  position: process.env.TAMAGUI_POSITION_STATIC === '1' ? 'static' : 'relative',
   // @ts-expect-error
   boxSizing: 'border-box',
+  position: process.env.TAMAGUI_POSITION_STATIC === '1' ? 'static' : 'relative',
   minHeight: 0,
   minWidth: 0,
   flexShrink: 0,

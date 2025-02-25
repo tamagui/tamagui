@@ -207,6 +207,7 @@ async function run() {
       console.info('run checks')
       if (!skipTest) {
         await spawnify(`yarn lint`)
+        await spawnify(`chmod ug+x ./node_modules/.bin/tamagui`)
         await spawnify(`yarn check`)
         await spawnify(`yarn typecheck`)
         await spawnify(`yarn test`)
