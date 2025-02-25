@@ -3,7 +3,7 @@ import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -20,7 +20,41 @@ import {
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
+import { z } from 'zod'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
+
+const stripeErrorSchema = z.object({
+  code: z.string(),
+  decline_code: z.string().optional(),
+  doc_url: z.string(),
+  message: z.string(),
+  param: z.string(),
+  request_log_url: z.string().optional(),
+  type: z.string(),
+})
+
+type StripeErrorResponse = z.infer<typeof stripeErrorSchema>
+
+const ErrorMessage = ({ error }: { error: Error | StripeError }) => {
+  const errorMessage = useMemo(() => {
+    if (typeof error === 'string') {
+      return error
+    }
+    const parsed = stripeErrorSchema.safeParse(error)
+    if (parsed.success) {
+      return parsed.data.message
+    }
+    return 'An error occurred during payment processing'
+  }, [error])
+
+  return (
+    <YStack mt="$2">
+      <Paragraph color="$red10" size="$3">
+        {errorMessage}
+      </Paragraph>
+    </YStack>
+  )
+}
 
 const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
@@ -87,9 +121,11 @@ const PaymentForm = ({
   const stripe = useStripe()
   const elements = useElements()
   const [paymentMethod, setPaymentMethod] = useState<string>()
+  const [error, setError] = useState<Error | StripeError | null>(null)
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
+    setError(null)
 
     if (!stripe || !elements) {
       return
@@ -101,6 +137,7 @@ const PaymentForm = ({
       // Submit the form first
       const { error: submitError } = await elements.submit()
       if (submitError) {
+        setError(submitError)
         onError(submitError)
         return
       }
@@ -112,6 +149,7 @@ const PaymentForm = ({
         })
 
       if (paymentMethodError) {
+        setError(paymentMethodError)
         onError(paymentMethodError)
         return
       }
@@ -150,11 +188,15 @@ const PaymentForm = ({
 
       const data = await response.json()
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to process subscription')
+        const error = new Error(JSON.stringify(data))
+        setError(error)
+        onError(error)
+        return
       }
 
       onSuccess(data.subscriptionId)
     } catch (error) {
+      setError(error as Error)
       onError(error as Error)
     } finally {
       setIsProcessing(false)
@@ -181,14 +223,17 @@ const PaymentForm = ({
         </XStack>
 
         <Theme name="accent">
-          <Button
-            fontFamily="$mono"
-            br="$10"
-            als="flex-end"
-            disabled={isProcessing || !stripe || !elements}
-          >
-            {isProcessing ? 'Processing...' : 'Complete purchase'}
-          </Button>
+          <YStack alignItems="flex-end" gap="$2">
+            <Button
+              fontFamily="$mono"
+              br="$10"
+              als="flex-end"
+              disabled={isProcessing || !stripe || !elements}
+            >
+              {isProcessing ? 'Processing...' : 'Complete purchase'}
+            </Button>
+            {error && <ErrorMessage error={error} />}
+          </YStack>
         </Theme>
       </YStack>
     </form>
