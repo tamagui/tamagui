@@ -1,7 +1,11 @@
 import { apiRoute, postgresError } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
-import { ClaimError, claimProductAccess } from '~/features/user/claim-product'
+import {
+  ClaimError,
+  claimProductAccess,
+  claimTakeoutForProPlan,
+} from '~/features/user/claim-product'
 import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
 
@@ -82,7 +86,7 @@ export default apiRoute(async (req) => {
             console.info(`Claim: claiming ${product.id}`)
             console.info(`Claim: claim data: ${JSON.stringify(product)}`)
 
-            const claimData = await claimProductAccess({
+            const claimData = await claimTakeoutForProPlan({
               request: req,
               type: 'subscription',
               product,

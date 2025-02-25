@@ -20,6 +20,38 @@ type ClaimProductArgs = {
       productOwnership: Database['public']['Tables']['product_ownership']['Row']
     }
 )
+
+export const claimTakeoutForProPlan = async (args: ClaimProductArgs) => {
+  const { product } = args
+
+  if (product.name !== 'Tamagui Pro') {
+    throw new Error('Product is not Tamagui Pro')
+  }
+
+  const metadata = {
+    claim_type: 'repo_access',
+    repository_name: 'unistack',
+  }
+
+  const claimData = await claimRepositoryAccess({ ...args, metadata })
+
+  if (claimData.data) {
+    await supabaseAdmin.from('claims').insert({
+      product_id: product.id,
+      subscription_id: args.type === 'subscription' ? args.subscription.id : null,
+      product_ownership_id:
+        args.type === 'product_ownership' ? args.productOwnership.id : null,
+      data: { claim_type: metadata.claim_type, ...claimData.data },
+    })
+  }
+
+  return claimData
+}
+
+/**
+ * @deprecated
+ * Since we're migrating to the new Pro plan, we no longer need to switch on the claim_type
+ */
 export const claimProductAccess = async (args: ClaimProductArgs) => {
   const { product } = args
 
