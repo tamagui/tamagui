@@ -54,8 +54,7 @@ export const NewAccountModal = () => {
 
   // Get active subscriptions
   const activeSubscriptions = subscriptions?.filter(
-    (sub) =>
-      sub.status === 'active' || sub.status === 'trialing' || sub.status === 'incomplete'
+    (sub) => sub.status === 'active' || sub.status === 'trialing'
   )
 
   // Find Pro subscription
