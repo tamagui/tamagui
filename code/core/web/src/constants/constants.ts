@@ -11,15 +11,12 @@ export const webViewFlexCompatStyles: StackStyle = {
   alignItems: 'stretch',
   flexDirection: 'column',
   flexBasis: 'auto',
+  position: process.env.TAMAGUI_POSITION_STATIC === '1' ? 'static' : 'relative',
   // @ts-expect-error
   boxSizing: 'border-box',
   minHeight: 0,
   minWidth: 0,
   flexShrink: 0,
-}
-
-if (process.env.TAMAGUI_POSITION_STATIC !== '1') {
-  webViewFlexCompatStyles.position = 'relative'
 }
 
 if (process.env.TAMAGUI_TARGET === 'web') {
