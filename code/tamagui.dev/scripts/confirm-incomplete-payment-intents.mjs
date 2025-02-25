@@ -19,7 +19,6 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
   },
 })
 
-// 過去7日間（秒単位）
 const sevenDaysAgo = Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000)
 
 async function confirmIncompletePaymentIntents() {
