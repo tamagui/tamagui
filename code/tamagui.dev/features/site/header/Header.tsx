@@ -272,12 +272,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
-  const [state, setState] = React.useState({
-    via: undefined as 'hover' | 'press' | undefined,
-    viaAt: Date.now(),
-  })
   const userSwr = useUser()
-  const isPressOpened = state.via === 'press' && open
 
   return (
     <Popover.Trigger>
@@ -285,12 +280,12 @@ const HeaderMenuButton = () => {
         <Button
           size="$3"
           my={10}
-          bg={isPressOpened ? '$color5' : 'rgba(0,0,0,0.02)'}
           noTextWrap
+          bg="transparent"
           br="$10"
           bw={2}
           px="$2"
-          onPress={() => {
+          onPress={(e) => {
             if (!open && userSwr.data?.user) {
               accountModal.show = true
               return
@@ -299,8 +294,9 @@ const HeaderMenuButton = () => {
               setOpen(!open)
               return
             }
-            if (open && state.via === 'hover') {
-              setState({ ...state, via: 'press', viaAt: Date.now() })
+            if (isOnLink) {
+              e.preventDefault()
+              e.stopPropagation()
               return
             }
             if (open) {
@@ -311,7 +307,6 @@ const HeaderMenuButton = () => {
           }}
           aria-label="Open the main menu"
           hoverStyle={{
-            bg: isPressOpened ? '$color5' : 'transparent',
             // @ts-ignore
             bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
           }}
@@ -350,6 +345,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
   const check = React.useRef<any>()
 
   const checkForClose = () => {
+    if (isTouchable) return
     check.current = setInterval(() => {
       if (!isOnMenu && !isOnLink.size) {
         close()
@@ -358,6 +354,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
   }
 
   const cancelCheckForClose = () => {
+    if (isTouchable) return
     clearInterval(check.current)
   }
 
@@ -478,6 +475,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
           setHovered(false)
         }}
         onPress={() => {
+          if (isTouchable) return
           setTimeout(() => {
             context.close()
           }, 400)
@@ -564,7 +562,10 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         onPressOut={() => {
           context.close()
         }}
-        width={290}
+        $pointerFine={{
+          w: 290,
+        }}
+        w="100%"
         transition="all ease-in 200ms"
         mih={`calc(min(${heights[active]}px, 80vh))`}
         ov="hidden"
@@ -596,8 +597,12 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
   return (
     <Frame>
-      <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        <YStack miw={230} p="$3">
+      <Popover.ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1, width: '100%' }}
+        contentContainerStyle={{ width: '100%' }}
+      >
+        <YStack miw={230} w="100%" p="$3">
           {content}
         </YStack>
       </Popover.ScrollView>
