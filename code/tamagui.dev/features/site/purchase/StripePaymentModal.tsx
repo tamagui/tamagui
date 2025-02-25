@@ -390,25 +390,25 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       )
     }
 
-    // if (!userData?.user) {
-    //   return (
-    //     <YStack gap="$4" ai="center" p="$4">
-    //       <H3>Sign in to continue</H3>
-    //       <Paragraph ta="center">
-    //         Please sign in with GitHub to continue your purchase.
-    //       </Paragraph>
-    //       <Button
-    //         size="$4"
-    //         theme="accent"
-    //         onPress={handleLogin}
-    //         icon={GithubIcon}
-    //         disabled={!supabaseClient}
-    //       >
-    //         Continue with GitHub
-    //       </Button>
-    //     </YStack>
-    //   )
-    // }
+    if (!userData?.user) {
+      return (
+        <YStack gap="$4" ai="center" p="$4">
+          <H3>Sign in to continue</H3>
+          <Paragraph ta="center">
+            Please sign in with GitHub to continue your purchase.
+          </Paragraph>
+          <Button
+            size="$4"
+            theme="accent"
+            onPress={handleLogin}
+            icon={GithubIcon}
+            disabled={!supabaseClient}
+          >
+            Continue with GitHub
+          </Button>
+        </YStack>
+      )
+    }
 
     const appearance: Appearance = {
       theme: themeName.startsWith('dark') ? 'night' : 'stripe',
