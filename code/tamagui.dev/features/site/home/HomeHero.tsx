@@ -1,4 +1,4 @@
-import { LogoIcon, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { memo } from 'react'
 import {
   Button,

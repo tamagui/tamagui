@@ -20,6 +20,7 @@ export const InstallInput = memo(() => {
       als="center"
       elevation="$3"
       br="$10"
+      position="relative"
     >
       <YStack zi={-1} fullscreen bg="$background02" className="blur-8" />
       <Paragraph

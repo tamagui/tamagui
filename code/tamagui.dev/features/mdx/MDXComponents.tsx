@@ -876,7 +876,7 @@ const componentsIn = {
               </Card.Header>
 
               <Card.Footer p="$6" pt={0}>
-                <XStack ai="center" gap="$4" f={1}>
+                <XStack position="relative" ai="center" gap="$4" f={1}>
                   <Code f={1} bg="$color4" p="$3" br="$4" size="$5">
                     npm create tamagui@latest
                   </Code>
