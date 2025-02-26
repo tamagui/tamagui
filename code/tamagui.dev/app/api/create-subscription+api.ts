@@ -57,19 +57,26 @@ export default apiRoute(async (req) => {
 
     // Handle Pro plan
     if (disableAutoRenew) {
-      // Create one-time payment for Pro plan
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: 40000, // $400
-        currency: 'usd',
+      // Create invoice item for Pro plan
+      await stripe.invoiceItems.create({
         customer: stripeCustomerId,
-        payment_method: paymentMethodId,
-        off_session: true,
-        confirm: true,
+        price: PRO_ONE_TIME_PRICE_ID, // 例: "price_XXXXXX"（$400のPrice）
+      })
+
+      // Create a payment using the one-time price
+      const invoice = await stripe.invoices.create({
+        customer: stripeCustomerId,
+        collection_method: 'charge_automatically',
+        auto_advance: true,
+      })
+
+      const paidInvoice = await stripe.invoices.pay(invoice.id, {
+        expand: ['payment_intent'],
       })
 
       return Response.json({
-        id: paymentIntent.id,
-        clientSecret: paymentIntent.client_secret,
+        id: invoice.id,
+        clientSecret: (paidInvoice.payment_intent as any).client_secret,
       })
     } else {
       // Create subscription for Pro plan
