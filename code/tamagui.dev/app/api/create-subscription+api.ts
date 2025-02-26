@@ -60,7 +60,7 @@ export default apiRoute(async (req) => {
       // Create invoice item for Pro plan
       await stripe.invoiceItems.create({
         customer: stripeCustomerId,
-        price: PRO_ONE_TIME_PRICE_ID, // 例: "price_XXXXXX"（$400のPrice）
+        price: PRO_ONE_TIME_PRICE_ID,
       })
 
       // Create a payment using the one-time price

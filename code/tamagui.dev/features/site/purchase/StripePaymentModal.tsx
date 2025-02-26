@@ -88,10 +88,9 @@ type StripePaymentModalProps = {
   chatSupport: boolean
   supportTier: number
   selectedPrices: {
-    proPriceId: string
-    supportPriceIds: string[]
     disableAutoRenew: boolean
     chatSupport: boolean
+    supportTier: number
   }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -135,7 +134,6 @@ const PaymentForm = ({
     }
 
     setIsProcessing(true)
-
     try {
       // Submit the form first
       const { error: submitError } = await elements.submit()
@@ -177,21 +175,22 @@ const PaymentForm = ({
         return
       }
 
-      // Confirm Pro subscription/payment
-      const result = await stripe.confirmPayment({
-        elements,
-        redirect: 'if_required',
-        confirmParams: {
-          payment_method: paymentMethod.id,
-        },
-        clientSecret: data.clientSecret,
-      })
+      // Confirm payment only for subscription (not one-time payment)
+      if (!selectedPrices.disableAutoRenew) {
+        const result = await stripe.confirmPayment({
+          elements,
+          redirect: 'if_required',
+          confirmParams: {
+            payment_method: paymentMethod.id,
+          },
+          clientSecret: data.clientSecret,
+        })
 
-      if (result.error) {
-        // No need to cancel anything as the payment hasn't been confirmed
-        setError(result.error)
-        onError(result.error)
-        return
+        if (result.error) {
+          setError(result.error)
+          onError(result.error)
+          return
+        }
       }
 
       // If Chat or Support is selected, create additional subscription
@@ -419,9 +418,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const disableAutoRenew = store.disableAutoRenew || propDisableAutoRenew
   const chatSupport = store.chatSupport || propChatSupport
   const supportTier = store.supportTier || propSupportTier
-  const selectedPrices = store.selectedPrices.proPriceId
-    ? store.selectedPrices
-    : propSelectedPrices
 
   const renderContent = () => {
     if (isLoading) {
