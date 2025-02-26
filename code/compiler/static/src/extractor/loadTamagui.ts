@@ -100,7 +100,7 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
 
     // only logs when changed
     if (didGenerate) {
-      const whitespaceBefore = `    `
+      const whitespaceBefore = `  `
       colorLog(
         Color.FgYellow,
         `${whitespaceBefore}➡ [tamagui] generated themes: ${relative(
