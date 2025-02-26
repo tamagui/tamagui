@@ -16,6 +16,8 @@ import {
   useThemeName,
   XStack,
   YStack,
+  SizableText,
+  Input,
 } from 'tamagui'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -283,6 +285,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const supabaseClient = useSupabaseClient()
   const [authInterval, setAuthInterval] = useState<NodeJS.Timeout | null>(null)
   const [authURL, setAuthURL] = useState('')
+  const [showCoupon, setShowCoupon] = useState(false)
+  const [couponCode, setCouponCode] = useState('')
+  const [finalCoupon, setFinalCoupon] = useState<any>(null)
+  const [couponError, setCouponError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!supabaseClient) return
@@ -381,6 +387,45 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     ? store.selectedPrices
     : propSelectedPrices
 
+  const handleApplyCoupon = async () => {
+    if (!couponCode) return
+
+    try {
+      setCouponError(null)
+      const response = await fetch('/api/validate-coupon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: couponCode }),
+      })
+      const data = await response.json()
+
+      if (data.valid) {
+        setFinalCoupon(data.coupon)
+        setShowCoupon(false) // Hide input after successful application
+      } else {
+        setCouponError(data.message || 'Invalid coupon code')
+      }
+    } catch (error) {
+      console.error('Error validating coupon:', error)
+      setCouponError('Error validating coupon')
+    }
+  }
+
+  // Calculate final amount after coupon
+  const calculateFinalAmount = (amount: number) => {
+    if (!finalCoupon) return amount
+
+    if (finalCoupon.percent_off) {
+      return amount * (1 - finalCoupon.percent_off / 100)
+    } else if (finalCoupon.amount_off) {
+      return Math.max(0, amount - finalCoupon.amount_off)
+    }
+
+    return amount
+  }
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -390,25 +435,25 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       )
     }
 
-    if (!userData?.user) {
-      return (
-        <YStack gap="$4" ai="center" p="$4">
-          <H3>Sign in to continue</H3>
-          <Paragraph ta="center">
-            Please sign in with GitHub to continue your purchase.
-          </Paragraph>
-          <Button
-            size="$4"
-            theme="accent"
-            onPress={handleLogin}
-            icon={GithubIcon}
-            disabled={!supabaseClient}
-          >
-            Continue with GitHub
-          </Button>
-        </YStack>
-      )
-    }
+    // if (!userData?.user) {
+    //   return (
+    //     <YStack gap="$4" ai="center" p="$4">
+    //       <H3>Sign in to continue</H3>
+    //       <Paragraph ta="center">
+    //         Please sign in with GitHub to continue your purchase.
+    //       </Paragraph>
+    //       <Button
+    //         size="$4"
+    //         theme="accent"
+    //         onPress={handleLogin}
+    //         icon={GithubIcon}
+    //         disabled={!supabaseClient}
+    //       >
+    //         Continue with GitHub
+    //       </Button>
+    //     </YStack>
+    //   )
+    // }
 
     const appearance: Appearance = {
       theme: themeName.startsWith('dark') ? 'night' : 'stripe',
@@ -510,6 +555,46 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               <H3 ff="$mono">${yearlyTotal}</H3>
             </YStack>
           </XStack>
+
+          <YStack gap="$2">
+            <SizableText
+              theme="alt1"
+              o={0.3}
+              cursor="pointer"
+              hoverStyle={{ opacity: 0.8 }}
+              onPress={() => setShowCoupon((x) => !x)}
+            >
+              {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+            </SizableText>
+            {showCoupon && (
+              <XStack gap="$2" ai="center">
+                <Input
+                  f={1}
+                  size="$3"
+                  borderWidth={1}
+                  placeholder="Enter code"
+                  value={couponCode}
+                  onChangeText={setCouponCode}
+                />
+                <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                  Apply
+                </Button>
+              </XStack>
+            )}
+            {couponError && (
+              <Paragraph size="$2" color="$red10">
+                {couponError}
+              </Paragraph>
+            )}
+            {finalCoupon && (
+              <Paragraph size="$2" color="$green10">
+                Coupon applied:{' '}
+                {finalCoupon.percent_off
+                  ? `${finalCoupon.percent_off}% off`
+                  : `$${finalCoupon.amount_off / 100} off`}
+              </Paragraph>
+            )}
+          </YStack>
         </YStack>
       </XStack>
     )
