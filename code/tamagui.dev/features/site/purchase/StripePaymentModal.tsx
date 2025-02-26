@@ -73,9 +73,8 @@ class PaymentModal {
   supportTier = 0
   selectedPrices = {
     disableAutoRenew: false,
-    proPriceId: '',
     chatSupport: false,
-    supportPriceIds: [] as string[],
+    supportTier: 0,
   }
 }
 
@@ -495,8 +494,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 chatSupport={chatSupport}
                 supportTier={supportTier}
                 selectedPrices={{
-                  ...selectedPrices,
-                  supportTier,
+                  disableAutoRenew,
+                  chatSupport,
+                  supportTier: Number(supportTier),
                 }}
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
@@ -568,6 +568,23 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         </YStack>
       </XStack>
     )
+  }
+
+  const handleCheckout = () => {
+    if (isProcessing) return
+
+    // Show payment modal with current selections
+    paymentModal.show = true
+    paymentModal.yearlyTotal = yearlyTotal
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = disableAutoRenew
+    paymentModal.chatSupport = chatSupport
+    paymentModal.supportTier = Number(supportTier)
+    paymentModal.selectedPrices = {
+      disableAutoRenew,
+      chatSupport,
+      supportTier: Number(supportTier),
+    }
   }
 
   return (

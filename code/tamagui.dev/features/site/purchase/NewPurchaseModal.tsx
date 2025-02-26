@@ -137,7 +137,7 @@ const PurchaseModalContents = () => {
     paymentModal.chatSupport = chatSupport
     paymentModal.supportTier = Number(supportTier)
     paymentModal.selectedPrices = {
-      disableAutoRenew, // Add this to replace proPriceId
+      disableAutoRenew,
       chatSupport,
       supportTier: Number(supportTier),
     }
