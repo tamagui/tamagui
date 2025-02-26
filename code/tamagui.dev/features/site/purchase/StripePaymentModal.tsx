@@ -582,7 +582,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         <Dialog.Overlay
           key="overlay"
           animation="medium"
-          opacity={0.5}
+          opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -592,7 +592,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           key="content"
           animation="quick"
           w="90%"
-          maw={!userData?.user ? 500 : 1000}
+          maw={1000}
           p="$6"
           enterStyle={{
             opacity: 0,
