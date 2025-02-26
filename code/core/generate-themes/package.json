@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/generate-themes",
-  "version": "1.125.17",
+  "version": "1.125.18",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
