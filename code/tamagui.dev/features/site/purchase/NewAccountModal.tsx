@@ -4,7 +4,7 @@ import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
-import { Link } from 'one'
+import { Link, router } from 'one'
 import { useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
@@ -774,18 +774,21 @@ const PlanTab = ({
             description="Prompt an LLM to generate themes."
             actionLabel="Go"
             onAction={() => {
-              // Add download logic
+              accountModal.show = false
+              setTimeout(() => {
+                router.navigate('/theme')
+              })
             }}
           />
 
-          <ServiceCard
+          {/* <ServiceCard
             title="start.chat"
             description="Talk to a chatbot that's an expert in Tamagui."
             actionLabel="Go"
             onAction={() => {
               // Add download logic
             }}
-          />
+          /> */}
         </XStack>
       </YStack>
 
