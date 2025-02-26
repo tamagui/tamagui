@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.125.17",
+  "version": "1.125.18",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -54,6 +54,7 @@
     "octokit": "^4.0.2",
     "open": "^10.1.0",
     "pastel": "^2.0.0",
+    "react": "npm:react@18.3.1",
     "react-router-dom": "6.4",
     "swr": "^2.2.5",
     "type-fest": "3.13.1",

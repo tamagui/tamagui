@@ -341,6 +341,7 @@ export const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
   backgroundColor: '$background',
   position: 'absolute',
+  pointerEvents: 'box-none',
 })
 
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>
