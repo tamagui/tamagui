@@ -589,7 +589,10 @@ export const getSplitStyles: StyleSplitter = (
     const disablePropMap = isMediaOrPseudo || !isStyleLikeKey
 
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
-      if (!isHOC && disablePropMap && !isMediaOrPseudo) {
+      const isStyledContextProp =
+        styleProps.styledContextProps && key in styleProps.styledContextProps
+
+      if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
         viewProps[key] = val
         return
       }
@@ -1000,7 +1003,7 @@ export const getSplitStyles: StyleSplitter = (
 
       // pass to view props
       if (!isVariant) {
-        if (styleProps.styledContextProps && key in styleProps.styledContextProps) {
+        if (isStyledContextProp) {
           return
         }
 

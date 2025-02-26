@@ -317,6 +317,19 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     const left = window.screenX + (window.innerWidth - width) / 2
     const top = window.screenY + (window.innerHeight - height) / 2
 
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        skipBrowserRedirect: true,
+        redirectTo: `${window.location.origin}/api/auth/callback`,
+      },
+    })
+
+    if (error) {
+      console.error('Login error:', error)
+      return
+    }
+
     // Open popup with the auth URL
     const popup = window.open(
       authURL,
@@ -340,7 +353,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           popup.close()
           refresh()
         }
-      }, 1000)
+      }, 500)
 
       setAuthInterval(interval)
     }

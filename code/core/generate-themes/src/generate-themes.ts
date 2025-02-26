@@ -1,12 +1,9 @@
 import type { ThemeBuilder } from '@tamagui/theme-builder'
-import Module from 'node:module'
 import { join } from 'node:path'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
 }
-
-const ogRequire = Module.prototype.require
 
 let didRegisterOnce = false
 
@@ -23,26 +20,6 @@ export async function generateThemes(inputFile: string) {
 
   const promises: Array<Promise<null | ThemeBuilder<any>>> = []
 
-  // @ts-ignore
-  Module.prototype.require = function (id) {
-    // @ts-ignore
-    const out = ogRequire.apply(this, arguments)
-
-    if (id === '@tamagui/theme-builder') {
-      let resolve: Function
-      const promise = new Promise<any>((res) => {
-        resolve = res
-      })
-      promises.push(promise)
-      return createThemeIntercept(out, {
-        onComplete: (result) => {
-          resolve?.(result.themeBuilder)
-        },
-      })
-    }
-    return out
-  }
-
   let og = process.env.TAMAGUI_KEEP_THEMES
   process.env.TAMAGUI_KEEP_THEMES = '1'
   process.env.TAMAGUI_RUN_THEMEBUILDER = '1'
@@ -57,34 +34,13 @@ export async function generateThemes(inputFile: string) {
 
     const generatedThemes = generatedThemesToTypescript(themes)
 
-    let tm: any
-    if (promises.length) {
-      let finished = false
-      await Promise.any(promises).then(() => {
-        finished = true
-      })
-      // handle never finishing promise with nice error
-      tm = setTimeout(() => {
-        if (!finished) {
-          console.warn(
-            `Warning: ThemeBuilder didn't finish after a couple seconds, did you forget to call .build()?`
-          )
-        }
-      }, 2000)
-    }
-
-    const themeBuilder = await Promise.any(promises)
-    clearTimeout(tm)
-
     return {
       generated: generatedThemes,
-      state: themeBuilder?.state,
     }
   } catch (err) {
     console.warn(` ⚠️ Error running theme builder:\n`, err?.['stack'] || err)
   } finally {
     process.env.TAMAGUI_KEEP_THEMES = og
-    Module.prototype.require = ogRequire
   }
 }
 
@@ -208,44 +164,6 @@ function objectToJsString(
     arrItems.push(`[${ki}, ${vi}]`)
   }
   return `t([${arrItems.join(',')}])`
-}
-
-function createThemeIntercept(
-  createThemeExport: any,
-  themeBuilderInterceptOpts: ThemeBuilderInterceptOpts
-) {
-  return new Proxy(createThemeExport, {
-    get(target, key) {
-      const out = Reflect.get(target, key)
-      if (key === 'createThemeBuilder') {
-        return new Proxy(out, {
-          apply(target, thisArg, argArray) {
-            const builder = Reflect.apply(target, thisArg, argArray) as any
-            return themeBuilderIntercept(builder, themeBuilderInterceptOpts)
-          },
-        })
-      }
-      return out
-    },
-  })
-}
-
-function themeBuilderIntercept(
-  themeBuilder: any,
-  themeBuilderInterceptOpts: ThemeBuilderInterceptOpts
-) {
-  return new Proxy(themeBuilder, {
-    get(target, key) {
-      const out = Reflect.get(target, key)
-      if (key === 'build') {
-        // get the state and return!
-        themeBuilderInterceptOpts.onComplete({
-          themeBuilder,
-        })
-      }
-      return out
-    },
-  })
 }
 
 /**
