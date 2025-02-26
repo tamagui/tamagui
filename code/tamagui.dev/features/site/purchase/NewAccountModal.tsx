@@ -900,8 +900,8 @@ const UpgradeTab = ({
       <Separator />
 
       <Paragraph ff="$mono" size="$5" lineHeight="$6" o={0.8}>
-        Each tier adds 2 hours of prioritized development each month, and puts your
-        messages higher in our response queue.
+        Each tier adds 4 hours of development a month, faster response times, and 4
+        additional private chat invites.
       </Paragraph>
     </YStack>
   )

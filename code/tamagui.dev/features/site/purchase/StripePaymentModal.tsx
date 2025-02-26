@@ -72,7 +72,9 @@ class PaymentModal {
   chatSupport = false
   supportTier = 0
   selectedPrices = {
+    disableAutoRenew: false,
     proPriceId: '',
+    chatSupport: false,
     supportPriceIds: [] as string[],
   }
 }
@@ -89,6 +91,8 @@ type StripePaymentModalProps = {
   selectedPrices: {
     proPriceId: string
     supportPriceIds: string[]
+    disableAutoRenew: boolean
+    chatSupport: boolean
   }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -490,7 +494,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 autoRenew={!disableAutoRenew}
                 chatSupport={chatSupport}
                 supportTier={supportTier}
-                selectedPrices={selectedPrices}
+                selectedPrices={{
+                  ...selectedPrices,
+                  supportTier,
+                }}
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
                 userData={userData}
