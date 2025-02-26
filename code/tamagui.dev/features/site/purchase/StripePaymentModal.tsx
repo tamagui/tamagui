@@ -1,3 +1,29 @@
+/**
+ * @summary
+ *
+ * StripePaymentModal handles the payment flow for Pro plan and additional support options.
+ *
+ * Pro Plan Options:
+ * - One-time payment: $400
+ * - Yearly subscription: $240/year
+ *    - This is processed as an invoice payment thus no client-side confirmation is needed
+ *    - However, as for the subscription, we need to confirm the payment on the client side
+ *      to verify the card ownership. The same goes for the monthly subscriptions described below.
+ *
+ * Additional monthly subscriptions:
+ * - Chat Support: $200/month
+ * - Support Tier: $800/month per tier
+ *
+ * The payment flow is split into two APIs because Pro plan (yearly) and
+ * additional options (monthly) have different billing cycles, which cannot
+ * be combined in a single Stripe subscription:
+ * - create-subscription: Handles Pro plan (one-time or yearly)
+ * - upgrade-subscription: Handles monthly subscriptions
+ *
+ * Client-side payment confirmation is required for subscriptions due to
+ * card ownership verification, but not for one-time payments which are
+ * completed server-side.
+ */
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
