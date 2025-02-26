@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "paths": {
+      "@tamagui/bento": ["src"]
+    },
   },
   "include": [
     "src/**/*.ts",
@@ -52,6 +55,9 @@
     },
     {
       "path": "../ui/tamagui"
+    },
+    {
+      "path": "../ui/toast"
     }
   ]
 }

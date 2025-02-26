@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "BentoExample",
+    "slug": "BentoExample",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "We needs to access your camera so that you can upload your photo: (avatar, etc.)",
+        "NSPhotoLibraryAddUsageDescription": "We needs photo library permissions to allow you to upload profile images.",
+        "NSPhotoLibraryUsageDescription": "We needs photo library permissions to allow you to upload profile images.",
+        "NSMicrophoneUsageDescription": "We needs to access your microphone so that you can take your photo: (avatar, etc.)"
+      },
+      "bundleIdentifier": "com.tamagui.bento"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.tamagui.bento"
+    },
+
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.6",
+            "useFrameworks": "static"
+          },
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
+          }
+        }
+      ]
+    ]
+  }
+}

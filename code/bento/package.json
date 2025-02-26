@@ -5,10 +5,10 @@
   "sideEffects": [
     "*.css"
   ],
-  "source": "index.tsx",
-  "types": "./src",
-  "main": "index.tsx",
   "module": "dist/esm",
+  "source": "index.jsx",
+  "types": "./src",
+  "main": "dist/cjs",
   "files": [
     "src",
     "types",

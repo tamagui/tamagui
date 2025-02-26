@@ -9,6 +9,7 @@
   "references": [
     { "path": "code/kitchen-sink" },
     { "path": "code/bento" },
+    { "path": "code/bento/example" },
     { "path": "code/demos" },
     // this is giving errors because some conflict with bentos tamagui.config
     // { "path": "code/tamagui.dev" },
