@@ -6,7 +6,7 @@ export const Switch = memo((props: SwitchProps) => {
     <Theme name={props.checked ? 'accent' : 'gray'}>
       <TamaguiSwitch
         animation={[
-          'quicker',
+          'bouncy',
           {
             opacity: {
               overshootClamping: true,

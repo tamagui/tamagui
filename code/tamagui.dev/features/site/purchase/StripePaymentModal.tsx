@@ -72,7 +72,9 @@ class PaymentModal {
   chatSupport = false
   supportTier = 0
   selectedPrices = {
+    disableAutoRenew: false,
     proPriceId: '',
+    chatSupport: false,
     supportPriceIds: [] as string[],
   }
 }
@@ -89,6 +91,8 @@ type StripePaymentModalProps = {
   selectedPrices: {
     proPriceId: string
     supportPriceIds: string[]
+    disableAutoRenew: boolean
+    chatSupport: boolean
   }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -490,7 +494,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 autoRenew={!disableAutoRenew}
                 chatSupport={chatSupport}
                 supportTier={supportTier}
-                selectedPrices={selectedPrices}
+                selectedPrices={{
+                  ...selectedPrices,
+                  supportTier,
+                }}
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
                 userData={userData}
@@ -575,7 +582,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         <Dialog.Overlay
           key="overlay"
           animation="medium"
-          opacity={0.5}
+          opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -585,7 +592,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           key="content"
           animation="quick"
           w="90%"
-          maw={!userData?.user ? 500 : 1000}
+          maw={1000}
           p="$6"
           enterStyle={{
             opacity: 0,

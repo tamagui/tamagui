@@ -181,7 +181,7 @@ const PurchaseModalContents = () => {
       if (hasSupportTier) {
         return 'Yearly base + monthly support tier, easy 1-click cancel'
       }
-      return 'Yearly subscription'
+      return 'Yearly subscription, easy one-click cancel'
     }
   }, [chatSupport, supportTier, disableAutoRenew])
 
@@ -221,8 +221,6 @@ const PurchaseModalContents = () => {
     ),
     faq: FaqTabContent,
   }
-
-  const CurrentTabContents: () => JSX.Element = tabContents[currentTab]
 
   return (
     <>
@@ -321,11 +319,11 @@ const PurchaseModalContents = () => {
                       forceMount
                       flex={1}
                       minHeight={400}
-                      height="calc(min(100vh - 400px, 580px))"
+                      height="calc(min(100vh - 280px, 620px))"
                     >
                       <ScrollView>
                         <YStack p="$8" gap="$6">
-                          <CurrentTabContents />
+                          {tabContents[currentTab]()}
                         </YStack>
                       </ScrollView>
                     </Tabs.Content>
@@ -463,7 +461,7 @@ const PurchaseModalContents = () => {
 
 const Question = styled(P, {
   fontWeight: 'bold',
-  color: '$orange9',
+  color: '$green9',
 })
 
 const FaqTabContent = () => {
@@ -513,7 +511,7 @@ const FaqTabContent = () => {
       <Question>What support do I get in the base plan?</Question>
 
       <P>
-        You get access to the private #support channel. We prioritize responses there over
+        You get access to the private #takeout channel. We prioritize responses there over
         the public Discord, but we don't provide any SLA.
       </P>
 
@@ -529,10 +527,8 @@ const FaqTabContent = () => {
       <Question>What support do I get with Support tiers?</Question>
 
       <P>
-        Each tier gives you 2 hours of prioritized development per month. We will set up a
-        call with your team on sign-up, and you get a private chat room to talk with us.
-        We log the work we do for you each month, and prioritize chat responses above
-        prior tiers of support.
+        Each tier adds 4 hours of development per month, faster response times, and 4
+        additional private chat invites.
       </P>
 
       <Spacer h="$10" />
@@ -581,7 +577,7 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P maw={500} size="$5" lineHeight="$6" o={0.8}>
+          <P maw={500} size="$5" lineHeight="$6" o={0.5}>
             A private Discord room just for your team with 2 invites, with responses
             prioritized over our community chat.
           </P>
@@ -615,10 +611,9 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P size="$5" lineHeight="$6" maw={500} o={0.8}>
-            Each tier adds 2 hours of prioritized development each month, puts your
-            messages higher in our response queue, and includes additional chat invites
-            (Tier 1: 6 invites, Tier 2: 10 invites, Tier 3: 14 invites).
+          <P size="$5" lineHeight="$6" maw={500} o={0.5}>
+            Each tier adds 4 hours of development a month, faster response times, and 4
+            additional private chat invites.
           </P>
         </YStack>
       </YStack>
