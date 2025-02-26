@@ -3,24 +3,20 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
 
+// Price IDs for Pro plan
+const PRO_SUBSCRIPTION_PRICE_ID = 'price_1QthHSFQGtHoG6xcDOEuFsrW' // $240/year with auto-renew
+const PRO_ONE_TIME_PRICE_ID = 'price_1Qs41HFQGtHoG6xcerDq7RJZ' // $400 one-time payment
+
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
   const { user } = await ensureAuth({ req })
-  const {
-    paymentMethodId,
-    proPriceId,
-    supportPriceIds = [],
-    disableAutoRenew,
-  } = await req.json()
+  const { paymentMethodId, disableAutoRenew } = await req.json()
 
-  if (!paymentMethodId || !proPriceId) {
-    return Response.json(
-      { error: 'Payment method ID and Pro plan price ID are required' },
-      { status: 400 }
-    )
+  if (!paymentMethodId) {
+    return Response.json({ error: 'Payment method ID is required' }, { status: 400 })
   }
 
   try {
@@ -59,43 +55,37 @@ export default apiRoute(async (req) => {
         return Response.json({ error: 'Failed to update customer' }, { status: 500 })
       })
 
-    // Get the Pro plan price details and verify it's recurring
-    const priceDetails = await stripe.prices.retrieve(proPriceId)
-    if (priceDetails.type !== 'recurring') {
-      return Response.json(
-        { error: 'Pro plan price must be recurring type' },
-        { status: 400 }
-      )
-    }
-
-    // Create the subscription with Pro plan
-    const subscription = await stripe.subscriptions.create({
-      customer: stripeCustomerId,
-      items: [{ price: proPriceId }],
-      payment_behavior: 'default_incomplete',
-      payment_settings: { save_default_payment_method: 'on_subscription' },
-      expand: ['latest_invoice.payment_intent'],
-      cancel_at_period_end: disableAutoRenew || false,
-    })
-
-    // If there are support prices, create a separate subscription for them
-    if (supportPriceIds.length > 0) {
-      const supportSubscription = await stripe.subscriptions.create({
+    // Handle Pro plan
+    if (disableAutoRenew) {
+      // Create one-time payment for Pro plan
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: 40000, // $400
+        currency: 'usd',
         customer: stripeCustomerId,
-        items: supportPriceIds.map((priceId) => ({ price: priceId })),
+        payment_method: paymentMethodId,
+        off_session: true,
+        confirm: true,
+      })
+
+      return Response.json({
+        id: paymentIntent.id,
+        clientSecret: paymentIntent.client_secret,
+      })
+    } else {
+      // Create subscription for Pro plan
+      const subscription = await stripe.subscriptions.create({
+        customer: stripeCustomerId,
+        items: [{ price: PRO_SUBSCRIPTION_PRICE_ID }],
         payment_behavior: 'default_incomplete',
         payment_settings: { save_default_payment_method: 'on_subscription' },
         expand: ['latest_invoice.payment_intent'],
-        cancel_at_period_end: disableAutoRenew || false,
+      })
+
+      return Response.json({
+        id: subscription.id,
+        clientSecret: (subscription.latest_invoice as any).payment_intent?.client_secret,
       })
     }
-    /**
-     * On the client side, if we don’t explicitly confirm the PaymentIntent using clientSecret, the subscription will remain incomplete.
-     */
-    return Response.json({
-      subscriptionId: subscription.id,
-      clientSecret: (subscription.latest_invoice as any).payment_intent?.client_secret,
-    })
   } catch (error) {
     console.error('Error creating subscription:', error)
     return Response.json({ error: 'Failed to create subscription' }, { status: 500 })

@@ -111,8 +111,9 @@ const PaymentForm = ({
   chatSupport: boolean
   supportTier: number
   selectedPrices: {
-    proPriceId: string
-    supportPriceIds: string[]
+    disableAutoRenew: boolean
+    chatSupport: boolean
+    supportTier: number
   }
   isProcessing: boolean
   setIsProcessing: (value: boolean) => void
@@ -120,7 +121,6 @@ const PaymentForm = ({
 }) => {
   const stripe = useStripe()
   const elements = useElements()
-  const [paymentMethod, setPaymentMethod] = useState<string>()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -154,37 +154,17 @@ const PaymentForm = ({
         return
       }
 
-      // Determine which API to call based on the selected prices
-      let response
-      if (selectedPrices.proPriceId) {
-        // Creating new Pro subscription
-        response = await fetch('/api/create-subscription', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            paymentMethodId: paymentMethod.id,
-            proPriceId: selectedPrices.proPriceId,
-            supportPriceIds: selectedPrices.supportPriceIds,
-            disableAutoRenew: !autoRenew,
-          }),
-        })
-      } else {
-        // Upgrading existing subscription with Support tier
-        response = await fetch('/api/upgrade-subscription', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            subscriptionId: userData.subscriptions[0].id,
-            chatSupport,
-            supportTier,
-            disableAutoRenew: !autoRenew,
-          }),
-        })
-      }
+      // Create Pro subscription/payment first
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          paymentMethodId: paymentMethod.id,
+          disableAutoRenew: selectedPrices.disableAutoRenew,
+        }),
+      })
 
       const data = await response.json()
       if (!response.ok) {
@@ -194,6 +174,7 @@ const PaymentForm = ({
         return
       }
 
+      // Confirm Pro subscription/payment
       const result = await stripe.confirmPayment({
         elements,
         redirect: 'if_required',
@@ -204,23 +185,81 @@ const PaymentForm = ({
       })
 
       if (result.error) {
-        // Payment failed, cancel the subscription
-        await fetch('/api/handle-failed-payment-subscription', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            subscriptionId: data.subscriptionId,
-          }),
-        })
-
+        // No need to cancel anything as the payment hasn't been confirmed
         setError(result.error)
         onError(result.error)
         return
       }
 
-      onSuccess(data.subscriptionId)
+      // If Chat or Support is selected, create additional subscription
+      if (selectedPrices.chatSupport || selectedPrices.supportTier > 0) {
+        const upgradeResponse = await fetch('/api/upgrade-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            subscriptionId: data.id, // Pass the Pro subscription ID
+            paymentMethodId: paymentMethod.id,
+            chatSupport: selectedPrices.chatSupport,
+            supportTier: selectedPrices.supportTier,
+          }),
+        })
+
+        const upgradeData = await upgradeResponse.json()
+        if (!upgradeResponse.ok) {
+          // If upgrade fails and Pro is a subscription, cancel it
+          if (!selectedPrices.disableAutoRenew) {
+            await fetch('/api/handle-failed-payment-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscriptionId: data.id,
+              }),
+            })
+          }
+          // For one-time payment, no need to do anything as the payment is already confirmed
+
+          const error = new Error(JSON.stringify(upgradeData))
+          setError(error)
+          onError(error)
+          return
+        }
+
+        // Confirm monthly subscription payment
+        const monthlyResult = await stripe.confirmPayment({
+          elements,
+          redirect: 'if_required',
+          confirmParams: {
+            payment_method: paymentMethod.id,
+          },
+          clientSecret: upgradeData.clientSecret,
+        })
+
+        if (monthlyResult.error) {
+          // If monthly payment fails and Pro is a subscription, cancel it
+          if (!selectedPrices.disableAutoRenew) {
+            await fetch('/api/handle-failed-payment-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscriptionId: data.id,
+              }),
+            })
+          }
+          // For one-time payment, no need to do anything as the payment is already confirmed
+
+          setError(monthlyResult.error)
+          onError(monthlyResult.error)
+          return
+        }
+      }
+
+      onSuccess(data.id)
     } catch (error) {
       setError(error as Error)
       onError(error as Error)
@@ -390,25 +429,25 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       )
     }
 
-    if (!userData?.user) {
-      return (
-        <YStack gap="$4" ai="center" p="$4">
-          <H3>Sign in to continue</H3>
-          <Paragraph ta="center">
-            Please sign in with GitHub to continue your purchase.
-          </Paragraph>
-          <Button
-            size="$4"
-            theme="accent"
-            onPress={handleLogin}
-            icon={GithubIcon}
-            disabled={!supabaseClient}
-          >
-            Continue with GitHub
-          </Button>
-        </YStack>
-      )
-    }
+    // if (!userData?.user) {
+    //   return (
+    //     <YStack gap="$4" ai="center" p="$4">
+    //       <H3>Sign in to continue</H3>
+    //       <Paragraph ta="center">
+    //         Please sign in with GitHub to continue your purchase.
+    //       </Paragraph>
+    //       <Button
+    //         size="$4"
+    //         theme="accent"
+    //         onPress={handleLogin}
+    //         icon={GithubIcon}
+    //         disabled={!supabaseClient}
+    //       >
+    //         Continue with GitHub
+    //       </Button>
+    //     </YStack>
+    //   )
+    // }
 
     const appearance: Appearance = {
       theme: themeName.startsWith('dark') ? 'night' : 'stripe',
@@ -493,6 +532,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
           {monthlyTotal > 0 && (
             <>
+              {chatSupport && (
+                <XStack jc="space-between">
+                  <Paragraph ff="$mono">Chat Support</Paragraph>
+                  <Paragraph ff="$mono">$200/month</Paragraph>
+                </XStack>
+              )}
               {supportTier > 0 && (
                 <XStack jc="space-between">
                   <Paragraph ff="$mono">Support tier ({supportTier})</Paragraph>
@@ -507,7 +552,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <XStack jc="space-between">
             <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
-              <H3 ff="$mono">${yearlyTotal}</H3>
+              <H3 ff="$mono">
+                ${yearlyTotal}
+                {monthlyTotal > 0 && ` + $${monthlyTotal}/month`}
+              </H3>
             </YStack>
           </XStack>
         </YStack>
