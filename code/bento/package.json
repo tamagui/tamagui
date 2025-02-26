@@ -5,9 +5,9 @@
   "sideEffects": [
     "*.css"
   ],
-  "source": "index.jsx",
+  "source": "index.tsx",
   "types": "./src",
-  "main": "dist/cjs",
+  "main": "index.tsx",
   "module": "dist/esm",
   "files": [
     "src",
@@ -81,9 +81,12 @@
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
     "awesome-phonenumber": "^6.4.0",
+    "expo": "^52.0.23",
     "expo-document-picker": "~13.0.1",
     "expo-image-picker": "~16.0.3",
     "foxact": "^0.2.33",
+    "react": "*",
+    "react-dom": "*",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-native": "^0.76.5",

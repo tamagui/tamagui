@@ -5,7 +5,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx",
+    "src/**/*.tsx", "src/App.tsx",
   ],
   "exclude": [
     "types",
