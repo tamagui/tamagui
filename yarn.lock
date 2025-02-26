@@ -11351,7 +11351,7 @@ __metadata:
     octokit: "npm:^4.0.2"
     open: "npm:^10.1.0"
     pastel: "npm:^2.0.0"
-    react: "npm:18.3.1"
+    react: "npm:react@18.3.1"
     react-router-dom: "npm:6.4"
     swr: "npm:^2.2.5"
     type-fest: "npm:3.13.1"
@@ -23678,7 +23678,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.3.1":
+"react@npm:react@18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:
