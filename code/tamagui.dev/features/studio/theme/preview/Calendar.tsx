@@ -31,6 +31,7 @@ const calendar = Array(weeks)
     }
     return week
   })
+
 export const Calendar = () => {
   const demoProps = useDemoProps()
 

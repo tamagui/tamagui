@@ -31,9 +31,9 @@ import { paymentModal, StripePaymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
 import { useProducts } from './useProducts'
 import { BigP, P } from './BigP'
+import { useTakeoutStore } from './useTakeoutStore'
 import { ProPoliciesModal } from './PoliciesModal'
 import { ProAgreementModal } from './AgreementModal'
-import { useTakeoutStore } from './useTakeoutStore'
 
 class PurchaseModal {
   show = false

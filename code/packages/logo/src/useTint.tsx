@@ -17,7 +17,7 @@ export const onTintChange = (listener: (cur: number) => void) => {
 const numTints = getTints().tints.length
 
 export const setTintIndex = (next: number): void => {
-  const val = next % numTints
+  const val = Math.max(0, next % numTints)
   if (val === current) return
   current = val
   listeners.forEach((x) => x(val))

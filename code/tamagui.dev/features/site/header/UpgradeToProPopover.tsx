@@ -16,7 +16,7 @@ import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
 import { PromoCards } from './PromoCards'
 import { ThemeTintAlt } from '@tamagui/logo'
 
-export const UpgradePopover = (props: PopoverProps) => {
+export const UpgradeToProPopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
   const [state, setState] = React.useState({
     via: undefined as 'hover' | 'press' | undefined,
@@ -123,36 +123,40 @@ export const UpgradePopover = (props: PopoverProps) => {
         <YStack mah="80vh" p="$3" width={280} ov="hidden" br="$6">
           <Popover.ScrollView>
             <YStack gap="$2">
-              <H5 py="$2" pe="none" ff="$mono" size="$5" ta="center">
-                Tamagui Pro
-              </H5>
+              {!isProUser && (
+                <H5 py="$2" pe="none" ff="$mono" size="$5" ta="center">
+                  Tamagui Pro
+                </H5>
+              )}
 
-              <Paragraph
-                bg="$color3"
-                p="$4"
-                br="$4"
-                // theme="red"
-                lh="$2"
-                color="$color11"
-                bw={0.5}
-                bc="$color3"
-                cur="pointer"
-                animation="lazy"
-                hoverStyle={{
-                  y: -2,
-                  color: '$color12',
-                }}
-                pressStyle={{
-                  animation: '100ms',
-                  y: -2,
-                }}
-                onPress={() => {
-                  showAppropriateModal()
-                  setOpen(false)
-                }}
-              >
-                Pro is how we fund the OSS development of Tamagui.
-              </Paragraph>
+              {!isProUser && (
+                <Paragraph
+                  bg="$color3"
+                  p="$4"
+                  br="$4"
+                  // theme="red"
+                  lh="$2"
+                  color="$color11"
+                  bw={0.5}
+                  bc="$color3"
+                  cur="pointer"
+                  animation="lazy"
+                  hoverStyle={{
+                    y: -2,
+                    color: '$color12',
+                  }}
+                  pressStyle={{
+                    animation: '100ms',
+                    y: -2,
+                  }}
+                  onPress={() => {
+                    showAppropriateModal()
+                    setOpen(false)
+                  }}
+                >
+                  Pro is how we fund the OSS development of Tamagui.
+                </Paragraph>
+              )}
 
               <PromoCards less />
 
