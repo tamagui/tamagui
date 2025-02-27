@@ -16,7 +16,7 @@ import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
 import { PromoCards } from './PromoCards'
 import { ThemeTintAlt } from '@tamagui/logo'
 
-export const UpgradePopover = (props: PopoverProps) => {
+export const UpgradeToProPopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
   const [state, setState] = React.useState({
     via: undefined as 'hover' | 'press' | undefined,

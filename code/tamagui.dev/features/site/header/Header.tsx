@@ -38,7 +38,7 @@ import { useUser } from '../../user/useUser'
 import { accountModal } from '../purchase/NewAccountModal'
 import { PromoCardTheme } from './PromoCards'
 import { SearchButton } from './SearchButton'
-import { UpgradePopover } from './UpgradePopover'
+import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 
@@ -196,7 +196,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XStack>
         </Link>
 
-        <UpgradePopover />
+        <UpgradeToProPopover />
       </XStack>
 
       <View flex={1} />
@@ -218,7 +218,27 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             cursor={isHome ? 'default' : 'pointer'}
             pointerEvents="auto"
             als="center"
+            gap="$3"
+            ml="$-3"
+            ai="center"
           >
+            <Link href="/">
+              <SeasonTogglePopover>
+                <YStack
+                  cur="pointer"
+                  o={1}
+                  {...(isHome && {
+                    onPress(e) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      tint.setNextTint()
+                    },
+                  })}
+                >
+                  <TamaguiLogo downscale={2.6} />
+                </YStack>
+              </SeasonTogglePopover>
+            </Link>
             <LogoWords animated />
           </XStack>
         </Link>
