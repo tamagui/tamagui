@@ -1,7 +1,7 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { createShallowSetState, isTouchable } from '@tamagui/web'
-import { usePathname } from 'one'
+import { useFocusEffect, useNavigation, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
 import {
@@ -290,6 +290,10 @@ const HeaderMenuButton = () => {
               accountModal.show = true
               return
             }
+            if (isTouchable) {
+              setOpen(!open)
+              return
+            }
             if (isOnLink) {
               e.preventDefault()
               e.stopPropagation()
@@ -502,8 +506,15 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   if (active !== props.active && props.active !== '') {
     setActive(props.active)
   }
+  const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
+  useFocusEffect(
+    React.useCallback(() => {
+      context.close()
+    }, [pathname])
+  )
+
   const last = React.useRef(active)
 
   const curI = order.indexOf(active)
@@ -554,9 +565,6 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       <Popover.Arrow bg="$background08" size="$3.5" />
 
       <YStack
-        onPressOut={() => {
-          context.close()
-        }}
         $pointerFine={{
           w: 290,
         }}
@@ -607,6 +615,13 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
 const HeaderMenuMoreContents = () => {
   const userSwr = useUser()
+  const router = useRouter()
+
+  const handlePress = (e: any) => {
+    e.preventDefault()
+    e.stopPropagation()
+    router.push(e.target.href)
+  }
 
   return (
     <YStack gap="$2" aria-label="Home menu contents">
@@ -617,19 +632,19 @@ const HeaderMenuMoreContents = () => {
           </HeadAnchor>
         </Link>
 
-        <Link asChild href="/docs/intro/compiler-install">
+        <Link asChild href="/docs/intro/compiler-install" onPress={handlePress}>
           <HeadAnchor grid half>
             Compile
           </HeadAnchor>
         </Link>
 
-        <Link asChild href="/ui/intro">
+        <Link asChild href="/ui/intro" onPress={handlePress}>
           <HeadAnchor grid half>
             UI
           </HeadAnchor>
         </Link>
 
-        <Link asChild href="/theme">
+        <Link asChild href="/theme" onPress={handlePress}>
           <HeadAnchor grid half>
             Theme
           </HeadAnchor>
