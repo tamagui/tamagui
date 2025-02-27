@@ -56,11 +56,15 @@ export default apiRoute(async (req) => {
         discounts: couponId ? [{ coupon: couponId }] : [],
       })
 
-      await stripe.invoices.pay(invoice.id)
+      const paidInvoice = await stripe.invoices.pay(invoice.id, {
+        expand: ['payment_intent'],
+      })
 
       return Response.json({
         id: invoice.id,
         status: invoice.status,
+        // We don't actually need this for one-time payments, but let's keep it for consistency
+        clientSecret: (paidInvoice.payment_intent as any).client_secret,
       })
     } else {
       // Create subscription
