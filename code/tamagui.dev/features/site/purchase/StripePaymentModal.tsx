@@ -30,6 +30,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useEffect, useMemo, useState } from 'react'
+import { z } from 'zod'
 import {
   Button,
   Dialog,
@@ -48,8 +49,29 @@ import {
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
-import { z } from 'zod'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
+
+const couponSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  percent_off: z.number().nullable(),
+  amount_off: z.number().nullable(),
+})
+
+type Coupon = z.infer<typeof couponSchema>
+
+const couponResponseSchema = z.discriminatedUnion('valid', [
+  z.object({
+    valid: z.literal(true),
+    coupon: couponSchema,
+  }),
+  z.object({
+    valid: z.literal(false),
+    message: z.string(),
+  }),
+])
+
+type CouponResponse = z.infer<typeof couponResponseSchema>
 
 const stripeErrorSchema = z.object({
   code: z.string(),
@@ -60,8 +82,6 @@ const stripeErrorSchema = z.object({
   request_log_url: z.string().optional(),
   type: z.string(),
 })
-
-type StripeErrorResponse = z.infer<typeof stripeErrorSchema>
 
 const ErrorMessage = ({ error }: { error: Error | StripeError }) => {
   const errorMessage = useMemo(() => {
@@ -134,6 +154,7 @@ const PaymentForm = ({
   isProcessing,
   setIsProcessing,
   userData,
+  finalCoupon,
 }: {
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -148,6 +169,7 @@ const PaymentForm = ({
   isProcessing: boolean
   setIsProcessing: (value: boolean) => void
   userData: any
+  finalCoupon: Coupon | null
 }) => {
   const stripe = useStripe()
   const elements = useElements()
@@ -192,6 +214,7 @@ const PaymentForm = ({
         body: JSON.stringify({
           paymentMethodId: paymentMethod.id,
           disableAutoRenew: selectedPrices.disableAutoRenew,
+          couponId: finalCoupon?.id,
         }),
       })
 
@@ -229,10 +252,11 @@ const PaymentForm = ({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            subscriptionId: data.id, // Pass the Pro subscription ID
+            subscriptionId: data.id,
             paymentMethodId: paymentMethod.id,
             chatSupport: selectedPrices.chatSupport,
             supportTier: selectedPrices.supportTier,
+            couponId: finalCoupon?.id,
           }),
         })
 
@@ -250,7 +274,6 @@ const PaymentForm = ({
               }),
             })
           }
-          // For one-time payment, no need to do anything as the payment is already confirmed
 
           const error = new Error(JSON.stringify(upgradeData))
           setError(error)
@@ -281,7 +304,6 @@ const PaymentForm = ({
               }),
             })
           }
-          // For one-time payment, no need to do anything as the payment is already confirmed
 
           setError(monthlyResult.error)
           onError(monthlyResult.error)
@@ -354,7 +376,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const [authURL, setAuthURL] = useState('')
   const [showCoupon, setShowCoupon] = useState(false)
   const [couponCode, setCouponCode] = useState('')
-  const [finalCoupon, setFinalCoupon] = useState<any>(null)
+  const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
   const [couponError, setCouponError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -452,10 +474,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const supportTier = store.supportTier || propSupportTier
 
   const handleApplyCoupon = async () => {
-    if (!couponCode) return
-
     try {
-      setCouponError(null)
+      setIsProcessing(true)
       const response = await fetch('/api/validate-coupon', {
         method: 'POST',
         headers: {
@@ -463,28 +483,32 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         },
         body: JSON.stringify({ code: couponCode }),
       })
-      const data = await response.json()
+
+      const result = await response.json()
+      const data = couponResponseSchema.parse(result)
 
       if (data.valid) {
         setFinalCoupon(data.coupon)
-        setShowCoupon(false) // Hide input after successful application
+        setShowCoupon(false)
       } else {
-        setCouponError(data.message || 'Invalid coupon code')
+        setCouponError(data.message)
       }
     } catch (error) {
-      console.error('Error validating coupon:', error)
-      setCouponError('Error validating coupon')
+      setCouponError('Failed to apply coupon')
+    } finally {
+      setIsProcessing(false)
     }
   }
 
-  // Calculate final amount after coupon
-  const calculateFinalAmount = (amount: number) => {
-    if (!finalCoupon) return amount
+  const calculateDiscountedAmount = (amount: number, coupon: Coupon | null): number => {
+    if (!coupon) return amount
 
-    if (finalCoupon.percent_off) {
-      return amount * (1 - finalCoupon.percent_off / 100)
-    } else if (finalCoupon.amount_off) {
-      return Math.max(0, amount - finalCoupon.amount_off)
+    if (coupon.percent_off) {
+      return amount * (1 - coupon.percent_off / 100)
+    }
+
+    if (coupon.amount_off) {
+      return Math.max(0, amount - coupon.amount_off / 100)
     }
 
     return amount
@@ -534,7 +558,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       },
     }
 
-    const amount = Math.ceil(monthlyTotal * 100 + yearlyTotal * 100)
+    const baseAmount = monthlyTotal * 100 + yearlyTotal * 100
+    const amount = Math.ceil(
+      calculateDiscountedAmount(baseAmount / 100, finalCoupon) * 100
+    )
 
     return (
       <XStack gap="$6">
@@ -568,6 +595,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
                 userData={userData}
+                finalCoupon={finalCoupon}
               />
             </Elements>
           )}
@@ -590,17 +618,29 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   'Pro subscription'
                 )}
               </Paragraph>
-              <Paragraph textAlign="right" ff="$mono">
-                {disableAutoRenew ? (
-                  `$${Math.ceil(yearlyTotal)}`
-                ) : (
-                  <>
-                    ${Math.ceil(yearlyTotal / 12)}/month
-                    <br />
-                    paid yearly
-                  </>
+              <YStack ai="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    ff="$mono"
+                    size="$3"
+                    o={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${disableAutoRenew ? yearlyTotal : Math.ceil(yearlyTotal / 12)}
+                    {!disableAutoRenew && '/month'}
+                  </Paragraph>
                 )}
-              </Paragraph>
+                <Paragraph ff="$mono">
+                  $
+                  {Math.ceil(
+                    calculateDiscountedAmount(
+                      disableAutoRenew ? yearlyTotal : yearlyTotal / 12,
+                      finalCoupon
+                    )
+                  )}
+                  {!disableAutoRenew && '/month'}
+                </Paragraph>
+              </YStack>
             </XStack>
           )}
 
@@ -609,13 +649,45 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               {chatSupport && (
                 <XStack jc="space-between">
                   <Paragraph ff="$mono">Chat Support</Paragraph>
-                  <Paragraph ff="$mono">$200/month</Paragraph>
+                  <YStack ai="flex-end">
+                    {finalCoupon && (
+                      <Paragraph
+                        ff="$mono"
+                        size="$3"
+                        o={0.5}
+                        textDecorationLine="line-through"
+                      >
+                        $200/month
+                      </Paragraph>
+                    )}
+                    <Paragraph ff="$mono">
+                      ${Math.ceil(calculateDiscountedAmount(200, finalCoupon))}/month
+                    </Paragraph>
+                  </YStack>
                 </XStack>
               )}
               {supportTier > 0 && (
                 <XStack jc="space-between">
                   <Paragraph ff="$mono">Support tier ({supportTier})</Paragraph>
-                  <Paragraph ff="$mono">${supportTier * 800}/month</Paragraph>
+                  <YStack ai="flex-end">
+                    {finalCoupon && (
+                      <Paragraph
+                        ff="$mono"
+                        size="$3"
+                        o={0.5}
+                        textDecorationLine="line-through"
+                      >
+                        ${supportTier * 800}/month
+                      </Paragraph>
+                    )}
+                    <Paragraph ff="$mono">
+                      $
+                      {Math.ceil(
+                        calculateDiscountedAmount(supportTier * 800, finalCoupon)
+                      )}
+                      /month
+                    </Paragraph>
+                  </YStack>
                 </XStack>
               )}
             </>
@@ -626,9 +698,16 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <XStack jc="space-between">
             <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
+              {finalCoupon && (
+                <Paragraph ff="$mono" size="$3" o={0.5} textDecorationLine="line-through">
+                  ${yearlyTotal}
+                  {monthlyTotal > 0 && ` + $${monthlyTotal}/month`}
+                </Paragraph>
+              )}
               <H3 ff="$mono">
-                ${yearlyTotal}
-                {monthlyTotal > 0 && ` + $${monthlyTotal}/month`}
+                ${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}
+                {monthlyTotal > 0 &&
+                  ` + $${Math.ceil(calculateDiscountedAmount(monthlyTotal, finalCoupon))}/month`}
               </H3>
             </YStack>
           </XStack>
@@ -668,7 +747,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 Coupon applied:{' '}
                 {finalCoupon.percent_off
                   ? `${finalCoupon.percent_off}% off`
-                  : `$${finalCoupon.amount_off / 100} off`}
+                  : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
               </Paragraph>
             )}
           </YStack>
