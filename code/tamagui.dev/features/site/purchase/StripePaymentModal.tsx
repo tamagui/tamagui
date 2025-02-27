@@ -1,3 +1,29 @@
+/**
+ * @summary
+ *
+ * StripePaymentModal handles the payment flow for Pro plan and additional support options.
+ *
+ * Pro Plan Options:
+ * - One-time payment: $400
+ * - Yearly subscription: $240/year
+ *    - This is processed as an invoice payment thus no client-side confirmation is needed
+ *    - However, as for the subscription, we need to confirm the payment on the client side
+ *      to verify the card ownership. The same goes for the monthly subscriptions described below.
+ *
+ * Additional monthly subscriptions:
+ * - Chat Support: $200/month
+ * - Support Tier: $800/month per tier
+ *
+ * The payment flow is split into two APIs because Pro plan (yearly) and
+ * additional options (monthly) have different billing cycles, which cannot
+ * be combined in a single Stripe subscription:
+ * - create-subscription: Handles Pro plan (one-time or yearly)
+ * - upgrade-subscription: Handles monthly subscriptions
+ *
+ * Client-side payment confirmation is required for subscriptions due to
+ * card ownership verification, but not for one-time payments which are
+ * completed server-side.
+ */
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -74,8 +100,9 @@ class PaymentModal {
   chatSupport = false
   supportTier = 0
   selectedPrices = {
-    proPriceId: '',
-    supportPriceIds: [] as string[],
+    disableAutoRenew: false,
+    chatSupport: false,
+    supportTier: 0,
   }
 }
 
@@ -89,8 +116,9 @@ type StripePaymentModalProps = {
   chatSupport: boolean
   supportTier: number
   selectedPrices: {
-    proPriceId: string
-    supportPriceIds: string[]
+    disableAutoRenew: boolean
+    chatSupport: boolean
+    supportTier: number
   }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -113,8 +141,9 @@ const PaymentForm = ({
   chatSupport: boolean
   supportTier: number
   selectedPrices: {
-    proPriceId: string
-    supportPriceIds: string[]
+    disableAutoRenew: boolean
+    chatSupport: boolean
+    supportTier: number
   }
   isProcessing: boolean
   setIsProcessing: (value: boolean) => void
@@ -122,7 +151,6 @@ const PaymentForm = ({
 }) => {
   const stripe = useStripe()
   const elements = useElements()
-  const [paymentMethod, setPaymentMethod] = useState<string>()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -134,7 +162,6 @@ const PaymentForm = ({
     }
 
     setIsProcessing(true)
-
     try {
       // Submit the form first
       const { error: submitError } = await elements.submit()
@@ -156,37 +183,17 @@ const PaymentForm = ({
         return
       }
 
-      // Determine which API to call based on the selected prices
-      let response
-      if (selectedPrices.proPriceId) {
-        // Creating new Pro subscription
-        response = await fetch('/api/create-subscription', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            paymentMethodId: paymentMethod.id,
-            proPriceId: selectedPrices.proPriceId,
-            supportPriceIds: selectedPrices.supportPriceIds,
-            disableAutoRenew: !autoRenew,
-          }),
-        })
-      } else {
-        // Upgrading existing subscription with Support tier
-        response = await fetch('/api/upgrade-subscription', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            subscriptionId: userData.subscriptions[0].id,
-            chatSupport,
-            supportTier,
-            disableAutoRenew: !autoRenew,
-          }),
-        })
-      }
+      // Create Pro subscription/payment first
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          paymentMethodId: paymentMethod.id,
+          disableAutoRenew: selectedPrices.disableAutoRenew,
+        }),
+      })
 
       const data = await response.json()
       if (!response.ok) {
@@ -196,33 +203,93 @@ const PaymentForm = ({
         return
       }
 
-      const result = await stripe.confirmPayment({
-        elements,
-        redirect: 'if_required',
-        confirmParams: {
-          payment_method: paymentMethod.id,
-        },
-        clientSecret: data.clientSecret,
-      })
+      // Confirm payment only for subscription (not one-time payment)
+      if (!selectedPrices.disableAutoRenew) {
+        const result = await stripe.confirmPayment({
+          elements,
+          redirect: 'if_required',
+          confirmParams: {
+            payment_method: paymentMethod.id,
+          },
+          clientSecret: data.clientSecret,
+        })
 
-      if (result.error) {
-        // Payment failed, cancel the subscription
-        await fetch('/api/handle-failed-payment-subscription', {
+        if (result.error) {
+          setError(result.error)
+          onError(result.error)
+          return
+        }
+      }
+
+      // If Chat or Support is selected, create additional subscription
+      if (selectedPrices.chatSupport || selectedPrices.supportTier > 0) {
+        const upgradeResponse = await fetch('/api/upgrade-subscription', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            subscriptionId: data.subscriptionId,
+            subscriptionId: data.id, // Pass the Pro subscription ID
+            paymentMethodId: paymentMethod.id,
+            chatSupport: selectedPrices.chatSupport,
+            supportTier: selectedPrices.supportTier,
           }),
         })
 
-        setError(result.error)
-        onError(result.error)
-        return
+        const upgradeData = await upgradeResponse.json()
+        if (!upgradeResponse.ok) {
+          // If upgrade fails and Pro is a subscription, cancel it
+          if (!selectedPrices.disableAutoRenew) {
+            await fetch('/api/handle-failed-payment-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscriptionId: data.id,
+              }),
+            })
+          }
+          // For one-time payment, no need to do anything as the payment is already confirmed
+
+          const error = new Error(JSON.stringify(upgradeData))
+          setError(error)
+          onError(error)
+          return
+        }
+
+        // Confirm monthly subscription payment
+        const monthlyResult = await stripe.confirmPayment({
+          elements,
+          redirect: 'if_required',
+          confirmParams: {
+            payment_method: paymentMethod.id,
+          },
+          clientSecret: upgradeData.clientSecret,
+        })
+
+        if (monthlyResult.error) {
+          // If monthly payment fails and Pro is a subscription, cancel it
+          if (!selectedPrices.disableAutoRenew) {
+            await fetch('/api/handle-failed-payment-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscriptionId: data.id,
+              }),
+            })
+          }
+          // For one-time payment, no need to do anything as the payment is already confirmed
+
+          setError(monthlyResult.error)
+          onError(monthlyResult.error)
+          return
+        }
       }
 
-      onSuccess(data.subscriptionId)
+      onSuccess(data.id)
     } catch (error) {
       setError(error as Error)
       onError(error as Error)
@@ -383,9 +450,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const disableAutoRenew = store.disableAutoRenew || propDisableAutoRenew
   const chatSupport = store.chatSupport || propChatSupport
   const supportTier = store.supportTier || propSupportTier
-  const selectedPrices = store.selectedPrices.proPriceId
-    ? store.selectedPrices
-    : propSelectedPrices
 
   const handleApplyCoupon = async () => {
     if (!couponCode) return
@@ -496,7 +560,11 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 autoRenew={!disableAutoRenew}
                 chatSupport={chatSupport}
                 supportTier={supportTier}
-                selectedPrices={selectedPrices}
+                selectedPrices={{
+                  disableAutoRenew,
+                  chatSupport,
+                  supportTier: Number(supportTier),
+                }}
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
                 userData={userData}
@@ -538,6 +606,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
           {monthlyTotal > 0 && (
             <>
+              {chatSupport && (
+                <XStack jc="space-between">
+                  <Paragraph ff="$mono">Chat Support</Paragraph>
+                  <Paragraph ff="$mono">$200/month</Paragraph>
+                </XStack>
+              )}
               {supportTier > 0 && (
                 <XStack jc="space-between">
                   <Paragraph ff="$mono">Support tier ({supportTier})</Paragraph>
@@ -552,7 +626,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <XStack jc="space-between">
             <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
-              <H3 ff="$mono">${yearlyTotal}</H3>
+              <H3 ff="$mono">
+                ${yearlyTotal}
+                {monthlyTotal > 0 && ` + $${monthlyTotal}/month`}
+              </H3>
             </YStack>
           </XStack>
 
@@ -600,6 +677,23 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     )
   }
 
+  const handleCheckout = () => {
+    if (isProcessing) return
+
+    // Show payment modal with current selections
+    paymentModal.show = true
+    paymentModal.yearlyTotal = yearlyTotal
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = disableAutoRenew
+    paymentModal.chatSupport = chatSupport
+    paymentModal.supportTier = Number(supportTier)
+    paymentModal.selectedPrices = {
+      disableAutoRenew,
+      chatSupport,
+      supportTier: Number(supportTier),
+    }
+  }
+
   return (
     <Dialog
       modal
@@ -612,7 +706,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         <Dialog.Overlay
           key="overlay"
           animation="medium"
-          opacity={0.5}
+          opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -622,7 +716,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           key="content"
           animation="quick"
           w="90%"
-          maw={!userData?.user ? 500 : 1000}
+          maw={1000}
           p="$6"
           enterStyle={{
             opacity: 0,

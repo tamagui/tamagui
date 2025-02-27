@@ -96,7 +96,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             <DialogInstance />
 
             <Dialog.Close displayWhenAdapted asChild>
-              <Button disabled theme="accent" aria-label="Close">
+              <Button theme="accent" aria-label="Close">
                 Save changes
               </Button>
             </Dialog.Close>

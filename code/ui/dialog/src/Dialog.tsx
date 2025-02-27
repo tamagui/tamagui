@@ -12,7 +12,7 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { Portal, resolveViewZIndex } from '@tamagui/portal'
+import { Portal, PortalItem, resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
@@ -153,6 +153,7 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
 
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
+  const isAdapted = useAdaptIsActive()
 
   let childrenSpaced = children
 
@@ -165,15 +166,20 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
     })
   }
 
+  const content = (
+    <DialogProvider scope={__scopeDialog} {...context}>
+      <Theme name={themeName}>{childrenSpaced}</Theme>
+    </DialogProvider>
+  )
+
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
 
-  return (
-    <AdaptPortalContents>
-      <DialogProvider scope={__scopeDialog} {...context}>
-        <Theme name={themeName}>{childrenSpaced}</Theme>
-      </DialogProvider>
-    </AdaptPortalContents>
+  // when adapted we portal to the adapt, when not we portal to root modal if needed
+  return isAdapted ? (
+    <AdaptPortalContents>{content}</AdaptPortalContents>
+  ) : (
+    <PortalItem>{content}</PortalItem>
   )
 }
 
@@ -229,7 +235,11 @@ const DialogPortal: React.FC<DialogPortalProps> = (
       )
     }
 
-    return framedContents
+    return isAdapted ? (
+      framedContents
+    ) : (
+      <DialogPortalItem __scopeDialog={__scopeDialog}>{framedContents}</DialogPortalItem>
+    )
   }
 
   return children
