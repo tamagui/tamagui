@@ -373,35 +373,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const { data: userData, isLoading, refresh } = useUser()
   const supabaseClient = useSupabaseClient()
   const [authInterval, setAuthInterval] = useState<NodeJS.Timeout | null>(null)
-  const [authURL, setAuthURL] = useState('')
   const [showCoupon, setShowCoupon] = useState(false)
   const [couponCode, setCouponCode] = useState('')
   const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
   const [couponError, setCouponError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!supabaseClient) return
-    if (isLoading) return
-    if (!userData?.user) {
-      supabaseClient.auth
-        .signInWithOAuth({
-          provider: 'github',
-          options: {
-            skipBrowserRedirect: true,
-            redirectTo: `${window.location.origin}/api/auth/callback`,
-          },
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            console.error('supabase err:', error)
-            return
-          }
-          if (data.url) {
-            setAuthURL(data.url)
-          }
-        })
-    }
-  }, [supabaseClient, userData?.user])
 
   const handleLogin = async () => {
     if (!supabaseClient) return
@@ -416,7 +391,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       provider: 'github',
       options: {
         skipBrowserRedirect: true,
-        redirectTo: `${window.location.origin}/api/auth/callback`,
+        redirectTo: `${window.location.origin}/auth`,
       },
     })
 
@@ -427,31 +402,25 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
     // Open popup with the auth URL
     const popup = window.open(
-      authURL,
+      data.url,
       'Login with GitHub',
-      `width=${width},height=${height},left=${left},top=${top}`
+      `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
     )
 
-    if (popup) {
-      // Poll for authentication status
-      const interval = setInterval(async () => {
-        if (popup.closed) {
-          clearInterval(interval)
-          return
-        }
-
-        const {
-          data: { session },
-        } = await supabaseClient.auth.getSession()
-        if (session) {
-          clearInterval(interval)
-          popup.close()
-          refresh()
-        }
-      }, 500)
-
-      setAuthInterval(interval)
+    if (!popup) {
+      console.error('Failed to open popup')
+      return
     }
+
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return
+      if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
+        window.removeEventListener('message', handleMessage)
+        await refresh()
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
   }
 
   // Cleanup interval on unmount

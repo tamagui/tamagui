@@ -41,6 +41,7 @@ import { SearchButton } from './SearchButton'
 import { UpgradePopover } from './UpgradePopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
+import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -616,6 +617,53 @@ const HeaderMenuContents = (props: { id: ID }) => {
 const HeaderMenuMoreContents = () => {
   const userSwr = useUser()
   const router = useRouter()
+  const supabaseClient = useSupabaseClient()
+
+  const handleLogin = async (e: any) => {
+    e.preventDefault()
+    if (!supabaseClient) return
+
+    // Open popup for GitHub auth
+    const width = 600
+    const height = 800
+    const left = window.screenX + (window.innerWidth - width) / 2
+    const top = window.screenY + (window.innerHeight - height) / 2
+
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        skipBrowserRedirect: true,
+        redirectTo: `${window.location.origin}/auth`,
+      },
+    })
+
+    if (error) {
+      console.error('Login error:', error)
+      return
+    }
+
+    // Open popup with the auth URL
+    const popup = window.open(
+      data.url,
+      'Login with GitHub',
+      `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
+    )
+
+    if (!popup) {
+      console.error('Failed to open popup')
+      return
+    }
+
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return
+      if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
+        window.removeEventListener('message', handleMessage)
+        await userSwr.refresh()
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+  }
 
   const handlePress = (e: any) => {
     e.preventDefault()
@@ -652,14 +700,12 @@ const HeaderMenuMoreContents = () => {
       </XStack>
 
       {!userSwr.data?.userDetails && (
-        <Link asChild href="/login">
-          <HeadAnchor grid>
-            Login
-            <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
-              <LogIn color="$color10" size={14} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
+        <HeadAnchor grid onPress={handleLogin}>
+          Login
+          <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
+            <LogIn color="$color10" size={14} />
+          </YStack>
+        </HeadAnchor>
       )}
 
       {userSwr.data?.userDetails && (
