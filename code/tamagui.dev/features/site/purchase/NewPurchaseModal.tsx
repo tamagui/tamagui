@@ -531,6 +531,13 @@ const FaqTabContent = () => {
         additional private chat invites.
       </P>
 
+      <Question>How do I use a coupon?</Question>
+
+      <P>
+        When you checkout, you'll see an input box to enter a coupon. If you have a
+        coupon, enter it and click apply. If it's valid, the price will update.
+      </P>
+
       <Spacer h="$10" />
     </>
   )
