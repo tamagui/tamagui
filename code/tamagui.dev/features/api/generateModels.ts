@@ -8,6 +8,7 @@ export const generateModels = {
   'grok-2-1212': true,
   'deepseek-chat': true,
   'deepseek-reasoner': true,
+  'claude-3-7-sonnet': true,
   'claude-3-5-sonnet-latest': true,
   'claude-3-5-haiku-latest': true,
   'gpt-4o-mini': true,
@@ -24,4 +25,4 @@ export const generateModels = {
 
 export type ModelNames = keyof typeof generateModels
 
-export const defaultModel: ModelNames = 'groq-r1-llama-70b'
+export const defaultModel: ModelNames = 'claude-3-7-sonnet'

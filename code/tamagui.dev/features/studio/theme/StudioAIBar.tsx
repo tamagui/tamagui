@@ -14,12 +14,12 @@ import {
   YStack,
 } from 'tamagui'
 import { Select } from '../../../components/Select'
-import { defaultModel, generateModels, ModelNames } from '../../api/generateModels'
 import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
+import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
 
 export const StudioAIBar = memo(() => {
   const [model, setModel] = useState(defaultModel)
@@ -28,6 +28,7 @@ export const StudioAIBar = memo(() => {
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
   const [lastReply, setLastReply] = useState('')
+  const [lastPrompt, setLastPrompt] = useState('')
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
 
@@ -64,6 +65,7 @@ export const StudioAIBar = memo(() => {
           prompt,
           model,
           lastReply,
+          lastPrompt,
           scheme: themeName.startsWith('dark') ? 'dark' : 'light',
         }),
         headers: {
@@ -82,6 +84,7 @@ export const StudioAIBar = memo(() => {
       }
 
       setLastReply(data.reply)
+      setLastPrompt(prompt)
       themeBuilderStore.updateGenerate(data.result)
       toastController.hide()
     } catch (err) {

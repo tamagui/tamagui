@@ -165,25 +165,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       zi={50000}
     >
       <XStack ai="center" gap="$4">
-        <Link href="/">
-          <SeasonTogglePopover>
-            <YStack
-              px="$2"
-              cur="pointer"
-              o={1}
-              {...(isHome && {
-                onPress(e) {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  tint.setNextTint()
-                },
-              })}
-            >
-              <TamaguiLogo downscale={2} />
-            </YStack>
-          </SeasonTogglePopover>
-        </Link>
-
         <TooltipGroup delay={tooltipDelay}>
           <XGroup mah={32} bc="transparent" ai="center" size="$4">
             <XGroup.Item>
