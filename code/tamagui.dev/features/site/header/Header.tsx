@@ -219,26 +219,24 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             pointerEvents="auto"
             als="center"
             gap="$3"
-            ml="$-3"
+            ml="$-5"
             ai="center"
           >
-            <Link href="/">
-              <SeasonTogglePopover>
-                <YStack
-                  cur="pointer"
-                  o={1}
-                  {...(isHome && {
-                    onPress(e) {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      tint.setNextTint()
-                    },
-                  })}
-                >
-                  <TamaguiLogo downscale={2.6} />
-                </YStack>
-              </SeasonTogglePopover>
-            </Link>
+            <SeasonTogglePopover>
+              <YStack
+                cur="pointer"
+                o={1}
+                {...(isHome && {
+                  onPress(e) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    tint.setNextTint()
+                  },
+                })}
+              >
+                <TamaguiLogo downscale={2.6} />
+              </YStack>
+            </SeasonTogglePopover>
             <LogoWords animated />
           </XStack>
         </Link>
