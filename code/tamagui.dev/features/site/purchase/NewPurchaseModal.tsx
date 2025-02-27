@@ -88,12 +88,10 @@ const PurchaseModalContents = () => {
   const [supportTier, setSupportTier] = useState('0')
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<Error | StripeError | null>(null)
-  const [selectedPrices, setSelectedPrices] = useState<{
-    proPriceId: string
-    supportPriceIds: string[]
-  }>({
-    proPriceId: '',
-    supportPriceIds: [],
+  const [selectedPrices, setSelectedPrices] = useState<SelectedPrices>({
+    disableAutoRenew: false,
+    chatSupport: false,
+    supportTier: 0,
   })
   const { data: products } = useProducts()
   const { data: userData } = useUser()

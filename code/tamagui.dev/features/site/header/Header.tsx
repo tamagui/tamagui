@@ -290,10 +290,6 @@ const HeaderMenuButton = () => {
               accountModal.show = true
               return
             }
-            if (isTouchable) {
-              setOpen(!open)
-              return
-            }
             if (isOnLink) {
               e.preventDefault()
               e.stopPropagation()
@@ -303,7 +299,6 @@ const HeaderMenuButton = () => {
               setOpen(false)
               return
             }
-            // hover handles this
           }}
           aria-label="Open the main menu"
           hoverStyle={{
