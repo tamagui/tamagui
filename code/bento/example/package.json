@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/bento-example1",
+  "name": "@tamagui/bento-example",
   "version": "1.125.18",
   "main": "expo/AppEntry.js",
   "scripts": {
