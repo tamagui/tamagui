@@ -672,7 +672,14 @@ const HeaderMenuMoreContents = () => {
 
   return (
     <YStack gap="$2" aria-label="Home menu contents">
-      <XStack fw="wrap" f={1} gap="$2" w="100%" $gtSm={{ dsp: 'none' }}>
+      <YStack gap="$2" $gtSm={{ dsp: 'none' }}>
+        <Link asChild href="/">
+          <HeadAnchor grid>Home</HeadAnchor>
+        </Link>
+        <Separator bc="$color02" o={0.25} my="$2" />
+      </YStack>
+
+      <XStack fw="wrap" f={1} gap="$2" w="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
             Core
@@ -697,6 +704,8 @@ const HeaderMenuMoreContents = () => {
           </HeadAnchor>
         </Link>
       </XStack>
+
+      <Separator bc="$color02" o={0.25} my="$2" />
 
       {!userSwr.data?.userDetails && (
         <HeadAnchor grid onPress={handleLogin}>
