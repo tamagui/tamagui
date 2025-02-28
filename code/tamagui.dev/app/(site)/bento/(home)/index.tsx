@@ -1,20 +1,11 @@
-import { assertIsError } from '@tamagui/assert'
 import { LocationNotification } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import {
-  AlertCircle,
-  Globe,
-  Leaf,
-  Puzzle,
-  Search,
-  ShoppingCart,
-} from '@tamagui/lucide-icons'
+import { Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import {
   Button,
   Circle,
   EnsureFlexed,
-  H3,
   H4,
   Paragraph,
   Spacer,
@@ -23,27 +14,18 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { BentoStore, ComponentSection } from '~/components/ComponentSection'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
-import type { ProComponentsProps } from '~/features/bento/types'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
-import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
-import { useProducts } from '~/features/site/purchase/useProducts'
-import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
+import { PageThemeCarousel } from '~/features/site/PageThemeCarousel'
+import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { ComponentSection, BentoStore } from '~/components/ComponentSection'
-import { PageThemeCarousel } from '../../../../features/site/PageThemeCarousel'
-import { useSubscriptionModal } from '../../../../features/site/purchase/useSubscriptionModal'
 
 export default function BentoPage() {
-  const { data, isLoading, error } = useProducts()
   const store = useStore(BentoStore)
-
-  if (error) {
-    console.error('Error loading products:', error)
-  }
 
   return (
     <>
@@ -62,10 +44,6 @@ export default function BentoPage() {
           ],
         }}
       />
-
-      {data?.bento && (
-        <PurchaseModal bento={data.bento} defaultValue="bento" starter={data.starter} />
-      )}
 
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
@@ -103,7 +81,7 @@ export default function BentoPage() {
           }}
         >
           <Theme name="tan">
-            <Hero mainProduct={data?.bento!} />
+            <Hero />
 
             {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
@@ -185,7 +163,7 @@ const IntermediateCard = ({
   )
 }
 
-const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => {
+const Hero = () => {
   const { showAppropriateModal, isProUser } = useSubscriptionModal()
 
   return (

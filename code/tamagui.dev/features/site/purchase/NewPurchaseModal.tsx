@@ -31,12 +31,28 @@ import { paymentModal, StripePaymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
 import { useProducts } from './useProducts'
 import { BigP, P } from './BigP'
+import { useTakeoutStore } from './useTakeoutStore'
 import { ProPoliciesModal } from './PoliciesModal'
 import { ProAgreementModal } from './AgreementModal'
-import { useTakeoutStore } from './useTakeoutStore'
 
 class PurchaseModal {
   show = false
+  yearlyTotal = 0
+  monthlyTotal = 0
+  disableAutoRenew = false
+  chatSupport = false
+  supportTier = 0
+  selectedPrices = {
+    disableAutoRenew: false,
+    chatSupport: false,
+    supportTier: 0,
+  }
+}
+
+type SelectedPrices = {
+  disableAutoRenew: boolean
+  chatSupport: boolean
+  supportTier: number
 }
 
 export const purchaseModal = createStore(PurchaseModal)
@@ -72,12 +88,10 @@ const PurchaseModalContents = () => {
   const [supportTier, setSupportTier] = useState('0')
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<Error | StripeError | null>(null)
-  const [selectedPrices, setSelectedPrices] = useState<{
-    proPriceId: string
-    supportPriceIds: string[]
-  }>({
-    proPriceId: '',
-    supportPriceIds: [],
+  const [selectedPrices, setSelectedPrices] = useState<SelectedPrices>({
+    disableAutoRenew: false,
+    chatSupport: false,
+    supportTier: 0,
   })
   const { data: products } = useProducts()
   const { data: userData } = useUser()
@@ -111,42 +125,20 @@ const PurchaseModalContents = () => {
   }
 
   const handleCheckout = () => {
-    // Find the appropriate price IDs based on user selection
-    const selectedPrices = {
-      proPriceId: '',
-      supportPriceIds: [] as string[],
-    }
+    if (isProcessing) return
 
-    // Add Pro price based on auto-renew setting
-    const proPrice = disableAutoRenew
-      ? products?.pro.prices.find((p) => p.type === 'one_time')
-      : products?.pro.prices.find((p) => p.type === 'recurring')
-    if (proPrice) {
-      selectedPrices.proPriceId = proPrice.id
-    }
-
-    // Add support tier if selected
-    if (supportTier !== '0') {
-      const supportPrice = products?.support.prices.find(
-        (p) => p.description === `Tier ${supportTier}`
-      )
-      if (supportPrice) {
-        selectedPrices.supportPriceIds.push(supportPrice.id)
-      }
-    }
-
-    // Add chat support if selected
-    if (chatSupport) {
-      const chatSupportPrice = products?.support.prices.find(
-        (p) => p.description === 'Chat Support'
-      )
-      if (chatSupportPrice) {
-        selectedPrices.supportPriceIds.push(chatSupportPrice.id)
-      }
-    }
-
-    setSelectedPrices(selectedPrices)
+    // Show payment modal with current selections
     paymentModal.show = true
+    paymentModal.yearlyTotal = yearlyTotal
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = disableAutoRenew
+    paymentModal.chatSupport = chatSupport
+    paymentModal.supportTier = Number(supportTier)
+    paymentModal.selectedPrices = {
+      disableAutoRenew,
+      chatSupport,
+      supportTier: Number(supportTier),
+    }
   }
 
   // Calculate direction for animation
@@ -154,7 +146,7 @@ const PurchaseModalContents = () => {
 
   // Calculate prices
   const basePrice = disableAutoRenew ? 400 : 240 // yearly base price
-  const chatSupportMonthly = chatSupport ? 100 : 0 // $100/month for chat support
+  const chatSupportMonthly = chatSupport ? 200 : 0 // $200/month for chat support
   const supportTierMonthly = Number(supportTier) * 800 // $800/month per tier
 
   // Keep yearly and monthly totals separate
@@ -187,7 +179,7 @@ const PurchaseModalContents = () => {
       if (hasSupportTier) {
         return 'Yearly base + monthly support tier, easy 1-click cancel'
       }
-      return 'Yearly subscription'
+      return 'Yearly subscription, easy one-click cancel'
     }
   }, [chatSupport, supportTier, disableAutoRenew])
 
@@ -227,8 +219,6 @@ const PurchaseModalContents = () => {
     ),
     faq: FaqTabContent,
   }
-
-  const CurrentTabContents: () => JSX.Element = tabContents[currentTab]
 
   return (
     <>
@@ -327,11 +317,11 @@ const PurchaseModalContents = () => {
                       forceMount
                       flex={1}
                       minHeight={400}
-                      height="calc(min(100vh - 400px, 580px))"
+                      height="calc(min(100vh - 280px, 620px))"
                     >
                       <ScrollView>
                         <YStack p="$8" gap="$6">
-                          <CurrentTabContents />
+                          {tabContents[currentTab]()}
                         </YStack>
                       </ScrollView>
                     </Tabs.Content>
@@ -469,7 +459,7 @@ const PurchaseModalContents = () => {
 
 const Question = styled(P, {
   fontWeight: 'bold',
-  color: '$orange9',
+  color: '$green9',
 })
 
 const FaqTabContent = () => {
@@ -519,7 +509,7 @@ const FaqTabContent = () => {
       <Question>What support do I get in the base plan?</Question>
 
       <P>
-        You get access to the private #support channel. We prioritize responses there over
+        You get access to the private #takeout channel. We prioritize responses there over
         the public Discord, but we don't provide any SLA.
       </P>
 
@@ -527,18 +517,23 @@ const FaqTabContent = () => {
 
       <P>
         You get a private Discord channel just for your team and a highlighted role in
-        Discord chat. You can add up to 5 members to the private channel. We answer
+        Discord chat. You can add up to 2 members to the private channel. We answer
         questions within 2 business days, and will prioritize bugs above our base
-        subscribers.
+        subscribers. The Chat add-on costs $200/month.
       </P>
 
       <Question>What support do I get with Support tiers?</Question>
 
       <P>
-        Each tier gives you 2 hours of prioritized development per month. We will set up a
-        call with your team on sign-up, and you get a private chat room to talk with us.
-        We log the work we do for you each month, and prioritize chat responses above
-        prior tiers of support.
+        Each tier adds 4 hours of development per month, faster response times, and 4
+        additional private chat invites.
+      </P>
+
+      <Question>How do I use a coupon?</Question>
+
+      <P>
+        When you checkout, you'll see an input box to enter a coupon. If you have a
+        coupon, enter it and click apply. If it's valid, the price will update.
       </P>
 
       <Spacer h="$10" />
@@ -572,10 +567,10 @@ const SupportTabContent = ({
       </BigP>
 
       <YStack gap="$6" p="$4">
-        {/* <YStack gap="$3">
+        <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="chat-support">
-              <P>Chat Support ($100/month)</P>
+              <P>Chat Support ($200/month)</P>
             </Label>
 
             <XStack maw={100}>
@@ -587,11 +582,11 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P maw={500} size="$5" lineHeight="$6" o={0.8}>
-            A private Discord room just for your team, with responses prioritized over our
-            community chat.
+          <P maw={500} size="$5" lineHeight="$6" o={0.5}>
+            A private Discord room just for your team with 2 invites, with responses
+            prioritized over our community chat.
           </P>
-        </YStack> */}
+        </YStack>
 
         <YStack gap="$3">
           <XStack ov="hidden" alignItems="center">
@@ -621,9 +616,9 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P size="$5" lineHeight="$6" maw={500} o={0.8}>
-            Each tier adds 2 hours of prioritized development each month, and puts your
-            messages higher in our response queue.
+          <P size="$5" lineHeight="$6" maw={500} o={0.5}>
+            Each tier adds 4 hours of development a month, faster response times, and 4
+            additional private chat invites.
           </P>
         </YStack>
       </YStack>

@@ -169,7 +169,7 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
   }
 
   if (batch) {
-    const id = simpleHash(typeof batch == 'string' ? batch : Object.keys(themes).join(''))
+    const id = typeof batch == 'string' ? batch : simpleHash(Object.keys(themes).join(''))
     updateStyle(`t_theme_style_${id}`, cssRules)
   }
 

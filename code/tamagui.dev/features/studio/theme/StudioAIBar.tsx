@@ -13,18 +13,22 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Select } from '../../../components/Select'
+import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
-import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
+import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
 
 export const StudioAIBar = memo(() => {
+  const [model, setModel] = useState(defaultModel)
   const inputRef = useRef<HTMLInputElement>(null)
   const user = useUser()
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
   const [lastReply, setLastReply] = useState('')
+  const [lastPrompt, setLastPrompt] = useState('')
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
 
@@ -55,22 +59,14 @@ export const StudioAIBar = memo(() => {
 
     try {
       let prompt = inputRef.current?.value ?? ''
-      let model = ''
-
-      if (prompt[0] === '!') {
-        const space = prompt.indexOf(' ')
-        if (space > 0) {
-          model = prompt.slice(1, space)
-          prompt = prompt.slice(space)
-        }
-      }
 
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
           prompt,
-          lastReply,
-          scheme: themeName.startsWith('dark') ? 'dark' : 'light',
           model,
+          lastReply,
+          lastPrompt,
+          scheme: themeName.startsWith('dark') ? 'dark' : 'light',
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -88,6 +84,7 @@ export const StudioAIBar = memo(() => {
       }
 
       setLastReply(data.reply)
+      setLastPrompt(prompt)
       themeBuilderStore.updateGenerate(data.result)
       toastController.hide()
     } catch (err) {
@@ -101,26 +98,46 @@ export const StudioAIBar = memo(() => {
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
       <XStack fw="wrap" ai="center" f={1} gap="$3">
-        <Input
-          ref={inputRef as any}
-          placeholder={`Generate a theme`}
-          miw={300}
-          f={10}
-          size="$6"
-          shadowColor="$shadow3"
-          bg="$color4"
-          shadowOffset={{ height: 2, width: 0 }}
-          shadowRadius={20}
-          br="$8"
-          onSubmit={() => {
-            generate(lastReply ? 'reply' : 'new')
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              generate('new')
-            }
-          }}
-        />
+        <XStack miw={300} f={10}>
+          <Input
+            ref={inputRef as any}
+            f={1}
+            placeholder={`Generate a theme`}
+            size="$6"
+            shadowColor="$shadow3"
+            bg="$color4"
+            shadowOffset={{ height: 2, width: 0 }}
+            shadowRadius={20}
+            br="$8"
+            onSubmit={() => {
+              generate(lastReply ? 'reply' : 'new')
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                generate('new')
+              }
+            }}
+          />
+
+          <Select
+            w={200}
+            pos="absolute"
+            t={10}
+            br={100}
+            r="$4"
+            size="$4"
+            value={model}
+            onValueChange={(x) => {
+              setModel(x as ModelNames)
+            }}
+          >
+            {Object.keys(generateModels).map((modelName, index) => (
+              <Select.Item key={modelName} value={modelName} index={index}>
+                {modelName}
+              </Select.Item>
+            ))}
+          </Select>
+        </XStack>
 
         <XStack gap="$3" ai="center" jc="space-between">
           <Theme name="accent">

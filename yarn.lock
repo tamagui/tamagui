@@ -24,7 +24,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/anthropic@npm:^1.1.6":
+"@ai-sdk/anthropic@npm:^1.1.11":
   version: 1.1.11
   resolution: "@ai-sdk/anthropic@npm:1.1.11"
   dependencies:
@@ -36,7 +36,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/deepseek@npm:^0.1.8":
+"@ai-sdk/deepseek@npm:^0.1.12":
   version: 0.1.12
   resolution: "@ai-sdk/deepseek@npm:0.1.12"
   dependencies:
@@ -49,7 +49,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/google@npm:^1.1.16":
+"@ai-sdk/google@npm:^1.1.17":
   version: 1.1.17
   resolution: "@ai-sdk/google@npm:1.1.17"
   dependencies:
@@ -61,7 +61,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/groq@npm:^1.1.7":
+"@ai-sdk/groq@npm:^1.1.11":
   version: 1.1.11
   resolution: "@ai-sdk/groq@npm:1.1.11"
   dependencies:
@@ -85,7 +85,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/openai@npm:^1.1.9":
+"@ai-sdk/openai@npm:^1.1.14":
   version: 1.1.14
   resolution: "@ai-sdk/openai@npm:1.1.14"
   dependencies:
@@ -185,7 +185,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/xai@npm:^1.1.8":
+"@ai-sdk/xai@npm:^1.1.12":
   version: 1.1.12
   resolution: "@ai-sdk/xai@npm:1.1.12"
   dependencies:
@@ -7545,12 +7545,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dot-dev@workspace:code/tamagui.dev"
   dependencies:
-    "@ai-sdk/anthropic": "npm:^1.1.6"
-    "@ai-sdk/deepseek": "npm:^0.1.8"
-    "@ai-sdk/google": "npm:^1.1.16"
-    "@ai-sdk/groq": "npm:^1.1.7"
-    "@ai-sdk/openai": "npm:^1.1.9"
-    "@ai-sdk/xai": "npm:^1.1.8"
+    "@ai-sdk/anthropic": "npm:^1.1.11"
+    "@ai-sdk/deepseek": "npm:^0.1.12"
+    "@ai-sdk/google": "npm:^1.1.17"
+    "@ai-sdk/groq": "npm:^1.1.11"
+    "@ai-sdk/openai": "npm:^1.1.14"
+    "@ai-sdk/xai": "npm:^1.1.12"
     "@biomejs/biome": "npm:^1.9.4"
     "@discordjs/core": "npm:^2.0.1"
     "@docsearch/react": "npm:^3.6.1"
@@ -7580,7 +7580,7 @@ __metadata:
     "@vxrn/color-scheme": "npm:^1.1.454"
     acorn: "npm:^8.11.3"
     acorn-walk: "npm:^8.3.1"
-    ai: "npm:^4.1.16"
+    ai: "npm:^4.1.46"
     archiver: "npm:^7.0.1"
     color2k: "npm:^2.0.2"
     esbuild-register: "npm:^3.6.0"
@@ -11183,7 +11183,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ai@npm:^4.1.16":
+"ai@npm:^4.1.46":
   version: 4.1.46
   resolution: "ai@npm:4.1.46"
   dependencies:

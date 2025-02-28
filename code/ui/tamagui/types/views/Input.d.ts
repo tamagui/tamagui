@@ -87,7 +87,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
 }>;
 export declare function useInputProps(props: InputProps, ref: any): {
     placeholderTextColor: any;
-    onChangeText: (value: any) => void;
+    onChangeText: (value: string) => void;
     theme?: (import("@tamagui/core").ThemeName | null) | undefined;
     debug?: import("@tamagui/core").DebugProp | undefined;
     children?: any | any[];

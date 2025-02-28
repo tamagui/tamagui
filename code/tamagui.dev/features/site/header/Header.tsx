@@ -1,7 +1,7 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { createShallowSetState, isTouchable } from '@tamagui/web'
-import { usePathname } from 'one'
+import { useFocusEffect, useNavigation, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
 import {
@@ -38,9 +38,10 @@ import { useUser } from '../../user/useUser'
 import { accountModal } from '../purchase/NewAccountModal'
 import { PromoCardTheme } from './PromoCards'
 import { SearchButton } from './SearchButton'
-import { UpgradePopover } from './UpgradePopover'
+import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
+import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -165,25 +166,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       zi={50000}
     >
       <XStack ai="center" gap="$4">
-        <Link href="/">
-          <SeasonTogglePopover>
-            <YStack
-              px="$2"
-              cur="pointer"
-              o={1}
-              {...(isHome && {
-                onPress(e) {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  tint.setNextTint()
-                },
-              })}
-            >
-              <TamaguiLogo downscale={2} />
-            </YStack>
-          </SeasonTogglePopover>
-        </Link>
-
         <TooltipGroup delay={tooltipDelay}>
           <XGroup mah={32} bc="transparent" ai="center" size="$4">
             <XGroup.Item>
@@ -215,7 +197,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XStack>
         </Link>
 
-        <UpgradePopover />
+        <UpgradeToProPopover />
       </XStack>
 
       <View flex={1} />
@@ -237,7 +219,25 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             cursor={isHome ? 'default' : 'pointer'}
             pointerEvents="auto"
             als="center"
+            gap="$3"
+            ml="$-5"
+            ai="center"
           >
+            <SeasonTogglePopover>
+              <YStack
+                cur="pointer"
+                o={1}
+                {...(isHome && {
+                  onPress(e) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    tint.setNextTint()
+                  },
+                })}
+              >
+                <TamaguiLogo downscale={2.6} />
+              </YStack>
+            </SeasonTogglePopover>
             <LogoWords animated />
           </XStack>
         </Link>
@@ -303,7 +303,6 @@ const HeaderMenuButton = () => {
               setOpen(false)
               return
             }
-            // hover handles this
           }}
           aria-label="Open the main menu"
           hoverStyle={{
@@ -507,8 +506,15 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   if (active !== props.active && props.active !== '') {
     setActive(props.active)
   }
+  const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
+  useFocusEffect(
+    React.useCallback(() => {
+      context.close()
+    }, [pathname])
+  )
+
   const last = React.useRef(active)
 
   const curI = order.indexOf(active)
@@ -559,9 +565,6 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       <Popover.Arrow bg="$background08" size="$3.5" />
 
       <YStack
-        onPressOut={() => {
-          context.close()
-        }}
         $pointerFine={{
           w: 290,
         }}
@@ -612,6 +615,60 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
 const HeaderMenuMoreContents = () => {
   const userSwr = useUser()
+  const router = useRouter()
+  const supabaseClient = useSupabaseClient()
+
+  const handleLogin = async (e: any) => {
+    e.preventDefault()
+    if (!supabaseClient) return
+
+    // Open popup for GitHub auth
+    const width = 600
+    const height = 800
+    const left = window.screenX + (window.innerWidth - width) / 2
+    const top = window.screenY + (window.innerHeight - height) / 2
+
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        skipBrowserRedirect: true,
+        redirectTo: `${window.location.origin}/auth`,
+      },
+    })
+
+    if (error) {
+      console.error('Login error:', error)
+      return
+    }
+
+    // Open popup with the auth URL
+    const popup = window.open(
+      data.url,
+      'Login with GitHub',
+      `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
+    )
+
+    if (!popup) {
+      console.error('Failed to open popup')
+      return
+    }
+
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return
+      if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
+        window.removeEventListener('message', handleMessage)
+        await userSwr.refresh()
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+  }
+
+  const handlePress = (e: any) => {
+    e.preventDefault()
+    e.stopPropagation()
+    router.push(e.target.href)
+  }
 
   return (
     <YStack gap="$2" aria-label="Home menu contents">
@@ -622,19 +679,19 @@ const HeaderMenuMoreContents = () => {
           </HeadAnchor>
         </Link>
 
-        <Link asChild href="/docs/intro/compiler-install">
+        <Link asChild href="/docs/intro/compiler-install" onPress={handlePress}>
           <HeadAnchor grid half>
             Compile
           </HeadAnchor>
         </Link>
 
-        <Link asChild href="/ui/intro">
+        <Link asChild href="/ui/intro" onPress={handlePress}>
           <HeadAnchor grid half>
             UI
           </HeadAnchor>
         </Link>
 
-        <Link asChild href="/theme">
+        <Link asChild href="/theme" onPress={handlePress}>
           <HeadAnchor grid half>
             Theme
           </HeadAnchor>
@@ -642,14 +699,12 @@ const HeaderMenuMoreContents = () => {
       </XStack>
 
       {!userSwr.data?.userDetails && (
-        <Link asChild href="/login">
-          <HeadAnchor grid>
-            Login
-            <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
-              <LogIn color="$color10" size={14} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
+        <HeadAnchor grid onPress={handleLogin}>
+          Login
+          <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
+            <LogIn color="$color10" size={14} />
+          </YStack>
+        </HeadAnchor>
       )}
 
       {userSwr.data?.userDetails && (

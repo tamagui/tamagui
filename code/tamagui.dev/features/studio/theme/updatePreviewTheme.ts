@@ -52,8 +52,6 @@ export async function updatePreviewTheme(
     })
   }
 
-  console.warn(`updatePreviewTheme()`, args.id, { themes, insertThemes })
-
   last.set(args.id, cacheKey)
 
   if (process.env.NODE_ENV === 'development') {
@@ -62,10 +60,12 @@ export async function updatePreviewTheme(
 
   lastInserted = themes
 
-  mutateThemes({
+  const out = mutateThemes({
     themes: insertThemes,
-    batch: args.id,
+    batch: `themes`,
   })
+
+  console.warn(`updatePreviewTheme()`, args.id, { themes, insertThemes, out })
 
   return true
 }

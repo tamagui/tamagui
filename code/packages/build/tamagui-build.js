@@ -29,7 +29,8 @@ const shouldWatch = process.argv.includes('--watch')
 
 if (process.env.NEEDS_UNLOCK) {
   if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
-    process.exit(shouldWatch ? 0 : 1)
+    console.warn(`Not unlocked, skipping`)
+    process.exit(0)
   }
 }
 

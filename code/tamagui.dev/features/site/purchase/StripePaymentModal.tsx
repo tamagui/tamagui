@@ -1,9 +1,36 @@
+/**
+ * @summary
+ *
+ * StripePaymentModal handles the payment flow for Pro plan and additional support options.
+ *
+ * Pro Plan Options:
+ * - One-time payment: $400
+ * - Yearly subscription: $240/year
+ *    - This is processed as an invoice payment thus no client-side confirmation is needed
+ *    - However, as for the subscription, we need to confirm the payment on the client side
+ *      to verify the card ownership. The same goes for the monthly subscriptions described below.
+ *
+ * Additional monthly subscriptions:
+ * - Chat Support: $200/month
+ * - Support Tier: $800/month per tier
+ *
+ * The payment flow is split into two APIs because Pro plan (yearly) and
+ * additional options (monthly) have different billing cycles, which cannot
+ * be combined in a single Stripe subscription:
+ * - create-subscription: Handles Pro plan (one-time or yearly)
+ * - upgrade-subscription: Handles monthly subscriptions
+ *
+ * Client-side payment confirmation is required for subscriptions due to
+ * card ownership verification, but not for one-time payments which are
+ * completed server-side.
+ */
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useEffect, useMemo, useState } from 'react'
+import { z } from 'zod'
 import {
   Button,
   Dialog,
@@ -16,12 +43,35 @@ import {
   useThemeName,
   XStack,
   YStack,
+  SizableText,
+  Input,
 } from 'tamagui'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
-import { z } from 'zod'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
+
+const couponSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  percent_off: z.number().nullable(),
+  amount_off: z.number().nullable(),
+})
+
+type Coupon = z.infer<typeof couponSchema>
+
+const couponResponseSchema = z.discriminatedUnion('valid', [
+  z.object({
+    valid: z.literal(true),
+    coupon: couponSchema,
+  }),
+  z.object({
+    valid: z.literal(false),
+    message: z.string(),
+  }),
+])
+
+type CouponResponse = z.infer<typeof couponResponseSchema>
 
 const stripeErrorSchema = z.object({
   code: z.string(),
@@ -32,8 +82,6 @@ const stripeErrorSchema = z.object({
   request_log_url: z.string().optional(),
   type: z.string(),
 })
-
-type StripeErrorResponse = z.infer<typeof stripeErrorSchema>
 
 const ErrorMessage = ({ error }: { error: Error | StripeError }) => {
   const errorMessage = useMemo(() => {
@@ -72,8 +120,9 @@ class PaymentModal {
   chatSupport = false
   supportTier = 0
   selectedPrices = {
-    proPriceId: '',
-    supportPriceIds: [] as string[],
+    disableAutoRenew: false,
+    chatSupport: false,
+    supportTier: 0,
   }
 }
 
@@ -87,8 +136,9 @@ type StripePaymentModalProps = {
   chatSupport: boolean
   supportTier: number
   selectedPrices: {
-    proPriceId: string
-    supportPriceIds: string[]
+    disableAutoRenew: boolean
+    chatSupport: boolean
+    supportTier: number
   }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -104,6 +154,7 @@ const PaymentForm = ({
   isProcessing,
   setIsProcessing,
   userData,
+  finalCoupon,
 }: {
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -111,16 +162,17 @@ const PaymentForm = ({
   chatSupport: boolean
   supportTier: number
   selectedPrices: {
-    proPriceId: string
-    supportPriceIds: string[]
+    disableAutoRenew: boolean
+    chatSupport: boolean
+    supportTier: number
   }
   isProcessing: boolean
   setIsProcessing: (value: boolean) => void
   userData: any
+  finalCoupon: Coupon | null
 }) => {
   const stripe = useStripe()
   const elements = useElements()
-  const [paymentMethod, setPaymentMethod] = useState<string>()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -132,7 +184,6 @@ const PaymentForm = ({
     }
 
     setIsProcessing(true)
-
     try {
       // Submit the form first
       const { error: submitError } = await elements.submit()
@@ -154,37 +205,18 @@ const PaymentForm = ({
         return
       }
 
-      // Determine which API to call based on the selected prices
-      let response
-      if (selectedPrices.proPriceId) {
-        // Creating new Pro subscription
-        response = await fetch('/api/create-subscription', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            paymentMethodId: paymentMethod.id,
-            proPriceId: selectedPrices.proPriceId,
-            supportPriceIds: selectedPrices.supportPriceIds,
-            disableAutoRenew: !autoRenew,
-          }),
-        })
-      } else {
-        // Upgrading existing subscription with Support tier
-        response = await fetch('/api/upgrade-subscription', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            subscriptionId: userData.subscriptions[0].id,
-            chatSupport,
-            supportTier,
-            disableAutoRenew: !autoRenew,
-          }),
-        })
-      }
+      // Create Pro subscription/payment first
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          paymentMethodId: paymentMethod.id,
+          disableAutoRenew: selectedPrices.disableAutoRenew,
+          couponId: finalCoupon?.id,
+        }),
+      })
 
       const data = await response.json()
       if (!response.ok) {
@@ -194,33 +226,92 @@ const PaymentForm = ({
         return
       }
 
-      const result = await stripe.confirmPayment({
-        elements,
-        redirect: 'if_required',
-        confirmParams: {
-          payment_method: paymentMethod.id,
-        },
-        clientSecret: data.clientSecret,
-      })
+      // Confirm payment only for subscription (not one-time payment)
+      if (!selectedPrices.disableAutoRenew) {
+        const result = await stripe.confirmPayment({
+          elements,
+          redirect: 'if_required',
+          confirmParams: {
+            payment_method: paymentMethod.id,
+          },
+          clientSecret: data.clientSecret,
+        })
 
-      if (result.error) {
-        // Payment failed, cancel the subscription
-        await fetch('/api/handle-failed-payment-subscription', {
+        if (result.error) {
+          setError(result.error)
+          onError(result.error)
+          return
+        }
+      }
+
+      // If Chat or Support is selected, create additional subscription
+      if (selectedPrices.chatSupport || selectedPrices.supportTier > 0) {
+        const upgradeResponse = await fetch('/api/upgrade-subscription', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            subscriptionId: data.subscriptionId,
+            subscriptionId: data.id,
+            paymentMethodId: paymentMethod.id,
+            chatSupport: selectedPrices.chatSupport,
+            supportTier: selectedPrices.supportTier,
+            couponId: finalCoupon?.id,
           }),
         })
 
-        setError(result.error)
-        onError(result.error)
-        return
+        const upgradeData = await upgradeResponse.json()
+        if (!upgradeResponse.ok) {
+          // If upgrade fails and Pro is a subscription, cancel it
+          if (!selectedPrices.disableAutoRenew) {
+            await fetch('/api/handle-failed-payment-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscriptionId: data.id,
+              }),
+            })
+          }
+
+          const error = new Error(JSON.stringify(upgradeData))
+          setError(error)
+          onError(error)
+          return
+        }
+
+        // Confirm monthly subscription payment
+        const monthlyResult = await stripe.confirmPayment({
+          elements,
+          redirect: 'if_required',
+          confirmParams: {
+            payment_method: paymentMethod.id,
+          },
+          clientSecret: upgradeData.clientSecret,
+        })
+
+        if (monthlyResult.error) {
+          // If monthly payment fails and Pro is a subscription, cancel it
+          if (!selectedPrices.disableAutoRenew) {
+            await fetch('/api/handle-failed-payment-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscriptionId: data.id,
+              }),
+            })
+          }
+
+          setError(monthlyResult.error)
+          onError(monthlyResult.error)
+          return
+        }
       }
 
-      onSuccess(data.subscriptionId)
+      onSuccess(data.id)
     } catch (error) {
       setError(error as Error)
       onError(error as Error)
@@ -282,31 +373,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const { data: userData, isLoading, refresh } = useUser()
   const supabaseClient = useSupabaseClient()
   const [authInterval, setAuthInterval] = useState<NodeJS.Timeout | null>(null)
-  const [authURL, setAuthURL] = useState('')
-
-  useEffect(() => {
-    if (!supabaseClient) return
-    if (isLoading) return
-    if (!userData?.user) {
-      supabaseClient.auth
-        .signInWithOAuth({
-          provider: 'github',
-          options: {
-            skipBrowserRedirect: true,
-            redirectTo: `${window.location.origin}/api/auth/callback`,
-          },
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            console.error('supabase err:', error)
-            return
-          }
-          if (data.url) {
-            setAuthURL(data.url)
-          }
-        })
-    }
-  }, [supabaseClient, userData?.user])
+  const [showCoupon, setShowCoupon] = useState(false)
+  const [couponCode, setCouponCode] = useState('')
+  const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
+  const [couponError, setCouponError] = useState<string | null>(null)
 
   const handleLogin = async () => {
     if (!supabaseClient) return
@@ -321,7 +391,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       provider: 'github',
       options: {
         skipBrowserRedirect: true,
-        redirectTo: `${window.location.origin}/api/auth/callback`,
+        redirectTo: `${window.location.origin}/auth`,
       },
     })
 
@@ -332,31 +402,25 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
     // Open popup with the auth URL
     const popup = window.open(
-      authURL,
+      data.url,
       'Login with GitHub',
-      `width=${width},height=${height},left=${left},top=${top}`
+      `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
     )
 
-    if (popup) {
-      // Poll for authentication status
-      const interval = setInterval(async () => {
-        if (popup.closed) {
-          clearInterval(interval)
-          return
-        }
-
-        const {
-          data: { session },
-        } = await supabaseClient.auth.getSession()
-        if (session) {
-          clearInterval(interval)
-          popup.close()
-          refresh()
-        }
-      }, 500)
-
-      setAuthInterval(interval)
+    if (!popup) {
+      console.error('Failed to open popup')
+      return
     }
+
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return
+      if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
+        window.removeEventListener('message', handleMessage)
+        await refresh()
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
   }
 
   // Cleanup interval on unmount
@@ -377,9 +441,47 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const disableAutoRenew = store.disableAutoRenew || propDisableAutoRenew
   const chatSupport = store.chatSupport || propChatSupport
   const supportTier = store.supportTier || propSupportTier
-  const selectedPrices = store.selectedPrices.proPriceId
-    ? store.selectedPrices
-    : propSelectedPrices
+
+  const handleApplyCoupon = async () => {
+    try {
+      setIsProcessing(true)
+      const response = await fetch('/api/validate-coupon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: couponCode }),
+      })
+
+      const result = await response.json()
+      const data = couponResponseSchema.parse(result)
+
+      if (data.valid) {
+        setFinalCoupon(data.coupon)
+        setShowCoupon(false)
+      } else {
+        setCouponError(data.message)
+      }
+    } catch (error) {
+      setCouponError('Failed to apply coupon')
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const calculateDiscountedAmount = (amount: number, coupon: Coupon | null): number => {
+    if (!coupon) return amount
+
+    if (coupon.percent_off) {
+      return amount * (1 - coupon.percent_off / 100)
+    }
+
+    if (coupon.amount_off) {
+      return Math.max(0, amount - coupon.amount_off / 100)
+    }
+
+    return amount
+  }
 
   const renderContent = () => {
     if (isLoading) {
@@ -425,7 +527,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       },
     }
 
-    const amount = Math.ceil(monthlyTotal * 100 + yearlyTotal * 100)
+    const baseAmount = monthlyTotal * 100 + yearlyTotal * 100
+    const amount = Math.ceil(
+      calculateDiscountedAmount(baseAmount / 100, finalCoupon) * 100
+    )
 
     return (
       <XStack gap="$6">
@@ -451,10 +556,15 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 autoRenew={!disableAutoRenew}
                 chatSupport={chatSupport}
                 supportTier={supportTier}
-                selectedPrices={selectedPrices}
+                selectedPrices={{
+                  disableAutoRenew,
+                  chatSupport,
+                  supportTier: Number(supportTier),
+                }}
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
                 userData={userData}
+                finalCoupon={finalCoupon}
               />
             </Elements>
           )}
@@ -477,26 +587,76 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   'Pro subscription'
                 )}
               </Paragraph>
-              <Paragraph textAlign="right" ff="$mono">
-                {disableAutoRenew ? (
-                  `$${Math.ceil(yearlyTotal)}`
-                ) : (
-                  <>
-                    ${Math.ceil(yearlyTotal / 12)}/month
-                    <br />
-                    paid yearly
-                  </>
+              <YStack ai="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    ff="$mono"
+                    size="$3"
+                    o={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${disableAutoRenew ? yearlyTotal : Math.ceil(yearlyTotal / 12)}
+                    {!disableAutoRenew && '/month'}
+                  </Paragraph>
                 )}
-              </Paragraph>
+                <Paragraph ff="$mono">
+                  $
+                  {Math.ceil(
+                    calculateDiscountedAmount(
+                      disableAutoRenew ? yearlyTotal : yearlyTotal / 12,
+                      finalCoupon
+                    )
+                  )}
+                  {!disableAutoRenew && '/month'}
+                </Paragraph>
+              </YStack>
             </XStack>
           )}
 
           {monthlyTotal > 0 && (
             <>
+              {chatSupport && (
+                <XStack jc="space-between">
+                  <Paragraph ff="$mono">Chat Support</Paragraph>
+                  <YStack ai="flex-end">
+                    {finalCoupon && (
+                      <Paragraph
+                        ff="$mono"
+                        size="$3"
+                        o={0.5}
+                        textDecorationLine="line-through"
+                      >
+                        $200/month
+                      </Paragraph>
+                    )}
+                    <Paragraph ff="$mono">
+                      ${Math.ceil(calculateDiscountedAmount(200, finalCoupon))}/month
+                    </Paragraph>
+                  </YStack>
+                </XStack>
+              )}
               {supportTier > 0 && (
                 <XStack jc="space-between">
                   <Paragraph ff="$mono">Support tier ({supportTier})</Paragraph>
-                  <Paragraph ff="$mono">${supportTier * 800}/month</Paragraph>
+                  <YStack ai="flex-end">
+                    {finalCoupon && (
+                      <Paragraph
+                        ff="$mono"
+                        size="$3"
+                        o={0.5}
+                        textDecorationLine="line-through"
+                      >
+                        ${supportTier * 800}/month
+                      </Paragraph>
+                    )}
+                    <Paragraph ff="$mono">
+                      $
+                      {Math.ceil(
+                        calculateDiscountedAmount(supportTier * 800, finalCoupon)
+                      )}
+                      /month
+                    </Paragraph>
+                  </YStack>
                 </XStack>
               )}
             </>
@@ -507,12 +667,79 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <XStack jc="space-between">
             <H3 ff="$mono">Total</H3>
             <YStack ai="flex-end">
-              <H3 ff="$mono">${yearlyTotal}</H3>
+              {finalCoupon && (
+                <Paragraph ff="$mono" size="$3" o={0.5} textDecorationLine="line-through">
+                  ${yearlyTotal}
+                  {monthlyTotal > 0 && ` + $${monthlyTotal}/month`}
+                </Paragraph>
+              )}
+              <H3 ff="$mono">
+                ${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}
+                {monthlyTotal > 0 &&
+                  ` + $${Math.ceil(calculateDiscountedAmount(monthlyTotal, finalCoupon))}/month`}
+              </H3>
             </YStack>
           </XStack>
+
+          <YStack gap="$2">
+            <SizableText
+              theme="alt1"
+              o={0.3}
+              cursor="pointer"
+              hoverStyle={{ opacity: 0.8 }}
+              onPress={() => setShowCoupon((x) => !x)}
+            >
+              {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+            </SizableText>
+            {showCoupon && (
+              <XStack gap="$2" ai="center">
+                <Input
+                  f={1}
+                  size="$3"
+                  borderWidth={1}
+                  placeholder="Enter code"
+                  value={couponCode}
+                  onChangeText={setCouponCode}
+                />
+                <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                  Apply
+                </Button>
+              </XStack>
+            )}
+            {couponError && (
+              <Paragraph size="$2" color="$red10">
+                {couponError}
+              </Paragraph>
+            )}
+            {finalCoupon && (
+              <Paragraph size="$2" color="$green10">
+                Coupon applied:{' '}
+                {finalCoupon.percent_off
+                  ? `${finalCoupon.percent_off}% off`
+                  : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+              </Paragraph>
+            )}
+          </YStack>
         </YStack>
       </XStack>
     )
+  }
+
+  const handleCheckout = () => {
+    if (isProcessing) return
+
+    // Show payment modal with current selections
+    paymentModal.show = true
+    paymentModal.yearlyTotal = yearlyTotal
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = disableAutoRenew
+    paymentModal.chatSupport = chatSupport
+    paymentModal.supportTier = Number(supportTier)
+    paymentModal.selectedPrices = {
+      disableAutoRenew,
+      chatSupport,
+      supportTier: Number(supportTier),
+    }
   }
 
   return (
@@ -527,7 +754,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         <Dialog.Overlay
           key="overlay"
           animation="medium"
-          opacity={0.5}
+          opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -537,7 +764,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           key="content"
           animation="quick"
           w="90%"
-          maw={!userData?.user ? 500 : 1000}
+          maw={1000}
           p="$6"
           enterStyle={{
             opacity: 0,
