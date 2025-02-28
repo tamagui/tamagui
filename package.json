@@ -38,7 +38,7 @@
     "dev:prod-only-homepage": "yarn dev:build --only index && yarn dev:serve",
     "postinstall": "./scripts/unlock-repo.sh",
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "./scripts/ensure-unlocked.sh && ./scripts/run.sh build --force --skip-types",
+    "build:js": "./scripts/run.sh build --force --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build",
     "build:verbose": "yarn build -vvv",
