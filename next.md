@@ -25,7 +25,7 @@ does not give the Button a red background when pressed
 
 v2
 
-
+  - default position relative => position static with ENV to revert
   - onMouseMove and other web props
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - @tamagui/static and all the plugins => @tamagui/compiler package
