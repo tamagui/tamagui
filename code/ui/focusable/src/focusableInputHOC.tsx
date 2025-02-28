@@ -16,34 +16,50 @@ export function useFocusable({
   isInput,
   props,
   ref,
-}: { isInput?: boolean; props: FocusableProps; ref?: MutableRefObject<any> }) {
+}: {
+  isInput?: boolean
+  props: FocusableProps
+  ref?: MutableRefObject<any>
+}) {
   const { id, onChangeText, value, defaultValue } = props
   const inputValue = React.useRef(value || defaultValue || '')
   const unregisterFocusable = React.useRef<() => void | undefined>()
 
-  const inputRef = React.useCallback(
-    (input) => {
-      if (!id) return
-      if (!input) return
+  const focusAndSelect = React.useCallback((input: any) => {
+    input.focus()
+    if (input.setSelection && typeof inputValue.current === 'string') {
+      input.setSelection(0, inputValue.current.length)
+    }
+  }, [])
+
+  const registerFocusableHandler = React.useCallback(
+    (input: any) => {
+      if (!id || !input) return
+
       unregisterFocusable.current?.()
       unregisterFocusable.current = registerFocusable(id, {
         focus: input.focus,
-
         ...(isInput && {
-          // react-native doesn't support programmatic .select()
-          focusAndSelect() {
-            input.focus()
-            if (input.setSelection && typeof inputValue.current === 'string') {
-              input.setSelection(0, inputValue.current.length)
-            }
-          },
+          focusAndSelect: () => focusAndSelect(input),
         }),
       })
     },
-    [isInput, id]
+    [id, isInput, focusAndSelect]
   )
 
-  const combinedRefs = composeRefs(ref, inputRef)
+  const inputRef = React.useCallback(
+    (input: any) => {
+      if (input) {
+        registerFocusableHandler(input)
+      }
+    },
+    [registerFocusableHandler]
+  )
+
+  const handleChangeText = useEvent((value: string) => {
+    inputValue.current = value
+    onChangeText?.(value)
+  })
 
   React.useEffect(() => {
     return () => {
@@ -52,10 +68,7 @@ export function useFocusable({
   }, [])
 
   return {
-    ref: combinedRefs,
-    onChangeText: useEvent((value) => {
-      inputValue.current = value
-      onChangeText?.(value)
-    }),
+    ref: React.useMemo(() => composeRefs(ref, inputRef), [ref, inputRef]),
+    onChangeText: handleChangeText,
   }
 }

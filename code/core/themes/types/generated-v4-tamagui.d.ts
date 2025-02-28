@@ -35,9 +35,9 @@ type Theme = {
     colorHover: string;
     colorPress: string;
     colorFocus: string;
-    colorTransparent: string;
     placeholderColor: string;
     outlineColor: string;
+    colorTransparent: string;
     blue1: string;
     blue2: string;
     blue3: string;
@@ -140,6 +140,10 @@ type Theme = {
     shadow4: string;
     shadow5: string;
     shadow6: string;
+    shadow7: string;
+    shadow8: string;
+    shadow9: string;
+    shadow10: string;
     black1: string;
     black2: string;
     black3: string;
