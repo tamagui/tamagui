@@ -163,7 +163,7 @@ export const PopoverTrigger = React.forwardRef<
   )
 
   const virtualRef = React.useMemo(() => {
-    if (!context.anchorTo) {
+    if (!anchorTo) {
       return null
     }
     return {
@@ -176,7 +176,14 @@ export const PopoverTrigger = React.forwardRef<
         }),
       },
     }
-  }, [context.anchorTo])
+  }, [
+    context.anchorTo,
+    anchorTo?.x,
+    anchorTo?.y,
+    anchorTo?.x,
+    anchorTo?.height,
+    anchorTo?.width,
+  ])
 
   return context.hasCustomAnchor ? (
     trigger
