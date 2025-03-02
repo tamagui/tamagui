@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/test-design-system",
-  "version": "1.125.21",
+  "version": "1.125.22",
   "sideEffects": [
     "*.css"
   ],
