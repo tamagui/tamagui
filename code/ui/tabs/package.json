@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs",
-  "version": "1.125.20",
+  "version": "1.125.21",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

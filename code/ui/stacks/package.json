@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/stacks",
-  "version": "1.125.20",
+  "version": "1.125.21",
   "sideEffects": [
     "*.css"
   ],
