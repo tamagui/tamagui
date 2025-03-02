@@ -143,10 +143,11 @@ export const PopoverTrigger = React.forwardRef<
   const { __scopePopover, ...rest } = props
   const context = usePopoverContext(__scopePopover)
   const anchorTo = context.anchorTo
-
   const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
-  if (!props.children) return null
+  if (!props.children) {
+    return null
+  }
 
   const trigger = (
     <View
@@ -161,8 +162,11 @@ export const PopoverTrigger = React.forwardRef<
     />
   )
 
-  if (anchorTo) {
-    const virtualRef = {
+  const virtualRef = React.useMemo(() => {
+    if (!context.anchorTo) {
+      return null
+    }
+    return {
       current: {
         getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
         ...(!isWeb && {
@@ -172,26 +176,22 @@ export const PopoverTrigger = React.forwardRef<
         }),
       },
     }
-    return (
-      <PopperAnchor
-        virtualRef={virtualRef}
-        __scopePopper={__scopePopover || POPOVER_SCOPE}
-      >
-        {trigger}
-      </PopperAnchor>
-    )
-  }
+  }, [context.anchorTo])
 
   return context.hasCustomAnchor ? (
     trigger
   ) : (
-    <PopperAnchor __scopePopper={__scopePopover || POPOVER_SCOPE} asChild>
+    <PopperAnchor
+      {...(virtualRef && { virtualRef })}
+      __scopePopper={__scopePopover || POPOVER_SCOPE}
+      asChild={rest.asChild}
+    >
       {trigger}
     </PopperAnchor>
   )
 })
 
-/* -------------------------------------------------------------------------------------------------
+/* -------------------------  ------------------------------------------------------------------------
  * PopoverContent
  * -----------------------------------------------------------------------------------------------*/
 
