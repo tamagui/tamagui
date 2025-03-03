@@ -6,7 +6,6 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
-    "./code/bento/example",
     "./code/bento",
     "./code/compiler/**/*",
     "./code/core/**/*",
@@ -64,9 +63,9 @@
     "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink start:web",
     "kitchen-sink": "yarn profile react-18 && yarn workspace @tamagui/kitchen-sink start",
-    "bento": "yarn profile react-18 && yarn workspace @tamagui/bento-example start",
-    "bento:ios": "yarn workspace @tamagui/bento-example ios",
-    "bento:android": "yarn workspace @tamagui/bento-example android",
+    "bento": "yarn profile react-18 && yarn workspace @tamagui/bento start",
+    "bento:ios": "yarn workspace @tamagui/bento ios",
+    "bento:android": "yarn workspace @tamagui/bento android",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
