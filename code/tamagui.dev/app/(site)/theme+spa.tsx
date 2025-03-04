@@ -27,32 +27,33 @@ import {
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
 import { lastInserted } from '../../features/studio/theme/updatePreviewTheme'
+import { useUser } from '~/features/user/useUser'
 
 export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
   const router = useRouter()
   const params = useParams<any>()
+  const user = useUser()
 
   useEffect(() => {
-    // give it a bit to load many dynamic charts that animate etc
-    themeBuilderStore.load(params.state as string | undefined).then(() => {
+    const loadTheme = async () => {
+      const query = params.q
+      const userId = params.uid
+
+      if (query && userId) {
+        await themeBuilderStore.load(query, userId)
+      }
+
       startTransition(() => {
         setLoaded(true)
       })
-    })
-
-    const onSave = () => {
-      router.setParams({
-        state: themeBuilderStore.serializedState,
-      })
     }
 
-    themeBuilderStore.listeners.add(onSave)
-
-    return () => {
-      themeBuilderStore.listeners.delete(onSave)
+    // ユーザーデータが利用可能になった時にロード
+    if (user.data) {
+      loadTheme()
     }
-  }, [])
+  }, [params.q, params.uid, user.data])
 
   // const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
 
