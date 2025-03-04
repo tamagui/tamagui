@@ -90,7 +90,7 @@
     "react-hook-form": "^7.51.0",
     "react-native": "^0.76.5",
     "react-native-gesture-handler": "~2.20.2",
-    "react-native-reanimated": "^3.17.1",
+    "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "4.12.0",
     "react-native-static-safe-area-insets": "https://github.com/mainguyen12/react-native-static-safe-area-insets.git#62d76a2acdb572dd6aa968d51c701a510c858d7e",
     "react-native-svg": "15.8.0",
