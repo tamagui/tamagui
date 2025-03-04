@@ -116,6 +116,11 @@ export function getMainTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
   return sortedTeams?.[0]
 }
 
+/**
+ * @deprecated
+ * TODO: we only have to check if the user has a subscription to the Pro plan.
+ * We can remove the check for owned products and the subscription_items.
+ */
 function checkAccessToProduct(
   productSlug: string,
   subscriptions: Awaited<ReturnType<typeof getSubscriptions>>,
@@ -124,9 +129,12 @@ function checkAccessToProduct(
   const hasActiveSubscription = subscriptions.some(
     (subscription) =>
       (subscription.status === 'trialing' || subscription.status === 'active') &&
-      subscription.subscription_items.some(
+      (subscription.subscription_items.some(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
-      )
+      ) ||
+        subscription.subscription_items.some(
+          (item) => item.price.product?.name === 'Tamagui Pro'
+        ))
   )
   if (hasActiveSubscription) {
     return {
@@ -149,6 +157,12 @@ function checkAccessToProduct(
   }
 }
 
+/**
+ * @deprecated
+ * TODO: we only have to check if the user has a subscription to the Pro plan.
+ * We can remove the check for owned products and the subscription_items.
+ * However, for the backwards compatibility, we keep the function.
+ */
 export async function getUserAccessInfo(
   supabase: SupabaseClient<Database>,
   user: User | null
