@@ -15,6 +15,9 @@
       "@tamagui/bento": [
         "code/bento"
       ],
+      "@tamagui/bento-example": [
+        "code/bento/example"
+      ],
       "@tamagui/demos": [
         "code/demos"
       ]
