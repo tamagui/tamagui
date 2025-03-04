@@ -6549,7 +6549,6 @@ __metadata:
     "@tamagui/cli": "workspace:*"
     "@tamagui/colors": "workspace:*"
     "@tamagui/config": "workspace:*"
-    "@tamagui/demos": "workspace:*"
     "@tamagui/font-inter": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
@@ -6573,6 +6572,7 @@ __metadata:
     react-native: "npm:^0.76.5"
     react-native-gesture-handler: "npm:~2.20.2"
     react-native-safe-area-context: "npm:4.12.0"
+    react-native-static-safe-area-insets: "https://github.com/mainguyen12/react-native-static-safe-area-insets.git#62d76a2acdb572dd6aa968d51c701a510c858d7e"
     react-native-svg: "npm:15.8.0"
     react-native-web: "npm:^0.19.0"
     swr: "npm:^2.2.5"
@@ -23792,6 +23792,13 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/a70d036674611b327c01e6c3a147b9d22b59d7e58cfd82a9df5a070fac26af17b65bcd1ec911ec3516c6d9e2782a48577b5ac2f576a196ad5fff1fddcf17bf38
+  languageName: node
+  linkType: hard
+
+"react-native-static-safe-area-insets@https://github.com/mainguyen12/react-native-static-safe-area-insets.git#62d76a2acdb572dd6aa968d51c701a510c858d7e":
+  version: 2.2.0
+  resolution: "react-native-static-safe-area-insets@https://github.com/mainguyen12/react-native-static-safe-area-insets.git#commit=62d76a2acdb572dd6aa968d51c701a510c858d7e"
+  checksum: 10/d997a7eae3a7d5630d4e948725862acb0b1750549658afa85ce33c9909c0166b7178b7056649f2638162d0bd6c2bd1eea48feb6a3a5ac84cdf56f895e5c554cf
   languageName: node
   linkType: hard
 
