@@ -79,22 +79,6 @@ export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
   })
 }
 
-export const getProductOwnerships = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase
-    .from('product_ownership')
-    .select('*, prices(*, products(*))')
-  if (result.error) {
-    throw new Error(result.error.message)
-  }
-  return result.data.map(({ prices, ...sub }) => {
-    const price = getSingle(prices)
-    return {
-      ...sub,
-      price: { ...price, product: getSingle(price?.products) },
-    }
-  })
-}
-
 export function getPersonalTeam(
   teams: Awaited<ReturnType<typeof getUserTeams>>,
   userId: string
