@@ -509,11 +509,10 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
-  useFocusEffect(
-    React.useCallback(() => {
-      context.close()
-    }, [pathname])
-  )
+
+  useFocusEffect(() => {
+    context.close()
+  }, [pathname])
 
   const last = React.useRef(active)
 
