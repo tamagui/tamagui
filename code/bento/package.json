@@ -68,7 +68,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@ngneat/falso": "^7.3.0",
-    "@react-native-segmented-control/segmented-control": "2.5.4",
     "@rehookify/datepicker": "^6.6.8",
     "@tamagui/cli": "workspace:*",
     "@tamagui/colors": "workspace:*",
@@ -85,7 +84,6 @@
     "expo-document-picker": "~13.0.1",
     "expo-image-picker": "~16.0.3",
     "foxact": "^0.2.33",
-    "react": "18.3.1",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-native": "^0.76.5",

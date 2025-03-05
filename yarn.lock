@@ -4635,16 +4635,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-segmented-control/segmented-control@npm:2.5.4":
-  version: 2.5.4
-  resolution: "@react-native-segmented-control/segmented-control@npm:2.5.4"
-  peerDependencies:
-    react: ">=16.0"
-    react-native: ">=0.62"
-  checksum: 10/2164ca3da0acd38e51375bddec76bd49d1ec69f0a2ea179302343b5b9f5b2a559ef249d5fef55c69060da9e34d12fdddad7ee495bacb0a6f24b73cfe674325b3
-  languageName: node
-  linkType: hard
-
 "@react-native/assets-registry@npm:0.76.7":
   version: 0.76.7
   resolution: "@react-native/assets-registry@npm:0.76.7"
@@ -6074,7 +6064,6 @@ __metadata:
     "@ngneat/falso": "npm:^7.3.0"
     "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
-    "@react-native-segmented-control/segmented-control": "npm:2.5.4"
     "@rehookify/datepicker": "npm:^6.6.8"
     "@tamagui/babel-plugin": "workspace:*"
     "@tamagui/build": "workspace:*"
@@ -6098,7 +6087,6 @@ __metadata:
     metro-runtime: "npm:*"
     mini-css-extract-plugin: "npm:^2.9.1"
     pod-install: "npm:^0.3.2"
-    react: "npm:18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:^0.76.5"
@@ -23295,7 +23283,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.3.1, react@npm:react@18.3.1":
+"react@npm:react@18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:
