@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
-import { useParams, useRouter } from 'one'
+import { useLoader, useParams, useRouter } from 'one'
 import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
 import {
   AnimatePresence,
@@ -26,36 +26,63 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
-import { lastInserted } from '../../features/studio/theme/updatePreviewTheme'
+import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { useUser } from '~/features/user/useUser'
+import type { LoaderProps } from 'one'
+import { getTheme } from '~/app/api/theme/histories+api'
 
-export default function ThemePage() {
-  const [loaded, setLoaded] = useState(false)
-  const router = useRouter()
-  const params = useParams<any>()
+export async function loader(props: LoaderProps) {
+  const subpath = props.params.subpath
+  const id = subpath ? subpath[0] : null
+  let data: {
+    theme_data: {
+      base: any[]
+      accent: any[]
+      schema: string
+    }
+    search_query: string
+    id: number
+  } | null = null
+
+  if (id) {
+    data = await getTheme(id)
+  }
+
+  return {
+    data,
+  }
+}
+
+type ThemeProps = Awaited<ReturnType<typeof loader>>['data']
+
+export default function ThemeLayout() {
+  const { data } = useLoader(loader)
+
+  if (typeof window !== 'undefined') {
+    return <ThemePage data={data} />
+  }
+
+  return null
+}
+
+function ThemePage({
+  data,
+}: {
+  data: ThemeProps
+}) {
   const user = useUser()
+  const router = useRouter()
 
   useEffect(() => {
-    const loadTheme = async () => {
-      const query = params.q
-      const userId = params.uid
-
-      if (query && userId) {
-        await themeBuilderStore.load(query, userId)
-      }
-
-      startTransition(() => {
-        setLoaded(true)
-      })
+    if (data) {
+      themeBuilderStore.updateGenerate(
+        data.theme_data,
+        data.search_query,
+        data.id,
+        user.data?.userDetails?.full_name
+      )
     }
-
-    // ユーザーデータが利用可能になった時にロード
-    if (user.data) {
-      loadTheme()
-    }
-  }, [params.q, params.uid, user.data])
-
-  // const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
+  }, [])
 
   return (
     <>
@@ -84,7 +111,7 @@ export default function ThemePage() {
               p: '$4',
             }}
           >
-            <StudioAIBar />
+            <StudioAIBar initialTheme={{ currentTheme: data }} />
             <StudioPreviewComponentsBar scrollView={document.documentElement} />
             <PreviewTheme>
               <YStack gap="$6">

@@ -113,25 +113,23 @@ export class ThemeBuilderStore {
   themeSwitchOpen = true
 
   currentQuery = ''
-  currentUserId = ''
+  currentThemeId = ''
 
   async setAccentSetting(next: AccentSetting) {
     this.accentSetting = next
     await this.refreshThemeSuite()
   }
 
-  async load(query?: string, userId?: string) {
-    if (query && userId) {
+  async load(themeId?: string) {
+    if (themeId) {
       try {
-        const res = await fetch(
-          `/api/theme/histories?q=${encodeURIComponent(query)}&uid=${encodeURIComponent(userId)}`
-        )
+        const res = await fetch(`/api/theme/histories?id=${themeId}`)
         const data = await res.json()
 
-        if (data.theme_data) {
-          this.currentQuery = query
-          this.currentUserId = userId
-          await this.updateGenerate(data.theme_data, query, userId)
+        if (data?.theme_data) {
+          this.currentThemeId = themeId
+          this.currentQuery = data.search_query
+          await this.updateGenerate(data.theme_data, data.search_query, themeId)
         }
       } catch (err) {
         console.error('Failed to load theme:', err)
@@ -176,9 +174,14 @@ export class ThemeBuilderStore {
   }
 
   async updateGenerate(
-    result: { base: any; accent: any },
+    result: {
+      base: any[]
+      accent: any[]
+      schema?: string
+    },
     query?: string,
-    userId?: string
+    themeId?: string | number,
+    username?: string | null
   ) {
     this.palettes.base.anchors = result.base
     this.palettes.accent.anchors = result.accent
@@ -187,20 +190,18 @@ export class ThemeBuilderStore {
     }
     this.themeSuiteVersion++
 
-    const params = new URLSearchParams()
-    if (query && userId) {
+    if (query && themeId) {
       this.currentQuery = query
-      this.currentUserId = userId
-      params.set('q', query)
-      params.set('uid', userId)
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.pathname}?${params.toString()}`
-      )
+      this.currentThemeId = String(themeId)
+
+      const encodedQuery = encodeURIComponent(query)
+      const path = username
+        ? `/theme/${themeId}/${encodeURIComponent(username)}/${encodedQuery}`
+        : `/theme/${themeId}/${encodedQuery}`
+
+      window.history.replaceState({}, '', path)
     }
 
-    // force it to hard refresh
     this.themeSuiteId = `${this.themeSuiteId}${this.themeSuiteVersion}`
     await this.refreshThemeSuite()
   }
@@ -423,7 +424,7 @@ export class ThemeBuilderStore {
       }
 
       if (this.sectionsFlat[this.step].saveOnNext) {
-        this.save()
+        // this.save()
       }
     } else if (dir === -1) {
       if (!this.canGoBackward) {

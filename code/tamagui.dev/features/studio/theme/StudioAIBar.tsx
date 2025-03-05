@@ -23,6 +23,8 @@ import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
 import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
 import { Sheet } from '@tamagui/sheet'
+import { useRouter } from 'one'
+import useSWR, { mutate } from 'swr'
 
 type ThemeHistory = {
   theme_data: {
@@ -34,25 +36,59 @@ type ThemeHistory = {
   }
   search_query: string
   created_at: string
+  id: number
 }
 
-export const StudioAIBar = memo(() => {
+type ThemeData = {
+  theme_data: {
+    base: any[]
+    accent: any[]
+    schema: string
+  }
+  search_query: string
+  id: number
+} | null
+
+interface StudioAIBarProps {
+  initialTheme?: {
+    currentTheme: ThemeData
+  }
+}
+
+export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const [model, setModel] = useState(defaultModel)
   const inputRef = useRef<HTMLInputElement>(null)
   const user = useUser()
+  const router = useRouter()
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
   const [lastReply, setLastReply] = useState('')
   const [lastPrompt, setLastPrompt] = useState('')
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
-  const [histories, setHistories] = useState<ThemeHistory[]>([])
   const [showHistories, setShowHistories] = useState(false)
+  const username = user.data?.userDetails?.full_name
+
+  const { data: historiesData } = useSWR(
+    user.data ? '/api/theme/histories' : null,
+    async (url) => {
+      const res = await fetch(url)
+      const data = await res.json()
+      return data.histories as ThemeHistory[]
+    }
+  )
 
   useEffect(() => {
-    // 初期ロード時に履歴を取得
-    fetchHistories()
-  }, [])
+    if (initialTheme?.currentTheme) {
+      inputRef.current!.value = initialTheme.currentTheme.search_query
+      themeBuilderStore.updateGenerate(
+        initialTheme.currentTheme.theme_data,
+        initialTheme.currentTheme.search_query,
+        initialTheme.currentTheme.id,
+        user.data?.userDetails?.full_name
+      )
+    }
+  }, [initialTheme?.currentTheme])
 
   const generate = async (type: 'reply' | 'new') => {
     if (!inputRef.current?.value.trim()) {
@@ -105,9 +141,18 @@ export const StudioAIBar = memo(() => {
         return
       }
 
+      if (data.themeId) {
+        const newPath = `/theme/${data.themeId}/${encodeURIComponent(prompt)}`
+        window.history.pushState({}, '', newPath)
+      }
+
+      themeBuilderStore.updateGenerate(data.result, prompt, data.themeId)
+
+      // 成功したら履歴を再取得
+      await mutate('/api/theme/histories')
+
       setLastReply(data.reply)
       setLastPrompt(prompt)
-      themeBuilderStore.updateGenerate(data.result, prompt, user.data?.user.id)
       toastController.hide()
     } catch (err) {
       toastController.show(`Error: ${err}`)
@@ -117,31 +162,11 @@ export const StudioAIBar = memo(() => {
     }
   }
 
-  const fetchHistories = async () => {
-    try {
-      const res = await fetch('/api/theme/histories')
-      const data = await res.json()
-      setHistories(data.histories)
-    } catch (err) {
-      console.error('Failed to fetch histories:', err)
-    }
-  }
-
   const applyTheme = async (history: ThemeHistory) => {
-    if (inputRef.current) {
-      inputRef.current.value = history.search_query
-    }
-    setLastReply(history.theme_data.reply)
-    setLastPrompt(history.search_query)
-    themeBuilderStore.updateGenerate(
-      {
-        base: history.theme_data.base,
-        accent: history.theme_data.accent,
-      },
-      history.search_query,
-      user.data?.user.id
-    )
-    setShowHistories(false)
+    const newPath = `/theme/${history.id}/${encodeURIComponent(history.search_query)}`
+    window.history.pushState({}, '', newPath)
+
+    themeBuilderStore.updateGenerate(history.theme_data, history.search_query, history.id)
   }
 
   return (
@@ -214,10 +239,10 @@ export const StudioAIBar = memo(() => {
             <ThemeToggle />
           </XStack>
         </XStack>
-        {histories.length > 0 && (
+        {historiesData && historiesData.length > 0 && (
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack gap="$2" py="$2">
-              {histories.map((history) => (
+              {historiesData.map((history) => (
                 <Button
                   key={history.search_query}
                   size="$3"
