@@ -6,6 +6,9 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "tamagui.config.ts",
+    "example/**/*.ts",
+    "example/**/*.tsx",
   ],
   "exclude": [
     "types",
@@ -42,9 +45,6 @@
       "path": "../core/web"
     },
     {
-      "path": "../demos"
-    },
-    {
       "path": "../packages/lucide-icons"
     },
     {
@@ -52,6 +52,6 @@
     },
     {
       "path": "../ui/tamagui"
-    }
+    },
   ]
 }

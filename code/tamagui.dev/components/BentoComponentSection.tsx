@@ -2,7 +2,7 @@ import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
 import { H3, Input, ScrollView, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
-import { ComponentItem } from './ComponentItem'
+import { ComponentItem } from './BentoComponentItem'
 import { listingData } from '@tamagui/bento/data'
 import { ThemeTintAlt } from '@tamagui/logo'
 
@@ -59,7 +59,7 @@ export const ComponentSection = () => {
         fullscreen
         zi={0}
         $theme-light={{
-          bg: '$color5',
+          bg: '$color2',
         }}
         $theme-dark={{ bg: '#000' }}
       />
@@ -97,7 +97,7 @@ export const ComponentSection = () => {
                     <ContainerLarge>
                       <YStack py="$4" px="$3" pos="relative">
                         <H3
-                          ff="$silkscreen"
+                          ff="$mono"
                           size="$3"
                           ls={3}
                           tt="uppercase"

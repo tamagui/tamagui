@@ -5,7 +5,6 @@ import {
   getMainTeam,
   getOrgTeams,
   getPersonalTeam,
-  getProductOwnerships,
   getSubscriptions,
   getUserAccessInfo,
   getUserDetails,
@@ -16,19 +15,10 @@ import {
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
-  const [
-    userTeams,
-    userDetails,
-    subscriptions,
-    productOwnerships,
-    privateInfo,
-    accessInfo,
-  ] = await Promise.all([
+  const [userTeams, userDetails, subscriptions, accessInfo] = await Promise.all([
     getUserTeams(supabase),
     getUserDetails(supabase),
     getSubscriptions(supabase),
-    getProductOwnerships(supabase),
-    getUserPrivateInfo(user.id),
     getUserAccessInfo(supabase, user),
   ])
 
@@ -36,16 +26,11 @@ export default apiRoute(async (req) => {
     user,
     userDetails,
     subscriptions,
-    productOwnerships,
     teams: {
       all: userTeams,
       personal: getPersonalTeam(userTeams, user.id),
       orgs: getOrgTeams(userTeams),
       main: getMainTeam(userTeams),
-    },
-    connections: {
-      discord: !!privateInfo.discord_token,
-      github: !!privateInfo.github_token,
     },
     accessInfo,
   } satisfies UserContextType)
