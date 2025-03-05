@@ -30,6 +30,7 @@ import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { useUser } from '~/features/user/useUser'
 import type { LoaderProps } from 'one'
 import { getTheme } from '~/app/api/theme/histories+api'
+import { HeadInfo } from '~/components/HeadInfo'
 
 export async function loader(props: LoaderProps) {
   const subpath = props.params.subpath
@@ -50,25 +51,6 @@ export async function loader(props: LoaderProps) {
 
   return {
     data,
-    head: data
-      ? {
-          title: `${data.search_query} - Tamagui Theme`,
-          meta: [
-            {
-              property: 'og:title',
-              content: `${data.search_query} - Tamagui Theme`,
-            },
-            {
-              property: 'og:image',
-              content: `${process.env.NEXT_PUBLIC_SITE_URL}/api/theme/og/${data.id}`,
-            },
-            {
-              property: 'twitter:card',
-              content: 'summary_large_image',
-            },
-          ],
-        }
-      : undefined,
   }
 }
 
@@ -76,12 +58,26 @@ type ThemeProps = Awaited<ReturnType<typeof loader>>['data']
 
 export default function ThemeLayout() {
   const { data } = useLoader(loader)
-
-  if (typeof window !== 'undefined') {
-    return <ThemePage data={data} />
-  }
-
-  return null
+  return (
+    <>
+      <HeadInfo
+        title={`${data?.search_query || 'Tamagui Theme Builder'} - Tamagui Theme`}
+        description={
+          data?.search_query
+            ? `Tamagui Theme for ${data?.search_query}`
+            : `Tamagui Theme Builder`
+        }
+        openGraph={{
+          images: [
+            {
+              url: `https://tamagui.dev/api/theme/open-graph?id=${data?.id || '0'}`,
+            },
+          ],
+        }}
+      />
+      {typeof window !== 'undefined' && <ThemePage data={data} />}
+    </>
+  )
 }
 
 function ThemePage({

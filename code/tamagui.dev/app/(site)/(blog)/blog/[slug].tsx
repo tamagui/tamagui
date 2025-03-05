@@ -52,7 +52,7 @@ export default function BlogSlug() {
         {...data.frontmatter}
         title={`${data.frontmatter.title} — Tamagui`}
         description={data.frontmatter.description}
-        openGraph={{
+        ph={{
           images: [
             {
               url:
