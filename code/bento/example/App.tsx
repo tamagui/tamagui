@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { Separator, Theme, View, XStack, YStack } from 'tamagui'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 
-import { Provider } from '../components/provider/Provider'
-import { datepickers } from '../sections/elements/datepickers'
+import { Provider } from '../src/components/provider/Provider'
+import { datepickers } from '../src/sections/elements/datepickers'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
