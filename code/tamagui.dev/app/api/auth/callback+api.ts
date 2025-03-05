@@ -4,7 +4,6 @@ import { getSupabaseServerClient } from '~/features/api/getSupabaseServerClient'
 export const GET: Endpoint = async (req) => {
   const url = new URL(req.url)
   const code = url.searchParams.get('code')
-  const next = url.searchParams.get('next') ?? '/'
 
   if (!code) {
     return Response.error()
@@ -26,7 +25,7 @@ export const GET: Endpoint = async (req) => {
     `<html>
         <head>
           <script>
-            window.location.href = "${next}?login_success=true"
+            window.location.href = "/auth"
           </script>
         </head>
       </html>`,

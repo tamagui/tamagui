@@ -4,11 +4,23 @@ import { YStack, Text, Spinner } from 'tamagui'
 
 export default function Auth() {
   const { supabase } = useSupabase()
+
   useLayoutEffect(() => {
-    exchangeSession(supabase)
+    if (supabase) {
+      exchangeSession(supabase)
+    }
   }, [supabase])
+
   return (
-    <YStack flex={1} justifyContent="center" alignItems="center" gap="$8">
+    <YStack
+      flex={1}
+      justifyContent="center"
+      alignItems="center"
+      gap="$8"
+      w="100%"
+      h="100%"
+      mih={400}
+    >
       <Text>Authenticating...</Text>
       <Spinner size="large" />
     </YStack>
@@ -20,16 +32,20 @@ const exchangeSession = async (supabase: ReturnType<typeof useSupabase>['supabas
   const code = url.searchParams.get('code')
 
   if (!code) {
-    console.error('No auth code found')
+    // no code is our new flow we can remove old one
+    window.opener?.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
     window.close()
     return
   }
-  const { error } = await supabase.auth.exchangeCodeForSession(code)
+
+  const { error, data } = await supabase.auth.exchangeCodeForSession(code)
 
   if (error) {
     console.error('Error exchanging code for session:', error)
-    window.opener?.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
+    alert(`${error}`)
+    return
   }
 
+  window.opener?.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
   window.close()
 }
