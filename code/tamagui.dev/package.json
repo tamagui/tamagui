@@ -59,6 +59,7 @@
     "masonic": "^4.0.1",
     "one": "1.1.454",
     "postmark": "^3.0.18",
+    "puppeteer": "^24.3.1",
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "^0.76.5",
     "react-native-reanimated": "~3.16.1",

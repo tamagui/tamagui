@@ -50,6 +50,25 @@ export async function loader(props: LoaderProps) {
 
   return {
     data,
+    head: data
+      ? {
+          title: `${data.search_query} - Tamagui Theme`,
+          meta: [
+            {
+              property: 'og:title',
+              content: `${data.search_query} - Tamagui Theme`,
+            },
+            {
+              property: 'og:image',
+              content: `${process.env.NEXT_PUBLIC_SITE_URL}/api/theme/og/${data.id}`,
+            },
+            {
+              property: 'twitter:card',
+              content: 'summary_large_image',
+            },
+          ],
+        }
+      : undefined,
   }
 }
 
