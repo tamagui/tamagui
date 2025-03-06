@@ -1,8 +1,7 @@
 import type { Href } from 'one'
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
-import { Toast, useToastState } from '@tamagui/toast'
+import { ThemeTint } from '@tamagui/logo'
+import { CircleDashed, Paintbrush, Link as LinkIcon } from '@tamagui/lucide-icons'
 import { startTransition } from 'react'
 import {
   Anchor,
@@ -25,6 +24,7 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { listingData } from '@tamagui/bento/data'
 import { Text } from 'tamagui'
 import { Paragraph } from 'tamagui'
+import { useToastController } from '@tamagui/toast'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -42,6 +42,7 @@ export default function BentoPage() {
   const { section, part } = useParts()
   const bentoStore = useBentoStore()
   const Comp = Sections?.[section]?.[part]
+  const toast = useToastController()
 
   if (!Comp) {
     return null
@@ -64,15 +65,31 @@ export default function BentoPage() {
                   <SideBar ai="flex-end">
                     {listingData.sections.map(({ parts, sectionName }, index) => (
                       <YStack key={`${sectionName}-${name}`} ai="flex-end" gap="$4">
-                        <Text
-                          textTransform="uppercase"
-                          ff="$silkscreen"
-                          color="$gray9"
-                          textAlign="right"
-                          px="$2"
+                        <XStack
+                          onPress={() => {
+                            navigator?.clipboard?.writeText?.(
+                              `${window.location.hostname}/bento#${sectionName}`
+                            )
+
+                            toast.show('Link copied to clipboard')
+                          }}
+                          gap="$2"
+                          ai="center"
                         >
-                          {sectionName}
-                        </Text>
+                          <Text
+                            textTransform="uppercase"
+                            ff="$silkscreen"
+                            color="$color10"
+                            textAlign="right"
+                            px="$2"
+                            cursor="pointer"
+                            hoverStyle={{
+                              color: '$accentColor',
+                            }}
+                          >
+                            {sectionName}
+                          </Text>
+                        </XStack>
 
                         <YStack ai="flex-end" gap="$2">
                           {parts.map((partItem, index) => {
@@ -134,7 +151,6 @@ export default function BentoPage() {
                   <Comp />
                 </View>
               </XStack>
-              <CurrentToast />
             </ContainerBento>
           </YStack>
         </ThemeTint>
@@ -202,7 +218,7 @@ export const DetailHeader = (props: { children: string }) => {
             &raquo;
           </SizableText>
 
-          <Link href={`/bento/${category}`}>
+          <Link href={`/bento#${category}`}>
             <Anchor ff="$mono" tag="span" textTransform="capitalize">
               {category}
             </Anchor>
@@ -220,35 +236,6 @@ export const DetailHeader = (props: { children: string }) => {
         </XStack>
       </YStack>
     </YStack>
-  )
-}
-
-const CurrentToast = () => {
-  const currentToast = useToastState()
-
-  if (!currentToast || currentToast.isHandledNatively) {
-    return null
-  }
-
-  return (
-    <Toast
-      key={currentToast?.id ?? ''}
-      duration={currentToast?.duration ?? 0}
-      enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
-      exitStyle={{ opacity: 0, scale: 1, y: -20 }}
-      y={0}
-      opacity={1}
-      scale={1}
-      animation="100ms"
-      viewportName={currentToast.viewportName ?? ''}
-    >
-      <YStack>
-        <Toast.Title>{currentToast.title}</Toast.Title>
-        {!!currentToast.message && (
-          <Toast.Description>{currentToast.message}</Toast.Description>
-        )}
-      </YStack>
-    </Toast>
   )
 }
 
