@@ -67,7 +67,7 @@ export default function BentoPage() {
                         <Text
                           textTransform="uppercase"
                           ff="$silkscreen"
-                          color="$color10"
+                          color="$gray9"
                           textAlign="right"
                           px="$2"
                         >
@@ -84,22 +84,42 @@ export default function BentoPage() {
                                 key={`${sectionName}-${name}`}
                                 href={`/bento${route}` as Href}
                               >
-                                <View py="$2" ai="center" gap="$2" flex={1}>
+                                <View
+                                  pos="relative"
+                                  py="$2"
+                                  ai="center"
+                                  jc="center"
+                                  gap="$2"
+                                  flex={1}
+                                >
                                   <Paragraph
                                     ff="$mono"
-                                    size="$4"
+                                    // size="$4"
                                     fow="600"
                                     textAlign="right"
                                     color={active ? '$accentColor' : '$color10'}
                                     px="$2"
-                                    borderRightWidth={2}
-                                    hoverStyle={{ borderRightColor: '$accentColor' }}
-                                    borderRightColor={
-                                      active ? '$accentColor' : '$background0'
-                                    }
                                   >
                                     {name}
                                   </Paragraph>
+                                  <View
+                                    pos="absolute"
+                                    inset={0}
+                                    opacity={active ? 1 : 0}
+                                    hoverStyle={{
+                                      borderRightColor: '$accentColor',
+                                      opacity: 1,
+                                    }}
+                                    jc="center"
+                                    ai="flex-end"
+                                  >
+                                    <View
+                                      height="70%"
+                                      width={3}
+                                      br="$10"
+                                      bg={'$accentColor'}
+                                    />
+                                  </View>
                                 </View>
                               </Link>
                             )
