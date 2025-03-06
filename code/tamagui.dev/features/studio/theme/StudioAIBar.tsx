@@ -30,7 +30,7 @@ export const StudioAIBar = memo(() => {
   const [lastReply, setLastReply] = useState('')
   const [lastPrompt, setLastPrompt] = useState('')
   const hasAccess =
-    user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
+    user.data?.accessInfo?.hasBentoAccess || user.data?.accessInfo?.hasTakeoutAccess
 
   const generate = async (type: 'reply' | 'new') => {
     if (!inputRef.current?.value.trim()) {

@@ -27,7 +27,7 @@ import { useColorScheme } from '@vxrn/color-scheme'
 export default function StudioSplashPage() {
   const user = useUser()
   const router = useRouter()
-  const hasStudioAccess = user.data?.accessInfo.hasStudioAccess
+  const hasStudioAccess = user.data?.accessInfo?.hasStudioAccess
 
   useEffect(() => {
     if (hasStudioAccess) {
