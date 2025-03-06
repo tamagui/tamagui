@@ -94,7 +94,7 @@
     "test:starter-free": "./scripts/test-starter-free.sh",
     "test": "CLEANUP=1 turbo run --concurrency=1 test && yarn test:starter-free",
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
-    "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
+    "typecheck": "./scripts/typecheck.sh",
     "upgrade:one": "yarn up 'one'@latest '@vxrn/*'@latest",
     "upgrade:one:canary": "yarn up 'one'@canary '@vxrn/*'@canary",
     "upgrade:starters:expo-router": "cd code/starters/expo-router && yarn && yarn upgrade:tamagui",
