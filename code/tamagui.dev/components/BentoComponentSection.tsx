@@ -121,13 +121,12 @@ export const ComponentSection = () => {
                   <ContainerLarge>
                     <ThemeTintAlt offset={index}>
                       <XStack
-                        gap="$5"
+                        gap="$4"
                         f={4}
                         fs={1}
                         $gtMd={{
                           maw: '100%',
                           fw: store.heroVisible ? 'wrap' : 'nowrap',
-                          gap: 0,
                           rowGap: 20,
                         }}
                       >

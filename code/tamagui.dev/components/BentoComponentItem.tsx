@@ -46,7 +46,7 @@ export function ComponentItem({
       <YStack
         tag="a"
         w={210}
-        key={10}
+        // key={10}
         // br="$9"
         cursor="pointer"
         pos="relative"
