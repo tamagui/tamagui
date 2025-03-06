@@ -36,6 +36,8 @@ export const StudioPreviewComponents = memo(() => {
   )
 })
 
+export default StudioPreviewComponents
+
 const ComponentComponent = ({ index }) => {
   return components[index]
 }

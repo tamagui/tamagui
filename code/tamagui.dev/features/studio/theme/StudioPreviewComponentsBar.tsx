@@ -48,6 +48,8 @@ export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: an
   )
 })
 
+export default StudioPreviewComponentsBar
+
 const ToggleGroupItem = styled(ToggleGroup.Item, {
   height: 28,
   w: 30,

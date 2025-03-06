@@ -1,7 +1,16 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
 import { useLoader, useParams, useRouter } from 'one'
-import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  memo,
+  startTransition,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  lazy,
+} from 'react'
 import {
   AnimatePresence,
   Button,
@@ -17,8 +26,6 @@ import {
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
-import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
-import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
 
 import {
@@ -31,6 +38,14 @@ import { useUser } from '~/features/user/useUser'
 import type { LoaderProps } from 'one'
 import { getTheme } from '~/app/api/theme/histories+api'
 import { HeadInfo } from '~/components/HeadInfo'
+
+const StudioPreviewComponentsBar = lazy(
+  () => import('~/features/studio/theme/StudioPreviewComponentsBar')
+)
+
+const StudioPreviewComponents = lazy(
+  () => import('~/features/studio/theme/StudioPreviewComponents')
+)
 
 export async function loader(props: LoaderProps) {
   const subpath = props.params.subpath
@@ -75,7 +90,7 @@ export default function ThemeLayout() {
           ],
         }}
       />
-      {typeof window !== 'undefined' && <ThemePage data={data} />}
+      <ThemePage data={data} />
     </>
   )
 }
@@ -104,7 +119,9 @@ function ThemePage({
       <Dialogs />
 
       <YStack flexShrink={0} mb="$10">
-        <ThemeBuilderModal />
+        <Suspense fallback={null}>
+          <ThemeBuilderModal />
+        </Suspense>
 
         <XStack
           w="100%"
@@ -127,10 +144,14 @@ function ThemePage({
             }}
           >
             <StudioAIBar initialTheme={{ currentTheme: data }} />
-            <StudioPreviewComponentsBar scrollView={document.documentElement} />
+            <StudioPreviewComponentsBar
+              scrollView={typeof window !== 'undefined' ? document.documentElement : null}
+            />
             <PreviewTheme>
               <YStack gap="$6">
-                <StudioPreviewComponents />
+                <Suspense fallback={null}>
+                  <StudioPreviewComponents />
+                </Suspense>
               </YStack>
             </PreviewTheme>
           </YStack>
