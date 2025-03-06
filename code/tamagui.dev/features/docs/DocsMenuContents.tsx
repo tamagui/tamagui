@@ -183,7 +183,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
                 const contents = (
                   <DocsRouteNavItem
-                    inMenu={inMenu}
+                    inMenu={inMenu ?? false}
                     href={page.route}
                     active={currentPath === page.route}
                     pending={page['pending']}
