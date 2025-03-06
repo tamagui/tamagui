@@ -62,53 +62,46 @@ export default function BentoPage() {
                 <View className="sticky">
                   <SideBar ai="flex-end">
                     {listingData.sections.map(({ parts, sectionName }, index) => (
-                      <ThemeTintAlt key={`${sectionName}-${name}`} offset={index}>
-                        <YStack ai="flex-end" gap="$4" key={sectionName}>
-                          <Text
-                            textTransform="uppercase"
-                            ff="$silkscreen"
-                            color="$color10"
-                            textAlign="right"
-                            px="$2"
-                          >
-                            {sectionName}
-                          </Text>
+                      <YStack key={`${sectionName}-${name}`} ai="flex-end" gap="$4">
+                        <Text
+                          textTransform="uppercase"
+                          ff="$silkscreen"
+                          color="$color10"
+                          textAlign="right"
+                          px="$2"
+                        >
+                          {sectionName}
+                        </Text>
 
-                          <YStack ai="flex-end" gap="$2">
-                            {parts.map((partItem, index) => {
-                              const { route, name } = partItem
-                              const active = route === `/${section}/${part}`
+                        <YStack ai="flex-end" gap="$2">
+                          {parts.map((partItem, index) => {
+                            const { route, name } = partItem
+                            const active = route === `/${section}/${part}`
 
-                              return (
-                                <Link
-                                  key={`${sectionName}-${name}`}
-                                  href={`/bento${route}` as Href}
-                                >
-                                  <View
-                                    py="$2"
-                                    px="$2"
+                            return (
+                              <Link
+                                key={`${sectionName}-${name}`}
+                                href={`/bento${route}` as Href}
+                              >
+                                <View py="$2" ai="center" gap="$2" flex={1}>
+                                  <Text
+                                    textAlign="right"
+                                    color={active ? '$accentColor' : '$color10'}
+                                    px="$4"
                                     borderRightWidth={2}
+                                    hoverStyle={{ borderRightColor: '$accentColor' }}
                                     borderRightColor={
                                       active ? '$accentColor' : '$background0'
                                     }
-                                    hoverStyle={{ borderRightColor: '$color' }}
-                                    ai="center"
-                                    gap="$2"
-                                    flex={1}
                                   >
-                                    <Text
-                                      textAlign="right"
-                                      color={active ? '$accentColor' : '$color10'}
-                                    >
-                                      {name}
-                                    </Text>
-                                  </View>
-                                </Link>
-                              )
-                            })}
-                          </YStack>
+                                    {name}
+                                  </Text>
+                                </View>
+                              </Link>
+                            )
+                          })}
                         </YStack>
-                      </ThemeTintAlt>
+                      </YStack>
                     ))}
                   </SideBar>
                 </View>
@@ -176,7 +169,7 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} ai="center" gap="$2">
           <Link href="/bento/">
-            <Anchor tag="span" textTransform="capitalize">
+            <Anchor ff="$silkscreen" tag="span" textTransform="capitalize">
               Bento
             </Anchor>
           </Link>
@@ -187,7 +180,7 @@ export const DetailHeader = (props: { children: string }) => {
 
           {/* TODO for some reason these break [vite:build-import-analysis */}
           <Link href={`/bento#${category}`}>
-            <Anchor tag="span" textTransform="capitalize">
+            <Anchor ff="$silkscreen" tag="span" textTransform="capitalize">
               {category}
             </Anchor>
           </Link>
@@ -198,7 +191,7 @@ export const DetailHeader = (props: { children: string }) => {
 
           {/* TODO for some reason these break [vite:build-import-analysis */}
           <Link href={`/bento/${subCategory}`}>
-            <Anchor tag="span" textTransform="capitalize">
+            <Anchor ff="$silkscreen" tag="span" textTransform="capitalize">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>
