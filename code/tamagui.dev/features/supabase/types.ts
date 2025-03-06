@@ -495,6 +495,8 @@ export type Database = {
         Row: {
           created_at: string | null
           id: number
+          is_cached: boolean | null
+          og_image_url: string | null
           search_query: string
           state: string
           theme_data: Json
@@ -504,6 +506,8 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: number
+          is_cached?: boolean | null
+          og_image_url?: string | null
           search_query: string
           state: string
           theme_data: Json
@@ -513,6 +517,8 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: number
+          is_cached?: boolean | null
+          og_image_url?: string | null
           search_query?: string
           state?: string
           theme_data?: Json

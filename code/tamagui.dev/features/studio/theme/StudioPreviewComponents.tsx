@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Theme, YStack, useThemeName } from 'tamagui'
+import { XStack, YStack, useThemeName } from 'tamagui'
 
 import { Masonry } from 'masonic'
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
@@ -17,6 +17,7 @@ import { PieScreen } from './preview/Pie'
 import { PricingCards } from './preview/Pricing'
 import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
 import { UserDropdown } from './preview/UserDropdown'
+import { Skeleton } from 'moti/skeleton'
 
 export const StudioPreviewComponents = memo(() => {
   return (
@@ -161,6 +162,58 @@ const PalettePreviewPanels = memo(() => {
           </Panel>
         )
       })}
+    </YStack>
+  )
+})
+
+export const StudioPreviewComponentsSkeleton = memo(() => {
+  return (
+    <>
+      <PalettePreviewPanelsSkeleton />
+
+      <YStack mr={-10}>
+        <XStack flexWrap="wrap" gap="$4">
+          {[...Array(13)].map((_, index) => (
+            <ComponentSkeleton key={index} index={index} />
+          ))}
+        </XStack>
+      </YStack>
+    </>
+  )
+})
+
+const ComponentSkeleton = ({ index }) => {
+  const heights = [200, 280, 320, 240, 300]
+  const height = heights[index % heights.length]
+
+  return (
+    <YStack width="calc(33.33% - 16px)" mb="$4">
+      <Skeleton
+        height={height}
+        width="100%"
+        radius={16}
+        colorMode="light"
+        colors={['#f3f3f6', '#d0d0d0']}
+        backgroundColor="#f3f3f6"
+      />
+    </YStack>
+  )
+}
+
+const PalettePreviewPanelsSkeleton = memo(() => {
+  return (
+    <YStack gap="$2" mb="$4">
+      {[...Array(3)].map((_, i) => (
+        <Skeleton
+          key={i}
+          width="100%"
+          height={80}
+          radius={16}
+          colorMode="light"
+          colors={['#f3f3f6', '#d0d0d0']}
+          backgroundColor="#f3f3f6"
+        />
+      ))}
     </YStack>
   )
 })

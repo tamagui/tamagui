@@ -38,6 +38,7 @@ import { useUser } from '~/features/user/useUser'
 import type { LoaderProps } from 'one'
 import { getTheme } from '~/app/api/theme/histories+api'
 import { HeadInfo } from '~/components/HeadInfo'
+import { StudioPreviewComponentsSkeleton } from '~/features/studio/theme/StudioPreviewComponents'
 
 const StudioPreviewComponentsBar = lazy(
   () => import('~/features/studio/theme/StudioPreviewComponentsBar')
@@ -149,7 +150,7 @@ function ThemePage({
             />
             <PreviewTheme>
               <YStack gap="$6">
-                <Suspense fallback={null}>
+                <Suspense fallback={<StudioPreviewComponentsSkeleton />}>
                   <StudioPreviewComponents />
                 </Suspense>
               </YStack>
