@@ -50,6 +50,7 @@ import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
+import { useLoginLink } from '../../auth/useLoginLink'
 
 const couponSchema = z.object({
   id: z.string(),
@@ -377,51 +378,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const [couponCode, setCouponCode] = useState('')
   const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
   const [couponError, setCouponError] = useState<string | null>(null)
-
-  const handleLogin = async () => {
-    if (!supabaseClient) return
-
-    // Open popup for GitHub auth
-    const width = 600
-    const height = 800
-    const left = window.screenX + (window.innerWidth - width) / 2
-    const top = window.screenY + (window.innerHeight - height) / 2
-
-    const { data, error } = await supabaseClient.auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        skipBrowserRedirect: true,
-        redirectTo: `${window.location.origin}/auth`,
-      },
-    })
-
-    if (error) {
-      console.error('Login error:', error)
-      return
-    }
-
-    // Open popup with the auth URL
-    const popup = window.open(
-      data.url,
-      'Login with GitHub',
-      `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
-    )
-
-    if (!popup) {
-      console.error('Failed to open popup')
-      return
-    }
-
-    const handleMessage = async (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return
-      if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
-        window.removeEventListener('message', handleMessage)
-        await refresh()
-      }
-    }
-
-    window.addEventListener('message', handleMessage)
-  }
+  const { handleLogin } = useLoginLink()
 
   // Cleanup interval on unmount
   useEffect(() => {
