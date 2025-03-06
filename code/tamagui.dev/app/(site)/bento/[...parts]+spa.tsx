@@ -193,7 +193,7 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} ai="center" gap="$2">
           <Link href="/bento/">
-            <Anchor ff="$silkscreen" tag="span" textTransform="capitalize">
+            <Anchor ff="$mono" tag="span" textTransform="capitalize">
               Bento
             </Anchor>
           </Link>
@@ -202,9 +202,8 @@ export const DetailHeader = (props: { children: string }) => {
             &raquo;
           </SizableText>
 
-          {/* TODO for some reason these break [vite:build-import-analysis */}
-          <Link href={`/bento#${category}`}>
-            <Anchor ff="$silkscreen" tag="span" textTransform="capitalize">
+          <Link href={`/bento/${category}`}>
+            <Anchor ff="$mono" tag="span" textTransform="capitalize">
               {category}
             </Anchor>
           </Link>
@@ -213,9 +212,8 @@ export const DetailHeader = (props: { children: string }) => {
             &raquo;
           </SizableText>
 
-          {/* TODO for some reason these break [vite:build-import-analysis */}
-          <Link href={`/bento/${subCategory}`}>
-            <Anchor ff="$silkscreen" tag="span" textTransform="capitalize">
+          <Link href={`/bento/${category}/${subCategory}`}>
+            <Anchor ff="$mono" tag="span" textTransform="capitalize">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>
