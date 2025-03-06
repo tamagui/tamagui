@@ -112,7 +112,7 @@ export default function BentoPage() {
                                   <Paragraph
                                     ff="$mono"
                                     // size="$4"
-                                    fow="600"
+                                    fow="500"
                                     textAlign="right"
                                     color={active ? '$accentColor' : '$color10'}
                                     px="$2"
