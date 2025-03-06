@@ -367,7 +367,7 @@ export const componentsList: ComponentSchema[] = [
   //   moveFilesToFolder: [{ file: '', to: '' }],
   // },
   // {
-  //   name: 'Prodcut List with Label',
+  //   name: 'Product List with Label',
   //   fileName: 'ProductListWithLabel',
   //   category: 'ecommerce',
   //   categorySection: 'product_list',
@@ -986,7 +986,7 @@ export const componentsList: ComponentSchema[] = [
     name: 'Responsive Sidebar',
     fileName: 'FullSideBar',
     category: 'shells',
-    categorySection: 'sidebars',
+    categorySection: 'navbars',
     dependencies: [
       '@tamagui/lucide-icons',
       '@tamagui/roving-focus',
