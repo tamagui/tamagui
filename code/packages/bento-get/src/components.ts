@@ -1036,7 +1036,7 @@ export const componentsList: ComponentSchema[] = [
     name: 'Employees Status Tracker',
     fileName: 'StatusTracker',
     category: 'user',
-    categorySection: 'events',
+    categorySection: 'preferences',
     dependencies: ['@tamagui/lucide-icons', '@tamagui/get-font-sized'],
     moveFilesToFolder: [{ file: 'StatusTracker', to: '' }],
   },

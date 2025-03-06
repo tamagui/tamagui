@@ -24,6 +24,7 @@ import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { listingData } from '@tamagui/bento/data'
 import { Text } from 'tamagui'
+import { Paragraph } from 'tamagui'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -84,10 +85,13 @@ export default function BentoPage() {
                                 href={`/bento${route}` as Href}
                               >
                                 <View py="$2" ai="center" gap="$2" flex={1}>
-                                  <Text
+                                  <Paragraph
+                                    ff="$mono"
+                                    size="$4"
+                                    fow="600"
                                     textAlign="right"
                                     color={active ? '$accentColor' : '$color10'}
-                                    px="$4"
+                                    px="$2"
                                     borderRightWidth={2}
                                     hoverStyle={{ borderRightColor: '$accentColor' }}
                                     borderRightColor={
@@ -95,7 +99,7 @@ export default function BentoPage() {
                                     }
                                   >
                                     {name}
-                                  </Text>
+                                  </Paragraph>
                                 </View>
                               </Link>
                             )
