@@ -148,7 +148,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
       themeBuilderStore.updateGenerate(data.result, prompt, data.themeId)
 
-      // 成功したら履歴を再取得
       await mutate('/api/theme/histories')
 
       setLastReply(data.reply)
