@@ -14,7 +14,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { BentoStore, ComponentSection } from '~/components/ComponentSection'
+import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
@@ -83,15 +83,7 @@ export default function BentoPage() {
           <Theme name="tan">
             <Hero />
 
-            {/* <YStack pos="relative" zi={10000}>
-            <ContainerLarge>
-              <YStack pos="absolute" t={-50} r={80} rotate="-10deg">
-                <BentoIcon scale={3} />
-              </YStack>
-            </ContainerLarge>
-          </YStack> */}
-
-            {/* <Intermediate /> */}
+            <Intermediate />
           </Theme>
         </YStack>
         <ComponentSection />
@@ -194,7 +186,7 @@ const Hero = () => {
           >
             <YStack
               className="ms200 ease-in all"
-              h={180}
+              h={150}
               $xxs={{
                 scale: 0.4,
               }}
@@ -210,7 +202,7 @@ const Hero = () => {
               $md={{ mb: -100, scale: 0.72, transformOrigin: 'left top' }}
               $lg={{ scale: 0.9, y: 10 }}
             >
-              <BentoLogo scale={0.94} />
+              <BentoLogo scale={0.8} />
             </YStack>
             <YStack
               // account for the left bar visual offset
@@ -230,12 +222,10 @@ const Hero = () => {
                   $sm={{ dsp: 'none' }}
                 />
                 <Paragraph
-                  className="pixelate"
-                  ff="$munro"
-                  fos={26}
-                  lh={46}
+                  ff="$mono"
+                  fos={22}
+                  lh={40}
                   color="$color11"
-                  ls={1}
                   maxHeight={120}
                   $md={{
                     mt: '$6',
@@ -257,7 +247,12 @@ const Hero = () => {
                 mr="$4"
                 $md={{ mx: 0, fd: 'column', gap: '$3' }}
               >
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph
+                  fontFamily="$mono"
+                  color="$color10"
+                  size="$5"
+                  $md={{ size: '$3' }}
+                >
                   One-time Purchase
                 </Paragraph>
 
@@ -301,7 +296,12 @@ const Hero = () => {
 
                 <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
 
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph
+                  fontFamily="$mono"
+                  color="$color10"
+                  size="$5"
+                  $md={{ size: '$3' }}
+                >
                   Lifetime rights
                 </Paragraph>
               </XStack>

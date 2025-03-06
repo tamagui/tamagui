@@ -22,10 +22,10 @@ import {
   TextCursorInput,
   ToggleRight,
 } from '@tamagui/lucide-icons'
-import { H5, Image, H4, Theme, YStack } from 'tamagui'
+import { H4, H5, Image, Theme, YStack } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 import { Link } from '~/components/Link'
 import ComponentPreview from './ComponentPreview'
-import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function ComponentItem({
   name,
@@ -45,41 +45,26 @@ export function ComponentItem({
     <Link href={href as any} asChild>
       <YStack
         tag="a"
-        ov="hidden"
-        w={220}
+        w={210}
+        key={10}
         // br="$9"
         cursor="pointer"
         pos="relative"
-        hoverStyle={{
-          bg: `rgba(150,150,150,0.035)`,
-        }}
-        pressStyle={{
-          bg: 'rgba(150,150,150,0.05)',
-          y: 1,
-        }}
         bg="rgba(150,150,150,0.025)"
         mt="$3"
         // br="$6"
         $gtMd={{
           bg: 'rgba(255,255,255,0)',
-          w: 'calc(25% - 14px)',
+          w: 'calc(25% - 20px)',
           br: '$4',
-          m: '$2',
         }}
       >
         {/* Preview */}
         <YStack
-          pointerEvents="none"
           h={192}
           br="$8"
           ov="hidden"
-          p="$6"
-          $md={{
-            p: '$4',
-          }}
           className="relative"
-          justifyContent="center"
-          alignItems="center"
           $theme-dark={{
             borderColor: '$background04',
             borderWidth: 1.5,
@@ -87,11 +72,27 @@ export function ComponentItem({
           $theme-light={{
             bg: '$background',
           }}
+          animation="bouncy"
+          shadowColor="$shadow1"
+          shadowRadius={10}
+          shadowOffset={{ height: 5, width: 0 }}
           hoverStyle={{
-            scale: 1.2,
+            scale: 1.02,
+          }}
+          pressStyle={{
+            y: 2,
+            scale: 0.99,
           }}
         >
-          <Preview />
+          <YStack
+            fullscreen
+            pointerEvents="none"
+            justifyContent="center"
+            alignItems="center"
+            p="$6"
+          >
+            <Preview />
+          </YStack>
           <LinearGradient
             fullscreen
             start={[1, 0]}
@@ -102,12 +103,12 @@ export function ComponentItem({
 
         <YStack f={1} p="$4">
           <Theme name="gray">
-            <H4 ff="$body" size="$5" fow="600" color="$color12">
+            <H4 ff="$mono" size="$5" fow="600" color="$color12">
               {name}
             </H4>
           </Theme>
 
-          <H5 theme="alt1" size="$1" ls={1}>
+          <H5 fontFamily="$mono" theme="alt1" size="$1" ls={1}>
             {numberOfComponents} components
           </H5>
 
