@@ -40,12 +40,12 @@ type ThemeHistory = {
 }
 
 type ThemeData = {
-  theme_data: {
+  theme: {
     base: any[]
     accent: any[]
     schema: string
   }
-  search_query: string
+  search: string
   id: number
 } | null
 

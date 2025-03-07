@@ -1,25 +1,21 @@
 import {
+  type BuildPalette,
   createPalettes,
   getThemeSuitePalettes,
   type TemplateStrategy,
+  type ThemeSuiteItem,
 } from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
 import { getUniqueId } from '~/features/studio/theme/helpers/getUniqueId'
+import { steps } from '~/features/studio/theme/steps/steps'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
+import type { BuildTheme, ThemeBuilderState, ThemeSuiteItemData } from '../types'
 import { updatePreviewTheme } from '../updatePreviewTheme'
-import { steps } from '~/features/studio/theme/steps/steps'
-import type {
-  BuildPalette,
-  BuildTheme,
-  ThemeBuilderState,
-  ThemeSuiteItem,
-  ThemeSuiteItemData,
-} from '../types'
 
 type AccentSetting = 'color' | 'inverse' | 'off'
 

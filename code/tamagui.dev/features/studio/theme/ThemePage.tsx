@@ -1,44 +1,31 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
-import { useLoader, useParams, useRouter } from 'one'
-import {
-  memo,
-  startTransition,
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  lazy,
-} from 'react'
+import { lazy, memo, Suspense, useEffect, useMemo, useRef } from 'react'
 import {
   AnimatePresence,
   Button,
   ScrollView,
   Separator,
   Spacer,
+  styled,
   Theme,
   View,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
+import { HeadInfo } from '~/components/HeadInfo'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
+import { StudioPreviewComponentsSkeleton } from '~/features/studio/theme/StudioPreviewComponents'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
-
 import {
   themeBuilderStore,
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { weakKey } from '~/helpers/weakKey'
 import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { useUser } from '~/features/user/useUser'
-import type { LoaderProps } from 'one'
-import { getTheme } from '~/app/api/theme/histories+api'
-import { HeadInfo } from '~/components/HeadInfo'
-import { StudioPreviewComponentsSkeleton } from '~/features/studio/theme/StudioPreviewComponents'
+import { weakKey } from '~/helpers/weakKey'
 
 const StudioPreviewComponentsBar = lazy(
   () => import('~/features/studio/theme/StudioPreviewComponentsBar')
@@ -48,68 +35,28 @@ const StudioPreviewComponents = lazy(
   () => import('~/features/studio/theme/StudioPreviewComponents')
 )
 
-export async function loader(props: LoaderProps) {
-  const subpath = props.params.subpath
-  const id = subpath ? subpath[0] : null
-  let data: {
-    theme_data: {
-      base: any[]
-      accent: any[]
-      schema: string
-    }
-    search_query: string
-    id: number
-  } | null = null
-
-  if (id) {
-    data = await getTheme(id)
-  }
-
-  return {
-    data,
-  }
+export type Props = {
+  search: string
+  id: number
+  theme: ThemeData
 }
 
-type ThemeProps = Awaited<ReturnType<typeof loader>>['data']
-
-export default function ThemeLayout() {
-  const { data } = useLoader(loader)
-  return (
-    <>
-      <HeadInfo
-        title={`${data?.search_query || 'Tamagui Theme Builder'} - Tamagui Theme`}
-        description={
-          data?.search_query
-            ? `Tamagui Theme for ${data?.search_query}`
-            : `Tamagui Theme Builder`
-        }
-        openGraph={{
-          images: [
-            {
-              url: `https://tamagui.dev/api/theme/open-graph?id=${data?.id || '0'}`,
-            },
-          ],
-        }}
-      />
-      <ThemePage data={data} />
-    </>
-  )
+type ThemeData = {
+  base: any[]
+  accent: any[]
+  schema: string
 }
 
-function ThemePage({
-  data,
-}: {
-  data: ThemeProps
-}) {
+export function ThemePage(props: Props) {
+  const { theme, id, search } = props
   const user = useUser()
-  const router = useRouter()
 
   useEffect(() => {
-    if (data) {
+    if (theme) {
       themeBuilderStore.updateGenerate(
-        data.theme_data,
-        data.search_query,
-        data.id,
+        theme,
+        search,
+        id,
         user.data?.userDetails?.full_name
       )
     }
@@ -117,6 +64,18 @@ function ThemePage({
 
   return (
     <>
+      <HeadInfo
+        title={`${search || 'Tamagui Theme Builder'} - Tamagui Theme`}
+        description={search ? `Tamagui Theme for ${search}` : `Tamagui Theme Builder`}
+        openGraph={{
+          images: [
+            {
+              url: `https://tamagui.dev/api/theme/open-graph?id=${id || '0'}`,
+            },
+          ],
+        }}
+      />
+
       <Dialogs />
 
       <YStack flexShrink={0} mb="$10">
@@ -144,7 +103,7 @@ function ThemePage({
               p: '$4',
             }}
           >
-            <StudioAIBar initialTheme={{ currentTheme: data }} />
+            <StudioAIBar initialTheme={{ currentTheme: props }} />
             <StudioPreviewComponentsBar
               scrollView={typeof window !== 'undefined' ? document.documentElement : null}
             />
@@ -211,39 +170,6 @@ const ThemeBuilderModal = memo(() => {
         bg="$background06"
         backdropFilter="blur(60px)"
       >
-        {/* <TooltipSimple label="Show Drawer">
-          <YStack
-            animation="lazy"
-            px="$2"
-            py="$2"
-            t="$-3"
-            l={-20}
-            br="$10"
-            bg="$color2"
-            bw={0.5}
-            bc="$borderColor"
-            elevation="$2"
-            w={40}
-            h={40}
-            ai="center"
-            jc="center"
-            x={0}
-            opacity={0}
-            pressStyle={{
-              bg: '$color3',
-            }}
-            $lg={{
-              x: expanded ? 30 : -30,
-              opacity: 1,
-            }}
-            // onPress={() => {
-            //   setExpanded(!expanded)
-            // }}
-          >
-            {expanded ? <ChevronRight x={0.5} /> : <ChevronLeft x={0.5} />}
-          </YStack>
-        </TooltipSimple> */}
-
         <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
@@ -329,9 +255,6 @@ const ThemeStudioStepButtonsBar = () => {
       forward()
     }
   }
-
-  // useHotkeys('left', backward)
-  // useHotkeys('right', forward)
 
   return (
     <XStack gap="$2">
