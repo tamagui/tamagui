@@ -385,17 +385,26 @@ const PurchaseModalContents = () => {
                     </XStack>
                   </YStack>
 
-                  <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
+                  <YStack gap="$2" width="100%" $gtXs={{ width: '42%' }}>
                     {parityDeals && (
-                      <XStack mb="$2">
-                        <Paragraph theme="alt1" size="$3" opacity={0.9} color="$color10">
-                          {parityDeals.countryFlag} Use code{' '}
-                          <Text fontWeight="bold" fontFamily="$mono">
-                            {parityDeals.couponCode}
-                          </Text>{' '}
-                          at checkout for {parityDeals.discountPercentage}% off
-                        </Paragraph>
-                      </XStack>
+                      <Theme name="yellow">
+                        <XStack
+                          mb="$2"
+                          backgroundColor="$color3"
+                          borderRadius="$4"
+                          borderWidth={0.5}
+                          borderColor="$color8"
+                          p="$2"
+                        >
+                          <Paragraph size="$3" color="$color11" textWrap="balance">
+                            {parityDeals.countryFlag} Use code{' '}
+                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
+                              {parityDeals.couponCode}
+                            </Text>{' '}
+                            at checkout for {parityDeals.discountPercentage}% off
+                          </Paragraph>
+                        </XStack>
+                      </Theme>
                     )}
 
                     <Theme name="accent">
