@@ -321,6 +321,7 @@ const ThemeStudioStepButtonsBar = () => {
     currentSection,
     disableForward,
   } = store
+
   const forwardOrFinish = () => {
     if (!canGoForward) {
       console.warn('done')
@@ -334,14 +335,18 @@ const ThemeStudioStepButtonsBar = () => {
 
   return (
     <XStack gap="$2">
-      {location.hostname === 'localhost' && lastInserted && (
-        <>
-          <a href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
-            <Button size="$3">Chat</Button>
-          </a>
-          <View flex={1} />
-        </>
-      )}
+      {typeof location !== 'undefined' &&
+        location.host === 'localhost' &&
+        lastInserted && (
+          <>
+            <a
+              href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}
+            >
+              <Button size="$3">Chat</Button>
+            </a>
+            <View flex={1} />
+          </>
+        )}
 
       <Button
         size="$3"
