@@ -18,6 +18,9 @@
   ],
   "references": [
     {
+      "path": "../demos"
+    },
+    {
       "path": "../compiler/babel-plugin"
     },
     {
