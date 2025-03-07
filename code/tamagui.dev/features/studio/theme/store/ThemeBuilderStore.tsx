@@ -170,20 +170,12 @@ export class ThemeBuilderStore {
   }
 
   async updateGenerate(
-    result: {
-      base: any[]
-      accent: any[]
-      schema?: string
-    },
+    themeSuite: ThemeSuiteItemData,
     query?: string,
     themeId?: string | number,
     username?: string | null
   ) {
-    this.palettes.base.anchors = result.base
-    this.palettes.accent.anchors = result.accent
-    this.palettes = {
-      ...this.palettes,
-    }
+    this.palettes = themeSuite.palettes
     this.themeSuiteVersion++
 
     if (query && themeId) {
@@ -200,26 +192,6 @@ export class ThemeBuilderStore {
 
     this.themeSuiteId = `${this.themeSuiteId}${this.themeSuiteVersion}`
     await this.refreshThemeSuite()
-  }
-
-  async addThemeSuite(next: Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>) {
-    const themes = this.state?.themeSuites
-    if (!themes) throw new Error(`No themes`)
-    const id = getUniqueId()
-    const themeSuite = {
-      ...next,
-      id,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    }
-    console.info('adding', themeSuite)
-    this.state = {
-      ...this.state,
-      themeSuites: {
-        ...themes,
-        [id]: themeSuite,
-      },
-    }
   }
 
   getPalettesForTheme(theme: BuildTheme, palettes = this.palettes) {
@@ -308,16 +280,6 @@ export class ThemeBuilderStore {
     }
   }
 
-  async addPalette(palette: BuildPalette) {
-    if (Object.values(this.palettes).some((_) => _.name === palette.name)) {
-      palette.name = `${palette.name.replace(/-[0-9]+$/, '')}-1`
-    }
-    this.palettes = {
-      ...this.palettes,
-      [palette.name]: palette,
-    }
-  }
-
   async updatePalette(name: string, palette: Partial<BuildPalette>) {
     this.palettes = {
       ...this.palettes,
@@ -326,14 +288,6 @@ export class ThemeBuilderStore {
         ...palette,
       },
     }
-  }
-
-  async deletePalette(name: string) {
-    this.palettes = (() => {
-      let next = structuredClone(this.palettes)
-      delete next[name]
-      return next
-    })()
   }
 
   get sectionsFlat() {

@@ -26,6 +26,7 @@ import {
 import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { useUser } from '~/features/user/useUser'
 import { weakKey } from '~/helpers/weakKey'
+import type { ThemeSuiteItemData } from './types'
 
 const StudioPreviewComponentsBar = lazy(
   () => import('~/features/studio/theme/StudioPreviewComponentsBar')
@@ -38,13 +39,7 @@ const StudioPreviewComponents = lazy(
 export type Props = {
   search: string
   id: number
-  theme: ThemeData
-}
-
-type ThemeData = {
-  base: any[]
-  accent: any[]
-  schema: string
+  theme: ThemeSuiteItemData
 }
 
 export function ThemePage(props: Props) {
