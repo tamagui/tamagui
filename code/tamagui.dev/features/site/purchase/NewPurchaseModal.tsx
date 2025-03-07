@@ -21,6 +21,7 @@ import {
   Unspaced,
   XStack,
   YStack,
+  Text,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { Select } from '../../../components/Select'
@@ -34,6 +35,7 @@ import { BigP, P } from './BigP'
 import { useTakeoutStore } from './useTakeoutStore'
 import { ProPoliciesModal } from './PoliciesModal'
 import { ProAgreementModal } from './AgreementModal'
+import { useParityDiscount } from '~/hooks/useParityDiscount'
 
 class PurchaseModal {
   show = false
@@ -95,6 +97,7 @@ const PurchaseModalContents = () => {
   })
   const { data: products } = useProducts()
   const { data: userData } = useUser()
+  const { parityDeals } = useParityDiscount()
 
   useEffect(() => {
     if (window.opener && userData) {
@@ -383,6 +386,18 @@ const PurchaseModalContents = () => {
                   </YStack>
 
                   <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
+                    {parityDeals && (
+                      <XStack mb="$2">
+                        <Paragraph theme="alt1" size="$3" opacity={0.9} color="$color10">
+                          {parityDeals.countryFlag} Use code{' '}
+                          <Text fontWeight="bold" fontFamily="$mono">
+                            {parityDeals.couponCode}
+                          </Text>{' '}
+                          at checkout for {parityDeals.discountPercentage}% off
+                        </Paragraph>
+                      </XStack>
+                    )}
+
                     <Theme name="accent">
                       <PurchaseButton onPress={handleCheckout} disabled={isProcessing}>
                         {isProcessing ? 'Processing...' : 'Checkout'}
