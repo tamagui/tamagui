@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <Provider defaultTheme={colorScheme}>
-      <YStack theme={themeName} flex={1}>
+      <YStack theme={themeName} bg={'$color2'} flex={1}>
         {themeName ? <Background themeName={themeName} /> : null}
         <View flex={1} justifyContent="center" ai="center" p="$4">
           <Datepickers.Calendar />
