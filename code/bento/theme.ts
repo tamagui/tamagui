@@ -89,7 +89,36 @@ const pigLight = [
   'hsla(350, 80%, 15%, 1)',
 ]
 
-const darkPalette = [
+const sunFlowerDark = [
+  'hsla(54, 95%, 5%, 1)',
+  'hsla(54, 94%, 8%, 1)',
+  'hsla(54, 93%, 10%, 1)',
+  'hsla(54, 91%, 13%, 1)',
+  'hsla(54, 90%, 15%, 1)',
+  'hsla(54, 89%, 22%, 1)',
+  'hsla(54, 88%, 29%, 1)',
+  'hsla(54, 87%, 36%, 1)',
+  'hsla(54, 86%, 43%, 1)',
+  'hsla(54, 85%, 50%, 1)',
+  'hsla(54, 80%, 85%, 1)',
+  'hsla(54, 75%, 95%, 1)',
+]
+const sunFlowerLight = [
+  'hsla(54, 95%, 99%, 1)',
+  'hsla(54, 94%, 96%, 1)',
+  'hsla(54, 93%, 92%, 1)',
+  'hsla(54, 91%, 89%, 1)',
+  'hsla(54, 90%, 85%, 1)',
+  'hsla(54, 89%, 78%, 1)',
+  'hsla(54, 88%, 71%, 1)',
+  'hsla(54, 87%, 64%, 1)',
+  'hsla(54, 86%, 57%, 1)',
+  'hsla(54, 85%, 50%, 1)',
+  'hsla(54, 80%, 20%, 1)',
+  'hsla(54, 75%, 10%, 1)',
+]
+
+const squidDark = [
   'hsla(0, 85%, 5%, 1)',
   'hsla(0, 84%, 10%, 1)',
   'hsla(0, 83%, 15%, 1)',
@@ -103,7 +132,7 @@ const darkPalette = [
   'hsla(340, 70%, 85%, 1)',
   'hsla(340, 75%, 95%, 1)',
 ]
-const lightPalette = [
+const squidLight = [
   'hsla(0, 85%, 97%, 1)',
   'hsla(0, 84%, 93%, 1)',
   'hsla(0, 83%, 89%, 1)',
@@ -116,6 +145,35 @@ const lightPalette = [
   'hsla(0, 75%, 50%, 1)',
   'hsla(340, 70%, 25%, 1)',
   'hsla(340, 75%, 15%, 1)',
+]
+
+const darkPalette = [
+  'hsla(0, 5%, 2%, 1)',
+  'hsla(0, 6%, 4%, 1)',
+  'hsla(0, 8%, 6%, 1)',
+  'hsla(0, 9%, 8%, 1)',
+  'hsla(0, 10%, 10%, 1)',
+  'hsla(0, 11%, 14%, 1)',
+  'hsla(0, 12%, 18%, 1)',
+  'hsla(0, 13%, 22%, 1)',
+  'hsla(0, 14%, 26%, 1)',
+  'hsla(0, 15%, 30%, 1)',
+  'hsla(0, 20%, 60%, 1)',
+  'hsla(0, 25%, 90%, 1)',
+]
+const lightPalette = [
+  'hsla(0, 5%, 98%, 1)',
+  'hsla(0, 6%, 96%, 1)',
+  'hsla(0, 8%, 94%, 1)',
+  'hsla(0, 9%, 92%, 1)',
+  'hsla(0, 10%, 90%, 1)',
+  'hsla(0, 11%, 86%, 1)',
+  'hsla(0, 12%, 82%, 1)',
+  'hsla(0, 13%, 78%, 1)',
+  'hsla(0, 14%, 74%, 1)',
+  'hsla(0, 15%, 70%, 1)',
+  'hsla(0, 20%, 40%, 1)',
+  'hsla(0, 25%, 10%, 1)',
 ]
 
 const lightShadows = {
@@ -167,34 +225,8 @@ const builtThemes = createThemes({
 
   accent: {
     palette: {
-      dark: [
-        'hsla(340, 75%, 10%, 1)',
-        'hsla(340, 74%, 15%, 1)',
-        'hsla(340, 73%, 20%, 1)',
-        'hsla(340, 71%, 25%, 1)',
-        'hsla(340, 70%, 30%, 1)',
-        'hsla(340, 69%, 34%, 1)',
-        'hsla(340, 68%, 38%, 1)',
-        'hsla(340, 67%, 42%, 1)',
-        'hsla(340, 66%, 46%, 1)',
-        'hsla(340, 65%, 50%, 1)',
-        'hsla(0, 80%, 90%, 1)',
-        'hsla(0, 85%, 98%, 1)',
-      ],
-      light: [
-        'hsla(340, 75%, 95%, 1)',
-        'hsla(340, 74%, 90%, 1)',
-        'hsla(340, 73%, 85%, 1)',
-        'hsla(340, 71%, 80%, 1)',
-        'hsla(340, 70%, 75%, 1)',
-        'hsla(340, 69%, 70%, 1)',
-        'hsla(340, 68%, 65%, 1)',
-        'hsla(340, 67%, 60%, 1)',
-        'hsla(340, 66%, 55%, 1)',
-        'hsla(340, 65%, 50%, 1)',
-        'hsla(0, 80%, 20%, 1)',
-        'hsla(0, 85%, 10%, 1)',
-      ],
+      dark: darkPalette,
+      light: lightPalette,
     },
   },
 
@@ -218,6 +250,20 @@ const builtThemes = createThemes({
       palette: {
         dark: pigDark,
         light: pigLight,
+      },
+    },
+
+    sunFlower: {
+      palette: {
+        dark: sunFlowerDark,
+        light: sunFlowerLight,
+      },
+    },
+
+    squid: {
+      palette: {
+        dark: squidDark,
+        light: squidLight,
       },
     },
   },

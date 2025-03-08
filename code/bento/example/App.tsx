@@ -49,7 +49,7 @@ const Frame = (props: { children: any }) => {
       />
 
       <YStack fullscreen w="100%" ai="center">
-        <Theme name={screenshot ? 'blue' : undefined}>
+        <Theme name={screenshot ? 'whale' : undefined}>
           <View py="$12" w="100%" h="full" maxWidth={1280}>
             <YStack
               {...(centered && {
