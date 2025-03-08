@@ -8,33 +8,38 @@ export const insets = {
   paddingBottom: StaticSafeAreaInsets.safeAreaInsetsBottom + 12,
 }
 
-export const colors: { theme: ThemeName; color: string }[] = [
+// 🍓🐙
+
+export type Colors = {
+  emoji: string
+  theme: ThemeName
+  color: string
+}
+
+export const colors: Colors[] = [
   {
-    theme: 'red',
+    emoji: '🐙',
+    theme: 'squid',
     color: '#F16A50',
   },
   {
-    theme: 'orange',
-    color: '#ea8f90',
-  },
-  {
-    theme: 'yellow',
-    color: '#ebbc02',
-  },
-  {
-    theme: 'green',
-    color: '#72a189',
-  },
-  {
-    theme: 'blue',
+    emoji: '🐳',
+    theme: 'whale',
     color: '#5eb0ef',
   },
   {
-    theme: 'purple',
-    color: '#e28dc2',
+    emoji: '🐽',
+    theme: 'pig',
+    color: '#F65CB6',
   },
   {
-    theme: 'pink',
-    color: '#F65CB6',
+    emoji: '🥑',
+    theme: 'avocado',
+    color: '#72a189',
+  },
+  {
+    emoji: '🌼',
+    theme: 'yellow',
+    color: '#ebbc02',
   },
 ]

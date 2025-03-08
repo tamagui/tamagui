@@ -7,7 +7,7 @@ import config from '../../tamagui.config'
 export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'config'>) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <TamaguiProvider config={config} defaultTheme="light" {...rest}>
+      <TamaguiProvider config={config} defaultTheme={rest.defaultTheme} {...rest}>
         {children}
       </TamaguiProvider>
     </GestureHandlerRootView>
