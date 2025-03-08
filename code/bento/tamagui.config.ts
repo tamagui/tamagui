@@ -4,7 +4,10 @@ import { themes } from './theme'
 
 const appConfig = createTamagui({
   ...config,
-  themes,
+  themes: {
+    ...config.themes,
+    ...themes,
+  },
 })
 
 export type AppConfig = typeof appConfig

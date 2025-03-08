@@ -39,7 +39,7 @@ export const colors: Colors[] = [
   },
   {
     emoji: '🌼',
-    theme: 'yellow',
+    theme: 'sunFlower',
     color: '#ebbc02',
   },
 ]
