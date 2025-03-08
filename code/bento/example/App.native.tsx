@@ -2,16 +2,19 @@ import 'react-native-gesture-handler'
 
 import { useFonts } from 'expo-font'
 import { useState } from 'react'
-import { Appearance, LogBox } from 'react-native'
+import { LogBox, useColorScheme } from 'react-native'
 import { Provider, BottomView } from './components'
 import { type ThemeName, View, YStack } from 'tamagui'
 import { Datepickers } from '../src/components'
+import { ThemePicker } from './components/ThemePicker'
+import { Background } from './components/Background'
 
 LogBox.ignoreAllLogs()
 
 export default function App() {
-  const [theme] = useState(Appearance.getColorScheme() ?? 'light')
   const [themeName, setThemeName] = useState<ThemeName>()
+
+  const colorScheme = useColorScheme() ?? 'light'
 
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
@@ -23,16 +26,14 @@ export default function App() {
   }
 
   return (
-    <Provider defaultTheme={theme}>
-      <YStack theme={themeName} bg={'$color2'} flex={1}>
-        <View flex={1} jc="center" ai="center" p="$4">
+    <Provider defaultTheme={colorScheme}>
+      <YStack theme={themeName} flex={1}>
+        {themeName ? <Background themeName={themeName} /> : null}
+        <View flex={1} justifyContent="center" ai="center" p="$4">
           <Datepickers.Calendar />
+          <ThemePicker themeColor={colorScheme} setThemeColor={setThemeName} />
         </View>
-        <BottomView
-          title="Date Picker"
-          themeColor="orange"
-          setThemeColor={setThemeName}
-        />
+        <BottomView title="Calendar" />
       </YStack>
     </Provider>
   )
