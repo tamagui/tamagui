@@ -1,3 +1,5 @@
+- tooltip: expects zIndex but shorthand overrides and doesn't work
+
 - make group props require the prop key to be stable like animations
   - saves 2 hooks in every component
   - in dev mode add a extra component around every component
