@@ -1,8 +1,15 @@
 #!/bin/bash
 
+<<<<<<< HEAD
 tsc -b --preserveWatchOutput tsconfig.build.json "$@" 2>&1 | tee /dev/stderr | grep -q "error"
 
 if [ $? -eq 0 ]; then
+=======
+output=$(tsc -b --preserveWatchOutput tsconfig.build.json "$@" 2>&1)
+echo "$output"
+
+if echo "$output" | grep -q "error"; then
+>>>>>>> main
   echo "‼️ Type check failed"
   exit 1
 else

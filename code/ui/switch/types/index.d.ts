@@ -1,6 +1,17 @@
 export * from './createSwitch';
 export * from './StyledContext';
 export * from './Switch';
+/**
+ * @summary A component that displays a switch that can be used to toggle between two states.
+ * @see — Docs https://tamagui.dev/ui/switch
+ *
+ * @example
+ * ```tsx
+ * <Switch id={id} size={props.size} defaultChecked={props.defaultChecked}>
+ *  <Switch.Thumb animation="quicker" />
+ * </Switch>
+ * ```
+ */
 export declare const Switch: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;

@@ -1,7 +1,9 @@
+import React from "react";
 import type { ThemeName } from "tamagui";
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
 export declare const setTintIndex: (next: number) => void;
 export declare function getDocsSection(pathname: string): "compiler" | "ui" | "core" | null;
+export declare const InitialPathContext: React.Context<number>;
 export declare const useTint: (altOffset?: number) => {
 	tints: ThemeName[];
 	tintIndex: number;

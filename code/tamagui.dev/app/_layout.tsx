@@ -2,14 +2,14 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
+import { getDocsSection, InitialPathContext } from '@tamagui/logo'
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
-import { LoadProgressBar, Slot, Stack } from 'one'
+import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'
-import { Suspense } from 'react'
 
 // for navigation container props
 //           theme: {
@@ -154,12 +154,21 @@ export default function Layout() {
 }
 
 export const Providers = (props: { children: any }) => {
+  const pathname = usePathname()
+  const section = getDocsSection(pathname)
+  let initial = 3
+  if (section) {
+    initial = section === 'compiler' ? 5 : section === 'core' ? 4 : 6
+  }
+
   return (
-    <SchemeProvider>
-      <WebsiteTamaguiProvider>
-        <SearchProvider>{props.children}</SearchProvider>
-      </WebsiteTamaguiProvider>
-    </SchemeProvider>
+    <InitialPathContext.Provider value={initial}>
+      <SchemeProvider>
+        <WebsiteTamaguiProvider>
+          <SearchProvider>{props.children}</SearchProvider>
+        </WebsiteTamaguiProvider>
+      </SchemeProvider>
+    </InitialPathContext.Provider>
   )
 }
 

@@ -1,5 +1,4 @@
-import { usePathname } from 'one'
-import React from 'react'
+import React, { createContext, useContext } from 'react'
 import type { ThemeName } from 'tamagui'
 import { getTints, setNextTintFamily, useTints } from './tints'
 
@@ -35,6 +34,8 @@ export function getDocsSection(pathname: string): 'compiler' | 'ui' | 'core' | n
         : null
 }
 
+export const InitialPathContext: React.Context<number> = createContext(3)
+
 export const useTint = (
   altOffset = -1
 ): {
@@ -56,14 +57,7 @@ export const useTint = (
     lunar: string[]
   }
 } => {
-  const pathname = usePathname()
-  const section = getDocsSection(pathname)
-
-  let initial = current
-  if (section) {
-    initial = section === 'compiler' ? 5 : section === 'core' ? 4 : 6
-  }
-
+  const initial = useContext(InitialPathContext)
   const index = React.useSyncExternalStore(
     onTintChange,
     () => current,

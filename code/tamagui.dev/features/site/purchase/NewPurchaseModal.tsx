@@ -21,6 +21,7 @@ import {
   Unspaced,
   XStack,
   YStack,
+  Text,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { Select } from '../../../components/Select'
@@ -34,6 +35,7 @@ import { BigP, P } from './BigP'
 import { useTakeoutStore } from './useTakeoutStore'
 import { ProPoliciesModal } from './PoliciesModal'
 import { ProAgreementModal } from './AgreementModal'
+import { useParityDiscount } from '~/hooks/useParityDiscount'
 
 class PurchaseModal {
   show = false
@@ -95,6 +97,7 @@ const PurchaseModalContents = () => {
   })
   const { data: products } = useProducts()
   const { data: userData } = useUser()
+  const { parityDeals } = useParityDiscount()
 
   useEffect(() => {
     if (window.opener && userData) {
@@ -382,7 +385,28 @@ const PurchaseModalContents = () => {
                     </XStack>
                   </YStack>
 
-                  <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
+                  <YStack gap="$2" width="100%" $gtXs={{ width: '42%' }}>
+                    {parityDeals && (
+                      <Theme name="yellow">
+                        <XStack
+                          mb="$2"
+                          backgroundColor="$color3"
+                          borderRadius="$4"
+                          borderWidth={0.5}
+                          borderColor="$color8"
+                          p="$2"
+                        >
+                          <Paragraph size="$3" color="$color11" textWrap="balance">
+                            {parityDeals.countryFlag} Use code{' '}
+                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
+                              {parityDeals.couponCode}
+                            </Text>{' '}
+                            at checkout for {parityDeals.discountPercentage}% off
+                          </Paragraph>
+                        </XStack>
+                      </Theme>
+                    )}
+
                     <Theme name="accent">
                       <PurchaseButton onPress={handleCheckout} disabled={isProcessing}>
                         {isProcessing ? 'Processing...' : 'Checkout'}
