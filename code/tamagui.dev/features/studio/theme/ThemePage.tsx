@@ -101,7 +101,13 @@ export function ThemePage(props: Props) {
             <PreviewTheme>
               <YStack gap="$6">
                 <Suspense fallback={<StudioPreviewComponentsSkeleton />}>
-                  <StudioPreviewComponents />
+                  {/**
+                   * FIXME: remove this once we have a better way to check if the
+                   * ResizeObserver is available
+                   * For some reason, `if (typeof window !== 'undefined')`
+                   * doesn't work in the StudioPreviewComponents useEffect
+                   */}
+                  <StudioPreviewComponents isReady={typeof window !== 'undefined'} />
                 </Suspense>
               </YStack>
             </PreviewTheme>

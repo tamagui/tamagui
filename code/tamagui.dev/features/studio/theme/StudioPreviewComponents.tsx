@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useEffect, useReducer, useRef } from 'react'
 import { XStack, YStack, useThemeName } from 'tamagui'
 
 import { Masonry } from 'masonic'
@@ -19,7 +19,9 @@ import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
 import { UserDropdown } from './preview/UserDropdown'
 import { Skeleton } from 'moti/skeleton'
 
-export const StudioPreviewComponents = memo(() => {
+export const StudioPreviewComponents = memo(({ isReady }: { isReady: boolean }) => {
+  if (!isReady) return null
+
   return (
     <>
       <PalettePreviewPanels />
