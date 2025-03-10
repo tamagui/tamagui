@@ -312,7 +312,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   return res
 }
 
-const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => ({
+const tokenCats = ['size', 'radius', 'space', 'zIndex'].map((name) => ({
   name,
   spreadName: `...${name}`,
 }))
@@ -327,7 +327,7 @@ function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalCon
   if (exact) {
     return exact
   }
-  if (value != null) {
+  if (value != null && (typeof value !== 'string' || value.trim() !== '')) {
     const { tokensParsed } = conf
     for (const { name, spreadName } of tokenCats) {
       if (spreadName in variant && value in tokensParsed[name]) {
