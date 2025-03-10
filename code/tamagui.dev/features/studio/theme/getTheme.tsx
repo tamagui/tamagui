@@ -54,7 +54,7 @@ export const getTheme = async (id: string) => {
 
   const { data: currentTheme, error: themeError } = await supabase
     .from('theme_histories')
-    .select('theme_data, search_query, id')
+    .select('theme_data, search_query, id, is_cached, og_image_url')
     .eq('id', Number.parseInt(id))
     .single()
 
@@ -68,5 +68,7 @@ export const getTheme = async (id: string) => {
     theme: themeData as ThemeSuiteItemData,
     search: currentTheme.search_query,
     id: currentTheme.id,
+    is_cached: currentTheme.is_cached as boolean | null,
+    og_image_url: currentTheme.og_image_url as string | null,
   }
 }

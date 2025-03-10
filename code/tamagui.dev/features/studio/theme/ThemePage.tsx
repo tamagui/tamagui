@@ -45,17 +45,13 @@ export type Props = {
 export function ThemePage(props: Props) {
   const { theme, id, search } = props
   const user = useUser()
+  const { updateGenerate } = useThemeBuilderStore()
 
   useEffect(() => {
     if (theme) {
-      themeBuilderStore.updateGenerate(
-        theme,
-        search,
-        id,
-        user.data?.userDetails?.full_name
-      )
+      updateGenerate(theme, search, id, user.data?.userDetails?.full_name)
     }
-  }, [])
+  }, [theme])
 
   return (
     <>
