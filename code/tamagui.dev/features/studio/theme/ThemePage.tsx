@@ -98,7 +98,7 @@ export function ThemePage(props: Props) {
               p: '$4',
             }}
           >
-            <StudioAIBar initialTheme={{ currentTheme: props }} />
+            <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
             <StudioPreviewComponentsBar
               scrollView={typeof window !== 'undefined' ? document.documentElement : null}
             />
