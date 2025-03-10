@@ -70,15 +70,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   )
 
   useEffect(() => {
-<<<<<<< HEAD
-    console.info('initialTheme?.currentTheme', initialTheme?.currentTheme)
-    if (initialTheme?.currentTheme) {
-      inputRef.current!.value = initialTheme.currentTheme.search_query
-=======
     if (initialTheme) {
       initialTheme
       inputRef.current!.value = initialTheme.query ?? ''
->>>>>>> origin/feat-ai-theme
       themeBuilderStore.updateGenerate(
         initialTheme.themeSuite,
         initialTheme.query,
