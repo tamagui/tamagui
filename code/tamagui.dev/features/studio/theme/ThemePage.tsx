@@ -45,17 +45,13 @@ export type Props = {
 export function ThemePage(props: Props) {
   const { theme, id, search } = props
   const user = useUser()
+  const { updateGenerate } = useThemeBuilderStore()
 
   useEffect(() => {
     if (theme) {
-      themeBuilderStore.updateGenerate(
-        theme,
-        search,
-        id,
-        user.data?.userDetails?.full_name
-      )
+      updateGenerate(theme, search, id, user.data?.userDetails?.full_name)
     }
-  }, [])
+  }, [theme])
 
   return (
     <>
@@ -98,14 +94,20 @@ export function ThemePage(props: Props) {
               p: '$4',
             }}
           >
-            <StudioAIBar initialTheme={{ currentTheme: props }} />
+            <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
             <StudioPreviewComponentsBar
               scrollView={typeof window !== 'undefined' ? document.documentElement : null}
             />
             <PreviewTheme>
               <YStack gap="$6">
                 <Suspense fallback={<StudioPreviewComponentsSkeleton />}>
-                  <StudioPreviewComponents />
+                  {/**
+                   * FIXME: remove this once we have a better way to check if the
+                   * ResizeObserver is available
+                   * For some reason, `if (typeof window !== 'undefined')`
+                   * doesn't work in the StudioPreviewComponents useEffect
+                   */}
+                  <StudioPreviewComponents isReady={typeof window !== 'undefined'} />
                 </Suspense>
               </YStack>
             </PreviewTheme>

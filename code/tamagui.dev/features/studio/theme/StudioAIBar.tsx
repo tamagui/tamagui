@@ -25,33 +25,19 @@ import { defaultModel, generateModels, type ModelNames } from '../../api/generat
 import { Sheet } from '@tamagui/sheet'
 import { useRouter } from 'one'
 import useSWR, { mutate } from 'swr'
+import { dumpThemeState } from './debug'
+import type { ThemeSuiteItemData } from './types'
 
-type ThemeHistory = {
-  theme_data: {
-    base: any
-    accent: any
-    reply: string
-    scheme: string
-    model: string
-  }
-  search_query: string
-  created_at: string
-  id: number
-}
+type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
 
-type ThemeData = {
-  theme: {
-    base: any[]
-    accent: any[]
-    schema: string
-  }
-  search: string
-  id: number
-} | null
+type UpdateGenerateArgs = Parameters<typeof themeBuilderStore.updateGenerate>
 
 interface StudioAIBarProps {
   initialTheme?: {
-    currentTheme: ThemeData
+    themeSuite: UpdateGenerateArgs[0]
+    query?: UpdateGenerateArgs[1]
+    themeId?: UpdateGenerateArgs[2]
+    username?: UpdateGenerateArgs[3]
   }
 }
 
@@ -74,22 +60,33 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     async (url) => {
       const res = await fetch(url)
       const data = await res.json()
-      return data.histories as ThemeHistory[]
+      return data.histories.map((history) => ({
+        themeSuite: history.theme_data,
+        query: history.search_query,
+        themeId: history.id,
+        username: null,
+      })) as NonNullable<StudioAIBarProps['initialTheme']>[]
     }
   )
 
   useEffect(() => {
+<<<<<<< HEAD
     console.info('initialTheme?.currentTheme', initialTheme?.currentTheme)
     if (initialTheme?.currentTheme) {
       inputRef.current!.value = initialTheme.currentTheme.search_query
+=======
+    if (initialTheme) {
+      initialTheme
+      inputRef.current!.value = initialTheme.query ?? ''
+>>>>>>> origin/feat-ai-theme
       themeBuilderStore.updateGenerate(
-        initialTheme.currentTheme.theme_data,
-        initialTheme.currentTheme.search_query,
-        initialTheme.currentTheme.id,
-        user.data?.userDetails?.full_name
+        initialTheme.themeSuite,
+        initialTheme.query,
+        initialTheme.themeId,
+        initialTheme.username
       )
     }
-  }, [initialTheme?.currentTheme])
+  }, [initialTheme?.themeSuite])
 
   const generate = async (type: 'reply' | 'new') => {
     if (!inputRef.current?.value.trim()) {
@@ -162,11 +159,11 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     }
   }
 
-  const applyTheme = async (history: ThemeHistory) => {
-    const newPath = `/theme/${history.id}/${encodeURIComponent(history.search_query)}`
+  const applyTheme = async (history: NonNullable<StudioAIBarProps['initialTheme']>) => {
+    const newPath = `/theme/${history?.themeId}/${encodeURIComponent(history?.query ?? '')}`
     window.history.pushState({}, '', newPath)
 
-    themeBuilderStore.updateGenerate(history.theme_data, history.search_query, history.id)
+    themeBuilderStore.updateGenerate(history.themeSuite, history.query, history.themeId)
   }
 
   return (
@@ -244,7 +241,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             <XStack gap="$2" py="$2">
               {historiesData.map((history) => (
                 <Button
-                  key={history.search_query}
+                  key={history.query}
                   size="$3"
                   chromeless
                   bordered
@@ -254,7 +251,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                   <XStack ai="center" gap="$2">
                     <History size={14} />
                     <Text numberOfLines={1} maxWidth={200}>
-                      {history.search_query}
+                      {history.query}
                     </Text>
                   </XStack>
                 </Button>

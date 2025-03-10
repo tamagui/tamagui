@@ -216,6 +216,7 @@ export class ThemeBuilderStore {
       ...this.schemes,
       [scheme]: val,
     }
+    await this.save()
   }
 
   async refreshThemeSuite() {
@@ -261,6 +262,7 @@ export class ThemeBuilderStore {
     ) {
       // this.themeSuiteId = `${Math.round(Math.random() * 100_000)}`
       this.themeSuiteVersion++
+      this.save()
     }
   }
 
@@ -280,6 +282,12 @@ export class ThemeBuilderStore {
     }
   }
 
+  async save() {
+    this.listeners.forEach((cb) => {
+      cb()
+    })
+  }
+
   async updatePalette(name: string, palette: Partial<BuildPalette>) {
     this.palettes = {
       ...this.palettes,
@@ -288,6 +296,7 @@ export class ThemeBuilderStore {
         ...palette,
       },
     }
+    await this.refreshThemeSuite()
   }
 
   get sectionsFlat() {
@@ -374,7 +383,7 @@ export class ThemeBuilderStore {
       }
 
       if (this.sectionsFlat[this.step].saveOnNext) {
-        // this.save()
+        this.save()
       }
     } else if (dir === -1) {
       if (!this.canGoBackward) {
