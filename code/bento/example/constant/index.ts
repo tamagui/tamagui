@@ -13,33 +13,27 @@ export const insets = {
 export type Colors = {
   emoji: string
   theme: ThemeName
-  color: string
 }
 
 export const colors: Colors[] = [
   {
-    emoji: '🐙',
-    theme: 'squid',
-    color: '#F16A50',
+    emoji: '🦋',
+    theme: 'neonBlue',
   },
   {
-    emoji: '🐳',
-    theme: 'whale',
-    color: '#5eb0ef',
+    emoji: '🦄',
+    theme: 'neon',
   },
   {
-    emoji: '🐽',
-    theme: 'pig',
-    color: '#F65CB6',
+    emoji: '🐝',
+    theme: 'bee',
   },
   {
     emoji: '🥑',
     theme: 'avocado',
-    color: '#72a189',
   },
   {
-    emoji: '🌼',
-    theme: 'sunFlower',
-    color: '#ebbc02',
+    emoji: '🌋',
+    theme: 'volcanic',
   },
 ]

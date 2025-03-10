@@ -48,7 +48,7 @@ export const Background = ({ themeName }: { themeName?: ThemeName }) => {
     <AnimatedView
       entering={FadeIn}
       exiting={FadeOut}
-      bg={'$color2'}
+      bg={'$color3'}
       position="absolute"
       inset={0}
       flex={1}
@@ -59,7 +59,7 @@ export const Background = ({ themeName }: { themeName?: ThemeName }) => {
             <View
               width={SIZE}
               height={SIZE}
-              borderWidth={0.5}
+              borderWidth={0.3}
               opacity={0.8}
               borderColor="$borderColor"
               key={index}
