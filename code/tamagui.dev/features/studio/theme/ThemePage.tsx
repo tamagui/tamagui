@@ -1,67 +1,78 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
-import { useParams, useRouter } from 'one'
-import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, memo, Suspense, useEffect, useMemo, useRef } from 'react'
 import {
   AnimatePresence,
   Button,
   ScrollView,
   Separator,
   Spacer,
+  styled,
   Theme,
   View,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
+import { HeadInfo } from '~/components/HeadInfo'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
-import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
-import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
+import { StudioPreviewComponentsSkeleton } from '~/features/studio/theme/StudioPreviewComponents'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
-
 import {
   themeBuilderStore,
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
+import { useUser } from '~/features/user/useUser'
 import { weakKey } from '~/helpers/weakKey'
-import { lastInserted } from '../../features/studio/theme/updatePreviewTheme'
+import type { ThemeSuiteItemData } from './types'
 
-export default function ThemePage() {
-  const [loaded, setLoaded] = useState(false)
-  const router = useRouter()
-  const params = useParams<any>()
+const StudioPreviewComponentsBar = lazy(
+  () => import('~/features/studio/theme/StudioPreviewComponentsBar')
+)
+
+const StudioPreviewComponents = lazy(
+  () => import('~/features/studio/theme/StudioPreviewComponents')
+)
+
+export type Props = {
+  search: string
+  id: number
+  theme: ThemeSuiteItemData
+}
+
+export function ThemePage(props: Props) {
+  const { theme, id, search } = props
+  const user = useUser()
+  const { updateGenerate } = useThemeBuilderStore()
 
   useEffect(() => {
-    // give it a bit to load many dynamic charts that animate etc
-    themeBuilderStore.load(params.state as string | undefined).then(() => {
-      startTransition(() => {
-        setLoaded(true)
-      })
-    })
-
-    const onSave = () => {
-      router.setParams({
-        state: themeBuilderStore.serializedState,
-      })
+    if (theme) {
+      updateGenerate(theme, search, id, user.data?.userDetails?.full_name)
     }
-
-    themeBuilderStore.listeners.add(onSave)
-
-    return () => {
-      themeBuilderStore.listeners.delete(onSave)
-    }
-  }, [])
-
-  // const previewKey = `${loaded}${themeName.replace(/(dark|light)_?/, '')}`
+  }, [theme])
 
   return (
     <>
+      <HeadInfo
+        title={`${search || 'Tamagui Theme Builder'} - Tamagui Theme`}
+        description={search ? `Tamagui Theme for ${search}` : `Tamagui Theme Builder`}
+        openGraph={{
+          images: [
+            {
+              url: `https://tamagui.dev/api/theme/open-graph?id=${id || '0'}`,
+            },
+          ],
+        }}
+      />
+
       <Dialogs />
 
       <YStack flexShrink={0} mb="$10">
-        <ThemeBuilderModal />
+        <Suspense fallback={null}>
+          <ThemeBuilderModal />
+        </Suspense>
 
         <XStack
           w="100%"
@@ -83,11 +94,21 @@ export default function ThemePage() {
               p: '$4',
             }}
           >
-            <StudioAIBar />
-            <StudioPreviewComponentsBar scrollView={document.documentElement} />
+            <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
+            <StudioPreviewComponentsBar
+              scrollView={typeof window !== 'undefined' ? document.documentElement : null}
+            />
             <PreviewTheme>
               <YStack gap="$6">
-                <StudioPreviewComponents />
+                <Suspense fallback={<StudioPreviewComponentsSkeleton />}>
+                  {/**
+                   * FIXME: remove this once we have a better way to check if the
+                   * ResizeObserver is available
+                   * For some reason, `if (typeof window !== 'undefined')`
+                   * doesn't work in the StudioPreviewComponents useEffect
+                   */}
+                  <StudioPreviewComponents isReady={typeof window !== 'undefined'} />
+                </Suspense>
               </YStack>
             </PreviewTheme>
           </YStack>
@@ -146,39 +167,6 @@ const ThemeBuilderModal = memo(() => {
         bg="$background06"
         backdropFilter="blur(60px)"
       >
-        {/* <TooltipSimple label="Show Drawer">
-          <YStack
-            animation="lazy"
-            px="$2"
-            py="$2"
-            t="$-3"
-            l={-20}
-            br="$10"
-            bg="$color2"
-            bw={0.5}
-            bc="$borderColor"
-            elevation="$2"
-            w={40}
-            h={40}
-            ai="center"
-            jc="center"
-            x={0}
-            opacity={0}
-            pressStyle={{
-              bg: '$color3',
-            }}
-            $lg={{
-              x: expanded ? 30 : -30,
-              opacity: 1,
-            }}
-            // onPress={() => {
-            //   setExpanded(!expanded)
-            // }}
-          >
-            {expanded ? <ChevronRight x={0.5} /> : <ChevronLeft x={0.5} />}
-          </YStack>
-        </TooltipSimple> */}
-
         <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
@@ -256,6 +244,7 @@ const ThemeStudioStepButtonsBar = () => {
     currentSection,
     disableForward,
   } = store
+
   const forwardOrFinish = () => {
     if (!canGoForward) {
       console.warn('done')
@@ -264,19 +253,20 @@ const ThemeStudioStepButtonsBar = () => {
     }
   }
 
-  // useHotkeys('left', backward)
-  // useHotkeys('right', forward)
-
   return (
     <XStack gap="$2">
-      {location.hostname === 'localhost' && lastInserted && (
-        <>
-          <a href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}>
-            <Button size="$3">Chat</Button>
-          </a>
-          <View flex={1} />
-        </>
-      )}
+      {typeof location !== 'undefined' &&
+        location.host === 'localhost' &&
+        lastInserted && (
+          <>
+            <a
+              href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}
+            >
+              <Button size="$3">Chat</Button>
+            </a>
+            <View flex={1} />
+          </>
+        )}
 
       <Button
         size="$3"
