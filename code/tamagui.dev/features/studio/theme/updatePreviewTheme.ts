@@ -3,13 +3,20 @@ import type { BuildThemeSuiteProps } from '@tamagui/themes'
 import type { ThemeName } from 'tamagui'
 import { mutateThemes } from 'tamagui'
 
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+  let timeout: NodeJS.Timeout
+  return (...args: any[]) => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func(...args), delay)
+  }
+}
+
 const STUDIO_INTERNAL_THEME_NAME = 'studiodemointernal'
 
 export function getStudioInternalThemeName(id: string) {
   return `${STUDIO_INTERNAL_THEME_NAME}${id}` as ThemeName
 }
 
-const last = new Map()
 const running = new Map()
 
 export const builtThemes: Record<string, any> = {}
@@ -19,26 +26,53 @@ if (process.env.NODE_ENV === 'development') {
   globalThis['builtThemes'] = builtThemes
 }
 
+const themeCache = new Map<
+  string,
+  {
+    palettes: any
+    schemes: any
+    templateStrategy: string
+    themes: any
+  }
+>()
+
+const debouncedUpdateThemes = debounce((insertThemes: any[]) => {
+  return mutateThemes({
+    themes: insertThemes,
+    batch: 'themes',
+  })
+}, 100)
+
 export async function updatePreviewTheme(
   args: BuildThemeSuiteProps & {
     id: string
   }
 ) {
-  const cacheKey = JSON.stringify(args)
+  const cacheKey = args.id
+  const cached = themeCache.get(cacheKey)
 
-  // avoid re-running same exact thing
-  if (last.get(args.id) === cacheKey) {
+  if (
+    cached &&
+    JSON.stringify(cached.palettes) === JSON.stringify(args.palettes) &&
+    JSON.stringify(cached.schemes) === JSON.stringify(args.schemes) &&
+    cached.templateStrategy === args.templateStrategy
+  ) {
     return false
   }
-  // async lock
-  running.set(args.id, cacheKey)
+
+  if (running.get(args.id)) {
+    return false
+  }
+  running.set(args.id, true)
 
   const { themes } = createStudioThemes(args)
 
-  // async stale check
-  if (running.get(args.id) !== cacheKey) {
-    return false
-  }
+  themeCache.set(cacheKey, {
+    palettes: args.palettes,
+    schemes: args.schemes,
+    templateStrategy: args.templateStrategy ?? 'base',
+    themes,
+  })
 
   let insertThemes: any[] = []
 
@@ -52,20 +86,14 @@ export async function updatePreviewTheme(
     })
   }
 
-  last.set(args.id, cacheKey)
-
   if (process.env.NODE_ENV === 'development') {
     builtThemes[args.id] = themes
   }
 
   lastInserted = themes
 
-  const out = mutateThemes({
-    themes: insertThemes,
-    batch: `themes`,
-  })
+  await debouncedUpdateThemes(insertThemes)
 
-  console.warn(`updatePreviewTheme()`, args.id, { themes, insertThemes, out })
-
+  running.set(args.id, false)
   return true
 }
