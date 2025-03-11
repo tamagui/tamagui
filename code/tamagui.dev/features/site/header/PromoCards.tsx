@@ -47,6 +47,7 @@ export const PromoCards = ({
 
       <Card>
         <TooltipLabelLarge
+          href="/chat"
           icon={
             <YStack>
               <MessageCircle size={20} />
