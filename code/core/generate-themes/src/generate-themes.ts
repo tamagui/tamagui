@@ -8,17 +8,17 @@ type ThemeBuilderInterceptOpts = {
 let didRegisterOnce = false
 
 export async function generateThemes(inputFile: string) {
+  const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
+
   if (!didRegisterOnce) {
+    didRegisterOnce = true
     // the unregsiter does basically nothing and keeps a process running
     require('esbuild-register/dist/node').register({
       hookIgnoreNodeModules: false,
     })
+  } else {
+    purgeCache(inputFilePath)
   }
-
-  const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
-  purgeCache(inputFilePath)
-
-  const promises: Array<Promise<null | ThemeBuilder<any>>> = []
 
   let og = process.env.TAMAGUI_KEEP_THEMES
   process.env.TAMAGUI_KEEP_THEMES = '1'
@@ -175,6 +175,12 @@ function purgeCache(moduleName) {
   searchCache(moduleName, (mod) => {
     delete require.cache[mod.id]
   })
+
+  // @ts-ignore
+  if (!module.constructor || !module.constructor._pathCache) {
+    // bun doesn't have this
+    return
+  }
 
   // Remove cached paths to the module.
   // Thanks to @bentael for pointing this out.
