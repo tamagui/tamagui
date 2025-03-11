@@ -14,7 +14,6 @@ import {
 } from 'tamagui'
 import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
 import { PromoCards } from './PromoCards'
-import { ThemeTintAlt } from '@tamagui/logo'
 
 export const UpgradeToProPopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
