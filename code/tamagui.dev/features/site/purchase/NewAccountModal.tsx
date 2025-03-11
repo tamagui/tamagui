@@ -41,7 +41,6 @@ export const accountModal = createStore(AccountModal)
 export const useAccountModal = createUseStore(AccountModal)
 
 export const NewAccountModal = () => {
-  const [mounted, setMounted] = useState(false)
   const store = useAccountModal()
   const { isLoading, data } = useUser()
   const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage'>('plan')
@@ -158,13 +157,13 @@ export const NewAccountModal = () => {
                   <YStack p="$6">
                     {currentTab === 'plan' && (
                       <PlanTab
-                        subscription={proSubscription}
-                        supportSubscription={supportSubscription}
+                        subscription={proSubscription!}
+                        supportSubscription={supportSubscription!}
                         setCurrentTab={setCurrentTab}
                       />
                     )}
                     {currentTab === 'upgrade' && (
-                      <UpgradeTab subscription={supportSubscription} />
+                      <UpgradeTab subscription={supportSubscription!} />
                     )}
                     {currentTab === 'manage' && (
                       <ManageTab
@@ -876,8 +875,9 @@ const UpgradeTab = ({
     paymentModal.chatSupport = false
     paymentModal.supportTier = Number(supportTier)
     paymentModal.selectedPrices = {
-      proPriceId: '', // No pro price for support upgrade
-      supportPriceIds: [supportPriceId],
+      disableAutoRenew: false,
+      chatSupport: false,
+      supportTier: Number(supportTier),
     }
   }
 

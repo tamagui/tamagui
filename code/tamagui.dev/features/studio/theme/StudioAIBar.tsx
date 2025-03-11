@@ -261,10 +261,10 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                   bordered
                   onPress={() => applyTheme(history)}
                   borderRadius="$8"
-                  bg={history.themeId === selectedThemeId ? '$black1' : '$color2'}
+                  bg={history.themeId === selectedThemeId ? '$color12' : '$color2'}
                   color={history.themeId === selectedThemeId ? '$color1' : '$color11'}
                   focusStyle={{
-                    bg: history.themeId === selectedThemeId ? '$black1' : '$color2',
+                    bg: history.themeId === selectedThemeId ? '$color12' : '$color2',
                     opacity: 0.8,
                   }}
                 >
