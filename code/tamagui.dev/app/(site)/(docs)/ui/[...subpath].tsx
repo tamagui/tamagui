@@ -2,7 +2,8 @@ import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React, { memo } from 'react'
 import type { LoaderProps } from 'one'
-import { useLoader } from 'one'
+import { useLoader, useParams, usePathname } from 'one'
+import { Text } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { MDXProvider } from '~/features/docs/MDXProvider'
@@ -36,6 +37,7 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
+  console.log(`loader props are ${JSON.stringify(props)}`)
   const { getMDXBySlug, getAllVersionsFromPath } = await import('@tamagui/mdx-2')
 
   const { frontmatter, code } = await getMDXBySlug(
@@ -55,8 +57,21 @@ export async function loader(props: LoaderProps) {
 }
 
 export default function DocComponentsPage() {
+  const params = useParams()
+  console.log(`params are ${JSON.stringify(params)}`)
+  const pathname = usePathname()
+  console.log(`pathname is ${pathname}`)
+
+  // return (
+  //   <>
+  //     <Text>params: {JSON.stringify(params)}</Text>
+  //     <Text>pathname: {JSON.stringify(pathname)}</Text>
+  //   </>
+  // )
+
   const { frontmatter, code } = useLoader(loader)
-  const Component = React.useMemo(() => getMDXComponent(code), [code])
+  console.log(`code is `, code)
+  const Component = React.useMemo(() => code ? getMDXComponent(code) : () => null, [code])
 
   // useEffect(() => {
   //   const url = new URL(location.href)
@@ -66,6 +81,8 @@ export default function DocComponentsPage() {
   //   }
   //   router.replace(url)
   // }, [])
+
+  if (!frontmatter) return null
 
   return (
     <>
