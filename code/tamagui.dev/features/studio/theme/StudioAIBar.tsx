@@ -25,8 +25,6 @@ import { defaultModel, generateModels, type ModelNames } from '../../api/generat
 import { Sheet } from '@tamagui/sheet'
 import { useRouter } from 'one'
 import useSWR, { mutate } from 'swr'
-import { dumpThemeState } from './debug'
-import type { ThemeSuiteItemData } from './types'
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
 
@@ -242,12 +240,13 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                   onPress={() => applyTheme(history)}
                   borderRadius="$8"
                 >
-                  <XStack ai="center" gap="$2">
+                  <Button.Icon>
                     <History size={14} />
-                    <Text numberOfLines={1} maxWidth={200}>
-                      {history.query}
-                    </Text>
-                  </XStack>
+                  </Button.Icon>
+
+                  <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
+                    {history.query}
+                  </Button.Text>
                 </Button>
               ))}
             </XStack>
