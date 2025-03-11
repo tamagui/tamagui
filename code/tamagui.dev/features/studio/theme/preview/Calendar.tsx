@@ -129,7 +129,7 @@ const DayCell = ({ day, isDisabled }: { day: number; isDisabled?: boolean }) => 
       cursor={isDisabled ? 'default' : 'pointer'}
       userSelect="none"
       hoverStyle={isDisabled ? {} : { backgroundColor: '$backgroundHover' }}
-      disabled={isDisabled}
+      disabled={!!isDisabled}
       opacity={isDisabled ? 0.5 : 1}
       jc="center"
       ai="center"
