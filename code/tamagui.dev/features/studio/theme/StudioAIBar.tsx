@@ -2,7 +2,7 @@ import { Input } from '@tamagui/input'
 import { Moon, Sun, History } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
   Configuration,
@@ -23,7 +23,7 @@ import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
 import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
 import { Sheet } from '@tamagui/sheet'
-import { useRouter } from 'one'
+import { useParams, useRouter } from 'one'
 import useSWR, { mutate } from 'swr'
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
@@ -43,14 +43,24 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const [model, setModel] = useState(defaultModel)
   const inputRef = useRef<HTMLInputElement>(null)
   const user = useUser()
-  const router = useRouter()
+  const params = useParams<{ subpath: string | string[] }>()
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
   const [lastReply, setLastReply] = useState('')
   const [lastPrompt, setLastPrompt] = useState('')
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
-  const [showHistories, setShowHistories] = useState(false)
+  const [selectedThemeId, setSelectedThemeId] = useState(
+    (() => {
+      if (Array.isArray(params.subpath)) {
+        return Number(params.subpath[0])
+      }
+      if (typeof params.subpath === 'string') {
+        return Number(params.subpath)
+      }
+      return typeof initialTheme?.themeId === 'number' ? initialTheme.themeId : undefined
+    })()
+  )
   const username = user.data?.userDetails?.full_name
 
   const { data: historiesData } = useSWR(
@@ -153,6 +163,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
   const applyTheme = async (history: NonNullable<StudioAIBarProps['initialTheme']>) => {
     const newPath = `/theme/${history?.themeId}/${encodeURIComponent(history?.query ?? '')}`
+    if (typeof history.themeId === 'number') {
+      setSelectedThemeId(history.themeId)
+    }
     window.history.pushState({}, '', newPath)
 
     themeBuilderStore.updateGenerate(history.themeSuite, history.query, history.themeId)
@@ -239,6 +252,8 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                   bordered
                   onPress={() => applyTheme(history)}
                   borderRadius="$8"
+                  bg={history.themeId === selectedThemeId ? '$black1' : '$color2'}
+                  color={history.themeId === selectedThemeId ? '$white1' : '$black1'}
                 >
                   <Button.Icon>
                     <History size={14} />
