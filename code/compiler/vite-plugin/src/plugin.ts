@@ -13,7 +13,7 @@ const fileURLToPathName = (fileUrl?: string) => {
   }
   return pathname;
 };
-const resolve = async (name: string) => fileURLToPathName(await import.meta.resolve?.(name))
+const resolve = (name: string) => fileURLToPathName(import.meta.resolve?.(name));
 
 export function tamaguiPlugin({
   optimize,
