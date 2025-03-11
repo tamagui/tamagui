@@ -25,6 +25,7 @@ import { listingData } from '@tamagui/bento/data'
 import { Text } from 'tamagui'
 import { Paragraph } from 'tamagui'
 import { useToastController } from '@tamagui/toast'
+import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -43,6 +44,8 @@ export default function BentoPage() {
   const bentoStore = useBentoStore()
   const Comp = Sections?.[section]?.[part]
   const toast = useToastController()
+
+  const { showAppropriateModal, isProUser } = useSubscriptionModal()
 
   if (!Comp) {
     return null
@@ -148,7 +151,7 @@ export default function BentoPage() {
                 </View>
 
                 <View w="100%" flex={1}>
-                  <Comp />
+                  <Comp showAppropriateModal={showAppropriateModal} isProUser={isProUser} />
                 </View>
               </XStack>
             </ContainerBento>
