@@ -31,13 +31,6 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function formatPrice(amount: number, currency: string) {
-  return new Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: currency.toUpperCase(),
-  }).format(amount)
-}
-
 export function PurchaseButton(props: ButtonProps) {
   return (
     <Button size="$5" br="$10" {...props}>

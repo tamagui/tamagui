@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { getDocsSection, InitialPathContext } from '@tamagui/logo'
+import { getDocsSection } from '@tamagui/logo'
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
@@ -162,13 +162,13 @@ export const Providers = (props: { children: any }) => {
   }
 
   return (
-    <InitialPathContext.Provider value={initial}>
-      <SchemeProvider>
-        <WebsiteTamaguiProvider>
-          <SearchProvider>{props.children}</SearchProvider>
-        </WebsiteTamaguiProvider>
-      </SchemeProvider>
-    </InitialPathContext.Provider>
+    // <InitialPathContext.Provider value={initial}>
+    <SchemeProvider>
+      <WebsiteTamaguiProvider>
+        <SearchProvider>{props.children}</SearchProvider>
+      </WebsiteTamaguiProvider>
+    </SchemeProvider>
+    // </InitialPathContext.Provider>
   )
 }
 
