@@ -35,35 +35,8 @@ const fetcher = async (url: string) => {
 }
 
 const ParityDealsSchema = z.object({
-  bar: z.object({
-    backgroundColor: z.string(),
-    backgroundTransparency: z.string(),
-    fontColor: z.string(),
-    highlightFontColor: z.string(),
-    placement: z.string(),
-    borderRadius: z.string(),
-    addCloseIcon: z.boolean(),
-    unStyled: z.boolean(),
-    container: z.string(),
-    fontSize: z.string(),
-  }),
   couponCode: z.string(),
   discountPercentage: z.string(),
-  data: z.object({
-    stripePromoCodeId: z.string(),
-  }),
-  country: z.string(),
   countryFlag: z.string(),
   countryFlagSvg: z.string(),
-  holiday: z.nullable(z.string()),
-  time: z.nullable(z.string()),
-  message: z.string(),
-  messageText: z.string(),
-  countryCode: z.string(),
-  currencyCode: z.string(),
-  currencySymbol: z.string(),
-  usdConversionRate: z.string(),
-  isVpn: z.boolean(),
-  isProxy: z.boolean(),
-  isTor: z.boolean(),
 })
