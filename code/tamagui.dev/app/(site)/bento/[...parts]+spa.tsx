@@ -151,7 +151,10 @@ export default function BentoPage() {
                 </View>
 
                 <View w="100%" flex={1}>
-                  <Comp showAppropriateModal={showAppropriateModal} isProUser={isProUser} />
+                  <Comp
+                    showAppropriateModal={showAppropriateModal}
+                    isProUser={isProUser}
+                  />
                 </View>
               </XStack>
             </ContainerBento>
