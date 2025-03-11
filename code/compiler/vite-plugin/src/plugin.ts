@@ -3,8 +3,17 @@ import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 import { tamaguiExtractPlugin } from './extract'
 import { Static, loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
+import url from 'url'
 
-const resolve = (name: string) => import.meta.resolve?.(name).replace('file://', '')
+const fileURLToPathName = (fileUrl?: string) => {
+  if (!fileUrl) return undefined;
+  let { pathname } = new url.URL(fileUrl);
+  if (process.platform === 'win32') {
+    pathname = pathname.replace(/^\/([A-Za-z]:)/, '$1');
+  }
+  return pathname;
+};
+const resolve = async (name: string) => fileURLToPathName(await import.meta.resolve?.(name))
 
 export function tamaguiPlugin({
   optimize,
