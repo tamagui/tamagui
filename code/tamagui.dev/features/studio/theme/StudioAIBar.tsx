@@ -25,6 +25,7 @@ import { defaultModel, generateModels, type ModelNames } from '../../api/generat
 import { Sheet } from '@tamagui/sheet'
 import { useParams, useRouter } from 'one'
 import useSWR, { mutate } from 'swr'
+import slugify from '@sindresorhus/slugify'
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
 
@@ -142,11 +143,13 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       }
 
       if (data.themeId) {
-        const newPath = `/theme/${data.themeId}/${encodeURIComponent(prompt)}`
-        window.history.pushState({}, '', newPath)
+        const slug = slugify(prompt)
+        const newPath = `/theme/${data.themeId}/${slug}`
+        const url = new URL(newPath, window.location.origin)
+        window.history.pushState({}, '', url.pathname)
       }
 
-      themeBuilderStore.updateGenerate(data.result, prompt, data.themeId)
+      themeBuilderStore.updateGenerate(data.result, slugify(prompt), data.themeId)
 
       await mutate('/api/theme/histories')
 
@@ -162,13 +165,15 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   }
 
   const applyTheme = async (history: NonNullable<StudioAIBarProps['initialTheme']>) => {
-    const newPath = `/theme/${history?.themeId}/${encodeURIComponent(history?.query ?? '')}`
+    const slug = slugify(history?.query ?? '')
+    const newPath = `/theme/${history?.themeId}/${slug}`
+    const url = new URL(newPath, window.location.origin)
     if (typeof history.themeId === 'number') {
       setSelectedThemeId(history.themeId)
     }
-    window.history.pushState({}, '', newPath)
+    window.history.pushState({}, '', url.pathname)
 
-    themeBuilderStore.updateGenerate(history.themeSuite, history.query, history.themeId)
+    themeBuilderStore.updateGenerate(history.themeSuite, slug, history.themeId)
   }
 
   return (
@@ -253,7 +258,11 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                   onPress={() => applyTheme(history)}
                   borderRadius="$8"
                   bg={history.themeId === selectedThemeId ? '$black1' : '$color2'}
-                  color={history.themeId === selectedThemeId ? '$white1' : '$black1'}
+                  color={history.themeId === selectedThemeId ? '$color1' : '$color11'}
+                  focusStyle={{
+                    bg: history.themeId === selectedThemeId ? '$black1' : '$color2',
+                    opacity: 0.8,
+                  }}
                 >
                   <Button.Icon>
                     <History size={14} />

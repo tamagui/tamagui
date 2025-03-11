@@ -5623,6 +5623,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sindresorhus/slugify@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@sindresorhus/slugify@npm:2.2.1"
+  dependencies:
+    "@sindresorhus/transliterate": "npm:^1.0.0"
+    escape-string-regexp: "npm:^5.0.0"
+  checksum: 10/717f04cf71261ebac1284b982bd090cd4a29c277c146a42f861622dfd092504c65b20375ee41c6be3db30c483731bdf0377f3cdad9e8e9dc3f69560049aa203c
+  languageName: node
+  linkType: hard
+
+"@sindresorhus/transliterate@npm:^1.0.0":
+  version: 1.6.0
+  resolution: "@sindresorhus/transliterate@npm:1.6.0"
+  dependencies:
+    escape-string-regexp: "npm:^5.0.0"
+  checksum: 10/fbb5bbcaf986068dc5aec87ef18380f46a8beaf0c5a7a5adf6cee26ceacde564b21381b1068d0beae86e489c2ef368ca15042a86a196762f59feca25db66abb3
+  languageName: node
+  linkType: hard
+
 "@sinonjs/commons@npm:^3.0.0":
   version: 3.0.1
   resolution: "@sinonjs/commons@npm:3.0.1"
@@ -6740,6 +6759,7 @@ __metadata:
     "@react-three/drei": "npm:^9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
     "@sentry/browser": "npm:^8.17.0"
+    "@sindresorhus/slugify": "npm:^2.2.1"
     "@stripe/react-stripe-js": "npm:^3.1.1"
     "@stripe/stripe-js": "npm:^5.6.0"
     "@supabase/ssr": "npm:^0.5.2"
