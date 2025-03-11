@@ -169,9 +169,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               placeholder={`Generate a theme`}
               size="$6"
               shadowColor="$shadow3"
-              bg="$color4"
+              bg="$color1"
               shadowOffset={{ height: 2, width: 0 }}
-              shadowRadius={20}
+              shadowRadius={10}
               br="$8"
               onSubmit={() => {
                 generate(lastReply ? 'reply' : 'new')

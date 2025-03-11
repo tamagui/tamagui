@@ -17,7 +17,10 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
-import { StudioPreviewComponentsSkeleton } from '~/features/studio/theme/StudioPreviewComponents'
+import {
+  StudioPreviewComponentsSkeleton,
+  StudioPreviewComponents,
+} from '~/features/studio/theme/StudioPreviewComponents'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
 import {
   themeBuilderStore,
@@ -27,14 +30,7 @@ import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { useUser } from '~/features/user/useUser'
 import { weakKey } from '~/helpers/weakKey'
 import type { ThemeSuiteItemData } from './types'
-
-const StudioPreviewComponentsBar = lazy(
-  () => import('~/features/studio/theme/StudioPreviewComponentsBar')
-)
-
-const StudioPreviewComponents = lazy(
-  () => import('~/features/studio/theme/StudioPreviewComponents')
-)
+import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 
 export type Props = {
   search: string
@@ -100,15 +96,11 @@ export function ThemePage(props: Props) {
             />
             <PreviewTheme>
               <YStack gap="$6">
-                <Suspense fallback={<StudioPreviewComponentsSkeleton />}>
-                  {/**
-                   * FIXME: remove this once we have a better way to check if the
-                   * ResizeObserver is available
-                   * For some reason, `if (typeof window !== 'undefined')`
-                   * doesn't work in the StudioPreviewComponents useEffect
-                   */}
+                {typeof window !== 'undefined' ? (
                   <StudioPreviewComponents isReady={typeof window !== 'undefined'} />
-                </Suspense>
+                ) : (
+                  <StudioPreviewComponentsSkeleton />
+                )}
               </YStack>
             </PreviewTheme>
           </YStack>
