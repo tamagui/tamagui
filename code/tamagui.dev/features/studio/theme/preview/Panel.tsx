@@ -77,7 +77,6 @@ export function Panel({
         )}
       >
         <Theme
-          forceClassName
           name={accent ? accentThemeName : undefined}
           // TODO shouldn't need this
           key={`${accent}`}

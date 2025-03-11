@@ -1,8 +1,8 @@
 import { Input } from '@tamagui/input'
-import { Moon, Sun } from '@tamagui/lucide-icons'
+import { Moon, Sun, History } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
   Configuration,
@@ -12,6 +12,8 @@ import {
   useThemeName,
   XStack,
   YStack,
+  Text,
+  ScrollView,
 } from 'tamagui'
 import { Select } from '../../../components/Select'
 import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
@@ -20,17 +22,74 @@ import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
 import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
+import { Sheet } from '@tamagui/sheet'
+import { useParams, useRouter } from 'one'
+import useSWR, { mutate } from 'swr'
+import slugify from '@sindresorhus/slugify'
 
-export const StudioAIBar = memo(() => {
+type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
+
+type UpdateGenerateArgs = Parameters<typeof themeBuilderStore.updateGenerate>
+
+interface StudioAIBarProps {
+  initialTheme?: {
+    themeSuite: UpdateGenerateArgs[0]
+    query?: UpdateGenerateArgs[1]
+    themeId?: UpdateGenerateArgs[2]
+    username?: UpdateGenerateArgs[3]
+  }
+}
+
+export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const [model, setModel] = useState(defaultModel)
   const inputRef = useRef<HTMLInputElement>(null)
   const user = useUser()
+  const params = useParams<{ subpath: string | string[] }>()
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
   const [lastReply, setLastReply] = useState('')
   const [lastPrompt, setLastPrompt] = useState('')
   const hasAccess =
-    user.data?.accessInfo?.hasBentoAccess || user.data?.accessInfo?.hasTakeoutAccess
+    user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
+  const [selectedThemeId, setSelectedThemeId] = useState(
+    (() => {
+      if (Array.isArray(params.subpath)) {
+        return Number(params.subpath[0])
+      }
+      if (typeof params.subpath === 'string') {
+        return Number(params.subpath)
+      }
+      return typeof initialTheme?.themeId === 'number' ? initialTheme.themeId : undefined
+    })()
+  )
+  const username = user.data?.userDetails?.full_name
+
+  const { data: historiesData } = useSWR(
+    user.data ? '/api/theme/histories' : null,
+    async (url) => {
+      const res = await fetch(url)
+      const data = await res.json()
+      return data.histories.map((history) => ({
+        themeSuite: history.theme_data,
+        query: history.search_query,
+        themeId: history.id,
+        username: username,
+      })) as NonNullable<StudioAIBarProps['initialTheme']>[]
+    }
+  )
+
+  useEffect(() => {
+    if (initialTheme) {
+      initialTheme
+      inputRef.current!.value = initialTheme.query ?? ''
+      themeBuilderStore.updateGenerate(
+        initialTheme.themeSuite,
+        initialTheme.query,
+        initialTheme.themeId,
+        initialTheme.username
+      )
+    }
+  }, [initialTheme?.themeSuite])
 
   const generate = async (type: 'reply' | 'new') => {
     if (!inputRef.current?.value.trim()) {
@@ -83,9 +142,21 @@ export const StudioAIBar = memo(() => {
         return
       }
 
+      themeBuilderStore.updateGenerate(
+        data.result,
+        slugify(prompt),
+        data.themeId,
+        username
+      )
+
+      if (typeof data.themeId === 'number') {
+        setSelectedThemeId(data.themeId)
+      }
+
+      await mutate('/api/theme/histories')
+
       setLastReply(data.reply)
       setLastPrompt(prompt)
-      themeBuilderStore.updateGenerate(data.result)
       toastController.hide()
     } catch (err) {
       toastController.show(`Error: ${err}`)
@@ -95,76 +166,121 @@ export const StudioAIBar = memo(() => {
     }
   }
 
+  const applyTheme = async (history: NonNullable<StudioAIBarProps['initialTheme']>) => {
+    const slug = slugify(history?.query ?? '')
+    if (typeof history.themeId === 'number') {
+      setSelectedThemeId(history.themeId)
+    }
+
+    themeBuilderStore.updateGenerate(
+      history.themeSuite,
+      slug,
+      history.themeId,
+      history.username
+    )
+  }
+
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
-      <XStack fw="wrap" ai="center" f={1} gap="$3">
-        <XStack miw={300} f={10}>
-          <Input
-            ref={inputRef as any}
-            f={1}
-            placeholder={`Generate a theme`}
-            size="$6"
-            shadowColor="$shadow3"
-            bg="$color4"
-            shadowOffset={{ height: 2, width: 0 }}
-            shadowRadius={20}
-            br="$8"
-            onSubmit={() => {
-              generate(lastReply ? 'reply' : 'new')
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                generate('new')
-              }
-            }}
-          />
-
-          <Select
-            w={200}
-            pos="absolute"
-            t={10}
-            br={100}
-            r="$4"
-            size="$4"
-            value={model}
-            onValueChange={(x) => {
-              setModel(x as ModelNames)
-            }}
-          >
-            {Object.keys(generateModels).map((modelName, index) => (
-              <Select.Item key={modelName} value={modelName} index={index}>
-                {modelName}
-              </Select.Item>
-            ))}
-          </Select>
-        </XStack>
-
-        <XStack gap="$3" ai="center" jc="space-between">
-          <Theme name="accent">
-            <Button
-              br="$10"
-              disabled={isGenerating === 'new'}
-              o={isGenerating === 'new' ? 0.2 : 1}
-              pe={isGenerating === 'new' ? 'none' : 'auto'}
-              icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
-              onPress={() => {
-                if (hasAccess) {
+      <YStack f={1} width="100%" gap="$4">
+        <XStack fw="wrap" ai="center" f={1} gap="$3">
+          <XStack miw={300} f={1}>
+            <Input
+              ref={inputRef as any}
+              f={1}
+              placeholder={`Generate a theme`}
+              size="$6"
+              shadowColor="$shadow3"
+              bg="$color1"
+              shadowOffset={{ height: 2, width: 0 }}
+              shadowRadius={10}
+              br="$8"
+              onSubmit={() => {
+                generate(lastReply ? 'reply' : 'new')
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
                   generate('new')
-                } else {
-                  purchaseModal.show = true
                 }
               }}
+            />
+
+            <Select
+              w={200}
+              pos="absolute"
+              t={10}
+              br={100}
+              r="$4"
               size="$4"
+              value={model}
+              onValueChange={(x) => {
+                setModel(x as ModelNames)
+              }}
             >
-              {hasAccess ? 'Generate' : 'Access'}
-            </Button>
+              {Object.keys(generateModels).map((modelName, index) => (
+                <Select.Item key={modelName} value={modelName} index={index}>
+                  {modelName}
+                </Select.Item>
+              ))}
+            </Select>
+          </XStack>
+          <XStack gap="$3" ai="center" jc="space-between">
+            <Theme name="accent">
+              <Button
+                br="$10"
+                disabled={isGenerating === 'new'}
+                o={isGenerating === 'new' ? 0.2 : 1}
+                pe={isGenerating === 'new' ? 'none' : 'auto'}
+                icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
+                onPress={() => {
+                  if (hasAccess) {
+                    generate('new')
+                  } else {
+                    purchaseModal.show = true
+                  }
+                }}
+                size="$4"
+              >
+                {hasAccess ? 'Generate' : 'Access'}
+              </Button>
 
-            <RandomizeButton />
-          </Theme>
+              <RandomizeButton />
+            </Theme>
 
-          <ThemeToggle />
+            <ThemeToggle />
+          </XStack>
         </XStack>
-      </XStack>
+        {historiesData && historiesData.length > 0 && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <XStack gap="$2" py="$2">
+              {historiesData.map((history) => (
+                <Button
+                  key={history.query}
+                  size="$3"
+                  chromeless
+                  bordered
+                  onPress={() => applyTheme(history)}
+                  borderRadius="$8"
+                  bg={history.themeId === selectedThemeId ? '$black1' : '$color2'}
+                  color={history.themeId === selectedThemeId ? '$color1' : '$color11'}
+                  focusStyle={{
+                    bg: history.themeId === selectedThemeId ? '$black1' : '$color2',
+                    opacity: 0.8,
+                  }}
+                >
+                  <Button.Icon>
+                    <History size={14} />
+                  </Button.Icon>
+
+                  <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
+                    {history.query}
+                  </Button.Text>
+                </Button>
+              ))}
+            </XStack>
+          </ScrollView>
+        )}
+      </YStack>
     </XStack>
   )
 })

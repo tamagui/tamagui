@@ -72,7 +72,6 @@ export function ComponentItem({
           $theme-light={{
             bg: '$background',
           }}
-          animation="bouncy"
           shadowColor="$shadow1"
           shadowRadius={10}
           shadowOffset={{ height: 5, width: 0 }}

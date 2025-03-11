@@ -1,25 +1,22 @@
 import {
+  type BuildPalette,
   createPalettes,
   getThemeSuitePalettes,
   type TemplateStrategy,
+  type ThemeSuiteItem,
 } from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
 import { getUniqueId } from '~/features/studio/theme/helpers/getUniqueId'
+import { steps } from '~/features/studio/theme/steps/steps'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
+import type { BuildTheme, ThemeBuilderState, ThemeSuiteItemData } from '../types'
 import { updatePreviewTheme } from '../updatePreviewTheme'
-import { steps } from '~/features/studio/theme/steps/steps'
-import type {
-  BuildPalette,
-  BuildTheme,
-  ThemeBuilderState,
-  ThemeSuiteItem,
-  ThemeSuiteItemData,
-} from '../types'
+import slugify from '@sindresorhus/slugify'
 
 type AccentSetting = 'color' | 'inverse' | 'off'
 
@@ -112,25 +109,27 @@ export class ThemeBuilderStore {
   demosOptions = demoOptions
   themeSwitchOpen = true
 
+  currentQuery = ''
+  currentThemeId = ''
+
   async setAccentSetting(next: AccentSetting) {
     this.accentSetting = next
     await this.refreshThemeSuite()
   }
 
-  get serializedState() {
-    return btoa(JSON.stringify(this.getWorkingThemeSuite()))
-  }
+  async load(themeId?: string) {
+    if (themeId) {
+      try {
+        const res = await fetch(`/api/theme/histories?id=${themeId}`)
+        const data = await res.json()
 
-  deserializeState(serialized: string) {
-    return JSON.parse(atob(serialized))
-  }
-
-  async load(serializedState?: string) {
-    if (serializedState) {
-      const state = this.deserializeState(serializedState)
-      console.info(`deserialized`, state)
-      for (const key in state) {
-        this[key] = state[key]
+        if (data?.theme_data) {
+          this.currentThemeId = themeId
+          this.currentQuery = data.search_query
+          await this.updateGenerate(data.theme_data, data.search_query, themeId)
+        }
+      } catch (err) {
+        console.error('Failed to load theme:', err)
       }
     }
     await this.refreshThemeSuite()
@@ -171,43 +170,29 @@ export class ThemeBuilderStore {
     }
   }
 
-  async save() {
-    this.listeners.forEach((cb) => {
-      cb()
-    })
-  }
-
-  async updateGenerate(result: { base: any; accent: any }) {
-    this.palettes.base.anchors = result.base
-    this.palettes.accent.anchors = result.accent
-    this.palettes = {
-      ...this.palettes,
-    }
+  async updateGenerate(
+    themeSuite: ThemeSuiteItemData,
+    query?: string,
+    themeId?: string | number,
+    username?: string | null
+  ) {
+    this.palettes = themeSuite.palettes
     this.themeSuiteVersion++
-    // force it to hard refresh
+
+    if (query && themeId) {
+      this.currentQuery = query
+      this.currentThemeId = String(themeId)
+
+      const slugQuery = slugify(query)
+      const slugUsername = username ? slugify(username) : undefined
+      const slug = username ? `${slugUsername}-${slugQuery}` : slugQuery
+      const path = `/theme/${themeId}/${slugQuery}`
+
+      window.history.replaceState({}, '', path)
+    }
+
     this.themeSuiteId = `${this.themeSuiteId}${this.themeSuiteVersion}`
     await this.refreshThemeSuite()
-  }
-
-  async addThemeSuite(next: Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>) {
-    const themes = this.state?.themeSuites
-    if (!themes) throw new Error(`No themes`)
-    const id = getUniqueId()
-    const themeSuite = {
-      ...next,
-      id,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    }
-    console.info('adding', themeSuite)
-    this.state = {
-      ...this.state,
-      themeSuites: {
-        ...themes,
-        [id]: themeSuite,
-      },
-    }
-    this.save()
   }
 
   getPalettesForTheme(theme: BuildTheme, palettes = this.palettes) {
@@ -298,15 +283,10 @@ export class ThemeBuilderStore {
     }
   }
 
-  async addPalette(palette: BuildPalette) {
-    if (Object.values(this.palettes).some((_) => _.name === palette.name)) {
-      palette.name = `${palette.name.replace(/-[0-9]+$/, '')}-1`
-    }
-    this.palettes = {
-      ...this.palettes,
-      [palette.name]: palette,
-    }
-    await this.save()
+  async save() {
+    this.listeners.forEach((cb) => {
+      cb()
+    })
   }
 
   async updatePalette(name: string, palette: Partial<BuildPalette>) {
@@ -317,15 +297,6 @@ export class ThemeBuilderStore {
         ...palette,
       },
     }
-    await this.refreshThemeSuite()
-  }
-
-  async deletePalette(name: string) {
-    this.palettes = (() => {
-      let next = structuredClone(this.palettes)
-      delete next[name]
-      return next
-    })()
     await this.refreshThemeSuite()
   }
 
