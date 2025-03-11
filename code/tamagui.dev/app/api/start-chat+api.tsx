@@ -31,7 +31,13 @@ export const POST: Endpoint = async (req) => {
     body: JSON.stringify(requestBody),
   })
 
+  if (!response.ok) {
+    return Response.json({
+      error: 'Response not ok',
+    })
+  }
+
   const data = await response.json()
 
-  return data
+  return Response.json(data)
 }

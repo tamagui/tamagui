@@ -163,26 +163,26 @@ const PurchaseModalContents = () => {
 
     if (disableAutoRenew) {
       if (hasChat && hasSupportTier) {
-        return 'One-time payment for yearly base, monthly billing for chat and support tier'
+        return 'One-time payment for yearly base, monthly billing for chat and support tier.'
       }
       if (hasChat) {
-        return 'One-time payment for yearly base, monthly billing for chat support'
+        return 'One-time payment for yearly base, monthly billing for chat support.'
       }
       if (hasSupportTier) {
-        return 'One-time payment for yearly base, monthly billing for support tier'
+        return 'One-time payment for yearly base, monthly billing for support tier.'
       }
       return 'One-time payment, no renewal'
     } else {
       if (hasChat && hasSupportTier) {
-        return 'Yearly base + monthly chat and support tier, easy 1-click cancel'
+        return 'Yearly base + monthly chat and support tier, easy 1-click cancel.'
       }
       if (hasChat) {
-        return 'Yearly base + monthly chat support, easy 1-click cancel'
+        return 'Yearly base + monthly chat support, easy 1-click cancel.'
       }
       if (hasSupportTier) {
-        return 'Yearly base + monthly support tier, easy 1-click cancel'
+        return 'Yearly base + monthly support tier, easy 1-click cancel.'
       }
-      return 'Yearly subscription, easy one-click cancel'
+      return 'Pay one year up-front, easy one-click cancel.'
     }
   }, [chatSupport, supportTier, disableAutoRenew])
 
@@ -367,7 +367,7 @@ const PurchaseModalContents = () => {
                       </H3>
                     </XStack>
 
-                    <Paragraph theme="alt1" ellipse size="$4" mb="$3">
+                    <Paragraph theme="alt2" ellipse size="$4" mb="$3">
                       {subscriptionMessage}
                     </Paragraph>
 
@@ -497,13 +497,13 @@ const FaqTabContent = () => {
         identical.
       </P>
 
-      <Question>Do I own the code? Can I publish it publically?</Question>
+      <Question>Do I own the code? Can I publish it publicly?</Question>
 
       <P>
         For Bento - yes. For Takeout - no. Takeout is closed source, but the Bento license
-        is very liberal, you have all rights to the code even including re-selling. We'd
-        like it if you didn't wholesale re-publish or sell Bento, but we don't put any
-        limits on it.
+        is liberal, you have all rights to the code. The only limit we have is that you
+        don't directly list or sell the majority of Bento code in one place, but you can
+        absolutely use it in public projects.
       </P>
 
       <Question>What is Theme AI?</Question>
@@ -514,27 +514,32 @@ const FaqTabContent = () => {
         great looking themes based on your input. It's quite fun and generates some great
         themes.
       </P>
-      {/* 
-      <Question>What is Chat AI?</Question>
+
+      <Question>What is Chat?</Question>
 
       <P>
-        We've built a custom chatbot that's an expert at all things Tamagui. It actually
-        does a two step process: first, it uses a fast LLM to gather context and decide if
-        needs to reason or not, then it either responds immediately or thinks more before
-        responding.
+        We've spent a few months building a custom chatbot that's an expert at all things
+        Tamagui. It's not just a simple prompt over a GPT model, it has multiple tools,
+        often using a multi-stage LLM pipeline to find the best answers.
       </P>
 
       <P>
         We've given the chatbot a huge amount of context on Tamagui, Bento, Takeout, React
         Native, and the ecosystem of common libraries. It has access to our entire
-        Discord, docs, and many examples of configurations and demos.
-      </P> */}
+        Discord, docs, and many examples of configurations and demos, vector search, and
+        code generation tools.
+      </P>
+
+      <P>
+        All that said, it's currently in beta and may experience outages or poor
+        performance. We appreciate your feedback.
+      </P>
 
       <Question>What support do I get in the base plan?</Question>
 
       <P>
-        You get access to the private #takeout channel. We prioritize responses there over
-        the public Discord, but we don't provide any SLA.
+        For subscribers, you get access to the private #takeout channel. We prioritize
+        responses there over the public Discord, but we don't provide any SLA.
       </P>
 
       <Question>What support do I get with the Chat add-on?</Question>
@@ -615,7 +620,7 @@ const SupportTabContent = ({
         <YStack gap="$3">
           <XStack ov="hidden" alignItems="center">
             <Label f={1} htmlFor="support-tier">
-              <P>Level</P>
+              <P>Extra Support Level</P>
             </Label>
 
             <XStack f={1} maw={200}>
