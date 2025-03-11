@@ -73,7 +73,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         themeSuite: history.theme_data,
         query: history.search_query,
         themeId: history.id,
-        username: null,
+        username: username,
       })) as NonNullable<StudioAIBarProps['initialTheme']>[]
     }
   )
@@ -142,14 +142,16 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         return
       }
 
-      if (data.themeId) {
-        const slug = slugify(prompt)
-        const newPath = `/theme/${data.themeId}/${slug}`
-        const url = new URL(newPath, window.location.origin)
-        window.history.pushState({}, '', url.pathname)
-      }
+      themeBuilderStore.updateGenerate(
+        data.result,
+        slugify(prompt),
+        data.themeId,
+        username
+      )
 
-      themeBuilderStore.updateGenerate(data.result, slugify(prompt), data.themeId)
+      if (typeof data.themeId === 'number') {
+        setSelectedThemeId(data.themeId)
+      }
 
       await mutate('/api/theme/histories')
 
@@ -166,14 +168,16 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
   const applyTheme = async (history: NonNullable<StudioAIBarProps['initialTheme']>) => {
     const slug = slugify(history?.query ?? '')
-    const newPath = `/theme/${history?.themeId}/${slug}`
-    const url = new URL(newPath, window.location.origin)
     if (typeof history.themeId === 'number') {
       setSelectedThemeId(history.themeId)
     }
-    window.history.pushState({}, '', url.pathname)
 
-    themeBuilderStore.updateGenerate(history.themeSuite, slug, history.themeId)
+    themeBuilderStore.updateGenerate(
+      history.themeSuite,
+      slug,
+      history.themeId,
+      history.username
+    )
   }
 
   return (

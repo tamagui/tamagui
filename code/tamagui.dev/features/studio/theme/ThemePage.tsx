@@ -36,33 +36,21 @@ export type Props = {
   search: string
   id: number
   theme: ThemeSuiteItemData
+  user_name: string | null
 }
 
 export function ThemePage(props: Props) {
-  const { theme, id, search } = props
-  const user = useUser()
   const { updateGenerate } = useThemeBuilderStore()
 
   useEffect(() => {
-    if (theme) {
-      updateGenerate(theme, search, id, user.data?.userDetails?.full_name)
+    const { theme, id, search, user_name } = props
+    if (theme && typeof window !== 'undefined') {
+      updateGenerate(theme, search, id, user_name)
     }
-  }, [theme])
+  }, [props])
 
   return (
     <>
-      <HeadInfo
-        title={`${search || 'Tamagui Theme Builder'} - Tamagui Theme`}
-        description={search ? `Tamagui Theme for ${search}` : `Tamagui Theme Builder`}
-        openGraph={{
-          images: [
-            {
-              url: `https://tamagui.dev/api/theme/open-graph?id=${id || '0'}`,
-            },
-          ],
-        }}
-      />
-
       <Dialogs />
 
       <YStack flexShrink={0} mb="$10">

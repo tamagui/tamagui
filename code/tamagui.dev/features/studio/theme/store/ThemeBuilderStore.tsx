@@ -16,6 +16,7 @@ import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
 import type { BuildTheme, ThemeBuilderState, ThemeSuiteItemData } from '../types'
 import { updatePreviewTheme } from '../updatePreviewTheme'
+import slugify from '@sindresorhus/slugify'
 
 type AccentSetting = 'color' | 'inverse' | 'off'
 
@@ -182,10 +183,10 @@ export class ThemeBuilderStore {
       this.currentQuery = query
       this.currentThemeId = String(themeId)
 
-      const encodedQuery = encodeURIComponent(query)
-      const path = username
-        ? `/theme/${themeId}/${encodeURIComponent(username)}/${encodedQuery}`
-        : `/theme/${themeId}/${encodedQuery}`
+      const slugQuery = slugify(query)
+      const slugUsername = username ? slugify(username) : undefined
+      const slug = username ? `${slugUsername}-${slugQuery}` : slugQuery
+      const path = `/theme/${themeId}/${slugQuery}`
 
       window.history.replaceState({}, '', path)
     }

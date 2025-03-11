@@ -54,9 +54,28 @@ export const getTheme = async (id: string) => {
 
   const { data: currentTheme, error: themeError } = await supabase
     .from('theme_histories')
-    .select('theme_data, search_query, id, is_cached, og_image_url')
+    .select(`
+      theme_data,
+      search_query,
+      id,
+      is_cached,
+      og_image_url,
+      user_id
+    `)
     .eq('id', Number.parseInt(id))
     .single()
+
+  let user_name: string | null = null
+
+  if (currentTheme?.user_id) {
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('full_name')
+      .eq('id', currentTheme.user_id)
+      .single()
+
+    user_name = user?.full_name ?? null
+  }
 
   if (themeError) {
     return null
@@ -70,5 +89,6 @@ export const getTheme = async (id: string) => {
     id: currentTheme.id,
     is_cached: currentTheme.is_cached as boolean | null,
     og_image_url: currentTheme.og_image_url as string | null,
+    user_name: user_name as string | null,
   }
 }
