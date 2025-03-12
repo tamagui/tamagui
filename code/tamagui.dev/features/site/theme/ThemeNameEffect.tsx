@@ -1,7 +1,7 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { memo, useEffect, useState } from 'react'
 import type { ColorTokens, ThemeName } from 'tamagui'
-import { YStack, isClient, useDidFinishSSR, useTheme, useThemeName } from 'tamagui'
+import { YStack, isClient, useDidFinishSSR, useTheme } from 'tamagui'
 
 type Props = {
   colorKey?: ColorTokens
@@ -28,7 +28,7 @@ export const ThemeNameEffect = memo((props: Props) => {
       : !!props.disableTint
 
   return (
-    <ThemeTint debug={props.debug} key={disable ? 1 : 0} disable={disable}>
+    <ThemeTint debug={props.debug as any} key={disable ? 1 : 0} disable={disable}>
       <ThemeNameEffectNoTheme {...props} />
       {props.children}
     </ThemeTint>

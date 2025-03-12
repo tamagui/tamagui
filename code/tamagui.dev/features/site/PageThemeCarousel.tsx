@@ -19,7 +19,7 @@ export const PageThemeCarousel = () => {
         ai="center"
         zi={100_000}
       >
-        <XStack ai="center" jc="space-between" als="center" f={1} h="100%" maw={1200}>
+        <XStack ai="center" jc="space-between" als="center" f={1} h="100%" maw={1250}>
           <View
             p="$3"
             animation="lazy"

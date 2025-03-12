@@ -1,10 +1,14 @@
 import { type ViewProps, Button, Paragraph, Text, type ButtonProps } from 'tamagui'
-import { useLinkTo, type LinkProps as OneLinkProps } from 'one'
+import { router, useLinkTo, type LinkProps as OneLinkProps } from 'one'
 
-export type LinkProps = ViewProps & OneLinkProps<any>
+export type LinkProps = ViewProps &
+  OneLinkProps<any> & {
+    // for animating/doing something right before nav
+    delayNavigate?: boolean
+  }
 
-export const Link = ({ href, replace, asChild, ...props }: LinkProps) => {
-  const linkProps = useLinkTo({ href: href as string, replace })
+export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkProps) => {
+  const linkProps = useLinkTo({ href: href as any, replace: !!replace })
 
   return (
     <Text
@@ -20,6 +24,15 @@ export const Link = ({ href, replace, asChild, ...props }: LinkProps) => {
       lineHeight="inherit"
       {...props}
       {...linkProps}
+      {...(delayNavigate && {
+        onPress(e) {
+          e.preventDefault()
+          setTimeout(() => {
+            router.navigate(href)
+          }, 16)
+          props.onPress?.(e)
+        },
+      })}
     />
   )
 }
@@ -27,11 +40,12 @@ export const Link = ({ href, replace, asChild, ...props }: LinkProps) => {
 export const ParagraphLink = ({
   href = '' as any,
   replace,
+  delayNavigate,
   onPress,
   children,
   ...props
 }: LinkProps) => {
-  const linkProps = useLinkTo({ href: href as string, replace })
+  const linkProps = useLinkTo({ href: href as string, replace: !!replace })
 
   return (
     <Paragraph
@@ -40,7 +54,16 @@ export const ParagraphLink = ({
       color="$color"
       hoverStyle={{ color: '$color', outlineColor: 'red' }}
       {...props}
-      {...linkProps}
+      {...(linkProps as any)}
+      {...(delayNavigate && {
+        onPress(e) {
+          e.preventDefault()
+          setTimeout(() => {
+            router.navigate(href)
+          }, 16)
+          onPress?.(e)
+        },
+      })}
     >
       {children}
     </Paragraph>
@@ -54,11 +77,12 @@ export const ButtonLink = ({
   href = '' as any,
   rel,
   target,
-  replace,
+  replace = false,
   children,
   ...props
 }: ButtonLinkProps) => {
   return (
+    // @ts-expect-error
     <Link
       asChild
       {...{
