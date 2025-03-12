@@ -5,14 +5,14 @@ import { Separator, Theme, View, XStack, YStack } from 'tamagui'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 
 import { Provider } from '../src/components/provider/Provider'
-import { datepickers } from '../src/sections/elements/datepickers'
+import { accordions } from '../src/sections/elements'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
 }
 
 export default function App() {
-  return <Frame>{datepickers()}</Frame>
+  return <Frame>{accordions({ isProUser: false, showAppropriateModal: () => {} })}</Frame>
 }
 
 const Frame = (props: { children: any }) => {
