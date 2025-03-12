@@ -1,15 +1,7 @@
 import { createStudioThemes } from '@tamagui/theme-builder'
 import type { BuildThemeSuiteProps } from '@tamagui/themes'
 import type { ThemeName } from 'tamagui'
-import { mutateThemes } from 'tamagui'
-
-const debounce = (func: (...args: any[]) => void, delay: number) => {
-  let timeout: NodeJS.Timeout
-  return (...args: any[]) => {
-    clearTimeout(timeout)
-    timeout = setTimeout(() => func(...args), delay)
-  }
-}
+import { debounce, mutateThemes } from 'tamagui'
 
 const STUDIO_INTERNAL_THEME_NAME = 'studiodemointernal'
 
@@ -51,6 +43,10 @@ export async function updatePreviewTheme(
   const cacheKey = args.id
   const cached = themeCache.get(cacheKey)
 
+  console.warn(cacheKey, cached)
+
+  console.warn('update')
+
   if (
     cached &&
     JSON.stringify(cached.palettes) === JSON.stringify(args.palettes) &&
@@ -59,11 +55,6 @@ export async function updatePreviewTheme(
   ) {
     return false
   }
-
-  if (running.get(args.id)) {
-    return false
-  }
-  running.set(args.id, true)
 
   const { themes } = createStudioThemes(args)
 
@@ -92,8 +83,9 @@ export async function updatePreviewTheme(
 
   lastInserted = themes
 
-  await debouncedUpdateThemes(insertThemes)
+  debouncedUpdateThemes(insertThemes)
 
-  running.set(args.id, false)
+  await new Promise((res) => setTimeout(res, 100))
+
   return true
 }
