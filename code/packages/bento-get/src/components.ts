@@ -78,10 +78,21 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     ],
   },
   {
+    name: 'Calendar',
+    fileName: 'Calendar',
+    categorySection: 'datepickers',
+    category: 'elements',
+    dependencies: ['@rehookify/datepicker'],
+    moveFilesToFolder: [
+      { file: 'Calendar', to: '' },
+      { file: 'dateParts', to: 'common' },
+    ],
+  },
+  {
     name: 'DatePicker',
     fileName: 'DatePicker',
-    category: 'elements',
     categorySection: 'datepickers',
+    category: 'elements',
     dependencies: ['@rehookify/datepicker'],
     moveFilesToFolder: [
       { file: 'DatePicker', to: '' },
@@ -92,8 +103,8 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
   {
     name: 'MonthPicker',
     fileName: 'MonthPicker',
-    category: 'elements',
     categorySection: 'datepickers',
+    category: 'elements',
     dependencies: ['@rehookify/datepicker'],
     moveFilesToFolder: [
       { file: 'MonthPicker', to: '' },
