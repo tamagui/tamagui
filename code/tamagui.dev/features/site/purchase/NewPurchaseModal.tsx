@@ -397,7 +397,7 @@ const PurchaseModalContents = () => {
                           p="$2"
                         >
                           <Paragraph size="$3" color="$color11" textWrap="balance">
-                            {parityDeals.countryFlag} Use code{' '}
+                            You are from {parityDeals.country}.{`\n`} Use code{' '}
                             <Text fontWeight="bold" fontFamily="$mono" color="$color12">
                               {parityDeals.couponCode}
                             </Text>{' '}
