@@ -9,7 +9,6 @@ import {
   H4,
   Paragraph,
   Spacer,
-  Stack,
   Theme,
   XStack,
   YStack,
@@ -32,8 +31,19 @@ export default function BentoPage() {
       <LoadCherryBomb />
       <LoadMunro />
       <script src="https://cdn.paritydeals.com/banner.js" />
+
+      <YStack
+        fullscreen
+        t={-54}
+        zi={0}
+        $theme-light={{
+          bg: '$color2',
+        }}
+        $theme-dark={{ bg: '#050505' }}
+      />
+
       <HeadInfo
-        title="🍱 Tamagui Bento"
+        title="Copy-paste UI for React Native and Web - Tamagui Bento"
         description="Tamagui Bento - Copy-paste components and screens for React and React Native"
         openGraph={{
           url: 'https://tamagui.dev/bento',
@@ -45,46 +55,18 @@ export default function BentoPage() {
         }}
       />
 
-      <Theme name="tan">
-        <ThemeNameEffect colorKey="$color6" />
-      </Theme>
+      <ThemeNameEffect colorKey="$color1" />
 
       <PageThemeCarousel />
 
-      {/* <BentoFrond /> */}
-
       <BentoPageFrame>
-        <ContainerLarge
-          zi={10}
-          h={0}
-          // offset for the banner
-          mt={30}
-        >
-          {/* <Theme name="tan">
-            <Button
-              pos="absolute"
-              t="$-4"
-              r="$8"
-              size="$2"
-              circular
-              icon={store.heroVisible ? Search : ChevronDown}
-              onPress={() => {
-                store.heroVisible = !store.heroVisible
-              }}
-              bg="$background02"
-            ></Button>
-          </Theme> */}
-        </ContainerLarge>
         <YStack
           onLayout={(e) => {
             store.heroHeight = e.nativeEvent.layout.height
           }}
         >
-          <Theme name="tan">
-            <Hero />
-
-            <Intermediate />
-          </Theme>
+          <Hero />
+          <Intermediate />
         </YStack>
         <ComponentSection />
       </BentoPageFrame>
@@ -103,21 +85,15 @@ const Intermediate = () => {
           fd: 'column',
         }}
       >
-        <ThemeTintAlt offset={-1}>
-          <IntermediateCard Icon={Globe} title="Universal">
-            Whether light or dark mode, native or web, or any screen size.
-          </IntermediateCard>
-        </ThemeTintAlt>
-        <ThemeTintAlt offset={0}>
-          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
-            Customize to your design system, designed to be used independently.
-          </IntermediateCard>
-        </ThemeTintAlt>
-        <ThemeTintAlt offset={1}>
-          <IntermediateCard Icon={Leaf} title="Free">
-            Expanding free components. Lifetime&nbsp;rights paid.
-          </IntermediateCard>
-        </ThemeTintAlt>
+        <IntermediateCard Icon={Globe} title="Universal">
+          Whether light or dark mode, native or web, or any screen size.
+        </IntermediateCard>
+        <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+          Customize to your design system, designed to be used independently.
+        </IntermediateCard>
+        <IntermediateCard Icon={Leaf} title="Free">
+          Expanding free components. Lifetime&nbsp;rights paid.
+        </IntermediateCard>
       </XStack>
     </ContainerLarge>
   )
@@ -131,7 +107,7 @@ const IntermediateCard = ({
   return (
     <XStack className="" ov="hidden" f={1} gap="$5" px="$5" py="$4">
       <YStack f={1} gap="$2">
-        <H4 ff="$silkscreen" color="$color11" className="text-glow" size="$2">
+        <H4 o={0.5} ff="$silkscreen" color="$color11" className="text-glow" size="$2">
           {title}
         </H4>
         <Paragraph mb={-5} size="$3" color="$color12" o={0.7}>
@@ -156,7 +132,7 @@ const IntermediateCard = ({
 }
 
 const Hero = () => {
-  const { showAppropriateModal, isProUser } = useSubscriptionModal()
+  const { showAppropriateModal } = useSubscriptionModal()
 
   return (
     <YStack pos="relative" zi={10}>
@@ -173,20 +149,18 @@ const Hero = () => {
         >
           <YStack
             mb={40}
-            mt={30}
+            mt={60}
             maw="55%"
             zi={100}
             jc="space-between"
             f={10}
             ai="flex-start"
-            gap="$6"
             $sm={{
               maw: '100%',
             }}
           >
             <YStack
               className="ms200 ease-in all"
-              h={150}
               $xxs={{
                 scale: 0.4,
               }}
@@ -199,28 +173,15 @@ const Hero = () => {
                 mb: -100,
                 transformOrigin: 'center top',
               }}
-              $md={{ mb: -100, scale: 0.72, transformOrigin: 'left top' }}
-              $lg={{ scale: 0.9, y: 10 }}
+              $md={{ mb: -100, scale: 0.72, transformOrigin: 'center top' }}
             >
-              <BentoLogo scale={0.8} />
+              <BentoLogo scale={0.7} />
             </YStack>
-            <YStack
-              // account for the left bar visual offset
-              ml={-20}
-              als="center"
-              maw={550}
-              gap="$7"
-              $sm={{ px: '$4', maw: 400, ml: 0 }}
-            >
-              <XStack gap="$6">
-                <Stack
-                  pos="relative"
-                  bg="$color9"
-                  w={6}
-                  br="$2"
-                  my={18}
-                  $sm={{ dsp: 'none' }}
-                />
+
+            <Spacer size="$6" />
+
+            <YStack maw={500} gap="$7" $sm={{ px: '$4', maw: 400, ml: 0 }}>
+              <XStack gap="$6" px="$4">
                 <Paragraph
                   ff="$mono"
                   fos={22}
@@ -236,8 +197,7 @@ const Hero = () => {
                     ta: 'center',
                   }}
                 >
-                  Copy-paste styled components for React&nbsp;Native and web, free and
-                  paid.
+                  Copy-paste UI for React&nbsp;Native and&nbsp;React web, free and paid.
                 </Paragraph>
               </XStack>
               <XStack
@@ -261,7 +221,6 @@ const Hero = () => {
                 <XStack ai="center" jc="space-between">
                   <Spacer />
                   <Theme name="green">
-                    {/* $199 */}
                     <Button
                       className="box-3d all ease-in-out ms100"
                       size="$3"
@@ -391,84 +350,82 @@ const Hero = () => {
               display: 'none',
             }}
           >
-            <Theme name="gray">
-              <XStack
-                pe="none"
+            <XStack
+              pe="none"
+              style={{
+                transform: `rotate(4deg) scale(0.75)`,
+              }}
+              $sm={{
+                mt: -85,
+                mb: -60,
+              }}
+            >
+              <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
+                <ThemeTintAlt>
+                  <Theme name="surface3">
+                    <LocationNotification />
+                  </Theme>
+                </ThemeTintAlt>
+              </YStack>
+
+              <YStack
+                pos="absolute"
+                zi={1}
+                l={0}
                 style={{
-                  transform: `rotate(4deg) scale(0.75)`,
-                }}
-                $sm={{
-                  mt: -85,
-                  mb: -60,
+                  clipPath: `polygon(0% 0%, 105% 0%, 65% 100%, 0% 100%)`,
                 }}
               >
-                <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
-                  <ThemeTintAlt>
-                    <Theme name="surface3">
-                      <LocationNotification />
-                    </Theme>
-                  </ThemeTintAlt>
-                </YStack>
+                <ThemeTintAlt>
+                  <Theme name="surface3">
+                    <LocationNotification />
+                  </Theme>
+                </ThemeTintAlt>
+              </YStack>
 
-                <YStack
-                  pos="absolute"
-                  zi={1}
-                  l={0}
-                  style={{
-                    clipPath: `polygon(0% 0%, 105% 0%, 65% 100%, 0% 100%)`,
-                  }}
-                >
-                  <ThemeTintAlt>
-                    <Theme name="surface3">
-                      <LocationNotification />
-                    </Theme>
-                  </ThemeTintAlt>
-                </YStack>
+              <YStack
+                pos="absolute"
+                zi={1}
+                l={0}
+                style={{
+                  clipPath: `polygon(0% 0%, 75% 0%, 30% 100%, 0% 100%)`,
+                }}
+              >
+                <ThemeTintAlt>
+                  <Theme name="surface2">
+                    <LocationNotification />
+                  </Theme>
+                </ThemeTintAlt>
+              </YStack>
 
-                <YStack
-                  pos="absolute"
-                  zi={1}
-                  l={0}
-                  style={{
-                    clipPath: `polygon(0% 0%, 75% 0%, 30% 100%, 0% 100%)`,
-                  }}
-                >
-                  <ThemeTintAlt>
-                    <Theme name="surface2">
-                      <LocationNotification />
-                    </Theme>
-                  </ThemeTintAlt>
-                </YStack>
+              <YStack
+                pos="absolute"
+                zi={1}
+                l={0}
+                style={{
+                  clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
+                }}
+              >
+                <LocationNotification />
+              </YStack>
 
-                <YStack
-                  pos="absolute"
-                  zi={1}
-                  l={0}
-                  style={{
-                    clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
-                  }}
-                >
-                  <LocationNotification />
-                </YStack>
-
-                <YStack
-                  pos="absolute"
-                  zi={-1}
-                  l="15%"
-                  scale={0.9}
-                  rotate="5deg"
-                  br="$4"
-                  shac="rgba(0,0,0,0.2)"
-                  shar="$8"
-                >
-                  <ThemeTint>
-                    <Theme name="surface3">
-                      <LocationNotification />
-                    </Theme>
-                  </ThemeTint>
-                </YStack>
-              </XStack>
-            </Theme>
+              <YStack
+                pos="absolute"
+                zi={-1}
+                l="15%"
+                scale={0.9}
+                rotate="5deg"
+                br="$4"
+                shac="rgba(0,0,0,0.2)"
+                shar="$8"
+              >
+                <ThemeTint>
+                  <Theme name="surface3">
+                    <LocationNotification />
+                  </Theme>
+                </ThemeTint>
+              </YStack>
+            </XStack>
           </YStack>
         </XStack>
       </ContainerLarge>

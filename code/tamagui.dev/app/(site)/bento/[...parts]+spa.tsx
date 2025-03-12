@@ -1,30 +1,30 @@
-import type { Href } from 'one'
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
+import { listingData } from '@tamagui/bento/data'
 import { ThemeTint } from '@tamagui/logo'
-import { CircleDashed, Paintbrush, Link as LinkIcon } from '@tamagui/lucide-icons'
+import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
+import { useToastController } from '@tamagui/toast'
+import type { Href } from 'one'
+import { Link, useParams } from 'one'
 import { startTransition } from 'react'
 import {
   Anchor,
   Button,
+  EnsureFlexed,
   H1,
+  Paragraph,
   SizableText,
   styled,
-  Theme,
+  Text,
   View,
   XStack,
   YStack,
 } from 'tamagui'
-import { Link, useParams } from 'one'
 import { ContainerBento } from '~/components/Containers'
-import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
+import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { listingData } from '@tamagui/bento/data'
-import { Text } from 'tamagui'
-import { Paragraph } from 'tamagui'
-import { useToastController } from '@tamagui/toast'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -43,6 +43,8 @@ export default function BentoPage() {
   const bentoStore = useBentoStore()
   const Comp = Sections?.[section]?.[part]
   const toast = useToastController()
+
+  const { showAppropriateModal, isProUser } = useSubscriptionModal()
 
   if (!Comp) {
     return null
@@ -76,18 +78,9 @@ export default function BentoPage() {
                           gap="$2"
                           ai="center"
                         >
-                          <Text
-                            textTransform="uppercase"
-                            ff="$silkscreen"
-                            color="$color10"
-                            textAlign="right"
-                            px="$2"
-                            cursor="pointer"
-                            hoverStyle={{
-                              color: '$accentColor',
-                            }}
-                          >
-                            {sectionName}
+                          <Text ff="$mono" color="$color9" textAlign="right" px="$2">
+                            {sectionName[0].toUpperCase()}
+                            {sectionName.slice(1)}
                           </Text>
                         </XStack>
 
@@ -132,7 +125,7 @@ export default function BentoPage() {
                                   >
                                     <View
                                       height="70%"
-                                      width={3}
+                                      width={2}
                                       br="$10"
                                       bg={'$accentColor'}
                                     />
@@ -148,7 +141,10 @@ export default function BentoPage() {
                 </View>
 
                 <View w="100%" flex={1}>
-                  <Comp />
+                  <Comp
+                    showAppropriateModal={showAppropriateModal}
+                    isProUser={isProUser}
+                  />
                 </View>
               </XStack>
             </ContainerBento>
@@ -166,14 +162,13 @@ export const DetailHeader = (props: { children: string }) => {
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
-    <YStack position={'sticky' as any} top={0} gap="$4" $sm={{ px: '$4' }} pb="$4">
+    <YStack top={0} gap="$4" $sm={{ px: '$4' }} py="$4" mx="auto" maw={1050}>
+      <EnsureFlexed />
       <YStack gap="$4">
-        <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
-          <Theme name="gray">
-            <H1 mb={-50} ff="$silkscreen" size="$10" $sm={{ size: '$6', mb: '$4' }}>
-              {props.children}
-            </H1>
-          </Theme>
+        <XStack ai="center" jc="space-between" $sm={{ fd: 'column' }}>
+          <H1 ff="$mono" size="$11" $sm={{ size: '$9', mb: '$4' }}>
+            {props.children}
+          </H1>
 
           {/* <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}> */}
           <YStack
@@ -184,10 +179,6 @@ export const DetailHeader = (props: { children: string }) => {
             mt={-10}
             $sm={{ y: 0, mt: 0, mb: 40, ai: 'center' }}
           >
-            <View x={30}>
-              <BentoLogo scale={0.25} />
-            </View>
-
             <XStack gap="$4">
               <DropTamaguiConfig />
 
