@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
-import { lazy, memo, Suspense, useEffect, useMemo, useRef } from 'react'
+import { memo, Suspense, useEffect, useMemo, useRef } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -13,24 +13,19 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { HeadInfo } from '~/components/HeadInfo'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
 import {
-  StudioPreviewComponentsSkeleton,
   StudioPreviewComponents,
+  StudioPreviewComponentsSkeleton,
 } from '~/features/studio/theme/StudioPreviewComponents'
+import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
-import {
-  themeBuilderStore,
-  useThemeBuilderStore,
-} from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
-import { useUser } from '~/features/user/useUser'
 import { weakKey } from '~/helpers/weakKey'
 import type { ThemeSuiteItemData } from './types'
-import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 
 export type Props = {
   search: string

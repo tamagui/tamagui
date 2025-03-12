@@ -3,7 +3,7 @@ import { Input } from '@tamagui/input'
 import { History, Moon, Sun } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { useParams } from 'one'
+import { useActiveParams, useParams } from 'one'
 import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import {
@@ -24,6 +24,7 @@ import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
+import { themeJSONToText } from './helpers/themeJSONToText'
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
 
@@ -42,13 +43,17 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const [model, setModel] = useState(defaultModel)
   const inputRef = useRef<HTMLInputElement>(null)
   const user = useUser()
+
+  // bug in one: doesn't update after first render
   const params = useParams<{ subpath: string | string[] }>()
+
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
-  const [lastReply, setLastReply] = useState('')
   const [lastPrompt, setLastPrompt] = useState('')
+
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
+
   const [selectedThemeId, setSelectedThemeId] = useState(
     (() => {
       if (Array.isArray(params.subpath)) {
@@ -60,6 +65,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       return typeof initialTheme?.themeId === 'number' ? initialTheme.themeId : undefined
     })()
   )
+
   const username = user.data?.userDetails?.full_name
 
   const { data: historiesData } = useSWR(
@@ -89,6 +95,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       )
     }
   }, [initialTheme?.themeSuite])
+
+  const themeSuite = themeBuilderStore.themeSuite
+  const lastReply = themeSuite ? themeJSONToText(themeSuite) : ''
 
   const generate = async (type: 'reply' | 'new') => {
     if (!inputRef.current?.value.trim()) {
@@ -154,7 +163,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
       await mutate('/api/theme/histories')
 
-      setLastReply(data.reply)
       setLastPrompt(prompt)
       toastController.hide()
     } catch (err) {
@@ -195,7 +203,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               shadowRadius={10}
               br="$8"
               onSubmit={() => {
-                generate(lastReply ? 'reply' : 'new')
+                generate(selectedThemeId ? 'reply' : 'new')
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -240,7 +248,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                 }}
                 size="$4"
               >
-                {hasAccess ? 'Generate' : 'Access'}
+                {hasAccess ? (selectedThemeId ? 'Refine' : 'Generate') : 'Access'}
               </Button>
 
               <RandomizeButton />
