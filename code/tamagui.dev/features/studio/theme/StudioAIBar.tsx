@@ -1,14 +1,16 @@
 import slugify from '@sindresorhus/slugify'
 import { Input } from '@tamagui/input'
-import { History, Moon, Sun } from '@tamagui/lucide-icons'
+import { History, Moon, Plus, Sun } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
+import { useStore } from '@tamagui/use-store'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { useActiveParams, useParams } from 'one'
+import { Link } from 'one'
 import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import {
   Button,
   Configuration,
+  Paragraph,
   ScrollView,
   Spinner,
   Switch,
@@ -22,13 +24,12 @@ import { defaultModel, generateModels, type ModelNames } from '../../api/generat
 import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
-import { RandomizeButton } from './RandomizeButton'
-import { themeBuilderStore } from './store/ThemeBuilderStore'
 import { themeJSONToText } from './helpers/themeJSONToText'
+import { RandomizeButton } from './RandomizeButton'
+import { type UpdateGenerateArgs, useThemeBuilderStore } from './store/ThemeBuilderStore'
+import { ThemePageStore } from './themePageStore'
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
-
-type UpdateGenerateArgs = Parameters<typeof themeBuilderStore.updateGenerate>
 
 interface StudioAIBarProps {
   initialTheme?: {
@@ -43,9 +44,8 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const [model, setModel] = useState(defaultModel)
   const inputRef = useRef<HTMLInputElement>(null)
   const user = useUser()
-
-  // bug in one: doesn't update after first render
-  const params = useParams<{ subpath: string | string[] }>()
+  const themePage = useStore(ThemePageStore)
+  const themeBuilderStore = useThemeBuilderStore()
 
   const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
   const themeName = useThemeName()
@@ -53,18 +53,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
-
-  const [selectedThemeId, setSelectedThemeId] = useState(
-    (() => {
-      if (Array.isArray(params.subpath)) {
-        return Number(params.subpath[0])
-      }
-      if (typeof params.subpath === 'string') {
-        return Number(params.subpath)
-      }
-      return typeof initialTheme?.themeId === 'number' ? initialTheme.themeId : undefined
-    })()
-  )
 
   const username = user.data?.userDetails?.full_name
 
@@ -86,7 +74,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     if (initialTheme) {
       initialTheme
       inputRef.current!.value = initialTheme.query ?? ''
-      console.warn('update to', initialTheme?.themeSuite)
       themeBuilderStore.updateGenerate(
         initialTheme.themeSuite,
         initialTheme.query,
@@ -94,7 +81,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         initialTheme.username
       )
     }
-  }, [initialTheme?.themeSuite])
+  }, [initialTheme?.themeSuite?.name])
 
   const themeSuite = themeBuilderStore.themeSuite
   const lastReply = themeSuite ? themeJSONToText(themeSuite) : ''
@@ -157,10 +144,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         username
       )
 
-      if (typeof data.themeId === 'number') {
-        setSelectedThemeId(data.themeId)
-      }
-
       await mutate('/api/theme/histories')
 
       setLastPrompt(prompt)
@@ -173,19 +156,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     }
   }
 
-  const applyTheme = async (history: NonNullable<StudioAIBarProps['initialTheme']>) => {
-    const slug = slugify(history?.query ?? '')
-    if (typeof history.themeId === 'number') {
-      setSelectedThemeId(history.themeId)
-    }
-
-    themeBuilderStore.updateGenerate(
-      history.themeSuite,
-      slug,
-      history.themeId,
-      history.username
-    )
-  }
+  const selectedThemeId = themePage.curProps?.id
 
   return (
     <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
@@ -195,7 +166,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             <Input
               ref={inputRef as any}
               f={1}
-              placeholder={`Generate a theme`}
+              placeholder={selectedThemeId ? `Refine this theme` : `Generate a theme`}
               size="$6"
               shadowColor="$shadow3"
               bg="$color1"
@@ -231,6 +202,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               ))}
             </Select>
           </XStack>
+
           <XStack gap="$3" ai="center" jc="space-between">
             <Theme name="accent">
               <Button
@@ -257,40 +229,59 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             <ThemeToggle />
           </XStack>
         </XStack>
-        {historiesData && historiesData.length > 0 && (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <XStack gap="$2" py="$2">
-              {historiesData.map((history) => (
-                <Button
-                  key={history.query}
-                  size="$3"
-                  chromeless
-                  bordered
-                  onPress={() => applyTheme(history)}
-                  borderRadius="$8"
-                  bg={history.themeId === selectedThemeId ? '$color12' : '$color2'}
-                  color={history.themeId === selectedThemeId ? '$color1' : '$color11'}
-                  focusStyle={{
-                    bg: history.themeId === selectedThemeId ? '$color12' : '$color2',
-                    opacity: 0.8,
-                  }}
-                >
-                  <Button.Icon>
-                    <History size={14} />
-                  </Button.Icon>
 
-                  <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
-                    {history.query}
-                  </Button.Text>
-                </Button>
-              ))}
-            </XStack>
-          </ScrollView>
-        )}
+        <ScrollView f={1} horizontal showsHorizontalScrollIndicator={false}>
+          <XStack gap="$2" py="$2">
+            <Link href="/theme">
+              <HistoryButton active={!selectedThemeId} icon={<Plus size={14} />}>
+                New
+              </HistoryButton>
+            </Link>
+
+            {(historiesData || []).map((history) => (
+              <Link
+                key={history.query}
+                href={`/theme/${history.themeId!}/${slugify(history.query!)}`}
+              >
+                <HistoryButton
+                  icon={<History size={14} />}
+                  active={history.themeId === selectedThemeId}
+                >
+                  {history.query}
+                </HistoryButton>
+              </Link>
+            ))}
+
+            {!hasAccess && (
+              <XStack f={1} ov="hidden" ai="center" px="$4">
+                <Paragraph ff="$mono" size="$3">
+                  Welcome to the Theme Builder! Pro members can build, save and refine
+                  themes using the generate input above.
+                </Paragraph>
+              </XStack>
+            )}
+          </XStack>
+        </ScrollView>
       </YStack>
     </XStack>
   )
 })
+
+const HistoryButton = ({
+  active,
+  children,
+  icon,
+}: { active?: boolean; children?: any; icon?: any }) => {
+  return (
+    <Button size="$3" borderRadius="$8" theme={active ? 'accent' : null}>
+      <Button.Icon>{icon}</Button.Icon>
+
+      <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
+        {children}
+      </Button.Text>
+    </Button>
+  )
+}
 
 const ThemeToggle = () => {
   const [scheme, setUserTheme] = useColorScheme()

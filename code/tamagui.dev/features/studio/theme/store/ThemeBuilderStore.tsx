@@ -1,4 +1,3 @@
-import slugify from '@sindresorhus/slugify'
 import {
   type BuildPalette,
   createPalettes,
@@ -55,6 +54,16 @@ export class ThemeBuilderStore {
 
   // using up to date data from unsaved state
   get themeSuite(): ThemeSuiteItem | undefined {
+    if (!this.state) {
+      return {
+        ...this.getWorkingThemeSuite(),
+        id: this.themeSuiteId || '',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        name: '',
+      }
+    }
+
     return this.state && this.themeSuiteId
       ? {
           ...this.state.themeSuites[this.themeSuiteId],
@@ -160,13 +169,13 @@ export class ThemeBuilderStore {
     }
   }
 
-  getWorkingThemeSuite(): ThemeSuiteItemData {
+  getWorkingThemeSuite() {
     return {
       name: this.name,
       palettes: this.palettes,
       schemes: this.schemes,
       templateStrategy: this.templateStrategy,
-    }
+    } satisfies ThemeSuiteItemData
   }
 
   async updateGenerate(
@@ -181,11 +190,6 @@ export class ThemeBuilderStore {
     if (query && themeId) {
       this.currentQuery = query
       this.currentThemeId = String(themeId)
-
-      const slugQuery = slugify(query)
-      const path = `/theme/${themeId}/${slugQuery}`
-
-      window.history.replaceState({}, '', path)
     }
 
     this.themeSuiteId = `${this.themeSuiteId}${this.themeSuiteVersion}`
@@ -424,3 +428,5 @@ export const useThemeBuilderStore = createUseStore(ThemeBuilderStore)
 globalThis['themeBuilderStore'] = themeBuilderStore
 
 // for syncing
+
+export type UpdateGenerateArgs = Parameters<typeof themeBuilderStore.updateGenerate>

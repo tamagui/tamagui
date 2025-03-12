@@ -28,13 +28,6 @@ const themeCache = new Map<
   }
 >()
 
-const debouncedUpdateThemes = debounce((insertThemes: any[]) => {
-  return mutateThemes({
-    themes: insertThemes,
-    batch: 'themes',
-  })
-}, 100)
-
 export async function updatePreviewTheme(
   args: BuildThemeSuiteProps & {
     id: string
@@ -42,10 +35,6 @@ export async function updatePreviewTheme(
 ) {
   const cacheKey = args.id
   const cached = themeCache.get(cacheKey)
-
-  console.warn(cacheKey, cached)
-
-  console.warn('update')
 
   if (
     cached &&
@@ -83,9 +72,11 @@ export async function updatePreviewTheme(
 
   lastInserted = themes
 
-  debouncedUpdateThemes(insertThemes)
-
-  await new Promise((res) => setTimeout(res, 100))
+  console.warn('UPDATE themes', insertThemes)
+  mutateThemes({
+    themes: insertThemes,
+    batch: 'themes',
+  })
 
   return true
 }

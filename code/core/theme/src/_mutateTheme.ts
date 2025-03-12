@@ -59,6 +59,8 @@ export function mutateThemes({
 
   const cssRules = insertCSS ? insertThemeCSS(allThemesRaw, batch) : []
 
+  console.warn('updating now', cssRules)
+
   startTransition(() => {
     for (const themeName in allThemesProxied) {
       const theme = allThemesProxied[themeName]

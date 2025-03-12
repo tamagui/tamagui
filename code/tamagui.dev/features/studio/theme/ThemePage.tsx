@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import { useStore } from '@tamagui/use-store'
 import type { TamaguiElement } from '@tamagui/web'
-import { memo, Suspense, useEffect, useMemo, useRef } from 'react'
+import { memo, Suspense, useLayoutEffect, useMemo, useRef } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -25,24 +26,20 @@ import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBas
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { weakKey } from '~/helpers/weakKey'
-import type { ThemeSuiteItemData } from './types'
+import { type ThemePageProps, themePageStore, ThemePageStore } from './themePageStore'
 
-export type Props = {
-  search: string
-  id: number
-  theme: ThemeSuiteItemData
-  user_name: string | null
+// TO avoid changing the entire React tree we can do this, better perf
+
+export function ThemePageUpdater(props: ThemePageProps) {
+  useLayoutEffect(() => {
+    themePageStore.setProps(props)
+  }, [props])
+
+  return null
 }
 
-export function ThemePage(props: Props) {
-  const { updateGenerate } = useThemeBuilderStore()
-
-  useEffect(() => {
-    const { theme, id, search, user_name } = props
-    if (theme && typeof window !== 'undefined') {
-      updateGenerate(theme, search, id, user_name)
-    }
-  }, [props])
+export function ThemePage() {
+  const { curProps: props } = useStore(ThemePageStore)
 
   return (
     <>

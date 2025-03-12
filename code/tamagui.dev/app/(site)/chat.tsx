@@ -42,19 +42,19 @@ export const ChatPage = () => {
 
         <Paragraph ff="$mono" size="$7" lh="$8" theme="alt1">
           It also has access to our entire Discord chatroom, distilled using a multi-stage
-          LLM pipeline with a variety of tools, including multi-stage vector and fuzzy
-          search.
+          LLM pipeline.
         </Paragraph>
 
         <Paragraph ff="$mono" size="$7" lh="$8" theme="alt1">
-          Tamagui Chat also has a few different code generation tools that are in early
-          beta.
+          Tamagui Chat has many tools, including multi-stage vector and fuzzy search and
+          code generation that is in early beta.
         </Paragraph>
 
         <Separator my="$5" />
 
         <Paragraph ff="$mono" size="$7" lh="$8" theme="alt1">
-          Tamagui Chat is in early beta, we appreciate your patience and feedback.
+          Tamagui Chat is in early beta, so we appreciate your patience and look forward
+          to your feedback.
         </Paragraph>
 
         <Spacer my="$6" />

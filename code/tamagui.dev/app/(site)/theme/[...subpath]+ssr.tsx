@@ -1,8 +1,8 @@
 import type { LoaderProps } from 'one'
 import { useLoader } from 'one'
-import { getTheme } from '~/features/studio/theme/getTheme'
-import { ThemePage } from '~/features/studio/theme/ThemePage'
 import { HeadInfo } from '~/components/HeadInfo'
+import { getTheme } from '~/features/studio/theme/getTheme'
+import { ThemePageUpdater } from '~/features/studio/theme/ThemePage'
 
 export async function loader(props: LoaderProps) {
   const subpath = props.params.subpath || ''
@@ -35,7 +35,7 @@ export default function ThemeLayout() {
           ],
         }}
       />
-      <ThemePage {...data} />
+      <ThemePageUpdater {...data} />
     </>
   )
 }
