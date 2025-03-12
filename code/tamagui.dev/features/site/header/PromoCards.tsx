@@ -1,4 +1,4 @@
-import { Box, Brush } from '@tamagui/lucide-icons'
+import { Box, Brush, MessageCircle } from '@tamagui/lucide-icons'
 import { styled, YStack } from 'tamagui'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
@@ -45,11 +45,23 @@ export const PromoCards = ({
         <PromoCardTheme />
       </Card>
 
+      {/* <Card>
+        <TooltipLabelLarge
+          href="/chat"
+          icon={
+            <YStack>
+              <MessageCircle size={20} />
+            </YStack>
+          }
+          title="Chat"
+          subtitle="Our beta chatbot for answers and generation."
+        />
+      </Card> */}
+
       {!less && (
         <>
           <Card opacity={disableAutoRenew ? 0.1 : 1}>
             <TooltipLabelLarge
-              href="/theme"
               icon={null as any}
               title="#takeout"
               subtitle="Access to private Discord chat room."
@@ -74,7 +86,7 @@ export const PromoCardTheme = () => {
   return (
     <TooltipLabelLarge
       href="/theme"
-      icon={<Brush size={20} />}
+      icon={<Brush y={-2} size={20} />}
       title="Theme"
       subtitle="Generate themes using a custom AI."
     />

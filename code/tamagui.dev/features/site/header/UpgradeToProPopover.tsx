@@ -119,7 +119,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
       >
         <Popover.Arrow bg="$background08" size="$4" />
 
-        <YStack mah="80vh" p="$3" width={280} ov="hidden" br="$6">
+        <YStack mah="90vh" p="$3" width={280} ov="hidden" br="$6">
           <Popover.ScrollView>
             <YStack gap="$2">
               {!isProUser && (

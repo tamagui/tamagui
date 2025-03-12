@@ -35,7 +35,7 @@ export const ComponentSection = () => {
 
   return (
     <YStack
-      bg="$color1"
+      // bg="$color1"
       pos="relative"
       contain="paint"
       className="transform ease-in-out ms200"
@@ -55,14 +55,6 @@ export const ComponentSection = () => {
       })}
       zi={10000}
     >
-      <YStack
-        fullscreen
-        zi={0}
-        $theme-light={{
-          bg: '$color2',
-        }}
-        $theme-dark={{ bg: '#000' }}
-      />
       <YStack>
         {/* <ContainerLarge>
           <Input
