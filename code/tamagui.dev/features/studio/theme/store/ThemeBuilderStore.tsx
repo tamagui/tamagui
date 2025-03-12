@@ -1,3 +1,4 @@
+import slugify from '@sindresorhus/slugify'
 import {
   type BuildPalette,
   createPalettes,
@@ -9,14 +10,12 @@ import { createStore, createUseStore } from '@tamagui/use-store'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
-import { getUniqueId } from '~/features/studio/theme/helpers/getUniqueId'
 import { steps } from '~/features/studio/theme/steps/steps'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
 import type { BuildTheme, ThemeBuilderState, ThemeSuiteItemData } from '../types'
 import { updatePreviewTheme } from '../updatePreviewTheme'
-import slugify from '@sindresorhus/slugify'
 
 type AccentSetting = 'color' | 'inverse' | 'off'
 
@@ -184,8 +183,6 @@ export class ThemeBuilderStore {
       this.currentThemeId = String(themeId)
 
       const slugQuery = slugify(query)
-      const slugUsername = username ? slugify(username) : undefined
-      const slug = username ? `${slugUsername}-${slugQuery}` : slugQuery
       const path = `/theme/${themeId}/${slugQuery}`
 
       window.history.replaceState({}, '', path)

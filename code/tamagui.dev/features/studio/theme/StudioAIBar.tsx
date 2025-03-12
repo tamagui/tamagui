@@ -1,31 +1,29 @@
+import slugify from '@sindresorhus/slugify'
 import { Input } from '@tamagui/input'
-import { Moon, Sun, History } from '@tamagui/lucide-icons'
+import { History, Moon, Sun } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { useParams } from 'one'
+import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import useSWR, { mutate } from 'swr'
 import {
   Button,
   Configuration,
+  ScrollView,
   Spinner,
   Switch,
   Theme,
   useThemeName,
   XStack,
   YStack,
-  Text,
-  ScrollView,
 } from 'tamagui'
 import { Select } from '../../../components/Select'
+import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
 import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { RandomizeButton } from './RandomizeButton'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
-import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
-import { Sheet } from '@tamagui/sheet'
-import { useParams, useRouter } from 'one'
-import useSWR, { mutate } from 'swr'
-import slugify from '@sindresorhus/slugify'
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
 
@@ -78,10 +76,11 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     }
   )
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (initialTheme) {
       initialTheme
       inputRef.current!.value = initialTheme.query ?? ''
+      console.warn('update to', initialTheme?.themeSuite)
       themeBuilderStore.updateGenerate(
         initialTheme.themeSuite,
         initialTheme.query,
