@@ -58,7 +58,7 @@
     "react-router-dom": "7.3.0",
     "swr": "^2.2.5",
     "type-fest": "4.37.0",
-    "zod": "^3.24.2"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
