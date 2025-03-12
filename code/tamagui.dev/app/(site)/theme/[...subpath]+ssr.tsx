@@ -7,6 +7,7 @@ import { ThemePageUpdater } from '~/features/studio/theme/ThemePage'
 export async function loader(props: LoaderProps) {
   const subpath = props.params.subpath || ''
   // could be `/10/vercel` or something but we only want the id
+  // @ts-ignore
   const id = subpath.includes('/') ? subpath.split('/')[0] : subpath
 
   return await getTheme(id)
