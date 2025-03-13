@@ -10,7 +10,14 @@ export async function loader(props: LoaderProps) {
   // @ts-ignore
   const id = subpath.includes('/') ? subpath.split('/')[0] : subpath
 
-  return await getTheme(id)
+  console.info(`Fetching theme`, id)
+
+  try {
+    return await getTheme(id)
+  } catch (err) {
+    console.error(`Error loading theme`, err)
+    return null
+  }
 }
 
 export default function ThemeLayout() {
