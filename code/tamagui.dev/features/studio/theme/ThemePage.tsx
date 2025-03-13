@@ -70,7 +70,6 @@ export function ThemePage() {
           ov="hidden"
         >
           <YStack
-            gap="$6"
             p="$4"
             f={1}
             maw="calc(min(100vw, 1300px))"
@@ -80,12 +79,14 @@ export function ThemePage() {
               p: '$4',
             }}
           >
-            <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
-            <StudioPreviewComponentsBar
-              scrollView={typeof window !== 'undefined' ? document.documentElement : null}
-            />
             <PreviewTheme>
               <YStack gap="$6">
+                <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
+                <StudioPreviewComponentsBar
+                  scrollView={
+                    typeof window !== 'undefined' ? document.documentElement : null
+                  }
+                />
                 {typeof window !== 'undefined' ? (
                   <StudioPreviewComponents isReady={typeof window !== 'undefined'} />
                 ) : (

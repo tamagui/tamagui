@@ -98,8 +98,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const themeSuite = themeBuilderStore.themeSuite
   const lastReply = id && themeSuite ? themeJSONToText(themeSuite) : ''
 
-  console.warn('wtf', lastReply, id)
-
   const fetchUpdate = async (
     type: 'reply' | 'new' | 'delete',
     themeIdToDelete?: string
@@ -350,7 +348,7 @@ const HistoryButton = ({
   onPress?: () => void
 }) => {
   return (
-    <XStack position="relative">
+    <XStack group="item" containerType="normal" position="relative">
       <Button
         onPress={onPress}
         size="$3"
@@ -365,20 +363,22 @@ const HistoryButton = ({
       </Button>
 
       {onDelete && (
-        <Button
+        <YStack
           position="absolute"
+          opacity={0}
+          $group-item-hover={{
+            opacity: 1,
+          }}
           top={-5}
           right={-5}
-          size="$1"
-          circular
           onPress={(e) => {
             e.preventDefault()
             e.stopPropagation()
             onDelete()
           }}
         >
-          <X opacity={0.5} size={10} />
-        </Button>
+          <X opacity={0.3} size={10} />
+        </YStack>
       )}
     </XStack>
   )
