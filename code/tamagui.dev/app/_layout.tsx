@@ -31,6 +31,8 @@ setupPopper({
 })
 
 export default function Layout() {
+  const pathname = usePathname()
+
   return (
     <html lang="en-US">
       <head>
@@ -106,19 +108,21 @@ export default function Layout() {
           // @ts-ignore
           precedence="default"
         />
-        <HeadInfo
-          openGraph={{
-            type: 'website',
-            locale: 'en_US',
-            url: 'https://tamagui.dev',
-            siteName: 'Tamagui',
-            images: [
-              {
-                url: 'https://tamagui.dev/social.png',
-              },
-            ],
-          }}
-        />
+        {!pathname.startsWith('/theme/') && (
+          <HeadInfo
+            openGraph={{
+              type: 'website',
+              locale: 'en_US',
+              url: 'https://tamagui.dev',
+              siteName: 'Tamagui',
+              images: [
+                {
+                  url: 'https://tamagui.dev/social.png',
+                },
+              ],
+            }}
+          />
+        )}
       </head>
 
       <body
