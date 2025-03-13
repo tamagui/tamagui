@@ -1,4 +1,5 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { useColorScheme } from '@vxrn/color-scheme'
 import { Link, useRouter } from 'one'
 import { memo, useEffect } from 'react'
 import type { HeadingProps } from 'tamagui'
@@ -16,13 +17,11 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { Container, ContainerXL } from '~/components/Containers'
 import { Features } from '~/components/Features'
+import { HeadInfo } from '~/components/HeadInfo'
 import type { DivProps, HoverGlowProps } from '~/components/HoverGlow'
 import { IS_SAFARI, useHoverGlow } from '~/components/HoverGlow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
-import { HeadInfo } from '~/components/HeadInfo'
 import { useUser } from '~/features/user/useUser'
-import { useColorScheme } from '@vxrn/color-scheme'
 
 export default function StudioSplashPage() {
   const user = useUser()
@@ -38,8 +37,6 @@ export default function StudioSplashPage() {
   return (
     <>
       <HeadInfo title="Tamagui Studio" description="Tamagui Studio" />
-
-      <LoadInter900 />
 
       <ThemeNameEffect />
 

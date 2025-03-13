@@ -43,7 +43,7 @@ export function PurchaseButton(props: ButtonProps) {
 
 export const MunroP = styled(Paragraph, {
   // className: 'pixelate',
-  fontFamily: '$munro',
+  fontFamily: '$mono',
 })
 
 export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {

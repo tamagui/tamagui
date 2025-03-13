@@ -4,17 +4,7 @@ import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import { animations } from './animations'
-import {
-  bodyFont,
-  cherryBombFont,
-  dmSansHeadingFont,
-  dmSerifDisplayHeadingFont,
-  headingFont,
-  monoFont,
-  munroFont,
-  nohemiFont,
-  silkscreenFont,
-} from './fonts'
+import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
 setupDev({
@@ -23,13 +13,9 @@ setupDev({
 
 const fonts = {
   heading: headingFont,
-  headingDmSans: dmSansHeadingFont,
-  headingDmSerifDisplay: dmSerifDisplayHeadingFont,
-  headingNohemi: nohemiFont,
   body: bodyFont,
   mono: monoFont,
   silkscreen: silkscreenFont,
-  munro: munroFont,
   cherryBomb: cherryBombFont,
 }
 

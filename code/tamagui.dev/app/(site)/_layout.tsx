@@ -2,7 +2,7 @@ import { ToastViewport } from '@tamagui/toast'
 import { Slot, usePathname } from 'one'
 import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
 import { NewAccountModal } from '../../features/site/purchase/NewAccountModal'
 import { NewPurchaseModal } from '../../features/site/purchase/NewPurchaseModal'
@@ -27,7 +27,6 @@ export default function SiteLayout() {
       <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />
-      <LoadMunro prefetch />
       <NewPurchaseModal />
       <NewAccountModal />
       <Slot />

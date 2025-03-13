@@ -58,10 +58,6 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
         fontSize: 14,
       }),
 
-      ...(demosOptions.headingFontFamily == '$munro' && {
-        fontSize: 20,
-      }),
-
       ...(demosOptions.headingFontFamily === '$mono' && {
         fontSize: 16,
       }),
