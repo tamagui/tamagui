@@ -27,6 +27,7 @@ import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilder
 import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { weakKey } from '~/helpers/weakKey'
 import { type ThemePageProps, themePageStore, ThemePageStore } from './themePageStore'
+import { router, useRouter } from 'one'
 
 // TO avoid changing the entire React tree we can do this, better perf
 
@@ -196,6 +197,7 @@ const StudioThemeBuilderBottomBar = memo(() => {
 })
 
 const CurrentStepActionBar = () => {
+  const router = useRouter()
   const { currentSection } = useThemeBuilderStore()
   const ActionComponent = currentSection?.actions as any
 
@@ -245,6 +247,7 @@ const ThemeStudioStepButtonsBar = () => {
         onPress={() => {
           if (confirm(`Reset theme builder state?`)) {
             store.reset()
+            router.navigate('/theme')
           }
         }}
       >
