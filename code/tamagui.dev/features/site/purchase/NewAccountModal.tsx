@@ -645,6 +645,16 @@ const PlanTab = ({
   const { data: products } = useProducts()
   const [isGrantingAccess, setIsGrantingAccess] = useState(false)
 
+  const chatAccess = useSWR<any>(
+    `/api/start-chat`,
+    (url) =>
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }).then((res) => res.json()),
+    { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
+  )
+
   const handleTakeoutAccess = async () => {
     if (!subscription || !products) return
 
@@ -781,14 +791,41 @@ const PlanTab = ({
             }}
           />
 
-          {/* <ServiceCard
-            title="start.chat"
-            description="Talk to a chatbot that's an expert in Tamagui."
-            actionLabel="Go"
+          <ServiceCard
+            title="Chat"
+            description={
+              chatAccess.data?.code === 'no_user'
+                ? 'You must sign up first on start.chat'
+                : "Talk to a chatbot that's an expert in Tamagui."
+            }
+            actionLabel={
+              chatAccess.isLoading
+                ? 'Checking access...'
+                : chatAccess.data?.code === 'no_user'
+                  ? 'Signup ➤'
+                  : chatAccess.data?.success
+                    ? 'Visit ➤'
+                    : 'Error'
+            }
             onAction={() => {
-              // Add download logic
+              if (chatAccess.isLoading) {
+                alert(`Still loading chat access...`)
+                return
+              }
+              if (chatAccess.data?.success) {
+                window.open(`https://start.chat/tamagui/jbk8gyxwogo`)
+                return
+              }
+              if (chatAccess.data?.code === 'no_user') {
+                window.open(`https://start.chat/tamagui`)
+                return
+              }
+              if (chatAccess.error) {
+                alert(`${chatAccess.error}`)
+                return
+              }
             }}
-          /> */}
+          />
         </XStack>
       </YStack>
 
