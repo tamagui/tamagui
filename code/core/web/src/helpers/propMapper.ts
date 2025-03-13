@@ -330,7 +330,7 @@ function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalCon
   if (value != null) {
     const { tokensParsed } = conf
     for (const { name, spreadName } of tokenCats) {
-      if (spreadName in variant && value in tokensParsed[name]) {
+      if (spreadName in variant && name in tokensParsed && value in tokensParsed[name]) {
         return variant[spreadName]
       }
     }

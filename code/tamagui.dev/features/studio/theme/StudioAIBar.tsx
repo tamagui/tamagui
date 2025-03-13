@@ -192,7 +192,12 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const selectedThemeId = themePage.curProps?.id
 
   return (
-    <XStack zi={1000} data-tauri-drag-region className="all ease-in ms300">
+    <XStack
+      zi={1000}
+      data-tauri-drag-region
+      className="all ease-in ms300"
+      $lg={{ mr: '$6' }}
+    >
       <YStack f={1} width="100%" gap="$4">
         <XStack fw="wrap" ai="center" f={1} gap="$3">
           <XStack miw={300} f={1}>
@@ -273,9 +278,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         >
           <XStack gap="$2" py="$2">
             <Link href="/theme">
-              <HistoryButton active={!selectedThemeId} icon={<Plus size={14} />}>
-                New
-              </HistoryButton>
+              <HistoryButton icon={<Plus size={14} />}>New</HistoryButton>
             </Link>
 
             {(historiesData || []).map((history) => (

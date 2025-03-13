@@ -46,8 +46,8 @@ export const ChatPage = () => {
         </Paragraph>
 
         <Paragraph ff="$mono" size="$7" lh="$8" theme="alt1">
-          Tamagui Chat has many tools, including multi-stage vector and fuzzy search and
-          code generation that is in early beta.
+          Tamagui Chat has many tools, including vector and fuzzy search, and a few code
+          generation specific tools.
         </Paragraph>
 
         <Separator my="$5" />

@@ -213,11 +213,7 @@ const ChatMessage = memo(
         {...demoProps.borderRadiusProps}
         {...(isUser ? demoProps.chatFrameActiveProps : demoProps.chatFrameProps)}
       >
-        <Paragraph
-          lh="$2"
-          maxWidth={200}
-          {...(isUser ? demoProps.chatTextActiveProps : demoProps.chatTextProps)}
-        >
+        <Paragraph lh="$2" maxWidth={200} {...demoProps.chatTextProps}>
           {message}
         </Paragraph>
       </YStack>

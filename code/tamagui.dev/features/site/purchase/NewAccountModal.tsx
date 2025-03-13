@@ -4,7 +4,7 @@ import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
-import { Link, router } from 'one'
+import { router } from 'one'
 import { useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
@@ -32,6 +32,7 @@ import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
+import { Link } from '../../../components/Link'
 
 class AccountModal {
   show = false
@@ -780,14 +781,7 @@ const PlanTab = ({
             }}
           />
 
-          {/* <ServiceCard
-            title="start.chat"
-            description="Talk to a chatbot that's an expert in Tamagui."
-            actionLabel="Go"
-            onAction={() => {
-              // Add download logic
-            }}
-          /> */}
+          {/* <ChatAccessCard /> */}
         </XStack>
       </YStack>
 
@@ -822,6 +816,56 @@ const PlanTab = ({
         />
       )}
     </YStack>
+  )
+}
+
+const ChatAccessCard = () => {
+  const chatAccess = useSWR<any>(
+    `/api/start-chat`,
+    (url) =>
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }).then((res) => res.json()),
+    { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
+  )
+
+  return (
+    <ServiceCard
+      title="Chat"
+      description={
+        chatAccess.data?.code === 'no_user'
+          ? 'You must sign up first on start.chat'
+          : "Talk to a chatbot that's an expert in Tamagui."
+      }
+      actionLabel={
+        chatAccess.isLoading
+          ? 'Checking access...'
+          : chatAccess.data?.code === 'no_user'
+            ? 'Signup ➤'
+            : chatAccess.data?.success
+              ? 'Visit ➤'
+              : 'Error'
+      }
+      onAction={() => {
+        if (chatAccess.isLoading) {
+          alert(`Still loading chat access...`)
+          return
+        }
+        if (chatAccess.data?.success) {
+          window.open(`https://start.chat/tamagui/jbk8gyxwogo`)
+          return
+        }
+        if (chatAccess.data?.code === 'no_user') {
+          window.open(`https://start.chat/tamagui`)
+          return
+        }
+        if (chatAccess.error) {
+          alert(`${chatAccess.error}`)
+          return
+        }
+      }}
+    />
   )
 }
 

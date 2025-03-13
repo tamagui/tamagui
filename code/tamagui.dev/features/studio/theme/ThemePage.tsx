@@ -1,7 +1,15 @@
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight, X } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import type { TamaguiElement } from '@tamagui/web'
-import { memo, Suspense, useLayoutEffect, useMemo, useRef } from 'react'
+import {
+  memo,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   AnimatePresence,
   Button,
@@ -10,6 +18,7 @@ import {
   Spacer,
   styled,
   Theme,
+  useMedia,
   View,
   XStack,
   YStack,
@@ -111,6 +120,14 @@ const ThemeBuilderModal = memo(() => {
   const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
+  const [hide, setHide] = useState(false)
+  const { gtLg } = useMedia()
+
+  useEffect(() => {
+    if (gtLg) {
+      setHide(false)
+    }
+  }, [gtLg])
 
   return (
     <YStack
@@ -121,10 +138,10 @@ const ThemeBuilderModal = memo(() => {
       b={0}
       w={530}
       mah="90vh"
+      maw="95vw"
       zi={100_000}
-      $lg={{
-        x: '98%',
-      }}
+      x={hide ? 490 : 0}
+      animation="medium"
     >
       <YStack
         fullscreen
@@ -140,6 +157,23 @@ const ThemeBuilderModal = memo(() => {
         bg="$background06"
         backdropFilter="blur(60px)"
       >
+        <XStack
+          pos="absolute"
+          zi={100000}
+          t="$2"
+          l="$2"
+          $gtLg={{
+            display: 'none',
+          }}
+        >
+          <Button
+            size="$2"
+            circular
+            icon={hide ? ChevronLeft : ChevronRight}
+            onPress={() => setHide(!hide)}
+          />
+        </XStack>
+
         <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
