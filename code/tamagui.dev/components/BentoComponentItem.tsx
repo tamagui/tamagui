@@ -102,7 +102,7 @@ export function ComponentItem({
 
         <YStack f={1} p="$4">
           <Theme name="gray">
-            <H4 ff="$mono" size="$5" fow="600" color="$color12">
+            <H4 ff="$mono" size="$5" color="$color12">
               {name}
             </H4>
           </Theme>

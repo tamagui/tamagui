@@ -128,6 +128,7 @@ const themes = createThemes({
         ...blackColors,
         ...whiteColors,
         shadowColor: lightShadows.shadow1,
+        colorBg: '#fff',
       },
       dark: {
         ...Colors.blueDark,
@@ -142,6 +143,7 @@ const themes = createThemes({
         ...blackColors,
         ...whiteColors,
         shadowColor: darkShadows.shadow1,
+        colorBg: '#000',
       },
     },
   },
