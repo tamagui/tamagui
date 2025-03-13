@@ -12,7 +12,9 @@ if (typeof require !== 'undefined') {
 }
 
 export default function App() {
-  return <Frame>{datepickers()}</Frame>
+  return (
+    <Frame>{datepickers({ isProUser: false, showAppropriateModal: () => {} })}</Frame>
+  )
 }
 
 const Frame = (props: { children: any }) => {
@@ -49,7 +51,8 @@ const Frame = (props: { children: any }) => {
       />
 
       <YStack fullscreen w="100%" ai="center">
-        <Theme name={screenshot ? 'whale' : undefined}>
+        {/* @ts-ignore */}
+        <Theme name={screenshot ? 'whale' : null}>
           <View py="$12" w="100%" h="full" maxWidth={1280}>
             <YStack
               {...(centered && {
