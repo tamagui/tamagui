@@ -59,6 +59,10 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     setActive(themePage.curProps?.id)
   }, [themePage.curProps?.id])
 
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [id])
+
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
 
@@ -92,7 +96,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   }, [initialTheme?.themeSuite?.name])
 
   const themeSuite = themeBuilderStore.themeSuite
-  const lastReply = themeSuite ? themeJSONToText(themeSuite) : ''
+  const lastReply = id && themeSuite ? themeJSONToText(themeSuite) : ''
+
+  console.warn('wtf', lastReply, id)
 
   const fetchUpdate = async (
     type: 'reply' | 'new' | 'delete',
@@ -300,6 +306,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                       onDelete={() => {
                         if (confirm('Are you sure you want to delete this theme?')) {
                           fetchUpdate('delete', `${history.themeId || ''}`)
+                          router.navigate('/theme')
                         }
                       }}
                       onPress={() => {
