@@ -1,10 +1,10 @@
 import slugify from '@sindresorhus/slugify'
 import { Input } from '@tamagui/input'
-import { History, Moon, Plus, Sun } from '@tamagui/lucide-icons'
+import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useStore } from '@tamagui/use-store'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { Link } from 'one'
+import { Link, router } from 'one'
 import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import {
@@ -47,9 +47,12 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const themePage = useStore(ThemePageStore)
   const themeBuilderStore = useThemeBuilderStore()
 
-  const [isGenerating, setGenerating] = useState<'reply' | 'new' | null>(null)
+  const [isGenerating, setGenerating] = useState<'reply' | 'new' | 'delete' | null>(null)
   const themeName = useThemeName()
   const [lastPrompt, setLastPrompt] = useState('')
+
+  const id = themePage.curProps?.id || initialTheme?.themeId || ''
+  console.warn('id', id)
 
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
@@ -86,24 +89,37 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const themeSuite = themeBuilderStore.themeSuite
   const lastReply = themeSuite ? themeJSONToText(themeSuite) : ''
 
-  const generate = async (type: 'reply' | 'new') => {
-    if (!inputRef.current?.value.trim()) {
+  const fetchUpdate = async (
+    type: 'reply' | 'new' | 'delete',
+    themeIdToDelete?: string
+  ) => {
+    if (type !== 'delete' && !inputRef.current?.value.trim()) {
       toastController.show(`Please enter a prompt`)
       return
     }
-    toastController.show(`Generating...`)
-    setGenerating(type)
+
+    if (type !== 'delete') {
+      toastController.show(`Generating...`)
+    } else {
+      toastController.show(`Deleting theme...`)
+    }
+
+    setGenerating(type as 'reply' | 'new')
 
     let seconds = 0
 
     const int = setInterval(() => {
       seconds++
       if (seconds === 4) {
-        toastController.show(`Thinking about colors...`)
+        toastController.show(
+          `${type === 'delete' ? 'Still deleting...' : 'Thinking about colors...'}`
+        )
       } else if (seconds === 8) {
         toastController.show(`...`)
       } else if (seconds === 12) {
-        toastController.show(`Refining palettes...`)
+        toastController.show(
+          `${type === 'delete' ? 'Almost done...' : 'Refining palettes...'}`
+        )
       } else if (seconds === 16) {
         toastController.show(`Taking too long...`)
       } else if (seconds === 24) {
@@ -114,13 +130,17 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     try {
       let prompt = inputRef.current?.value ?? ''
 
+      const lastId = `${type === 'delete' ? themeIdToDelete : id}`
+
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
           prompt,
           model,
           lastReply,
+          lastId,
           lastPrompt,
           scheme: themeName.startsWith('dark') ? 'dark' : 'light',
+          action: type === 'delete' ? 'delete' : 'generate',
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -133,20 +153,33 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       console.info(`got themes`, data)
 
       if (data.error) {
-        toastController.show(`Error generating! ${data.error}`)
+        toastController.show(
+          `Error ${type === 'delete' ? 'deleting' : 'generating'}! ${data.error}`
+        )
         return
       }
 
-      themeBuilderStore.updateGenerate(
-        data.result,
-        slugify(prompt),
-        data.themeId,
-        username
-      )
+      if (type !== 'delete') {
+        if (!lastId) {
+          // created new one just go there
+          router.navigate(`/theme/${data.themeId}/${data.slug}`)
+        } else {
+          await themeBuilderStore.updateGenerate(
+            data.result,
+            slugify(prompt),
+            data.themeId,
+            username
+          )
+        }
+      } else {
+        toastController.show('Theme deleted')
+      }
 
       await mutate('/api/theme/histories')
 
-      setLastPrompt(prompt)
+      if (type !== 'delete') {
+        setLastPrompt(prompt)
+      }
       toastController.hide()
     } catch (err) {
       toastController.show(`Error: ${err}`)
@@ -171,14 +204,15 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               shadowColor="$shadow3"
               bg="$color1"
               shadowOffset={{ height: 2, width: 0 }}
+              pr={240}
               shadowRadius={10}
               br="$8"
               onSubmit={() => {
-                generate(selectedThemeId ? 'reply' : 'new')
+                fetchUpdate(selectedThemeId ? 'reply' : 'new')
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  generate('new')
+                  fetchUpdate('new')
                 }
               }}
             />
@@ -213,7 +247,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                 icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
                 onPress={() => {
                   if (hasAccess) {
-                    generate('new')
+                    fetchUpdate('new')
                   } else {
                     purchaseModal.show = true
                   }
@@ -239,17 +273,25 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             </Link>
 
             {(historiesData || []).map((history) => (
-              <Link
-                key={history.query}
-                href={`/theme/${history.themeId!}/${slugify(history.query!)}`}
-              >
-                <HistoryButton
-                  icon={<History size={14} />}
-                  active={history.themeId === selectedThemeId}
-                >
-                  {history.query}
-                </HistoryButton>
-              </Link>
+              <XStack key={history.query}>
+                <Link href={`/theme/${history.themeId!}/${slugify(history.query!)}`}>
+                  <HistoryButton
+                    icon={<History size={14} />}
+                    active={history.themeId === selectedThemeId}
+                    onDelete={
+                      hasAccess
+                        ? () => {
+                            if (confirm('Are you sure you want to delete this theme?')) {
+                              fetchUpdate('delete', `${history.themeId || ''}`)
+                            }
+                          }
+                        : undefined
+                    }
+                  >
+                    {history.query}
+                  </HistoryButton>
+                </Link>
+              </XStack>
             ))}
 
             {!hasAccess && (
@@ -271,15 +313,41 @@ const HistoryButton = ({
   active,
   children,
   icon,
-}: { active?: boolean; children?: any; icon?: any }) => {
+  onDelete,
+}: {
+  active?: boolean
+  children?: any
+  icon?: any
+  onDelete?: () => void
+}) => {
   return (
-    <Button size="$3" borderRadius="$8" theme={active ? 'accent' : null}>
-      <Button.Icon>{icon}</Button.Icon>
+    <XStack position="relative">
+      <Button size="$3" borderRadius="$8" theme={active ? 'accent' : null}>
+        <Button.Icon>{icon}</Button.Icon>
 
-      <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
-        {children}
-      </Button.Text>
-    </Button>
+        <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
+          {children}
+        </Button.Text>
+      </Button>
+
+      {onDelete && (
+        <Button
+          position="absolute"
+          top={-5}
+          right={-5}
+          size="$1"
+          circular
+          theme="red"
+          onPress={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            onDelete()
+          }}
+        >
+          <X size={10} />
+        </Button>
+      )}
+    </XStack>
   )
 }
 
