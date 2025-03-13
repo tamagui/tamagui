@@ -7,17 +7,20 @@ const ColorEntrySchema = z.object({
   hue: z.object({
     light: z.number(),
     dark: z.number(),
-    sync: z.boolean(),
+    sync: z.boolean().optional(),
     syncLeft: z.boolean().optional(),
   }),
   sat: z.object({
     light: z.number(),
     dark: z.number(),
-    sync: z.boolean(),
+    sync: z.boolean().optional(),
+    syncLeft: z.boolean().optional(),
   }),
   lum: z.object({
     light: z.number(),
     dark: z.number(),
+    sync: z.boolean().optional(),
+    syncLeft: z.boolean().optional(),
   }),
 })
 
@@ -39,19 +42,19 @@ const ThemeSuiteSchema = z.object({
   templateStrategy: z.literal('base'),
 })
 
-export const getTheme = async (id: string) => {
-  const supabase = createServerClient(
-    import.meta.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
-    import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
-    {
-      cookies: {
-        getAll() {
-          return []
-        },
+const supabase = createServerClient(
+  import.meta.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
+  {
+    cookies: {
+      getAll() {
+        return []
       },
-    }
-  )
+    },
+  }
+)
 
+export const getTheme = async (id: string) => {
   const { data: currentTheme, error: themeError } = await supabase
     .from('theme_histories')
     .select(`

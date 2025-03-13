@@ -140,7 +140,7 @@ const ThemeBuilderModal = memo(() => {
       mah="90vh"
       maw="95vw"
       zi={100_000}
-      x={hide ? 490 : 0}
+      x={hide ? 500 : 0}
       animation="medium"
     >
       <YStack
