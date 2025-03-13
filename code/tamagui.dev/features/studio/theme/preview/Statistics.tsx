@@ -1,8 +1,9 @@
 import { H4, Paragraph, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { BarChart, LineChart } from './Charts'
+import { memo } from 'react'
 
-export const StatisticsBarScreen = () => {
+export const StatisticsBarScreen = memo(() => {
   const demoProps = useDemoProps()
   return (
     <YStack
@@ -39,9 +40,9 @@ export const StatisticsBarScreen = () => {
       </YStack>
     </YStack>
   )
-}
+})
 
-export const StatisticsLineScreen = () => {
+export const StatisticsLineScreen = memo(() => {
   const demoProps = useDemoProps()
 
   return (
@@ -85,4 +86,4 @@ export const StatisticsLineScreen = () => {
       </YStack>
     </YStack>
   )
-}
+})

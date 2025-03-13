@@ -4,7 +4,7 @@ import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
-import { Link, router } from 'one'
+import { router } from 'one'
 import { useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
@@ -32,6 +32,7 @@ import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
+import { Link } from '../../../components/Link'
 
 class AccountModal {
   show = false
