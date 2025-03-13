@@ -264,7 +264,13 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
           </XStack>
         </XStack>
 
-        <ScrollView f={1} horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          mx="$-6"
+          px="$6"
+          f={1}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
           <XStack gap="$2" py="$2">
             <Link href="/theme">
               <HistoryButton active={!selectedThemeId} icon={<Plus size={14} />}>
@@ -278,15 +284,11 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                   <HistoryButton
                     icon={<History size={14} />}
                     active={history.themeId === selectedThemeId}
-                    onDelete={
-                      hasAccess
-                        ? () => {
-                            if (confirm('Are you sure you want to delete this theme?')) {
-                              fetchUpdate('delete', `${history.themeId || ''}`)
-                            }
-                          }
-                        : undefined
-                    }
+                    onDelete={() => {
+                      if (confirm('Are you sure you want to delete this theme?')) {
+                        fetchUpdate('delete', `${history.themeId || ''}`)
+                      }
+                    }}
                   >
                     {history.query}
                   </HistoryButton>
@@ -337,14 +339,13 @@ const HistoryButton = ({
           right={-5}
           size="$1"
           circular
-          theme="red"
           onPress={(e) => {
             e.preventDefault()
             e.stopPropagation()
             onDelete()
           }}
         >
-          <X size={10} />
+          <X opacity={0.5} size={10} />
         </Button>
       )}
     </XStack>

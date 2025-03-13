@@ -1,11 +1,12 @@
 import { LocationNotification } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
+import { AlertCircle, Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import {
   Button,
   Circle,
   EnsureFlexed,
+  H3,
   H4,
   Paragraph,
   Spacer,
@@ -22,6 +23,7 @@ import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PageThemeCarousel } from '~/features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { CodeInline } from '../../../../components/Code'
 
 export default function BentoPage() {
   const store = useStore(BentoStore)
@@ -31,16 +33,6 @@ export default function BentoPage() {
       <LoadCherryBomb />
       <LoadMunro />
       <script src="https://cdn.paritydeals.com/banner.js" />
-
-      <YStack
-        fullscreen
-        t={-54}
-        zi={0}
-        $theme-light={{
-          bg: '$color2',
-        }}
-        $theme-dark={{ bg: '#050505' }}
-      />
 
       <HeadInfo
         title="Copy-paste UI for React Native and Web - Tamagui Bento"
@@ -54,8 +46,6 @@ export default function BentoPage() {
           ],
         }}
       />
-
-      <ThemeNameEffect colorKey="$color1" />
 
       <PageThemeCarousel />
 
@@ -80,7 +70,8 @@ const Intermediate = () => {
       <XStack
         gap="$4"
         py="$6"
-        pt={0}
+        pt={20}
+        mb={-20}
         $sm={{
           fd: 'column',
         }}
@@ -268,7 +259,7 @@ const Hero = () => {
           </YStack>
 
           {/* disable - bento-get has a bug atm */}
-          {/* <YStack
+          <YStack
             pos="absolute"
             b="6%"
             r="$2"
@@ -279,52 +270,35 @@ const Hero = () => {
               mb: 20,
             }}
           >
-            <Theme name="green">
-              <XStack
-                bw="$1"
-                bc="$color02"
-                maw={300}
-                als="center"
-                br="$6"
-                ov="hidden"
-                className="blur-8"
-              >
-                <YStack o={0.5} bg="$color10" fullscreen br="$5" />
-                <YStack py="$3.5" px="$4" f={1}>
-                  <H3
-                    ff="$silkscreen"
-                    size="$2"
-                    color="$color2"
-                    mb="$1"
-                    $theme-dark={{
-                      color: '$color12',
-                    }}
-                  >
-                    The latest
-                  </H3>
-                  <Paragraph
-                    color="$color3"
-                    size="$3"
-                    lh="$2"
-                    $theme-dark={{
-                      color: '$color10',
-                    }}
-                  >
-                    Use <CodeInline>npx bento-get</CodeInline> to search and copy any
-                    component directly to your repo.
-                  </Paragraph>
-                </YStack>
-                <AlertCircle
-                  pos="absolute"
-                  t="$3"
-                  r="$3"
-                  zi={100}
-                  color="$color10"
-                  size={16}
-                />
-              </XStack>
-            </Theme>
-          </YStack> */}
+            <XStack
+              bw={0.5}
+              bc="$color02"
+              maw={300}
+              als="center"
+              br="$6"
+              ov="hidden"
+              className="blur-8"
+              elevation="$3"
+            >
+              <YStack py="$3.5" px="$4" f={1}>
+                <H3 ff="$silkscreen" size="$2" color="$color12" mb="$1.5">
+                  The latest
+                </H3>
+                <Paragraph ff="$mono" color="$color12" size="$3" lh="$2">
+                  Use <CodeInline ff="$mono">npx bento-get</CodeInline> to search and copy
+                  directly to your repo.
+                </Paragraph>
+              </YStack>
+              <AlertCircle
+                pos="absolute"
+                t="$3"
+                r="$3"
+                zi={100}
+                color="$color10"
+                size={16}
+              />
+            </XStack>
+          </YStack>
 
           <YStack
             className="ms300 ease-in all"

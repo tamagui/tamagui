@@ -30,7 +30,7 @@ export const CodeInline = styled(Paragraph, {
   cursor: 'inherit',
   br: '$3',
   // @ts-ignore
-  fontSize: '85%',
+  fontSize: '90%',
   p: '1%',
   whiteSpace: 'pre',
 })

@@ -52,7 +52,6 @@ export default function BentoPage() {
 
   return (
     <CurrentRouteProvider section={section} part={part}>
-      <ThemeNameEffect />
       <BentoPageFrame>
         <ContainerBento>
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>

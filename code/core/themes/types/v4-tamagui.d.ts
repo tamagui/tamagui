@@ -151,6 +151,7 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     black10: string;
     black11: string;
     black12: string;
+    colorBg: string;
     shadow1: string;
     shadow2: string;
     shadow3: string;
