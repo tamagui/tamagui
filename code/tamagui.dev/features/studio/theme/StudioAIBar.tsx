@@ -52,7 +52,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const [lastPrompt, setLastPrompt] = useState('')
 
   const id = themePage.curProps?.id || initialTheme?.themeId || ''
-  console.warn('id', id)
 
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
