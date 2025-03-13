@@ -30,7 +30,7 @@ export const claimTakeoutForProPlan = async (args: ClaimProductArgs) => {
 
   const metadata = {
     claim_type: 'repo_access',
-    repository_name: 'unistack',
+    repository_name: 'takeout',
   }
 
   const claimData = await claimRepositoryAccess({ ...args, metadata })

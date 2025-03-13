@@ -439,10 +439,11 @@ const getOrgs = async (
 const GITHUB_ADMIN_TOKEN = process.env.GITHUB_ADMIN_TOKEN
 
 /**
- * https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#add-a-repository-collaborator
+ * @see https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#add-a-repository-collaborator
+ * @see https://github.com/octokit/plugin-rest-endpoint-methods.js/blob/main/docs/repos/addCollaborator.md
  */
 export const inviteCollaboratorToRepo = async (
-  repoName: string,
+  repoName = 'tamagui',
   userLogin: string,
   permission = 'pull'
 ) => {
@@ -455,13 +456,14 @@ export const inviteCollaboratorToRepo = async (
 
   try {
     const octokit = await getOctokit()
-    octokit.rest.repos.addCollaborator({
+    const res = await octokit.rest.repos.addCollaborator({
       owner: 'tamagui',
       repo: repoName,
       username: userLogin,
       permission,
     })
 
+    console.info(`Claim: inviteCollaboratorToRepo response: ${JSON.stringify(res)}`)
     console.info(`Claim: inviteCollaboratorToRepo succeeded`)
   } catch (err) {
     console.error(`Claim: inviteCollaboratorToRepo Error: ${err}`)
