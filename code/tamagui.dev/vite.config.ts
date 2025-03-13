@@ -1,5 +1,4 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-import { join } from 'node:path'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
 
@@ -43,8 +42,6 @@ const include = [
   'unified',
 ]
 
-const disableExtraction = false
-
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
@@ -87,7 +84,6 @@ export default {
       components: ['tamagui'],
       logTimings: true,
       optimize: true,
-      disableExtraction,
       config: '@tamagui/tamagui-dev-config',
       outputCSS: './tamagui.css',
       // useReactNativeWebLite: true,

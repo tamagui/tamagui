@@ -61,6 +61,10 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
       ...(demosOptions.headingFontFamily == '$munro' && {
         fontSize: 20,
       }),
+
+      ...(demosOptions.headingFontFamily === '$mono' && {
+        fontSize: 16,
+      }),
     } as const,
 
     buttonOutlineProps: {
