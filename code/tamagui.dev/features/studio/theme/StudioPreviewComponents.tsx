@@ -128,7 +128,7 @@ const PalettePreviewPanels = memo(() => {
   if (!palettes) return null
 
   return (
-    <YStack gap="$2">
+    <YStack gap="$2" mt={-40}>
       {Object.entries(palettes).map(([name, palette]) => {
         if (
           (isThemeDark && !name.startsWith('dark')) ||

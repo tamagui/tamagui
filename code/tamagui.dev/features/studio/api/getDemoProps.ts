@@ -65,7 +65,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
 
     buttonOutlineProps: {
       variant: isOutlined ? ('outlined' as const) : (undefined as any),
-      color: isOutlined ? '$color12' : undefined,
+      color: isOutlined ? '$color10' : undefined,
       // ...(hasAccent && accentStyle),
       borderColor: hasAccent ? accentBorder : '$borderColor',
     } as ButtonProps,
