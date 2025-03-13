@@ -1,5 +1,5 @@
 import { ToastViewport } from '@tamagui/toast'
-import { Slot, usePathname } from 'one'
+import { LoadProgressBar, Slot, usePathname } from 'one'
 import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
@@ -29,6 +29,7 @@ export default function SiteLayout() {
       <LoadCherryBomb prefetch />
       <NewPurchaseModal />
       <NewAccountModal />
+      <LoadProgressBar />
       <Slot />
       {!hideFooter && <Footer />}
       <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />

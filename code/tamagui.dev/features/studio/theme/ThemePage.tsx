@@ -156,6 +156,10 @@ const ThemeBuilderModal = memo(() => {
         bc="$color6"
         bg="$background06"
         backdropFilter="blur(60px)"
+        {...(hide && {
+          bc: '$color0',
+          bg: '$background0',
+        })}
       >
         <XStack
           pos="absolute"
@@ -174,7 +178,13 @@ const ThemeBuilderModal = memo(() => {
           />
         </XStack>
 
-        <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
+        <YStack
+          animation={['medium', { opacity: { overshootClamping: true } }]}
+          opacity={hide ? 0 : 1}
+          gap="$4"
+          separator={<Separator bw={1} />}
+          f={1}
+        >
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
               f={1}

@@ -72,7 +72,6 @@ export async function updatePreviewTheme(
 
   lastInserted = themes
 
-  console.warn('UPDATE themes', insertThemes)
   mutateThemes({
     themes: insertThemes,
     batch: 'themes',
