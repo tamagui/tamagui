@@ -169,8 +169,6 @@ const PalettePreviewPanels = memo(() => {
 export const StudioPreviewComponentsSkeleton = memo(() => {
   return (
     <>
-      <PalettePreviewPanelsSkeleton />
-
       <YStack mr={-10}>
         <XStack flexWrap="wrap" gap="$4">
           {[...Array(13)].map((_, index) => (
@@ -196,13 +194,3 @@ const ComponentSkeleton = ({ index }) => {
     </YStack>
   )
 }
-
-const PalettePreviewPanelsSkeleton = memo(() => {
-  return (
-    <YStack gap="$2" mb="$4">
-      {[...Array(3)].map((_, i) => (
-        <Skeleton key={i} width="100%" height={80} br={16} />
-      ))}
-    </YStack>
-  )
-})
