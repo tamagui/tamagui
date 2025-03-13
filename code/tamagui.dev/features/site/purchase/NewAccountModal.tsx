@@ -645,16 +645,6 @@ const PlanTab = ({
   const { data: products } = useProducts()
   const [isGrantingAccess, setIsGrantingAccess] = useState(false)
 
-  const chatAccess = useSWR<any>(
-    `/api/start-chat`,
-    (url) =>
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      }).then((res) => res.json()),
-    { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
-  )
-
   const handleTakeoutAccess = async () => {
     if (!subscription || !products) return
 
@@ -791,41 +781,7 @@ const PlanTab = ({
             }}
           />
 
-          <ServiceCard
-            title="Chat"
-            description={
-              chatAccess.data?.code === 'no_user'
-                ? 'You must sign up first on start.chat'
-                : "Talk to a chatbot that's an expert in Tamagui."
-            }
-            actionLabel={
-              chatAccess.isLoading
-                ? 'Checking access...'
-                : chatAccess.data?.code === 'no_user'
-                  ? 'Signup ➤'
-                  : chatAccess.data?.success
-                    ? 'Visit ➤'
-                    : 'Error'
-            }
-            onAction={() => {
-              if (chatAccess.isLoading) {
-                alert(`Still loading chat access...`)
-                return
-              }
-              if (chatAccess.data?.success) {
-                window.open(`https://start.chat/tamagui/jbk8gyxwogo`)
-                return
-              }
-              if (chatAccess.data?.code === 'no_user') {
-                window.open(`https://start.chat/tamagui`)
-                return
-              }
-              if (chatAccess.error) {
-                alert(`${chatAccess.error}`)
-                return
-              }
-            }}
-          />
+          {/* <ChatAccessCard /> */}
         </XStack>
       </YStack>
 
@@ -860,6 +816,56 @@ const PlanTab = ({
         />
       )}
     </YStack>
+  )
+}
+
+const ChatAccessCard = () => {
+  const chatAccess = useSWR<any>(
+    `/api/start-chat`,
+    (url) =>
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }).then((res) => res.json()),
+    { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
+  )
+
+  return (
+    <ServiceCard
+      title="Chat"
+      description={
+        chatAccess.data?.code === 'no_user'
+          ? 'You must sign up first on start.chat'
+          : "Talk to a chatbot that's an expert in Tamagui."
+      }
+      actionLabel={
+        chatAccess.isLoading
+          ? 'Checking access...'
+          : chatAccess.data?.code === 'no_user'
+            ? 'Signup ➤'
+            : chatAccess.data?.success
+              ? 'Visit ➤'
+              : 'Error'
+      }
+      onAction={() => {
+        if (chatAccess.isLoading) {
+          alert(`Still loading chat access...`)
+          return
+        }
+        if (chatAccess.data?.success) {
+          window.open(`https://start.chat/tamagui/jbk8gyxwogo`)
+          return
+        }
+        if (chatAccess.data?.code === 'no_user') {
+          window.open(`https://start.chat/tamagui`)
+          return
+        }
+        if (chatAccess.error) {
+          alert(`${chatAccess.error}`)
+          return
+        }
+      }}
+    />
   )
 }
 
