@@ -29,7 +29,7 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
           e.preventDefault()
           setTimeout(() => {
             router.navigate(href)
-          }, 16)
+          }, 100)
           props.onPress?.(e)
         },
       })}
