@@ -1,4 +1,4 @@
-import { Calendar } from '@tamagui/bento/data'
+import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { AlertCircle, Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
@@ -15,6 +15,7 @@ import {
   YStack,
 } from 'tamagui'
 import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'
+import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
@@ -22,7 +23,6 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { PageThemeCarousel } from '~/features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
-import { CodeInline } from '../../../../components/Code'
 
 export default function BentoPage() {
   const store = useStore(BentoStore)
@@ -335,7 +335,7 @@ const Hero = () => {
               <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                 <ThemeTintAlt>
                   <Theme name="surface3">
-                    <Calendar showTabs={false} />
+                    <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
               </YStack>
@@ -350,7 +350,7 @@ const Hero = () => {
               >
                 <ThemeTintAlt>
                   <Theme name="surface3">
-                    <Calendar showTabs={false} />
+                    <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
               </YStack>
@@ -365,7 +365,7 @@ const Hero = () => {
               >
                 <ThemeTintAlt>
                   <Theme name="surface2">
-                    <Calendar showTabs={false} />
+                    <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
               </YStack>
@@ -378,7 +378,7 @@ const Hero = () => {
                   clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
                 }}
               >
-                <Calendar showTabs={false} />
+                <LocationNotification />
               </YStack>
 
               <YStack
@@ -393,7 +393,7 @@ const Hero = () => {
               >
                 <ThemeTint>
                   <Theme name="surface3">
-                    <Calendar showTabs={false} />
+                    <LocationNotification />
                   </Theme>
                 </ThemeTint>
               </YStack>
