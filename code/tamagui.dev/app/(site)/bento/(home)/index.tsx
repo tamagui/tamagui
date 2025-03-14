@@ -1,4 +1,4 @@
-import { LocationNotification } from '@tamagui/bento/data'
+import { Calendar } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { AlertCircle, Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
@@ -335,7 +335,7 @@ const Hero = () => {
               <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                 <ThemeTintAlt>
                   <Theme name="surface3">
-                    <LocationNotification />
+                    <Calendar showTabs={false} />
                   </Theme>
                 </ThemeTintAlt>
               </YStack>
@@ -350,7 +350,7 @@ const Hero = () => {
               >
                 <ThemeTintAlt>
                   <Theme name="surface3">
-                    <LocationNotification />
+                    <Calendar showTabs={false} />
                   </Theme>
                 </ThemeTintAlt>
               </YStack>
@@ -365,7 +365,7 @@ const Hero = () => {
               >
                 <ThemeTintAlt>
                   <Theme name="surface2">
-                    <LocationNotification />
+                    <Calendar showTabs={false} />
                   </Theme>
                 </ThemeTintAlt>
               </YStack>
@@ -378,7 +378,7 @@ const Hero = () => {
                   clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
                 }}
               >
-                <LocationNotification />
+                <Calendar showTabs={false} />
               </YStack>
 
               <YStack
@@ -393,7 +393,7 @@ const Hero = () => {
               >
                 <ThemeTint>
                   <Theme name="surface3">
-                    <LocationNotification />
+                    <Calendar showTabs={false} />
                   </Theme>
                 </ThemeTint>
               </YStack>
