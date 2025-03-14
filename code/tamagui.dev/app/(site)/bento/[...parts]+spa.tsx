@@ -24,7 +24,6 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
