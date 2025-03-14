@@ -53,7 +53,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.76.5"
+    "react-native": "^0.77.0"
   },
   "publishConfig": {
     "access": "public"
