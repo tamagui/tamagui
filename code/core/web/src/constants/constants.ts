@@ -22,3 +22,16 @@ export const webViewFlexCompatStyles: StackStyle = {
 if (process.env.TAMAGUI_TARGET === 'web') {
   Object.assign(stackDefaultStyles, webViewFlexCompatStyles)
 }
+
+export const MISSING_THEME_MESSAGE =
+  process.env.NODE_ENV === 'development'
+    ? `Can't find Tamagui configuration.
+    
+99% of the time this is due to having mis-matched versions of Tamagui dependencies.
+Ensure that every "tamagui" and "@tamagui/*" dependency is pinned to exactly the same version.
+
+We have a CLI tool to help check this: 
+
+  npx @tamagui/cli check
+`
+    : `Missing theme.`

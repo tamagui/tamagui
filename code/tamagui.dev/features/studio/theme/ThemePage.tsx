@@ -70,7 +70,6 @@ export function ThemePage() {
           ov="hidden"
         >
           <YStack
-            gap="$6"
             p="$4"
             f={1}
             maw="calc(min(100vw, 1300px))"
@@ -80,12 +79,14 @@ export function ThemePage() {
               p: '$4',
             }}
           >
-            <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
-            <StudioPreviewComponentsBar
-              scrollView={typeof window !== 'undefined' ? document.documentElement : null}
-            />
             <PreviewTheme>
               <YStack gap="$6">
+                <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
+                <StudioPreviewComponentsBar
+                  scrollView={
+                    typeof window !== 'undefined' ? document.documentElement : null
+                  }
+                />
                 {typeof window !== 'undefined' ? (
                   <StudioPreviewComponents isReady={typeof window !== 'undefined'} />
                 ) : (
@@ -140,7 +141,7 @@ const ThemeBuilderModal = memo(() => {
       mah="90vh"
       maw="95vw"
       zi={100_000}
-      x={hide ? 490 : 0}
+      x={hide ? 500 : 0}
       animation="medium"
     >
       <YStack
@@ -156,6 +157,10 @@ const ThemeBuilderModal = memo(() => {
         bc="$color6"
         bg="$background06"
         backdropFilter="blur(60px)"
+        {...(hide && {
+          bc: '$color0',
+          bg: '$background0',
+        })}
       >
         <XStack
           pos="absolute"
@@ -174,7 +179,13 @@ const ThemeBuilderModal = memo(() => {
           />
         </XStack>
 
-        <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
+        <YStack
+          animation={['medium', { opacity: { overshootClamping: true } }]}
+          opacity={hide ? 0 : 1}
+          gap="$4"
+          separator={<Separator bw={1} />}
+          f={1}
+        >
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
               f={1}

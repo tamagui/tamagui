@@ -19,10 +19,9 @@ import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { PageThemeCarousel } from '~/features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { CodeInline } from '../../../../components/Code'
 
 export default function BentoPage() {
@@ -31,7 +30,6 @@ export default function BentoPage() {
   return (
     <>
       <LoadCherryBomb />
-      <LoadMunro />
       <script src="https://cdn.paritydeals.com/banner.js" />
 
       <HeadInfo

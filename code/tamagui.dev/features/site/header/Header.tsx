@@ -1,6 +1,6 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
-import { createShallowSetState, isTouchable } from '@tamagui/web'
+import { createShallowSetState, isTouchable, useGet } from '@tamagui/web'
 import { useFocusEffect, useNavigation, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
@@ -20,6 +20,7 @@ import {
   styled,
   TooltipGroup,
   useComposedRefs,
+  useDebounce,
   View,
   XGroup,
   XStack,
@@ -445,6 +446,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
     const triggerRef = React.useRef<HTMLElement>(null)
     const combinedRef = useComposedRefs(ref)
     const [hovered, setHovered] = React.useState(false)
+    const getLayout = useGet(layout)
 
     React.useEffect(() => {
       if (!hovered) return
@@ -461,21 +463,26 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
       }
     }, [hovered])
 
+    const setActive = useDebounce(() => {
+      const layout = getLayout()
+      if (layout) {
+        isOnLink.add(id)
+        context.setActive(id, layout)
+      }
+      setHovered(true)
+    }, 300)
+
     return (
       <YStack
-        onMouseEnter={() => {
-          if (layout) {
-            isOnLink.add(id)
-            context.setActive(id, layout)
-          }
-          setHovered(true)
-        }}
+        onMouseEnter={setActive}
         onMouseLeave={() => {
+          setActive.cancel()
           isOnLink.delete(id)
           setHovered(false)
         }}
         onPress={() => {
           if (isTouchable) return
+          setActive.cancel()
           setTimeout(() => {
             context.close()
           }, 400)

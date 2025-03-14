@@ -1,33 +1,18 @@
 import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { Dot } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useProducts, type ProductsResponse } from '~/features/site/purchase/useProducts'
 import type React from 'react'
 import { Suspense, lazy, memo, useEffect, useState } from 'react'
-import type {
-  FontSizeTokens,
-  GetProps,
-  TabLayout,
-  TabsProps,
-  TabsTabProps,
-  ThemeName,
-  XStackProps,
-  YStackProps,
-} from 'tamagui'
+import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from 'tamagui'
 import {
-  AnimatePresence,
-  Button,
-  Circle,
   H2,
-  Input,
   Paragraph,
   ScrollView,
   SizableText,
   Spacer,
   Stack,
-  Tabs,
   Theme,
   XStack,
   YStack,
@@ -43,15 +28,15 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
+import type { ProductsResponse } from '~/features/site/purchase/useProducts'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
-import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
-import { usePurchaseModal } from '~/features/site/purchase/NewPurchaseModal'
+import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
@@ -61,7 +46,6 @@ export default function TakeoutPage() {
   return (
     <YStack maw="100%">
       <ThemeNameEffect colorKey="$color5" />
-      <LoadMunro />
       <LoadCherryBomb />
       <script src="https://cdn.paritydeals.com/banner.js" />
       <HeadInfo
@@ -772,7 +756,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 
         <YStack f={1} space zi={100}>
           <H2
-            fontFamily="$munro"
+            fontFamily="$mono"
             size="$8"
             ls={3}
             als="center"
@@ -1179,7 +1163,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
       }}
     >
       <YStack f={1} py="$3" space="$1">
-        <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
+        <Paragraph fontFamily="$mono" tt="uppercase" ls={4} size="$4">
           {props.title}
         </Paragraph>
         <Paragraph
@@ -1271,7 +1255,7 @@ const PixelTooltip = ({
         scale: 1.1,
       })}
     >
-      <Paragraph color="$color12" fontFamily="$munro" size="$2">
+      <Paragraph color="$color12" fontFamily="$mono" size="$2">
         {label}
       </Paragraph>
       {children}

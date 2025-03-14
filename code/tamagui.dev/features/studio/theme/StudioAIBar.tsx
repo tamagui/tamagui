@@ -4,8 +4,8 @@ import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useStore } from '@tamagui/use-store'
 import { useColorScheme } from '@vxrn/color-scheme'
-import { Link, router } from 'one'
-import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { router } from 'one'
+import { memo, useEffect, useLayoutEffect, useOptimistic, useRef, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import {
   Button,
@@ -28,6 +28,7 @@ import { themeJSONToText } from './helpers/themeJSONToText'
 import { RandomizeButton } from './RandomizeButton'
 import { type UpdateGenerateArgs, useThemeBuilderStore } from './store/ThemeBuilderStore'
 import { ThemePageStore } from './themePageStore'
+import { Link } from '../../../components/Link'
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
 
@@ -51,8 +52,16 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const themeName = useThemeName()
   const [lastPrompt, setLastPrompt] = useState('')
 
-  const id = themePage.curProps?.id || initialTheme?.themeId || ''
-  console.warn('id', id)
+  const id = themePage.curProps?.id || initialTheme?.themeId || 0
+  const [active, setActive] = useState(id)
+
+  useEffect(() => {
+    setActive(themePage.curProps?.id)
+  }, [themePage.curProps?.id])
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [id])
 
   const hasAccess =
     user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
@@ -87,7 +96,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   }, [initialTheme?.themeSuite?.name])
 
   const themeSuite = themeBuilderStore.themeSuite
-  const lastReply = themeSuite ? themeJSONToText(themeSuite) : ''
+  const lastReply = id && themeSuite ? themeJSONToText(themeSuite) : ''
 
   const fetchUpdate = async (
     type: 'reply' | 'new' | 'delete',
@@ -189,8 +198,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     }
   }
 
-  const selectedThemeId = themePage.curProps?.id
-
   return (
     <XStack
       zi={1000}
@@ -204,7 +211,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             <Input
               ref={inputRef as any}
               f={1}
-              placeholder={selectedThemeId ? `Refine this theme` : `Generate a theme`}
+              placeholder={active ? `Refine this theme` : `Generate a theme`}
               size="$6"
               shadowColor="$shadow3"
               bg="$color1"
@@ -213,7 +220,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               shadowRadius={10}
               br="$8"
               onSubmit={() => {
-                fetchUpdate(selectedThemeId ? 'reply' : 'new')
+                fetchUpdate(active ? 'reply' : 'new')
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -259,7 +266,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                 }}
                 size="$4"
               >
-                {hasAccess ? (selectedThemeId ? 'Refine' : 'Generate') : 'Access'}
+                {hasAccess ? (active ? 'Refine' : 'Generate') : 'Access'}
               </Button>
 
               <RandomizeButton />
@@ -281,23 +288,36 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               <HistoryButton icon={<Plus size={14} />}>New</HistoryButton>
             </Link>
 
-            {(historiesData || []).map((history) => (
-              <XStack key={history.query}>
-                <Link href={`/theme/${history.themeId!}/${slugify(history.query!)}`}>
-                  <HistoryButton
-                    icon={<History size={14} />}
-                    active={history.themeId === selectedThemeId}
-                    onDelete={() => {
-                      if (confirm('Are you sure you want to delete this theme?')) {
-                        fetchUpdate('delete', `${history.themeId || ''}`)
-                      }
-                    }}
+            {(historiesData || []).map((history) => {
+              if (!history.themeId) {
+                return null
+              }
+              return (
+                <XStack key={history.query}>
+                  <Link
+                    delayNavigate
+                    href={`/theme/${history.themeId!}/${slugify(history.query!)}`}
                   >
-                    {history.query}
-                  </HistoryButton>
-                </Link>
-              </XStack>
-            ))}
+                    <HistoryButton
+                      icon={<History size={14} />}
+                      active={active === history.themeId}
+                      onDelete={() => {
+                        if (confirm('Are you sure you want to delete this theme?')) {
+                          fetchUpdate('delete', `${history.themeId || ''}`)
+                          router.navigate('/theme')
+                        }
+                      }}
+                      onPress={() => {
+                        console.warn('set active')
+                        setActive(+history.themeId!)
+                      }}
+                    >
+                      {history.query}
+                    </HistoryButton>
+                  </Link>
+                </XStack>
+              )
+            })}
 
             {!hasAccess && (
               <XStack f={1} ov="hidden" ai="center" px="$4">
@@ -319,15 +339,22 @@ const HistoryButton = ({
   children,
   icon,
   onDelete,
+  onPress,
 }: {
   active?: boolean
   children?: any
   icon?: any
   onDelete?: () => void
+  onPress?: () => void
 }) => {
   return (
-    <XStack position="relative">
-      <Button size="$3" borderRadius="$8" theme={active ? 'accent' : null}>
+    <XStack group="item" containerType="normal" position="relative">
+      <Button
+        onPress={onPress}
+        size="$3"
+        borderRadius="$8"
+        theme={active ? 'accent' : null}
+      >
         <Button.Icon>{icon}</Button.Icon>
 
         <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
@@ -336,20 +363,22 @@ const HistoryButton = ({
       </Button>
 
       {onDelete && (
-        <Button
+        <YStack
           position="absolute"
+          opacity={0}
+          $group-item-hover={{
+            opacity: 1,
+          }}
           top={-5}
           right={-5}
-          size="$1"
-          circular
           onPress={(e) => {
             e.preventDefault()
             e.stopPropagation()
             onDelete()
           }}
         >
-          <X opacity={0.5} size={10} />
-        </Button>
+          <X opacity={0.3} size={10} />
+        </YStack>
       )}
     </XStack>
   )

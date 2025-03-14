@@ -9,6 +9,7 @@ import {
 } from 'react'
 import { getConfig } from '../config'
 import type { ThemeParsed, ThemeProps, UseThemeWithStateProps } from '../types'
+import { MISSING_THEME_MESSAGE } from '../constants/constants'
 
 type ID = string
 
@@ -62,7 +63,7 @@ export const useThemeState = (
   const parentId = useContext(ThemeStateContext)
 
   if (!parentId && !isRoot) {
-    throw new Error(`No parent?`)
+    throw new Error(MISSING_THEME_MESSAGE)
   }
 
   if (disable) {
@@ -239,7 +240,7 @@ const getNextState = (
     const next = lastState ?? parentState
 
     if (!next) {
-      throw new Error(`No theme and no parent?`)
+      throw new Error(MISSING_THEME_MESSAGE)
     }
 
     if (shouldRerender) {

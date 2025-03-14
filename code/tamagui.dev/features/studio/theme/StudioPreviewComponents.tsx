@@ -1,8 +1,7 @@
-import { memo, useEffect, useReducer, useRef } from 'react'
-import { XStack, YStack, styled, useThemeName } from 'tamagui'
 import { Masonry } from 'masonic'
+import { memo } from 'react'
+import { XStack, YStack, styled, useThemeName } from 'tamagui'
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
-import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { AllTasks } from './preview/AllTasks'
 import { Calendar } from './preview/Calendar'
@@ -22,9 +21,7 @@ export const StudioPreviewComponents = memo(({ isReady }: { isReady: boolean }) 
 
   return (
     <>
-      <PalettePreviewPanels />
-
-      <YStack mr={-10}>
+      <YStack>
         <Masonry
           items={new Array(components.length).fill(0).map((_, id) => ({ id }))}
           render={ComponentComponent}
@@ -33,6 +30,7 @@ export const StudioPreviewComponents = memo(({ isReady }: { isReady: boolean }) 
           rowGutter={18}
         />
       </YStack>
+      <PalettePreviewPanels />
     </>
   )
 })
@@ -121,14 +119,13 @@ const PalettePreviewPanels = memo(() => {
   const themeBuilderStore = useThemeBuilderStore()
   const themeName = useThemeName()
   const isThemeDark = themeName.startsWith('dark')
-  const demoProps = useDemoProps()
 
   const palettes = themeBuilderStore.palettesBuilt
 
   if (!palettes) return null
 
   return (
-    <YStack gap="$2">
+    <XStack fw="wrap" gap="$2">
       {Object.entries(palettes).map(([name, palette]) => {
         if (
           (isThemeDark && !name.startsWith('dark')) ||
@@ -138,31 +135,14 @@ const PalettePreviewPanels = memo(() => {
         }
 
         return (
-          <Panel
-            key={name}
-            disableSettings
-            m={0}
-            f={0}
-            h="auto"
-            w="calc(100% + 24px)"
-            ml={-1}
-          >
-            <YStack
-              {...demoProps.stackOutlineProps}
-              {...demoProps.borderRadiusProps}
-              {...demoProps.elevationProps}
-              {...demoProps.panelPaddingProps}
-              borderWidth={0}
-              gap="$0"
-              p="$0"
-              ov="hidden"
-            >
+          <Panel key={name} disableSettings m={0} h="auto" f={1}>
+            <YStack borderWidth={0} gap="$0" p="$0" ov="hidden">
               <StudioPaletteBar showLabelIndices colors={palette} />
             </YStack>
           </Panel>
         )
       })}
-    </YStack>
+    </XStack>
   )
 })
 

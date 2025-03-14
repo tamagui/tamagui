@@ -10,22 +10,14 @@ import {
   TooltipSimple,
   XStack,
   styled,
-  useThemeName,
 } from 'tamagui'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
-  const themeName = useThemeName()
   return (
-    <XStack
-      // bugfix not changing in prod light/dark
-      key={themeName.split('_')[0]}
-      zi={1000}
-      data-tauri-drag-region
-      className="all ease-in ms300"
-    >
-      <XStack fw="wrap" f={1} className="all ease-in ms300" gap="$3">
+    <XStack zi={1000} mt={-10} data-tauri-drag-region className="all ease-in ms300">
+      <XStack fw="wrap" f={1} gap="$3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 
