@@ -463,26 +463,28 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
       }
     }, [hovered])
 
-    const setActive = useDebounce(() => {
+    const setActive = () => {
       const layout = getLayout()
       if (layout) {
         isOnLink.add(id)
         context.setActive(id, layout)
       }
       setHovered(true)
-    }, 300)
+    }
+
+    const setActiveDebounced = useDebounce(setActive, 100)
 
     return (
       <YStack
-        onMouseEnter={setActive}
+        onMouseEnter={setActiveDebounced}
         onMouseLeave={() => {
-          setActive.cancel()
+          setActiveDebounced.cancel()
           isOnLink.delete(id)
           setHovered(false)
         }}
         onPress={() => {
           if (isTouchable) return
-          setActive.cancel()
+          setActiveDebounced.cancel()
           setTimeout(() => {
             context.close()
           }, 400)
