@@ -10,14 +10,18 @@ import type { PortalProps } from './PortalProps'
 const createPortal = (() => {
   if (IS_FABRIC) {
     try {
-      return require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
+      const ReactFabricShimModule = require('react-native/Libraries/Renderer/shims/ReactFabric');
+
+      return ReactFabricShimModule.default?.createPortal ?? ReactFabricShimModule.createPortal;
     } catch (err) {
       console.info(`Note: error importing portal, defaulting to non-native portals`, err)
       return null
     }
   }
   try {
-    return require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+    const ReactNativeShimModule = require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+
+    return ReactNativeShimModule.default?.createPortal ?? ReactNativeShimModule.createPortal;
   } catch (err) {
     console.info(`Note: error importing portal, defaulting to non-native portals`, err)
     return null
