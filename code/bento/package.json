@@ -84,6 +84,8 @@
     "expo-document-picker": "~13.0.1",
     "expo-image-picker": "~16.0.3",
     "foxact": "^0.2.33",
+    "lottie-react-native": "^7.2.2",
+    "react": "18.3.1",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-native": "^0.76.5",
