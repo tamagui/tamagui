@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { LogBox, useColorScheme } from 'react-native'
 import { Provider, BottomView } from './components'
 import { type ThemeName, View, YStack } from 'tamagui'
-import { Datepickers } from '../src/components'
+import { Datepickers, UserProfile } from '../src/components'
 import { ThemePicker } from './components/ThemePicker'
 import { Background } from './components/Background'
 
@@ -27,14 +27,15 @@ export default function App() {
 
   return (
     <Provider defaultTheme={colorScheme}>
-      <YStack theme={themeName} bg={'$color2'} flex={1}>
+      {/* <YStack theme={themeName} bg={'$color2'} flex={1}>
         <Background themeName={themeName} />
         <View flex={1} justifyContent="center" ai="center" p="$4">
           <Datepickers.Calendar />
           <ThemePicker themeColor={colorScheme} setThemeColor={setThemeName} />
         </View>
         <BottomView title="Calendar" />
-      </YStack>
+      </YStack> */}
+      <UserProfile.ProfileView />
     </Provider>
   )
 }
