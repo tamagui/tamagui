@@ -1,8 +1,9 @@
 import { Box, Brush, MessageCircle } from '@tamagui/lucide-icons'
-import { styled, YStack } from 'tamagui'
+import { styled, Text, YStack } from 'tamagui'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { TooltipLabelLarge } from './TooltipLabelLarge'
+import type { UserContextType } from '~/features/auth/types'
 
 const Card = styled(YStack, {
   maxHeight: 120,
@@ -90,5 +91,18 @@ export const PromoCardTheme = () => {
       title="Theme"
       subtitle="Generate themes using a custom AI."
     />
+  )
+}
+
+/**
+ * TODO: refine the design later
+ */
+export const ThemeHistoryCard = (
+  history: NonNullable<UserContextType['themeHistories']>[number]
+) => {
+  return (
+    <Card>
+      <Text>{history.search_query}</Text>
+    </Card>
   )
 }

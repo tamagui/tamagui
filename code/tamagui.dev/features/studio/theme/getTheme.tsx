@@ -29,7 +29,7 @@ const PaletteSchema = z.object({
   anchors: z.array(ColorEntrySchema),
 })
 
-const ThemeSuiteSchema = z.object({
+export const ThemeSuiteSchema = z.object({
   name: z.string(),
   palettes: z.object({
     base: PaletteSchema,

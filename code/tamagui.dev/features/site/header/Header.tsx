@@ -1,9 +1,9 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
+import { ExternalLink, Figma, LogIn, Menu, Clock } from '@tamagui/lucide-icons'
 import { createShallowSetState, isTouchable, useGet } from '@tamagui/web'
 import { useFocusEffect, useNavigation, usePathname, useRouter } from 'one'
 import * as React from 'react'
-import type { LayoutRectangle } from 'react-native'
+import { Pressable, type LayoutRectangle } from 'react-native'
 import {
   type PopoverProps,
   Adapt,
@@ -37,13 +37,14 @@ import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
 import { accountModal } from '../purchase/NewAccountModal'
-import { PromoCardTheme } from './PromoCards'
+import { PromoCardTheme, ThemeHistoryCard } from './PromoCards'
 import { SearchButton } from './SearchButton'
 import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { useLoginLink } from '../../auth/useLoginLink'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -538,7 +539,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: 1400,
     compiler: 117,
     ui: 1400,
-    theme: 140,
+    theme: 300,
     menu: 390,
   }
 
@@ -593,19 +594,67 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 })
 
 const HeaderMenuContents = (props: { id: ID }) => {
-  const content = (() => {
+  const { data } = useUser()
+  const { updateGenerate } = useThemeBuilderStore()
+
+  const themeHistories = data?.themeHistories || []
+
+  /**
+   * When the theme_histories are fetched,
+   * we can apply one of them to Bento components from dropdown
+   */
+  const content = React.useMemo(() => {
     if (props.id === 'menu') {
       return <HeaderMenuMoreContents />
     }
     if (props.id === 'theme') {
       return (
-        <YStack>
+        <YStack flex={1} gap="$2">
           <PromoCardTheme />
+
+          <Separator bc="$color02" o={0.25} my="$2" />
+
+          <YStack gap="$2">
+            <SizableText
+              size="$3"
+              fontFamily="$mono"
+              px="$4"
+              color="$color10"
+              theme="alt2"
+            >
+              Recent Themes
+            </SizableText>
+
+            {themeHistories.map((history) => (
+              <HeadAnchor
+                key={history.id}
+                grid
+                onPress={() => updateGenerate(history.theme_data)}
+              >
+                <XStack ai="center" jc="space-between">
+                  <SizableText size="$3" color="$color11" ellipse>
+                    {history.search_query}
+                  </SizableText>
+                  <YStack ml="$2" o={0.5}>
+                    <Clock size={12} />
+                  </YStack>
+                </XStack>
+              </HeadAnchor>
+            ))}
+
+            {themeHistories.length === 0 && (
+              <YStack p="$4" ai="center">
+                <SizableText size="$2" theme="alt2">
+                  {data?.user ? 'No theme history yet' : 'Login to save themes'}
+                </SizableText>
+              </YStack>
+            )}
+          </YStack>
         </YStack>
       )
     }
     return <DocsMenuContents inMenu section={props.id} />
-  })()
+  }, [props.id, themeHistories])
 
   return (
     <Frame>

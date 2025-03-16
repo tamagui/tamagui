@@ -8,7 +8,8 @@ import {
 } from '~/features/github/helpers'
 import { tiersPriority } from '../stripe/tiers'
 import { getArray } from '~/helpers/getArray'
-
+import { ThemeSuiteSchema } from '../studio/theme/getTheme'
+import type { ThemeSuiteItemData } from '../studio/theme/types'
 export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase.from('users').select('*').single()
 
@@ -187,5 +188,38 @@ export async function getUserAccessInfo(
     hasTakeoutAccess: takeoutAccessInfo.access,
     hasStudioAccess,
     teamsWithAccess,
+  }
+}
+
+/**
+ * Retrieve the theme histories that the user has previously created
+ *
+ * @param supabase - Supabase client instance
+ * @param user - Current user object
+ */
+export async function getUserThemeHistories(
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) {
+  try {
+    if (!user) return []
+    // Get last 5 theme histories
+    const { data, error } = await supabase
+      .from('theme_histories')
+      .select('theme_data, search_query, created_at, id')
+      .eq('user_id', user.id)
+      .order('updated_at', { ascending: false })
+      .limit(5)
+
+    if (error) {
+      return []
+    }
+
+    return data.map((d) => ({
+      ...d,
+      theme_data: ThemeSuiteSchema.parse(d.theme_data) as ThemeSuiteItemData,
+    }))
+  } catch {
+    return []
   }
 }

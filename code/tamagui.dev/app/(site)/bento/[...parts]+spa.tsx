@@ -5,7 +5,7 @@ import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
 import { useToastController } from '@tamagui/toast'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
-import { startTransition } from 'react'
+import { startTransition, useEffect } from 'react'
 import {
   Anchor,
   Button,
@@ -18,13 +18,15 @@ import {
   View,
   XStack,
   YStack,
+  Theme,
 } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useColorScheme } from '@vxrn/color-scheme'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -45,6 +47,10 @@ export default function BentoPage() {
   const toast = useToastController()
 
   const { showAppropriateModal, isProUser } = useSubscriptionModal()
+  const [scheme] = useColorScheme()
+
+  const store = useThemeBuilderStore()
+  const themeName: any = `studiodemointernal${store.themeSuiteUID}`
 
   if (!Comp) {
     return null
@@ -140,10 +146,14 @@ export default function BentoPage() {
                 </View>
 
                 <View w="100%" flex={1}>
-                  <Comp
-                    showAppropriateModal={showAppropriateModal}
-                    isProUser={isProUser}
-                  />
+                  <Theme name={scheme}>
+                    <Theme name={themeName}>
+                      <Comp
+                        showAppropriateModal={showAppropriateModal}
+                        isProUser={isProUser}
+                      />
+                    </Theme>
+                  </Theme>
                 </View>
               </XStack>
             </ContainerBento>
