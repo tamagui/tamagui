@@ -3,9 +3,12 @@ import { View, styled } from '@tamagui/core'
 
 import { getElevation } from './getElevation'
 
-export type YStackProps = GetProps<typeof YStack>
+// Base type for stacks
+type BaseStackProps = GetProps<typeof View>
 
-export type XStackProps = YStackProps
+// Remove flexDirection from allowed props
+export type YStackProps = Omit<BaseStackProps, 'flexDirection'>
+export type XStackProps = Omit<BaseStackProps, 'flexDirection'>
 export type ZStackProps = YStackProps
 
 export const fullscreenStyle = {
@@ -51,7 +54,8 @@ const variants = {
  * @see — Docs https://tamagui.dev/ui/stacks#xstack-ystack-zstack
  */
 export const YStack = styled(View, {
-  flexDirection: 'column',
+  // Set flexDirection in the style object
+  flexDirection: 'column' as const,
   variants,
 })
 
@@ -62,7 +66,8 @@ YStack['displayName'] = 'YStack'
  * @see — Docs https://tamagui.dev/ui/stacks#xstack-ystack-zstack
  */
 export const XStack = styled(View, {
-  flexDirection: 'row',
+  // Set flexDirection in the style object
+  flexDirection: 'row' as const,
   variants,
 })
 
