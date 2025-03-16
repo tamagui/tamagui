@@ -203,13 +203,13 @@ export async function getUserThemeHistories(
 ) {
   try {
     if (!user) return []
-    // Get last 5 theme histories
+    // Get last few theme histories
     const { data, error } = await supabase
       .from('theme_histories')
       .select('theme_data, search_query, created_at, id')
       .eq('user_id', user.id)
       .order('updated_at', { ascending: false })
-      .limit(5)
+      .limit(15)
 
     if (error) {
       return []
