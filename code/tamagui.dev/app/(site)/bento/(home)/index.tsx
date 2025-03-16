@@ -1,4 +1,4 @@
-import { LocationNotification } from '@tamagui/bento/data'
+import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { AlertCircle, Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
@@ -15,6 +15,7 @@ import {
   YStack,
 } from 'tamagui'
 import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'
+import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
@@ -22,7 +23,6 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { PageThemeCarousel } from '~/features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
-import { CodeInline } from '../../../../components/Code'
 
 export default function BentoPage() {
   const store = useStore(BentoStore)

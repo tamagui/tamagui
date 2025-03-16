@@ -169,6 +169,7 @@ type Theme = {
     white11: string;
     white12: string;
     shadowColor: string;
+    colorBg: string;
     accent1: string;
     accent2: string;
     accent3: string;

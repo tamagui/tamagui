@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bento",
-  "version": "1.125.25",
+  "version": "1.125.26",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -40,7 +40,7 @@
         "import": "./dist/esm/components/*.native.js",
         "require": "./dist/cjs/components/*.native.js"
       },
-      "types": "./src/components/d.ts",
+      "types": "./src/components/*.d.ts",
       "import": "./dist/esm/components/*.mjs",
       "require": "./dist/cjs/components/*.cjs"
     }
