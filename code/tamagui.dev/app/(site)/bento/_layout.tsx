@@ -1,8 +1,8 @@
 import { Slot } from 'one'
 import { Theme, YStack } from 'tamagui'
+import { useBentoTheme } from '~/features/bento/useBentoTheme'
 import { Footer } from '~/features/site/Footer'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { useBentoTheme } from '~/features/bento/useBentoTheme'
 
 export default function Layout() {
   const { themeName, bgColor } = useBentoTheme()
