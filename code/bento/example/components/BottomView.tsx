@@ -1,5 +1,7 @@
 import { Image, Text, type ThemeName, XStack, YStack } from 'tamagui'
 import { insets } from '../constant'
+import { LinearGradient } from 'tamagui/linear-gradient'
+import { SafeAreaView } from 'react-native'
 
 type BottomViewProps = {
   title: string
@@ -10,28 +12,49 @@ const SPACE = 4
 
 export function BottomView({ title }: BottomViewProps) {
   return (
-    <YStack pos="absolute" p="$4" pb={insets.paddingBottom} bottom={0} left={0} right={0}>
-      <YStack jc="center" ai="center" gap="$3">
-        <Text fontWeight="bold" textTransform="uppercase" fontFamily="$silkscreen">
-          {title} BY
-        </Text>
+    <>
+     
 
-        <XStack alignSelf="center">
-          <XStack
-            gap={SPACE}
-            data-tauri-drag-region
-            position="relative"
-            jc="center"
-            ai="center"
-            mx={SPACE}
-          >
-            {logoWords.map((image, index) => (
-              <ImageWord key={`path-${index}`} image={image} index={index} />
-            ))}
+      <LinearGradient
+        colors={['background0', '$background', '$background']}
+        pos="absolute"
+        left={0}
+        right={0}
+        bottom={0}
+        // height={"120%"}
+        height={200}
+      />
+
+      <YStack
+        pos="absolute"
+        p="$4"
+        pb={insets.paddingBottom}
+        bottom={0}
+        left={0}
+        right={0}
+      >
+        <YStack jc="center" ai="center" gap="$3">
+          <Text fontWeight="bold" textTransform="uppercase" fontFamily="$silkscreen">
+            {title} BY
+          </Text>
+
+          <XStack alignSelf="center">
+            <XStack
+              gap={SPACE}
+              data-tauri-drag-region
+              position="relative"
+              jc="center"
+              ai="center"
+              mx={SPACE}
+            >
+              {logoWords.map((image, index) => (
+                <ImageWord key={`path-${index}`} image={image} index={index} />
+              ))}
+            </XStack>
           </XStack>
-        </XStack>
+        </YStack>
       </YStack>
-    </YStack>
+    </>
   )
 }
 
