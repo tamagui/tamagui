@@ -513,6 +513,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
 const order = ['', 'core', 'compiler', 'ui', 'theme', 'menu']
 
 const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
+  const { data } = useUser()
   const [active, setActive] = React.useState<ID>(
     props.active === '' ? 'menu' : props.active
   )
@@ -541,7 +542,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: 1400,
     compiler: 117,
     ui: 1400,
-    theme: 300,
+    theme: data?.user ? 300 : 130,
     menu: 390,
   }
 
@@ -609,15 +610,31 @@ const HeaderMenuContents = (props: { id: ID }) => {
    * we can apply one of them to Bento components from dropdown
    */
   const content = (() => {
-    if (props.id === 'menu' || !isOnBentoPage) {
+    if (props.id === 'menu') {
       return <HeaderMenuMoreContents />
     }
 
     if (props.id === 'theme') {
       return (
         <YStack flex={1} gap="$2">
-          {!themeHistories.length ? (
-            <PromoCardTheme />
+          {!isOnBentoPage || !themeHistories.length ? (
+            <>
+              <PromoCardTheme />
+              <Paragraph
+                bg="$color3"
+                pointerEvents="none"
+                bw={0.5}
+                bc="$color6"
+                br="$5"
+                ff="$mono"
+                size="$4"
+                o={0.5}
+                p="$4"
+              >
+                Once you create themes, visit the Bento page and open this menu to preview
+                them.
+              </Paragraph>
+            </>
           ) : (
             <YStack gap="$2">
               <XStack>
