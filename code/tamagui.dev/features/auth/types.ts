@@ -1,6 +1,11 @@
 import type { User } from '@supabase/supabase-js'
 import type { Database } from '../supabase/types'
-import type { getSubscriptions, getUserAccessInfo, getUserDetails } from '../user/helpers'
+import type {
+  getSubscriptions,
+  getUserAccessInfo,
+  getUserDetails,
+  getUserThemeHistories,
+} from '../user/helpers'
 
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
@@ -13,4 +18,5 @@ export type UserContextType = {
     main?: Database['public']['Tables']['teams']['Row'] | null
   }
   accessInfo: Awaited<ReturnType<typeof getUserAccessInfo>>
+  themeHistories?: Awaited<ReturnType<typeof getUserThemeHistories>>
 }

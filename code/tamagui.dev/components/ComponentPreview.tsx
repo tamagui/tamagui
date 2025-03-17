@@ -8,6 +8,7 @@ import {
   Upload,
   User,
 } from '@tamagui/lucide-icons'
+import { Theme } from 'tamagui'
 
 import {
   Avatar,
@@ -41,11 +42,9 @@ const WindowMacView = () => {
     <XStack
       bg="$backgroundPress"
       borderBottomWidth={1}
-      borderColor="$borderColor"
-      $theme-light={{
-        borderColor: '$gray6',
-      }}
-      p="$2"
+      borderColor="$color3"
+      py="$1.5"
+      px="$2"
       gap="$2"
     >
       {['$red10', '$yellow10', '$green10'].map((color, index) => (
@@ -58,24 +57,28 @@ const WindowMacView = () => {
 
 const WindowLayout = ({ children, ...props }) => {
   return (
-    <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center" {...props}>
+    <Theme name="accent">
       <YStack
+        h="100%"
         w="100%"
-        h={200}
-        bg="$background"
-        borderRadius="$4"
-        overflow="hidden"
-        borderWidth={1}
-        borderColor={'$borderColor'}
-        $theme-light={{
-          borderColor: '$gray6',
-          bg: '$gray3',
-        }}
+        justifyContent="flex-start"
+        alignItems="center"
+        {...props}
       >
-        <WindowMacView />
-        {children}
+        <YStack
+          w="100%"
+          h={200}
+          bg="$color1"
+          borderRadius="$5"
+          overflow="hidden"
+          borderWidth={1}
+          borderColor="$color2"
+        >
+          <WindowMacView />
+          {children}
+        </YStack>
       </YStack>
-    </YStack>
+    </Theme>
   )
 }
 
@@ -120,7 +123,7 @@ const ComponentPreview = {
         px="$3"
         borderRadius="$4"
       >
-        <Text color="$gray7">Bento 🍱</Text>
+        <Text color="$color7">Bento 🍱</Text>
       </View>
     </YStack>
   ),
@@ -128,16 +131,16 @@ const ComponentPreview = {
   Layouts: () => {
     return (
       <WindowLayout>
-        <YStack gap="$4" overflow="hidden" w="100%" bg="$background" p="$4">
+        <YStack gap="$4" overflow="hidden" w="100%" p="$4">
           <Text fontSize={'$1'} textAlign="center" fontWeight="bold">
             Sign Up
           </Text>
           <XStack gap="$4" w="100%" justifyContent="space-between">
-            <View flex={1} h={20} bg="$gray4" borderRadius="$2" />
-            <View flex={1} h={20} bg="$gray4" borderRadius="$2" />
+            <View flex={1} h={20} bg="$color4" borderRadius="$2" />
+            <View flex={1} h={20} bg="$color4" borderRadius="$2" />
           </XStack>
-          <View w="100%" h={20} bg="$gray4" borderRadius="$2" />
-          <View w="100%" h={'100%'} bg="$gray4" borderRadius="$2" />
+          <View w="100%" h={20} bg="$color4" borderRadius="$2" />
+          <View w="100%" h={'100%'} bg="$color4" borderRadius="$2" />
         </YStack>
       </WindowLayout>
     )
@@ -188,20 +191,16 @@ const ComponentPreview = {
       <YStack
         flexDirection="row"
         maxWidth="100%"
-        borderColor="$borderColor"
-        $theme-light={{
-          borderColor: '$gray6',
-        }}
+        borderColor="$color4"
         borderWidth={1}
         paddingHorizontal="$4"
         paddingVertical="$3"
         $group-window-sm={{ marginTop: '$6', marginHorizontal: '$5' }}
-        borderRadius="$3"
+        borderRadius="$10"
         width={'100%'}
         height="auto"
         alignItems="center"
         gap="$2.5"
-        theme="surface1"
         animation="medium"
       >
         <Label size="$1.5" htmlFor={'switch'}>
@@ -242,7 +241,6 @@ const ComponentPreview = {
           alignItems="center"
           justifyContent="flex-start"
           gap="$2"
-          bg="$background"
         >
           <Text fontWeight="bold" p="$2" fontSize={12} bg="$backgroundFocus">
             Write
@@ -267,7 +265,7 @@ const ComponentPreview = {
         width="100%"
         borderWidth={1.5}
         borderStyle="dashed"
-        borderColor="$gray6"
+        borderColor="$color6"
         py="$5"
         justifyContent="center"
         alignItems="center"
@@ -281,15 +279,15 @@ const ComponentPreview = {
   List: () => {
     return (
       <WindowLayout>
-        <YStack bg="$background" ov="hidden" p="$4" width="100%" mb="$-8" gap="$4">
+        <YStack ov="hidden" p="$4" width="100%" mb="$-8" gap="$4">
           {Array.from({ length: 3 }).map((_, index) => {
             return (
               <View flexDirection="row" alignItems="center" key={index} gap="$2">
-                <User color="$gray8" />
+                <User color="$color8" />
 
                 <View gap="$2" flex={1}>
-                  <View height={4} bg={'$gray8'} width="80%" />
-                  <View height={4} bg={'$gray8'} width="45%" />
+                  <View height={4} bg={'$color8'} width="80%" />
+                  <View height={4} bg={'$color8'} width="45%" />
                   <View />
                 </View>
               </View>
@@ -356,7 +354,7 @@ const ComponentPreview = {
           w="100%"
           borderColor="$borderColor"
           $theme-light={{
-            borderColor: '$gray7',
+            borderColor: '$color7',
           }}
           borderRadius="$4"
           gap="$2"
@@ -437,8 +435,8 @@ const ComponentPreview = {
           borderBottomWidth={1}
           borderColor={'$borderColor'}
           $theme-light={{
-            borderColor: '$gray6',
-            bg: '$gray4',
+            borderColor: '$color6',
+            bg: '$color4',
           }}
         >
           {Array.from({ length: 3 }).map((_, index) => (
@@ -449,7 +447,7 @@ const ComponentPreview = {
               borderRightWidth={1}
               borderColor={index === 1 ? '$borderColor' : 'transparent'}
               $theme-light={{
-                borderColor: index === 1 ? '$gray6' : 'transparent',
+                borderColor: index === 1 ? '$color6' : 'transparent',
               }}
               key={index}
             />
@@ -470,7 +468,7 @@ const ComponentPreview = {
                   borderRightWidth={1}
                   borderColor={index === 1 ? '$borderColor' : 'transparent'}
                   $theme-light={{
-                    borderColor: index === 1 ? '$gray6' : 'transparent',
+                    borderColor: index === 1 ? '$color6' : 'transparent',
                   }}
                   flex={1}
                   h="100%"
@@ -493,7 +491,7 @@ const ComponentPreview = {
           <CheckCircle2 size={12} color="$white1" />
         </Chip>
 
-        <Chip rotate={'-2deg'} ml={'$-6'} alignSelf="center" bg="$gray10">
+        <Chip rotate={'-2deg'} ml={'$-6'} alignSelf="center" bg="$color10">
           <Text fontSize="$1" color="$white1">
             Offline
           </Text>
@@ -516,7 +514,7 @@ const ComponentPreview = {
         borderWidth={1}
         borderColor={'$borderColor'}
         $theme-light={{
-          borderColor: '$gray6',
+          borderColor: '$color6',
         }}
         gap="$2"
       >
@@ -538,7 +536,7 @@ const ComponentPreview = {
             borderTopWidth={1}
             borderColor="$borderColor"
             $theme-light={{
-              borderColor: '$gray6',
+              borderColor: '$color6',
             }}
           >
             Cancel
@@ -547,12 +545,12 @@ const ComponentPreview = {
             borderTopWidth={1}
             borderColor="$borderColor"
             $theme-light={{
-              borderColor: '$gray6',
+              borderColor: '$color6',
             }}
             textAlign="center"
             fontSize={10}
             p="$2"
-            color="$blue10"
+            color="$color10"
           >
             Hi
           </Text>
@@ -570,7 +568,7 @@ const ComponentPreview = {
           borderBottomWidth={1}
           borderColor={'$borderColor'}
           $theme-light={{
-            borderColor: '$gray6',
+            borderColor: '$color6',
           }}
           p="$2"
           gap="$2"
@@ -578,7 +576,7 @@ const ComponentPreview = {
           <BentoIcon />
           <XStack px="$2" gap="$4" flex={1}>
             {Array.from({ length: 3 }).map((_, index) => (
-              <View bg="$gray8" flex={1} h={6} key={index} />
+              <View bg="$color8" flex={1} h={6} key={index} />
             ))}
           </XStack>
         </XStack>
@@ -597,7 +595,7 @@ const ComponentPreview = {
           borderBottomWidth={1}
           borderColor={'$borderColor'}
           $theme-light={{
-            borderColor: '$gray6',
+            borderColor: '$color6',
           }}
           justifyContent="flex-start"
           p="$2"
@@ -605,10 +603,10 @@ const ComponentPreview = {
         >
           <BentoIcon />
           <YStack h="100%" w="100%" gap="$3" flex={1}>
-            <View w="90%" bg="$gray8" h={6} />
-            <View w="70%" bg="$gray8" h={6} />
-            <View w="50%" bg="$gray8" h={6} />
-            <View w="90%" bg="$gray8" h={6} />
+            <View w="90%" bg="$color8" h={6} />
+            <View w="70%" bg="$color8" h={6} />
+            <View w="50%" bg="$color8" h={6} />
+            <View w="90%" bg="$color8" h={6} />
           </YStack>
         </YStack>
       </WindowLayout>
@@ -623,9 +621,6 @@ const ComponentPreview = {
           bg="$backgroundPress"
           borderBottomWidth={1}
           borderColor={'$borderColor'}
-          $theme-light={{
-            borderColor: '$gray6',
-          }}
         >
           {['Home', 'Explorer', 'Profile'].map((tab, index) => (
             <View
@@ -652,8 +647,8 @@ const ComponentPreview = {
           gap="$2"
         >
           <Text fontWeight="bold">Hero</Text>
-          <View w="100%" mt="$2" h={6} bg="$gray8" />
-          <View w="80%" h={6} bg="$gray8" />
+          <View w="100%" mt="$2" h={6} bg="$color8" />
+          <View w="80%" h={6} bg="$color8" />
         </YStack>
       </WindowLayout>
     )
@@ -684,7 +679,7 @@ const ComponentPreview = {
                 width={index === 1 ? '$2' : '$0.75'}
                 height="$0.75"
                 borderRadius="$5"
-                backgroundColor={index === 1 ? '$accentColor' : '$gray10'}
+                backgroundColor={index === 1 ? '$accentColor' : '$color10'}
                 animation="200ms"
               />
             ))}
@@ -703,7 +698,7 @@ const ComponentPreview = {
           h={100}
           rotate={'-16deg'}
           borderWidth={2}
-          borderColor="$gray6"
+          borderColor="$color6"
           bg="$background"
           br="$4"
           opacity={0.6}
@@ -719,7 +714,7 @@ const ComponentPreview = {
           aspectRatio={1}
           br="$4"
           bg="$background"
-          borderColor="$gray6"
+          borderColor="$color6"
           opacity={0.7}
           scale={0.8}
         />
@@ -734,7 +729,7 @@ const ComponentPreview = {
           br="$4"
           bg="$background"
           justifyContent="center"
-          borderColor="$gray6"
+          borderColor="$color6"
           alignItems="center"
         >
           <BentoIcon />
@@ -751,13 +746,13 @@ const ComponentPreview = {
           <YStack gap="$4">
             {Array.from({ length: 3 }).map((_, index) => (
               <XStack gap="$2" key={index}>
-                <View aspectRatio={1} bg="$gray8" h={'$1.5'} br="$2" />
+                <View aspectRatio={1} bg="$color8" h={'$1.5'} br="$2" />
                 <YStack flex={1} gap="$2">
-                  <View bg="$gray8" h={6} width={'70%'} />
-                  <View bg="$gray8" h={6} width={'20%'} />
+                  <View bg="$color8" h={6} width={'70%'} />
+                  <View bg="$color8" h={6} width={'20%'} />
                 </YStack>
 
-                <View bg="$gray8" h={6} width={'10%'} />
+                <View bg="$color8" h={6} width={'10%'} />
               </XStack>
             ))}
           </YStack>
@@ -771,10 +766,10 @@ const ComponentPreview = {
       <WindowLayout>
         <XStack gap="$4" justifyContent="flex-start" p="$4">
           <YStack flex={3} gap="$1.5">
-            <View w={'100%'} bg="$gray8" aspectRatio={3 / 2} />
+            <View w={'100%'} bg="$color8" aspectRatio={3 / 2} />
             <XStack gap="$1.5">
               {Array.from({ length: 4 }).map((_, i) => (
-                <View key={i} bg="$gray8" flex={1} aspectRatio={1} />
+                <View key={i} bg="$color8" flex={1} aspectRatio={1} />
               ))}
             </XStack>
           </YStack>
@@ -793,8 +788,8 @@ const ComponentPreview = {
               ))}
             </XStack>
 
-            <View w="100%" mt="$2" h={6} bg="$gray8" />
-            <View w="80%" h={6} bg="$gray8" />
+            <View w="100%" mt="$2" h={6} bg="$color8" />
+            <View w="80%" h={6} bg="$color8" />
           </YStack>
         </XStack>
       </WindowLayout>
@@ -810,12 +805,12 @@ const ComponentPreview = {
           br="$4"
           gap="$2"
           borderWidth={1.5}
-          borderColor={'$gray8'}
+          borderColor={'$color8'}
           height={200}
         >
           <Mail />
-          <View w="100%" mt="$2" h={6} bg="$gray8" />
-          <View w="80%" h={6} bg="$gray8" />
+          <View w="100%" mt="$2" h={6} bg="$color8" />
+          <View w="80%" h={6} bg="$color8" />
         </YStack>
       </WindowLayout>
     )
@@ -846,10 +841,10 @@ const ComponentPreview = {
         <YStack p="$2" gap="$2">
           {[1, 2].map((_, i) => (
             <XStack key={i} alignItems="center" gap="$2">
-              <View bg="$gray8" h={'$2'} aspectRatio={1} borderRadius={1_000_000_000} />
+              <View bg="$color8" h={'$2'} aspectRatio={1} borderRadius={1_000_000_000} />
               <View flex={1} gap="$2">
-                <View bg="$gray8" h={6} w="80%" />
-                <View bg="$gray8" h={6} w="20%" />
+                <View bg="$color8" h={6} w="80%" />
+                <View bg="$color8" h={6} w="20%" />
               </View>
             </XStack>
           ))}
