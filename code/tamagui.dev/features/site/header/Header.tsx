@@ -1,5 +1,5 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { ExternalLink, Figma, LogIn, Menu, Clock } from '@tamagui/lucide-icons'
+import { ExternalLink, Figma, LogIn, Menu, Clock, Check } from '@tamagui/lucide-icons'
 import { createShallowSetState, isTouchable, useGet } from '@tamagui/web'
 import { useFocusEffect, useNavigation, usePathname, useRouter } from 'one'
 import * as React from 'react'
@@ -45,6 +45,8 @@ import type { HeaderProps } from './types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { useLoginLink } from '../../auth/useLoginLink'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useBentoStore } from '../../bento/BentoStore'
+import { useBentoTheme } from '../../bento/useBentoTheme'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -596,65 +598,96 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 const HeaderMenuContents = (props: { id: ID }) => {
   const { data } = useUser()
   const { updateGenerate } = useThemeBuilderStore()
-
+  const bentoStore = useBentoStore()
   const themeHistories = data?.themeHistories || []
+  const bentoTheme = useBentoTheme()
+  const pathName = usePathname()
+  const isOnBentoPage = pathName.startsWith('/bento')
 
   /**
    * When the theme_histories are fetched,
    * we can apply one of them to Bento components from dropdown
    */
-  const content = React.useMemo(() => {
-    if (props.id === 'menu') {
+  const content = (() => {
+    if (props.id === 'menu' || !isOnBentoPage) {
       return <HeaderMenuMoreContents />
     }
+
     if (props.id === 'theme') {
       return (
         <YStack flex={1} gap="$2">
-          <PromoCardTheme />
-
-          <Separator bc="$color02" o={0.25} my="$2" />
-
-          <YStack gap="$2">
-            <SizableText
-              size="$3"
-              fontFamily="$mono"
-              px="$4"
-              color="$color10"
-              theme="alt2"
-            >
-              Recent Themes
-            </SizableText>
-
-            {themeHistories.map((history) => (
-              <HeadAnchor
-                key={history.id}
-                grid
-                onPress={() => updateGenerate(history.theme_data)}
-              >
-                <XStack ai="center" jc="space-between">
+          {!themeHistories.length ? (
+            <PromoCardTheme />
+          ) : (
+            <YStack gap="$2">
+              <XStack>
+                <HeadAnchor
+                  grid
+                  alignItems="center"
+                  onPress={() => {
+                    bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
+                  }}
+                >
                   <SizableText size="$3" color="$color11" ellipse>
-                    {history.search_query}
+                    Enabled
                   </SizableText>
-                  <YStack ml="$2" o={0.5}>
-                    <Clock size={12} />
-                  </YStack>
-                </XStack>
-              </HeadAnchor>
-            ))}
 
-            {themeHistories.length === 0 && (
-              <YStack p="$4" ai="center">
-                <SizableText size="$2" theme="alt2">
-                  {data?.user ? 'No theme history yet' : 'Login to save themes'}
-                </SizableText>
-              </YStack>
-            )}
-          </YStack>
+                  {bentoTheme.enabled ? <Check ml="$2" size={12} /> : null}
+                </HeadAnchor>
+                <HeadAnchor
+                  grid
+                  onPress={() => {
+                    bentoStore.disableTint = !bentoStore.disableTint
+                  }}
+                >
+                  <SizableText size="$3" color="$color11" ellipse>
+                    Tint
+                  </SizableText>
+
+                  {!bentoStore.disableTint ? <Check ml="$2" size={12} /> : null}
+                </HeadAnchor>
+              </XStack>
+
+              <Separator mb="$3" opacity={0.5} />
+
+              <SizableText
+                size="$3"
+                fontFamily="$mono"
+                px="$4"
+                color="$color10"
+                theme="alt2"
+              >
+                Recent Themes
+              </SizableText>
+
+              {themeHistories.map((history) => (
+                <HeadAnchor
+                  key={history.id}
+                  grid
+                  onPress={() => updateGenerate(history.theme_data)}
+                >
+                  <XStack ai="center" jc="space-between">
+                    <SizableText size="$3" color="$color11" ellipse>
+                      {history.search_query}
+                    </SizableText>
+                  </XStack>
+                </HeadAnchor>
+              ))}
+
+              {themeHistories.length === 0 && (
+                <YStack p="$4" ai="center">
+                  <SizableText size="$2" theme="alt2">
+                    {data?.user ? 'No theme history yet' : 'Login to save themes'}
+                  </SizableText>
+                </YStack>
+              )}
+            </YStack>
+          )}
         </YStack>
       )
     }
     return <DocsMenuContents inMenu section={props.id} />
-  }, [props.id, themeHistories])
+  })()
 
   return (
     <Frame>

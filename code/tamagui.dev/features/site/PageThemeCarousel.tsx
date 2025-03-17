@@ -10,8 +10,8 @@ export const PageThemeCarousel = () => {
       <XStack
         pos="absolute"
         t={0}
-        l="$4"
-        r="$4"
+        l="$0"
+        r="$0"
         mah={400}
         b={0}
         pe="none"

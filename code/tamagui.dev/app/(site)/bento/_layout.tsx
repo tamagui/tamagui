@@ -1,28 +1,8 @@
-import { useTint } from '@tamagui/logo'
 import { Slot } from 'one'
 import { Theme, YStack } from 'tamagui'
-import { useBentoStore } from '~/features/bento/BentoStore'
 import { Footer } from '~/features/site/Footer'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-
-const useBentoTheme = () => {
-  const bentoStore = useBentoStore()
-  const { tint } = useTint()
-  const store = useThemeBuilderStore()
-  const themeName: any = `studiodemointernal${store.themeSuiteUID}`
-
-  return {
-    bgColor: themeName ? '$color1' : '$colorBg',
-    themeName: store.themeSuiteUID
-      ? bentoStore.disableTint
-        ? themeName
-        : `${themeName}_accent`
-      : bentoStore.disableTint
-        ? tint
-        : null,
-  } as const
-}
+import { useBentoTheme } from '~/features/bento/useBentoTheme'
 
 export default function Layout() {
   const { themeName, bgColor } = useBentoTheme()

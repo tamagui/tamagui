@@ -150,6 +150,7 @@ const Hero = () => {
           >
             <YStack
               className="ms200 ease-in all"
+              transformOrigin="center top"
               $xxs={{
                 scale: 0.4,
               }}
@@ -160,17 +161,16 @@ const Hero = () => {
                 als: 'center',
                 scale: 0.6,
                 mb: -100,
-                transformOrigin: 'center top',
               }}
-              $md={{ mb: -100, scale: 0.72, transformOrigin: 'center top' }}
+              $md={{ mb: -100, scale: 0.72 }}
             >
-              <BentoLogo scale={0.7} />
+              <BentoLogo />
             </YStack>
 
             <Spacer size="$6" />
 
-            <YStack maw={500} gap="$7" $sm={{ px: '$4', maw: 400, ml: 0 }}>
-              <XStack gap="$6" px="$4">
+            <YStack maw={500} gap="$7" $sm={{ px: '$4', maw: 400, ml: 0, mx: 'auto' }}>
+              <XStack gap="$6">
                 <Paragraph
                   ff="$mono"
                   fos={22}
@@ -332,7 +332,7 @@ const Hero = () => {
                 mb: -60,
               }}
             >
-              <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
+              <YStack br="$4" shac="rgba(0,0,0,0.1)" shar="$8">
                 <ThemeTintAlt>
                   <Theme name="surface3">
                     <LocationNotification />
@@ -388,7 +388,7 @@ const Hero = () => {
                 scale={0.9}
                 rotate="5deg"
                 br="$4"
-                shac="rgba(0,0,0,0.2)"
+                shac="rgba(0,0,0,0.1)"
                 shar="$8"
               >
                 <ThemeTint>
