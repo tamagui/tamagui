@@ -173,22 +173,6 @@ export default {
       },
     }),
 
-    babel({
-      babelConfig: {
-        include: [/node_modules\/(react-native|@react-native)/],
-        plugins: [
-          [
-            '@babel/plugin-transform-modules-commonjs',
-            {
-              strict: false,
-              strictMode: false,
-              allowTopLevelThis: true,
-            },
-          ],
-        ],
-      },
-    }),
-
     // removeReactNativeWebAnimatedPlugin(),
   ],
 } satisfies UserConfig

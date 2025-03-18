@@ -66,7 +66,6 @@
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
   },
   "dependencies": {
-    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@hookform/resolvers": "^3.3.4",
     "@ngneat/falso": "^7.3.0",
     "@rehookify/datepicker": "^6.6.8",
@@ -86,7 +85,6 @@
     "expo-image-picker": "~16.0.3",
     "expo-linear-gradient": "~14.0.1",
     "foxact": "^0.2.33",
-    "react": "18.3.1",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-native": "^0.76.5",
