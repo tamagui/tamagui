@@ -6656,7 +6656,6 @@ __metadata:
     victory: "npm:^37.0.2"
     vite: "npm:^6.1.0"
     vite-bundle-analyzer: "npm:^0.9.4"
-    vite-plugin-babel: "npm:^1.3.0"
     vite-plugin-inspect: "npm:^0.8.4"
     vitest: "npm:^3.0.5"
     zod: "npm:^3.24.1"
@@ -28209,16 +28208,6 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: 10/804d3a4a794f9fa7d5c7b433e96b0813eee39b8c0d4da5c8fe28c9a2aa226702ec711e272a66a5208944f26a35e46d931fc09b1404b04db1cf607f58af1baf6b
-  languageName: node
-  linkType: hard
-
-"vite-plugin-babel@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "vite-plugin-babel@npm:1.3.0"
-  peerDependencies:
-    "@babel/core": ^7.0.0
-    vite: ^2.7.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
-  checksum: 10/41a374eec5495e148224df511b804fc85a08a977b92b58b3e5f2104b8063be4eaa36c054c18e2b7c0c4349928b1c2142dc5fde0f001bd8d7f6e44f4cc19a012c
   languageName: node
   linkType: hard
 
