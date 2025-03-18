@@ -1,7 +1,6 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
-import babel from 'vite-plugin-babel'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
