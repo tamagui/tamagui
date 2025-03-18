@@ -7,7 +7,6 @@ import { Provider, BottomView } from './components'
 import { type ThemeName, View, YStack } from 'tamagui'
 import { ThemePicker } from './components/ThemePicker'
 import { Background } from './components/Background'
-import CircularScroll from './CircularScroll'
 import { List } from '../src/components'
 
 LogBox.ignoreAllLogs()
