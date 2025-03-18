@@ -17,10 +17,7 @@ import type { SheetScopedProps } from './types'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = React.forwardRef<
-  GetRef<typeof ScrollView>,
-  ScrollViewProps
->(
+export const SheetScrollView = React.forwardRef<GetRef<typeof ScrollView>, ScrollViewProps>(
   (
     {
       __scopeSheet,
@@ -58,6 +55,9 @@ export const SheetScrollView = React.forwardRef<
 
     useEffect(() => {
       setHasScrollView(true)
+      return () => {
+        setHasScrollView(false)
+      }
     }, [])
 
     const release = () => {

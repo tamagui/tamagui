@@ -16,7 +16,7 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -229,7 +229,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
     const [isDragging, setIsDragging] = React.useState(false)
-    const [scrollEnabled, setScrollEnabled] = React.useState(true)
+    const scrollEnabled = useRef(true)
+
+    const setScrollEnabled = React.useCallback((val: boolean) => {
+      scrollEnabled.current = val
+    }, [])
 
     const panResponder = React.useMemo(() => {
       if (disableDrag) return
@@ -297,7 +301,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // if dragging handle always allow:
         if (
           e.target === providerProps.handleRef.current ||
-          !scrollEnabled ||
+          !scrollEnabled.current ||
           !hasScrollView.current
         ) {
           return true
@@ -316,11 +320,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
         // prevent drag once at top and pulling up
         if (isNearTop) {
-          if (scrollEnabled && isDraggingUp) {
-            // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
-            // if (!isWeb) {
+          if (scrollEnabled.current && isDraggingUp) {
             return false
-            // }
           }
         }
         // we could do some detection of other touchables and cancel here..
@@ -365,8 +366,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       animateTo,
       frameSize,
       positions,
-      setPosition,
-      scrollEnabled,
+      setPosition
     ])
 
     const handleAnimationViewLayout = React.useCallback((e: LayoutChangeEvent) => {
@@ -468,7 +468,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider
           {...providerProps}
-          scrollEnabled={scrollEnabled}
+          scrollEnabled={scrollEnabled.current}
           setHasScrollView={setHasScrollView}
         >
           <AnimatePresence custom={{ open }}>
