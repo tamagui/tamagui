@@ -6,7 +6,7 @@ export const BentoPageFrame = ({
 }: { children: any; simpler?: boolean }) => {
   return (
     <>
-      <YStack f={1} pt={simpler ? 0 : '$2'}>
+      <YStack maxWidth="100%" pt={simpler ? 0 : '$2'}>
         {children}
       </YStack>
     </>

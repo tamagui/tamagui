@@ -1,11 +1,11 @@
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
 import { listingData } from '@tamagui/bento/data'
-import { ThemeTint } from '@tamagui/logo'
+import { ThemeTint, useTint } from '@tamagui/logo'
 import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
 import { useToastController } from '@tamagui/toast'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
-import { startTransition } from 'react'
+import { startTransition, useEffect } from 'react'
 import {
   Anchor,
   Button,
@@ -18,12 +18,15 @@ import {
   View,
   XStack,
   YStack,
+  Theme,
 } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useColorScheme } from '@vxrn/color-scheme'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -39,11 +42,11 @@ function useParts() {
 
 export default function BentoPage() {
   const { section, part } = useParts()
-  const bentoStore = useBentoStore()
   const Comp = Sections?.[section]?.[part]
   const toast = useToastController()
 
   const { showAppropriateModal, isProUser } = useSubscriptionModal()
+  const [scheme] = useColorScheme()
 
   if (!Comp) {
     return null
@@ -56,98 +59,94 @@ export default function BentoPage() {
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
         </ContainerBento>
 
-        <ThemeTint key={bentoStore.disableTint as any} disable={bentoStore.disableTint}>
-          <YStack py="$8" bg="$background">
-            <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
-            <ContainerBento>
-              <XStack pos="relative" top={0}>
-                <View className="sticky">
-                  <SideBar ai="flex-end">
-                    {listingData.sections.map(({ parts, sectionName }, index) => (
-                      <YStack key={`${sectionName}-${name}`} ai="flex-end" gap="$4">
-                        <XStack
-                          onPress={() => {
-                            navigator?.clipboard?.writeText?.(
-                              `${window.location.hostname}/bento#${sectionName}`
-                            )
+        <YStack py="$8" pb="$16">
+          <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
+          <ContainerBento>
+            <XStack pos="relative" top={0}>
+              <View className="sticky">
+                <SideBar ai="flex-end">
+                  {listingData.sections.map(({ parts, sectionName }, index) => (
+                    <YStack key={`${sectionName}-${name}`} ai="flex-end" gap="$4">
+                      <XStack
+                        onPress={() => {
+                          navigator?.clipboard?.writeText?.(
+                            `${window.location.hostname}/bento#${sectionName}`
+                          )
 
-                            toast.show('Link copied to clipboard')
-                          }}
-                          gap="$2"
-                          ai="center"
-                        >
-                          <Text ff="$mono" color="$color9" textAlign="right" px="$2">
-                            {sectionName[0].toUpperCase()}
-                            {sectionName.slice(1)}
-                          </Text>
-                        </XStack>
+                          toast.show('Link copied to clipboard')
+                        }}
+                        gap="$2"
+                        ai="center"
+                      >
+                        <Text ff="$mono" color="$color12" textAlign="right" px="$2">
+                          {sectionName[0].toUpperCase()}
+                          {sectionName.slice(1)}
+                        </Text>
+                      </XStack>
 
-                        <YStack ai="flex-end" gap="$2">
-                          {parts.map((partItem, index) => {
-                            const { route, name } = partItem
-                            const active = route === `/${section}/${part}`
+                      <YStack ai="flex-end" gap="$2">
+                        {parts.map((partItem, index) => {
+                          const { route, name } = partItem
+                          const active = route === `/${section}/${part}`
 
-                            return (
-                              <Link
-                                key={`${sectionName}-${name}`}
-                                href={`/bento${route}` as Href}
+                          return (
+                            <Link
+                              key={`${sectionName}-${name}`}
+                              href={`/bento${route}` as Href}
+                            >
+                              <View
+                                pos="relative"
+                                py="$2"
+                                ai="center"
+                                jc="center"
+                                gap="$2"
+                                flex={1}
                               >
-                                <View
-                                  pos="relative"
-                                  py="$2"
-                                  ai="center"
-                                  jc="center"
-                                  gap="$2"
-                                  flex={1}
+                                <Paragraph
+                                  ff="$mono"
+                                  // size="$4"
+                                  fow="500"
+                                  textAlign="right"
+                                  color={active ? '$accentColor' : '$color10'}
+                                  px="$2"
                                 >
-                                  <Paragraph
-                                    ff="$mono"
-                                    // size="$4"
-                                    fow="500"
-                                    textAlign="right"
-                                    color={active ? '$accentColor' : '$color10'}
-                                    px="$2"
-                                  >
-                                    {name}
-                                  </Paragraph>
+                                  {name}
+                                </Paragraph>
+                                <View
+                                  pos="absolute"
+                                  inset={0}
+                                  opacity={active ? 1 : 0}
+                                  hoverStyle={{
+                                    borderRightColor: '$accentColor',
+                                    opacity: 1,
+                                  }}
+                                  jc="center"
+                                  ai="flex-end"
+                                >
                                   <View
-                                    pos="absolute"
-                                    inset={0}
-                                    opacity={active ? 1 : 0}
-                                    hoverStyle={{
-                                      borderRightColor: '$accentColor',
-                                      opacity: 1,
-                                    }}
-                                    jc="center"
-                                    ai="flex-end"
-                                  >
-                                    <View
-                                      height="70%"
-                                      width={2}
-                                      br="$10"
-                                      bg={'$accentColor'}
-                                    />
-                                  </View>
+                                    height="70%"
+                                    width={2}
+                                    br="$10"
+                                    bg={'$accentColor'}
+                                    x={5}
+                                  />
                                 </View>
-                              </Link>
-                            )
-                          })}
-                        </YStack>
+                              </View>
+                            </Link>
+                          )
+                        })}
                       </YStack>
-                    ))}
-                  </SideBar>
-                </View>
+                    </YStack>
+                  ))}
+                </SideBar>
+              </View>
 
-                <View w="100%" flex={1}>
-                  <Comp
-                    showAppropriateModal={showAppropriateModal}
-                    isProUser={isProUser}
-                  />
-                </View>
-              </XStack>
-            </ContainerBento>
-          </YStack>
-        </ThemeTint>
+              <View f={1} maxWidth="100%" w="100%">
+                <Comp showAppropriateModal={showAppropriateModal} isProUser={isProUser} />
+              </View>
+            </XStack>
+          </ContainerBento>
+        </YStack>
       </BentoPageFrame>
     </CurrentRouteProvider>
   )
@@ -160,8 +159,7 @@ export const DetailHeader = (props: { children: string }) => {
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
-    <YStack top={0} gap="$4" $sm={{ px: '$4' }} py="$4" mx="auto" maw={1050}>
-      <EnsureFlexed />
+    <YStack top={0} gap="$4" px="$4" py="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between" $sm={{ fd: 'column' }}>
           <H1 ff="$mono" size="$11" $sm={{ size: '$9', mb: '$4' }}>

@@ -22,7 +22,7 @@ import {
   TextCursorInput,
   ToggleRight,
 } from '@tamagui/lucide-icons'
-import { H4, H5, Image, Theme, YStack } from 'tamagui'
+import { H4, H5, Image, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { Link } from '~/components/Link'
 import ComponentPreview from './ComponentPreview'
@@ -65,18 +65,11 @@ export function ComponentItem({
           br="$8"
           ov="hidden"
           className="relative"
-          $theme-dark={{
-            borderColor: '$background04',
-            borderWidth: 1.5,
-          }}
-          $theme-light={{
-            bg: '$background',
-          }}
-          shadowColor="$shadow1"
-          shadowRadius={10}
-          shadowOffset={{ height: 5, width: 0 }}
+          shadowColor="$shadow2"
+          shadowRadius={30}
+          shadowOffset={{ height: 16, width: 0 }}
           hoverStyle={{
-            scale: 1.02,
+            bg: '$color3',
           }}
           pressStyle={{
             y: 2,
@@ -94,20 +87,19 @@ export function ComponentItem({
           </YStack>
           <LinearGradient
             fullscreen
-            start={[1, 0]}
-            end={[0, 0.5]}
-            colors={['$background02', 'transparent']}
+            start={[0, 0.5]}
+            end={[0.5, 0]}
+            colors={['transparent', '$background04']}
+            zIndex={-1}
           />
         </YStack>
 
         <YStack f={1} p="$4">
-          <Theme name="gray">
-            <H4 ff="$mono" size="$5" color="$color12">
-              {name}
-            </H4>
-          </Theme>
+          <H4 ff="$mono" size="$5" color="$color12">
+            {name}
+          </H4>
 
-          <H5 fontFamily="$mono" theme="alt1" size="$1" ls={1}>
+          <H5 opacity={0} fontFamily="$mono" theme="alt1" size="$1" ls={1}>
             {numberOfComponents} components
           </H5>
 
