@@ -2,7 +2,7 @@ import 'react-native-gesture-handler'
 
 import { useFonts } from 'expo-font'
 import { useState } from 'react'
-import { LogBox, useColorScheme } from 'react-native'
+import { LayoutAnimation, LogBox, useColorScheme } from 'react-native'
 import { Provider, BottomView } from './components'
 import { type ThemeName, View, YStack } from 'tamagui'
 import { ThemePicker } from './components/ThemePicker'
@@ -25,6 +25,11 @@ export default function App() {
     return null
   }
 
+  const onChange = (index: number) => {
+    setThemeName(colors[index])
+    RNLayoutAnimation()
+  }
+
   return (
     <Provider defaultTheme={colorScheme}>
       <YStack theme={themeName} bg={'$color2'} flex={1}>
@@ -33,9 +38,45 @@ export default function App() {
           <Datepickers.Calendar />
           <ThemePicker themeColor={colorScheme} setThemeColor={setThemeName} />
         </View> */}
-        <List.WheelList />
+        <List.WheelList onChange={onChange} />
         <BottomView title="WheelList" />
       </YStack>
     </Provider>
   )
 }
+
+const RNLayoutAnimation = (
+  options: {
+    callback?: () => void
+    duration?: number
+  } = {}
+) => {
+  LayoutAnimation.configureNext(
+    {
+      duration: options?.duration || 300,
+      create: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+    },
+    () => {
+      if (typeof options?.callback === 'function') {
+        options?.callback?.()
+      }
+    }
+  )
+}
+
+const colors: ThemeName[] = [
+  'neonBlue',
+  'cyan',
+  'forest',
+  'teal',
+  'orangeRed',
+  'burgundy',
+  'royalBlue',
+  'supreme',
+]

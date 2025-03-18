@@ -17,6 +17,36 @@ const volcanicDark = [
   'hsla(44, 80%, 70%, 1)', // Heat shimmer
 ]
 
+const jadeDark = [
+  'hsla(165, 100%, 4%, 1)', // Deep black jade
+  'hsla(165, 100%, 8%, 1)', // Very dark jade
+  'hsla(165, 100%, 12%, 1)', // Dark jade
+  'hsla(165, 100%, 18%, 1)', // Rich dark jade
+  'hsla(165, 100%, 25%, 1)', // Medium dark jade
+  'hsla(165, 100%, 35%, 1)', // True jade
+  'hsla(165, 100%, 45%, 1)', // Bright jade
+  'hsla(165, 100%, 55%, 1)', // Vibrant jade
+  'hsla(165, 100%, 65%, 1)', // Intense jade
+  'hsla(165, 100%, 75%, 1)', // Bold jade
+  'hsla(165, 100%, 85%, 1)', // Brilliant jade
+  'hsla(165, 100%, 90%, 1)', // Radiant jade
+]
+
+const jadeLight = [
+  'hsla(165, 100%, 90%, 1)', // Radiant jade
+  'hsla(165, 100%, 85%, 1)', // Brilliant jade
+  'hsla(165, 100%, 75%, 1)', // Bold jade
+  'hsla(165, 100%, 65%, 1)', // Intense jade
+  'hsla(165, 100%, 55%, 1)', // Vibrant jade
+  'hsla(165, 100%, 45%, 1)', // Bright jade
+  'hsla(165, 100%, 35%, 1)', // True jade
+  'hsla(165, 100%, 25%, 1)', // Medium dark jade
+  'hsla(165, 100%, 18%, 1)', // Rich dark jade
+  'hsla(165, 100%, 12%, 1)', // Dark jade
+  'hsla(165, 100%, 8%, 1)', // Very dark jade
+  'hsla(165, 100%, 4%, 1)', // Deep black jade
+]
+
 const volcanicLight = [
   'hsla(0, 80%, 97%, 1)', // White hot
   'hsla(4, 85%, 90%, 1)', // Pale ember
@@ -257,6 +287,186 @@ const beeLight = [
   'hsla(0, 0%, 5%, 1)',
 ]
 
+const orangeRedDark = [
+  'hsla(17, 100%, 5%, 1)', // Gần như đen
+  'hsla(17, 100%, 10%, 1)', // Rất tối
+  'hsla(17, 100%, 15%, 1)', // Tối
+  'hsla(17, 100%, 20%, 1)', // Tối vừa
+  'hsla(17, 100%, 25%, 1)', // Tối nhẹ
+  'hsla(17, 100%, 38%, 1)', // Màu C14600
+  'hsla(17, 100%, 45%, 1)', // Sáng vừa
+  'hsla(17, 100%, 50%, 1)', // Sáng
+  'hsla(17, 100%, 55%, 1)', // Rất sáng
+  'hsla(17, 100%, 60%, 1)', // Cực sáng
+  'hsla(17, 100%, 65%, 1)', // Sáng nhất
+  'hsla(17, 100%, 70%, 1)', // Highlight
+]
+
+const orangeRedLight = [
+  'hsla(17, 100%, 70%, 1)', // Highlight
+  'hsla(17, 100%, 65%, 1)', // Sáng nhất
+  'hsla(17, 100%, 60%, 1)', // Cực sáng
+  'hsla(17, 100%, 55%, 1)', // Rất sáng
+  'hsla(17, 100%, 50%, 1)', // Sáng
+  'hsla(17, 100%, 45%, 1)', // Sáng vừa
+  'hsla(17, 100%, 38%, 1)', // Màu C14600
+  'hsla(17, 100%, 25%, 1)', // Tối nhẹ
+  'hsla(17, 100%, 20%, 1)', // Tối vừa
+  'hsla(17, 100%, 15%, 1)', // Tối
+  'hsla(17, 100%, 10%, 1)', // Rất tối
+  'hsla(17, 100%, 5%, 1)', // Gần như đen
+]
+
+const royalBlueDark = [
+  'hsla(243, 90%, 5%, 1)', // Gần như đen
+  'hsla(243, 90%, 10%, 1)', // Rất tối
+  'hsla(243, 90%, 15%, 1)', // Tối
+  'hsla(243, 90%, 20%, 1)', // Tối vừa
+  'hsla(243, 90%, 25%, 1)', // Tối nhẹ
+  'hsla(243, 70%, 41%, 1)', // Màu 261FB3
+  'hsla(243, 90%, 45%, 1)', // Sáng vừa
+  'hsla(243, 90%, 50%, 1)', // Sáng
+  'hsla(243, 90%, 55%, 1)', // Rất sáng
+  'hsla(243, 90%, 60%, 1)', // Cực sáng
+  'hsla(243, 90%, 65%, 1)', // Sáng nhất
+  'hsla(243, 90%, 70%, 1)', // Highlight
+]
+
+const royalBlueLight = [
+  'hsla(243, 90%, 70%, 1)', // Highlight
+  'hsla(243, 90%, 65%, 1)', // Sáng nhất
+  'hsla(243, 90%, 60%, 1)', // Cực sáng
+  'hsla(243, 90%, 55%, 1)', // Rất sáng
+  'hsla(243, 90%, 50%, 1)', // Sáng
+  'hsla(243, 90%, 45%, 1)', // Sáng vừa
+  'hsla(243, 70%, 41%, 1)', // Màu 261FB3
+  'hsla(243, 90%, 25%, 1)', // Tối nhẹ
+  'hsla(243, 90%, 20%, 1)', // Tối vừa
+  'hsla(243, 90%, 15%, 1)', // Tối
+  'hsla(243, 90%, 10%, 1)', // Rất tối
+  'hsla(243, 90%, 5%, 1)', // Gần như đen
+]
+
+const burgundyDark = [
+  'hsla(334, 60%, 5%, 1)', // Gần như đen
+  'hsla(334, 60%, 10%, 1)', // Rất tối
+  'hsla(334, 60%, 15%, 1)', // Tối
+  'hsla(334, 60%, 20%, 1)', // Tối vừa
+  'hsla(334, 60%, 25%, 1)', // Tối nhẹ
+  'hsla(334, 60%, 27%, 1)', // Màu 872341
+  'hsla(334, 60%, 35%, 1)', // Sáng vừa
+  'hsla(334, 60%, 40%, 1)', // Sáng
+  'hsla(334, 60%, 45%, 1)', // Rất sáng
+  'hsla(334, 60%, 50%, 1)', // Cực sáng
+  'hsla(334, 60%, 55%, 1)', // Sáng nhất
+  'hsla(334, 60%, 60%, 1)', // Highlight
+]
+
+const burgundyLight = [
+  'hsla(334, 60%, 60%, 1)', // Highlight
+  'hsla(334, 60%, 55%, 1)', // Sáng nhất
+  'hsla(334, 60%, 50%, 1)', // Cực sáng
+  'hsla(334, 60%, 45%, 1)', // Rất sáng
+  'hsla(334, 60%, 40%, 1)', // Sáng
+  'hsla(334, 60%, 35%, 1)', // Sáng vừa
+  'hsla(334, 60%, 27%, 1)', // Màu 872341
+  'hsla(334, 60%, 25%, 1)', // Tối nhẹ
+  'hsla(334, 60%, 20%, 1)', // Tối vừa
+  'hsla(334, 60%, 15%, 1)', // Tối
+  'hsla(334, 60%, 10%, 1)', // Rất tối
+  'hsla(334, 60%, 5%, 1)', // Gần như đen
+]
+
+const tealDark = [
+  'hsla(187, 94%, 5%, 1)',    // Gần như đen
+  'hsla(187, 94%, 10%, 1)',   // Rất tối
+  'hsla(187, 94%, 15%, 1)',   // Tối
+  'hsla(187, 94%, 20%, 1)',   // Tối vừa
+  'hsla(187, 94%, 25%, 1)',   // Tối nhẹ
+  'hsla(187, 94%, 32%, 1)',   // Màu 034C53
+  'hsla(187, 94%, 38%, 1)',   // Sáng vừa
+  'hsla(187, 94%, 43%, 1)',   // Sáng
+  'hsla(187, 94%, 48%, 1)',   // Rất sáng
+  'hsla(187, 94%, 53%, 1)',   // Cực sáng
+  'hsla(187, 94%, 58%, 1)',   // Sáng nhất
+  'hsla(187, 94%, 63%, 1)',   // Highlight
+]
+
+const tealLight = [
+  'hsla(187, 94%, 63%, 1)',   // Highlight
+  'hsla(187, 94%, 58%, 1)',   // Sáng nhất
+  'hsla(187, 94%, 53%, 1)',   // Cực sáng
+  'hsla(187, 94%, 48%, 1)',   // Rất sáng
+  'hsla(187, 94%, 43%, 1)',   // Sáng
+  'hsla(187, 94%, 38%, 1)',   // Sáng vừa
+  'hsla(187, 94%, 32%, 1)',   // Màu 034C53
+  'hsla(187, 94%, 25%, 1)',   // Tối nhẹ
+  'hsla(187, 94%, 20%, 1)',   // Tối vừa
+  'hsla(187, 94%, 15%, 1)',   // Tối
+  'hsla(187, 94%, 10%, 1)',   // Rất tối
+  'hsla(187, 94%, 5%, 1)',    // Gần như đen
+]
+
+const forestDark = [
+  'hsla(162, 64%, 5%, 1)',    // Gần như đen
+  'hsla(162, 64%, 10%, 1)',   // Rất tối
+  'hsla(162, 64%, 15%, 1)',   // Tối
+  'hsla(162, 64%, 20%, 1)',   // Tối vừa
+  'hsla(162, 64%, 25%, 1)',   // Tối nhẹ
+  'hsla(162, 64%, 30%, 1)',   // Màu 1B4D3E
+  'hsla(162, 64%, 35%, 1)',   // Sáng vừa
+  'hsla(162, 64%, 40%, 1)',   // Sáng
+  'hsla(162, 64%, 45%, 1)',   // Rất sáng
+  'hsla(162, 64%, 50%, 1)',   // Cực sáng
+  'hsla(162, 64%, 55%, 1)',   // Sáng nhất
+  'hsla(162, 64%, 60%, 1)',   // Highlight
+]
+
+const forestLight = [
+  'hsla(162, 64%, 60%, 1)',   // Highlight
+  'hsla(162, 64%, 55%, 1)',   // Sáng nhất
+  'hsla(162, 64%, 50%, 1)',   // Cực sáng
+  'hsla(162, 64%, 45%, 1)',   // Rất sáng
+  'hsla(162, 64%, 40%, 1)',   // Sáng
+  'hsla(162, 64%, 35%, 1)',   // Sáng vừa
+  'hsla(162, 64%, 30%, 1)',   // Màu 1B4D3E
+  'hsla(162, 64%, 25%, 1)',   // Tối nhẹ
+  'hsla(162, 64%, 20%, 1)',   // Tối vừa
+  'hsla(162, 64%, 15%, 1)',   // Tối
+  'hsla(162, 64%, 10%, 1)',   // Rất tối
+  'hsla(162, 64%, 5%, 1)',    // Gần như đen
+]
+
+const cyanDark = [
+  'hsla(186, 32%, 5%, 1)',    // Gần như đen
+  'hsla(186, 32%, 10%, 1)',   // Rất tối
+  'hsla(186, 32%, 15%, 1)',   // Tối
+  'hsla(186, 32%, 20%, 1)',   // Tối vừa
+  'hsla(186, 32%, 25%, 1)',   // Tối nhẹ
+  'hsla(186, 32%, 46%, 1)',   // Màu 4F959D
+  'hsla(186, 32%, 50%, 1)',   // Sáng vừa
+  'hsla(186, 32%, 55%, 1)',   // Sáng
+  'hsla(186, 32%, 60%, 1)',   // Rất sáng
+  'hsla(186, 32%, 65%, 1)',   // Cực sáng
+  'hsla(186, 32%, 70%, 1)',   // Sáng nhất
+  'hsla(186, 32%, 75%, 1)',   // Highlight
+]
+
+const cyanLight = [
+  'hsla(186, 32%, 75%, 1)',   // Highlight
+  'hsla(186, 32%, 70%, 1)',   // Sáng nhất
+  'hsla(186, 32%, 65%, 1)',   // Cực sáng
+  'hsla(186, 32%, 60%, 1)',   // Rất sáng
+  'hsla(186, 32%, 55%, 1)',   // Sáng
+  'hsla(186, 32%, 50%, 1)',   // Sáng vừa
+  'hsla(186, 32%, 46%, 1)',   // Màu 4F959D
+  'hsla(186, 32%, 25%, 1)',   // Tối nhẹ
+  'hsla(186, 32%, 20%, 1)',   // Tối vừa
+  'hsla(186, 32%, 15%, 1)',   // Tối
+  'hsla(186, 32%, 10%, 1)',   // Rất tối
+  'hsla(186, 32%, 5%, 1)',    // Gần như đen
+]
+
 // we're adding some example sub-themes for you to show how they are done, "success" "warning", "error":
 
 const builtThemes = createThemes({
@@ -334,6 +544,62 @@ const builtThemes = createThemes({
       palette: {
         dark: neonRainbowDark,
         light: neonRainbowLight,
+      },
+    },
+
+    jade: {
+      palette: {
+        dark: jadeDark,
+        light: jadeLight,
+      },
+    },
+
+    supreme: {
+      palette: {
+        dark: supremeDark,
+        light: supremeLight,
+      },
+    },
+
+    orangeRed: {
+      palette: {
+        dark: orangeRedDark,
+        light: orangeRedLight,
+      },
+    },
+
+    royalBlue: {
+      palette: {
+        dark: royalBlueDark,
+        light: royalBlueLight,
+      },
+    },
+
+    burgundy: {
+      palette: {
+        dark: burgundyDark,
+        light: burgundyLight,
+      },
+    },
+
+    teal: {
+      palette: {
+        dark: tealDark,
+        light: tealLight,
+      },
+    },
+
+    forest: {
+      palette: {
+        dark: forestDark,
+        light: forestLight,
+      },
+    },
+
+    cyan: {
+      palette: {
+        dark: cyanDark,
+        light: cyanLight,
       },
     },
   },
