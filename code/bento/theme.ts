@@ -47,6 +47,35 @@ const avocadoDark = [
   'hsla(158, 50%, 90%, 1)', // Almost white green
 ]
 
+const supremeDark = [
+  'hsla(358, 100%, 35%, 1)',
+  'hsla(358, 100%, 38%, 1)',
+  'hsla(358, 100%, 40%, 1)',
+  'hsla(358, 100%, 43%, 1)',
+  'hsla(358, 100%, 45%, 1)',
+  'hsla(358, 100%, 48%, 1)',
+  'hsla(358, 100%, 50%, 1)',
+  'hsla(358, 100%, 53%, 1)',
+  'hsla(358, 100%, 55%, 1)',
+  'hsla(358, 100%, 65%, 1)',
+  'hsla(358, 100%, 75%, 1)',
+  'hsla(358, 100%, 95%, 1)',
+]
+const supremeLight = [
+  'hsla(358, 100%, 50%, 1)',
+  'hsla(358, 100%, 49%, 1)',
+  'hsla(358, 100%, 48%, 1)',
+  'hsla(358, 100%, 46%, 1)',
+  'hsla(358, 100%, 45%, 1)',
+  'hsla(358, 100%, 44%, 1)',
+  'hsla(358, 100%, 43%, 1)',
+  'hsla(358, 100%, 41%, 1)',
+  'hsla(358, 100%, 40%, 1)',
+  'hsla(358, 100%, 35%, 1)',
+  'hsla(358, 100%, 100%, 1)',
+  'hsla(358, 100%, 100%, 1)',
+]
+
 const avocadoLight = [
   'hsla(158, 50%, 97%, 1)', // Almost white
   'hsla(158, 55%, 92%, 1)', // Very light sage
@@ -89,36 +118,6 @@ const neonBlueLight = [
   'hsla(190, 90%, 50%, 1)',
   'hsla(195, 85%, 25%, 1)',
   'hsla(200, 80%, 15%, 1)',
-]
-
-const beVietnamDark = [
-  'hsla(0, 0%, 5%, 1)', // Almost black
-  'hsla(0, 0%, 8%, 1)', // Deep black
-  'hsla(45, 80%, 10%, 1)', // Dark gold
-  'hsla(45, 85%, 15%, 1)', // Deep yellow
-  'hsla(45, 90%, 20%, 1)', // Rich gold
-  'hsla(45, 95%, 25%, 1)', // Be brand gold
-  'hsla(45, 100%, 30%, 1)', // Bright gold
-  'hsla(45, 100%, 40%, 1)', // Vibrant yellow
-  'hsla(45, 100%, 50%, 1)', // Be yellow
-  'hsla(45, 95%, 60%, 1)', // Light gold
-  'hsla(45, 90%, 75%, 1)', // Pale gold
-  'hsla(45, 85%, 90%, 1)', // Brightest gold
-]
-
-const beVietnamLight = [
-  'hsla(45, 100%, 99%, 1)', // Almost white
-  'hsla(45, 95%, 95%, 1)', // Lightest yellow
-  'hsla(45, 90%, 90%, 1)', // Very light gold
-  'hsla(45, 85%, 85%, 1)', // Light yellow
-  'hsla(45, 80%, 75%, 1)', // Soft gold
-  'hsla(45, 85%, 65%, 1)', // Medium gold
-  'hsla(45, 90%, 55%, 1)', // Be yellow
-  'hsla(45, 95%, 45%, 1)', // Rich gold
-  'hsla(45, 100%, 35%, 1)', // Deep gold
-  'hsla(0, 0%, 25%, 1)', // Dark grey
-  'hsla(0, 0%, 15%, 1)', // Nearly black
-  'hsla(0, 0%, 5%, 1)', // Pure black
 ]
 
 const darkPalette = [

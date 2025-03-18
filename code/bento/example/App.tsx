@@ -1,6 +1,5 @@
 import '@tamagui/core/reset.css'
 
-import { useState } from 'react'
 import { View, YStack } from 'tamagui'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 
@@ -11,7 +10,7 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
 }
 
-const App = (props: { children: any }) => {
+const App = () => {
   const params = new URLSearchParams(window.location.search)
   const [{ scheme: theme }] = useSchemeSetting()
 
