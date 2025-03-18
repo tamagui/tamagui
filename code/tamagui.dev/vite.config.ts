@@ -1,6 +1,7 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
+import babel from 'vite-plugin-babel'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -168,6 +169,22 @@ export default {
             destination: '/ui/:slug',
             permanent: true,
           },
+        ],
+      },
+    }),
+
+    babel({
+      babelConfig: {
+        include: [/node_modules\/(react-native|@react-native)/],
+        plugins: [
+          [
+            '@babel/plugin-transform-modules-commonjs',
+            {
+              strict: false,
+              strictMode: false,
+              allowTopLevelThis: true,
+            },
+          ],
         ],
       },
     }),

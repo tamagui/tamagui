@@ -5,7 +5,7 @@ import { View, YStack } from 'tamagui'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 
 import { Provider } from '../src/components/provider/Provider'
-import { profile as Profile } from '../src/sections/user/profile'
+import { list as List } from '../src/sections/elements/list'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
@@ -15,7 +15,6 @@ const App = (props: { children: any }) => {
   const params = new URLSearchParams(window.location.search)
   const [{ scheme: theme }] = useSchemeSetting()
 
-  const [screenshot] = useState(params.has('screenshot'))
   const centered = params.has('centered')
 
   return (
@@ -41,7 +40,7 @@ const App = (props: { children: any }) => {
             f={1}
             h="100%"
           >
-            <Profile isProUser={false} showAppropriateModal={() => {}} />
+            <List isProUser={false} showAppropriateModal={() => {}} />
           </YStack>
         </View>
       </YStack>

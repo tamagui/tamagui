@@ -612,7 +612,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-plugin-utils@npm:^7.0.0, @babel/helper-plugin-utils@npm:^7.10.4, @babel/helper-plugin-utils@npm:^7.12.13, @babel/helper-plugin-utils@npm:^7.14.5, @babel/helper-plugin-utils@npm:^7.18.6, @babel/helper-plugin-utils@npm:^7.20.2, @babel/helper-plugin-utils@npm:^7.22.5, @babel/helper-plugin-utils@npm:^7.24.8, @babel/helper-plugin-utils@npm:^7.25.9, @babel/helper-plugin-utils@npm:^7.26.5, @babel/helper-plugin-utils@npm:^7.8.0":
+"@babel/helper-plugin-utils@npm:^7.0.0, @babel/helper-plugin-utils@npm:^7.10.4, @babel/helper-plugin-utils@npm:^7.12.13, @babel/helper-plugin-utils@npm:^7.14.5, @babel/helper-plugin-utils@npm:^7.18.6, @babel/helper-plugin-utils@npm:^7.18.9, @babel/helper-plugin-utils@npm:^7.20.2, @babel/helper-plugin-utils@npm:^7.22.5, @babel/helper-plugin-utils@npm:^7.24.8, @babel/helper-plugin-utils@npm:^7.25.9, @babel/helper-plugin-utils@npm:^7.26.5, @babel/helper-plugin-utils@npm:^7.8.0, @babel/helper-plugin-utils@npm:^7.8.3":
   version: 7.26.5
   resolution: "@babel/helper-plugin-utils@npm:7.26.5"
   checksum: 10/1cc0fd8514da3bb249bed6c27227696ab5e84289749d7258098701cffc0c599b7f61ec40dd332f8613030564b79899d9826813c96f966330bcfc7145a8377857
@@ -770,6 +770,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-proposal-export-namespace-from@npm:^7.18.9":
+  version: 7.18.9
+  resolution: "@babel/plugin-proposal-export-namespace-from@npm:7.18.9"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.18.9"
+    "@babel/plugin-syntax-export-namespace-from": "npm:^7.8.3"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 10/84ff22bacc5d30918a849bfb7e0e90ae4c5b8d8b65f2ac881803d1cf9068dffbe53bd657b0e4bc4c20b4db301b1c85f1e74183cf29a0dd31e964bd4e97c363ef
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-proposal-nullish-coalescing-operator@npm:^7.13.8, @babel/plugin-proposal-nullish-coalescing-operator@npm:^7.18.0":
   version: 7.18.6
   resolution: "@babel/plugin-proposal-nullish-coalescing-operator@npm:7.18.6"
@@ -908,6 +920,17 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 10/8eb254c8050369f3cfac7755230ad9d39a53d1b489e03170684d6b514a0d09ad6001c38e6dfd271a439a8035a57d60b8be7d3dd80f997c6bc5c7e688ed529517
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-syntax-export-namespace-from@npm:^7.8.3":
+  version: 7.8.3
+  resolution: "@babel/plugin-syntax-export-namespace-from@npm:7.8.3"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.8.3"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 10/85740478be5b0de185228e7814451d74ab8ce0a26fcca7613955262a26e99e8e15e9da58f60c754b84515d4c679b590dbd3f2148f0f58025f4ae706f1c5a5d4a
   languageName: node
   linkType: hard
 
@@ -6089,6 +6112,7 @@ __metadata:
   resolution: "@tamagui/bento@workspace:code/bento"
   dependencies:
     "@babel/core": "npm:^7.25.2"
+    "@babel/plugin-proposal-export-namespace-from": "npm:^7.18.9"
     "@hookform/resolvers": "npm:^3.3.4"
     "@ngneat/falso": "npm:^7.3.0"
     "@playwright/test": "npm:^1.49.1"
@@ -6111,11 +6135,13 @@ __metadata:
     expo: "npm:^52.0.23"
     expo-document-picker: "npm:~13.0.1"
     expo-image-picker: "npm:~16.0.3"
+    expo-linear-gradient: "npm:~14.0.1"
     foxact: "npm:^0.2.33"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
     mini-css-extract-plugin: "npm:^2.9.1"
     pod-install: "npm:^0.3.2"
+    react: "npm:18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:^0.76.5"
@@ -6655,6 +6681,7 @@ __metadata:
     victory: "npm:^37.0.2"
     vite: "npm:^6.1.0"
     vite-bundle-analyzer: "npm:^0.9.4"
+    vite-plugin-babel: "npm:^1.3.0"
     vite-plugin-inspect: "npm:^0.8.4"
     vitest: "npm:^3.0.5"
     zod: "npm:^3.24.1"
@@ -23531,7 +23558,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:react@18.3.1":
+"react@npm:18.3.1, react@npm:react@18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:
@@ -28207,6 +28234,16 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: 10/804d3a4a794f9fa7d5c7b433e96b0813eee39b8c0d4da5c8fe28c9a2aa226702ec711e272a66a5208944f26a35e46d931fc09b1404b04db1cf607f58af1baf6b
+  languageName: node
+  linkType: hard
+
+"vite-plugin-babel@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "vite-plugin-babel@npm:1.3.0"
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    vite: ^2.7.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
+  checksum: 10/41a374eec5495e148224df511b804fc85a08a977b92b58b3e5f2104b8063be4eaa36c054c18e2b7c0c4349928b1c2142dc5fde0f001bd8d7f6e44f4cc19a012c
   languageName: node
   linkType: hard
 
