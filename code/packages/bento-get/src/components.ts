@@ -623,6 +623,13 @@ export const componentsList: ComponentSchema[] = [
     moveFilesToFolder: [{ file: 'HList', to: '' }],
   },
   {
+    name: 'Wheel List',
+    fileName: 'WheelList',
+    category: 'elements',
+    categorySection: 'list',
+    moveFilesToFolder: [{ file: 'WheelList', to: '' }],
+  },
+  {
     name: 'Chat List',
     fileName: 'ChatList',
     category: 'elements',
