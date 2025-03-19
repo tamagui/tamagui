@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { composeRefs } from '@tamagui/compose-refs'
 import type { GetRef } from '@tamagui/core'
 import type { ScrollViewProps } from '@tamagui/scroll-view'
@@ -17,16 +17,19 @@ import type { SheetScopedProps } from './types'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = React.forwardRef<
-  GetRef<typeof ScrollView>,
-  ScrollViewProps
->(
+export const SheetScrollView = React.forwardRef<GetRef<typeof ScrollView>, ScrollViewProps>(
   (
-    { __scopeSheet, children, onScroll, ...props }: SheetScopedProps<ScrollViewProps>,
+    {
+      __scopeSheet,
+      children,
+      onScroll,
+      scrollEnabled,
+      ...props
+    }: SheetScopedProps<ScrollViewProps>,
     ref
   ) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
-    const { scrollBridge } = context
+    const { scrollBridge, scrollEnabled: scrollEnabled_, setHasScrollView } = context
     // const [scrollEnabled, setScrollEnabled_] = useState(true)
     const scrollRef = React.useRef<RNScrollView | null>(null)
 
@@ -50,6 +53,13 @@ export const SheetScrollView = React.forwardRef<
       isDragging: false,
     })
 
+    useEffect(() => {
+      setHasScrollView(true)
+      return () => {
+        setHasScrollView(false)
+      }
+    }, [])
+
     const release = () => {
       if (!state.current.isDragging) {
         return
@@ -72,6 +82,9 @@ export const SheetScrollView = React.forwardRef<
       })
     }
 
+    // Override scrollEnabled if provided
+    const scrollable = scrollEnabled ?? scrollEnabled_
+
     return (
       <ScrollView
         ref={composeRefs(scrollRef as any, ref)}
@@ -79,7 +92,10 @@ export const SheetScrollView = React.forwardRef<
         scrollEventThrottle={8}
         onResponderRelease={release}
         className="_ovs-contain"
-        // scrollEnabled={scrollEnabled}
+        scrollEnabled={scrollable}
+        // {...(Platform.OS === 'android' && {
+        //   pointerEvents: scrollable ? undefined : 'none',
+        // })}
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
           scrollBridge.y = y
@@ -101,10 +117,10 @@ export const SheetScrollView = React.forwardRef<
         onStartShouldSetResponder={() => {
           scrollBridge.scrollStartY = -1
           state.current.isDragging = true
-          return true
+          return scrollable
         }}
         // setting to false while onResponderMove is disabled
-        onMoveShouldSetResponder={() => false}
+        onMoveShouldSetResponder={() => scrollable}
         // somehow disabling works better, regression, no more nice drag continue scroll
         // onResponderMove={(e) => {
         //   const { pageY } = e.nativeEvent
