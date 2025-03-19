@@ -39,6 +39,13 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       case 'writingDirection': {
         return [['direction', value]]
       }
+      // some safari-based browsers seem not to support without -webkit prefix
+      case 'backdropFilter': {
+        return [
+          ['backdropFilter', value],
+          ['WebkitBackdropFilter', value],
+        ]
+      }
     }
   }
 
