@@ -666,11 +666,11 @@ export const componentsList: ComponentSchema[] = [
   },
   {
     name: 'Card Swipe',
-    fileName: 'CardSwipeExample',
+    fileName: 'CardSwipe',
     category: 'elements',
     categorySection: 'list',
     dependencies: ['framer-motion', '@tamagui/lucide-icons'],
-    moveFilesToFolder: [{ file: 'CardSwipeExample', to: '' }],
+    moveFilesToFolder: [{ file: 'CardSwipe', to: '' }],
   },
   {
     name: 'CheckBox Cards',
