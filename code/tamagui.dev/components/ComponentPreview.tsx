@@ -39,46 +39,40 @@ const Chip = styled(View, {
 
 const WindowMacView = () => {
   return (
-    <XStack
-      bg="$backgroundPress"
-      borderBottomWidth={1}
-      borderColor="$color3"
-      py="$1.5"
-      px="$2"
-      gap="$2"
-    >
-      {['$red10', '$yellow10', '$green10'].map((color, index) => (
-        <View bg={color as any} h={6} w={6} borderRadius={1_000_000_000} key={index} />
-      ))}
-      <View flex={1} />
-    </XStack>
+    <Theme name="accent">
+      <XStack
+        bg="$backgroundPress"
+        borderBottomWidth={1}
+        borderColor="$color3"
+        py="$1.5"
+        px="$2"
+        gap="$2"
+      >
+        {['$red10', '$yellow10', '$green10'].map((color, index) => (
+          <View bg={color as any} h={6} w={6} borderRadius={1_000_000_000} key={index} />
+        ))}
+        <View flex={1} />
+      </XStack>
+    </Theme>
   )
 }
 
 const WindowLayout = ({ children, ...props }) => {
   return (
-    <Theme name="accent">
+    <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center" {...props}>
       <YStack
-        h="100%"
         w="100%"
-        justifyContent="flex-start"
-        alignItems="center"
-        {...props}
+        h={200}
+        bg="$color1"
+        borderRadius="$5"
+        overflow="hidden"
+        borderWidth={1}
+        borderColor="$color2"
       >
-        <YStack
-          w="100%"
-          h={200}
-          bg="$color1"
-          borderRadius="$5"
-          overflow="hidden"
-          borderWidth={1}
-          borderColor="$color2"
-        >
-          <WindowMacView />
-          {children}
-        </YStack>
+        <WindowMacView />
+        {children}
       </YStack>
-    </Theme>
+    </YStack>
   )
 }
 

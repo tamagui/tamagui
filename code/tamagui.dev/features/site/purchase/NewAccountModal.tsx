@@ -786,7 +786,7 @@ const PlanTab = ({
             }}
           />
 
-          {/* <ChatAccessCard /> */}
+          <ChatAccessCard />
         </XStack>
       </YStack>
 
@@ -858,7 +858,7 @@ const ChatAccessCard = () => {
           return
         }
         if (chatAccess.data?.success) {
-          window.open(`https://start.chat/tamagui/jbk8gyxwogo`)
+          window.open(`https://start.chat/tamagui/q0upl90r4xd`)
           return
         }
         if (chatAccess.data?.code === 'no_user') {
