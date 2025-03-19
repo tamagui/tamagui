@@ -1,10 +1,9 @@
+import { listingData } from '@tamagui/bento/data'
 import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
-import { H3, Input, ScrollView, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { H3, ScrollView, Spacer, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { ComponentItem } from './BentoComponentItem'
-import { listingData } from '@tamagui/bento/data'
-import { ThemeTintAlt } from '@tamagui/logo'
 
 export class BentoStore {
   heroVisible = true
@@ -35,7 +34,7 @@ export const ComponentSection = () => {
 
   return (
     <YStack
-      // bg="$color1"
+      bg="$color2"
       pos="relative"
       contain="paint"
       className="transform ease-in-out ms200"
@@ -77,31 +76,22 @@ export const ComponentSection = () => {
           {filteredSections.map(({ sectionName, parts }, index) => {
             return (
               <YStack py="$4" id={sectionName} key={sectionName} jc={'space-between'}>
-                <Theme name="tan">
-                  <YStack pos="relative">
-                    <YStack
-                      fullscreen
-                      o={0.15}
-                      style={{
-                        background: 'linear-gradient(transparent, var(--background02))',
-                      }}
-                    />
-                    <ContainerLarge>
-                      <YStack py="$4" px="$3" pos="relative">
-                        <H3
-                          ff="$mono"
-                          size="$3"
-                          ls={3}
-                          tt="uppercase"
-                          color="$color10"
-                          f={2}
-                        >
-                          {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-                        </H3>
-                      </YStack>
-                    </ContainerLarge>
-                  </YStack>
-                </Theme>
+                <YStack pos="relative">
+                  <ContainerLarge>
+                    <YStack py="$4" px="$3" pos="relative">
+                      <H3
+                        ff="$mono"
+                        size="$3"
+                        ls={3}
+                        tt="uppercase"
+                        color="$color10"
+                        f={2}
+                      >
+                        {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
+                      </H3>
+                    </YStack>
+                  </ContainerLarge>
+                </YStack>
 
                 <ScrollView
                   horizontal
@@ -111,31 +101,29 @@ export const ComponentSection = () => {
                   }}
                 >
                   <ContainerLarge>
-                    <ThemeTintAlt offset={index}>
-                      <XStack
-                        gap="$4"
-                        f={4}
-                        fs={1}
-                        $gtMd={{
-                          maw: '100%',
-                          fw: store.heroVisible ? 'wrap' : 'nowrap',
-                          rowGap: 20,
-                        }}
-                      >
-                        {parts.map((props) => {
-                          const { route, name, numberOfComponents } = props
-                          return (
-                            <ComponentItem
-                              key={route + name + numberOfComponents.toString()}
-                              {...props}
-                            />
-                          )
-                        })}
+                    <XStack
+                      gap="$4"
+                      f={4}
+                      fs={1}
+                      $gtMd={{
+                        maw: '100%',
+                        fw: store.heroVisible ? 'wrap' : 'nowrap',
+                        rowGap: 20,
+                      }}
+                    >
+                      {parts.map((props) => {
+                        const { route, name, numberOfComponents } = props
+                        return (
+                          <ComponentItem
+                            key={route + name + numberOfComponents.toString()}
+                            {...props}
+                          />
+                        )
+                      })}
 
-                        {/* @ts-ignore */}
-                        <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />
-                      </XStack>
-                    </ThemeTintAlt>
+                      {/* @ts-ignore */}
+                      <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />
+                    </XStack>
                   </ContainerLarge>
                 </ScrollView>
               </YStack>

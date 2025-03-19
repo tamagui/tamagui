@@ -1,4 +1,5 @@
 import { LogOut, Search, X } from '@tamagui/lucide-icons'
+import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import type {
   APIGuildMember,
@@ -11,6 +12,7 @@ import useSWRMutation from 'swr/mutation'
 import {
   Avatar,
   Button,
+  Configuration,
   Dialog,
   Fieldset,
   Form,
@@ -30,9 +32,9 @@ import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
+import { Link } from '../../../components/Link'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
-import { Link } from '../../../components/Link'
 
 class AccountModal {
   show = false
@@ -95,13 +97,16 @@ export const NewAccountModal = () => {
       </Dialog.Adapt>
 
       <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Configuration animationDriver={animationsCSS}>
+          <Dialog.Overlay
+            key="overlay"
+            animation="medium"
+            bg="$shadow3"
+            backdropFilter="blur(20px)"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Configuration>
 
         <Dialog.Content
           bordered

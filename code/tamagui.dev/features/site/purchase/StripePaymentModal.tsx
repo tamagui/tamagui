@@ -373,21 +373,11 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const [isProcessing, setIsProcessing] = useState(false)
   const { data: userData, isLoading, refresh } = useUser()
   const supabaseClient = useSupabaseClient()
-  const [authInterval, setAuthInterval] = useState<NodeJS.Timeout | null>(null)
   const [showCoupon, setShowCoupon] = useState(false)
   const [couponCode, setCouponCode] = useState('')
   const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
   const [couponError, setCouponError] = useState<string | null>(null)
   const { handleLogin } = useLoginLink()
-
-  // Cleanup interval on unmount
-  useEffect(() => {
-    return () => {
-      if (authInterval) {
-        clearInterval(authInterval)
-      }
-    }
-  }, [authInterval])
 
   const theme = useTheme()
   const themeName = useThemeName()
