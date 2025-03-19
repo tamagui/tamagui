@@ -6111,6 +6111,7 @@ __metadata:
     expo: "npm:^52.0.23"
     expo-document-picker: "npm:~13.0.1"
     expo-image-picker: "npm:~16.0.3"
+    expo-linear-gradient: "npm:~14.0.1"
     foxact: "npm:^0.2.33"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"

@@ -2,10 +2,10 @@ import { tokens } from '@tamagui/config/v3'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
-import { tamaguiThemes } from '@tamagui/themes/v4'
 import { animations } from './animations'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
+import { themeDev } from './theme.dev'
 
 setupDev({
   visualizer: true,
@@ -31,7 +31,7 @@ const fixTypescript55Bug = {
 export const config = {
   fonts,
   animations,
-  themes: tamaguiThemes,
+  themes: themeDev,
   media,
   shorthands,
   tokens: fixTypescript55Bug,
