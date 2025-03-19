@@ -25,11 +25,6 @@ export default function App() {
     return null
   }
 
-  const onChange = (index: number) => {
-    setThemeName(colors[index])
-    RNLayoutAnimation()
-  }
-
   return (
     <Provider defaultTheme={colorScheme}>
       <YStack theme={themeName} flex={1}>
@@ -38,35 +33,10 @@ export default function App() {
           <Datepickers.Calendar />
           <ThemePicker themeColor={colorScheme} setThemeColor={setThemeName} />
         </View> */}
-        <List.WheelList onChange={onChange} />
+        <List.WheelList />
         <BottomView title="WheelList" />
       </YStack>
     </Provider>
-  )
-}
-
-const RNLayoutAnimation = (
-  options: {
-    callback?: () => void
-    duration?: number
-  } = {}
-) => {
-  LayoutAnimation.configureNext(
-    {
-      duration: options?.duration || 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    },
-    () => {
-      if (typeof options?.callback === 'function') {
-        options?.callback?.()
-      }
-    }
   )
 }
 
