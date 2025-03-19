@@ -297,7 +297,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       let previouslyScrolling = false
 
-      const onMoveShouldSet = (e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+      const onMoveShouldSet = (
+        e: GestureResponderEvent,
+        { dy }: PanResponderGestureState
+      ) => {
         // if dragging handle always allow:
         if (
           e.target === providerProps.handleRef.current ||
@@ -360,14 +363,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         onPanResponderTerminate: finish,
         onPanResponderRelease: finish,
       })
-    }, [
-      disableDrag,
-      isShowingInnerSheet,
-      animateTo,
-      frameSize,
-      positions,
-      setPosition
-    ])
+    }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
     const handleAnimationViewLayout = React.useCallback((e: LayoutChangeEvent) => {
       // avoid bugs where it grows forever for whatever reason

@@ -17,7 +17,10 @@ import type { SheetScopedProps } from './types'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = React.forwardRef<GetRef<typeof ScrollView>, ScrollViewProps>(
+export const SheetScrollView = React.forwardRef<
+  GetRef<typeof ScrollView>,
+  ScrollViewProps
+>(
   (
     {
       __scopeSheet,
