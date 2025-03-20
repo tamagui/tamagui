@@ -33,7 +33,7 @@ export const ChatPage = () => {
         </Paragraph>
 
         <Paragraph ff="$mono" size="$7" lh="$8" theme="alt1">
-          Out bot isn't just a GPT wrapper, it features a large library of resources
+          Our bot isn't just a GPT wrapper, it features a large library of resources
           including all the code for Bento and Takeout and a custom library designed to
           improve it's answers with Config v4.
         </Paragraph>
