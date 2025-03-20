@@ -840,7 +840,7 @@ const ChatAccessCard = () => {
       title="Chat"
       description={
         chatAccess.data?.code === 'no_user'
-          ? 'You must sign up first on start.chat'
+          ? 'You must sign up first on start.chat with your same Github account'
           : "Talk to a chatbot that's an expert in Tamagui."
       }
       actionLabel={
@@ -850,7 +850,7 @@ const ChatAccessCard = () => {
             ? 'Signup ➤'
             : chatAccess.data?.success
               ? 'Visit ➤'
-              : 'Error'
+              : 'Signup'
       }
       onAction={() => {
         if (chatAccess.isLoading) {
