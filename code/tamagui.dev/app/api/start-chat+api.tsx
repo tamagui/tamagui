@@ -33,13 +33,18 @@ export const POST: Endpoint = async (req) => {
     body: JSON.stringify(requestBody),
   })
 
-  if (!response.ok) {
-    return Response.json({
-      error: 'Response not ok',
-    })
-  }
-
   const data = await response.json()
+
+  if (!response.ok) {
+    return Response.json(
+      {
+        error: `Response not ok: ${JSON.stringify(data || null)}`,
+      },
+      {
+        status: 500,
+      }
+    )
+  }
 
   console.info(`Got chat access reply`, data)
 
