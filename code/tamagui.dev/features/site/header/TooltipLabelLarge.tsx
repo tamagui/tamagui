@@ -35,7 +35,7 @@ export const TooltipLabelLarge = ({
       asChild
       delayNavigate
       href={href as Href}
-      onPressIn={() => {
+      onPressOut={() => {
         purchaseModal.show = false
       }}
     >
