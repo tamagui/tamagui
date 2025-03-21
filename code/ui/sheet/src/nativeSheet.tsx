@@ -59,7 +59,12 @@ export function setupNativeSheet(
 
       return (
         <>
-          <SheetProvider {...providerProps} onlyShowFrame>
+          <SheetProvider
+            scrollEnabled
+            setHasScrollView={emptyFn}
+            {...providerProps}
+            onlyShowFrame
+          >
             <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
               <ModalSheetViewMainContent>
                 <View style={{ flex: 1 }}>{props.children}</View>
@@ -82,4 +87,8 @@ export function setupNativeSheet(
       )
     }
   }
+}
+
+const emptyFn = () => {
+  // TODO
 }

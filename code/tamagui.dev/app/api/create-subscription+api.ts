@@ -76,6 +76,8 @@ export default apiRoute(async (req) => {
         payment_settings: { save_default_payment_method: 'on_subscription' },
         expand: ['latest_invoice.payment_intent'],
         coupon: couponId || undefined,
+        default_payment_method: paymentMethodId,
+        collection_method: 'charge_automatically',
       })
 
       return Response.json({

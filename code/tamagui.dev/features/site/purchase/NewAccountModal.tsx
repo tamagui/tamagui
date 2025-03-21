@@ -308,11 +308,16 @@ const ServiceCard = ({
   description,
   actionLabel,
   onAction,
+  secondAction,
 }: {
   title: string
   description: string
   actionLabel: string
   onAction: () => void
+  secondAction?: null | {
+    label: string
+    onPress: () => void
+  }
 }) => {
   return (
     <YStack
@@ -329,9 +334,31 @@ const ServiceCard = ({
       </H3>
       <Paragraph theme="alt1">{description}</Paragraph>
 
-      <Button br="$10" als="flex-end" mt="$4" size="$3" theme="accent" onPress={onAction}>
-        {actionLabel}
-      </Button>
+      <XStack gap="$3">
+        <Button
+          br="$10"
+          als="flex-end"
+          mt="$4"
+          size="$3"
+          theme="accent"
+          onPress={onAction}
+        >
+          {actionLabel}
+        </Button>
+
+        {!!secondAction && (
+          <Button
+            br="$10"
+            als="flex-end"
+            mt="$4"
+            size="$3"
+            theme="accent"
+            onPress={secondAction.onPress}
+          >
+            {secondAction.label}
+          </Button>
+        )}
+      </XStack>
     </YStack>
   )
 }
@@ -786,7 +813,7 @@ const PlanTab = ({
             }}
           />
 
-          {/* <ChatAccessCard /> */}
+          <ChatAccessCard />
         </XStack>
       </YStack>
 
@@ -839,18 +866,16 @@ const ChatAccessCard = () => {
     <ServiceCard
       title="Chat"
       description={
-        chatAccess.data?.code === 'no_user'
-          ? 'You must sign up first on start.chat'
-          : "Talk to a chatbot that's an expert in Tamagui."
+        chatAccess.data?.success
+          ? `You're signed up! Go chat!`
+          : 'First, register. Click the user icon, signup with Github, then come back here and authorize.'
       }
       actionLabel={
         chatAccess.isLoading
           ? 'Checking access...'
-          : chatAccess.data?.code === 'no_user'
-            ? 'Signup ➤'
-            : chatAccess.data?.success
-              ? 'Visit ➤'
-              : 'Error'
+          : chatAccess.data?.success
+            ? 'Open ➤'
+            : 'First: Register ➤'
       }
       onAction={() => {
         if (chatAccess.isLoading) {
@@ -858,18 +883,21 @@ const ChatAccessCard = () => {
           return
         }
         if (chatAccess.data?.success) {
-          window.open(`https://start.chat/tamagui/jbk8gyxwogo`)
+          window.open(`https://start.chat/tamagui/q0upl90r4xd`)
           return
         }
-        if (chatAccess.data?.code === 'no_user') {
-          window.open(`https://start.chat/tamagui`)
-          return
-        }
-        if (chatAccess.error) {
-          alert(`${chatAccess.error}`)
-          return
-        }
+        window.open(`https://start.chat/tamagui`)
       }}
+      secondAction={
+        chatAccess.isLoading || chatAccess.data?.success
+          ? null
+          : {
+              label: `Second: Authorize`,
+              onPress() {
+                chatAccess.mutate()
+              },
+            }
+      }
     />
   )
 }

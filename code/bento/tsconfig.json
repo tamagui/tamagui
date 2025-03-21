@@ -6,10 +6,10 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "tamagui.config.ts",
     "theme.ts",
     "example/**/*.ts",
     "example/**/*.tsx",
+    "tamagui.config.ts",
   ],
   "exclude": [
     "types",
