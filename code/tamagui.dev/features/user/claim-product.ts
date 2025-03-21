@@ -1,78 +1,121 @@
-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
+import type { User } from '@supabase/supabase-js'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { inviteCollaboratorToRepo } from '~/features/github/helpers'
+import type { Database, Json } from '~/features/supabase/types'
+import { getUserPrivateInfo } from './helpers'
+
+export class ClaimError extends Error {}
+
+type ClaimProductArgs = {
+  request: Request
+  product: Database['public']['Tables']['products']['Row']
+  user: User
+} & (
+  | {
+      type: 'subscription'
+      subscription: Database['public']['Tables']['subscriptions']['Row']
+    }
+  | {
+      type: 'product_ownership'
+      productOwnership: Database['public']['Tables']['product_ownership']['Row']
+    }
+)
+
+export const claimTakeoutForProPlan = async (args: ClaimProductArgs) => {
+  const { product } = args
+
+  if (product.name !== 'Tamagui Pro') {
+    throw new Error('Product is not Tamagui Pro')
+  }
+
+  const metadata = {
+    claim_type: 'repo_access',
+    repository_name: 'takeout',
+  }
+
+  const claimData = await claimRepositoryAccess({ ...args, metadata })
+
+  if (claimData.data) {
+    await supabaseAdmin.from('claims').insert({
+      product_id: product.id,
+      subscription_id: args.type === 'subscription' ? args.subscription.id : null,
+      product_ownership_id:
+        args.type === 'product_ownership' ? args.productOwnership.id : null,
+      data: { claim_type: metadata.claim_type, ...claimData.data },
+    })
+  }
+
+  return claimData
+}
+
+type ClaimFunction = (
+  args: ClaimProductArgs & {
+    metadata: {
+      [key: string]: Json | undefined
+    }
+  }
+) => Promise<{
+  /**
+   * Will be shown to the user as feedback
+   */
+  message?: string
+  /**
+   * Send the user to this url
+   * This could be used for redirecting the user to a page, or to download a file
+   * Note: the redirection is handled on the frontend
+   */
+  url?: string
+  /**
+   * Will be saved to DB and be used for un-claiming - be careful with changing the shape of this
+   * If null, no record will be saved to the DB
+   */
+  data: { [key: string]: Json | undefined } | null
+}>
+
+const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request }) => {
+  console.info(`Claim: checking private users`)
+
+  const repoName = metadata.repository_name
+  if (typeof repoName !== 'string')
+    throw new Error('No repository_name is present on metadata')
+
+  console.info(`Claim: inviting collaborator`)
+
+  const permission = 'pull'
+
+  const userPrivate = await getUserPrivateInfo(user.id)
+
+  console.info(`Claim: got github username`, userPrivate.github_user_name)
+
+  if (!userPrivate.github_user_name) {
+    throw new ClaimError(
+      "We weren't able to find your GitHub username. Please logout of your account, login and try again. If this kept occurring, contact support@tamagui.dev or get help on Discord."
+    )
+  }
+
+  try {
+    await inviteCollaboratorToRepo(repoName, userPrivate.github_user_name, permission)
+
+    console.info(`Invited successfully`)
+
+    return {
+      data: {
+        user_github: {
+          id: userPrivate.id,
+          login: userPrivate.github_user_name,
+        },
+        repository_name: repoName,
+        permission,
+      },
+      message: `Successfully invited. Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation to the repository.`,
+    }
+  } catch (error) {
+    console.error(
+      `Failed to invite ${userPrivate.github_user_name} with ${permission} permission, error: ${error}`,
+      error
+    )
+    throw new ClaimError(
+      'Invitation failed. It could be that you are already invited. Check your email or GitHub notifications for the invite. Otherwise, contact support@tamagui.dev or get help on Discord.'
+    )
+  }
+}

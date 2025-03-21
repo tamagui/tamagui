@@ -1,31 +1,45 @@
-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
+import { type Href, useActiveParams, useRouter } from 'one'
+import { useEffect } from 'react'
+import { useUser } from './useUser'
+import { accountModal } from '../site/purchase/NewAccountModal'
+
+const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev', '127.0.0.1', 'localhost']
+
+export function useForwardToDashboard() {
+  const { data, isLoading } = useUser()
+  const user = data?.user
+  const query = useActiveParams<any>()
+  const router = useRouter()
+
+  useEffect(() => {
+    const main = async () => {
+      if (user && !isLoading) {
+        if (typeof query.redirect_to === 'string') {
+          const decodedUrl = decodeURIComponent(query.redirect_to)
+          if (decodedUrl.startsWith('/')) {
+            // e.g. /account/items
+            await router.replace(decodedUrl as Href)
+          } else {
+            try {
+              const url = new URL(decodedUrl)
+              if (
+                ALLOWED_REDIRECT_DOMAINS.includes(url.host) ||
+                process.env.NODE_ENV !== 'production'
+              ) {
+                await router.replace(decodedUrl as Href)
+              }
+            } catch {
+              // means the url is invalid
+              // just show the account modal
+              accountModal.show = true
+            }
+          }
+        } else {
+          // No redirect_to, show the account modal
+          accountModal.show = true
+        }
+      }
+    }
+    main()
+  }, [user, isLoading, query.redirect_to])
+}
