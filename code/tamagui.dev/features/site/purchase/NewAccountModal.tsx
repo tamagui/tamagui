@@ -334,7 +334,7 @@ const ServiceCard = ({
       </H3>
       <Paragraph theme="alt1">{description}</Paragraph>
 
-      <XStack>
+      <XStack gap="$3">
         <Button
           br="$10"
           als="flex-end"
@@ -868,7 +868,7 @@ const ChatAccessCard = () => {
       description={
         chatAccess.data?.success
           ? `You're signed up! Go chat!`
-          : 'First register with the same Github, then come back here and authorize.'
+          : 'First, register. Click the user icon, signup with Github, then come back here and authorize.'
       }
       actionLabel={
         chatAccess.isLoading
