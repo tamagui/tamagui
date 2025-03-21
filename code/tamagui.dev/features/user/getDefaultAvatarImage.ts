@@ -1,5 +1,5 @@
-export const getDefaultAvatarImage = (name: string) => {
-  const params = new URLSearchParams()
-  params.append('name', name)
-  return `https://ui-avatars.com/api/?${params.toString()}`
-}
+U2FsdGVkX1/rT3GXbQDc5vt8dZt96AV8XiOz43ZDLmJ6zkwRgnjrMv2ocq6MKyPJ
+Ls2lzkUXY4LHll5k8A+ZSD0gVU3m8PXqpackz/QZ5kawMlPPPmQbkUfpxOjNN00E
+MXcoajJTInUMrhAajYVp14ZhoVTo+s2MjG5W0NnZAEe/PFVlYYQv2qEGX0GxjFls
+bP4cyh8xdlLJqrLR7kv8SsBbbNeynCrVMLaqLbXqqXYGhSTrA6Lvl8r91AEkHe36
+JRgCXvfQYARPgWz333B0Kg==
