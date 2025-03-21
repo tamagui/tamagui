@@ -4,6 +4,31 @@
 
 This documentation covers all aspects of using Tamagui, from installation to advanced usage.
 
+## Core
+
+Core documentation covers the fundamental styling and configuration aspects of Tamagui:
+
+- [Animations](https://tamagui.dev/docs/core/animations.md): Animation system and utilities
+- [Config V4](https://tamagui.dev/docs/core/config-v4.md): Version 4 configuration guide
+- [Configuration](https://tamagui.dev/docs/core/configuration.md): General configuration options
+- [Exports](https://tamagui.dev/docs/core/exports.md): Available exports and utilities
+- [Font Language](https://tamagui.dev/docs/core/font-language.md): Font and language settings
+- [Stack and Text](https://tamagui.dev/docs/core/stack-and-text.md): Basic layout components
+- [Styled](https://tamagui.dev/docs/core/styled.md): Styled component system
+- [Theme](https://tamagui.dev/docs/core/theme.md): Theming system
+- [Tokens](https://tamagui.dev/docs/core/tokens.md): Design tokens and variables
+- [Use Media](https://tamagui.dev/docs/core/use-media.md): Media query hooks
+- [Use Theme](https://tamagui.dev/docs/core/use-theme.md): Theme hooks
+- [Variants](https://tamagui.dev/docs/core/variants.md): Component variants system
+
+## Compiler
+
+Documentation about Tamagui's optimizing compiler:
+
+- [Compiler Installation](https://tamagui.dev/docs/intro/compiler-install.md): How to install and setup the compiler
+- [Why a Compiler?](https://tamagui.dev/docs/intro/why-a-compiler.md): Benefits and reasoning behind the compiler
+- [Benchmarks](https://tamagui.dev/docs/intro/benchmarks.md): Performance benchmarks and comparisons
+
 ## Components
 
 All component documentation can be accessed at https://tamagui.dev/ui/[component-name]
