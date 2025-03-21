@@ -1,43 +1,75 @@
-U2FsdGVkX18lqFWb+l/WNvGI/ip97G8HZhjZ3Fe880pJKioPcQgHuygJv/6gDw3I
-sW8sIWU7ncOyxhLZyILfg2NaKX/vdTsSMJcNDw7D0f2vIciPUP3HcFRS4E8tkmSQ
-ExXjrzF4m1zP5ocUNvy+55iOxsCm4KM9/7nvIWBng4geVKtcwVJmryO/Ju0WOzaL
-sj/zlj+KVo5Cr6vaZMnz7SeVL7TuLvtjpbmMe+XnrRDo+KiWqYtFFr5agl/jTPPH
-2YsS3Kl3TZBmAe4IS3QEhO7FK7gsGB8r9zDlxh//3lwbktGDJmRzUlSxrO2/2YBS
-ZVL2TmD6LBbZnRM+/3eH8fzdJ1C9iWN13kzTYDsPgfnetF96I/NItMyyVVBHIC3O
-8wJnyeQb5etTEI+Q0MelD+jeiKiaGgWqw/us7q7QQKYxhgHMYLerrflUKHoVGivg
-FQmkbdYEnzUTHGyRs8oBrzShzGV2q9vZPItkNmtbKwm5vs/Wh7/OgTvdAXaJNkD4
-z5r88sqejkbK15I+5NVLOq9/Shd+oxY4ED3wbHglnhcWLGVWgFmPiGVBY6pICQZT
-+BtLN4s4uXhEhqNj0/FJlOgQSWqpzTeLCJRpUD+OjCVnsdM3ARmN6nAJIHFq2fxa
-cNgeKDZ5CKpFE5kJFO8r9xzuL0dk0TDrMdbdh8YL/v7m/Sx6sBdunIlvMm3g2CaW
-jKomiyLjZfvMZy/daE/emGEEat1DGXXFm4Sm5S7agRqIAzPxkKZs0MIZ9UxRNuQx
-rhWHuxr5aWdgLtwtwwtmYkl5nfYpiOlGNWNIq7qc7JwcNmTdrGd95J7mw+VQx02j
-VZvNs0mjTytjAJmQYgf0k6nSfCgwMQjA7MloenMPBTVQtCRPV1Qp2CYsliCTaofn
-lh+1VtT0KjAQvPky0BtpBlfBVk0ft5ATvJgih2oTt4OeaGfrpmMU2at8maBRUcxo
-O206mRtICUtKgq3+GAUqA5/dQoNbJ1oZ3jD+XCyvtziBsniz25H+LwFu9RiGaNH9
-StPZDt+YJ2n7VWjE1VnIMYDccfbc4GJuUv7fIeVTt+AxfRo5fLQ4vYwkertJzcA/
-zF7edVVPcWXnhC5rRbNRR5CTxDZJQrZhSNC0cVFGndyYEkDIZmHGQM4m1bAqQlKo
-MgeScctBuaDLLXicXgFV6Fdp3aagBk2cjSZ1nhafDS/f01rpMz1fOZ2OCOrnQzoy
-NeOHH5OYyNz41MWQ7N8yGaTWQ+0g8U+gfp3fpC2fTE5IMo0ZxgOtDFZTxIntsZVg
-l8+J4jui2H9t0enyuksSW6g4Yvmlozi9ysAr4oFh8yOr8cvRhi2hTtjwKttXlLLT
-YwLagXPxqYjyn7ragpx2HWXb7Iz0OMdAiUdhvn040GVNzFSVgGtPlk4R9epQ9Enl
-RMKAYAYruNRcz7FtxFV4fc1z2RY5pxY4Wrp24QvZr0oJ335jeakzFNRLQYlt5t6y
-c0J30kwD+zV5tnSEnI50gsqXvIkozlRax6kdscMYdVqzaeDBwn1j+my2OQfLhEpx
-H51tv712uQ2cCOdCLGWt35KsoLIvw3b0m4cQ/2nfw5JSjAKlbZmw1zdwW5Kdhpl3
-ThPS1GdU9CIxdqCrwYU52r9BfLsG80pQz/pX0r//ULu+ZxbQeGmRx1Kbbor9nK/v
-kv3xiq3ZPimDBx2qndnjqzHjTGLIcDdg3G92tDeamqhHyaP3DvWBWSmZa4zmhFRZ
-rNpK+0MDq3WYoqY9WwbEe1QqzfSye+U3UI6LrJq4CFltBo5B8QLbl/hSdwAcoKjo
-4bYeuRxkjBk3/cevseoVrrZ9hh2+7ft0U5gRhLXlmDbk4CTMQlYczDQLIV0RO+UZ
-Zi6LYRDO+0Ck2WvUvutqCXBBJYmxYz+qCFSSP4OUlszx30OdquhlQQ6yqIuiQnWE
-MokEV3GSLeKoWpZY7hvqBFWjffMBwtFZ3z7cATb0Kz2+L4tkUwQmOYdS0nd0lu5V
-qfp/679n4oGwo3oXSDTU0sn59teRT8KoZZUnimZtpagdjFZj3aTKFj9x/lQEyi2l
-zrk8IzxlW6aBdNoobYwyf19jUuMF7HnHOuYootfJsAIqeTW+bn1HoKBGAMr+ZYiv
-BQH9m2wMFjua5tncGTX2BbPQpkyj6kiVNm7/hrwDn4UAviu8bkNZVSfsWUH1L0vF
-B/osLa2PC5cnjwBV1g+KbHgxTdr59moOAQ649T9cx43fb8Lsks6HnhTPKNSOd3BL
-H1U11SOX75FXtowatOweTku9qaV9pVeiFlm07DMMOQqqPziTFWQuyVBcQA9UwXsD
-5GGMsgcTD0qv3XwFIO9mv44bPFlzsh07IIAbEF/Yx5XuhdSDeU4HzJiMpFCshWHf
-PUs5hZX8nRN1pW1vgPWU3w/v/f6KOvGg3pTOTJnaLFK2HzrzBp+I2pVDbTmrVjbS
-YIoaSpFLnpyON0dBQ7RT/zOSN8nOIamRPRXYPfQMhJZbraCPGXPOm2mcSbJ5Q3y8
-23+MDBm8o5LOzNNWu6ecB0w9tZ6TS0bDM/8ni8RNuzL1KkKLziVfo66sWS7bODS6
-3OttuSEgC7ZmP8MrIPkIcX/qKsdyxhQzD+PFCdwlkNqDatQD3CLrWAX1gCHTvtex
-K7VscVO3d9lSDMKM1E+Qeg/zyFnvYJs5hejNZytYQekM3++EZrz0HxE58gcs4K5I
-/lBRFUat4DjIl2Qf5QjpXyD4Q4za4uePoAAdnQGk9xU=
+import { useEffect } from 'react'
+import useSWR, { useSWRConfig } from 'swr'
+import { Spinner, YStack } from 'tamagui'
+import { useRouter } from 'one'
+
+import { useOfflineMode } from '~/hooks/useOfflineMode'
+import type { UserContextType } from '../auth/types'
+import { userSubscriptionStatus, SubscriptionStatus } from './subscription/eligibility'
+
+export const useUser = () => {
+  const { mutate } = useSWRConfig()
+  const response = useSWR<UserContextType | null>('user', {
+    fetcher: async () => {
+      if (typeof window === 'undefined') {
+        return null
+      }
+      const res = await fetch('/api/user')
+      if (res.ok) {
+        return (await res.json()) as UserContextType
+      }
+
+      // in the case where you are unauthorized lets clear all cookies
+      // this is because we had a bad version of supabase ssr that caused bad cookies
+      // and users with those cookies cant sign in
+      deleteSupabaseCookies()
+
+      return null
+    },
+    refreshInterval: 0,
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    refreshWhenHidden: false,
+  })
+  return {
+    ...response,
+    subscriptionStatus: userSubscriptionStatus(response.data ?? undefined),
+    refresh() {
+      mutate('user')
+    },
+  }
+}
+
+function deleteSupabaseCookies() {
+  document.cookie.split(';').forEach((cookie) => {
+    const [name] = cookie.split('=')
+    if (name.startsWith('sb-')) {
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    }
+  })
+}
+
+export const UserGuard = ({ children }: { children: React.ReactNode }) => {
+  const { data, isLoading } = useUser()
+  const router = useRouter()
+  const isOffline = useOfflineMode()
+  const user = data?.user
+
+  useEffect(() => {
+    if (isOffline) {
+      return
+    }
+    if (!user && !isLoading) {
+      router.push(`/login`)
+    }
+  }, [isOffline, user, isLoading, router])
+
+  if (!user)
+    return (
+      <YStack ai="center" flex={1} jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
+
+  return <>{children}</>
+}

@@ -1,139 +1,225 @@
-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
+import type { Database } from '~/features/supabase/types'
+import { getSingle } from '~/helpers/getSingle'
+import { supabaseAdmin } from '../auth/supabaseAdmin'
+import type { SupabaseClient, User } from '@supabase/supabase-js'
+import {
+  whitelistGithubUsernames,
+  whitelistBentoUsernames,
+} from '~/features/github/helpers'
+import { tiersPriority } from '../stripe/tiers'
+import { getArray } from '~/helpers/getArray'
+import { ThemeSuiteSchema } from '../studio/theme/getTheme'
+import type { ThemeSuiteItemData } from '../studio/theme/types'
+export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
+  const result = await supabase.from('users').select('*').single()
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
+  return result.data
+}
+
+export const getUserPrivateInfo = async (userId: string) => {
+  const result = await supabaseAdmin
+    .from('users_private')
+    .select('*')
+    .eq('id', userId)
+    .limit(1)
+
+  if (result.error) {
+    throw new Error(`Error getting user private info: ${result.error.message}`)
+  }
+
+  return result.data?.[0] || {}
+}
+
+export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
+  const result = await supabase.from('teams').select('*')
+  if (result.error) throw new Error(result.error.message)
+  return result.data
+}
+
+export const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
+  const result = await supabase
+    .from('subscriptions')
+    .select('*, subscription_items(*, prices(*, products(*)), app_installations(*))')
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
+  return result.data.map((sub) => ({
+    ...sub,
+    subscription_items: getArray(sub.subscription_items).map(({ prices, ...item }) => {
+      const price = getSingle(prices)
+
+      return {
+        ...item,
+        price: { ...price, product: getSingle(price?.products) },
+      }
+    }),
+  }))
+}
+
+export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
+  const result = await supabase
+    .from('product_ownership')
+    .select('*, prices(*, products(*))')
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
+  return result.data.map(({ prices, ...productOwnership }) => {
+    const price = getSingle(prices)
+    return {
+      ...productOwnership,
+      price: { ...price, product: getSingle(price?.products) },
+    }
+  })
+}
+
+export function getPersonalTeam(
+  teams: Awaited<ReturnType<typeof getUserTeams>>,
+  userId: string
+) {
+  return getSingle(teams?.filter((team) => team.is_personal && team.owner_id === userId))
+}
+
+export function getOrgTeams(teams: Awaited<ReturnType<typeof getUserTeams>>) {
+  return getArray(teams?.filter((team) => !team.is_personal) ?? [])
+}
+
+export function getMainTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
+  const sortedTeams = teams
+    ?.filter((t) => t.is_active)
+    .sort(
+      (a, b) =>
+        tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
+    )
+  return sortedTeams?.[0]
+}
+
+/**
+ * @deprecated
+ * TODO: we only have to check if the user has a subscription to the Pro plan.
+ * We can remove the check for owned products and the subscription_items.
+ */
+function checkAccessToProduct(
+  productSlug: string,
+  subscriptions: Awaited<ReturnType<typeof getSubscriptions>>,
+  ownedProducts: Awaited<ReturnType<typeof getOwnedProducts>>
+) {
+  const hasActiveSubscription = subscriptions.some(
+    (subscription) =>
+      (subscription.status === 'trialing' || subscription.status === 'active') &&
+      (subscription.subscription_items.some(
+        (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
+      ) ||
+        subscription.subscription_items.some(
+          (item) => item.price.product?.name === 'Tamagui Pro'
+        ))
+  )
+  if (hasActiveSubscription) {
+    return {
+      access: true,
+      type: 'subscription' as const,
+    }
+  }
+  const hasLifetimeOwnership = ownedProducts.some(
+    (ownedProduct) =>
+      getSingle(ownedProduct.price?.product?.metadata?.['slug']) === productSlug
+  )
+  if (hasLifetimeOwnership) {
+    return {
+      access: true,
+      type: 'lifetime' as const,
+    }
+  }
+  return {
+    access: false,
+  }
+}
+
+/**
+ * @deprecated
+ * TODO: we only have to check if the user has a subscription to the Pro plan.
+ * We can remove the check for owned products and the subscription_items.
+ * However, for the backwards compatibility, we keep the function.
+ */
+export async function getUserAccessInfo(
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) {
+  const [subscriptions, ownedProducts] = await Promise.all([
+    getSubscriptions(supabase),
+    getOwnedProducts(supabase),
+  ])
+
+  const bentoAccessInfo = checkAccessToProduct('bento', subscriptions, ownedProducts)
+  const takeoutAccessInfo = checkAccessToProduct(
+    'universal-starter',
+    subscriptions,
+    ownedProducts
+  )
+
+  const teamsResult = await supabase.from('teams').select('id, name, is_active')
+  if (teamsResult.error) {
+    throw teamsResult.error
+  }
+  const teams = getArray(teamsResult.data)
+  const teamsWithAccess = teams.filter(
+    (team) =>
+      team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
+  )
+  const hasTeamAccess = teamsWithAccess.length > 0
+
+  const isBentoWhitelisted = teams.some((team) =>
+    whitelistBentoUsernames.has(team.name || '')
+  )
+
+  const hasStudioAccess =
+    takeoutAccessInfo.access || // if the user has purchased takeout, we give them studio access
+    hasTeamAccess // if the user is a member of at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give them studio access
+
+  return {
+    hasBentoAccess: isBentoWhitelisted || bentoAccessInfo.access,
+    hasTakeoutAccess: takeoutAccessInfo.access,
+    hasStudioAccess,
+    teamsWithAccess,
+  }
+}
+
+/**
+ * Retrieve the theme histories that the user has previously created
+ *
+ * @param supabase - Supabase client instance
+ * @param user - Current user object
+ */
+export async function getUserThemeHistories(
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) {
+  try {
+    if (!user) return []
+    // Get last few theme histories
+    const { data, error } = await supabase
+      .from('theme_histories')
+      .select('theme_data, search_query, created_at, id')
+      .eq('user_id', user.id)
+      .order('updated_at', { ascending: false })
+      .limit(15)
+
+    if (error) {
+      return []
+    }
+
+    return data.map((d) => ({
+      ...d,
+      theme_data: ThemeSuiteSchema.parse(d.theme_data) as ThemeSuiteItemData,
+    }))
+  } catch {
+    return []
+  }
+}
