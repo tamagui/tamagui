@@ -234,6 +234,7 @@ const PaymentForm = ({
           redirect: 'if_required',
           confirmParams: {
             payment_method: paymentMethod.id,
+            setup_future_usage: 'off_session',
           },
           clientSecret: data.clientSecret,
         })
@@ -247,6 +248,18 @@ const PaymentForm = ({
 
       // If Chat or Support is selected, create additional subscription
       if (selectedPrices.chatSupport || selectedPrices.supportTier > 0) {
+        // Submit the form first
+        const { error: submitError } = await elements.submit()
+        if (submitError) {
+          setError(submitError)
+          onError(submitError)
+          return
+        }
+        if (submitError) {
+          setError(submitError)
+          onError(submitError)
+          return
+        }
         const upgradeResponse = await fetch('/api/upgrade-subscription', {
           method: 'POST',
           headers: {
@@ -288,6 +301,7 @@ const PaymentForm = ({
           redirect: 'if_required',
           confirmParams: {
             payment_method: paymentMethod.id,
+            setup_future_usage: 'off_session',
           },
           clientSecret: upgradeData.clientSecret,
         })

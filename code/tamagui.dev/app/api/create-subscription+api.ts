@@ -2,6 +2,7 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
+import type Stripe from 'stripe'
 
 // Price IDs for Pro plan
 const PRO_SUBSCRIPTION_PRICE_ID = 'price_1QthHSFQGtHoG6xcDOEuFsrW' // $240/year with auto-renew
@@ -64,7 +65,7 @@ export default apiRoute(async (req) => {
         id: invoice.id,
         status: invoice.status,
         // We don't actually need this for one-time payments, but let's keep it for consistency
-        clientSecret: (paidInvoice.payment_intent as any).client_secret,
+        // clientSecret: await getClientSecret(paidInvoice),
       })
     } else {
       // Create subscription
@@ -79,7 +80,7 @@ export default apiRoute(async (req) => {
 
       return Response.json({
         id: subscription.id,
-        clientSecret: (subscription.latest_invoice as any).payment_intent.client_secret,
+        clientSecret: await getClientSecret(subscription),
       })
     }
   } catch (error) {
@@ -87,3 +88,29 @@ export default apiRoute(async (req) => {
     return Response.json({ error: 'Failed to create subscription' }, { status: 500 })
   }
 })
+
+// Helper function to get client secret from subscription or invoice
+async function getClientSecret(
+  subscription: Stripe.Subscription | Stripe.Invoice
+): Promise<string | null> {
+  // First try to get from the expanded payment_intent
+  let paymentIntent = (
+    (subscription as Stripe.Subscription).latest_invoice as Stripe.Invoice
+  )?.payment_intent
+
+  if (paymentIntent && (paymentIntent as Stripe.PaymentIntent).client_secret) {
+    return (paymentIntent as Stripe.PaymentIntent).client_secret
+  }
+
+  // If not found, retrieve the invoice and try again
+  const invoice = await stripe.invoices.retrieve(
+    ((subscription as Stripe.Subscription).latest_invoice as Stripe.Invoice).id,
+    { expand: ['payment_intent'] }
+  )
+  if (typeof invoice.payment_intent === 'string') {
+    paymentIntent = await stripe.paymentIntents.retrieve(invoice.payment_intent)
+  } else {
+    paymentIntent = invoice.payment_intent as Stripe.PaymentIntent
+  }
+  return paymentIntent?.client_secret || null
+}
