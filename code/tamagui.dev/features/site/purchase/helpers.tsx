@@ -15,8 +15,6 @@ import {
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
-import { usePathname } from 'one'
-
 const ua = (() => {
   if (typeof window === 'undefined') return
   return window.navigator.userAgent

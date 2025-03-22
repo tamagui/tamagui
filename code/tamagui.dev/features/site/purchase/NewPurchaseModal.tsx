@@ -20,6 +20,7 @@ import {
   XStack,
   YStack,
   Text,
+  ScrollView,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { Select } from '../../../components/Select'
@@ -187,8 +188,8 @@ const PurchaseModalContents = () => {
   const tabContents = {
     purchase: () => {
       return (
-        <YStack gap="$4" pb="$4">
-          <YStack $gtMd={{ gap: '$7' }} gap="$5">
+        <YStack h="100%" bg="red" overflow="scroll" gap="$4" pb="$4">
+          <YStack $gtMd={{ gap: '$6' }} gap="$5">
             <BigP>
               We've put together tools that make starting and building a universal app as
               good as it gets.
@@ -219,6 +220,7 @@ const PurchaseModalContents = () => {
         setSupportTier={setSupportTier}
       />
     ),
+
     faq: FaqTabContent,
   }
 
@@ -606,7 +608,7 @@ const SupportTabContent = ({
         are answered, and Tamagui stays healthy and up to date.
       </BigP>
 
-      <YStack gap="$6" p="$4">
+      <YStack gap="$6">
         <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="chat-support">
