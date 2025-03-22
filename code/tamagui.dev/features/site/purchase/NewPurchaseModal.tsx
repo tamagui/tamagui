@@ -4,13 +4,11 @@ import { createStore, createUseStore } from '@tamagui/use-store'
 import { startTransition, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
-  AnimatePresence,
   Button,
   Dialog,
   H3,
   Label,
   Paragraph,
-  ScrollView,
   Separator,
   Sheet,
   SizableText,
@@ -190,7 +188,7 @@ const PurchaseModalContents = () => {
     purchase: () => {
       return (
         <YStack gap="$4" pb="$4">
-          <YStack gap="$7">
+          <YStack $gtMd={{ gap: '$7' }} gap="$5">
             <BigP>
               We've put together tools that make starting and building a universal app as
               good as it gets.
@@ -201,7 +199,7 @@ const PurchaseModalContents = () => {
             </XStack>
 
             <YStack gap="$3">
-              <P color="$color10">
+              <P color="$color10" size="$4" $gtXs={{ size: '$8' }}>
                 For a one year term you get access to the private Takeout Github repo,
                 Bento components
                 {disableAutoRenew ? `` : `, and the private community chat room`}. You get
@@ -212,6 +210,7 @@ const PurchaseModalContents = () => {
         </YStack>
       )
     },
+
     support: () => (
       <SupportTabContent
         chatSupport={chatSupport}
@@ -236,11 +235,8 @@ const PurchaseModalContents = () => {
           }
         }}
       >
-        <ProPoliciesModal />
-        <ProAgreementModal />
-
         <Dialog.Adapt when="sm">
-          <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal animation="medium">
             <Sheet.Frame bg="$color1" padding={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
@@ -286,62 +282,72 @@ const PurchaseModalContents = () => {
             maw={900}
             p={0}
           >
-            <Tabs
-              orientation="horizontal"
-              flexDirection="column"
-              defaultValue="purchase"
-              size="$6"
-              value={currentTab}
-              onValueChange={changeTab}
-            >
-              <Tabs.List disablePassBorderRadius>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'purchase'} value="purchase">
-                    Pro
-                  </Tab>
-                </YStack>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'support'} value="support">
-                    Support
-                  </Tab>
-                </YStack>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'faq'} value="faq" end>
-                    FAQ
-                  </Tab>
-                </YStack>
-              </Tabs.List>
+            <YStack h="100%">
+              <Tabs
+                orientation="horizontal"
+                flexDirection="column"
+                defaultValue="purchase"
+                size="$6"
+                value={currentTab}
+                onValueChange={changeTab}
+              >
+                <Tabs.List disablePassBorderRadius>
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'purchase'} value="purchase">
+                      Pro
+                    </Tab>
+                  </YStack>
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'support'} value="support">
+                      Support
+                    </Tab>
+                  </YStack>
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'faq'} value="faq" end>
+                      FAQ
+                    </Tab>
+                  </YStack>
+                </Tabs.List>
 
-              <YStack f={1} group="takeoutBody">
-                <AnimatePresence exitBeforeEnter initial={false} custom={{ direction }}>
+                <YStack group="takeoutBody">
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
                       value={currentTab}
                       forceMount
-                      flex={1}
+                      // flex={1}
                       minHeight={400}
-                      height="calc(min(100vh - 280px, 620px))"
+                      $gtMd={{
+                        height: 'calc(min(100vh - 280px, 620px))',
+                      }}
                     >
-                      <ScrollView>
-                        <YStack p="$8" gap="$6">
-                          {tabContents[currentTab]()}
-                        </YStack>
-                      </ScrollView>
+                      <YStack
+                        $gtMd={{
+                          p: '$8',
+                          gap: '$6',
+                        }}
+                        p="$4"
+                        gap="$4"
+                      >
+                        {tabContents[currentTab]()}
+                      </YStack>
                     </Tabs.Content>
                   </AnimatedYStack>
-                </AnimatePresence>
-              </YStack>
+                </YStack>
 
-              <Separator />
-              <YStack p="$6" gap="$2" bg="$color1">
+                <Separator />
+              </Tabs>
+
+              {/* Bottom */}
+              <YStack p="$4" $gtXs={{ p: '$6' }} gap="$2" bg="$color1">
                 <YStack
                   jc="center"
                   ai="center"
-                  gap="$6"
+                  gap="$4"
                   $gtXs={{
                     jc: 'space-between',
                     ai: 'flex-start',
                     flexDirection: 'row',
+                    gap: '$6',
                   }}
                 >
                   <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
@@ -451,7 +457,7 @@ const PurchaseModalContents = () => {
                   </YStack>
                 </YStack>
               </YStack>
-            </Tabs>
+            </YStack>
             <Unspaced>
               <Dialog.Close asChild>
                 <Button
@@ -467,6 +473,11 @@ const PurchaseModalContents = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog>
+
+      <ProPoliciesModal />
+
+      <ProAgreementModal />
+
       <StripePaymentModal
         yearlyTotal={yearlyTotal}
         monthlyTotal={monthlyTotal}
@@ -720,7 +731,8 @@ function Tab({
       />
       <Paragraph
         ff="$mono"
-        size="$7"
+        size="$6"
+        $gtMd={{ size: '$7' }}
         color={isActive ? '$color12' : '$color10'}
         fow={isActive ? 'bold' : 'normal'}
       >
