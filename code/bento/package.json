@@ -83,6 +83,7 @@
     "expo": "^52.0.23",
     "expo-document-picker": "~13.0.1",
     "expo-image-picker": "~16.0.3",
+    "expo-linear-gradient": "~14.0.1",
     "foxact": "^0.2.33",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",

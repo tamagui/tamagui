@@ -45,7 +45,7 @@ export const PromoCards = ({
         <PromoCardTheme />
       </Card>
 
-      {/* <Card>
+      <Card>
         <TooltipLabelLarge
           href="/chat"
           icon={
@@ -56,7 +56,7 @@ export const PromoCards = ({
           title="Chat"
           subtitle="Our beta chatbot for answers and generation."
         />
-      </Card> */}
+      </Card>
 
       {!less && (
         <>

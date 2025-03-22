@@ -1,4 +1,5 @@
 import { LogOut, Search, X } from '@tamagui/lucide-icons'
+import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import type {
   APIGuildMember,
@@ -11,6 +12,7 @@ import useSWRMutation from 'swr/mutation'
 import {
   Avatar,
   Button,
+  Configuration,
   Dialog,
   Fieldset,
   Form,
@@ -30,9 +32,9 @@ import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
+import { Link } from '../../../components/Link'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
-import { Link } from '../../../components/Link'
 
 class AccountModal {
   show = false
@@ -95,13 +97,16 @@ export const NewAccountModal = () => {
       </Dialog.Adapt>
 
       <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Configuration animationDriver={animationsCSS}>
+          <Dialog.Overlay
+            key="overlay"
+            animation="medium"
+            bg="$shadow3"
+            backdropFilter="blur(20px)"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Configuration>
 
         <Dialog.Content
           bordered
@@ -303,11 +308,16 @@ const ServiceCard = ({
   description,
   actionLabel,
   onAction,
+  secondAction,
 }: {
   title: string
   description: string
   actionLabel: string
   onAction: () => void
+  secondAction?: null | {
+    label: string
+    onPress: () => void
+  }
 }) => {
   return (
     <YStack
@@ -324,9 +334,31 @@ const ServiceCard = ({
       </H3>
       <Paragraph theme="alt1">{description}</Paragraph>
 
-      <Button br="$10" als="flex-end" mt="$4" size="$3" theme="accent" onPress={onAction}>
-        {actionLabel}
-      </Button>
+      <XStack gap="$3">
+        <Button
+          br="$10"
+          als="flex-end"
+          mt="$4"
+          size="$3"
+          theme="accent"
+          onPress={onAction}
+        >
+          {actionLabel}
+        </Button>
+
+        {!!secondAction && (
+          <Button
+            br="$10"
+            als="flex-end"
+            mt="$4"
+            size="$3"
+            theme="accent"
+            onPress={secondAction.onPress}
+          >
+            {secondAction.label}
+          </Button>
+        )}
+      </XStack>
     </YStack>
   )
 }
@@ -781,7 +813,7 @@ const PlanTab = ({
             }}
           />
 
-          {/* <ChatAccessCard /> */}
+          <ChatAccessCard />
         </XStack>
       </YStack>
 
@@ -834,18 +866,16 @@ const ChatAccessCard = () => {
     <ServiceCard
       title="Chat"
       description={
-        chatAccess.data?.code === 'no_user'
-          ? 'You must sign up first on start.chat'
-          : "Talk to a chatbot that's an expert in Tamagui."
+        chatAccess.data?.success
+          ? `You're signed up! Go chat!`
+          : 'First, register. Click the user icon, signup with Github, then come back here and authorize.'
       }
       actionLabel={
         chatAccess.isLoading
           ? 'Checking access...'
-          : chatAccess.data?.code === 'no_user'
-            ? 'Signup ➤'
-            : chatAccess.data?.success
-              ? 'Visit ➤'
-              : 'Error'
+          : chatAccess.data?.success
+            ? 'Open ➤'
+            : 'First: Register ➤'
       }
       onAction={() => {
         if (chatAccess.isLoading) {
@@ -853,18 +883,21 @@ const ChatAccessCard = () => {
           return
         }
         if (chatAccess.data?.success) {
-          window.open(`https://start.chat/tamagui/jbk8gyxwogo`)
+          window.open(`https://start.chat/tamagui/q0upl90r4xd`)
           return
         }
-        if (chatAccess.data?.code === 'no_user') {
-          window.open(`https://start.chat/tamagui`)
-          return
-        }
-        if (chatAccess.error) {
-          alert(`${chatAccess.error}`)
-          return
-        }
+        window.open(`https://start.chat/tamagui`)
       }}
+      secondAction={
+        chatAccess.isLoading || chatAccess.data?.success
+          ? null
+          : {
+              label: `Second: Authorize`,
+              onPress() {
+                chatAccess.mutate()
+              },
+            }
+      }
     />
   )
 }
@@ -872,32 +905,10 @@ const ChatAccessCard = () => {
 const UpgradeTab = ({
   subscription,
 }: { subscription?: NonNullable<UserContextType['subscriptions']>[number] }) => {
-  const getCurrentSupportTier = () => {
-    if (!subscription) {
-      return '0'
-    }
+  const { subscriptionStatus } = useUser()
 
-    const supportItem = subscription.subscription_items?.find((item) => {
-      return item.price?.product?.name === 'Tamagui Support'
-    })
-
-    if (!supportItem) {
-      return '0'
-    }
-
-    // Calculate tier from unit_amount (80000 cents = $800 = Tier 1)
-    const unitAmount = supportItem.price?.unit_amount
-    if (!unitAmount) {
-      return '0'
-    }
-
-    // Convert cents to dollars and divide by 800 to get tier
-    const tier = Math.floor(unitAmount / 80000)
-    return tier.toString()
-  }
-
-  const [supportTier, setSupportTier] = useState(getCurrentSupportTier())
-  const currentTier = getCurrentSupportTier()
+  const [supportTier, setSupportTier] = useState(subscriptionStatus.supportTier)
+  const currentTier = subscriptionStatus.supportTier
 
   const getActionLabel = () => {
     if (supportTier === currentTier) return 'Current Plan'
@@ -907,9 +918,6 @@ const UpgradeTab = ({
   const handleUpgrade = () => {
     // Calculate the monthly total based on support tier
     const monthlyTotal = Number(supportTier) * 800
-
-    // Get the support price ID for the selected tier
-    const supportPriceId = `price_1QrulKFQGtHoG6xcDs9OYTFu`
 
     // Set payment modal properties
     paymentModal.show = true
@@ -928,9 +936,9 @@ const UpgradeTab = ({
   return (
     <YStack gap="$6">
       <SupportTabContent
-        currentTier={currentTier}
-        supportTier={supportTier}
-        setSupportTier={setSupportTier}
+        currentTier={currentTier.toString()}
+        supportTier={supportTier.toString()}
+        setSupportTier={(value) => setSupportTier(Number(value))}
       />
 
       <Button

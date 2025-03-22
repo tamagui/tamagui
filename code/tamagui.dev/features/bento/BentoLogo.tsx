@@ -8,11 +8,11 @@ export const BentoLogo = ({
 }: { children?: string; scale?: number; noShadow?: boolean; backgrounded?: boolean }) => {
   return (
     <Theme name="accent">
-      <YStack pe="none" scale={scale} bg="$color2">
+      <YStack pe="none" scale={scale}>
         <H1
           componentName="span"
           ff="$mono"
-          color="$color12"
+          color="$color5"
           maw="100%"
           f={1}
           lh={120}

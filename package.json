@@ -148,7 +148,7 @@
     "prompts": "2.1.0",
     "react-native-screens": "~4.4.0",
     "turbo": "^2.1.3",
-    "typescript": "^5.7.2",
+    "typescript": "^5.8.2",
     "ultra-runner": "^3.10.5",
     "zx": "^7.2.3"
   }
