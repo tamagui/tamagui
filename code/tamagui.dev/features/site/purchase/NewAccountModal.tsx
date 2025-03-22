@@ -905,32 +905,10 @@ const ChatAccessCard = () => {
 const UpgradeTab = ({
   subscription,
 }: { subscription?: NonNullable<UserContextType['subscriptions']>[number] }) => {
-  const getCurrentSupportTier = () => {
-    if (!subscription) {
-      return '0'
-    }
+  const { subscriptionStatus } = useUser()
 
-    const supportItem = subscription.subscription_items?.find((item) => {
-      return item.price?.product?.name === 'Tamagui Support'
-    })
-
-    if (!supportItem) {
-      return '0'
-    }
-
-    // Calculate tier from unit_amount (80000 cents = $800 = Tier 1)
-    const unitAmount = supportItem.price?.unit_amount
-    if (!unitAmount) {
-      return '0'
-    }
-
-    // Convert cents to dollars and divide by 800 to get tier
-    const tier = Math.floor(unitAmount / 80000)
-    return tier.toString()
-  }
-
-  const [supportTier, setSupportTier] = useState(getCurrentSupportTier())
-  const currentTier = getCurrentSupportTier()
+  const [supportTier, setSupportTier] = useState(subscriptionStatus.supportTier)
+  const currentTier = subscriptionStatus.supportTier
 
   const getActionLabel = () => {
     if (supportTier === currentTier) return 'Current Plan'
@@ -940,9 +918,6 @@ const UpgradeTab = ({
   const handleUpgrade = () => {
     // Calculate the monthly total based on support tier
     const monthlyTotal = Number(supportTier) * 800
-
-    // Get the support price ID for the selected tier
-    const supportPriceId = `price_1QrulKFQGtHoG6xcDs9OYTFu`
 
     // Set payment modal properties
     paymentModal.show = true
@@ -961,9 +936,9 @@ const UpgradeTab = ({
   return (
     <YStack gap="$6">
       <SupportTabContent
-        currentTier={currentTier}
-        supportTier={supportTier}
-        setSupportTier={setSupportTier}
+        currentTier={currentTier.toString()}
+        supportTier={supportTier.toString()}
+        setSupportTier={(value) => setSupportTier(Number(value))}
       />
 
       <Button
