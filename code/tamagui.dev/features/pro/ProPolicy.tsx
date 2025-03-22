@@ -2,7 +2,7 @@ import { H1, H3, Paragraph, Separator, YStack } from 'tamagui'
 
 export const ProPolicy = () => {
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="$4">
       <H1 $sm={{ size: '$8' }}>Fulfillment Policies</H1>
 
       <H3>Delivery</H3>
