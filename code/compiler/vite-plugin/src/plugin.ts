@@ -1,15 +1,11 @@
 import type { TamaguiOptions } from '@tamagui/static'
+import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 import { tamaguiExtractPlugin } from './extract'
 import { Static, loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
-import { fileURLToPath } from 'url'
 
-const safeFileURLToPath = (fileURL?: string) => {
-  if (!fileURL) return undefined;
-  return fileURLToPath(fileURL);
-};
-const resolve = (name: string) => safeFileURLToPath(import.meta.resolve?.(name));
+const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
 
 export function tamaguiPlugin({
   optimize,
