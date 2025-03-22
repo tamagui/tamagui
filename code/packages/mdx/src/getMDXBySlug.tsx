@@ -15,19 +15,34 @@ export async function getMDXBySlug(
   basePath: string,
   slug: string
 ): Promise<{ frontmatter: Frontmatter; code: string }> {
-  let mdxPath = slug
+  if (!basePath || typeof basePath !== 'string') {
+    throw new Error(`Invalid basePath: ${basePath}`)
+  }
 
-  if (!slug) {
-    throw new Error(`No slug: ${slug} ${[...arguments].join(',')}`)
+  let mdxPath = slug
+  if (!slug || typeof slug !== 'string') {
+    if (Array.isArray(slug)) {
+      mdxPath = slug[0]
+    } else {
+      throw new Error(`Invalid slug: ${slug}`)
+    }
   }
 
   // if no version given, find it
   if (!slug.includes('.') && basePath.includes('components')) {
     const versions = getAllVersionsFromPath(path.join(basePath, slug))
+    if (!versions.length) {
+      throw new Error(`No versions found for: ${slug} in ${basePath}`)
+    }
     mdxPath += `/${versions[0]}`
   }
 
   const filePath = path.join(basePath, `${mdxPath}.mdx`)
+
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`File not found: ${filePath}`)
+  }
+
   const source = fs.readFileSync(filePath, 'utf8')
   const { frontmatter, code } = await getMDX(source)
   return {

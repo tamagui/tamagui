@@ -38,11 +38,12 @@ export async function generateStaticParams() {
 export async function loader(props: LoaderProps) {
   const { getMDXBySlug, getAllVersionsFromPath } = await import('@tamagui/mdx-2')
 
-  const { frontmatter, code } = await getMDXBySlug(
-    'data/docs/components',
-    props.params.subpath
-  )
-  const [componentName, componentVersion] = props.params.subpath.split('/')
+  const subpath = Array.isArray(props.params.subpath)
+    ? props.params.subpath[0]
+    : props.params.subpath
+
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath)
+  const [componentName, componentVersion] = subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
   return {
     frontmatter: {
