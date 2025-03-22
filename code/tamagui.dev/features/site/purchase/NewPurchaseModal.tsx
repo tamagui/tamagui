@@ -20,7 +20,7 @@ import {
   XStack,
   YStack,
   Text,
-  ScrollView,
+  useMedia,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { Select } from '../../../components/Select'
@@ -29,7 +29,6 @@ import { PromoCards } from '../header/PromoCards'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { paymentModal, StripePaymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
-import { useProducts } from './useProducts'
 import { BigP, P } from './BigP'
 import { useTakeoutStore } from './useTakeoutStore'
 import { ProPoliciesModal } from './PoliciesModal'
@@ -94,7 +93,8 @@ const PurchaseModalContents = () => {
     chatSupport: false,
     supportTier: 0,
   })
-  const { data: products } = useProducts()
+  const { gtMd } = useMedia()
+
   const { data: userData } = useUser()
   const { parityDeals } = useParityDiscount()
 
@@ -188,7 +188,7 @@ const PurchaseModalContents = () => {
   const tabContents = {
     purchase: () => {
       return (
-        <YStack h="100%" bg="red" overflow="scroll" gap="$4" pb="$4">
+        <>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
             <BigP>
               We've put together tools that make starting and building a universal app as
@@ -208,7 +208,7 @@ const PurchaseModalContents = () => {
               </P>
             </YStack>
           </YStack>
-        </YStack>
+        </>
       )
     },
 
@@ -238,7 +238,7 @@ const PurchaseModalContents = () => {
         }}
       >
         <Dialog.Adapt when="sm">
-          <Sheet modal animation="medium">
+          <Sheet modal dismissOnSnapToBottom={false} animation="medium">
             <Sheet.Frame bg="$color1" padding={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
@@ -316,7 +316,7 @@ const PurchaseModalContents = () => {
                     <Tabs.Content
                       value={currentTab}
                       forceMount
-                      // flex={1}
+                      flex={1}
                       minHeight={400}
                       $gtMd={{
                         height: 'calc(min(100vh - 280px, 620px))',
@@ -329,6 +329,14 @@ const PurchaseModalContents = () => {
                         }}
                         p="$4"
                         gap="$4"
+                        h="100%"
+                        // scrollbarWidth='none'
+                        // overflowX="scroll"
+                        {...(gtMd && {
+                          style: {
+                            overflowY: 'scroll',
+                          },
+                        })}
                       >
                         {tabContents[currentTab]()}
                       </YStack>

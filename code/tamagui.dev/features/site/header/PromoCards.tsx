@@ -6,10 +6,7 @@ import { TooltipLabelLarge } from './TooltipLabelLarge'
 
 const Card = styled(YStack, {
   maxHeight: 120,
-  // maw: '90%',
-  // $gtXs: {
   maxWidth: 'calc(min(100%, 257px))',
-  // },
   flex: 1,
   br: '$4',
   borderWidth: 0.5,
