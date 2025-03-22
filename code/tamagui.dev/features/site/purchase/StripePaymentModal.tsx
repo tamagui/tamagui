@@ -51,6 +51,8 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { useLoginLink } from '../../auth/useLoginLink'
+import { Sheet } from 'tamagui'
+import { Unspaced } from 'tamagui'
 
 const couponSchema = z.object({
   id: z.string(),
@@ -711,6 +713,20 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         store.show = val
       }}
     >
+      <Dialog.Adapt when="sm">
+        <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet.Frame bg="$color1" jc="center" ai="center" padding={0} gap="$4">
+            <Dialog.Adapt.Contents />
+          </Sheet.Frame>
+          <Sheet.Overlay
+            bg="$shadow4"
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Sheet>
+      </Dialog.Adapt>
+
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
