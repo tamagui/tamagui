@@ -8,6 +8,10 @@ import type Stripe from 'stripe'
 const PRO_SUBSCRIPTION_PRICE_ID = 'price_1QthHSFQGtHoG6xcDOEuFsrW' // $240/year with auto-renew
 const PRO_ONE_TIME_PRICE_ID = 'price_1Qs41HFQGtHoG6xcerDq7RJZ' // $400 one-time payment
 
+// New Team Seats Price IDs
+const TEAM_SEATS_SUBSCRIPTION_PRICE_ID = 'price_1R3yCAFQGtHoG6xcatVUMGL4'
+const TEAM_SEATS_ONE_TIME_PRICE_ID = 'price_1R3yCaFQGtHoG6xcwQ8EtfDu'
+
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })

@@ -22,6 +22,7 @@ import {
   XStack,
   YStack,
   Text,
+  Input,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { Select } from '../../../components/Select'
@@ -44,10 +45,12 @@ class PurchaseModal {
   disableAutoRenew = false
   chatSupport = false
   supportTier = 0
+  teamSeats = 0
   selectedPrices = {
     disableAutoRenew: false,
     chatSupport: false,
     supportTier: 0,
+    teamSeats: 0,
   }
 }
 
@@ -55,6 +58,7 @@ type SelectedPrices = {
   disableAutoRenew: boolean
   chatSupport: boolean
   supportTier: number
+  teamSeats: number
 }
 
 export const purchaseModal = createStore(PurchaseModal)
@@ -80,7 +84,7 @@ const tabOrder = ['purchase', 'support', 'faq'] as const
 
 type Tab = (typeof tabOrder)[number]
 
-const PurchaseModalContents = () => {
+export function PurchaseModalContents() {
   const store = usePurchaseModal()
   const takeoutStore = useTakeoutStore()
   const [lastTab, setLastTab] = useState<Tab>('purchase')
@@ -94,10 +98,12 @@ const PurchaseModalContents = () => {
     disableAutoRenew: false,
     chatSupport: false,
     supportTier: 0,
+    teamSeats: 0,
   })
   const { data: products } = useProducts()
   const { data: userData } = useUser()
   const { parityDeals } = useParityDiscount()
+  const [teamSeats, setTeamSeats] = useState(0)
 
   useEffect(() => {
     if (window.opener && userData) {
@@ -130,17 +136,18 @@ const PurchaseModalContents = () => {
   const handleCheckout = () => {
     if (isProcessing) return
 
-    // Show payment modal with current selections
     paymentModal.show = true
     paymentModal.yearlyTotal = yearlyTotal
     paymentModal.monthlyTotal = monthlyTotal
     paymentModal.disableAutoRenew = disableAutoRenew
     paymentModal.chatSupport = chatSupport
     paymentModal.supportTier = Number(supportTier)
+    paymentModal.teamSeats = teamSeats
     paymentModal.selectedPrices = {
       disableAutoRenew,
       chatSupport,
       supportTier: Number(supportTier),
+      teamSeats,
     }
   }
 
@@ -151,9 +158,10 @@ const PurchaseModalContents = () => {
   const basePrice = disableAutoRenew ? 400 : 240 // yearly base price
   const chatSupportMonthly = chatSupport ? 200 : 0 // $200/month for chat support
   const supportTierMonthly = Number(supportTier) * 800 // $800/month per tier
+  const teamSeatsPrice = teamSeats * 100 // $100 per seat
 
   // Keep yearly and monthly totals separate
-  const yearlyTotal = basePrice
+  const yearlyTotal = basePrice + teamSeatsPrice
   const monthlyTotal = chatSupportMonthly + supportTierMonthly
 
   // Determine subscription message based on selected options
@@ -209,6 +217,12 @@ const PurchaseModalContents = () => {
               </P>
             </YStack>
           </YStack>
+
+          <TeamSeatsInput
+            value={teamSeats}
+            onChange={setTeamSeats}
+            yearlyPrice={teamSeatsPrice}
+          />
         </YStack>
       )
     },
@@ -473,6 +487,7 @@ const PurchaseModalContents = () => {
         disableAutoRenew={disableAutoRenew}
         chatSupport={chatSupport}
         supportTier={Number(supportTier)}
+        teamSeats={teamSeats}
         selectedPrices={selectedPrices}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
@@ -727,5 +742,40 @@ function Tab({
         {children}
       </Paragraph>
     </Tabs.Tab>
+  )
+}
+
+const TeamSeatsInput = ({
+  value,
+  onChange,
+  yearlyPrice,
+}: {
+  value: number
+  onChange: (seats: number) => void
+  yearlyPrice: number
+}) => {
+  return (
+    <YStack gap="$3">
+      <XStack alignItems="center">
+        <Label f={1} htmlFor="team-seats">
+          <Text>Additional Team Seats</Text>
+        </Label>
+        <Input
+          id="team-seats"
+          value={value.toString()}
+          onChange={(e) => {
+            const val = e.nativeEvent.text
+            onChange(Math.max(0, Number.parseInt(val) || 0))
+          }}
+          keyboardType="number-pad"
+          width={100}
+        />
+      </XStack>
+      {value > 0 && (
+        <Text theme="alt2">
+          +${yearlyPrice}/year for {value} additional {value === 1 ? 'seat' : 'seats'}
+        </Text>
+      )}
+    </YStack>
   )
 }
