@@ -39,7 +39,6 @@ async function cancelSubscription(userId) {
   }
 
   try {
-    // ユーザーの存在確認
     const { data: user, error: userError } = await supabaseAdmin
       .from('users')
       .select('*')
@@ -50,12 +49,11 @@ async function cancelSubscription(userId) {
       throw new Error(`User not found: ${userId}`)
     }
 
-    // アクティブなサブスクリプションを取得
     const { data: subscriptions, error: subError } = await supabaseAdmin
       .from('subscriptions')
       .select('*')
       .eq('user_id', userId)
-      .in('status', ['active', 'trialing', 'incomplete'])
+      .in('status', ['active', 'trialing', 'incomplete', 'incomplete_expired'])
 
     if (subError) throw subError
 
@@ -68,9 +66,11 @@ async function cancelSubscription(userId) {
 
     for (const sub of subscriptions) {
       try {
-        const canceledSubscription = await stripe.subscriptions.cancel(sub.id, {
-          prorate: true,
-        })
+        if (sub.status !== 'incomplete_expired') {
+          const canceledSubscription = await stripe.subscriptions.cancel(sub.id, {
+            prorate: true,
+          })
+        }
 
         await supabaseAdmin
           .from('subscriptions')

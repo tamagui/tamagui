@@ -234,7 +234,6 @@ const PaymentForm = ({
           redirect: 'if_required',
           confirmParams: {
             payment_method: paymentMethod.id,
-            setup_future_usage: 'off_session',
           },
           clientSecret: data.clientSecret,
         })
@@ -301,7 +300,6 @@ const PaymentForm = ({
           redirect: 'if_required',
           confirmParams: {
             payment_method: paymentMethod.id,
-            setup_future_usage: 'off_session',
           },
           clientSecret: upgradeData.clientSecret,
         })
