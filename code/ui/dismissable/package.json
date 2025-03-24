@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dismissable",
-  "version": "1.125.28",
+  "version": "1.125.29",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
