@@ -41,6 +41,11 @@ export const Portal = React.memo((propsIn: PortalProps) => {
   const { host = getRootDiv(), stackZIndex, children, ...props } = propsIn
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
+  if (!host) {
+    // this happens on toast but hard to see how that could happen, but doesn't break with this
+    return null
+  }
+
   return createPortal(
     <YStack
       contain="strict"
