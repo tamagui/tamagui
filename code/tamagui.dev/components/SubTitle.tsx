@@ -32,7 +32,7 @@ export const SubTitle = ({ children, ...props }) => {
       pos="relative"
       color="$gray9"
       width="max-content"
-      fontFamily="$body"
+      fontFamily="$mono"
       size="$8"
       lh="$7"
       ls={-0.5}
