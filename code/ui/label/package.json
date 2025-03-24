@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/label",
-  "version": "1.125.27",
+  "version": "1.125.28",
   "sideEffects": [
     "*.css"
   ],
