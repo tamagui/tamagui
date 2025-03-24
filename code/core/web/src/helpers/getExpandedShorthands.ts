@@ -16,3 +16,8 @@ export function getExpandedShorthands<A extends Object>(
   }
   return res
 }
+
+export function getExpandedShorthand(propKey: string, props: Object) {
+  const shorthands = getConfig().shorthands
+  return props[propKey] ?? props[shorthands[propKey]]
+}
