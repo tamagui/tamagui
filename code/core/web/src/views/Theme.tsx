@@ -145,13 +145,7 @@ export function getThemedChildren(
     const { className, style } = getThemeClassNameAndStyle(themeState, props, isRoot)
 
     children = (
-      <span
-        {...(process.env.NODE_ENV === 'development' && {
-          'data-theme-id': themeState.id,
-        })}
-        className={`${className} _dsp_contents is_Theme`}
-        style={style}
-      >
+      <span className={`${className} _dsp_contents is_Theme`} style={style}>
         {children}
       </span>
     )
