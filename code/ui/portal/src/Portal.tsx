@@ -32,13 +32,20 @@ function getRootDiv() {
 // web only version
 
 export const Portal = React.memo((propsIn: PortalProps) => {
+  const { host = getRootDiv(), stackZIndex, children, ...props } = propsIn
   const isHydated = useDidFinishSSR()
+  const [_, forceUpdate] = React.useState(0)
+
+  React.useEffect(() => {
+    if (!host) {
+      forceUpdate(Math.random())
+    }
+  }, [host])
 
   if (!isHydated) {
     return null
   }
 
-  const { host = getRootDiv(), stackZIndex, children, ...props } = propsIn
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
   if (!host) {

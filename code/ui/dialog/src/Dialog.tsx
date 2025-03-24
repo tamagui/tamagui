@@ -70,6 +70,7 @@ type DialogContextValue = {
   modal: NonNull<DialogProps['modal']>
   allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
   scopeKey: string
+  adaptName: string
 }
 
 const [DialogProvider, useDialogContext] =
@@ -179,8 +180,6 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
     </DialogProvider>
   )
 
-  console.warn('isAdapted', isAdapted)
-
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
   // when adapted we portal to the adapt, when not we portal to root modal if needed
@@ -188,7 +187,7 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   return isAdapted ? (
     <AdaptPortalContents>{content}</AdaptPortalContents>
   ) : (
-    <PortalItem hostName={getSheetContentsName(context)}>{content}</PortalItem>
+    <PortalItem hostName={context.adaptName}>{content}</PortalItem>
   )
 }
 
@@ -211,7 +210,6 @@ const DialogPortal: React.FC<DialogPortalProps> = (
   }, [])
 
   const zIndex = getExpandedShorthand('zIndex', props)
-  console.warn('zIndex', zIndex)
 
   if (context.modal) {
     const contents = (
@@ -421,13 +419,12 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    if (isWeb) {
-      React.useEffect(() => {
-        if (!context.open) return
-        const content = contentRef.current
-        if (content) return hideOthers(content)
-      }, [context.open])
-    }
+    React.useEffect(() => {
+      if (!isWeb) return
+      if (!context.open) return
+      const content = contentRef.current
+      if (content) return hideOthers(content)
+    }, [context.open])
 
     return (
       <DialogContentImpl
@@ -846,6 +843,7 @@ const Dialog = withStaticProperties(
       modal,
       allowPinchZoom,
       disableRemoveScroll,
+      adaptName,
     }
 
     React.useImperativeHandle(
