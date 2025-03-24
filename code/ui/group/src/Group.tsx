@@ -138,9 +138,10 @@ function createGroup(verticalDefault: boolean) {
                     vertical,
                     disable: disablePassBorderRadius,
                   })
+
             const props = {
               disabled,
-              ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
+              ...radiusStyles,
             }
 
             return cloneElementWithPropOrder(child, props)
