@@ -120,6 +120,11 @@ const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValu
 
 type DialogPortalProps = YStackProps & {
   /**
+   * This passes to @tamagui/portal and will be used for the base portal z-index on web
+   */
+  zIndex?: number
+
+  /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
