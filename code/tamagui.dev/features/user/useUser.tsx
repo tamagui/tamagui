@@ -6,6 +6,8 @@ import { useRouter } from 'one'
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
 
+export let currentUser: UserContextType | null = null
+
 export const useUser = () => {
   const { mutate } = useSWRConfig()
   const response = useSWR<UserContextType | null>('user', {
@@ -30,6 +32,11 @@ export const useUser = () => {
     revalidateIfStale: false,
     refreshWhenHidden: false,
   })
+
+  useEffect(() => {
+    currentUser = response.data || null
+  }, [response])
+
   return {
     ...response,
     refresh() {

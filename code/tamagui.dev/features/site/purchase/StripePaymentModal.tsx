@@ -136,11 +136,6 @@ type StripePaymentModalProps = {
   disableAutoRenew: boolean
   chatSupport: boolean
   supportTier: number
-  selectedPrices: {
-    disableAutoRenew: boolean
-    chatSupport: boolean
-    supportTier: number
-  }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
 }
@@ -379,7 +374,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     disableAutoRenew: propDisableAutoRenew,
     chatSupport: propChatSupport,
     supportTier: propSupportTier,
-    selectedPrices: propSelectedPrices,
     onSuccess,
     onError,
   } = props
