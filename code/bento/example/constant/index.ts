@@ -26,14 +26,17 @@ export const colors: Colors[] = [
   },
   {
     emoji: '🐝',
+    // @ts-expect-error
     theme: 'bee',
   },
   {
     emoji: '🥑',
+    // @ts-expect-error
     theme: 'avocado',
   },
   {
     emoji: '🌋',
+    // @ts-expect-error
     theme: 'volcanic',
   },
 ]
