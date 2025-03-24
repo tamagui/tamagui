@@ -41,7 +41,8 @@ import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
 export default function TakeoutPage() {
-  const { showAppropriateModal, isProUser } = useSubscriptionModal()
+  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
+  const isProUser = subscriptionStatus?.pro
 
   return (
     <YStack maw="100%">
@@ -954,7 +955,8 @@ const IconFrame = styled(Stack, {
 
 const StarterCard = memo(() => {
   const [ref, setRef] = useState<any>()
-  const { showAppropriateModal, isProUser } = useSubscriptionModal()
+  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
+  const isProUser = subscriptionStatus?.pro
 
   const media = useMedia()
   useEffect(() => {

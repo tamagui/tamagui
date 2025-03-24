@@ -5,6 +5,7 @@ import { useRouter } from 'one'
 
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
+import { userSubscriptionStatus, SubscriptionStatus } from './subscription/eligibility'
 
 export let currentUser: UserContextType | null = null
 
@@ -39,6 +40,7 @@ export const useUser = () => {
 
   return {
     ...response,
+    subscriptionStatus: userSubscriptionStatus(response.data ?? undefined),
     refresh() {
       mutate('user')
     },

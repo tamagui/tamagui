@@ -10,24 +10,11 @@ import { useMemo } from 'react'
  * - If the user is logged in and has an active subscription, it shows the account modal.
  */
 export const useSubscriptionModal = () => {
-  const { data: userData, isLoading } = useUser()
-
-  const isProUser = useMemo(() => {
-    return (
-      userData?.subscriptions?.some(
-        (sub) => sub.status === 'active' || sub.status === 'trialing'
-      ) &&
-      userData?.subscriptions?.some((sub) =>
-        sub.subscription_items?.some(
-          (item) => item.price?.product?.name === 'Tamagui Pro'
-        )
-      )
-    )
-  }, [userData])
+  const { data: userData, isLoading, subscriptionStatus } = useUser()
 
   const showAppropriateModal = () => {
     if (isLoading) return
-    if (isProUser) {
+    if (subscriptionStatus.pro) {
       accountModal.show = true
       // purchaseModal.show = true // DEBUG
     } else {
@@ -39,6 +26,6 @@ export const useSubscriptionModal = () => {
     showAppropriateModal,
     isLoading,
     userData,
-    isProUser,
+    subscriptionStatus,
   }
 }

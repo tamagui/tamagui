@@ -22,7 +22,8 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
     via: undefined as 'hover' | 'press' | undefined,
     viaAt: Date.now(),
   })
-  const { showAppropriateModal, isProUser } = useSubscriptionModal()
+  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
+  const isProUser = subscriptionStatus?.pro
 
   return (
     <Popover
