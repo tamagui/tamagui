@@ -12,6 +12,8 @@
 
 bug:
 
+- https://github.com/tamagui/tamagui/issues/3322
+
 As an example, we have a Button that has a variant, default.
 its pressStyle is
 pressStyle: {
