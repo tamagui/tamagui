@@ -7,6 +7,8 @@ import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
 import { userSubscriptionStatus, SubscriptionStatus } from './subscription/eligibility'
 
+export let currentUser: UserContextType | null = null
+
 export const useUser = () => {
   const { mutate } = useSWRConfig()
   const response = useSWR<UserContextType | null>('user', {
@@ -31,6 +33,11 @@ export const useUser = () => {
     revalidateIfStale: false,
     refreshWhenHidden: false,
   })
+
+  useEffect(() => {
+    currentUser = response.data || null
+  }, [response])
+
   return {
     ...response,
     subscriptionStatus: userSubscriptionStatus(response.data ?? undefined),

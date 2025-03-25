@@ -15,25 +15,26 @@ import {
   Spacer,
   styled,
   Tabs,
+  Text,
   Theme,
   Unspaced,
+  useMedia,
   XStack,
   YStack,
-  Text,
-  useMedia,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
+import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
+import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
+import { ProAgreementModal } from './AgreementModal'
+import { BigP, P } from './BigP'
+import { ProPoliciesModal } from './PoliciesModal'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { paymentModal, StripePaymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
-import { BigP, P } from './BigP'
 import { useTakeoutStore } from './useTakeoutStore'
-import { ProPoliciesModal } from './PoliciesModal'
-import { ProAgreementModal } from './AgreementModal'
-import { useParityDiscount } from '~/hooks/useParityDiscount'
 
 class PurchaseModal {
   show = false
@@ -88,15 +89,16 @@ const PurchaseModalContents = () => {
   const [supportTier, setSupportTier] = useState('0')
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<Error | StripeError | null>(null)
-  const [selectedPrices, setSelectedPrices] = useState<SelectedPrices>({
-    disableAutoRenew: false,
-    chatSupport: false,
-    supportTier: 0,
-  })
   const { gtMd } = useMedia()
 
   const { data: userData } = useUser()
   const { parityDeals } = useParityDiscount()
+
+  useEffect(() => {
+    if (parityDeals) {
+      sendEvent(`Pro: Show Parity Deals`)
+    }
+  }, [parityDeals])
 
   useEffect(() => {
     if (window.opener && userData) {
@@ -106,6 +108,7 @@ const PurchaseModalContents = () => {
   }, [])
 
   function changeTab(next: string) {
+    sendEvent(`Pro: Change Tab`, { tab: next })
     if (next === 'purchase' || next === 'support' || next === 'faq') {
       if (currentTab === 'purchase' && next === 'support') {
         setLastTab(currentTab)
@@ -118,15 +121,21 @@ const PurchaseModalContents = () => {
   }
 
   const handlePaymentError = (error: Error | StripeError) => {
+    sendEvent('Pro: Payment Error', {
+      error: `${error}`,
+    })
     setError(error)
     setIsProcessing(false)
   }
 
   const handlePaymentSuccess = async () => {
+    sendEvent('Pro: Payment Success')
     window.location.href = '/payment-finished'
   }
 
   const handleCheckout = () => {
+    sendEvent('Pro: Purchase Button')
+
     if (isProcessing) return
 
     // Show payment modal with current selections
@@ -494,7 +503,6 @@ const PurchaseModalContents = () => {
         disableAutoRenew={disableAutoRenew}
         chatSupport={chatSupport}
         supportTier={Number(supportTier)}
-        selectedPrices={selectedPrices}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
       />

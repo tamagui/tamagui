@@ -55,7 +55,7 @@ export async function loader(props: LoaderProps) {
   }
 }
 
-export default function DocComponentsPage() {
+export function DocComponentsPage() {
   const { frontmatter, code } = useLoader(loader)
   const Component = React.useMemo(() => getMDXComponent(code), [code])
 
@@ -98,6 +98,7 @@ export default function DocComponentsPage() {
       )} */}
 
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
+
       <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
 
       <MDXProvider frontmatter={frontmatter}>

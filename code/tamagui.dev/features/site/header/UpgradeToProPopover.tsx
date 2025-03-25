@@ -12,6 +12,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { sendEvent } from '../../analytics/sendEvent'
 import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
 import { PromoCards } from './PromoCards'
 
@@ -66,6 +67,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
             bc: '$black2',
           }}
           onPress={() => {
+            sendEvent(`Pro: Modal Open`)
             showAppropriateModal()
             setOpen(false)
           }}

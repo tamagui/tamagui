@@ -21,5 +21,6 @@ type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
 
 export function useClientValue<Value>(value?: Value): FunctionOrValue<Value> | undefined {
   const done = useDidFinishSSR()
+  // @ts-expect-error this is fine but started to error in ts latest
   return !done ? undefined : typeof value === 'function' ? value() : value
 }

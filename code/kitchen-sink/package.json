@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "1.125.26",
+  "version": "1.125.30",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -79,7 +79,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.1.471",
+    "one": "1.1.474",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
     "webpack": "^5.88.2",

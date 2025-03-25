@@ -1,3 +1,7 @@
+- option to default to position "static"
+
+- i think a big current bug is onlyAllowShorthands can be set on settings or on base, but if its set on base it breaks types entirely.
+
 - tooltip: expects zIndex but shorthand overrides and doesn't work
 
 - make group props require the prop key to be stable like animations

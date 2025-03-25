@@ -4,7 +4,14 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
-import { Theme, View, spacedChildren, styled, useThemeName } from '@tamagui/core'
+import {
+  Theme,
+  View,
+  getExpandedShorthand,
+  spacedChildren,
+  styled,
+  useThemeName,
+} from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContext, createContextScope } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
@@ -63,6 +70,7 @@ type DialogContextValue = {
   modal: NonNull<DialogProps['modal']>
   allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
   scopeKey: string
+  adaptName: string
 }
 
 const [DialogProvider, useDialogContext] =
@@ -174,12 +182,12 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
 
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
-
   // when adapted we portal to the adapt, when not we portal to root modal if needed
+
   return isAdapted ? (
     <AdaptPortalContents>{content}</AdaptPortalContents>
   ) : (
-    <PortalItem>{content}</PortalItem>
+    <PortalItem hostName={context.adaptName}>{content}</PortalItem>
   )
 }
 
@@ -201,9 +209,11 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(true)
   }, [])
 
+  const zIndex = getExpandedShorthand('zIndex', props)
+
   if (context.modal) {
     const contents = (
-      <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+      <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
         <AnimatePresence onExitComplete={handleExitComplete}>
           {isShowing || isAdapted ? children : null}
         </AnimatePresence>
@@ -225,7 +235,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     if (isWeb) {
       return (
         <Portal
-          zIndex={props.zIndex}
+          zIndex={zIndex}
           // set to 1000 which "boosts" it 1000 above baseline for current context
           // this makes sure its above (this first 1k) popovers on the same layer
           stackZIndex={1000}
@@ -409,13 +419,12 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    if (isWeb) {
-      React.useEffect(() => {
-        if (!context.open) return
-        const content = contentRef.current
-        if (content) return hideOthers(content)
-      }, [context.open])
-    }
+    React.useEffect(() => {
+      if (!isWeb) return
+      if (!context.open) return
+      const content = contentRef.current
+      if (content) return hideOthers(content)
+    }, [context.open])
 
     return (
       <DialogContentImpl
@@ -834,6 +843,7 @@ const Dialog = withStaticProperties(
       modal,
       allowPinchZoom,
       disableRemoveScroll,
+      adaptName,
     }
 
     React.useImperativeHandle(

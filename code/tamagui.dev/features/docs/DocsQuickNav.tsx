@@ -1,9 +1,21 @@
 import { classNames } from '@tamagui/remove-scroll'
-import { useEffect, useState } from 'react'
-import { Circle, H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
 import type { Href } from 'one'
+import { useEffect, useState } from 'react'
+import {
+  Circle,
+  H4,
+  Paragraph,
+  ScrollView,
+  Separator,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
 
-import type { LinkProps } from '~/components/Link'
+import { Link, type LinkProps } from '~/components/Link'
+import { BentoButton } from '../site/BentoButton'
+import { TakeoutButton } from '../site/TakeoutButton'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <a onClick={(e) => [e.stopPropagation()]} href={href as any}>
@@ -16,7 +28,7 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
       hoverStyle={{
         color: '$color12',
       }}
-      {...rest}
+      {...(rest as any)}
     />
   </a>
 )
@@ -86,6 +98,19 @@ export function DocsQuickNav() {
             </ul>
           </YStack>
         </ScrollView>
+      </YStack>
+
+      <YStack gap="$3" my="$6">
+        <Theme name="tan">
+          <Link width="100%" href="/bento">
+            <BentoButton />
+          </Link>
+        </Theme>
+        <Theme name="gray">
+          <Link width="100%" href="/takeout">
+            <TakeoutButton />
+          </Link>
+        </Theme>
       </YStack>
     </YStack>
   )
