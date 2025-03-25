@@ -4,9 +4,8 @@ import type { PortalItemProps } from './types'
 import { createPortal } from 'react-dom'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
-  console.warn('props', props)
   if (!props.hostName) {
-    throw new Error(`No hostName set for portal`)
+    throw new Error(`No hostName`)
   }
 
   const cur = allPortalHosts.get(props.hostName)
