@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox-headless",
-  "version": "1.125.29",
+  "version": "1.125.29-1742879698913",
   "sideEffects": [
     "*.css"
   ],
