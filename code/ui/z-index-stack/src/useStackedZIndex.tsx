@@ -12,10 +12,14 @@ export const useStackedZIndex = (props: {
   const { stackZIndex, zIndex: zIndexProp } = props
   const id = useId()
   const stackingContextLevel = useContext(ZIndexStackContext)
+<<<<<<< HEAD
   const stackLayer =
     process.env.TAMAGUI_STACK_Z_INDEX_GLOBAL || stackZIndex === 'global'
       ? 0
       : stackingContextLevel
+=======
+  const stackLayer = stackZIndex === 'global' ? 0 : stackingContextLevel
+>>>>>>> f2dac909d9 (feat(z-index-stack): adds "global" option to stackZIndex prop that avoids nesting z-index stacking, keeping older behavior)
   const hardcoded = useContext(ZIndexHardcodedContext)
 
   ZIndicesByContext[stackLayer] ||= {}
