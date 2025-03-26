@@ -1,6 +1,10 @@
 {
   "name": "@tamagui/babel-plugin",
+<<<<<<< HEAD
   "version": "1.125.31-1743030157133",
+=======
+  "version": "1.125.31",
+>>>>>>> 557d378bbb (v1.125.31)
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
