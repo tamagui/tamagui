@@ -12,7 +12,10 @@ export const useStackedZIndex = (props: {
   const { stackZIndex, zIndex: zIndexProp } = props
   const id = useId()
   const stackingContextLevel = useContext(ZIndexStackContext)
-  const stackLayer = stackZIndex === 'global' ? 0 : stackingContextLevel
+  const stackLayer =
+    process.env.TAMAGUI_STACK_Z_INDEX_GLOBAL || stackZIndex === 'global'
+      ? 0
+      : stackingContextLevel
   const hardcoded = useContext(ZIndexHardcodedContext)
 
   ZIndicesByContext[stackLayer] ||= {}
