@@ -12,7 +12,7 @@ test(`dialogs and portals stack their z-index automatically`, async ({ page }) =
       function findEffectiveZIndex(element: Element): number {
         let current = element
         while (current && current instanceof HTMLElement) {
-          if (current.parentElement?.id !== 'tamagui-root-portal') {
+          if (current.parentElement?.tagName !== 'BODY') {
             current = current.parentElement!
           } else {
             const zIndex = window.getComputedStyle(current).zIndex
@@ -44,7 +44,7 @@ test(`harcoded z-index overrides stacking z-index`, async ({ page }) => {
       function findEffectiveZIndex(element: Element): number {
         let current = element
         while (current && current instanceof HTMLElement) {
-          if (current.parentElement?.id !== 'tamagui-root-portal') {
+          if (current.parentElement?.tagName !== 'BODY') {
             current = current.parentElement!
           } else {
             const zIndex = window.getComputedStyle(current).zIndex
