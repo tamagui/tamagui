@@ -6,6 +6,7 @@ import { readBodyBuffer } from '~/features/api/readBodyBuffer'
 import { unclaimSubscription } from '~/features/api/unclaimProduct'
 import {
   addRenewalSubscription,
+  createTeamSubscription,
   deletePriceRecord,
   deleteProductRecord,
   deleteSubscriptionRecord,
@@ -16,6 +17,7 @@ import {
 import { sendProductRenewalEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 
 const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
 
@@ -115,6 +117,7 @@ export default apiRoute(async (req) => {
             : createdSub.customer.id,
           true
         )
+        await createTeamSubscription(createdSub)
         break
       }
       case 'customer.subscription.updated': {
@@ -125,6 +128,7 @@ export default apiRoute(async (req) => {
             ? updatedSub.customer
             : updatedSub.customer.id
         )
+        await createTeamSubscription(updatedSub)
         break
       }
       case 'customer.subscription.deleted': {
