@@ -1,3 +1,9 @@
+- useTheme().x.val may have bug on light/dark switch
+
+- option to default to position "static"
+
+- i think a big current bug is onlyAllowShorthands can be set on settings or on base, but if its set on base it breaks types entirely.
+
 - tooltip: expects zIndex but shorthand overrides and doesn't work
 
 - make group props require the prop key to be stable like animations
@@ -7,6 +13,8 @@
     - but make it error in the console
 
 bug:
+
+- https://github.com/tamagui/tamagui/issues/3322
 
 As an example, we have a Button that has a variant, default.
 its pressStyle is

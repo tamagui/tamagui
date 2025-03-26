@@ -1,15 +1,13 @@
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
 import { listingData } from '@tamagui/bento/data'
-import { ThemeTint, useTint } from '@tamagui/logo'
 import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
 import { useToastController } from '@tamagui/toast'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
-import { startTransition, useEffect } from 'react'
+import { startTransition } from 'react'
 import {
   Anchor,
   Button,
-  EnsureFlexed,
   H1,
   Paragraph,
   SizableText,
@@ -25,8 +23,6 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { useColorScheme } from '@vxrn/color-scheme'
 
 export const generateStaticParams = async () => {
   return Data.paths.map((x) => ({
@@ -45,8 +41,8 @@ export default function BentoPage() {
   const Comp = Sections?.[section]?.[part]
   const toast = useToastController()
 
-  const { showAppropriateModal, isProUser } = useSubscriptionModal()
-  const [scheme] = useColorScheme()
+  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
+  const isProUser = subscriptionStatus.pro
 
   if (!Comp) {
     return null

@@ -1,14 +1,5 @@
-import {
-  Adapt,
-  Button,
-  Dialog,
-  ScrollView,
-  Separator,
-  Sheet,
-  SizableText,
-  YStack,
-} from 'tamagui'
 import { useState } from 'react'
+import { Adapt, Button, Dialog, ScrollView, Sheet, SizableText, YStack } from 'tamagui'
 
 export default function TestAdaptDialogToSheet() {
   const [open, setOpen] = useState(false)
@@ -43,13 +34,10 @@ export default function TestAdaptDialogToSheet() {
               top={20}
               width={40}
               height={4}
-              backgroundColor="$colorSubtle"
             />
             <Sheet.Overlay opacity={0.5} />
-            <Sheet.Frame p="$1" pb={24} jc="flex-start" ai="center">
-              <Separator w={40} mt="$5" mb="$2" bw="$0.5" br={9} />
-
-              <YStack px="$4" pb="$4" w="100%">
+            <Sheet.Frame>
+              <YStack>
                 <Adapt.Contents />
               </YStack>
             </Sheet.Frame>
@@ -66,27 +54,26 @@ export default function TestAdaptDialogToSheet() {
           />
 
           <Dialog.Content
-            bg="$gray1"
             key="content"
             p={0}
             m="$0"
-            w="100%"
-            h="100%"
-            alignItems="center"
-            br={0}
+            width="100%"
+            height="100%"
+            items="center"
+            rounded={0}
             animateOnly={['transform', 'opacity']}
             animation="quick"
             enterStyle={{ x: '100%' }}
             exitStyle={{ x: '100%' }}
           >
-            <ScrollView w="100%">
-              <YStack alignItems="center" justifyContent="center">
+            <ScrollView width="100%">
+              <YStack items="center" justify="center">
                 <YStack gap={12}>
                   <SizableText>
                     This should be in a Sheet on SM screens but its not
                   </SizableText>
                   <Button
-                    pe="auto"
+                    pointerEvents="auto"
                     onPress={() => {
                       setOpen(false)
                     }}

@@ -68,7 +68,7 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'AlertWithIcon',
       'IosStyleAlert',
       'SlidingPopoverDemo',
-      'OneTimeCodeInputExample'
+      'OneTimeCodeInputExample',
     ].includes(name)
   ) {
     return (

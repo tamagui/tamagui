@@ -35,6 +35,7 @@ type DialogContextValue = {
     modal: NonNull<DialogProps['modal']>;
     allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
     scopeKey: string;
+    adaptName: string;
 };
 interface DialogTriggerProps extends StackProps {
 }

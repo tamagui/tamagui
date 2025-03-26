@@ -83,6 +83,7 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
   return (
     <Paragraph
       tag="p"
+      ff="$mono"
       size={large ? '$9' : '$8'}
       mb="$4"
       $sm={{
@@ -774,11 +775,9 @@ const componentsIn = {
     return (
       <YStack gap="$1">
         <ThemeTintAlt offset={2}>
-          <IntroParagraph mt="$4">
-            Tamagui is a bunch of libraries that make sharing styling between React web
-            and React Native much more performant, while bringing many features from CSS
-            to React Native. It has an optional optimizing compiler that significantly
-            improves performance.
+          <IntroParagraph large mt="$4">
+            Tamagui makes styling React on any platform a delight. All of its features
+            work the same on both React Native and React web.
           </IntroParagraph>
 
           <UL mt="$4" pl="$4" gap="$2">
@@ -790,8 +789,11 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
                   </CodeInline>
                 </Link>
-                &nbsp; is the core style library, it expands on the React Native style API
-                with many features from CSS all without any external dependency.
+                &nbsp; is the base style library, it expands on the React Native style API
+                with many features from CSS, all without a single external dependency. It
+                can entirely replace React Native Web in a much lighter package, with full
+                API compatibility, much improved SSR, more features, and much better
+                performance.
               </LI>
             </Theme>
 
@@ -811,7 +813,8 @@ const componentsIn = {
                 >
                   significantly improves performance
                 </Link>{' '}
-                through partial analysis, hoisting, and flattening.
+                through partial analysis, hoisting, and flattening. It makes sharing code
+                between web and native actually feel great.
               </LI>
             </Theme>
 
@@ -823,8 +826,10 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>tamagui UI</span>
                   </CodeInline>
                 </Link>{' '}
-                is a bunch of unstyled and styled compound components for building common
-                UI elements that adapt to each platform.
+                is a bunch of unstyled and styled components for building common UI
+                elements. It's similar to Radix, but works on native and web, and has a
+                powerful Adapt primitive to shapeshift UI based on the platform or media
+                query.
               </LI>
             </Theme>
           </UL>
