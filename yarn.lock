@@ -6146,7 +6146,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@npm:^1.125.28":
+"@tamagui/build@npm:^1.125.30":
   version: 1.125.29
   resolution: "@tamagui/build@npm:1.125.29"
   dependencies:
@@ -7488,7 +7488,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-native-svg@npm:^1.125.28":
+"@tamagui/react-native-svg@npm:^1.125.30":
   version: 1.125.29
   resolution: "@tamagui/react-native-svg@npm:1.125.29"
   checksum: 10/eb9e73dce53537e213e09166fbcfbd627178c7f1ecb7bfe28b6f9cc1089d8cc1814a450be23721ae4b083011a6c11fe25912c5f87e8728d268f5c193e8361f6d
@@ -12863,7 +12863,7 @@ __metadata:
   version: 1.1.474
   resolution: "create-vxrn@npm:1.1.474"
   dependencies:
-    "@tamagui/build": "npm:^1.125.28"
+    "@tamagui/build": "npm:^1.125.30"
     "@types/validate-npm-package-name": "npm:^4.0.2"
     "@vxrn/utils": "npm:1.1.474"
     ansis: "npm:^3.1.0"
@@ -28475,7 +28475,7 @@ __metadata:
     "@hono/node-server": "npm:^1.13.7"
     "@react-native/dev-middleware": "npm:^0.76.5"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
-    "@tamagui/react-native-svg": "npm:^1.125.28"
+    "@tamagui/react-native-svg": "npm:^1.125.30"
     "@vxrn/compiler": "npm:1.1.474"
     "@vxrn/debug": "npm:1.1.474"
     "@vxrn/query-string": "npm:1.1.474"
