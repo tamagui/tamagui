@@ -14,11 +14,6 @@ const bentoScreensPerElementRoutes = Object.entries(Components)
   .reduce((acc, curr) => acc.concat(curr), [])
   .reduce((acc, [key, value]) => ({ ...acc, [key]: key }), {})
 
-const bentoScreens = Data.listingData.sections.reduce((acc, { sectionName }) => {
-  acc[sectionName] = `${sectionName}/:id`
-  return acc
-}, {})
-
 const bentoElementScreens = Object.entries(Components['Inputs']).reduce(
   (acc, component) => {
     acc[component[0]] = `${component[0]}`
@@ -31,8 +26,17 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   const storage = useAsyncStorage(PERSISTENCE_KEY)
   const themeContext = useContext(ThemeContext)
 
-  const linking = useMemo(
-    () => ({
+  const linking = useMemo(() => {
+    if (!Data) {
+      return null
+    }
+
+    const bentoScreens = Data.listingData.sections.reduce((acc, { sectionName }) => {
+      acc[sectionName] = `${sectionName}/:id`
+      return acc
+    }, {})
+
+    return {
       // Linking.createURL('/')
       prefixes: [],
       config: {
@@ -49,11 +53,15 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
           ...bentoScreensPerElementRoutes,
         },
       } as const,
-    }),
-    []
-  )
+    }
+  }, [])
 
   const theme = themeContext.value === 'dark' ? DarkTheme : DefaultTheme
+
+  if (!linking) {
+    console.warn(`No linking?`)
+    return null
+  }
 
   return (
     <NavigationContainer
