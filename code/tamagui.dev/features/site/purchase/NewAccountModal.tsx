@@ -27,6 +27,7 @@ import {
   Tabs,
   XStack,
   YStack,
+  Spinner,
 } from 'tamagui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -35,6 +36,7 @@ import { useUser } from '~/features/user/useUser'
 import { Link } from '../../../components/Link'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
+import { useTeamSeats, type TeamMember } from './useTeamSeats'
 
 class AccountModal {
   show = false
@@ -45,8 +47,10 @@ export const useAccountModal = createUseStore(AccountModal)
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
-  const { isLoading, data } = useUser()
-  const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage'>('plan')
+  const { isLoading, data, subscriptionStatus } = useUser()
+  const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
+    'plan'
+  )
 
   if (isLoading || !data) {
     return null
@@ -156,6 +160,13 @@ export const NewAccountModal = () => {
                     Manage
                   </Tab>
                 </YStack>
+                {subscriptionStatus.teamSeats > -1 && (
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'team'} value="team">
+                      Team
+                    </Tab>
+                  </YStack>
+                )}
               </Tabs.List>
 
               <YStack overflow="hidden" f={1}>
@@ -177,6 +188,7 @@ export const NewAccountModal = () => {
                         supportSubscription={supportSubscription}
                       />
                     )}
+                    {currentTab === 'team' && <TeamTab />}
                   </YStack>
                 </ScrollView>
               </YStack>
@@ -670,7 +682,7 @@ const PlanTab = ({
 }: {
   subscription?: NonNullable<UserContextType['subscriptions']>[number]
   supportSubscription?: NonNullable<UserContextType['subscriptions']>[number]
-  setCurrentTab: (value: 'plan' | 'upgrade' | 'manage') => void
+  setCurrentTab: (value: 'plan' | 'upgrade' | 'manage' | 'team') => void
 }) => {
   const supabase = useSupabaseClient()
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
@@ -926,11 +938,6 @@ const UpgradeTab = ({
     paymentModal.disableAutoRenew = false // Support is always monthly
     paymentModal.chatSupport = false
     paymentModal.supportTier = Number(supportTier)
-    paymentModal.selectedPrices = {
-      disableAutoRenew: false,
-      chatSupport: false,
-      supportTier: Number(supportTier),
-    }
   }
 
   return (
@@ -1153,5 +1160,147 @@ const ManageTab = ({
         </Button>
       </YStack>
     </YStack>
+  )
+}
+
+const TeamTab = () => {
+  const { data: teamData, error, isLoading, mutate } = useTeamSeats()
+
+  if (isLoading) {
+    return (
+      <YStack f={1} ai="center" jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
+  }
+
+  if (error || !teamData) {
+    return (
+      <YStack gap="$4">
+        <H3>No Team Subscription</H3>
+        <Paragraph theme="alt1">
+          Purchase team seats to invite team members to your Tamagui Pro subscription.
+        </Paragraph>
+        <Button
+          theme="accent"
+          onPress={() => {
+            paymentModal.show = true
+            paymentModal.teamSeats = 1
+          }}
+        >
+          Purchase Team Seats
+        </Button>
+      </YStack>
+    )
+  }
+
+  return (
+    <YStack gap="$6">
+      <YStack gap="$4">
+        <H3>Team Management</H3>
+        <XStack ai="center" jc="space-between">
+          <Paragraph theme="alt1">
+            {teamData.subscription.used_seats} of {teamData.subscription.total_seats}{' '}
+            seats used
+          </Paragraph>
+          <Button
+            theme="accent"
+            onPress={() => {
+              paymentModal.show = true
+              paymentModal.teamSeats = 1
+            }}
+          >
+            Add Seats
+          </Button>
+        </XStack>
+      </YStack>
+
+      <Separator />
+
+      <YStack gap="$4">
+        <H4>Team Members</H4>
+        <YStack gap="$2">
+          {teamData.members.map((member) => (
+            <TeamMemberRow key={member.id} member={member} onRemove={mutate} />
+          ))}
+        </YStack>
+
+        {teamData.subscription.used_seats < teamData.subscription.total_seats && (
+          <Button
+            theme="accent"
+            onPress={() => {
+              // TODO: Implement invite modal
+            }}
+          >
+            Invite Member
+          </Button>
+        )}
+      </YStack>
+    </YStack>
+  )
+}
+
+const TeamMemberRow = ({
+  member,
+  onRemove,
+}: {
+  member: TeamMember
+  onRemove: () => void
+}) => {
+  const [isRemoving, setIsRemoving] = useState(false)
+
+  const handleRemove = async () => {
+    if (!confirm('Are you sure you want to remove this team member?')) return
+
+    setIsRemoving(true)
+    try {
+      const res = await fetch(`/api/team-seat/${member.id}`, {
+        method: 'DELETE',
+      })
+      if (!res.ok) throw new Error('Failed to remove team member')
+      onRemove()
+    } catch (error) {
+      alert('Failed to remove team member')
+    } finally {
+      setIsRemoving(false)
+    }
+  }
+
+  return (
+    <XStack
+      borderWidth={1}
+      borderColor="$color3"
+      borderRadius="$4"
+      p="$3"
+      ai="center"
+      jc="space-between"
+    >
+      <XStack ai="center" gap="$3">
+        <Avatar circular size="$3">
+          <Avatar.Image
+            source={{
+              uri:
+                member.user?.avatar_url ??
+                getDefaultAvatarImage(member.user?.full_name ?? ''),
+            }}
+          />
+        </Avatar>
+        <YStack>
+          <Paragraph>{member.user?.full_name ?? 'Unknown User'}</Paragraph>
+          <Paragraph theme="alt2" size="$2">
+            {member.user?.email}
+          </Paragraph>
+        </YStack>
+      </XStack>
+
+      <XStack ai="center" gap="$2">
+        <Paragraph size="$2" theme="alt2">
+          {member.role}
+        </Paragraph>
+        <Button theme="red" size="$2" onPress={handleRemove} disabled={isRemoving}>
+          {isRemoving ? 'Removing...' : 'Remove'}
+        </Button>
+      </XStack>
+    </XStack>
   )
 }
