@@ -1,3 +1,5 @@
+- useTheme().x.val may have bug on light/dark switch
+
 - option to default to position "static"
 
 - i think a big current bug is onlyAllowShorthands can be set on settings or on base, but if its set on base it breaks types entirely.
