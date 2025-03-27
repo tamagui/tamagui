@@ -41,7 +41,11 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
   //NOTE: Components using Flatlist can't have a ScrollView wrapper. This breaks scrolling on Android.
 
   if (name === 'ThemeSwitch') {
-    return children
+    return (
+      <View jc="center" ai="center" flex={1} bg="$background">
+        {children}
+      </View>
+    )
   }
 
   if (
@@ -190,7 +194,7 @@ export function Navigation() {
           },
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="bento"
         component={BentoScreen}
         options={{
@@ -201,7 +205,7 @@ export function Navigation() {
         }}
       />
       {bentoScreensPerElement}
-      {bentoScreenSections}
+      {bentoScreenSections} */}
     </Stack.Navigator>
   )
 }
