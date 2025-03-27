@@ -36,7 +36,12 @@ import { useUser } from '~/features/user/useUser'
 import { Link } from '../../../components/Link'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
-import { useTeamSeats, type TeamMember } from './useTeamSeats'
+import {
+  useInviteTeamMember,
+  useRemoveTeamMember,
+  useTeamSeats,
+  type TeamMember,
+} from './useTeamSeats'
 import { debounce } from 'lodash'
 
 class AccountModal {
@@ -1165,13 +1170,13 @@ const ManageTab = ({
 }
 
 type GitHubUser = {
-  id: number
+  id: string
   full_name: string | null
   avatar_url: string | null
 }
 
 const TeamTab = () => {
-  const { data: teamData, error, isLoading, mutate } = useTeamSeats()
+  const { data: teamData, error, isLoading } = useTeamSeats()
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [searchResults, setSearchResults] = useState<GitHubUser[]>([])
@@ -1239,22 +1244,11 @@ const TeamTab = () => {
         <H3>Team Management</H3>
         <XStack ai="center" jc="space-between">
           <Paragraph theme="alt1">
-            {teamData.subscription.used_seats} of {teamData.subscription.total_seats}{' '}
+            {teamData.subscription.used_seats || 0} of {teamData.subscription.total_seats}{' '}
             seats used
           </Paragraph>
-          <Button
-            theme="accent"
-            onPress={() => {
-              paymentModal.show = true
-              paymentModal.teamSeats = 1
-            }}
-          >
-            Add Seats
-          </Button>
         </XStack>
       </YStack>
-
-      <Separator />
 
       {teamData.subscription.used_seats < teamData.subscription.total_seats && (
         <YStack gap="$4">
@@ -1283,8 +1277,7 @@ const TeamTab = () => {
                 <GitHubUserRow
                   key={githubUser.id}
                   user={githubUser}
-                  teamSubscriptionId={teamData.subscription.id}
-                  onInvite={mutate}
+                  subscriptionId={teamData.subscription.id}
                 />
               ))
             )}
@@ -1298,7 +1291,11 @@ const TeamTab = () => {
         <H4>Team Members</H4>
         <YStack gap="$2">
           {teamData.members.map((member) => (
-            <TeamMemberRow key={member.id} member={member} onRemove={mutate} />
+            <TeamMemberRow
+              key={member.id}
+              member={member}
+              subscriptionId={teamData.subscription.id}
+            />
           ))}
         </YStack>
       </YStack>
@@ -1308,36 +1305,16 @@ const TeamTab = () => {
 
 const GitHubUserRow = ({
   user,
-  teamSubscriptionId,
-  onInvite,
+  subscriptionId,
 }: {
   user: GitHubUser
-  teamSubscriptionId: string
-  onInvite: () => void
+  subscriptionId: string
 }) => {
-  const [isInviting, setIsInviting] = useState(false)
-
-  const handleInvite = async () => {
-    setIsInviting(true)
-    try {
-      const res = await fetch('/api/team-seat/invite', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // body: JSON.stringify({
-        //   github_username: user.login,
-        //   team_subscription_id: teamSubscriptionId,
-        // }),
-      })
-      if (!res.ok) throw new Error('Failed to invite user')
-      onInvite()
-    } catch (error) {
-      alert('Failed to invite user')
-    } finally {
-      setIsInviting(false)
-    }
-  }
+  const {
+    trigger: inviteTeamMember,
+    isMutating: isInviting,
+    error: inviteError,
+  } = useInviteTeamMember(subscriptionId)
 
   return (
     <XStack
@@ -1352,10 +1329,22 @@ const GitHubUserRow = ({
         <Avatar circular size="$3">
           <Avatar.Image source={{ uri: user.avatar_url ?? '' }} />
         </Avatar>
-        <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
+        <YStack>
+          <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
+          {inviteError && (
+            <Paragraph size="$2" color="$red10">
+              Error: {inviteError.message}
+            </Paragraph>
+          )}
+        </YStack>
       </XStack>
 
-      <Button theme="accent" size="$2" onPress={handleInvite} disabled={isInviting}>
+      <Button
+        theme="accent"
+        size="$2"
+        onPress={() => inviteTeamMember({ user_id: String(user.id) })}
+        disabled={isInviting}
+      >
         {isInviting ? 'Inviting...' : 'Invite'}
       </Button>
     </XStack>
@@ -1364,29 +1353,13 @@ const GitHubUserRow = ({
 
 const TeamMemberRow = ({
   member,
-  onRemove,
+  subscriptionId,
 }: {
   member: TeamMember
-  onRemove: () => void
+  subscriptionId: string
 }) => {
-  const [isRemoving, setIsRemoving] = useState(false)
-
-  const handleRemove = async () => {
-    if (!confirm('Are you sure you want to remove this team member?')) return
-
-    setIsRemoving(true)
-    try {
-      const res = await fetch(`/api/team-seat/${member.id}`, {
-        method: 'DELETE',
-      })
-      if (!res.ok) throw new Error('Failed to remove team member')
-      onRemove()
-    } catch (error) {
-      alert('Failed to remove team member')
-    } finally {
-      setIsRemoving(false)
-    }
-  }
+  const { trigger: removeTeamMember, isMutating: isRemoving } =
+    useRemoveTeamMember(subscriptionId)
 
   return (
     <XStack
@@ -1419,7 +1392,12 @@ const TeamMemberRow = ({
         <Paragraph size="$2" theme="alt2">
           {member.role}
         </Paragraph>
-        <Button theme="red" size="$2" onPress={handleRemove} disabled={isRemoving}>
+        <Button
+          theme="red"
+          size="$2"
+          onPress={() => removeTeamMember({ team_member_id: member.user?.id ?? '' })}
+          disabled={isRemoving}
+        >
           {isRemoving ? 'Removing...' : 'Remove'}
         </Button>
       </XStack>

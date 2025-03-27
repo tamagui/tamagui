@@ -25,6 +25,8 @@ export default apiRoute(async (req) => {
       .from('users')
       .select('*')
       .ilike('full_name', `%${query}%`)
+      .neq('id', user.id)
+      .limit(5)
 
     if (error) {
       throw error

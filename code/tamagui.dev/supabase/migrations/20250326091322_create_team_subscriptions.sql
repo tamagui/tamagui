@@ -18,3 +18,11 @@ create table team_members (
   
   constraint team_member_unique unique (team_subscription_id, member_id)
 );
+
+create policy "Allow users to search other users"
+  on users
+  for select
+  using (
+    -- Allow all users to search other users
+    auth.uid() != id
+  );

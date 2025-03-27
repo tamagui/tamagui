@@ -9,6 +9,12 @@ export default apiRoute(async (req) => {
   if (req.method === 'GET') {
     return getTeamSeats(req)
   }
+  if (req.method === 'POST') {
+    return inviteTeamMember(req)
+  }
+  if (req.method === 'DELETE') {
+    return removeTeamMember(req)
+  }
 })
 
 const getTeamSeats = async (req: Request) => {
@@ -32,10 +38,14 @@ const getTeamSeats = async (req: Request) => {
     return Response.json({ error: 'No team subscription found' }, { status: 404 })
   }
 
+  // Calculate used seats from active team members
+  const activeMembers = teamSubscription.team_members.filter(
+    (member) => member.status === 'active'
+  )
+  const used_seats = activeMembers.length
+
   // Get member details for each team member
-  const memberIds = teamSubscription.team_members
-    .filter((member) => member.status === 'active')
-    .map((member) => member.member_id)
+  const memberIds = activeMembers.map((member) => member.member_id)
 
   const { data: memberDetails, error: memberError } = await supabase
     .from('users')
@@ -59,7 +69,7 @@ const getTeamSeats = async (req: Request) => {
     subscription: {
       id: teamSubscription.id,
       total_seats: teamSubscription.total_seats,
-      used_seats: teamSubscription.used_seats,
+      used_seats,
       created_at: teamSubscription.created_at,
       expires_at: teamSubscription.expires_at,
       status: teamSubscription.status,
@@ -67,4 +77,47 @@ const getTeamSeats = async (req: Request) => {
     },
     members: membersWithDetails,
   })
+}
+
+const inviteTeamMember = async (req: Request) => {
+  const { supabase, user } = await ensureAuth({ req })
+
+  const { user_id, team_subscription_id } = await req.json()
+
+  const { data: teamMember, error: teamMemberError } = await supabase
+    .from('team_members')
+    .insert({
+      member_id: user_id,
+      team_subscription_id,
+      status: 'active',
+    })
+    .select()
+    .single()
+
+  if (teamMemberError) {
+    return Response.json({ error: 'Failed to invite team member' }, { status: 500 })
+  }
+
+  return Response.json({
+    message: 'Team member invited successfully',
+    team_member: teamMember,
+  })
+}
+
+const removeTeamMember = async (req: Request) => {
+  const { supabase, user } = await ensureAuth({ req })
+
+  const { team_member_id, team_subscription_id } = await req.json()
+
+  const { data: teamMember, error: teamMemberError } = await supabase
+    .from('team_members')
+    .delete()
+    .eq('member_id', team_member_id)
+    .eq('team_subscription_id', team_subscription_id)
+
+  if (teamMemberError) {
+    return Response.json({ error: 'Failed to remove team member' }, { status: 500 })
+  }
+
+  return Response.json({ message: 'Team member removed successfully' })
 }
