@@ -16,6 +16,7 @@ import {
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
+<<<<<<< HEAD
   const [
     userTeams,
     userDetails,
@@ -31,6 +32,16 @@ export default apiRoute(async (req) => {
     getUserThemeHistories(supabase, user),
     getTeamEligibility(supabase, user),
   ])
+=======
+  const [userTeams, userDetails, subscriptions, accessInfo, themeHistories] =
+    await Promise.all([
+      getUserTeams(supabase),
+      getUserDetails(supabase, user.id),
+      getSubscriptions(supabase),
+      getUserAccessInfo(supabase, user),
+      getUserThemeHistories(supabase, user),
+    ])
+>>>>>>> c9c636fbac (fix login)
 
   return Response.json({
     user,
