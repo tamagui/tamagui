@@ -42,14 +42,20 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
 
   if (name === 'ThemeSwitch') {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d3fe2e79a7 (bento: set default size for ThemeSwitch and improve optional chaining for Appearance)
     return (
       <View jc="center" ai="center" flex={1} bg="$background">
         {children}
       </View>
     )
+<<<<<<< HEAD
 =======
     return children
 >>>>>>> 07b13fdfdf (kitchen-sink: comment out unused imports and remove iOS sheet setup)
+=======
+>>>>>>> d3fe2e79a7 (bento: set default size for ThemeSwitch and improve optional chaining for Appearance)
   }
 
   if (
