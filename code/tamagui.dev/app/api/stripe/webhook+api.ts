@@ -13,6 +13,7 @@ import {
   manageSubscriptionStatusChange,
   upsertPriceRecord,
   upsertProductRecord,
+  createTeamInvoice,
 } from '~/features/auth/supabaseAdmin'
 import { sendProductRenewalEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
@@ -95,6 +96,7 @@ export default apiRoute(async (req) => {
 
         if (invoice.subscription === null) {
           await manageOneTimePayment(invoice)
+          await createTeamInvoice(invoice)
         }
         break
       }

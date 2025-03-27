@@ -414,6 +414,29 @@ export const createTeamSubscription = async (sub: Stripe.Subscription) => {
   if (teamSubscriptionError) throw teamSubscriptionError
 }
 
+export const createTeamInvoice = async (sub: Stripe.Invoice) => {
+  const teamItem = sub.lines.data.find(
+    (d) => d.price?.id === STRIPE_PRODUCTS.PRO_TEAM_SEATS_ONE_TIME.priceId
+  )
+  if (!teamItem) return
+
+  const { data: subscriptionData, error: subscriptionError } = await supabaseAdmin
+    .from('subscriptions')
+    .select('*')
+    .eq('id', sub.id)
+    .single()
+  if (subscriptionError) throw subscriptionError
+
+  const { data: teamSubscriptionData, error: teamSubscriptionError } = await supabaseAdmin
+    .from('team_subscriptions')
+    .insert({
+      owner_id: subscriptionData.user_id,
+      total_seats: teamItem.quantity || 1,
+      expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+    })
+  if (teamSubscriptionError) throw teamSubscriptionError
+}
+
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
   const { error } = await supabaseAdmin.from('subscriptions').delete().eq('id', sub.id)
   if (error) throw error
