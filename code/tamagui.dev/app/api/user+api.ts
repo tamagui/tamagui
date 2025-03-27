@@ -11,19 +11,27 @@ import {
   getUserPrivateInfo,
   getUserTeams,
   getUserThemeHistories,
+  getTeamEligibility,
 } from '~/features/user/helpers'
 
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
-  const [userTeams, userDetails, subscriptions, accessInfo, themeHistories] =
-    await Promise.all([
-      getUserTeams(supabase),
-      getUserDetails(supabase),
-      getSubscriptions(supabase),
-      getUserAccessInfo(supabase, user),
-      getUserThemeHistories(supabase, user),
-    ])
+  const [
+    userTeams,
+    userDetails,
+    subscriptions,
+    accessInfo,
+    themeHistories,
+    teamEligibility,
+  ] = await Promise.all([
+    getUserTeams(supabase),
+    getUserDetails(supabase),
+    getSubscriptions(supabase),
+    getUserAccessInfo(supabase, user),
+    getUserThemeHistories(supabase, user),
+    getTeamEligibility(supabase, user),
+  ])
 
   return Response.json({
     user,
@@ -37,5 +45,6 @@ export default apiRoute(async (req) => {
     },
     accessInfo,
     themeHistories,
+    teamEligibility,
   } satisfies UserContextType)
 })
