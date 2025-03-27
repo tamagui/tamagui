@@ -166,7 +166,7 @@ export const NewAccountModal = () => {
                     Manage
                   </Tab>
                 </YStack>
-                {subscriptionStatus.teamSeats > -1 && (
+                {subscriptionStatus.teamSeats > 0 && (
                   <YStack width={'33.3333%'} f={1}>
                     <Tab isActive={currentTab === 'team'} value="team">
                       Team
