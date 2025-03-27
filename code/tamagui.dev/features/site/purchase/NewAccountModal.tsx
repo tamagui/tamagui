@@ -6,7 +6,7 @@ import type {
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { router } from 'one'
-import { useState } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
 import {
@@ -37,6 +37,7 @@ import { Link } from '../../../components/Link'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
 import { useTeamSeats, type TeamMember } from './useTeamSeats'
+import { debounce } from 'lodash'
 
 class AccountModal {
   show = false
@@ -1163,8 +1164,46 @@ const ManageTab = ({
   )
 }
 
+type GitHubUser = {
+  id: number
+  full_name: string | null
+  avatar_url: string | null
+}
+
 const TeamTab = () => {
   const { data: teamData, error, isLoading, mutate } = useTeamSeats()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
+  const [searchResults, setSearchResults] = useState<GitHubUser[]>([])
+
+  const searchUsers = useMemo(
+    () =>
+      debounce(async (query: string) => {
+        if (!query) {
+          setSearchResults([])
+          return
+        }
+        setIsSearching(true)
+        try {
+          const response = await fetch(`/api/github/users?q=${query}`)
+          const data = await response.json()
+          if (response.ok) {
+            setSearchResults(data.users)
+          } else {
+            console.error('Search failed:', data.error)
+          }
+        } catch (error) {
+          console.error('Search error:', error)
+        } finally {
+          setIsSearching(false)
+        }
+      }, 300),
+    []
+  )
+
+  useEffect(() => {
+    searchUsers(searchQuery)
+  }, [searchQuery, searchUsers])
 
   if (isLoading) {
     return (
@@ -1217,6 +1256,44 @@ const TeamTab = () => {
 
       <Separator />
 
+      {teamData.subscription.used_seats < teamData.subscription.total_seats && (
+        <YStack gap="$4">
+          <H4>Invite Team Member</H4>
+          <Form gap="$2">
+            <XStack gap="$2" ai="flex-end">
+              <Fieldset f={1}>
+                <Label htmlFor="github-username">GitHub Username</Label>
+                <Input
+                  id="github-username"
+                  placeholder="Search GitHub users..."
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                />
+              </Fieldset>
+            </XStack>
+          </Form>
+
+          <YStack gap="$2">
+            {isSearching ? (
+              <XStack p="$2" ai="center" jc="center">
+                <Spinner size="small" />
+              </XStack>
+            ) : (
+              searchResults.map((githubUser) => (
+                <GitHubUserRow
+                  key={githubUser.id}
+                  user={githubUser}
+                  teamSubscriptionId={teamData.subscription.id}
+                  onInvite={mutate}
+                />
+              ))
+            )}
+          </YStack>
+        </YStack>
+      )}
+
+      <Separator />
+
       <YStack gap="$4">
         <H4>Team Members</H4>
         <YStack gap="$2">
@@ -1224,19 +1301,64 @@ const TeamTab = () => {
             <TeamMemberRow key={member.id} member={member} onRemove={mutate} />
           ))}
         </YStack>
-
-        {teamData.subscription.used_seats < teamData.subscription.total_seats && (
-          <Button
-            theme="accent"
-            onPress={() => {
-              // TODO: Implement invite modal
-            }}
-          >
-            Invite Member
-          </Button>
-        )}
       </YStack>
     </YStack>
+  )
+}
+
+const GitHubUserRow = ({
+  user,
+  teamSubscriptionId,
+  onInvite,
+}: {
+  user: GitHubUser
+  teamSubscriptionId: string
+  onInvite: () => void
+}) => {
+  const [isInviting, setIsInviting] = useState(false)
+
+  const handleInvite = async () => {
+    setIsInviting(true)
+    try {
+      const res = await fetch('/api/team-seat/invite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // body: JSON.stringify({
+        //   github_username: user.login,
+        //   team_subscription_id: teamSubscriptionId,
+        // }),
+      })
+      if (!res.ok) throw new Error('Failed to invite user')
+      onInvite()
+    } catch (error) {
+      alert('Failed to invite user')
+    } finally {
+      setIsInviting(false)
+    }
+  }
+
+  return (
+    <XStack
+      borderWidth={1}
+      borderColor="$color3"
+      borderRadius="$4"
+      p="$3"
+      ai="center"
+      jc="space-between"
+    >
+      <XStack ai="center" gap="$3">
+        <Avatar circular size="$3">
+          <Avatar.Image source={{ uri: user.avatar_url ?? '' }} />
+        </Avatar>
+        <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
+      </XStack>
+
+      <Button theme="accent" size="$2" onPress={handleInvite} disabled={isInviting}>
+        {isInviting ? 'Inviting...' : 'Invite'}
+      </Button>
+    </XStack>
   )
 }
 

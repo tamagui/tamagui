@@ -19,13 +19,7 @@ const getTeamSeats = async (req: Request) => {
     .from('team_subscriptions')
     .select(`
       *,
-      team_members:team_members(
-        id,
-        member_id,
-        role,
-        status,
-        joined_at
-      )
+      team_members(*)
     `)
     .eq('owner_id', user.id)
     .single()
@@ -45,7 +39,7 @@ const getTeamSeats = async (req: Request) => {
 
   const { data: memberDetails, error: memberError } = await supabase
     .from('users')
-    .select('id, email, full_name, avatar_url')
+    .select('id, full_name, avatar_url')
     .in('id', memberIds)
 
   if (memberError) {
