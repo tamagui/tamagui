@@ -8,7 +8,6 @@ import {
   getSubscriptions,
   getUserAccessInfo,
   getUserDetails,
-  getUserPrivateInfo,
   getUserTeams,
   getUserThemeHistories,
 } from '~/features/user/helpers'
@@ -19,7 +18,7 @@ export default apiRoute(async (req) => {
   const [userTeams, userDetails, subscriptions, accessInfo, themeHistories] =
     await Promise.all([
       getUserTeams(supabase),
-      getUserDetails(supabase),
+      getUserDetails(supabase, user.id),
       getSubscriptions(supabase),
       getUserAccessInfo(supabase, user),
       getUserThemeHistories(supabase, user),
