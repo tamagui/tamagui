@@ -11,7 +11,7 @@ const PRO_ONE_TIME_PRICE_ID = STRIPE_PRODUCTS.PRO_ONE_TIME.priceId
 
 // New Team Seats Price IDs
 const TEAM_SEATS_SUBSCRIPTION_PRICE_ID = STRIPE_PRODUCTS.PRO_TEAM_SEATS.priceId
-
+const TEAM_SEATS_ONE_TIME_PRICE_ID = STRIPE_PRODUCTS.PRO_TEAM_SEATS_ONE_TIME.priceId
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
@@ -54,6 +54,14 @@ export default apiRoute(async (req) => {
         customer: stripeCustomerId,
         price: PRO_ONE_TIME_PRICE_ID,
       })
+
+      if (teamSeatCount > 0) {
+        await stripe.invoiceItems.create({
+          customer: stripeCustomerId,
+          price: TEAM_SEATS_ONE_TIME_PRICE_ID,
+          quantity: teamSeatCount,
+        })
+      }
 
       // Create and pay invoice
       const invoice = await stripe.invoices.create({
