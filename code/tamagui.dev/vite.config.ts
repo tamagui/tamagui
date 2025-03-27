@@ -101,6 +101,12 @@ export default {
         // },
       },
 
+      router: {
+        experimental: {
+          preventLayoutRemounting: true,
+        },
+      },
+
       ssr: {
         autoDepsOptimization: {
           include: /.*/,
