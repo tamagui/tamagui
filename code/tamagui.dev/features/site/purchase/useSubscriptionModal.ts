@@ -14,7 +14,7 @@ export const useSubscriptionModal = () => {
 
   const showAppropriateModal = () => {
     if (isLoading) return
-    if (!subscriptionStatus.pro) {
+    if (subscriptionStatus.pro) {
       accountModal.show = true
       // purchaseModal.show = true // DEBUG
     } else {
