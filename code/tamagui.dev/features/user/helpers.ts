@@ -10,8 +10,12 @@ import { tiersPriority } from '../stripe/tiers'
 import { getArray } from '~/helpers/getArray'
 import { ThemeSuiteSchema } from '../studio/theme/getTheme'
 import type { ThemeSuiteItemData } from '../studio/theme/types'
-export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase.from('users').select('*').single()
+
+export const getUserDetails = async (
+  supabase: SupabaseClient<Database>,
+  userId: string
+) => {
+  const result = await supabase.from('users').select('*').eq('id', userId).single()
 
   if (result.error) {
     throw new Error(result.error.message)
