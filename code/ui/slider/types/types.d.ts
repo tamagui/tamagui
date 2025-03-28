@@ -1,8 +1,7 @@
 import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/core';
-import type { Scope } from '@tamagui/create-context';
 import type { SizableStackProps } from '@tamagui/stacks';
 export type ScopedProps<P> = P & {
-    __scopeSlider?: Scope;
+    __scopeSlider?: string;
 };
 export type Direction = 'ltr' | 'rtl';
 type SliderEventProps = {
