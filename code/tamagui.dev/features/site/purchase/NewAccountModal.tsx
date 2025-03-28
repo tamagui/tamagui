@@ -81,6 +81,12 @@ export const NewAccountModal = () => {
     )
   )
 
+  const isTeamAdmin = activeSubscriptions?.some((sub) =>
+    sub.subscription_items?.some(
+      (item) => item.price?.product?.name === 'Tamagui Pro Team Seats'
+    )
+  )
+
   return (
     <Dialog
       modal
@@ -166,7 +172,7 @@ export const NewAccountModal = () => {
                     Manage
                   </Tab>
                 </YStack>
-                {subscriptionStatus.teamSeats > 0 && (
+                {isTeamAdmin && (
                   <YStack width={'33.3333%'} f={1}>
                     <Tab isActive={currentTab === 'team'} value="team">
                       Team
