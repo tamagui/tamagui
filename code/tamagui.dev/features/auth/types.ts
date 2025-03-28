@@ -5,6 +5,7 @@ import type {
   getUserAccessInfo,
   getUserDetails,
   getUserThemeHistories,
+  getTeamEligibility,
 } from '../user/helpers'
 
 export type UserContextType = {
@@ -19,4 +20,5 @@ export type UserContextType = {
   }
   accessInfo: Awaited<ReturnType<typeof getUserAccessInfo>>
   themeHistories?: Awaited<ReturnType<typeof getUserThemeHistories>>
+  teamEligibility: Awaited<ReturnType<typeof getTeamEligibility>>
 }

@@ -17,6 +17,16 @@ export const STRIPE_PRODUCTS = {
     priceId: DEV ? 'price_1R5cfBFQGtHoG6xc1S72yoOl' : 'price_1Qs41HFQGtHoG6xcerDq7RJZ',
   },
 
+  PRO_TEAM_SEATS: {
+    productId: DEV ? 'prod_S0rGywhQ7q0u5O' : 'prod_Rxu0x7jR0nWJSv',
+    priceId: DEV ? 'price_1R6pXrFQGtHoG6xcaXMaE40I' : 'price_1R3yCAFQGtHoG6xcatVUMGL4',
+  },
+
+  PRO_TEAM_SEATS_ONE_TIME: {
+    productId: DEV ? 'prod_S0rGywhQ7q0u5O' : 'prod_Rxu0x7jR0nWJSv',
+    priceId: DEV ? 'price_1R6pcEFQGtHoG6xcrNgf45BL' : 'price_1R3yCaFQGtHoG6xcwQ8EtfDu',
+  },
+
   /**
    * $800/month per tier
    */

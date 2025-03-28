@@ -227,3 +227,27 @@ export async function getUserThemeHistories(
     return []
   }
 }
+
+/**
+ * Get the team eligibility for a user
+ * @param supabase - Supabase client instance
+ * @param user - Current user object
+ */
+export async function getTeamEligibility(
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) {
+  const { data, error } = await supabase
+    .from('team_members')
+    .select('*')
+    .eq('member_id', user?.id ?? '')
+    .eq('status', 'active')
+
+  if (error) {
+    throw error
+  }
+
+  return {
+    isProMember: !!data.length,
+  }
+}
