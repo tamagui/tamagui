@@ -17,6 +17,9 @@ export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bb1ec591ea (checkout from pro-team-plan branch)
   const [
     userTeams,
     userDetails,
@@ -32,6 +35,7 @@ export default apiRoute(async (req) => {
     getUserThemeHistories(supabase, user),
     getTeamEligibility(supabase, user),
   ])
+<<<<<<< HEAD
 =======
   const [userTeams, userDetails, subscriptions, accessInfo, themeHistories] =
     await Promise.all([
@@ -42,6 +46,8 @@ export default apiRoute(async (req) => {
       getUserThemeHistories(supabase, user),
     ])
 >>>>>>> c9c636fbac (fix login)
+=======
+>>>>>>> bb1ec591ea (checkout from pro-team-plan branch)
 
   return Response.json({
     user,

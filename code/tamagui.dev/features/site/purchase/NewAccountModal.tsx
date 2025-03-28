@@ -172,7 +172,11 @@ export const NewAccountModal = () => {
                     Manage
                   </Tab>
                 </YStack>
+<<<<<<< HEAD
                 {isTeamAdmin && (
+=======
+                {subscriptionStatus.teamSeats > 0 && (
+>>>>>>> bb1ec591ea (checkout from pro-team-plan branch)
                   <YStack width={'33.3333%'} f={1}>
                     <Tab isActive={currentTab === 'team'} value="team">
                       Team
