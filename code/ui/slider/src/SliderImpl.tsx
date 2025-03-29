@@ -81,7 +81,7 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
       onStepKeyDown,
       ...sliderProps
     } = props
-    const context = useSliderContext(SLIDER_NAME, __scopeSlider)
+    const context = useSliderContext(__scopeSlider)
     return (
       <SliderFrame
         size="$4"

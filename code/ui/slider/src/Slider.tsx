@@ -315,7 +315,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
   (props: ScopedProps<SliderTrackProps>, forwardedRef) => {
     const { __scopeSlider, ...trackProps } = props
-    const context = useSliderContext(TRACK_NAME, __scopeSlider)
+    const context = useSliderContext(__scopeSlider)
     return (
       <SliderTrackFrame
         data-disabled={context.disabled ? '' : undefined}
@@ -349,8 +349,8 @@ type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>
 const SliderTrackActive = React.forwardRef<View, SliderTrackActiveProps>(
   (props: ScopedProps<SliderTrackActiveProps>, forwardedRef) => {
     const { __scopeSlider, ...rangeProps } = props
-    const context = useSliderContext(RANGE_NAME, __scopeSlider)
-    const orientation = useSliderOrientationContext(RANGE_NAME, __scopeSlider)
+    const context = useSliderContext(__scopeSlider)
+    const orientation = useSliderOrientationContext(__scopeSlider)
     const ref = React.useRef<View>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     const valuesCount = context.values.length
@@ -446,9 +446,9 @@ export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraPro
 
 const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
   function SliderThumb(props: ScopedProps<SliderThumbProps>, forwardedRef) {
-    const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props
-    const context = useSliderContext(THUMB_NAME, __scopeSlider)
-    const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
+    const { __scopeSlider, index, circular, size: sizeProp, ...thumbProps } = props
+    const context = useSliderContext(__scopeSlider)
+    const orientation = useSliderOrientationContext(__scopeSlider)
     const [thumb, setThumb] = React.useState<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, setThumb as any)
 
@@ -516,6 +516,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
           [orientation.startEdge]: `${percent}%`,
         }}
         size={sizeIn}
+        circular={circular}
         {...thumbProps}
         onLayout={(e) => {
           setSize(e.nativeEvent.layout[orientation.sizeProp])
