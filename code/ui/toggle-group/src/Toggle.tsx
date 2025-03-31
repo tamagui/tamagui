@@ -61,14 +61,15 @@ export const ToggleFrame = styled(ThemeableStack, {
     active: {
       true: {
         zIndex: 1,
+        backgroundColor: '$background',
 
         hoverStyle: {
-          backgroundColor: '$background',
+          backgroundColor: '$backgroundHover',
         },
 
         focusStyle: {
-          borderColor: '$borderColor',
-          backgroundColor: '$background',
+          backgroundColor: '$backgroundFocus',
+          borderColor: '$borderColorFocus',
         },
       },
     },
@@ -122,6 +123,7 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
         {...(!props.unstyled && {
           theme: pressed ? 'active' : null,
           themeShallow: true,
+          themeInverse: pressed,
         })}
         active={!props.unstyled ? pressed : undefined}
         aria-pressed={pressed}
