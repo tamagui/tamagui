@@ -24,9 +24,7 @@ export const useStackedZIndex = (props: {
         )
         return Math.max(stackZIndex === true ? 1 : stackZIndex, highest + 1)
       }
-      if (zIndexProp) {
-        return zIndexProp
-      }
+      return zIndexProp || 1000
     }, [stackZIndex])
 
     useEffect(() => {
