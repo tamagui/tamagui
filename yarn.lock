@@ -7535,6 +7535,7 @@ __metadata:
     "@tamagui/react-native-use-responder-events": "workspace:*"
     "@tamagui/simple-hash": "workspace:*"
     "@tamagui/web": "workspace:*"
+    react: "npm:*"
   languageName: unknown
   linkType: soft
 
