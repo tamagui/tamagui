@@ -1,3 +1,6 @@
+- tamagui.dev the right side quick nav on docs isnt updating on page nav
+  - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
+
 - we need to actually in validStyleProps probably have the web-only ones be on a new object like "webOnly" and then actually filtered out on native so they dont clutter things.
 
 - fix react 19 + nextjs 15
