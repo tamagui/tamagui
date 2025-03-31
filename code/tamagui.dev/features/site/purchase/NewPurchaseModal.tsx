@@ -52,14 +52,6 @@ class PurchaseModal {
     teamSeats: 0,
   }
 }
-
-type SelectedPrices = {
-  disableAutoRenew: boolean
-  chatSupport: boolean
-  supportTier: number
-  teamSeats: number
-}
-
 export const purchaseModal = createStore(PurchaseModal)
 export const usePurchaseModal = createUseStore(PurchaseModal)
 
