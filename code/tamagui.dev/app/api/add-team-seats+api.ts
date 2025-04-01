@@ -13,13 +13,14 @@ export default apiRoute(async (req) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
-  const { paymentMethodId, subscriptionId, additionalSeats } = await req.json()
-
-  if (!paymentMethodId || !subscriptionId || !additionalSeats) {
-    return Response.json({ error: 'Missing required fields' }, { status: 400 })
-  }
-
   try {
+    const body = await req.json()
+    const { paymentMethodId, subscriptionId, additionalSeats, couponId } = body
+
+    if (!paymentMethodId || !subscriptionId || !additionalSeats) {
+      return Response.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
     const { user } = await ensureAuth({ req })
     const stripeCustomerId = await createOrRetrieveCustomer({
       email: user.email!,
@@ -47,53 +48,109 @@ export default apiRoute(async (req) => {
     })
 
     if (isSubscription) {
-      // Add seats to existing subscription
-      const updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
-        items: [
-          {
-            price: TEAM_SEATS_SUBSCRIPTION_PRICE_ID,
-            quantity: additionalSeats,
-          },
-        ],
-        payment_behavior: 'default_incomplete',
-        payment_settings: { save_default_payment_method: 'on_subscription' },
-        expand: ['latest_invoice.payment_intent'],
-      })
+      try {
+        // First get the existing subscription items
+        const existingSubscription = await stripe.subscriptions.retrieve(subscriptionId, {
+          expand: ['items'],
+        })
 
-      const latestInvoice = updatedSubscription.latest_invoice as Stripe.Invoice
-      const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent
+        // Find the team seats subscription item
+        const teamSeatsItem = existingSubscription.items.data.find(
+          (item) => item.price.id === TEAM_SEATS_SUBSCRIPTION_PRICE_ID
+        )
 
-      return Response.json({
-        id: updatedSubscription.id,
-        clientSecret: paymentIntent.client_secret,
-        type: 'subscription',
-      })
+        let updatedSubscription
+        if (teamSeatsItem) {
+          // Update existing team seats subscription
+          updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
+            items: [
+              {
+                id: teamSeatsItem.id,
+                quantity: teamSeatsItem.quantity + additionalSeats,
+              },
+            ],
+            payment_behavior: 'default_incomplete',
+            payment_settings: { save_default_payment_method: 'on_subscription' },
+            expand: ['latest_invoice.payment_intent'],
+            coupon: couponId || undefined,
+          })
+        } else {
+          // Create new team seats subscription
+          updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
+            items: [
+              {
+                price: TEAM_SEATS_SUBSCRIPTION_PRICE_ID,
+                quantity: additionalSeats,
+              },
+            ],
+            payment_behavior: 'default_incomplete',
+            payment_settings: { save_default_payment_method: 'on_subscription' },
+            expand: ['latest_invoice.payment_intent'],
+            coupon: couponId || undefined,
+          })
+        }
+
+        const latestInvoice = updatedSubscription.latest_invoice as Stripe.Invoice
+        const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent
+
+        if (!paymentIntent?.client_secret) {
+          throw new Error('No client secret found in payment intent')
+        }
+
+        return Response.json({
+          id: updatedSubscription.id,
+          clientSecret: paymentIntent.client_secret,
+          type: 'subscription',
+        })
+      } catch (err) {
+        const error = err as Error
+        return Response.json(
+          { error: 'Failed to update subscription', details: error.message },
+          { status: 500 }
+        )
+      }
     } else {
-      // Create one-time payment invoice for additional seats
-      await stripe.invoiceItems.create({
-        customer: stripeCustomerId,
-        price: TEAM_SEATS_ONE_TIME_PRICE_ID,
-        quantity: additionalSeats,
-      })
+      try {
+        // Create one-time payment invoice for additional seats
+        await stripe.invoiceItems.create({
+          customer: stripeCustomerId,
+          price: TEAM_SEATS_ONE_TIME_PRICE_ID,
+          quantity: additionalSeats,
+        })
 
-      const invoice = await stripe.invoices.create({
-        customer: stripeCustomerId,
-        collection_method: 'charge_automatically',
-        auto_advance: true,
-      })
+        const invoice = await stripe.invoices.create({
+          customer: stripeCustomerId,
+          collection_method: 'charge_automatically',
+          auto_advance: true,
+          discounts: couponId ? [{ coupon: couponId }] : [],
+        })
 
-      const paidInvoice = await stripe.invoices.pay(invoice.id, {
-        expand: ['payment_intent'],
-      })
+        const paidInvoice = await stripe.invoices.pay(invoice.id, {
+          expand: ['payment_intent'],
+        })
 
-      return Response.json({
-        id: invoice.id,
-        status: invoice.status,
-        type: 'invoice',
-      })
+        if (!paidInvoice) {
+          throw new Error('Failed to process invoice payment')
+        }
+
+        return Response.json({
+          id: invoice.id,
+          status: invoice.status,
+          type: 'invoice',
+        })
+      } catch (err) {
+        const error = err as Error
+        return Response.json(
+          { error: 'Failed to process payment', details: error.message },
+          { status: 500 }
+        )
+      }
     }
-  } catch (error) {
-    console.error('Error adding team seats:', error)
-    return Response.json({ error: 'Failed to add team seats' }, { status: 500 })
+  } catch (err) {
+    const error = err as Error
+    return Response.json(
+      { error: 'Failed to add team seats', details: error.message },
+      { status: 500 }
+    )
   }
 })

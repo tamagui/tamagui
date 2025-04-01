@@ -4,6 +4,7 @@ import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useState } from 'react'
+import { z } from 'zod'
 import {
   Button,
   Dialog,
@@ -18,14 +19,32 @@ import {
   Theme,
   useTheme,
   useThemeName,
-  Select,
-  Adapt,
-  Sheet,
+  SizableText,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 
 const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 const stripePromise = loadStripe(key || '')
+
+const couponSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  percent_off: z.number().nullable(),
+  amount_off: z.number().nullable(),
+})
+
+type Coupon = z.infer<typeof couponSchema>
+
+const couponResponseSchema = z.discriminatedUnion('valid', [
+  z.object({
+    valid: z.literal(true),
+    coupon: couponSchema,
+  }),
+  z.object({
+    valid: z.literal(false),
+    message: z.string(),
+  }),
+])
 
 class AddTeamMemberModal {
   show = false
@@ -42,6 +61,7 @@ const PaymentForm = ({
   additionalSeats,
   isProcessing,
   setIsProcessing,
+  couponId,
 }: {
   onSuccess: () => void
   onError: (error: Error | StripeError) => void
@@ -49,6 +69,7 @@ const PaymentForm = ({
   additionalSeats: number
   isProcessing: boolean
   setIsProcessing: (value: boolean) => void
+  couponId: string
 }) => {
   const stripe = useStripe()
   const elements = useElements()
@@ -87,6 +108,7 @@ const PaymentForm = ({
           paymentMethodId: paymentMethod.id,
           subscriptionId,
           additionalSeats,
+          couponId: couponId || undefined,
         }),
       })
 
@@ -96,6 +118,12 @@ const PaymentForm = ({
       }
 
       if (data.type === 'subscription' && data.clientSecret) {
+        const paymentIntent = await stripe.retrievePaymentIntent(data.clientSecret)
+        if (paymentIntent.paymentIntent?.status === 'succeeded') {
+          onSuccess()
+          return
+        }
+
         const result = await stripe.confirmPayment({
           elements,
           redirect: 'if_required',
@@ -150,6 +178,51 @@ export const AddTeamMemberModalComponent = () => {
   const { data: userData, isLoading, refresh } = useUser()
   const theme = useTheme()
   const themeName = useThemeName()
+  const [showCoupon, setShowCoupon] = useState(false)
+  const [couponCode, setCouponCode] = useState('')
+  const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
+  const [couponError, setCouponError] = useState<string | null>(null)
+
+  const handleApplyCoupon = async () => {
+    try {
+      setIsProcessing(true)
+      const response = await fetch('/api/validate-coupon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: couponCode }),
+      })
+
+      const result = await response.json()
+      const data = couponResponseSchema.parse(result)
+
+      if (data.valid) {
+        setFinalCoupon(data.coupon)
+        setShowCoupon(false)
+      } else {
+        setCouponError(data.message)
+      }
+    } catch (error) {
+      setCouponError('Failed to apply coupon')
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const calculateDiscountedAmount = (amount: number, coupon: Coupon | null): number => {
+    if (!coupon) return amount
+
+    if (coupon.percent_off) {
+      return amount * (1 - coupon.percent_off / 100)
+    }
+
+    if (coupon.amount_off) {
+      return Math.max(0, amount - coupon.amount_off / 100)
+    }
+
+    return amount
+  }
 
   const appearance: Appearance = {
     theme: themeName.startsWith('dark') ? 'night' : 'stripe',
@@ -170,6 +243,9 @@ export const AddTeamMemberModalComponent = () => {
   const handleError = (error: Error | StripeError) => {
     console.error('Payment error:', error)
   }
+
+  const baseAmount = additionalSeats * 100
+  const amount = Math.ceil(calculateDiscountedAmount(baseAmount, finalCoupon))
 
   return (
     <Dialog
@@ -217,9 +293,59 @@ export const AddTeamMemberModalComponent = () => {
                   keyboardType="numeric"
                   width={200}
                 />
-                <Paragraph theme="alt2">
-                  Cost: ${additionalSeats * 100}/year per seat
-                </Paragraph>
+                <YStack ai="flex-end">
+                  {finalCoupon && (
+                    <Paragraph
+                      ff="$mono"
+                      size="$3"
+                      o={0.5}
+                      textDecorationLine="line-through"
+                    >
+                      Cost: ${baseAmount}/year per seat
+                    </Paragraph>
+                  )}
+                  <Paragraph theme="alt2">Cost: ${amount}/year per seat</Paragraph>
+                </YStack>
+              </YStack>
+
+              <YStack gap="$2">
+                <SizableText
+                  theme="alt1"
+                  o={0.3}
+                  cursor="pointer"
+                  hoverStyle={{ opacity: 0.8 }}
+                  onPress={() => setShowCoupon((x) => !x)}
+                >
+                  {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+                </SizableText>
+                {showCoupon && (
+                  <XStack gap="$2" ai="center">
+                    <Input
+                      f={1}
+                      size="$3"
+                      borderWidth={1}
+                      placeholder="Enter code"
+                      value={couponCode}
+                      onChangeText={setCouponCode}
+                    />
+                    <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                      Apply
+                    </Button>
+                  </XStack>
+                )}
+                {couponError && (
+                  <Paragraph size="$2" color="$red10">
+                    {couponError}
+                  </Paragraph>
+                )}
+                {finalCoupon && (
+                  <Paragraph size="$2" color="$green10">
+                    Coupon applied:{' '}
+                    {finalCoupon.percent_off
+                      ? `${finalCoupon.percent_off}% off`
+                      : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                  </Paragraph>
+                )}
               </YStack>
 
               <Elements
@@ -229,6 +355,8 @@ export const AddTeamMemberModalComponent = () => {
                   mode: 'payment',
                   currency: 'usd',
                   amount: Math.max(1, additionalSeats) * 10000,
+                  paymentMethodCreation: 'manual',
+                  paymentMethodTypes: ['card', 'link'],
                 }}
               >
                 <PaymentForm
@@ -238,6 +366,7 @@ export const AddTeamMemberModalComponent = () => {
                   additionalSeats={Math.max(1, additionalSeats)}
                   isProcessing={isProcessing}
                   setIsProcessing={setIsProcessing}
+                  couponId={finalCoupon?.id || ''}
                 />
               </Elements>
             </YStack>
