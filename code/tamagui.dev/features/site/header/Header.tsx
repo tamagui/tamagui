@@ -633,6 +633,10 @@ const HeaderMenuContents = (props: { id: ID }) => {
               >
                 Once you create themes, visit the Bento page and open this menu to preview
                 them.
+                {`\n`}
+                <Link href="/bento" theme="blue" style={{ pointerEvents: 'auto' }}>
+                  Go to Bento to preview your themes →
+                </Link>
               </Paragraph>
             </>
           ) : (
