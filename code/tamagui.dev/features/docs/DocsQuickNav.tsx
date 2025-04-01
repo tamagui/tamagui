@@ -1,18 +1,22 @@
 import { classNames } from '@tamagui/remove-scroll'
-import type { Href } from 'one'
+import { href, usePathname, type Href } from 'one'
 import { useEffect, useState } from 'react'
 import {
+  Button,
   Circle,
   H4,
+  Label,
   Paragraph,
   ScrollView,
   Separator,
+  SizableText,
   Theme,
+  XGroup,
   XStack,
   YStack,
 } from 'tamagui'
 
-import { Link, type LinkProps } from '~/components/Link'
+import { ButtonLink, Link, type LinkProps } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { TakeoutButton } from '../site/TakeoutButton'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
@@ -35,6 +39,7 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
 
 export function DocsQuickNav() {
   const [headings, setHeadings] = useState<HTMLHeadingElement[]>([])
+  const pathname = usePathname()
 
   useEffect(() => {
     const headingElements: HTMLHeadingElement[] = Array.from(
@@ -100,17 +105,47 @@ export function DocsQuickNav() {
         </ScrollView>
       </YStack>
 
-      <YStack gap="$3" my="$6">
-        <Theme name="tan">
-          <Link width="100%" href="/bento">
-            <BentoButton />
+      <YStack gap="$5" my="$6">
+        <XStack ai="center" gap="$3">
+          <XGroup borderRadius="$8">
+            <Label ff="$mono" px="$3" size="$3" bg="$color3">
+              Format:
+            </Label>
+
+            <ButtonLink
+              fontFamily="$mono"
+              href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
+              size="$3"
+              target="_blank"
+            >
+              .md
+            </ButtonLink>
+          </XGroup>
+
+          <Link
+            target="_blank"
+            href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
+          >
+            <SizableText size="$3" ff="$mono">
+              llms.txt
+            </SizableText>
           </Link>
-        </Theme>
-        <Theme name="gray">
-          <Link width="100%" href="/takeout">
-            <TakeoutButton />
-          </Link>
-        </Theme>
+        </XStack>
+
+        <Separator />
+
+        <YStack gap="$2">
+          <Theme name="tan">
+            <Link width="100%" href="/bento">
+              <BentoButton />
+            </Link>
+          </Theme>
+          <Theme name="gray">
+            <Link width="100%" href="/takeout">
+              <TakeoutButton />
+            </Link>
+          </Theme>
+        </YStack>
       </YStack>
     </YStack>
   )

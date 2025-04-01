@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-internals",
-  "version": "1.125.31-1743030157133",
+  "version": "1.125.32",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -35,7 +35,8 @@
     "@tamagui/react-native-use-pressable": "workspace:*",
     "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/simple-hash": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
