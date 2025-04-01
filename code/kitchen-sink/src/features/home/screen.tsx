@@ -126,9 +126,9 @@ export const LinkListItem = ({
 }
 
 const demos = [
-  {
-    pages: [{ title: 'Bento', route: '/bento' }],
-  },
+  // {
+  //   pages: [{ title: 'Bento', route: '/bento' }],
+  // },
   {
     pages: [
       { title: 'Sandbox', route: '/sandbox' },
