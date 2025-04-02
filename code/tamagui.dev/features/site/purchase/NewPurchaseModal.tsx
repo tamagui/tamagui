@@ -87,9 +87,23 @@ export function PurchaseModalContents() {
   const [error, setError] = useState<Error | StripeError | null>(null)
   const { gtMd } = useMedia()
 
-  const { data: userData } = useUser()
+  const { data: userData, subscriptionStatus } = useUser()
   const { parityDeals } = useParityDiscount()
   const [teamSeats, setTeamSeats] = useState(0)
+
+  const hasSubscribedBefore = useMemo(() => {
+    return (
+      userData?.subscriptions?.some((sub) =>
+        sub.subscription_items.some(
+          (item) =>
+            (item.price?.product?.name === 'Tamagui Pro' ||
+              item.price?.product?.name === 'Takeout Stack') &&
+            sub.ended_at &&
+            new Date(sub.ended_at) < new Date()
+        )
+      ) ?? false
+    )
+  }, [userData])
 
   useEffect(() => {
     if (parityDeals) {
@@ -432,6 +446,29 @@ export function PurchaseModalContents() {
                               {parityDeals.couponCode}
                             </Text>{' '}
                             at checkout for {parityDeals.discountPercentage}% off
+                          </Paragraph>
+                        </XStack>
+                      </Theme>
+                    )}
+                    {hasSubscribedBefore && (
+                      <Theme name="yellow">
+                        <XStack
+                          mb="$2"
+                          backgroundColor="$color3"
+                          borderRadius="$4"
+                          borderWidth={0.5}
+                          borderColor="$color8"
+                          p="$2"
+                        >
+                          <Paragraph size="$3" color="$color11" textWrap="balance">
+                            You have subscribed before so you are eligible for a 25%
+                            discount.
+                            <br />
+                            Use code{' '}
+                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
+                              {subscriptionStatus.couponCodes.previouslySubscribed}
+                            </Text>{' '}
+                            at checkout for 25% off
                           </Paragraph>
                         </XStack>
                       </Theme>

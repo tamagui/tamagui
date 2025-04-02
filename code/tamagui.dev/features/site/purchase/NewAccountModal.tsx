@@ -1292,7 +1292,7 @@ const TeamTab = () => {
                 <Label htmlFor="github-username">GitHub Username</Label>
                 <Input
                   id="github-username"
-                  placeholder="Search GitHub users..."
+                  placeholder="Search GitHub users by username, email, or id"
                   value={searchQuery}
                   onChangeText={setSearchQuery}
                 />
