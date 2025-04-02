@@ -9,14 +9,14 @@ export function SelectDemo() {
   return (
     <YStack gap="$4">
       <XStack w={'100%'} ai="center" gap="$4">
-        <Label htmlFor="select-demo-1" f={1} miw={80}>
+        <Label htmlFor="select-demo-1" flex={1} miw={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </XStack>
 
       <XStack w={'100%'} ai="center" gap="$4">
-        <Label htmlFor="select-demo-2" f={1} miw={80}>
+        <Label htmlFor="select-demo-2" flex={1} miw={80}>
           Native
         </Label>
         <SelectDemoItem id="select-demo-2" native />
@@ -34,7 +34,7 @@ export function SelectDemoItem(props: SelectProps) {
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
-      <Adapt when="sm" platform="touch">
+      <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom animation="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>

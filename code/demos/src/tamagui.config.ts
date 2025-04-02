@@ -1,7 +1,11 @@
 import { createTamagui } from 'tamagui'
 import { config } from '@tamagui/tamagui-dev-config'
+import { media } from '@tamagui/config/v4'
 
-const tamaConf = createTamagui(config)
+const tamaConf = createTamagui({
+  ...config,
+  media,
+})
 
 export type Conf = typeof tamaConf
 
