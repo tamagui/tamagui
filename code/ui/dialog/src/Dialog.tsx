@@ -594,7 +594,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           onInteractOutside={onInteractOutside}
           // @ts-ignore
           ref={composedRefs}
-          onDismiss={() => context.onOpenChange(false)}
+          onDismiss={() => context?.onOpenChange?.(false)}
         >
           <FocusScope
             loop
