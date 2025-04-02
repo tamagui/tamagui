@@ -64,7 +64,9 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab1"
         >
-          <SizableText fontFamily="$body" textAlign="center">Profile</SizableText>
+          <SizableText fontFamily="$body" textAlign="center">
+            Profile
+          </SizableText>
         </Tabs.Tab>
         <Tabs.Tab
           focusStyle={{
@@ -73,7 +75,9 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab2"
         >
-          <SizableText fontFamily="$body" textAlign="center">Connections</SizableText>
+          <SizableText fontFamily="$body" textAlign="center">
+            Connections
+          </SizableText>
         </Tabs.Tab>
         <Tabs.Tab
           focusStyle={{
@@ -82,7 +86,9 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab3"
         >
-          <SizableText fontFamily="$body" textAlign="center">Notifications</SizableText>
+          <SizableText fontFamily="$body" textAlign="center">
+            Notifications
+          </SizableText>
         </Tabs.Tab>
       </Tabs.List>
       <Separator />
