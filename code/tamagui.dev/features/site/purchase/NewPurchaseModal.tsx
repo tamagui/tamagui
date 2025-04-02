@@ -96,7 +96,7 @@ export function PurchaseModalContents() {
       userData?.subscriptions?.some((sub) =>
         sub.subscription_items.some(
           (item) =>
-            (item.price?.product?.name === 'Tamagui Pro' ||
+            (item.price?.product?.name === 'Bento' ||
               item.price?.product?.name === 'Takeout Stack') &&
             sub.ended_at &&
             new Date(sub.ended_at) < new Date()
