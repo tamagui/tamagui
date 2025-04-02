@@ -43,6 +43,7 @@ import {
   type TeamMember,
 } from './useTeamSeats'
 import { debounce } from 'lodash'
+import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
 
 class AccountModal {
   show = false
@@ -88,135 +89,145 @@ export const NewAccountModal = () => {
   )
 
   return (
-    <Dialog
-      modal
-      open={store.show}
-      onOpenChange={(val) => {
-        store.show = val
-      }}
-    >
-      <Dialog.Adapt when="sm">
-        <Sheet modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame bg="$color2" padding={0} gap="$4">
-            <Sheet.ScrollView>
-              <Dialog.Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
-            bg="$shadow6"
-            opacity={1}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Dialog.Adapt>
+    <>
+      <Dialog
+        modal
+        open={store.show}
+        onOpenChange={(val) => {
+          store.show = val
+        }}
+      >
+        <Dialog.Adapt when="sm">
+          <Sheet modal dismissOnSnapToBottom animation="medium">
+            <Sheet.Frame bg="$color2" padding={0} gap="$4">
+              <Sheet.ScrollView>
+                <Dialog.Adapt.Contents />
+              </Sheet.ScrollView>
+            </Sheet.Frame>
+            <Sheet.Overlay
+              animation="lazy"
+              bg="$shadow6"
+              opacity={1}
+              enterStyle={{ opacity: 0 }}
+              exitStyle={{ opacity: 0 }}
+            />
+          </Sheet>
+        </Dialog.Adapt>
 
-      <Dialog.Portal>
-        <Configuration animationDriver={animationsCSS}>
-          <Dialog.Overlay
-            key="overlay"
-            animation="medium"
-            bg="$shadow3"
-            backdropFilter="blur(20px)"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Configuration>
+        <Dialog.Portal>
+          <Configuration animationDriver={animationsCSS}>
+            <Dialog.Overlay
+              key="overlay"
+              animation="medium"
+              bg="$shadow3"
+              backdropFilter="blur(20px)"
+              enterStyle={{ opacity: 0 }}
+              exitStyle={{ opacity: 0 }}
+            />
+          </Configuration>
 
-        <Dialog.Content
-          bordered
-          elevate
-          key="content"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
+          <Dialog.Content
+            bordered
+            elevate
+            key="content"
+            animation={[
+              'quick',
+              {
+                opacity: {
+                  overshootClamping: true,
+                },
               },
-            },
-          ]}
-          enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.95 }}
-          exitStyle={{ x: 0, y: 5, opacity: 0, scale: 0.95 }}
-          width="90%"
-          maw={800}
-          p={0}
-          br="$4"
-          ov="hidden"
-          height="85%"
-          maxHeight="calc(min(85vh, 800px))"
-          minHeight={500}
-        >
-          <YStack f={1}>
-            <Tabs
-              flex={1}
-              value={currentTab}
-              onValueChange={(val: any) => setCurrentTab(val)}
-              orientation="horizontal"
-              flexDirection="column"
-              size="$6"
-            >
-              <Tabs.List disablePassBorderRadius>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'plan'} value="plan">
-                    Plan
-                  </Tab>
-                </YStack>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'upgrade'} value="upgrade">
-                    Upgrade
-                  </Tab>
-                </YStack>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'manage'} value="manage">
-                    Manage
-                  </Tab>
-                </YStack>
-                {isTeamAdmin && (
+            ]}
+            enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.95 }}
+            exitStyle={{ x: 0, y: 5, opacity: 0, scale: 0.95 }}
+            width="90%"
+            maw={800}
+            p={0}
+            br="$4"
+            ov="hidden"
+            height="85%"
+            maxHeight="calc(min(85vh, 800px))"
+            minHeight={500}
+          >
+            <YStack f={1}>
+              <Tabs
+                flex={1}
+                value={currentTab}
+                onValueChange={(val: any) => setCurrentTab(val)}
+                orientation="horizontal"
+                flexDirection="column"
+                size="$6"
+              >
+                <Tabs.List disablePassBorderRadius>
                   <YStack width={'33.3333%'} f={1}>
-                    <Tab isActive={currentTab === 'team'} value="team">
-                      Team
+                    <Tab isActive={currentTab === 'plan'} value="plan">
+                      Plan
                     </Tab>
                   </YStack>
-                )}
-              </Tabs.List>
-
-              <YStack overflow="hidden" f={1}>
-                <ScrollView>
-                  <YStack p="$6">
-                    {currentTab === 'plan' && (
-                      <PlanTab
-                        subscription={proSubscription!}
-                        supportSubscription={supportSubscription!}
-                        setCurrentTab={setCurrentTab}
-                      />
-                    )}
-                    {currentTab === 'upgrade' && (
-                      <UpgradeTab subscription={supportSubscription!} />
-                    )}
-                    {currentTab === 'manage' && (
-                      <ManageTab
-                        subscription={proSubscription}
-                        supportSubscription={supportSubscription}
-                      />
-                    )}
-                    {currentTab === 'team' && <TeamTab />}
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'upgrade'} value="upgrade">
+                      Upgrade
+                    </Tab>
                   </YStack>
-                </ScrollView>
-              </YStack>
-            </Tabs>
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'manage'} value="manage">
+                      Manage
+                    </Tab>
+                  </YStack>
+                  {isTeamAdmin && (
+                    <YStack width={'33.3333%'} f={1}>
+                      <Tab isActive={currentTab === 'team'} value="team">
+                        Team
+                      </Tab>
+                    </YStack>
+                  )}
+                </Tabs.List>
 
-            <Separator />
+                <YStack overflow="hidden" f={1}>
+                  <ScrollView>
+                    <YStack p="$6">
+                      {currentTab === 'plan' && (
+                        <PlanTab
+                          subscription={proSubscription!}
+                          supportSubscription={supportSubscription!}
+                          setCurrentTab={setCurrentTab}
+                        />
+                      )}
+                      {currentTab === 'upgrade' && (
+                        <UpgradeTab subscription={supportSubscription!} />
+                      )}
+                      {currentTab === 'manage' && (
+                        <ManageTab
+                          subscription={proSubscription}
+                          supportSubscription={supportSubscription}
+                        />
+                      )}
+                      {currentTab === 'team' && <TeamTab />}
+                    </YStack>
+                  </ScrollView>
+                </YStack>
+              </Tabs>
 
-            <AccountHeader />
-          </YStack>
+              <Separator />
 
-          <Dialog.Close asChild>
-            <Button position="absolute" top="$3" right="$3" size="$3" circular icon={X} />
-          </Dialog.Close>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
+              <AccountHeader />
+            </YStack>
+
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$3"
+                right="$3"
+                size="$3"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
+      <AddTeamMemberModalComponent />
+    </>
   )
 }
 
@@ -333,6 +344,7 @@ const ServiceCard = ({
   actionLabel,
   onAction,
   secondAction,
+  proSubscription,
 }: {
   title: string
   description: string
@@ -342,6 +354,7 @@ const ServiceCard = ({
     label: string
     onPress: () => void
   }
+  proSubscription?: any
 }) => {
   return (
     <YStack
@@ -838,6 +851,20 @@ const PlanTab = ({
           />
 
           <ChatAccessCard />
+          <ServiceCard
+            title="Add Members"
+            description="Add members to your Pro plan."
+            actionLabel="Add Seats"
+            onAction={() => {
+              if (!subscription) {
+                paymentModal.show = true
+                paymentModal.teamSeats = 1
+              } else {
+                addTeamMemberModal.subscriptionId = subscription.id
+                addTeamMemberModal.show = true
+              }
+            }}
+          />
         </XStack>
       </YStack>
 
