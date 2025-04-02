@@ -389,7 +389,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
         <HeaderLinksPopoverContent active={active} />
       </SlidingPopoverContext.Provider>
 
-      <Adapt platform="touch" when="maxMd">
+      <Adapt platform="touch" when="sm">
         <Sheet
           zIndex={100000000}
           modal

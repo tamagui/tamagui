@@ -169,7 +169,7 @@ uniswap:
 
 - bug: if you name a file `polyfill-native.ts` tamagui-biuld doesnt output the .native files properly
 
-- When using <Adapt.Contents />  inside an Adapt when="sm"  it seems to hide the children before fully closed
+- When using <Adapt.Contents />  inside an Adapt when="maxMd"  it seems to hide the children before fully closed
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
 
 - When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
