@@ -109,6 +109,7 @@ export declare const stylePropsView: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -398,6 +399,7 @@ export declare const stylePropsText: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -652,6 +654,7 @@ export declare const stylePropsAll: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -890,6 +893,7 @@ export declare const validStyles: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;

@@ -190,7 +190,7 @@ declare const SliderThumb: import("@tamagui/core").TamaguiComponent<Omit<import(
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
-    __scopeSlider?: import("@tamagui/create-context").Scope;
+    __scopeSlider?: string;
 } & React.RefAttributes<unknown>> & {
     Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
