@@ -1206,6 +1206,7 @@ type GitHubUser = {
   id: string
   full_name: string | null
   avatar_url: string | null
+  email: string | null
 }
 
 const TeamTab = () => {
@@ -1364,6 +1365,9 @@ const GitHubUserRow = ({
         </Avatar>
         <YStack>
           <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
+          <Paragraph size="$2" theme="alt2">
+            {user.email ?? 'Unknown Email'}
+          </Paragraph>
           {inviteError && (
             <Paragraph size="$2" color="$red10">
               Error: {inviteError.message}
