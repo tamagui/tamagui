@@ -4,6 +4,7 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 type GitHubUser = {
   id: number
   full_name: string | null
+  email: string | null
   avatar_url: string | null
 }
 
@@ -24,7 +25,7 @@ export default apiRoute(async (req) => {
     const { data, error } = await supabase
       .from('users')
       .select('*')
-      .ilike('full_name', `%${query}%`)
+      .or(`full_name.ilike.%${query}%, email.ilike.%${query}%`)
       .neq('id', user.id)
       .limit(5)
 
