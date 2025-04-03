@@ -1,3 +1,8 @@
+- small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
+
+- react native 78 dialogs not working
+  - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
+
 - tamagui.dev the right side quick nav on docs isnt updating on page nav
   - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
 
@@ -47,6 +52,9 @@ however, doing this
 >
 does not give the Button a red background when pressed
 
+- issue with letter spacing after upgrading
+  - https://discord.com/channels/909986013848412191/974145843919716412/1356379335132446740
+  - https://share.cleanshot.com/4rKTYFkl
 
 v2
 
