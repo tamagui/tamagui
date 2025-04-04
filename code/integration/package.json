@@ -17,7 +17,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-theme": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
-    "react-native-web": "^0.19.0",
+    "react-native-web": "^0.20.0",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
