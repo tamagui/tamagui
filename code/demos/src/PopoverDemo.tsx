@@ -57,7 +57,7 @@ export function Demo({
       </Popover.Trigger>
 
       {shouldAdapt && (
-        <Adapt when="sm" platform="touch">
+        <Adapt when="maxMd" platform="touch">
           <Popover.Sheet animation="medium" modal dismissOnSnapToBottom>
             <Popover.Sheet.Frame padding="$4">
               <Adapt.Contents />

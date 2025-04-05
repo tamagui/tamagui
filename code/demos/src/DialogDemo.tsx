@@ -32,7 +32,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       </Dialog.Trigger>
 
       {!disableAdapt && (
-        <Adapt when="sm" platform="touch">
+        <Adapt when="maxMd" platform="touch">
           <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
             <Sheet.Frame padding="$4" gap="$4">
               <Adapt.Contents />
