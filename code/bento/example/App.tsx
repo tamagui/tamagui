@@ -4,7 +4,7 @@ import { View, YStack } from 'tamagui'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 
 import { Provider } from '../src/components/provider/Provider'
-import { list as List } from '../src/sections/elements/list'
+import { buttons as Button } from '../src/sections/elements/buttons'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
@@ -39,7 +39,7 @@ const App = () => {
             f={1}
             h="100%"
           >
-            <List isProUser={false} showAppropriateModal={() => {}} />
+            <Button isProUser={false} showAppropriateModal={() => {}} />
           </YStack>
         </View>
       </YStack>

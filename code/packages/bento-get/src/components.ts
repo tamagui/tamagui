@@ -469,6 +469,14 @@ export const componentsList: ComponentSchema[] = [
     moveFilesToFolder: [{ file: 'ButtonsWithLeftIcons', to: '' }],
   },
   {
+    name: 'Rating Button',
+    fileName: 'RatingButton',
+    category: 'elements',
+    categorySection: 'buttons',
+    dependencies: ['react-native-reanimated'],
+    moveFilesToFolder: [{ file: 'RatingButton', to: '' }],
+  },
+  {
     name: 'Buttons with Loaders',
     fileName: 'ButtonsWithLoaders',
     category: 'elements',
@@ -627,6 +635,7 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'WheelList',
     category: 'elements',
     categorySection: 'list',
+    dependencies: ['react-native-reanimated', 'react-native-gesture-handler'],
     moveFilesToFolder: [{ file: 'WheelList', to: '' }],
   },
   {
