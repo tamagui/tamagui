@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/collapsible",
-  "version": "1.125.32",
+  "version": "1.125.33",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

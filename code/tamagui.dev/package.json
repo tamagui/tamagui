@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dot-dev",
-  "version": "1.125.32",
+  "version": "1.125.33",
   "type": "module",
   "private": true,
   "sideEffects": false,
