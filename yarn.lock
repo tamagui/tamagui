@@ -9758,11 +9758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@vxrn/color-scheme@npm:^1.1.476":
-=======
 "@vxrn/color-scheme@npm:^1.1.479":
->>>>>>> 725e89fc43 (fix css and speed up)
   version: 1.1.479
   resolution: "@vxrn/color-scheme@npm:1.1.479"
   dependencies:
@@ -9867,27 +9863,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@vxrn/universal-color-scheme@npm:1.1.479":
-  version: 1.1.479
-  resolution: "@vxrn/universal-color-scheme@npm:1.1.479"
-  dependencies:
-    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.479"
-    react: "npm:^18.3.1 || ^19.0.0"
-  peerDependencies:
-    react-native: "*"
-  checksum: 10/f66171379f8f43fadb8bb33700bceba92fc4909ac4d0d8befe5018bd8264673f5668a8e1f732fd8a6b4c2a82651372b0a5de451af998e96c7627089a93878c0a
-  languageName: node
-  linkType: hard
-
-"@vxrn/url-parse@npm:1.1.476":
-  version: 1.1.476
-  resolution: "@vxrn/url-parse@npm:1.1.476"
-=======
 "@vxrn/url-parse@npm:1.1.479":
   version: 1.1.479
   resolution: "@vxrn/url-parse@npm:1.1.479"
->>>>>>> 725e89fc43 (fix css and speed up)
   dependencies:
     url-parse: "npm:^1.5.10"
   checksum: 10/f281a67752f29140b8fcebdf0459053162d698f7ee99000870625fa724f339d6a161be9ad30cb4b9f9d6855e173db1b02af55104f6a3e487e2262b85b1a78b1b
@@ -9903,24 +9881,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@vxrn/use-isomorphic-layout-effect@npm:1.1.479":
-  version: 1.1.479
-  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.1.479"
-  dependencies:
-    react: "npm:^18.3.1 || ^19.0.0"
-  checksum: 10/129ee58b7da7c5ba7396ad3d77d685a52dc06af03cdc496050e456a9ce46f86bd0352e8382fdfebe750fa7a201d66704e40d972daff766cd2a660d4d560840d1
-  languageName: node
-  linkType: hard
-
-"@vxrn/utils@npm:1.1.476":
-  version: 1.1.476
-  resolution: "@vxrn/utils@npm:1.1.476"
-=======
 "@vxrn/utils@npm:1.1.479":
   version: 1.1.479
   resolution: "@vxrn/utils@npm:1.1.479"
->>>>>>> 725e89fc43 (fix css and speed up)
   dependencies:
     "@vxrn/debug": "npm:1.1.479"
     "@vxrn/resolve": "npm:1.1.479"
