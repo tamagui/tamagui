@@ -3,17 +3,23 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
 import type Stripe from 'stripe'
+import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 
 // Price IDs for Pro plan
-const PRO_SUBSCRIPTION_PRICE_ID = 'price_1QthHSFQGtHoG6xcDOEuFsrW' // $240/year with auto-renew
-const PRO_ONE_TIME_PRICE_ID = 'price_1Qs41HFQGtHoG6xcerDq7RJZ' // $400 one-time payment
+const PRO_SUBSCRIPTION_PRICE_ID = STRIPE_PRODUCTS.PRO_SUBSCRIPTION.priceId
+const PRO_ONE_TIME_PRICE_ID = STRIPE_PRODUCTS.PRO_ONE_TIME.priceId
 
+// New Team Seats Price IDs
+const TEAM_SEATS_SUBSCRIPTION_PRICE_ID = STRIPE_PRODUCTS.PRO_TEAM_SEATS.priceId
+const TEAM_SEATS_ONE_TIME_PRICE_ID = STRIPE_PRODUCTS.PRO_TEAM_SEATS_ONE_TIME.priceId
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
-  const { paymentMethodId, disableAutoRenew, couponId } = await req.json()
+  const { paymentMethodId, disableAutoRenew, couponId, teamSeats } = await req.json()
+
+  const teamSeatCount = Number(teamSeats)
 
   if (!paymentMethodId) {
     return Response.json({ error: 'Payment method ID is required' }, { status: 400 })
@@ -49,6 +55,14 @@ export default apiRoute(async (req) => {
         price: PRO_ONE_TIME_PRICE_ID,
       })
 
+      if (teamSeatCount > 0) {
+        await stripe.invoiceItems.create({
+          customer: stripeCustomerId,
+          price: TEAM_SEATS_ONE_TIME_PRICE_ID,
+          quantity: teamSeatCount,
+        })
+      }
+
       // Create and pay invoice
       const invoice = await stripe.invoices.create({
         customer: stripeCustomerId,
@@ -68,16 +82,23 @@ export default apiRoute(async (req) => {
         // clientSecret: await getClientSecret(paidInvoice),
       })
     } else {
+      let items: Stripe.SubscriptionCreateParams.Item[] = [
+        { price: PRO_SUBSCRIPTION_PRICE_ID },
+      ]
+
+      if (teamSeatCount > 0) {
+        items.push({ price: TEAM_SEATS_SUBSCRIPTION_PRICE_ID, quantity: teamSeatCount })
+      }
+
       // Create subscription
       const subscription = await stripe.subscriptions.create({
         customer: stripeCustomerId,
-        items: [{ price: PRO_SUBSCRIPTION_PRICE_ID }],
+        items,
         payment_behavior: 'default_incomplete',
         payment_settings: { save_default_payment_method: 'on_subscription' },
         expand: ['latest_invoice.payment_intent'],
         coupon: couponId || undefined,
         default_payment_method: paymentMethodId,
-        collection_method: 'charge_automatically',
       })
 
       return Response.json({

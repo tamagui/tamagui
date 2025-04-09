@@ -2,10 +2,9 @@ import '@tamagui/polyfill-dev'
 
 import { isServer } from '@tamagui/constants'
 import { YStack } from '@tamagui/stacks'
+import { useStackedZIndex } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
-
-import { useStackedZIndex } from '@tamagui/z-index-stack'
 import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
 

@@ -1,3 +1,27 @@
+- small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
+
+- react native 78 dialogs not working
+  - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
+
+- tamagui.dev the right side quick nav on docs isnt updating on page nav
+  - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
+
+- we need to actually in validStyleProps probably have the web-only ones be on a new object like "webOnly" and then actually filtered out on native so they dont clutter things.
+
+- fix react 19 + nextjs 15
+  - https://github.com/gcoakleyjr/React19-Tamagui
+  - right now we have TAMAGUI_REACT_19 but you also need to use react-native-web-lite or patch rnw because it doesn't work, we should:
+    - somehow fix rnw issue with rn19
+    - fix issue with rnw-lite
+      - https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
+    - better solution for react 19 mode (properly in settings no more TAMAGUI_REACT_19)
+  - eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
+  - announcement
+
+- option to default to position "static"
+
+- i think a big current bug is onlyAllowShorthands can be set on settings or on base, but if its set on base it breaks types entirely.
+
 - tooltip: expects zIndex but shorthand overrides and doesn't work
 
 - make group props require the prop key to be stable like animations
@@ -6,7 +30,11 @@
     - make it so it automatically handles animation/group changes without breaking
     - but make it error in the console
 
+- useTheme().x.val may have bug on light/dark switch
+
 bug:
+
+- https://github.com/tamagui/tamagui/issues/3322
 
 As an example, we have a Button that has a variant, default.
 its pressStyle is
@@ -24,6 +52,9 @@ however, doing this
 >
 does not give the Button a red background when pressed
 
+- issue with letter spacing after upgrading
+  - https://discord.com/channels/909986013848412191/974145843919716412/1356379335132446740
+  - https://share.cleanshot.com/4rKTYFkl
 
 v2
 

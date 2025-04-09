@@ -4,38 +4,38 @@ import { createStore, createUseStore } from '@tamagui/use-store'
 import { startTransition, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
-  AnimatePresence,
   Button,
   Dialog,
   H3,
   Label,
   Paragraph,
-  ScrollView,
   Separator,
   Sheet,
   SizableText,
   Spacer,
   styled,
   Tabs,
+  Text,
   Theme,
   Unspaced,
+  useMedia,
   XStack,
   YStack,
-  Text,
+  Input,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
+import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
+import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
+import { ProAgreementModal } from './AgreementModal'
+import { BigP, P } from './BigP'
+import { ProPoliciesModal } from './PoliciesModal'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { paymentModal, StripePaymentModal } from './StripePaymentModal'
 import { PurchaseButton } from './helpers'
-import { useProducts } from './useProducts'
-import { BigP, P } from './BigP'
 import { useTakeoutStore } from './useTakeoutStore'
-import { ProPoliciesModal } from './PoliciesModal'
-import { ProAgreementModal } from './AgreementModal'
-import { useParityDiscount } from '~/hooks/useParityDiscount'
 
 class PurchaseModal {
   show = false
@@ -44,19 +44,14 @@ class PurchaseModal {
   disableAutoRenew = false
   chatSupport = false
   supportTier = 0
+  teamSeats = 0
   selectedPrices = {
     disableAutoRenew: false,
     chatSupport: false,
     supportTier: 0,
+    teamSeats: 0,
   }
 }
-
-type SelectedPrices = {
-  disableAutoRenew: boolean
-  chatSupport: boolean
-  supportTier: number
-}
-
 export const purchaseModal = createStore(PurchaseModal)
 export const usePurchaseModal = createUseStore(PurchaseModal)
 
@@ -80,7 +75,7 @@ const tabOrder = ['purchase', 'support', 'faq'] as const
 
 type Tab = (typeof tabOrder)[number]
 
-const PurchaseModalContents = () => {
+export function PurchaseModalContents() {
   const store = usePurchaseModal()
   const takeoutStore = useTakeoutStore()
   const [lastTab, setLastTab] = useState<Tab>('purchase')
@@ -90,14 +85,31 @@ const PurchaseModalContents = () => {
   const [supportTier, setSupportTier] = useState('0')
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<Error | StripeError | null>(null)
-  const [selectedPrices, setSelectedPrices] = useState<SelectedPrices>({
-    disableAutoRenew: false,
-    chatSupport: false,
-    supportTier: 0,
-  })
-  const { data: products } = useProducts()
-  const { data: userData } = useUser()
+  const { gtMd } = useMedia()
+
+  const { data: userData, subscriptionStatus } = useUser()
   const { parityDeals } = useParityDiscount()
+  const [teamSeats, setTeamSeats] = useState(0)
+
+  const hasSubscribedBefore = useMemo(() => {
+    return (
+      userData?.subscriptions?.some((sub) =>
+        sub.subscription_items.some(
+          (item) =>
+            (item.price?.product?.name === 'Bento' ||
+              item.price?.product?.name === 'Takeout Stack') &&
+            sub.ended_at &&
+            new Date(sub.ended_at) < new Date()
+        )
+      ) ?? false
+    )
+  }, [userData])
+
+  useEffect(() => {
+    if (parityDeals) {
+      sendEvent(`Pro: Show Parity Deals`)
+    }
+  }, [parityDeals])
 
   useEffect(() => {
     if (window.opener && userData) {
@@ -107,6 +119,7 @@ const PurchaseModalContents = () => {
   }, [])
 
   function changeTab(next: string) {
+    sendEvent(`Pro: Change Tab`, { tab: next })
     if (next === 'purchase' || next === 'support' || next === 'faq') {
       if (currentTab === 'purchase' && next === 'support') {
         setLastTab(currentTab)
@@ -119,28 +132,35 @@ const PurchaseModalContents = () => {
   }
 
   const handlePaymentError = (error: Error | StripeError) => {
+    sendEvent('Pro: Payment Error', {
+      error: `${error}`,
+    })
     setError(error)
     setIsProcessing(false)
   }
 
   const handlePaymentSuccess = async () => {
+    sendEvent('Pro: Payment Success')
     window.location.href = '/payment-finished'
   }
 
   const handleCheckout = () => {
+    sendEvent('Pro: Purchase Button')
+
     if (isProcessing) return
 
-    // Show payment modal with current selections
     paymentModal.show = true
     paymentModal.yearlyTotal = yearlyTotal
     paymentModal.monthlyTotal = monthlyTotal
     paymentModal.disableAutoRenew = disableAutoRenew
     paymentModal.chatSupport = chatSupport
     paymentModal.supportTier = Number(supportTier)
+    paymentModal.teamSeats = teamSeats
     paymentModal.selectedPrices = {
       disableAutoRenew,
       chatSupport,
       supportTier: Number(supportTier),
+      teamSeats,
     }
   }
 
@@ -151,9 +171,10 @@ const PurchaseModalContents = () => {
   const basePrice = disableAutoRenew ? 400 : 240 // yearly base price
   const chatSupportMonthly = chatSupport ? 200 : 0 // $200/month for chat support
   const supportTierMonthly = Number(supportTier) * 800 // $800/month per tier
+  const teamSeatsPrice = teamSeats * 100 // $100 per seat
 
   // Keep yearly and monthly totals separate
-  const yearlyTotal = basePrice
+  const yearlyTotal = basePrice + teamSeatsPrice
   const monthlyTotal = chatSupportMonthly + supportTierMonthly
 
   // Determine subscription message based on selected options
@@ -189,9 +210,9 @@ const PurchaseModalContents = () => {
   const tabContents = {
     purchase: () => {
       return (
-        <YStack gap="$4" pb="$4">
-          <YStack gap="$7">
-            <BigP>
+        <YStack>
+          <YStack $gtMd={{ gap: '$6' }} gap="$5">
+            <BigP ta="center">
               We've put together tools that make starting and building a universal app as
               good as it gets.
             </BigP>
@@ -201,7 +222,7 @@ const PurchaseModalContents = () => {
             </XStack>
 
             <YStack gap="$3">
-              <P color="$color10">
+              <P color="$color10" size="$4">
                 For a one year term you get access to the private Takeout Github repo,
                 Bento components
                 {disableAutoRenew ? `` : `, and the private community chat room`}. You get
@@ -209,9 +230,20 @@ const PurchaseModalContents = () => {
               </P>
             </YStack>
           </YStack>
+
+          <Separator my="$10" />
+
+          <H3 ff="$mono">Team</H3>
+
+          <TeamSeatsInput
+            value={teamSeats}
+            onChange={setTeamSeats}
+            yearlyPrice={teamSeatsPrice}
+          />
         </YStack>
       )
     },
+
     support: () => (
       <SupportTabContent
         chatSupport={chatSupport}
@@ -220,6 +252,7 @@ const PurchaseModalContents = () => {
         setSupportTier={setSupportTier}
       />
     ),
+
     faq: FaqTabContent,
   }
 
@@ -236,11 +269,8 @@ const PurchaseModalContents = () => {
           }
         }}
       >
-        <ProPoliciesModal />
-        <ProAgreementModal />
-
         <Dialog.Adapt when="sm">
-          <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal dismissOnSnapToBottom={false} animation="medium">
             <Sheet.Frame bg="$color1" padding={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
@@ -286,62 +316,80 @@ const PurchaseModalContents = () => {
             maw={900}
             p={0}
           >
-            <Tabs
-              orientation="horizontal"
-              flexDirection="column"
-              defaultValue="purchase"
-              size="$6"
-              value={currentTab}
-              onValueChange={changeTab}
-            >
-              <Tabs.List disablePassBorderRadius>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'purchase'} value="purchase">
-                    Pro
-                  </Tab>
-                </YStack>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'support'} value="support">
-                    Support
-                  </Tab>
-                </YStack>
-                <YStack width={'33.3333%'} f={1}>
-                  <Tab isActive={currentTab === 'faq'} value="faq" end>
-                    FAQ
-                  </Tab>
-                </YStack>
-              </Tabs.List>
+            <YStack h="100%">
+              <Tabs
+                orientation="horizontal"
+                flexDirection="column"
+                defaultValue="purchase"
+                size="$6"
+                value={currentTab}
+                onValueChange={changeTab}
+              >
+                <Tabs.List disablePassBorderRadius>
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'purchase'} value="purchase">
+                      Pro
+                    </Tab>
+                  </YStack>
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'support'} value="support">
+                      Support
+                    </Tab>
+                  </YStack>
+                  <YStack width={'33.3333%'} f={1}>
+                    <Tab isActive={currentTab === 'faq'} value="faq" end>
+                      FAQ
+                    </Tab>
+                  </YStack>
+                </Tabs.List>
 
-              <YStack f={1} group="takeoutBody">
-                <AnimatePresence exitBeforeEnter initial={false} custom={{ direction }}>
+                <YStack group="takeoutBody">
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
                       value={currentTab}
                       forceMount
                       flex={1}
                       minHeight={400}
-                      height="calc(min(100vh - 280px, 620px))"
+                      $gtMd={{
+                        height: 'calc(min(100vh - 280px, 620px))',
+                      }}
                     >
-                      <ScrollView>
-                        <YStack p="$8" gap="$6">
-                          {tabContents[currentTab]()}
-                        </YStack>
-                      </ScrollView>
+                      <YStack
+                        $gtMd={{
+                          p: '$8',
+                          gap: '$6',
+                        }}
+                        p="$4"
+                        gap="$4"
+                        h="100%"
+                        // scrollbarWidth='none'
+                        // overflowX="scroll"
+                        {...(gtMd && {
+                          style: {
+                            overflowY: 'scroll',
+                          },
+                        })}
+                      >
+                        {tabContents[currentTab]()}
+                      </YStack>
                     </Tabs.Content>
                   </AnimatedYStack>
-                </AnimatePresence>
-              </YStack>
+                </YStack>
 
-              <Separator />
-              <YStack p="$6" gap="$2" bg="$color1">
+                <Separator />
+              </Tabs>
+
+              {/* Bottom */}
+              <YStack p="$4" $gtXs={{ p: '$6' }} gap="$2" bg="$color1">
                 <YStack
                   jc="center"
                   ai="center"
-                  gap="$6"
+                  gap="$4"
                   $gtXs={{
                     jc: 'space-between',
                     ai: 'flex-start',
                     flexDirection: 'row',
+                    gap: '$6',
                   }}
                 >
                   <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
@@ -406,6 +454,29 @@ const PurchaseModalContents = () => {
                         </XStack>
                       </Theme>
                     )}
+                    {hasSubscribedBefore && (
+                      <Theme name="yellow">
+                        <XStack
+                          mb="$2"
+                          backgroundColor="$color3"
+                          borderRadius="$4"
+                          borderWidth={0.5}
+                          borderColor="$color8"
+                          p="$2"
+                        >
+                          <Paragraph size="$3" color="$color11" textWrap="balance">
+                            You have subscribed before so you are eligible for a 25%
+                            discount.
+                            <br />
+                            Use code{' '}
+                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
+                              {subscriptionStatus.couponCodes.previouslySubscribed}
+                            </Text>{' '}
+                            at checkout for 25% off
+                          </Paragraph>
+                        </XStack>
+                      </Theme>
+                    )}
 
                     <Theme name="accent">
                       <PurchaseButton onPress={handleCheckout} disabled={isProcessing}>
@@ -451,7 +522,7 @@ const PurchaseModalContents = () => {
                   </YStack>
                 </YStack>
               </YStack>
-            </Tabs>
+            </YStack>
             <Unspaced>
               <Dialog.Close asChild>
                 <Button
@@ -467,13 +538,18 @@ const PurchaseModalContents = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog>
+
+      <ProPoliciesModal />
+
+      <ProAgreementModal />
+
       <StripePaymentModal
         yearlyTotal={yearlyTotal}
         monthlyTotal={monthlyTotal}
         disableAutoRenew={disableAutoRenew}
         chatSupport={chatSupport}
         supportTier={Number(supportTier)}
-        selectedPrices={selectedPrices}
+        teamSeats={teamSeats}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
       />
@@ -595,7 +671,7 @@ const SupportTabContent = ({
         are answered, and Tamagui stays healthy and up to date.
       </BigP>
 
-      <YStack gap="$6" p="$4">
+      <YStack gap="$6">
         <YStack gap="$3">
           <XStack alignItems="center">
             <Label f={1} htmlFor="chat-support">
@@ -720,12 +796,48 @@ function Tab({
       />
       <Paragraph
         ff="$mono"
-        size="$7"
+        size="$6"
+        $gtMd={{ size: '$7' }}
         color={isActive ? '$color12' : '$color10'}
         fow={isActive ? 'bold' : 'normal'}
       >
         {children}
       </Paragraph>
     </Tabs.Tab>
+  )
+}
+
+const TeamSeatsInput = ({
+  value,
+  onChange,
+  yearlyPrice,
+}: {
+  value: number
+  onChange: (seats: number) => void
+  yearlyPrice: number
+}) => {
+  return (
+    <YStack gap="$3">
+      <XStack alignItems="center">
+        <Label f={1} htmlFor="team-seats">
+          <Text>Additional Team Seats</Text>
+        </Label>
+        <Input
+          id="team-seats"
+          value={value.toString()}
+          onChange={(e) => {
+            const val = e.nativeEvent.text
+            onChange(Math.max(0, Number.parseInt(val) || 0))
+          }}
+          keyboardType="number-pad"
+          width={100}
+        />
+      </XStack>
+      {value > 0 && (
+        <Text theme="alt2">
+          +${yearlyPrice}/year for {value} additional {value === 1 ? 'seat' : 'seats'}
+        </Text>
+      )}
+    </YStack>
   )
 }

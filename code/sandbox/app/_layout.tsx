@@ -30,7 +30,7 @@ export default function Layout() {
       <SchemeProvider>
         <ToastProvider swipeDirection="horizontal">
           <TamaguiRootProvider>
-            <YStack bg="$color1" minH="100%" gap="$4" f={1}>
+            <YStack bg="$color1" minH="100%" gap="$4" flex={1}>
               <SafeAreaView>
                 <ToastViewport portalToRoot top={0} left={0} right={0} />
                 <CustomToast />
@@ -72,7 +72,7 @@ export const CustomToast = () => {
       animation="quick"
     >
       <YStack py="$1.5" px="$2">
-        <Toast.Title lh="$1">{currentToast.title}</Toast.Title>
+        <Toast.Title lineHeight="$1">{currentToast.title}</Toast.Title>
         {!!currentToast.message && (
           <Toast.Description>{currentToast.message}</Toast.Description>
         )}

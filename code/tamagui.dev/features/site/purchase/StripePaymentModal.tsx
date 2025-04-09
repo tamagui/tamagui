@@ -1,23 +1,28 @@
 /**
  * @summary
  *
- * StripePaymentModal handles the payment flow for Pro plan and additional support options.
+ * StripePaymentModal handles the payment flow for Pro plan, Team plan, and additional support options.
  *
  * Pro Plan Options:
  * - One-time payment: $400
  * - Yearly subscription: $240/year
- *    - This is processed as an invoice payment thus no client-side confirmation is needed
- *    - However, as for the subscription, we need to confirm the payment on the client side
- *      to verify the card ownership. The same goes for the monthly subscriptions described below.
+ *    - This is processed as an invoice payment for one-time payment
+ *    - For subscription, client-side confirmation is needed to verify card ownership
+ *
+ * Team Plan Options:
+ * - Additional seats: $100/seat/year
+ *    - Can be added to both one-time and subscription plans
+ *    - Billed annually regardless of plan type
+ *    - For one-time payment: processed with the base plan invoice
+ *    - For subscription: added as an additional subscription item
  *
  * Additional monthly subscriptions:
  * - Chat Support: $200/month
  * - Support Tier: $800/month per tier
  *
- * The payment flow is split into two APIs because Pro plan (yearly) and
- * additional options (monthly) have different billing cycles, which cannot
- * be combined in a single Stripe subscription:
- * - create-subscription: Handles Pro plan (one-time or yearly)
+ * The payment flow is split into two APIs because Pro/Team plans (yearly) and
+ * additional options (monthly) have different billing cycles:
+ * - create-subscription: Handles Pro plan and Team seats (one-time or yearly)
  * - upgrade-subscription: Handles monthly subscriptions
  *
  * Client-side payment confirmation is required for subscriptions due to
@@ -51,6 +56,8 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { useLoginLink } from '../../auth/useLoginLink'
+import { Sheet } from 'tamagui'
+import { Unspaced } from 'tamagui'
 
 const couponSchema = z.object({
   id: z.string(),
@@ -120,10 +127,12 @@ class PaymentModal {
   disableAutoRenew = false
   chatSupport = false
   supportTier = 0
+  teamSeats = 0
   selectedPrices = {
     disableAutoRenew: false,
     chatSupport: false,
     supportTier: 0,
+    teamSeats: 0,
   }
 }
 
@@ -136,13 +145,9 @@ type StripePaymentModalProps = {
   disableAutoRenew: boolean
   chatSupport: boolean
   supportTier: number
-  selectedPrices: {
-    disableAutoRenew: boolean
-    chatSupport: boolean
-    supportTier: number
-  }
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
+  teamSeats: number
 }
 
 const PaymentForm = ({
@@ -151,6 +156,7 @@ const PaymentForm = ({
   autoRenew,
   chatSupport,
   supportTier,
+  teamSeats,
   selectedPrices,
   isProcessing,
   setIsProcessing,
@@ -162,10 +168,12 @@ const PaymentForm = ({
   autoRenew: boolean
   chatSupport: boolean
   supportTier: number
+  teamSeats: number
   selectedPrices: {
     disableAutoRenew: boolean
     chatSupport: boolean
     supportTier: number
+    teamSeats: number
   }
   isProcessing: boolean
   setIsProcessing: (value: boolean) => void
@@ -216,6 +224,7 @@ const PaymentForm = ({
           paymentMethodId: paymentMethod.id,
           disableAutoRenew: selectedPrices.disableAutoRenew,
           couponId: finalCoupon?.id,
+          teamSeats: selectedPrices.teamSeats,
         }),
       })
 
@@ -234,7 +243,6 @@ const PaymentForm = ({
           redirect: 'if_required',
           confirmParams: {
             payment_method: paymentMethod.id,
-            setup_future_usage: 'off_session',
           },
           clientSecret: data.clientSecret,
         })
@@ -301,7 +309,6 @@ const PaymentForm = ({
           redirect: 'if_required',
           confirmParams: {
             payment_method: paymentMethod.id,
-            setup_future_usage: 'off_session',
           },
           clientSecret: upgradeData.clientSecret,
         })
@@ -379,9 +386,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     disableAutoRenew: propDisableAutoRenew,
     chatSupport: propChatSupport,
     supportTier: propSupportTier,
-    selectedPrices: propSelectedPrices,
     onSuccess,
     onError,
+    teamSeats: propTeamSeats,
   } = props
   const store = usePaymentModal()
   const [isProcessing, setIsProcessing] = useState(false)
@@ -402,6 +409,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const disableAutoRenew = store.disableAutoRenew || propDisableAutoRenew
   const chatSupport = store.chatSupport || propChatSupport
   const supportTier = store.supportTier || propSupportTier
+  const teamSeats = store.teamSeats || propTeamSeats
 
   const handleApplyCoupon = async () => {
     try {
@@ -517,10 +525,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 autoRenew={!disableAutoRenew}
                 chatSupport={chatSupport}
                 supportTier={supportTier}
+                teamSeats={teamSeats}
                 selectedPrices={{
                   disableAutoRenew,
                   chatSupport,
                   supportTier: Number(supportTier),
+                  teamSeats: Number(teamSeats),
                 }}
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
@@ -623,6 +633,30 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             </>
           )}
 
+          {teamSeats > 0 && (
+            <XStack jc="space-between">
+              <Paragraph ff="$mono">
+                Team Seats ({teamSeats} {teamSeats === 1 ? 'seat' : 'seats'})
+              </Paragraph>
+              <YStack ai="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    ff="$mono"
+                    size="$3"
+                    o={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${teamSeats * 100}/year
+                  </Paragraph>
+                )}
+                <Paragraph ff="$mono">
+                  ${Math.ceil(calculateDiscountedAmount(teamSeats * 100, finalCoupon))}
+                  /year
+                </Paragraph>
+              </YStack>
+            </XStack>
+          )}
+
           <Separator />
 
           <XStack jc="space-between">
@@ -696,10 +730,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     paymentModal.disableAutoRenew = disableAutoRenew
     paymentModal.chatSupport = chatSupport
     paymentModal.supportTier = Number(supportTier)
+    paymentModal.teamSeats = Number(teamSeats)
     paymentModal.selectedPrices = {
       disableAutoRenew,
       chatSupport,
       supportTier: Number(supportTier),
+      teamSeats: Number(teamSeats),
     }
   }
 
@@ -711,6 +747,20 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         store.show = val
       }}
     >
+      <Dialog.Adapt when="sm">
+        <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet.Frame bg="$color1" jc="center" ai="center" padding={0} gap="$4">
+            <Dialog.Adapt.Contents />
+          </Sheet.Frame>
+          <Sheet.Overlay
+            bg="$shadow4"
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Sheet>
+      </Dialog.Adapt>
+
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"

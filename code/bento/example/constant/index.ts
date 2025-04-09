@@ -1,11 +1,10 @@
-import StaticSafeAreaInsets from 'react-native-static-safe-area-insets'
 import type { ThemeName } from 'tamagui'
 
 export const insets = {
-  bottom: StaticSafeAreaInsets.safeAreaInsetsBottom || 12,
-  top: StaticSafeAreaInsets.safeAreaInsetsTop,
-  paddingTop: StaticSafeAreaInsets.safeAreaInsetsTop + 12,
-  paddingBottom: StaticSafeAreaInsets.safeAreaInsetsBottom + 12,
+  bottom: 24,
+  top: 24,
+  paddingTop: 32,
+  paddingBottom: 32,
 }
 
 // 🍓🐙
@@ -26,14 +25,17 @@ export const colors: Colors[] = [
   },
   {
     emoji: '🐝',
+    // @ts-expect-error
     theme: 'bee',
   },
   {
     emoji: '🥑',
+    // @ts-expect-error
     theme: 'avocado',
   },
   {
     emoji: '🌋',
+    // @ts-expect-error
     theme: 'volcanic',
   },
 ]

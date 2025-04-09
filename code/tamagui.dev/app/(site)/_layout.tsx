@@ -24,6 +24,9 @@ export default function SiteLayout() {
 
   return (
     <>
+      {/* stats */}
+      <script defer src="https://assets.onedollarstats.com/stonks.js" />
+
       <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />

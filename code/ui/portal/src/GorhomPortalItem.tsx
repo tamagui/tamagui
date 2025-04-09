@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
   if (!props.hostName) {
-    throw new Error(`No name`)
+    throw new Error(`No hostName`)
   }
 
   const cur = allPortalHosts.get(props.hostName)

@@ -447,6 +447,62 @@ export type Database = {
           },
         ]
       }
+      team_members: {
+        Row: {
+          id: string
+          joined_at: string
+          member_id: string
+          status: string
+          team_subscription_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          member_id: string
+          status?: string
+          team_subscription_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          member_id?: string
+          status?: string
+          team_subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'team_members_team_subscription_id_fkey'
+            columns: ['team_subscription_id']
+            isOneToOne: false
+            referencedRelation: 'team_subscriptions'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      team_subscriptions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          owner_id: string
+          total_seats: number
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          owner_id: string
+          total_seats: number
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          owner_id?: string
+          total_seats?: number
+        }
+        Relationships: []
+      }
       teams: {
         Row: {
           created_at: string | null
@@ -498,7 +554,6 @@ export type Database = {
           is_cached: boolean | null
           og_image_url: string | null
           search_query: string
-          state: string
           theme_data: Json
           updated_at: string | null
           user_id: string
@@ -509,7 +564,6 @@ export type Database = {
           is_cached?: boolean | null
           og_image_url?: string | null
           search_query: string
-          state: string
           theme_data: Json
           updated_at?: string | null
           user_id: string
@@ -520,7 +574,6 @@ export type Database = {
           is_cached?: boolean | null
           og_image_url?: string | null
           search_query?: string
-          state?: string
           theme_data?: Json
           updated_at?: string | null
           user_id?: string
@@ -531,6 +584,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           billing_address: Json | null
+          email: string | null
           full_name: string | null
           id: string
           payment_method: Json | null
@@ -538,6 +592,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           billing_address?: Json | null
+          email?: string | null
           full_name?: string | null
           id: string
           payment_method?: Json | null
@@ -545,6 +600,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           billing_address?: Json | null
+          email?: string | null
           full_name?: string | null
           id?: string
           payment_method?: Json | null

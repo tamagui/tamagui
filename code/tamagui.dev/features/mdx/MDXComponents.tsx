@@ -83,6 +83,7 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
   return (
     <Paragraph
       tag="p"
+      ff="$mono"
       size={large ? '$9' : '$8'}
       mb="$4"
       $sm={{
@@ -269,58 +270,63 @@ const componentsIn = {
     const CopyIcon2 = tamaguiCmdClip.hasCopied ? Check : Copy
 
     return (
-      <YStack gap="$2">
-        <XStack gap="$2">
-          <Tabs
-            activationMode="manual"
-            orientation="horizontal"
-            size="$4"
-            br="$4"
-            value={selectedPackageManager}
-            onPress={(e) => e.stopPropagation()}
-            onValueChange={setPackageManager}
-            group
-          >
-            <Tabs.List
-              disablePassBorderRadius
-              loop={false}
-              aria-label="package manager"
-              gap="$2"
+      <XStack fw="wrap" ai="center" gap="$4">
+        {name && (
+          <ThemeTint>
+            <TooltipSimple
+              restMs={1200}
+              delay={{
+                open: 1200,
+                close: 0,
+              }}
+              label={hasCopied ? 'Copied' : 'Copy to clipboard'}
             >
-              <>
-                {PACKAGE_MANAGERS.map((pkgManager) => {
-                  const active = selectedPackageManager === pkgManager
-                  return (
-                    <View
-                      key={pkgManager}
-                      br="$2"
-                      bg={active ? '$color3' : '$colorTransparent'}
-                    >
-                      <Tab
-                        active={active}
-                        pkgManager={pkgManager}
-                        onInteraction={() => {
-                          //
-                        }}
-                      />
-                    </View>
-                  )
-                })}
-              </>
-            </Tabs.List>
-          </Tabs>
-        </XStack>
+              <XStack
+                ai="center"
+                gap="$2"
+                my="$1"
+                py="$1"
+                px="$2"
+                als="flex-start"
+                bg="$color3"
+                br="$3"
+                cur="pointer"
+                onPress={onCopy}
+              >
+                <SizableText color="$color11">{transformedCommand}</SizableText>
 
-        <XStack fw="wrap" ai="center" gap="$4">
-          {name && (
-            <ThemeTint>
+                <CopyIcon
+                  p="$0.5"
+                  size={16}
+                  color="$color10"
+                  hoverStyle={{
+                    color: '$color2',
+                  }}
+                />
+              </XStack>
+            </TooltipSimple>
+          </ThemeTint>
+        )}
+
+        {(isInstallCommand || isExecCommand || isCreateCommand) && (
+          <>
+            <TooltipSimple label="« Individually or all-in-one »">
+              <XStack ai="center">
+                <SizableText pe="none" size="$3">
+                  or
+                </SizableText>
+                <Asterisk size={12} y={-8} />
+              </XStack>
+            </TooltipSimple>
+
+            <ThemeTintAlt>
               <TooltipSimple
                 restMs={1200}
                 delay={{
                   open: 1200,
                   close: 0,
                 }}
-                label={hasCopied ? 'Copied' : 'Copy to clipboard'}
+                label={tamaguiCmdClip.hasCopied ? 'Copied' : 'Copy to clipboard'}
               >
                 <XStack
                   ai="center"
@@ -332,18 +338,11 @@ const componentsIn = {
                   bg="$color3"
                   br="$3"
                   cur="pointer"
-                  onPress={onCopy}
+                  onPress={tamaguiCmdClip.onCopy}
                 >
-                  <Image
-                    width={16}
-                    height={16}
-                    scale={selectedPackageManager === 'pnpm' ? 0.7 : 0.8}
-                    y={selectedPackageManager === 'pnpm' ? 0 : 0}
-                    src={`/logos/${selectedPackageManager}.svg`}
-                  />
-                  <SizableText color="$color11">{transformedCommand}</SizableText>
+                  <SizableText color="$color11">{tamaguiCommand}</SizableText>
 
-                  <CopyIcon
+                  <CopyIcon2
                     p="$0.5"
                     size={16}
                     color="$color10"
@@ -353,66 +352,32 @@ const componentsIn = {
                   />
                 </XStack>
               </TooltipSimple>
-            </ThemeTint>
-          )}
+            </ThemeTintAlt>
+          </>
+        )}
 
-          {(isInstallCommand || isExecCommand || isCreateCommand) && (
-            <>
-              <TooltipSimple label="« Individually or all-in-one »">
-                <XStack ai="center">
-                  <SizableText pe="none" size="$3">
-                    or
-                  </SizableText>
-                  <Asterisk size={12} y={-8} />
-                </XStack>
-              </TooltipSimple>
-
-              <ThemeTintAlt>
-                <TooltipSimple
-                  restMs={1200}
-                  delay={{
-                    open: 1200,
-                    close: 0,
-                  }}
-                  label={tamaguiCmdClip.hasCopied ? 'Copied' : 'Copy to clipboard'}
-                >
-                  <XStack
-                    ai="center"
-                    gap="$2"
-                    my="$1"
-                    py="$1"
-                    px="$2"
-                    als="flex-start"
-                    bg="$color3"
-                    br="$3"
-                    cur="pointer"
-                    onPress={tamaguiCmdClip.onCopy}
-                  >
-                    <Image
-                      width={16}
-                      height={16}
-                      scale={selectedPackageManager === 'pnpm' ? 0.7 : 0.8}
-                      y={selectedPackageManager === 'pnpm' ? 0 : 0}
-                      src={`/logos/${selectedPackageManager}.svg`}
-                    />
-
-                    <SizableText color="$color11">{tamaguiCommand}</SizableText>
-
-                    <CopyIcon2
-                      p="$0.5"
-                      size={16}
-                      color="$color10"
-                      hoverStyle={{
-                        color: '$color2',
-                      }}
-                    />
-                  </XStack>
-                </TooltipSimple>
-              </ThemeTintAlt>
-            </>
-          )}
+        <XStack gap="$2">
+          {Object.keys(pkgCommands).map((c) => {
+            const isActive = selectedPackageManager === c
+            return (
+              <SizableText
+                cur="pointer"
+                onPress={() => {
+                  setPackageManager(c)
+                }}
+                color="$color12"
+                o={isActive ? 0.8 : 0.5}
+                hoverStyle={{
+                  o: 0.8,
+                }}
+                key={c}
+              >
+                {c}
+              </SizableText>
+            )
+          })}
         </XStack>
-      </YStack>
+      </XStack>
     )
   },
 
@@ -774,11 +739,9 @@ const componentsIn = {
     return (
       <YStack gap="$1">
         <ThemeTintAlt offset={2}>
-          <IntroParagraph mt="$4">
-            Tamagui is a bunch of libraries that make sharing styling between React web
-            and React Native much more performant, while bringing many features from CSS
-            to React Native. It has an optional optimizing compiler that significantly
-            improves performance.
+          <IntroParagraph large mt="$4">
+            Tamagui makes styling React on any platform a delight. All of its features
+            work the same on both React Native and React web.
           </IntroParagraph>
 
           <UL mt="$4" pl="$4" gap="$2">
@@ -790,8 +753,11 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
                   </CodeInline>
                 </Link>
-                &nbsp; is the core style library, it expands on the React Native style API
-                with many features from CSS all without any external dependency.
+                &nbsp; is the base style library, it expands on the React Native style API
+                with many features from CSS, all without a single external dependency. It
+                can entirely replace React Native Web in a much lighter package, with full
+                API compatibility, much improved SSR, more features, and much better
+                performance.
               </LI>
             </Theme>
 
@@ -811,7 +777,8 @@ const componentsIn = {
                 >
                   significantly improves performance
                 </Link>{' '}
-                through partial analysis, hoisting, and flattening.
+                through partial analysis, hoisting, and flattening. It makes sharing code
+                between web and native actually feel great.
               </LI>
             </Theme>
 
@@ -823,8 +790,10 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>tamagui UI</span>
                   </CodeInline>
                 </Link>{' '}
-                is a bunch of unstyled and styled compound components for building common
-                UI elements that adapt to each platform.
+                is a bunch of unstyled and styled components for building common UI
+                elements. It's similar to Radix, but works on native and web, and has a
+                powerful Adapt primitive to shapeshift UI based on the platform or media
+                query.
               </LI>
             </Theme>
           </UL>

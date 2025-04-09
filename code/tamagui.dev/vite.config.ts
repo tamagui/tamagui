@@ -101,6 +101,12 @@ export default {
         // },
       },
 
+      router: {
+        experimental: {
+          preventLayoutRemounting: true,
+        },
+      },
+
       ssr: {
         autoDepsOptimization: {
           include: /.*/,
@@ -121,6 +127,15 @@ export default {
         'fetch-blob': true,
         'discord-api-types/v10': true,
         'magic-bytes.js': true,
+        '@react-navigation/core': {
+          version: '^7',
+          'lib/module/useOnGetState.js': (contents) => {
+            return contents?.replace(
+              'if (route.state === childState)',
+              'if (!childState || route.state === childState)'
+            )
+          },
+        },
       },
 
       build: {

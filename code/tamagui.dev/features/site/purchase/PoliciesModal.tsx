@@ -16,7 +16,7 @@ export const ProPoliciesModal = () => {
     >
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
+          <Sheet.Frame padding="$8">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>

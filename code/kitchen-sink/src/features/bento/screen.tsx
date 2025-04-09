@@ -42,6 +42,10 @@ const List = styled(SectionList, {
 export function BentoScreen() {
   const [search, setSearch] = useState('')
 
+  if (!Data) {
+    return null
+  }
+
   const filteredDemos = useMemo(() => {
     return Data.listingData.sections
       .filter((section) => section.parts.some((part) => part.name.includes(search)))
