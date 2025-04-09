@@ -28,12 +28,10 @@ describe('useParityDiscount', () => {
     expect(result.current.parityDeals).toBeNull()
 
     // Simulate banner injection
-    act(() => {
+    await act(async () => {
       document.body.innerHTML = mockBannerHTML
+      await new Promise((resolve) => setTimeout(resolve, 0))
     })
-
-    // Wait for MutationObserver to fire
-    await new Promise((resolve) => setTimeout(resolve, 0))
 
     // Check if the data was extracted correctly
     expect(result.current.parityDeals).toEqual({
