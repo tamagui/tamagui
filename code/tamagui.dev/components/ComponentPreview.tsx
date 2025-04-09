@@ -1,6 +1,7 @@
 import {
   Check,
   CheckCircle2,
+  DollarSign,
   Laptop2,
   Mail,
   Share,
@@ -844,6 +845,26 @@ const ComponentPreview = {
           ))}
         </YStack>
       </YStack>
+    )
+  },
+
+  Payment: () => {
+    return (
+      <WindowLayout>
+        <YStack
+          m="$4"
+          p="$4"
+          br="$4"
+          gap="$2"
+          borderWidth={1.5}
+          borderColor={'$color8'}
+          height={200}
+        >
+          <DollarSign />
+          <View w="100%" mt="$2" h={6} bg="$color8" />
+          <View w="80%" h={6} bg="$color8" />
+        </YStack>
+      </WindowLayout>
     )
   },
 }

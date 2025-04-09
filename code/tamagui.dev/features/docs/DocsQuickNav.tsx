@@ -2,7 +2,6 @@ import { classNames } from '@tamagui/remove-scroll'
 import { href, usePathname, type Href } from 'one'
 import { useEffect, useState } from 'react'
 import {
-  Button,
   Circle,
   H4,
   Label,
@@ -19,7 +18,6 @@ import {
 import { ButtonLink, Link, type LinkProps } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { TakeoutButton } from '../site/TakeoutButton'
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <a onClick={(e) => [e.stopPropagation()]} href={href as any}>

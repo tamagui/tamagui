@@ -212,7 +212,7 @@ export function PurchaseModalContents() {
       return (
         <YStack>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
-            <BigP>
+            <BigP ta="center">
               We've put together tools that make starting and building a universal app as
               good as it gets.
             </BigP>
@@ -222,7 +222,7 @@ export function PurchaseModalContents() {
             </XStack>
 
             <YStack gap="$3">
-              <P color="$color10" size="$4" $gtXs={{ size: '$8' }}>
+              <P color="$color10" size="$4">
                 For a one year term you get access to the private Takeout Github repo,
                 Bento components
                 {disableAutoRenew ? `` : `, and the private community chat room`}. You get
@@ -230,6 +230,10 @@ export function PurchaseModalContents() {
               </P>
             </YStack>
           </YStack>
+
+          <Separator my="$10" />
+
+          <H3 ff="$mono">Team</H3>
 
           <TeamSeatsInput
             value={teamSeats}
