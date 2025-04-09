@@ -545,7 +545,7 @@ export const PopoverClose = React.forwardRef<
       ref={forwardedRef}
       componentName="PopoverClose"
       onPress={composeEventHandlers(props.onPress as any, () =>
-        context.onOpenChange(false, 'press')
+        context?.onOpenChange?.(false, 'press')
       )}
     />
   )

@@ -7,7 +7,7 @@ export function InputsDemo() {
       width={200}
       minHeight={250}
       overflow="hidden"
-      space="$2"
+      gap="$2"
       margin="$3"
       padding="$2"
     >

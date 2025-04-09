@@ -194,7 +194,7 @@ export function Navigation() {
           },
         }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="bento"
         component={BentoScreen}
         options={{
@@ -205,7 +205,7 @@ export function Navigation() {
         }}
       />
       {bentoScreensPerElement}
-      {bentoScreenSections} */}
+      {bentoScreenSections}
     </Stack.Navigator>
   )
 }

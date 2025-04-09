@@ -1,3 +1,4 @@
+import { defaultConfig } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
 import { createTamagui } from '@tamagui/core'
 import { themes } from './theme'
@@ -7,6 +8,10 @@ const appConfig = createTamagui({
   themes: {
     ...config.themes,
     ...themes,
+  },
+  media: {
+    ...defaultConfig.media,
+    ...config.media,
   },
 })
 
