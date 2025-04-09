@@ -1064,6 +1064,20 @@ export const componentsList: ComponentSchema[] = [
     dependencies: ['@tamagui/lucide-icons', '@tamagui/get-font-sized'],
     moveFilesToFolder: [{ file: 'StatusTracker', to: '' }],
   },
+
+  {
+    name: 'Paywall',
+    fileName: 'Paywall',
+    category: 'user',
+    categorySection: 'payment',
+    dependencies: [
+      'react-native-reanimated',
+      'react-native-gesture-handler',
+      '@tamagui/lucide-icons',
+      'tamagui/linear-gradient',
+    ],
+    moveFilesToFolder: [{ file: 'Paywall', to: '' }],
+  },
   ...MISSING_COMPONENTS,
 ].map((item) => {
   return { ...item, isOSS: Boolean(OSS_COMPONENTS.includes(item.fileName)) }
