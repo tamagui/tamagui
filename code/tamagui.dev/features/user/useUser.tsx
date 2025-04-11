@@ -17,9 +17,7 @@ export const useUser = () => {
       if (typeof window === 'undefined') {
         return null
       }
-
       const res = await fetch('/api/user')
-
       if (res.ok) {
         return (await res.json()) as UserContextType
       }

@@ -10,6 +10,7 @@ import { tiersPriority } from '../stripe/tiers'
 import { getArray } from '~/helpers/getArray'
 import { ThemeSuiteSchema } from '../studio/theme/getTheme'
 import type { ThemeSuiteItemData } from '../studio/theme/types'
+import type { UserContextType } from '../auth/types'
 
 export const getUserDetails = async (
   supabase: SupabaseClient<Database>,
@@ -44,34 +45,31 @@ export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
   return result.data
 }
 
-export const getSubscriptions = async (
-  supabase: SupabaseClient<Database>,
-  user: User | null
-) => {
+export const getSubscriptions = async (user: User | null) => {
   let userId = user?.id
-  let ownerId
 
-  if (userId) {
-    //NOTE: check user is a team member
-    const { data: teamMember, error } = await supabase
-      .from('team_members')
-      .select(`team_subscriptions (owner_id)`)
-      .eq('member_id', userId)
-      .eq('status', 'active')
-      .single()
-
-    if (error) {
-      throw new Error(error.message)
-    }
-
-    // NOTE: if the user is a team member, we need to get the owner's id ===> to get the subscription
-    ownerId = teamMember?.team_subscriptions?.owner_id
+  if (!userId) {
+    return []
   }
 
+  //NOTE: check user is a team member
+  const { data: teamMember } = await supabaseAdmin
+    .from('team_members')
+    .select(`team_subscriptions (owner_id)`)
+    .eq('member_id', userId)
+    .eq('status', 'active')
+    .single()
+
+  // NOTE: if the user is a team member, we need to get the owner's id ===> to get the subscription
+  const ownerId = teamMember?.team_subscriptions?.owner_id
+  if (ownerId) userId = ownerId
+
   const select = '*, subscription_items(*, prices(*, products(*)), app_installations(*))'
-  const result = await (ownerId
-    ? supabaseAdmin.from('subscriptions').select(select).eq('user_id', ownerId)
-    : supabase.from('subscriptions').select(select))
+
+  const result = await supabaseAdmin
+    .from('subscriptions')
+    .select(select)
+    .eq('user_id', userId)
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -181,7 +179,7 @@ export async function getUserAccessInfo(
   user: User | null
 ) {
   const [subscriptions, ownedProducts] = await Promise.all([
-    getSubscriptions(supabase, user),
+    getSubscriptions(user),
     getOwnedProducts(supabase),
   ])
 

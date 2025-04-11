@@ -28,6 +28,7 @@ import {
   XStack,
   YStack,
   Spinner,
+  View,
 } from 'tamagui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -55,7 +56,7 @@ export const useAccountModal = createUseStore(AccountModal)
 export const NewAccountModal = () => {
   const store = useAccountModal()
   const { isLoading, data } = useUser()
-  
+
   const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
     'plan'
   )
@@ -74,7 +75,10 @@ export const NewAccountModal = () => {
   // Find Pro subscription
   const proSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
-  )
+  ) as NonNullable<UserContextType['subscriptions']>[number]
+
+  const user = data.user
+  const isTeamMember = user?.id && user.id !== proSubscription?.user_id
 
   // Find Support subscription
   const supportSubscription = activeSubscriptions?.find((sub) =>
@@ -165,11 +169,13 @@ export const NewAccountModal = () => {
                       Plan
                     </Tab>
                   </YStack>
-                  <YStack width={'33.3333%'} f={1}>
-                    <Tab isActive={currentTab === 'upgrade'} value="upgrade">
-                      Upgrade
-                    </Tab>
-                  </YStack>
+                  {!isTeamMember ? (
+                    <YStack width={'33.3333%'} f={1}>
+                      <Tab isActive={currentTab === 'upgrade'} value="upgrade">
+                        Upgrade
+                      </Tab>
+                    </YStack>
+                  ) : null}
                   <YStack width={'33.3333%'} f={1}>
                     <Tab isActive={currentTab === 'manage'} value="manage">
                       Manage
@@ -1056,10 +1062,10 @@ const SupportTabContent = ({
 const ManageTab = ({
   subscription,
 }: {
-  subscription?: any
+  subscription?: NonNullable<UserContextType['subscriptions']>[number]
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { refresh } = useUser()
+  const { refresh, data } = useUser()
 
   if (!subscription) {
     return (
@@ -1079,6 +1085,16 @@ const ManageTab = ({
       </YStack>
     )
   }
+
+  // Check member status
+  const user = data?.user?.id
+  const isMember = user && user !== subscription?.user_id
+
+  // Get subscription details
+  const subscriptionItems = subscription?.subscription_items || []
+  const mainItem = subscriptionItems[0]
+  const price = mainItem?.price
+  const product = price?.product
 
   const handleCancelSubscription = async () => {
     setIsLoading(true)
@@ -1103,12 +1119,6 @@ const ManageTab = ({
     }
   }
 
-  // Get subscription details
-  const subscriptionItems = subscription.subscription_items || []
-  const mainItem = subscriptionItems[0]
-  const price = mainItem?.price
-  const product = price?.product
-
   // Format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -1119,7 +1129,10 @@ const ManageTab = ({
 
   return (
     <YStack gap="$6">
-      <H3>Subscription Details</H3>
+      <View>
+        <H3>Subscription Details</H3>
+        {isMember && <Paragraph color="$green9">You are a member</Paragraph>}
+      </View>
       <YStack gap="$4" p="$4" borderWidth={1} borderColor="$color3" borderRadius="$4">
         <XStack jc="space-between">
           <Paragraph>Plan</Paragraph>
@@ -1179,17 +1192,21 @@ const ManageTab = ({
           </YStack>
         )}
 
-        <Separator />
+        {!isMember ? (
+          <>
+            <Separator />
 
-        <Button
-          theme="red"
-          disabled={isLoading || subscription.cancel_at_period_end}
-          onPress={handleCancelSubscription}
-        >
-          {subscription.cancel_at_period_end
-            ? 'Cancellation Scheduled'
-            : 'Cancel Subscription'}
-        </Button>
+            <Button
+              theme="red"
+              disabled={isLoading || !!subscription.cancel_at_period_end}
+              onPress={handleCancelSubscription}
+            >
+              {subscription.cancel_at_period_end
+                ? 'Cancellation Scheduled'
+                : 'Cancel Subscription'}
+            </Button>
+          </>
+        ) : null}
       </YStack>
     </YStack>
   )
