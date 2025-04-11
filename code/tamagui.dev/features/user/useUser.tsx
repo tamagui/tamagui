@@ -11,12 +11,15 @@ export let currentUser: UserContextType | null = null
 
 export const useUser = () => {
   const { mutate } = useSWRConfig()
+
   const response = useSWR<UserContextType | null>('user', {
     fetcher: async () => {
       if (typeof window === 'undefined') {
         return null
       }
+
       const res = await fetch('/api/user')
+
       if (res.ok) {
         return (await res.json()) as UserContextType
       }

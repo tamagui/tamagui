@@ -55,6 +55,7 @@ export const useAccountModal = createUseStore(AccountModal)
 export const NewAccountModal = () => {
   const store = useAccountModal()
   const { isLoading, data } = useUser()
+  
   const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
     'plan'
   )
@@ -197,10 +198,7 @@ export const NewAccountModal = () => {
                         <UpgradeTab subscription={supportSubscription!} />
                       )}
                       {currentTab === 'manage' && (
-                        <ManageTab
-                          subscription={proSubscription}
-                          supportSubscription={supportSubscription}
-                        />
+                        <ManageTab subscription={proSubscription} />
                       )}
                       {currentTab === 'team' && <TeamTab />}
                     </YStack>
@@ -1057,14 +1055,11 @@ const SupportTabContent = ({
 
 const ManageTab = ({
   subscription,
-  supportSubscription,
 }: {
   subscription?: any
-  supportSubscription?: any
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { refresh } = useUser()
-  const { data: products } = useProducts()
 
   if (!subscription) {
     return (

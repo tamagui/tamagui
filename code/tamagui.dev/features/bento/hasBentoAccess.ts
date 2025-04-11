@@ -15,7 +15,6 @@ export const hasBentoAccess = async (userId: string) => {
       )
     `)
     .eq('user_id', userId)
-  // .in('status', ['active', 'trialing'])
 
   return Boolean(
     result.data?.some((subscription) =>

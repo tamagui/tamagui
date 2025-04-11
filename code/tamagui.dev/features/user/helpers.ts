@@ -44,10 +44,34 @@ export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
   return result.data
 }
 
-export const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase
-    .from('subscriptions')
-    .select('*, subscription_items(*, prices(*, products(*)), app_installations(*))')
+export const getSubscriptions = async (
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) => {
+  let userId = user?.id
+  let ownerId
+
+  if (userId) {
+    //NOTE: check user is a team member
+    const { data: teamMember, error } = await supabase
+      .from('team_members')
+      .select(`team_subscriptions (owner_id)`)
+      .eq('member_id', userId)
+      .eq('status', 'active')
+      .single()
+
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    // NOTE: if the user is a team member, we need to get the owner's id ===> to get the subscription
+    ownerId = teamMember?.team_subscriptions?.owner_id
+  }
+
+  const select = '*, subscription_items(*, prices(*, products(*)), app_installations(*))'
+  const result = await (ownerId
+    ? supabaseAdmin.from('subscriptions').select(select).eq('user_id', ownerId)
+    : supabase.from('subscriptions').select(select))
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -157,7 +181,7 @@ export async function getUserAccessInfo(
   user: User | null
 ) {
   const [subscriptions, ownedProducts] = await Promise.all([
-    getSubscriptions(supabase),
+    getSubscriptions(supabase, user),
     getOwnedProducts(supabase),
   ])
 
@@ -237,17 +261,104 @@ export async function getTeamEligibility(
   supabase: SupabaseClient<Database>,
   user: User | null
 ) {
-  const { data, error } = await supabase
-    .from('team_members')
-    .select('*')
-    .eq('member_id', user?.id ?? '')
-    .eq('status', 'active')
+  if (!user) {
+    return {
+      isProMember: false,
+      subscriptions: undefined,
+    }
+  }
 
-  if (error) {
-    throw error
+  try {
+    const teamMembership = await getActiveTeamMembership(supabase, user.id)
+    if (!teamMembership.isActive) {
+      return {
+        isProMember: false,
+      }
+    }
+
+    if (!teamMembership.ownerId) {
+      return {
+        isProMember: true,
+      }
+    }
+
+    const subscriptions = await getOwnerSubscriptions(teamMembership.ownerId)
+
+    return {
+      subscriptions,
+      isProMember: true,
+    }
+  } catch (err) {
+    return {
+      subscriptions: undefined,
+      isProMember: false,
+    }
+  }
+}
+
+/**
+ * Get active team membership for a user
+ */
+async function getActiveTeamMembership(
+  supabase: SupabaseClient<Database>,
+  userId: string
+) {
+  const { data: teamMember, error } = await supabase
+    .from('team_members')
+    .select(`
+      team_subscription_id,
+      team_subscriptions (
+        owner_id
+      )
+    `)
+    .eq('member_id', userId)
+    .eq('status', 'active')
+    .single()
+
+  if (error || !teamMember?.team_subscription_id) {
+    return {
+      isActive: false,
+      ownerId: null,
+    }
   }
 
   return {
-    isProMember: !!data.length,
+    isActive: true,
+    ownerId: teamMember.team_subscriptions?.owner_id,
   }
+}
+
+/**
+ * Get subscriptions for a team owner
+ */
+async function getOwnerSubscriptions(ownerId: string) {
+  const { data: subscriptions, error: subError } = await supabaseAdmin
+    .from('subscriptions')
+    .select(`
+      *,
+      subscription_items (
+        *,
+        prices (
+          *,
+          products (*)
+        ),
+        app_installations (*)
+      )
+    `)
+    .eq('user_id', ownerId)
+
+  if (subError) {
+    throw new Error(subError.message)
+  }
+
+  return subscriptions.map((sub) => ({
+    ...sub,
+    subscription_items: getArray(sub.subscription_items).map(({ prices, ...item }) => ({
+      ...item,
+      price: {
+        ...getSingle(prices),
+        product: getSingle(getSingle(prices)?.products),
+      },
+    })),
+  }))
 }

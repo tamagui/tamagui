@@ -47,8 +47,6 @@ export default apiRoute(async (req) => {
     )
   }
 
-  console.info('Claim: validated')
-
   const subscriptionRes = await supabase
     .from('subscriptions')
     .select('*, subscription_items(id, prices(*, products(*)))')
@@ -59,13 +57,10 @@ export default apiRoute(async (req) => {
     throw postgresError(subscriptionRes.error)
   }
 
-  console.info('Claim: found subscription')
   const subscription = subscriptionRes.data
   const prices = getArray(subscriptionRes.data.subscription_items).map((s) =>
     getSingle(s?.prices)
   )
-
-  console.info('Claim: found prices')
 
   for (const price of prices) {
     for (const product of getArray(price?.products)) {
