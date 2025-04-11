@@ -47,11 +47,15 @@ export default apiRoute(async (req) => {
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
 
   const { subscription, hasDiscordPrivateChannels, discordSeats } =
-    await ensureSubscription(supabase, subscriptionId)
+    await ensureSubscription(user.id, subscriptionId)
+
+  if (!subscription) {
+    return Response.json({ message: 'No subscription found' }, { status: 400 })
+  }
 
   // Get subscription tier information and verify it's a Support tier
-  const supportItems = subscription.data.subscription_items?.filter(
-    (item) => (item.prices as any)?.products?.name === 'Tamagui Support'
+  const supportItems = subscription?.subscription_items?.filter(
+    (item) => item.price?.products?.name === 'Tamagui Support'
   )
 
   if (!supportItems?.length) {
@@ -72,7 +76,7 @@ export default apiRoute(async (req) => {
   const discordInvites = await supabaseAdmin
     .from('discord_invites')
     .select('*')
-    .eq('subscription_id', subscription.data.id)
+    .eq('subscription_id', subscription?.id)
 
   if (discordInvites.error) {
     throw discordInvites.error
@@ -90,7 +94,7 @@ export default apiRoute(async (req) => {
   const discordClient = await getDiscordClient()
 
   let discordChannelId: string | null =
-    (subscription.data.metadata as Record<string, any>)?.discord_channel || null
+    (subscription.metadata as Record<string, any>)?.discord_channel || null
 
   let userName = user.email?.split('@')[0]
 
@@ -136,7 +140,7 @@ export default apiRoute(async (req) => {
           name: channelName,
           parent_id: supportCategory.id,
           permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-          topic: `Support Tier ${supportTier} - Created at ${subscription.data.created} - ID: ${subscription.data.id}`,
+          topic: `Support Tier ${supportTier} - Created at ${subscription.created} - ID: ${subscription.id}`,
         }
       )
 
@@ -149,7 +153,7 @@ export default apiRoute(async (req) => {
       await supabaseAdmin
         .from('subscriptions')
         .update({ metadata: { discord_channel: discordChannel.id } })
-        .eq('id', subscription.data.id)
+        .eq('id', subscription.id)
     }
 
     if (req.method === 'DELETE') {
@@ -168,7 +172,7 @@ export default apiRoute(async (req) => {
       await supabaseAdmin
         .from('discord_invites')
         .delete()
-        .eq('subscription_id', subscription.data.id)
+        .eq('subscription_id', subscription.id)
       return Response.json({ message: 'discord access reset' })
     }
 
@@ -207,7 +211,7 @@ export default apiRoute(async (req) => {
 
       await supabaseAdmin.from('discord_invites').insert({
         discord_user_id: userDiscordId,
-        subscription_id: subscription.data.id,
+        subscription_id: subscription.id,
       })
 
       await discordClient.api.guilds.addRoleToMember(

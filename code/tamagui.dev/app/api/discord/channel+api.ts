@@ -3,7 +3,6 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
-  DEFAULT_ROLE_ID,
   getDiscordClient,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
@@ -44,12 +43,16 @@ export default apiRoute(async (req) => {
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
 
   const { subscription, hasDiscordPrivateChannels, discordSeats } =
-    await ensureSubscription(supabase, subscriptionId)
+    await ensureSubscription(user.id, subscriptionId)
+
+  if (!subscription) {
+    return Response.json({ message: 'No subscription found' }, { status: 400 })
+  }
 
   const discordInvites = await supabaseAdmin
     .from('discord_invites')
     .select('*')
-    .eq('subscription_id', subscription.data.id)
+    .eq('subscription_id', subscription.id)
 
   if (discordInvites.error) {
     throw discordInvites.error
@@ -67,7 +70,7 @@ export default apiRoute(async (req) => {
   const discordClient = await getDiscordClient()
 
   let discordChannelId: string | null =
-    (subscription.data.metadata as Record<string, any>)?.discord_channel || null
+    (subscription.metadata as Record<string, any>)?.discord_channel || null
 
   if (hasDiscordPrivateChannels && !discordChannelId) {
     // Pro users get access to the general channel
@@ -79,7 +82,7 @@ export default apiRoute(async (req) => {
       await supabaseAdmin
         .from('subscriptions')
         .update({ metadata: { discord_channel: generalChannel.id } })
-        .eq('id', subscription.data.id)
+        .eq('id', subscription.id)
     }
   }
 
@@ -96,7 +99,7 @@ export default apiRoute(async (req) => {
     await supabaseAdmin
       .from('discord_invites')
       .delete()
-      .eq('subscription_id', subscription.data.id)
+      .eq('subscription_id', subscription.id)
     return Response.json({ message: 'discord access reset' })
   }
 
@@ -124,7 +127,7 @@ export default apiRoute(async (req) => {
 
     await supabaseAdmin.from('discord_invites').insert({
       discord_user_id: userDiscordId,
-      subscription_id: subscription.data.id,
+      subscription_id: subscription.id,
     })
 
     await discordClient.api.guilds.addRoleToMember(
