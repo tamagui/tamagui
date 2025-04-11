@@ -48,7 +48,7 @@ export default apiRoute(async (req) => {
     )
   }
 
-  const subscriptions = await getSubscriptions(user)
+  const subscriptions = await getSubscriptions(user?.id)
 
   const subscription = subscriptions.find((s) => s.id === subscriptionId)
 

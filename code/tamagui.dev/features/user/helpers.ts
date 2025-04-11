@@ -45,8 +45,8 @@ export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
   return result.data
 }
 
-export const getSubscriptions = async (user: User | null) => {
-  let userId = user?.id
+export const getSubscriptions = async (id?: string) => {
+  let userId = id
 
   if (!userId) {
     return []
@@ -179,7 +179,7 @@ export async function getUserAccessInfo(
   user: User | null
 ) {
   const [subscriptions, ownedProducts] = await Promise.all([
-    getSubscriptions(user),
+    getSubscriptions(user?.id),
     getOwnedProducts(supabase),
   ])
 

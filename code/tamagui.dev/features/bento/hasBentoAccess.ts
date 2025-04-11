@@ -1,25 +1,13 @@
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { getSubscriptions } from '../user/helpers'
 
 export const hasBentoAccess = async (userId: string) => {
-  const result = await supabaseAdmin
-    .from('subscriptions')
-    .select(`
-      *,
-      subscription_items (
-        prices (
-          *,
-          products (
-            name
-          )
-        )
-      )
-    `)
-    .eq('user_id', userId)
+  const subscriptions = await getSubscriptions(userId)
 
   return Boolean(
-    result.data?.some((subscription) =>
+    subscriptions?.some((subscription) =>
       subscription.subscription_items?.some(
-        (item) => item.prices?.products?.name === 'Tamagui Pro'
+        (item) => item.price?.product?.name === 'Tamagui Pro'
       )
     )
   )

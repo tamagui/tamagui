@@ -19,7 +19,7 @@ export default apiRoute(async (req) => {
     await Promise.all([
       getUserTeams(supabase),
       getUserDetails(supabase, user.id),
-      getSubscriptions(user),
+      getSubscriptions(user?.id),
       getUserAccessInfo(supabase, user),
       getUserThemeHistories(supabase, user),
     ])
