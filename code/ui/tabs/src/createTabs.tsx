@@ -6,27 +6,37 @@ import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, TamaguiElement } from '@tamagui/web'
+import type { GetProps, StackProps, TamaguiElement } from '@tamagui/web'
 import { Theme, useEvent } from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
-import {
-  TabsContentFrame as DefaultTabsContentFrame,
-  TabsFrame as DefaultTabsFrame,
-  TabsTriggerFrame as DefaultTabsTriggerFrame,
-} from './Tabs'
+import { DefaultTabsContentFrame, DefaultTabsFrame, DefaultTabsTabFrame } from './Tabs'
 import { TabsProvider, useTabsContext } from './StyledContext'
 
-export function createTabs({
-  ContentFrame = DefaultTabsContentFrame,
-  TriggerFrame = DefaultTabsTriggerFrame,
-  TabsFrame = DefaultTabsFrame,
-}) {
-  const TABS_CONTEXT = 'TabsContext'
+type TabsComponent = (props: { direction: 'horizontal' | 'vertical' } & StackProps) => any
+type TabComponent = (props: { active?: boolean } & StackProps) => any
+type ContentComponent = (props: StackProps) => any
 
-  /* -------------------------------------------------------------------------------------------------
-   * TabsList
-   * -----------------------------------------------------------------------------------------------*/
+export function createTabs<
+  C extends TabsComponent,
+  T extends TabComponent,
+  F extends ContentComponent,
+>(createProps: {
+  ContentFrame: C
+  TabFrame: T
+  TabsFrame: F
+}) {
+  const {
+    ContentFrame = DefaultTabsContentFrame,
+    TabFrame = DefaultTabsTabFrame,
+    TabsFrame = DefaultTabsFrame,
+  } = createProps as unknown as {
+    ContentFrame: typeof DefaultTabsContentFrame
+    TabFrame: typeof DefaultTabsTabFrame
+    TabsFrame: typeof DefaultTabsFrame
+  }
+
+  const TABS_CONTEXT = 'TabsContext'
 
   const TAB_LIST_NAME = 'TabsList'
 
@@ -70,7 +80,7 @@ export function createTabs({
    * @deprecated Use `TabLayout` instead
    */
 
-  const TabsTrigger = TriggerFrame.styleable<ScopedProps<TabsTabProps>>(
+  const TabsTrigger = TabFrame.styleable<ScopedProps<TabsTabProps>>(
     (props, forwardedRef) => {
       const {
         __scopeTabs,
@@ -130,7 +140,7 @@ export function createTabs({
             focusable={!disabled}
             active={isSelected}
           >
-            <TriggerFrame
+            <TabFrame
               onLayout={(event) => {
                 if (!isWeb) {
                   setLayout(event.nativeEvent.layout)
@@ -381,7 +391,7 @@ type InteractionType = 'select' | 'focus' | 'hover'
 
 type TabLayout = LayoutRectangle
 
-type TabsTriggerFrameProps = GetProps<typeof DefaultTabsTriggerFrame>
+type TabsTriggerFrameProps = GetProps<typeof DefaultTabsTabFrame>
 
 /**
  * @deprecated use `TabTabsProps` instead

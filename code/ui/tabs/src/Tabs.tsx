@@ -2,9 +2,14 @@ import { styled } from '@tamagui/core'
 import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 import { getButtonSized } from '@tamagui/get-button-sized'
 
+const TABS_NAME = 'Tabs'
+export const DefaultTabsFrame = styled(SizableStack, {
+  name: TABS_NAME,
+})
+
 const TRIGGER_NAME = 'TabsTrigger'
 
-export const TabsTriggerFrame = styled(ThemeableStack, {
+export const DefaultTabsTabFrame = styled(ThemeableStack, {
   name: TRIGGER_NAME,
   tag: 'button',
 
@@ -62,20 +67,8 @@ export const TabsTriggerFrame = styled(ThemeableStack, {
   },
 })
 
-/* -------------------------------------------------------------------------------------------------
- * TabsContent
- * -----------------------------------------------------------------------------------------------*/
 const CONTENT_NAME = 'TabsContent'
 
-export const TabsContentFrame = styled(ThemeableStack, {
+export const DefaultTabsContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
-})
-
-/* -------------------------------------------------------------------------------------------------
- * Tabs
- * -----------------------------------------------------------------------------------------------*/
-
-const TABS_NAME = 'Tabs'
-export const TabsFrame = styled(SizableStack, {
-  name: TABS_NAME,
 })
