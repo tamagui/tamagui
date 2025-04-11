@@ -45,8 +45,16 @@ export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
   return result.data
 }
 
-export const getSubscriptions = async (id?: string) => {
-  let userId = id
+export const getActiveSubscriptions = async (
+  userId?: string,
+  subscriptionId?: string
+) => {
+  const subscriptions = await getSubscriptions(userId)
+  return subscriptions.find((s) => s.id && s.id === subscriptionId)
+}
+
+export const getSubscriptions = async (uuid?: string) => {
+  let userId = uuid
 
   if (!userId) {
     return []

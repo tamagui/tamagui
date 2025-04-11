@@ -726,6 +726,7 @@ const PlanTab = ({
     }
 
     setIsGrantingAccess(true)
+
     try {
       const res = await fetch(`/api/claim`, {
         method: 'POST',

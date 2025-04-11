@@ -1,8 +1,8 @@
-import { apiRoute, postgresError } from '~/features/api/apiRoute'
+import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { ClaimError, claimTakeoutForProPlan } from '~/features/user/claim-product'
-import { getSubscriptions } from '~/features/user/helpers'
+import { getActiveSubscriptions } from '~/features/user/helpers'
 import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
 
@@ -48,9 +48,7 @@ export default apiRoute(async (req) => {
     )
   }
 
-  const subscriptions = await getSubscriptions(user?.id)
-
-  const subscription = subscriptions.find((s) => s.id === subscriptionId)
+  const subscription = await getActiveSubscriptions(user?.id, subscriptionId)
 
   if (!subscription) {
     return Response.json({ error: 'Subscription not found' }, { status: 404 })
