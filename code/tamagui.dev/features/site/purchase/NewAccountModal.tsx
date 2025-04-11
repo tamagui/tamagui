@@ -198,13 +198,17 @@ export const NewAccountModal = () => {
                           subscription={proSubscription!}
                           supportSubscription={supportSubscription!}
                           setCurrentTab={setCurrentTab}
+                          isTeamMember={!!isTeamMember}
                         />
                       )}
                       {currentTab === 'upgrade' && (
                         <UpgradeTab subscription={supportSubscription!} />
                       )}
                       {currentTab === 'manage' && (
-                        <ManageTab subscription={proSubscription} />
+                        <ManageTab
+                          subscription={proSubscription}
+                          isTeamMember={!!isTeamMember}
+                        />
                       )}
                       {currentTab === 'team' && <TeamTab />}
                     </YStack>
@@ -706,10 +710,12 @@ const PlanTab = ({
   subscription,
   supportSubscription,
   setCurrentTab,
+  isTeamMember,
 }: {
   subscription?: NonNullable<UserContextType['subscriptions']>[number]
   supportSubscription?: NonNullable<UserContextType['subscriptions']>[number]
   setCurrentTab: (value: 'plan' | 'upgrade' | 'manage' | 'team') => void
+  isTeamMember: boolean
 }) => {
   const supabase = useSupabaseClient()
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
@@ -854,20 +860,24 @@ const PlanTab = ({
           />
 
           <ChatAccessCard />
-          <ServiceCard
-            title="Add Members"
-            description="Add members to your Pro plan."
-            actionLabel="Add Seats"
-            onAction={() => {
-              if (!subscription) {
-                paymentModal.show = true
-                paymentModal.teamSeats = 1
-              } else {
-                addTeamMemberModal.subscriptionId = subscription.id
-                addTeamMemberModal.show = true
-              }
-            }}
-          />
+          {!isTeamMember ? (
+            <ServiceCard
+              title="Add Members"
+              description="Add members to your Pro plan."
+              actionLabel="Add Seats"
+              onAction={() => {
+                if (!subscription) {
+                  paymentModal.show = true
+                  paymentModal.teamSeats = 1
+                } else {
+                  addTeamMemberModal.subscriptionId = subscription.id
+                  addTeamMemberModal.show = true
+                }
+              }}
+            />
+          ) : (
+            <View flex={1} w={300} />
+          )}
         </XStack>
       </YStack>
 
@@ -1062,8 +1072,10 @@ const SupportTabContent = ({
 
 const ManageTab = ({
   subscription,
+  isTeamMember,
 }: {
   subscription?: NonNullable<UserContextType['subscriptions']>[number]
+  isTeamMember: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { refresh, data } = useUser()
@@ -1086,10 +1098,6 @@ const ManageTab = ({
       </YStack>
     )
   }
-
-  // Check member status
-  const user = data?.user?.id
-  const isMember = user && user !== subscription?.user_id
 
   // Get subscription details
   const subscriptionItems = subscription?.subscription_items || []
@@ -1132,7 +1140,7 @@ const ManageTab = ({
     <YStack gap="$6">
       <View>
         <H3>Subscription Details</H3>
-        {isMember && <Paragraph color="$green9">You are a member</Paragraph>}
+        {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
       </View>
       <YStack gap="$4" p="$4" borderWidth={1} borderColor="$color3" borderRadius="$4">
         <XStack jc="space-between">
@@ -1162,12 +1170,10 @@ const ManageTab = ({
         </XStack>
 
         <XStack jc="space-between">
-          <Paragraph>Billing Period</Paragraph>
+          <Paragraph flex={1}>Billing Period</Paragraph>
           <YStack ai="flex-end">
             <Paragraph>
               {new Date(subscription.current_period_start).toLocaleDateString()} -
-            </Paragraph>
-            <Paragraph>
               {new Date(subscription.current_period_end).toLocaleDateString()}
             </Paragraph>
           </YStack>
@@ -1184,16 +1190,14 @@ const ManageTab = ({
 
         {product?.description && (
           <YStack gap="$2" pt="$2">
-            <Paragraph theme="alt1" size="$5">
-              Includes:
-            </Paragraph>
+            <Paragraph>Includes:</Paragraph>
             <Paragraph theme="alt2" size="$4">
               {product.description}
             </Paragraph>
           </YStack>
         )}
 
-        {!isMember ? (
+        {!isTeamMember ? (
           <>
             <Separator />
 
