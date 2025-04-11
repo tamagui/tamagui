@@ -1,10 +1,10 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
 import { getArray } from './getArray'
 import { getSingle } from './getSingle'
 import { getTakeoutPriceInfo } from '../features/site/purchase/getProductInfo'
+import { getActiveSubscriptions } from '~/features/user/helpers'
 
 export async function ensureSubscription(
-  supabase: SupabaseClient<any, 'public', any>,
+  userId?: string,
   subscriptionId?: string | null
 ) {
   if (!subscriptionId) {
@@ -18,15 +18,9 @@ export async function ensureSubscription(
     )
   }
 
-  const subscription = await supabase
-    .from('subscriptions')
-    .select(
-      'id, metadata, created, subscription_items(id, prices(id, description, products(id, name, metadata)))'
-    )
-    .eq('id', subscriptionId)
-    .single()
+  const subscription = await getActiveSubscriptions(userId, subscriptionId)
 
-  if (subscription.error) {
+  if (!subscription) {
     throw Response.json(
       {
         message: 'no subscription with the provided id found that belongs to your user.',
@@ -39,9 +33,10 @@ export async function ensureSubscription(
 
   const validProducts = ['Tamagui Pro', 'Tamagui Support']
 
-  const subscriptionData = getArray(subscription.data.subscription_items).find((item) =>
-    validProducts.includes(getSingle(getSingle(item?.prices)?.products).name)
-  )
+  const subscriptionData = getArray(subscription.subscription_items).find((item) => {
+    const products = getSingle(getSingle(item?.price)?.products)
+    return products?.name && validProducts.includes(products.name)
+  })
 
   if (!subscriptionData) {
     throw Response.json(
@@ -54,9 +49,7 @@ export async function ensureSubscription(
     )
   }
 
-  const pricingDescription = getSingle(
-    subscriptionData.prices
-  )?.description?.toLowerCase()
+  const pricingDescription = getSingle(subscriptionData.price)?.description?.toLowerCase()
 
   if (!pricingDescription) {
     console.warn(`No price description: ${JSON.stringify(subscriptionData)}`)

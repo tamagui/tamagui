@@ -1,12 +1,13 @@
-import { apiRoute, postgresError } from '~/features/api/apiRoute'
+import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { ClaimError, claimTakeoutForProPlan } from '~/features/user/claim-product'
+import { getActiveSubscriptions } from '~/features/user/helpers'
 import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const body = await readBodyJSON(req)
   const subscriptionId = body['subscription_id']
@@ -47,25 +48,13 @@ export default apiRoute(async (req) => {
     )
   }
 
-  console.info('Claim: validated')
+  const subscription = await getActiveSubscriptions(user?.id, subscriptionId)
 
-  const subscriptionRes = await supabase
-    .from('subscriptions')
-    .select('*, subscription_items(id, prices(*, products(*)))')
-    .eq('id', subscriptionId)
-    .single()
-
-  if (subscriptionRes.error) {
-    throw postgresError(subscriptionRes.error)
+  if (!subscription) {
+    return Response.json({ error: 'Subscription not found' }, { status: 404 })
   }
 
-  console.info('Claim: found subscription')
-  const subscription = subscriptionRes.data
-  const prices = getArray(subscriptionRes.data.subscription_items).map((s) =>
-    getSingle(s?.prices)
-  )
-
-  console.info('Claim: found prices')
+  const prices = getArray(subscription.subscription_items).map((s) => getSingle(s?.price))
 
   for (const price of prices) {
     for (const product of getArray(price?.products)) {
