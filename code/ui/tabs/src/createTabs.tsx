@@ -22,9 +22,9 @@ export function createTabs<
   T extends TabComponent,
   F extends ContentComponent,
 >(createProps: {
-  ContentFrame: C
+  ContentFrame: F
   TabFrame: T
-  TabsFrame: F
+  TabsFrame: C
 }) {
   const {
     ContentFrame = DefaultTabsContentFrame,
