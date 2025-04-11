@@ -5,7 +5,6 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
   DEFAULT_ROLE_ID,
   getDiscordClient,
-  TAKEOUT_GROUP_ID,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
 } from '~/features/discord/helpers'
@@ -22,7 +21,7 @@ export type DiscordChannelStatus = {
 }
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
 
   const userPrivate = await supabaseAdmin
