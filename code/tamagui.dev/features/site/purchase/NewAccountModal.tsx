@@ -54,7 +54,7 @@ export const useAccountModal = createUseStore(AccountModal)
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
-  const { isLoading, data, subscriptionStatus } = useUser()
+  const { isLoading, data } = useUser()
   const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
     'plan'
   )
@@ -63,7 +63,7 @@ export const NewAccountModal = () => {
     return null
   }
 
-  const { userDetails, user, subscriptions } = data
+  const { subscriptions } = data
 
   // Get active subscriptions
   const activeSubscriptions = subscriptions?.filter(
@@ -344,7 +344,6 @@ const ServiceCard = ({
   actionLabel,
   onAction,
   secondAction,
-  proSubscription,
 }: {
   title: string
   description: string
@@ -354,7 +353,6 @@ const ServiceCard = ({
     label: string
     onPress: () => void
   }
-  proSubscription?: any
 }) => {
   return (
     <YStack
