@@ -58,6 +58,7 @@ import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { useLoginLink } from '../../auth/useLoginLink'
 import { Sheet } from 'tamagui'
 import { Unspaced } from 'tamagui'
+import { sendEvent } from '../../analytics/sendEvent'
 
 const couponSchema = z.object({
   id: z.string(),
@@ -362,7 +363,13 @@ const PaymentForm = ({
         </XStack>
 
         <Theme name="accent">
-          <YStack alignItems="flex-end" gap="$2">
+          <YStack
+            alignItems="flex-end"
+            gap="$2"
+            onPressOut={() => {
+              sendEvent(`Pro: Complete Purchase`)
+            }}
+          >
             <Button
               fontFamily="$mono"
               br="$10"
