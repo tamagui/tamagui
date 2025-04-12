@@ -22,7 +22,7 @@ const createPortal = (() => {
   }
   try {
     const ReactNativeShimModule =
-      require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+      require('react-native/Libraries/Renderer/shims/ReactNative')
 
     return (
       ReactNativeShimModule?.default?.createPortal ?? ReactNativeShimModule.createPortal
