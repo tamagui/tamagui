@@ -1,4 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { defaultComponentThemes } from '@tamagui/theme-builder'
 import {
   createContext,
   useCallback,
@@ -215,7 +216,6 @@ const getNextState = (
           props,
           pendingUpdate === 'force' ? true : !!needsUpdate
         )
-
   const isSameAsParent = parentState && (!name || name === parentState.name)
   const shouldRerender = Boolean(
     needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
@@ -267,6 +267,7 @@ const getNextState = (
     isInverse,
     isNew: true,
   } satisfies ThemeState
+
 
   if (isRoot) {
     rootThemeState = nextState
@@ -346,13 +347,21 @@ function getNewThemeName(
     )
   }
 
+  const { themes } = getConfig()
+
   if (reset) {
-    if (!parentName) throw new Error(`‼️`)
-    const lastPartIndex = parentName.lastIndexOf('_')
-    return lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
+    const lastPartIndex = parentName.lastIndexOf("_");
+    // parentName will have format light_{name} or dark_{name}
+    const name =
+      lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex);
+    const scheme = parentName.slice(0, lastPartIndex);
+    // If user parent name is a default component => we use the default component theme
+    const defaultComponent = defaultComponentThemes[name.replace("_", "")];
+    const defaultComponentThemeName = defaultComponent ? `${scheme}_${defaultComponent.template}` : scheme
+    const result = themes[name] ? name : themes[defaultComponentThemeName] ? defaultComponentThemeName : scheme
+    return result
   }
 
-  const { themes } = getConfig()
   const parentParts = parentName.split('_')
 
   // always remove component theme if it exists, we never sub a component theme
