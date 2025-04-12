@@ -268,7 +268,6 @@ const getNextState = (
     isNew: true,
   } satisfies ThemeState
 
-
   if (isRoot) {
     rootThemeState = nextState
   }
@@ -350,15 +349,20 @@ function getNewThemeName(
   const { themes } = getConfig()
 
   if (reset) {
-    const lastPartIndex = parentName.lastIndexOf("_");
+    const lastPartIndex = parentName.lastIndexOf('_')
     // parentName will have format light_{name} or dark_{name}
-    const name =
-      lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex);
-    const scheme = parentName.slice(0, lastPartIndex);
+    const name = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
+    const scheme = parentName.slice(0, lastPartIndex)
     // If user parent name is a default component => we use the default component theme
-    const defaultComponent = defaultComponentThemes[name.replace("_", "")];
-    const defaultComponentThemeName = defaultComponent ? `${scheme}_${defaultComponent.template}` : scheme
-    const result = themes[name] ? name : themes[defaultComponentThemeName] ? defaultComponentThemeName : scheme
+    const defaultComponent = defaultComponentThemes[name.replace('_', '')]
+    const defaultComponentThemeName = defaultComponent
+      ? `${scheme}_${defaultComponent.template}`
+      : scheme
+    const result = themes[name]
+      ? name
+      : themes[defaultComponentThemeName]
+        ? defaultComponentThemeName
+        : scheme
     return result
   }
 
