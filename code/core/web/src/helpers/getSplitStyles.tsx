@@ -894,36 +894,36 @@ export const getSplitStyles: StyleSplitter = (
               if (subKey === 'space') {
                 // Handle space property directly
                 styleState.style[subKey] = val
-              } else if (subKey === 'fontFamily') { 
+              } else if (subKey === 'fontFamily') {
                 // Special handling for fontFamily
                 styleState.fontFamily = val.fontFamily as string
-              } else if (typeof val === 'object') { 
+              } else if (typeof val === 'object') {
                 if (val['dynamic']) {
                   // Handle dynamic theme values (like dark/light mode)
-                  if (typeof styleState.style[subKey] === 'string') { 
+                  if (typeof styleState.style[subKey] === 'string') {
                     // If current value is a string, convert to dynamic object with both theme modes
                     const restKey = mediaKeyShort === 'dark' ? 'light' : 'dark'
-                    styleState.style[subKey] = { 
-                      dynamic: { 
+                    styleState.style[subKey] = {
+                      dynamic: {
                         [mediaKeyShort]: val['dynamic'][mediaKeyShort],
-                        [restKey]: styleState.style[subKey]
-                      }
+                        [restKey]: styleState.style[subKey],
+                      },
                     }
-                  }  else { 
+                  } else {
                     // Add or update dynamic theme value while preserving existing ones
                     styleState.style[subKey]['dynamic'] ||= {}
-                    styleState.style[subKey]['dynamic'][mediaKeyShort] = val['dynamic'][mediaKeyShort]
+                    styleState.style[subKey]['dynamic'][mediaKeyShort] =
+                      val['dynamic'][mediaKeyShort]
                   }
-                } else { 
+                } else {
                   // For non-dynamic object values, replace the entire value
                   styleState.style[subKey] = val
                 }
               }
- 
             }
             // needed to get updates when theme changes
             // Process theme media styles by iterating through each property in mediaStyle
-            for (let subKey in mediaStyle) { 
+            for (let subKey in mediaStyle) {
               mergeThemeMediaStyle(subKey, mediaStyle[subKey])
             }
             return
