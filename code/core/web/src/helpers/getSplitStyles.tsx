@@ -1,4 +1,10 @@
-import { isAndroid, isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  isIos,
+  isAndroid,
+  isClient,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
   StyleObjectProperty,
@@ -11,6 +17,7 @@ import {
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
+import { getDynamicVal, getOppositeScheme } from './getDynamicVal'
 
 import { getConfig, getFont } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
@@ -522,9 +529,9 @@ export const getSplitStyles: StyleSplitter = (
       groupEnd() // react native was not nesting right
       groupEnd() // react native was not nesting right
       groupCollapsed(
-        `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
-          shouldPassThrough ? '(pass)' : ''
-        }`
+        `  🔑 ${keyOg}${
+          keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''
+        } ${shouldPassThrough ? '(pass)' : ''}`
       )
       log({ isVariant, valInit, shouldPassProp })
       if (isClient) {
@@ -856,9 +863,9 @@ export const getSplitStyles: StyleSplitter = (
             // property is just $platform-web, it should br $platform-web-bg, so we add extra info from style
             // but that info includes the value too
             const subKey = isSubStyle ? style[2] : ''
-            const fullKey = `${style[StyleObjectProperty]}${subKey}${PROP_SPLIT}${mediaKeyShort}${
-              style[StyleObjectPseudo] || ''
-            }`
+            const fullKey = `${
+              style[StyleObjectProperty]
+            }${subKey}${PROP_SPLIT}${mediaKeyShort}${style[StyleObjectPseudo] || ''}`
 
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
@@ -882,51 +889,50 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           const mediaStyle = getSubStyle(styleState, key, val, true)
-          // console.log('mediaStyle =========> ', mediaStyle)
 
           let importanceBump = 0
 
           if (isThemeMedia) {
+            // needed to get updates when theme changes
             dynamicThemeAccess = true
 
-            function mergeThemeMediaStyle(subKey: string, val: any) {
-              styleState.style ||= {}
-              if (subKey === 'space') {
-                // Handle space property directly
-                styleState.style[subKey] = val
-              } else if (subKey === 'fontFamily') {
-                // Special handling for fontFamily
-                styleState.fontFamily = val.fontFamily as string
-              } else if (typeof val === 'object') {
-                if (val['dynamic']) {
-                  // Handle dynamic theme values (like dark/light mode)
-                  if (typeof styleState.style[subKey] === 'string') {
-                    // If current value is a string, convert to dynamic object with both theme modes
-                    const restKey = mediaKeyShort === 'dark' ? 'light' : 'dark'
-                    styleState.style[subKey] = {
-                      dynamic: {
-                        [mediaKeyShort]: val['dynamic'][mediaKeyShort],
-                        [restKey]: styleState.style[subKey],
-                      },
-                    }
-                  } else {
-                    // Add or update dynamic theme value while preserving existing ones
-                    styleState.style[subKey]['dynamic'] ||= {}
-                    styleState.style[subKey]['dynamic'][mediaKeyShort] =
-                      val['dynamic'][mediaKeyShort]
-                  }
-                } else {
-                  // For non-dynamic object values, replace the entire value
-                  styleState.style[subKey] = val
+            if (isIos) {
+              // iOS will use https://reactnative.dev/docs/dynamiccolorios
+              // So need to predefine the dynamic color before merging the styles
+              // For example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
+              function extractValueFromDynamic(val: any, scheme: string) {
+                if (val?.['dynamic']) {
+                  return val['dynamic'][scheme]
                 }
+                return val
               }
+
+              styleState.style ||= {}
+              const scheme = mediaKeyShort
+              const oppositeScheme = getOppositeScheme(mediaKeyShort)
+
+              for (const subKey in mediaStyle) {
+                const hasDynamic = !!mediaStyle[subKey]?.['dynamic']
+                let val = extractValueFromDynamic(mediaStyle[subKey], scheme)
+                const oppositeVal = extractValueFromDynamic(
+                  styleState.style[subKey],
+                  oppositeScheme
+                )
+
+                if (hasDynamic) {
+                  mediaStyle[subKey] = getDynamicVal({
+                    scheme,
+                    val,
+                    oppositeVal,
+                  })
+                }
+                mergeStyle(styleState, subKey, mediaStyle[subKey])
+              }
+            } else if (
+              !(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))
+            ) {
+              return
             }
-            // needed to get updates when theme changes
-            // Process theme media styles by iterating through each property in mediaStyle
-            for (let subKey in mediaStyle) {
-              mergeThemeMediaStyle(subKey, mediaStyle[subKey])
-            }
-            return
           } else if (isGroupMedia) {
             const groupInfo = getGroupPropParts(mediaKeyShort)
             const groupName = groupInfo.name
