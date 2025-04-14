@@ -43,11 +43,10 @@ type AlertDialogActionProps = DialogCloseProps;
 declare const AlertDialogAction: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & import("@tamagui/dialog").DialogCloseExtraProps & React.RefAttributes<TamaguiElement>>;
 interface AlertDialogCancelProps extends DialogCloseProps {
 }
-
 declare const AlertDialogCancel: React.ForwardRefExoticComponent<AlertDialogCancelProps & React.RefAttributes<TamaguiElement>>;
 interface AlertDialogDestructiveProps extends DialogCloseProps {
 }
-declare const AlertDialogDestructive: React.ForwardRefExoticComponent<AlertDialogCancelProps & React.RefAttributes<TamaguiElement>>;
+declare const AlertDialogDestructive: React.ForwardRefExoticComponent<AlertDialogDestructiveProps & React.RefAttributes<TamaguiElement>>;
 declare const AlertDialog: React.FC<AlertDialogProps> & {
     Trigger: React.ForwardRefExoticComponent<AlertDialogTriggerProps & React.RefAttributes<TamaguiElement>>;
     Portal: React.FC<AlertDialogPortalProps>;
@@ -77,6 +76,6 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
         unstyled?: boolean | undefined;
     }>> & React.RefAttributes<TamaguiElement>>;
 };
-export { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogOverlay, AlertDialogPortal, AlertDialogTitle, AlertDialogTrigger, createAlertDialogScope, };
+export { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogDestructive, AlertDialogContent, AlertDialogDescription, AlertDialogOverlay, AlertDialogPortal, AlertDialogTitle, AlertDialogTrigger, createAlertDialogScope, };
 export type { AlertDialogActionProps, AlertDialogCancelProps, AlertDialogContentProps, AlertDialogDescriptionProps, AlertDialogOverlayProps, AlertDialogPortalProps, AlertDialogProps, AlertDialogTitleProps, AlertDialogTriggerProps, };
 //# sourceMappingURL=AlertDialog.d.ts.map
