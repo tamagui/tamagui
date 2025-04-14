@@ -9,6 +9,7 @@ export type WithTamaguiProps = LoaderPluginOptions & {
         request: string;
         fullPath: string;
     }) => boolean | string | undefined;
+    disableThemesBundleOptimize?: boolean;
 };
 export declare const withTamagui: (tamaguiOptionsIn?: WithTamaguiProps) => (nextConfig?: any) => any;
 //# sourceMappingURL=withTamagui.d.ts.map
