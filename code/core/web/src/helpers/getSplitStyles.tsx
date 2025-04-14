@@ -19,7 +19,7 @@ import {
 import React from 'react'
 import { getDynamicVal, getOppositeScheme } from './getDynamicVal'
 
-import { getConfig, getFont } from '../config'
+import { getConfig, getFont, getSetting } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
@@ -896,7 +896,7 @@ export const getSplitStyles: StyleSplitter = (
             // needed to get updates when theme changes
             dynamicThemeAccess = true
 
-            if (isIos) {
+            if (isIos && getSetting('fastSchemeChange')) {
               // iOS will use https://reactnative.dev/docs/dynamiccolorios
               // So need to predefine the dynamic color before merging the styles
               // For example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
