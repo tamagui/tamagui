@@ -93,9 +93,9 @@ export class TamaguiPlugin {
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         ['react/jsx-runtime.js', 'react/jsx-runtime'],
-        ['react/jsx-runtime', 'react/jsx-runtime'],
+        // ['react/jsx-runtime', 'react/jsx-runtime'],
         ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
-        ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
+        // ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
 
         ...(this.options.useTamaguiSVG
           ? [['react-native-svg', '@tamagui/react-native-svg'] as [string, string]]
