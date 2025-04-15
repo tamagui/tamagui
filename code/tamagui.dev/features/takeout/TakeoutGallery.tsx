@@ -117,7 +117,7 @@ export default function TakeoutGallery() {
         jc="center"
         gap="$6"
         px="$4"
-        $md={{
+        $maxLg={{
           flexDirection: 'column',
         }}
       >
@@ -136,7 +136,7 @@ export default function TakeoutGallery() {
 
             borderRadius: '$12',
             overflow: 'hidden',
-            $md: {
+            $maxLg: {
               width: '100%',
             },
           }}
@@ -157,7 +157,7 @@ export default function TakeoutGallery() {
 
             borderRadius: '$12',
             overflow: 'hidden',
-            $md: {
+            $maxLg: {
               width: '100%',
             },
           }}
@@ -178,7 +178,7 @@ export default function TakeoutGallery() {
 
             borderRadius: '$12',
             overflow: 'hidden',
-            $md: {
+            $maxLg: {
               width: '100%',
             },
           }}

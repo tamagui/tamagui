@@ -36,7 +36,7 @@ export const SearchButton = memo((props: ButtonProps) => {
         icon={SearchIcon}
         // dont hide this on touchables to avoid layout shifts...
         iconAfter={
-          <SizableText size="$1" mx="$1" $sm={{ maw: 0, ov: 'hidden', mx: -1 }} o={0.25}>
+          <SizableText size="$1" mx="$1" $maxMd={{ maw: 0, ov: 'hidden', mx: -1 }} o={0.25}>
             /
           </SizableText>
         }

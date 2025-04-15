@@ -176,37 +176,37 @@ export default function TakeoutPage() {
 
         <XStack
           mt={heroHeight}
-          $sm={{ mt: heroHeight - 100 }}
-          $xs={{ mt: heroHeight - 150 }}
+          $maxMd={{ mt: heroHeight - 100 }}
+          $maxSm={{ mt: heroHeight - 150 }}
+          $maxLg={{ fd: 'column' }}
           gap="$10"
-          $md={{ fd: 'column' }}
         >
           <XStack
             f={1}
             p="$5"
-            $md={{
+            $maxLg={{
               flexDirection: 'column-reverse',
             }}
-            $sm={{
+            $maxMd={{
               px: '$4',
             }}
-            $xxs={{
+            $maxXs={{
               px: '$2',
             }}
           >
-            <YStack mt={-700} $md={{ mt: 0 }} ml={20} mr={0}>
+            <YStack mt={-700} $maxLg={{ mt: 0 }} ml={20} mr={0}>
               <StarterCard />
             </YStack>
 
-            <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
+            <YStack mt={-580} $maxLg={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
               <ThemeTintAlt>
-                <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
+                <Paragraph className="text-wrap-balance" size="$7" $maxMd={{ size: '$7' }}>
                   Takeout is a production-ready base stack that includes everything you
                   need for apps with a user-system. It funds the OSS development of
                   Tamagui.
                 </Paragraph>
 
-                <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
+                <Paragraph className="text-wrap-balance" size="$7" $maxMd={{ size: '$7' }}>
                   Takeout shares a high % of code between native and web, while
                   maintaining a high bar for UX and performance. Building off our OSS
                   starter (<CodeInline>npm create tamagui</CodeInline>), we add Supabase,
@@ -606,7 +606,7 @@ export default function TakeoutPage() {
             </YStack>
           </XStack>
 
-          {/* <YStack mt={200} w={3} mih={500} h="100%" $sm={{ display: 'none' }} /> */}
+          {/* <YStack mt={200} w={3} mih={500} h="100%" $maxMd={{ display: 'none' }} /> */}
         </XStack>
         <Footer />
       </ContainerLarge>
@@ -814,18 +814,18 @@ const TakeoutHero = () => {
       pe="none"
       pos="relative"
       scale={1}
-      $xxs={{
+      $maxXs={{
         scale: 0.35,
       }}
-      $xs={{
+      $maxSm={{
         scale: 0.45,
         y: 0,
       }}
-      $sm={{
+      $maxMd={{
         scale: 0.65,
         y: 0,
       }}
-      $md={{
+      $maxLg={{
         scale: 0.85,
         y: '20%',
       }}
@@ -845,7 +845,7 @@ const TakeoutHero = () => {
 
       <TakeoutLogo />
 
-      <YStack position="absolute" pe="none" top={200} r={0} $md={{ r: -150 }} zIndex={-1}>
+      <YStack position="absolute" pe="none" top={200} r={0} $maxLg={{ r: -150 }} zIndex={-1}>
         {enable3d && (
           <Suspense fallback={null}>
             <ErrorBoundary noMessage>
@@ -1018,7 +1018,7 @@ const StarterCard = memo(() => {
         y={50}
         mah="calc(min(85vh, 800px))"
         br="$8"
-        $md={{
+        $maxLg={{
           x: -20,
           y: 0,
           mah: 'auto',
@@ -1157,7 +1157,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
           setShowDetail((x) => !x)
         }
       }}
-      $md={{
+      $maxLg={{
         cursor: 'pointer',
         hoverStyle: {
           backgroundColor: 'var(--color4)',
@@ -1171,7 +1171,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
         <Paragraph
           size="$3"
           color="$color10"
-          $md={{
+          $maxLg={{
             display: showDetail ? 'flex' : 'none',
           }}
         >

@@ -63,7 +63,7 @@ export const HomeTypography = memo(() => {
           pos="relative"
           space="$8"
           flexDirection="row-reverse"
-          $sm={{
+          $maxMd={{
             flexDirection: 'column-reverse',
           }}
         >
@@ -77,7 +77,7 @@ export const HomeTypography = memo(() => {
             scale={1.1}
             x={-20}
             y={5}
-            $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
+            $maxMd={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
             <YStack ai="flex-end" contain="paint layout" h={270}>
               <AnimatePresence exitBeforeEnter>
@@ -161,7 +161,7 @@ const OverlayCard = () => {
         p="$6"
         space="$5"
         maw="calc(min(90vw, 400px))"
-        $sm={{ p: '$5' }}
+        $maxMd={{ p: '$5' }}
       >
         <Paragraph ta="left" size="$8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
@@ -212,7 +212,7 @@ const AnimatedHeading = memo(
           y={0}
           pr="$1"
           my="$1"
-          $sm={{
+          $maxMd={{
             pr: 0,
           }}
           // @ts-ignore

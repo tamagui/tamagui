@@ -21,7 +21,7 @@ const Features = ({ items, ...props }: any) => {
   return (
     <YStack gap="$4" {...props}>
       {items.map((feature, i) => (
-        <Card key={i} p="$6" elevation="$1" $sm={{ p: '$4' }}>
+        <Card key={i} p="$6" elevation="$1" $maxMd={{ p: '$4' }}>
           <XStack tag="li">
             <Text color="$green9">
               <CheckCircle />
@@ -37,8 +37,8 @@ const Features = ({ items, ...props }: any) => {
 export const HomeExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <XStack px="$6" pt="$8" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
-        <YStack w="50%" $sm={{ w: '100%' }}>
+      <XStack px="$6" pt="$8" space="$4" $maxMd={{ flexDirection: 'column', px: 0 }}>
+        <YStack w="50%" $maxMd={{ w: '100%' }}>
           <Features
             space="$4"
             items={[
@@ -54,7 +54,7 @@ export const HomeExampleProps = () => {
             ]}
           />
         </YStack>
-        <YStack w="50%" $sm={{ w: `100%` }}>
+        <YStack w="50%" $maxMd={{ w: `100%` }}>
           <Features
             space="$4"
             items={[

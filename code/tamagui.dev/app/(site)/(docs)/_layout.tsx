@@ -76,7 +76,7 @@ export default function DocsLayout() {
           <EnsureFlexed />
           <YStack
             overflow="hidden"
-            $md={{
+            $maxLg={{
               display: 'none',
             }}
             // className="custom-scroll"

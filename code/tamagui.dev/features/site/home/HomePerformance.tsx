@@ -36,7 +36,7 @@ export function HomePerformance() {
         <YStack
           pos="relative"
           px="$2"
-          $sm={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
+          $maxMd={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
           h={131}
           br="$8"
           width="100%"
@@ -50,7 +50,7 @@ export function HomePerformance() {
             mt={-20}
             theme="alt2"
             size="$2"
-            $sm={{ display: 'none' }}
+            $maxMd={{ display: 'none' }}
           >
             Lower is better. As of February 2022.
           </Paragraph>

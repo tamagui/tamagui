@@ -7,10 +7,12 @@ export const widths = [660, 800, 1020, 1280]
 
 export const media = {
   ...mediaV4,
-  // for site
-  xl: { maxWidth: 1650 },
-  // between lg and xl - for studio usage
   lg_xl: { maxWidth: 1400 },
+  
+  // for site
+  // xl: { maxWidth: 1650 },
+  // between lg and xl - for studio usage
+  
   // lg: { maxWidth: 1280 },
   // md: { maxWidth: 1020 },
   // sm: { maxWidth: 800 },

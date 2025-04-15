@@ -13,7 +13,7 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
         width: '50%',
         maxWidth: 'calc(50% - var(--space-8))',
       }}
-      $sm={{ width: 'auto', maxWidth: 'auto', f: 1 }}
+      $maxMd={{ width: 'auto', maxWidth: 'auto', f: 1 }}
       {...props}
     >
       <H3

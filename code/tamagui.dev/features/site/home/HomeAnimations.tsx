@@ -82,7 +82,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             perspective={1000}
             rotateY="-5deg"
             x={-10}
-            $sm={{ display: 'none' }}
+            $maxMd={{ display: 'none' }}
             pos="relative"
             br="$8"
             elevation="$5"
@@ -191,7 +191,7 @@ export const ExampleAnimations = memo(() => {
         ai="center"
         jc="center"
         width="60%"
-        $sm={{ width: '100%' }}
+        $maxMd={{ width: '100%' }}
       >
         <YStack fullscreen zi={-1} bg="$background" o={0.5} />
         {isIntersecting ? (
@@ -201,7 +201,7 @@ export const ExampleAnimations = memo(() => {
 
       <Separator vertical />
 
-      <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
+      <YStack pos="relative" $maxMd={{ display: 'none' }} width="40%">
         <YStack f={1} theme="alt2" bg="$color1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation

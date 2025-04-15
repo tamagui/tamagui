@@ -86,7 +86,7 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
       ff="$mono"
       size={large ? '$9' : '$8'}
       mb="$4"
-      $sm={{
+      $maxMd={{
         size: '$7',
       }}
       {...props}
@@ -203,7 +203,7 @@ const componentsIn = {
   ),
 
   Wide: (props) => (
-    <YStack mx="$-8" $sm={{ mx: '$-2' }}>
+    <YStack mx="$-8" $maxMd={{ mx: '$-2' }}>
       {props.children}
     </YStack>
   ),
@@ -859,7 +859,7 @@ const componentsIn = {
                     onPress={() => {
                       clipBoard.onCopy()
                     }}
-                    $xs={{
+                    $maxSm={{
                       display: 'none',
                     }}
                   >

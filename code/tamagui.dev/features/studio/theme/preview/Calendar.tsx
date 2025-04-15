@@ -101,7 +101,7 @@ const LabelCell = ({ children }: { children: React.ReactNode }) => {
     <YStack
       width="$3"
       height="$3"
-      $md={{
+      $maxLg={{
         width: '$2',
         height: '$2',
       }}
@@ -109,7 +109,7 @@ const LabelCell = ({ children }: { children: React.ReactNode }) => {
       jc="center"
       ai="center"
     >
-      <SizableText $md={{ size: '$2' }} size="$4" ta="center">
+      <SizableText $maxLg={{ size: '$2' }} size="$4" ta="center">
         {children}
       </SizableText>
     </YStack>
@@ -122,7 +122,7 @@ const DayCell = ({ day, isDisabled }: { day: number; isDisabled?: boolean }) => 
     <YStack
       width="$3"
       height="$3"
-      $md={{
+      $maxLg={{
         width: '$2',
         height: '$2',
       }}

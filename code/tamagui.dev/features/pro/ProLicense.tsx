@@ -4,7 +4,7 @@ import { YStack, H1, Paragraph, H3, styled } from 'tamagui'
 export const ProLicense = () => {
   return (
     <YStack gap="$4" p="$4">
-      <H1 $sm={{ size: '$8' }}>License Agreement</H1>
+      <H1 $maxMd={{ size: '$8' }}>License Agreement</H1>
       <Link href="/pro-policy">Policy Agreement</Link>.
       <Paragraph>
         Tamagui Pro License grants you a non-exclusive license and permission to use the

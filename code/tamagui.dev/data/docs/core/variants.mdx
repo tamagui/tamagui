@@ -52,7 +52,7 @@ export const Circle = styled(View, {
 We can use this styled component like so:
 
 ```tsx
-<Circle pin="top" centered size="$lg" />
+<Circle pin="top" centered size="$maxXl" />
 ```
 
 This component uses a few different types of variants. Below we'll expand on
@@ -186,7 +186,7 @@ const MyButton = styled(View, {
 })
 
 // now you can
-<MyButton pad="$lg" />
+<MyButton pad="$maxXl" />
 ```
 
 This is verbose, and only gets more verbose if you add more sizes. It would
@@ -222,7 +222,7 @@ const MyButton = styled(View, {
 })
 
 // now you can
-<MyButton pad="$lg" />
+<MyButton pad="$maxXl" />
 ```
 
 Spread variants save you from having to define hardcoded styles for every key
@@ -257,11 +257,11 @@ const SizableText = styled(Text, {
 Which you can use:
 
 ```tsx
-<SizableText size="$md">Hello world</SizableText>
+<SizableText size="$maxLg">Hello world</SizableText>
 ```
 
 The Spread variant function will receive two arguments: the first is the value
-given to the property (`"$lg"`), and the second is an object with
+given to the property (`"$maxXl"`), and the second is an object with
 `{ theme, tokens, props, font }`.
 
 <PropsTable
@@ -358,8 +358,8 @@ const Square = styled(View, {
   variants: {
     size: {
       '...size': (size, { tokens }) => {
-        // size === '$lg'
-        // tokens.size.$lg === 25
+        // size === '$maxXl'
+        // tokens.size.$maxXl === 25
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
@@ -385,14 +385,14 @@ const SizedText = styled(Text, {
   variants: {
     size: {
       md: {
-        fontSize: '$sm',
+        fontSize: '$maxMd',
 
         $gtMd: {
-          fontSize: '$md',
+          fontSize: '$maxLg',
         },
 
         $gt2xl: {
-          fontSize: '$lg',
+          fontSize: '$maxXl',
         },
       },
     },

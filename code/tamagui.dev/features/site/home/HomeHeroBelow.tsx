@@ -45,7 +45,7 @@ export const HeroBelowContent = memo(() => {
         px="$2"
         mb={-8}
         py="$1"
-        $sm={{ flexDirection: 'column' }}
+        $maxMd={{ flexDirection: 'column' }}
         $gtSm={{
           px: '$6',
         }}
@@ -122,7 +122,7 @@ const TitleLink = ({ href, children, ...props }: any) => {
 const Section = (props: YStackProps) => (
   <YStack
     width="33%"
-    $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }}
+    $maxMd={{ width: 'auto', maxWidth: 500, mx: 'auto' }}
     flexShrink={1}
     {...props}
   />

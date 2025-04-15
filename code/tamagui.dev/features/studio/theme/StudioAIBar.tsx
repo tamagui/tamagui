@@ -203,7 +203,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       zi={1000}
       data-tauri-drag-region
       className="all ease-in ms300"
-      $lg={{ mr: '$6' }}
+      $maxXl={{ mr: '$6' }}
     >
       <YStack f={1} width="100%" gap="$4">
         <XStack fw="wrap" ai="center" f={1} gap="$3">

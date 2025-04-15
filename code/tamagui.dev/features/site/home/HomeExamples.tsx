@@ -90,7 +90,7 @@ export const HomeExamples = memo(
             theme="surface1"
             pos="relative"
             jc="space-between"
-            $sm={{ fd: 'column' }}
+            $maxMd={{ fd: 'column' }}
             {...(onlyDemo && {
               fd: 'column',
             })}
@@ -100,7 +100,7 @@ export const HomeExamples = memo(
               f={1}
               maxWidth="50%"
               {...(onlyDemo && { maxWidth: '100%' })}
-              $sm={{ maxWidth: '100%' }}
+              $maxMd={{ maxWidth: '100%' }}
               px="$2"
               gap="$4"
             >
@@ -118,7 +118,7 @@ export const HomeExamples = memo(
             </YStack>
 
             <YStack
-              $sm={{ display: 'none' }}
+              $maxMd={{ display: 'none' }}
               {...(onlyDemo && { display: 'none' })}
               pos="absolute"
               left={0}
@@ -139,7 +139,7 @@ export const HomeExamples = memo(
               f={1}
               maxWidth="50%"
               {...(onlyDemo && { maxWidth: '100%', mt: '$6' })}
-              $sm={{ maxWidth: '100%', mt: '$6' }}
+              $maxMd={{ maxWidth: '100%', mt: '$6' }}
               px="$2"
               gap="$4"
             >

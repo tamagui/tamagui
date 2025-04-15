@@ -100,7 +100,7 @@ const TabsListFrame = styled(XStack, {
   bbw: '$1',
   br: '$2',
 
-  $sm: {
+  $maxMd: {
     minWidth: '100%',
     alignSelf: 'stretch',
     marginTop: 0,

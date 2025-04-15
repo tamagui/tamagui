@@ -187,7 +187,7 @@ export const HomeResponsive = memo(() => {
     <YStack ref={ref} y={0} mt={-80} pos="relative">
       <ContainerLarge pos="relative">
         <ResponsiveHeader />
-        <Spacer size="$6" $sm={{ size: '$0' }} />
+        <Spacer size="$6" $maxMd={{ size: '$0' }} />
         <YStack h={browserHeight + 80} />
         <XStack
           b={-20}
@@ -220,7 +220,7 @@ export const HomeResponsive = memo(() => {
           </YStack>
 
           <Container zi={1} pos="absolute">
-            <XStack x={-10} $sm={{ display: 'none' }}>
+            <XStack x={-10} $maxMd={{ display: 'none' }}>
               {breakpoints.map((bp, i) => {
                 return (
                   <Marker
@@ -244,7 +244,7 @@ export const HomeResponsive = memo(() => {
                 e.stopPropagation()
                 setIsDragging(true)
               }}
-              $sm={{
+              $maxMd={{
                 display: 'none',
               }}
             >

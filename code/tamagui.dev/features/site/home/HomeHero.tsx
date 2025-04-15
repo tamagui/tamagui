@@ -96,7 +96,7 @@ const HeroContents = memo(function HeroContents() {
         position="relative"
         pt="$16"
         mb="$4"
-        $sm={{
+        $maxMd={{
           maxWidth: '100%',
           mx: 'auto',
           pb: '$4',
@@ -172,7 +172,7 @@ const HeroContents = memo(function HeroContents() {
               mb={-350 - 9}
               mah={700}
               maw={700}
-              $sm={{ x: '-10%', scale: 0.7 }}
+              $maxMd={{ x: '-10%', scale: 0.7 }}
               o={0.5}
             >
               <svg
@@ -222,11 +222,11 @@ const HeroContents = memo(function HeroContents() {
           ai="center"
           jc="center"
           gap="$2"
-          $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
+          $maxXs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
           <Link target="_blank" href="https://x.com/tamagui_js">
             <TooltipSimple placement="top" delay={0} restMs={25} label="X">
-              <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
+              <YStack p="$5" $maxMd={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
                   <Text>X</Text>
                 </VisuallyHidden>
@@ -268,7 +268,7 @@ const HeroContents = memo(function HeroContents() {
               <YStack
                 tag="a"
                 p="$5"
-                $sm={{ p: '$3' }}
+                $maxMd={{ p: '$3' }}
                 opacity={0.65}
                 hoverStyle={{ opacity: 1 }}
               >
@@ -363,7 +363,7 @@ const HeroText = styled(Text, {
   position: 'absolute',
   ta: 'center',
 
-  $sm: {
+  $maxMd: {
     t: 0,
     l: -2,
   },

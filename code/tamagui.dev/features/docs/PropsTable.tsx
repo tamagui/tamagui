@@ -44,7 +44,7 @@ export function PropsTable({
       br="$4"
       ov="hidden"
       mx="$-4"
-      $sm={{
+      $maxMd={{
         mx: 0,
       }}
     >
@@ -60,7 +60,7 @@ export function PropsTable({
                 py="$2"
                 bg="$background"
                 px="$4"
-                $sm={{ flexDirection: 'column' }}
+                $maxMd={{ flexDirection: 'column' }}
               >
                 <YStack fullscreen backgroundColor="$background" zi={-1} o={0.5} />
                 <XStack miw="30%" ai="center" jc="space-between">
@@ -99,7 +99,7 @@ export function PropsTable({
                       miw="30%"
                       ai="center"
                       separator={<Separator als="stretch" vertical mx="$3.5" my="$2" />}
-                      $xs={{
+                      $maxSm={{
                         flexDirection: 'column',
                         ai: 'flex-start',
                       }}

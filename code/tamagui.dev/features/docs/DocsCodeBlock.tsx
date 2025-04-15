@@ -225,7 +225,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
                   onPress={onCopy}
-                  $xs={{
+                  $maxSm={{
                     display: 'none',
                   }}
                 >

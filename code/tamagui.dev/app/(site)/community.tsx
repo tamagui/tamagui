@@ -42,8 +42,8 @@ export default function Community() {
 
         <Spacer />
 
-        <XStack $sm={{ flexDirection: 'column' }}>
-          <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" bw={0}>
+        <XStack $maxMd={{ flexDirection: 'column' }}>
+          <FlatBubbleCard w="50%" $maxMd={{ w: 'auto' }} ai="center" bw={0}>
             <Link href="/blog">
               <Button
                 bg="transparent"
@@ -416,7 +416,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
   return (
     <FlatBubbleCard flat mb="$4">
       <YStack maxWidth="100%" fs={0} als="center">
-        <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
+        <XStack gap="$4" $maxMd={{ flexDirection: 'column' }}>
           <Link href={props.link as any} target="_blank">
             <YStack
               cursor="pointer"

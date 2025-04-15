@@ -10,10 +10,10 @@ export const Footer = memo(() => {
   return (
     <YStack tag="footer" pos="relative" mb="$10">
       <ContainerLarge>
-        <XStack py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
+        <XStack py="$7" $maxMd={{ flexDirection: 'column', ai: 'center' }}>
           <YStack
             ai="flex-start"
-            $sm={{ ai: 'center' }}
+            $maxMd={{ ai: 'center' }}
             py="$5"
             flex={2}
             mb="$2"
@@ -31,7 +31,7 @@ export const Footer = memo(() => {
 
           <YStack
             ai="flex-start"
-            $sm={{ ai: 'center' }}
+            $maxMd={{ ai: 'center' }}
             px="$4"
             py="$5"
             flex={1.5}
@@ -51,7 +51,7 @@ export const Footer = memo(() => {
 
           <YStack
             ai="flex-start"
-            $sm={{ ai: 'center' }}
+            $maxMd={{ ai: 'center' }}
             px="$4"
             py="$5"
             flex={1.5}
@@ -69,7 +69,7 @@ export const Footer = memo(() => {
 
           <YStack
             ai="flex-start"
-            $sm={{ ai: 'center' }}
+            $maxMd={{ ai: 'center' }}
             px="$4"
             py="$5"
             flex={1.5}

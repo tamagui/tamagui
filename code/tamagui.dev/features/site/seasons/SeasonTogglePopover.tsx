@@ -50,7 +50,7 @@ export const SeasonTogglePopover = (props: { children: any }) => {
               <Square
                 key={optionName}
                 size="$4"
-                $sm={{ size: '$5' }}
+                $maxMd={{ size: '$5' }}
                 hoverStyle={{
                   bg: '$backgroundHover',
                 }}

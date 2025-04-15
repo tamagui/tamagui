@@ -23,7 +23,7 @@ export const Header = () => {
           bg="$backgroundFocus"
           bc="$color5"
           {...demoProps.borderRadiusOuterProps}
-          $lg={{
+          $maxXl={{
             width: '100%',
             maxWidth: '100%',
           }}

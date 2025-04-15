@@ -32,7 +32,7 @@ export const InstallInput = memo(() => {
           fontWeight="500"
           fontFamily="$mono"
           ls={1}
-          $sm={{ size: '$3' }}
+          $maxMd={{ size: '$3' }}
         >
           {installScript}
         </Paragraph>

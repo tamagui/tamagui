@@ -50,7 +50,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         onMouseEnter={() => {
           getStore(DocsItemsStore).index = index
         }}
-        $sm={{
+        $maxMd={{
           py: '$1.5',
         }}
         {...(isActive && {

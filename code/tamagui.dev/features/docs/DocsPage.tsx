@@ -171,7 +171,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         <EnsureFlexed />
         <YStack
           overflow="hidden"
-          $md={{
+          $maxLg={{
             display: 'none',
           }}
           // className="custom-scroll"

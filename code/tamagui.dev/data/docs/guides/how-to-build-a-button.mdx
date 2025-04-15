@@ -66,7 +66,7 @@ import {
 import { cloneElement, isValidElement, useContext } from 'react'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: '$maxLg' as SizeTokens,
 })
 
 export const ButtonFrame = styled(View, {
@@ -103,7 +103,7 @@ export const ButtonFrame = styled(View, {
   } as const,
 
   defaultVariants: {
-    size: '$md',
+    size: '$maxLg',
   },
 })
 
@@ -253,13 +253,13 @@ const ButtonFrame = styled(View, {
   // these all use tokens
   // note that size tokens are used only for these properties:
   //   width, height, minWidth, minHeight, maxWidth and maxHeight
-  height: '$md', // 46
+  height: '$maxLg', // 46
 
   // meanwhile our radius token is used here
-  borderRadius: '$md', // 8
+  borderRadius: '$maxLg', // 8
 
   // and space tokens are used for all others
-  paddingHorizontal: '$sm', // 25
+  paddingHorizontal: '$maxMd', // 25
 })
 
 ```
@@ -285,8 +285,8 @@ export const ButtonText = styled(Text, {
   name: 'ButtonText',
   color: '$color',
   fontFamily: '$body',
-  fontSize: '$md',
-  lineHeight: '$md',
+  fontSize: '$maxLg',
+  lineHeight: '$maxLg',
   userSelect: 'none',
 })
 ```
@@ -323,18 +323,18 @@ const ButtonFrame = styled(View, {
   variants: {
     size: {
       sm: {
-        height: '$sm',
-        borderRadius: '$sm',
+        height: '$maxMd',
+        borderRadius: '$maxMd',
         gap: 4,
       },
       md: {
-        height: '$md',
-        borderRadius: '$md',
+        height: '$maxLg',
+        borderRadius: '$maxLg',
         gap: 6,
       },
       lg: {
-        height: '$lg',
-        borderRadius: '$lg',
+        height: '$maxXl',
+        borderRadius: '$maxXl',
         gap: 8,
       },
     },
@@ -393,8 +393,8 @@ export const ButtonText = styled(Text, {
 So now we can pass in our new `size` property:
 
 ```tsx
-<ButtonFrame size="$md">
-  <ButtonText size="$md" />
+<ButtonFrame size="$maxLg">
+  <ButtonText size="$maxLg" />
 </ButtonFrame>
 ```
 
@@ -427,8 +427,8 @@ Which is functionally the same as the above. So, now our users can do:
 import { Button } from './OurButton'
 
 export default () => (
-  <Button size="$md">
-    <Button.Text size="$md">Hello world</Button.Text>
+  <Button size="$maxLg">
+    <Button.Text size="$maxLg">Hello world</Button.Text>
   </Button>
 )
 ```
@@ -494,7 +494,7 @@ export const CustomButton = withStaticProperties(CustomButtonFrame, {
 export default () => (
   <CustomButton>
     <CustomButton.Text>Hello world</CustomButton.Text>
-    <CustomButton.Text size="$sm">(Smaller text)</CustomButton.Text>
+    <CustomButton.Text size="$maxMd">(Smaller text)</CustomButton.Text>
   </CustomButton>
 )
 ```
@@ -519,10 +519,10 @@ import { createContext } from 'react'
 import { SizeTokens, GetProps, withStaticProperties } from '@tamagui/core'
 import { Button } from './OurButton'
 
-const SizeContext = createContext<SizeTokens>('$md')
+const SizeContext = createContext<SizeTokens>('$maxLg')
 
 const ButtonFrame = Button.styleable(
-  ({ size = '$md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
+  ({ size = '$maxLg', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
     return (
       <SizeContext.Provider value={size}>
         <Button size={size} {...props} />
@@ -569,7 +569,7 @@ to:
 import { createStyledContext } from '@tamagui/core'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: '$maxLg' as SizeTokens,
 })
 ```
 
@@ -585,7 +585,7 @@ And now, bringing back the full example, we add an extra property to each
 import { View, styled, createStyledContext } from '@tamagui/core'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: '$maxLg' as SizeTokens,
 })
 
 const ButtonFrame = styled(View, {
@@ -635,7 +635,7 @@ export const Button = withStaticProperties(ButtonFrame, {
 import { Button } from './OurButton'
 
 export default () => (
-  <Button size="$md">
+  <Button size="$maxLg">
     <Button.Text>
       Hello world
     </Button.Text>
@@ -660,7 +660,7 @@ anywhere above in the React tree:
 import { Button } from './OurButton'
 
 export default () => (
-  <Button.Props size="$md">
+  <Button.Props size="$maxLg">
     <Button>
       <Button.Text>
         Hello world
@@ -720,7 +720,7 @@ Now we can use it like this, assuming your Icon accepts `width`, `height`, and
 import { MyIcon } from 'some-icon-library'
 
 export default () => (
-  <Button size="$lg">
+  <Button size="$maxXl">
     <Button.Icon>
       <MyIcon />
     </Button.Icon>

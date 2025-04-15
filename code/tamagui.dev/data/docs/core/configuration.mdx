@@ -27,7 +27,7 @@ import { createTamagui, getConfig } from '@tamagui/core'
 export const config = createTamagui({
   // act like CSS variables at your root
   tokens: {
-    // width="$sm"
+    // width="$maxMd"
     size: { sm: 8, md: 12, lg: 20 },
     // margin="$-sm"
     space: { '-sm': 8 },
@@ -487,7 +487,7 @@ tokens to use based on the style property you use.
 
 ```tsx
 const App = () => (
-  <Text fontSize="$lg" lineHeight="$lg" fontFamily="$mono" color="$white">
+  <Text fontSize="$maxXl" lineHeight="$maxXl" fontFamily="$mono" color="$white">
     Hello world
   </Text>
 )

@@ -60,7 +60,7 @@ export default function StudioSplashPage() {
                 py="$8"
                 f={1}
                 w="100%"
-                $sm={{ mt: -100, fd: 'column' }}
+                $maxMd={{ mt: -100, fd: 'column' }}
               >
                 <ThemeTintAlt>
                   <Link target="_blank" href="https://github.com/sponsors/natew">
@@ -105,7 +105,7 @@ export default function StudioSplashPage() {
                   ff="$silkscreen"
                   size="$8"
                   fow="900"
-                  $sm={{ size: '$5' }}
+                  $maxMd={{ size: '$5' }}
                 >
                   Your design system!
                 </H2>
@@ -118,9 +118,9 @@ export default function StudioSplashPage() {
               ov="hidden"
               maw={1000}
               als="center"
-              $sm={{ fd: 'column', maw: '100%' }}
+              $maxMd={{ fd: 'column', maw: '100%' }}
             >
-              <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
+              <YStack px="$6" maw="50%" $maxMd={{ maw: '100%', p: '$2' }}>
                 <EnsureFlexed />
                 <Features
                   size="$5"
@@ -132,7 +132,7 @@ export default function StudioSplashPage() {
                 />
               </YStack>
 
-              <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
+              <YStack px="$6" maw="50%" $maxMd={{ maw: '100%', p: '$2' }}>
                 <EnsureFlexed />
                 <Features
                   soon
@@ -329,8 +329,8 @@ const StudioScreen1 = memo(() => {
           $gtSm={{ scale: 0.7 }}
           $gtMd={{ scale: 0.9 }}
           $gtLg={{ scale: 1 }}
-          $sm={{ scale: 0.55 }}
-          $xs={{ scale: 0.4 }}
+          $maxMd={{ scale: 0.55 }}
+          $maxSm={{ scale: 0.4 }}
           pos="relative"
           ref={parentRef as any}
           {...lettersContainerBounds}

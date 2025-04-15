@@ -24,7 +24,7 @@ export function DataTable({
         br="$4"
         ov="hidden"
         mx="$-4"
-        $sm={{
+        $maxMd={{
           mx: 0,
         }}
       >
@@ -41,7 +41,7 @@ export function DataTable({
               pos="relative"
               py="$3"
               px="$4"
-              $sm={{ flexDirection: 'column' }}
+              $maxMd={{ flexDirection: 'column' }}
             >
               {items.map((item) => (
                 <H4

@@ -67,7 +67,7 @@ export const DropTamaguiConfig = () => {
             onPress={() => setShow(true)}
             size="$3"
             chromeless
-            $sm={{
+            $maxMd={{
               dsp: 'none',
             }}
             icon={Paintbrush}

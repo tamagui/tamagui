@@ -127,8 +127,8 @@ Pass in props that include media styles and shorthands, get back a flat object o
 
 ```tsx
 // if props is:
-//   { size: '$2', $sm: { size: '$4' } }
-// and $sm is active, activeProps will be:
+//   { size: '$2', $maxMd: { size: '$4' } }
+// and $maxMd is active, activeProps will be:
 //   { size: '$4' }
 
 // if shorthands like m => margin, then m always expands to margin
@@ -153,8 +153,8 @@ Pass in props that include media styles and shorthands, get back a flat style ob
 
 ```tsx
 // if props is:
-//   { color: '$background', $sm: { color: '$color' } }
-// and $sm is active, activeProps will be on web:
+//   { color: '$background', $maxMd: { color: '$color' } }
+// and $maxMd is active, activeProps will be on web:
 //   { color: 'var(--color)' }
 // and on native will resolve to the actual theme or token value:
 //   { color: '#fff' }

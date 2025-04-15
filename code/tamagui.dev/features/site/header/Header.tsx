@@ -90,7 +90,7 @@ export function Header(props: HeaderProps) {
             width="100%"
             bc="transparent"
             br="$10"
-            $sm={{
+            $maxMd={{
               br: 0,
               bw: 0,
               y: -1 + (isScrolled ? 0 : bannerHeight),
@@ -187,7 +187,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               <GithubIcon width={22} />
               <>
                 <SizableText
-                  $xl={{ display: 'none' }}
+                  $max2Xl={{ display: 'none' }}
                   size="$3"
                   color="$color12"
                   o={0.5}
@@ -209,7 +209,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
       <XStack
         position="absolute"
-        $md={{
+        $maxLg={{
           opacity: 0,
           pointerEvents: 'none',
         }}
@@ -425,7 +425,7 @@ export const HeaderLink = (props: {
     <SlidingPopoverTarget id={props.id}>
       <Link asChild href={props.href as any}>
         <HeadAnchor
-          $sm={{
+          $maxMd={{
             display: 'none',
           }}
         >

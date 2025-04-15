@@ -88,7 +88,7 @@ const TabsListFrame = styled(XStack, {
   position: 'sticky' as any,
   right: 0,
 
-  $sm: {
+  $maxMd: {
     minWidth: '100%',
     alignSelf: 'stretch',
     marginTop: 0,

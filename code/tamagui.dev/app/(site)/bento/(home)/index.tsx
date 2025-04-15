@@ -70,7 +70,7 @@ const Intermediate = () => {
         py="$6"
         pt={20}
         mb={-20}
-        $sm={{
+        $maxMd={{
           fd: 'column',
         }}
       >
@@ -132,7 +132,7 @@ const Hero = () => {
           bc="transparent"
           jc="space-between"
           w={'100%'}
-          $sm={{
+          $maxMd={{
             fd: 'column',
           }}
         >
@@ -144,32 +144,32 @@ const Hero = () => {
             jc="space-between"
             f={10}
             ai="flex-start"
-            $sm={{
+            $maxMd={{
               maw: '100%',
             }}
           >
             <YStack
               className="ms200 ease-in all"
               transformOrigin="center top"
-              $xxs={{
+              $maxXs={{
                 scale: 0.4,
               }}
-              $xs={{
+              $maxSm={{
                 scale: 0.5,
               }}
-              $sm={{
+              $maxMd={{
                 als: 'center',
                 scale: 0.6,
                 mb: -100,
               }}
-              $md={{ mb: -100, scale: 0.72 }}
+              $maxLg={{ mb: -100, scale: 0.72 }}
             >
               <BentoLogo />
             </YStack>
 
             <Spacer size="$6" />
 
-            <YStack maw={500} gap="$7" $sm={{ px: '$4', maw: 400, ml: 0, mx: 'auto' }}>
+            <YStack maw={500} gap="$7" $maxMd={{ px: '$4', maw: 400, ml: 0, mx: 'auto' }}>
               <XStack gap="$6">
                 <Paragraph
                   ff="$mono"
@@ -177,12 +177,12 @@ const Hero = () => {
                   lh={40}
                   color="$color11"
                   maxHeight={120}
-                  $md={{
+                  $maxLg={{
                     mt: '$6',
                     fos: 22,
                     lh: 38,
                   }}
-                  $sm={{
+                  $maxMd={{
                     ta: 'center',
                   }}
                 >
@@ -194,18 +194,18 @@ const Hero = () => {
                 ai="center"
                 ml="$8"
                 mr="$4"
-                $md={{ mx: 0, fd: 'column', gap: '$3' }}
+                $maxLg={{ mx: 0, fd: 'column', gap: '$3' }}
               >
                 <Paragraph
                   fontFamily="$mono"
                   color="$color10"
                   size="$5"
-                  $md={{ size: '$3' }}
+                  $maxLg={{ size: '$3' }}
                 >
                   One-time Purchase
                 </Paragraph>
 
-                <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
+                <Circle size={4} bg="$color10" $maxLg={{ dsp: 'none' }} />
 
                 <XStack ai="center" jc="space-between">
                   <Spacer />
@@ -242,13 +242,13 @@ const Hero = () => {
                   </Theme>
                 </XStack>
 
-                <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
+                <Circle size={4} bg="$color10" $maxLg={{ dsp: 'none' }} />
 
                 <Paragraph
                   fontFamily="$mono"
                   color="$color10"
                   size="$5"
-                  $md={{ size: '$3' }}
+                  $maxLg={{ size: '$3' }}
                 >
                   Lifetime rights
                 </Paragraph>
@@ -262,7 +262,7 @@ const Hero = () => {
             b="6%"
             r="$2"
             zi={100}
-            $sm={{
+            $maxMd={{
               pos: 'relative',
               mt: -30,
               mb: 20,
@@ -313,12 +313,12 @@ const Hero = () => {
             style={{
               maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent 65%)`,
             }}
-            $md={{
+            $maxLg={{
               mr: -400,
               mt: -150,
               scale: 0.9,
             }}
-            $sm={{
+            $maxMd={{
               display: 'none',
             }}
           >
@@ -327,7 +327,7 @@ const Hero = () => {
               style={{
                 transform: `rotate(4deg) scale(0.75)`,
               }}
-              $sm={{
+              $maxMd={{
                 mt: -85,
                 mb: -60,
               }}

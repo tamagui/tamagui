@@ -124,7 +124,7 @@ type WithStates = BaseViewStyle & {
 // final View style props
 type ViewStyle = WithStates & {
   // add media queries
-  $sm?: WithStates
+  $maxMd?: WithStates
 
   // add group queries
   $group-hover?: WithStates
@@ -212,7 +212,7 @@ createTamagui({
 Then you can use it like:
 
 ```tsx
-<Text color="red" $sm={{ color: 'blue' }} />
+<Text color="red" $maxMd={{ color: 'blue' }} />
 ```
 
 ### Theme

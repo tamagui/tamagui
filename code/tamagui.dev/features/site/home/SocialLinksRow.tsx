@@ -7,11 +7,11 @@ import { TwitterIcon } from '~/features/icons/TwitterIcon'
 
 export const SocialLinksRow = () => {
   return (
-    <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
+    <XStack gap="$4" $maxMd={{ flexDirection: 'column' }}>
       <Card
         width="33.33%"
         jc="center"
-        $sm={{ width: 'auto' }}
+        $maxMd={{ width: 'auto' }}
         space="$2"
         tag="a"
         href="https://x.com/tamagui_js"
@@ -31,7 +31,7 @@ export const SocialLinksRow = () => {
         width="33.33%"
         jc="center"
         space="$2"
-        $sm={{ width: 'auto' }}
+        $maxMd={{ width: 'auto' }}
         tag="a"
         href="https://discord.gg/4qh6tdcVDa"
         target="_blank"
@@ -50,7 +50,7 @@ export const SocialLinksRow = () => {
       <Card
         width="33.33%"
         jc="center"
-        $sm={{ width: 'auto' }}
+        $maxMd={{ width: 'auto' }}
         space="$2"
         tag="a"
         href="https://github.com/tamagui/tamagui"

@@ -66,7 +66,7 @@ export function ProductCard({ product, children, ...props }) {
             als="flex-end"
             animation="quicker"
             y="$-10"
-            $lg={{ y: '$-6' }}
+            $maxXl={{ y: '$-6' }}
             x="$-0.25"
             rotateZ="-5deg"
             scale={1}

@@ -20,10 +20,10 @@ export const HomeH2 = styled(H2, {
   size: '$10',
   maw: 720,
   mt: '$-2',
-  $sm: {
+  $maxMd: {
     size: '$10',
   },
-  $xs: {
+  $maxSm: {
     size: '$9',
   },
 })
@@ -41,7 +41,7 @@ export const HomeH3 = styled(H3, {
   ls: -0.5,
   maw: 720,
 
-  $sm: {
+  $maxMd: {
     size: '$6',
     fow: '400',
     color: '$color',

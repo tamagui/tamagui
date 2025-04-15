@@ -157,19 +157,19 @@ export const DetailHeader = (props: { children: string }) => {
   return (
     <YStack top={0} gap="$4" px="$4" py="$4">
       <YStack gap="$4">
-        <XStack ai="center" jc="space-between" $sm={{ fd: 'column' }}>
-          <H1 ff="$mono" size="$11" $sm={{ size: '$9', mb: '$4' }}>
+        <XStack ai="center" jc="space-between" $maxMd={{ fd: 'column' }}>
+          <H1 ff="$mono" size="$11" $maxMd={{ size: '$9', mb: '$4' }}>
             {props.children}
           </H1>
 
-          {/* <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}> */}
+          {/* <YStack zi={100} mb={-50} gap="$6" $maxMd={{ mb: 40 }}> */}
           <YStack
             ai="flex-end"
             zi={100}
             gap="$6"
             y={40}
             mt={-10}
-            $sm={{ y: 0, mt: 0, mb: 40, ai: 'center' }}
+            $maxMd={{ y: 0, mt: 0, mb: 40, ai: 'center' }}
           >
             <XStack gap="$4">
               <DropTamaguiConfig />
@@ -227,5 +227,5 @@ const SideBar = styled(YStack, {
   top: '$12',
   gap: '$8',
   px: '$8',
-  $lg: { dsp: 'none' },
+  $maxXl: { dsp: 'none' },
 })

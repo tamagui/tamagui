@@ -272,7 +272,7 @@ export const HomeThemes = memo(function HomeThemes() {
                       scale={scale}
                       className="all ease-in ms100"
                       cursor="pointer"
-                      $xs={{
+                      $maxSm={{
                         scale: scale * 0.8,
                       }}
                       onPress={() => {
@@ -299,7 +299,7 @@ export const HomeThemes = memo(function HomeThemes() {
             fullscreen
             ai="center"
             jc="center"
-            $xs={{ scale: 0.8 }}
+            $maxSm={{ scale: 0.8 }}
           >
             <Theme name={colorName}>
               <MediaPlayer

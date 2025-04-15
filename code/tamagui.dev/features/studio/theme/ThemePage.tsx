@@ -65,7 +65,7 @@ export function ThemePage() {
           h="max-content"
           pr={540}
           pt={10}
-          $lg={{ pr: 0 }}
+          $maxXl={{ pr: 0 }}
           jc="flex-end"
           ov="hidden"
         >
@@ -74,7 +74,7 @@ export function ThemePage() {
             f={1}
             maw="calc(min(100vw, 1300px))"
             group="content"
-            $md={{
+            $maxLg={{
               maw: `calc(min(100vw, 900px))`,
               p: '$4',
             }}
