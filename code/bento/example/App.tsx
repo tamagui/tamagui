@@ -5,7 +5,7 @@ import { useSchemeSetting } from '@vxrn/color-scheme'
 
 import { Provider } from '../src/components/provider/Provider'
 import { list as List } from '../src/sections/elements/list'
-import { Paywall } from '../src/components'
+// import { Paywall } from '../src/components'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
@@ -40,7 +40,7 @@ const App = () => {
             f={1}
             h="100%"
           >
-            <Paywall.Paywall />
+            {/* <Paywall.Paywall /> */}
           </YStack>
         </View>
       </YStack>

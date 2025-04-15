@@ -215,7 +215,6 @@ const getNextState = (
           props,
           pendingUpdate === 'force' ? true : !!needsUpdate
         )
-
   const isSameAsParent = parentState && (!name || name === parentState.name)
   const shouldRerender = Boolean(
     needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
@@ -346,13 +345,17 @@ function getNewThemeName(
     )
   }
 
+  const { themes } = getConfig()
+
   if (reset) {
-    if (!parentName) throw new Error(`‼️`)
     const lastPartIndex = parentName.lastIndexOf('_')
-    return lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
+    // parentName will have format light_{name} or dark_{name}
+    const name = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
+    const scheme = parentName.slice(0, lastPartIndex)
+    const result = themes[name] ? name : scheme
+    return result
   }
 
-  const { themes } = getConfig()
   const parentParts = parentName.split('_')
 
   // always remove component theme if it exists, we never sub a component theme

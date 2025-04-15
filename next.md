@@ -1,3 +1,6 @@
+- css animation driver enter animations not working it seems, i used to have
+  a fix for this where setState({ unmounted: true }) inside createComponent had a setTimeout() wrapped around it, but then removed it when i tested and found it didnt need it anymore, but seems it does need it again? or some other better fix ideally.
+
 - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
 
 - react native 78 dialogs not working
