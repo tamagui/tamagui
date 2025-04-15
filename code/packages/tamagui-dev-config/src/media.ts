@@ -1,3 +1,4 @@
+import { media as mediaV4 } from '@tamagui/config/v4'
 export const demoMedia = [500, 620, 780, 900]
 export const widths = [660, 800, 1020, 1280]
 
@@ -5,15 +6,16 @@ export const widths = [660, 800, 1020, 1280]
 // earlier defined = less important
 
 export const media = {
+  ...mediaV4,
   // for site
   xl: { maxWidth: 1650 },
   // between lg and xl - for studio usage
   lg_xl: { maxWidth: 1400 },
-  lg: { maxWidth: 1280 },
-  md: { maxWidth: 1020 },
-  sm: { maxWidth: 800 },
-  xs: { maxWidth: 660 },
-  xxs: { maxWidth: 390 },
+  // lg: { maxWidth: 1280 },
+  // md: { maxWidth: 1020 },
+  // sm: { maxWidth: 800 },
+  // xs: { maxWidth: 660 },
+  // xxs: { maxWidth: 390 },
   gtXxs: { minWidth: 390 + 1 },
   gtXs: { minWidth: 660 + 1 },
   gtSm: { minWidth: 800 + 1 },

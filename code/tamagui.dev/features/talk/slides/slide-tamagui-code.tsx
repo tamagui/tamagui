@@ -11,7 +11,7 @@ const adaptSnippet = highlightCode(
     <Button />
   </Popover.Trigger>
 
-  <Adapt when="sm" platform="touch">
+  <Adapt when="maxMd" platform="touch">
     <Popover.Sheet>
       <Popover.Sheet.Frame>
         <Adapt.Contents />

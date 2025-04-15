@@ -78,7 +78,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
         </XStack>
       </Popover.Anchor>
 
-      <Adapt platform="touch" when="sm">
+      <Adapt platform="touch" when="maxMd">
         <Sheet
           zIndex={100000000}
           modal

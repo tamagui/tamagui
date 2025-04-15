@@ -110,7 +110,7 @@ export function Panel({
               />
             </Popover.Trigger>
 
-            <Adapt when="sm" platform="touch">
+            <Adapt when="maxMd" platform="touch">
               <Popover.Sheet modal dismissOnSnapToBottom>
                 <Popover.Sheet.Frame padding="$4">
                   <Adapt.Contents />
