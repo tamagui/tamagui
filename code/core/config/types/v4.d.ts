@@ -185,6 +185,9 @@ export declare const defaultConfig: {
         readonly maxXs: {
             readonly maxWidth: number;
         };
+        readonly max2xs: {
+            readonly maxWidth: number;
+        };
         readonly maxSm: {
             readonly maxWidth: number;
         };
