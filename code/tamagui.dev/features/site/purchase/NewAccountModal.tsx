@@ -28,6 +28,7 @@ import {
   XStack,
   YStack,
   Spinner,
+  View,
 } from 'tamagui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -54,7 +55,8 @@ export const useAccountModal = createUseStore(AccountModal)
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
-  const { isLoading, data, subscriptionStatus } = useUser()
+  const { isLoading, data } = useUser()
+
   const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
     'plan'
   )
@@ -63,7 +65,7 @@ export const NewAccountModal = () => {
     return null
   }
 
-  const { userDetails, user, subscriptions } = data
+  const { subscriptions } = data
 
   // Get active subscriptions
   const activeSubscriptions = subscriptions?.filter(
@@ -73,7 +75,10 @@ export const NewAccountModal = () => {
   // Find Pro subscription
   const proSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
-  )
+  ) as NonNullable<UserContextType['subscriptions']>[number]
+
+  const user = data.user
+  const isTeamMember = user?.id && user.id !== proSubscription?.user_id
 
   // Find Support subscription
   const supportSubscription = activeSubscriptions?.find((sub) =>
@@ -164,11 +169,13 @@ export const NewAccountModal = () => {
                       Plan
                     </Tab>
                   </YStack>
-                  <YStack width={'33.3333%'} f={1}>
-                    <Tab isActive={currentTab === 'upgrade'} value="upgrade">
-                      Upgrade
-                    </Tab>
-                  </YStack>
+                  {!isTeamMember ? (
+                    <YStack width={'33.3333%'} f={1}>
+                      <Tab isActive={currentTab === 'upgrade'} value="upgrade">
+                        Upgrade
+                      </Tab>
+                    </YStack>
+                  ) : null}
                   <YStack width={'33.3333%'} f={1}>
                     <Tab isActive={currentTab === 'manage'} value="manage">
                       Manage
@@ -191,6 +198,7 @@ export const NewAccountModal = () => {
                           subscription={proSubscription!}
                           supportSubscription={supportSubscription!}
                           setCurrentTab={setCurrentTab}
+                          isTeamMember={!!isTeamMember}
                         />
                       )}
                       {currentTab === 'upgrade' && (
@@ -199,7 +207,7 @@ export const NewAccountModal = () => {
                       {currentTab === 'manage' && (
                         <ManageTab
                           subscription={proSubscription}
-                          supportSubscription={supportSubscription}
+                          isTeamMember={!!isTeamMember}
                         />
                       )}
                       {currentTab === 'team' && <TeamTab />}
@@ -344,7 +352,6 @@ const ServiceCard = ({
   actionLabel,
   onAction,
   secondAction,
-  proSubscription,
 }: {
   title: string
   description: string
@@ -354,7 +361,6 @@ const ServiceCard = ({
     label: string
     onPress: () => void
   }
-  proSubscription?: any
 }) => {
   return (
     <YStack
@@ -704,10 +710,12 @@ const PlanTab = ({
   subscription,
   supportSubscription,
   setCurrentTab,
+  isTeamMember,
 }: {
   subscription?: NonNullable<UserContextType['subscriptions']>[number]
   supportSubscription?: NonNullable<UserContextType['subscriptions']>[number]
   setCurrentTab: (value: 'plan' | 'upgrade' | 'manage' | 'team') => void
+  isTeamMember: boolean
 }) => {
   const supabase = useSupabaseClient()
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
@@ -724,6 +732,7 @@ const PlanTab = ({
     }
 
     setIsGrantingAccess(true)
+
     try {
       const res = await fetch(`/api/claim`, {
         method: 'POST',
@@ -851,20 +860,24 @@ const PlanTab = ({
           />
 
           <ChatAccessCard />
-          <ServiceCard
-            title="Add Members"
-            description="Add members to your Pro plan."
-            actionLabel="Add Seats"
-            onAction={() => {
-              if (!subscription) {
-                paymentModal.show = true
-                paymentModal.teamSeats = 1
-              } else {
-                addTeamMemberModal.subscriptionId = subscription.id
-                addTeamMemberModal.show = true
-              }
-            }}
-          />
+          {!isTeamMember ? (
+            <ServiceCard
+              title="Add Members"
+              description="Add members to your Pro plan."
+              actionLabel="Add Seats"
+              onAction={() => {
+                if (!subscription) {
+                  paymentModal.show = true
+                  paymentModal.teamSeats = 1
+                } else {
+                  addTeamMemberModal.subscriptionId = subscription.id
+                  addTeamMemberModal.show = true
+                }
+              }}
+            />
+          ) : (
+            <View flex={1} w={300} />
+          )}
         </XStack>
       </YStack>
 
@@ -1059,14 +1072,13 @@ const SupportTabContent = ({
 
 const ManageTab = ({
   subscription,
-  supportSubscription,
+  isTeamMember,
 }: {
-  subscription?: any
-  supportSubscription?: any
+  subscription?: NonNullable<UserContextType['subscriptions']>[number]
+  isTeamMember: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { refresh } = useUser()
-  const { data: products } = useProducts()
+  const { refresh, data } = useUser()
 
   if (!subscription) {
     return (
@@ -1086,6 +1098,12 @@ const ManageTab = ({
       </YStack>
     )
   }
+
+  // Get subscription details
+  const subscriptionItems = subscription?.subscription_items || []
+  const mainItem = subscriptionItems[0]
+  const price = mainItem?.price
+  const product = price?.product
 
   const handleCancelSubscription = async () => {
     setIsLoading(true)
@@ -1110,12 +1128,6 @@ const ManageTab = ({
     }
   }
 
-  // Get subscription details
-  const subscriptionItems = subscription.subscription_items || []
-  const mainItem = subscriptionItems[0]
-  const price = mainItem?.price
-  const product = price?.product
-
   // Format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -1126,7 +1138,10 @@ const ManageTab = ({
 
   return (
     <YStack gap="$6">
-      <H3>Subscription Details</H3>
+      <View>
+        <H3>Subscription Details</H3>
+        {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
+      </View>
       <YStack gap="$4" p="$4" borderWidth={1} borderColor="$color3" borderRadius="$4">
         <XStack jc="space-between">
           <Paragraph>Plan</Paragraph>
@@ -1155,12 +1170,10 @@ const ManageTab = ({
         </XStack>
 
         <XStack jc="space-between">
-          <Paragraph>Billing Period</Paragraph>
+          <Paragraph flex={1}>Billing Period</Paragraph>
           <YStack ai="flex-end">
             <Paragraph>
               {new Date(subscription.current_period_start).toLocaleDateString()} -
-            </Paragraph>
-            <Paragraph>
               {new Date(subscription.current_period_end).toLocaleDateString()}
             </Paragraph>
           </YStack>
@@ -1177,26 +1190,28 @@ const ManageTab = ({
 
         {product?.description && (
           <YStack gap="$2" pt="$2">
-            <Paragraph theme="alt1" size="$5">
-              Includes:
-            </Paragraph>
+            <Paragraph>Includes:</Paragraph>
             <Paragraph theme="alt2" size="$4">
               {product.description}
             </Paragraph>
           </YStack>
         )}
 
-        <Separator />
+        {!isTeamMember ? (
+          <>
+            <Separator />
 
-        <Button
-          theme="red"
-          disabled={isLoading || subscription.cancel_at_period_end}
-          onPress={handleCancelSubscription}
-        >
-          {subscription.cancel_at_period_end
-            ? 'Cancellation Scheduled'
-            : 'Cancel Subscription'}
-        </Button>
+            <Button
+              theme="red"
+              disabled={isLoading || !!subscription.cancel_at_period_end}
+              onPress={handleCancelSubscription}
+            >
+              {subscription.cancel_at_period_end
+                ? 'Cancellation Scheduled'
+                : 'Cancel Subscription'}
+            </Button>
+          </>
+        ) : null}
       </YStack>
     </YStack>
   )

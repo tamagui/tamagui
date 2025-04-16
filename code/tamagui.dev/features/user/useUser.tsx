@@ -11,6 +11,7 @@ export let currentUser: UserContextType | null = null
 
 export const useUser = () => {
   const { mutate } = useSWRConfig()
+
   const response = useSWR<UserContextType | null>('user', {
     fetcher: async () => {
       if (typeof window === 'undefined') {

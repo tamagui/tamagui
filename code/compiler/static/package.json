@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.125.34",
+  "version": "1.125.35",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -60,7 +60,7 @@
     "babel-literal-to-ast": "^2.1.0",
     "browserslist": "^4.22.2",
     "check-dependency-version-consistency": "^4.1.0",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "esbuild-register": "^3.6.0",
     "fast-glob": "^3.2.11",
     "find-cache-dir": "^3.3.2",

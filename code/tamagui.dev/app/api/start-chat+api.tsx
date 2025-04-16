@@ -23,8 +23,6 @@ export const POST: Endpoint = async (req) => {
     key: process.env.TAMAGUI_PRO_SECRET,
   }
 
-  console.info(`Checking chat access`, requestBody)
-
   const response = await fetch('https://start.chat/api/tamagui-pro', {
     method: 'POST',
     headers: {
@@ -38,8 +36,6 @@ export const POST: Endpoint = async (req) => {
   if (!response.ok) {
     console.error(`Got error response`)
   }
-
-  console.info(`Got chat access reply`, data)
 
   return Response.json(data)
 }
