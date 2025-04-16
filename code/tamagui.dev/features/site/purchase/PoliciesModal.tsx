@@ -14,7 +14,7 @@ export const ProPoliciesModal = () => {
         store.showProPolicies = val
       }}
     >
-      <Dialog.Adapt when="sm">
+      <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$8">
             <Sheet.ScrollView>

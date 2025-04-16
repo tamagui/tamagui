@@ -102,7 +102,7 @@ export const NewAccountModal = () => {
           store.show = val
         }}
       >
-        <Dialog.Adapt when="sm">
+        <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom animation="medium">
             <Sheet.Frame bg="$color2" padding={0} gap="$4">
               <Sheet.ScrollView>

@@ -182,6 +182,27 @@ export declare const defaultConfig: {
         tooltip: string;
     }>;
     media: {
+        readonly maxXs: {
+            readonly maxWidth: number;
+        };
+        readonly max2xs: {
+            readonly maxWidth: number;
+        };
+        readonly maxSm: {
+            readonly maxWidth: number;
+        };
+        readonly maxMd: {
+            readonly maxWidth: number;
+        };
+        readonly maxLg: {
+            readonly maxWidth: number;
+        };
+        readonly maxXl: {
+            readonly maxWidth: number;
+        };
+        readonly max2Xl: {
+            readonly maxWidth: number;
+        };
         readonly '2xl': {
             readonly minWidth: number;
         };

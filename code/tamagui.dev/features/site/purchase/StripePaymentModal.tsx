@@ -754,7 +754,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         store.show = val
       }}
     >
-      <Dialog.Adapt when="sm">
+      <Dialog.Adapt when="maxMd">
         <Sheet modal dismissOnSnapToBottom animation="medium">
           <Sheet.Frame bg="$color1" jc="center" ai="center" padding={0} gap="$4">
             <Dialog.Adapt.Contents />

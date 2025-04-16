@@ -1,6 +1,7 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
+import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
 import { createTamagui } from 'tamagui'
 
@@ -150,6 +151,7 @@ const tamaConf = createTamagui({
     fastSchemeChange: true,
   },
   tokens,
+  media: configV4.media,
   animations: search.includes('animationDriver=css')
     ? animationsCSS
     : search.includes('animationDriver=native')

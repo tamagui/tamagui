@@ -25,14 +25,14 @@ __metadata:
   linkType: hard
 
 "@ai-sdk/anthropic@npm:^1.1.11":
-  version: 1.2.8
-  resolution: "@ai-sdk/anthropic@npm:1.2.8"
+  version: 1.2.9
+  resolution: "@ai-sdk/anthropic@npm:1.2.9"
   dependencies:
     "@ai-sdk/provider": "npm:1.1.2"
     "@ai-sdk/provider-utils": "npm:2.2.6"
   peerDependencies:
     zod: ^3.0.0
-  checksum: 10/e73bdcb91b1a51d0bf3ad41b1aa018ac9645c97ee0c9f2d9494fab5cf71acf2490c8faa6b2b052a70473b13ad2282ae47818fb6ee09df38fe80ae5dfb8085e66
+  checksum: 10/84ec43184bd2c6034644e5a5e978d759b784c135414942a94468bead8aed978b38fe0b35e4e3ba1facf9deec3112af9795b5c6008aed64bdd3bcb09d912eddf2
   languageName: node
   linkType: hard
 
@@ -9285,11 +9285,11 @@ __metadata:
   linkType: hard
 
 "@types/react-dom@npm:^19.0.3":
-  version: 19.1.1
-  resolution: "@types/react-dom@npm:19.1.1"
+  version: 19.1.2
+  resolution: "@types/react-dom@npm:19.1.2"
   peerDependencies:
     "@types/react": ^19.0.0
-  checksum: 10/39dd8fc080559a8d9f7f9afc8868e0885eac0abe5816ef46050866e8c84b466641edf4b62221430d07070d903a2824e81002a7bbc5bde51adb682fcb830e7839
+  checksum: 10/bcadf2a1f4d23db8c1aaa0d13e30866d7bcda076801bbc66df14512932e0802ddac526bf15f4cce9777cd6e0bd3803aba47a1d726977f5193b4bc173348508d0
   languageName: node
   linkType: hard
 
@@ -17497,7 +17497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"index-to-position@npm:^1.0.0":
+"index-to-position@npm:^1.1.0":
   version: 1.1.0
   resolution: "index-to-position@npm:1.1.0"
   checksum: 10/16703893c732a025786098fe77cb7e83109afe4b72633dd6feea1595c54f8406623fa7a0a2263a8e08adee7f639fbb1c4731982cd30b4bc30d787bf803f5f3d8
@@ -22376,13 +22376,13 @@ __metadata:
   linkType: hard
 
 "parse-json@npm:^8.0.0":
-  version: 8.2.0
-  resolution: "parse-json@npm:8.2.0"
+  version: 8.3.0
+  resolution: "parse-json@npm:8.3.0"
   dependencies:
     "@babel/code-frame": "npm:^7.26.2"
-    index-to-position: "npm:^1.0.0"
-    type-fest: "npm:^4.37.0"
-  checksum: 10/7238fe443668b4e0c278b53d80863062c84a0ed326a79f40f2cdf6ba98a3f43f452ce4bae470cb8a859069daf457b2ae30f4e7560b61742442959157e22b5813
+    index-to-position: "npm:^1.1.0"
+    type-fest: "npm:^4.39.1"
+  checksum: 10/23812dd66a8ceedfeb0fd8a92c96b88b18bc1030cf1f07cd29146b711a208ef91ac995cf14517422f908fa930f84324086bf22fdcc1013029776cc01d589bae4
   languageName: node
   linkType: hard
 
@@ -23510,12 +23510,12 @@ __metadata:
   linkType: hard
 
 "react-hotkeys-hook@npm:^4.5.0":
-  version: 4.6.1
-  resolution: "react-hotkeys-hook@npm:4.6.1"
+  version: 4.6.2
+  resolution: "react-hotkeys-hook@npm:4.6.2"
   peerDependencies:
     react: ">=16.8.1"
     react-dom: ">=16.8.1"
-  checksum: 10/fc7449c72899c1adcb67d4d3d5130411a6ea26a9dc862f1599d2542201b57612b0add169ad0037a2de9e5a5db588c308a32f421ad47221f44eb88ab01018e750
+  checksum: 10/23fc4673b1ec07fb3c2990ccf092eaf76f434ed11b48bb6dbaba16cff4c5a38fc6769af1f9381e931ba1fe9ea8832db3451b0b2060813eed531be77d6268114f
   languageName: node
   linkType: hard
 
@@ -27293,7 +27293,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.27.0, type-fest@npm:^4.30.0, type-fest@npm:^4.37.0, type-fest@npm:^4.6.0":
+"type-fest@npm:^4.27.0, type-fest@npm:^4.30.0, type-fest@npm:^4.39.1, type-fest@npm:^4.6.0":
   version: 4.39.1
   resolution: "type-fest@npm:4.39.1"
   checksum: 10/8f3fc947cb072effd9ba240425397b4d3c08901b344409bc12a0aabf43fd309f87fa214d7ee0b600f6e2335b435f40992cd22c0ce4bc7ab8dc5a987200f83bcc

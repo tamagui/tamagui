@@ -25,7 +25,7 @@ const GroupChild = styled(Stack, {
     },
   },
 
-  '$group-testy-sm': {
+  '$group-testy-maxMd': {
     backgroundColor: 'rgb(0,255,0)',
 
     hoverStyle: {
@@ -55,7 +55,7 @@ const GroupChildMedia = styled(GroupChild, {
     },
   },
 
-  '$group-testy-sm': {
+  '$group-testy-maxMd': {
     backgroundColor: 'rgb(0,255,0)',
 
     hoverStyle: {

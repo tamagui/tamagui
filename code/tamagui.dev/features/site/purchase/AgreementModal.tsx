@@ -14,7 +14,7 @@ export const ProAgreementModal = () => {
         store.showProAgreement = val
       }}
     >
-      <Dialog.Adapt when="sm">
+      <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
             <Sheet.ScrollView>
