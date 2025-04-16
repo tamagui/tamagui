@@ -34,6 +34,7 @@ const skipTest =
   process.argv.includes('--skip-test') ||
   process.argv.includes('--skip-tests')
 const skipBuild = shouldFinish || rePublish || process.argv.includes('--skip-build')
+const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || process.argv.includes('--ci')
@@ -198,7 +199,11 @@ async function run() {
     // build from fresh
     if (!skipBuild && !shouldFinish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn build`)
+      if (buildFast) {
+        await spawnify(`yarn build`)
+      } else {
+        await spawnify(`yarn build:force`)
+      }
       await checkDistDirs()
     }
 
