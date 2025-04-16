@@ -722,8 +722,17 @@ export function createComponent<
         return
       }
 
+      let tm: NodeJS.Timeout
       if (state.unmounted) {
-        setStateShallow({ unmounted: false })
+        if (animationDriver?.supportsCSSVars ?? config?.animations?.supportsCSSVars) {
+          // this setTimeout fixes css driver enter animations - not sure why
+          tm = setTimeout(() => {
+            setStateShallow({ unmounted: false })
+          })
+          return () => clearTimeout(tm)
+        } else {
+          setStateShallow({ unmounted: false })
+        }
         return
       }
 

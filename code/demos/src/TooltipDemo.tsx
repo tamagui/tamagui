@@ -45,6 +45,7 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         x={0}
         y={0}
         opacity={1}
+        py="$2"
         animation={[
           'quick',
           {
