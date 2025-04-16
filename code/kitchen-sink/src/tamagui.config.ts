@@ -5,7 +5,6 @@ import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
 import { createTamagui } from 'tamagui'
 
-
 export const animationsCSS = createAnimationsCSS({
   '100ms': 'ease-in 100ms',
   bouncy: 'ease-in 200ms',
