@@ -151,7 +151,10 @@ const tamaConf = createTamagui({
     fastSchemeChange: true,
   },
   tokens,
-  media: configV4.media,
+  media: {
+    ...configV4.media, // adds max queries
+    ...config.media,
+  },
   animations: search.includes('animationDriver=css')
     ? animationsCSS
     : search.includes('animationDriver=native')
