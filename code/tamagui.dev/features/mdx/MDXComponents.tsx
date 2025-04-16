@@ -26,7 +26,6 @@ import {
   Separator,
   SizableText,
   Spacer,
-  Tabs,
   Text,
   Theme,
   ThemeableStack,
