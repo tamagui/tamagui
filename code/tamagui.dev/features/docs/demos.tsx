@@ -206,3 +206,7 @@ export const RadioGroupUnstyledDemo = lazyDemo(() =>
     (x) => x.RadioGroupUnstyledDemo
   )
 )
+
+export const TabsHeadlessDemo = lazyDemo(() =>
+  import('@tamagui/demos/demo/TabsHeadlessDemo').then((x) => x.TabsHeadlessDemo)
+)
