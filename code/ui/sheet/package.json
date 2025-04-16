@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.125.35",
+  "version": "1.126.0",
   "sideEffects": [
     "*.css"
   ],
