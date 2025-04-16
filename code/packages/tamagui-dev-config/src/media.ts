@@ -1,4 +1,4 @@
-import { media as mediaV4 } from '@tamagui/config/v4'
+import { breakpoints } from '@tamagui/config/v4'
 export const demoMedia = [500, 620, 780, 900]
 export const widths = [660, 800, 1020, 1280]
 
@@ -6,7 +6,14 @@ export const widths = [660, 800, 1020, 1280]
 // earlier defined = less important
 
 export const media = {
-  ...mediaV4,
+  // v4 Config
+  maxXs: { maxWidth: breakpoints.xs },
+  max2xs: { maxWidth: breakpoints['2xs'] },
+  maxSm: { maxWidth: breakpoints.sm },
+  maxMd: { maxWidth: breakpoints.md },
+  maxLg: { maxWidth: breakpoints.lg },
+  maxXl: { maxWidth: breakpoints.xl },
+  max2Xl: { maxWidth: breakpoints['2xl'] },
   // for site
   xl: { maxWidth: 1650 },
   // between lg and xl - for studio usage
