@@ -17,7 +17,11 @@ import {
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
-import { getDynamicVal, getOppositeScheme } from './getDynamicVal'
+import {
+  getDynamicVal,
+  getOppositeScheme,
+  extractValueFromDynamic,
+} from './getDynamicVal'
 
 import { getConfig, getFont, getSetting } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
@@ -900,32 +904,23 @@ export const getSplitStyles: StyleSplitter = (
               // iOS will use https://reactnative.dev/docs/dynamiccolorios
               // So need to predefine the dynamic color before merging the styles
               // For example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
-              function extractValueFromDynamic(val: any, scheme: string) {
-                if (val?.['dynamic']) {
-                  return val['dynamic'][scheme]
-                }
-                return val
-              }
 
               styleState.style ||= {}
               const scheme = mediaKeyShort
               const oppositeScheme = getOppositeScheme(mediaKeyShort)
 
               for (const subKey in mediaStyle) {
-                const hasDynamic = !!mediaStyle[subKey]?.['dynamic']
                 let val = extractValueFromDynamic(mediaStyle[subKey], scheme)
                 const oppositeVal = extractValueFromDynamic(
                   styleState.style[subKey],
                   oppositeScheme
                 )
 
-                if (hasDynamic) {
-                  mediaStyle[subKey] = getDynamicVal({
-                    scheme,
-                    val,
-                    oppositeVal,
-                  })
-                }
+                mediaStyle[subKey] = getDynamicVal({
+                  scheme,
+                  val,
+                  oppositeVal,
+                })
                 mergeStyle(styleState, subKey, mediaStyle[subKey])
               }
             } else if (

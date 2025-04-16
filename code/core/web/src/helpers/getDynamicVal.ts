@@ -15,3 +15,10 @@ export function getDynamicVal({
     },
   }
 }
+
+export function extractValueFromDynamic(val: any, scheme: string) {
+  if (val?.['dynamic']) {
+    return val['dynamic'][scheme]
+  }
+  return val
+}
