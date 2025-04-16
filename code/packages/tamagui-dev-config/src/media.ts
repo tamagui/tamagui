@@ -1,9 +1,19 @@
-import { breakpoints } from '@tamagui/config/v4'
 export const demoMedia = [500, 620, 780, 900]
 export const widths = [660, 800, 1020, 1280]
 
 // note order is important!
 // earlier defined = less important
+
+// v4 Config
+const breakpoints = {
+  '2xl': 1536,
+  xl: 1280,
+  lg: 1024,
+  md: 768,
+  sm: 640,
+  xs: 460,
+  '2xs': 340,
+}
 
 export const media = {
   // v4 Config

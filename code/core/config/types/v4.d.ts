@@ -200,6 +200,9 @@ export declare const defaultConfig: {
         readonly maxXl: {
             readonly maxWidth: number;
         };
+        readonly max2Xl: {
+            readonly maxWidth: number;
+        };
         readonly '2xl': {
             readonly minWidth: number;
         };
