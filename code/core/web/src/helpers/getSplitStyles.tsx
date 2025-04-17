@@ -1,4 +1,10 @@
-import { isAndroid, isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  isIos,
+  isAndroid,
+  isClient,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
   StyleObjectProperty,
@@ -11,8 +17,13 @@ import {
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
+import {
+  getDynamicVal,
+  getOppositeScheme,
+  extractValueFromDynamic,
+} from './getDynamicVal'
 
-import { getConfig, getFont } from '../config'
+import { getConfig, getFont, getSetting } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
@@ -522,9 +533,9 @@ export const getSplitStyles: StyleSplitter = (
       groupEnd() // react native was not nesting right
       groupEnd() // react native was not nesting right
       groupCollapsed(
-        `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
-          shouldPassThrough ? '(pass)' : ''
-        }`
+        `  🔑 ${keyOg}${
+          keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''
+        } ${shouldPassThrough ? '(pass)' : ''}`
       )
       log({ isVariant, valInit, shouldPassProp })
       if (isClient) {
@@ -856,9 +867,9 @@ export const getSplitStyles: StyleSplitter = (
             // property is just $platform-web, it should br $platform-web-bg, so we add extra info from style
             // but that info includes the value too
             const subKey = isSubStyle ? style[2] : ''
-            const fullKey = `${style[StyleObjectProperty]}${subKey}${PROP_SPLIT}${mediaKeyShort}${
-              style[StyleObjectPseudo] || ''
-            }`
+            const fullKey = `${
+              style[StyleObjectProperty]
+            }${subKey}${PROP_SPLIT}${mediaKeyShort}${style[StyleObjectPseudo] || ''}`
 
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
@@ -889,7 +900,32 @@ export const getSplitStyles: StyleSplitter = (
             // needed to get updates when theme changes
             dynamicThemeAccess = true
 
-            if (!(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))) {
+            if (isIos && getSetting('fastSchemeChange')) {
+              // iOS will use https://reactnative.dev/docs/dynamiccolorios
+              // So need to predefine the dynamic color before merging the styles
+              // For example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
+
+              styleState.style ||= {}
+              const scheme = mediaKeyShort
+              const oppositeScheme = getOppositeScheme(mediaKeyShort)
+
+              for (const subKey in mediaStyle) {
+                let val = extractValueFromDynamic(mediaStyle[subKey], scheme)
+                const oppositeVal = extractValueFromDynamic(
+                  styleState.style[subKey],
+                  oppositeScheme
+                )
+
+                mediaStyle[subKey] = getDynamicVal({
+                  scheme,
+                  val,
+                  oppositeVal,
+                })
+                mergeStyle(styleState, subKey, mediaStyle[subKey])
+              }
+            } else if (
+              !(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))
+            ) {
               return
             }
           } else if (isGroupMedia) {

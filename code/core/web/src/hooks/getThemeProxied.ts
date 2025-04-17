@@ -12,6 +12,7 @@ import type {
 } from '../types'
 import { doesRootSchemeMatchSystem } from './doesRootSchemeMatchSystem'
 import type { ThemeState } from './useThemeState'
+import { getDynamicVal } from '../helpers/getDynamicVal'
 
 export type ThemeProxied = {
   [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<
@@ -127,12 +128,11 @@ export function getThemeProxied(
               const color = getVariable(config.themes[name]?.[key])
               const oppositeColor = getVariable(config.themes[oppositeName]?.[key])
 
-              const dynamicVal = {
-                dynamic: {
-                  [scheme]: color,
-                  [oppositeScheme]: oppositeColor,
-                },
-              }
+              const dynamicVal = getDynamicVal({
+                scheme,
+                val: color,
+                oppositeVal: oppositeColor,
+              })
 
               return dynamicVal
             }

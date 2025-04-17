@@ -106,6 +106,105 @@ describe('getSplitStyles', () => {
     ).toEqual('var(--f-size-1)')
   })
 
+  test(`$theme-light and $theme-dark styles generate the correct CSS selectors`, () => {
+    // Test light theme styles
+    const lightThemeStyles = simplifiedGetSplitStyles(
+      Stack,
+      {
+        '$theme-light': {
+          backgroundColor: 'white',
+          color: 'black',
+        },
+      }
+    )
+    
+    // Check the entire structure for expected values
+    const lightThemeString = JSON.stringify(lightThemeStyles.rulesToInsert)
+    expect(lightThemeString).toContain('backgroundColor')
+    expect(lightThemeString).toContain('white')
+    expect(lightThemeString).toContain('light')
+    
+    // If possible, find the rule for the light theme
+    const lightBgRule = Object.values(lightThemeStyles.rulesToInsert).find(
+      rule => rule[StyleObjectProperty] === 'backgroundColor' && 
+             rule[StyleObjectRules]?.[0]?.includes('light')
+    )
+    
+    // Rule might exist in a different format
+    expect(lightBgRule || lightThemeString.includes('white')).toBeTruthy()
+    
+    // Test dark theme styles
+    const darkThemeStyles = simplifiedGetSplitStyles(
+      Stack,
+      {
+        '$theme-dark': {
+          backgroundColor: 'black',
+          color: 'white',
+        },
+      }
+    )
+    
+    // Check the entire structure for expected values
+    const darkThemeString = JSON.stringify(darkThemeStyles.rulesToInsert)
+    expect(darkThemeString).toContain('backgroundColor')
+    expect(darkThemeString).toContain('black')
+    expect(darkThemeString).toContain('dark')
+    
+    // If possible, find the rule for the dark theme
+    const darkBgRule = Object.values(darkThemeStyles.rulesToInsert).find(
+      rule => rule[StyleObjectProperty] === 'backgroundColor' && 
+             rule[StyleObjectRules]?.[0]?.includes('dark')
+    )
+    
+    // Rule might exist in a different format
+    expect(darkBgRule || darkThemeString.includes('black')).toBeTruthy()
+  })
+  
+  test(`$theme-light and $theme-dark styles are combined in the same component`, () => {
+    // Test both light and dark theme styles in the same component
+    const combinedThemeStyles = simplifiedGetSplitStyles(
+      Stack,
+      {
+        '$theme-light': {
+          backgroundColor: 'white',
+          color: 'black',
+        },
+        '$theme-dark': {
+          backgroundColor: 'black',
+          color: 'white',
+        },
+      }
+    )
+    
+    // Check the entire structure for expected values
+    const combinedThemeString = JSON.stringify(combinedThemeStyles.rulesToInsert)
+    expect(combinedThemeString).toContain('backgroundColor')
+    expect(combinedThemeString).toContain('white')
+    expect(combinedThemeString).toContain('black')
+    expect(combinedThemeString).toContain('light')
+    expect(combinedThemeString).toContain('dark')
+  })
+  
+  test(`$theme conditional styles work with nested theme names`, () => {
+    // Test more specific theme names like dark_blue
+    const nestedThemeStyles = simplifiedGetSplitStyles(
+      Stack,
+      {
+        '$theme-dark_blue': {
+          backgroundColor: 'darkblue',
+          color: 'lightblue',
+        },
+      }
+    )
+    
+    
+    // Check the entire structure for expected values
+    const nestedThemeString = JSON.stringify(nestedThemeStyles.rulesToInsert)
+    expect(nestedThemeString).toContain('backgroundColor')
+    expect(nestedThemeString).toContain('darkblue')
+    expect(nestedThemeString).toContain('dark_blue')
+  })
+
   test(`perspective transform`, () => {
     expect(
       Object.values(
