@@ -125,11 +125,11 @@ export const useComponentState = (
 
   // immediately update disabled state and reset component state
   if (disabled !== state.disabled) {
-    state.disabled = disabled
     // if disabled remove all press/focus/hover states
     if (disabled) {
       Object.assign(state, defaultComponentStateMounted)
     }
+    state.disabled = disabled
     setState({ ...state })
   }
 
