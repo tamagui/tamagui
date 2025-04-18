@@ -5,7 +5,6 @@ import { useSchemeSetting } from '@vxrn/color-scheme'
 
 import { Provider } from '../src/components/provider/Provider'
 import { list as List } from '../src/sections/elements/list'
-// import { Paywall } from '../src/components'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
