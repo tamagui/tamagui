@@ -524,7 +524,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 paymentMethodTypes: ['card', 'link'],
                 payment_method_types: ['card', 'link'],
                 paymentMethodCreation: 'manual',
-                setup_future_usage: 'off_session',
+                ...(monthlyTotal > 0 && {
+                  setup_future_usage: 'off_session',
+                }),
               }}
             >
               <PaymentForm
