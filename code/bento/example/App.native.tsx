@@ -32,7 +32,7 @@ export default function App() {
           <ThemePicker themeColor={colorScheme} setThemeColor={setThemeName} />
         </View> */}
 
-        <List.ScrollProgressBar />
+        <List.ScrollProgress />
 
         {/* <BottomView title="Paywall" /> */}
       </YStack>
