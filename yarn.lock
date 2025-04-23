@@ -11330,6 +11330,7 @@ __metadata:
     fuse.js: "npm:7.1.0"
     ink: "npm:5.2.0"
     ink-link: "npm:^4.1.0"
+    ink-spinner: "npm:^5.0.0"
     ink-text-input: "npm:^5.0.1"
     node-fetch: "npm:^3.3.2"
     octokit: "npm:^4.0.2"
@@ -12252,7 +12253,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-spinners@npm:^2.0.0, cli-spinners@npm:^2.5.0":
+"cli-spinners@npm:^2.0.0, cli-spinners@npm:^2.5.0, cli-spinners@npm:^2.7.0":
   version: 2.9.2
   resolution: "cli-spinners@npm:2.9.2"
   checksum: 10/a0a863f442df35ed7294424f5491fa1756bd8d2e4ff0c8736531d886cec0ece4d85e8663b77a5afaf1d296e3cbbebff92e2e99f52bbea89b667cbe789b994794
@@ -17544,6 +17545,18 @@ __metadata:
   peerDependencies:
     ink: ">=4"
   checksum: 10/94ead37ae72088e9dfc5a6fc4c6b86f7ec6367cb99045c2374b73feef5b5262a818c9abec4e615ee3ed7df47d4b5439bb0f579e4f92beb623da79e50efe6e2e1
+  languageName: node
+  linkType: hard
+
+"ink-spinner@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "ink-spinner@npm:5.0.0"
+  dependencies:
+    cli-spinners: "npm:^2.7.0"
+  peerDependencies:
+    ink: ">=4.0.0"
+    react: ">=18.0.0"
+  checksum: 10/88e547ff56ac8ee31239daef43b03ca2797eb20cc338ad25aba8e8fbe2cb322ea212494f8c545f327d345051be50542e1a27fdee3758a32a1b4a5db5308cad63
   languageName: node
   linkType: hard
 
