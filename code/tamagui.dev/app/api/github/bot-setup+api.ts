@@ -67,7 +67,7 @@ export default apiRoute(async (req) => {
   }
 
   return redirect(
-    `/account/items?${new URLSearchParams({
+    `/account?${new URLSearchParams({
       github_app_installed: '1',
     })}`
   )

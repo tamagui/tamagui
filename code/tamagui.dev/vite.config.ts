@@ -160,7 +160,7 @@ export default {
         redirects: [
           {
             source: '/account/subscriptions',
-            destination: '/account/items',
+            destination: '/account',
             permanent: false,
           },
           {
