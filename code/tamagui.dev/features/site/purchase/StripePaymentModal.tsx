@@ -373,7 +373,12 @@ const PaymentForm = ({
         </View>
       </ScrollView>
       {children}
-      <YStack gap="$2">
+      <YStack
+        gap="$2"
+        $maxMd={{
+          alignItems: 'flex-end',
+        }}
+      >
         <XStack
           $maxMd={{
             flexDirection: 'column',
@@ -540,7 +545,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     const renderTotalView = () => {
       return (
         <YStack f={1} gap="$4" backgroundColor="$color2" p="$4" br="$4">
-          <H3 fontFamily="$mono">Order summary</H3>
+          <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+            Order summary
+          </H3>
           <Separator />
 
           {yearlyTotal > 0 && (
@@ -658,15 +665,24 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <Separator />
 
           <XStack jc="space-between">
-            <H3 ff="$mono">Total</H3>
+            <H3 $maxMd={{ fontSize: '$6' }} ff="$mono">
+              Total
+            </H3>
             <YStack ai="flex-end">
               {finalCoupon && (
-                <Paragraph ff="$mono" size="$3" o={0.5} textDecorationLine="line-through">
+                <Paragraph
+                  $maxMd={{ fontSize: '$6' }}
+                  ff="$mono"
+                  size="$3"
+                  o={0.5}
+                  textDecorationLine="line-through"
+                >
                   ${yearlyTotal}
                   {monthlyTotal > 0 && ` + $${monthlyTotal}/month`}
                 </Paragraph>
               )}
-              <H3 ff="$mono">
+
+              <H3 $maxMd={{ fontSize: '$6' }} ff="$mono">
                 ${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}
                 {monthlyTotal > 0 &&
                   ` + $${Math.ceil(calculateDiscountedAmount(monthlyTotal, finalCoupon))}/month`}
