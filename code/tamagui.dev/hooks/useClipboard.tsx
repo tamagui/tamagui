@@ -11,8 +11,8 @@ export function useClipboard(
 ) {
   const [hasCopied, setHasCopied] = useState(false)
 
-  const onCopy = async () => {
-    await copyToClipboard(text)
+  const onCopy = async (string: string = text) => {
+    await copyToClipboard(string)
     setHasCopied(true)
   }
 
