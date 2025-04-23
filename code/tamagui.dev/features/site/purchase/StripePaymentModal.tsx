@@ -50,6 +50,9 @@ import {
   YStack,
   SizableText,
   Input,
+  ScrollView,
+  View,
+  useMedia,
 } from 'tamagui'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -163,6 +166,7 @@ const PaymentForm = ({
   setIsProcessing,
   userData,
   finalCoupon,
+  children,
 }: {
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -180,6 +184,7 @@ const PaymentForm = ({
   setIsProcessing: (value: boolean) => void
   userData: any
   finalCoupon: Coupon | null
+  children: React.ReactNode
 }) => {
   const stripe = useStripe()
   const elements = useElements()
@@ -194,6 +199,7 @@ const PaymentForm = ({
     }
 
     setIsProcessing(true)
+
     try {
       // Submit the form first
       const { error: submitError } = await elements.submit()
@@ -345,42 +351,63 @@ const PaymentForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <YStack gap="$4">
-        <PaymentElement
-          options={{
-            layout: 'accordion',
-            defaultValues: {
-              billingDetails: {
-                name: userData?.userDetails?.full_name || '',
-                email: userData?.user?.email || '',
-              },
-            },
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          maxHeight="70vh"
+          $maxMd={{
+            maxHeight: '100%',
           }}
-        />
+          py="$4"
+        >
+          <PaymentElement
+            options={{
+              layout: 'accordion',
+              defaultValues: {
+                billingDetails: {
+                  name: userData?.userDetails?.full_name || '',
+                  email: userData?.user?.email || '',
+                },
+              },
+            }}
+          />
+        </View>
+      </ScrollView>
+      {children}
+      <YStack gap="$2">
+        <XStack
+          $maxMd={{
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            pt: '$4',
+          }}
+          justifyContent="space-between"
+          alignItems="flex-start"
+          gap="$2"
+        >
+          <PoweredByStripeIcon height={23} />
 
-        <XStack h={23} als="flex-end">
-          <PoweredByStripeIcon />
+          <Theme name="accent">
+            <YStack
+              onPressOut={() => {
+                sendEvent(`Pro: Complete Purchase`)
+              }}
+            >
+              <Button
+                fontFamily="$mono"
+                br="$10"
+                als="flex-end"
+                $maxMd={{
+                  width: '100%',
+                }}
+                disabled={isProcessing || !stripe || !elements}
+              >
+                {isProcessing ? 'Processing...' : 'Complete purchase'}
+              </Button>
+            </YStack>
+          </Theme>
         </XStack>
 
-        <Theme name="accent">
-          <YStack
-            alignItems="flex-end"
-            gap="$2"
-            onPressOut={() => {
-              sendEvent(`Pro: Complete Purchase`)
-            }}
-          >
-            <Button
-              fontFamily="$mono"
-              br="$10"
-              als="flex-end"
-              disabled={isProcessing || !stripe || !elements}
-            >
-              {isProcessing ? 'Processing...' : 'Complete purchase'}
-            </Button>
-            {error && <ErrorMessage error={error} />}
-          </YStack>
-        </Theme>
+        {error && <ErrorMessage error={error} />}
       </YStack>
     </form>
   )
@@ -409,6 +436,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
   const theme = useTheme()
   const themeName = useThemeName()
+  const { maxMd } = useMedia()
 
   // Use store values if available, otherwise use props
   const yearlyTotal = store.yearlyTotal || propYearlyTotal
@@ -475,6 +503,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <Paragraph ta="center">
             Please sign in with GitHub to continue your purchase.
           </Paragraph>
+
           <Button
             size="$4"
             theme="accent"
@@ -508,49 +537,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       calculateDiscountedAmount(baseAmount / 100, finalCoupon) * 100
     )
 
-    return (
-      <XStack gap="$6">
-        <YStack f={1} gap="$4">
-          <H3 ff="$mono">Payment details</H3>
-          <Separator />
-          {amount > 0 && (
-            <Elements
-              stripe={stripePromise}
-              options={{
-                appearance,
-                mode: 'payment',
-                currency: 'usd',
-                amount,
-                paymentMethodTypes: ['card', 'link'],
-                payment_method_types: ['card', 'link'],
-                paymentMethodCreation: 'manual',
-                ...(monthlyTotal > 0 && {
-                  setup_future_usage: 'off_session',
-                }),
-              }}
-            >
-              <PaymentForm
-                onSuccess={onSuccess}
-                onError={onError}
-                autoRenew={!disableAutoRenew}
-                chatSupport={chatSupport}
-                supportTier={supportTier}
-                teamSeats={teamSeats}
-                selectedPrices={{
-                  disableAutoRenew,
-                  chatSupport,
-                  supportTier: Number(supportTier),
-                  teamSeats: Number(teamSeats),
-                }}
-                isProcessing={isProcessing}
-                setIsProcessing={setIsProcessing}
-                userData={userData}
-                finalCoupon={finalCoupon}
-              />
-            </Elements>
-          )}
-        </YStack>
-
+    const renderTotalView = () => {
+      return (
         <YStack f={1} gap="$4" backgroundColor="$color2" p="$4" br="$4">
           <H3 fontFamily="$mono">Order summary</H3>
           <Separator />
@@ -726,7 +714,67 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             )}
           </YStack>
         </YStack>
-      </XStack>
+      )
+    }
+
+    return (
+      <View
+        flexDirection="row"
+        $maxMd={{
+          flexDirection: 'column-reverse',
+          p: '$6',
+        }}
+        flex={1}
+        gap="$6"
+      >
+        <YStack flex={1}>
+          <View gap="$4">
+            <H3 ff="$mono">Payment details</H3>
+            <Separator />
+          </View>
+
+          {amount > 0 && (
+            <Elements
+              stripe={stripePromise}
+              options={{
+                appearance,
+                mode: 'payment',
+                currency: 'usd',
+                amount,
+                paymentMethodTypes: ['card', 'link'],
+                payment_method_types: ['card', 'link'],
+                paymentMethodCreation: 'manual',
+                ...(monthlyTotal > 0 && {
+                  setup_future_usage: 'off_session',
+                }),
+              }}
+            >
+              <PaymentForm
+                onSuccess={onSuccess}
+                onError={onError}
+                autoRenew={!disableAutoRenew}
+                chatSupport={chatSupport}
+                supportTier={supportTier}
+                teamSeats={teamSeats}
+                selectedPrices={{
+                  disableAutoRenew,
+                  chatSupport,
+                  supportTier: Number(supportTier),
+                  teamSeats: Number(teamSeats),
+                }}
+                isProcessing={isProcessing}
+                setIsProcessing={setIsProcessing}
+                userData={userData}
+                finalCoupon={finalCoupon}
+              >
+                {maxMd && renderTotalView()}
+              </PaymentForm>
+            </Elements>
+          )}
+        </YStack>
+
+        {!maxMd && renderTotalView()}
+      </View>
     )
   }
 
@@ -758,9 +806,11 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       }}
     >
       <Dialog.Adapt when="maxMd">
-        <Sheet modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame bg="$color1" jc="center" ai="center" padding={0} gap="$4">
-            <Dialog.Adapt.Contents />
+        <Sheet zIndex={999999} modal dismissOnSnapToBottom animation="medium">
+          <Sheet.Frame bg="$color1" padding={0} gap="$4">
+            <Sheet.ScrollView showsVerticalScrollIndicator={false}>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadow4"
@@ -786,6 +836,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           animation="quick"
           w="90%"
           maw={1000}
+          $maxMd={{
+            maw: '100%',
+          }}
           p="$6"
           enterStyle={{
             opacity: 0,
@@ -797,9 +850,19 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           }}
         >
           {renderContent()}
-          <Dialog.Close asChild>
-            <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
-          </Dialog.Close>
+
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
