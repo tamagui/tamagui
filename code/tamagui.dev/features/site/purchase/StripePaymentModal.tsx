@@ -236,6 +236,7 @@ const PaymentForm = ({
       })
 
       const data = await response.json()
+
       if (!response.ok) {
         const error = new Error(JSON.stringify(data))
         setError(error)
@@ -683,9 +684,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               )}
 
               <H3 $maxMd={{ fontSize: '$6' }} ff="$mono">
-                ${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}
+                {yearlyTotal
+                  ? `${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}`
+                  : ''}
+                {yearlyTotal && monthlyTotal ? ' + ' : ''}
                 {monthlyTotal > 0 &&
-                  ` + $${Math.ceil(calculateDiscountedAmount(monthlyTotal, finalCoupon))}/month`}
+                  `$${Math.ceil(calculateDiscountedAmount(monthlyTotal, finalCoupon))}/month`}
               </H3>
             </YStack>
           </XStack>
@@ -696,6 +700,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               o={0.3}
               cursor="pointer"
               hoverStyle={{ opacity: 0.8 }}
+              $maxMd={{
+                fontSize: '$3',
+              }}
               onPress={() => setShowCoupon((x) => !x)}
             >
               {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
@@ -792,25 +799,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         {!maxMd && renderTotalView()}
       </View>
     )
-  }
-
-  const handleCheckout = () => {
-    if (isProcessing) return
-
-    // Show payment modal with current selections
-    paymentModal.show = true
-    paymentModal.yearlyTotal = yearlyTotal
-    paymentModal.monthlyTotal = monthlyTotal
-    paymentModal.disableAutoRenew = disableAutoRenew
-    paymentModal.chatSupport = chatSupport
-    paymentModal.supportTier = Number(supportTier)
-    paymentModal.teamSeats = Number(teamSeats)
-    paymentModal.selectedPrices = {
-      disableAutoRenew,
-      chatSupport,
-      supportTier: Number(supportTier),
-      teamSeats: Number(teamSeats),
-    }
   }
 
   return (

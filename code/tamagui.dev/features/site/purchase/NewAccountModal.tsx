@@ -145,9 +145,7 @@ export const NewAccountModal = () => {
 export const AccountView = () => {
   const { isLoading, data } = useUser()
 
-  const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
-    'plan'
-  )
+  const [currentTab, setCurrentTab] = useState<TabName>('plan')
 
   if (isLoading || !data) {
     return null
@@ -267,7 +265,7 @@ const AccountHeader = () => {
   const { userDetails, user } = data
 
   return (
-    <XStack pb="$4" gap="$4" p="$5">
+    <XStack gap="$4" p="$5" pb="$8">
       <Avatar circular size="$5">
         <Avatar.Image
           source={{
@@ -1005,9 +1003,17 @@ const SupportTabContent = ({
     { value: '3', label: 'Tier 3', price: 3000 },
   ]
 
+  const formatCurrency = (price: number) => {
+    return price.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+    })
+  }
+
   return (
     <YStack gap="$6">
-      <YStack gap="$2">
+      <YStack gap="$4">
         {tiers.map((tier) => (
           <YStack
             key={tier.value}
@@ -1026,7 +1032,9 @@ const SupportTabContent = ({
                   {tier.label}
                 </H3>
                 <Paragraph theme="alt1">
-                  {tier.price === 0 ? 'Basic Support' : `${tier.price}/month`}
+                  {tier.price === 0
+                    ? 'Basic Support'
+                    : `${formatCurrency(tier.price)}/month`}
                 </Paragraph>
               </YStack>
               {currentTier === tier.value && <Paragraph>Current Plan</Paragraph>}
