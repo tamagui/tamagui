@@ -50,6 +50,8 @@ class AccountModal {
   show = false
 }
 
+type Subscription = NonNullable<UserContextType['subscriptions']>[number]
+
 export const accountModal = createStore(AccountModal)
 export const useAccountModal = createUseStore(AccountModal)
 
@@ -75,7 +77,7 @@ export const NewAccountModal = () => {
   // Find Pro subscription
   const proSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
-  ) as NonNullable<UserContextType['subscriptions']>[number]
+  ) as Subscription
 
   const user = data.user
   const isTeamMember = user?.id && user.id !== proSubscription?.user_id
@@ -104,7 +106,7 @@ export const NewAccountModal = () => {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom animation="medium">
-            <Sheet.Frame bg="$color2" padding={0} gap="$4">
+            <Sheet.Frame bg="$background" padding={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
@@ -201,9 +203,7 @@ export const NewAccountModal = () => {
                           isTeamMember={!!isTeamMember}
                         />
                       )}
-                      {currentTab === 'upgrade' && (
-                        <UpgradeTab subscription={supportSubscription!} />
-                      )}
+                      {currentTab === 'upgrade' && <UpgradeTab />}
                       {currentTab === 'manage' && (
                         <ManageTab
                           subscription={proSubscription}
@@ -410,7 +410,7 @@ const DiscordAccessDialog = ({
   subscription,
   onClose,
 }: {
-  subscription: NonNullable<UserContextType['subscriptions']>[number]
+  subscription: Subscription
   onClose: () => void
 }) => {
   return (
@@ -712,12 +712,11 @@ const PlanTab = ({
   setCurrentTab,
   isTeamMember,
 }: {
-  subscription?: NonNullable<UserContextType['subscriptions']>[number]
-  supportSubscription?: NonNullable<UserContextType['subscriptions']>[number]
+  subscription?: Subscription
+  supportSubscription?: Subscription
   setCurrentTab: (value: 'plan' | 'upgrade' | 'manage' | 'team') => void
   isTeamMember: boolean
 }) => {
-  const supabase = useSupabaseClient()
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const { data: products } = useProducts()
   const [isGrantingAccess, setIsGrantingAccess] = useState(false)
@@ -760,49 +759,6 @@ const PlanTab = ({
     }
   }
 
-  const handleBentoDownload = async () => {
-    if (!supabase) {
-      alert('Authentication required')
-      return
-    }
-
-    try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-      if (!session) {
-        alert('Please sign in to download Bento components')
-        return
-      }
-
-      const response = await fetch('/api/bento/zip-download', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to download Bento components')
-      }
-
-      // Create a blob from the response
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'bento-bundle.zip'
-      document.body.appendChild(a)
-      a.click()
-
-      // Cleanup
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
-    } catch (error) {
-      alert('Failed to download Bento components. Please try again later.')
-    }
-  }
-
   return (
     <YStack gap="$6">
       <YStack gap="$4">
@@ -826,12 +782,7 @@ const PlanTab = ({
             }}
           />
 
-          <ServiceCard
-            title="Bento"
-            description="Download the entire suite of Bento components."
-            actionLabel="Download"
-            onAction={handleBentoDownload}
-          />
+          <BentoCard subscription={subscription as Subscription} />
 
           <ServiceCard
             title="Discord Access"
@@ -966,9 +917,7 @@ const ChatAccessCard = () => {
   )
 }
 
-const UpgradeTab = ({
-  subscription,
-}: { subscription?: NonNullable<UserContextType['subscriptions']>[number] }) => {
+const UpgradeTab = () => {
   const { subscriptionStatus } = useUser()
 
   const [supportTier, setSupportTier] = useState(subscriptionStatus.supportTier)
@@ -1074,7 +1023,7 @@ const ManageTab = ({
   subscription,
   isTeamMember,
 }: {
-  subscription?: NonNullable<UserContextType['subscriptions']>[number]
+  subscription?: Subscription
   isTeamMember: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -1454,5 +1403,84 @@ const TeamMemberRow = ({
         </Button>
       </XStack>
     </XStack>
+  )
+}
+
+const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
+  const supabase = useSupabaseClient()
+
+  const { data, error, isLoading, mutate } = useSWR(
+    '/api/bento/cli/login',
+    async (url) => {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error('Failed to fetch access token')
+      }
+      return response.json()
+    }
+  )
+
+  const handleBentoDownload = async () => {
+    if (!supabase) {
+      alert('Authentication required')
+      return
+    }
+
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (!session) {
+        alert('Please sign in to download Bento components')
+        return
+      }
+
+      const response = await fetch('/api/bento/zip-download', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to download Bento components')
+      }
+
+      // Create a blob from the response
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'bento-bundle.zip'
+      document.body.appendChild(a)
+      a.click()
+
+      // Cleanup
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch (error) {
+      alert('Failed to download Bento components. Please try again later.')
+    }
+  }
+
+  const onCopyCode = async () => {
+    // console.log('data', data)
+  }
+
+  return (
+    <ServiceCard
+      title="Bento"
+      description="Download the entire suite of Bento components."
+      actionLabel="Download"
+      onAction={handleBentoDownload}
+      secondAction={
+        subscription
+          ? {
+              label: isLoading ? 'Copying...' : `Copy Code`,
+              onPress: onCopyCode,
+            }
+          : null
+      }
+    />
   )
 }
