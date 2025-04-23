@@ -49,6 +49,7 @@
     "fuse.js": "7.1.0",
     "ink": "5.2.0",
     "ink-link": "^4.1.0",
+    "ink-spinner": "^5.0.0",
     "ink-text-input": "^5.0.1",
     "node-fetch": "^3.3.2",
     "octokit": "^4.0.2",
