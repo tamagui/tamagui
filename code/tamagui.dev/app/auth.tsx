@@ -1,5 +1,5 @@
 import { useSupabase } from '~/features/auth/useSupabaseClient'
-import React, { useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { YStack, Text, Spinner } from 'tamagui'
 
 export default function Auth() {
@@ -38,7 +38,7 @@ const exchangeSession = async (supabase: ReturnType<typeof useSupabase>['supabas
     return
   }
 
-  const { error, data } = await supabase.auth.exchangeCodeForSession(code)
+  const { error } = await supabase.auth.exchangeCodeForSession(code)
 
   if (error) {
     console.error('Error exchanging code for session:', error)

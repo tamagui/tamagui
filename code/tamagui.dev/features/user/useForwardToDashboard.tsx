@@ -17,7 +17,7 @@ export function useForwardToDashboard() {
         if (typeof query.redirect_to === 'string') {
           const decodedUrl = decodeURIComponent(query.redirect_to)
           if (decodedUrl.startsWith('/')) {
-            // e.g. /account/items
+            // e.g. /account
             await router.replace(decodedUrl as Href)
           } else {
             try {

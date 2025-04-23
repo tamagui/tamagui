@@ -58,43 +58,6 @@ export const useAccountModal = createUseStore(AccountModal)
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
-  const { isLoading, data } = useUser()
-
-  const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
-    'plan'
-  )
-
-  if (isLoading || !data) {
-    return null
-  }
-
-  const { subscriptions } = data
-
-  // Get active subscriptions
-  const activeSubscriptions = subscriptions?.filter(
-    (sub) => sub.status === 'active' || sub.status === 'trialing'
-  )
-
-  // Find Pro subscription
-  const proSubscription = activeSubscriptions?.find((sub) =>
-    sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
-  ) as Subscription
-
-  const user = data.user
-  const isTeamMember = user?.id && user.id !== proSubscription?.user_id
-
-  // Find Support subscription
-  const supportSubscription = activeSubscriptions?.find((sub) =>
-    sub.subscription_items?.some(
-      (item) => item.price?.product?.name === 'Tamagui Support'
-    )
-  )
-
-  const isTeamAdmin = activeSubscriptions?.some((sub) =>
-    sub.subscription_items?.some(
-      (item) => item.price?.product?.name === 'Tamagui Pro Team Seats'
-    )
-  )
 
   return (
     <>
@@ -157,70 +120,7 @@ export const NewAccountModal = () => {
             maxHeight="calc(min(85vh, 800px))"
             minHeight={500}
           >
-            <YStack f={1}>
-              <Tabs
-                flex={1}
-                value={currentTab}
-                onValueChange={(val: any) => setCurrentTab(val)}
-                orientation="horizontal"
-                flexDirection="column"
-                size="$6"
-              >
-                <Tabs.List disablePassBorderRadius>
-                  <YStack width={'33.3333%'} f={1}>
-                    <Tab isActive={currentTab === 'plan'} value="plan">
-                      Plan
-                    </Tab>
-                  </YStack>
-                  {!isTeamMember ? (
-                    <YStack width={'33.3333%'} f={1}>
-                      <Tab isActive={currentTab === 'upgrade'} value="upgrade">
-                        Upgrade
-                      </Tab>
-                    </YStack>
-                  ) : null}
-                  <YStack width={'33.3333%'} f={1}>
-                    <Tab isActive={currentTab === 'manage'} value="manage">
-                      Manage
-                    </Tab>
-                  </YStack>
-                  {isTeamAdmin && (
-                    <YStack width={'33.3333%'} f={1}>
-                      <Tab isActive={currentTab === 'team'} value="team">
-                        Team
-                      </Tab>
-                    </YStack>
-                  )}
-                </Tabs.List>
-
-                <YStack overflow="hidden" f={1}>
-                  <ScrollView>
-                    <YStack p="$6">
-                      {currentTab === 'plan' && (
-                        <PlanTab
-                          subscription={proSubscription!}
-                          supportSubscription={supportSubscription!}
-                          setCurrentTab={setCurrentTab}
-                          isTeamMember={!!isTeamMember}
-                        />
-                      )}
-                      {currentTab === 'upgrade' && <UpgradeTab />}
-                      {currentTab === 'manage' && (
-                        <ManageTab
-                          subscription={proSubscription}
-                          isTeamMember={!!isTeamMember}
-                        />
-                      )}
-                      {currentTab === 'team' && <TeamTab />}
-                    </YStack>
-                  </ScrollView>
-                </YStack>
-              </Tabs>
-
-              <Separator />
-
-              <AccountHeader />
-            </YStack>
+            <AccountView />
 
             <Dialog.Close asChild>
               <Button
@@ -237,6 +137,110 @@ export const NewAccountModal = () => {
       </Dialog>
       <AddTeamMemberModalComponent />
     </>
+  )
+}
+
+export const AccountView = () => {
+  const { isLoading, data } = useUser()
+
+  const [currentTab, setCurrentTab] = useState<'plan' | 'upgrade' | 'manage' | 'team'>(
+    'plan'
+  )
+
+  if (isLoading || !data) {
+    return null
+  }
+
+  const { subscriptions } = data
+
+  // Get active subscriptions
+  const activeSubscriptions = subscriptions?.filter(
+    (sub) => sub.status === 'active' || sub.status === 'trialing'
+  )
+
+  // Find Pro subscription
+  const proSubscription = activeSubscriptions?.find((sub) =>
+    sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
+  ) as Subscription
+
+  const user = data.user
+  const isTeamMember = user?.id && user.id !== proSubscription?.user_id
+
+  // Find Support subscription
+  const supportSubscription = activeSubscriptions?.find((sub) =>
+    sub.subscription_items?.some(
+      (item) => item.price?.product?.name === 'Tamagui Support'
+    )
+  )
+
+  const isTeamAdmin = activeSubscriptions?.some((sub) =>
+    sub.subscription_items?.some(
+      (item) => item.price?.product?.name === 'Tamagui Pro Team Seats'
+    )
+  )
+
+  return (
+    <YStack f={1}>
+      <Tabs
+        flex={1}
+        value={currentTab}
+        onValueChange={(val: any) => setCurrentTab(val)}
+        orientation="horizontal"
+        flexDirection="column"
+        size="$6"
+      >
+        <Tabs.List disablePassBorderRadius>
+          <YStack width={'33.3333%'} f={1}>
+            <Tab isActive={currentTab === 'plan'} value="plan">
+              Plan
+            </Tab>
+          </YStack>
+          {!isTeamMember ? (
+            <YStack width={'33.3333%'} f={1}>
+              <Tab isActive={currentTab === 'upgrade'} value="upgrade">
+                Upgrade
+              </Tab>
+            </YStack>
+          ) : null}
+          <YStack width={'33.3333%'} f={1}>
+            <Tab isActive={currentTab === 'manage'} value="manage">
+              Manage
+            </Tab>
+          </YStack>
+          {isTeamAdmin && (
+            <YStack width={'33.3333%'} f={1}>
+              <Tab isActive={currentTab === 'team'} value="team">
+                Team
+              </Tab>
+            </YStack>
+          )}
+        </Tabs.List>
+
+        <YStack overflow="hidden" f={1}>
+          <ScrollView>
+            <YStack p="$6">
+              {currentTab === 'plan' && (
+                <PlanTab
+                  subscription={proSubscription!}
+                  supportSubscription={supportSubscription!}
+                  setCurrentTab={setCurrentTab}
+                  isTeamMember={!!isTeamMember}
+                />
+              )}
+              {currentTab === 'upgrade' && <UpgradeTab />}
+              {currentTab === 'manage' && (
+                <ManageTab subscription={proSubscription} isTeamMember={!!isTeamMember} />
+              )}
+              {currentTab === 'team' && <TeamTab />}
+            </YStack>
+          </ScrollView>
+        </YStack>
+      </Tabs>
+
+      <Separator />
+
+      <AccountHeader />
+    </YStack>
   )
 }
 
