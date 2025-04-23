@@ -544,7 +544,7 @@ export function PurchaseModalContents() {
       <ProAgreementModal />
 
       <StripePaymentModal
-        yearlyTotal={yearlyTotal}
+        yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : yearlyTotal} // if they have a pro subscription or have subscribed before, the yearly total is 0
         monthlyTotal={monthlyTotal}
         disableAutoRenew={disableAutoRenew}
         chatSupport={chatSupport}
