@@ -2,12 +2,10 @@ import 'react-native-gesture-handler'
 
 import { useFonts } from 'expo-font'
 import { useState } from 'react'
-import { LayoutAnimation, LogBox, useColorScheme } from 'react-native'
-import { Provider, BottomView } from './components'
-import { type ThemeName, View, YStack } from 'tamagui'
-import { ThemePicker } from './components/ThemePicker'
-import { Background } from './components/Background'
-import { Payment } from '../src/components'
+import { LogBox, useColorScheme } from 'react-native'
+import { Provider } from './components'
+import { type ThemeName, YStack } from 'tamagui'
+import { List, Payment } from '../src/components'
 
 LogBox.ignoreAllLogs()
 
@@ -34,7 +32,7 @@ export default function App() {
           <ThemePicker themeColor={colorScheme} setThemeColor={setThemeName} />
         </View> */}
 
-        <Payment.Paywall />
+        <List.ScrollProgress />
 
         {/* <BottomView title="Paywall" /> */}
       </YStack>

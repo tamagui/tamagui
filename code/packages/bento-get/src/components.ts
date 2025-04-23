@@ -665,6 +665,21 @@ export const componentsList: ComponentSchema[] = [
     dependencies: ['@ngneat/falso', '@tamagui/lucide-icons'],
     moveFilesToFolder: [{ file: 'List', to: '' }],
   },
+
+  {
+    name: 'Scroll Progress',
+    fileName: 'ScrollProgress',
+    category: 'elements',
+    categorySection: 'list',
+    dependencies: [
+      'react-native-reanimated',
+      'react-native-svg',
+      '@tamagui/lucide-icons',
+      'tamagui/linear-gradient',
+    ],
+    moveFilesToFolder: [{ file: 'ScrollProgress', to: '' }],
+  },
+
   {
     name: 'Masonry List',
     fileName: 'MasonryListExample',
