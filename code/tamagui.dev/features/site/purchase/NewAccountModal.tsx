@@ -5,7 +5,7 @@ import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
-import { router } from 'one'
+import { render, router } from 'one'
 import { useState, useMemo, useEffect } from 'react'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
@@ -55,6 +55,8 @@ type Subscription = NonNullable<UserContextType['subscriptions']>[number]
 
 export const accountModal = createStore(AccountModal)
 export const useAccountModal = createUseStore(AccountModal)
+
+type TabName = 'plan' | 'upgrade' | 'manage' | 'team'
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
@@ -179,6 +181,32 @@ export const AccountView = () => {
     )
   )
 
+  const renderTabs = () => {
+    switch (currentTab) {
+      case 'plan':
+        return (
+          <PlanTab
+            subscription={proSubscription!}
+            supportSubscription={supportSubscription!}
+            setCurrentTab={setCurrentTab}
+            isTeamMember={!!isTeamMember}
+          />
+        )
+
+      case 'upgrade':
+        return <UpgradeTab />
+
+      case 'manage':
+        return <ManageTab subscription={proSubscription} isTeamMember={!!isTeamMember} />
+
+      case 'team':
+        return <TeamTab />
+
+      default:
+        return null
+    }
+  }
+
   return (
     <YStack f={1}>
       <Tabs
@@ -218,21 +246,7 @@ export const AccountView = () => {
 
         <YStack overflow="hidden" f={1}>
           <ScrollView>
-            <YStack p="$6">
-              {currentTab === 'plan' && (
-                <PlanTab
-                  subscription={proSubscription!}
-                  supportSubscription={supportSubscription!}
-                  setCurrentTab={setCurrentTab}
-                  isTeamMember={!!isTeamMember}
-                />
-              )}
-              {currentTab === 'upgrade' && <UpgradeTab />}
-              {currentTab === 'manage' && (
-                <ManageTab subscription={proSubscription} isTeamMember={!!isTeamMember} />
-              )}
-              {currentTab === 'team' && <TeamTab />}
-            </YStack>
+            <YStack p="$6">{renderTabs()}</YStack>
           </ScrollView>
         </YStack>
       </Tabs>
