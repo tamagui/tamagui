@@ -43,8 +43,9 @@ import {
   useTeamSeats,
   type TeamMember,
 } from './useTeamSeats'
-import { debounce } from 'lodash'
+import { debounce, has } from 'lodash'
 import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
+import { useClipboard } from '~/hooks/useClipboard'
 
 class AccountModal {
   show = false
@@ -1408,8 +1409,9 @@ const TeamMemberRow = ({
 
 const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
   const supabase = useSupabaseClient()
+  const { onCopy, hasCopied } = useClipboard()
 
-  const { data, error, isLoading, mutate } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     '/api/bento/cli/login',
     async (url) => {
       const response = await fetch(url)
@@ -1417,8 +1419,14 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
         throw new Error('Failed to fetch access token')
       }
       return response.json()
+    },
+    {
+      revalidateOnMount: false,
+      revalidateOnFocus: false,
     }
   )
+
+  // console.log('data', isLoading, data)
 
   const handleBentoDownload = async () => {
     if (!supabase) {
@@ -1463,8 +1471,19 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
     }
   }
 
+  // const { onCopy } = useClipboard(token ?? '')
+
   const onCopyCode = async () => {
-    // console.log('data', data)
+    if (hasCopied || isLoading) return
+
+    const token = data?.accessToken
+    if (token) {
+      onCopy(token)
+    } else {
+      const res = await mutate()
+      const token = res?.accessToken
+      if (token) onCopy(token)
+    }
   }
 
   return (
@@ -1476,7 +1495,7 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
       secondAction={
         subscription
           ? {
-              label: isLoading ? 'Copying...' : `Copy Code`,
+              label: hasCopied ? 'Copied' : isLoading ? 'Loading...' : `Copy Code`,
               onPress: onCopyCode,
             }
           : null
