@@ -271,7 +271,7 @@ const PaymentForm = ({
           onError(submitError)
           return
         }
-        
+
         if (submitError) {
           setError(submitError)
           onError(submitError)
