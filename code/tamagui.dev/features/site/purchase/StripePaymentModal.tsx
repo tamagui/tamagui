@@ -271,11 +271,13 @@ const PaymentForm = ({
           onError(submitError)
           return
         }
+        
         if (submitError) {
           setError(submitError)
           onError(submitError)
           return
         }
+
         const upgradeResponse = await fetch('/api/upgrade-subscription', {
           method: 'POST',
           headers: {
@@ -685,7 +687,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
               <H3 $maxMd={{ fontSize: '$6' }} ff="$mono">
                 {yearlyTotal
-                  ? `${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}`
+                  ? `$${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}`
                   : ''}
                 {yearlyTotal && monthlyTotal ? ' + ' : ''}
                 {monthlyTotal > 0 &&
