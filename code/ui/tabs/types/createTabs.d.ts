@@ -12,9 +12,9 @@ type TabComponent = (props: {
 } & StackProps) => any;
 type ContentComponent = (props: StackProps) => any;
 export declare function createTabs<C extends TabsComponent, T extends TabComponent, F extends ContentComponent>(createProps: {
-    ContentFrame: F;
+    ContentFrame: C;
     TabFrame: T;
-    TabsFrame: C;
+    TabsFrame: F;
 }): React.ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
