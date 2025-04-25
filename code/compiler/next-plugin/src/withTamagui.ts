@@ -71,11 +71,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
               process.env.TAMAGUI_DOES_SSR_CSS
             ),
           }),
-          ...(tamaguiOptions?.disableThemesBundleOptimize && {
-            'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(false),
-            'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(false),
-          }),
-
           // TODO move to TamaguiPlugin
           // optimizes inserts automatically assuming CSS wont be "removed" on page change
           ...(tamaguiOptions.emitSingleCSSFile && {

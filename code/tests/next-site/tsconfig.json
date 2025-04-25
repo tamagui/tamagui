@@ -1,15 +1,15 @@
 {
-  "extends": "../../tsconfig",
+  "extends": "../../../tsconfig",
   "compilerOptions": {
     "composite": true,
     // for jumping to things properly in vscode
     "baseUrl": ".",
     "paths": {
       "tamagui": [
-        "../tamagui"
+        "../../tamagui"
       ],
       "@tamagui/studio": [
-        "../studio"
+        "../../studio"
       ],
       "@tamagui/*": [
         "../../packages/*"

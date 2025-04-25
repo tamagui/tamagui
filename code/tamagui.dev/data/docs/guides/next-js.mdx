@@ -177,6 +177,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Your page title</title>
         <meta name="description" content="Your page description" />
         <link rel="icon" href="/favicon.ico" />
+        {/* This links the static CSS file for theme optimization reducing the bundle size */}
+        <link rel="icon" href="/tamagui.css" />
       </Head>
       <NextThemeProvider>
         <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
@@ -379,6 +381,9 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
     const rnwStyle = StyleSheet.getSheet()
     return (
       <>
+      
+        {/* This links the static CSS file for theme optimization reducing the bundle size */}
+        <link rel="stylesheet" href="/tamagui.css" />
         <style
           dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
           id={rnwStyle.id}

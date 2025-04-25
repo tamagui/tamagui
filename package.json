@@ -151,5 +151,8 @@
     "typescript": "^5.8.2",
     "ultra-runner": "^3.10.5",
     "zx": "^7.2.3"
+  },
+  "resolutions": {
+    "@react-native/assets-registry@npm:0.76.9": "patch:@react-native/assets-registry@npm%3A0.76.9#~/.yarn/patches/@react-native-assets-registry-npm-0.76.9-8c740e2424.patch"
   }
 }
