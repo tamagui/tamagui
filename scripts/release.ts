@@ -211,9 +211,12 @@ async function run() {
     if (!shouldFinish) {
       console.info('run checks')
       if (!skipTest) {
-        await spawnify(`yarn lint`)
-        await spawnify(`chmod ug+x ./node_modules/.bin/tamagui`)
-        await spawnify(`yarn check`)
+        await Promise.all([
+          spawnify(`chmod ug+x ./node_modules/.bin/tamagui`),
+          spawnify(`yarn playwright install`),
+          spawnify(`yarn check`),
+          spawnify(`yarn lint`),
+        ])
         await spawnify(`yarn typecheck`)
         await spawnify(`yarn test`)
       }
