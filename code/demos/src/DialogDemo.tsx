@@ -1,4 +1,4 @@
-import { X } from "@tamagui/lucide-icons";
+import { X } from '@tamagui/lucide-icons'
 import {
   Adapt,
   Button,
@@ -13,8 +13,8 @@ import {
   Unspaced,
   View,
   XStack,
-} from "tamagui";
-import { SelectDemoItem } from "./SelectDemo";
+} from 'tamagui'
+import { SelectDemoItem } from './SelectDemo'
 
 export function DialogDemo() {
   return (
@@ -22,14 +22,14 @@ export function DialogDemo() {
       <DialogInstance />
       <DialogInstance disableAdapt />
     </View>
-  );
+  )
 }
 
 function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
   return (
-    <Dialog >
+    <Dialog>
       <Dialog.Trigger asChild>
-        <Button>Show Dialog{disableAdapt ? ` (No Adapt)` : ""}</Button>
+        <Button>Show Dialog{disableAdapt ? ` (No Adapt)` : ''}</Button>
       </Dialog.Trigger>
 
       {!disableAdapt && (
@@ -52,9 +52,9 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
         <Dialog.Overlay
           key="overlay"
           backgroundColor="$shadow6"
-          animateOnly={["transform", "opacity"]}
+          animateOnly={['transform', 'opacity']}
           animation={[
-            "quicker",
+            'quicker',
             {
               opacity: {
                 overshootClamping: true,
@@ -71,9 +71,9 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
           h={400}
           elevate
           key="content"
-          animateOnly={["transform", "opacity"]}
+          animateOnly={['transform', 'opacity']}
           animation={[
-            "quicker",
+            'quicker',
             {
               opacity: {
                 overshootClamping: true,
@@ -96,10 +96,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
           </Fieldset>
           <Fieldset gap="$4" horizontal>
             <Label width={130} justifyContent="flex-end" htmlFor="username">
-              <TooltipSimple
-                label="Pick your favorite"
-                placement="bottom-start"
-              >
+              <TooltipSimple label="Pick your favorite" placement="bottom-start">
                 <Paragraph>Food</Paragraph>
               </TooltipSimple>
             </Label>
@@ -131,5 +128,5 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
-  );
+  )
 }
