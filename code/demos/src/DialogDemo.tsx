@@ -7,6 +7,7 @@ import {
   Input,
   Label,
   Paragraph,
+  PortalItem,
   Sheet,
   TooltipSimple,
   Unspaced,
@@ -17,12 +18,7 @@ import { SelectDemoItem } from "./SelectDemo";
 
 export function DialogDemo() {
   return (
-    <View
-      gap="$4"
-      justifyContent="center"
-      alignItems="center"
-      bg="pink"
-    >
+    <View gap="$4" justifyContent="center" alignItems="center" bg="pink">
       <DialogInstance />
       <DialogInstance disableAdapt />
     </View>
@@ -56,7 +52,15 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
         <Dialog.Overlay
           key="overlay"
           backgroundColor="$shadow6"
-          animation="slow"
+          animateOnly={["transform", "opacity"]}
+          animation={[
+            "quicker",
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -78,7 +82,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               },
             },
           ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, }}
+          enterStyle={{ x: 0, y: -20, opacity: 0 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >
