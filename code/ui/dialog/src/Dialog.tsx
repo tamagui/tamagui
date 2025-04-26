@@ -195,11 +195,12 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
   // when adapted we portal to the adapt, when not we portal to root modal if needed
-
   return isAdapted ? (
     <AdaptPortalContents>{content}</AdaptPortalContents>
   ) : (
-    <PortalItem hostName={context.adaptName}>{content}</PortalItem>
+    <PortalItem hostName={context.modal ? "root" : context.adaptName}>
+      {content}
+    </PortalItem>
   );
 };
 
@@ -620,7 +621,6 @@ const DialogContentImpl = React.forwardRef<
     />
   );
 
-  console.log('DialogContentNonModaldddddddddddddddddddddddddd', context.open)
   if (!isWeb) {
     return contents;
   }
