@@ -18,7 +18,7 @@ import { SelectDemoItem } from "./SelectDemo";
 
 export function DialogDemo() {
   return (
-    <View gap="$4" justifyContent="center" alignItems="center" bg="pink">
+    <View gap="$4" justifyContent="center" alignItems="center">
       <DialogInstance />
       <DialogInstance disableAdapt />
     </View>
@@ -27,7 +27,7 @@ export function DialogDemo() {
 
 function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
   return (
-    <Dialog modal={false}>
+    <Dialog >
       <Dialog.Trigger asChild>
         <Button>Show Dialog{disableAdapt ? ` (No Adapt)` : ""}</Button>
       </Dialog.Trigger>
@@ -61,14 +61,12 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               },
             },
           ]}
-          enterStyle={{ opacity: 0 }}
+          enterStyle={{ opacity: 0, scale: 0.95 }}
           exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
           bordered
-          borderColor="$blue10"
-          backgroundColor={"$green6"}
           w={400}
           h={400}
           elevate

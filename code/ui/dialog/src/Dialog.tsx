@@ -224,53 +224,49 @@ const DialogPortal: React.FC<DialogPortalProps> = (
 
   const zIndex = getExpandedShorthand("zIndex", props);
 
-  if (context.modal) {
-    const contents = (
-      <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-        <AnimatePresence onExitComplete={handleExitComplete}>
-          {isShowing || isAdapted ? children : null}
-        </AnimatePresence>
-      </StackZIndexContext>
-    );
+  const contents = (
+    <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
+      <AnimatePresence onExitComplete={handleExitComplete}>
+        {isShowing || isAdapted ? children : null}
+      </AnimatePresence>
+    </StackZIndexContext>
+  );
 
-    if (isFullyHidden && !isAdapted) {
-      return null;
-    }
+  if (isFullyHidden && !isAdapted) {
+    return null;
+  }
 
-    const framedContents = (
-      <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-        <DialogPortalFrame
-          pointerEvents={isShowing ? "auto" : "none"}
-          {...frameProps}
-        >
-          {contents}
-        </DialogPortalFrame>
-      </PortalProvider>
-    );
+  const framedContents = (
+    <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
+      <DialogPortalFrame
+        pointerEvents={isShowing ? "auto" : "none"}
+        {...frameProps}
+      >
+        {contents}
+      </DialogPortalFrame>
+    </PortalProvider>
+  );
 
-    if (isWeb) {
-      return (
-        <Portal
-          zIndex={zIndex}
-          // set to 1000 which "boosts" it 1000 above baseline for current context
-          // this makes sure its above (this first 1k) popovers on the same layer
-          stackZIndex={1000}
-        >
-          <PassthroughTheme>{framedContents}</PassthroughTheme>
-        </Portal>
-      );
-    }
-
-    return isAdapted ? (
-      framedContents
-    ) : (
-      <DialogPortalItem __scopeDialog={__scopeDialog}>
-        {framedContents}
-      </DialogPortalItem>
+  if (isWeb) {
+    return (
+      <Portal
+        zIndex={zIndex}
+        // set to 1000 which "boosts" it 1000 above baseline for current context
+        // this makes sure its above (this first 1k) popovers on the same layer
+        stackZIndex={1000}
+      >
+        <PassthroughTheme>{framedContents}</PassthroughTheme>
+      </Portal>
     );
   }
 
-  return children;
+  return isAdapted ? (
+    framedContents
+  ) : (
+    <DialogPortalItem __scopeDialog={__scopeDialog}>
+      {framedContents}
+    </DialogPortalItem>
+  );
 };
 
 const PassthroughTheme = ({ children }) => {
@@ -325,6 +321,10 @@ const DialogOverlay = DialogOverlayFrame.extractable(
     return (
       <DialogOverlayFrame
         data-state={getState(context.open)}
+        onPress={() => {
+          // if the overlay is pressed, close the dialog
+          context.onOpenChange(false);
+        }}
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
         pointerEvents={context.open ? "auto" : "none"}
         {...overlayProps}
@@ -906,25 +906,23 @@ const Dialog = withStaticProperties(
       );
 
       return (
-        <>
-          <AdaptParent
-            scope={adaptName}
-            portal={{
-              forwardProps: props,
-            }}
-          >
-            <PortalHost name={adaptName} />
+        <AdaptParent
+          scope={adaptName}
+          portal={{
+            forwardProps: props,
+          }}
+        >
+          <PortalHost name={adaptName} />
 
-            <DialogProvider {...context}>
-              <DialogSheetController
-                onOpenChange={setOpen}
-                __scopeDialog={__scopeDialog}
-              >
-                {children}
-              </DialogSheetController>
-            </DialogProvider>
-          </AdaptParent>
-        </>
+          <DialogProvider {...context}>
+            <DialogSheetController
+              onOpenChange={setOpen}
+              __scopeDialog={__scopeDialog}
+            >
+              {children}
+            </DialogSheetController>
+          </DialogProvider>
+        </AdaptParent>
       );
     }
   ),
