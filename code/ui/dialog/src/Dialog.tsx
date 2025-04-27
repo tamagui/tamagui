@@ -304,10 +304,11 @@ const DialogOverlay = DialogOverlayFrame.extractable(
     return (
       <DialogOverlayFrame
         data-state={getState(context.open)}
-        onPress={() => {
-          // if the overlay is pressed, close the dialog
-          context.onOpenChange(false)
-        }}
+        // TODO: this will be apply for v2
+        // onPress={() => {
+        //   // if the overlay is pressed, close the dialog
+        //   context.onOpenChange(false)
+        // }}
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
         pointerEvents={context.open ? 'auto' : 'none'}
         {...overlayProps}

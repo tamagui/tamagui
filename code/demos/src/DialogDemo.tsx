@@ -7,7 +7,6 @@ import {
   Input,
   Label,
   Paragraph,
-  PortalItem,
   Sheet,
   TooltipSimple,
   Unspaced,
@@ -80,7 +79,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               },
             },
           ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0 }}
+          enterStyle={{ x: 0, y: -20, opacity: 0, }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >
