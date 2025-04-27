@@ -20,7 +20,7 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     if (node) return
 
     const listener = (newNode: HTMLElement) => {
-      if (!node || newNode.isEqualNode(node)) {
+      if (!node) {
         return
       }
       setNode(newNode)
