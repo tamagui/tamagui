@@ -19,7 +19,7 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { Portal, PortalHost, PortalItem, resolveViewZIndex } from '@tamagui/portal'
+import { Portal, PortalItem, resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
@@ -185,10 +185,12 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   // when adapted we portal to the adapt, when not we portal to root modal if needed
   return isAdapted ? (
     <AdaptPortalContents>{content}</AdaptPortalContents>
-  ) : (
+  ) : context.modal ? (
     <PortalItem hostName={context.modal ? 'root' : context.adaptName}>
       {content}
     </PortalItem>
+  ) : (
+    content
   )
 }
 
@@ -863,9 +865,6 @@ const Dialog = withStaticProperties(
           forwardProps: props,
         }}
       >
-        {/* Use for render inline modal when `modal` is false */}
-        {props.modal ? null : <PortalHost name={adaptName} />}
-
         <DialogProvider {...context}>
           <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
             {children}
