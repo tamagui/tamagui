@@ -26,7 +26,7 @@ export function DialogDemo() {
 
 function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
   return (
-    <Dialog modal={false}>
+    <Dialog modal>
       <Dialog.Trigger asChild>
         <Button>Show Dialog{disableAdapt ? ` (No Adapt)` : ''}</Button>
       </Dialog.Trigger>
