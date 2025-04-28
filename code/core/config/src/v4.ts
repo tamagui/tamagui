@@ -11,6 +11,7 @@ export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
 export { animations } from './v4-animations'
 export { createSystemFont, fonts } from './v4-fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './v4-media'
+export { defaultThemes as themes } from '@tamagui/themes/v4'
 
 // Configuration:
 
