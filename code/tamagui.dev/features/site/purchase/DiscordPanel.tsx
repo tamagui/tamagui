@@ -175,10 +175,12 @@ const DiscordMember = ({
         }),
       })
 
-      if (res.status < 200 || res.status > 299) {
-        throw await res.json()
+      const data = await res.json()
+
+      if (!res.ok || res.status < 200 || res.status > 299) {
+        throw data
       }
-      return await res.json()
+      return data
     },
     {
       onSuccess: async () => {
@@ -248,7 +250,7 @@ const SearchForm = forwardRef<
     setQuery(draftQuery)
   }
 
-  const searchSwr = useSWR<RESTGetAPIGuildMembersSearchResult>(
+  const { isLoading, data } = useSWR<RESTGetAPIGuildMembersSearchResult>(
     query
       ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}`
       : null,
@@ -276,7 +278,9 @@ const SearchForm = forwardRef<
         </Fieldset>
 
         <Form.Trigger>
-          <Button icon={Search}>Search</Button>
+          <Button disabled={isLoading} icon={Search}>
+            {isLoading ? 'Searching...' : 'Search'}
+          </Button>
         </Form.Trigger>
       </Form>
 
@@ -291,7 +295,7 @@ const SearchForm = forwardRef<
       </XStack>
 
       <YStack gap="$2">
-        {searchSwr.data?.map((member) => (
+        {data?.map((member) => (
           <DiscordMember
             key={member.user?.id}
             member={member}

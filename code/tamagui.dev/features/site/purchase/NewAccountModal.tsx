@@ -142,7 +142,7 @@ export const AccountView = () => {
 
   // Find Pro subscription
   const proSubscription = activeSubscriptions?.find((sub) =>
-    sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
+    sub.subscription_items?.some((item) => item.price?.product?.name === PRODUCT_NAME.TAMAGUI_PRO)
   ) as Subscription
 
   const user = data.user
