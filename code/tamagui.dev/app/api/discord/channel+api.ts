@@ -18,7 +18,7 @@ export type DiscordChannelStatus = {
 }
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
 
   const userPrivate = await supabaseAdmin
@@ -115,9 +115,10 @@ export default apiRoute(async (req) => {
 
   if (req.method === 'POST') {
     if (currentlyOccupiedSeats >= discordSeats) {
-      return Response.json(
+      throw Response.json(
         {
           message: `you've maxed out the members of your channel ${currentlyOccupiedSeats}/${discordSeats}`,
+          status: 401,
         },
         {
           status: 401,
