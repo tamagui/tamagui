@@ -17,7 +17,7 @@ import { SelectDemoItem } from './SelectDemo'
 
 export function DialogDemo() {
   return (
-    <View gap="$4">
+    <View gap="$4" justifyContent="center" alignItems="center">
       <DialogInstance />
       <DialogInstance disableAdapt />
     </View>
@@ -51,13 +51,23 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
         <Dialog.Overlay
           key="overlay"
           backgroundColor="$shadow6"
-          animation="slow"
-          enterStyle={{ opacity: 0 }}
+          animateOnly={['transform', 'opacity']}
+          animation={[
+            'quicker',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ opacity: 0, scale: 0.95 }}
           exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
           bordered
+          w={400}
+          h={400}
           elevate
           key="content"
           animateOnly={['transform', 'opacity']}
@@ -69,7 +79,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               },
             },
           ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
+          enterStyle={{ x: 0, y: -20, opacity: 0 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >

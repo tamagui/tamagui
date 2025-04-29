@@ -19,8 +19,11 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     if (!props.hostName) return
     if (node) return
 
-    const listener = (node) => {
-      setNode(node)
+    const listener = (newNode: HTMLElement) => {
+      if (!node) {
+        return
+      }
+      setNode(newNode)
     }
 
     portalListeners[props.hostName] ||= new Set()

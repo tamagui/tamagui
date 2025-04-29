@@ -175,7 +175,7 @@ export const Adapt = withStaticProperties(
     useIsomorphicLayoutEffect(() => {
       context?.setWhen?.((when || enabled) as AdaptWhen)
       context?.setPlatform?.(platform || null)
-    }, [when, platform, context, enabled])
+    }, [when, platform, enabled, context.setWhen, context.setPlatform])
 
     useIsomorphicLayoutEffect(() => {
       return () => {
