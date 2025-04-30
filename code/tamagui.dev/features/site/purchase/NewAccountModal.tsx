@@ -146,10 +146,10 @@ export const AccountView = () => {
     )
   ) as Subscription
 
-  const isTeamAdmin = !!proTeamSubscription?.id
+  const haveTeamSeats = !!proTeamSubscription?.id
 
   // Find Pro subscription
-  const proSubscription = isTeamAdmin
+  const proSubscription = haveTeamSeats
     ? proTeamSubscription
     : (activeSubscriptions?.find((sub) =>
         sub.subscription_items?.some(
@@ -158,7 +158,8 @@ export const AccountView = () => {
       ) as Subscription)
 
   const user = data.user
-  const isTeamMember = user?.id && user.id !== proSubscription?.user_id
+  const isTeamAdmin = haveTeamSeats && user?.id && user.id === proSubscription?.user_id
+  const isTeamMember = haveTeamSeats && !isTeamAdmin
 
   // Find Support subscription
   const supportSubscription = activeSubscriptions?.find((sub) =>

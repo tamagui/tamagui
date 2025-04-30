@@ -122,7 +122,7 @@ export const TeamTab = () => {
               <XStack p="$2" ai="center" jc="center">
                 <Spinner size="small" />
               </XStack>
-            ) : (
+            ) : searchResults.length > 0 ? (
               searchResults.map((githubUser) => (
                 <GitHubUserRow
                   key={githubUser.id}
@@ -130,6 +130,15 @@ export const TeamTab = () => {
                   subscriptionId={teamData.subscription.id}
                 />
               ))
+            ) : searchQuery.length > 0 ? (
+              <YStack gap={0}>
+                <Paragraph theme="alt1">No results found</Paragraph>
+                <Paragraph theme="alt1">
+                  GitHub user is not a member of Tamagui
+                </Paragraph>
+              </YStack>
+            ) : (
+              <Paragraph theme="alt1">Search for a GitHub user to invite</Paragraph>
             )}
           </YStack>
         </YStack>
