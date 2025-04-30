@@ -1,5 +1,6 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { PRODUCT_NAME } from '~/features/auth/types'
 import { getArray } from '~/helpers/getArray'
 
 export default apiRoute(async () => {
@@ -8,12 +9,12 @@ export default apiRoute(async () => {
       supabaseAdmin
         .from('products')
         .select('*, prices(*)')
-        .eq('name', 'Tamagui Pro')
+        .eq('name', PRODUCT_NAME.TAMAGUI_PRO)
         .single(),
       supabaseAdmin
         .from('products')
         .select('*, prices(*)')
-        .eq('name', 'Tamagui Support')
+        .eq('name', PRODUCT_NAME.TAMAGUI_SUPPORT)
         .single(),
     ])
 
