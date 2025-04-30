@@ -1,15 +1,25 @@
 import { LogOut, Search, X } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { router } from 'one'
-import { useState } from 'react'
-import useSWR from 'swr'
+import type {
+  APIGuildMember,
+  RESTGetAPIGuildMembersSearchResult,
+} from 'discord-api-types/v10'
+import { render, router } from 'one'
+import { useState, useMemo, useEffect } from 'react'
+import useSWR, { mutate } from 'swr'
+import useSWRMutation from 'swr/mutation'
 import {
   Avatar,
   Button,
   Configuration,
   Dialog,
+  Fieldset,
+  Form,
   H3,
+  H4,
+  Input,
+  Label,
   Paragraph,
   ScrollView,
   Separator,
@@ -17,18 +27,26 @@ import {
   Tabs,
   XStack,
   YStack,
+  Spinner,
   View,
 } from 'tamagui'
-import { PRODUCT_NAME, type UserContextType } from '~/features/auth/types'
+import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
+import { Link } from '../../../components/Link'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
+import {
+  useInviteTeamMember,
+  useRemoveTeamMember,
+  useTeamSeats,
+  type TeamMember,
+} from './useTeamSeats'
+import { debounce, has } from 'lodash'
 import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
 import { useClipboard } from '~/hooks/useClipboard'
-import { DiscordPanel } from './DiscordPanel'
-import { TeamTab } from './TeamTab'
+
 class AccountModal {
   show = false
 }
@@ -142,9 +160,7 @@ export const AccountView = () => {
 
   // Find Pro subscription
   const proSubscription = activeSubscriptions?.find((sub) =>
-    sub.subscription_items?.some(
-      (item) => item.price?.product?.name === PRODUCT_NAME.TAMAGUI_PRO
-    )
+    sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
   ) as Subscription
 
   const user = data.user
@@ -153,7 +169,7 @@ export const AccountView = () => {
   // Find Support subscription
   const supportSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
-      (item) => item.price?.product?.name === PRODUCT_NAME.TAMAGUI_SUPPORT
+      (item) => item.price?.product?.name === 'Tamagui Support'
     )
   )
 
@@ -416,7 +432,7 @@ const DiscordAccessDialog = ({
 }) => {
   return (
     <Dialog modal open onOpenChange={onClose}>
-      <Dialog.Portal zIndex={999999}>
+      <Dialog.Portal zIndex={100_000}>
         <Dialog.Overlay
           key="overlay"
           animation="medium"
@@ -433,13 +449,277 @@ const DiscordAccessDialog = ({
           maw={600}
           p="$6"
         >
-          <DiscordPanel subscription={subscription} />
+          <DiscordPanel subscription={subscription} apiType="channel" />
           <Dialog.Close asChild>
             <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
+  )
+}
+
+const DiscordPanel = ({
+  subscription,
+  apiType,
+}: {
+  subscription: any
+  apiType: 'channel' | 'support'
+}) => {
+  const hasSupportTier = () => {
+    const supportItem = subscription.subscription_items?.find((item) => {
+      return item.price?.product?.name === 'Tamagui Support'
+    })
+
+    if (!supportItem) {
+      return false
+    }
+
+    // Calculate tier from unit_amount (80000 cents = $800 = Tier 1)
+    const unitAmount = supportItem.price?.unit_amount
+    if (!unitAmount) {
+      return false
+    }
+
+    // If unit_amount is at least 80000 (Tier 1 or higher)
+    return unitAmount >= 80000
+  }
+
+  const [activeApi, setActiveApi] = useState<'channel' | 'support'>('channel')
+  const groupInfoSwr = useSWR<any>(
+    `/api/discord/${activeApi}?${new URLSearchParams({ subscription_id: subscription.id })}`,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      ),
+    { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
+  )
+  const [draftQuery, setDraftQuery] = useState('')
+  const [query, setQuery] = useState(draftQuery)
+  const searchSwr = useSWR<RESTGetAPIGuildMembersSearchResult>(
+    query
+      ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}`
+      : null,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      )
+  )
+
+  const resetChannelMutation = useSWRMutation(
+    [`/api/discord/${activeApi}`, 'DELETE', subscription.id],
+    (url) =>
+      fetch(`/api/discord/${activeApi}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscription.id,
+        }),
+      }).then((res) => res.json()),
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/${activeApi}?${new URLSearchParams({
+            subscription_id: subscription.id,
+          })}`
+        )
+        setDraftQuery('')
+        setQuery('')
+      },
+    }
+  )
+
+  const handleSearch = async () => {
+    setQuery(draftQuery)
+  }
+
+  // Get subscription details to determine available access types
+  const { data: subscriptionData } = useSWR<any>(
+    subscription.id ? `/api/products?subscription_id=${subscription.id}` : null,
+    (url) => fetch(url).then((res) => res.json())
+  )
+
+  const SearchForm = () => (
+    <>
+      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
+        <Fieldset>
+          <Label size="$3" theme="alt1" htmlFor="discord-username">
+            Username / Nickname
+          </Label>
+          <Input
+            miw={200}
+            placeholder="Your username..."
+            id="discord-username"
+            value={draftQuery}
+            onChangeText={setDraftQuery}
+          />
+        </Fieldset>
+
+        <Form.Trigger>
+          <Button icon={Search}>Search</Button>
+        </Form.Trigger>
+      </Form>
+
+      <XStack tag="article">
+        <Paragraph size="$3" theme="alt1">
+          Note: You must{' '}
+          <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
+            join the Discord server
+          </Link>{' '}
+          first so we can find your username.
+        </Paragraph>
+      </XStack>
+
+      <YStack gap="$2">
+        {searchSwr.data?.map((member) => (
+          <DiscordMember
+            key={member.user?.id}
+            member={member}
+            subscriptionId={subscription.id}
+            apiType={activeApi}
+          />
+        ))}
+      </YStack>
+    </>
+  )
+
+  return (
+    <YStack gap="$3">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H4>
+          Discord Access{' '}
+          {!!groupInfoSwr.data &&
+            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
+        </H4>
+
+        <Button
+          size="$2"
+          onPress={() => resetChannelMutation.trigger()}
+          disabled={resetChannelMutation.isMutating}
+        >
+          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+        </Button>
+      </XStack>
+
+      <Tabs
+        value={activeApi}
+        onValueChange={(val: string) => setActiveApi(val as 'channel' | 'support')}
+        orientation="horizontal"
+        flexDirection="column"
+        size="$4"
+      >
+        <Tabs.List mb="$4">
+          <Tabs.Tab value="channel" f={1}>
+            <Paragraph>General Channel</Paragraph>
+          </Tabs.Tab>
+          <Tabs.Tab value="support" f={1}>
+            <Paragraph>Support Channel</Paragraph>
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Content value="channel">
+          <YStack gap="$4">
+            <Paragraph theme="alt2">
+              Join the #takeout-general channel to discuss Tamagui with other Pro users.
+            </Paragraph>
+            <SearchForm />
+          </YStack>
+        </Tabs.Content>
+
+        <Tabs.Content value="support">
+          <YStack gap="$4">
+            {hasSupportTier() ? (
+              <>
+                <Paragraph theme="alt2">
+                  Get access to your private support channel where you can directly
+                  communicate with the Tamagui team.
+                </Paragraph>
+                <SearchForm />
+              </>
+            ) : (
+              <YStack gap="$4" p="$4" backgroundColor="$color2" br="$4">
+                <Paragraph theme="alt2" ta="center">
+                  You need a Support tier subscription to access private support channels.
+                </Paragraph>
+              </YStack>
+            )}
+          </YStack>
+        </Tabs.Content>
+      </Tabs>
+    </YStack>
+  )
+}
+
+const DiscordMember = ({
+  member,
+  subscriptionId,
+  apiType,
+}: {
+  member: APIGuildMember
+  subscriptionId: string
+  apiType: 'channel' | 'support'
+}) => {
+  const { data, error, isMutating, trigger } = useSWRMutation(
+    [`/api/discord/${apiType}`, 'POST', member.user?.id],
+    async () => {
+      const res = await fetch(`/api/discord/${apiType}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+          discord_id: member.user?.id,
+        }),
+      })
+
+      if (res.status < 200 || res.status > 299) {
+        throw await res.json()
+      }
+      return await res.json()
+    },
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/${apiType}?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+      },
+    }
+  )
+
+  const name = member.nick || member.user?.global_name
+  const username = `${member.user?.username}${
+    member.user?.discriminator !== '0' ? `#${member.user?.discriminator}` : ''
+  }`
+  const avatarSrc = member.user?.avatar
+    ? `https://cdn.discordapp.com/avatars/${member.user?.id}/${member.user?.avatar}.png`
+    : null
+
+  return (
+    <XStack gap="$2" ai="center" flexWrap="wrap">
+      <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+        {isMutating ? 'Inviting...' : 'Add'}
+      </Button>
+      <Avatar circular size="$2">
+        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Fallback backgroundColor="$blue10" />
+      </Avatar>
+      <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
+      {data && (
+        <Paragraph size="$1" theme="green">
+          {data.message}
+        </Paragraph>
+      )}
+      {error && (
+        <Paragraph size="$1" theme="red">
+          {error.message}
+        </Paragraph>
+      )}
+    </XStack>
   )
 }
 
@@ -578,7 +858,7 @@ const PlanTab = ({
               description="Access to private Discord support channels"
               actionLabel="Join Discord"
               onAction={() => {
-                setShowDiscordAccess(true)
+                // Add Discord join logic
               }}
             />
             <ServiceCard
@@ -913,6 +1193,246 @@ const ManageTab = ({
   )
 }
 
+type GitHubUser = {
+  id: string
+  full_name: string | null
+  avatar_url: string | null
+  email: string | null
+}
+
+const TeamTab = () => {
+  const { data: teamData, error, isLoading } = useTeamSeats()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
+  const [searchResults, setSearchResults] = useState<GitHubUser[]>([])
+
+  const searchUsers = useMemo(
+    () =>
+      debounce(async (query: string) => {
+        if (!query) {
+          setSearchResults([])
+          return
+        }
+        setIsSearching(true)
+        try {
+          const response = await fetch(`/api/github/users?q=${query}`)
+          const data = await response.json()
+          if (response.ok) {
+            setSearchResults(data.users)
+          } else {
+            console.error('Search failed:', data.error)
+          }
+        } catch (error) {
+          console.error('Search error:', error)
+        } finally {
+          setIsSearching(false)
+        }
+      }, 300),
+    []
+  )
+
+  useEffect(() => {
+    searchUsers(searchQuery)
+  }, [searchQuery, searchUsers])
+
+  if (isLoading) {
+    return (
+      <YStack f={1} ai="center" jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
+  }
+
+  if (error || !teamData) {
+    return (
+      <YStack gap="$4">
+        <H3>No Team Subscription</H3>
+        <Paragraph theme="alt1">
+          Purchase team seats to invite team members to your Tamagui Pro subscription.
+        </Paragraph>
+        <Button
+          theme="accent"
+          onPress={() => {
+            paymentModal.show = true
+            paymentModal.teamSeats = 1
+          }}
+        >
+          Purchase Team Seats
+        </Button>
+      </YStack>
+    )
+  }
+
+  return (
+    <YStack gap="$6">
+      <YStack gap="$4">
+        <H3>Team Management</H3>
+        <XStack ai="center" jc="space-between">
+          <Paragraph theme="alt1">
+            {teamData.subscription.used_seats || 0} of {teamData.subscription.total_seats}{' '}
+            seats used
+          </Paragraph>
+        </XStack>
+      </YStack>
+
+      {teamData.subscription.used_seats < teamData.subscription.total_seats && (
+        <YStack gap="$4">
+          <H4>Invite Team Member</H4>
+          <Form gap="$2">
+            <XStack gap="$2" ai="flex-end">
+              <Fieldset f={1}>
+                <Label htmlFor="github-username">GitHub Username</Label>
+                <Input
+                  id="github-username"
+                  placeholder="Search GitHub users by username, email, or id"
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                />
+              </Fieldset>
+            </XStack>
+          </Form>
+
+          <YStack gap="$2">
+            {isSearching ? (
+              <XStack p="$2" ai="center" jc="center">
+                <Spinner size="small" />
+              </XStack>
+            ) : (
+              searchResults.map((githubUser) => (
+                <GitHubUserRow
+                  key={githubUser.id}
+                  user={githubUser}
+                  subscriptionId={teamData.subscription.id}
+                />
+              ))
+            )}
+          </YStack>
+        </YStack>
+      )}
+
+      <Separator />
+
+      <YStack gap="$4">
+        <H4>Team Members</H4>
+        <YStack gap="$2">
+          {teamData.members.map((member) => (
+            <TeamMemberRow
+              key={member.id}
+              member={member}
+              subscriptionId={teamData.subscription.id}
+            />
+          ))}
+        </YStack>
+      </YStack>
+    </YStack>
+  )
+}
+
+const GitHubUserRow = ({
+  user,
+  subscriptionId,
+}: {
+  user: GitHubUser
+  subscriptionId: string
+}) => {
+  const {
+    trigger: inviteTeamMember,
+    isMutating: isInviting,
+    error: inviteError,
+  } = useInviteTeamMember(subscriptionId)
+
+  return (
+    <XStack
+      borderWidth={1}
+      borderColor="$color3"
+      borderRadius="$4"
+      p="$3"
+      ai="center"
+      jc="space-between"
+    >
+      <XStack ai="center" gap="$3">
+        <Avatar circular size="$3">
+          <Avatar.Image source={{ uri: user.avatar_url ?? '' }} />
+        </Avatar>
+        <YStack>
+          <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
+          <Paragraph size="$2" theme="alt2">
+            {user.email ?? 'Unknown Email'}
+          </Paragraph>
+          {inviteError && (
+            <Paragraph size="$2" color="$red10">
+              Error: {inviteError.message}
+            </Paragraph>
+          )}
+        </YStack>
+      </XStack>
+
+      <Button
+        theme="accent"
+        size="$2"
+        onPress={() => inviteTeamMember({ user_id: String(user.id) })}
+        disabled={isInviting}
+      >
+        {isInviting ? 'Inviting...' : 'Invite'}
+      </Button>
+    </XStack>
+  )
+}
+
+const TeamMemberRow = ({
+  member,
+  subscriptionId,
+}: {
+  member: TeamMember
+  subscriptionId: string
+}) => {
+  const { trigger: removeTeamMember, isMutating: isRemoving } =
+    useRemoveTeamMember(subscriptionId)
+
+  return (
+    <XStack
+      borderWidth={1}
+      borderColor="$color3"
+      borderRadius="$4"
+      p="$3"
+      ai="center"
+      jc="space-between"
+    >
+      <XStack ai="center" gap="$3">
+        <Avatar circular size="$3">
+          <Avatar.Image
+            source={{
+              uri:
+                member.user?.avatar_url ??
+                getDefaultAvatarImage(member.user?.full_name ?? ''),
+            }}
+          />
+        </Avatar>
+        <YStack>
+          <Paragraph>{member.user?.full_name ?? 'Unknown User'}</Paragraph>
+          <Paragraph theme="alt2" size="$2">
+            {member.user?.email}
+          </Paragraph>
+        </YStack>
+      </XStack>
+
+      <XStack ai="center" gap="$2">
+        <Paragraph size="$2" theme="alt2">
+          {member.role}
+        </Paragraph>
+        <Button
+          theme="red"
+          size="$2"
+          onPress={() => removeTeamMember({ team_member_id: member.user?.id ?? '' })}
+          disabled={isRemoving}
+        >
+          {isRemoving ? 'Removing...' : 'Remove'}
+        </Button>
+      </XStack>
+    </XStack>
+  )
+}
+
 const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
   const supabase = useSupabaseClient()
   const { onCopy, hasCopied } = useClipboard()
@@ -977,16 +1497,18 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
     }
   }
 
+  // const { onCopy } = useClipboard(token ?? '')
+
   const onCopyCode = async () => {
     if (hasCopied || isLoading) return
 
     const token = data?.accessToken
-    if (typeof token === 'string') {
+    if (token) {
       onCopy(token)
     } else {
       const res = await mutate()
       const token = res?.accessToken
-      if (typeof token === 'string') onCopy(token)
+      if (token) onCopy(token)
     }
   }
 

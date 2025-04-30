@@ -20,12 +20,3 @@ export type UserContextType = {
   accessInfo: Awaited<ReturnType<typeof getUserAccessInfo>>
   themeHistories?: Awaited<ReturnType<typeof getUserThemeHistories>>
 }
-
-export type Subscription = NonNullable<UserContextType['subscriptions']>[number]
-
-export enum PRODUCT_NAME {
-  TAMAGUI_PRO = 'Tamagui Pro',
-  TAMAGUI_SUPPORT = 'Tamagui Support',
-  TAMAGUI_PRO_TEAM_SEATS = 'Tamagui Pro Team Seats',
-  TAMAGUI_CHAT = 'Tamagui Chat',
-}
