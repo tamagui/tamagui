@@ -1281,10 +1281,10 @@ const TeamTab = () => {
           <Form gap="$2">
             <XStack gap="$2" ai="flex-end">
               <Fieldset f={1}>
-                <Label htmlFor="github-username">GitHub Username</Label>
+                <Label htmlFor="github-username">Name / Email / Id</Label>
                 <Input
                   id="github-username"
-                  placeholder="Search GitHub users by username, email, or id"
+                  placeholder="Search GitHub users by name, email, or id"
                   value={searchQuery}
                   onChangeText={setSearchQuery}
                 />
@@ -1297,7 +1297,7 @@ const TeamTab = () => {
               <XStack p="$2" ai="center" jc="center">
                 <Spinner size="small" />
               </XStack>
-            ) : (
+            ) : searchResults.length > 0 ? (
               searchResults.map((githubUser) => (
                 <GitHubUserRow
                   key={githubUser.id}
@@ -1305,7 +1305,12 @@ const TeamTab = () => {
                   subscriptionId={teamData.subscription.id}
                 />
               ))
-            )}
+            ) : searchQuery.length > 0 ? (
+              <YStack gap={0}>
+                <Paragraph theme="alt1">No results found</Paragraph>
+                <Paragraph theme="alt1">User is not a member of Tamagui</Paragraph>
+              </YStack>
+            ) : null}
           </YStack>
         </YStack>
       )}
