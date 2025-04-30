@@ -158,24 +158,31 @@ export const AccountView = () => {
     (sub) => sub.status === 'active' || sub.status === 'trialing'
   )
 
-  // Find Pro subscription
-  const proSubscription = activeSubscriptions?.find((sub) =>
-    sub.subscription_items?.some((item) => item.price?.product?.name === 'Tamagui Pro')
+  const proTeamSubscription = activeSubscriptions?.find((sub) =>
+    sub.subscription_items?.some(
+      (item) => item.price?.product?.name === 'Tamagui Pro Team Seats'
+    )
   ) as Subscription
 
+  const haveTeamSeats = !!proTeamSubscription?.id
+
+  // Find Pro subscription
+  const proSubscription = haveTeamSeats
+    ? proTeamSubscription
+    : (activeSubscriptions?.find((sub) =>
+        sub.subscription_items?.some(
+          (item) => item.price?.product?.name === 'Tamagui Pro'
+        )
+      ) as Subscription)
+
   const user = data.user
-  const isTeamMember = user?.id && user.id !== proSubscription?.user_id
+  const isTeamAdmin = haveTeamSeats && user?.id === proTeamSubscription?.user_id
+  const isTeamMember = haveTeamSeats && !isTeamAdmin
 
   // Find Support subscription
   const supportSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
       (item) => item.price?.product?.name === 'Tamagui Support'
-    )
-  )
-
-  const isTeamAdmin = activeSubscriptions?.some((sub) =>
-    sub.subscription_items?.some(
-      (item) => item.price?.product?.name === 'Tamagui Pro Team Seats'
     )
   )
 
@@ -432,7 +439,7 @@ const DiscordAccessDialog = ({
 }) => {
   return (
     <Dialog modal open onOpenChange={onClose}>
-      <Dialog.Portal zIndex={100_000}>
+      <Dialog.Portal zIndex={999999}>
         <Dialog.Overlay
           key="overlay"
           animation="medium"
@@ -486,7 +493,7 @@ const DiscordPanel = ({
   }
 
   const [activeApi, setActiveApi] = useState<'channel' | 'support'>('channel')
-  const groupInfoSwr = useSWR<any>(
+  const { data: groupInfoData, error: groupInfoError } = useSWR<any>(
     `/api/discord/${activeApi}?${new URLSearchParams({ subscription_id: subscription.id })}`,
     (url) =>
       fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
@@ -590,8 +597,8 @@ const DiscordPanel = ({
       <XStack jc="space-between" gap="$2" ai="center">
         <H4>
           Discord Access{' '}
-          {!!groupInfoSwr.data &&
-            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
+          {!!groupInfoData &&
+            `(${groupInfoData?.currentlyOccupiedSeats}/${groupInfoData?.discordSeats})`}
         </H4>
 
         <Button
@@ -624,7 +631,7 @@ const DiscordPanel = ({
             <Paragraph theme="alt2">
               Join the #takeout-general channel to discuss Tamagui with other Pro users.
             </Paragraph>
-            <SearchForm />
+            {SearchForm()}
           </YStack>
         </Tabs.Content>
 

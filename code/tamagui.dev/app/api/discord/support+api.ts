@@ -31,7 +31,7 @@ export default apiRoute(async (req) => {
     .single()
 
   if (userPrivate.error) {
-    return Response.json(
+    throw Response.json(
       {
         message: 'no github connection found for you account. login using github first',
       },
@@ -66,7 +66,7 @@ export default apiRoute(async (req) => {
   const supportTier = supportItems.length.toString()
 
   if (supportTier === '0') {
-    return Response.json(
+    throw Response.json(
       { message: 'Please use the channel API for Pro plan subscriptions' },
       { status: 400 }
     )
@@ -98,7 +98,7 @@ export default apiRoute(async (req) => {
   let userName = user.email?.split('@')[0]
 
   if (!userName) {
-    return Response.json({ message: 'No user name found' }, { status: 400 })
+    throw Response.json({ message: 'No user name found' }, { status: 400 })
   }
 
   // if userName contains invalid characters (such as ., -, _) replace them with _
@@ -177,7 +177,7 @@ export default apiRoute(async (req) => {
 
     const userDiscordId = body.discord_id
     if (!userDiscordId) {
-      return Response.json(
+      throw Response.json(
         { message: 'no discord_id is provided' },
         {
           status: 401,
@@ -187,7 +187,7 @@ export default apiRoute(async (req) => {
 
     if (req.method === 'POST') {
       if (currentlyOccupiedSeats >= discordSeats) {
-        return Response.json(
+        throw Response.json(
           {
             message: `you've maxed out the members of your channel ${currentlyOccupiedSeats}/${discordSeats}`,
           },

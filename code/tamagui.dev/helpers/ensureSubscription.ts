@@ -31,7 +31,7 @@ export async function ensureSubscription(
     )
   }
 
-  const validProducts = ['Tamagui Pro', 'Tamagui Support']
+  const validProducts = ['Tamagui Pro', 'Tamagui Support', 'Tamagui Pro Team Seats']
 
   const subscriptionData = getArray(subscription.subscription_items).find((item) => {
     const products = getSingle(getSingle(item?.price)?.products)
