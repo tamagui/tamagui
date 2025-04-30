@@ -133,9 +133,7 @@ export const TeamTab = () => {
             ) : searchQuery.length > 0 ? (
               <YStack gap={0}>
                 <Paragraph theme="alt1">No results found</Paragraph>
-                <Paragraph theme="alt1">
-                  GitHub user is not a member of Tamagui
-                </Paragraph>
+                <Paragraph theme="alt1">GitHub user is not a member of Tamagui</Paragraph>
               </YStack>
             ) : (
               <Paragraph theme="alt1">Search for a GitHub user to invite</Paragraph>
