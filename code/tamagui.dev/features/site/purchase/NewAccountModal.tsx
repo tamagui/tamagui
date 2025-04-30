@@ -865,6 +865,7 @@ const PlanTab = ({
               description="Access to private Discord support channels"
               actionLabel="Join Discord"
               onAction={() => {
+                router.navigate('https://discord.gg/4qh6tdcVDa')
                 // Add Discord join logic
               }}
             />
