@@ -1,9 +1,9 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { ExternalLink, Figma, LogIn, Menu, Clock, Check } from '@tamagui/lucide-icons'
-import { createShallowSetState, isTouchable, useGet } from '@tamagui/web'
-import { useFocusEffect, useNavigation, usePathname, useRouter } from 'one'
+import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
+import { createShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
+import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
-import { Pressable, type LayoutRectangle } from 'react-native'
+import type { LayoutRectangle } from 'react-native'
 import {
   type PopoverProps,
   Adapt,
@@ -277,10 +277,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
   const userSwr = useUser()
+  const { maxMd } = useMedia()
 
   return (
     <Popover.Trigger>
-      <SlidingPopoverTarget id="menu">
+      <SlidingPopoverTarget id="menu" disabled={maxMd}>
         <Button
           size="$3"
           my={10}
@@ -440,8 +441,8 @@ const SlidingPopoverContext = React.createContext({
   close() {},
 })
 
-export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
-  ({ id, ...props }, ref) => {
+export const SlidingPopoverTarget = YStack.styleable<{ id: ID; disabled?: boolean }>(
+  ({ id, disabled = false, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout_] = React.useState<LayoutRectangle>()
     const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
@@ -478,7 +479,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
 
     return (
       <YStack
-        onMouseEnter={setActiveDebounced}
+        onMouseEnter={disabled ? undefined : setActiveDebounced}
         onMouseLeave={() => {
           setActiveDebounced.cancel()
           isOnLink.delete(id)
