@@ -140,12 +140,22 @@ export const AccountView = () => {
     (sub) => sub.status === 'active' || sub.status === 'trialing'
   )
 
-  // Find Pro subscription
-  const proSubscription = activeSubscriptions?.find((sub) =>
+  const proTeamSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
-      (item) => item.price?.product?.name === PRODUCT_NAME.TAMAGUI_PRO
+      (item) => item.price?.product?.name === PRODUCT_NAME.TAMAGUI_PRO_TEAM_SEATS
     )
   ) as Subscription
+
+  const isTeamAdmin = !!proTeamSubscription?.id
+
+  // Find Pro subscription
+  const proSubscription = isTeamAdmin
+    ? proTeamSubscription
+    : (activeSubscriptions?.find((sub) =>
+        sub.subscription_items?.some(
+          (item) => item.price?.product?.name === PRODUCT_NAME.TAMAGUI_PRO
+        )
+      ) as Subscription)
 
   const user = data.user
   const isTeamMember = user?.id && user.id !== proSubscription?.user_id
@@ -154,12 +164,6 @@ export const AccountView = () => {
   const supportSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
       (item) => item.price?.product?.name === PRODUCT_NAME.TAMAGUI_SUPPORT
-    )
-  )
-
-  const isTeamAdmin = activeSubscriptions?.some((sub) =>
-    sub.subscription_items?.some(
-      (item) => item.price?.product?.name === 'Tamagui Pro Team Seats'
     )
   )
 
