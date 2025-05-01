@@ -24,7 +24,7 @@ type ClaimProductArgs = {
 export const claimTakeoutForProPlan = async (args: ClaimProductArgs) => {
   const { product } = args
 
-  if (product.name !== 'Tamagui Pro') {
+  if (!product.name?.includes('Tamagui Pro')) {
     throw new Error('Product is not Tamagui Pro')
   }
 

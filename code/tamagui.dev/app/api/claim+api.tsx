@@ -56,10 +56,15 @@ export default apiRoute(async (req) => {
 
   const prices = getArray(subscription.subscription_items).map((s) => getSingle(s?.price))
 
+  const alternativeProductId =
+    productId === 'prod_RlRd2DVrG0frHe' /* Tamagui Pro */
+      ? 'prod_Rxu0x7jR0nWJSv' /* Tamagui Pro Team Seats */
+      : productId /* no additional product ID to check */
+
   for (const price of prices) {
     for (const product of getArray(price?.products)) {
       if (!product) continue
-      if (product.id !== productId) continue
+      if (product.id !== productId && product.id !== alternativeProductId) continue
 
       try {
         console.info(`Claim: claiming ${product.id}`)
