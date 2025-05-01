@@ -6,8 +6,8 @@ export const hasBentoAccess = async (userId: string) => {
 
   return Boolean(
     subscriptions?.some((subscription) =>
-      subscription.subscription_items?.some(
-        (item) => item.price?.product?.name === 'Tamagui Pro'
+      subscription.subscription_items?.some((item) =>
+        item.price?.product?.name?.includes('Tamagui Pro')
       )
     )
   )
