@@ -151,8 +151,8 @@ function checkAccessToProduct(
       (subscription.subscription_items.some(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
       ) ||
-        subscription.subscription_items.some(
-          (item) => item.price.product?.name?.includes('Tamagui Pro')
+        subscription.subscription_items.some((item) =>
+          item.price.product?.name?.includes('Tamagui Pro')
         ))
   )
   if (hasActiveSubscription) {
