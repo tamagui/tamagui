@@ -304,8 +304,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // if dragging handle always allow:
         if (
           e.target === providerProps.handleRef.current ||
-          !scrollEnabled.current ||
-          !hasScrollView.current
+          !scrollEnabled.current 
         ) {
           return true
         }
@@ -328,7 +327,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           }
         }
         // we could do some detection of other touchables and cancel here..
-        return Math.abs(dy) > 5
+        return Math.abs(dy) > 10 
       }
 
       const grant = () => {
