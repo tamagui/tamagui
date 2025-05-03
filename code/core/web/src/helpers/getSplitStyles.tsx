@@ -250,7 +250,6 @@ export const getSplitStyles: StyleSplitter = (
   const { noSkip, disableExpandShorthands, noExpand } = styleProps
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-
   for (const keyOg in props) {
     let keyInit = keyOg
     let valInit = props[keyInit]

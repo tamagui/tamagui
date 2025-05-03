@@ -404,3 +404,47 @@ describe('getSplitStyles', () => {
   //   ).toEqual('-1')
   // })
 })
+
+describe('getSplitStyles - pseudo prop merging', () => {
+  const StyledButton = styled(Stack, {
+    name: 'StyledButton',
+    pressStyle: { backgroundColor: 'green' },
+    variants: {
+      variant: {
+        prim: {
+          pressStyle: { backgroundColor: 'blue' },
+        },
+      },
+    },
+  })
+
+  test('inline pressStyle should override variant pressStyle', () => {
+    const { viewProps } = simplifiedGetSplitStyles(
+      StyledButton,
+      {
+        variant: 'prim',
+        pressStyle: { backgroundColor: 'red' },
+      }
+    )
+    expect(viewProps.className).toContain('_bg-0active-red')
+  })
+
+  test('variant pressStyle should be used if no inline pressStyle', () => {
+    const { viewProps } = simplifiedGetSplitStyles(
+      StyledButton,
+      {
+        variant: 'prim',
+      }
+    )
+    expect(viewProps.className).toContain('_bg-0active-blue')
+  })
+
+  test('default pressStyle should not generate a class if not used', () => {
+    const { viewProps } = simplifiedGetSplitStyles(
+      StyledButton,
+      {}
+    )
+    // No press state simulated, so no class is generated
+    expect(viewProps.className).not.toContain('_bg-0active-green')
+  })
+})
