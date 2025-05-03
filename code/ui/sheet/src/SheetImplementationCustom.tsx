@@ -319,7 +319,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
         // prevent drag once at top and pulling up
         if (isNearTop) {
-          if (scrollEnabled.current && isDraggingUp) {
+          if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {
             return false
           }
         }
