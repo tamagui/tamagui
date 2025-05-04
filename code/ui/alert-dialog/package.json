@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/alert-dialog",
-  "version": "1.126.4",
+  "version": "1.126.4-1746355141077",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
