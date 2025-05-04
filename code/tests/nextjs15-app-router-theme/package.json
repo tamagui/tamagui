@@ -1,0 +1,25 @@
+{
+  "name": "starter-free",
+  "private": true,
+  "workspaces": [
+    "./apps/*",
+    "./packages/*"
+  ],
+  "scripts": {
+    "web": "yarn build && cd apps/next && yarn next",
+    "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
+    "web:prod": "yarn workspace next-app build",
+    "web:prod:serve": "yarn workspace next-app serve"
+  },
+  "resolutions": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-refresh": "^0.14.0",
+    "react-native-svg": "15.11.2",
+    "react-native-web": "~0.19.12"
+  },
+  "dependencies": {
+    "@tamagui/cli": "workspace:*"
+  },
+  "version": "1.126.5"
+}

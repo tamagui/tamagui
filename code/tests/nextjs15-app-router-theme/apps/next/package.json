@@ -1,0 +1,31 @@
+{
+  "name": "next-app",
+  "version": "1.126.5",
+  "private": true,
+  "packageManager": "yarn@4.5.0",
+  "scripts": {
+    "dev": "next dev",
+    "prod-build": "next build",
+    "start": "next start",
+    "serve": "NODE_ENV=production next start --port 8151"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/next-theme": "workspace:*",
+    "app": "workspace:^",
+    "next": "^15.3.1",
+    "raf": "^3.4.1",
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "^0.76.5",
+    "react-native-web": "^0.20.0",
+    "tamagui": "workspace:*",
+    "vercel": "latest"
+  },
+  "devDependencies": {
+    "@tamagui/next-plugin": "workspace:*",
+    "@types/node": "^22.1.0",
+    "next-compose-plugins": "^2.2.1",
+    "next-transpile-modules": "^10.0.1"
+  }
+}
