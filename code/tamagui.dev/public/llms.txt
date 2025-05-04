@@ -1,6 +1,6 @@
 # Tamagui Documentation
 
-If you want all docs as a single document, see https://tamagui.dev/docs.txt.
+If you want all docs as a single document, see https://tamagui.dev/llms-full.txt.
 
 > Tamagui is a complete UI solution for React Native and Web, with a fully-featured UI kit, styling engine, and optimizing compiler.
 

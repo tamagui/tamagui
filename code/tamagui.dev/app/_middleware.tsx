@@ -92,7 +92,7 @@ export default createMiddleware(async ({ request, next }) => {
   const url = new URL(request.url)
 
   // Change /docs.md to /docs.txt
-  if (url.pathname === '/docs.txt') {
+  if (url.pathname === '/llms-full.txt' || url.pathname === '/docs.txt') {
     try {
       const combined = await getCombinedDocs()
       return new Response(combined, {
