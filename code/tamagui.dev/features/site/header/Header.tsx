@@ -438,8 +438,8 @@ const SlidingPopoverContext = React.createContext({
   close() {},
 })
 
-export const SlidingPopoverTarget = YStack.styleable<{ id: ID; disabled?: boolean }>(
-  ({ id, disabled = false, ...props }, ref) => {
+export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
+  ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout_] = React.useState<LayoutRectangle>()
     const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
@@ -485,7 +485,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID; disabled?: boolea
 
     return (
       <YStack
-        onMouseEnter={disabled ? undefined : setActiveDebounced}
+        onMouseEnter={setActiveDebounced}
         onMouseLeave={() => {
           setActiveDebounced.cancel()
           isOnLink.delete(id)
