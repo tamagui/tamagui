@@ -64,12 +64,6 @@ export default (name, { defaultConfig }) => {
     // must set to false if using reanimated
     reactStrictMode: true,
     optimizeFonts: true,
-    modularizeImports: {
-      '@tamagui/lucide-icons': {
-        transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
-        skipDefaultConversion: true,
-      },
-    },
     // async headers() {
     //   return [
     //     {
