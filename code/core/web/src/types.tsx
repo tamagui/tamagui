@@ -147,7 +147,7 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
-export type VariableVal = number | string | Variable | VariableValGeneric
+export type VariableVal = number | string | Variable | VariableValGeneric 
 export type VariableColorVal = string | Variable
 
 type GenericKey = string
@@ -2662,3 +2662,15 @@ export type UseMediaState = {
 }
 
 export type TamaDefer = { __tamaDefer: true }
+
+export type CreateTamaguiConfigIn = Omit<CreateTamaguiProps, 'tokens' | 'themes'> & { 
+  tokens: Required<CreateTamaguiProps['tokens']>
+  themes: CreateTamaguiProps['themes'] & { 
+    light: {
+      [key: string]: string | number | Variable
+    }
+    dark: {
+      [key: string]: string | number | Variable
+    }
+  }
+}

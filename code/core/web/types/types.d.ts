@@ -1644,4 +1644,15 @@ export type UseMediaState = {
 export type TamaDefer = {
     __tamaDefer: true;
 };
+export type CreateTamaguiConfigIn = Omit<CreateTamaguiProps, 'tokens' | 'themes'> & {
+    tokens: Required<CreateTamaguiProps['tokens']>;
+    themes: CreateTamaguiProps['themes'] & {
+        light: {
+            [key: string]: string | number | Variable;
+        };
+        dark: {
+            [key: string]: string | number | Variable;
+        };
+    };
+};
 //# sourceMappingURL=types.d.ts.map
