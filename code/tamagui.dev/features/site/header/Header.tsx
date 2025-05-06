@@ -46,6 +46,7 @@ import { useLoginLink } from '../../auth/useLoginLink'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useBentoStore } from '../../bento/BentoStore'
 import { useBentoTheme } from '../../bento/useBentoTheme'
+import { useImperativeHandle } from 'react'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -277,11 +278,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
   const userSwr = useUser()
-  const { maxMd } = useMedia()
+  const haveUser = !!userSwr.data?.user
 
   return (
     <Popover.Trigger>
-      <SlidingPopoverTarget id="menu" disabled={maxMd}>
+      <SlidingPopoverTarget id="menu">
         <Button
           size="$3"
           my={10}
@@ -291,10 +292,6 @@ const HeaderMenuButton = () => {
           bw={2}
           px="$2"
           onPress={(e) => {
-            if (!open && userSwr.data?.user) {
-              accountModal.show = true
-              return
-            }
             if (isTouchable) {
               setOpen(!open)
               return
@@ -316,7 +313,7 @@ const HeaderMenuButton = () => {
           }}
         >
           <Circle size={34} ai="center" jc="center">
-            {userSwr.data?.userDetails ? <UserAvatar /> : <Menu size={16} />}
+            {haveUser ? <UserAvatar /> : <Menu size={16} />}
           </Circle>
         </Button>
       </SlidingPopoverTarget>
@@ -450,6 +447,15 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID; disabled?: boolea
     const combinedRef = useComposedRefs(ref)
     const [hovered, setHovered] = React.useState(false)
     const getLayout = useGet(layout)
+
+    useImperativeHandle(ref, () => {
+      return {
+        close: () => {
+          context.close()
+          setHovered(false)
+        },
+      }
+    })
 
     React.useEffect(() => {
       if (!hovered) return
@@ -729,6 +735,7 @@ const HeaderMenuMoreContents = () => {
   const userSwr = useUser()
   const router = useRouter()
   const { handleLogin } = useLoginLink()
+  const context = React.useContext(SlidingPopoverContext)
 
   const handlePress = (e: any) => {
     e.preventDefault()
@@ -786,6 +793,7 @@ const HeaderMenuMoreContents = () => {
         <HeadAnchor
           grid
           onPress={() => {
+            context.close()
             accountModal.show = true
           }}
         >
