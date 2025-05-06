@@ -47,6 +47,7 @@
     "@babel/core": "^7.26.0",
     "@expo/metro-config": "~0.20.12",
     "@expo/metro-runtime": "~5.0.4",
+    "@tamagui/metro-plugin": "^1.126.5",
     "@tamagui/babel-plugin": "^1.126.4",
     "@tamagui/cli": "^1.126.4",
     "@types/react": "~19.0.10",
