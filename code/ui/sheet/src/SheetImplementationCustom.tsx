@@ -302,11 +302,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         { dy }: PanResponderGestureState
       ) => {
         // if dragging handle always allow:
-        if (
-          e.target === providerProps.handleRef.current ||
-          !scrollEnabled.current ||
-          !hasScrollView.current
-        ) {
+        if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
           return true
         }
 
@@ -323,12 +319,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
         // prevent drag once at top and pulling up
         if (isNearTop) {
-          if (scrollEnabled.current && isDraggingUp) {
+          if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {
             return false
           }
         }
         // we could do some detection of other touchables and cancel here..
-        return Math.abs(dy) > 5
+        return Math.abs(dy) > 10
       }
 
       const grant = () => {

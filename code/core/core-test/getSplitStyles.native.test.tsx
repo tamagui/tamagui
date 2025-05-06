@@ -1,4 +1,4 @@
-import { Stack, createTamagui, getSplitStyles } from '@tamagui/core'
+import { Stack, createTamagui, getSplitStyles, styled } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -173,6 +173,52 @@ describe('getSplitStyles', () => {
     }
   })
 
+})
+
+describe('getSplitStyles - pseudo prop merging', () => {
+  const StyledButton = styled(Stack, {
+    name: 'StyledButton',
+    pressStyle: { backgroundColor: 'green' },
+    variants: {
+      variant: {
+        prim: {
+          pressStyle: { backgroundColor: 'blue' },
+        },
+      },
+    },
+  })
+
+  function getPressStyle(props: any) {
+    const { style } = getSplitStyles(
+      props,
+      StyledButton.staticConfig,
+      {} as any,
+      '',
+      {
+        hover: false,
+        press: true, // simulate press state
+        pressIn: true,
+        focus: false,
+        unmounted: false,
+        disabled: false,
+        focusVisible: false,
+      },
+      {
+        isAnimated: false,
+      }
+    )
+    return style?.backgroundColor
+  }
+
+  test('inline pressStyle should override variant pressStyle', () => {
+    const bg = getPressStyle({ variant: 'prim', pressStyle: { backgroundColor: 'red' } })
+    expect(bg).toBe('red')
+  })
+
+  test('variant pressStyle should be used if no inline pressStyle', () => {
+    const bg = getPressStyle({ variant: 'prim' })
+    expect(bg).toBe('blue')
+  })
 })
 
 function getSplitStylesStack(props: Record<string, any>, tag?: string) {
