@@ -28,6 +28,19 @@
     "react": "*",
     "react-native-svg": ">=12"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@tamagui/build": "workspace:*",
