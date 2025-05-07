@@ -23,5 +23,7 @@
         )
       }))
 
-      export const MessageCircleDashed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MessageCircleDashed: IconComponent = Icon
     

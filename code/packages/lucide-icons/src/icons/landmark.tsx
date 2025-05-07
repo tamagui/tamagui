@@ -22,5 +22,7 @@
         )
       }))
 
-      export const Landmark = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Landmark: IconComponent = Icon
     

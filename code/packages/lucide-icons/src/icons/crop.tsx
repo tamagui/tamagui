@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Crop = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Crop: IconComponent = Icon
     

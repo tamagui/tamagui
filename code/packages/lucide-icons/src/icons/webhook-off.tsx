@@ -22,5 +22,7 @@
         )
       }))
 
-      export const WebhookOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const WebhookOff: IconComponent = Icon
     

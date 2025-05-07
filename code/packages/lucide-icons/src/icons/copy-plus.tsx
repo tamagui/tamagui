@@ -21,5 +21,7 @@
         )
       }))
 
-      export const CopyPlus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CopyPlus: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const ListOrdered = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ListOrdered: IconComponent = Icon
     

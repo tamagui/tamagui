@@ -27,5 +27,7 @@
         )
       }))
 
-      export const Vault = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Vault: IconComponent = Icon
     

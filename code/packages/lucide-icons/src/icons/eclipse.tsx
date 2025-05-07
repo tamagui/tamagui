@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Eclipse = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Eclipse: IconComponent = Icon
     

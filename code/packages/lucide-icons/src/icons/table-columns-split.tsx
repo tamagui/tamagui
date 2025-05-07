@@ -26,5 +26,7 @@
         )
       }))
 
-      export const TableColumnsSplit = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TableColumnsSplit: IconComponent = Icon
     

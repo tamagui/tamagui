@@ -17,5 +17,7 @@
         )
       }))
 
-      export const FolderSymlink = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FolderSymlink: IconComponent = Icon
     

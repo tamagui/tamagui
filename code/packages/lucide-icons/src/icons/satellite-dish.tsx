@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SatelliteDish = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SatelliteDish: IconComponent = Icon
     

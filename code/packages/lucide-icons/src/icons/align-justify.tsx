@@ -18,5 +18,7 @@
         )
       }))
 
-      export const AlignJustify = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlignJustify: IconComponent = Icon
     

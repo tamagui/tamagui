@@ -18,5 +18,7 @@
         )
       }))
 
-      export const OctagonPause = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const OctagonPause: IconComponent = Icon
     

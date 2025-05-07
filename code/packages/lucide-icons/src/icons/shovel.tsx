@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Shovel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Shovel: IconComponent = Icon
     

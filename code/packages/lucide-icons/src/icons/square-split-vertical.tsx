@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SquareSplitVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquareSplitVertical: IconComponent = Icon
     

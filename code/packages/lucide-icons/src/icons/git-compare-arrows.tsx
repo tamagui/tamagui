@@ -22,5 +22,7 @@
         )
       }))
 
-      export const GitCompareArrows = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitCompareArrows: IconComponent = Icon
     

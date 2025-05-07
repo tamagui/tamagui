@@ -19,5 +19,7 @@
         )
       }))
 
-      export const FileAxis3d = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileAxis3d: IconComponent = Icon
     

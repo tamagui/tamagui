@@ -19,5 +19,7 @@
         )
       }))
 
-      export const FolderKanban = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FolderKanban: IconComponent = Icon
     

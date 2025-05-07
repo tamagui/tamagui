@@ -27,5 +27,7 @@
         )
       }))
 
-      export const ServerCog = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ServerCog: IconComponent = Icon
     

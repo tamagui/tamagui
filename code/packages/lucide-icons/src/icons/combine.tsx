@@ -22,5 +22,7 @@
         )
       }))
 
-      export const Combine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Combine: IconComponent = Icon
     

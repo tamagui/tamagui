@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Workflow = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Workflow: IconComponent = Icon
     

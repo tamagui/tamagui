@@ -26,5 +26,7 @@
         )
       }))
 
-      export const Biohazard = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Biohazard: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const MapPinHouse = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MapPinHouse: IconComponent = Icon
     

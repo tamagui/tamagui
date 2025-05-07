@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Drill = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Drill: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const HardDriveUpload = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const HardDriveUpload: IconComponent = Icon
     

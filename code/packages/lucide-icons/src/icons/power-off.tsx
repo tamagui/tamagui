@@ -19,5 +19,7 @@
         )
       }))
 
-      export const PowerOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PowerOff: IconComponent = Icon
     

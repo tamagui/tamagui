@@ -19,5 +19,7 @@
         )
       }))
 
-      export const AlignHorizontalSpaceAround = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlignHorizontalSpaceAround: IconComponent = Icon
     

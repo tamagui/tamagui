@@ -21,5 +21,7 @@
         )
       }))
 
-      export const ChartColumnStacked = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartColumnStacked: IconComponent = Icon
     

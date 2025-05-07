@@ -22,5 +22,7 @@
         )
       }))
 
-      export const GitGraph = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitGraph: IconComponent = Icon
     

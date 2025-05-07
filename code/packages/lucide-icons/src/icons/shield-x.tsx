@@ -18,5 +18,7 @@
         )
       }))
 
-      export const ShieldX = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ShieldX: IconComponent = Icon
     

@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Replace = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Replace: IconComponent = Icon
     

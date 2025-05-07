@@ -19,5 +19,7 @@
         )
       }))
 
-      export const CircleGauge = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircleGauge: IconComponent = Icon
     

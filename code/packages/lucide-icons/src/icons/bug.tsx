@@ -26,5 +26,7 @@
         )
       }))
 
-      export const Bug = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Bug: IconComponent = Icon
     

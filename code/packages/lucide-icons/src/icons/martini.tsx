@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Martini = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Martini: IconComponent = Icon
     

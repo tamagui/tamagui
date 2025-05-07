@@ -18,5 +18,7 @@
         )
       }))
 
-      export const PiggyBank = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PiggyBank: IconComponent = Icon
     

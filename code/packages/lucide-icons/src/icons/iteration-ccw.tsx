@@ -18,5 +18,7 @@
         )
       }))
 
-      export const IterationCcw = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const IterationCcw: IconComponent = Icon
     

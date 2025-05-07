@@ -20,5 +20,7 @@
         )
       }))
 
-      export const GlobeLock = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GlobeLock: IconComponent = Icon
     

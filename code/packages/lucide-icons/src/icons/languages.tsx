@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Languages = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Languages: IconComponent = Icon
     

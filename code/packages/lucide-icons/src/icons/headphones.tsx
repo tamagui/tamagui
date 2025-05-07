@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Headphones = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Headphones: IconComponent = Icon
     

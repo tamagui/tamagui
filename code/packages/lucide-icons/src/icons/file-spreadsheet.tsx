@@ -21,5 +21,7 @@
         )
       }))
 
-      export const FileSpreadsheet = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileSpreadsheet: IconComponent = Icon
     

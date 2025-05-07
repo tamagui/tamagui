@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Italic = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Italic: IconComponent = Icon
     

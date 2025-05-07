@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Clover = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Clover: IconComponent = Icon
     

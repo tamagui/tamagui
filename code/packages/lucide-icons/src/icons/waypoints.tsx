@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Waypoints = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Waypoints: IconComponent = Icon
     

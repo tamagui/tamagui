@@ -20,5 +20,7 @@
         )
       }))
 
-      export const FileChartColumn = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileChartColumn: IconComponent = Icon
     

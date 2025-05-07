@@ -22,5 +22,7 @@
         )
       }))
 
-      export const CircleFadingArrowUp = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircleFadingArrowUp: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const MoveHorizontal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MoveHorizontal: IconComponent = Icon
     

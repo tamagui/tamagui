@@ -20,5 +20,7 @@
         )
       }))
 
-      export const PenTool = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PenTool: IconComponent = Icon
     

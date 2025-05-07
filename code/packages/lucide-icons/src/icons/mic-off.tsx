@@ -22,5 +22,7 @@
         )
       }))
 
-      export const MicOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MicOff: IconComponent = Icon
     

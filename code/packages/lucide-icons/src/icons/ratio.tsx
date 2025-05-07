@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Ratio = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Ratio: IconComponent = Icon
     

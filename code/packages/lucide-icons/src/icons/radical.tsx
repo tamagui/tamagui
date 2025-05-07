@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Radical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Radical: IconComponent = Icon
     

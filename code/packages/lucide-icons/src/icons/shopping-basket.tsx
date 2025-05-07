@@ -22,5 +22,7 @@
         )
       }))
 
-      export const ShoppingBasket = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ShoppingBasket: IconComponent = Icon
     

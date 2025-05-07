@@ -22,5 +22,7 @@
         )
       }))
 
-      export const TrainFrontTunnel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TrainFrontTunnel: IconComponent = Icon
     

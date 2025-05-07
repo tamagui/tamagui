@@ -18,5 +18,7 @@
         )
       }))
 
-      export const SpellCheck2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SpellCheck2: IconComponent = Icon
     

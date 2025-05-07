@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Cookie = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Cookie: IconComponent = Icon
     

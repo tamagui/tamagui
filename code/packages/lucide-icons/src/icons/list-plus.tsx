@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ListPlus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ListPlus: IconComponent = Icon
     

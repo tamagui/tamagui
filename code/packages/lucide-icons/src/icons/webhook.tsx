@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Webhook = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Webhook: IconComponent = Icon
     

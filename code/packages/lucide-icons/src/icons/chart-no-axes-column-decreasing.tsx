@@ -18,5 +18,7 @@
         )
       }))
 
-      export const ChartNoAxesColumnDecreasing = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartNoAxesColumnDecreasing: IconComponent = Icon
     

@@ -16,5 +16,7 @@
         )
       }))
 
-      export const TypeOutline = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TypeOutline: IconComponent = Icon
     

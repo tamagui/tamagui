@@ -17,5 +17,7 @@
         )
       }))
 
-      export const LeafyGreen = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LeafyGreen: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Diff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Diff: IconComponent = Icon
     

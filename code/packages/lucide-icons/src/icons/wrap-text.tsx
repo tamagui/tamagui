@@ -21,5 +21,7 @@
         )
       }))
 
-      export const WrapText = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const WrapText: IconComponent = Icon
     

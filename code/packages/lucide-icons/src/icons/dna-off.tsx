@@ -25,5 +25,7 @@
         )
       }))
 
-      export const DnaOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const DnaOff: IconComponent = Icon
     

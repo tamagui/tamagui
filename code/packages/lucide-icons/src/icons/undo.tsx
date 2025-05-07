@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Undo = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Undo: IconComponent = Icon
     

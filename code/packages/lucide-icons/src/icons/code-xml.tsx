@@ -18,5 +18,7 @@
         )
       }))
 
-      export const CodeXml = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CodeXml: IconComponent = Icon
     

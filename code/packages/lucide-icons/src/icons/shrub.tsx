@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Shrub = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Shrub: IconComponent = Icon
     

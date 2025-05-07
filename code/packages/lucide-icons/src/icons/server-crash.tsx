@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ServerCrash = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ServerCrash: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Unplug = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Unplug: IconComponent = Icon
     

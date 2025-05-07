@@ -18,5 +18,7 @@
         )
       }))
 
-      export const History = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const History: IconComponent = Icon
     

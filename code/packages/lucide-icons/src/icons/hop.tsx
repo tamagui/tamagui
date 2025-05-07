@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Hop = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Hop: IconComponent = Icon
     

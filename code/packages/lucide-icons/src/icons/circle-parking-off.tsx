@@ -20,5 +20,7 @@
         )
       }))
 
-      export const CircleParkingOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircleParkingOff: IconComponent = Icon
     

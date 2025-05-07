@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Shrink = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Shrink: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Ligature = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Ligature: IconComponent = Icon
     

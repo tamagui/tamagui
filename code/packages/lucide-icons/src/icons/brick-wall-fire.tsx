@@ -22,5 +22,7 @@
         )
       }))
 
-      export const BrickWallFire = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BrickWallFire: IconComponent = Icon
     

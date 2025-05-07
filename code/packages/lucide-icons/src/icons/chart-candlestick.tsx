@@ -23,5 +23,7 @@
         )
       }))
 
-      export const ChartCandlestick = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartCandlestick: IconComponent = Icon
     

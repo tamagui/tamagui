@@ -21,5 +21,7 @@
         )
       }))
 
-      export const FireExtinguisher = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FireExtinguisher: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const NonBinary = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const NonBinary: IconComponent = Icon
     

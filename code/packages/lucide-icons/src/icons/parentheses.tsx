@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Parentheses = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Parentheses: IconComponent = Icon
     

@@ -25,5 +25,7 @@
         )
       }))
 
-      export const SunDim = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SunDim: IconComponent = Icon
     

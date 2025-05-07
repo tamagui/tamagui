@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ALargeSmall = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ALargeSmall: IconComponent = Icon
     

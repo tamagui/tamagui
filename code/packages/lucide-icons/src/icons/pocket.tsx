@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Pocket = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Pocket: IconComponent = Icon
     

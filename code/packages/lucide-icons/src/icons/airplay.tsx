@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Airplay = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Airplay: IconComponent = Icon
     

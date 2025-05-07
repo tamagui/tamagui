@@ -20,5 +20,7 @@
         )
       }))
 
-      export const PcCase = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PcCase: IconComponent = Icon
     

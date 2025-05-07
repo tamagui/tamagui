@@ -19,5 +19,7 @@
         )
       }))
 
-      export const LandPlot = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LandPlot: IconComponent = Icon
     

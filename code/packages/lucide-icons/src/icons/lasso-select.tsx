@@ -20,5 +20,7 @@
         )
       }))
 
-      export const LassoSelect = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LassoSelect: IconComponent = Icon
     

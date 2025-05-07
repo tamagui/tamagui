@@ -21,5 +21,7 @@
         )
       }))
 
-      export const FileAudio2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileAudio2: IconComponent = Icon
     

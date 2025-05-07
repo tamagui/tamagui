@@ -19,5 +19,7 @@
         )
       }))
 
-      export const PrinterCheck = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PrinterCheck: IconComponent = Icon
     

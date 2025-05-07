@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Hash = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Hash: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Diameter = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Diameter: IconComponent = Icon
     

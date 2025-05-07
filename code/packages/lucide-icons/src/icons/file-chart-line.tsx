@@ -18,5 +18,7 @@
         )
       }))
 
-      export const FileChartLine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileChartLine: IconComponent = Icon
     

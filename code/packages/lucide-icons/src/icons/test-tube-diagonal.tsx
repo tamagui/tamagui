@@ -18,5 +18,7 @@
         )
       }))
 
-      export const TestTubeDiagonal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TestTubeDiagonal: IconComponent = Icon
     

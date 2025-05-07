@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Highlighter = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Highlighter: IconComponent = Icon
     

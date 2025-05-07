@@ -28,5 +28,7 @@
         )
       }))
 
-      export const Columns3Cog = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Columns3Cog: IconComponent = Icon
     

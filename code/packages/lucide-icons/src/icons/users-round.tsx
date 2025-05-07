@@ -19,5 +19,7 @@
         )
       }))
 
-      export const UsersRound = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const UsersRound: IconComponent = Icon
     

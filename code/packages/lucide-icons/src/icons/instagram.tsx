@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Instagram = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Instagram: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const BedDouble = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BedDouble: IconComponent = Icon
     

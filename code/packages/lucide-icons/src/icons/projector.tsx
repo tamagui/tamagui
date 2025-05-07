@@ -22,5 +22,7 @@
         )
       }))
 
-      export const Projector = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Projector: IconComponent = Icon
     

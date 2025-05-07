@@ -23,5 +23,7 @@
         )
       }))
 
-      export const PackagePlus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PackagePlus: IconComponent = Icon
     

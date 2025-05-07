@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Layers2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Layers2: IconComponent = Icon
     

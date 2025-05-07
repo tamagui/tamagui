@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ListCheck = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ListCheck: IconComponent = Icon
     

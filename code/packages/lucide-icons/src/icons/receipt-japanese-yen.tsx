@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ReceiptJapaneseYen = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ReceiptJapaneseYen: IconComponent = Icon
     

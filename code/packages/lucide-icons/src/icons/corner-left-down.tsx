@@ -18,5 +18,7 @@
         )
       }))
 
-      export const CornerLeftDown = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CornerLeftDown: IconComponent = Icon
     

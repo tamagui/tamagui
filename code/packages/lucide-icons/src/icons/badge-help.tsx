@@ -19,5 +19,7 @@
         )
       }))
 
-      export const BadgeHelp = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BadgeHelp: IconComponent = Icon
     

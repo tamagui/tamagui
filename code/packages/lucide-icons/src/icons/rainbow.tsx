@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Rainbow = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Rainbow: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ZoomOut = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ZoomOut: IconComponent = Icon
     

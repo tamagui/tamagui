@@ -18,5 +18,7 @@
         )
       }))
 
-      export const IceCreamBowl = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const IceCreamBowl: IconComponent = Icon
     

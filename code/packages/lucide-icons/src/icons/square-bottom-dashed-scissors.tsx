@@ -24,5 +24,7 @@
         )
       }))
 
-      export const SquareBottomDashedScissors = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquareBottomDashedScissors: IconComponent = Icon
     

@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Sigma = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Sigma: IconComponent = Icon
     

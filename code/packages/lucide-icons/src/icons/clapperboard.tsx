@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Clapperboard = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Clapperboard: IconComponent = Icon
     

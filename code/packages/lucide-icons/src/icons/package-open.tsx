@@ -19,5 +19,7 @@
         )
       }))
 
-      export const PackageOpen = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PackageOpen: IconComponent = Icon
     

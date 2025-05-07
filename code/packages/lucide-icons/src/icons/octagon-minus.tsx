@@ -17,5 +17,7 @@
         )
       }))
 
-      export const OctagonMinus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const OctagonMinus: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Baseline = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Baseline: IconComponent = Icon
     

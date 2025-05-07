@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ReplyAll = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ReplyAll: IconComponent = Icon
     

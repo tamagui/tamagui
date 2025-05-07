@@ -22,5 +22,7 @@
         )
       }))
 
-      export const MonitorSpeaker = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MonitorSpeaker: IconComponent = Icon
     

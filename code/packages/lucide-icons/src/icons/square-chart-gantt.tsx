@@ -20,5 +20,7 @@
         )
       }))
 
-      export const SquareChartGantt = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquareChartGantt: IconComponent = Icon
     

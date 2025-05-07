@@ -22,5 +22,7 @@
         )
       }))
 
-      export const Medal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Medal: IconComponent = Icon
     

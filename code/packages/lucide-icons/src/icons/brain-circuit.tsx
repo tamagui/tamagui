@@ -29,5 +29,7 @@
         )
       }))
 
-      export const BrainCircuit = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BrainCircuit: IconComponent = Icon
     

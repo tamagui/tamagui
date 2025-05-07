@@ -18,5 +18,7 @@
         )
       }))
 
-      export const DoorClosed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const DoorClosed: IconComponent = Icon
     

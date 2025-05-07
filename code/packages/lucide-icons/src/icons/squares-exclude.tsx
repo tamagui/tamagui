@@ -17,5 +17,7 @@
         )
       }))
 
-      export const SquaresExclude = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquaresExclude: IconComponent = Icon
     

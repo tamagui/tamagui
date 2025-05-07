@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Asterisk = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Asterisk: IconComponent = Icon
     

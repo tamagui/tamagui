@@ -25,5 +25,7 @@
         )
       }))
 
-      export const NotebookTabs = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const NotebookTabs: IconComponent = Icon
     

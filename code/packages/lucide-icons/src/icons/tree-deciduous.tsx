@@ -17,5 +17,7 @@
         )
       }))
 
-      export const TreeDeciduous = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TreeDeciduous: IconComponent = Icon
     

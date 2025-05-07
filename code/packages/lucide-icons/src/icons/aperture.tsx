@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Aperture = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Aperture: IconComponent = Icon
     

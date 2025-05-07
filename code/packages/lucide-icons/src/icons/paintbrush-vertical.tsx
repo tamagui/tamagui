@@ -19,5 +19,7 @@
         )
       }))
 
-      export const PaintbrushVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PaintbrushVertical: IconComponent = Icon
     

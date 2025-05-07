@@ -18,5 +18,7 @@
         )
       }))
 
-      export const RailSymbol = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RailSymbol: IconComponent = Icon
     

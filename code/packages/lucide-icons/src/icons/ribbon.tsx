@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Ribbon = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Ribbon: IconComponent = Icon
     

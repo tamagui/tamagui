@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Crosshair = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Crosshair: IconComponent = Icon
     

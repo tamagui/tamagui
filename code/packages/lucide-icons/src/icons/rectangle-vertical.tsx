@@ -16,5 +16,7 @@
         )
       }))
 
-      export const RectangleVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RectangleVertical: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Rss = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Rss: IconComponent = Icon
     

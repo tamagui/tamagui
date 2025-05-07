@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Hammer = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Hammer: IconComponent = Icon
     

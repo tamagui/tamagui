@@ -18,5 +18,7 @@
         )
       }))
 
-      export const RotateCwSquare = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RotateCwSquare: IconComponent = Icon
     

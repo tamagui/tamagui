@@ -16,5 +16,7 @@
         )
       }))
 
-      export const AudioWaveform = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AudioWaveform: IconComponent = Icon
     

@@ -26,5 +26,7 @@
         )
       }))
 
-      export const Microchip = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Microchip: IconComponent = Icon
     

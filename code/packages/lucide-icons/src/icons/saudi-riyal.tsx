@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SaudiRiyal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SaudiRiyal: IconComponent = Icon
     

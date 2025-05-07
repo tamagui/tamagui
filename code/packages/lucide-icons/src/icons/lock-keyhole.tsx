@@ -20,5 +20,7 @@
         )
       }))
 
-      export const LockKeyhole = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LockKeyhole: IconComponent = Icon
     

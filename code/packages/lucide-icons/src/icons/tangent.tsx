@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Tangent = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Tangent: IconComponent = Icon
     

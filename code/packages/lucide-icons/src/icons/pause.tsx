@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Pause = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Pause: IconComponent = Icon
     

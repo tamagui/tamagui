@@ -18,5 +18,7 @@
         )
       }))
 
-      export const BicepsFlexed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BicepsFlexed: IconComponent = Icon
     

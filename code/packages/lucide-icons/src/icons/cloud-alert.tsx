@@ -18,5 +18,7 @@
         )
       }))
 
-      export const CloudAlert = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CloudAlert: IconComponent = Icon
     

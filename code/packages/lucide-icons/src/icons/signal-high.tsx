@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SignalHigh = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SignalHigh: IconComponent = Icon
     

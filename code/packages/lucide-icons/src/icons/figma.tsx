@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Figma = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Figma: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ZapOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ZapOff: IconComponent = Icon
     

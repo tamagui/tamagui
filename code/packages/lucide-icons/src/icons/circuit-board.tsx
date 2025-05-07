@@ -22,5 +22,7 @@
         )
       }))
 
-      export const CircuitBoard = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircuitBoard: IconComponent = Icon
     

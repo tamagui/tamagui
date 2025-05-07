@@ -17,5 +17,7 @@
         )
       }))
 
-      export const SquareMousePointer = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquareMousePointer: IconComponent = Icon
     

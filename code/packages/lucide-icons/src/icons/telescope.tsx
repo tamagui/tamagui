@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Telescope = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Telescope: IconComponent = Icon
     

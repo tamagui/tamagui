@@ -17,5 +17,7 @@
         )
       }))
 
-      export const ChartSpline = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartSpline: IconComponent = Icon
     

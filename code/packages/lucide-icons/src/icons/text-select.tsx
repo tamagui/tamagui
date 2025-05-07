@@ -30,5 +30,7 @@
         )
       }))
 
-      export const TextSelect = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TextSelect: IconComponent = Icon
     

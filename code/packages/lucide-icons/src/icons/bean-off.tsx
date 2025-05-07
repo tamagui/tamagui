@@ -20,5 +20,7 @@
         )
       }))
 
-      export const BeanOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BeanOff: IconComponent = Icon
     

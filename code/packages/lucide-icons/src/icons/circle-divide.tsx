@@ -20,5 +20,7 @@
         )
       }))
 
-      export const CircleDivide = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircleDivide: IconComponent = Icon
     

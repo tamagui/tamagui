@@ -18,5 +18,7 @@
         )
       }))
 
-      export const PhilippinePeso = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PhilippinePeso: IconComponent = Icon
     

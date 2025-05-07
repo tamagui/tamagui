@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Rocket = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Rocket: IconComponent = Icon
     

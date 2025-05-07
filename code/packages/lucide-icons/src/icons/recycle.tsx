@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Recycle = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Recycle: IconComponent = Icon
     

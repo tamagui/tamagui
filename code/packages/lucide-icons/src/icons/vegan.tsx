@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Vegan = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Vegan: IconComponent = Icon
     

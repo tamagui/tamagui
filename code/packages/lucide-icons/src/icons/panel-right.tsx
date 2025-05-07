@@ -18,5 +18,7 @@
         )
       }))
 
-      export const PanelRight = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PanelRight: IconComponent = Icon
     

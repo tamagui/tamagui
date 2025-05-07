@@ -20,5 +20,7 @@
         )
       }))
 
-      export const LockKeyholeOpen = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LockKeyholeOpen: IconComponent = Icon
     

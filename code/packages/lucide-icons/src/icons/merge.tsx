@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Merge = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Merge: IconComponent = Icon
     

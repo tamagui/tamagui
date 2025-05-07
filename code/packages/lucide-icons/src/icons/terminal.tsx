@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Terminal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Terminal: IconComponent = Icon
     

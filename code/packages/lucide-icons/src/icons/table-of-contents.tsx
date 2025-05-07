@@ -21,5 +21,7 @@
         )
       }))
 
-      export const TableOfContents = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TableOfContents: IconComponent = Icon
     

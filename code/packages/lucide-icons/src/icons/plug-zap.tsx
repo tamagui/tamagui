@@ -20,5 +20,7 @@
         )
       }))
 
-      export const PlugZap = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PlugZap: IconComponent = Icon
     

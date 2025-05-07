@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Loader = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Loader: IconComponent = Icon
     

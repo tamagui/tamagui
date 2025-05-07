@@ -28,5 +28,7 @@
         )
       }))
 
-      export const NotepadTextDashed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const NotepadTextDashed: IconComponent = Icon
     

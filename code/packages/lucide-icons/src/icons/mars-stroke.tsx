@@ -20,5 +20,7 @@
         )
       }))
 
-      export const MarsStroke = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MarsStroke: IconComponent = Icon
     

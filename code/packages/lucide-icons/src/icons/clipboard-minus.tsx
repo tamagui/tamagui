@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ClipboardMinus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ClipboardMinus: IconComponent = Icon
     

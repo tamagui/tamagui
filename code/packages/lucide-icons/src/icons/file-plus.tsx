@@ -19,5 +19,7 @@
         )
       }))
 
-      export const FilePlus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FilePlus: IconComponent = Icon
     

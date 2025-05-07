@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SeparatorHorizontal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SeparatorHorizontal: IconComponent = Icon
     

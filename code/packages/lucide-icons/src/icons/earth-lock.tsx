@@ -22,5 +22,7 @@
         )
       }))
 
-      export const EarthLock = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const EarthLock: IconComponent = Icon
     

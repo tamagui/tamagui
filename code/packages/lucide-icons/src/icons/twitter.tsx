@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Twitter = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Twitter: IconComponent = Icon
     

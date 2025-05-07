@@ -24,5 +24,7 @@
         )
       }))
 
-      export const HopOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const HopOff: IconComponent = Icon
     

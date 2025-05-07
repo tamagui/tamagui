@@ -20,5 +20,7 @@
         )
       }))
 
-      export const RemoveFormatting = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RemoveFormatting: IconComponent = Icon
     

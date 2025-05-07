@@ -20,5 +20,7 @@
         )
       }))
 
-      export const CaseSensitive = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CaseSensitive: IconComponent = Icon
     

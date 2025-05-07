@@ -18,5 +18,7 @@
         )
       }))
 
-      export const FlaskRound = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FlaskRound: IconComponent = Icon
     

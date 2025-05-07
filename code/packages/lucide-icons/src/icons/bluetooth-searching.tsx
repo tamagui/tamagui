@@ -18,5 +18,7 @@
         )
       }))
 
-      export const BluetoothSearching = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BluetoothSearching: IconComponent = Icon
     

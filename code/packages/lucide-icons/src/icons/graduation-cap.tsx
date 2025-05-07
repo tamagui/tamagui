@@ -18,5 +18,7 @@
         )
       }))
 
-      export const GraduationCap = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GraduationCap: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const LoaderPinwheel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LoaderPinwheel: IconComponent = Icon
     

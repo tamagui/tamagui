@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Torus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Torus: IconComponent = Icon
     

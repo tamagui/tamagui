@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Triangle = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Triangle: IconComponent = Icon
     

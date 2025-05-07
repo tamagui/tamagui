@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Delete = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Delete: IconComponent = Icon
     

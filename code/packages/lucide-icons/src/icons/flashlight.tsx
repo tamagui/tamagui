@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Flashlight = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Flashlight: IconComponent = Icon
     

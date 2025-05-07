@@ -19,5 +19,7 @@
         )
       }))
 
-      export const HandHeart = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const HandHeart: IconComponent = Icon
     

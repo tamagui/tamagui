@@ -17,5 +17,7 @@
         )
       }))
 
-      export const ChevronFirst = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChevronFirst: IconComponent = Icon
     

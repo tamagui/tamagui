@@ -19,5 +19,7 @@
         )
       }))
 
-      export const PaintBucket = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PaintBucket: IconComponent = Icon
     

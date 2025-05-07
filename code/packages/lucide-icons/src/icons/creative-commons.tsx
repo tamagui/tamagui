@@ -19,5 +19,7 @@
         )
       }))
 
-      export const CreativeCommons = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CreativeCommons: IconComponent = Icon
     

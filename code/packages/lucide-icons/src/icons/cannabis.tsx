@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Cannabis = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Cannabis: IconComponent = Icon
     

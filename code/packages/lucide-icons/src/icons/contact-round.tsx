@@ -22,5 +22,7 @@
         )
       }))
 
-      export const ContactRound = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ContactRound: IconComponent = Icon
     

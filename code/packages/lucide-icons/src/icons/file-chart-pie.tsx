@@ -19,5 +19,7 @@
         )
       }))
 
-      export const FileChartPie = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileChartPie: IconComponent = Icon
     

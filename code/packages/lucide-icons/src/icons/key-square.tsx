@@ -18,5 +18,7 @@
         )
       }))
 
-      export const KeySquare = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const KeySquare: IconComponent = Icon
     

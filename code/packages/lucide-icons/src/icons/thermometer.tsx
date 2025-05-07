@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Thermometer = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Thermometer: IconComponent = Icon
     

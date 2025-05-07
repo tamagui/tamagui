@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Origami = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Origami: IconComponent = Icon
     

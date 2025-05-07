@@ -17,5 +17,7 @@
         )
       }))
 
-      export const CloudLightning = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CloudLightning: IconComponent = Icon
     

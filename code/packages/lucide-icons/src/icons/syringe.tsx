@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Syringe = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Syringe: IconComponent = Icon
     

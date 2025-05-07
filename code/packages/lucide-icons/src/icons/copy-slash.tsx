@@ -20,5 +20,7 @@
         )
       }))
 
-      export const CopySlash = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CopySlash: IconComponent = Icon
     

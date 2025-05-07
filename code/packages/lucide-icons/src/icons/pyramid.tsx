@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Pyramid = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Pyramid: IconComponent = Icon
     

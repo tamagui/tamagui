@@ -23,5 +23,7 @@
         )
       }))
 
-      export const CircleDashed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircleDashed: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Newspaper = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Newspaper: IconComponent = Icon
     

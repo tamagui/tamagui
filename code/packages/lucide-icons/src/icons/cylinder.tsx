@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Cylinder = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Cylinder: IconComponent = Icon
     

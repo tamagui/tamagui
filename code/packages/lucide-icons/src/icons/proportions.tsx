@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Proportions = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Proportions: IconComponent = Icon
     

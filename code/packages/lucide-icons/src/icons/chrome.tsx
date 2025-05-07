@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Chrome = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Chrome: IconComponent = Icon
     

@@ -26,5 +26,7 @@
         )
       }))
 
-      export const ShipWheel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ShipWheel: IconComponent = Icon
     

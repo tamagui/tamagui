@@ -21,5 +21,7 @@
         )
       }))
 
-      export const RefreshCcwDot = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RefreshCcwDot: IconComponent = Icon
     

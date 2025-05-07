@@ -26,5 +26,7 @@
         )
       }))
 
-      export const BookDashed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BookDashed: IconComponent = Icon
     

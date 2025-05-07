@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Weight = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Weight: IconComponent = Icon
     

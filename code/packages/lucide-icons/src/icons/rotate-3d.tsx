@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Rotate3d = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Rotate3d: IconComponent = Icon
     

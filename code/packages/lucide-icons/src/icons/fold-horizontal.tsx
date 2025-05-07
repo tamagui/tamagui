@@ -23,5 +23,7 @@
         )
       }))
 
-      export const FoldHorizontal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FoldHorizontal: IconComponent = Icon
     

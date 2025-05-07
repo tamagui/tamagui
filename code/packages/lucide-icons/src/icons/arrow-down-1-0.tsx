@@ -21,5 +21,7 @@
         )
       }))
 
-      export const ArrowDown10 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ArrowDown10: IconComponent = Icon
     

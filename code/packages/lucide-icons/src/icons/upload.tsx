@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Upload = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Upload: IconComponent = Icon
     

@@ -23,5 +23,7 @@
         )
       }))
 
-      export const CalendarSync = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CalendarSync: IconComponent = Icon
     

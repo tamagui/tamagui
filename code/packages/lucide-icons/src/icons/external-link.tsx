@@ -18,5 +18,7 @@
         )
       }))
 
-      export const ExternalLink = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ExternalLink: IconComponent = Icon
     

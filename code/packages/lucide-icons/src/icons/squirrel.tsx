@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Squirrel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Squirrel: IconComponent = Icon
     

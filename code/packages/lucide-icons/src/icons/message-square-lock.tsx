@@ -19,5 +19,7 @@
         )
       }))
 
-      export const MessageSquareLock = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MessageSquareLock: IconComponent = Icon
     

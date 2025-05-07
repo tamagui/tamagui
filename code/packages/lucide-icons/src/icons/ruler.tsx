@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Ruler = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Ruler: IconComponent = Icon
     

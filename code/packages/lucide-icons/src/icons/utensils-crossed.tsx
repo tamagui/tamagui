@@ -19,5 +19,7 @@
         )
       }))
 
-      export const UtensilsCrossed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const UtensilsCrossed: IconComponent = Icon
     

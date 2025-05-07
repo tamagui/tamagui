@@ -26,5 +26,7 @@
         )
       }))
 
-      export const SquaresIntersect = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquaresIntersect: IconComponent = Icon
     

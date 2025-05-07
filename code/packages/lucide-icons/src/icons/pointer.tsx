@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Pointer = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Pointer: IconComponent = Icon
     

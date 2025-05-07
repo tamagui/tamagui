@@ -19,5 +19,7 @@
         )
       }))
 
-      export const GitCommitHorizontal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitCommitHorizontal: IconComponent = Icon
     

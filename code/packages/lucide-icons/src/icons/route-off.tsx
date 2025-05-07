@@ -23,5 +23,7 @@
         )
       }))
 
-      export const RouteOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RouteOff: IconComponent = Icon
     

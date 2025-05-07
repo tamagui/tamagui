@@ -24,5 +24,7 @@
         )
       }))
 
-      export const Cake = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Cake: IconComponent = Icon
     

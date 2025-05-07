@@ -18,5 +18,7 @@
         )
       }))
 
-      export const BookUp = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BookUp: IconComponent = Icon
     

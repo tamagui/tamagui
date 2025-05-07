@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Eye = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Eye: IconComponent = Icon
     

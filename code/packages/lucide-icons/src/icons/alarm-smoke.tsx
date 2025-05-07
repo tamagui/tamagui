@@ -20,5 +20,7 @@
         )
       }))
 
-      export const AlarmSmoke = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlarmSmoke: IconComponent = Icon
     

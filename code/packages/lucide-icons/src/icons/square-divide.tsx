@@ -20,5 +20,7 @@
         )
       }))
 
-      export const SquareDivide = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquareDivide: IconComponent = Icon
     

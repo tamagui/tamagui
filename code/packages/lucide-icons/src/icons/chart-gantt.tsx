@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ChartGantt = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartGantt: IconComponent = Icon
     

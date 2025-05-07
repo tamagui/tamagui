@@ -17,5 +17,7 @@
         )
       }))
 
-      export const ChartPie = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartPie: IconComponent = Icon
     

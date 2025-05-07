@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Plane = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Plane: IconComponent = Icon
     

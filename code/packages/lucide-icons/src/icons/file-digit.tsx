@@ -21,5 +21,7 @@
         )
       }))
 
-      export const FileDigit = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileDigit: IconComponent = Icon
     

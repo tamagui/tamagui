@@ -24,5 +24,7 @@
         )
       }))
 
-      export const SlidersVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SlidersVertical: IconComponent = Icon
     

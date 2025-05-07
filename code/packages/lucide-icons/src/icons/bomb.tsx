@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Bomb = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Bomb: IconComponent = Icon
     

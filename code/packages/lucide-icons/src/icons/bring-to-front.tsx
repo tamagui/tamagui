@@ -19,5 +19,7 @@
         )
       }))
 
-      export const BringToFront = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BringToFront: IconComponent = Icon
     

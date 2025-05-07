@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Voicemail = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Voicemail: IconComponent = Icon
     

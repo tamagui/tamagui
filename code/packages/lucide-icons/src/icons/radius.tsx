@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Radius = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Radius: IconComponent = Icon
     

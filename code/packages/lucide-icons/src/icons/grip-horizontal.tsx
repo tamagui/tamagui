@@ -21,5 +21,7 @@
         )
       }))
 
-      export const GripHorizontal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GripHorizontal: IconComponent = Icon
     

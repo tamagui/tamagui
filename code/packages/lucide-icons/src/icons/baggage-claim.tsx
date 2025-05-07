@@ -22,5 +22,7 @@
         )
       }))
 
-      export const BaggageClaim = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BaggageClaim: IconComponent = Icon
     

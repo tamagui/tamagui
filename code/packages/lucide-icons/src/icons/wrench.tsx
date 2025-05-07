@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Wrench = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Wrench: IconComponent = Icon
     

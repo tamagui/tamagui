@@ -18,5 +18,7 @@
         )
       }))
 
-      export const FileSymlink = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileSymlink: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SignpostBig = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SignpostBig: IconComponent = Icon
     

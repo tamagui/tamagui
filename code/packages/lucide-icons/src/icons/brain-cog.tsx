@@ -31,5 +31,7 @@
         )
       }))
 
-      export const BrainCog = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BrainCog: IconComponent = Icon
     

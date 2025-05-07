@@ -19,5 +19,7 @@
         )
       }))
 
-      export const CopyCheck = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CopyCheck: IconComponent = Icon
     

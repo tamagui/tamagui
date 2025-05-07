@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ScreenShare = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ScreenShare: IconComponent = Icon
     

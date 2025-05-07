@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Tornado = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Tornado: IconComponent = Icon
     

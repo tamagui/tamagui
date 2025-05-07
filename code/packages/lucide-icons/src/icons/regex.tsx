@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Regex = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Regex: IconComponent = Icon
     

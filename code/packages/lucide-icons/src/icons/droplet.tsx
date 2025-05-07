@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Droplet = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Droplet: IconComponent = Icon
     

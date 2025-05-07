@@ -18,5 +18,7 @@
         )
       }))
 
-      export const AlignLeft = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlignLeft: IconComponent = Icon
     

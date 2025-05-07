@@ -18,5 +18,7 @@
         )
       }))
 
-      export const SkipBack = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SkipBack: IconComponent = Icon
     

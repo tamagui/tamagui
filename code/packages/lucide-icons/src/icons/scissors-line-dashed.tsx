@@ -23,5 +23,7 @@
         )
       }))
 
-      export const ScissorsLineDashed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ScissorsLineDashed: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Camera = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Camera: IconComponent = Icon
     

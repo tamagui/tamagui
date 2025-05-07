@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Trophy = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Trophy: IconComponent = Icon
     

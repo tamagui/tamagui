@@ -22,5 +22,7 @@
         )
       }))
 
-      export const RollerCoaster = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RollerCoaster: IconComponent = Icon
     

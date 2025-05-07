@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Minimize2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Minimize2: IconComponent = Icon
     

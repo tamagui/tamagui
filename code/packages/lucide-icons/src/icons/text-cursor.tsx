@@ -18,5 +18,7 @@
         )
       }))
 
-      export const TextCursor = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TextCursor: IconComponent = Icon
     

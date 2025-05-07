@@ -20,5 +20,7 @@
         )
       }))
 
-      export const CaseLower = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CaseLower: IconComponent = Icon
     

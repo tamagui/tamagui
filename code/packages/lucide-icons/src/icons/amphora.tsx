@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Amphora = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Amphora: IconComponent = Icon
     

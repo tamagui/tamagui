@@ -19,5 +19,7 @@
         )
       }))
 
-      export const GitMerge = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitMerge: IconComponent = Icon
     

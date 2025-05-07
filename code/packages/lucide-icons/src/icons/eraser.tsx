@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Eraser = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Eraser: IconComponent = Icon
     

@@ -25,5 +25,7 @@
         )
       }))
 
-      export const BusFront = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BusFront: IconComponent = Icon
     

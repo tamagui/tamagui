@@ -18,5 +18,7 @@
         )
       }))
 
-      export const KeyRound = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const KeyRound: IconComponent = Icon
     

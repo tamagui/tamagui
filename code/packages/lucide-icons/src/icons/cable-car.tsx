@@ -24,5 +24,7 @@
         )
       }))
 
-      export const CableCar = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CableCar: IconComponent = Icon
     

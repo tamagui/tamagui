@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Earth = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Earth: IconComponent = Icon
     

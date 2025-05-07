@@ -22,5 +22,7 @@
         )
       }))
 
-      export const IdCard = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const IdCard: IconComponent = Icon
     

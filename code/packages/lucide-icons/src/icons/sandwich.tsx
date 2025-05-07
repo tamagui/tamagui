@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Sandwich = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Sandwich: IconComponent = Icon
     

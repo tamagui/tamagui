@@ -18,5 +18,7 @@
         )
       }))
 
-      export const AtSign = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AtSign: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const CreditCard = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CreditCard: IconComponent = Icon
     

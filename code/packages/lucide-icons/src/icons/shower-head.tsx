@@ -25,5 +25,7 @@
         )
       }))
 
-      export const ShowerHead = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ShowerHead: IconComponent = Icon
     

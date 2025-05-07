@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Tally1 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Tally1: IconComponent = Icon
     

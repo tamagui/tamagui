@@ -24,5 +24,7 @@
         )
       }))
 
-      export const Transgender = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Transgender: IconComponent = Icon
     

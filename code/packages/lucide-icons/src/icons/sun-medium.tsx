@@ -25,5 +25,7 @@
         )
       }))
 
-      export const SunMedium = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SunMedium: IconComponent = Icon
     

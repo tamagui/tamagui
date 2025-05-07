@@ -30,5 +30,7 @@
         )
       }))
 
-      export const Cpu = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Cpu: IconComponent = Icon
     

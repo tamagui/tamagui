@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Braces = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Braces: IconComponent = Icon
     

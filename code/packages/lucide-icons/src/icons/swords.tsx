@@ -24,5 +24,7 @@
         )
       }))
 
-      export const Swords = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Swords: IconComponent = Icon
     

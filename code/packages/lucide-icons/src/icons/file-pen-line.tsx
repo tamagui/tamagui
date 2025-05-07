@@ -18,5 +18,7 @@
         )
       }))
 
-      export const FilePenLine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FilePenLine: IconComponent = Icon
     

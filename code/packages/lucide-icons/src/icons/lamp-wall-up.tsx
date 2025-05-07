@@ -18,5 +18,7 @@
         )
       }))
 
-      export const LampWallUp = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LampWallUp: IconComponent = Icon
     

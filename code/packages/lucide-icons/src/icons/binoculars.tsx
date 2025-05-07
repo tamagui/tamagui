@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Binoculars = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Binoculars: IconComponent = Icon
     

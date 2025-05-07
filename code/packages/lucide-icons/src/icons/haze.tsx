@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Haze = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Haze: IconComponent = Icon
     

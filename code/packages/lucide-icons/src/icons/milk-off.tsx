@@ -20,5 +20,7 @@
         )
       }))
 
-      export const MilkOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MilkOff: IconComponent = Icon
     

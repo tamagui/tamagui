@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Bandage = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Bandage: IconComponent = Icon
     

@@ -16,5 +16,7 @@
         )
       }))
 
-      export const MousePointer2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MousePointer2: IconComponent = Icon
     

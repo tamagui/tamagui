@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Worm = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Worm: IconComponent = Icon
     

@@ -24,5 +24,7 @@
         )
       }))
 
-      export const Slack = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Slack: IconComponent = Icon
     

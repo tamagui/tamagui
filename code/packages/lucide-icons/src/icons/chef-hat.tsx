@@ -17,5 +17,7 @@
         )
       }))
 
-      export const ChefHat = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChefHat: IconComponent = Icon
     

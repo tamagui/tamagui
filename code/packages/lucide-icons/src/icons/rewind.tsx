@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Rewind = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Rewind: IconComponent = Icon
     

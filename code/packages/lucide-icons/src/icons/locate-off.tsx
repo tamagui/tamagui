@@ -22,5 +22,7 @@
         )
       }))
 
-      export const LocateOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LocateOff: IconComponent = Icon
     

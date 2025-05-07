@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Activity = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Activity: IconComponent = Icon
     

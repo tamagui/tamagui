@@ -17,5 +17,7 @@
         )
       }))
 
-      export const MoveUpRight = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MoveUpRight: IconComponent = Icon
     

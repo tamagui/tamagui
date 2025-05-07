@@ -19,5 +19,7 @@
         )
       }))
 
-      export const UmbrellaOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const UmbrellaOff: IconComponent = Icon
     

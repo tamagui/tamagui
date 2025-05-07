@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Lectern = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Lectern: IconComponent = Icon
     

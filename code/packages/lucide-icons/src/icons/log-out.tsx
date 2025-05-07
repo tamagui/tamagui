@@ -20,5 +20,7 @@
         )
       }))
 
-      export const LogOut = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LogOut: IconComponent = Icon
     

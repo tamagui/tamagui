@@ -20,5 +20,7 @@
         )
       }))
 
-      export const AppWindow = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AppWindow: IconComponent = Icon
     

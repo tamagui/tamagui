@@ -20,5 +20,7 @@
         )
       }))
 
-      export const RectangleEllipsis = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RectangleEllipsis: IconComponent = Icon
     

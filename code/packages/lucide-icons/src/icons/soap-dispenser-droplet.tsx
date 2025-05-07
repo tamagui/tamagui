@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SoapDispenserDroplet = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SoapDispenserDroplet: IconComponent = Icon
     

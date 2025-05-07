@@ -23,5 +23,7 @@
         )
       }))
 
-      export const RulerDimensionLine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RulerDimensionLine: IconComponent = Icon
     

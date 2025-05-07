@@ -21,5 +21,7 @@
         )
       }))
 
-      export const GitBranchPlus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitBranchPlus: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Underline = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Underline: IconComponent = Icon
     

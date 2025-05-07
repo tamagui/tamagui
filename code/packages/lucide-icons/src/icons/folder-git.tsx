@@ -20,5 +20,7 @@
         )
       }))
 
-      export const FolderGit = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FolderGit: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Divide = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Divide: IconComponent = Icon
     

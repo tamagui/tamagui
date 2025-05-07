@@ -21,5 +21,7 @@
         )
       }))
 
-      export const MonitorPause = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MonitorPause: IconComponent = Icon
     

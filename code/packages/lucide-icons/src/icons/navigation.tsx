@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Navigation = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Navigation: IconComponent = Icon
     

@@ -22,5 +22,7 @@
         )
       }))
 
-      export const GitPullRequestDraft = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitPullRequestDraft: IconComponent = Icon
     

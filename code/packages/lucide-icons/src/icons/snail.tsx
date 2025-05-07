@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Snail = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Snail: IconComponent = Icon
     

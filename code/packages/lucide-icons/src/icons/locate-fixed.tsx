@@ -22,5 +22,7 @@
         )
       }))
 
-      export const LocateFixed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LocateFixed: IconComponent = Icon
     

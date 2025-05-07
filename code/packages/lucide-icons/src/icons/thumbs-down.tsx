@@ -17,5 +17,7 @@
         )
       }))
 
-      export const ThumbsDown = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ThumbsDown: IconComponent = Icon
     

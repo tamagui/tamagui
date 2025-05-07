@@ -19,5 +19,7 @@
         )
       }))
 
-      export const LocationEdit = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LocationEdit: IconComponent = Icon
     

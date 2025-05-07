@@ -20,5 +20,7 @@
         )
       }))
 
-      export const WavesLadder = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const WavesLadder: IconComponent = Icon
     

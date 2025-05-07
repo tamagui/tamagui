@@ -17,5 +17,7 @@
         )
       }))
 
-      export const SendHorizontal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SendHorizontal: IconComponent = Icon
     

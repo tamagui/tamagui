@@ -19,5 +19,7 @@
         )
       }))
 
-      export const LayoutGrid = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LayoutGrid: IconComponent = Icon
     

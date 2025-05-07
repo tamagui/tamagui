@@ -17,5 +17,7 @@
         )
       }))
 
-      export const MailOpen = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MailOpen: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Trello = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Trello: IconComponent = Icon
     

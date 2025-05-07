@@ -22,5 +22,7 @@
         )
       }))
 
-      export const ChartScatter = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartScatter: IconComponent = Icon
     

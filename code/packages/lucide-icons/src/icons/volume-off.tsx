@@ -20,5 +20,7 @@
         )
       }))
 
-      export const VolumeOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const VolumeOff: IconComponent = Icon
     

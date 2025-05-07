@@ -18,5 +18,7 @@
         )
       }))
 
-      export const ToggleLeft = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ToggleLeft: IconComponent = Icon
     

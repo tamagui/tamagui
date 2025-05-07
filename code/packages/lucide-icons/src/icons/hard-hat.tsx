@@ -20,5 +20,7 @@
         )
       }))
 
-      export const HardHat = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const HardHat: IconComponent = Icon
     

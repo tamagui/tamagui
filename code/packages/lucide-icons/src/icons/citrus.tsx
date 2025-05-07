@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Citrus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Citrus: IconComponent = Icon
     

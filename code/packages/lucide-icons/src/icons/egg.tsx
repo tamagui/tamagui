@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Egg = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Egg: IconComponent = Icon
     

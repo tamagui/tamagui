@@ -25,5 +25,7 @@
         )
       }))
 
-      export const FerrisWheel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FerrisWheel: IconComponent = Icon
     

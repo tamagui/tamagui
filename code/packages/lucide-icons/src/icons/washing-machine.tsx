@@ -22,5 +22,7 @@
         )
       }))
 
-      export const WashingMachine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const WashingMachine: IconComponent = Icon
     

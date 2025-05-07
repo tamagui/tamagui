@@ -24,5 +24,7 @@
         )
       }))
 
-      export const CalendarRange = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CalendarRange: IconComponent = Icon
     

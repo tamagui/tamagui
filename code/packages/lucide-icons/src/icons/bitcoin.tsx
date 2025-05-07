@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Bitcoin = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Bitcoin: IconComponent = Icon
     

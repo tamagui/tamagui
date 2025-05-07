@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Pipette = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Pipette: IconComponent = Icon
     

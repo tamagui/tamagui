@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Clock4 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Clock4: IconComponent = Icon
     

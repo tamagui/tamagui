@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Vibrate = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Vibrate: IconComponent = Icon
     

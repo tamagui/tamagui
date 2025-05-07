@@ -24,5 +24,7 @@
         )
       }))
 
-      export const PackageSearch = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PackageSearch: IconComponent = Icon
     

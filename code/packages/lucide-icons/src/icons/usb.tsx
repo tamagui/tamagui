@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Usb = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Usb: IconComponent = Icon
     

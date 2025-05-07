@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Touchpad = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Touchpad: IconComponent = Icon
     

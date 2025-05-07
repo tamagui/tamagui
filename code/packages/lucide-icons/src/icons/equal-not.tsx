@@ -18,5 +18,7 @@
         )
       }))
 
-      export const EqualNot = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const EqualNot: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const FileDiff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileDiff: IconComponent = Icon
     

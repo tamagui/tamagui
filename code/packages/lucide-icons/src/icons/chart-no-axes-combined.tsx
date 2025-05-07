@@ -21,5 +21,7 @@
         )
       }))
 
-      export const ChartNoAxesCombined = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartNoAxesCombined: IconComponent = Icon
     

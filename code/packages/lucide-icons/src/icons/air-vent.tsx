@@ -19,5 +19,7 @@
         )
       }))
 
-      export const AirVent = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AirVent: IconComponent = Icon
     

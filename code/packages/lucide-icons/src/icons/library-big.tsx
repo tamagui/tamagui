@@ -19,5 +19,7 @@
         )
       }))
 
-      export const LibraryBig = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LibraryBig: IconComponent = Icon
     

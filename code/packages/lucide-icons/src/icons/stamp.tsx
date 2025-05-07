@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Stamp = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Stamp: IconComponent = Icon
     

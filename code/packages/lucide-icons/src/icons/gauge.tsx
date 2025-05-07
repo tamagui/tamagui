@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Gauge = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Gauge: IconComponent = Icon
     

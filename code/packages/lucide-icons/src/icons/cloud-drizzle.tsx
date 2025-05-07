@@ -22,5 +22,7 @@
         )
       }))
 
-      export const CloudDrizzle = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CloudDrizzle: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const PanelRightDashed = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PanelRightDashed: IconComponent = Icon
     

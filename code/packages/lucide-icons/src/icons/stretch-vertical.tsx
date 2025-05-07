@@ -17,5 +17,7 @@
         )
       }))
 
-      export const StretchVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const StretchVertical: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Globe = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Globe: IconComponent = Icon
     

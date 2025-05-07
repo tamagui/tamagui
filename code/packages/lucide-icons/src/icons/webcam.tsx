@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Webcam = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Webcam: IconComponent = Icon
     

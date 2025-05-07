@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SquareArrowUpLeft = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SquareArrowUpLeft: IconComponent = Icon
     

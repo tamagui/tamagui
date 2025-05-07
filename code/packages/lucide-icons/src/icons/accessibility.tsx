@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Accessibility = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Accessibility: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const PencilLine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PencilLine: IconComponent = Icon
     

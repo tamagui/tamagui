@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ScanLine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ScanLine: IconComponent = Icon
     

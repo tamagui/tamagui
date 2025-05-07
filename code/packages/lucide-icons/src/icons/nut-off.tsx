@@ -21,5 +21,7 @@
         )
       }))
 
-      export const NutOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const NutOff: IconComponent = Icon
     

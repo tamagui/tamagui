@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Blinds = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Blinds: IconComponent = Icon
     

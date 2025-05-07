@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Focus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Focus: IconComponent = Icon
     

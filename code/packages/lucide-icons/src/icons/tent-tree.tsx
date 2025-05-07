@@ -23,5 +23,7 @@
         )
       }))
 
-      export const TentTree = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TentTree: IconComponent = Icon
     

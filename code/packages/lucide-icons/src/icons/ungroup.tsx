@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Ungroup = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Ungroup: IconComponent = Icon
     

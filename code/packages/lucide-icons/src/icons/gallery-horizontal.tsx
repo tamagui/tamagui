@@ -19,5 +19,7 @@
         )
       }))
 
-      export const GalleryHorizontal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GalleryHorizontal: IconComponent = Icon
     

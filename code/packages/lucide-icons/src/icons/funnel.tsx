@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Funnel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Funnel: IconComponent = Icon
     

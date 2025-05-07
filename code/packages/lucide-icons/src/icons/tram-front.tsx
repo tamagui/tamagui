@@ -23,5 +23,7 @@
         )
       }))
 
-      export const TramFront = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TramFront: IconComponent = Icon
     

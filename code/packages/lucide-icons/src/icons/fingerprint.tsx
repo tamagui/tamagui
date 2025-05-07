@@ -24,5 +24,7 @@
         )
       }))
 
-      export const Fingerprint = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Fingerprint: IconComponent = Icon
     

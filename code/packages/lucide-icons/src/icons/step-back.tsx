@@ -18,5 +18,7 @@
         )
       }))
 
-      export const StepBack = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const StepBack: IconComponent = Icon
     

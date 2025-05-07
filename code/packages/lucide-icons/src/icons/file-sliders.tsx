@@ -21,5 +21,7 @@
         )
       }))
 
-      export const FileSliders = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FileSliders: IconComponent = Icon
     

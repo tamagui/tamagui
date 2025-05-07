@@ -21,5 +21,7 @@
         )
       }))
 
-      export const GalleryThumbnails = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GalleryThumbnails: IconComponent = Icon
     

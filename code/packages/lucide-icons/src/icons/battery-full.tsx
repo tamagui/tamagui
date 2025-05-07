@@ -21,5 +21,7 @@
         )
       }))
 
-      export const BatteryFull = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BatteryFull: IconComponent = Icon
     

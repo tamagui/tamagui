@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Beef = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Beef: IconComponent = Icon
     

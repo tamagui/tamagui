@@ -16,5 +16,7 @@
         )
       }))
 
-      export const StarHalf = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const StarHalf: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const VenetianMask = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const VenetianMask: IconComponent = Icon
     

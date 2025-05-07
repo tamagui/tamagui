@@ -19,5 +19,7 @@
         )
       }))
 
-      export const TvMinimalPlay = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TvMinimalPlay: IconComponent = Icon
     

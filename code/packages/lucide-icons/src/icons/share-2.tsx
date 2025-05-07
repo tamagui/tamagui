@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Share2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Share2: IconComponent = Icon
     

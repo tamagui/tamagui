@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Sticker = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Sticker: IconComponent = Icon
     

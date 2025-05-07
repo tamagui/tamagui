@@ -18,5 +18,7 @@
         )
       }))
 
-      export const CircleArrowOutDownRight = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircleArrowOutDownRight: IconComponent = Icon
     

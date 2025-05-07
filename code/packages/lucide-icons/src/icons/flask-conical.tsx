@@ -18,5 +18,7 @@
         )
       }))
 
-      export const FlaskConical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FlaskConical: IconComponent = Icon
     

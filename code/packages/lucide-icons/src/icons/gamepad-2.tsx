@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Gamepad2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Gamepad2: IconComponent = Icon
     

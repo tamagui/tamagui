@@ -24,5 +24,7 @@
         )
       }))
 
-      export const Wand = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Wand: IconComponent = Icon
     

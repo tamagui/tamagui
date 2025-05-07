@@ -18,5 +18,7 @@
         )
       }))
 
-      export const FlameKindling = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FlameKindling: IconComponent = Icon
     

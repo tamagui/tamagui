@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Facebook = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Facebook: IconComponent = Icon
     

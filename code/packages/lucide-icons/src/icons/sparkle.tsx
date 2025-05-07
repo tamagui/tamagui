@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Sparkle = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Sparkle: IconComponent = Icon
     

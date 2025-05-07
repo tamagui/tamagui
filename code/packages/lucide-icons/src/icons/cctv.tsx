@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Cctv = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Cctv: IconComponent = Icon
     

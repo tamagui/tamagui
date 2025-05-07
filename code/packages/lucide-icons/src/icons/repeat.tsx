@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Repeat = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Repeat: IconComponent = Icon
     

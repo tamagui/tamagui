@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Cuboid = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Cuboid: IconComponent = Icon
     

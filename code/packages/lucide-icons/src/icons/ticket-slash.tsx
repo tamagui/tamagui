@@ -17,5 +17,7 @@
         )
       }))
 
-      export const TicketSlash = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TicketSlash: IconComponent = Icon
     

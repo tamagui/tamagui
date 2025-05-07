@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Drumstick = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Drumstick: IconComponent = Icon
     

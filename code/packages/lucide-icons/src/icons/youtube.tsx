@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Youtube = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Youtube: IconComponent = Icon
     

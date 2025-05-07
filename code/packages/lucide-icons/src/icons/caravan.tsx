@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Caravan = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Caravan: IconComponent = Icon
     

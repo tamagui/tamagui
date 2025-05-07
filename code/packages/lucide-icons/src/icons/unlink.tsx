@@ -22,5 +22,7 @@
         )
       }))
 
-      export const Unlink = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Unlink: IconComponent = Icon
     

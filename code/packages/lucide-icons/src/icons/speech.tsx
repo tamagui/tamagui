@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Speech = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Speech: IconComponent = Icon
     

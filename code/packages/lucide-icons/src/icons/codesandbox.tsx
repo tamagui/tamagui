@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Codesandbox = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Codesandbox: IconComponent = Icon
     

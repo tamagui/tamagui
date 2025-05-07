@@ -26,5 +26,7 @@
         )
       }))
 
-      export const WheatOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const WheatOff: IconComponent = Icon
     

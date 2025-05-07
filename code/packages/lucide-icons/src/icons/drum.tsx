@@ -23,5 +23,7 @@
         )
       }))
 
-      export const Drum = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Drum: IconComponent = Icon
     

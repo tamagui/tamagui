@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Omega = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Omega: IconComponent = Icon
     

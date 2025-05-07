@@ -21,5 +21,7 @@
         )
       }))
 
-      export const PointerOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PointerOff: IconComponent = Icon
     

@@ -17,5 +17,7 @@
         )
       }))
 
-      export const ArrowBigDownDash = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ArrowBigDownDash: IconComponent = Icon
     

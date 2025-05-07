@@ -19,5 +19,7 @@
         )
       }))
 
-      export const BetweenVerticalStart = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BetweenVerticalStart: IconComponent = Icon
     

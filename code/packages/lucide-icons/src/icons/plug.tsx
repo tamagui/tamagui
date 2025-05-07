@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Plug = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Plug: IconComponent = Icon
     

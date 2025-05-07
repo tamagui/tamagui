@@ -21,5 +21,7 @@
         )
       }))
 
-      export const GitFork = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitFork: IconComponent = Icon
     

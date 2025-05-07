@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Joystick = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Joystick: IconComponent = Icon
     

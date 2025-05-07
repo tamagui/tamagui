@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Dribbble = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Dribbble: IconComponent = Icon
     

@@ -23,5 +23,7 @@
         )
       }))
 
-      export const CloudSunRain = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CloudSunRain: IconComponent = Icon
     

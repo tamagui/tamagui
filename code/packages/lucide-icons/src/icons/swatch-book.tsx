@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SwatchBook = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SwatchBook: IconComponent = Icon
     

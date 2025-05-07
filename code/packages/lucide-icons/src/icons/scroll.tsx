@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Scroll = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Scroll: IconComponent = Icon
     

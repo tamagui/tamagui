@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ListVideo = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ListVideo: IconComponent = Icon
     

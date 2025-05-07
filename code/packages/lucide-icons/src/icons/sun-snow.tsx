@@ -26,5 +26,7 @@
         )
       }))
 
-      export const SunSnow = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SunSnow: IconComponent = Icon
     

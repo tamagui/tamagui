@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Pentagon = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Pentagon: IconComponent = Icon
     

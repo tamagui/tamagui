@@ -18,5 +18,7 @@
         )
       }))
 
-      export const MessageCircleReply = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MessageCircleReply: IconComponent = Icon
     

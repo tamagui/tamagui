@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Database = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Database: IconComponent = Icon
     

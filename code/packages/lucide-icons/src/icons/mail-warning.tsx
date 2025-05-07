@@ -19,5 +19,7 @@
         )
       }))
 
-      export const MailWarning = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MailWarning: IconComponent = Icon
     

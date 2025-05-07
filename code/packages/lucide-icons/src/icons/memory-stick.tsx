@@ -24,5 +24,7 @@
         )
       }))
 
-      export const MemoryStick = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MemoryStick: IconComponent = Icon
     

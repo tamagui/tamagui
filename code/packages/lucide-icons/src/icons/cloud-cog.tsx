@@ -24,5 +24,7 @@
         )
       }))
 
-      export const CloudCog = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CloudCog: IconComponent = Icon
     

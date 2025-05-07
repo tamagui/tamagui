@@ -19,5 +19,7 @@
         )
       }))
 
-      export const BrushCleaning = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BrushCleaning: IconComponent = Icon
     

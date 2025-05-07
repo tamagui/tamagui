@@ -20,5 +20,7 @@
         )
       }))
 
-      export const PilcrowRight = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PilcrowRight: IconComponent = Icon
     

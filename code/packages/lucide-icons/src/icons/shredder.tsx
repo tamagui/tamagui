@@ -22,5 +22,7 @@
         )
       }))
 
-      export const Shredder = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Shredder: IconComponent = Icon
     

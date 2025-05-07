@@ -18,5 +18,7 @@
         )
       }))
 
-      export const SkipForward = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SkipForward: IconComponent = Icon
     

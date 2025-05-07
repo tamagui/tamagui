@@ -21,5 +21,7 @@
         )
       }))
 
-      export const TableCellsMerge = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TableCellsMerge: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const TouchpadOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TouchpadOff: IconComponent = Icon
     

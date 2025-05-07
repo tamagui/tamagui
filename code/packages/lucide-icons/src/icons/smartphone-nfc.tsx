@@ -20,5 +20,7 @@
         )
       }))
 
-      export const SmartphoneNfc = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SmartphoneNfc: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const GripVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GripVertical: IconComponent = Icon
     

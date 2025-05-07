@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Lightbulb = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Lightbulb: IconComponent = Icon
     

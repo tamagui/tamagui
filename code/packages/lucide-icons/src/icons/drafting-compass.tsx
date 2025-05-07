@@ -21,5 +21,7 @@
         )
       }))
 
-      export const DraftingCompass = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const DraftingCompass: IconComponent = Icon
     

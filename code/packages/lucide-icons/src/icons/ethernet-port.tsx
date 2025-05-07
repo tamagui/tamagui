@@ -20,5 +20,7 @@
         )
       }))
 
-      export const EthernetPort = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const EthernetPort: IconComponent = Icon
     

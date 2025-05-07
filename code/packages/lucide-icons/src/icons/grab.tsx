@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Grab = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Grab: IconComponent = Icon
     

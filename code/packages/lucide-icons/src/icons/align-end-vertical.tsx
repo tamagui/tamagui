@@ -19,5 +19,7 @@
         )
       }))
 
-      export const AlignEndVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlignEndVertical: IconComponent = Icon
     

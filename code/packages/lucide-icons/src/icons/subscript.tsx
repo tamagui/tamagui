@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Subscript = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Subscript: IconComponent = Icon
     

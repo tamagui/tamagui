@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Factory = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Factory: IconComponent = Icon
     

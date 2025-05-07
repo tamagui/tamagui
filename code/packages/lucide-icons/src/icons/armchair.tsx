@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Armchair = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Armchair: IconComponent = Icon
     

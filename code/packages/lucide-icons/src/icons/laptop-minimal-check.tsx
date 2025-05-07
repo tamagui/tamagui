@@ -19,5 +19,7 @@
         )
       }))
 
-      export const LaptopMinimalCheck = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LaptopMinimalCheck: IconComponent = Icon
     

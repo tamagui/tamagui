@@ -23,5 +23,7 @@
         )
       }))
 
-      export const TruckElectric = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TruckElectric: IconComponent = Icon
     

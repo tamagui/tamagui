@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Zap = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Zap: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ChartColumnBig = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartColumnBig: IconComponent = Icon
     

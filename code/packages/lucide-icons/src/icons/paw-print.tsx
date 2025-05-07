@@ -20,5 +20,7 @@
         )
       }))
 
-      export const PawPrint = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PawPrint: IconComponent = Icon
     

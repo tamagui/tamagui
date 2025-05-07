@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Maximize = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Maximize: IconComponent = Icon
     

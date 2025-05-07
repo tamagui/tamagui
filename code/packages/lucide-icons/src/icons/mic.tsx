@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Mic = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Mic: IconComponent = Icon
     

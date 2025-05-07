@@ -22,5 +22,7 @@
         )
       }))
 
-      export const BotOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BotOff: IconComponent = Icon
     

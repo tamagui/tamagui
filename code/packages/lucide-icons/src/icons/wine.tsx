@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Wine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Wine: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const DiscAlbum = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const DiscAlbum: IconComponent = Icon
     

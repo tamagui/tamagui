@@ -20,7 +20,7 @@ const packageJsonExports = {}
 glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
 
-  console.info(`Processing icons`, icons)
+  console.info(`Processing icons`, icons.length)
 
   icons.forEach((i) => {
     const svg = fs.readFileSync(i, 'utf-8')
@@ -157,7 +157,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     fs.writeFileSync(location, out, 'utf-8')
 
     iconExports.push(`export { ${cname} } from './icons/${id}'`)
-    packageJsonExports[`icon/${cname}`] = {
+    packageJsonExports[`${cname}`] = {
       import: `dist/esm/icons/${fileName.replace('.svg', '.mjs')}`,
       require: `dist/cjs/icons/${fileName.replace('.svg', '.cjs')}`,
     }
@@ -167,7 +167,9 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
 setTimeout(() => {
   const pkgJson = fs.readJSONSync('package.json')
   pkgJson.exports.icon = packageJsonExports
-  fs.writeJSONSync('package.json', pkgJson)
+  fs.writeJSONSync('package.json', pkgJson, {
+    spaces: 2,
+  })
 
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), iconExports.join('\n'), 'utf-8')
 

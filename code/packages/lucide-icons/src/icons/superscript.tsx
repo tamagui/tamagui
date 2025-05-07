@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Superscript = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Superscript: IconComponent = Icon
     

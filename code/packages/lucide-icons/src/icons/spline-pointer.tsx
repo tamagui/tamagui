@@ -20,5 +20,7 @@
         )
       }))
 
-      export const SplinePointer = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SplinePointer: IconComponent = Icon
     

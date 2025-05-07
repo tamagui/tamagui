@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Microwave = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Microwave: IconComponent = Icon
     

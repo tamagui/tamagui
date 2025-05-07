@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Watch = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Watch: IconComponent = Icon
     

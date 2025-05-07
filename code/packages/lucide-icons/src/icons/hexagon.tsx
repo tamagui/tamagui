@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Hexagon = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Hexagon: IconComponent = Icon
     

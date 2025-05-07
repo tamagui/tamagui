@@ -19,5 +19,7 @@
         )
       }))
 
-      export const MailQuestion = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MailQuestion: IconComponent = Icon
     

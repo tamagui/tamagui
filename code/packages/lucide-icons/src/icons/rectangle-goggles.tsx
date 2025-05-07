@@ -16,5 +16,7 @@
         )
       }))
 
-      export const RectangleGoggles = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RectangleGoggles: IconComponent = Icon
     

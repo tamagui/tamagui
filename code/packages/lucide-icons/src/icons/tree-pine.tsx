@@ -17,5 +17,7 @@
         )
       }))
 
-      export const TreePine = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TreePine: IconComponent = Icon
     

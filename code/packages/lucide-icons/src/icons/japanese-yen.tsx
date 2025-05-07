@@ -18,5 +18,7 @@
         )
       }))
 
-      export const JapaneseYen = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const JapaneseYen: IconComponent = Icon
     

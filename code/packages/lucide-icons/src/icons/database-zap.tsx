@@ -21,5 +21,7 @@
         )
       }))
 
-      export const DatabaseZap = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const DatabaseZap: IconComponent = Icon
     

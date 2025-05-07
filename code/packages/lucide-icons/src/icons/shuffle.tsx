@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Shuffle = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Shuffle: IconComponent = Icon
     

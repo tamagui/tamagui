@@ -17,5 +17,7 @@
         )
       }))
 
-      export const EqualApproximately = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const EqualApproximately: IconComponent = Icon
     

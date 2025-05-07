@@ -17,5 +17,7 @@
         )
       }))
 
-      export const HeartPulse = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const HeartPulse: IconComponent = Icon
     

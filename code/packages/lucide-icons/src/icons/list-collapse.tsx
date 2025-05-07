@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ListCollapse = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ListCollapse: IconComponent = Icon
     

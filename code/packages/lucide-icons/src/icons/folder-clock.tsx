@@ -19,5 +19,7 @@
         )
       }))
 
-      export const FolderClock = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FolderClock: IconComponent = Icon
     

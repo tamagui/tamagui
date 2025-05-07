@@ -16,5 +16,7 @@
         )
       }))
 
-      export const FishSymbol = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FishSymbol: IconComponent = Icon
     

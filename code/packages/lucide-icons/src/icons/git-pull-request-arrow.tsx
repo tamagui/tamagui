@@ -21,5 +21,7 @@
         )
       }))
 
-      export const GitPullRequestArrow = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GitPullRequestArrow: IconComponent = Icon
     

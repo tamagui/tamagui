@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Sprout = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Sprout: IconComponent = Icon
     

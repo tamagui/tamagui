@@ -26,5 +26,7 @@
         )
       }))
 
-      export const SprayCan = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SprayCan: IconComponent = Icon
     

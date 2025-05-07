@@ -19,5 +19,7 @@
         )
       }))
 
-      export const TrendingUpDown = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const TrendingUpDown: IconComponent = Icon
     

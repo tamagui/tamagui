@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Space = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Space: IconComponent = Icon
     

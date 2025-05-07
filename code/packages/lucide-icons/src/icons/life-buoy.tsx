@@ -22,5 +22,7 @@
         )
       }))
 
-      export const LifeBuoy = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const LifeBuoy: IconComponent = Icon
     

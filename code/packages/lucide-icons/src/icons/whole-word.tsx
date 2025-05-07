@@ -21,5 +21,7 @@
         )
       }))
 
-      export const WholeWord = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const WholeWord: IconComponent = Icon
     

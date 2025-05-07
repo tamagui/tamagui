@@ -24,5 +24,7 @@
         )
       }))
 
-      export const ScanQrCode = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ScanQrCode: IconComponent = Icon
     

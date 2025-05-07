@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Megaphone = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Megaphone: IconComponent = Icon
     

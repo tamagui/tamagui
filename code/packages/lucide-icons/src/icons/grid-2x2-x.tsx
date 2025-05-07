@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Grid2x2X = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Grid2x2X: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const FolderSearch = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FolderSearch: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ParkingMeter = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ParkingMeter: IconComponent = Icon
     

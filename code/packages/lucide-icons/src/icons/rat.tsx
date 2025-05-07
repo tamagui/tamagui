@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Rat = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Rat: IconComponent = Icon
     

@@ -23,5 +23,7 @@
         )
       }))
 
-      export const ChartNetwork = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartNetwork: IconComponent = Icon
     

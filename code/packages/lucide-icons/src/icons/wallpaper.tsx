@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Wallpaper = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Wallpaper: IconComponent = Icon
     

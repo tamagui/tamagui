@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Stethoscope = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Stethoscope: IconComponent = Icon
     

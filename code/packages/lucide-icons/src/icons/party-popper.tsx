@@ -24,5 +24,7 @@
         )
       }))
 
-      export const PartyPopper = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const PartyPopper: IconComponent = Icon
     

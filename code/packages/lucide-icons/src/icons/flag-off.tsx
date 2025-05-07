@@ -20,5 +20,7 @@
         )
       }))
 
-      export const FlagOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FlagOff: IconComponent = Icon
     

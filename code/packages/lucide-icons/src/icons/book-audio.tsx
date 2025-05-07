@@ -19,5 +19,7 @@
         )
       }))
 
-      export const BookAudio = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BookAudio: IconComponent = Icon
     

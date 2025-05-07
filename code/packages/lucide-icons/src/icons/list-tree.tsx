@@ -20,5 +20,7 @@
         )
       }))
 
-      export const ListTree = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ListTree: IconComponent = Icon
     

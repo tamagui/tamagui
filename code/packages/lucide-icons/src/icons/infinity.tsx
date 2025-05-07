@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Infinity = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Infinity: IconComponent = Icon
     

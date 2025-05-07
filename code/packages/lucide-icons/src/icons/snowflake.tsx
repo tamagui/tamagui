@@ -27,5 +27,7 @@
         )
       }))
 
-      export const Snowflake = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Snowflake: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const MessageSquareWarning = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const MessageSquareWarning: IconComponent = Icon
     

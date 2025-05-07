@@ -17,5 +17,7 @@
         )
       }))
 
-      export const StickyNote = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const StickyNote: IconComponent = Icon
     

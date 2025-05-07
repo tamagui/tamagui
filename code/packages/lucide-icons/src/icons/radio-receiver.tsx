@@ -20,5 +20,7 @@
         )
       }))
 
-      export const RadioReceiver = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const RadioReceiver: IconComponent = Icon
     

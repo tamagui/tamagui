@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Footprints = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Footprints: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Shrimp = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Shrimp: IconComponent = Icon
     

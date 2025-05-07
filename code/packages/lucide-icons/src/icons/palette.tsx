@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Palette = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Palette: IconComponent = Icon
     

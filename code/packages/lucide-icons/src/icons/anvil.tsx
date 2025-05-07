@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Anvil = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Anvil: IconComponent = Icon
     

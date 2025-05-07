@@ -25,5 +25,7 @@
         )
       }))
 
-      export const KeyboardOff = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const KeyboardOff: IconComponent = Icon
     

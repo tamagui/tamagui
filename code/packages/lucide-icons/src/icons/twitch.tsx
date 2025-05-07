@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Twitch = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Twitch: IconComponent = Icon
     

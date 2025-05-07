@@ -22,5 +22,7 @@
         )
       }))
 
-      export const Group = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Group: IconComponent = Icon
     

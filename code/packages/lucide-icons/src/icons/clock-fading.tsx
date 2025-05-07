@@ -21,5 +21,7 @@
         )
       }))
 
-      export const ClockFading = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ClockFading: IconComponent = Icon
     

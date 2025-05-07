@@ -20,5 +20,7 @@
         )
       }))
 
-      export const BriefcaseBusiness = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BriefcaseBusiness: IconComponent = Icon
     

@@ -23,5 +23,7 @@
         )
       }))
 
-      export const FoldVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FoldVertical: IconComponent = Icon
     

@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Moon = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Moon: IconComponent = Icon
     

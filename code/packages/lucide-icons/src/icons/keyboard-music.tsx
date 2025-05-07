@@ -25,5 +25,7 @@
         )
       }))
 
-      export const KeyboardMusic = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const KeyboardMusic: IconComponent = Icon
     

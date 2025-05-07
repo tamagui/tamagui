@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Link2Off = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Link2Off: IconComponent = Icon
     

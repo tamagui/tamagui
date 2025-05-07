@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Copyright = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Copyright: IconComponent = Icon
     

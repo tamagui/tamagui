@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Fullscreen = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Fullscreen: IconComponent = Icon
     

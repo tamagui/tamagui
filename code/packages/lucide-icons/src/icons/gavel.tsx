@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Gavel = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Gavel: IconComponent = Icon
     

@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Lock = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Lock: IconComponent = Icon
     

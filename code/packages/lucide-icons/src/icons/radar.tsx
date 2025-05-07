@@ -24,5 +24,7 @@
         )
       }))
 
-      export const Radar = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Radar: IconComponent = Icon
     

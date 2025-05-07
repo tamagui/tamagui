@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Pi = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Pi: IconComponent = Icon
     

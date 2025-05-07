@@ -19,5 +19,7 @@
         )
       }))
 
-      export const ChartBar = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ChartBar: IconComponent = Icon
     

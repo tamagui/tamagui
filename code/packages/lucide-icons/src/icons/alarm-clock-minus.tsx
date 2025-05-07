@@ -22,5 +22,7 @@
         )
       }))
 
-      export const AlarmClockMinus = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlarmClockMinus: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const IndentIncrease = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const IndentIncrease: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Bubbles = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Bubbles: IconComponent = Icon
     

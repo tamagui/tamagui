@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Forward = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Forward: IconComponent = Icon
     

@@ -20,5 +20,7 @@
         )
       }))
 
-      export const SendToBack = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SendToBack: IconComponent = Icon
     

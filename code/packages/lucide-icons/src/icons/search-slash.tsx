@@ -19,5 +19,7 @@
         )
       }))
 
-      export const SearchSlash = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const SearchSlash: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const BetweenHorizontalEnd = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BetweenHorizontalEnd: IconComponent = Icon
     

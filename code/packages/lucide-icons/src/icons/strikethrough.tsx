@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Strikethrough = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Strikethrough: IconComponent = Icon
     

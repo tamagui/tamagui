@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Kanban = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Kanban: IconComponent = Icon
     

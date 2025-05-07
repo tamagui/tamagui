@@ -21,5 +21,7 @@
         )
       }))
 
-      export const FlipHorizontal2 = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FlipHorizontal2: IconComponent = Icon
     

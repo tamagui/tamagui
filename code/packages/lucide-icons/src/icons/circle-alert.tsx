@@ -19,5 +19,7 @@
         )
       }))
 
-      export const CircleAlert = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const CircleAlert: IconComponent = Icon
     

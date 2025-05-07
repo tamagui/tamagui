@@ -20,5 +20,7 @@
         )
       }))
 
-      export const AlignHorizontalSpaceBetween = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlignHorizontalSpaceBetween: IconComponent = Icon
     

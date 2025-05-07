@@ -24,5 +24,7 @@
         )
       }))
 
-      export const ImageUpscale = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ImageUpscale: IconComponent = Icon
     

@@ -21,5 +21,7 @@
         )
       }))
 
-      export const Network = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Network: IconComponent = Icon
     

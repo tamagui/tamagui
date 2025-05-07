@@ -16,5 +16,7 @@
         )
       }))
 
-      export const WifiZero = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const WifiZero: IconComponent = Icon
     

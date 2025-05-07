@@ -17,5 +17,7 @@
         )
       }))
 
-      export const HdmiPort = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const HdmiPort: IconComponent = Icon
     

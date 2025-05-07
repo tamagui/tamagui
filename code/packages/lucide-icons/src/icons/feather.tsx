@@ -18,5 +18,7 @@
         )
       }))
 
-      export const Feather = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Feather: IconComponent = Icon
     

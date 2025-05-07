@@ -23,5 +23,7 @@
         )
       }))
 
-      export const BriefcaseConveyorBelt = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const BriefcaseConveyorBelt: IconComponent = Icon
     

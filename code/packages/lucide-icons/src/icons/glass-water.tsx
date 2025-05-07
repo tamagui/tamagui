@@ -17,5 +17,7 @@
         )
       }))
 
-      export const GlassWater = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const GlassWater: IconComponent = Icon
     

@@ -17,5 +17,7 @@
         )
       }))
 
-      export const FastForward = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const FastForward: IconComponent = Icon
     

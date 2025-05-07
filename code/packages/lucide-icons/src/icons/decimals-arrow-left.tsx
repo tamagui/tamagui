@@ -20,5 +20,7 @@
         )
       }))
 
-      export const DecimalsArrowLeft = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const DecimalsArrowLeft: IconComponent = Icon
     

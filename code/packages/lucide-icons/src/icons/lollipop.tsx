@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Lollipop = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Lollipop: IconComponent = Icon
     

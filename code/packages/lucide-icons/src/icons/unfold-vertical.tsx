@@ -23,5 +23,7 @@
         )
       }))
 
-      export const UnfoldVertical = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const UnfoldVertical: IconComponent = Icon
     

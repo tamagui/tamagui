@@ -16,5 +16,7 @@
         )
       }))
 
-      export const Bookmark = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Bookmark: IconComponent = Icon
     

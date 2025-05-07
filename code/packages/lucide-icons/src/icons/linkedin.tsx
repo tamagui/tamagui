@@ -20,5 +20,7 @@
         )
       }))
 
-      export const Linkedin = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Linkedin: IconComponent = Icon
     

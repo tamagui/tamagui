@@ -20,5 +20,7 @@
         )
       }))
 
-      export const AlignVerticalSpaceBetween = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const AlignVerticalSpaceBetween: IconComponent = Icon
     

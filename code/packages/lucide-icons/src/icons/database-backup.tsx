@@ -22,5 +22,7 @@
         )
       }))
 
-      export const DatabaseBackup = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const DatabaseBackup: IconComponent = Icon
     

@@ -19,5 +19,7 @@
         )
       }))
 
-      export const Anchor = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Anchor: IconComponent = Icon
     

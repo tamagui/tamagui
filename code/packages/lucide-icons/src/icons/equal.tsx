@@ -17,5 +17,7 @@
         )
       }))
 
-      export const Equal = Icon
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const Equal: IconComponent = Icon
     
