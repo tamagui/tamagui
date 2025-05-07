@@ -1,32 +1,22 @@
-import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line, Polyline } from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Polyline points="5 11 5 5 11 5" stroke={color} />
-      <Polyline points="19 13 19 19 13 19" stroke={color} />
-      <Line x1="5" x2="19" y1="5" y2="19" stroke={color} />
-    </Svg>
-  )
-}
+      import { memo } from 'react'
+      import type { IconProps } from '@tamagui/helpers-icon'
+      import {
+        Svg,
+        Path,
+      } from 'react-native-svg'
+      import { themed } from '@tamagui/helpers-icon'
 
-Icon.displayName = 'MoveDiagonal2'
+      const Icon = themed(memo(function MoveDiagonal2(props: IconProps) {
+        const { color = 'black', size = 24, ...otherProps } = props
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
+  <Path d="M19 13v6h-6" stroke={color}/>
+  <Path d="M5 11V5h6" stroke={color}/>
+  <Path d="m5 5 14 14" stroke={color}/>
+</Svg>
+        )
+      }))
 
-export const MoveDiagonal2: NamedExoticComponent<IconProps> = memo<IconProps>(
-  themed(Icon)
-)
+      export const MoveDiagonal2 = Icon
+    

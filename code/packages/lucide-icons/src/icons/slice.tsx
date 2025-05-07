@@ -1,29 +1,20 @@
-import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Path } from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Path d="m8 14-6 6h9v-3" stroke={color} />
-      <Path d="M18.37 3.63 8 14l3 3L21.37 6.63a2.12 2.12 0 1 0-3-3Z" stroke={color} />
-    </Svg>
-  )
-}
+      import { memo } from 'react'
+      import type { IconProps } from '@tamagui/helpers-icon'
+      import {
+        Svg,
+        Path,
+      } from 'react-native-svg'
+      import { themed } from '@tamagui/helpers-icon'
 
-Icon.displayName = 'Slice'
+      const Icon = themed(memo(function Slice(props: IconProps) {
+        const { color = 'black', size = 24, ...otherProps } = props
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
+  <Path d="M11 16.586V19a1 1 0 0 1-1 1H2L18.37 3.63a1 1 0 1 1 3 3l-9.663 9.663a1 1 0 0 1-1.414 0L8 14" stroke={color}/>
+</Svg>
+        )
+      }))
 
-export const Slice: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
+      export const Slice = Icon
+    

@@ -1,33 +1,23 @@
-import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line, Polyline } from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Polyline points="7 8 3 12 7 16" stroke={color} />
-      <Line x1="21" x2="11" y1="12" y2="12" stroke={color} />
-      <Line x1="21" x2="11" y1="6" y2="6" stroke={color} />
-      <Line x1="21" x2="11" y1="18" y2="18" stroke={color} />
-    </Svg>
-  )
-}
+      import { memo } from 'react'
+      import type { IconProps } from '@tamagui/helpers-icon'
+      import {
+        Svg,
+        Path,
+      } from 'react-native-svg'
+      import { themed } from '@tamagui/helpers-icon'
 
-Icon.displayName = 'IndentDecrease'
+      const Icon = themed(memo(function IndentDecrease(props: IconProps) {
+        const { color = 'black', size = 24, ...otherProps } = props
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
+  <Path d="M21 12H11" stroke={color}/>
+  <Path d="M21 18H11" stroke={color}/>
+  <Path d="M21 6H11" stroke={color}/>
+  <Path d="m7 8-4 4 4 4" stroke={color}/>
+</Svg>
+        )
+      }))
 
-export const IndentDecrease: NamedExoticComponent<IconProps> = memo<IconProps>(
-  themed(Icon)
-)
+      export const IndentDecrease = Icon
+    

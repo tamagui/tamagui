@@ -1,33 +1,25 @@
-import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line } from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Line x1="8" x2="21" y1="6" y2="6" stroke={color} />
-      <Line x1="8" x2="21" y1="12" y2="12" stroke={color} />
-      <Line x1="8" x2="21" y1="18" y2="18" stroke={color} />
-      <Line x1="3" x2="3.01" y1="6" y2="6" stroke={color} />
-      <Line x1="3" x2="3.01" y1="12" y2="12" stroke={color} />
-      <Line x1="3" x2="3.01" y1="18" y2="18" stroke={color} />
-    </Svg>
-  )
-}
+      import { memo } from 'react'
+      import type { IconProps } from '@tamagui/helpers-icon'
+      import {
+        Svg,
+        Path,
+      } from 'react-native-svg'
+      import { themed } from '@tamagui/helpers-icon'
 
-Icon.displayName = 'List'
+      const Icon = themed(memo(function List(props: IconProps) {
+        const { color = 'black', size = 24, ...otherProps } = props
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
+  <Path d="M3 12h.01" stroke={color}/>
+  <Path d="M3 18h.01" stroke={color}/>
+  <Path d="M3 6h.01" stroke={color}/>
+  <Path d="M8 12h13" stroke={color}/>
+  <Path d="M8 18h13" stroke={color}/>
+  <Path d="M8 6h13" stroke={color}/>
+</Svg>
+        )
+      }))
 
-export const List: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
+      export const List = Icon
+    

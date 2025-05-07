@@ -1,30 +1,22 @@
-import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line } from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Line x1="21" x2="3" y1="6" y2="6" stroke={color} />
-      <Line x1="21" x2="9" y1="12" y2="12" stroke={color} />
-      <Line x1="21" x2="7" y1="18" y2="18" stroke={color} />
-    </Svg>
-  )
-}
+      import { memo } from 'react'
+      import type { IconProps } from '@tamagui/helpers-icon'
+      import {
+        Svg,
+        Path,
+      } from 'react-native-svg'
+      import { themed } from '@tamagui/helpers-icon'
 
-Icon.displayName = 'AlignRight'
+      const Icon = themed(memo(function AlignRight(props: IconProps) {
+        const { color = 'black', size = 24, ...otherProps } = props
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
+  <Path d="M21 12H9" stroke={color}/>
+  <Path d="M21 18H7" stroke={color}/>
+  <Path d="M21 6H3" stroke={color}/>
+</Svg>
+        )
+      }))
 
-export const AlignRight: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
+      export const AlignRight = Icon
+    

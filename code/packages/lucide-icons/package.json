@@ -16,6 +16,8 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean:build": "tamagui-build clean:build",
     "generate": "node ./bin/build"
   },
@@ -47,7 +49,7 @@
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
     "glob": "^7.1.6",
-    "lucide-static": "^0.447.0",
+    "lucide-static": "^0.507.0",
     "prop-types": "^15.7.2",
     "react": "*",
     "react-native-svg": "15.8.0",

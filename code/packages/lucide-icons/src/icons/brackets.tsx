@@ -1,29 +1,21 @@
-import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Path } from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Path d="M16 3h3v18h-3" stroke={color} />
-      <Path d="M8 21H5V3h3" stroke={color} />
-    </Svg>
-  )
-}
+      import { memo } from 'react'
+      import type { IconProps } from '@tamagui/helpers-icon'
+      import {
+        Svg,
+        Path,
+      } from 'react-native-svg'
+      import { themed } from '@tamagui/helpers-icon'
 
-Icon.displayName = 'Brackets'
+      const Icon = themed(memo(function Brackets(props: IconProps) {
+        const { color = 'black', size = 24, ...otherProps } = props
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
+  <Path d="M16 3h2a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-2" stroke={color}/>
+  <Path d="M8 21H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2" stroke={color}/>
+</Svg>
+        )
+      }))
 
-export const Brackets: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
+      export const Brackets = Icon
+    

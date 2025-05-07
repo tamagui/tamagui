@@ -1,29 +1,21 @@
-import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Ellipse } from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Ellipse cx="12" cy="11" rx="3" ry="2" stroke={color} />
-      <Ellipse cx="12" cy="12.5" rx="10" ry="8.5" stroke={color} />
-    </Svg>
-  )
-}
+      import { memo } from 'react'
+      import type { IconProps } from '@tamagui/helpers-icon'
+      import {
+        Svg,
+        Ellipse,
+      } from 'react-native-svg'
+      import { themed } from '@tamagui/helpers-icon'
 
-Icon.displayName = 'Torus'
+      const Icon = themed(memo(function Torus(props: IconProps) {
+        const { color = 'black', size = 24, ...otherProps } = props
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
+  <Ellipse cx="12" cy="11" rx="3" ry="2" stroke={color}/>
+  <Ellipse cx="12" cy="12.5" rx="10" ry="8.5" stroke={color}/>
+</Svg>
+        )
+      }))
 
-export const Torus: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
+      export const Torus = Icon
+    

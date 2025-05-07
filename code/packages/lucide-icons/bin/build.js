@@ -1,4 +1,4 @@
-const fs = require('node:fs')
+const fs = require('fs-extra')
 const glob = require('glob')
 const camelcase = require('camelcase')
 const uppercamelcase = require('uppercamelcase')
@@ -10,9 +10,12 @@ const lucideIconsDir = path.join(lucideDir, '..', '..', '..', 'icons')
 const rootDir = path.join(__dirname, '..')
 const outDir = path.join(rootDir, 'src/icons')
 
+console.info(`Scanning`, lucideIconsDir)
+
 fs.mkdir(outDir, () => {})
 
 let iconExports = []
+const packageJsonExports = {}
 
 glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
@@ -99,7 +102,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
       } from 'react-native-svg'
       import { themed } from '@tamagui/helpers-icon'
 
-      const Icon = (props) => {
+      const Icon = themed(memo(function ${cname}(props: IconProps) {
         const { color = 'black', size = 24, ...otherProps } = props
         return (
           ${$('svg')
@@ -144,22 +147,30 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
             .replace(new RegExp('</stop', 'g'), '</Stop')
             .replace(new RegExp('px', 'g'), '')}
         )
-      }
+      }))
 
-      Icon.displayName = '${cname}'
-
-      export const ${cname}: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
+      type IconComponent = (propsIn: IconProps) => JSX.Element
+      
+      export const ${cname}: IconComponent = Icon
     `
 
     fs.writeFileSync(location, out, 'utf-8')
 
     iconExports.push(`export { ${cname} } from './icons/${id}'`)
+    packageJsonExports[`icon/${cname}`] = {
+      import: `dist/esm/icons/${fileName.replace('.svg', '.mjs')}`,
+      require: `dist/cjs/icons/${fileName.replace('.svg', '.cjs')}`,
+    }
   })
 })
 
 setTimeout(() => {
+  const pkgJson = fs.readJSONSync('package.json')
+  pkgJson.exports.icon = packageJsonExports
+  fs.writeJSONSync('package.json', pkgJson)
+
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), iconExports.join('\n'), 'utf-8')
 
-  // run biome:
-  require('child_process').execSync(`biome check --write src`)
+  // run biome to format:
+  require('child_process').execSync(`biome lint --write src`)
 }, 1000)
