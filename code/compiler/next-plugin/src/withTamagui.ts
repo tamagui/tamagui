@@ -183,7 +183,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           if (!isServer) {
             nextConfig.modularizeImports ??= {}
             nextConfig.modularizeImports['@tamagui/lucide-icons'] = {
-              transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}.mjs`,
+              transform: `@tamagui/lucide-icons/icon/{{member}}`,
               skipDefaultConversion: true,
             }
           }

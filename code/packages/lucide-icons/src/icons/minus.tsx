@@ -1,22 +1,27 @@
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
-      import { memo } from 'react'
-      import type { IconProps } from '@tamagui/helpers-icon'
-      import {
-        Svg,
-        Path,
-      } from 'react-native-svg'
-      import { themed } from '@tamagui/helpers-icon'
+type IconComponent = (propsIn: IconProps) => JSX.Element
 
-      const Icon = themed(memo(function Minus(props: IconProps) {
-        const { color = 'black', size = 24, ...otherProps } = props
-        return (
-          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...otherProps}>
-  <Path d="M5 12h14" stroke={color}/>
-</Svg>
-        )
-      }))
-
-      type IconComponent = (propsIn: IconProps) => JSX.Element
-      
-      export const Minus: IconComponent = Icon
-    
+export const Minus: IconComponent = themed(
+  memo(function Minus(props: IconProps) {
+    const { color = 'black', size = 24, ...otherProps } = props
+    return (
+      <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...otherProps}
+      >
+        <Path d="M5 12h14" stroke={color} />
+      </Svg>
+    )
+  })
+)
