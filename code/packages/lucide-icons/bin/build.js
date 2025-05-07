@@ -101,7 +101,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     const outLocation = `./src/icons/${name}.tsx`
     const out = wrapReact(name, fs.readFileSync(inLocation, 'utf-8').trim())
     fs.writeFileSync(outLocation, out, 'utf-8')
-    iconExports.push(`export { ${name} } from '${outLocation.replace('.tsx', '')}'`)
+    iconExports.push(`export { ${name} } from './icons/${name}'`)
     packageJsonExports[`./icons/${name}`] = {
       import: `./dist/esm/icons/${name + '.mjs'}`,
       require: `./dist/cjs/icons/${name + '.cjs'}`,
