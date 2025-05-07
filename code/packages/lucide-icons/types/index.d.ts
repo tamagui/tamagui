@@ -1207,6 +1207,7 @@ export { PaintRoller } from "./icons/PaintRoller";
 export { PaintbrushVertical } from "./icons/PaintbrushVertical";
 export { Paintbrush } from "./icons/Paintbrush";
 export { Palette } from "./icons/Palette";
+export { Panda } from "./icons/Panda";
 export { PanelBottomClose } from "./icons/PanelBottomClose";
 export { PanelBottomDashed } from "./icons/PanelBottomDashed";
 export { PanelBottomOpen } from "./icons/PanelBottomOpen";

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate",
-  "version": "1.126.7",
+  "version": "1.126.8",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
