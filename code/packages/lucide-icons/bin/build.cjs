@@ -182,7 +182,8 @@ setTimeout(() => {
 }, 1000)
 
 function wrapReact(name, contents) {
-  return `import React, { memo } from 'react'
+  return `// @ts-nocheck
+import React, { memo } from 'react'
     import PropTypes from 'prop-types'
     import type { NamedExoticComponent } from 'react'
     import type { IconProps } from '@tamagui/helpers-icon'

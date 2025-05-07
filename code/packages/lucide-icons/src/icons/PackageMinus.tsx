@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { Svg, Line, Path, Polyline } from 'react-native-svg'

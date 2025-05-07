@@ -20,7 +20,7 @@
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean:build": "tamagui-build clean:build",
-    "generate": "node ./bin/build"
+    "generate": "node ./bin/build.cjs"
   },
   "license": "MIT",
   "dependencies": {
@@ -4879,6 +4879,10 @@
       "import": "./dist/esm/icons/Palette.mjs",
       "require": "./dist/cjs/icons/Palette.cjs"
     },
+    "./icons/Panda": {
+      "import": "./dist/esm/icons/Panda.mjs",
+      "require": "./dist/cjs/icons/Panda.cjs"
+    },
     "./icons/PanelBottomClose": {
       "import": "./dist/esm/icons/PanelBottomClose.mjs",
       "require": "./dist/cjs/icons/PanelBottomClose.cjs"
@@ -7086,7 +7090,7 @@
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
     "glob": "^7.1.6",
-    "lucide-static": "^0.447.0",
+    "lucide-static": "^0.508.0",
     "prop-types": "^15.7.2",
     "react": "*",
     "react-native-svg": "15.8.0",

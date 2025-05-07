@@ -213,7 +213,7 @@ async function run() {
       if (!skipTest) {
         await Promise.all([
           spawnify(`chmod ug+x ./node_modules/.bin/tamagui`),
-          spawnify(`yarn playwright install`),
+          // spawnify(`yarn playwright install`),
           spawnify(`yarn check`),
           spawnify(`yarn lint`),
         ])
