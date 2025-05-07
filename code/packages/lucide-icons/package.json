@@ -5,6 +5,7 @@
   "description": "React Native components for Lucide icons - native and web",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
+  "type": "module",
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
@@ -13,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
+    "build": "TAMAGUI_BUILD_CLEANUP_JS_FILES=1 tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "lint": "biome check src",

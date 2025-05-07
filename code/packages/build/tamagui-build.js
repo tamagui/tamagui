@@ -678,6 +678,7 @@ async function esbuildWriteIfChanged(
   }
 
   const cleanupNonMjsFiles = []
+  const cleanupNonCjsFiles = []
 
   async function flush(path, contents) {
     if (shouldWatch) {
@@ -812,6 +813,8 @@ async function esbuildWriteIfChanged(
               ].filter(Boolean),
             })
 
+        cleanupNonCjsFiles.push(path)
+
         await FSE.writeFile(path.replace(/\.js$/, '.cjs'), result.code)
       })
     )
@@ -871,10 +874,13 @@ async function esbuildWriteIfChanged(
   )
 
   // if we do mjs we should remove js after to avoid bloat
-  if (process.env.TAMAGUI_BUILD_REMOVE_ESM_JS_FILES) {
+  if (
+    process.env.TAMAGUI_BUILD_REMOVE_ESM_JS_FILES ||
+    process.env.TAMAGUI_BUILD_CLEANUP_JS_FILES
+  ) {
     if (cleanupNonMjsFiles.length) {
       await Promise.all(
-        cleanupNonMjsFiles.map(async (file) => {
+        [...cleanupNonMjsFiles, ...cleanupNonCjsFiles].map(async (file) => {
           await FSE.remove(file)
         })
       )
