@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Annoyed: IconComponent;
 export {};
 
-//# sourceMappingURL=annoyed.d.ts.map
+//# sourceMappingURL=Annoyed.d.ts.map

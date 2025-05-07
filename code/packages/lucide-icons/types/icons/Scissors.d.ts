@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Scissors: IconComponent;
 export {};
 
-//# sourceMappingURL=scissors.d.ts.map
+//# sourceMappingURL=Scissors.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Sunset: IconComponent;
 export {};
 
-//# sourceMappingURL=sunset.d.ts.map
+//# sourceMappingURL=Sunset.d.ts.map

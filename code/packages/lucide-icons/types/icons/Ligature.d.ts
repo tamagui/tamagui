@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Ligature: IconComponent;
 export {};
 
-//# sourceMappingURL=ligature.d.ts.map
+//# sourceMappingURL=Ligature.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Citrus: IconComponent;
 export {};
 
-//# sourceMappingURL=citrus.d.ts.map
+//# sourceMappingURL=Citrus.d.ts.map

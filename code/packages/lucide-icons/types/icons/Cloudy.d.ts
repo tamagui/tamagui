@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Cloudy: IconComponent;
 export {};
 
-//# sourceMappingURL=cloudy.d.ts.map
+//# sourceMappingURL=Cloudy.d.ts.map

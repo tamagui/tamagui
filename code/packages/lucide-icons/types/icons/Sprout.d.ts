@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Sprout: IconComponent;
 export {};
 
-//# sourceMappingURL=sprout.d.ts.map
+//# sourceMappingURL=Sprout.d.ts.map

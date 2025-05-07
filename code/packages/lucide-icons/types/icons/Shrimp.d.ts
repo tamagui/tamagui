@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Shrimp: IconComponent;
 export {};
 
-//# sourceMappingURL=shrimp.d.ts.map
+//# sourceMappingURL=Shrimp.d.ts.map

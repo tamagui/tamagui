@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Diff: IconComponent;
 export {};
 
-//# sourceMappingURL=diff.d.ts.map
+//# sourceMappingURL=Diff.d.ts.map

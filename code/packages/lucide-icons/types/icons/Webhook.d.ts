@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Webhook: IconComponent;
 export {};
 
-//# sourceMappingURL=webhook.d.ts.map
+//# sourceMappingURL=Webhook.d.ts.map

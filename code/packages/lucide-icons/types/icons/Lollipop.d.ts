@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Lollipop: IconComponent;
 export {};
 
-//# sourceMappingURL=lollipop.d.ts.map
+//# sourceMappingURL=Lollipop.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Ellipsis: IconComponent;
 export {};
 
-//# sourceMappingURL=ellipsis.d.ts.map
+//# sourceMappingURL=Ellipsis.d.ts.map

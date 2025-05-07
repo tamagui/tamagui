@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Anvil: IconComponent;
 export {};
 
-//# sourceMappingURL=anvil.d.ts.map
+//# sourceMappingURL=Anvil.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Grab: IconComponent;
 export {};
 
-//# sourceMappingURL=grab.d.ts.map
+//# sourceMappingURL=Grab.d.ts.map

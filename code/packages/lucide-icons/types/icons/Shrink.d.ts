@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Shrink: IconComponent;
 export {};
 
-//# sourceMappingURL=shrink.d.ts.map
+//# sourceMappingURL=Shrink.d.ts.map

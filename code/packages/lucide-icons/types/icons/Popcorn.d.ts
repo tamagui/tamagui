@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Popcorn: IconComponent;
 export {};
 
-//# sourceMappingURL=popcorn.d.ts.map
+//# sourceMappingURL=Popcorn.d.ts.map

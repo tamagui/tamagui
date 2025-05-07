@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Bandage: IconComponent;
 export {};
 
-//# sourceMappingURL=bandage.d.ts.map
+//# sourceMappingURL=Bandage.d.ts.map

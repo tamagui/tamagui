@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Shrub: IconComponent;
 export {};
 
-//# sourceMappingURL=shrub.d.ts.map
+//# sourceMappingURL=Shrub.d.ts.map

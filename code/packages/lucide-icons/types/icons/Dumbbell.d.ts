@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Dumbbell: IconComponent;
 export {};
 
-//# sourceMappingURL=dumbbell.d.ts.map
+//# sourceMappingURL=Dumbbell.d.ts.map

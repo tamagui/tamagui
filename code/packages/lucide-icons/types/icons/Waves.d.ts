@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Waves: IconComponent;
 export {};
 
-//# sourceMappingURL=waves.d.ts.map
+//# sourceMappingURL=Waves.d.ts.map

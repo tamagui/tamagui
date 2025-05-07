@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Radio: IconComponent;
 export {};
 
-//# sourceMappingURL=radio.d.ts.map
+//# sourceMappingURL=Radio.d.ts.map

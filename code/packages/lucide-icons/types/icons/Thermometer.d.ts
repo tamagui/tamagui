@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Thermometer: IconComponent;
 export {};
 
-//# sourceMappingURL=thermometer.d.ts.map
+//# sourceMappingURL=Thermometer.d.ts.map

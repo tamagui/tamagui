@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Shredder: IconComponent;
 export {};
 
-//# sourceMappingURL=shredder.d.ts.map
+//# sourceMappingURL=Shredder.d.ts.map

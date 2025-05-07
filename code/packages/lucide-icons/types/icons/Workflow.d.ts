@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Workflow: IconComponent;
 export {};
 
-//# sourceMappingURL=workflow.d.ts.map
+//# sourceMappingURL=Workflow.d.ts.map

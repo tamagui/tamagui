@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Underline: IconComponent;
 export {};
 
-//# sourceMappingURL=underline.d.ts.map
+//# sourceMappingURL=Underline.d.ts.map

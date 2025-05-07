@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Barcode: IconComponent;
 export {};
 
-//# sourceMappingURL=barcode.d.ts.map
+//# sourceMappingURL=Barcode.d.ts.map

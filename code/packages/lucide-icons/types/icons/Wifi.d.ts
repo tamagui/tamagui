@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Wifi: IconComponent;
 export {};
 
-//# sourceMappingURL=wifi.d.ts.map
+//# sourceMappingURL=Wifi.d.ts.map

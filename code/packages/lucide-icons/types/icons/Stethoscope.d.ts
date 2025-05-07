@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Stethoscope: IconComponent;
 export {};
 
-//# sourceMappingURL=stethoscope.d.ts.map
+//# sourceMappingURL=Stethoscope.d.ts.map

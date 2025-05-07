@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Microwave: IconComponent;
 export {};
 
-//# sourceMappingURL=microwave.d.ts.map
+//# sourceMappingURL=Microwave.d.ts.map

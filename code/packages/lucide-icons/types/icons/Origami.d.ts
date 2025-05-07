@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Origami: IconComponent;
 export {};
 
-//# sourceMappingURL=origami.d.ts.map
+//# sourceMappingURL=Origami.d.ts.map

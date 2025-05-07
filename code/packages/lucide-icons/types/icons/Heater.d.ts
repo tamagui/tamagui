@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Heater: IconComponent;
 export {};
 
-//# sourceMappingURL=heater.d.ts.map
+//# sourceMappingURL=Heater.d.ts.map

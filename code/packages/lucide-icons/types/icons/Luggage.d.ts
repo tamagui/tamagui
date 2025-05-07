@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Luggage: IconComponent;
 export {};
 
-//# sourceMappingURL=luggage.d.ts.map
+//# sourceMappingURL=Luggage.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Rocket: IconComponent;
 export {};
 
-//# sourceMappingURL=rocket.d.ts.map
+//# sourceMappingURL=Rocket.d.ts.map

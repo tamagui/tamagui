@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Sparkle: IconComponent;
 export {};
 
-//# sourceMappingURL=sparkle.d.ts.map
+//# sourceMappingURL=Sparkle.d.ts.map

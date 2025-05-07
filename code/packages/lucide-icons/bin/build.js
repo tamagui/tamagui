@@ -17,91 +17,27 @@ fs.mkdir(outDir, () => {})
 let iconExports = []
 const packageJsonExports = {}
 
-const backwardsCompat = [
-  'AlarmCheck',
-  'AlarmMinus',
-  'AlarmPlus',
-  'BookTemplate',
-  'ClipboardEdit',
-  'ClipboardSignature',
-  'Code2',
-  'Columns',
-  'Edit3',
-  'FileCog2',
-  'FileEdit',
-  'FileSignature',
-  'GitCommit',
-  'Grid',
-  'Inspect',
-  'Layout',
-  'PanelBottomInactive',
-  'PanelLeftInactive',
-  'PanelRightInactive',
-  'PanelTopInactive',
-  'PenSquare',
-  'Rows',
-  'ShieldClose',
-  'Train',
-  'User2',
-  'UserCheck2',
-  'UserCircle',
-  'UserCircle2',
-  'UserCog2',
-  'UserMinus2',
-  'UserPlus2',
-  'UserSquare',
-  'UserSquare2',
-  'UserX2',
-  'Users2',
-  'Verified',
-]
-
 glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
 
   console.info(`Processing icons`, icons.length)
 
-  function wrapReact(name, contents) {
-    return `import React, { memo } from 'react'
-      import PropTypes from 'prop-types'
-      import type { NamedExoticComponent } from 'react'
-      import type { IconProps } from '@tamagui/helpers-icon'
-      import {
-        Svg,
-        Circle as _Circle,
-        Ellipse,
-        G,
-        LinearGradient,
-        RadialGradient, 
-        Line,
-        Path,
-        Polygon,
-        Polyline,
-        Rect,
-        Symbol,
-        Text as _Text,
-        Use,
-        Defs,
-        Stop
-      } from 'react-native-svg'
-      import { themed } from '@tamagui/helpers-icon'
+  const backwardsCompat = fs.readdirSync('./backwards-compat')
 
-      type IconComponent = (propsIn: IconProps) => JSX.Element
-      
-      export const ${name}: IconComponent = themed(memo(function ${name}(props: IconProps) {
-        const { color = 'black', size = 24, ...otherProps } = props
-        return (
-         ${contents}
-        )
-      }))
-        `
-  }
+  backwardsCompat.forEach((filePath) => {
+    let out = fs.readFileSync('./backwards-compat/' + filePath, 'utf-8').trim()
+    const name = uppercamelcase(path.basename(filePath).replace(/\..*/, ''))
 
-  backwardsCompat.forEach((name) => {
-    const inLocation = `./backwards-compat/${name}.svg-part`
+    if (filePath.endsWith('svg-part')) {
+      //
+    } else {
+      out = out.slice(out.search(/\<Svg/g))
+      out = out.slice(0, out.search(/<\/Svg>.*/g)) + '</Svg>'
+    }
+
     const outLocation = `./src/icons/${name}.tsx`
-    const out = wrapReact(name, fs.readFileSync(inLocation, 'utf-8').trim())
-    fs.writeFileSync(outLocation, out, 'utf-8')
+    fs.writeFileSync(outLocation, wrapReact(name, out), 'utf-8')
+
     iconExports.push(`export { ${name} } from './icons/${name}'`)
     packageJsonExports[`./icons/${name}`] = {
       import: `./dist/esm/icons/${name + '.mjs'}`,
@@ -244,3 +180,39 @@ setTimeout(() => {
   require('child_process').execSync(`biome lint --write src`)
   require('child_process').execSync(`biome format --write src`)
 }, 1000)
+
+function wrapReact(name, contents) {
+  return `import React, { memo } from 'react'
+    import PropTypes from 'prop-types'
+    import type { NamedExoticComponent } from 'react'
+    import type { IconProps } from '@tamagui/helpers-icon'
+    import {
+      Svg,
+      Circle as _Circle,
+      Ellipse,
+      G,
+      LinearGradient,
+      RadialGradient, 
+      Line,
+      Path,
+      Polygon,
+      Polyline,
+      Rect,
+      Symbol,
+      Text as _Text,
+      Use,
+      Defs,
+      Stop
+    } from 'react-native-svg'
+    import { themed } from '@tamagui/helpers-icon'
+
+    type IconComponent = (propsIn: IconProps) => JSX.Element
+    
+    export const ${name}: IconComponent = themed(memo(function ${name}(props: IconProps) {
+      const { color = 'black', size = 24, ...otherProps } = props
+      return (
+       ${contents}
+      )
+    }))
+      `
+}

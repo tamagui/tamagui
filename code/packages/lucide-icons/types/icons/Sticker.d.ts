@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Sticker: IconComponent;
 export {};
 
-//# sourceMappingURL=sticker.d.ts.map
+//# sourceMappingURL=Sticker.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Nfc: IconComponent;
 export {};
 
-//# sourceMappingURL=nfc.d.ts.map
+//# sourceMappingURL=Nfc.d.ts.map

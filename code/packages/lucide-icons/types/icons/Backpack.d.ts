@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Backpack: IconComponent;
 export {};
 
-//# sourceMappingURL=backpack.d.ts.map
+//# sourceMappingURL=Backpack.d.ts.map

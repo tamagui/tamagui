@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Figma: IconComponent;
 export {};
 
-//# sourceMappingURL=figma.d.ts.map
+//# sourceMappingURL=Figma.d.ts.map

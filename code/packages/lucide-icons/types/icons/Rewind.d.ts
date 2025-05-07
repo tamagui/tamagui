@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Rewind: IconComponent;
 export {};
 
-//# sourceMappingURL=rewind.d.ts.map
+//# sourceMappingURL=Rewind.d.ts.map

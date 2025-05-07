@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Shuffle: IconComponent;
 export {};
 
-//# sourceMappingURL=shuffle.d.ts.map
+//# sourceMappingURL=Shuffle.d.ts.map

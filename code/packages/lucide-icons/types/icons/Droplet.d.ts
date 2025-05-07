@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Droplet: IconComponent;
 export {};
 
-//# sourceMappingURL=droplet.d.ts.map
+//# sourceMappingURL=Droplet.d.ts.map

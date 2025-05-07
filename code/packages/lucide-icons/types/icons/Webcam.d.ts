@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Webcam: IconComponent;
 export {};
 
-//# sourceMappingURL=webcam.d.ts.map
+//# sourceMappingURL=Webcam.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Ribbon: IconComponent;
 export {};
 
-//# sourceMappingURL=ribbon.d.ts.map
+//# sourceMappingURL=Ribbon.d.ts.map

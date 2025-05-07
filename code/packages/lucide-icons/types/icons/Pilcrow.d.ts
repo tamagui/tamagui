@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Pilcrow: IconComponent;
 export {};
 
-//# sourceMappingURL=pilcrow.d.ts.map
+//# sourceMappingURL=Pilcrow.d.ts.map

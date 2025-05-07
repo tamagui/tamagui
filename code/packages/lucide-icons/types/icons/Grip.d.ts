@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Grip: IconComponent;
 export {};
 
-//# sourceMappingURL=grip.d.ts.map
+//# sourceMappingURL=Grip.d.ts.map

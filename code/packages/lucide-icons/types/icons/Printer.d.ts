@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Printer: IconComponent;
 export {};
 
-//# sourceMappingURL=printer.d.ts.map
+//# sourceMappingURL=Printer.d.ts.map

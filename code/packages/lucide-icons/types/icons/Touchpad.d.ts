@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Touchpad: IconComponent;
 export {};
 
-//# sourceMappingURL=touchpad.d.ts.map
+//# sourceMappingURL=Touchpad.d.ts.map

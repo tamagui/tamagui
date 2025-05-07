@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Fingerprint: IconComponent;
 export {};
 
-//# sourceMappingURL=fingerprint.d.ts.map
+//# sourceMappingURL=Fingerprint.d.ts.map

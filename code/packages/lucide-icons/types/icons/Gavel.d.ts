@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Gavel: IconComponent;
 export {};
 
-//# sourceMappingURL=gavel.d.ts.map
+//# sourceMappingURL=Gavel.d.ts.map

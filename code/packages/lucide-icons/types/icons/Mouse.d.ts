@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Mouse: IconComponent;
 export {};
 
-//# sourceMappingURL=mouse.d.ts.map
+//# sourceMappingURL=Mouse.d.ts.map

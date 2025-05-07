@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Redo: IconComponent;
 export {};
 
-//# sourceMappingURL=redo.d.ts.map
+//# sourceMappingURL=Redo.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Wine: IconComponent;
 export {};
 
-//# sourceMappingURL=wine.d.ts.map
+//# sourceMappingURL=Wine.d.ts.map

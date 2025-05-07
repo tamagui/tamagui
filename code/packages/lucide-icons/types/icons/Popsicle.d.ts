@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Popsicle: IconComponent;
 export {};
 
-//# sourceMappingURL=popsicle.d.ts.map
+//# sourceMappingURL=Popsicle.d.ts.map

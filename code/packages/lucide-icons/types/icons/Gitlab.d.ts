@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Gitlab: IconComponent;
 export {};
 
-//# sourceMappingURL=gitlab.d.ts.map
+//# sourceMappingURL=Gitlab.d.ts.map

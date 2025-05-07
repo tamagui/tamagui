@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Watch: IconComponent;
 export {};
 
-//# sourceMappingURL=watch.d.ts.map
+//# sourceMappingURL=Watch.d.ts.map

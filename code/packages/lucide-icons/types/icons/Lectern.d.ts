@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Lectern: IconComponent;
 export {};
 
-//# sourceMappingURL=lectern.d.ts.map
+//# sourceMappingURL=Lectern.d.ts.map

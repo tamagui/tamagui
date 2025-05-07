@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Paperclip: IconComponent;
 export {};
 
-//# sourceMappingURL=paperclip.d.ts.map
+//# sourceMappingURL=Paperclip.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Bluetooth: IconComponent;
 export {};
 
-//# sourceMappingURL=bluetooth.d.ts.map
+//# sourceMappingURL=Bluetooth.d.ts.map

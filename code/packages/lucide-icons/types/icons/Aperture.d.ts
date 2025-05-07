@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Aperture: IconComponent;
 export {};
 
-//# sourceMappingURL=aperture.d.ts.map
+//# sourceMappingURL=Aperture.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Gamepad: IconComponent;
 export {};
 
-//# sourceMappingURL=gamepad.d.ts.map
+//# sourceMappingURL=Gamepad.d.ts.map
