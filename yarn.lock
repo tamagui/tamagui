@@ -7667,7 +7667,7 @@ __metadata:
     camelcase: "npm:^6.0.0"
     cheerio: "npm:^1.0.0-rc.5"
     glob: "npm:^7.1.6"
-    lucide-static: "npm:^0.507.0"
+    lucide-static: "npm:^0.447.0"
     prop-types: "npm:^15.7.2"
     react: "npm:*"
     react-native-svg: "npm:15.8.0"
@@ -20742,10 +20742,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-static@npm:^0.507.0":
-  version: 0.507.0
-  resolution: "lucide-static@npm:0.507.0"
-  checksum: 10/30ae4ef8540838205e55ce2c6efeb8964576988d6d25d1be43256cd25a62b837bd30620749632c74c0223deddc591896eb78ed2b7650ecf825297332b01b0b50
+"lucide-static@npm:^0.447.0":
+  version: 0.447.0
+  resolution: "lucide-static@npm:0.447.0"
+  checksum: 10/91b47413bcf0d780abf6d6b93a0b49bbff6134d4047d3329ea1c02fca3ab5cb83fd92a38548821def08370cc549d43435f967d36c57b6bf081b18190a53e526d
   languageName: node
   linkType: hard
 
