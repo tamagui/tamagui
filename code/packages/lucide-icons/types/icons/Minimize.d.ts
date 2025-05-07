@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Minimize: IconComponent;
 export {};
 
-//# sourceMappingURL=Minimize.d.ts.map
+//# sourceMappingURL=minimize.d.ts.map

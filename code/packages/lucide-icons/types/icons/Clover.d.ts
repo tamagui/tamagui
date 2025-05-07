@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Clover: IconComponent;
 export {};
 
-//# sourceMappingURL=Clover.d.ts.map
+//# sourceMappingURL=clover.d.ts.map

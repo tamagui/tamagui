@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Worm: IconComponent;
 export {};
 
-//# sourceMappingURL=Worm.d.ts.map
+//# sourceMappingURL=worm.d.ts.map

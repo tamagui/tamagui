@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Pyramid: IconComponent;
 export {};
 
-//# sourceMappingURL=Pyramid.d.ts.map
+//# sourceMappingURL=pyramid.d.ts.map

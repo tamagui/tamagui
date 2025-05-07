@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Flashlight: IconComponent;
 export {};
 
-//# sourceMappingURL=Flashlight.d.ts.map
+//# sourceMappingURL=flashlight.d.ts.map

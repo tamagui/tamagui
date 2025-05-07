@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Spline: IconComponent;
 export {};
 
-//# sourceMappingURL=Spline.d.ts.map
+//# sourceMappingURL=spline.d.ts.map

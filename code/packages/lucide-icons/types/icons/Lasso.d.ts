@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Lasso: IconComponent;
 export {};
 
-//# sourceMappingURL=Lasso.d.ts.map
+//# sourceMappingURL=lasso.d.ts.map

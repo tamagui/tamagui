@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Pipette: IconComponent;
 export {};
 
-//# sourceMappingURL=Pipette.d.ts.map
+//# sourceMappingURL=pipette.d.ts.map

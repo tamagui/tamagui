@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Strikethrough: IconComponent;
 export {};
 
-//# sourceMappingURL=Strikethrough.d.ts.map
+//# sourceMappingURL=strikethrough.d.ts.map

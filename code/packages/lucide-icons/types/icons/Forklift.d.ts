@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Forklift: IconComponent;
 export {};
 
-//# sourceMappingURL=Forklift.d.ts.map
+//# sourceMappingURL=forklift.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Wrench: IconComponent;
 export {};
 
-//# sourceMappingURL=Wrench.d.ts.map
+//# sourceMappingURL=wrench.d.ts.map

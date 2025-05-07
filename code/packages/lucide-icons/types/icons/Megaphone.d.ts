@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Megaphone: IconComponent;
 export {};
 
-//# sourceMappingURL=Megaphone.d.ts.map
+//# sourceMappingURL=megaphone.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Twitch: IconComponent;
 export {};
 
-//# sourceMappingURL=Twitch.d.ts.map
+//# sourceMappingURL=twitch.d.ts.map

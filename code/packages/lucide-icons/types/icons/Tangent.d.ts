@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Tangent: IconComponent;
 export {};
 
-//# sourceMappingURL=Tangent.d.ts.map
+//# sourceMappingURL=tangent.d.ts.map

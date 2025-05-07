@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Infinity: IconComponent;
 export {};
 
-//# sourceMappingURL=Infinity.d.ts.map
+//# sourceMappingURL=infinity.d.ts.map

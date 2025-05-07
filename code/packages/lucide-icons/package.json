@@ -66,6 +66,10 @@
       "import": "./dist/esm/icons/ClipboardSignature.mjs",
       "require": "./dist/cjs/icons/ClipboardSignature.cjs"
     },
+    "./icons/Code2": {
+      "import": "./dist/esm/icons/Code2.mjs",
+      "require": "./dist/cjs/icons/Code2.cjs"
+    },
     "./icons/Columns": {
       "import": "./dist/esm/icons/Columns.mjs",
       "require": "./dist/cjs/icons/Columns.cjs"

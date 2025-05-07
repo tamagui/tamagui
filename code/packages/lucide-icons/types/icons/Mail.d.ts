@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Mail: IconComponent;
 export {};
 
-//# sourceMappingURL=Mail.d.ts.map
+//# sourceMappingURL=mail.d.ts.map

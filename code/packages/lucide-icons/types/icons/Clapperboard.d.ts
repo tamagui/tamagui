@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Clapperboard: IconComponent;
 export {};
 
-//# sourceMappingURL=Clapperboard.d.ts.map
+//# sourceMappingURL=clapperboard.d.ts.map

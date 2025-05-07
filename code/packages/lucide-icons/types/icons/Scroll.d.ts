@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Scroll: IconComponent;
 export {};
 
-//# sourceMappingURL=Scroll.d.ts.map
+//# sourceMappingURL=scroll.d.ts.map

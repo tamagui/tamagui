@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Funnel: IconComponent;
 export {};
 
-//# sourceMappingURL=Funnel.d.ts.map
+//# sourceMappingURL=funnel.d.ts.map

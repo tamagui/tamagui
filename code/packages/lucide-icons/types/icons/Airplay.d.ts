@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Airplay: IconComponent;
 export {};
 
-//# sourceMappingURL=Airplay.d.ts.map
+//# sourceMappingURL=airplay.d.ts.map

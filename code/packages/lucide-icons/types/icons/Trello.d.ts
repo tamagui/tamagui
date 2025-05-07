@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Trello: IconComponent;
 export {};
 
-//# sourceMappingURL=Trello.d.ts.map
+//# sourceMappingURL=trello.d.ts.map

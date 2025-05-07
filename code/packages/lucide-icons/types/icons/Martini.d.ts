@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Martini: IconComponent;
 export {};
 
-//# sourceMappingURL=Martini.d.ts.map
+//# sourceMappingURL=martini.d.ts.map

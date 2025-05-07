@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Crosshair: IconComponent;
 export {};
 
-//# sourceMappingURL=Crosshair.d.ts.map
+//# sourceMappingURL=crosshair.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Torus: IconComponent;
 export {};
 
-//# sourceMappingURL=Torus.d.ts.map
+//# sourceMappingURL=torus.d.ts.map

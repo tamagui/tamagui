@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Drumstick: IconComponent;
 export {};
 
-//# sourceMappingURL=Drumstick.d.ts.map
+//# sourceMappingURL=drumstick.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Microscope: IconComponent;
 export {};
 
-//# sourceMappingURL=Microscope.d.ts.map
+//# sourceMappingURL=microscope.d.ts.map

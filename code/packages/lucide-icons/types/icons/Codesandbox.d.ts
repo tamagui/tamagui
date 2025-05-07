@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Codesandbox: IconComponent;
 export {};
 
-//# sourceMappingURL=Codesandbox.d.ts.map
+//# sourceMappingURL=codesandbox.d.ts.map

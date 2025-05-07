@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Cherry: IconComponent;
 export {};
 
-//# sourceMappingURL=Cherry.d.ts.map
+//# sourceMappingURL=cherry.d.ts.map

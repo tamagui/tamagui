@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Haze: IconComponent;
 export {};
 
-//# sourceMappingURL=Haze.d.ts.map
+//# sourceMappingURL=haze.d.ts.map

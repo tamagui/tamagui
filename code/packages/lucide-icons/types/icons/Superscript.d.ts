@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Superscript: IconComponent;
 export {};
 
-//# sourceMappingURL=Superscript.d.ts.map
+//# sourceMappingURL=superscript.d.ts.map

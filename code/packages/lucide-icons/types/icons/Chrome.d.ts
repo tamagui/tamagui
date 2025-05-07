@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Chrome: IconComponent;
 export {};
 
-//# sourceMappingURL=Chrome.d.ts.map
+//# sourceMappingURL=chrome.d.ts.map

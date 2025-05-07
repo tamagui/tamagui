@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Magnet: IconComponent;
 export {};
 
-//# sourceMappingURL=Magnet.d.ts.map
+//# sourceMappingURL=magnet.d.ts.map

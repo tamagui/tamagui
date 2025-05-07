@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Carrot: IconComponent;
 export {};
 
-//# sourceMappingURL=Carrot.d.ts.map
+//# sourceMappingURL=carrot.d.ts.map

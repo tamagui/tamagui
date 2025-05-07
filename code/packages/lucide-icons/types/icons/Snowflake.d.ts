@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Snowflake: IconComponent;
 export {};
 
-//# sourceMappingURL=Snowflake.d.ts.map
+//# sourceMappingURL=snowflake.d.ts.map

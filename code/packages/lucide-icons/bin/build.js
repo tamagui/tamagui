@@ -24,6 +24,7 @@ const backwardsCompat = [
   'BookTemplate',
   'ClipboardEdit',
   'ClipboardSignature',
+  'Code2',
   'Columns',
   'Edit3',
   'FileCog2',

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Clipboard: IconComponent;
 export {};
 
-//# sourceMappingURL=Clipboard.d.ts.map
+//# sourceMappingURL=clipboard.d.ts.map

@@ -4,6 +4,7 @@ export { AlarmPlus } from "./icons/AlarmPlus";
 export { BookTemplate } from "./icons/BookTemplate";
 export { ClipboardEdit } from "./icons/ClipboardEdit";
 export { ClipboardSignature } from "./icons/ClipboardSignature";
+export { Code2 } from "./icons/Code2";
 export { Columns } from "./icons/Columns";
 export { Edit3 } from "./icons/Edit3";
 export { FileCog2 } from "./icons/FileCog2";

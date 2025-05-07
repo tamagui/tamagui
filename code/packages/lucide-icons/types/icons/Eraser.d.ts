@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Eraser: IconComponent;
 export {};
 
-//# sourceMappingURL=Eraser.d.ts.map
+//# sourceMappingURL=eraser.d.ts.map

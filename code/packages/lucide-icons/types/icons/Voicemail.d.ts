@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Voicemail: IconComponent;
 export {};
 
-//# sourceMappingURL=Voicemail.d.ts.map
+//# sourceMappingURL=voicemail.d.ts.map

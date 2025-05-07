@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Hourglass: IconComponent;
 export {};
 
-//# sourceMappingURL=Hourglass.d.ts.map
+//# sourceMappingURL=hourglass.d.ts.map

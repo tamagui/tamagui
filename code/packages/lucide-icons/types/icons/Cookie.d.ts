@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Cookie: IconComponent;
 export {};
 
-//# sourceMappingURL=Cookie.d.ts.map
+//# sourceMappingURL=cookie.d.ts.map

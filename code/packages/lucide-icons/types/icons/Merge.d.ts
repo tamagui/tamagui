@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Merge: IconComponent;
 export {};
 
-//# sourceMappingURL=Merge.d.ts.map
+//# sourceMappingURL=merge.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Bookmark: IconComponent;
 export {};
 
-//# sourceMappingURL=Bookmark.d.ts.map
+//# sourceMappingURL=bookmark.d.ts.map

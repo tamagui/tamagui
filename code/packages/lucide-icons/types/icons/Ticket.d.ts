@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Ticket: IconComponent;
 export {};
 
-//# sourceMappingURL=Ticket.d.ts.map
+//# sourceMappingURL=ticket.d.ts.map

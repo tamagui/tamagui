@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Tornado: IconComponent;
 export {};
 
-//# sourceMappingURL=Tornado.d.ts.map
+//# sourceMappingURL=tornado.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Keyboard: IconComponent;
 export {};
 
-//# sourceMappingURL=Keyboard.d.ts.map
+//# sourceMappingURL=keyboard.d.ts.map

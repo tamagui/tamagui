@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Pocket: IconComponent;
 export {};
 
-//# sourceMappingURL=Pocket.d.ts.map
+//# sourceMappingURL=pocket.d.ts.map

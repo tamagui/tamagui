@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Telescope: IconComponent;
 export {};
 
-//# sourceMappingURL=Telescope.d.ts.map
+//# sourceMappingURL=telescope.d.ts.map

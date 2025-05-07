@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Undo: IconComponent;
 export {};
 
-//# sourceMappingURL=Undo.d.ts.map
+//# sourceMappingURL=undo.d.ts.map

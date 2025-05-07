@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Handshake: IconComponent;
 export {};
 
-//# sourceMappingURL=Handshake.d.ts.map
+//# sourceMappingURL=handshake.d.ts.map

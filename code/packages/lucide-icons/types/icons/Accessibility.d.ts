@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Accessibility: IconComponent;
 export {};
 
-//# sourceMappingURL=Accessibility.d.ts.map
+//# sourceMappingURL=accessibility.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Fullscreen: IconComponent;
 export {};
 
-//# sourceMappingURL=Fullscreen.d.ts.map
+//# sourceMappingURL=fullscreen.d.ts.map

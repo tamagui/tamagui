@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Feather: IconComponent;
 export {};
 
-//# sourceMappingURL=Feather.d.ts.map
+//# sourceMappingURL=feather.d.ts.map

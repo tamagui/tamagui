@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Transgender: IconComponent;
 export {};
 
-//# sourceMappingURL=Transgender.d.ts.map
+//# sourceMappingURL=transgender.d.ts.map

@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Pickaxe: IconComponent;
 export {};
 
-//# sourceMappingURL=Pickaxe.d.ts.map
+//# sourceMappingURL=pickaxe.d.ts.map

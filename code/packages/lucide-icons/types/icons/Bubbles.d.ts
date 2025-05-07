@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Bubbles: IconComponent;
 export {};
 
-//# sourceMappingURL=Bubbles.d.ts.map
+//# sourceMappingURL=bubbles.d.ts.map

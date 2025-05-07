@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Speech: IconComponent;
 export {};
 
-//# sourceMappingURL=Speech.d.ts.map
+//# sourceMappingURL=speech.d.ts.map

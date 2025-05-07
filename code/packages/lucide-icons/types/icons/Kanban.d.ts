@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Kanban: IconComponent;
 export {};
 
-//# sourceMappingURL=Kanban.d.ts.map
+//# sourceMappingURL=kanban.d.ts.map

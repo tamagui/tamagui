@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Slack: IconComponent;
 export {};
 
-//# sourceMappingURL=Slack.d.ts.map
+//# sourceMappingURL=slack.d.ts.map

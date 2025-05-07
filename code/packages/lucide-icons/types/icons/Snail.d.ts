@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Snail: IconComponent;
 export {};
 
-//# sourceMappingURL=Snail.d.ts.map
+//# sourceMappingURL=snail.d.ts.map

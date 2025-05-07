@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Facebook: IconComponent;
 export {};
 
-//# sourceMappingURL=Facebook.d.ts.map
+//# sourceMappingURL=facebook.d.ts.map

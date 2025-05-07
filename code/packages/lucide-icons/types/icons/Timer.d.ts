@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Timer: IconComponent;
 export {};
 
-//# sourceMappingURL=Timer.d.ts.map
+//# sourceMappingURL=timer.d.ts.map

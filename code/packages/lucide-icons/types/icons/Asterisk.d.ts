@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Asterisk: IconComponent;
 export {};
 
-//# sourceMappingURL=Asterisk.d.ts.map
+//# sourceMappingURL=asterisk.d.ts.map

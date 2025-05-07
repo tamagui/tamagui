@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Radar: IconComponent;
 export {};
 
-//# sourceMappingURL=Radar.d.ts.map
+//# sourceMappingURL=radar.d.ts.map

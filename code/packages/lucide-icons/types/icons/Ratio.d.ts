@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Ratio: IconComponent;
 export {};
 
-//# sourceMappingURL=Ratio.d.ts.map
+//# sourceMappingURL=ratio.d.ts.map

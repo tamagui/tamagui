@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Dribbble: IconComponent;
 export {};
 
-//# sourceMappingURL=Dribbble.d.ts.map
+//# sourceMappingURL=dribbble.d.ts.map

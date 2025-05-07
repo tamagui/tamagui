@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Usb: IconComponent;
 export {};
 
-//# sourceMappingURL=Usb.d.ts.map
+//# sourceMappingURL=usb.d.ts.map

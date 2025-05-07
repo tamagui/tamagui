@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Amphora: IconComponent;
 export {};
 
-//# sourceMappingURL=Amphora.d.ts.map
+//# sourceMappingURL=amphora.d.ts.map

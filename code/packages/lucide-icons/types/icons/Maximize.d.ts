@@ -3,4 +3,4 @@ type IconComponent = (propsIn: IconProps) => JSX.Element;
 export declare const Maximize: IconComponent;
 export {};
 
-//# sourceMappingURL=Maximize.d.ts.map
+//# sourceMappingURL=maximize.d.ts.map
