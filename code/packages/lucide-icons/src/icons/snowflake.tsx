@@ -1,33 +1,38 @@
 import { memo } from 'react'
-import type { NamedExoticComponent } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line, Path } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
 
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Line x1="2" x2="22" y1="12" y2="12" stroke={color} />
-      <Line x1="12" x2="12" y1="2" y2="22" stroke={color} />
-      <Path d="m20 16-4-4 4-4" stroke={color} />
-      <Path d="m4 8 4 4-4 4" stroke={color} />
-      <Path d="m16 4-4 4-4-4" stroke={color} />
-      <Path d="m8 20 4-4 4 4" stroke={color} />
-    </Svg>
-  )
-}
+type IconComponent = (propsIn: IconProps) => JSX.Element
 
-Icon.displayName = 'Snowflake'
-
-export const Snowflake: NamedExoticComponent<IconProps> = memo<IconProps>(themed(Icon))
+export const Snowflake: IconComponent = themed(
+  memo(function Snowflake(props: IconProps) {
+    const { color = 'black', size = 24, ...otherProps } = props
+    return (
+      <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...otherProps}
+      >
+        <Path d="m10 20-1.25-2.5L6 18" stroke={color} />
+        <Path d="M10 4 8.75 6.5 6 6" stroke={color} />
+        <Path d="m14 20 1.25-2.5L18 18" stroke={color} />
+        <Path d="m14 4 1.25 2.5L18 6" stroke={color} />
+        <Path d="m17 21-3-6h-4" stroke={color} />
+        <Path d="m17 3-3 6 1.5 3" stroke={color} />
+        <Path d="M2 12h6.5L10 9" stroke={color} />
+        <Path d="m20 10-1.5 2 1.5 2" stroke={color} />
+        <Path d="M22 12h-6.5L14 15" stroke={color} />
+        <Path d="m4 10 1.5 2L4 14" stroke={color} />
+        <Path d="m7 21 3-6-1.5-3" stroke={color} />
+        <Path d="m7 3 3 6h4" stroke={color} />
+      </Svg>
+    )
+  })
+)

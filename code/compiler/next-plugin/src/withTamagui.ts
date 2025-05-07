@@ -180,13 +180,9 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
 
         // better shaking for icons:
         if (!tamaguiOptions.disableOptimizeLucideIcons) {
-          if (!isServer) {
-            nextConfig.modularizeImports ??= {}
-            nextConfig.modularizeImports['@tamagui/lucide-icons'] = {
-              transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}.mjs`,
-              skipDefaultConversion: true,
-            }
-          }
+          nextConfig.experimental ||= {}
+          nextConfig.experimental.optimizePackageImports ||= []
+          nextConfig.experimental.optimizePackageImports.push('@tamagui/lucide-icons')
         }
 
         /**
