@@ -1,5 +1,11 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  isAndroid,
+  isClient,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import React from 'react'
 import { devConfig, onConfiguredOnce } from './config'
@@ -724,8 +730,12 @@ export function createComponent<
 
       let tm: NodeJS.Timeout
       if (state.unmounted) {
-        if (animationDriver?.supportsCSSVars ?? config?.animations?.supportsCSSVars) {
-          // this setTimeout fixes css driver enter animations - not sure why
+        if (
+          (animationDriver?.supportsCSSVars ?? config?.animations?.supportsCSSVars) ||
+          isAndroid
+        ) {
+          // this setTimeout fixes css driver enter animations  - not sure why
+          // this setTimeout fixes the conflict when with the safe area view in android
           tm = setTimeout(() => {
             setStateShallow({ unmounted: false })
           })
