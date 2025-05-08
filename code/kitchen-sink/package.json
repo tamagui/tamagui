@@ -67,7 +67,9 @@
     "react-native-svg": "15.8.0",
     "react-native-web": "^0.20.0",
     "solito": "^4.3.0",
-    "tamagui": "workspace:*"
+    "tamagui": "workspace:*",
+    "vitest": "^3.0.5",
+    "webdriverio": "^9.5.4"
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
