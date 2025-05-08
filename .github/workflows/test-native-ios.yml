@@ -115,7 +115,8 @@ jobs:
           SIMULATOR_UDID: ${{ steps.get-simulator-udid.outputs.simulator_udid }}
           IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios-kitchensink-dev.outputs.built-app-path }}
         run: |
-          echo "TODO!"
+          cd code/kitchen-sink
+          yarn vitest --config ./vitest.config.ios.ts --run
 
 
   test-ios-native-prod:
