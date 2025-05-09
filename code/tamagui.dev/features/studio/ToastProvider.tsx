@@ -6,7 +6,7 @@ import {
   useToastController,
   useToastState,
 } from '@tamagui/toast'
-import { AnimatePresence, Theme } from 'tamagui'
+import { AnimatePresence, Theme, YStack } from 'tamagui'
 
 export let toastController: ReturnType<typeof useToastController>
 
@@ -31,36 +31,28 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
 const ToastHandler = () => {
   const toast = useToastState()
 
+  // avoid rendering the toast if it's a demo toast
+  if (!toast || toast?.demo) return null
+
   return (
     <Theme name="accent">
-      <AnimatePresence>
-        {toast && (
-          <Toast
-            key={toast.title + toast.message}
-            duration={toast.duration ?? 3000}
-            animation="bouncy"
-            enterStyle={{ opacity: 0, scale: 0 }}
-            exitStyle={{ opacity: 0, scale: 0 }}
-            y={0}
-            position="absolute"
-            bottom={0}
-            left="50%"
-            x="-50%"
-            opacity={1}
-            scale={1}
-            elevation="$6"
-            m="$4"
-            br="$10"
-            bg="$color1"
-            px="$5"
-            py="$2"
-            {...toast.customData}
-          >
-            <Toast.Title whiteSpace="pre">{toast.title}</Toast.Title>
-            <Toast.Description>{toast.message}</Toast.Description>
-          </Toast>
-        )}
-      </AnimatePresence>
+      <Toast
+        key={toast.title + toast.message}
+        duration={toast.duration ?? 3000}
+        animation="200ms"
+        enterStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+        exitStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+        transform={[{ translateY: 0 }]}
+        bottom={0}
+        opacity={1}
+        gap={0}
+        {...toast.customData}
+      >
+        <YStack gap={0}>
+          <Toast.Title>{toast.title}</Toast.Title>
+          <Toast.Description>{toast.message}</Toast.Description>
+        </YStack>
+      </Toast>
     </Theme>
   )
 }
