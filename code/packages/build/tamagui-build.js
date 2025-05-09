@@ -855,8 +855,10 @@ async function esbuildWriteIfChanged(
             ].filter(Boolean),
           })
 
-      cleanupNonMjsFiles.push(path)
-      cleanupNonMjsFiles.push(path + '.map')
+      if (!path.includes('.native.')) {
+        cleanupNonMjsFiles.push(path)
+        cleanupNonMjsFiles.push(path + '.map')
+      }
 
       // output to mjs fully specified
       if (
