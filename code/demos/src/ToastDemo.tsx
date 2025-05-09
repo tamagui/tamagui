@@ -1,6 +1,6 @@
 import { Toast, useToastController, useToastState } from '@tamagui/toast'
 import React from 'react'
-import { AnimatePresence, Button, isWeb, Label, Switch, XStack, YStack } from 'tamagui'
+import { Button, isWeb, Label, Switch, XStack, YStack } from 'tamagui'
 
 /**
  *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
@@ -23,34 +23,33 @@ export const ToastDemo = () => {
 const CurrentToast = () => {
   const currentToast = useToastState()
 
+  if (!currentToast || currentToast.isHandledNatively) return null
+
   return (
-    <AnimatePresence>
-      {currentToast && !currentToast.isHandledNatively ? (
-        <Toast
-          animation="200ms"
-          key={currentToast.id}
-          duration={currentToast.duration}
-          enterStyle={{ opacity: 0, scale: 0.5, y: 25 }}
-          exitStyle={{ opacity: 0, scale: 1, y: 20 }}
-          y={0}
-          opacity={1}
-          scale={1}
-          viewportName={currentToast.viewportName}
-        >
-          <YStack>
-            <Toast.Title>{currentToast.title}</Toast.Title>
-            {!!currentToast.message && (
-              <Toast.Description>{currentToast.message}</Toast.Description>
-            )}
-          </YStack>
-        </Toast>
-      ) : null}
-    </AnimatePresence>
+    <Toast
+      animation="200ms"
+      key={currentToast.id}
+      duration={currentToast.duration}
+      enterStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+      exitStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+      transform={[{ translateY: 0 }]}
+      opacity={1}
+      scale={1}
+      viewportName={currentToast.viewportName}
+    >
+      <YStack>
+        <Toast.Title>{currentToast.title}</Toast.Title>
+        {!!currentToast.message && (
+          <Toast.Description>{currentToast.message}</Toast.Description>
+        )}
+      </YStack>
+    </Toast>
   )
 }
 
 const ToastControl = ({ native }: { native: boolean }) => {
   const toast = useToastController()
+
   return (
     <XStack gap="$2" justifyContent="center">
       <Button
@@ -58,6 +57,7 @@ const ToastControl = ({ native }: { native: boolean }) => {
           toast.show('Successfully saved!', {
             message: "Don't worry, we've got your data.",
             native,
+            demo: true,
           })
         }}
       >

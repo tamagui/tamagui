@@ -16,6 +16,7 @@ import type { ScopedProps, ToastProviderProps } from './ToastProvider'
 import { ToastProvider } from './ToastProvider'
 import type { ToastViewportProps } from './ToastViewport'
 import { ToastViewport } from './ToastViewport'
+import { AnimatePresence } from '@tamagui/animate-presence'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle
@@ -158,26 +159,35 @@ const ToastComponent = ToastImplFrame.styleable<ToastExtraProps>(
       strategy: 'most-recent-wins',
     })
 
+    const currentToast = useToastState()
+    const { hide } = useToastController()
+
     const id = React.useId()
     const onPause = useEvent(props.onPause)
     const onResume = useEvent(props.onResume)
-    const shouldShow = forceMount || open
-
-    if (!shouldShow) return null
+    const isHide = currentToast?.hide === true
+    const shouldShow = (forceMount || open) && !isHide
 
     return (
-      <ToastImpl
-        id={id}
-        open={open}
-        {...toastProps}
-        ref={forwardedRef}
-        onClose={() => setOpen(false)}
-        onPause={onPause}
-        onResume={onResume}
-        onSwipeEnd={composeEventHandlers(props.onSwipeEnd, (event) => {
-          setOpen(false)
-        })}
-      />
+      <AnimatePresence key={id}>
+        {shouldShow ? (
+          <ToastImpl
+            id={id}
+            open={open}
+            {...toastProps}
+            ref={forwardedRef}
+            onClose={() => {
+              setOpen(false)
+              hide()
+            }}
+            onPause={onPause}
+            onResume={onResume}
+            onSwipeEnd={composeEventHandlers(props.onSwipeEnd, (event) => {
+              setOpen(false)
+            })}
+          />
+        ) : null}
+      </AnimatePresence>
     )
   }
 )
