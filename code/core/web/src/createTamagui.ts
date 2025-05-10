@@ -27,13 +27,15 @@ import type {
   ThemesLikeObject,
   TokensMerged,
   TokensParsed,
+  CreateTamaguiConfigIn 
 } from './types'
 
 // config is re-run by @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
 
-export function createTamagui<Conf extends CreateTamaguiProps>(
-  configIn: Conf
+
+export function createTamagui<Conf extends CreateTamaguiConfigIn>(
+  configIn:Conf
 ): InferTamaguiConfig<Conf> {
   if (process.env.NODE_ENV === 'test' && globalThis.__tamaguiConfig) {
     console.warn(
