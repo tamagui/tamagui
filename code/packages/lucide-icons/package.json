@@ -6,8 +6,8 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "module",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "files": [
     "src",
     "types",

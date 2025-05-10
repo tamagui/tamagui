@@ -56,14 +56,9 @@ const plugins = [
 export default (name, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
   let config = {
-    // output: 'export',
-    // runtime: 'experimental-edge',
-    outputFileTracing: true,
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
-    swcMinify: true,
     // must set to false if using reanimated
     reactStrictMode: true,
-    optimizeFonts: true,
     // async headers() {
     //   return [
     //     {

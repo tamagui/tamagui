@@ -1,29 +1,14 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { useIsIntersecting } from '@tamagui/demos'
-import { useTint } from '@tamagui/logo'
 import { memo, useEffect, useRef, useState } from 'react'
 import type { Heading, TextProps } from 'tamagui'
-import {
-  Button,
-  Card,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  H6,
-  Paragraph,
-  XStack,
-  YStack,
-  useDidFinishSSR,
-} from 'tamagui'
+import { Button, Card, H1, H2, Paragraph, XStack, YStack, useDidFinishSSR } from 'tamagui'
 
 const families = ['silkscreen', 'mono', 'heading']
 
 export const HeroTypography = memo(() => {
   const [family, setFamily] = useState(`silkscreen`)
   const ref = useRef<any>()
-  const isIntersecting = useIsIntersecting(ref)
+  const isIntersecting = false
 
   useEffect(() => {
     if (!isIntersecting) {
@@ -142,8 +127,6 @@ export const HeroTypography = memo(() => {
 })
 
 const OverlayCard = () => {
-  const { tint } = useTint()
-
   // {/* TODO elevation not overriding? */}
   return (
     <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
@@ -163,12 +146,7 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <Button
-          aria-label="Fonts docs"
-          fontFamily="$silkscreen"
-          als="flex-end"
-          theme={tint as any}
-        >
+        <Button aria-label="Fonts docs" fontFamily="$silkscreen" als="flex-end">
           Fonts &raquo;
         </Button>
       </YStack>
