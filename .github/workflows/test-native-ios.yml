@@ -115,9 +115,7 @@ jobs:
           SIMULATOR_UDID: ${{ steps.get-simulator-udid.outputs.simulator_udid }}
           IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios-kitchensink-dev.outputs.built-app-path }}
         run: |
-          cd code/kitchen-sink
-          yarn vitest --config ./vitest.config.ios.ts --run
-
+          yarn test-ios
 
   test-ios-native-prod:
     name: Native iOS Tests (Prod)
@@ -126,77 +124,80 @@ jobs:
     # runs-on: ghcr.io/cirruslabs/macos-runner:sonoma
     runs-on: macos-14
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install
-        uses: ./.github/actions/install
-        with:
-          transcrypt_password: ${{ secrets.transcrypt_password }}
-
-      - name: Download Built Test Container App
-        uses: actions/cache/restore@v4
-        with:
-          fail-on-cache-miss: true
-          key: ${{ needs.build-ios-kitchensink-prod.outputs.built-app-cache-key }}
-          path: ${{ needs.build-ios-kitchensink-prod.outputs.built-app-path }}
-
-      - name: Get Simulator UDID
-        id: get-simulator-udid
-        env:
-          SIMULATOR_IOS_VERSION: ${{ env.simulator_ios_version }}
-          SIMULATOR_DEVICE_NAME: ${{ env.simulator_device_name }}
+      - name: TODO
         run: |
-          AVAILABLE_SIMULATORS=$(xcrun simctl list devices available --json | jq -r '[.devices | to_entries[] | select(.key | contains("SimRuntime.iOS")) | .key as $runtime | .value[] | { runtime: $runtime, name: .name, udid: .udid }]')
-          echo "Available simulators: $AVAILABLE_SIMULATORS"
+          echo "TODO"
+      # - name: Checkout
+      #   uses: actions/checkout@v4
 
-          SELECTED_SIMULATOR=$(echo $AVAILABLE_SIMULATORS | jq -r "[.[] | select(.runtime | contains(\"$SIMULATOR_IOS_VERSION\")) | select(.name | \"$SIMULATOR_DEVICE_NAME\")] | first")
-          if [ -z "$SELECTED_SIMULATOR" ] || [ "$SELECTED_SIMULATOR" = "null" ]; then
-            echo "Error: No simulator found for iOS version $SIMULATOR_IOS_VERSION and device name $SIMULATOR_DEVICE_NAME"
-            exit 1
-          fi
-          echo "Selected simulator: $SELECTED_SIMULATOR"
+      # - name: Install
+      #   uses: ./.github/actions/install
+      #   with:
+      #     transcrypt_password: ${{ secrets.transcrypt_password }}
 
-          SIMULATOR_UDID=$(echo $SELECTED_SIMULATOR | jq -r .udid)
-          if [ -z "$SIMULATOR_UDID" ] || [ "$SIMULATOR_UDID" = "null" ]; then
-            echo "Error: Could not get simulator UDID"
-            exit 1
-          fi
-          echo "Simulator UDID: $SIMULATOR_UDID"
-          echo "simulator_udid=$SIMULATOR_UDID" >> $GITHUB_OUTPUT
+      # - name: Download Built Test Container App
+      #   uses: actions/cache/restore@v4
+      #   with:
+      #     fail-on-cache-miss: true
+      #     key: ${{ needs.build-ios-kitchensink-prod.outputs.built-app-cache-key }}
+      #     path: ${{ needs.build-ios-kitchensink-prod.outputs.built-app-path }}
 
-      - name: Boot Simulator
-        env:
-          SIMULATOR_UDID: ${{ steps.get-simulator-udid.outputs.simulator_udid }}
-        run: xcrun simctl boot $SIMULATOR_UDID
+      # - name: Get Simulator UDID
+      #   id: get-simulator-udid
+      #   env:
+      #     SIMULATOR_IOS_VERSION: ${{ env.simulator_ios_version }}
+      #     SIMULATOR_DEVICE_NAME: ${{ env.simulator_device_name }}
+      #   run: |
+      #     AVAILABLE_SIMULATORS=$(xcrun simctl list devices available --json | jq -r '[.devices | to_entries[] | select(.key | contains("SimRuntime.iOS")) | .key as $runtime | .value[] | { runtime: $runtime, name: .name, udid: .udid }]')
+      #     echo "Available simulators: $AVAILABLE_SIMULATORS"
 
-      - name: Get NPM Global Root Path
-        id: get-npm-global-root-path
-        run: |
-          NPM_GLOBAL_ROOT_PATH=$(npm root -g)
-          echo "NPM global root path: $NPM_GLOBAL_ROOT_PATH"
-          echo "path=$NPM_GLOBAL_ROOT_PATH" >> $GITHUB_OUTPUT
+      #     SELECTED_SIMULATOR=$(echo $AVAILABLE_SIMULATORS | jq -r "[.[] | select(.runtime | contains(\"$SIMULATOR_IOS_VERSION\")) | select(.name | \"$SIMULATOR_DEVICE_NAME\")] | first")
+      #     if [ -z "$SELECTED_SIMULATOR" ] || [ "$SELECTED_SIMULATOR" = "null" ]; then
+      #       echo "Error: No simulator found for iOS version $SIMULATOR_IOS_VERSION and device name $SIMULATOR_DEVICE_NAME"
+      #       exit 1
+      #     fi
+      #     echo "Selected simulator: $SELECTED_SIMULATOR"
 
-      - uses: cirruslabs/cache/restore@v4
-        with:
-          path: ${{ steps.get-npm-global-root-path.outputs.path }}
-          key: ${{ runner.os }}-npm-appium
+      #     SIMULATOR_UDID=$(echo $SELECTED_SIMULATOR | jq -r .udid)
+      #     if [ -z "$SIMULATOR_UDID" ] || [ "$SIMULATOR_UDID" = "null" ]; then
+      #       echo "Error: Could not get simulator UDID"
+      #       exit 1
+      #     fi
+      #     echo "Simulator UDID: $SIMULATOR_UDID"
+      #     echo "simulator_udid=$SIMULATOR_UDID" >> $GITHUB_OUTPUT
 
-      - name: Install and Run Appium Server
-        run: |
-          npm install -g appium
-          appium driver install xcuitest
-          appium > /tmp/appium.log &
-          sleep 3
+      # - name: Boot Simulator
+      #   env:
+      #     SIMULATOR_UDID: ${{ steps.get-simulator-udid.outputs.simulator_udid }}
+      #   run: xcrun simctl boot $SIMULATOR_UDID
 
-      - uses: cirruslabs/cache/save@v4
-        with:
-          path: ${{ steps.get-npm-global-root-path.outputs.path }}
-          key: ${{ runner.os }}-npm-appium
+      # - name: Get NPM Global Root Path
+      #   id: get-npm-global-root-path
+      #   run: |
+      #     NPM_GLOBAL_ROOT_PATH=$(npm root -g)
+      #     echo "NPM global root path: $NPM_GLOBAL_ROOT_PATH"
+      #     echo "path=$NPM_GLOBAL_ROOT_PATH" >> $GITHUB_OUTPUT
 
-      - name: Test
-        env:
-          SIMULATOR_UDID: ${{ steps.get-simulator-udid.outputs.simulator_udid }}
-          IOS_TEST_CONTAINER_PATH_PROD: ${{ github.workspace }}/${{ needs.build-ios-kitchensink-prod.outputs.built-app-path }}
-        run: |
-          echo "TODO!"
+      # - uses: cirruslabs/cache/restore@v4
+      #   with:
+      #     path: ${{ steps.get-npm-global-root-path.outputs.path }}
+      #     key: ${{ runner.os }}-npm-appium
+
+      # - name: Install and Run Appium Server
+      #   run: |
+      #     npm install -g appium
+      #     appium driver install xcuitest
+      #     appium > /tmp/appium.log &
+      #     sleep 3
+
+      # - uses: cirruslabs/cache/save@v4
+      #   with:
+      #     path: ${{ steps.get-npm-global-root-path.outputs.path }}
+      #     key: ${{ runner.os }}-npm-appium
+
+      # - name: Test
+      #   env:
+      #     SIMULATOR_UDID: ${{ steps.get-simulator-udid.outputs.simulator_udid }}
+      #     IOS_TEST_CONTAINER_PATH_PROD: ${{ github.workspace }}/${{ needs.build-ios-kitchensink-prod.outputs.built-app-path }}
+      #   run: |
+      #     echo "TODO!"
