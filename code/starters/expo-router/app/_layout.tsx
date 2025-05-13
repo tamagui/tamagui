@@ -1,7 +1,8 @@
 import '../tamagui-web.css'
 
 import { useEffect } from 'react'
-import { StatusBar, useColorScheme } from 'react-native'
+import { useColorScheme } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
@@ -54,7 +55,7 @@ function RootLayoutNav() {
   const theme = useTheme()
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
+      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <Stack>
         <Stack.Screen
           name="(tabs)"
