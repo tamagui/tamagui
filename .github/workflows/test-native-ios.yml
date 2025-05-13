@@ -39,8 +39,8 @@ jobs:
     name: Native iOS Tests (Dev)
     needs:
       - build-ios-kitchensink-dev
-    # runs-on: ghcr.io/cirruslabs/macos-runner:sonoma
-    runs-on: macos-14
+    runs-on: ghcr.io/cirruslabs/macos-runner:sequoia
+    # runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -121,8 +121,8 @@ jobs:
     name: Native iOS Tests (Prod)
     needs:
       - build-ios-kitchensink-prod
-    # runs-on: ghcr.io/cirruslabs/macos-runner:sonoma
-    runs-on: macos-14
+    runs-on: ghcr.io/cirruslabs/macos-runner:sequoia
+    # runs-on: macos-14
     steps:
       - name: TODO
         run: |
