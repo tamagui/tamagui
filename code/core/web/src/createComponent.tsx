@@ -719,10 +719,8 @@ export function createComponent<
     }
 
     useIsomorphicLayoutEffect(() => {
-      if (disabled) {
-        return
-      }
-
+      // Note: We removed the early return on disabled to allow animations to work
+      // This fixes the issue where animations wouldn't work on disabled components
       if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
@@ -746,8 +744,9 @@ export function createComponent<
         return
       }
 
+      // Only subscribe to context group if not disabled
       const dispose =
-        pseudoGroups || mediaGroups
+        !disabled && (pseudoGroups || mediaGroups)
           ? subscribeToContextGroup({
               componentContext,
               setStateShallow,

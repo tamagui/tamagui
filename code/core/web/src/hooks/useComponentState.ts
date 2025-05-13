@@ -137,7 +137,7 @@ export const useComponentState = (
 
   let setStateShallow = createShallowSetState(
     setState,
-    disabled ? ['disabled'] : undefined,
+    undefined, // note: allows all state updates even when disabled for the enterStyle animation to work
     false,
     props.debug
   )
