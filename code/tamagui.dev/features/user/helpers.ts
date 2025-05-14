@@ -203,22 +203,35 @@ export async function getUserAccessInfo(
     throw teamsResult.error
   }
   const teams = getArray(teamsResult.data)
+
   const teamsWithAccess = teams.filter(
     (team) =>
       team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
   )
+
   const hasTeamAccess = teamsWithAccess.length > 0
 
-  const isBentoWhitelisted = teams.some((team) =>
-    whitelistBentoUsernames.has(team.name || '')
-  )
+  // Determine if the user is directly whitelisted for Bento via their GitHub username or email
+  let isUserDirectlyBentoWhitelisted = false
+  if (user) {
+    const githubUsername = user.user_metadata?.user_name // GitHub username from user metadata
+    const userEmail = user.email // User's email
+
+    // Check if GitHub username is in the Bento whitelist
+    if (githubUsername && whitelistBentoUsernames.has(githubUsername)) {
+      isUserDirectlyBentoWhitelisted = true
+    } else if (userEmail && whitelistBentoUsernames.has(userEmail)) {
+      // If GitHub username isn't whitelisted or not present, check email
+      isUserDirectlyBentoWhitelisted = true
+    }
+  }
 
   const hasStudioAccess =
     takeoutAccessInfo.access || // if the user has purchased takeout, we give them studio access
     hasTeamAccess // if the user is a member of at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give them studio access
 
   return {
-    hasBentoAccess: isBentoWhitelisted || bentoAccessInfo.access,
+    hasBentoAccess: isUserDirectlyBentoWhitelisted || bentoAccessInfo.access,
     hasTakeoutAccess: takeoutAccessInfo.access,
     hasStudioAccess,
     teamsWithAccess,
