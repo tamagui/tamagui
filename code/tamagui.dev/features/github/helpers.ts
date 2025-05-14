@@ -157,6 +157,7 @@ export const whitelistBentoUsernames = new Set([
   'baronha',
   'poteboy',
   'zetavg',
+  'anhquan291',
 
   'Bankilo',
   'meal',
@@ -210,6 +211,9 @@ export const whitelistBentoUsernames = new Set([
   // RichardTunstall
   'ads102003',
   'FateFirst',
+
+  // iBotPeaches
+  'iBotPeaches',
 
   // codingscape
   ...codinscapeusers,
