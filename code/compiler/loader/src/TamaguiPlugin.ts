@@ -92,10 +92,9 @@ export class TamaguiPlugin {
         ['@tamagui/web', '@tamagui/web'],
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
+        // `react/jsx-runtime` and `react/jsx-dev-runtime` will break the build in nextjs 15 + app router
         ['react/jsx-runtime.js', 'react/jsx-runtime'],
-        ['react/jsx-runtime', 'react/jsx-runtime'],
         ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
-        ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
 
         ...(this.options.useTamaguiSVG
           ? [['react-native-svg', '@tamagui/react-native-svg'] as [string, string]]

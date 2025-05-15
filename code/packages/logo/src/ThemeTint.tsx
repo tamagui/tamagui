@@ -8,6 +8,7 @@ export const ThemeTint = ({
   ...rest
 }: ThemeProps & { disable?: boolean }): JSX.Element => {
   const curTint = useTint().tint
+
   return (
     <Theme {...rest} name={disable ? null : curTint}>
       {children}

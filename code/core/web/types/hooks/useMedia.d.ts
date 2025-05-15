@@ -7,13 +7,10 @@ export declare const isMediaKey: (key: string) => IsMediaType;
 export declare const getMediaKeyImportance: (key: string) => number;
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
 export declare function setupMediaListeners(): void;
-type MediaKeysState = {
-    [key: string]: any;
-};
+export declare function updateMediaListeners(): void;
 type MediaState = {
-    prev?: MediaKeysState;
     enabled?: boolean;
-    keys?: Record<string, boolean> | null;
+    keys?: Set<string> | null;
 };
 export declare function setMediaShouldUpdate(ref: any, enabled?: boolean, keys?: MediaState['keys']): void;
 export declare function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState;

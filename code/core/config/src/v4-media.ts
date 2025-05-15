@@ -12,6 +12,13 @@ export const breakpoints = {
 }
 
 export const media = {
+  maxXs: { maxWidth: breakpoints.xs },
+  max2xs: { maxWidth: breakpoints['2xs'] },
+  maxSm: { maxWidth: breakpoints.sm },
+  maxMd: { maxWidth: breakpoints.md },
+  maxLg: { maxWidth: breakpoints.lg },
+  maxXl: { maxWidth: breakpoints.xl },
+  max2Xl: { maxWidth: breakpoints['2xl'] },
   // for site
   '2xl': { minWidth: breakpoints['2xl'] },
   xl: { minWidth: breakpoints.xl },

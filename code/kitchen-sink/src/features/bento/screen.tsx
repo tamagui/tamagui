@@ -42,6 +42,10 @@ const List = styled(SectionList, {
 export function BentoScreen() {
   const [search, setSearch] = useState('')
 
+  if (!Data) {
+    return null
+  }
+
   const filteredDemos = useMemo(() => {
     return Data.listingData.sections
       .filter((section) => section.parts.some((part) => part.name.includes(search)))
@@ -72,7 +76,6 @@ export function BentoScreen() {
       <List
         stickyHeaderHiddenOnScroll
         sections={filteredDemos}
-        // data={filteredDemos}
         stickySectionHeadersEnabled
         renderItem={({ item }: any) => <Item item={item} />}
         renderSectionHeader={({ section: { title } }: any) => (

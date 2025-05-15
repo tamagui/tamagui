@@ -10,8 +10,8 @@ export const PageThemeCarousel = () => {
       <XStack
         pos="absolute"
         t={0}
-        l="$4"
-        r="$4"
+        l="$0"
+        r="$0"
         mah={400}
         b={0}
         pe="none"
@@ -19,7 +19,7 @@ export const PageThemeCarousel = () => {
         ai="center"
         zi={100_000}
       >
-        <XStack ai="center" jc="space-between" als="center" f={1} h="100%" maw={1200}>
+        <XStack ai="center" jc="space-between" als="center" f={1} h="100%" maw={1250}>
           <View
             p="$3"
             animation="lazy"
@@ -38,7 +38,7 @@ export const PageThemeCarousel = () => {
             }}
           >
             <ChevronLeft
-              size={48}
+              size={22}
               color="$color08"
               hoverStyle={{
                 color: '$color12',
@@ -60,7 +60,7 @@ export const PageThemeCarousel = () => {
               tint.setTintIndex((tint.tintIndex + 1) % tint.tints.length)
             }}
           >
-            <ChevronRight size={48} color="$color08" />
+            <ChevronRight size={22} color="$color08" />
           </View>
         </XStack>
       </XStack>

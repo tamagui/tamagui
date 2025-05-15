@@ -223,6 +223,7 @@ export const stylePropsView = {
     transition: true,
     textWrap: true,
     backdropFilter: true,
+    WebkitBackdropFilter: true,
     background: true,
     backgroundAttachment: true,
     backgroundBlendMode: true,

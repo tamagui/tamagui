@@ -6,6 +6,10 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "theme.ts",
+    "example/**/*.ts",
+    "example/**/*.tsx",
+    "tamagui.config.ts",
   ],
   "exclude": [
     "types",
@@ -14,6 +18,9 @@
     "**/__tests__"
   ],
   "references": [
+    {
+      "path": "../demos"
+    },
     {
       "path": "../compiler/babel-plugin"
     },
@@ -42,9 +49,6 @@
       "path": "../core/web"
     },
     {
-      "path": "../demos"
-    },
-    {
       "path": "../packages/lucide-icons"
     },
     {
@@ -52,6 +56,6 @@
     },
     {
       "path": "../ui/tamagui"
-    }
+    },
   ]
 }

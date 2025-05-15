@@ -156,9 +156,20 @@ export const ToastImperativeProvider = ({
     },
     [setToast, JSON.stringify(options.native || null)]
   )
+
   const hide = React.useCallback(() => {
     lastNativeToastRef?.close()
-    setToast(null)
+    setToast((prev) => {
+      if (!prev) return null
+      return {
+        ...prev,
+        hide: true,
+      }
+    })
+
+    setTimeout(() => {
+      setToast(null)
+    }, 100)
   }, [setToast, lastNativeToastRef])
 
   const contextValue = React.useMemo(() => {

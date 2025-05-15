@@ -117,7 +117,7 @@ var API = {
     if (ReactNativeFeatureFlags.animatedShouldDebounceQueueFlush()) {
       var prevTimeout = flushQueueTimeout
       clearImmediate(prevTimeout)
-      flushQueueTimeout = setImmediate(API.flushQueue)
+      flushQueueTimeout = setTimeout(API.flushQueue, 0)
     } else {
       API.flushQueue()
     }

@@ -9,13 +9,14 @@ import type {
 } from '@tamagui/core'
 import { Stack } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
+import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
 import { forwardRef, memo, useMemo } from 'react'
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
-
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
 import { useSheetContext } from './SheetContext'
@@ -143,67 +144,65 @@ export function createSheet<
       const composedContentRef = useComposedRefs(forwardedRef, contentRef)
       const offscreenSize = useSheetOffscreenSize(context)
 
-      const sheetContents = useMemo(() => {
-        return (
-          // @ts-ignore
-          <Frame
-            ref={composedContentRef}
-            flex={hasFit ? 0 : 1}
-            height={hasFit ? undefined : frameSize}
-            pointerEvents={open ? 'auto' : 'none'}
-            {...props}
-          >
-            {children}
-
-            {adjustPaddingForOffscreenContent && (
-              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-            )}
-          </Frame>
-        )
-      }, [
-        open,
-        props,
-        frameSize,
-        offscreenSize,
-        adjustPaddingForOffscreenContent,
-        hasFit,
-      ])
-
-      return (
-        <>
-          <RemoveScroll
-            forwardProps
-            enabled={removeScrollEnabled}
-            allowPinchZoom
-            shards={[contentRef]}
-            // causes lots of bugs on touch web on site
-            removeScrollBar={false}
-          >
-            {sheetContents}
-          </RemoveScroll>
-
-          {/* below frame hide when bouncing past 100% */}
-          {!disableHideBottomOverflow && (
-            // @ts-ignore
+        const sheetContents = useMemo(() => {
+          return (
+            // @ts-expect-error
             <Frame
               {...props}
-              componentName="SheetCover"
-              // biome-ignore lint/correctness/noChildrenProp: <explanation>
-              children={null}
-              position="absolute"
-              bottom="-100%"
-              zIndex={-1}
-              height={context.frameSize}
-              left={0}
-              right={0}
-              borderWidth={0}
-              borderRadius={0}
-              shadowOpacity={0}
-            />
-          )}
-        </>
-      )
-    }
+            >
+              <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+                {children}
+              </StackZIndexContext>
+
+              {adjustPaddingForOffscreenContent && (
+                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+              )}
+            </Frame>
+          )
+        }, [
+          open,
+          props,
+          frameSize,
+          offscreenSize,
+          adjustPaddingForOffscreenContent,
+          hasFit,
+        ])
+
+        return (
+          <>
+            <RemoveScroll
+              forwardProps
+              enabled={removeScrollEnabled}
+              allowPinchZoom
+              shards={[contentRef]}
+              // causes lots of bugs on touch web on site
+              removeScrollBar={false}
+            >
+              {sheetContents}
+            </RemoveScroll>
+
+            {/* below frame hide when bouncing past 100% */}
+            {!disableHideBottomOverflow && (
+              // @ts-ignore
+              <Frame
+                {...props}
+                componentName="SheetCover"
+                // biome-ignore lint/correctness/noChildrenProp: <explanation>
+                children={null}
+                position="absolute"
+                bottom="-100%"
+                zIndex={-1}
+                height={context.frameSize}
+                left={0}
+                right={0}
+                borderWidth={0}
+                borderRadius={0}
+                shadowOpacity={0}
+              />
+            )}
+          </>
+        )
+      }
   ) as any as ForwardRefExoticComponent<
     SheetScopedProps<
       Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps

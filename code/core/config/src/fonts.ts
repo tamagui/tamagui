@@ -90,7 +90,6 @@ const monoFont = createGenericFont(
 )
 
 export const fonts = {
-  // noto: notoFont as any,
   heading: headingFont,
   body: bodyFont,
   mono: monoFont,

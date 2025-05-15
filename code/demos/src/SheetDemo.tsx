@@ -32,7 +32,7 @@ export const SheetDemo = () => {
   return (
     <>
       <YStack gap="$4">
-        <XStack gap="$4" $sm={{ flexDirection: 'column', alignItems: 'center' }}>
+        <XStack gap="$4" $maxMd={{ flexDirection: 'column', alignItems: 'center' }}>
           <Button onPress={() => setOpen(true)}>Open</Button>
           <Button onPress={() => setModal((x) => !x)}>
             {modal ? 'Type: Modal' : 'Type: Inline'}
@@ -121,6 +121,7 @@ function InnerSheet(props: SheetProps) {
     <Sheet animation="medium" modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
       <Sheet.Overlay
         animation="medium"
+        bg="$shadow2"
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       />

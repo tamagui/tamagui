@@ -1,10 +1,9 @@
-import React, { type HTMLInputTypeAttribute, type HTMLAttributes } from 'react'
 import { View, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
-import type { InputModeOptions } from 'react-native'
-
+import React, { type HTMLAttributes, type HTMLInputTypeAttribute } from 'react'
 import { styledBody } from './shared'
 import type { InputProps } from './types'
+
 const StyledInput = styled(View, styledBody[0], styledBody[1])
 
 /**

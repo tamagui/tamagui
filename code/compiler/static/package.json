@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.124.17",
+  "version": "1.126.12",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -60,7 +60,7 @@
     "babel-literal-to-ast": "^2.1.0",
     "browserslist": "^4.22.2",
     "check-dependency-version-consistency": "^4.1.0",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "esbuild-register": "^3.6.0",
     "fast-glob": "^3.2.11",
     "find-cache-dir": "^3.3.2",
@@ -69,7 +69,7 @@
     "invariant": "^2.2.4",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "react-native-web": "^0.19.0"
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
@@ -82,7 +82,7 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": "*",
-    "typescript": "^5.7.2"
+    "typescript": "^5.8.2"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {

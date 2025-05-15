@@ -286,9 +286,6 @@ export const HomeThemes = memo(function HomeThemes() {
                       scale={scale}
                       className="all ease-in ms100"
                       cursor="pointer"
-                      hoverStyle={{
-                        scale: scale + 0.025,
-                      }}
                       $xs={{
                         scale: scale * 0.8,
                       }}

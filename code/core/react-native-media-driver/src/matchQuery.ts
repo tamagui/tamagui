@@ -12,7 +12,7 @@ const RE_MQ_FEATURE = /^(?:(min|max)-)?(.+)/
 const RE_LENGTH_UNIT = /(em|rem|px|cm|mm|in|pt|pc)?$/
 const RE_RESOLUTION_UNIT = /(dpi|dpcm|dppx)?$/
 
-export function matchQuery(mediaQuery: string, values) {
+export function matchQuery(mediaQuery: string, values: Record<string, any>): boolean {
   return parseQuery(mediaQuery).some((query) => {
     if (!query) return
 
@@ -67,8 +67,8 @@ export function matchQuery(mediaQuery: string, values) {
         case 'color':
         case 'color-index':
         case 'monochrome':
-          expValue = parseInt(expValue, 10) || 1
-          value = parseInt(value, 10) || 0
+          expValue = Number.parseInt(expValue, 10) || 1
+          value = Number.parseInt(value, 10) || 0
           break
       }
 
@@ -86,8 +86,16 @@ export function matchQuery(mediaQuery: string, values) {
   })
 }
 
-export function parseQuery(mediaQuery: string) {
-  return mediaQuery.split(',').map(function (query) {
+export function parseQuery(mediaQuery: string): ({
+  inverse: boolean
+  type: string
+  expressions: {
+    modifier: any
+    feature: any
+    value: any
+  }[]
+} | null)[] {
+  return mediaQuery.split(',').map((query) => {
     query = query.trim()
 
     const captures = query.match(RE_MEDIA_QUERY)
@@ -103,10 +111,9 @@ export function parseQuery(mediaQuery: string) {
     return {
       inverse: !!modifier && modifier.toLowerCase() === 'not',
       type: type ? type.toLowerCase() : 'all',
-      expressions: expressions.map(function (expression) {
-        var captures = expression.match(RE_MQ_EXPRESSION),
-          feature = captures[1].toLowerCase().match(RE_MQ_FEATURE)
-
+      expressions: expressions.map((expression) => {
+        const captures = expression.match(RE_MQ_EXPRESSION)
+        const feature = captures[1].toLowerCase().match(RE_MQ_FEATURE)
         return {
           modifier: feature[1],
           feature: feature[2],
@@ -120,8 +127,8 @@ export function parseQuery(mediaQuery: string) {
 // -- Utilities ----------------------------------------------------------------
 
 function toDecimal(ratio) {
-  var decimal = Number(ratio),
-    numbers
+  let decimal = Number(ratio)
+  let numbers
 
   if (!decimal) {
     numbers = ratio.match(/^(\d+)\s*\/\s*(\d+)$/)
@@ -132,7 +139,7 @@ function toDecimal(ratio) {
 }
 
 function toDpi(resolution: string) {
-  const value = parseFloat(resolution)
+  const value = Number.parseFloat(resolution)
   const units = String(resolution).match(RE_RESOLUTION_UNIT)?.[1]
 
   switch (units) {
@@ -146,7 +153,7 @@ function toDpi(resolution: string) {
 }
 
 function toPx(length: string) {
-  const value = parseFloat(length)
+  const value = Number.parseFloat(length)
   const units = String(length).match(RE_LENGTH_UNIT)?.[1]
   switch (units) {
     case 'em':

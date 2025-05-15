@@ -1,5 +1,10 @@
+// NOTE THIS IS SANDBOX
+
+//  ‼️🚨
+
 import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
 import { useSchemeSetting } from '@vxrn/color-scheme'
+import { useEffect, useState } from 'react'
 import { Appearance } from 'react-native'
 import { isWeb, View } from 'tamagui'
 
@@ -17,7 +22,14 @@ export function ToggleThemeButton() {
 
 export function useToggleTheme() {
   const [{ setting, scheme }, setSchemeSetting] = useSchemeSetting()
-  const Icon = setting === 'system' ? SunMoon : setting === 'dark' ? Moon : Sun
+
+  // for faster re renders on heavy pages
+  const [val, setVal] = useState(setting)
+  if (setting !== val) {
+    setVal(setting)
+  }
+
+  const Icon = val === 'system' ? SunMoon : val === 'dark' ? Moon : Sun
 
   return {
     setting,
@@ -31,11 +43,15 @@ export function useToggleTheme() {
             : 'light'
           : schemeSettings[(schemeSettings.indexOf(setting) + 1) % 3]
 
-      if (!isWeb) {
-        Appearance.setColorScheme(next === 'system' ? scheme : next)
-      }
+      setVal(next)
 
-      setSchemeSetting(next)
+      setTimeout(() => {
+        if (!isWeb) {
+          Appearance.setColorScheme(next === 'system' ? scheme : next)
+        }
+
+        setSchemeSetting(next)
+      }, 250)
     },
   }
 }

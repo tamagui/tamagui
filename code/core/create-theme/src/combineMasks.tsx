@@ -2,7 +2,7 @@ import { applyMaskStateless } from './applyMask'
 import type { CreateMask } from './createThemeTypes'
 import { getThemeInfo } from './themeInfo'
 
-export const combineMasks = (...masks: CreateMask[]) => {
+export const combineMasks = (...masks: CreateMask[]): CreateMask => {
   const mask: CreateMask = {
     name: 'combine-mask',
     mask: (template, opts) => {

@@ -4,12 +4,7 @@ export const optionValues = {
   inverseAccent: [false, true],
   borderRadius: ['$0', '$2', '$4', '$5', '$6'] as YStackProps['borderRadius'][],
   borderWidth: [0 as const, 0.5 as const, 1 as const],
-  headingFontFamily: [
-    '$heading',
-    '$silkscreen',
-    '$munro',
-    '$cherryBomb',
-  ] as TextProps['fontFamily'][],
+  headingFontFamily: ['$heading', '$mono', '$silkscreen'] as TextProps['fontFamily'][],
   fillStyle: ['filled' as const, 'outlined' as const],
   elevation: [0, '$1', '$2'] as YStackProps['elevation'][],
   spacing: ['sm' as const, 'md' as const, 'lg' as const],

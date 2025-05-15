@@ -39,7 +39,7 @@ export const docsRoutes = [
   },
 
   {
-    section: 'compile',
+    section: 'compiler',
     pages: [
       { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },

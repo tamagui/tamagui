@@ -1,6 +1,6 @@
-import React from 'react' // via radix-ui
-
+// via radix-ui
 import { useCallbackRef } from '@tamagui/use-callback-ref'
+import React from 'react'
 
 /**
  * Listens for when the escape key is down
@@ -8,7 +8,7 @@ import { useCallbackRef } from '@tamagui/use-callback-ref'
 export function useEscapeKeydown(
   onEscapeKeyDownProp?: (event: KeyboardEvent) => void,
   ownerDocument: Document = globalThis?.document
-) {
+): void {
   const onEscapeKeyDown = useCallbackRef(onEscapeKeyDownProp)
 
   React.useEffect(() => {

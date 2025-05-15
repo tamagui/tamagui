@@ -52,8 +52,8 @@ describe('create-tamagui CLI', () => {
       // Simulate user input
       await writeWithDelay(`${projectName}`, 300)
       await writeWithDelay('\r', 300) // Enter
-      await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
-      await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
+      await writeWithDelay('\x1B\x5B\x42', 500) // Down arrow
+      await writeWithDelay('\x1B\x5B\x42', 500) // Down arrow
       await writeWithDelay('\r', 300) // Enter
 
       // Wait for the process to finish

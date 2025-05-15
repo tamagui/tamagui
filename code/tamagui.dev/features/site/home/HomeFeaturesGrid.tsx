@@ -10,7 +10,7 @@ export function HomeFeaturesGrid() {
         <YStack maw={950} als="center">
           <Grid gap={25} itemMinWidth={280}>
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$mono" ta="center">
                 Fully typed
               </H4>
               <Paragraph theme="alt1">
@@ -21,7 +21,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$mono" ta="center">
                 Server-first
               </H4>
               <Paragraph theme="alt1">
@@ -31,8 +31,8 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                Fast AF
+              <H4 ls={0} fontFamily="$mono" ta="center">
+                Fast
               </H4>
               <Paragraph theme="alt1">
                 Fully optimizes and flattens to platform-ideal code for web and native,
@@ -41,7 +41,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$mono" ta="center">
                 Introspection
               </H4>
               <Paragraph theme="alt1">
@@ -52,7 +52,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$mono" ta="center">
                 Compatibility
               </H4>
               <Paragraph theme="alt1">
@@ -62,7 +62,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$mono" ta="center">
                 Full Featured
               </H4>
               <Paragraph theme="alt1">

@@ -5,7 +5,7 @@ import { debugLog } from '../commands/index.js'
 import type { AppContextType } from '../data/AppContext.js'
 
 const apiBase = process.env.API_BASE || 'https://tamagui.dev'
-const ACCESS_TOKEN_URL = `${apiBase}/account/items`
+const ACCESS_TOKEN_URL = `${apiBase}/account`
 
 export const handleGlobalKeyPress = (
   key: string,
@@ -130,8 +130,16 @@ export const handleGlobalKeyPress = (
         ...prev,
         installingComponent: searchResults[selectedResultIndex]?.item,
       }))
+
+      const fileName = searchResults?.[selectedResultIndex]?.item.fileName
+
+      if (!fileName) {
+        console.error('No component found')
+        return
+      }
+
       debugLog('Installing component', searchResults[selectedResultIndex]?.item)
-      navigate(`/install-confirm/${searchResults[selectedResultIndex]?.item.fileName}`)
+      navigate(`/install-confirm/${fileName}`)
       return
     }
   }

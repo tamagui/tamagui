@@ -1,12 +1,19 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { composeEventHandlers } from '@tamagui/helpers'
+import {
+  isAndroid,
+  isClient,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
+import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import React from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { groupCollapsed, groupEnd } from './helpers/consoleLog'
 import { getShorthandValue } from './helpers/getShorthandValue'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
@@ -433,7 +440,7 @@ export function createComponent<
           log({ noClass, isAnimated, isWeb, supportsCSSVars })
         } else {
           // if strict mode or something messes with our nesting this fixes:
-          console.groupEnd()
+          groupEnd()
 
           const ch = propsIn.children
           let childLog =
@@ -442,13 +449,13 @@ export function createComponent<
             childLog = `(children: ${childLog})`
           }
 
-          console.groupCollapsed(`${childLog} Props:`)
+          groupCollapsed(`${childLog} Props:`)
           log('props in:', propsIn)
           log('final props:', props)
           log({ state, staticConfig, elementType, themeStateProps })
           log({ contextProps: styledContextProps, overriddenContextProps })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
-          console.groupEnd()
+          groupEnd()
         }
       }
     }
@@ -521,13 +528,13 @@ export function createComponent<
       (noClass && splitStyles.hasMedia === true)
 
     const mediaListeningKeys = hasRuntimeMediaKeys
-      ? (splitStyles.hasMedia as Record<string, boolean>)
+      ? (splitStyles.hasMedia as Set<string>)
       : null
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
-    setMediaShouldUpdate(stateRef, shouldListenForMedia, mediaListeningKeys)
+    setMediaShouldUpdate(componentContext, shouldListenForMedia, mediaListeningKeys)
 
     const {
       viewProps: viewPropsIn,
@@ -623,8 +630,10 @@ export function createComponent<
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
+          const layout = e.nativeEvent.layout
+          stateRef.current.group!.layout = layout
           stateRef.current.group!.emit(groupName, {
-            layout: e.nativeEvent.layout,
+            layout,
           })
 
           // force re-render if measure strategy is hide
@@ -693,47 +702,53 @@ export function createComponent<
           const computed = cssStyleDeclarationToObject(
             getComputedStyle(stateRef.current.host! as any)
           )
-          console.groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
+          groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
           console.warn(computed)
-          console.groupEnd()
+          groupEnd()
         }
       })
     }
 
-    React.useEffect(() => {
-      if (disabled) {
-        return
-      }
-
-      let tm
-
+    useIsomorphicLayoutEffect(() => {
+      // Note: We removed the early return on disabled to allow animations to work
+      // This fixes the issue where animations wouldn't work on disabled components
       if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
       }
 
+      let tm: NodeJS.Timeout
       if (state.unmounted) {
-        // this setTimeout fixes moti and css driver enter animations
-        // not sure why
-        tm = setTimeout(() => {
+        if (
+          (animationDriver?.supportsCSSVars ?? config?.animations?.supportsCSSVars) ||
+          isAndroid
+        ) {
+          // this setTimeout fixes css driver enter animations  - not sure why
+          // this setTimeout fixes the conflict when with the safe area view in android
+          tm = setTimeout(() => {
+            setStateShallow({ unmounted: false })
+          })
+          return () => clearTimeout(tm)
+        } else {
           setStateShallow({ unmounted: false })
-        })
-
-        return () => clearTimeout(tm)
+        }
+        return
       }
 
-      const dispose = subscribeToContextGroup({
-        disabled,
-        componentContext,
-        setStateShallow,
-        state,
-        mediaGroups,
-        pseudoGroups,
-      })
+      // Only subscribe to context group if not disabled
+      const dispose =
+        !disabled && (pseudoGroups || mediaGroups)
+          ? subscribeToContextGroup({
+              componentContext,
+              setStateShallow,
+              state,
+              mediaGroups,
+              pseudoGroups,
+            })
+          : null
 
       return () => {
-        clearTimeout(tm)
         dispose?.()
         componentSetStates.delete(setState)
       }
@@ -743,6 +758,23 @@ export function createComponent<
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
+
+    useIsomorphicLayoutEffect(() => {
+      if (!groupName) return
+      curStateRef.group!.emit(groupName, {
+        pseudo: state,
+        layout: curStateRef.group?.layout,
+      })
+      const groupContextState = componentContext?.groups
+      if (groupContextState) {
+        // and mutate the current since its concurrent safe (children throw it in useState on mount)
+        const next = {
+          ...groupContextState[groupName],
+          ...state,
+        }
+        groupContextState[groupName] = next
+      }
+    }, [groupName, state])
 
     // if its a group its gotta listen for pseudos to emit them to children
 
@@ -1027,7 +1059,7 @@ export function createComponent<
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
-    if (groupName || propsIn.focusWithinStyle) {
+    if ('group' in props || propsIn.focusWithinStyle) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
@@ -1101,7 +1133,7 @@ export function createComponent<
             log(key, splitStylesStyle[key])
           }
         } else {
-          console.groupCollapsed(title)
+          groupCollapsed(title)
           try {
             log('viewProps', viewProps)
             log('children', content)
@@ -1137,7 +1169,7 @@ export function createComponent<
           } catch {
             // RN can run into PayloadTooLargeError: request entity too large
           } finally {
-            console.groupEnd()
+            groupEnd()
           }
         }
         if (debugProp === 'break') {

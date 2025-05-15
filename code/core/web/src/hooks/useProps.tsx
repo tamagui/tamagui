@@ -132,7 +132,6 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     }
 
     return subscribeToContextGroup({
-      disabled,
       componentContext,
       setStateShallow,
       state,

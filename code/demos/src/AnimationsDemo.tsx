@@ -1,4 +1,4 @@
-import { LogoIcon } from '@tamagui/logo/icon'
+import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons'
 import { Button, Square, useControllableState, useEvent } from 'tamagui'
 

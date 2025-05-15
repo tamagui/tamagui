@@ -27,7 +27,12 @@ export function useSupabaseClient(given?: SupabaseClient) {
 
       client = createBrowserClient(
         import.meta.env.NEXT_PUBLIC_SUPABASE_URL!,
-        import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          auth: {
+            storage: window.localStorage,
+          },
+        }
       )
 
       globalThis['supabaseClient'] = client

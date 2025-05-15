@@ -3,11 +3,10 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
-  DEFAULT_ROLE_ID,
   getDiscordClient,
-  TAKEOUT_GROUP_ID,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
+  TAKEOUT_GENERAL_CHANNEL,
 } from '~/features/discord/helpers'
 import { ensureSubscription } from '../../../helpers/ensureSubscription'
 
@@ -44,12 +43,16 @@ export default apiRoute(async (req) => {
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
 
   const { subscription, hasDiscordPrivateChannels, discordSeats } =
-    await ensureSubscription(supabase, subscriptionId)
+    await ensureSubscription(user.id, subscriptionId)
+
+  if (!subscription) {
+    return Response.json({ message: 'No subscription found' }, { status: 400 })
+  }
 
   const discordInvites = await supabaseAdmin
     .from('discord_invites')
     .select('*')
-    .eq('subscription_id', subscription.data.id)
+    .eq('subscription_id', subscription.id)
 
   if (discordInvites.error) {
     throw discordInvites.error
@@ -67,46 +70,23 @@ export default apiRoute(async (req) => {
   const discordClient = await getDiscordClient()
 
   let discordChannelId: string | null =
-    (subscription.data.metadata as Record<string, any>)?.discord_channel || null
+    (subscription.metadata as Record<string, any>)?.discord_channel || null
+
   if (hasDiscordPrivateChannels && !discordChannelId) {
-    let channelName = subscription.data.id
-    try {
-      const githubData = await fetch('https://api.github.com/user', {
-        headers: {
-          Authorization: `Bearer ${userPrivate.data.github_token}`,
-        },
-      }).then((res) => res.json())
-      channelName = githubData.data.login
-    } catch (error) {}
+    // Pro users get access to the general channel
+    const channels = await discordClient.api.guilds.getChannels(TAMAGUI_DISCORD_GUILD_ID)
+    const generalChannel = channels.find((c: any) => c.name === TAKEOUT_GENERAL_CHANNEL)
 
-    const discordChannel = await discordClient.api.guilds.createChannel(
-      TAMAGUI_DISCORD_GUILD_ID,
-      {
-        name: channelName,
-        parent_id: TAKEOUT_GROUP_ID,
-        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-        topic: `Sub Created at ${subscription.data.created} - ID: ${subscription.data.id}`,
-      }
-    )
-
-    await discordClient.api.channels.createMessage(discordChannel.id, {
-      content: `Hello and welcome to your private Takeout channel! The creators of Takeout are here as well, so feel free to ask any questions and give us feedback as you go.`,
-    })
-
-    discordChannelId = discordChannel.id
-
-    await supabaseAdmin
-      .from('subscriptions')
-      .update({ metadata: { discord_channel: discordChannel.id } })
-      .eq('id', subscription.data.id)
+    if (generalChannel) {
+      discordChannelId = generalChannel.id
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({ metadata: { discord_channel: generalChannel.id } })
+        .eq('id', subscription.id)
+    }
   }
 
   if (req.method === 'DELETE') {
-    if (discordChannelId) {
-      await discordClient.api.channels.edit(discordChannelId, {
-        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-      })
-    }
     await Promise.allSettled(
       discordInvites.data.map((inv) =>
         discordClient.api.guilds.removeRoleFromMember(
@@ -119,8 +99,8 @@ export default apiRoute(async (req) => {
     await supabaseAdmin
       .from('discord_invites')
       .delete()
-      .eq('subscription_id', subscription.data.id)
-    return Response.json({ message: 'discord invites reset' })
+      .eq('subscription_id', subscription.id)
+    return Response.json({ message: 'discord access reset' })
   }
 
   const userDiscordId = body.discord_id
@@ -145,20 +125,9 @@ export default apiRoute(async (req) => {
       )
     }
 
-    if (discordChannelId) {
-      const channel = await discordClient.api.channels.get(discordChannelId)
-
-      await discordClient.api.channels.edit(discordChannelId, {
-        permission_overwrites: [
-          ...(channel as any).permission_overwrites, // other permissions
-          { id: userDiscordId, type: 1, allow: roleBitField },
-        ],
-      })
-    }
-
     await supabaseAdmin.from('discord_invites').insert({
       discord_user_id: userDiscordId,
-      subscription_id: subscription.data.id,
+      subscription_id: subscription.id,
     })
 
     await discordClient.api.guilds.addRoleToMember(
@@ -166,7 +135,9 @@ export default apiRoute(async (req) => {
       userDiscordId,
       TAKEOUT_ROLE_ID
     )
+
+    return Response.json({ message: 'Added to the Takeout general channel!' })
   }
 
-  return Response.json({ message: `Done!` })
+  return Response.json({ message: 'Done!' })
 })

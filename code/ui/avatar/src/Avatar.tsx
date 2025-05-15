@@ -141,6 +141,21 @@ export const AvatarFrame = styled(Square, {
 
 type AvatarProps = GetProps<typeof AvatarFrame>
 
+/**
+ * @summary A component that displays an image or a fallback icon.
+ * @see — Docs https://tamagui.dev/ui/avatar
+ *
+ * @example
+ * ```tsx
+ * <Avatar circular size="$10">
+ *  <Avatar.Image
+ *    accessibilityLabel="Cam"
+ *    src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
+ *  />
+ *  <Avatar.Fallback backgroundColor="$blue10" />
+ * </Avatar>
+ * ```
+ */
 const Avatar = withStaticProperties(
   React.forwardRef<TamaguiElement, AvatarProps>(
     (props: ScopedProps<AvatarProps>, forwardedRef) => {

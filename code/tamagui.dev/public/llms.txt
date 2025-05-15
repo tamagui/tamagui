@@ -1,0 +1,78 @@
+# Tamagui Documentation
+
+If you want all docs as a single document, see https://tamagui.dev/llms-full.txt.
+
+> Tamagui is a complete UI solution for React Native and Web, with a fully-featured UI kit, styling engine, and optimizing compiler.
+
+This documentation covers all aspects of using Tamagui, from installation to advanced usage.
+
+## Core
+
+Core documentation covers the fundamental styling and configuration aspects of Tamagui:
+
+- [Animations](https://tamagui.dev/docs/core/animations.md): Animation system and utilities
+- [Config V4](https://tamagui.dev/docs/core/config-v4.md): Version 4 configuration guide
+- [Configuration](https://tamagui.dev/docs/core/configuration.md): General configuration options
+- [Exports](https://tamagui.dev/docs/core/exports.md): Available exports and utilities
+- [Font Language](https://tamagui.dev/docs/core/font-language.md): Font and language settings
+- [Stack and Text](https://tamagui.dev/docs/core/stack-and-text.md): Basic layout components
+- [Styled](https://tamagui.dev/docs/core/styled.md): Styled component system
+- [Theme](https://tamagui.dev/docs/core/theme.md): Theming system
+- [Tokens](https://tamagui.dev/docs/core/tokens.md): Design tokens and variables
+- [Use Media](https://tamagui.dev/docs/core/use-media.md): Media query hooks
+- [Use Theme](https://tamagui.dev/docs/core/use-theme.md): Theme hooks
+- [Variants](https://tamagui.dev/docs/core/variants.md): Component variants system
+
+## Compiler
+
+Documentation about Tamagui's optimizing compiler:
+
+- [Compiler Installation](https://tamagui.dev/docs/intro/compiler-install.md): How to install and setup the compiler
+- [Why a Compiler?](https://tamagui.dev/docs/intro/why-a-compiler.md): Benefits and reasoning behind the compiler
+- [Benchmarks](https://tamagui.dev/docs/intro/benchmarks.md): Performance benchmarks and comparisons
+
+## Components
+
+All component documentation can be accessed at https://tamagui.dev/ui/[component-name]
+
+Available components:
+- [Accordion](https://tamagui.dev/ui/accordion.md): Expandable content sections
+- [AlertDialog](https://tamagui.dev/ui/alert-dialog.md): Modal dialog for important actions
+- [Anchor](https://tamagui.dev/ui/anchor.md): Link component with styling options
+- [Avatar](https://tamagui.dev/ui/avatar.md): User avatar display component
+- [Button](https://tamagui.dev/ui/button.md): A customizable button component with variants and themes
+- [Card](https://tamagui.dev/ui/card.md): Container component for grouped content
+- [Checkbox](https://tamagui.dev/ui/checkbox.md): Selection control component
+- [Dialog](https://tamagui.dev/ui/dialog.md): Modal dialog component
+- [Form](https://tamagui.dev/ui/form.md): Form components and validation
+- [Group](https://tamagui.dev/ui/group.md): Component grouping utilities
+- [Headings](https://tamagui.dev/ui/headings.md): Typography heading components
+- [HTML Elements](https://tamagui.dev/ui/html-elements.md): Basic HTML element components
+- [Image](https://tamagui.dev/ui/image.md): Image display component
+- [Inputs](https://tamagui.dev/ui/inputs.md): Text input components
+- [Label](https://tamagui.dev/ui/label.md): Accessible label components
+- [LinearGradient](https://tamagui.dev/ui/linear-gradient.md): Gradient background component
+- [ListItem](https://tamagui.dev/ui/list-item.md): List item component
+- [LucideIcons](https://tamagui.dev/ui/lucide-icons.md): Icon component library
+- [NewInputs](https://tamagui.dev/ui/new-inputs.md): Enhanced input components
+- [Popover](https://tamagui.dev/ui/popover.md): Floating content component
+- [Portal](https://tamagui.dev/ui/portal.md): Render content in different DOM locations
+- [Progress](https://tamagui.dev/ui/progress.md): Progress indicators
+- [RadioGroup](https://tamagui.dev/ui/radio-group.md): Radio button selection group
+- [ScrollView](https://tamagui.dev/ui/scroll-view.md): Scrollable container component
+- [Select](https://tamagui.dev/ui/select.md): Dropdown selection component
+- [Separator](https://tamagui.dev/ui/separator.md): Visual separators
+- [Shapes](https://tamagui.dev/ui/shapes.md): Basic shape components
+- [Sheet](https://tamagui.dev/ui/sheet.md): Bottom sheet and modal components
+- [Slider](https://tamagui.dev/ui/slider.md): Range input components
+- [Spinner](https://tamagui.dev/ui/spinner.md): Loading indicator component
+- [Stacks](https://tamagui.dev/ui/stacks.md): Layout stack components
+- [Switch](https://tamagui.dev/ui/switch.md): Toggle switch components
+- [Tabs](https://tamagui.dev/ui/tabs.md): Tabbed interface components
+- [TamaguiImage](https://tamagui.dev/ui/tamagui-image.md): Enhanced image component
+- [Text](https://tamagui.dev/ui/text.md): Text display component
+- [Toast](https://tamagui.dev/ui/toast.md): Notification component
+- [ToggleGroup](https://tamagui.dev/ui/toggle-group.md): Group of toggle buttons
+- [Tooltip](https://tamagui.dev/ui/tooltip.md): Informational tooltips
+- [Unspaced](https://tamagui.dev/ui/unspaced.md): Remove spacing utilities
+- [VisuallyHidden](https://tamagui.dev/ui/visually-hidden.md): Hide content visually while keeping it accessible

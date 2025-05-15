@@ -8,7 +8,10 @@ export type ScopedProps<P, K extends string> = P & { [Key in `__scope${K}`]?: Sc
 export function createContext<ContextValueType extends object | null>(
   rootComponentName: string,
   defaultContext?: ContextValueType
-) {
+): readonly [
+  (props: ContextValueType & { children: React.ReactNode }) => JSX.Element,
+  (consumerName: string) => Exclude<ContextValueType | undefined, undefined>,
+] {
   const Context = React.createContext<ContextValueType | undefined>(defaultContext)
 
   function Provider(props: ContextValueType & { children: React.ReactNode }) {
@@ -27,7 +30,6 @@ export function createContext<ContextValueType extends object | null>(
     throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``)
   }
 
-  Provider.displayName = `${rootComponentName}Provider`
   return [Provider, useContext] as const
 }
 
@@ -47,7 +49,28 @@ export interface CreateScope {
 export function createContextScope(
   scopeName: string,
   createContextScopeDeps: CreateScope[] = []
-) {
+): readonly [
+  <ContextValueType extends object | null>(
+    rootComponentName: string,
+    defaultContext?: ContextValueType
+  ) => readonly [
+    (
+      props: ContextValueType & {
+        scope: Scope<ContextValueType>
+        children: React.ReactNode
+      }
+    ) => import('react/jsx-runtime').JSX.Element,
+    (
+      consumerName: string,
+      scope: Scope<ContextValueType | undefined>,
+      options?: {
+        warn?: boolean
+        fallback?: Partial<ContextValueType>
+      }
+    ) => ContextValueType,
+  ],
+  CreateScope,
+] {
   let defaultContexts: any[] = []
 
   /* -----------------------------------------------------------------------------------------------
@@ -103,7 +126,6 @@ export function createContextScope(
       throw new Error(missingContextMessage)
     }
 
-    Provider.displayName = `${rootComponentName}Provider`
     return [Provider, useContext] as const
   }
 
@@ -125,6 +147,7 @@ export function createContextScope(
   }
 
   createScope.scopeName = scopeName
+
   return [
     createContext,
     composeContextScopes(createScope, ...createContextScopeDeps),

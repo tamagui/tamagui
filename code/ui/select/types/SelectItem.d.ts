@@ -5,13 +5,10 @@ type SelectItemContextValue = {
     textId: string;
     isSelected: boolean;
 };
-export declare const SelectItemContextProvider: {
-    (props: SelectItemContextValue & {
-        scope: import("@tamagui/create-context").Scope<SelectItemContextValue>;
-        children: React.ReactNode;
-    }): import("react/jsx-runtime").JSX.Element;
-    displayName: string;
-}, useSelectItemContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemContextValue | undefined>, options?: {
+export declare const SelectItemContextProvider: (props: SelectItemContextValue & {
+    scope: import("@tamagui/create-context").Scope<SelectItemContextValue>;
+    children: React.ReactNode;
+}) => import("react/jsx-runtime").JSX.Element, useSelectItemContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemContextValue | undefined>, options?: {
     warn?: boolean;
     fallback?: Partial<SelectItemContextValue> | undefined;
 } | undefined) => SelectItemContextValue;

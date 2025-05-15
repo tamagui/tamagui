@@ -8,7 +8,7 @@ module.exports = (api) => {
         {
           platform: 'native',
           components: ['tamagui'],
-          config: './src/tamagui.config.ts',
+          config: './tamagui.config.ts',
           // disable: true,
           // disableExtraction: true,
         },

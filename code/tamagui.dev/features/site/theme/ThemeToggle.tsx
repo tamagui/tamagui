@@ -1,10 +1,11 @@
 import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
 import { useSchemeSetting } from '@vxrn/color-scheme'
+import { memo, useEffect, useState } from 'react'
 import { Appearance } from 'react-native'
 import type { ButtonProps } from 'tamagui'
 import { Button, isWeb, TooltipSimple } from 'tamagui'
 
-export const ThemeToggle = (props: ButtonProps) => {
+export const ThemeToggle = memo((props: ButtonProps) => {
   const { onPress, Icon, setting } = useToggleTheme()
 
   return (
@@ -28,28 +29,45 @@ export const ThemeToggle = (props: ButtonProps) => {
       />
     </TooltipSimple>
   )
-}
+})
 
 const schemeSettings = ['light', 'dark', 'system'] as const
 
 export function useToggleTheme() {
   const [{ setting, scheme }, setSchemeSetting] = useSchemeSetting()
-  const Icon = setting === 'system' ? SunMoon : setting === 'dark' ? Moon : Sun
+
+  // for faster re renders on heavy pages
+  const [val, setVal] = useState(setting)
+
+  useEffect(() => {
+    if (setting !== val) {
+      setVal(setting)
+    }
+  }, [setting])
+
+  const Icon = val === 'system' ? SunMoon : val === 'dark' ? Moon : Sun
 
   return {
     setting,
     scheme,
     Icon,
     onPress: () => {
-      const next = schemeSettings[(schemeSettings.indexOf(setting) + 1) % 3]
+      const next =
+        setting === 'system'
+          ? scheme === 'light'
+            ? 'dark'
+            : 'light'
+          : schemeSettings[(schemeSettings.indexOf(setting) + 1) % 3]
 
-      if (!isWeb) {
-        Appearance.setColorScheme(next === 'system' ? scheme : next)
-      }
+      setVal(next)
 
       setTimeout(() => {
+        if (!isWeb) {
+          Appearance.setColorScheme(next === 'system' ? scheme : next)
+        }
+
         setSchemeSetting(next)
-      })
+      }, 20)
     },
   }
 }

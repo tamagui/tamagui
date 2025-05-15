@@ -726,17 +726,21 @@ type GenericFontKey = string | number | symbol
 
 export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
   size: { [key in Key]: number | Variable }
-  lineHeight?: Partial<{ [key in Key]: number | Variable }>
-  letterSpacing?: Partial<{ [key in Key]: number | Variable }>
-  weight?: Partial<{ [key in Key]: number | string | Variable }>
   family?: string | Variable
-  style?: Partial<{ [key in Key]: RNTextStyle['fontStyle'] | Variable }>
-  transform?: Partial<{ [key in Key]: RNTextStyle['textTransform'] | Variable }>
-  color?: Partial<{ [key in Key]: string | Variable }>
+  lineHeight?: Partial<{ [key in Key]: number | Variable }> | undefined
+  letterSpacing?: Partial<{ [key in Key]: number | Variable }> | undefined
+  weight?: Partial<{ [key in Key]: number | string | Variable }> | undefined
+  style?: Partial<{ [key in Key]: RNTextStyle['fontStyle'] | Variable }> | undefined
+  transform?:
+    | Partial<{ [key in Key]: RNTextStyle['textTransform'] | Variable }>
+    | undefined
+  color?: Partial<{ [key in Key]: string | Variable }> | undefined
   // for native use only, lets you map to alternative fonts
-  face?: Partial<{
-    [key in FontWeightValues]: { normal?: string; italic?: string }
-  }>
+  face?:
+    | Partial<{
+        [key in FontWeightValues]: { normal?: string; italic?: string }
+      }>
+    | undefined
 }
 
 // media
@@ -2421,6 +2425,7 @@ export type TamaguiComponentStateRef = {
   unPress?: Function
   group?: {
     listeners: Set<GroupStateListener>
+    layout?: LayoutValue
     emit: GroupStateListener
     subscribe: (cb: GroupStateListener) => () => void
   }
@@ -2459,7 +2464,8 @@ export type GetStyleResult = {
   rulesToInsert: RulesToInsert
   viewProps: StackProps & Record<string, any>
   fontFamily: string | undefined
-  hasMedia: boolean | Record<string, boolean>
+  space?: any // SpaceTokens?
+  hasMedia: boolean | Set<string>
   dynamicThemeAccess?: boolean
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
@@ -2520,7 +2526,7 @@ export type FillInFont<A extends GenericFont, DefaultKeys extends string | numbe
   style: FillInFontValues<A, 'style', DefaultKeys>
   transform: FillInFontValues<A, 'transform', DefaultKeys>
   color: FillInFontValues<A, 'color', DefaultKeys>
-  face: A['face']
+  face: Partial<A['face']>
 }
 
 type FillInFontValues<

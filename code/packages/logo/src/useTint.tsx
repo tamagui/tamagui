@@ -1,5 +1,4 @@
-import { usePathname } from 'one'
-import React from 'react'
+import React, { createContext, useContext } from 'react'
 import type { ThemeName } from 'tamagui'
 import { getTints, setNextTintFamily, useTints } from './tints'
 
@@ -17,23 +16,25 @@ export const onTintChange = (listener: (cur: number) => void) => {
 const numTints = getTints().tints.length
 
 export const setTintIndex = (next: number): void => {
-  const val = next % numTints
+  const val = Math.max(0, next % numTints)
   if (val === current) return
   current = val
   listeners.forEach((x) => x(val))
 }
 
-export function getDocsSection(pathname: string): 'compile' | 'ui' | 'core' | null {
+export function getDocsSection(pathname: string): 'compiler' | 'ui' | 'core' | null {
   return pathname === '/docs/intro/compiler-install' ||
     pathname === '/docs/intro/benchmarks' ||
     pathname === '/docs/intro/why-a-compiler'
-    ? 'compile'
+    ? 'compiler'
     : pathname.startsWith('/ui/')
       ? 'ui'
       : pathname.startsWith('/docs/')
         ? 'core'
         : null
 }
+
+export const InitialPathContext: React.Context<number> = createContext(3)
 
 export const useTint = (
   altOffset = -1
@@ -56,14 +57,7 @@ export const useTint = (
     lunar: string[]
   }
 } => {
-  const pathname = usePathname()
-  const section = getDocsSection(pathname)
-
-  let initial = current
-  if (section) {
-    initial = section === 'compile' ? 5 : section === 'core' ? 4 : 6
-  }
-
+  const initial = useContext(InitialPathContext)
   const index = React.useSyncExternalStore(
     onTintChange,
     () => current,

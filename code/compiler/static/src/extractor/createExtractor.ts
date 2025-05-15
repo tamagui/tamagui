@@ -1441,7 +1441,7 @@ export function createExtractor(
               t.isObjectExpression(obj) &&
               obj.properties.every((prop) => {
                 if (!t.isObjectProperty(prop)) {
-                  logger.info(['not object prop', prop].join(' '))
+                  // console.warn('not an object prop?', prop)
                   return false
                 }
                 const propName = prop.key['name']

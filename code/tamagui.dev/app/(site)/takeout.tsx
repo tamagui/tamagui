@@ -1,33 +1,18 @@
 import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { Dot } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useLoader } from 'one'
 import type React from 'react'
 import { Suspense, lazy, memo, useEffect, useState } from 'react'
-import type {
-  FontSizeTokens,
-  GetProps,
-  TabLayout,
-  TabsProps,
-  TabsTabProps,
-  ThemeName,
-  XStackProps,
-  YStackProps,
-} from 'tamagui'
+import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from 'tamagui'
 import {
-  AnimatePresence,
-  Button,
-  Circle,
   H2,
-  Input,
   Paragraph,
   ScrollView,
   SizableText,
   Spacer,
   Stack,
-  Tabs,
   Theme,
   XStack,
   YStack,
@@ -43,36 +28,25 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
-import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
+import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
-import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
+import type { ProductsResponse } from '~/features/site/purchase/useProducts'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
+import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
-
-export const loader = async () => {
-  try {
-    return await getProductsForServerSideRendering()
-  } catch (err) {
-    console.error(`Error loading prices`, err)
-    return { starter: null, fontsPack: null, iconsPack: null, bento: null }
-  }
-}
 
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
 export default function TakeoutPage() {
-  const { starter, bento } = useLoader(loader)
-  const store = useTakeoutStore()
-  const tint = useTint()
+  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
+  const isProUser = subscriptionStatus?.pro
 
   return (
     <YStack maw="100%">
       <ThemeNameEffect colorKey="$color5" />
-      <LoadMunro />
       <LoadCherryBomb />
       <script src="https://cdn.paritydeals.com/banner.js" />
       <HeadInfo
@@ -166,8 +140,6 @@ export default function TakeoutPage() {
 
       {/* <Glow /> */}
 
-      <PurchaseModal defaultValue="takeout" starter={starter!} bento={bento!} />
-
       {/* gradient on the end of the page */}
       <ThemeTint>
         <YStack
@@ -186,11 +158,11 @@ export default function TakeoutPage() {
               <PurchaseButton
                 // icon={ShoppingCart}
                 onPress={() => {
-                  store.showPurchase = true
+                  showAppropriateModal()
                 }}
                 size="$4"
               >
-                Get Access
+                {isProUser ? 'Access' : 'Buy'}
               </PurchaseButton>
             </Theme>
           </YStack>
@@ -223,7 +195,7 @@ export default function TakeoutPage() {
             }}
           >
             <YStack mt={-700} $md={{ mt: 0 }} ml={20} mr={0}>
-              {starter && <StarterCard product={starter} />}
+              <StarterCard />
             </YStack>
 
             <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
@@ -692,9 +664,7 @@ const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'
 
 const heroHeight = 1050
 
-export type TakeoutPageProps = Awaited<
-  ReturnType<typeof getProductsForServerSideRendering>
->
+export type TakeoutPageProps = ProductsResponse
 
 const TakeoutCard2Frame = styled(YStack, {
   minWidth: 282,
@@ -787,7 +757,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 
         <YStack f={1} gap="$4" zi={100}>
           <H2
-            fontFamily="$munro"
+            fontFamily="$mono"
             size="$8"
             ls={3}
             als="center"
@@ -983,10 +953,10 @@ const IconFrame = styled(Stack, {
   bg: 'rgba(255, 255, 255, 0.035)',
 })
 
-const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] }) => {
+const StarterCard = memo(() => {
   const [ref, setRef] = useState<any>()
-
-  const store = useTakeoutStore()
+  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
+  const isProUser = subscriptionStatus?.pro
 
   const media = useMedia()
   useEffect(() => {
@@ -1076,10 +1046,10 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
           <PurchaseButton
             onPress={() => {
-              store.showPurchase = true
+              showAppropriateModal()
             }}
           >
-            Get Access
+            {isProUser ? 'Manage Subscription' : 'Get Access'}
           </PurchaseButton>
         </YStack>
 
@@ -1194,8 +1164,8 @@ const Row = (props: { title: any; description: any; after: any }) => {
         },
       }}
     >
-      <YStack f={1} py="$3" gap="$1">
-        <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
+      <YStack f={1} py="$3" space="$1">
+        <Paragraph fontFamily="$mono" tt="uppercase" ls={4} size="$4">
           {props.title}
         </Paragraph>
         <Paragraph
@@ -1219,254 +1189,6 @@ const TakeoutCardFrame = styled(YStack, {
   br: '$4',
   ov: 'hidden',
 })
-
-const tabs = [{ value: '1' }, { value: '2' }, { value: '4' }, { value: '8' }]
-
-const PurchaseSelectTeam = ({
-  value: currentTab,
-  onValueChange: setCurrentTab,
-}: TabsProps) => {
-  const [tabRovingState, setTabRovingState] = useState<{
-    /**
-     * Layout of the Tab user might intend to select (hovering / focusing)
-     */
-    intentAt: TabLayout | null
-    /**
-     * Layout of the Tab user selected
-     */
-    activeAt: TabLayout | null
-    /**
-     * Used to get the direction of activation for animating the active indicator
-     */
-    prevActiveAt: TabLayout | null
-  }>({
-    activeAt: null,
-    intentAt: null,
-    prevActiveAt: null,
-  })
-
-  const [idPreset, setIsPreset] = useState(true)
-
-  const handleChangePresetValue = (value: string) => {
-    setIsPreset(true)
-    setCurrentTab?.(value)
-  }
-
-  const setIntentIndicator = (intentAt) =>
-    setTabRovingState({ ...tabRovingState, intentAt })
-  const setActiveIndicator = (activeAt) =>
-    setTabRovingState({
-      ...tabRovingState,
-      prevActiveAt: tabRovingState.activeAt,
-      activeAt,
-    })
-  const { activeAt, intentAt } = tabRovingState
-
-  /**
-   * -1: from left
-   *  0: n/a
-   *  1: from right
-   */
-  //   const direction = (() => {
-  //     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
-  //       return 0
-  //     }
-  //     return activeAt.x > prevActiveAt.x ? -1 : 1
-  //   })()
-
-  //   const enterVariant =
-  //     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
-  //   const exitVariant =
-  //     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
-
-  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
-    if (type === 'select') {
-      setActiveIndicator(layout)
-    } else {
-      setIntentIndicator(layout)
-    }
-  }
-
-  // const usingPresetValues = tabs.find((t) => t.value === currentTab)
-
-  return (
-    <Tabs
-      value={currentTab}
-      onValueChange={handleChangePresetValue}
-      orientation="horizontal"
-      size="$4"
-      flexDirection="column"
-      activationMode="manual"
-      position="relative"
-      p="$2"
-      bg="$background"
-      als="center"
-      br="$3"
-    >
-      <YStack>
-        <AnimatePresence>
-          {intentAt && (
-            <TabsRovingIndicator
-              animation="100ms"
-              key="intent-indicator"
-              width={intentAt.width}
-              height={intentAt.height}
-              x={intentAt.x}
-              y={intentAt.y}
-            />
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          <ThemeTint>
-            {activeAt && (
-              <TabsRovingIndicator
-                key="active-indicator"
-                isActive
-                width={activeAt.width}
-                height={activeAt.height}
-                x={activeAt.x}
-                y={activeAt.y}
-              />
-            )}
-          </ThemeTint>
-        </AnimatePresence>
-
-        <Tabs.List
-          disablePassBorderRadius
-          loop={false}
-          aria-label="Manage your account"
-          gap="$2"
-          backgroundColor="transparent"
-        >
-          {tabs.map(({ value }) => (
-            <Tabs.Tab
-              key={value}
-              unstyled
-              bc="transparent"
-              px="$4"
-              value={value}
-              onInteraction={handleOnInteraction}
-            >
-              <Paragraph>{value}</Paragraph>
-            </Tabs.Tab>
-          ))}
-          {idPreset ? (
-            <Button
-              width={100}
-              onPress={() => {
-                setCurrentTab?.('10')
-                setIsPreset(false)
-                setIntentIndicator(null)
-                setActiveIndicator(null)
-              }}
-              bc="transparent"
-              borderColor="transparent"
-              borderRadius="$2"
-              px="$4"
-            >
-              <Paragraph>Custom</Paragraph>
-            </Button>
-          ) : (
-            <ThemeTint>
-              <Input
-                backgroundColor="$color7"
-                autoFocus
-                width={100}
-                borderRadius="$2"
-                value={currentTab}
-                onChangeText={(text) => {
-                  if (Number.isNaN(Number(text))) return
-                  setActiveIndicator(null)
-                  setCurrentTab?.(text)
-                }}
-              />
-            </ThemeTint>
-          )}
-        </Tabs.List>
-      </YStack>
-    </Tabs>
-  )
-}
-
-const TabsRovingIndicator = ({
-  isActive,
-  ...props
-}: { isActive?: boolean } & YStackProps) => {
-  return (
-    <YStack
-      borderRadius="$2"
-      position="absolute"
-      backgroundColor="$color3"
-      animation="quicker"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
-      opacity={0.7}
-      {...(isActive && {
-        backgroundColor: '$color6',
-        opacity: 1,
-      })}
-      {...props}
-    />
-  )
-}
-
-const DiscountText = ({
-  children,
-}: {
-  children: React.ReactNode
-}) => {
-  return (
-    <ThemeTintAlt offset={6}>
-      <YStack m="auto" scale={1} $xs={{ scale: 1.2 }}>
-        {/* <YStack
-          fullscreen
-          shadowColor="$shadowColor"
-          shadowRadius={30}
-          shadowOffset={{ height: 5, width: 0 }}
-          scale={0.95}
-        /> */}
-        <YStack
-          px="$4"
-          py="$1"
-          rotate="10deg"
-          y={-40}
-          $sm={{ dsp: 'none' }}
-          // backgroundColor="$color8"
-          // style={{
-          //   clipPath: `polygon(
-          //   0% 3px,
-          //   3px 3px,
-          //   3px 0%,
-          //   calc(100% - 3px) 0%,
-          //   calc(100% - 3px) 3px,
-          //   100% 3px,
-          //   100% calc(100% - 3px),
-          //   calc(100% - 3px) calc(100% - 3px),
-          //   calc(100% - 3px) 100%,
-          //   3px 100%,
-          //   3px calc(100% - 3px),
-          //   0% calc(100% - 3px)
-          // )`,
-          // }}
-        >
-          <Paragraph
-            o={0.8}
-            ff="$silkscreen"
-            color="$color11"
-            textAlign="center"
-            size="$5"
-          >
-            {children}
-          </Paragraph>
-        </YStack>
-      </YStack>
-    </ThemeTintAlt>
-  )
-}
 
 let keepCycling = true
 
@@ -1535,7 +1257,7 @@ const PixelTooltip = ({
         scale: 1.1,
       })}
     >
-      <Paragraph color="$color12" fontFamily="$munro" size="$2">
+      <Paragraph color="$color12" fontFamily="$mono" size="$2">
         {label}
       </Paragraph>
       {children}
@@ -1555,150 +1277,6 @@ const useLazilyMounted = (extraTime?: number) => {
     }
   }, [])
   return loaded
-}
-
-const PromoVideo = () => {
-  const [open, setOpen] = useState(false)
-  const loaded = useLazilyMounted(0)
-
-  return (
-    <YStack
-      className="all ease-in ms300"
-      disableOptimization
-      pos="absolute"
-      t={360}
-      l={-230}
-      pe={!loaded ? 'none' : 'auto'}
-      zi={1000}
-      o={loaded ? 1 : 0}
-      scale={!loaded ? 0.25 : 0.175}
-      rotate="-4deg"
-      $sm={{
-        dsp: 'none',
-      }}
-      {...(open && {
-        scale: 1,
-        rotate: '0deg',
-        x: 400,
-        y: -180,
-      })}
-      cursor="pointer"
-      onPress={() => {
-        setOpen(true)
-      }}
-    >
-      {open && (
-        <Button
-          pos="absolute"
-          t={-20}
-          r={-20}
-          elevation="$4"
-          zi={100}
-          circular
-          icon={X}
-          onPress={(e) => {
-            e.stopPropagation()
-            setOpen(false)
-          }}
-        ></Button>
-      )}
-      <YStack
-        br="$10"
-        ov="hidden"
-        elevation="$10"
-        w={840}
-        h={480}
-        bg="$color3"
-        bw={3}
-        bc="$borderColor"
-      >
-        {!open && (
-          <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
-            <PlayCircle size={150} color="red" />
-            <Paragraph
-              size="$12"
-              pos="absolute"
-              rotate="-10deg"
-              ta="center"
-              ff="$silkscreen"
-            >
-              promo
-            </Paragraph>
-          </YStack>
-        )}
-        <iframe
-          width="840"
-          height="480"
-          style={{
-            width: 840,
-            height: 480,
-          }}
-          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
-            open ? 1 : 0
-          }`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        ></iframe>
-      </YStack>
-    </YStack>
-  )
-}
-
-const Bullet = ({
-  size = '$6',
-  children,
-  subtitle,
-  status,
-  ...props
-}: XStackProps & {
-  children: any
-  subtitle?: any
-  size?: FontSizeTokens
-  status?: 'building' | 'done'
-}) => {
-  return (
-    <XStack
-      tag="li"
-      ai="flex-start"
-      gap="$4"
-      f={1}
-      {...props}
-      w="100%"
-      $gtLg={{ w: 'calc(50% - 20px)' }}
-    >
-      <YStack y={-1}>
-        <Circle size={32} elevation="$1">
-          {status === 'done' ? (
-            <Check size={18} color="$color10" />
-          ) : status === 'building' ? (
-            <Hammer size={18} color="$color10" />
-          ) : (
-            <Dot size={18} color="$color10" />
-          )}
-        </Circle>
-      </YStack>
-      <YStack f={1}>
-        <Paragraph wordWrap="break-word" size={size}>
-          {children}
-        </Paragraph>
-        {!!subtitle && (
-          <Paragraph
-            size={
-              getSize(size, {
-                shift: -2,
-              }) as any
-            }
-            theme="alt2"
-            o={0.5}
-          >
-            {subtitle}
-          </Paragraph>
-        )}
-      </YStack>
-    </XStack>
-  )
 }
 
 const Lazy = (props: { children: any }) => {

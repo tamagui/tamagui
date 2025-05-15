@@ -1,4 +1,4 @@
-import { LogoIcon, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { memo } from 'react'
 import {
   Button,
@@ -17,12 +17,12 @@ import {
 } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
-import { BentoIcon } from '~/features/icons/BentoIcon'
 import { DiscordIcon } from '~/features/icons/DiscordIcon'
-import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { TwitterIcon } from '~/features/icons/TwitterIcon'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 
+import { BentoButton } from '../BentoButton'
+import { TakeoutButton } from '../TakeoutButton'
 import { InstallInput } from './InstallInput'
 import { useHeroHovered } from './useHeroHovered'
 
@@ -43,7 +43,7 @@ const HeroSubTitle = memo(() => {
 
   return (
     <Subtitle>
-      <Link asChild href="/docs/introduction">
+      <Link asChild href="/docs/intro/introduction">
         <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>
@@ -69,7 +69,7 @@ const HeroContents = memo(function HeroContents() {
   const { name, tint, tintAlt } = useTint()
 
   return (
-    <ContainerLarge contain="layout" pos="relative">
+    <ContainerLarge pos="relative">
       <YStack
         fullscreen
         left={-500}
@@ -106,66 +106,14 @@ const HeroContents = memo(function HeroContents() {
           <XGroup elevation="$0.5" pos="absolute" als="center" y={-80} br="$8">
             <Link href="/takeout">
               <XGroup.Item>
-                <Button
-                  // animation="bouncy"
-                  bc="$color6"
-                  size="$3"
-                  br="$10"
-                  fontFamily="$silkscreen"
-                  fontSize={12}
-                  brw={0.5}
-                  hoverStyle={{
-                    bc: '$color8',
-                    bg: '$color5',
-                  }}
-                >
-                  Takeout
-                  <YStack y={-1} dsp="inline-flex">
-                    <TakeoutIcon scale={0.75} />
-                  </YStack>
-                  <Text
-                    y={-0.5}
-                    ff="$body"
-                    fontSize="$4"
-                    color="$color10"
-                    $sm={{ dsp: 'none' }}
-                  >
-                    starter
-                  </Text>
-                </Button>
+                <TakeoutButton />
               </XGroup.Item>
             </Link>
 
             <Theme name="tan">
               <Link href="/bento">
                 <XGroup.Item>
-                  <Button
-                    // animation="bouncy"
-                    blw={0.5}
-                    bc="$color6"
-                    size="$3"
-                    br="$10"
-                    fontFamily="$silkscreen"
-                    fontSize={12}
-                    hoverStyle={{
-                      bc: '$color7',
-                      bg: '$color5',
-                    }}
-                  >
-                    Bento
-                    <YStack dsp="inline-flex">
-                      <BentoIcon scale={0.75} />
-                    </YStack>
-                    <Text
-                      y={-0.5}
-                      ff="$body"
-                      fontSize="$4"
-                      color="$color10"
-                      $sm={{ dsp: 'none' }}
-                    >
-                      more ui
-                    </Text>
-                  </Button>
+                  <BentoButton />
                 </XGroup.Item>
               </Link>
             </Theme>
@@ -178,11 +126,6 @@ const HeroContents = memo(function HeroContents() {
         <YStack ai="center" gap="$4">
           <H1
             ta="center"
-            // animation="lazy"
-            // enterStyle={{
-            //   y: -10,
-            //   o: 0,
-            // }}
             size="$11"
             lh={61}
             maw={500}
@@ -368,18 +311,18 @@ const Subtitle = styled(Paragraph, {
   ls: -1,
 
   $gtSm: {
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 
   $gtMd: {
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 
   $gtLg: {
-    size: '$9',
-    lh: 50,
+    fontSize: 25,
+    lh: 48,
     ls: -1,
   },
 })
@@ -418,6 +361,7 @@ const Tag = styled(Text, {
 
 const HeroText = styled(Text, {
   position: 'absolute',
+  ta: 'center',
 
   $sm: {
     t: 0,

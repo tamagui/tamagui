@@ -4,6 +4,7 @@ import { sendProductPurchaseEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import type { Price, Product } from '~/features/stripe/types'
 import type { Database } from '../supabase/types'
+import { STRIPE_PRODUCTS } from '../stripe/products'
 
 const SUPA_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
 const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -335,14 +336,6 @@ export const manageSubscriptionStatusChange = async (
     )
   }
 
-  // legacy way of handling 50% renewals:
-  // const renewalCouponId = process.env.TAKEOUT_RENEWAL_COUPON_ID
-  // if (createAction && renewalCouponId) {
-  //   await stripe.subscriptions.update(subscription.id, {
-  //     coupon: renewalCouponId,
-  //   })
-  // }
-
   if (createAction) {
     const user = await supabaseAdmin.auth.admin.getUserById(customerData.id)
 
@@ -391,6 +384,57 @@ export const manageSubscriptionStatusChange = async (
       console.info(`Bento purchase email request sent to Postmark for ${email}`)
     }
   }
+}
+
+export const createTeamSubscription = async (sub: Stripe.Subscription) => {
+  const teamItem = sub.items.data.find(
+    (item) => item.price.id === STRIPE_PRODUCTS.PRO_TEAM_SEATS.priceId
+  )
+  // if there is no team item, return
+  if (!teamItem) return
+
+  const subscriptionId = sub.id
+
+  const { data: subscriptionData, error: subscriptionError } = await supabaseAdmin
+    .from('subscriptions')
+    .select('*')
+    .eq('id', subscriptionId)
+    .single()
+  if (subscriptionError) throw subscriptionError
+
+  const userId = subscriptionData.user_id
+
+  const { data: teamSubscriptionData, error: teamSubscriptionError } = await supabaseAdmin
+    .from('team_subscriptions')
+    .insert({
+      owner_id: userId,
+      total_seats: teamItem.quantity || 1,
+      expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+    })
+  if (teamSubscriptionError) throw teamSubscriptionError
+}
+
+export const createTeamInvoice = async (sub: Stripe.Invoice) => {
+  const teamItem = sub.lines.data.find(
+    (d) => d.price?.id === STRIPE_PRODUCTS.PRO_TEAM_SEATS_ONE_TIME.priceId
+  )
+  if (!teamItem) return
+
+  const { data: subscriptionData, error: subscriptionError } = await supabaseAdmin
+    .from('subscriptions')
+    .select('*')
+    .eq('id', sub.id)
+    .single()
+  if (subscriptionError) throw subscriptionError
+
+  const { data: teamSubscriptionData, error: teamSubscriptionError } = await supabaseAdmin
+    .from('team_subscriptions')
+    .insert({
+      owner_id: subscriptionData.user_id,
+      total_seats: teamItem.quantity || 1,
+      expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+    })
+  if (teamSubscriptionError) throw teamSubscriptionError
 }
 
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
@@ -542,4 +586,17 @@ export async function populateStripeData() {
     await upsertPriceRecord(price)
     console.info('populated price ', price.nickname)
   }
+}
+
+export const getBentoBundleZip = async () => {
+  const { data, error } = await supabaseAdmin.storage
+    .from('bento')
+    .download('bento-bundle.zip')
+
+  if (error) {
+    console.error('Error downloading Bento bundle:', error)
+    throw new Error('Failed to download Bento bundle')
+  }
+
+  return data
 }

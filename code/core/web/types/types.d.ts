@@ -495,31 +495,31 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
     size: {
         [key in Key]: number | Variable;
     };
+    family?: string | Variable;
     lineHeight?: Partial<{
         [key in Key]: number | Variable;
-    }>;
+    }> | undefined;
     letterSpacing?: Partial<{
         [key in Key]: number | Variable;
-    }>;
+    }> | undefined;
     weight?: Partial<{
         [key in Key]: number | string | Variable;
-    }>;
-    family?: string | Variable;
+    }> | undefined;
     style?: Partial<{
         [key in Key]: RNTextStyle['fontStyle'] | Variable;
-    }>;
+    }> | undefined;
     transform?: Partial<{
         [key in Key]: RNTextStyle['textTransform'] | Variable;
-    }>;
+    }> | undefined;
     color?: Partial<{
         [key in Key]: string | Variable;
-    }>;
+    }> | undefined;
     face?: Partial<{
         [key in FontWeightValues]: {
             normal?: string;
             italic?: string;
         };
-    }>;
+    }> | undefined;
 };
 export type MediaQueryObject = {
     [key: string]: string | number | string;
@@ -1478,6 +1478,7 @@ export type TamaguiComponentStateRef = {
     unPress?: Function;
     group?: {
         listeners: Set<GroupStateListener>;
+        layout?: LayoutValue;
         emit: GroupStateListener;
         subscribe: (cb: GroupStateListener) => () => void;
     };
@@ -1509,7 +1510,8 @@ export type GetStyleResult = {
     rulesToInsert: RulesToInsert;
     viewProps: StackProps & Record<string, any>;
     fontFamily: string | undefined;
-    hasMedia: boolean | Record<string, boolean>;
+    space?: any;
+    hasMedia: boolean | Set<string>;
     dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;
@@ -1547,7 +1549,7 @@ export type FillInFont<A extends GenericFont, DefaultKeys extends string | numbe
     style: FillInFontValues<A, 'style', DefaultKeys>;
     transform: FillInFontValues<A, 'transform', DefaultKeys>;
     color: FillInFontValues<A, 'color', DefaultKeys>;
-    face: A['face'];
+    face: Partial<A['face']>;
 };
 type FillInFontValues<A extends GenericFont, K extends keyof A, DefaultKeys extends string | number> = keyof A[K] extends GenericFontKey ? {
     [Key in DefaultKeys]: A[K][any];

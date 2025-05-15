@@ -29,7 +29,8 @@ const shouldWatch = process.argv.includes('--watch')
 
 if (process.env.NEEDS_UNLOCK) {
   if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
-    process.exit(shouldWatch ? 0 : 1)
+    console.warn(`Not unlocked, skipping`)
+    process.exit(0)
   }
 }
 
@@ -186,7 +187,7 @@ async function buildTsc(allFiles) {
     return
   }
 
-  const targetDir = 'types'
+  const targetDir = './types'
   await FSE.ensureDir(targetDir)
 
   try {
@@ -211,6 +212,7 @@ async function buildTsc(allFiles) {
           const mapPath = `${dtsPath}.map`
 
           const output = `${code}\n//# sourceMappingURL=${path.basename(mapPath)}`
+          await FSE.ensureDir(dirname(dtsPath))
           await Promise.all([
             FSE.writeFile(dtsPath, output),
             FSE.writeFile(mapPath, JSON.stringify(map, null, 2)),
@@ -676,6 +678,7 @@ async function esbuildWriteIfChanged(
   }
 
   const cleanupNonMjsFiles = []
+  const cleanupNonCjsFiles = []
 
   async function flush(path, contents) {
     if (shouldWatch) {
@@ -810,13 +813,15 @@ async function esbuildWriteIfChanged(
               ].filter(Boolean),
             })
 
+        cleanupNonCjsFiles.push(path)
+
         await FSE.writeFile(path.replace(/\.js$/, '.cjs'), result.code)
       })
     )
     return
   }
 
-  if (shouldSkipMJS || !isESM || platform === 'native') {
+  if (shouldSkipMJS || !isESM) {
     return
   }
 
@@ -850,8 +855,10 @@ async function esbuildWriteIfChanged(
             ].filter(Boolean),
           })
 
-      cleanupNonMjsFiles.push(path)
-      cleanupNonMjsFiles.push(path + '.map')
+      if (!path.includes('.native.')) {
+        cleanupNonMjsFiles.push(path)
+        cleanupNonMjsFiles.push(path + '.map')
+      }
 
       // output to mjs fully specified
       if (
@@ -869,10 +876,13 @@ async function esbuildWriteIfChanged(
   )
 
   // if we do mjs we should remove js after to avoid bloat
-  if (process.env.TAMAGUI_BUILD_REMOVE_ESM_JS_FILES) {
+  if (
+    process.env.TAMAGUI_BUILD_REMOVE_ESM_JS_FILES ||
+    process.env.TAMAGUI_BUILD_CLEANUP_JS_FILES
+  ) {
     if (cleanupNonMjsFiles.length) {
       await Promise.all(
-        cleanupNonMjsFiles.map(async (file) => {
+        [...cleanupNonMjsFiles, ...cleanupNonCjsFiles].map(async (file) => {
           await FSE.remove(file)
         })
       )

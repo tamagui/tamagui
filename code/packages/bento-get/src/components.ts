@@ -57,14 +57,20 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'SlideIn',
     category: 'animation',
     categorySection: 'slide',
-    moveFilesToFolder: [{ file: 'SlideIn', to: '' }],
+    moveFilesToFolder: [
+      { file: 'SlideIn', to: '' },
+      { file: 'DirectionSlide', to: '' },
+    ],
   },
   {
     name: 'Slide Out',
     fileName: 'SlideOut',
     category: 'animation',
     categorySection: 'slide',
-    moveFilesToFolder: [{ file: 'SlideOut', to: '' }],
+    moveFilesToFolder: [
+      { file: 'SlideOut', to: '' },
+      { file: 'DirectionSlide', to: '' },
+    ],
   },
   {
     name: 'Basic Table',
@@ -78,10 +84,21 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     ],
   },
   {
+    name: 'Calendar',
+    fileName: 'Calendar',
+    categorySection: 'datepickers',
+    category: 'elements',
+    dependencies: ['@rehookify/datepicker'],
+    moveFilesToFolder: [
+      { file: 'Calendar', to: '' },
+      { file: 'dateParts', to: 'common' },
+    ],
+  },
+  {
     name: 'DatePicker',
     fileName: 'DatePicker',
-    category: 'elements',
     categorySection: 'datepickers',
+    category: 'elements',
     dependencies: ['@rehookify/datepicker'],
     moveFilesToFolder: [
       { file: 'DatePicker', to: '' },
@@ -92,8 +109,8 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
   {
     name: 'MonthPicker',
     fileName: 'MonthPicker',
-    category: 'elements',
     categorySection: 'datepickers',
+    category: 'elements',
     dependencies: ['@rehookify/datepicker'],
     moveFilesToFolder: [
       { file: 'MonthPicker', to: '' },
@@ -367,7 +384,7 @@ export const componentsList: ComponentSchema[] = [
   //   moveFilesToFolder: [{ file: '', to: '' }],
   // },
   // {
-  //   name: 'Prodcut List with Label',
+  //   name: 'Product List with Label',
   //   fileName: 'ProductListWithLabel',
   //   category: 'ecommerce',
   //   categorySection: 'product_list',
@@ -612,6 +629,13 @@ export const componentsList: ComponentSchema[] = [
     moveFilesToFolder: [{ file: 'HList', to: '' }],
   },
   {
+    name: 'Wheel List',
+    fileName: 'WheelList',
+    category: 'elements',
+    categorySection: 'list',
+    moveFilesToFolder: [{ file: 'WheelList', to: '' }],
+  },
+  {
     name: 'Chat List',
     fileName: 'ChatList',
     category: 'elements',
@@ -641,6 +665,21 @@ export const componentsList: ComponentSchema[] = [
     dependencies: ['@ngneat/falso', '@tamagui/lucide-icons'],
     moveFilesToFolder: [{ file: 'List', to: '' }],
   },
+
+  {
+    name: 'Scroll Progress',
+    fileName: 'ScrollProgress',
+    category: 'elements',
+    categorySection: 'list',
+    dependencies: [
+      'react-native-reanimated',
+      'react-native-svg',
+      '@tamagui/lucide-icons',
+      'tamagui/linear-gradient',
+    ],
+    moveFilesToFolder: [{ file: 'ScrollProgress', to: '' }],
+  },
+
   {
     name: 'Masonry List',
     fileName: 'MasonryListExample',
@@ -914,6 +953,16 @@ export const componentsList: ComponentSchema[] = [
     dependencies: ['@tamagui/lucide-icons'],
     moveFilesToFolder: [{ file: 'IconTitleSwitch', to: '' }],
   },
+
+  {
+    name: 'Theme Switch',
+    fileName: 'ThemeSwitch',
+    category: 'forms',
+    categorySection: 'switches',
+    dependencies: ['@tamagui/lucide-icons'],
+    moveFilesToFolder: [{ file: 'ThemeSwitch', to: '' }],
+  },
+
   {
     name: 'Comment Box with Preview',
     fileName: 'WritePreviewAction',
@@ -976,7 +1025,7 @@ export const componentsList: ComponentSchema[] = [
     name: 'Responsive Sidebar',
     fileName: 'FullSideBar',
     category: 'shells',
-    categorySection: 'sidebars',
+    categorySection: 'navbars',
     dependencies: [
       '@tamagui/lucide-icons',
       '@tamagui/roving-focus',
@@ -1026,9 +1075,23 @@ export const componentsList: ComponentSchema[] = [
     name: 'Employees Status Tracker',
     fileName: 'StatusTracker',
     category: 'user',
-    categorySection: 'events',
+    categorySection: 'preferences',
     dependencies: ['@tamagui/lucide-icons', '@tamagui/get-font-sized'],
     moveFilesToFolder: [{ file: 'StatusTracker', to: '' }],
+  },
+
+  {
+    name: 'Paywall',
+    fileName: 'Paywall',
+    category: 'user',
+    categorySection: 'payment',
+    dependencies: [
+      'react-native-reanimated',
+      'react-native-gesture-handler',
+      '@tamagui/lucide-icons',
+      'tamagui/linear-gradient',
+    ],
+    moveFilesToFolder: [{ file: 'Paywall', to: '' }],
   },
   ...MISSING_COMPONENTS,
 ].map((item) => {

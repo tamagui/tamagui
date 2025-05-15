@@ -4,7 +4,26 @@ export const widths = [660, 800, 1020, 1280]
 // note order is important!
 // earlier defined = less important
 
+// v4 Config
+const breakpoints = {
+  '2xl': 1536,
+  xl: 1280,
+  lg: 1024,
+  md: 768,
+  sm: 640,
+  xs: 460,
+  '2xs': 340,
+}
+
 export const media = {
+  // v4 Config
+  maxXs: { maxWidth: breakpoints.xs },
+  max2xs: { maxWidth: breakpoints['2xs'] },
+  maxSm: { maxWidth: breakpoints.sm },
+  maxMd: { maxWidth: breakpoints.md },
+  maxLg: { maxWidth: breakpoints.lg },
+  maxXl: { maxWidth: breakpoints.xl },
+  max2Xl: { maxWidth: breakpoints['2xl'] },
   // for site
   xl: { maxWidth: 1650 },
   // between lg and xl - for studio usage

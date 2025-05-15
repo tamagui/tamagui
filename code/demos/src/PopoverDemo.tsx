@@ -51,13 +51,13 @@ export function Demo({
   ...props
 }: PopoverProps & { Icon?: any; Name?: string; shouldAdapt?: boolean }) {
   return (
-    <Popover size="$5" allowFlip {...props}>
+    <Popover size="$5" allowFlip stayInFrame offset={15} resize {...props}>
       <Popover.Trigger asChild>
         <Button icon={Icon} />
       </Popover.Trigger>
 
       {shouldAdapt && (
-        <Adapt when="sm" platform="touch">
+        <Adapt when="maxMd" platform="touch">
           <Popover.Sheet animation="medium" modal dismissOnSnapToBottom>
             <Popover.Sheet.Frame padding="$4">
               <Adapt.Contents />
@@ -75,6 +75,8 @@ export function Demo({
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
+        width={300}
+        height={300}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate

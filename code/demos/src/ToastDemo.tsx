@@ -1,6 +1,6 @@
 import { Toast, useToastController, useToastState } from '@tamagui/toast'
 import React from 'react'
-import { Button, Label, Switch, XStack, YStack } from 'tamagui'
+import { Button, isWeb, Label, Switch, XStack, YStack } from 'tamagui'
 
 /**
  *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
@@ -24,16 +24,17 @@ const CurrentToast = () => {
   const currentToast = useToastState()
 
   if (!currentToast || currentToast.isHandledNatively) return null
+
   return (
     <Toast
+      animation="200ms"
       key={currentToast.id}
       duration={currentToast.duration}
-      enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
-      exitStyle={{ opacity: 0, scale: 1, y: -20 }}
-      y={0}
+      enterStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+      exitStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+      transform={[{ translateY: 0 }]}
       opacity={1}
       scale={1}
-      animation="100ms"
       viewportName={currentToast.viewportName}
     >
       <YStack>
@@ -48,6 +49,7 @@ const CurrentToast = () => {
 
 const ToastControl = ({ native }: { native: boolean }) => {
   const toast = useToastController()
+
   return (
     <XStack gap="$2" justifyContent="center">
       <Button
@@ -55,6 +57,7 @@ const ToastControl = ({ native }: { native: boolean }) => {
           toast.show('Successfully saved!', {
             message: "Don't worry, we've got your data.",
             native,
+            demo: true,
           })
         }}
       >

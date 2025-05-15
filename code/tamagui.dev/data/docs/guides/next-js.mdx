@@ -118,6 +118,8 @@ export default class Document extends NextDocument {
       ...page,
       styles: (
         <>
+          {/* Link your CSS output for optimized themes */}
+          <link rel="stylesheet" href="/tamagui.css" />
           <style
             id={rnwStyle.id}
             dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
@@ -483,6 +485,8 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
     const rnwStyle = StyleSheet.getSheet()
     return (
       <>
+        {/* Link your CSS output for optimized themes */}
+        <link rel="stylesheet" href="/tamagui.css" />
         <style
           dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
           id={rnwStyle.id}

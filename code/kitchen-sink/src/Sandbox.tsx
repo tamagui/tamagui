@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from 'react'
 import {
   Button,
+  Circle,
   type ColorTokens,
   styled,
   Switch as TamaguiSwitch,
@@ -15,19 +16,41 @@ const StyledButton = styled(Button, {
 })
 
 export const Sandbox = () => {
-  const [x, setX] = useState(false)
+  // const [x, setX] = useState(false)
 
   return (
-    <>
-      <Button onPress={() => setX(!x)}>set disbaled</Button>
-
-      <Button disabledStyle={{ bg: 'red' }} disabled={x}>
-        Hiii {x}
-      </Button>
-    </>
+    <XStack group="testy" width={900} height={300} bg="red">
+      <Circle
+        size={200}
+        bg="green"
+        // $group-testy-press={{
+        //   bg: 'yellow',
+        // }}
+        $group-testy={{
+          bg: 'pink',
+        }}
+        $group-testy-gtXs={{
+          borderWidth: 2,
+        }}
+        $group-testy-gtXs-press={{
+          scale: 1.1,
+          bg: 'white',
+        }}
+      />
+    </XStack>
   )
 
-  return <SwitchPerformance />
+  // return (
+  //   <>
+  //     <Button onPress={() => setX(!x)}>set disbaled</Button>
+
+  //     <Button disabledStyle={{ bg: 'red' }} disabled={x}>
+  //       Hiii {x}
+  //     </Button>
+  //   </>
+  // )
+
+  // return <SwitchPerformance />
   // const [k, setK] = useState(0)
 
   // console.warn('re rendering sandbox')

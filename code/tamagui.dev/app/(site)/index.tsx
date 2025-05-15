@@ -1,4 +1,6 @@
+import { setTintIndex } from '@tamagui/logo'
 import { useLoader } from 'one'
+import { useEffect } from 'react'
 import { YStack } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
@@ -14,7 +16,7 @@ import { HomeResponsive } from '~/features/site/home/HomeResponsive'
 import { HomeThemes } from '~/features/site/home/HomeThemes'
 import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 
 export async function loader() {
   const { getCompilationExamples } = await import('@tamagui/mdx-2')
@@ -23,6 +25,10 @@ export async function loader() {
 
 export default function TamaguiHomePage() {
   const { compilationExamples, animationCode } = useLoader(loader)
+
+  useEffect(() => {
+    setTintIndex(3)
+  }, [])
 
   if (!compilationExamples) {
     return null
@@ -35,7 +41,7 @@ export default function TamaguiHomePage() {
         description="React style library and UI kit that unifies React Native and React web"
       />
 
-      <ThemeNameEffect disableTint={3} colorKey="$color2" />
+      <ThemeNameEffectNoTheme disableTint={3} colorKey="$color3" />
 
       <HomeGlow />
       <YStack

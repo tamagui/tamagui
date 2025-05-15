@@ -21,6 +21,6 @@ export declare const didGetVariableValue: () => boolean;
 export declare function getVariableValue(v: Variable | any, group?: TokenCategories): any;
 export declare function getVariableName(v: Variable | any): any;
 export declare function getVariableVariable(v: Variable | any): any;
-export declare const createCSSVariable: (nameProp: string, includeVar?: boolean) => any;
+export declare const createCSSVariable: (nameProp: string, includeVar?: boolean) => string;
 export {};
 //# sourceMappingURL=createVariable.d.ts.map

@@ -15,8 +15,6 @@ import {
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
-import { usePathname } from 'one'
-
 const ua = (() => {
   if (typeof window === 'undefined') return
   return window.navigator.userAgent
@@ -31,17 +29,10 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function formatPrice(amount: number, currency: string) {
-  return new Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: currency.toUpperCase(),
-  }).format(amount)
-}
-
 export function PurchaseButton(props: ButtonProps) {
   return (
-    <Button size="$5" borderWidth={2} {...props}>
-      <Button.Text size="$4" ff="$silkscreen">
+    <Button size="$4" $gtXs={{ size: '$5' }} br="$10" {...props}>
+      <Button.Text size="$5" ff="$mono">
         {props.children}
       </Button.Text>
     </Button>
@@ -50,7 +41,7 @@ export function PurchaseButton(props: ButtonProps) {
 
 export const MunroP = styled(Paragraph, {
   // className: 'pixelate',
-  fontFamily: '$munro',
+  fontFamily: '$mono',
 })
 
 export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
@@ -135,6 +126,9 @@ export const RadioGroupItem = ({
 }
 
 const bentoDefaults = {
+  price_1QPzlaFQGtHoG6xcdRzFfWL8: {
+    seats: 1,
+  },
   price_1Pe0UKFQGtHoG6xcntaCw9k1: {
     seats: 1,
   },

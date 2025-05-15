@@ -17,7 +17,6 @@ const exec = promisify(proc.exec)
 export const spawn = proc.spawn
 
 // for failed publishes that need to re-run
-const confirmFinalPublish = process.argv.includes('--confirm-final-publish')
 const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
 const shouldFinish = process.argv.includes('--finish')
@@ -35,6 +34,7 @@ const skipTest =
   process.argv.includes('--skip-test') ||
   process.argv.includes('--skip-tests')
 const skipBuild = shouldFinish || rePublish || process.argv.includes('--skip-build')
+const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || process.argv.includes('--ci')
@@ -199,7 +199,11 @@ async function run() {
     // build from fresh
     if (!skipBuild && !shouldFinish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn build:force`)
+      if (buildFast) {
+        await spawnify(`yarn build`)
+      } else {
+        await spawnify(`yarn build:force`)
+      }
       await checkDistDirs()
     }
 
@@ -207,8 +211,12 @@ async function run() {
     if (!shouldFinish) {
       console.info('run checks')
       if (!skipTest) {
-        await spawnify(`yarn lint`)
-        await spawnify(`yarn check`)
+        await Promise.all([
+          spawnify(`chmod ug+x ./node_modules/.bin/tamagui`),
+          // spawnify(`yarn playwright install`),
+          spawnify(`yarn check`),
+          spawnify(`yarn lint`),
+        ])
         await spawnify(`yarn typecheck`)
         await spawnify(`yarn test`)
       }

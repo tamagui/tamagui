@@ -6,15 +6,19 @@ import { readBodyBuffer } from '~/features/api/readBodyBuffer'
 import { unclaimSubscription } from '~/features/api/unclaimProduct'
 import {
   addRenewalSubscription,
+  createTeamSubscription,
   deletePriceRecord,
   deleteProductRecord,
   deleteSubscriptionRecord,
   manageSubscriptionStatusChange,
   upsertPriceRecord,
   upsertProductRecord,
+  createTeamInvoice,
 } from '~/features/auth/supabaseAdmin'
 import { sendProductRenewalEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 
 const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
 
@@ -87,6 +91,16 @@ export default apiRoute(async (req) => {
         break
       }
 
+      case 'invoice.paid': {
+        const invoice = event.data.object as Stripe.Invoice
+
+        if (invoice.subscription === null) {
+          await manageOneTimePayment(invoice)
+          await createTeamInvoice(invoice)
+        }
+        break
+      }
+
       // TODO
       // case 'customer.updated': {
       //   const data = event.data.object as Stripe.Customer
@@ -105,6 +119,7 @@ export default apiRoute(async (req) => {
             : createdSub.customer.id,
           true
         )
+        await createTeamSubscription(createdSub)
         break
       }
       case 'customer.subscription.updated': {
@@ -115,6 +130,7 @@ export default apiRoute(async (req) => {
             ? updatedSub.customer
             : updatedSub.customer.id
         )
+        await createTeamSubscription(updatedSub)
         break
       }
       case 'customer.subscription.deleted': {
@@ -124,9 +140,11 @@ export default apiRoute(async (req) => {
       }
 
       case 'checkout.session.completed': {
-        await addRenewalSubscription(event.data.object as Stripe.Checkout.Session, {
-          toltReferral,
-        })
+        const options = toltReferral ? { toltReferral } : undefined
+        await addRenewalSubscription(
+          event.data.object as Stripe.Checkout.Session,
+          options
+        )
         break
       }
 
@@ -146,6 +164,53 @@ export default apiRoute(async (req) => {
     throw err
   }
 })
+
+async function manageOneTimePayment(invoice: Stripe.Invoice) {
+  if (!invoice.customer) {
+    throw new Error('No customer found for invoice')
+  }
+
+  const customerId =
+    typeof invoice.customer === 'string' ? invoice.customer : invoice.customer.id
+
+  const { data: customerData, error: noCustomerError } = await supabaseAdmin
+    .from('customers')
+    .select('id')
+    .eq('stripe_customer_id', customerId)
+    .single()
+
+  if (noCustomerError) throw noCustomerError
+
+  const { id: uuid } = customerData
+
+  const now = new Date()
+  const oneYearFromNow = new Date(now.setFullYear(now.getFullYear() + 1))
+
+  await supabaseAdmin.from('subscriptions').insert({
+    id: invoice.id,
+    user_id: uuid,
+    metadata: invoice.metadata,
+    status: 'active',
+    cancel_at: oneYearFromNow.toISOString(),
+    current_period_start: new Date().toISOString(),
+    current_period_end: oneYearFromNow.toISOString(),
+    created: new Date().toISOString(),
+  })
+
+  const subscriptionItems = invoice.lines.data
+    .filter((item): item is Stripe.InvoiceLineItem & { price: { id: string } } =>
+      Boolean(item.price?.id)
+    )
+    .map((item) => ({
+      id: item.id,
+      subscription_id: invoice.id,
+      price_id: item.price.id,
+    }))
+
+  if (subscriptionItems.length > 0) {
+    await supabaseAdmin.from('subscription_items').insert(subscriptionItems)
+  }
+}
 
 // async function handleCreateSubscription(
 //   sub: Stripe.Subscription & { plan?: Stripe.Plan; quantity?: number }

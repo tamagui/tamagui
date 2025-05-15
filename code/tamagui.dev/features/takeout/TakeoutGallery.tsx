@@ -218,7 +218,7 @@ export default function TakeoutGallery() {
             ai="center"
             jc="center"
           >
-            <H6 fontFamily="$munro" color="black">
+            <H6 fontFamily="$mono" color="black">
               +{takeoutImages.length - 11}
             </H6>
           </YStack>
@@ -272,7 +272,7 @@ const ImageGallery = () => {
                 textShadowColor="black"
                 textShadowOffset={{ height: 1, width: 1 }}
                 textShadowRadius={4}
-                fontFamily="$munro"
+                fontFamily="$mono"
               >
                 {store.galleryImageIdx + 1} / {takeoutImages.length}
               </Paragraph>
@@ -283,7 +283,7 @@ const ImageGallery = () => {
                 textShadowColor="black"
                 textShadowOffset={{ height: 1, width: 1 }}
                 textShadowRadius={4}
-                fontFamily="$munro"
+                fontFamily="$mono"
               >
                 {takeoutImages[store.galleryImageIdx].alt}
               </Paragraph>

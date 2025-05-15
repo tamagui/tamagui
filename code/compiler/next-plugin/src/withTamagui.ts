@@ -13,12 +13,25 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
   enableLegacyFontSupport?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
+
+  /**
+   * By default, we configure webpack to pass anything inside your root or design system
+   * to the Tamagui loader. If you are importing files from an external package, use this
+   **/
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
+
+  /**
+   * *Advaned* Config to avoid resolving files on the server.
+   */
   shouldExcludeFromServer?: (props: {
     context: string
     request: string
     fullPath: string
   }) => boolean | string | undefined
+  disableThemesBundleOptimize?: boolean
+
+  /** By default we add a Next.js modularizeImports option to tree shake @tamagui/lucide-icons, this disables it */
+  disableOptimizeLucideIcons?: boolean
 }
 
 export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
@@ -69,6 +82,10 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
               process.env.TAMAGUI_DOES_SSR_CSS
             ),
+          }),
+          ...(tamaguiOptions?.disableThemesBundleOptimize && {
+            'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(false),
+            'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(false),
           }),
 
           // TODO move to TamaguiPlugin
@@ -162,12 +179,10 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
         }
 
         // better shaking for icons:
-        if (!isServer) {
-          nextConfig.modularizeImports ??= {}
-          nextConfig.modularizeImports['@tamagui/lucide-icons'] = {
-            transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
-            skipDefaultConversion: true,
-          }
+        if (!tamaguiOptions.disableOptimizeLucideIcons) {
+          nextConfig.experimental ||= {}
+          nextConfig.experimental.optimizePackageImports ||= []
+          nextConfig.experimental.optimizePackageImports.push('@tamagui/lucide-icons')
         }
 
         /**

@@ -40,8 +40,28 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
 }) => {
   //NOTE: Components using Flatlist can't have a ScrollView wrapper. This breaks scrolling on Android.
 
-  if (['ProductWithReview'].includes(name)) {
-    return children
+  if (name === 'ThemeSwitch') {
+    return (
+      <View jc="center" ai="center" flex={1} bg="$background">
+        {children}
+      </View>
+    )
+  }
+
+  if (
+    [
+      'ProductWithReview',
+      'TopNavBarWithLogo',
+      'TopNavBarWithUnderLineTabs',
+      'WheelList',
+      'ThemeSwitch',
+    ].includes(name)
+  ) {
+    return (
+      <View flex={1} bg="$background">
+        {children}
+      </View>
+    )
   }
 
   if (
@@ -56,6 +76,11 @@ const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
       'CircularAvatarsWithCustomIcons',
       'RoundedAvatarsWithCustomIcons',
       'Fullpage',
+      'AlertDemo',
+      'AlertWithIcon',
+      'IosStyleAlert',
+      'SlidingPopoverDemo',
+      'OneTimeCodeInputExample',
     ].includes(name)
   ) {
     return (
@@ -79,13 +104,7 @@ const sectionModuleToTuple = ([, sectionModules]) => Object.entries(sectionModul
 const flatArray = (acc, curr) => acc.concat(curr)
 
 const filterOutComponents = ([key]: [string]) =>
-  ![
-    'default',
-    'SizableText',
-    'Example',
-    'VerticalCheckboxes',
-    'LocationNotification',
-  ].includes(key)
+  !['default', 'SizableText', 'Example', 'VerticalCheckboxes'].includes(key)
 
 const bentoScreenSections = bentoScreenNames.map((screenName) => {
   return (
@@ -134,16 +153,7 @@ const bentoScreensPerElement = Object.entries(Components)
 export function Navigation() {
   return (
     <Stack.Navigator initialRouteName="home">
-      <Stack.Screen
-        name="home"
-        component={HomeScreen}
-        options={{
-          title: 'Home',
-          headerRight() {
-            return <ColorSchemeToggle />
-          },
-        }}
-      />
+      <Stack.Screen name="home" component={HomeScreen} />
       <Stack.Screen
         name="sandbox"
         component={Sandbox}

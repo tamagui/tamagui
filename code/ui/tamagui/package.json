@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.124.17",
+  "version": "1.126.12",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
   "alsoPublishAs_disabled": [
@@ -136,12 +136,13 @@
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
-    "@tamagui/visually-hidden": "workspace:*"
+    "@tamagui/visually-hidden": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native-web": "^0.19.12"
+    "react-native-web": "^0.20.0"
   },
   "repository": {
     "type": "git",

@@ -40,10 +40,7 @@ const include = [
   'glob',
   'reading-time',
   'unified',
-  '@discordjs/core',
 ]
-
-const disableExtraction = false
 
 export default {
   envPrefix: 'NEXT_PUBLIC_',
@@ -84,11 +81,11 @@ export default {
 
   plugins: [
     tamaguiPlugin({
-      config: '@tamagui/tamagui-dev-config',
       components: ['tamagui'],
       logTimings: true,
       optimize: true,
-      disableExtraction,
+      config: '@tamagui/tamagui-dev-config',
+      outputCSS: './tamagui.css',
       // useReactNativeWebLite: true,
     }),
 
@@ -104,6 +101,12 @@ export default {
         // },
       },
 
+      router: {
+        experimental: {
+          preventLayoutRemounting: true,
+        },
+      },
+
       ssr: {
         autoDepsOptimization: {
           include: /.*/,
@@ -111,6 +114,8 @@ export default {
       },
 
       deps: {
+        ws: true,
+        url: false,
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
         postmark: true,
@@ -120,6 +125,17 @@ export default {
         octokit: true,
         'node-fetch': true,
         'fetch-blob': true,
+        'discord-api-types/v10': true,
+        'magic-bytes.js': true,
+        '@react-navigation/core': {
+          version: '^7',
+          'lib/module/useOnGetState.js': (contents) => {
+            return contents?.replace(
+              'if (route.state === childState)',
+              'if (!childState || route.state === childState)'
+            )
+          },
+        },
       },
 
       build: {
@@ -127,7 +143,13 @@ export default {
           config: {
             build: {
               rollupOptions: {
-                external: ['stripe', '@discordjs/core', 'zlib-sync'],
+                external: [
+                  '@discordjs/rest',
+                  '@discordjs/ws',
+                  '@vercel/og',
+                  'stripe',
+                  'zlib-sync',
+                ],
               },
             },
           },
@@ -138,7 +160,7 @@ export default {
         redirects: [
           {
             source: '/account/subscriptions',
-            destination: '/account/items',
+            destination: '/account',
             permanent: false,
           },
           {

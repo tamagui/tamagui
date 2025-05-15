@@ -8,20 +8,14 @@ import type {
   Tokens,
   TokensMerged,
 } from './types'
+import { MISSING_THEME_MESSAGE } from './constants/constants'
 
 let conf: TamaguiInternalConfig | null
 
 const haventCalledErrorMessage =
   process.env.NODE_ENV === 'development'
     ? `
-Haven't called createTamagui yet.
-
-  This often happens due to having duplicate Tamagui sub-dependencies.
-
-  Tamagui needs every @tamagui/* dependency to be on the exact same version, we include an upgrade script
-  with the starter kits that you can call with "yarn upgrade:tamagui" to help with this.
-
-  You may want to clear your node_modules as well and run a fresh install after ugprading.
+Haven't called createTamagui yet. ${MISSING_THEME_MESSAGE}
 `
     : `❌ Error 001`
 

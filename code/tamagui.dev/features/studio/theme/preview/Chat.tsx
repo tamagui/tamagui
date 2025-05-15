@@ -111,7 +111,6 @@ export const ChatScreen = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      bg="$background02"
       ov="hidden"
     >
       <YStack
@@ -121,7 +120,6 @@ export const ChatScreen = () => {
         py="$5"
         br="$4"
         mb="$2"
-        bg="$color3"
         borderBottomWidth="$0.25"
         borderBottomColor="$borderColor"
       >
@@ -130,12 +128,11 @@ export const ChatScreen = () => {
             <H4 {...demoProps.headingFontFamilyProps} size="$4">
               Group Chat
             </H4>
-            <Paragraph {...demoProps.panelDescriptionProps} color="$accent11">
+            <Paragraph {...demoProps.panelDescriptionProps}>
               3 online &mdash; 5 members
             </Paragraph>
           </YStack>
           <Button
-            color="$accent12"
             als="center"
             chromeless
             size="$5"
@@ -216,11 +213,7 @@ const ChatMessage = memo(
         {...demoProps.borderRadiusProps}
         {...(isUser ? demoProps.chatFrameActiveProps : demoProps.chatFrameProps)}
       >
-        <Paragraph
-          lh="$2"
-          maxWidth={200}
-          {...(isUser ? demoProps.chatTextActiveProps : demoProps.chatTextProps)}
-        >
+        <Paragraph lh="$2" maxWidth={200} {...demoProps.chatTextProps}>
           {message}
         </Paragraph>
       </YStack>

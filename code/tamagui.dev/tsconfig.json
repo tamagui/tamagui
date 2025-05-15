@@ -25,6 +25,7 @@
     "noImplicitReturns": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": true,
     "preserveConstEnums": true,
     "removeComments": false,
     "skipLibCheck": true,
@@ -47,6 +48,9 @@
     },
     {
       "path": "../core/cli"
+    },
+    {
+      "path": "../core/theme-builder"
     },
     {
       "path": "../core/get-token"

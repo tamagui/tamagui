@@ -3,6 +3,7 @@ import React from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
+import { updateMediaListeners } from '../hooks/useMedia'
 
 export function TamaguiProvider({
   children,
@@ -28,6 +29,10 @@ export function TamaguiProvider({
       }, [config, disableInjectCSS])
     }
   }
+
+  useIsomorphicLayoutEffect(() => {
+    updateMediaListeners()
+  }, [])
 
   return (
     <>

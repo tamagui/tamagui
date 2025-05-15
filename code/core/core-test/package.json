@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.124.17",
+  "version": "1.126.12",
   "module": "dist/esm",
   "type": "module",
   "private": true,
@@ -22,7 +22,7 @@
     "@testing-library/react-native": "^12.9.0",
     "csstype": "^3.0.10",
     "react": "*",
-    "typescript": "^5.7.2",
+    "typescript": "^5.8.2",
     "vitest": "^3.0.5"
   },
   "peerDependencies": {

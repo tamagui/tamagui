@@ -8,9 +8,8 @@ type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
 
 export async function generateThemeBuilderCode({
   palettes,
-  schemes,
   includeComponentThemes,
-  includeSizeTokens,
+  templateStrategy,
 }: GenerateThemeBuilderCodeProps) {
   // side effect to getLastBuilder
   const palettesOut = createPalettes(palettes)
@@ -19,7 +18,24 @@ export async function generateThemeBuilderCode({
     return pIn.slice(PALETTE_BACKGROUND_OFFSET, -PALETTE_BACKGROUND_OFFSET)
   }
 
-  return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``} } from '@tamagui/theme-builder'
+  const templatesIdentifier =
+    !templateStrategy || templateStrategy === 'base'
+      ? ''
+      : templateStrategy === 'stronger'
+        ? 'defaultTemplatesStronger'
+        : 'defaultTemplatesStrongest'
+
+  const importTemplates = templatesIdentifier ? `, ${templatesIdentifier}` : ''
+
+  const templatesProp = templatesIdentifier
+    ? `\n  templates: ${templatesIdentifier},\n`
+    : ''
+  const componentsProp =
+    includeComponentThemes === true
+      ? `\n  componentThemes: defaultComponentThemes,\n`
+      : ``
+
+  return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``}${importTemplates} } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
 
 const darkPalette = ${arrayToJS(paletteToCreateThemes(palettesOut.dark))}
@@ -45,9 +61,7 @@ const darkShadows = {
 
 // we're adding some example sub-themes for you to show how they are done, "success" "warning", "error":
 
-const builtThemes = createThemes({
-  ${includeComponentThemes === false ? `componentThemes: defaultComponentThemes,` : ``}
-
+const builtThemes = createThemes({${templatesProp}${componentsProp}
   base: {
     palette: {
       dark: darkPalette,
@@ -125,10 +139,11 @@ const builtThemes = createThemes({
 
 export type Themes = typeof builtThemes
 
-// this is optional, but saves client-side JS bundle size by leaving out themes on client.
-// tamagui automatically hydrates themes from css back into JS for you and the tamagui
-// bundler plugins automate setting TAMAGUI_ENVIRONMENT.
-
+// the process.env conditional here is optional but saves web client-side bundle
+// size by leaving out themes JS. tamagui automatically hydrates themes from CSS
+// back into JS for you, and the bundler plugins set TAMAGUI_ENVIRONMENT. so
+// long as you are using the Vite, Next, Webpack plugins this should just work,
+// but if not you can just export builtThemes directly as themes:
 export const themes: Themes =
   process.env.TAMAGUI_ENVIRONMENT === 'client' &&
   process.env.NODE_ENV === 'production'

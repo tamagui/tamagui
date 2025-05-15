@@ -7,16 +7,16 @@ export default apiRoute(async (req) => {
 
   if (!user) {
     console.warn(`No user found during logout`)
-    return redirect('/login')
+    return redirect('/')
   }
 
   console.warn(`Logging out`)
 
   try {
     await supabase.auth.signOut()
-    return redirect('/login')
+    return redirect('/')
   } catch (error) {
     console.error('Error signing out:', error)
-    return redirect('/login')
+    return redirect('/')
   }
 })

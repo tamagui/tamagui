@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { XStackProps } from 'tamagui'
 import { Circle, XStack } from 'tamagui'
 
@@ -35,7 +35,7 @@ export const LogoWords: React.MemoExoticComponent<
     ? Tint.tints.map((x) => `$${x}9`)
     : ['$accent1', '$accent1', '$accent1', '$accent1', ...rgb]
 
-  React.useEffect(() => {
+  useEffect(() => {
     const idle = window.requestIdleCallback || setTimeout
     idle(() => {
       setTimeout(() => {
@@ -48,11 +48,23 @@ export const LogoWords: React.MemoExoticComponent<
     })
   }, [])
 
-  const getColor = (i: number) => {
-    const isActive = mounted !== 'start' && i === index
-    if (hovered) {
-      return hoveredTints[i]
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const index = Number.parseInt(event.key, 10) - 1 // Convert key to index (0-based)
+      if (!Number.isNaN(index) && index >= 0 && index < Tint.tints.length) {
+        Tint.setTintIndex(index)
+      }
     }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [Tint])
+
+  const getColor = (i: number) => {
+    if (hovered) return hoveredTints[i]
     return tints[i]
   }
 

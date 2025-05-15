@@ -58,14 +58,14 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
         fontSize: 14,
       }),
 
-      ...(demosOptions.headingFontFamily == '$munro' && {
-        fontSize: 20,
+      ...(demosOptions.headingFontFamily === '$mono' && {
+        fontSize: 16,
       }),
     } as const,
 
     buttonOutlineProps: {
       variant: isOutlined ? ('outlined' as const) : (undefined as any),
-      color: isOutlined ? '$color12' : undefined,
+      color: isOutlined ? '$color10' : undefined,
       // ...(hasAccent && accentStyle),
       borderColor: hasAccent ? accentBorder : '$borderColor',
     } as ButtonProps,

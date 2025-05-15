@@ -1,12 +1,12 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.124.17",
+  "version": "1.126.12",
   "source": "src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./types/index.d.ts",
   "main": "dist/index.cjs",
   "bin": {
-    "tama": "./run.cjs",
-    "tamagui": "./run.cjs"
+    "tama": "./dist/index.cjs",
+    "tamagui": "./dist/index.cjs"
   },
   "publishConfig": {
     "access": "public"
@@ -17,7 +17,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-types",
+    "build": "tamagui-build",
     "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
@@ -32,7 +32,7 @@
     "chalk": "^4.1.2",
     "change-case": "^4.1.2",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "execa": "^5.0.0",
     "express": "^4.18.2",
     "fs-extra": "^11.2.0",
@@ -48,7 +48,7 @@
     "opener": "^1.5.2",
     "prompts": "2.1.0",
     "ts-morph": "^15.1.0",
-    "typescript": "^5.7.2",
+    "typescript": "^5.8.2",
     "url": "^0.11.0",
     "vite": "^6.1.0"
   },
