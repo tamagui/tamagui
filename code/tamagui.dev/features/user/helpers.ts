@@ -1,16 +1,16 @@
-import type { Database } from '~/features/supabase/types'
-import { getSingle } from '~/helpers/getSingle'
-import { supabaseAdmin } from '../auth/supabaseAdmin'
 import type { SupabaseClient, User } from '@supabase/supabase-js'
 import {
-  whitelistGithubUsernames,
   whitelistBentoUsernames,
+  whitelistGithubUsernames,
 } from '~/features/github/helpers'
-import { tiersPriority } from '../stripe/tiers'
+import type { Database } from '~/features/supabase/types'
 import { getArray } from '~/helpers/getArray'
+import { getSingle } from '~/helpers/getSingle'
+import { ProductName, ProductSlug, SubscriptionStatus } from '~/shared/types/subscription'
+import { supabaseAdmin } from '../auth/supabaseAdmin'
+import { tiersPriority } from '../stripe/tiers'
 import { ThemeSuiteSchema } from '../studio/theme/getTheme'
 import type { ThemeSuiteItemData } from '../studio/theme/types'
-import type { UserContextType } from '../auth/types'
 
 export const getUserDetails = async (
   supabase: SupabaseClient<Database>,
@@ -51,6 +51,29 @@ export const getActiveSubscriptions = async (
 ) => {
   const subscriptions = await getSubscriptions(userId)
   return subscriptions.find((s) => s.id && s.id === subscriptionId)
+}
+
+export const getAllActiveSubscriptions = async (userId: string) => {
+  const result = await supabaseAdmin
+    .from('subscriptions')
+    .select(`
+      *,
+      subscription_items (
+        *,
+        price:prices (
+          *,
+          product:products (*)
+        )
+      )
+    `)
+    .eq('user_id', userId)
+    .in('status', ['active', 'trialing'])
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
+  return result.data
 }
 
 export const getSubscriptions = async (uuid?: string) => {
@@ -147,12 +170,13 @@ function checkAccessToProduct(
 ) {
   const hasActiveSubscription = subscriptions.some(
     (subscription) =>
-      (subscription.status === 'trialing' || subscription.status === 'active') &&
+      (subscription.status === SubscriptionStatus.Trialing ||
+        subscription.status === SubscriptionStatus.Active) &&
       (subscription.subscription_items.some(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
       ) ||
         subscription.subscription_items.some((item) =>
-          item.price.product?.name?.includes('Tamagui Pro')
+          item.price.product?.name?.includes(ProductName.TamaguiPro)
         ))
   )
   if (hasActiveSubscription) {
@@ -193,7 +217,7 @@ export async function getUserAccessInfo(
 
   const bentoAccessInfo = checkAccessToProduct('bento', subscriptions, ownedProducts)
   const takeoutAccessInfo = checkAccessToProduct(
-    'universal-starter',
+    ProductSlug.UniversalStarter,
     subscriptions,
     ownedProducts
   )

@@ -29,6 +29,12 @@ import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 import { addNativeValidStyles } from './addNativeValidStyles'
 
+// helpful for usage outside of tamagui
+export {
+  getElementLayoutEvent,
+  type LayoutEvent,
+} from './hooks/useElementLayout'
+
 // add newer style props based on react native version
 addNativeValidStyles()
 

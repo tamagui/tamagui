@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { LogBox, useColorScheme } from 'react-native'
 import { Provider } from './components'
 import { type ThemeName, YStack } from 'tamagui'
-import { List, Payment } from '../src/components'
+import { List } from '../src/components'
 
 LogBox.ignoreAllLogs()
 
@@ -32,7 +32,7 @@ export default function App() {
           <ThemePicker themeColor={colorScheme} setThemeColor={setThemeName} />
         </View> */}
 
-        <List.ScrollProgress />
+        <List.Chat />
 
         {/* <BottomView title="Paywall" /> */}
       </YStack>

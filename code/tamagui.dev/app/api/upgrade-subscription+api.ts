@@ -1,10 +1,7 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
-
-// Price IDs for monthly options
-const CHAT_SUPPORT_PRICE_ID = 'price_1QrukQFQGtHoG6xcMpB125IR'
-const SUPPORT_TIER_PRICE_ID = 'price_1QrulKFQGtHoG6xcDs9OYTFu'
 
 // Helper function to get or create a Stripe customer
 const getOrCreateStripeCustomer = async (user: any) => {
@@ -46,15 +43,27 @@ export default apiRoute(async (req) => {
     // Build items array based on selected options
     const items: Array<{ price: string; quantity?: number }> = []
     if (chatSupport) {
-      items.push({ price: CHAT_SUPPORT_PRICE_ID })
+      items.push({ price: STRIPE_PRODUCTS.CHAT.priceId })
     }
     if (supportTier > 0) {
-      items.push({ price: SUPPORT_TIER_PRICE_ID, quantity: supportTier })
+      items.push({ price: STRIPE_PRODUCTS.SUPPORT.priceId, quantity: supportTier })
     }
 
     if (items.length === 0) {
       return Response.json({ error: 'No items selected' }, { status: 400 })
     }
+
+    // Attach the payment method to the customer
+    await stripe.paymentMethods.attach(paymentMethodId, {
+      customer: stripeCustomerId,
+    })
+
+    // Set it as the default payment method
+    await stripe.customers.update(stripeCustomerId, {
+      invoice_settings: {
+        default_payment_method: paymentMethodId,
+      },
+    })
 
     // Create subscription for monthly options
     const subscription = await stripe.subscriptions.create({
@@ -68,9 +77,26 @@ export default apiRoute(async (req) => {
       collection_method: 'charge_automatically',
     })
 
+    const latestInvoice = subscription.latest_invoice as any
+    const amountDue = latestInvoice?.amount_due || 0
+
+    // Get client secret safely
+    let clientSecret: string | null = null
+    if (latestInvoice?.payment_intent) {
+      if (typeof latestInvoice.payment_intent === 'string') {
+        const paymentIntent = await stripe.paymentIntents.retrieve(
+          latestInvoice.payment_intent
+        )
+        clientSecret = paymentIntent.client_secret
+      } else {
+        clientSecret = latestInvoice.payment_intent.client_secret
+      }
+    }
+
     return Response.json({
       id: subscription.id,
-      clientSecret: (subscription.latest_invoice as any).payment_intent.client_secret,
+      clientSecret,
+      amount_due: amountDue,
     })
   } catch (error) {
     console.error('Error creating subscription:', error)

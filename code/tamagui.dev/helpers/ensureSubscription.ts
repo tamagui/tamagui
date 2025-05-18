@@ -1,7 +1,8 @@
+import { getActiveSubscriptions } from '~/features/user/helpers'
+import { ProductName } from '~/shared/types/subscription'
+import { getTakeoutPriceInfo } from '../features/site/purchase/getProductInfo'
 import { getArray } from './getArray'
 import { getSingle } from './getSingle'
-import { getTakeoutPriceInfo } from '../features/site/purchase/getProductInfo'
-import { getActiveSubscriptions } from '~/features/user/helpers'
 
 export async function ensureSubscription(
   userId?: string,
@@ -31,11 +32,20 @@ export async function ensureSubscription(
     )
   }
 
-  const validProducts = ['Tamagui Pro', 'Tamagui Support', 'Tamagui Pro Team Seats']
+  // This for making sure the subscription is valid for the takeout channel
+  // We don't need to check for chat/support subscriptions since they are handled in the support+api.ts file
+  const validProducts = [
+    ProductName.TamaguiPro,
+    // Add old Takeout Stack to support old subscriptions access to the takeout channel
+    ProductName.TamaguiTakeoutStack,
+  ]
 
   const subscriptionData = getArray(subscription.subscription_items).find((item) => {
     const products = getSingle(getSingle(item?.price)?.products)
-    return products?.name && validProducts.includes(products.name)
+    return (
+      products?.name &&
+      validProducts.includes(products.name as (typeof validProducts)[number])
+    )
   })
 
   if (!subscriptionData) {

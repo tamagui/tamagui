@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   test: {
@@ -7,4 +8,5 @@ export default defineConfig({
     exclude: ['**/node_modules/**', '**/dist/**'],
     root: __dirname,
   },
+  plugins: [tsconfigPaths()],
 })

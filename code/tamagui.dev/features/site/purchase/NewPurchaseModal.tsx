@@ -7,6 +7,7 @@ import {
   Button,
   Dialog,
   H3,
+  Input,
   Label,
   Paragraph,
   Separator,
@@ -21,10 +22,10 @@ import {
   useMedia,
   XStack,
   YStack,
-  Input,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
+import { ProductName } from '~/shared/types/subscription'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
 import { sendEvent } from '../../analytics/sendEvent'
@@ -96,8 +97,8 @@ export function PurchaseModalContents() {
       userData?.subscriptions?.some((sub) =>
         sub.subscription_items.some(
           (item) =>
-            (item.price?.product?.name === 'Bento' ||
-              item.price?.product?.name === 'Takeout Stack') &&
+            (item.price?.product?.name === ProductName.TamaguiBento ||
+              item.price?.product?.name === ProductName.TamaguiTakeoutStack) &&
             sub.ended_at &&
             new Date(sub.ended_at) < new Date()
         )
@@ -562,11 +563,10 @@ const Question = styled(P, {
   color: '$green9',
 })
 
-const FaqTabContent = () => {
+export const FaqTabContent = () => {
   return (
-    <>
+    <YStack gap="$6">
       <Question>Do I have to subscribe?</Question>
-
       <P>
         Nope. There's a checkbox at the bottom to disable auto-renew. It raises the price
         a bit and you lose access to the private community Discord, but otherwise is
@@ -574,7 +574,6 @@ const FaqTabContent = () => {
       </P>
 
       <Question>Do I own the code? Can I publish it publicly?</Question>
-
       <P>
         For Bento - yes. For Takeout - no. Takeout is closed source, but the Bento license
         is liberal, you have all rights to the code. The only limit we have is that you
@@ -583,7 +582,6 @@ const FaqTabContent = () => {
       </P>
 
       <Question>What is Theme AI?</Question>
-
       <P>
         If you go to the Theme page from the header, we have an input box to prompt. We've
         spent a lot of effort putting together a prompt and examples for LLMs to generate
@@ -612,14 +610,12 @@ const FaqTabContent = () => {
       </P>
 
       <Question>What support do I get in the base plan?</Question>
-
       <P>
         For subscribers, you get access to the private #takeout channel. We prioritize
         responses there over the public Discord, but we don't provide any SLA.
       </P>
 
       <Question>What support do I get with the Chat add-on?</Question>
-
       <P>
         You get a private Discord channel just for your team and a highlighted role in
         Discord chat. You can add up to 2 members to the private channel. We answer
@@ -628,21 +624,19 @@ const FaqTabContent = () => {
       </P>
 
       <Question>What support do I get with Support tiers?</Question>
-
       <P>
         Each tier adds 4 hours of development per month, faster response times, and 4
         additional private chat invites.
       </P>
 
       <Question>How do I use a coupon?</Question>
-
       <P>
         When you checkout, you'll see an input box to enter a coupon. If you have a
         coupon, enter it and click apply. If it's valid, the price will update.
       </P>
 
       <Spacer h="$10" />
-    </>
+    </YStack>
   )
 }
 
@@ -664,6 +658,22 @@ const SupportTabContent = ({
     { value: '3', label: 'Tier 3', price: 2400 },
   ]
 
+  // Handle chat support toggle - disable support tier when enabled
+  const handleChatSupportChange = (checked: boolean) => {
+    setChatSupport(checked)
+    if (checked) {
+      setSupportTier('0') // Reset support tier to none
+    }
+  }
+
+  // Handle support tier change - disable chat support when tier is selected
+  const handleSupportTierChange = (value: string) => {
+    setSupportTier(value)
+    if (value !== '0') {
+      setChatSupport(false) // Disable chat support
+    }
+  }
+
   return (
     <>
       <BigP>
@@ -681,13 +691,14 @@ const SupportTabContent = ({
             <XStack maw={100}>
               <Switch
                 checked={chatSupport}
-                onCheckedChange={(checked) => setChatSupport(!!checked)}
+                onCheckedChange={handleChatSupportChange}
                 id="chat-support"
+                disabled={supportTier !== '0'} // Disable if support tier is selected
               />
             </XStack>
           </XStack>
 
-          <P maw={500} size="$5" lineHeight="$6" o={0.5}>
+          <P maw={500} size="$5" lineHeight="$6" o={chatSupport ? 1 : 0.5}>
             A private Discord room just for your team with 2 invites, with responses
             prioritized over our community chat.
           </P>
@@ -704,7 +715,8 @@ const SupportTabContent = ({
                 id="support-tier"
                 size="$4"
                 value={supportTier}
-                onValueChange={setSupportTier}
+                onValueChange={handleSupportTierChange}
+                disabled={chatSupport} // Disable if chat support is enabled
               >
                 {tiers.map((tier) => (
                   <Select.Item
@@ -721,7 +733,7 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P size="$5" lineHeight="$6" maw={500} o={0.5}>
+          <P size="$5" lineHeight="$6" maw={500} o={supportTier !== '0' ? 1 : 0.5}>
             Each tier adds 4 hours of development a month, faster response times, and 4
             additional private chat invites.
           </P>

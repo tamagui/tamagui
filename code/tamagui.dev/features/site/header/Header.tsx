@@ -366,6 +366,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
         delay: 0,
         restMs: 0,
         move: false,
+        enabled: !isTouchable,
       }}
       stayInFrame={{
         padding: 20,
@@ -386,7 +387,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
         <HeaderLinksPopoverContent active={active} />
       </SlidingPopoverContext.Provider>
 
-      <Adapt platform="touch" when="maxMd">
+      <Adapt platform="touch" when="sm">
         <Sheet
           zIndex={100000000}
           modal
@@ -566,6 +567,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       backdropFilter="blur(40px)"
       maxHeight="90vh"
       maxWidth={360}
+      minWidth={360}
       elevation="$8"
       padding={0}
       br="$6"

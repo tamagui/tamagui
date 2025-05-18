@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-fira-mono",
-  "version": "1.126.13",
+  "version": "1.126.13-1747813753833",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

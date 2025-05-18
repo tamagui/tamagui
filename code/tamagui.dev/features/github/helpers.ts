@@ -215,6 +215,11 @@ export const whitelistBentoUsernames = new Set([
   // iBotPeaches
   'iBotPeaches',
 
+  // shaunn.diamond@outlook.com
+  'upp22',
+
+  'pshomov@gmail.com',
+
   // codingscape
   ...codinscapeusers,
 ])
@@ -486,4 +491,53 @@ export const removeCollaboratorFromRepo = async (repoName: string, userLogin: st
       },
     }
   )
+}
+
+/**
+ * Check if a user is already a collaborator in the repository
+ * @see https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#get-a-repository-collaborator
+ */
+export const checkIfUserIsCollaborator = async (
+  repoName: string,
+  userLogin: string
+): Promise<{ isCollaborator: boolean; repoUrl?: string }> => {
+  console.info(`Checking if ${userLogin} is already a collaborator in ${repoName}`)
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      }
+    )
+
+    if (res.status === 204) {
+      // User is a collaborator
+      console.info(`${userLogin} is already a collaborator in ${repoName}`)
+      return {
+        isCollaborator: true,
+        repoUrl: `https://github.com/tamagui/${repoName}`,
+      }
+    } else if (res.status === 404) {
+      // User is not a collaborator
+      console.info(`${userLogin} is not a collaborator in ${repoName}`)
+      return { isCollaborator: false }
+    } else {
+      // Other status codes (401, 403, etc.)
+      const errorData = await res.json().catch(() => ({}))
+      console.error(
+        `Error checking collaborator status: ${res.status} ${res.statusText}`,
+        errorData
+      )
+      return { isCollaborator: false }
+    }
+  } catch (err) {
+    console.error(`Error checking if user is collaborator: ${err}`)
+    return { isCollaborator: false }
+  }
 }
