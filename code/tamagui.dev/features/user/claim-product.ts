@@ -2,6 +2,7 @@ import type { User } from '@supabase/supabase-js'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { inviteCollaboratorToRepo } from '~/features/github/helpers'
 import type { Database, Json } from '~/features/supabase/types'
+import { ProductName } from '~/shared/types/subscription'
 import { getUserPrivateInfo } from './helpers'
 
 export class ClaimError extends Error {}
@@ -24,7 +25,7 @@ type ClaimProductArgs = {
 export const claimTakeoutForProPlan = async (args: ClaimProductArgs) => {
   const { product } = args
 
-  if (!product.name?.includes('Tamagui Pro')) {
+  if (!product.name?.includes(ProductName.TamaguiPro)) {
     throw new Error('Product is not Tamagui Pro')
   }
 

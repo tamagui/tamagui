@@ -3,8 +3,9 @@ import type Stripe from 'stripe'
 import { sendProductPurchaseEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import type { Price, Product } from '~/features/stripe/types'
-import type { Database } from '../supabase/types'
+import { ProductSlug } from '~/shared/types/subscription'
 import { STRIPE_PRODUCTS } from '../stripe/products'
+import type { Database } from '../supabase/types'
 
 const SUPA_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
 const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -364,7 +365,7 @@ export const manageSubscriptionStatusChange = async (
     )
     const userName = userModel.data.full_name ?? email.split('@').shift()!
     const includesTakeoutStarter = subscribedProducts.some(
-      (product) => product.metadata.slug === 'universal-starter'
+      (product) => product.metadata.slug === ProductSlug.UniversalStarter
     )
     if (includesTakeoutStarter) {
       await sendProductPurchaseEmail(email, {

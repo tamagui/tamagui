@@ -1,11 +1,11 @@
+import { useRouter } from 'one'
 import { useEffect } from 'react'
 import useSWR, { useSWRConfig } from 'swr'
 import { Spinner, YStack } from 'tamagui'
-import { useRouter } from 'one'
 
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
-import { userSubscriptionStatus, SubscriptionStatus } from './subscription/eligibility'
+import { userSubscriptionStatus } from './subscription/eligibility'
 
 export let currentUser: UserContextType | null = null
 
