@@ -8,6 +8,7 @@ import {
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
 } from '~/features/discord/helpers'
+import { ProductName } from '~/shared/types/subscription'
 import { ensureSubscription } from '../../../helpers/ensureSubscription'
 
 const roleBitField = '1024' // VIEW_CHANNEL
@@ -54,7 +55,7 @@ export default apiRoute(async (req) => {
 
   // Get subscription tier information and verify it's a Support tier
   const supportItems = subscription?.subscription_items?.filter(
-    (item) => item.price?.products?.name === 'Tamagui Support'
+    (item) => item.price?.products?.name === ProductName.TamaguiSupport
   )
 
   if (!supportItems?.length) {

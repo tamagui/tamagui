@@ -1,4 +1,5 @@
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { ProductName } from '~/shared/types/subscription'
 import { getSubscriptions } from '../user/helpers'
 
 export const hasBentoAccess = async (userId: string) => {
@@ -7,7 +8,7 @@ export const hasBentoAccess = async (userId: string) => {
   return Boolean(
     subscriptions?.some((subscription) =>
       subscription.subscription_items?.some((item) =>
-        item.price?.product?.name?.includes('Tamagui Pro')
+        item.price?.product?.name?.includes(ProductName.TamaguiPro)
       )
     )
   )
