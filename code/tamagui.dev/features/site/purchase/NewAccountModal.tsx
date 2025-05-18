@@ -5,8 +5,9 @@ import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
-import { render, router } from 'one'
-import { useState, useMemo, useEffect } from 'react'
+import { debounce } from 'lodash'
+import { router } from 'one'
+import { useEffect, useMemo, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
 import {
@@ -24,17 +25,20 @@ import {
   ScrollView,
   Separator,
   Sheet,
+  Spinner,
   Tabs,
+  View,
   XStack,
   YStack,
-  Spinner,
-  View,
 } from 'tamagui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
+import { useClipboard } from '~/hooks/useClipboard'
+import { ProductName, SubscriptionStatus } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
+import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
 import {
@@ -43,9 +47,6 @@ import {
   useTeamSeats,
   type TeamMember,
 } from './useTeamSeats'
-import { debounce, has } from 'lodash'
-import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
-import { useClipboard } from '~/hooks/useClipboard'
 
 class AccountModal {
   show = false
@@ -155,12 +156,14 @@ export const AccountView = () => {
 
   // Get active subscriptions
   const activeSubscriptions = subscriptions?.filter(
-    (sub) => sub.status === 'active' || sub.status === 'trialing'
+    (sub) =>
+      sub.status === SubscriptionStatus.Active ||
+      sub.status === SubscriptionStatus.Trialing
   )
 
   const proTeamSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
-      (item) => item.price?.product?.name === 'Tamagui Pro Team Seats'
+      (item) => item.price?.product?.name === ProductName.TamaguiProTeamSeats
     )
   ) as Subscription
 
@@ -171,7 +174,7 @@ export const AccountView = () => {
     ? proTeamSubscription
     : (activeSubscriptions?.find((sub) =>
         sub.subscription_items?.some(
-          (item) => item.price?.product?.name === 'Tamagui Pro'
+          (item) => item.price?.product?.name === ProductName.TamaguiPro
         )
       ) as Subscription)
 
@@ -182,7 +185,7 @@ export const AccountView = () => {
   // Find Support subscription
   const supportSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
-      (item) => item.price?.product?.name === 'Tamagui Support'
+      (item) => item.price?.product?.name === ProductName.TamaguiSupport
     )
   )
 
@@ -489,7 +492,7 @@ const DiscordPanel = ({
 }) => {
   const hasSupportTier = () => {
     const supportItem = subscription.subscription_items?.find((item) => {
-      return item.price?.product?.name === 'Tamagui Support'
+      return item.price?.product?.name === ProductName.TamaguiSupport
     })
 
     if (!supportItem) {
@@ -1151,12 +1154,15 @@ const ManageTab = ({
           <Paragraph
             textTransform="capitalize"
             color={
-              subscription.status === 'active' || subscription.status === 'trialing'
+              subscription.status === SubscriptionStatus.Active ||
+              subscription.status === SubscriptionStatus.Trialing
                 ? '$green9'
                 : '$yellow9'
             }
           >
-            {subscription.status === 'trialing' ? 'active' : subscription.status}
+            {subscription.status === SubscriptionStatus.Trialing
+              ? SubscriptionStatus.Active
+              : subscription.status}
           </Paragraph>
         </XStack>
 

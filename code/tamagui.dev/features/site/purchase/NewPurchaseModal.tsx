@@ -7,6 +7,7 @@ import {
   Button,
   Dialog,
   H3,
+  Input,
   Label,
   Paragraph,
   Separator,
@@ -21,10 +22,10 @@ import {
   useMedia,
   XStack,
   YStack,
-  Input,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
+import { ProductName } from '~/shared/types/subscription'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
 import { sendEvent } from '../../analytics/sendEvent'
@@ -96,8 +97,8 @@ export function PurchaseModalContents() {
       userData?.subscriptions?.some((sub) =>
         sub.subscription_items.some(
           (item) =>
-            (item.price?.product?.name === 'Bento' ||
-              item.price?.product?.name === 'Takeout Stack') &&
+            (item.price?.product?.name === ProductName.TamaguiBento ||
+              item.price?.product?.name === ProductName.TamaguiTakeoutStack) &&
             sub.ended_at &&
             new Date(sub.ended_at) < new Date()
         )

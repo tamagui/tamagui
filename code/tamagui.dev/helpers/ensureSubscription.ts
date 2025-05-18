@@ -1,7 +1,8 @@
+import { getActiveSubscriptions } from '~/features/user/helpers'
+import { ProductName } from '~/shared/types/subscription'
+import { getTakeoutPriceInfo } from '../features/site/purchase/getProductInfo'
 import { getArray } from './getArray'
 import { getSingle } from './getSingle'
-import { getTakeoutPriceInfo } from '../features/site/purchase/getProductInfo'
-import { getActiveSubscriptions } from '~/features/user/helpers'
 
 export async function ensureSubscription(
   userId?: string,
@@ -31,11 +32,15 @@ export async function ensureSubscription(
     )
   }
 
-  const validProducts = ['Tamagui Pro', 'Tamagui Support', 'Tamagui Pro Team Seats']
+  const validProducts = [
+    ProductName.TamaguiPro,
+    ProductName.TamaguiSupport,
+    ProductName.TamaguiProTeamSeats,
+  ]
 
   const subscriptionData = getArray(subscription.subscription_items).find((item) => {
     const products = getSingle(getSingle(item?.price)?.products)
-    return products?.name && validProducts.includes(products.name)
+    return products?.name && validProducts.includes(products.name as ProductName)
   })
 
   if (!subscriptionData) {
