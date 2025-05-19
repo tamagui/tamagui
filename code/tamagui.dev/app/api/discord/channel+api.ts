@@ -42,11 +42,24 @@ export default apiRoute(async (req) => {
   const subscriptionId =
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
 
-  const { subscription, hasDiscordPrivateChannels, discordSeats } =
-    await ensureSubscription(user.id, subscriptionId)
+  const { subscription, hasDiscordPrivateChannels } = await ensureSubscription(
+    user.id,
+    subscriptionId
+  )
 
   if (!subscription) {
     return Response.json({ message: 'No subscription found' }, { status: 400 })
+  }
+
+  // Get team subscription to get the total_seats for Tamagui Pro Team Seats plan
+  const teamSubscription = await supabaseAdmin
+    .from('team_subscriptions')
+    .select('*')
+    .eq('owner_id', user.id)
+    .single()
+
+  if (teamSubscription.error) {
+    throw teamSubscription.error
   }
 
   const discordInvites = await supabaseAdmin
@@ -59,6 +72,7 @@ export default apiRoute(async (req) => {
   }
 
   const currentlyOccupiedSeats = discordInvites.data.length
+  const discordSeats = teamSubscription.data.total_seats
 
   if (req.method === 'GET') {
     return Response.json({
