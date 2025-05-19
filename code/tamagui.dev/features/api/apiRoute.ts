@@ -11,11 +11,6 @@ export function apiRoute(handler: Endpoint) {
       if (isResponse(out) && (out.status < 200 || out.status >= 400) && out.body) {
         try {
           console.info(`Error Response (${out.status}) from ${req.url}:`)
-          const bodyContents = await streamToString(out.body)
-          if (bodyContents) {
-            const snippet = bodyContents.slice(0, 300)
-            console.info(`  Snippet of response body: ${snippet}`)
-          }
         } catch {
           // ignore log errors
         }
@@ -57,24 +52,4 @@ ${err.details}
   hint:
 ${err.hint}
 `)
-}
-
-async function streamToString(stream: ReadableStream) {
-  const reader = stream.getReader()
-  const decoder = new TextDecoder()
-  let result = ''
-
-  try {
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      result += decoder.decode(value, { stream: true })
-    }
-  } catch (error) {
-    console.error('Error reading the stream:', error)
-  } finally {
-    reader.releaseLock()
-  }
-
-  return result
 }
