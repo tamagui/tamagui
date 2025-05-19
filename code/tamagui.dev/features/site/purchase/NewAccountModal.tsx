@@ -559,12 +559,6 @@ const DiscordPanel = ({
     setQuery(draftQuery)
   }
 
-  // Get subscription details to determine available access types
-  const { data: subscriptionData } = useSWR<any>(
-    subscription.id ? `/api/products?subscription_id=${subscription.id}` : null,
-    (url) => fetch(url).then((res) => res.json())
-  )
-
   const SearchForm = () => (
     <>
       <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
@@ -596,16 +590,20 @@ const DiscordPanel = ({
         </Paragraph>
       </XStack>
 
-      <YStack gap="$2">
-        {searchSwr.data?.map((member) => (
+      {Array.isArray(searchSwr.data) && searchSwr.data.length === 0 ? (
+        <Paragraph size="$3" theme="alt1">
+          No users found
+        </Paragraph>
+      ) : (
+        searchSwr.data?.map((member) => (
           <DiscordMember
             key={member.user?.id}
             member={member}
             subscriptionId={subscription.id}
             apiType={activeApi}
           />
-        ))}
-      </YStack>
+        ))
+      )}
     </>
   )
 
@@ -699,8 +697,15 @@ const DiscordMember = ({
         }),
       })
 
-      if (res.status < 200 || res.status > 299) {
-        throw await res.json()
+      if (!res.ok) {
+        let errorMessage = `HTTP ${res.status} ${res.statusText}`
+        try {
+          const errorData = await res.json()
+          errorMessage = errorData.message || errorMessage
+        } catch {
+          errorMessage = 'An unknown error occurred'
+        }
+        throw new Error(errorMessage)
       }
       return await res.json()
     },
