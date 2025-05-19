@@ -42,11 +42,68 @@ export default apiRoute(async (req) => {
   const subscriptionId =
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
 
-  const { subscription, hasDiscordPrivateChannels, discordSeats } =
-    await ensureSubscription(user.id, subscriptionId)
+  const {
+    subscription,
+    hasDiscordPrivateChannels,
+    discordSeats: initialDiscordSeats,
+  } = await ensureSubscription(user.id, subscriptionId)
 
   if (!subscription) {
     return Response.json({ message: 'No subscription found' }, { status: 400 })
+  }
+
+  /**
+   * Try to get team subscription to get the total_seats for Tamagui Pro Team Seats plan.
+   * In such case, the user should have more Discord seats given by the team subscription.
+   *
+   * TODO: Ideally, each team seat user would have their own pool of Discord seats.
+   * This would allow users to invite themselves to the Discord channel without
+   * taking up additional seats that should belong to other users.
+   *
+   * However, in the current implementation, the `discord_invites` table only logs
+   * the `subscription_id`, and since a team subscription is treated as a single entity,
+   * we cannot track which user is occupying the seat.
+   * So we have no choice but to share the whole pool of Discord seats across all team members.
+   *
+   * Another edge case we haven't handle here is if a user is a member of multiple teams,
+   * or they are a member of a team and also have their own subscription.
+   * Ideally, we should add up all the seats from all subscriptions and teams.
+   * But given the limitations of the current implementation, we cannot do that
+   * since Discord seats are not tracked per user.
+   */
+  let discordSeats = initialDiscordSeats
+  
+  const teamSubscription = await (async () => {
+    // First, try to find the team subscription where the user is the owner.
+    const ownedTeamSubscription = await supabaseAdmin
+      .from('team_subscriptions')
+      .select('*')
+      .eq('owner_id', user.id)
+      .single()
+    if (!ownedTeamSubscription.error) return ownedTeamSubscription.data
+
+    // If the user is not a owner of any team, check if they are a member of a team.
+    const teamMember = await supabaseAdmin
+      .from('team_members')
+      .select('team_subscription_id')
+      .eq('member_id', user.id)
+      .single()
+    if (teamMember.error) return null
+
+    const teamMemberSubscription = await supabaseAdmin
+      .from('team_subscriptions')
+      .select('*')
+      .eq('id', teamMember.data.team_subscription_id)
+      .single()
+    if (!teamMemberSubscription.error) return teamMemberSubscription.data
+  })()
+  // If the user is a member of a team, check if the team subscription has more seats.
+  // If so, use that as the discordSeats.
+  if (teamSubscription) {
+    const teamDiscordSeats = teamSubscription.total_seats
+    if (teamDiscordSeats > discordSeats) {
+      discordSeats = teamDiscordSeats
+    }
   }
 
   const discordInvites = await supabaseAdmin
