@@ -450,9 +450,11 @@ const ServiceCard = ({
 const DiscordAccessDialog = ({
   subscription,
   onClose,
+  isTeamMember,
 }: {
   subscription: Subscription
   onClose: () => void
+  isTeamMember: boolean
 }) => {
   return (
     <Dialog modal open onOpenChange={onClose}>
@@ -473,7 +475,11 @@ const DiscordAccessDialog = ({
           maw={600}
           p="$6"
         >
-          <DiscordPanel subscription={subscription} apiType="channel" />
+          <DiscordPanel
+            subscription={subscription}
+            apiType="channel"
+            isTeamMember={isTeamMember}
+          />
           <Dialog.Close asChild>
             <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
           </Dialog.Close>
@@ -486,9 +492,11 @@ const DiscordAccessDialog = ({
 const DiscordPanel = ({
   subscription,
   apiType,
+  isTeamMember,
 }: {
   subscription: any
   apiType: 'channel' | 'support'
+  isTeamMember: boolean
 }) => {
   const hasSupportTier = () => {
     const supportItem = subscription.subscription_items?.find((item) => {
@@ -510,7 +518,11 @@ const DiscordPanel = ({
   }
 
   const [activeApi, setActiveApi] = useState<'channel' | 'support'>('channel')
-  const { data: groupInfoData, error: groupInfoError } = useSWR<any>(
+  const {
+    data: groupInfoData,
+    error: groupInfoError,
+    isLoading,
+  } = useSWR<any>(
     `/api/discord/${activeApi}?${new URLSearchParams({ subscription_id: subscription.id })}`,
     (url) =>
       fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
@@ -616,13 +628,15 @@ const DiscordPanel = ({
             `(${groupInfoData?.currentlyOccupiedSeats}/${groupInfoData?.discordSeats})`}
         </H4>
 
-        <Button
-          size="$2"
-          onPress={() => resetChannelMutation.trigger()}
-          disabled={resetChannelMutation.isMutating}
-        >
-          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
-        </Button>
+        {!isTeamMember && groupInfoData?.currentlyOccupiedSeats > 0 && (
+          <Button
+            size="$2"
+            onPress={() => resetChannelMutation.trigger()}
+            disabled={resetChannelMutation.isMutating}
+          >
+            {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+          </Button>
+        )}
       </XStack>
 
       <Tabs
@@ -646,7 +660,18 @@ const DiscordPanel = ({
             <Paragraph theme="alt2">
               Join the #takeout-general channel to discuss Tamagui with other Pro users.
             </Paragraph>
-            {SearchForm()}
+            {isLoading ? (
+              <XStack ai="center" jc="center" p="$4">
+                <Spinner size="small" />
+              </XStack>
+            ) : groupInfoData.currentlyOccupiedSeats < groupInfoData.discordSeats ? (
+              <SearchForm />
+            ) : (
+              <Paragraph size="$3" theme="alt1">
+                You've reached the maximum number of Discord members for your plan. Please
+                reset if you want to add new members.
+              </Paragraph>
+            )}
           </YStack>
         </Tabs.Content>
 
@@ -907,6 +932,7 @@ const PlanTab = ({
         <DiscordAccessDialog
           subscription={supportSubscription || subscription}
           onClose={() => setShowDiscordAccess(false)}
+          isTeamMember={isTeamMember}
         />
       )}
     </YStack>
