@@ -51,15 +51,21 @@ export default apiRoute(async (req) => {
     return Response.json({ message: 'No subscription found' }, { status: 400 })
   }
 
+  // Default to 1 seat
+  let discordSeats = 1
+
   // Get team subscription to get the total_seats for Tamagui Pro Team Seats plan
   const teamSubscription = await supabaseAdmin
     .from('team_subscriptions')
     .select('*')
     .eq('owner_id', user.id)
+    .gt('expires_at', new Date().toISOString())
     .single()
 
-  if (teamSubscription.error) {
-    throw teamSubscription.error
+  // If user is not in a team subscription or the team subscription has expired
+  // use the default 1 seat
+  if (teamSubscription.data) {
+    discordSeats = teamSubscription.data.total_seats
   }
 
   const discordInvites = await supabaseAdmin
@@ -72,7 +78,6 @@ export default apiRoute(async (req) => {
   }
 
   const currentlyOccupiedSeats = discordInvites.data.length
-  const discordSeats = teamSubscription.data.total_seats
 
   if (req.method === 'GET') {
     return Response.json({
