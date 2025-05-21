@@ -76,6 +76,8 @@ if (!skipVersion) {
   console.info(`Re-releasing ${curVersion}`)
 }
 
+const isMain = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() === 'main'
+
 async function run() {
   try {
     let version = curVersion
@@ -83,7 +85,7 @@ async function run() {
     // ensure we are up to date
     // ensure we are on main
     if (!canary) {
-      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'main') {
+      if (!isMain) {
         throw new Error(`Not on main`)
       }
       if (!dirty && !rePublish && !shouldFinish) {
@@ -328,6 +330,10 @@ async function run() {
       await finishAndCommit()
 
       async function finishAndCommit(cwd = process.cwd()) {
+        if (canary && !isMain) {
+          console.info(`Canary off main - avoiding commit`)
+          return
+        }
         if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
           await spawnify(`git commit -m ${gitTag}`, { cwd })
