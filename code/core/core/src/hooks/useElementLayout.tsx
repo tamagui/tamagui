@@ -103,7 +103,7 @@ const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
   return { x, y, width, height, left, top }
 }
 
-const getBoundingClientRectAsync = (
+export const getBoundingClientRectAsync = (
   element: HTMLElement
 ): Promise<DOMRectReadOnly | undefined> => {
   return new Promise((resolve) => {
