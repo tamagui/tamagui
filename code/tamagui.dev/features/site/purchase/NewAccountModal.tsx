@@ -271,6 +271,22 @@ const AccountHeader = () => {
   }
   const { userDetails, user } = data
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (response.ok) {
+        window.location.href = '/'
+      }
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
+
   return (
     <XStack gap="$4" p="$5" pb="$8">
       <Avatar circular size="$5">
@@ -302,9 +318,7 @@ const AccountHeader = () => {
       </YStack>
 
       <Button
-        onPress={() => {
-          location.href = '/api/logout'
-        }}
+        onPress={handleLogout}
         icon={<LogOut />}
         size="$2"
         alignSelf="flex-end"
