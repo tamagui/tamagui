@@ -1093,7 +1093,6 @@ export const componentsList: ComponentSchema[] = [
     moveFilesToFolder: [{ file: 'StatusTracker', to: '' }],
   },
 
- 
   ...MISSING_COMPONENTS,
 ].map((item) => {
   return { ...item, isOSS: Boolean(OSS_COMPONENTS.includes(item.fileName)) }
