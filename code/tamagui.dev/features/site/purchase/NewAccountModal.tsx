@@ -619,6 +619,42 @@ const DiscordPanel = ({
     </>
   )
 
+  const DiscordAccessHeader = () => {
+    // Show seats count when:
+    // - User is in General Channel (always show)
+    // - User is in Support Channel AND has support tier subscription
+    const showSeats =
+      activeApi === 'channel' || (activeApi === 'support' && hasSupportTier())
+
+    // Show reset button when:
+    // - User is not a team member (only team owner or normal PRO user can reset)
+    // - There are occupied seats to reset
+    // - The seats are visible (using same logic as showSeats)
+    const showResetButton =
+      !isTeamMember && groupInfoData?.currentlyOccupiedSeats > 0 && showSeats
+
+    return (
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H4>
+          Discord Access{' '}
+          {showSeats &&
+            !!groupInfoData &&
+            `(${groupInfoData?.currentlyOccupiedSeats}/${groupInfoData?.discordSeats})`}
+        </H4>
+
+        {showResetButton && (
+          <Button
+            size="$2"
+            onPress={() => resetChannelMutation.trigger()}
+            disabled={resetChannelMutation.isMutating}
+          >
+            {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+          </Button>
+        )}
+      </XStack>
+    )
+  }
+
   const renderDiscordAccessContent = () => {
     if (isLoading) {
       return (
@@ -642,32 +678,15 @@ const DiscordPanel = ({
 
     return (
       <Paragraph size="$3" theme="alt1">
-        You've reached the maximum number of Discord members for your plan. Please
-        reset if you want to add new members.
+        You've reached the maximum number of Discord members for your plan. Please reset
+        if you want to add new members.
       </Paragraph>
     )
   }
 
   return (
     <YStack gap="$3">
-      <XStack jc="space-between" gap="$2" ai="center">
-        <H4>
-          Discord Access{' '}
-          {!!groupInfoData &&
-            `(${groupInfoData?.currentlyOccupiedSeats}/${groupInfoData?.discordSeats})`}
-        </H4>
-
-        {!isTeamMember && groupInfoData?.currentlyOccupiedSeats > 0 && (
-          <Button
-            size="$2"
-            onPress={() => resetChannelMutation.trigger()}
-            disabled={resetChannelMutation.isMutating}
-          >
-            {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
-          </Button>
-        )}
-      </XStack>
-
+      <DiscordAccessHeader />
       <Tabs
         value={activeApi}
         onValueChange={(val: string) => setActiveApi(val as 'channel' | 'support')}
