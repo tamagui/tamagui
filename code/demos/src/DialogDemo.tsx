@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons'
+import { ChevronDown, X } from '@tamagui/lucide-icons'
 import {
   Adapt,
   Button,
@@ -7,6 +7,7 @@ import {
   Input,
   Label,
   Paragraph,
+  Select,
   Sheet,
   TooltipSimple,
   Unspaced,
@@ -60,15 +61,15 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               },
             },
           ]}
-          enterStyle={{ opacity: 0, scale: 0.95 }}
+          enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
           bordered
           w={400}
-          h={400}
           elevate
+          borderRadius="$6"
           key="content"
           animateOnly={['transform', 'opacity']}
           animation={[
@@ -79,7 +80,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               },
             },
           ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0 }}
+          enterStyle={{ x: 0, y: 20, opacity: 0 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >
@@ -87,19 +88,29 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
           <Dialog.Description>
             Make changes to your profile here. Click save when you're done.
           </Dialog.Description>
+
           <Fieldset gap="$4" horizontal>
-            <Label width={130} justifyContent="flex-end" htmlFor="name">
+            <Label width={64} htmlFor="name">
               Name
             </Label>
             <Input flex={1} id="name" defaultValue="Nate Wienert" />
           </Fieldset>
+
           <Fieldset gap="$4" horizontal>
-            <Label width={130} justifyContent="flex-end" htmlFor="username">
+            <Label width={64} htmlFor="username">
               <TooltipSimple label="Pick your favorite" placement="bottom-start">
                 <Paragraph>Food</Paragraph>
               </TooltipSimple>
             </Label>
-            <SelectDemoItem />
+            <XStack flex={1}>
+              <SelectDemoItem
+                trigger={
+                  <Select.Trigger flex={1} iconAfter={ChevronDown}>
+                    <Select.Value placeholder="Something" />
+                  </Select.Trigger>
+                }
+              />
+            </XStack>
           </Fieldset>
 
           <XStack alignSelf="flex-end" gap="$4">
@@ -114,14 +125,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
           <Unspaced>
             <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$3"
-                right="$3"
-                size="$2"
-                circular
-                icon={X}
-              />
+              <Button position="absolute" right="$3" size="$2" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ElementType } from 'react'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
@@ -25,14 +25,16 @@ export function SelectDemo() {
   )
 }
 
-export function SelectDemoItem(props: SelectProps) {
+export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
   const [val, setVal] = React.useState('apple')
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
-      <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
-        <Select.Value placeholder="Something" />
-      </Select.Trigger>
+      {props?.trigger || (
+        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+          <Select.Value placeholder="Something" />
+        </Select.Trigger>
+      )}
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom animation="medium">
