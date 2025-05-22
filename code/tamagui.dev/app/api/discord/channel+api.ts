@@ -4,9 +4,9 @@ import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
   getDiscordClient,
+  TAKEOUT_GENERAL_CHANNEL,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
-  TAKEOUT_GENERAL_CHANNEL,
 } from '~/features/discord/helpers'
 import { ensureSubscription } from '../../../helpers/ensureSubscription'
 
@@ -72,7 +72,7 @@ export default apiRoute(async (req) => {
    * since Discord seats are not tracked per user.
    */
   let discordSeats = initialDiscordSeats
-  
+
   const teamSubscription = await (async () => {
     // First, try to find the team subscription where the user is the owner.
     const ownedTeamSubscription = await supabaseAdmin
