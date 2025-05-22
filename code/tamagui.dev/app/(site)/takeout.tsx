@@ -1063,14 +1063,14 @@ const StarterCard = memo(() => {
 
             <YStack>
               <Row
-                title="Template"
-                description="Complete GitHub Template with a built-in bot to send PRs with updates."
+                title="Access"
+                description="Access to the private Github repo and Discord chat room."
                 after="01"
               />
 
               <Row
                 title="Monorepo"
-                description="Complete with Next.js, Vercel deploy, Expo and EAS."
+                description="More refined monorepo with Next.js, Vercel deploy, Expo and EAS."
                 after="01"
               />
 
