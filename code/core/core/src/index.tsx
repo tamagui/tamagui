@@ -31,9 +31,7 @@ import { addNativeValidStyles } from './addNativeValidStyles'
 
 // helpful for usage outside of tamagui
 export {
-  getBoundingClientRectAsync,
-  measureLayout,
-  useElementLayout,
+  getElementLayoutEvent,
   type LayoutEvent,
 } from './hooks/useElementLayout'
 
