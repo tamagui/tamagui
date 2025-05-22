@@ -39,6 +39,7 @@ import { useClipboard } from '~/hooks/useClipboard'
 import { ProductName, SubscriptionStatus } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
 import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
+import { FaqTabContent } from './NewPurchaseModal'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'
 import {
@@ -57,7 +58,7 @@ type Subscription = NonNullable<UserContextType['subscriptions']>[number]
 export const accountModal = createStore(AccountModal)
 export const useAccountModal = createUseStore(AccountModal)
 
-type TabName = 'plan' | 'upgrade' | 'manage' | 'team'
+type TabName = 'plan' | 'upgrade' | 'manage' | 'team' | 'faq'
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
@@ -210,6 +211,9 @@ export const AccountView = () => {
       case 'team':
         return <TeamTab />
 
+      case 'faq':
+        return <FaqTabContent />
+
       default:
         return null
     }
@@ -250,6 +254,11 @@ export const AccountView = () => {
               </Tab>
             </YStack>
           )}
+          <YStack width={'33.3333%'} f={1}>
+            <Tab isActive={currentTab === 'faq'} value="faq">
+              FAQ
+            </Tab>
+          </YStack>
         </Tabs.List>
 
         <YStack overflow="hidden" f={1}>

@@ -563,11 +563,10 @@ const Question = styled(P, {
   color: '$green9',
 })
 
-const FaqTabContent = () => {
+export const FaqTabContent = () => {
   return (
-    <>
+    <YStack gap="$6">
       <Question>Do I have to subscribe?</Question>
-
       <P>
         Nope. There's a checkbox at the bottom to disable auto-renew. It raises the price
         a bit and you lose access to the private community Discord, but otherwise is
@@ -575,7 +574,6 @@ const FaqTabContent = () => {
       </P>
 
       <Question>Do I own the code? Can I publish it publicly?</Question>
-
       <P>
         For Bento - yes. For Takeout - no. Takeout is closed source, but the Bento license
         is liberal, you have all rights to the code. The only limit we have is that you
@@ -584,7 +582,6 @@ const FaqTabContent = () => {
       </P>
 
       <Question>What is Theme AI?</Question>
-
       <P>
         If you go to the Theme page from the header, we have an input box to prompt. We've
         spent a lot of effort putting together a prompt and examples for LLMs to generate
@@ -613,14 +610,12 @@ const FaqTabContent = () => {
       </P>
 
       <Question>What support do I get in the base plan?</Question>
-
       <P>
         For subscribers, you get access to the private #takeout channel. We prioritize
         responses there over the public Discord, but we don't provide any SLA.
       </P>
 
       <Question>What support do I get with the Chat add-on?</Question>
-
       <P>
         You get a private Discord channel just for your team and a highlighted role in
         Discord chat. You can add up to 2 members to the private channel. We answer
@@ -629,21 +624,19 @@ const FaqTabContent = () => {
       </P>
 
       <Question>What support do I get with Support tiers?</Question>
-
       <P>
         Each tier adds 4 hours of development per month, faster response times, and 4
         additional private chat invites.
       </P>
 
       <Question>How do I use a coupon?</Question>
-
       <P>
         When you checkout, you'll see an input box to enter a coupon. If you have a
         coupon, enter it and click apply. If it's valid, the price will update.
       </P>
 
       <Spacer h="$10" />
-    </>
+    </YStack>
   )
 }
 
