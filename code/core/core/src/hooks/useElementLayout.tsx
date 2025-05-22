@@ -29,54 +29,64 @@ export type LayoutEvent = {
 const NodeRectCache = new WeakMap<HTMLElement, DOMRect>()
 const ParentRectCache = new WeakMap<HTMLElement, DOMRect>()
 
-if (isClient && typeof requestAnimationFrame === 'function') {
-  // prevent thrashing during first hydration (somewhat, streaming gets trickier)
-  let avoidUpdates = true
-  const queuedUpdates = new Map<HTMLElement, Function>()
+const rAF = typeof window !== 'undefined' ? window.requestAnimationFrame : undefined
 
-  ___onDidFinishClientRender(() => {
-    avoidUpdates = false
-    if (queuedUpdates) {
-      queuedUpdates.forEach((cb) => cb())
-      queuedUpdates.clear()
-    }
-  })
+if (isClient) {
+  if (rAF) {
+    // prevent thrashing during first hydration (somewhat, streaming gets trickier)
+    let avoidUpdates = true
+    const queuedUpdates = new Map<HTMLElement, Function>()
 
-  function updateLayoutIfChanged(node: HTMLElement) {
-    const nodeRect = node.getBoundingClientRect()
-    const parentNode = node.parentElement
-    const parentRect = parentNode?.getBoundingClientRect()
-
-    const onLayout = LayoutHandlers.get(node)
-    if (typeof onLayout !== 'function') return
-
-    const cachedRect = NodeRectCache.get(node)
-    const cachedParentRect = parentNode ? NodeRectCache.get(parentNode) : null
-
-    if (
-      !cachedRect ||
-      // has changed one rect
-      (!isEqualShallow(cachedRect, nodeRect) &&
-        (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
-    ) {
-      NodeRectCache.set(node, nodeRect)
-      if (parentRect && parentNode) {
-        ParentRectCache.set(parentNode, parentRect)
+    ___onDidFinishClientRender(() => {
+      avoidUpdates = false
+      if (queuedUpdates) {
+        queuedUpdates.forEach((cb) => cb())
+        queuedUpdates.clear()
       }
-      const event = getElementLayoutEvent(node)
-      if (avoidUpdates) {
-        queuedUpdates.set(node, () => onLayout(event))
-      } else {
-        onLayout(event)
+    })
+
+    function updateLayoutIfChanged(node: HTMLElement) {
+      const nodeRect = node.getBoundingClientRect()
+      const parentNode = node.parentElement
+      const parentRect = parentNode?.getBoundingClientRect()
+
+      const onLayout = LayoutHandlers.get(node)
+      if (typeof onLayout !== 'function') return
+
+      const cachedRect = NodeRectCache.get(node)
+      const cachedParentRect = parentNode ? NodeRectCache.get(parentNode) : null
+
+      if (
+        !cachedRect ||
+        // has changed one rect
+        (!isEqualShallow(cachedRect, nodeRect) &&
+          (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
+      ) {
+        NodeRectCache.set(node, nodeRect)
+        if (parentRect && parentNode) {
+          ParentRectCache.set(parentNode, parentRect)
+        }
+        const event = getElementLayoutEvent(node)
+        if (avoidUpdates) {
+          queuedUpdates.set(node, () => onLayout(event))
+        } else {
+          onLayout(event)
+        }
       }
     }
-  }
 
-  // note that getBoundingClientRect() does not thrash layout if its after an animation frame
-  requestAnimationFrame(layoutOnAnimationFrame)
-  function layoutOnAnimationFrame() {
-    Nodes.forEach(updateLayoutIfChanged)
-    requestAnimationFrame(layoutOnAnimationFrame)
+    // note that getBoundingClientRect() does not thrash layout if its after an animation frame
+    rAF!(layoutOnAnimationFrame)
+    function layoutOnAnimationFrame() {
+      Nodes.forEach(updateLayoutIfChanged)
+      rAF!(layoutOnAnimationFrame)
+    }
+  } else {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        `No requestAnimationFrame - please polyfill for onLayout to work correctly`
+      )
+    }
   }
 }
 
