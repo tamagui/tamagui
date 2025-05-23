@@ -644,6 +644,13 @@ export const componentsList: ComponentSchema[] = [
     moveFilesToFolder: [{ file: 'ChatList', to: '' }],
   },
   {
+    name: 'Chat',
+    fileName: 'Chat',
+    category: 'elements',
+    categorySection: 'list',
+    moveFilesToFolder: [{ file: 'Chat', to: '' }],
+  },
+  {
     name: 'Item Value List',
     fileName: 'ItemValueList',
     category: 'elements',
