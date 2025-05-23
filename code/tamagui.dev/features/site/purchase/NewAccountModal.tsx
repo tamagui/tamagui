@@ -206,7 +206,9 @@ export const AccountView = () => {
         return <UpgradeTab />
 
       case 'manage':
-        return <ManageTab subscription={proSubscription} isTeamMember={!!isTeamMember} />
+        return (
+          <ManageTab subscriptions={activeSubscriptions!} isTeamMember={!!isTeamMember} />
+        )
 
       case 'team':
         return <TeamTab />
@@ -1149,16 +1151,25 @@ const SupportTabContent = ({
 }
 
 const ManageTab = ({
-  subscription,
+  subscriptions,
   isTeamMember,
 }: {
-  subscription?: Subscription
+  subscriptions: Subscription[]
   isTeamMember: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const { data: teamData, error, isLoading: isTeamLoading } = useTeamSeats()
   const { refresh, data } = useUser()
 
-  if (!subscription) {
+  if (isTeamLoading) {
+    return (
+      <YStack f={1} ai="center" jc="center" p="$6">
+        <Spinner size="large" />
+      </YStack>
+    )
+  }
+
+  if (!subscriptions || subscriptions.length === 0) {
     return (
       <YStack gap="$4">
         <H3>No Active Subscription</H3>
@@ -1177,13 +1188,16 @@ const ManageTab = ({
     )
   }
 
-  // Get subscription details
-  const subscriptionItems = subscription?.subscription_items || []
-  const mainItem = subscriptionItems[0]
-  const price = mainItem?.price
-  const product = price?.product
+  // Format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(amount / 100)
+  }
 
-  const handleCancelSubscription = async () => {
+  // Cancel handler for a specific subscription
+  const handleCancelSubscription = async (subscriptionId: string) => {
     setIsLoading(true)
     try {
       const res = await fetch('/api/cancel-subscription', {
@@ -1192,7 +1206,7 @@ const ManageTab = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          subscription_id: subscription.id,
+          subscription_id: subscriptionId,
         }),
       })
 
@@ -1206,94 +1220,139 @@ const ManageTab = ({
     }
   }
 
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount / 100)
-  }
-
   return (
     <YStack gap="$6">
       <View>
         <H3>Subscription Details</H3>
         {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
       </View>
-      <YStack gap="$4" p="$4" borderWidth={1} borderColor="$color3" borderRadius="$4">
-        <XStack jc="space-between">
-          <Paragraph>Plan</Paragraph>
-          <Paragraph theme="blue">{product?.name}</Paragraph>
-        </XStack>
-
-        <XStack jc="space-between">
-          <Paragraph>Status</Paragraph>
-          <Paragraph
-            textTransform="capitalize"
-            color={
-              subscription.status === SubscriptionStatus.Active ||
-              subscription.status === SubscriptionStatus.Trialing
-                ? '$green9'
-                : '$yellow9'
-            }
+      {subscriptions.map((subscription) => {
+        const subscriptionItems = subscription?.subscription_items || []
+        return (
+          <YStack
+            key={subscription.id}
+            gap="$4"
+            p="$4"
+            borderWidth={1}
+            borderColor="$color3"
+            borderRadius="$4"
+            mb="$4"
           >
-            {subscription.status === SubscriptionStatus.Trialing
-              ? SubscriptionStatus.Active
-              : subscription.status}
-          </Paragraph>
-        </XStack>
-
-        <XStack jc="space-between">
-          <Paragraph>Price</Paragraph>
-          <Paragraph>
-            {formatCurrency(price?.unit_amount || 0)}/{price?.interval}
-          </Paragraph>
-        </XStack>
-
-        <XStack jc="space-between">
-          <Paragraph flex={1}>Billing Period</Paragraph>
-          <YStack ai="flex-end">
-            <Paragraph>
-              {new Date(subscription.current_period_start).toLocaleDateString()} -
-              {new Date(subscription.current_period_end).toLocaleDateString()}
-            </Paragraph>
-          </YStack>
-        </XStack>
-
-        {subscription.cancel_at_period_end && (
-          <YStack backgroundColor="$yellow2" p="$3" borderRadius="$4">
-            <Paragraph theme="yellow">
-              Your subscription will end on{' '}
-              {new Date(subscription.current_period_end).toLocaleDateString()}
-            </Paragraph>
-          </YStack>
-        )}
-
-        {product?.description && (
-          <YStack gap="$2" pt="$2">
-            <Paragraph>Includes:</Paragraph>
-            <Paragraph theme="alt2" size="$4">
-              {product.description}
-            </Paragraph>
-          </YStack>
-        )}
-
-        {!isTeamMember ? (
-          <>
-            <Separator />
-
-            <Button
-              theme="red"
-              disabled={isLoading || !!subscription.cancel_at_period_end}
-              onPress={handleCancelSubscription}
+            <YStack
+              p="$4"
+              borderWidth={1}
+              borderColor="$color3"
+              borderRadius="$4"
+              width="100%"
+              style={{
+                overflowX: 'auto',
+              }}
             >
-              {subscription.cancel_at_period_end
-                ? 'Cancellation Scheduled'
-                : 'Cancel Subscription'}
-            </Button>
-          </>
-        ) : null}
-      </YStack>
+              <YStack minWidth={500} width="100%">
+                {/* Table Header */}
+                <XStack ai="center" mb="$2" width="100%">
+                  <Paragraph fontWeight="bold" width="60%">
+                    Product
+                  </Paragraph>
+                  <Paragraph fontWeight="bold" width="20%" textAlign="center">
+                    Qty
+                  </Paragraph>
+                  <Paragraph fontWeight="bold" width="20%" textAlign="right">
+                    Total
+                  </Paragraph>
+                </XStack>
+                {/* Table Rows */}
+                {subscriptionItems.map((item, idx) => {
+                  const price = item.price
+                  const product = price?.product
+                  const qty =
+                    product?.name === ProductName.TamaguiProTeamSeats
+                      ? (teamData?.subscription.total_seats ?? 1)
+                      : 1
+                  const total = (price?.unit_amount || 0) * qty
+                  return (
+                    <XStack key={item.id || idx} ai="center" mb="$2" width="100%">
+                      <YStack width="60%">
+                        <Paragraph fontWeight="bold">{product?.name}</Paragraph>
+                        {product?.description && (
+                          <Paragraph theme="alt2" size="$3">
+                            {product.description}
+                          </Paragraph>
+                        )}
+                        <Paragraph>
+                          {formatCurrency(price?.unit_amount || 0)}
+                          {price?.type !== 'one_time' && price?.interval
+                            ? `/${price.interval}`
+                            : ''}
+                        </Paragraph>
+                      </YStack>
+                      <Paragraph width="20%" textAlign="center">
+                        {qty}
+                      </Paragraph>
+                      <Paragraph width="20%" textAlign="right">
+                        {formatCurrency(total)}
+                        {price?.type !== 'one_time' && price?.interval
+                          ? `/${price.interval}`
+                          : ''}
+                      </Paragraph>
+                    </XStack>
+                  )
+                })}
+              </YStack>
+            </YStack>
+            {/* Billing Period, Status, Cancel Button */}
+            <XStack jc="space-between">
+              <Paragraph flex={1}>Status</Paragraph>
+              <Paragraph
+                textTransform="capitalize"
+                flex={1}
+                textAlign="right"
+                color={
+                  subscription.status === SubscriptionStatus.Active
+                    ? '$green9'
+                    : '$yellow9'
+                }
+              >
+                {subscription.status === SubscriptionStatus.Trialing
+                  ? SubscriptionStatus.Active
+                  : subscription.status}
+              </Paragraph>
+            </XStack>
+            <XStack jc="space-between">
+              <Paragraph flex={1}>Billing Period</Paragraph>
+              <YStack ai="flex-end">
+                <Paragraph>
+                  {new Date(subscription.current_period_start).toLocaleDateString()} -
+                  {new Date(subscription.current_period_end).toLocaleDateString()}
+                </Paragraph>
+              </YStack>
+            </XStack>
+            {subscription.cancel_at_period_end && (
+              <YStack backgroundColor="$yellow2" p="$3" borderRadius="$4">
+                <Paragraph theme="yellow">
+                  Your subscription will end on{' '}
+                  {new Date(subscription.current_period_end).toLocaleDateString()}
+                </Paragraph>
+              </YStack>
+            )}
+            {/* Cancel button logic here */}
+            {!isTeamMember ? (
+              <>
+                <Separator />
+                <Button
+                  theme="red"
+                  disabled={isLoading || !!subscription.cancel_at_period_end}
+                  onPress={() => handleCancelSubscription(subscription.id)}
+                >
+                  {subscription.cancel_at_period_end
+                    ? 'Cancellation Scheduled'
+                    : 'Cancel Subscription'}
+                </Button>
+              </>
+            ) : null}
+          </YStack>
+        )
+      })}
     </YStack>
   )
 }
