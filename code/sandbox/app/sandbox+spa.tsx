@@ -14,23 +14,15 @@ export default function Sandbox() {
 
   return (
     <>
-      <Button theme="accent">hello world</Button>
-
-      <YStack width={200} height={200} p="$4" bg="#f2f2f2">
-        <Button
-          shadowColor="$shadow6"
-          shadowRadius={4}
-          shadowOffset={{ height: 2, width: 0 }}
-        >
-          testing
-        </Button>
-      </YStack>
-
-      <View p={20} onPress={() => setX(Date.now())}>
-        <Text>
-          Re-render {x} in {time}ms
-        </Text>
-      </View>
+      <View
+        width={200}
+        height={200}
+        bg="red"
+        left="20%"
+        onLayout={(e) => {
+          console.log('.', e.nativeEvent.layout)
+        }}
+      />
     </>
   )
 }
