@@ -38,9 +38,7 @@ const App = () => {
             })}
             f={1}
             h="100%"
-          >
-            {/* <Paywall.Paywall /> */}
-          </YStack>
+          ></YStack>
         </View>
       </YStack>
     </Provider>
