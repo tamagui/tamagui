@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "1.126.12",
+  "version": "1.126.13-1747874018127",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "test:web:driver-rn": "NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=native node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver-moti": "NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=moti node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:debug": "yarn test:web --debug",
+    "test-ios": "vitest --config ./vitest.config.ios.ts --run",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test": "yarn test:web"
   },
@@ -68,7 +69,9 @@
     "react-native-svg": "15.8.0",
     "react-native-web": "^0.20.0",
     "solito": "^4.3.0",
-    "tamagui": "workspace:*"
+    "tamagui": "workspace:*",
+    "vitest": "^3.0.5",
+    "webdriverio": "^9.5.4"
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
@@ -80,7 +83,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.1.481",
+    "one": "1.1.475",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
     "webpack": "^5.88.2",

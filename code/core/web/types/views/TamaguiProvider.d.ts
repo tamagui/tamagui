@@ -1,4 +1,5 @@
 import type { TamaguiProviderProps } from '../types';
+export declare function ___onDidFinishClientRender(cb: () => void): void;
 export declare function TamaguiProvider({ children, disableInjectCSS, config, className, defaultTheme, reset, }: TamaguiProviderProps): import("react/jsx-runtime").JSX.Element;
 export declare namespace TamaguiProvider {
     var displayName: string;

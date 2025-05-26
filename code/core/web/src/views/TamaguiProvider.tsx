@@ -1,9 +1,20 @@
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
 import { updateMediaListeners } from '../hooks/useMedia'
+
+const listeners = new Set<() => void>()
+let didRender = false
+
+export function ___onDidFinishClientRender(cb: () => void) {
+  if (didRender) {
+    cb()
+  } else {
+    listeners.add(cb)
+  }
+}
 
 export function TamaguiProvider({
   children,
@@ -13,6 +24,14 @@ export function TamaguiProvider({
   defaultTheme,
   reset,
 }: TamaguiProviderProps) {
+  useEffect(() => {
+    listeners.forEach((cb) => cb())
+    didRender = true
+    return () => {
+      didRender = false
+    }
+  }, [])
+
   if (!process.env.TAMAGUI_REACT_19) {
     if (isClient) {
       // inject CSS if asked to (not SSR compliant)
