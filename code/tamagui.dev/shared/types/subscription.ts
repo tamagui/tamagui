@@ -29,6 +29,11 @@ export enum SubscriptionStatus {
   Unpaid = 'unpaid',
 }
 
+export enum PriceType {
+  Recurring = 'recurring',
+  OneTime = 'one_time',
+}
+
 export type UserSubscriptionStatus = {
   pro: boolean
   chat: boolean

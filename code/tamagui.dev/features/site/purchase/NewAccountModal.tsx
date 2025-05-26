@@ -37,7 +37,7 @@ import { CURRENT_PRODUCTS } from '~/features/stripe/products'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
-import { ProductName, SubscriptionStatus } from '~/shared/types/subscription'
+import { PriceType, ProductName, SubscriptionStatus } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
 import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
 import { FaqTabContent } from './NewPurchaseModal'
@@ -891,6 +891,10 @@ const PlanTab = ({
   const { data: products } = useProducts()
   const [isGrantingAccess, setIsGrantingAccess] = useState(false)
 
+  // Check if this is a one-time payment plan
+  const isOneTimePlan =
+    subscription?.subscription_items?.[0]?.price?.type === PriceType.OneTime
+
   const handleTakeoutAccess = async () => {
     if (!subscription || !products) return
 
@@ -981,7 +985,7 @@ const PlanTab = ({
           />
 
           <ChatAccessCard />
-          {!isTeamMember ? (
+          {!isTeamMember && !isOneTimePlan ? (
             <ServiceCard
               title="Add Members"
               description="Add members to your Pro plan."
@@ -1335,7 +1339,7 @@ const ManageTab = ({
                         )}
                         <Paragraph>
                           {formatCurrency(price?.unit_amount || 0)}
-                          {price?.type !== 'one_time' && price?.interval
+                          {price?.type !== PriceType.OneTime && price?.interval
                             ? `/${price.interval}`
                             : ''}
                         </Paragraph>
@@ -1345,7 +1349,7 @@ const ManageTab = ({
                       </Paragraph>
                       <Paragraph width="20%" textAlign="right">
                         {formatCurrency(total)}
-                        {price?.type !== 'one_time' && price?.interval
+                        {price?.type !== PriceType.OneTime && price?.interval
                           ? `/${price.interval}`
                           : ''}
                       </Paragraph>
@@ -1682,8 +1686,6 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
     }
   )
 
-  // console.log('data', isLoading, data)
-
   const handleBentoDownload = async () => {
     if (!supabase) {
       alert('Authentication required')
@@ -1726,8 +1728,6 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
       alert('Failed to download Bento components. Please try again later.')
     }
   }
-
-  // const { onCopy } = useClipboard(token ?? '')
 
   const onCopyCode = async () => {
     if (hasCopied || isLoading) return
