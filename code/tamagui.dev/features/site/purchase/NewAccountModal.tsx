@@ -33,6 +33,7 @@ import {
 } from 'tamagui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
+import { CURRENT_PRODUCTS } from '~/features/stripe/products'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
@@ -47,6 +48,7 @@ import {
   useRemoveTeamMember,
   useTeamSeats,
   type TeamMember,
+  type TeamSubscription,
 } from './useTeamSeats'
 
 class AccountModal {
@@ -156,11 +158,42 @@ export const AccountView = () => {
   const { subscriptions } = data
 
   // Get active subscriptions
-  const activeSubscriptions = subscriptions?.filter(
+  const filteredSubscriptions = subscriptions?.filter(
     (sub) =>
-      sub.status === SubscriptionStatus.Active ||
-      sub.status === SubscriptionStatus.Trialing
+      (sub.status === SubscriptionStatus.Active ||
+        sub.status === SubscriptionStatus.Trialing) &&
+      sub.subscription_items?.some(
+        (item) =>
+          item.price?.product?.id &&
+          CURRENT_PRODUCTS.includes(item.price.product.id as any)
+      )
   )
+
+  // Deduplicate by product ID, keeping the one with latest current_period_end
+  const activeSubscriptions = filteredSubscriptions?.reduce((acc, sub) => {
+    const productIds =
+      sub.subscription_items?.map((item) => item.price?.product?.id).filter(Boolean) || []
+
+    productIds.forEach((productId) => {
+      const existing = acc.find((existingSub) =>
+        existingSub.subscription_items?.some(
+          (item) => item.price?.product?.id === productId
+        )
+      )
+
+      if (!existing) {
+        acc.push(sub)
+      } else {
+        // Replace with the one that has later current_period_end
+        if (new Date(sub.current_period_end) > new Date(existing.current_period_end)) {
+          const index = acc.indexOf(existing)
+          acc[index] = sub
+        }
+      }
+    })
+
+    return acc
+  }, [] as Subscription[])
 
   const proTeamSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
@@ -169,6 +202,13 @@ export const AccountView = () => {
   ) as Subscription
 
   const haveTeamSeats = !!proTeamSubscription?.id
+
+  // Conditionally fetch team data only when team seats are available
+  const {
+    data: teamData,
+    error: teamError,
+    isLoading: isTeamLoading,
+  } = useTeamSeats(haveTeamSeats)
 
   // Find Pro subscription
   const proSubscription = haveTeamSeats
@@ -207,11 +247,22 @@ export const AccountView = () => {
 
       case 'manage':
         return (
-          <ManageTab subscriptions={activeSubscriptions!} isTeamMember={!!isTeamMember} />
+          <ManageTab
+            subscriptions={activeSubscriptions!}
+            isTeamMember={!!isTeamMember}
+            teamData={teamData}
+            isTeamLoading={isTeamLoading}
+          />
         )
 
       case 'team':
-        return <TeamTab />
+        return (
+          <TeamTab
+            teamData={teamData}
+            isTeamLoading={isTeamLoading}
+            teamError={teamError}
+          />
+        )
 
       case 'faq':
         return <FaqTabContent />
@@ -1153,13 +1204,16 @@ const SupportTabContent = ({
 const ManageTab = ({
   subscriptions,
   isTeamMember,
+  teamData,
+  isTeamLoading,
 }: {
   subscriptions: Subscription[]
   isTeamMember: boolean
+  teamData: TeamSubscription | undefined
+  isTeamLoading: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { data: teamData, error, isLoading: isTeamLoading } = useTeamSeats()
-  const { refresh, data } = useUser()
+  const { refresh } = useUser()
 
   if (isTeamLoading) {
     return (
@@ -1364,8 +1418,15 @@ type GitHubUser = {
   email: string | null
 }
 
-const TeamTab = () => {
-  const { data: teamData, error, isLoading } = useTeamSeats()
+const TeamTab = ({
+  teamData,
+  isTeamLoading,
+  teamError,
+}: {
+  teamData: TeamSubscription | undefined
+  isTeamLoading: boolean
+  teamError: any
+}) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [searchResults, setSearchResults] = useState<GitHubUser[]>([])
@@ -1399,7 +1460,7 @@ const TeamTab = () => {
     searchUsers(searchQuery)
   }, [searchQuery, searchUsers])
 
-  if (isLoading) {
+  if (isTeamLoading) {
     return (
       <YStack f={1} ai="center" jc="center">
         <Spinner size="large" />
@@ -1407,7 +1468,7 @@ const TeamTab = () => {
     )
   }
 
-  if (error || !teamData) {
+  if (teamError || !teamData) {
     return (
       <YStack gap="$4">
         <H3>No Team Subscription</H3>
