@@ -192,6 +192,7 @@ async function manageOneTimePayment(invoice: Stripe.Invoice) {
     metadata: invoice.metadata,
     status: 'active',
     cancel_at: oneYearFromNow.toISOString(),
+    cancel_at_period_end: true,
     current_period_start: new Date().toISOString(),
     current_period_end: oneYearFromNow.toISOString(),
     created: new Date().toISOString(),
