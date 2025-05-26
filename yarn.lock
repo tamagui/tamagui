@@ -6677,23 +6677,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/button-next@workspace:code/ui/button-next":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/button-next@workspace:code/ui/button-next"
-  dependencies:
-    "@tamagui/build": "workspace:*"
-    "@tamagui/get-button-sized": "workspace:*"
-    "@tamagui/helpers-tamagui": "workspace:*"
-    "@tamagui/stacks": "workspace:*"
-    "@tamagui/text": "workspace:*"
-    "@tamagui/web": "workspace:*"
-    react: "npm:*"
-    vitest: "npm:^3.0.5"
-  peerDependencies:
-    react: "*"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/button@workspace:*, @tamagui/button@workspace:code/ui/button":
   version: 0.0.0-use.local
   resolution: "@tamagui/button@workspace:code/ui/button"
@@ -7137,7 +7120,7 @@ __metadata:
     "@tamagui/cli": "workspace:*"
     "@tamagui/demos": "workspace:*"
     "@tamagui/get-token": "workspace:*"
-    "@tamagui/image-next": "workspace:*"
+    "@tamagui/image": "workspace:*"
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/mdx-2": "workspace:*"
@@ -7484,27 +7467,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/image-next@workspace:*, @tamagui/image-next@workspace:code/ui/image-next":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/image-next@workspace:code/ui/image-next"
-  dependencies:
-    "@tamagui/build": "workspace:*"
-    "@tamagui/constants": "workspace:*"
-    "@tamagui/web": "workspace:*"
-    react: "npm:*"
-    react-native: "npm:^0.76.5"
-  peerDependencies:
-    react: "*"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/image@workspace:*, @tamagui/image@workspace:code/ui/image":
   version: 0.0.0-use.local
   resolution: "@tamagui/image@workspace:code/ui/image"
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
-    "@tamagui/core": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
     react-native: "npm:^0.76.5"
   peerDependencies:
@@ -26751,7 +26720,7 @@ __metadata:
     "@tamagui/animations-moti": "workspace:*"
     "@tamagui/colors": "workspace:*"
     "@tamagui/demos": "workspace:*"
-    "@tamagui/image-next": "workspace:*"
+    "@tamagui/image": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/react-native-media-driver": "workspace:*"
     "@tamagui/toast": "workspace:*"

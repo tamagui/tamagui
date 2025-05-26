@@ -4,9 +4,10 @@ export type ButtonProps = GetProps<typeof Frame>;
 declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const ButtonContext: import("@tamagui/web").StyledContext<{
     size?: SizeTokens;
@@ -15,10 +16,11 @@ export declare const ButtonContext: import("@tamagui/web").StyledContext<{
 export declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}>, "size" | "variant" | "chromeless" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
+}>, "size" | "variant" | "circular" | "chromeless" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
     variant?: "outlined";
     size?: SizeTokens;
     icon?: any;
@@ -26,13 +28,15 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     scaleIcon?: number;
     iconSize?: SizeTokens;
     chromeless?: boolean;
+    circular?: boolean;
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}>, "size" | "variant" | "chromeless" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
+}>, "size" | "variant" | "circular" | "chromeless" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
     variant?: "outlined";
     size?: SizeTokens;
     icon?: any;
@@ -40,6 +44,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     scaleIcon?: number;
     iconSize?: SizeTokens;
     chromeless?: boolean;
+    circular?: boolean;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & {
     variant?: "outlined";
     size?: SizeTokens;
@@ -48,20 +53,23 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     scaleIcon?: number;
     iconSize?: SizeTokens;
     chromeless?: boolean;
+    circular?: boolean;
 }, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        circular?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }>, "size" | "variant" | "chromeless" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
+    }>, "size" | "variant" | "circular" | "chromeless" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
         variant?: "outlined";
         size?: SizeTokens;
         icon?: any;
@@ -69,6 +77,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         scaleIcon?: number;
         iconSize?: SizeTokens;
         chromeless?: boolean;
+        circular?: boolean;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & {
         variant?: "outlined";
         size?: SizeTokens;
@@ -77,12 +86,14 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         scaleIcon?: number;
         iconSize?: SizeTokens;
         chromeless?: boolean;
+        circular?: boolean;
     }, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        circular?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Apply: import("react").ProviderExoticComponent<Partial<{
@@ -95,9 +106,10 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        circular?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSizeTokens | undefined;

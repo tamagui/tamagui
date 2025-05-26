@@ -1,4 +1,4 @@
-import { Image, type ImageProps } from '@tamagui/image-next'
+import { Image, type ImageProps } from '@tamagui/image'
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'

@@ -4,7 +4,7 @@ import { SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
 import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { ScrollView } from 'react-native'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {

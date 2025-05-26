@@ -1,5 +1,5 @@
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { ButtonNestingContext } from '@tamagui/stacks'
+import { ButtonNestingContext, themeableVariants } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, styled, View, withStaticProperties } from '@tamagui/web'
@@ -13,16 +13,6 @@ const context = createStyledContext({
   size: undefined,
   variant: undefined,
 })
-
-const chromelessStyle = {
-  backgroundColor: 'transparent',
-  borderColor: 'transparent',
-  shadowColor: 'transparent',
-
-  hoverStyle: {
-    borderColor: 'transparent',
-  },
-}
 
 const Frame = styled(View, {
   context,
@@ -61,15 +51,9 @@ const Frame = styled(View, {
       },
     },
 
-    chromeless: {
-      true: chromelessStyle,
-      all: {
-        ...chromelessStyle,
-        hoverStyle: chromelessStyle,
-        pressStyle: chromelessStyle,
-        focusStyle: chromelessStyle,
-      },
-    },
+    circular: themeableVariants.circular,
+
+    chromeless: themeableVariants.chromeless,
 
     variant: {
       outlined:
@@ -174,6 +158,7 @@ const ButtonComponent = Frame.styleable<{
   scaleIcon?: number
   iconSize?: SizeTokens
   chromeless?: boolean
+  circular?: boolean
 }>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext)
   const { children, iconSize, icon, iconAfter, scaleIcon = 0.4, ...props } = propsIn

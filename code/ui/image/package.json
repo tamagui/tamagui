@@ -37,10 +37,7 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*"
-  },
-  "peerDependencies": {
-    "react": "*"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
@@ -49,5 +46,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }
