@@ -156,6 +156,7 @@ export const DialogPortalFrame = styled(YStack, {
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
+  // @ts-ignore
   const { __scopeDialog, children, space, separator, spaceDirection } = props
 
   const themeName = useThemeName()

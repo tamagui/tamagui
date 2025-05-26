@@ -1,13 +1,9 @@
-import { Image } from 'tamagui'
+import { Image } from '@tamagui/image-next'
 
 export function ImageDemo() {
   return (
-    <Image
-      source={{
-        uri: 'https://picsum.photos/200/300',
-        width: 200,
-        height: 300,
-      }}
-    />
+    <>
+      <Image src="https://picsum.photos/200/300" width={200} height={300} />
+    </>
   )
 }

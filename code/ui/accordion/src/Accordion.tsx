@@ -7,7 +7,7 @@ import { YStack } from '@tamagui/stacks'
 import { H1, type HeadingProps } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
+import type { GetProps, GetRef, Stack, StackProps, TamaguiElement } from '@tamagui/web'
 import { View, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 

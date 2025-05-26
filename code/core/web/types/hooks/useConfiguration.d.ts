@@ -47,7 +47,7 @@ export declare const useConfiguration: () => {
             [key: string]: string | number;
         };
     };
-    settings: Omit<import("..").GenericTamaguiSettings, keyof G> & G;
+    settings: import("..").GenericTamaguiSettings & Omit<import("..").GenericTamaguiSettings, keyof import("..").GenericTamaguiSettings>;
     tokens: Omit<{
         [x: string]: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;

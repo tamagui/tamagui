@@ -64,14 +64,14 @@ export type PopperAnchorExtraProps = {
 };
 export type PopperAnchorProps = YStackProps;
 export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }>, "__scopePopper" | "virtualRef"> & PopperAnchorExtraProps & {
     __scopePopper?: string | undefined;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperAnchorExtraProps & {
     __scopePopper?: string | undefined;
 }, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type PopperContentExtraProps = {

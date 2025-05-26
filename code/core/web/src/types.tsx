@@ -695,9 +695,9 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings,
+  G extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, I>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -1334,10 +1334,6 @@ interface ExtraStyleProps {
   /**
    * Web-only style property. Will be omitted on native.
    */
-  containerType?: Properties['containerType']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
   boxSizing?: Properties['boxSizing']
   /**
    * Web-only style property. Will be omitted on native.
@@ -1528,10 +1524,6 @@ interface ExtraStyleProps {
    */
   gridTemplateAreas?: Properties['gridTemplateAreas']
 
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  backdropFilter?: Properties['backdropFilter']
   /**
    * Web-only style property. Will be omitted on native.
    */

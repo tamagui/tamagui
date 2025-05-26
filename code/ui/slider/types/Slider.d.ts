@@ -136,12 +136,8 @@ declare const SliderThumb: import("@tamagui/core").TamaguiComponent<Omit<import(
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-<<<<<<< HEAD
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>>;
-=======
 }, import("@tamagui/core").StaticConfigPublic>;
->>>>>>> main
 declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
     __scopeSlider?: string;
 } & React.RefAttributes<unknown>> & {
@@ -241,6 +237,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
 declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -339,14 +336,8 @@ declare const Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tama
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-<<<<<<< HEAD
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export { Range, Slider, SliderThumb, SliderTrack, SliderTrackActive, Thumb, Track, };
 export type { SliderProps, SliderTrackActiveProps, SliderTrackProps };
-=======
-}, import("@tamagui/core").StaticConfigPublic>;
-export { Slider, SliderTrack, SliderTrackActive, SliderThumb, Track, Range, Thumb, };
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps };
->>>>>>> main
 //# sourceMappingURL=Slider.d.ts.map

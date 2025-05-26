@@ -205,7 +205,11 @@ export interface DialogCloseExtraProps {
     displayWhenAdapted?: boolean;
 }
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps;
-declare const DialogClose: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+declare const DialogClose: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "__scopeDialog" | "displayWhenAdapted"> & DialogCloseExtraProps & {
+    __scopeDialog?: Scope;
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps & {
+    __scopeDialog?: Scope;
+}, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 declare const DialogWarningProvider: (props: {
     contentName: string;
     titleName: string;
@@ -345,7 +349,13 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {
-                scope?: string;
+                scope
+                /**
+                 * Used to disable the remove scroll functionality when open
+                 */
+                ? /**
+                 * Used to disable the remove scroll functionality when open
+                 */: string;
             }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
