@@ -102,7 +102,8 @@ export default apiRoute(async (req) => {
   if (teamSubscription) {
     const teamDiscordSeats = teamSubscription.total_seats
     if (teamDiscordSeats > discordSeats) {
-      discordSeats = teamDiscordSeats
+      // Add 1 to the team discord seats to account for the owner
+      discordSeats = teamDiscordSeats + 1
     }
   }
 
