@@ -1246,6 +1246,11 @@ const ManageTab = ({
     )
   }
 
+  // Sort subscriptions by creation date (oldest first)
+  const sortedSubscriptions = [...subscriptions].sort(
+    (a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
+  )
+
   // Format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -1284,7 +1289,7 @@ const ManageTab = ({
         <H3>Subscription Details</H3>
         {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
       </View>
-      {subscriptions.map((subscription) => {
+      {sortedSubscriptions.map((subscription) => {
         const subscriptionItems = subscription?.subscription_items || []
         return (
           <YStack
