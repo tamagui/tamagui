@@ -101,9 +101,14 @@ export default apiRoute(async (req) => {
         default_payment_method: paymentMethodId,
       })
 
+      const latestInvoice = subscription.latest_invoice as Stripe.Invoice
+      const amountDue = latestInvoice?.amount_due || 0
+      const clientSecret = await getClientSecret(subscription)
+
       return Response.json({
         id: subscription.id,
-        clientSecret: await getClientSecret(subscription),
+        clientSecret,
+        amount_due: amountDue,
       })
     }
   } catch (error) {
