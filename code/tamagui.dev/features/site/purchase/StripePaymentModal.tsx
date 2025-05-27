@@ -11,9 +11,8 @@
  *
  * Team Plan Options:
  * - Additional seats: $100/seat/year
- *    - Can be added to both one-time and subscription plans
+ *    - Can only be added to subscription plans (No one-time payment for team seats)
  *    - Billed annually regardless of plan type
- *    - For one-time payment: processed with the base plan invoice
  *    - For subscription: added as an additional subscription item
  *
  * Additional monthly subscriptions:
@@ -34,34 +33,35 @@ import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { useEffect, useMemo, useState } from 'react'
-import { z } from 'zod'
+import { useMemo, useState } from 'react'
 import {
   Button,
   Dialog,
   H3,
+  Input,
   Paragraph,
+  ScrollView,
   Separator,
+  Sheet,
+  SizableText,
   Spinner,
   Theme,
+  Unspaced,
+  useMedia,
   useTheme,
   useThemeName,
+  View,
   XStack,
   YStack,
-  SizableText,
-  Input,
-  ScrollView,
-  View,
-  useMedia,
 } from 'tamagui'
+import { z } from 'zod'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
-import { PoweredByStripeIcon } from './PoweredByStripeIcon'
-import { useLoginLink } from '../../auth/useLoginLink'
-import { Sheet } from 'tamagui'
-import { Unspaced } from 'tamagui'
+import type { UserSubscriptionStatus } from '~/shared/types/subscription'
 import { sendEvent } from '../../analytics/sendEvent'
+import { useLoginLink } from '../../auth/useLoginLink'
+import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 
 const couponSchema = z.object({
   id: z.string(),
@@ -166,6 +166,7 @@ const PaymentForm = ({
   setIsProcessing,
   userData,
   finalCoupon,
+  subscriptionStatus,
   children,
 }: {
   onSuccess: (subscriptionId: string) => void
@@ -184,6 +185,7 @@ const PaymentForm = ({
   setIsProcessing: (value: boolean) => void
   userData: any
   finalCoupon: Coupon | null
+  subscriptionStatus: UserSubscriptionStatus
   children: React.ReactNode
 }) => {
   const stripe = useStripe()
@@ -221,70 +223,66 @@ const PaymentForm = ({
         return
       }
 
-      // Create Pro subscription/payment first
-      const response = await fetch('/api/create-subscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          paymentMethodId: paymentMethod.id,
-          disableAutoRenew: selectedPrices.disableAutoRenew,
-          couponId: finalCoupon?.id,
-          teamSeats: selectedPrices.teamSeats,
-        }),
-      })
+      let data: any = null
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        const error = new Error(JSON.stringify(data))
-        setError(error)
-        onError(error)
-        return
-      }
-
-      // Confirm payment only for subscription (not one-time payment)
-      if (!selectedPrices.disableAutoRenew) {
-        const result = await stripe.confirmPayment({
-          elements,
-          redirect: 'if_required',
-          confirmParams: {
-            payment_method: paymentMethod.id,
+      // Only create Pro subscription if user doesn't already have PRO
+      if (!subscriptionStatus.pro) {
+        // Create Pro subscription/payment first
+        const response = await fetch('/api/create-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-          clientSecret: data.clientSecret,
+          body: JSON.stringify({
+            paymentMethodId: paymentMethod.id,
+            disableAutoRenew: selectedPrices.disableAutoRenew,
+            couponId: finalCoupon?.id,
+            teamSeats: selectedPrices.teamSeats,
+          }),
         })
 
-        if (result.error) {
-          setError(result.error)
-          onError(result.error)
+        data = await response.json()
+
+        if (!response.ok) {
+          const error = new Error(JSON.stringify(data))
+          setError(error)
+          onError(error)
           return
+        }
+
+        // Confirm payment if needed (for both subscriptions and one-time payments)
+        // Payment confirmation is required when amount_due > 0 and clientSecret exists
+        if (
+          !selectedPrices.disableAutoRenew &&
+          data.amount_due &&
+          data.amount_due > 0 &&
+          data.clientSecret
+        ) {
+          const result = await stripe.confirmPayment({
+            elements,
+            redirect: 'if_required',
+            confirmParams: {
+              payment_method: paymentMethod.id,
+            },
+            clientSecret: data.clientSecret,
+          })
+
+          if (result.error) {
+            setError(result.error)
+            onError(result.error)
+            return
+          }
         }
       }
 
       // If Chat or Support is selected, create additional subscription
       if (selectedPrices.chatSupport || selectedPrices.supportTier > 0) {
-        // Submit the form first
-        const { error: submitError } = await elements.submit()
-        if (submitError) {
-          setError(submitError)
-          onError(submitError)
-          return
-        }
-
-        if (submitError) {
-          setError(submitError)
-          onError(submitError)
-          return
-        }
-
         const upgradeResponse = await fetch('/api/upgrade-subscription', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            subscriptionId: data.id,
             paymentMethodId: paymentMethod.id,
             chatSupport: selectedPrices.chatSupport,
             supportTier: selectedPrices.supportTier,
@@ -295,7 +293,7 @@ const PaymentForm = ({
         const upgradeData = await upgradeResponse.json()
         if (!upgradeResponse.ok) {
           // If upgrade fails and Pro is a subscription, cancel it
-          if (!selectedPrices.disableAutoRenew) {
+          if (data?.id && !selectedPrices.disableAutoRenew) {
             await fetch('/api/handle-failed-payment-subscription', {
               method: 'POST',
               headers: {
@@ -313,37 +311,49 @@ const PaymentForm = ({
           return
         }
 
-        // Confirm monthly subscription payment
-        const monthlyResult = await stripe.confirmPayment({
-          elements,
-          redirect: 'if_required',
-          confirmParams: {
-            payment_method: paymentMethod.id,
-          },
-          clientSecret: upgradeData.clientSecret,
-        })
+        // Confirm monthly subscription payment if needed
+        if (
+          upgradeData.amount_due &&
+          upgradeData.amount_due > 0 &&
+          upgradeData.clientSecret
+        ) {
+          const monthlyResult = await stripe.confirmPayment({
+            elements,
+            redirect: 'if_required',
+            confirmParams: {
+              payment_method: paymentMethod.id,
+            },
+            clientSecret: upgradeData.clientSecret,
+          })
 
-        if (monthlyResult.error) {
-          // If monthly payment fails and Pro is a subscription, cancel it
-          if (!selectedPrices.disableAutoRenew) {
-            await fetch('/api/handle-failed-payment-subscription', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                subscriptionId: data.id,
-              }),
-            })
+          if (monthlyResult.error) {
+            // If monthly payment fails and Pro is a subscription, cancel it
+            if (data?.id && !selectedPrices.disableAutoRenew) {
+              await fetch('/api/handle-failed-payment-subscription', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  subscriptionId: data.id,
+                }),
+              })
+            }
+
+            setError(monthlyResult.error)
+            onError(monthlyResult.error)
+            return
           }
-
-          setError(monthlyResult.error)
-          onError(monthlyResult.error)
-          return
         }
       }
 
-      onSuccess(data.id)
+      if (data?.id) {
+        // if we actually created a Pro subscription
+        onSuccess(data.id)
+      } else {
+        // if we didn't create a Pro subscription, we must have upgraded a tier
+        onSuccess('upgraded a tier or chat support')
+      }
     } catch (error) {
       setError(error as Error)
       onError(error as Error)
@@ -434,7 +444,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   } = props
   const store = usePaymentModal()
   const [isProcessing, setIsProcessing] = useState(false)
-  const { data: userData, isLoading, refresh } = useUser()
+  const { data: userData, isLoading, refresh, subscriptionStatus } = useUser()
   const supabaseClient = useSupabaseClient()
   const [showCoupon, setShowCoupon] = useState(false)
   const [couponCode, setCouponCode] = useState('')
@@ -791,6 +801,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 setIsProcessing={setIsProcessing}
                 userData={userData}
                 finalCoupon={finalCoupon}
+                subscriptionStatus={subscriptionStatus}
               >
                 {maxMd && renderTotalView()}
               </PaymentForm>
