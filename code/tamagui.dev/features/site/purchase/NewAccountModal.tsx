@@ -37,7 +37,7 @@ import { CURRENT_PRODUCTS } from '~/features/stripe/products'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
-import { PriceType, ProductName, SubscriptionStatus } from '~/shared/types/subscription'
+import { Pricing, ProductName, SubscriptionStatus } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
 import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
 import { FaqTabContent } from './NewPurchaseModal'
@@ -893,7 +893,7 @@ const PlanTab = ({
 
   // Check if this is a one-time payment plan
   const isOneTimePlan =
-    subscription?.subscription_items?.[0]?.price?.type === PriceType.OneTime
+    subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
 
   const handleTakeoutAccess = async () => {
     if (!subscription || !products) return
@@ -1344,7 +1344,7 @@ const ManageTab = ({
                         )}
                         <Paragraph>
                           {formatCurrency(price?.unit_amount || 0)}
-                          {price?.type !== PriceType.OneTime && price?.interval
+                          {price?.type !== Pricing.OneTime && price?.interval
                             ? `/${price.interval}`
                             : ''}
                         </Paragraph>
@@ -1354,7 +1354,7 @@ const ManageTab = ({
                       </Paragraph>
                       <Paragraph width="20%" textAlign="right">
                         {formatCurrency(total)}
-                        {price?.type !== PriceType.OneTime && price?.interval
+                        {price?.type !== Pricing.OneTime && price?.interval
                           ? `/${price.interval}`
                           : ''}
                       </Paragraph>

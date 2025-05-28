@@ -40,7 +40,10 @@ export async function ensureSubscription(
 
   const subscriptionData = getArray(subscription.subscription_items).find((item) => {
     const products = getSingle(getSingle(item?.price)?.products)
-    return products?.name && validProducts.includes(products.name as ProductName)
+    return (
+      products?.name &&
+      validProducts.includes(products.name as (typeof validProducts)[number])
+    )
   })
 
   if (!subscriptionData) {

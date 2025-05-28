@@ -1,38 +1,46 @@
-export enum WhitelistType {
-  Pro = 'pro',
-  Chat = 'chat',
-}
+export const Whitelist = {
+  Pro: 'pro',
+  Chat: 'chat',
+} as const
 
-export enum ProductName {
-  TamaguiPro = 'Tamagui Pro',
-  TamaguiChat = 'Tamagui Chat',
-  TamaguiSupport = 'Tamagui Support',
-  TamaguiProTeamSeats = 'Tamagui Pro Team Seats',
-  TamaguiBento = 'Bento',
-  TamaguiTakeoutStack = 'Takeout Stack',
-}
+export const ProductName = {
+  TamaguiPro: 'Tamagui Pro',
+  TamaguiChat: 'Tamagui Chat',
+  TamaguiSupport: 'Tamagui Support',
+  TamaguiProTeamSeats: 'Tamagui Pro Team Seats',
+  TamaguiBento: 'Bento',
+  TamaguiTakeoutStack: 'Takeout Stack',
+} as const
 
-export enum ProductSlug {
-  UniversalStarter = 'universal-starter',
-  IconPacks = 'icon-packs',
-  FontPacks = 'font-packs',
-  Bento = 'bento',
-}
+export const ProductSlug = {
+  UniversalStarter: 'universal-starter',
+  IconPacks: 'icon-packs',
+  FontPacks: 'font-packs',
+  Bento: 'bento',
+} as const
 
-export enum SubscriptionStatus {
-  Trialing = 'trialing',
-  Active = 'active',
-  Canceled = 'canceled',
-  Incomplete = 'incomplete',
-  IncompleteExpired = 'incomplete_expired',
-  PastDue = 'past_due',
-  Unpaid = 'unpaid',
-}
+export const SubscriptionStatus = {
+  Trialing: 'trialing',
+  Active: 'active',
+  Canceled: 'canceled',
+  Incomplete: 'incomplete',
+  IncompleteExpired: 'incomplete_expired',
+  PastDue: 'past_due',
+  Unpaid: 'unpaid',
+} as const
 
-export enum PriceType {
-  Recurring = 'recurring',
-  OneTime = 'one_time',
-}
+export const Pricing = {
+  Recurring: 'recurring',
+  OneTime: 'one_time',
+} as const
+
+// Type helpers to get the values
+export type WhitelistType = (typeof Whitelist)[keyof typeof Whitelist]
+export type ProductNameType = (typeof ProductName)[keyof typeof ProductName]
+export type ProductSlugType = (typeof ProductSlug)[keyof typeof ProductSlug]
+export type SubscriptionStatusType =
+  (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+export type PricingType = (typeof Pricing)[keyof typeof Pricing]
 
 export type UserSubscriptionStatus = {
   pro: boolean
