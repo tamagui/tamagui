@@ -183,6 +183,18 @@ export default apiRoute(async (req) => {
       )
     }
 
+    // Check if user is already added to this subscription
+    const existingInvite = discordInvites.data.find(
+      (invite) => invite.discord_user_id === userDiscordId
+    )
+
+    if (existingInvite) {
+      return Response.json(
+        { message: 'User is already added to the Takeout general channel!' },
+        { status: 400 }
+      )
+    }
+
     await supabaseAdmin.from('discord_invites').insert({
       discord_user_id: userDiscordId,
       subscription_id: subscription.id,

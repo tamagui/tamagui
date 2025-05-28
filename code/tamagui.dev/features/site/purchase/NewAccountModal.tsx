@@ -219,16 +219,30 @@ export const AccountView = () => {
         )
       ) as Subscription)
 
+  // Find ALL support-related subscriptions (Chat and/or Support tiers)
+  const supportSubscriptions = activeSubscriptions
+    ?.filter((sub) =>
+      sub.subscription_items?.some(
+        (item) =>
+          item.price?.product?.name === ProductName.TamaguiSupport ||
+          item.price?.product?.name === ProductName.TamaguiChat
+      )
+    )
+    .sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime())
+
+  // Use the first support subscription for Discord operations (oldest first)
+  // But will calculate total seats from ALL user support subscriptions
+  // TODO: Consolidate Chat + Support tier into single subscription to avoid complexity
+  // - When user has Chat subscription and purchases Support tier, upgrade the existing Chat subscription instead of creating new one
+  // - This eliminates multiple subscriptions with same functionality and simplifies seat calculation
+  // - Update upgrade-subscription API to check for existing support subscriptions and modify them instead of creating new ones
+  // - Benefits: Single Discord channel, unified billing, easier management, no need for complex multi-subscription logic
+  // WARNING: This is a temporary solution to avoid the complexity of having multiple subscriptions with the same functionality.
+  const supportSubscription = supportSubscriptions?.[0]
+
   const user = data.user
   const isTeamAdmin = haveTeamSeats && user?.id === proTeamSubscription?.user_id
   const isTeamMember = haveTeamSeats && !isTeamAdmin
-
-  // Find Support subscription
-  const supportSubscription = activeSubscriptions?.find((sub) =>
-    sub.subscription_items?.some(
-      (item) => item.price?.product?.name === ProductName.TamaguiSupport
-    )
-  )
 
   const renderTabs = () => {
     switch (currentTab) {
@@ -513,10 +527,12 @@ const DiscordAccessDialog = ({
   subscription,
   onClose,
   isTeamMember,
+  apiType,
 }: {
   subscription: Subscription
   onClose: () => void
   isTeamMember: boolean
+  apiType: 'channel' | 'support'
 }) => {
   return (
     <Dialog modal open onOpenChange={onClose}>
@@ -539,7 +555,7 @@ const DiscordAccessDialog = ({
         >
           <DiscordPanel
             subscription={subscription}
-            apiType="channel"
+            apiType={apiType}
             isTeamMember={isTeamMember}
           />
           <Dialog.Close asChild>
@@ -556,36 +572,54 @@ const DiscordPanel = ({
   apiType,
   isTeamMember,
 }: {
-  subscription: any
+  subscription?: Subscription
   apiType: 'channel' | 'support'
   isTeamMember: boolean
 }) => {
-  const hasSupportTier = () => {
-    const supportItem = subscription.subscription_items?.find((item) => {
-      return item.price?.product?.name === ProductName.TamaguiSupport
+  const hasSupportAccess = () => {
+    const supportItems = subscription?.subscription_items?.filter((item) => {
+      return (
+        item.price?.product?.name === ProductName.TamaguiSupport ||
+        item.price?.product?.name === ProductName.TamaguiChat
+      )
     })
 
-    if (!supportItem) {
-      return false
+    if (!supportItems || supportItems.length === 0) {
+      return { hasAccess: false, hasChat: false, hasTier: false }
     }
 
-    // Calculate tier from unit_amount (80000 cents = $800 = Tier 1)
-    const unitAmount = supportItem.price?.unit_amount
-    if (!unitAmount) {
-      return false
+    // Check for chat support
+    const chatItem = supportItems.find(
+      (item) => item.price?.product?.name === ProductName.TamaguiChat
+    )
+    const hasChat = !!chatItem
+
+    // Check for support tier
+    const tierItem = supportItems.find(
+      (item) => item.price?.product?.name === ProductName.TamaguiSupport
+    )
+
+    let hasTier = false
+
+    if (tierItem) {
+      hasTier = true
     }
 
-    // If unit_amount is at least 80000 (Tier 1 or higher)
-    return unitAmount >= 80000
+    return {
+      hasAccess: hasChat || hasTier,
+      hasChat,
+      hasTier,
+    }
   }
 
-  const [activeApi, setActiveApi] = useState<'channel' | 'support'>('channel')
   const {
     data: groupInfoData,
     error: groupInfoError,
     isLoading,
   } = useSWR<any>(
-    `/api/discord/${activeApi}?${new URLSearchParams({ subscription_id: subscription.id })}`,
+    subscription?.id
+      ? `/api/discord/${apiType}?${new URLSearchParams({ subscription_id: subscription.id })}`
+      : null,
     (url) =>
       fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
         res.json()
@@ -605,24 +639,26 @@ const DiscordPanel = ({
   )
 
   const resetChannelMutation = useSWRMutation(
-    [`/api/discord/${activeApi}`, 'DELETE', subscription.id],
+    subscription?.id ? [`/api/discord/${apiType}`, 'DELETE', subscription.id] : null,
     (url) =>
-      fetch(`/api/discord/${activeApi}`, {
+      fetch(`/api/discord/${apiType}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          subscription_id: subscription.id,
+          subscription_id: subscription?.id,
         }),
       }).then((res) => res.json()),
     {
       onSuccess: async () => {
-        await mutate(
-          `/api/discord/${activeApi}?${new URLSearchParams({
-            subscription_id: subscription.id,
-          })}`
-        )
+        if (subscription?.id) {
+          await mutate(
+            `/api/discord/${apiType}?${new URLSearchParams({
+              subscription_id: subscription.id,
+            })}`
+          )
+        }
         setDraftQuery('')
         setQuery('')
       },
@@ -673,8 +709,8 @@ const DiscordPanel = ({
           <DiscordMember
             key={member.user?.id}
             member={member}
-            subscriptionId={subscription.id}
-            apiType={activeApi}
+            subscriptionId={subscription?.id || ''}
+            apiType={apiType}
           />
         ))
       )}
@@ -684,9 +720,10 @@ const DiscordPanel = ({
   const DiscordAccessHeader = () => {
     // Show seats count when:
     // - User is in General Channel (always show)
-    // - User is in Support Channel AND has support tier subscription
+    // - User is in Support Channel AND has any support access
+    const supportAccess = hasSupportAccess()
     const showSeats =
-      activeApi === 'channel' || (activeApi === 'support' && hasSupportTier())
+      apiType === 'channel' || (apiType === 'support' && supportAccess.hasAccess)
 
     // Show reset button when:
     // - User is not a team member (only team owner or normal PRO user can reset)
@@ -695,10 +732,12 @@ const DiscordPanel = ({
     const showResetButton =
       !isTeamMember && groupInfoData?.currentlyOccupiedSeats > 0 && showSeats
 
+    const title = apiType === 'channel' ? 'Discord Access' : 'Private Support Access'
+
     return (
       <XStack jc="space-between" gap="$2" ai="center">
         <H4>
-          Discord Access{' '}
+          {title}{' '}
           {showSeats &&
             !!groupInfoData &&
             `(${groupInfoData?.currentlyOccupiedSeats}/${groupInfoData?.discordSeats})`}
@@ -734,6 +773,21 @@ const DiscordPanel = ({
       )
     }
 
+    // For support channels, check if user has any support access
+    if (apiType === 'support') {
+      const supportAccess = hasSupportAccess()
+      if (!supportAccess.hasAccess) {
+        return (
+          <YStack gap="$4" p="$4" backgroundColor="$color2" br="$4">
+            <Paragraph theme="alt2" ta="center">
+              You need a Chat Support or Support tier subscription to access private
+              support channels.
+            </Paragraph>
+          </YStack>
+        )
+      }
+    }
+
     if (groupInfoData.currentlyOccupiedSeats < groupInfoData.discordSeats) {
       return <SearchForm />
     }
@@ -749,51 +803,19 @@ const DiscordPanel = ({
   return (
     <YStack gap="$3">
       <DiscordAccessHeader />
-      <Tabs
-        value={activeApi}
-        onValueChange={(val: string) => setActiveApi(val as 'channel' | 'support')}
-        orientation="horizontal"
-        flexDirection="column"
-        size="$4"
-      >
-        <Tabs.List mb="$4">
-          <Tabs.Tab value="channel" f={1}>
-            <Paragraph>General Channel</Paragraph>
-          </Tabs.Tab>
-          <Tabs.Tab value="support" f={1}>
-            <Paragraph>Support Channel</Paragraph>
-          </Tabs.Tab>
-        </Tabs.List>
 
-        <Tabs.Content value="channel">
-          <YStack gap="$4">
-            <Paragraph theme="alt2">
-              Join the #takeout-general channel to discuss Tamagui with other Pro users.
-            </Paragraph>
-            {renderDiscordAccessContent()}
-          </YStack>
-        </Tabs.Content>
+      {apiType === 'channel' ? (
+        <Paragraph theme="alt2">
+          Join the #takeout-general channel to discuss Tamagui with other Pro users.
+        </Paragraph>
+      ) : (
+        <Paragraph theme="alt2">
+          Get access to your private support channel where you can directly communicate
+          with the Tamagui team.
+        </Paragraph>
+      )}
 
-        <Tabs.Content value="support">
-          <YStack gap="$4">
-            {hasSupportTier() ? (
-              <>
-                <Paragraph theme="alt2">
-                  Get access to your private support channel where you can directly
-                  communicate with the Tamagui team.
-                </Paragraph>
-                <SearchForm />
-              </>
-            ) : (
-              <YStack gap="$4" p="$4" backgroundColor="$color2" br="$4">
-                <Paragraph theme="alt2" ta="center">
-                  You need a Support tier subscription to access private support channels.
-                </Paragraph>
-              </YStack>
-            )}
-          </YStack>
-        </Tabs.Content>
-      </Tabs>
+      {renderDiscordAccessContent()}
     </YStack>
   )
 }
@@ -823,6 +845,7 @@ const DiscordMember = ({
 
       if (!res.ok) {
         let errorMessage = `HTTP ${res.status} ${res.statusText}`
+
         try {
           const errorData = await res.json()
           errorMessage = errorData.message || errorMessage
@@ -888,6 +911,7 @@ const PlanTab = ({
   isTeamMember: boolean
 }) => {
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
+  const [showSupportAccess, setShowSupportAccess] = useState(false)
   const { data: products } = useProducts()
   const [isGrantingAccess, setIsGrantingAccess] = useState(false)
 
@@ -972,6 +996,18 @@ const PlanTab = ({
             }}
           />
 
+          {/* Private Support Channels for Chat/Support users */}
+          {supportSubscription && (
+            <ServiceCard
+              title="Private Support"
+              description="Access your private Discord support channel with priority responses from the Tamagui team."
+              actionLabel="Manage Support"
+              onAction={() => {
+                setShowSupportAccess(true)
+              }}
+            />
+          )}
+
           <ServiceCard
             title="Theme AI"
             description="Prompt an LLM to generate themes."
@@ -1031,11 +1067,23 @@ const PlanTab = ({
         </YStack>
       )}
 
+      {/* General Discord Access Dialog for PRO users */}
       {showDiscordAccess && subscription && (
         <DiscordAccessDialog
-          subscription={supportSubscription || subscription}
+          subscription={subscription}
           onClose={() => setShowDiscordAccess(false)}
           isTeamMember={isTeamMember}
+          apiType="channel"
+        />
+      )}
+
+      {/* Private Support Access Dialog for Chat/Support users */}
+      {showSupportAccess && supportSubscription && (
+        <DiscordAccessDialog
+          subscription={supportSubscription}
+          onClose={() => setShowSupportAccess(false)}
+          isTeamMember={isTeamMember}
+          apiType="support"
         />
       )}
     </YStack>
@@ -1331,7 +1379,7 @@ const ManageTab = ({
                   const qty =
                     product?.name === ProductName.TamaguiProTeamSeats
                       ? (teamData?.subscription.total_seats ?? 1)
-                      : 1
+                      : (subscription.quantity ?? 1)
                   const total = (price?.unit_amount || 0) * qty
                   return (
                     <XStack key={item.id || idx} ai="center" mb="$2" width="100%">
@@ -1385,7 +1433,7 @@ const ManageTab = ({
               <Paragraph flex={1}>Billing Period</Paragraph>
               <YStack ai="flex-end">
                 <Paragraph>
-                  {new Date(subscription.current_period_start).toLocaleDateString()} -
+                  {new Date(subscription.current_period_start).toLocaleDateString()} -{' '}
                   {new Date(subscription.current_period_end).toLocaleDateString()}
                 </Paragraph>
               </YStack>
