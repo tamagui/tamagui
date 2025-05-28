@@ -5,7 +5,6 @@ export type ThemeState = {
     id: ID;
     name: string;
     theme: ThemeParsed;
-    inverses: number;
     parentName?: string;
     isInverse?: boolean;
     isNew?: boolean;

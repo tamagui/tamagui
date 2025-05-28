@@ -1143,7 +1143,6 @@ export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
-    themeInverse?: boolean;
     themeReset?: boolean;
     componentName?: string;
     debug?: DebugProp;

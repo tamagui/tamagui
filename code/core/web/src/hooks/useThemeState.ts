@@ -17,7 +17,7 @@ export type ThemeState = {
   id: ID
   name: string
   theme: ThemeParsed
-  inverses: number
+  // inverses: number
   parentName?: string
   isInverse?: boolean
   isNew?: boolean
@@ -72,7 +72,7 @@ export const useThemeState = (
         id: '',
         name: 'light',
         theme: getConfig().themes.light,
-        inverses: 0,
+        // inverses: 0,
       }
     )
   }
@@ -251,9 +251,9 @@ const getNextState = (
   }
 
   const scheme = getScheme(name)
-  const parentInverses = parentState?.inverses ?? 0
+  // const parentInverses = parentState?.inverses ?? 0
   const isInverse = parentState && scheme !== parentState.scheme
-  const inverses = parentInverses + (isInverse ? 1 : 0)
+  // const inverses = parentInverses + (isInverse ? 1 : 0)
 
   const nextState = {
     id,
@@ -262,7 +262,7 @@ const getNextState = (
     scheme,
     parentId,
     parentName: parentState?.name,
-    inverses,
+    // inverses,
     isInverse,
     isNew: true,
   } satisfies ThemeState

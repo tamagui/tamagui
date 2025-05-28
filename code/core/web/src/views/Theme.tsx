@@ -87,8 +87,8 @@ export function getThemedChildren(
     </ThemeStateContext.Provider>
   )
 
-  const { isInverse, name } = themeState
-  const requiresExtraWrapper = isInverse || forceClassName
+  const { name } = themeState
+  const requiresExtraWrapper = forceClassName
 
   // it only ever progresses from false => true => 'wrapped'
   if (!state.hasEverThemed) {
@@ -155,13 +155,11 @@ export function getThemedChildren(
       // but still calculate if we need the classnames
       const className = requiresExtraWrapper
         ? `${
-            isInverse
-              ? name.startsWith('light')
-                ? 't_light is_inversed'
-                : name.startsWith('dark')
-                  ? 't_dark is_inversed'
-                  : ''
-              : ''
+            name.startsWith('light')
+              ? 't_light'
+              : name.startsWith('dark')
+                ? 't_dark'
+                : ''
           } _dsp_contents`
         : `_dsp_contents`
       children = <span className={className}>{children}</span>
@@ -192,11 +190,13 @@ function getThemeClassNameAndStyle(
       }
     : undefined
 
-  const maxInverses = getSetting('maxDarkLightNesting') || 3
-  const themeClassName =
-    themeState.inverses >= maxInverses
-      ? themeState.name
-      : themeState.name.replace(schemePrefix, '')
+  // const maxInverses = getSetting('maxDarkLightNesting') || 3
+  // const themeClassName =
+  //   themeState.inverses >= maxInverses
+  //     ? themeState.name
+  //     : themeState.name.replace(schemePrefix, '')
+
+  const themeClassName = themeState.name.replace(schemePrefix, '')
 
   const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
 

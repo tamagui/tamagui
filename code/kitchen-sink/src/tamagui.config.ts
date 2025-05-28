@@ -143,9 +143,8 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
-  defaultFont: undefined,
   settings: {
-    defaultFont: undefined,
+    defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,

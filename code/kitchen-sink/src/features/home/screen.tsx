@@ -51,7 +51,7 @@ export function HomeScreen() {
             </Theme>
           </Theme>
 
-          <Square size={30} themeInverse bg="$background" />
+          <Square size={30} bg="$background" />
           <Square size={30} bg="$background" />
         </XStack>
 
@@ -82,7 +82,7 @@ export function HomeScreen() {
 
                   return (
                     <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
+                      <LinkListItem bg="$color1" href={route} size="$4">
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>

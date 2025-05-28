@@ -24,7 +24,7 @@ export function ButtonDemo(props) {
         </Button>
       </XStack>
       <XStack gap="$2">
-        <Button themeInverse size="$3">
+        <Button size="$3">
           Inverse
         </Button>
         <Button iconAfter={Activity} size="$3">

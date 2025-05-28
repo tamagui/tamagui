@@ -112,15 +112,15 @@ blog post:
     - "surface1-3" and have components use that instead of name by default when not unstyled
   - theme inverse only works with sub-themes named _inverse. createThemes.generateInverseSubThemes: boolean 
     - v4 config can add a boolean to do this by default
-  - button-next is mostly ready now to replace button:
+  <!-- - button-next is mostly ready now to replace button:
     - remove old button, move new button into place, fix issues around the site/bento
     - docs update: we should show "headless" style and non-headless
       - <Button.Frame><Button.Icon></Button.Icon></Button.Frame> for headless
-      - <Button> for non-headless
+      - <Button> for non-headless -->
   - input-next
     - rather than wrapping react-native-web we implement our own
     - keep it simple, align to web props as much as possible
-  - swap image-next => image
+  <!-- - swap image-next => image -->
   - make sure webContainerType is "right" - probably not `normal` default
     - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
   - we should fix "tag" and have it so you can pass typed props to the tag

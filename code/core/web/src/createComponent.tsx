@@ -395,9 +395,9 @@ export function createComponent<
 
     // these two are set conditionally if existing in props because we wrap children with
     // a span if they ever set one of these, so avoid wrapping all children with span
-    if ('themeInverse' in props) {
-      themeStateProps.inverse = props.themeInverse
-    }
+    // if ('themeInverse' in props) {
+    //   themeStateProps.inverse = props.themeInverse
+    // }
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }

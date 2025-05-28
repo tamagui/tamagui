@@ -12,7 +12,7 @@ export function themeable<ComponentType extends (props: any) => any>(
     props: ThemeableProps,
     ref
   ) {
-    const { themeInverse, theme, componentName, themeReset, ...rest } = props
+    const { theme, componentName, themeReset, ...rest } = props
 
     let overriddenContextProps: Object | undefined
     const context = staticConfig?.context
@@ -55,10 +55,10 @@ export function themeable<ComponentType extends (props: any) => any>(
       filteredProps ||= {}
       filteredProps.name = props.theme
     }
-    if ('themeInverse' in props) {
-      filteredProps ||= {}
-      filteredProps.inverse = props.themeInverse
-    }
+    // if ('themeInverse' in props) {
+    //   filteredProps ||= {}
+    //   filteredProps.inverse = props.themeInverse
+    // }
     if ('themeReset' in props) {
       filteredProps ||= {}
       filteredProps.reset = themeReset
@@ -95,7 +95,7 @@ export function themeable<ComponentType extends (props: any) => any>(
   })`
 
   type FinalComponentType = ComponentType extends (props: infer P) => infer R
-    ? (props: Omit<P, 'theme' | 'themeInverse'> & ThemeableProps) => R
+    ? (props: Omit<P, 'theme'> & ThemeableProps) => R
     : unknown
 
   return withTheme as FinalComponentType

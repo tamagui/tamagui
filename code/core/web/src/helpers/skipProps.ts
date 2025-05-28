@@ -15,7 +15,7 @@ export const skipProps = {
   tag: 1,
   style: 1, // handled after loop so pseudos set usedKeys and override it if necessary
   group: 1,
-  themeInverse: 1,
+  // themeInverse: 1,
   animatePresence: 1,
 }
 
