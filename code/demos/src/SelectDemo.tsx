@@ -81,7 +81,9 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           minWidth={200}
         >
           <Select.Group>
-            <Select.Label>Fruits</Select.Label>
+            <Select.Label>
+              <Select.Label.Text color="$red10">Fruits</Select.Label.Text>
+            </Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>

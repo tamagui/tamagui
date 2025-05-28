@@ -6,8 +6,7 @@ import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import type { ListItemProps } from '@tamagui/list-item'
-import { ListItem } from '@tamagui/list-item'
+import { ListItem, type ListItemProps } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { XStack, YStack } from '@tamagui/stacks'
@@ -272,9 +271,13 @@ const LABEL_NAME = 'SelectLabel'
 
 export type SelectLabelProps = ListItemProps
 
-const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
+const SelectLabelText = styled(ListItem.Text, {
+  fontWeight: '800',
+})
+
+const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
   (props: SelectScopedProps<SelectLabelProps>, forwardedRef) => {
-    const { __scopeSelect, ...labelProps } = props
+    const { __scopeSelect, children, ...labelProps } = props
     const context = useSelectItemParentContext(LABEL_NAME, __scopeSelect)
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
 
@@ -286,15 +289,21 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
       <ListItem
         tag="div"
         componentName={LABEL_NAME}
-        fontWeight="800"
         id={groupContext.id}
         size={context.size}
         {...labelProps}
         ref={forwardedRef}
-      />
+      >
+       {typeof children === 'string' ? <SelectLabelText>{children}</SelectLabelText> : children}
+      </ListItem>
     )
   }
 )
+
+const SelectLabel = withStaticProperties(SelectLabelFrame, {
+  Text: SelectLabelText,
+})
+
 
 SelectLabel.displayName = LABEL_NAME
 

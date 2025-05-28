@@ -1,5 +1,5 @@
-import type { GetProps, SizeTokens } from '@tamagui/web';
-type ButtonVariant = 'outlined';
+import type { GetProps, SizeTokens } from "@tamagui/web";
+type ButtonVariant = "outlined";
 export type ButtonProps = GetProps<typeof Frame>;
 declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
@@ -115,10 +115,10 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    Icon: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    Icon: (props: {
+        children: React.ReactNode;
+        scaleIcon?: number;
+    }) => any;
 };
 export {};
 //# sourceMappingURL=Button.d.ts.map

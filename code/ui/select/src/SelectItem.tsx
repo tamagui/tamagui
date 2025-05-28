@@ -1,7 +1,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ListItemProps } from '@tamagui/list-item'
-import { ListItemFrame, useListItem } from '@tamagui/list-item'
+import {ListItem} from '@tamagui/list-item'
 import * as React from 'react'
 
 import { createSelectContext, useSelectItemParentContext } from './context'
@@ -33,7 +33,7 @@ export interface SelectItemProps
   extends Omit<ListItemProps, keyof SelectItemExtraProps>,
     SelectItemExtraProps {}
 
-export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
+export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
       __scopeSelect,
@@ -44,12 +44,6 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
       ...restProps
     } = props
 
-    const { props: listItemProps } = useListItem({
-      ...(!props.unstyled && {
-        ellipsis: true,
-      }),
-      ...restProps,
-    })
 
     const context = useSelectItemParentContext(ITEM_NAME, __scopeSelect)
 
@@ -175,7 +169,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
         {shouldRenderWebNative ? (
           <option value={value}>{props.children}</option>
         ) : (
-          <ListItemFrame
+          <ListItem.Frame
             tag="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
@@ -200,7 +194,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
                 outlineStyle: 'solid',
               },
             })}
-            {...listItemProps}
+            {...restProps}
             {...selectItemProps}
           />
         )}

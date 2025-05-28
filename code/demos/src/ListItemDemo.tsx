@@ -1,13 +1,13 @@
-import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons'
-import { ListItem, Separator, XStack, YGroup } from 'tamagui'
+import { ChevronRight, Cloud, Moon, Star, Sun } from "@tamagui/lucide-icons";
+import { ListItem, Separator, XStack, YGroup } from "tamagui";
 
 export function ListItemDemo() {
   return (
-    <XStack $maxMd={{ flexDirection: 'column' }} paddingHorizontal="$4" space>
+    <XStack $maxMd={{ flexDirection: "column" }} paddingHorizontal="$4">
       <ListItemDemo1 />
       <ListItemDemo2 />
     </XStack>
-  )
+  );
 }
 
 function ListItemDemo1() {
@@ -20,25 +20,30 @@ function ListItemDemo1() {
       size="$4"
     >
       <YGroup.Item>
-        <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
+        <ListItem
+          icon={Star}
+          title="Star"
+          subTitle={<ListItem.Subtitle>Twinkles</ListItem.Subtitle>}
+          iconAfter={ChevronRight}
+        />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Moon}>
+        <ListItem icon={Moon}>
           Moon
         </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Sun}>
+        <ListItem icon={Sun}>
           Sun
         </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Cloud}>
+        <ListItem icon={Cloud}>
           Cloud
         </ListItem>
       </YGroup.Item>
     </YGroup>
-  )
+  );
 }
 
 function ListItemDemo2() {
@@ -72,5 +77,5 @@ function ListItemDemo2() {
         />
       </YGroup.Item>
     </YGroup>
-  )
+  );
 }
