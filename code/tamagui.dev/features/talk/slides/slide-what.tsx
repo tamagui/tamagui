@@ -50,7 +50,7 @@ export default memo(() => {
                 props: {
                   size: '$11',
                 },
-                content: `@tamagui/static`,
+                content: `@tamagui/compiler`,
               },
               {
                 type: 'bullet-point',

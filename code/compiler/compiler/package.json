@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/static",
+  "name": "@tamagui/compiler",
   "version": "1.126.13-1747874018127",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

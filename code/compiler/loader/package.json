@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "@tamagui/cli-color": "workspace:*",
+    "@tamagui/compiler": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/static": "workspace:*",
     "@tamagui/web": "workspace:*",
     "esbuild-loader": "^4.2.2",
     "esm-resolve": "^1.0.8",

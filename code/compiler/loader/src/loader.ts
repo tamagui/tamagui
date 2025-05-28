@@ -1,5 +1,5 @@
-import type { TamaguiOptions } from '@tamagui/static'
-import Static from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/compiler'
+import Static from '@tamagui/compiler'
 import type { LoaderContext } from 'webpack'
 import { requireResolve } from './requireResolve'
 

@@ -95,6 +95,9 @@
       "path": "code/compiler/static"
     },
     {
+      "path": "code/compiler/compiler"
+    },
+    {
       "path": "code/compiler/vite-plugin"
     },
     {

@@ -7,7 +7,7 @@ const highlightCode = createCodeHighlighter()
 export default memo(() => {
   return (
     <Slide
-      title="@tamagui/static"
+      title="@tamagui/compiler"
       subTitle="Optimizing compiler"
       stepsStrategy="replace"
       theme="green"

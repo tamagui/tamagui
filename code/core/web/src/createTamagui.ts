@@ -29,7 +29,7 @@ import type {
   TokensParsed,
 } from './types'
 
-// config is re-run by @tamagui/static, dont double validate
+// config is re-run by @tamagui/compiler, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
 
 export function createTamagui<Conf extends CreateTamaguiProps>(

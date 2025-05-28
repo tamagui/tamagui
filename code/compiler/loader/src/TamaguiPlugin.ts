@@ -1,5 +1,5 @@
-import type { TamaguiOptions } from '@tamagui/static'
-import Static from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/compiler'
+import Static from '@tamagui/compiler'
 import { existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { Compiler, RuleSetRule } from 'webpack'

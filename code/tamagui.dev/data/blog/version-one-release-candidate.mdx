@@ -47,11 +47,11 @@ Here's a very brief overview of changes since Beta:
 - `updateTheme()` - Using `updateTheme` gives you the ability to dynamically modify themes on the fly.
 - `useMediaPropsActive()` - Useful for authoring your own custom components built on Tamagui, easily access the "currently active" set of styles.
 
-### Major `@tamagui/static` Updates
+### Major `@tamagui/compiler` Updates
 
 - Install - The Webpack plugin and Vite plugin are easier to configure and generally handle many more edge cases, with an addition of 20+ dev-time console warnings.
 - Performance - During the beta we landed many performance improvements to the optimizing compiler. By default now Tamagui avoids even parsing many more files, and it pre-bundles your `components` and `config`.
-- Better analysis - Previously, `@tamagui/static` only knew how to optimize components found in your separated design system package. The compiler now analyzes components anywhere in your app, by dynamically loading and reading their configuration. This experimental feature is enabled with the environment variable `TAMAGUI_ENABLE_DYNAMIC_LOAD=1`.
+- Better analysis - Previously, `@tamagui/compiler` only knew how to optimize components found in your separated design system package. The compiler now analyzes components anywhere in your app, by dynamically loading and reading their configuration. This experimental feature is enabled with the environment variable `TAMAGUI_ENABLE_DYNAMIC_LOAD=1`.
 - Vite support - Tamagui supports Vite 3, both with the compiler and without.
 - Correctness - Most of the work during beta focused on correctness. We've increased testing to cover many more areas, and landed a number of important correctness fixes alongside the ones in `core`.
 

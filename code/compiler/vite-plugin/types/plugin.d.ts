@@ -1,4 +1,4 @@
-import type { TamaguiOptions } from '@tamagui/static';
+import type { TamaguiOptions } from '@tamagui/compiler';
 import type { Plugin } from 'vite';
 export declare function tamaguiPlugin({ optimize, disableResolveConfig, ...tamaguiOptionsIn }?: TamaguiOptions & {
     optimize?: boolean;

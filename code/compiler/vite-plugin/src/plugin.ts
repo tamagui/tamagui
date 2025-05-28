@@ -1,4 +1,4 @@
-import type { TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/compiler'
 import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'

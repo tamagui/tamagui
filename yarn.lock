@@ -6685,7 +6685,7 @@ __metadata:
     "@babel/traverse": "npm:^7.25.4"
     "@babel/types": "npm:^7.25.4"
     "@tamagui/build": "workspace:*"
-    "@tamagui/static": "workspace:*"
+    "@tamagui/compiler": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -6894,9 +6894,9 @@ __metadata:
   resolution: "@tamagui/cli@workspace:code/core/cli"
   dependencies:
     "@tamagui/build": "workspace:*"
+    "@tamagui/compiler": "workspace:*"
     "@tamagui/create-theme": "workspace:*"
     "@tamagui/generate-themes": "workspace:*"
-    "@tamagui/static": "workspace:*"
     "@tamagui/types": "workspace:*"
     "@tamagui/vite-plugin": "workspace:*"
     "@types/chokidar": "npm:^2.1.3"
@@ -6989,6 +6989,60 @@ __metadata:
   resolution: "@tamagui/colors@workspace:code/core/colors"
   dependencies:
     "@tamagui/build": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/compiler@workspace:*, @tamagui/compiler@workspace:code/compiler/compiler":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/compiler@workspace:code/compiler/compiler"
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+    "@babel/generator": "npm:^7.25.5"
+    "@babel/helper-plugin-utils": "npm:^7.24.8"
+    "@babel/parser": "npm:^7.25.4"
+    "@babel/plugin-syntax-typescript": "npm:^7.25.4"
+    "@babel/plugin-transform-react-jsx": "npm:^7.25.2"
+    "@babel/runtime": "npm:^7.25.4"
+    "@babel/traverse": "npm:^7.25.4"
+    "@babel/types": "npm:^7.25.4"
+    "@expo/match-media": "npm:^0.4.0"
+    "@tamagui/build": "workspace:*"
+    "@tamagui/cli-color": "workspace:*"
+    "@tamagui/config-default": "workspace:*"
+    "@tamagui/core": "workspace:*"
+    "@tamagui/fake-react-native": "workspace:*"
+    "@tamagui/generate-themes": "workspace:*"
+    "@tamagui/helpers": "workspace:*"
+    "@tamagui/helpers-node": "workspace:*"
+    "@tamagui/proxy-worm": "workspace:*"
+    "@tamagui/react-native-web-internals": "workspace:*"
+    "@tamagui/react-native-web-lite": "workspace:*"
+    "@tamagui/shorthands": "workspace:*"
+    "@tamagui/types": "workspace:*"
+    "@types/babel__core": "npm:^7.20.5"
+    "@types/find-root": "npm:^1.1.2"
+    "@types/node": "npm:^22.1.0"
+    "@types/webpack": "npm:^4.41.26"
+    babel-literal-to-ast: "npm:^2.1.0"
+    babel-loader: "npm:^9.1.3"
+    browserslist: "npm:^4.22.2"
+    check-dependency-version-consistency: "npm:^4.1.0"
+    esbuild: "npm:^0.25.0"
+    esbuild-loader: "npm:^4.2.2"
+    esbuild-register: "npm:^3.6.0"
+    fast-glob: "npm:^3.2.11"
+    find-cache-dir: "npm:^3.3.2"
+    find-root: "npm:^1.1.0"
+    fs-extra: "npm:^11.2.0"
+    invariant: "npm:^2.2.4"
+    js-yaml: "npm:^4.1.0"
+    lodash: "npm:^4.17.21"
+    null-loader: "npm:^4.0.1"
+    react: "npm:*"
+    react-native-web: "npm:^0.20.0"
+    typescript: "npm:^5.8.2"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -7811,7 +7865,7 @@ __metadata:
   resolution: "@tamagui/metro-plugin@workspace:code/compiler/metro-plugin"
   dependencies:
     "@tamagui/build": "workspace:*"
-    "@tamagui/static": "workspace:*"
+    "@tamagui/compiler": "workspace:*"
     fs-extra: "npm:^11.2.0"
     metro-config: "npm:*"
     metro-transform-worker: "npm:*"
@@ -7834,9 +7888,9 @@ __metadata:
   dependencies:
     "@babel/preset-react": "npm:^7.24.7"
     "@tamagui/build": "workspace:*"
+    "@tamagui/compiler": "workspace:*"
     "@tamagui/proxy-worm": "workspace:*"
     "@tamagui/react-native-svg": "workspace:*"
-    "@tamagui/static": "workspace:*"
     babel-loader: "npm:^9.1.3"
     browserslist: "npm:^4.22.2"
     css-loader: "npm:^6.7.4"
@@ -8394,60 +8448,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@workspace:*, @tamagui/static@workspace:code/compiler/static":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/static@workspace:code/compiler/static"
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-    "@babel/generator": "npm:^7.25.5"
-    "@babel/helper-plugin-utils": "npm:^7.24.8"
-    "@babel/parser": "npm:^7.25.4"
-    "@babel/plugin-syntax-typescript": "npm:^7.25.4"
-    "@babel/plugin-transform-react-jsx": "npm:^7.25.2"
-    "@babel/runtime": "npm:^7.25.4"
-    "@babel/traverse": "npm:^7.25.4"
-    "@babel/types": "npm:^7.25.4"
-    "@expo/match-media": "npm:^0.4.0"
-    "@tamagui/build": "workspace:*"
-    "@tamagui/cli-color": "workspace:*"
-    "@tamagui/config-default": "workspace:*"
-    "@tamagui/core": "workspace:*"
-    "@tamagui/fake-react-native": "workspace:*"
-    "@tamagui/generate-themes": "workspace:*"
-    "@tamagui/helpers": "workspace:*"
-    "@tamagui/helpers-node": "workspace:*"
-    "@tamagui/proxy-worm": "workspace:*"
-    "@tamagui/react-native-web-internals": "workspace:*"
-    "@tamagui/react-native-web-lite": "workspace:*"
-    "@tamagui/shorthands": "workspace:*"
-    "@tamagui/types": "workspace:*"
-    "@types/babel__core": "npm:^7.20.5"
-    "@types/find-root": "npm:^1.1.2"
-    "@types/node": "npm:^22.1.0"
-    "@types/webpack": "npm:^4.41.26"
-    babel-literal-to-ast: "npm:^2.1.0"
-    babel-loader: "npm:^9.1.3"
-    browserslist: "npm:^4.22.2"
-    check-dependency-version-consistency: "npm:^4.1.0"
-    esbuild: "npm:^0.25.0"
-    esbuild-loader: "npm:^4.2.2"
-    esbuild-register: "npm:^3.6.0"
-    fast-glob: "npm:^3.2.11"
-    find-cache-dir: "npm:^3.3.2"
-    find-root: "npm:^1.1.0"
-    fs-extra: "npm:^11.2.0"
-    invariant: "npm:^2.2.4"
-    js-yaml: "npm:^4.1.0"
-    lodash: "npm:^4.17.21"
-    null-loader: "npm:^4.0.1"
-    react: "npm:*"
-    react-native-web: "npm:^0.20.0"
-    typescript: "npm:^5.8.2"
-  peerDependencies:
-    react: "*"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/switch-headless@workspace:*, @tamagui/switch-headless@workspace:code/ui/switch-headless":
   version: 0.0.0-use.local
   resolution: "@tamagui/switch-headless@workspace:code/ui/switch-headless"
@@ -8963,11 +8963,11 @@ __metadata:
   resolution: "@tamagui/vite-plugin@workspace:code/compiler/vite-plugin"
   dependencies:
     "@tamagui/build": "workspace:*"
+    "@tamagui/compiler": "workspace:*"
     "@tamagui/fake-react-native": "workspace:*"
     "@tamagui/proxy-worm": "workspace:*"
     "@tamagui/react-native-svg": "workspace:*"
     "@tamagui/react-native-web-lite": "workspace:*"
-    "@tamagui/static": "workspace:*"
     esm-resolve: "npm:^1.0.8"
     fs-extra: "npm:^11.2.0"
     outdent: "npm:^0.8.0"
@@ -28875,8 +28875,8 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/cli-color": "workspace:*"
+    "@tamagui/compiler": "workspace:*"
     "@tamagui/core": "workspace:*"
-    "@tamagui/static": "workspace:*"
     "@tamagui/web": "workspace:*"
     esbuild-loader: "npm:^4.2.2"
     esm-resolve: "npm:^1.0.8"

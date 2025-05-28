@@ -1,4 +1,4 @@
-import type { TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/compiler'
 import type { LoaderContext } from 'webpack'
 
 export default function loader(this: LoaderContext<TamaguiOptions>) {
