@@ -473,6 +473,9 @@
       "path": "code/ui/tamagui"
     },
     {
+      "path": "code/ui/tamagui-ui"
+    },
+    {
       "path": "code/ui/text"
     },
     {

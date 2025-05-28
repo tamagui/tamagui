@@ -49,6 +49,7 @@
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "@tamagui/toast": "workspace:*",
+    "@tamagui/ui": "workspace:*",
     "@tamagui/web": "workspace:*",
     "burnt": "^0.12.2",
     "expo": "^52.0.23",
