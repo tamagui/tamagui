@@ -34,6 +34,7 @@ export const settings = {
   // allow two inverses (tooltips, etc)
   // TODO on inverse theme changes
   maxDarkLightNesting: 2,
+  styleCompat: 'legacy',
 } satisfies CreateTamaguiProps['settings']
 
 export const defaultConfig = {

@@ -26,6 +26,7 @@ export declare const settings: {
     addThemeClassName: "html";
     onlyAllowShorthands: true;
     maxDarkLightNesting: number;
+    styleCompat: "legacy";
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
@@ -394,6 +395,7 @@ export declare const defaultConfig: {
         addThemeClassName: "html";
         onlyAllowShorthands: true;
         maxDarkLightNesting: number;
+        styleCompat: "legacy";
     };
 };
 //# sourceMappingURL=v4.d.ts.map
