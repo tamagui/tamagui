@@ -53,6 +53,29 @@ export const getActiveSubscriptions = async (
   return subscriptions.find((s) => s.id && s.id === subscriptionId)
 }
 
+export const getAllActiveSubscriptions = async (userId: string) => {
+  const result = await supabaseAdmin
+    .from('subscriptions')
+    .select(`
+      *,
+      subscription_items (
+        *,
+        price:prices (
+          *,
+          product:products (*)
+        )
+      )
+    `)
+    .eq('user_id', userId)
+    .in('status', ['active', 'trialing'])
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
+  return result.data
+}
+
 export const getSubscriptions = async (uuid?: string) => {
   let userId = uuid
 

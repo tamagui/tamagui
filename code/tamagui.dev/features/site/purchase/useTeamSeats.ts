@@ -28,8 +28,8 @@ export type TeamSubscription = {
   members: TeamMember[]
 }
 
-export const useTeamSeats = () => {
-  return useSWR<TeamSubscription>('/api/team-seat', (url) =>
+export const useTeamSeats = (shouldFetch = true) => {
+  return useSWR<TeamSubscription>(shouldFetch ? '/api/team-seat' : null, (url) =>
     fetch(url).then((res) => {
       if (!res.ok) throw new Error('Failed to fetch team seats')
       return res.json()

@@ -102,7 +102,8 @@ export default apiRoute(async (req) => {
   if (teamSubscription) {
     const teamDiscordSeats = teamSubscription.total_seats
     if (teamDiscordSeats > discordSeats) {
-      discordSeats = teamDiscordSeats
+      // Add 1 to the team discord seats to account for the owner
+      discordSeats = teamDiscordSeats + 1
     }
   }
 
@@ -179,6 +180,18 @@ export default apiRoute(async (req) => {
         {
           status: 401,
         }
+      )
+    }
+
+    // Check if user is already added to this subscription
+    const existingInvite = discordInvites.data.find(
+      (invite) => invite.discord_user_id === userDiscordId
+    )
+
+    if (existingInvite) {
+      return Response.json(
+        { message: 'User is already added to the Takeout general channel!' },
+        { status: 400 }
       )
     }
 

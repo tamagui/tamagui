@@ -32,15 +32,20 @@ export async function ensureSubscription(
     )
   }
 
+  // This for making sure the subscription is valid for the takeout channel
+  // We don't need to check for chat/support subscriptions since they are handled in the support+api.ts file
   const validProducts = [
     ProductName.TamaguiPro,
-    ProductName.TamaguiSupport,
-    ProductName.TamaguiProTeamSeats,
+    // Add old Takeout Stack to support old subscriptions access to the takeout channel
+    ProductName.TamaguiTakeoutStack,
   ]
 
   const subscriptionData = getArray(subscription.subscription_items).find((item) => {
     const products = getSingle(getSingle(item?.price)?.products)
-    return products?.name && validProducts.includes(products.name as ProductName)
+    return (
+      products?.name &&
+      validProducts.includes(products.name as (typeof validProducts)[number])
+    )
   })
 
   if (!subscriptionData) {

@@ -93,6 +93,7 @@
     "test:docker": "yarn test:docker:build && yarn test:docker:run",
     "test:starter-free": "./scripts/test-starter-free.sh",
     "test": "CLEANUP=1 turbo run --concurrency=1 test && yarn test:starter-free",
+    "test-ios": "yarn workspaces foreach --exclude tamagui -A run test-ios",
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "typecheck": "./scripts/typecheck.sh",
     "upgrade:one": "yarn up 'one'@latest '@vxrn/*'@latest",
@@ -151,9 +152,5 @@
     "typescript": "^5.8.2",
     "ultra-runner": "^3.10.5",
     "zx": "^7.2.3"
-  },
-  "resolutions": {
-    "@react-native/assets-registry@npm:0.76.9": "patch:@react-native/assets-registry@npm%3A0.76.9#~/.yarn/patches/@react-native-assets-registry-npm-0.76.9-8c740e2424.patch",
-    "@react-native/assets-registry@npm:0.79.2": "patch:@react-native/assets-registry@npm%3A0.76.9#~/.yarn/patches/@react-native-assets-registry-npm-0.76.9-8c740e2424.patch"
   }
 }

@@ -35,8 +35,8 @@
     "@dominicstop/ts-event-emitter": "1.1.0",
     "@expo/metro-runtime": "~4.0.1",
     "@react-native-async-storage/async-storage": "1.23.1",
-    "@react-navigation/native": "^7.0.14",
-    "@react-navigation/native-stack": "^7.2.0",
+    "@react-navigation/native": "7.0.0",
+    "@react-navigation/native-stack": "7.0.0",
     "@shopify/restyle": "^2.4.4",
     "@tamagui/bento": "workspace:*",
     "@tamagui/cli": "workspace:*",
@@ -85,12 +85,15 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.1.475",
+    "one": "1.1.486",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
     "webpack": "^5.88.2",
     "webpack-bundle-analyzer": "^4.9.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
+  },
+  "resolutions": {
+    "@react-navigation/core": "7.8.5"
   }
 }

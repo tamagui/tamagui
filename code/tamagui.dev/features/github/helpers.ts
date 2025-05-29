@@ -218,6 +218,8 @@ export const whitelistBentoUsernames = new Set([
   // shaunn.diamond@outlook.com
   'upp22',
 
+  'pshomov@gmail.com',
+
   // codingscape
   ...codinscapeusers,
 ])
