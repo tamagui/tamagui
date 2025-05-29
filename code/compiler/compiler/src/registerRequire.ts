@@ -76,9 +76,9 @@ export function registerRequire(
       return og.apply(this, ['@tamagui/react-native-svg'])
     }
 
-    if (path === 'react-native/package.json') {
-      return og.apply(this, ['react-native-web/package.json'])
-    }
+    // if (path === 'react-native/package.json') {
+    //   return og.apply(this, ['react-native-web/package.json'])
+    // }
 
     if (
       path === '@tamagui/react-native-web-lite' ||

@@ -5100,10 +5100,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/assets-registry@npm:0.79.2":
-  version: 0.79.2
-  resolution: "@react-native/assets-registry@npm:0.79.2"
-  checksum: 10/bca594f4524d7e53a229c6454cd6bdfc70f2f1d994f140cc322bf768507383133e99b0d5621bc49d4998ad0fc28e30361423d6f375de3658e2b98a994de0e704
+"@react-native/assets-registry@patch:@react-native/assets-registry@npm%3A0.76.9#~/.yarn/patches/@react-native-assets-registry-npm-0.76.9-8c740e2424.patch":
+  version: 0.76.9
+  resolution: "@react-native/assets-registry@patch:@react-native/assets-registry@npm%3A0.76.9#~/.yarn/patches/@react-native-assets-registry-npm-0.76.9-8c740e2424.patch::version=0.76.9&hash=3fa93e"
+  checksum: 10/8858a81956c558d41fb07816680fffaa21750fd7fab3ad1885ab4c07e1632e920d52e1dd732602b5fdd0952541ae1be52712584f9c8a49e67919b5d775ef943a
   languageName: node
   linkType: hard
 
@@ -7039,7 +7039,6 @@ __metadata:
     lodash: "npm:^4.17.21"
     null-loader: "npm:^4.0.1"
     react: "npm:*"
-    react-native-web: "npm:^0.20.0"
     typescript: "npm:^5.8.2"
   peerDependencies:
     react: "*"
@@ -7692,6 +7691,7 @@ __metadata:
     "@tamagui/demos": "workspace:*"
     "@tamagui/font-inter": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
+    "@tamagui/metro-plugin": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
     "@tamagui/themes": "workspace:*"
     "@tamagui/toast": "workspace:*"
@@ -7860,7 +7860,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/metro-plugin@workspace:code/compiler/metro-plugin":
+"@tamagui/metro-plugin@workspace:*, @tamagui/metro-plugin@workspace:code/compiler/metro-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/metro-plugin@workspace:code/compiler/metro-plugin"
   dependencies:
@@ -23247,7 +23247,6 @@ __metadata:
     react: "npm:*"
     react-dom: "npm:*"
     react-native: "npm:^0.76.5"
-    react-native-web: "npm:^0.20.0"
     tamagui: "workspace:*"
     vercel: "npm:latest"
   languageName: unknown

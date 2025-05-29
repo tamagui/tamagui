@@ -180,10 +180,6 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
             {...(!props.unstyled && {
-              backgrounded: true,
-              pressTheme: true,
-              hoverTheme: true,
-              focusTheme: true,
               cursor: 'default',
               size,
               outlineOffset: -0.5,

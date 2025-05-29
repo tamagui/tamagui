@@ -46,6 +46,7 @@
     "@tamagui/demos": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "@tamagui/toast": "workspace:*",

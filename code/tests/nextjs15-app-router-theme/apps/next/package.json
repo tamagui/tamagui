@@ -18,7 +18,6 @@
     "react": "*",
     "react-dom": "*",
     "react-native": "^0.76.5",
-    "react-native-web": "^0.20.0",
     "tamagui": "workspace:*",
     "vercel": "latest"
   },
