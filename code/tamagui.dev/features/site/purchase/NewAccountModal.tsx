@@ -947,7 +947,8 @@ const PlanTab = ({
         alert(data?.error || `Error: ${res.status} ${res.statusText}`)
       } else {
         if (data.url) {
-          window.location.href = data.url
+          // Open URL in new tab
+          window.open(data.url, '_blank', 'noopener,noreferrer')
         } else if (data.message) {
           alert(data.message)
         }
