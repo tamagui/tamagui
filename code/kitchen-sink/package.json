@@ -50,7 +50,7 @@
     "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",
     "burnt": "^0.12.2",
-    "expo": "^52.0.23",
+    "expo": "^53",
     "expo-constants": "^17.0.3",
     "expo-document-picker": "~13.0.1",
     "expo-font": "~13.0.2",
