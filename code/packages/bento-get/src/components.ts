@@ -648,7 +648,18 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'Chat',
     category: 'elements',
     categorySection: 'list',
-    moveFilesToFolder: [{ file: 'Chat', to: '' }],
+    moveFilesToFolder: [
+      { file: 'Chat', to: '' },
+      { file: 'chipsParts', to: '../../chips/components' },
+      { file: 'BubbleChat', to: 'components/Chat' },
+      { file: 'ChatContext', to: 'components/ChatContext' },
+    ],
+    dependencies: [
+      'react-hook-form',
+      '@tamagui/lucide-icons',
+      'react-native-reanimated',
+      'react-native-gesture-handler',
+    ],
   },
   {
     name: 'Item Value List',
