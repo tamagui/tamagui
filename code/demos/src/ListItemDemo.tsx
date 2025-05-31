@@ -1,5 +1,5 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from "@tamagui/lucide-icons";
-import { ListItem, Separator, XStack, YGroup } from "tamagui";
+import { ListItem, Separator, XStack, YGroup } from "@tamagui/ui";
 
 export function ListItemDemo() {
   return (
@@ -58,8 +58,6 @@ function ListItemDemo2() {
     >
       <YGroup.Item>
         <ListItem
-          hoverTheme
-          pressTheme
           title="Star"
           subTitle="Subtitle"
           icon={Star}
@@ -68,8 +66,6 @@ function ListItemDemo2() {
       </YGroup.Item>
       <YGroup.Item>
         <ListItem
-          hoverTheme
-          pressTheme
           title="Moon"
           subTitle="Subtitle"
           icon={Moon}
