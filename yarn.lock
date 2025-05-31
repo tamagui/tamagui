@@ -5412,11 +5412,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< Updated upstream
-"@react-navigation/core@npm:^7.9.2":
-=======
 "@react-navigation/core@npm:^7.0.0, @react-navigation/core@npm:^7.9.2":
->>>>>>> Stashed changes
   version: 7.9.2
   resolution: "@react-navigation/core@npm:7.9.2"
   dependencies:
@@ -5433,8 +5429,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< Updated upstream
-=======
 "@react-navigation/core@npm:^7.9.1":
   version: 7.9.1
   resolution: "@react-navigation/core@npm:7.9.1"
@@ -5452,7 +5446,6 @@ __metadata:
   languageName: node
   linkType: hard
 
->>>>>>> Stashed changes
 "@react-navigation/core@npm:~7.8.0":
   version: 7.8.5
   resolution: "@react-navigation/core@npm:7.8.5"
@@ -5490,11 +5483,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< Updated upstream
-"@react-navigation/elements@npm:^2.4.2":
-=======
 "@react-navigation/elements@npm:^2.0.0, @react-navigation/elements@npm:^2.4.2":
->>>>>>> Stashed changes
   version: 2.4.2
   resolution: "@react-navigation/elements@npm:2.4.2"
   dependencies:
@@ -5530,9 +5519,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< Updated upstream
-"@react-navigation/native-stack@npm:^7.2.0, @react-navigation/native-stack@npm:~7.3.4":
-=======
 "@react-navigation/native-stack@npm:7.0.0":
   version: 7.0.0
   resolution: "@react-navigation/native-stack@npm:7.0.0"
@@ -5550,7 +5536,6 @@ __metadata:
   linkType: hard
 
 "@react-navigation/native-stack@npm:~7.3.4":
->>>>>>> Stashed changes
   version: 7.3.13
   resolution: "@react-navigation/native-stack@npm:7.3.13"
   dependencies:
@@ -5566,9 +5551,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< Updated upstream
-"@react-navigation/native@npm:^7.0.14, @react-navigation/native@npm:~7.1.0":
-=======
 "@react-navigation/native@npm:7.0.0":
   version: 7.0.0
   resolution: "@react-navigation/native@npm:7.0.0"
@@ -5602,7 +5584,6 @@ __metadata:
   linkType: hard
 
 "@react-navigation/native@npm:~7.1.0":
->>>>>>> Stashed changes
   version: 7.1.9
   resolution: "@react-navigation/native@npm:7.1.9"
   dependencies:
@@ -7745,15 +7726,9 @@ __metadata:
     "@expo/metro-runtime": "npm:~4.0.1"
     "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
-<<<<<<< Updated upstream
     "@react-native-async-storage/async-storage": "npm:1.23.1"
-    "@react-navigation/native": "npm:^7.0.14"
-    "@react-navigation/native-stack": "npm:^7.2.0"
-=======
-    "@react-native-async-storage/async-storage": "npm:^2.1.0"
     "@react-navigation/native": "npm:7.0.0"
     "@react-navigation/native-stack": "npm:7.0.0"
->>>>>>> Stashed changes
     "@shopify/restyle": "npm:^2.4.4"
     "@tamagui/babel-plugin": "workspace:*"
     "@tamagui/bento": "workspace:*"
