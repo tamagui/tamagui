@@ -17,7 +17,7 @@ import {
   XStack,
   YStack,
 } from '@my/ui'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React from 'react'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { useState } from 'react'
@@ -213,6 +213,19 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
+      <XStack gap="$2">
+        <Button
+          size="$3"
+          iconAfter={
+            <Button.Icon >
+              <Activity />
+            </Button.Icon>
+          }
+        >
+          <Button.Text>Inverse</Button.Text>
+        </Button>
+        
+      </XStack>
       <YStack gap="$4">
         <H1 text="center" color="$color12">
           Welcome to Tamagui.

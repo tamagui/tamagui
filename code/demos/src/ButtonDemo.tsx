@@ -6,9 +6,7 @@ import { Button as ButtonV1 } from "@tamagui/button/v1";
 export function ButtonDemo(props) {
   return (
     <YStack padding="$3" gap="$3" w="100%" {...props}>
-      <ButtonV1 icon={Airplay}>
-        Button v1
-      </ButtonV1>
+      <ButtonV1 icon={Airplay}>Button v1</ButtonV1>
       <Button>
         <Button.Text>Plain</Button.Text>
       </Button>
@@ -24,8 +22,15 @@ export function ButtonDemo(props) {
         </Button>
       </XStack>
       <XStack gap="$2">
-        <Button size="$3">
-          Inverse
+        <Button
+          size="$3"
+          icon={
+            <Button.Icon>
+              <Activity />
+            </Button.Icon>
+          }
+        >
+          <Button.Text>Inverse</Button.Text>
         </Button>
         <Button iconAfter={Activity} size="$3">
           iconAfter
