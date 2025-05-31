@@ -52,7 +52,7 @@ export default function TamaguiTalk() {
           <LogoWords />
         </YStack>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <ThemeToggle borderWidth={0} chromeless />
       </XStack>

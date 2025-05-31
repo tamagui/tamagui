@@ -72,7 +72,7 @@ export const FieldsetWithLabel = ({
           />
         ) : (
           <Heading
-            selectable={false}
+            userSelect="none"
             tag="label"
             size="$5"
             color="$color11"

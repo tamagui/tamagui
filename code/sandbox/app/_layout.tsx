@@ -1,4 +1,4 @@
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.css'
 

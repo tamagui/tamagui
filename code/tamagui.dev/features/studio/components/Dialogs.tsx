@@ -51,7 +51,8 @@ export const Dialogs = memo(() => {
           onPointerDownOutside={() => {
             rootStore.hideDialog()
           }}
-          bordered
+          borderWidth={1}
+          borderColor="$borderColor"
           elevate
           key="content"
           animation={[
@@ -94,15 +95,15 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$4">
-        <YStack space="$2">
+      <YStack gap="$4">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Create Theme</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Create a new theme in scope {props.category}.
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
+        <Fieldset gap="$4" horizontal>
           <Label size="$3" w={160} justifyContent="flex-end" htmlFor="theme-name">
             Name
           </Label>
@@ -120,15 +121,15 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
-        <YStack space="$2">
+      <YStack gap="$6" p="$2">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Delete {props.thingName}?</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Are you sure you want to delete {props.thingName}?
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack jc="flex-end" gap="$4">
           <Dialog.Close asChild>
             <Button>Cancel</Button>
           </Dialog.Close>
@@ -147,15 +148,15 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
-        <YStack space="$2">
+      <YStack gap="$6" p="$2">
+        <YStack gap="$2">
           <Dialog.Title size="$7">{props.title}</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             {props.message}
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack jc="flex-end" gap="$4">
           <DialogClose>
             <Button themeInverse aria-label="Ok">
               Ok

@@ -2,7 +2,7 @@ import { ChevronRight } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
-import type { ListItemProps } from 'tamagui'
+import type { ListItemProps } from '@tamagui/ui'
 import {
   H1,
   ListItem,
@@ -13,7 +13,7 @@ import {
   XStack,
   YGroup,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { ColorSchemeListItem } from './ColorSchemeListItem'
 
 export function HomeScreen() {
@@ -29,7 +29,7 @@ export function HomeScreen() {
 
   return (
     <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
@@ -51,7 +51,7 @@ export function HomeScreen() {
             </Theme>
           </Theme>
 
-          <Square size={30} themeInverse bg="$background" />
+          <Square size={30} bg="$background" />
           <Square size={30} bg="$background" />
         </XStack>
 
@@ -82,7 +82,7 @@ export function HomeScreen() {
 
                   return (
                     <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
+                      <LinkListItem bg="$color1" href={route} size="$4">
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>

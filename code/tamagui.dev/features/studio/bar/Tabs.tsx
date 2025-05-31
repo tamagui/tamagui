@@ -104,7 +104,7 @@ export const BarTabs = memo(function HeaderTabs({
         disablePassBorderRadius
         loop={false}
         aria-label="Manage your account"
-        space="$2"
+        gap="$2"
         backgroundColor="transparent"
       >
         {tabs.map(({ component, value, hasChanges }) => (

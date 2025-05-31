@@ -64,7 +64,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
 
   return (
     <ColorCanvasFrame>
-      <XStack p="$2" space pos="relative">
+      <XStack p="$2" gap="$4" pos="relative">
         <Unspaced>
           <YStack fullscreen zi={0} bg="$background" o={0.5} />
         </Unspaced>
@@ -88,7 +88,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
           })}
         </XGroup>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <XGroup>
           <Button
@@ -143,7 +143,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 p="$2"
                 onPress={() => state.colors.setColorIndex(String(i))}
               >
-                <Spacer flex />
+                <Spacer flex={1} />
                 <YStack ml="auto" ai="flex-end" pos="relative" br="$4" ov="hidden" p="$2">
                   <YStack
                     zi={-1}

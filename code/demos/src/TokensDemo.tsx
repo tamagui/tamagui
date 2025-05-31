@@ -1,8 +1,7 @@
-import React from 'react'
 import type { Tokens } from '@tamagui/core'
 import { getConfig } from '@tamagui/core'
-
-import { Button, H2, H3, H4, Separator, Square, XGroup, XStack, YStack } from 'tamagui'
+import React from 'react'
+import { Button, H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
 
 type Section = 'spaceNegative' | keyof Tokens
 
@@ -29,7 +28,7 @@ export function TokensDemo() {
   const [section, setSection] = React.useState<Section>('size')
 
   return (
-    <YStack space>
+    <YStack gap="$4">
       <XGroup alignItems="center" alignSelf="center">
         {sections.map(({ name, key }) => {
           return (
@@ -67,9 +66,9 @@ function SizeSection({ section }: { section: Section }) {
     .sort((a, b) => (Number.parseFloat(a) > Number.parseFloat(b) ? -1 : 1))
 
   return (
-    <YStack flex={1} space>
+    <YStack flex={1} gap="$4">
       <H2>Sizes</H2>
-      <YStack width="100%" space="$2" separator={<Separator />}>
+      <YStack width="100%" gap="$2">
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map(
           (token) => {
             return (

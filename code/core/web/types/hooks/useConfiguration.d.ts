@@ -8,23 +8,14 @@ export declare const useConfiguration: () => {
     setParentFocusState: ((next?: Partial<import("..").TamaguiComponentState> | undefined) => void) | null;
     unset?: import("..").BaseStyleProps | undefined;
     reactNative?: any;
-    defaultFont?: string | undefined;
     selectionStyles?: ((theme: Record<string, string>) => null | {
         backgroundColor?: any;
         color?: any;
     }) | undefined;
-    disableRootThemeClass?: boolean | undefined;
     defaultProps?: (Record<string, any> & {
         Stack?: import("..").StackProps;
         Text?: import("..").TextProps;
-        Spacer?: import("..").SpacerProps;
     }) | undefined;
-    mediaQueryDefaultActive?: Record<string, boolean> | undefined;
-    cssStyleSeparator?: string | undefined;
-    maxDarkLightNesting?: number | undefined;
-    shouldAddPrefersColorThemes?: boolean | undefined;
-    themeClassNameOnRoot?: boolean | undefined;
-    onlyAllowShorthands?: boolean | undefined;
     fonts: {
         [x: string]: import("..").GenericFont<string | number | symbol>;
     };

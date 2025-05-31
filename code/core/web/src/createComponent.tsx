@@ -9,7 +9,6 @@ import {
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import React from 'react'
 import { devConfig, onConfiguredOnce } from './config'
-import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
@@ -34,12 +33,6 @@ import type {
   ComponentContextI,
   DebugProp,
   LayoutEvent,
-  SizeTokens,
-  SpaceDirection,
-  SpaceValue,
-  SpacerProps,
-  SpacerStyleProps,
-  StackNonStyleProps,
   StackProps,
   StaticConfig,
   StyleableOptions,
@@ -402,9 +395,9 @@ export function createComponent<
 
     // these two are set conditionally if existing in props because we wrap children with
     // a span if they ever set one of these, so avoid wrapping all children with span
-    if ('themeInverse' in props) {
-      themeStateProps.inverse = props.themeInverse
-    }
+    // if ('themeInverse' in props) {
+    //   themeStateProps.inverse = props.themeInverse
+    // }
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
@@ -548,7 +541,6 @@ export function createComponent<
       pseudos,
       style: splitStylesStyle,
       classNames,
-      space,
     } = splitStyles
 
     const propsWithAnimation = props as UseAnimationProps
@@ -984,21 +976,9 @@ export function createComponent<
     // EVENTS native
     hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow, staticConfig)
 
-    const direction = props.spaceDirection || 'both'
-
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    let content =
-      !children || asChild
-        ? children
-        : spacedChildren({
-            separator,
-            children,
-            space,
-            direction,
-            isZStack,
-            debug: debugProp,
-          })
+    let content = children
 
     if (asChild) {
       elementType = Slot
@@ -1246,12 +1226,6 @@ export function createComponent<
     }
   }
 
-  function extractable(Component: any, extended?: Partial<StaticConfig>) {
-    Component.staticConfig = extendStyledConfig(extended)
-    Component.styleable = styleable
-    return Component
-  }
-
   function styleable(Component: any, options?: StyleableOptions) {
     const isForwardedRefAlready = Component.render?.length === 2
 
@@ -1272,7 +1246,6 @@ export function createComponent<
     return out
   }
 
-  res.extractable = extractable
   res.styleable = styleable
 
   return res
@@ -1294,212 +1267,6 @@ function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
     onBlur: events.onBlur,
   }
 }
-
-// for elements to avoid spacing
-export function Unspaced(props: { children?: any }) {
-  return props.children
-}
-Unspaced['isUnspaced'] = true
-
-const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  size = size === true ? '$true' : size
-  const sizePx = tokens.space[size as any] ?? size
-  return {
-    width: sizePx,
-    height: sizePx,
-    minWidth: sizePx,
-    minHeight: sizePx,
-  }
-}
-
-// dont used styled() here to avoid circular deps
-// keep inline to avoid circular deps
-export const Spacer = createComponent<
-  SpacerProps,
-  TamaguiElement,
-  StackNonStyleProps,
-  SpacerStyleProps
->({
-  acceptsClassName: true,
-  memo: true,
-  componentName: 'Spacer',
-  validStyles,
-
-  defaultProps: {
-    ...stackDefaultStyles,
-    // avoid nesting issues
-    tag: 'span',
-    size: true,
-    pointerEvents: 'none',
-  },
-
-  variants: {
-    size: {
-      '...': getSpacerSize,
-    },
-
-    flex: {
-      true: {
-        flexGrow: 1,
-      },
-    },
-
-    direction: {
-      horizontal: {
-        height: 0,
-        minHeight: 0,
-      },
-      vertical: {
-        width: 0,
-        minWidth: 0,
-      },
-      both: {},
-    },
-  } as const,
-})
-
-export type SpacedChildrenProps = {
-  isZStack?: boolean
-  children?: React.ReactNode
-  space?: SpaceValue
-  spaceFlex?: boolean | number
-  direction?: SpaceDirection | 'unset'
-  separator?: React.ReactNode
-  ensureKeys?: boolean
-  debug?: DebugProp
-}
-
-export function spacedChildren(props: SpacedChildrenProps) {
-  const { isZStack, children, space, direction, spaceFlex, separator, ensureKeys } = props
-  const hasSpace = !!(space || spaceFlex)
-  const hasSeparator = !(separator === undefined || separator === null)
-  const areChildrenArray = Array.isArray(children)
-
-  if (!ensureKeys && !(hasSpace || hasSeparator || isZStack)) {
-    return children
-  }
-
-  const childrenList = areChildrenArray
-    ? (children as any[])
-    : React.Children.toArray(children)
-
-  const len = childrenList.length
-  if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
-    return children
-  }
-
-  const final: React.ReactNode[] = []
-  for (let [index, child] of childrenList.entries()) {
-    const isEmpty =
-      child === null ||
-      child === undefined ||
-      (Array.isArray(child) && child.length === 0)
-
-    // forward space
-    if (!isEmpty && React.isValidElement(child) && child.type?.['shouldForwardSpace']) {
-      child = React.cloneElement(child, {
-        space,
-        spaceFlex,
-        separator,
-        key: child.key,
-      } as any)
-    }
-
-    // push them all, but wrap some in Fragment
-    if (isEmpty || !child || (child['key'] && !isZStack)) {
-      final.push(child)
-    } else {
-      final.push(
-        <React.Fragment key={`${index}0t`}>
-          {isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}
-        </React.Fragment>
-      )
-    }
-
-    // first child unspaced avoid insert space
-    if (isUnspaced(child) && index === 0) continue
-    // no spacing on ZStack
-    if (isZStack) continue
-
-    const next = childrenList[index + 1]
-
-    if (next && !isEmpty && !isUnspaced(next)) {
-      if (separator) {
-        if (hasSpace) {
-          final.push(
-            createSpacer({
-              key: `_${index}_00t`,
-              direction,
-              space,
-              spaceFlex,
-            })
-          )
-        }
-        final.push(<React.Fragment key={`${index}03t`}>{separator}</React.Fragment>)
-        if (hasSpace) {
-          final.push(
-            createSpacer({
-              key: `_${index}01t`,
-              direction,
-              space,
-              spaceFlex,
-            })
-          )
-        }
-      } else {
-        final.push(
-          createSpacer({
-            key: `_${index}02t`,
-            direction,
-            space,
-            spaceFlex,
-          })
-        )
-      }
-    }
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    if (props.debug) {
-      log(`  Spaced children`, final, props)
-    }
-  }
-
-  return final
-}
-
-type CreateSpacerProps = SpacedChildrenProps & { key: string }
-
-function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
-  return (
-    <Spacer
-      key={key}
-      size={space}
-      direction={direction}
-      {...(typeof spaceFlex !== 'undefined' && {
-        flex: spaceFlex === true ? 1 : spaceFlex === false ? 0 : spaceFlex,
-      })}
-    />
-  )
-}
-
-function isUnspaced(child: React.ReactNode) {
-  const t = child?.['type']
-  return t?.['isVisuallyHidden'] || t?.['isUnspaced']
-}
-
-const AbsoluteFill: any = createComponent({
-  defaultProps: {
-    ...stackDefaultStyles,
-    flexDirection: 'column',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    pointerEvents: 'box-none',
-  },
-})
 
 const fromPx = (val?: number | string) =>
   typeof val !== 'string' ? val : +val.replace('px', '')

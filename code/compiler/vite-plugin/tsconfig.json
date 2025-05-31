@@ -8,7 +8,7 @@
       "path": "../../packages/react-native-svg"
     },
     {
-      "path": "../static"
+      "path": "../compiler"
     }
   ],
   "exclude": [

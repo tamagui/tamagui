@@ -1,6 +1,5 @@
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React, { useEffect } from 'react'
-import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
@@ -23,9 +22,7 @@ export function TamaguiProvider({
   config,
   className,
   defaultTheme,
-  disableRootThemeClass,
   reset,
-  themeClassNameOnRoot,
 }: TamaguiProviderProps) {
   useEffect(() => {
     listeners.forEach((cb) => cb())
@@ -60,17 +57,7 @@ export function TamaguiProvider({
     <>
       <UnmountedClassName>
         <ComponentContext.Provider animationDriver={config?.animations}>
-          <ThemeProvider
-            themeClassNameOnRoot={
-              themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
-            }
-            disableRootThemeClass={
-              disableRootThemeClass ?? getSetting('disableRootThemeClass')
-            }
-            defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
-            reset={reset}
-            className={className}
-          >
+          <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
             {children}
           </ThemeProvider>
         </ComponentContext.Provider>

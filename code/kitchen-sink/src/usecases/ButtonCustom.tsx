@@ -1,10 +1,10 @@
-import { Button, ButtonFrame, ButtonText, GetProps, styled, useButton } from 'tamagui'
+import { Button, GetProps, styled, useButton } from 'tamagui'
 
-const Frame = styled(ButtonFrame, {
+const Frame = styled(Button.Frame, {
   backgroundColor: 'red',
 })
 
-const Text = styled(ButtonText, {
+const Text = styled(Button.Text, {
   fontSize: '$2',
   lineHeight: '$3',
   textTransform: 'uppercase',
@@ -22,12 +22,12 @@ export const ButtonCustom = Frame.styleable((props, ref) => {
       <Frame ref={ref} {...buttonProps} />
 
       {/* saw an issue where defaultProps gets merged back onto styled(styleable(styled())) causing flexDir column overwriting row */}
-      <Button testID="button" width={200}>
+      {/* <Button testID="button" width={200}>
         test
-      </Button>
-      <ButtonStyled testID="button-styled" width={200}>
+      </Button> */}
+      {/* <ButtonStyled testID="button-styled" width={200}>
         test
-      </ButtonStyled>
+      </ButtonStyled> */}
     </>
   ) as any
 })

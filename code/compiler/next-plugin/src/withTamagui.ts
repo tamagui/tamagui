@@ -1,4 +1,4 @@
-import Static from '@tamagui/static'
+import Static from '@tamagui/compiler'
 import browserslist from 'browserslist'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css/index.js'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders/index.js'

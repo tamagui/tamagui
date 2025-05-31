@@ -45,7 +45,7 @@
     "@tamagui/bento": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/get-token": "workspace:*",
-    "@tamagui/image-next": "workspace:*",
+    "@tamagui/image": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/mdx-2": "workspace:*",

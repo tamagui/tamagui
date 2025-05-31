@@ -1,7 +1,7 @@
 import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react';
 import type { NativeValue, SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
-import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks';
+import type { YStackProps } from '@tamagui/stacks';
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react';
 export type SelectDirection = 'ltr' | 'rtl';
 export type SelectScopedProps<P> = P & {
@@ -97,7 +97,7 @@ export interface SelectViewportExtraProps {
     disableScroll?: boolean;
     unstyled?: boolean;
 }
-export type SelectViewportProps = ThemeableStackProps & SelectViewportExtraProps;
+export type SelectViewportProps = YStackProps & SelectViewportExtraProps;
 export type SelectContentProps = SelectScopedProps<{
     children?: React.ReactNode;
     zIndex?: number;

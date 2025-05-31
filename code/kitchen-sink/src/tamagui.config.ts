@@ -143,9 +143,8 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
-  defaultFont: undefined,
   settings: {
-    defaultFont: undefined,
+    defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
@@ -160,7 +159,6 @@ const tamaConf = createTamagui({
     : search.includes('animationDriver=native')
       ? animationsNative
       : animationsMoti, // default moti
-  themeClassNameOnRoot: false,
 
   defaultProps: {
     Square: {

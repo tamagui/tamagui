@@ -58,7 +58,7 @@ export function HomePerformance() {
           {show && <BenchmarkChartWeb />}
         </YStack>
 
-        <XStack space flexWrap="wrap">
+        <XStack gap="$4" flexWrap="wrap">
           <BenchmarksLink />
           <CompilerLink />
         </XStack>

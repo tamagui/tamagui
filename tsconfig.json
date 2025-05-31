@@ -92,7 +92,7 @@
       "path": "code/compiler/static-tests"
     },
     {
-      "path": "code/compiler/static"
+      "path": "code/compiler/compiler"
     },
     {
       "path": "code/compiler/vite-plugin"
@@ -359,9 +359,6 @@
       "path": "code/ui/avatar"
     },
     {
-      "path": "code/ui/button-next"
-    },
-    {
       "path": "code/ui/button"
     },
     {
@@ -399,9 +396,6 @@
     },
     {
       "path": "code/ui/group"
-    },
-    {
-      "path": "code/ui/image-next"
     },
     {
       "path": "code/ui/image"
@@ -477,6 +471,9 @@
     },
     {
       "path": "code/ui/tamagui"
+    },
+    {
+      "path": "code/ui/tamagui-ui"
     },
     {
       "path": "code/ui/text"

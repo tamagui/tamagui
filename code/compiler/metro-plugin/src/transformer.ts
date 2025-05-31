@@ -7,8 +7,8 @@ import type {
 import worker from 'metro-transform-worker'
 import { join, posix, sep } from 'node:path'
 
-import type { TamaguiOptions } from '@tamagui/static'
-import { createExtractor, extractToClassNames } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/compiler'
+import { createExtractor, extractToClassNames } from '@tamagui/compiler'
 
 interface TamaguiJsTransformerConfig extends JsTransformerConfig {
   transformerPath?: string

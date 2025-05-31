@@ -130,7 +130,7 @@ function SignIn() {
 
           {!emailAuthDisabledFlag && (
             <>
-              <XStack mx="$4" jc="center" space ai="center">
+              <XStack mx="$4" jc="center" gap="$4" ai="center">
                 <Separator />
                 <Paragraph size="$2">Or</Paragraph>
                 <Separator />

@@ -192,7 +192,7 @@ const SlideInner = (props: SlideProps) => {
       <YStack fullscreen zi={-1}>
         {showAllSteps ? null : glows.elements}
       </YStack>
-      <YStack ref={glows.ref as any} space="$7" w="90%" h="100%" p="$12">
+      <YStack ref={glows.ref as any} gap="$7" w="90%" h="100%" p="$12">
         <YStack gap="$4">
           {Boolean(props.title) && (
             <H1
@@ -467,7 +467,7 @@ function getTextContent(
 
               if (item.title) {
                 return (
-                  <YStack ai="center" space>
+                  <YStack ai="center" gap="$4">
                     <H4 size="$9">{item.title}</H4>
                     {content}
                   </YStack>

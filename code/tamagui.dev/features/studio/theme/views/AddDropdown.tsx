@@ -12,7 +12,7 @@ import {
 } from 'tamagui'
 
 const Item = ({ children, ...props }: ListItemProps) => (
-  <ListItem miw={190} size="$5" hoverTheme iconAfter={Plus} {...props}>
+  <ListItem miw={190} size="$5" iconAfter={Plus} {...props}>
     <Paragraph userSelect="none">{children}</Paragraph>
   </ListItem>
 )

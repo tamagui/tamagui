@@ -24,7 +24,7 @@ export function TabsDemo() {
 
       <XStack
         alignItems="center"
-        space
+        gap="$4"
         position="absolute"
         bottom="$3"
         left="$4"
@@ -52,11 +52,7 @@ const HorizontalTabs = () => {
       overflow="hidden"
       borderColor="$borderColor"
     >
-      <Tabs.List
-        separator={<Separator vertical />}
-        disablePassBorderRadius="bottom"
-        aria-label="Manage your account"
-      >
+      <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
         <Tabs.Tab
           focusStyle={{
             backgroundColor: '$color3',
@@ -119,11 +115,7 @@ const VerticalTabs = () => {
       overflow="hidden"
       borderColor="$borderColor"
     >
-      <Tabs.List
-        disablePassBorderRadius="end"
-        aria-label="Manage your account"
-        separator={<Separator />}
-      >
+      <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
         <Tabs.Tab value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>

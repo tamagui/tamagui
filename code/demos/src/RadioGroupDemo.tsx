@@ -4,7 +4,7 @@ import { Label, RadioGroup, XStack, YStack } from 'tamagui'
 export function RadioGroupDemo() {
   return (
     <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-      <YStack width={300} alignItems="center" space="$2">
+      <YStack width={300} alignItems="center" gap="$2">
         <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
         <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />
         <RadioGroupItemWithLabel size="$5" value="4" label="Fourth value" />
@@ -20,7 +20,7 @@ export function RadioGroupItemWithLabel(props: {
 }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack width={300} alignItems="center" space="$4">
+    <XStack width={300} alignItems="center" gap="$4">
       <RadioGroup.Item value={props.value} id={id} size={props.size}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>
