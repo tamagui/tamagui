@@ -91,8 +91,5 @@
     "webpack-bundle-analyzer": "^4.9.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
-  },
-  "resolutions": {
-    "@react-navigation/core": "7.8.5"
   }
 }
