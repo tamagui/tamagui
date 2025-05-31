@@ -1,7 +1,7 @@
 import { Check, X } from '@tamagui/lucide-icons'
 import type { Href } from 'one'
 import { startTransition, useEffect, useMemo, useState } from 'react'
-import type { TabsProps } from 'tamagui'
+import type { TabsProps } from '@tamagui/ui'
 import {
   AnimatePresence,
   Button,
@@ -20,7 +20,7 @@ import {
   Unspaced,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import type { TakeoutPageProps } from '~/app/(site)/takeout'
 import { Link } from '~/components/Link'
 import { useUser } from '~/features/user/useUser'

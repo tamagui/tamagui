@@ -1,4 +1,4 @@
-import { Button } from 'tamagui'
+import { Button } from '@tamagui/ui'
 
 export function FocusVisibleButton() {
   return (

@@ -1,4 +1,4 @@
-import { Anchor, Button, Paragraph, Sheet, XStack } from 'tamagui'
+import { Anchor, Button, Paragraph, Sheet, XStack } from '@tamagui/ui'
 import { ChevronDown } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { useToastController } from '@tamagui/toast'

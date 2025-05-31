@@ -9,7 +9,7 @@ import {
   Upload,
   User,
 } from '@tamagui/lucide-icons'
-import { Theme } from 'tamagui'
+import { Theme } from '@tamagui/ui'
 
 import {
   Avatar,
@@ -23,8 +23,8 @@ import {
   View,
   XStack,
   ZStack,
-} from 'tamagui'
-import { CardFrame, Text, YStack } from 'tamagui'
+} from '@tamagui/ui'
+import { CardFrame, Text, YStack } from '@tamagui/ui'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 
 const Chip = styled(View, {

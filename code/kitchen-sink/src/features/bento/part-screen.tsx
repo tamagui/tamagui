@@ -2,7 +2,7 @@ import { type ElementType, useLayoutEffect } from 'react'
 import { Components } from '@tamagui/bento'
 
 import { createParam } from 'solito'
-import { ScrollView, YStack } from 'tamagui'
+import { ScrollView, YStack } from '@tamagui/ui'
 
 const { useParam } = createParam<{ id: string }>()
 export function BentoPartScreen({ navigation }) {

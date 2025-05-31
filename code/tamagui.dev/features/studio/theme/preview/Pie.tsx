@@ -1,4 +1,4 @@
-import { H4, Paragraph, YStack } from 'tamagui'
+import { H4, Paragraph, YStack } from '@tamagui/ui'
 import { NewMembersChart } from './Charts'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { AccentTheme } from '../../components/AccentTheme'

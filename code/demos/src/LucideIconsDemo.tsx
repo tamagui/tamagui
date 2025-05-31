@@ -2,7 +2,7 @@ import React from 'react'
 import * as LucideIcons from '@tamagui/lucide-icons'
 
 import { ScrollView } from 'react-native'
-import { Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
+import { Input, Paragraph, Spacer, YStack, useDebounceValue } from '@tamagui/ui'
 
 import { Grid } from './Grid'
 

@@ -1,11 +1,11 @@
-import type { GetProps, ButtonProps as TamaguiButtonProps } from 'tamagui'
+import type { GetProps, ButtonProps as TamaguiButtonProps } from '@tamagui/ui'
 import {
   Button,
   styled,
   useButton,
   useTheme,
   useThemeName,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 const CustomButtonFrame = styled(Button.Frame, {})
 

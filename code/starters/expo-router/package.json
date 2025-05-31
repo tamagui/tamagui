@@ -41,7 +41,7 @@
     "react-native-screens": "~4.10.0",
     "react-native-svg": "15.11.2",
     "react-native-web": "^0.20.0",
-    "tamagui": "^1.126.13"
+    "@tamagui/ui": "^1.126.13"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",

@@ -1,4 +1,4 @@
-import type { ButtonProps } from 'tamagui'
+import type { ButtonProps } from '@tamagui/ui'
 
 import { getTokenRelative } from '@tamagui/get-token'
 import { accentTokenName } from '~/features/studio/accentThemeName'

@@ -4,8 +4,8 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "tamagui": [
-        "code/ui/tamagui"
+      "@tamagui/ui": [
+        "code/ui/tamagui-ui"
       ],
       "@tamagui/*": [
         "code/core/*",
@@ -468,9 +468,6 @@
     },
     {
       "path": "code/ui/tabs"
-    },
-    {
-      "path": "code/ui/tamagui"
     },
     {
       "path": "code/ui/tamagui-ui"

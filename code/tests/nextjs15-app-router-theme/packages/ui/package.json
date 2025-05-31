@@ -19,7 +19,7 @@
   "dependencies": {
     "@my/config": "workspace:^",
     "@tamagui/toast": "workspace:*",
-    "tamagui": "workspace:*"
+    "@tamagui/ui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"

@@ -1,5 +1,5 @@
 import React from 'react'
-import type { StackProps, TabLayout, TabsTabProps } from 'tamagui'
+import type { StackProps, TabLayout, TabsTabProps } from '@tamagui/ui'
 import {
   AnimatePresence,
   Button,
@@ -9,7 +9,7 @@ import {
   XStack,
   YStack,
   styled,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 const demos = ['background', 'underline'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {

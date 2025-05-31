@@ -1,4 +1,4 @@
-import { Label, XStack, YStack, styled } from 'tamagui'
+import { Label, XStack, YStack, styled } from '@tamagui/ui'
 
 import { createRadioGroup } from '@tamagui/radio-group'
 

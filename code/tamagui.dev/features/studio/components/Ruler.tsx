@@ -1,4 +1,4 @@
-import { Unspaced, XStack, YStack } from 'tamagui'
+import { Unspaced, XStack, YStack } from '@tamagui/ui'
 
 // TODO: rendering these is very expensive, converting to svg might help
 export const Ruler = ({

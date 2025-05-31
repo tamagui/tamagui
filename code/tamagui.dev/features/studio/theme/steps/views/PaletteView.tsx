@@ -10,7 +10,7 @@ import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
-import type { XStackProps } from 'tamagui'
+import type { XStackProps } from '@tamagui/ui'
 import {
   Button,
   Separator,
@@ -21,7 +21,7 @@ import {
   XStack,
   YStack,
   useThemeName,
-} from 'tamagui'
+} from '@tamagui/ui'
 import type { HSLA } from '~/features/studio/colors/ColorPicker'
 import { ColorPickerContents } from '~/features/studio/colors/ColorPicker'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'

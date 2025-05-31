@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { Avatar, Card, H5, Paragraph, XStack, YStack } from 'tamagui'
+import { Avatar, Card, H5, Paragraph, XStack, YStack } from '@tamagui/ui'
 import { Link } from '~/components/Link'
 import { ThemeTintAlt } from '@tamagui/logo'
 

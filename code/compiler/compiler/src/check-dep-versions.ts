@@ -575,7 +575,7 @@ function check(path: string): {
   dependencies: Dependencies
 } {
   const options: Options = {
-    includeDepPattern: ['tamagui', 'react-native-web-internals'],
+    includeDepPattern: ['@tamagui/ui', 'react-native-web-internals'],
   }
 
   if (

@@ -1,4 +1,4 @@
-import { H1, H2, H3, styled } from 'tamagui'
+import { H1, H2, H3, styled } from '@tamagui/ui'
 
 export const HomeH1 = styled(H1, {
   fontFamily: '$mono',

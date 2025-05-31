@@ -1,13 +1,13 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import { Button, Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
+import { Button, Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from '@tamagui/ui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { IconStack } from './IconStack'
-import { Theme } from 'tamagui'
+import { Theme } from '@tamagui/ui'
 
 const defaultExample = {
   input: {

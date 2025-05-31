@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { H3, Spinner, YStack } from 'tamagui'
+import { H3, Spinner, YStack } from '@tamagui/ui'
 
 // TODO: design this page
 export const StudioLoading = ({ name }: { name: string }) => {

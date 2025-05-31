@@ -2,7 +2,7 @@ import { getFontSize } from "@tamagui/font-size";
 import { getButtonSized } from "@tamagui/get-button-sized";
 import { ButtonNestingContext, themeableVariants } from "@tamagui/stacks";
 import { SizableText, wrapChildrenInText } from "@tamagui/text";
-import type { GetProps, SizeTokens } from "@tamagui/web";
+import type { GetProps, RNExtraProps, SizeTokens } from "@tamagui/web";
 import {
   createStyledContext,
   styled,
@@ -166,6 +166,7 @@ const ButtonComponent = Frame.styleable<{
   iconSize?: SizeTokens;
   chromeless?: boolean;
   circular?: boolean;
+  onLayout?: RNExtraProps['onLayout'] 
 }>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext);
   const {

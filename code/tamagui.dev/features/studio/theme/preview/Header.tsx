@@ -1,5 +1,5 @@
 import { TamaguiLogo } from '@tamagui/logo'
-import { H1, Paragraph, Square, XStack, YStack } from 'tamagui'
+import { H1, Paragraph, Square, XStack, YStack } from '@tamagui/ui'
 
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { useThemeBuilderStore } from '../store/ThemeBuilderStore'

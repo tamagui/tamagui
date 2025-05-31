@@ -1,6 +1,6 @@
 import { DialogDemo } from '@tamagui/demos'
 import { useLayoutEffect, useState } from 'react'
-import { Button, Text, View, YStack } from 'tamagui'
+import { Button, Text, View, YStack } from '@tamagui/ui'
 
 export default function Sandbox() {
   const [x, setX] = useState(Date.now())

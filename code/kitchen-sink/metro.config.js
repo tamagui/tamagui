@@ -19,7 +19,7 @@ config.resolver.nodeModulesPaths = [
 ]
 
 module.exports = withTamagui(config, {
-  components: ['tamagui'],
+  components: ['@tamagui/ui'],
   config: './src/tamagui.config.ts',
   outputCSS: './tamagui-web.css',
 })

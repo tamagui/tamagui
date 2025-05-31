@@ -1,6 +1,6 @@
 import { Check } from '@tamagui/lucide-icons'
-import type { ListItemProps } from 'tamagui'
-import { H4, ListItem, Paragraph, Spacer, YStack } from 'tamagui'
+import type { ListItemProps } from '@tamagui/ui'
+import { H4, ListItem, Paragraph, Spacer, YStack } from '@tamagui/ui'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 

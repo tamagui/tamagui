@@ -1,5 +1,5 @@
-import type { SizeTokens } from 'tamagui'
-import { Label, Separator, Switch, XStack, YStack, styled } from 'tamagui'
+import type { SizeTokens } from '@tamagui/ui'
+import { Label, Separator, Switch, XStack, YStack, styled } from '@tamagui/ui'
 
 export function SwitchDemo() {
   return (

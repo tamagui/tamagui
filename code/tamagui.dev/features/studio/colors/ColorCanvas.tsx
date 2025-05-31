@@ -13,7 +13,7 @@ import {
   XStack,
   YStack,
   ZStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'

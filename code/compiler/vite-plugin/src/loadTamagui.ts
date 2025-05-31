@@ -53,7 +53,7 @@ export async function loadTamaguiBuildConfig(
 
     if (extractor) {
       await extractor.loadTamagui({
-        components: ['tamagui'],
+        components: ['@tamagui/ui'],
         platform: 'web',
         ...tamaguiOptions,
       } satisfies TamaguiOptions)

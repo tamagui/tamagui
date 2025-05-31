@@ -1,4 +1,4 @@
-import { XStack, isWeb } from 'tamagui'
+import { XStack, isWeb } from '@tamagui/ui'
 import React from 'react'
 
 export type GridProps = {

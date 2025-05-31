@@ -1,4 +1,4 @@
-import { Button, Text, styled } from 'tamagui'
+import { Button, Text, styled } from '@tamagui/ui'
 
 export function VariantsOrder() {
   return (

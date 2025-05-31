@@ -1,4 +1,4 @@
-import { YStack, XStack, Text, H2, Spacer } from 'tamagui'
+import { YStack, XStack, Text, H2, Spacer } from '@tamagui/ui'
 
 export const mode = 'spa'
 
@@ -117,7 +117,7 @@ export default function InvoicePage() {
 //   styled,
 //   useDidFinishSSR,
 //   withStaticProperties,
-// } from 'tamagui'
+// } from '@tamagui/ui'
 // import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 
 // export default memo(() => {

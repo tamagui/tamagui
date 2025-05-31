@@ -12,13 +12,13 @@
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
+    "@tamagui/ui": "workspace:*",
     "app": "workspace:^",
     "next": "^15.3.1",
     "raf": "^3.4.1",
     "react": "*",
     "react-dom": "*",
     "react-native": "^0.76.5",
-    "tamagui": "workspace:*",
     "vercel": "latest"
   },
   "devDependencies": {

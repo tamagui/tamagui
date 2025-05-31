@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 
-import { Button, TamaguiProvider, YStack } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { Button, TamaguiProvider, YStack } from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 
 import config from './tamagui.config'
 

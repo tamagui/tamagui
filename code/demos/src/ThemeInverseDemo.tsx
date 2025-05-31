@@ -1,4 +1,4 @@
-import { Button, H5, Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { Button, H5, Theme, XStack, YStack, useThemeName } from '@tamagui/ui'
 
 export function ThemeInverseDemo() {
   const themeName = useThemeName()

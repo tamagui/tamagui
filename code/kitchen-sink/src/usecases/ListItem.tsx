@@ -1,4 +1,4 @@
-import { H5, ListItem, Separator, Stack, Theme } from 'tamagui'
+import { H5, ListItem, Separator, Stack, Theme } from '@tamagui/ui'
 import { ChevronRight } from '@tamagui/lucide-icons'
 
 export const ThemedListItem = () => (

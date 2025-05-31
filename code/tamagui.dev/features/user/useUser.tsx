@@ -1,7 +1,7 @@
 import { useRouter } from 'one'
 import { useEffect } from 'react'
 import useSWR, { useSWRConfig } from 'swr'
-import { Spinner, YStack } from 'tamagui'
+import { Spinner, YStack } from '@tamagui/ui'
 
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'

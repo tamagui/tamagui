@@ -1,6 +1,6 @@
 import type { MutableRefObject } from 'react'
 import { startTransition, useEffect, useState } from 'react'
-import { isWeb, useEvent } from 'tamagui'
+import { isWeb, useEvent } from '@tamagui/ui'
 
 type DisposeFn = () => void
 

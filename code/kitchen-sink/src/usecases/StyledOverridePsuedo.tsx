@@ -1,4 +1,4 @@
-import { Input, TamaguiProvider, YStack, styled } from 'tamagui'
+import { Input, TamaguiProvider, YStack, styled } from '@tamagui/ui'
 
 const TransparentInput = styled(Input, {
   borderColor: 'red',

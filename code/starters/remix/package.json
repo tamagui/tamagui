@@ -25,7 +25,7 @@
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "^1.126.13"
+    "@tamagui/ui": "^1.126.13"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.2",

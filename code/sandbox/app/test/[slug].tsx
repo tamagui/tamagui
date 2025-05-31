@@ -1,5 +1,5 @@
 import { useParams } from 'one'
-import { H1, YStack } from 'tamagui'
+import { H1, YStack } from '@tamagui/ui'
 import { AllTests } from '~/components/allComponents'
 
 export function generateStaticParams() {

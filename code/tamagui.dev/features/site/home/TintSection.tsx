@@ -1,8 +1,8 @@
 import { getTints, useTint } from '@tamagui/logo'
 import { useEffect, useMemo, useRef } from 'react'
 import type { LayoutRectangle } from 'react-native'
-import type { GetProps } from 'tamagui'
-import { XStack, YStack, styled } from 'tamagui'
+import type { GetProps } from '@tamagui/ui'
+import { XStack, YStack, styled } from '@tamagui/ui'
 import { useOnIntersecting } from '~/hooks/useOnIntersecting'
 
 type Props = SectionProps & { themed?: boolean; index: number }

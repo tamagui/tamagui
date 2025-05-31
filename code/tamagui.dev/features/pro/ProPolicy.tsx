@@ -1,4 +1,4 @@
-import { H1, H3, Paragraph, Separator, YStack } from 'tamagui'
+import { H1, H3, Paragraph, Separator, YStack } from '@tamagui/ui'
 
 export const ProPolicy = () => {
   return (

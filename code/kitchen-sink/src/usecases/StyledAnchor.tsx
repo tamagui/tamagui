@@ -1,4 +1,4 @@
-import { Anchor, styled } from 'tamagui'
+import { Anchor, styled } from '@tamagui/ui'
 
 const StyledAnchor1 = styled(Anchor, {
   color: 'red',

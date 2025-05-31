@@ -48,7 +48,7 @@ It assumes your package.json looks something like this:
   "devDependencies": {
     "@tamagui/build": "latest"
   },
-  "tamagui": {
+  "@tamagui/ui": {
     "build": {
       "skipEnvToMeta": true,
       "bundle.native": "./src/index.ts",

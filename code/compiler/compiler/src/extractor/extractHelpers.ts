@@ -198,8 +198,8 @@ export const isValidImport = (
 }
 
 const getValidComponentPackages = memoize((props: TamaguiOptionsWithFileInfo) => {
-  // just always look for `tamagui` and `@tamagui/core`
-  return [...new Set(['@tamagui/core', 'tamagui', ...(props.components || [])])]
+  // just always look for `@tamagui/ui` and `@tamagui/core`
+  return [...new Set(['@tamagui/core', '@tamagui/ui', ...(props.components || [])])]
 })
 
 export const getValidComponentsPaths = memoize((props: TamaguiOptionsWithFileInfo) => {

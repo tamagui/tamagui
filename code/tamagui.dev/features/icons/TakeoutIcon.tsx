@@ -1,4 +1,4 @@
-import { YStack } from 'tamagui'
+import { YStack } from '@tamagui/ui'
 
 export const TakeoutIcon = YStack.styleable((props, ref) => (
   <YStack {...props} ref={ref as any} p="$4" m="$-4">

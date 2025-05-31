@@ -6,7 +6,7 @@ import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 import { useEffect, useState } from 'react'
 import { Appearance } from 'react-native'
-import { isWeb, View } from 'tamagui'
+import { isWeb, View } from '@tamagui/ui'
 
 const schemeSettings = ['light', 'dark', 'system'] as const
 

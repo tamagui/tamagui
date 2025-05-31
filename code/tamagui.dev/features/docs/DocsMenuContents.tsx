@@ -1,6 +1,6 @@
 import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { H4, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
+import { H4, Paragraph, Separator, Theme, XStack, YStack } from '@tamagui/ui'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'

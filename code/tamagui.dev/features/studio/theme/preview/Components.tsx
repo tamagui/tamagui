@@ -11,7 +11,7 @@ import {
   XGroup,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { RadioGroupItemWithLabel } from '../views/RadioGroupItemWithLabel'
 import { AccentTheme } from '../../components/AccentTheme'

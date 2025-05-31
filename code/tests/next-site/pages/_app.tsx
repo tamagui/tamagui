@@ -7,14 +7,14 @@ import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { TamaguiProvider } from 'tamagui'
+import { TamaguiProvider } from '@tamagui/ui'
 
 import Head from 'next/head'
 import config from '../tamagui.config'
 
 // import '../lib/wdyr'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {

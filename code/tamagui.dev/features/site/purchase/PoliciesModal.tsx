@@ -1,5 +1,5 @@
 import { X } from '@tamagui/lucide-icons'
-import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
+import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from '@tamagui/ui'
 import { Link } from '~/components/Link'
 import { ProPolicy } from '../../pro/ProPolicy'
 import { useTakeoutStore } from './useTakeoutStore'

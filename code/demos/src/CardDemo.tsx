@@ -1,5 +1,5 @@
-import type { CardProps } from 'tamagui'
-import { Button, Card, H2, Image, Paragraph, XStack } from 'tamagui'
+import type { CardProps } from '@tamagui/ui'
+import { Button, Card, H2, Image, Paragraph, XStack } from '@tamagui/ui'
 
 export function CardDemo() {
   return (

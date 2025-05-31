@@ -28,7 +28,7 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
   // defaults
   platform: (process.env.TAMAGUI_TARGET as any) || 'web',
   config: 'tamagui.config.ts',
-  components: ['tamagui'],
+  components: ['@tamagui/ui'],
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
@@ -157,7 +157,7 @@ export function loadTamaguiBuildConfigSync(
   }
   return {
     config: 'tamagui.config.ts',
-    components: ['tamagui', '@tamagui/core'],
+    components: ['@tamagui/ui', '@tamagui/core'],
     ...tamaguiOptions,
   } as TamaguiOptions
 }
@@ -312,7 +312,7 @@ export async function getOptions({
     tsconfigPath,
     tamaguiOptions: {
       platform: (process.env.TAMAGUI_TARGET as any) || 'web',
-      components: ['tamagui'],
+      components: ['@tamagui/ui'],
       ...tamaguiOptions,
       config:
         tamaguiOptions?.config ??

@@ -1,4 +1,4 @@
-import { H4, Paragraph, XStack } from 'tamagui'
+import { H4, Paragraph, XStack } from '@tamagui/ui'
 
 import { Card } from '~/components/Card'
 import { DiscordIcon } from '~/features/icons/DiscordIcon'

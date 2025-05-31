@@ -1,4 +1,4 @@
-import { Card, Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
+import { Card, Paragraph, SizableText, Text, XStack, YStack } from '@tamagui/ui'
 
 import { CheckCircle } from '~/components/CheckCircle'
 import { ContainerLarge } from '~/components/Containers'

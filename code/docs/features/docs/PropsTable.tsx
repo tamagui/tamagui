@@ -8,7 +8,7 @@ import {
   XStack,
   YStack,
   styled,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { Code } from './Code'
 
 export type PropDef = {

@@ -25,9 +25,9 @@
     "@expo/vector-icons": "^13.0.0",
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/toast": "workspace:*",
+    "@tamagui/ui": "workspace:*",
     "expo-image": "^1.5.1",
-    "solito": "^4.3.0",
-    "tamagui": "workspace:*"
+    "solito": "^4.3.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"

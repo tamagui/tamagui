@@ -1,4 +1,4 @@
-import { Button, styled } from 'tamagui'
+import { Button, styled } from '@tamagui/ui'
 
 export const ToggleButton = styled(Button, {
   size: '$2.5',

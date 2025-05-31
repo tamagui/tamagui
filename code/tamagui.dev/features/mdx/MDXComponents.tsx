@@ -12,7 +12,7 @@ import {
 import type { Href } from 'one'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
-import type { ImageProps, XStackProps } from 'tamagui'
+import type { ImageProps, XStackProps } from '@tamagui/ui'
 import {
   Adapt,
   Button,
@@ -35,8 +35,8 @@ import {
   XStack,
   YStack,
   styled,
-} from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+} from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -70,7 +70,7 @@ import { InlineTabs } from '../docs/InlineTabs'
 import { PropsTable } from '../docs/PropsTable'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
-import { TabsTabProps } from 'tamagui'
+import { TabsTabProps } from '@tamagui/ui'
 import { Tab } from '~/components/RovingTabs'
 
 if (!React.version.startsWith('19')) {

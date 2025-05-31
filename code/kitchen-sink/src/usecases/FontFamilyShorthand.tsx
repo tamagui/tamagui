@@ -1,4 +1,4 @@
-import { SizableText, styled } from 'tamagui'
+import { SizableText, styled } from '@tamagui/ui'
 
 const MyText = styled(SizableText, {
   name: 'H1',

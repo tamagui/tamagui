@@ -1,5 +1,5 @@
 import { Suspense, use } from 'react'
-import { Spinner, View } from 'tamagui'
+import { Spinner, View } from '@tamagui/ui'
 
 const cached: any = {}
 

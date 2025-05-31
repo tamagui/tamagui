@@ -1,7 +1,7 @@
 import { Copy, X } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
 import { useWindowDimensions } from 'react-native'
-import type { DialogCloseProps } from 'tamagui'
+import type { DialogCloseProps } from '@tamagui/ui'
 import {
   Button,
   Dialog,
@@ -14,7 +14,7 @@ import {
   Unspaced,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { generateOutput } from '../state/generateOutput'
 import { rootStore } from '../state/RootStore'

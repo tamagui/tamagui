@@ -20,7 +20,7 @@
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "tamagui": "workspace:*"
+    "@tamagui/ui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"

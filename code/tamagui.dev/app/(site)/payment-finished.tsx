@@ -1,6 +1,6 @@
 import { useRouter } from 'one'
 import { useEffect } from 'react'
-import { H1, H4, Paragraph, YStack } from 'tamagui'
+import { H1, H4, Paragraph, YStack } from '@tamagui/ui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { accountModal } from '~/features/site/purchase/NewAccountModal'
 import { ContainerLarge } from '../../components/Containers'

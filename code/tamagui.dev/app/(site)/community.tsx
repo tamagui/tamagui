@@ -14,7 +14,7 @@ import {
   Spacer,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'

@@ -11,7 +11,7 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "tamagui": {
+  "@tamagui/ui": {
     "bundle.native": "./src/index.ts",
     "bundle.native.test": "./src/index.ts"
   },

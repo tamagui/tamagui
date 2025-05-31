@@ -1,5 +1,5 @@
 import { useStore } from '@tamagui/use-store'
-import type { ThemeName } from 'tamagui'
+import type { ThemeName } from '@tamagui/ui'
 import {
   Separator,
   SizableText,
@@ -8,7 +8,7 @@ import {
   XStack,
   YStack,
   useThemeName,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { StudioProcedureStore } from '../../callApi'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'

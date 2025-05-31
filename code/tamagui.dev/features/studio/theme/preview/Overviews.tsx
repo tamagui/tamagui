@@ -1,5 +1,5 @@
-import type { CardProps } from 'tamagui'
-import { Card, H4, Paragraph, XStack, YStack } from 'tamagui'
+import type { CardProps } from '@tamagui/ui'
+import { Card, H4, Paragraph, XStack, YStack } from '@tamagui/ui'
 import { useDemoProps } from '../hooks/useDemoProps'
 
 export const Overview1 = () => {

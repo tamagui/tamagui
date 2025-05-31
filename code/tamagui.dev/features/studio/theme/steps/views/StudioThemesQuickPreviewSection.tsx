@@ -11,7 +11,7 @@ import {
   Switch,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { AccentTheme } from '~/features/studio/components/AccentTheme'
 import { accentThemeName } from '../../../accentThemeName'

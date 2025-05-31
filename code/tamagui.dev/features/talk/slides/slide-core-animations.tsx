@@ -1,7 +1,7 @@
 import { AnimationsHoverDemo } from '@tamagui/demos'
 import { createCodeHighlighter } from '../utils'
 import { memo } from 'react'
-import { YStack } from 'tamagui'
+import { YStack } from '@tamagui/ui'
 import { Slide } from '../Slide'
 
 const highlightCode = createCodeHighlighter()

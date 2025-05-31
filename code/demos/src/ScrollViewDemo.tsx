@@ -1,4 +1,4 @@
-import { Circle, ScrollView, Square, XStack } from 'tamagui'
+import { Circle, ScrollView, Square, XStack } from '@tamagui/ui'
 
 export function ScrollViewDemo() {
   return (

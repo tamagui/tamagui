@@ -1,4 +1,4 @@
-import { Text, View } from 'tamagui'
+import { Text, View } from '@tamagui/ui'
 
 export default function TabTwoScreen() {
   return (

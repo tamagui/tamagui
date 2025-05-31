@@ -26,7 +26,7 @@ export const generateOutput = (globalStore: ReturnType<typeof useGlobalState>) =
   const animations = globalStore.animations.draftAnimations
 
   return `import { config as baseConfig } from '@tamagui/config/v3'
-import { createTamagui } from 'tamagui'
+import { createTamagui } from '@tamagui/ui'
 import { createAnimations } from '@tamagui/animations-react-native'
 
 const animations = createAnimations({

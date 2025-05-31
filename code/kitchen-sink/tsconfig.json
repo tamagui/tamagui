@@ -41,9 +41,6 @@
       "path": "../packages/lucide-icons"
     },
     {
-      "path": "../ui/tamagui"
-    },
-    {
       "path": "../ui/toast"
     }
   ]

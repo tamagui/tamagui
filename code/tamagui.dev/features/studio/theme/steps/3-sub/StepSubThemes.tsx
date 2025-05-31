@@ -10,7 +10,7 @@ import {
   XStack,
   YGroup,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { NoticeParagraph, StudioNotice } from '../../../StudioNotice'

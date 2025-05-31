@@ -11,7 +11,7 @@ import {
   Square,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 // import {
 //   changeScaleCurve,

@@ -1,7 +1,7 @@
 import { Search as SearchIcon } from '@tamagui/lucide-icons'
 import { memo, useContext, useEffect, useRef } from 'react'
-import type { ButtonProps } from 'tamagui'
-import { Button, SizableText, TooltipSimple } from 'tamagui'
+import type { ButtonProps } from '@tamagui/ui'
+import { Button, SizableText, TooltipSimple } from '@tamagui/ui'
 
 import { SearchContext } from '~/features/site/search/SearchContext'
 

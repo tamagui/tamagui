@@ -1,4 +1,4 @@
-import { H3, Paragraph, XStack, YStack, styled } from 'tamagui'
+import { H3, Paragraph, XStack, YStack, styled } from '@tamagui/ui'
 
 import { unwrapText } from '~/helpers/unwrapText'
 

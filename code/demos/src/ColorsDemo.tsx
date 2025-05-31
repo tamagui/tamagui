@@ -8,7 +8,7 @@ import {
   YStack,
   getTokens,
   getVariableValue,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 const colorGroups = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red']
 

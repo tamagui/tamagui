@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, styled } from 'tamagui';
+import { Input, styled } from '@tamagui/ui';
 
 const StyledInput = styled(Input, {
   borderColor: 'red',

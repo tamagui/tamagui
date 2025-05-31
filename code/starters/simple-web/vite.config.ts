@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     tamaguiPlugin({
       optimize: process.env.EXTRACT === '1',
-      components: ['tamagui'],
+      components: ['@tamagui/ui'],
       config: 'src/tamagui.config.ts',
     }),
   ].filter(Boolean),

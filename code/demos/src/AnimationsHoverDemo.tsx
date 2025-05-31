@@ -1,5 +1,5 @@
 import { LogoIcon } from '@tamagui/logo'
-import { Square } from 'tamagui'
+import { Square } from '@tamagui/ui'
 
 export function AnimationsHoverDemo() {
   return (

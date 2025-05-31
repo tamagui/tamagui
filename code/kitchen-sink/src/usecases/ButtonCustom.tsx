@@ -1,4 +1,4 @@
-import { Button, GetProps, styled, useButton } from 'tamagui'
+import { Button, GetProps, styled, useButton } from '@tamagui/ui'
 
 const Frame = styled(Button.Frame, {
   backgroundColor: 'red',

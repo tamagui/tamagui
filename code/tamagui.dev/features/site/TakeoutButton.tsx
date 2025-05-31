@@ -1,4 +1,4 @@
-import { Button, type ButtonProps, Text, YStack } from 'tamagui'
+import { Button, type ButtonProps, Text, YStack } from '@tamagui/ui'
 import { TakeoutIcon } from '../icons/TakeoutIcon'
 
 export const TakeoutButton = (props: ButtonProps) => {

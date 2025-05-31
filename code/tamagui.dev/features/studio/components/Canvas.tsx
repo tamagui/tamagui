@@ -1,7 +1,7 @@
 'use client'
 
-import type { YStackProps } from 'tamagui'
-import { EnsureFlexed, YStack, styled } from 'tamagui'
+import type { YStackProps } from '@tamagui/ui'
+import { EnsureFlexed, YStack, styled } from '@tamagui/ui'
 
 import { sidebarWidth } from '../constants'
 

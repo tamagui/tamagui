@@ -2,7 +2,7 @@ import { onTintChange, setTintIndex, useTints } from '@tamagui/logo'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'
 import type { SetStateAction } from 'react'
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import type { ThemeName } from 'tamagui'
+import type { ThemeName } from '@tamagui/ui'
 import {
   Theme,
   XGroup,
@@ -12,7 +12,7 @@ import {
   useDebounce,
   useEvent,
   useGet,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { ActiveCircle } from '~/components/ActiveCircle'
 import { ContainerLarge } from '~/components/Containers'

@@ -1,4 +1,4 @@
-import { Input, Label, Switch, XStack, YStack } from 'tamagui'
+import { Input, Label, Switch, XStack, YStack } from '@tamagui/ui'
 
 export function LabelDemo() {
   return (

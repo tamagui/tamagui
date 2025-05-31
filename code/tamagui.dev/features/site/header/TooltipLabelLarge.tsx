@@ -1,5 +1,5 @@
 import type { Href } from 'one'
-import { H2, Paragraph, XStack, YStack } from 'tamagui'
+import { H2, Paragraph, XStack, YStack } from '@tamagui/ui'
 import { Link } from '../../../components/Link'
 import { purchaseModal } from '../purchase/NewPurchaseModal'
 

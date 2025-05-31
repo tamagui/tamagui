@@ -1,6 +1,6 @@
 import { Masonry } from 'masonic'
 import { memo } from 'react'
-import { XStack, YStack, styled, useThemeName } from 'tamagui'
+import { XStack, YStack, styled, useThemeName } from '@tamagui/ui'
 import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { AllTasks } from './preview/AllTasks'

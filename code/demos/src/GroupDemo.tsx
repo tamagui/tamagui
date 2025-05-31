@@ -1,5 +1,5 @@
 import { Activity, Airplay } from '@tamagui/lucide-icons'
-import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
+import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from '@tamagui/ui'
 
 export function GroupDemo() {
   return (

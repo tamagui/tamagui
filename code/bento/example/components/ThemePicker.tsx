@@ -1,4 +1,4 @@
-import { Image, Text, type ThemeName, XStack, YStack } from 'tamagui'
+import { Image, Text, type ThemeName, XStack, YStack } from '@tamagui/ui'
 import { colors, insets } from '../constant'
 import Animated, {
   type SharedValue,

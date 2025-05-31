@@ -1,6 +1,6 @@
 import { hsla } from 'color2k'
 import { memo, useState } from 'react'
-import { Slider, Stack, XGroup, XStack, YStack, useDebounce, useEvent } from 'tamagui'
+import { Slider, Stack, XGroup, XStack, YStack, useDebounce, useEvent } from '@tamagui/ui'
 
 export const HuePicker = memo(
   ({ value = 0, onChange }: { value: number; onChange: (next: number) => void }) => {

@@ -1,5 +1,5 @@
 import { assign } from 'lodash'
-import { getVariableValue, useTheme, useThemeName } from 'tamagui'
+import { getVariableValue, useTheme, useThemeName } from '@tamagui/ui'
 import type { VictoryThemeDefinition } from 'victory'
 import { useDemoProps } from '../hooks/useDemoProps'
 

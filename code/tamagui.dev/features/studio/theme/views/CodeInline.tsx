@@ -1,4 +1,4 @@
-import { Paragraph, styled } from 'tamagui'
+import { Paragraph, styled } from '@tamagui/ui'
 
 export const CodeInline = styled(Paragraph, {
   name: 'CodeInline',

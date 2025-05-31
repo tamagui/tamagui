@@ -16,7 +16,7 @@ import {
   XStack,
   YStack,
   styled,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { Link } from 'one'
 import { SubTitle } from '../site/SubTitle'
 import { Code, CodeInline } from './Code'

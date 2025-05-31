@@ -6,7 +6,7 @@ import { memo } from 'react'
 const highlightCode = createCodeHighlighter()
 
 const inputSnippet = highlightCode(
-  `import { Text, YStack } from 'tamagui'
+  `import { Text, YStack } from '@tamagui/ui'
 import { baseFontSize } from './constants'
 
 const height = 300 + baseFontSize

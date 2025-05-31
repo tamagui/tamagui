@@ -1,4 +1,4 @@
-import { EnsureFlexed, H4, Paragraph, YStack } from 'tamagui'
+import { EnsureFlexed, H4, Paragraph, YStack } from '@tamagui/ui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { Grid } from '~/components/Grid'

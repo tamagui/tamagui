@@ -69,7 +69,7 @@ export function getBabelPlugin() {
 
 export function getBabelParseDefinition(options: TamaguiOptions) {
   return {
-    name: 'tamagui',
+    name: '@tamagui/ui',
 
     visitor: {
       Program: {

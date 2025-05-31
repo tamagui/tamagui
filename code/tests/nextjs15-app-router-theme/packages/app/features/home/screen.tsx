@@ -19,7 +19,7 @@ import {
 } from '@my/ui'
 import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React from 'react'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { useState } from 'react'
 import { Platform } from 'react-native'
 import { useLink } from 'solito/navigation'

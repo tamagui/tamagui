@@ -6,7 +6,7 @@ import type {
   SpaceTokens,
   ThemeName,
   YStackProps,
-} from 'tamagui'
+} from '@tamagui/ui'
 import {
   H1,
   H2,
@@ -19,7 +19,7 @@ import {
   useComposedRefs,
   usePresence,
   useThemeName,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { useHoverGlow, type DivProps } from '~/components/HoverGlow'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
 import { Code } from '~/components/Code'

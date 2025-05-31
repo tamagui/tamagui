@@ -1,7 +1,7 @@
 import { createCodeHighlighter } from '../utils'
 import { Slide } from '../Slide'
 import { memo } from 'react'
-import { Square, YStack } from 'tamagui'
+import { Square, YStack } from '@tamagui/ui'
 
 const highlightCode = createCodeHighlighter()
 

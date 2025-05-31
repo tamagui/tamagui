@@ -1,5 +1,5 @@
 import { Plus } from '@tamagui/lucide-icons'
-import type { ListItemProps, PopoverProps } from 'tamagui'
+import type { ListItemProps, PopoverProps } from '@tamagui/ui'
 import {
   Button,
   H6,
@@ -9,7 +9,7 @@ import {
   Separator as TamaguiSeparator,
   styled,
   withStaticProperties,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 const Item = ({ children, ...props }: ListItemProps) => (
   <ListItem miw={190} size="$5" iconAfter={Plus} {...props}>

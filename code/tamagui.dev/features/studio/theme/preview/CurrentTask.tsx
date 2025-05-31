@@ -1,4 +1,4 @@
-import type { XStackProps } from 'tamagui'
+import type { XStackProps } from '@tamagui/ui'
 import {
   Avatar,
   H4,
@@ -9,7 +9,7 @@ import {
   Spacer,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { accentTokenName } from '../../accentThemeName'
 import { useDemoProps } from '../hooks/useDemoProps'

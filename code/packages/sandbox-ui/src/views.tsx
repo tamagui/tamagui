@@ -1,4 +1,4 @@
-import { Text, styled } from 'tamagui'
+import { Text, styled } from '@tamagui/ui'
 
 export const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',

@@ -1,13 +1,13 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
+import type { SelectItemProps, SelectProps, SelectTriggerProps } from '@tamagui/ui'
 import {
   Select as TamaguiSelect,
   XStack,
   YStack,
   useProps,
   withStaticProperties,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
   return (

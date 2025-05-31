@@ -8,7 +8,7 @@ import {
   type SwitchProps as TamaguiSwitchProps,
   View,
   XStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { TimedRender } from './components/TimedRender'
 
 const StyledButton = styled(Button, {

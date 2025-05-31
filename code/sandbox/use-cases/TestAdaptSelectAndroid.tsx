@@ -1,7 +1,7 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React from 'react'
-import type { FontSizeTokens, SelectProps } from 'tamagui'
-import { Adapt, Select, Sheet, YStack, getFontSize } from 'tamagui'
+import type { FontSizeTokens, SelectProps } from '@tamagui/ui'
+import { Adapt, Select, Sheet, YStack, getFontSize } from '@tamagui/ui'
 
 export default function TestSelectAdapt(props: SelectProps) {
   const [val, setVal] = React.useState('apple')

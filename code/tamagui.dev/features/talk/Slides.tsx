@@ -2,7 +2,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { Button, Paragraph, XStack, YStack, styled, useEvent } from 'tamagui'
+import { Button, Paragraph, XStack, YStack, styled, useEvent } from '@tamagui/ui'
 
 import { ShowAllStepsContext, SlideContext } from './Slide'
 

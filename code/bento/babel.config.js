@@ -7,7 +7,7 @@ module.exports = (api) => {
         '@tamagui/babel-plugin',
         {
           platform: 'native',
-          components: ['tamagui'],
+          components: ['@tamagui/ui'],
           config: './tamagui.config.ts',
           // disable: true,
           // disableExtraction: true,

@@ -11,7 +11,7 @@ import {
   YStack,
   useDebounce,
   useEvent,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { Checkerboard } from '../components/Checkerboard'
 

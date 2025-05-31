@@ -1,4 +1,4 @@
-import { H1 } from 'tamagui'
+import { H1 } from '@tamagui/ui'
 import { ContainerLarge } from '~/components/Containers'
 
 export default function AdminUserPage() {

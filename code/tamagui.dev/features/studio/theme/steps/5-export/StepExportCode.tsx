@@ -16,7 +16,7 @@ import {
   Theme,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { toastController } from '../../../ToastProvider'

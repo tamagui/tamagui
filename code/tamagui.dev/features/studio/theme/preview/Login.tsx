@@ -12,7 +12,7 @@ import {
   Theme,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { IconGithub } from '~/features/studio/theme/icons/icon-github'

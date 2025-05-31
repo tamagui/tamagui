@@ -1,4 +1,4 @@
-import { Stack, Text, YStack, styled } from 'tamagui'
+import { Stack, Text, YStack, styled } from '@tamagui/ui'
 
 const CustomYStack = styled(YStack, {
   backgroundColor: 'yellow',

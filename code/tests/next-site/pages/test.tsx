@@ -1,6 +1,6 @@
-import type { Heading, TextProps } from 'tamagui'
+import type { Heading, TextProps } from '@tamagui/ui'
 import { memo, useState, useEffect } from 'react'
-import { Circle, H1, useDidFinishSSR, AnimatePresence } from 'tamagui'
+import { Circle, H1, useDidFinishSSR, AnimatePresence } from '@tamagui/ui'
 
 export default () => {
   return (

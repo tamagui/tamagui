@@ -50,7 +50,7 @@ export function registerRequire(
   Module.prototype.require = tamaguiRequire
 
   function tamaguiRequire(this: any, path: string) {
-    if (path === 'tamagui' && platform === 'native') {
+    if (path === '@tamagui/ui' && platform === 'native') {
       return og.apply(this, ['tamagui/native'])
     }
 
@@ -94,7 +94,7 @@ export function registerRequire(
 
     if (!whitelisted[path]) {
       if (proxyWormImports && !path.includes('.tamagui-dynamic-eval')) {
-        if (path === 'tamagui') {
+        if (path === '@tamagui/ui') {
           return og.apply(this, [path])
         }
         return proxyWorm
@@ -190,7 +190,7 @@ const knownIgnorableModules = {
   solito: true,
   'expo-linear-gradient': true,
   '@expo/vector-icons': true,
-  'tamagui/linear-gradient': true,
+  '@tamagui/linear-gradient': true,
   ...Object.fromEntries(extraIgnores?.map((k) => [k, true]) || []),
 }
 

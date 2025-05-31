@@ -1,4 +1,4 @@
-import { Popover, Stack, Text, Theme, styled } from 'tamagui'
+import { Popover, Stack, Text, Theme, styled } from '@tamagui/ui'
 
 export const Content = styled(Popover.Content, {
   padding: 0,
