@@ -16,7 +16,10 @@ type ButtonVariant = "outlined";
 
 export type ButtonProps = GetProps<typeof Frame>;
 
-const context = createStyledContext({
+const context = createStyledContext<{
+  size?: SizeTokens;
+  variant?: ButtonVariant;
+}>({
   size: undefined,
   variant: undefined,
 });
@@ -127,20 +130,22 @@ const Text = styled(SizableText, {
   },
 });
 
-const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
-  const { children, scaleIcon = 1 } = props;
+const Icon = (props: { children: React.ReactNode; scaleIcon?: number; }) => {
+  const { children, scaleIcon = 1, marginLeft, marginRight, size } = props as any;
   const styledContext = context.useStyledContext();
   if (!styledContext) {
     throw new Error("Button.Icon must be used within a Button");
   }
   const getIcon = useGetIcon();
 
-  const sizeToken = styledContext.size ?? "$true";
+  const sizeToken = size ?? styledContext.size;
 
   const iconSize = getFontSize(sizeToken as any) * scaleIcon;
 
   return getIcon(children, {
     size: iconSize,
+    marginLeft,
+    marginRight,
   });
 };
 
@@ -172,7 +177,8 @@ const ButtonComponent = Frame.styleable<{
     ...props
   } = propsIn;
 
-  const size = iconSize ?? propsIn.size;
+  const styledContext = context.useStyledContext();
+  const size = iconSize ?? propsIn.size ?? styledContext?.size;
   const iconSizeNumber = getFontSize(size as any) * scaleIcon;
 
   const getIcon = useGetIcon();
@@ -194,7 +200,7 @@ const ButtonComponent = Frame.styleable<{
     propsIn.unstyled !== true
       ? {
           unstyled: process.env.TAMAGUI_HEADLESS === "1",
-          size: propsIn.size,
+          size: propsIn.size ?? styledContext?.size,
         }
       : undefined
   );
