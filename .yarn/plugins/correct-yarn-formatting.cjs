@@ -31,23 +31,34 @@ class Logger {
         }
     }
 }
+/**
+ * Yarn on windows writes its file paths as unix absolute and this causes problems:
+ *
+ * /D:/a/something/here
+ */
+function resolveCWD(yarnCwd) {
+    if (process.platform === "win32") {
+        return yarnCwd.startsWith("/") ? yarnCwd.slice(1) : yarnCwd;
+    }
+    return yarnCwd;
+}
 function factory(_require) {
     const { readFileSync, writeFileSync } = _require("fs");
-    const { join } = _require("path");
+    const { resolve } = _require("path");
     const origPkgs = [];
     return {
         configuration,
         hooks: {
             validateProject(project) {
                 const logger = new Logger(project);
-                const topPkgJsonPath = join(project.cwd, "package.json");
+                const topPkgJsonPath = resolve(resolveCWD(project.cwd), "package.json");
                 logger.debug(`Reading pre-formatted file: ${topPkgJsonPath}`);
                 origPkgs.push([
                     topPkgJsonPath,
                     readFileSync(topPkgJsonPath).toString(),
                 ]);
                 project.workspaces.forEach((w) => {
-                    const pkgJsonPath = join(w.cwd, "package.json");
+                    const pkgJsonPath = resolve(resolveCWD(w.cwd), "package.json");
                     logger.debug(`Reading pre-formatted file: ${pkgJsonPath}`);
                     origPkgs.push([pkgJsonPath, readFileSync(pkgJsonPath).toString()]);
                 });
