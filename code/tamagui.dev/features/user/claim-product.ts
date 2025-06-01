@@ -1,6 +1,9 @@
 import type { User } from '@supabase/supabase-js'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
-import { inviteCollaboratorToRepo } from '~/features/github/helpers'
+import {
+  inviteCollaboratorToRepo,
+  checkIfUserIsCollaborator,
+} from '~/features/github/helpers'
 import type { Database, Json } from '~/features/supabase/types'
 import { ProductName } from '~/shared/types/subscription'
 import { getUserPrivateInfo } from './helpers'
@@ -95,6 +98,27 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request })
   }
 
   try {
+    const collaboratorCheck = await checkIfUserIsCollaborator(
+      repoName,
+      userPrivate.github_user_name
+    )
+
+    if (collaboratorCheck.isCollaborator) {
+      console.info(`User is already a collaborator`)
+      return {
+        data: {
+          user_github: {
+            id: userPrivate.id,
+            login: userPrivate.github_user_name,
+          },
+          repository_name: repoName,
+          permission,
+        },
+        message: `You are already a collaborator on the repository. You can access it directly at: ${collaboratorCheck.repoUrl}`,
+        ...(collaboratorCheck.repoUrl && { url: collaboratorCheck.repoUrl }),
+      }
+    }
+
     await inviteCollaboratorToRepo(repoName, userPrivate.github_user_name, permission)
 
     console.info(`Invited successfully`)

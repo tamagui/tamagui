@@ -658,6 +658,22 @@ const SupportTabContent = ({
     { value: '3', label: 'Tier 3', price: 2400 },
   ]
 
+  // Handle chat support toggle - disable support tier when enabled
+  const handleChatSupportChange = (checked: boolean) => {
+    setChatSupport(checked)
+    if (checked) {
+      setSupportTier('0') // Reset support tier to none
+    }
+  }
+
+  // Handle support tier change - disable chat support when tier is selected
+  const handleSupportTierChange = (value: string) => {
+    setSupportTier(value)
+    if (value !== '0') {
+      setChatSupport(false) // Disable chat support
+    }
+  }
+
   return (
     <>
       <BigP>
@@ -675,13 +691,14 @@ const SupportTabContent = ({
             <XStack maw={100}>
               <Switch
                 checked={chatSupport}
-                onCheckedChange={(checked) => setChatSupport(!!checked)}
+                onCheckedChange={handleChatSupportChange}
                 id="chat-support"
+                disabled={supportTier !== '0'} // Disable if support tier is selected
               />
             </XStack>
           </XStack>
 
-          <P maw={500} size="$5" lineHeight="$6" o={0.5}>
+          <P maw={500} size="$5" lineHeight="$6" o={chatSupport ? 1 : 0.5}>
             A private Discord room just for your team with 2 invites, with responses
             prioritized over our community chat.
           </P>
@@ -698,7 +715,8 @@ const SupportTabContent = ({
                 id="support-tier"
                 size="$4"
                 value={supportTier}
-                onValueChange={setSupportTier}
+                onValueChange={handleSupportTierChange}
+                disabled={chatSupport} // Disable if chat support is enabled
               >
                 {tiers.map((tier) => (
                   <Select.Item
@@ -715,7 +733,7 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P size="$5" lineHeight="$6" maw={500} o={0.5}>
+          <P size="$5" lineHeight="$6" maw={500} o={supportTier !== '0' ? 1 : 0.5}>
             Each tier adds 4 hours of development a month, faster response times, and 4
             additional private chat invites.
           </P>
