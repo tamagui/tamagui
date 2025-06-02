@@ -1,5 +1,5 @@
 import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from 'tamagui'
+import { createTamagui } from '@tamagui/ui'
 
 const tamaguiConfig = createTamagui({
   ...defaultConfig,
@@ -11,7 +11,7 @@ const tamaguiConfig = createTamagui({
 
 export type TamaguiConfig = typeof tamaguiConfig
 
-declare module '@tamagui/web' {
+declare module '@tamagui/ui' {
   // overrides TamaguiCustomConfig so your custom types
   interface TamaguiCustomConfig extends TamaguiConfig {}
 }

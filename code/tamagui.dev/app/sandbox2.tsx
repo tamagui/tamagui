@@ -1,5 +1,5 @@
 import { Link, useLoader } from 'one'
-import { Circle, YStack } from 'tamagui'
+import { Circle, YStack } from '@tamagui/ui'
 import { Select } from '../components/Select'
 
 export default () => {

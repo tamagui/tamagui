@@ -4,8 +4,8 @@
     // for jumping to things properly in vscode
     "baseUrl": ".",
     "paths": {
-      "tamagui": [
-        "../tamagui"
+      "@tamagui/ui": [
+        "../ui/tamagui-ui"
       ],
       "@tamagui/studio": [
         "../studio"

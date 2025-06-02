@@ -13,7 +13,7 @@ import {
   XGroup,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { ButtonLink, Link, type LinkProps } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'

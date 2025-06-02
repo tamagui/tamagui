@@ -94,7 +94,6 @@
     "react-native-svg": "15.8.0",
     "react-native-web": "^0.20.0",
     "swr": "^2.2.5",
-    "tamagui": "workspace:*",
     "zod": "^3.24.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import { Text, useTheme } from '@tamagui/core'
-import { YStack } from 'tamagui'
+import { YStack } from '@tamagui/ui'
 
 export function UseTheme() {
   const x = useTheme()

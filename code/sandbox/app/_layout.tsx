@@ -1,11 +1,11 @@
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.css'
 
 import { Toast, ToastProvider, ToastViewport, useToastState } from '@tamagui/toast'
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, SafeAreaView, Slot } from 'one'
-import { isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
+import { isWeb, TamaguiProvider, XStack, YStack } from '@tamagui/ui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
 import oneBall from '~/public/app-icon.png'

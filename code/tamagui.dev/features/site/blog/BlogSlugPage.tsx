@@ -12,8 +12,8 @@ import {
   Spacer,
   XStack,
   YStack,
-} from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+} from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
@@ -147,7 +147,7 @@ export function BlogSlugPage(props: BlogPost) {
               Related
             </H3>
 
-            <YStack my="$4" space="$4">
+            <YStack my="$4" gap="$4">
               {relatedPosts.map((frontmatter) => {
                 return (
                   <Paragraph

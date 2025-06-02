@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import type { XStackProps } from 'tamagui'
-import { Circle, XStack } from 'tamagui'
+import type { XStackProps } from '@tamagui/ui'
+import { Circle, XStack } from '@tamagui/ui'
 
 import { useTint } from './useTint'
 

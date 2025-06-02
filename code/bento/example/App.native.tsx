@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font'
 import { useState } from 'react'
 import { LogBox, useColorScheme } from 'react-native'
 import { Provider } from './components'
-import { type ThemeName, YStack } from 'tamagui'
+import { type ThemeName, YStack } from '@tamagui/ui'
 import { List, Payment } from '../src/components'
 
 LogBox.ignoreAllLogs()

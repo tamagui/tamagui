@@ -1,4 +1,4 @@
-import { Paragraph, XStack, YStack } from 'tamagui'
+import { Paragraph, XStack, YStack } from '@tamagui/ui'
 
 import { Pencil } from '@tamagui/lucide-icons'
 import { CheckCircle } from './CheckCircle'

@@ -1,5 +1,5 @@
-import type { TamaguiProviderProps } from 'tamagui'
-import { TamaguiProvider } from 'tamagui'
+import type { TamaguiProviderProps } from '@tamagui/ui'
+import { TamaguiProvider } from '@tamagui/ui'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import config from '../../tamagui.config'

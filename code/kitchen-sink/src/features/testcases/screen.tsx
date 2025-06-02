@@ -2,15 +2,15 @@ import { ChevronRight } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
-import type { ListItemProps } from 'tamagui'
-import { H2, ListItem, Separator, YGroup, YStack } from 'tamagui'
+import type { ListItemProps } from '@tamagui/ui'
+import { H2, ListItem, Separator, YGroup, YStack } from '@tamagui/ui'
 
 import * as TestCases from '../../usecases'
 
 export function TestCasesScreen() {
   return (
     <ScrollView>
-      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} gap="$4">
         <H2>All Test Cases</H2>
         <YStack gap="$4" maw={600}>
           <YGroup size="$4" separator={<Separator />}>

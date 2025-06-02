@@ -73,42 +73,40 @@ export function createSheet<
    * SheetOverlay
    * -----------------------------------------------------------------------------------------------*/
 
-  const SheetOverlay = Overlay.extractable(
-    memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
-      const { __scopeSheet, ...props } = propsIn
-      const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
+  const SheetOverlay = Overlay.styleable<SheetScopedProps<{}>>((propsIn, ref) => {
+    const { __scopeSheet, ...props } = propsIn
+    const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
 
-      // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
-      // so we just pass it up to context
+    // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
+    // so we just pass it up to context
 
-      const element = useMemo(() => {
-        return (
-          // @ts-ignore
-          <Overlay
-            {...props}
-            onPress={composeEventHandlers(
-              props.onPress,
-              context.dismissOnOverlayPress
-                ? () => {
-                    context.setOpen(false)
-                  }
-                : undefined
-            )}
-          />
-        )
-      }, [props.onPress, props.opacity, context.dismissOnOverlayPress])
+    const element = useMemo(() => {
+      return (
+        // @ts-ignore
+        <Overlay
+          {...props}
+          onPress={composeEventHandlers(
+            props.onPress,
+            context.dismissOnOverlayPress
+              ? () => {
+                  context.setOpen(false)
+                }
+              : undefined
+          )}
+        />
+      )
+    }, [props.onPress, props.opacity, context.dismissOnOverlayPress])
 
-      useIsomorphicLayoutEffect(() => {
-        context.onOverlayComponent?.(element)
-      }, [element])
+    useIsomorphicLayoutEffect(() => {
+      context.onOverlayComponent?.(element)
+    }, [element])
 
-      if (context.onlyShowFrame) {
-        return null
-      }
-
+    if (context.onlyShowFrame) {
       return null
-    })
-  )
+    }
+
+    return null
+  })
 
   /* -------------------------------------------------------------------------------------------------
    * Sheet
@@ -130,31 +128,26 @@ export function createSheet<
     adjustPaddingForOffscreenContent?: boolean
   }
 
-  const SheetFrame = Frame.extractable(
-    forwardRef(
-      (
-        {
-          __scopeSheet,
-          adjustPaddingForOffscreenContent,
-          disableHideBottomOverflow,
-          children,
-          ...props
-        }: SheetProps & ExtraFrameProps,
-        forwardedRef
-      ) => {
-        const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const { hasFit, removeScrollEnabled, frameSize, contentRef, open } = context
-        const composedContentRef = useComposedRefs(forwardedRef, contentRef)
-        const offscreenSize = useSheetOffscreenSize(context)
+  const SheetFrame = Frame.styleable<SheetProps & ExtraFrameProps>(
+    (
+      {
+        __scopeSheet,
+        adjustPaddingForOffscreenContent,
+        disableHideBottomOverflow,
+        children,
+        ...props
+      },
+      forwardedRef
+    ) => {
+      const context = useSheetContext(SHEET_NAME, __scopeSheet)
+      const { hasFit, removeScrollEnabled, frameSize, contentRef, open } = context
+      const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+      const offscreenSize = useSheetOffscreenSize(context)
 
         const sheetContents = useMemo(() => {
           return (
             // @ts-expect-error
             <Frame
-              ref={composedContentRef}
-              flex={hasFit ? 0 : 1}
-              height={hasFit ? undefined : frameSize}
-              pointerEvents={open ? 'auto' : 'none'}
               {...props}
             >
               <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
@@ -210,7 +203,6 @@ export function createSheet<
           </>
         )
       }
-    )
   ) as any as ForwardRefExoticComponent<
     SheetScopedProps<
       Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps

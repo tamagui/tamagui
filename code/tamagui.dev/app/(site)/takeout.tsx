@@ -1,11 +1,11 @@
 import { getSize } from '@tamagui/get-token'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Dot } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import type React from 'react'
 import { Suspense, lazy, memo, useEffect, useState } from 'react'
-import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from 'tamagui'
+import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from '@tamagui/ui'
 import {
   H2,
   Paragraph,
@@ -21,7 +21,7 @@ import {
   styled,
   useMedia,
   useThemeName,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { ContainerLarge } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -755,7 +755,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           <borderGlow.Component />
         </YStack> */}
 
-        <YStack f={1} space zi={100}>
+        <YStack f={1} gap="$4" zi={100}>
           <H2
             fontFamily="$mono"
             size="$8"
@@ -921,7 +921,7 @@ const Point = ({
   size?: FontSizeTokens
 }) => {
   return (
-    <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
+    <XStack tag="li" ai="flex-start" gap="$4" f={1} ov="hidden" {...props}>
       <YStack mr={-12} py="$1.5">
         <Dot size={16} color="$color10" />
       </YStack>

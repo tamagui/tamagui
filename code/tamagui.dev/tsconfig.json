@@ -72,12 +72,6 @@
     },
     {
       "path": "../packages/use-store"
-    },
-    {
-      "path": "../ui/image-next"
-    },
-    {
-      "path": "../ui/tamagui"
     }
   ]
 }

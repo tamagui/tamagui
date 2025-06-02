@@ -19,7 +19,7 @@ import {
   View,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { PopoverDemo } from '@tamagui/demos'
 

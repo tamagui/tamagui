@@ -1,4 +1,4 @@
-import { H1, Paragraph, Separator, Spacer } from 'tamagui'
+import { H1, Paragraph, Separator, Spacer } from '@tamagui/ui'
 import { Container } from '../../components/Containers'
 import { Link } from '../../components/Link'
 
