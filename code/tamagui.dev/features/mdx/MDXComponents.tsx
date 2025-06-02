@@ -68,6 +68,7 @@ import { HeroContainer } from '../docs/HeroContainer'
 import { Highlights } from '../docs/Highlights'
 import { InlineTabs } from '../docs/InlineTabs'
 import { PropsTable } from '../docs/PropsTable'
+import { VersionSwitcher } from '../docs/VersionSwitcher'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
 import { TabsTabProps } from '@tamagui/ui'
@@ -239,6 +240,7 @@ const componentsIn = {
   },
 
   Highlights,
+  VersionSwitcher,
   ThemeTint,
   PropsTable,
   DataTable,
