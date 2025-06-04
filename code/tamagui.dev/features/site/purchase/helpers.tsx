@@ -1,4 +1,3 @@
-import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import type { ButtonProps, CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
@@ -16,8 +15,6 @@ import {
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
-import { usePathname } from 'one'
-
 const ua = (() => {
   if (typeof window === 'undefined') return
   return window.navigator.userAgent
@@ -32,34 +29,19 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function formatPrice(amount: number, currency: string) {
-  return new Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: currency.toUpperCase(),
-  }).format(amount)
-}
-
 export function PurchaseButton(props: ButtonProps) {
-  const isBento = usePathname().startsWith('/bento')
-
-  const contents = (
-    <Button size="$5" borderWidth={2} {...props}>
-      <Button.Text size="$3" ff="$silkscreen">
+  return (
+    <Button size="$4" $gtXs={{ size: '$5' }} br="$10" {...props}>
+      <Button.Text size="$5" ff="$mono">
         {props.children}
       </Button.Text>
     </Button>
   )
-
-  if (isBento) {
-    return contents
-  }
-
-  return <ThemeTintAlt offset={isBento ? -1 : 1}>{contents}</ThemeTintAlt>
 }
 
 export const MunroP = styled(Paragraph, {
   // className: 'pixelate',
-  fontFamily: '$munro',
+  fontFamily: '$mono',
 })
 
 export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
@@ -144,6 +126,9 @@ export const RadioGroupItem = ({
 }
 
 const bentoDefaults = {
+  price_1QPzlaFQGtHoG6xcdRzFfWL8: {
+    seats: 1,
+  },
   price_1Pe0UKFQGtHoG6xcntaCw9k1: {
     seats: 1,
   },
@@ -179,10 +164,8 @@ export function BentoTable({
           <Paragraph size="$6" fow="bold">
             Lifetime access
           </Paragraph>
-          <Paragraph size="$3" theme="alt1">
-            {price?.metadata?.['is_lifetime']
-              ? 'You own and can use the code forever, get updates forever.'
-              : "You own and can use the code for life, get updates as long as you're subscribed."}
+          <Paragraph f={1} ellipse size="$3" theme="alt1">
+            You own and can use the code forever.
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
@@ -230,7 +213,8 @@ export const TakeoutTable = ({
             Lifetime access, 1 year of updates
           </Paragraph>
           <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            You own the code for life, with updates for a year
+            You own the code for life, but only have access for a year. One-click cancel
+            in your account page
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
@@ -259,19 +243,7 @@ export const TakeoutTable = ({
           <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">Discord Private Channel</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Private chat for your team only
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">
-            {takeoutPriceInfo.hasDiscordPrivateChannels ? checkCircle : xCircle}
-          </Paragraph>
-        </XStack>
-      </XStack>
+
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6">GitHub Seats</Paragraph>

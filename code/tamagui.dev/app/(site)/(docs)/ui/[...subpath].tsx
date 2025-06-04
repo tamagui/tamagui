@@ -1,6 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
-import React from 'react'
+import React, { memo } from 'react'
 import type { LoaderProps } from 'one'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -10,6 +10,8 @@ import { MDXTabs } from '~/features/docs/MDXTabs'
 import { useIsDocsTinted } from '~/features/docs/docsTint'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
+import { nbspLastWord, SubTitle } from '../../../../components/SubTitle'
+import { HomeH1 } from '../../../../features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('@tamagui/mdx-2')
@@ -35,11 +37,13 @@ export async function generateStaticParams() {
 
 export async function loader(props: LoaderProps) {
   const { getMDXBySlug, getAllVersionsFromPath } = await import('@tamagui/mdx-2')
-  const { frontmatter, code } = await getMDXBySlug(
-    'data/docs/components',
-    props.params.subpath
-  )
-  const [componentName, componentVersion] = props.params.subpath.split('/')
+
+  const subpath = Array.isArray(props.params.subpath)
+    ? props.params.subpath[0]
+    : props.params.subpath
+
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath)
+  const [componentName, componentVersion] = subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
   return {
     frontmatter: {
@@ -51,10 +55,9 @@ export async function loader(props: LoaderProps) {
   }
 }
 
-export default function DocComponentsPage() {
+export function DocComponentsPage() {
   const { frontmatter, code } = useLoader(loader)
   const Component = React.useMemo(() => getMDXComponent(code), [code])
-  const isTinted = useIsDocsTinted()
 
   // useEffect(() => {
   //   const url = new URL(location.href)
@@ -93,15 +96,25 @@ export default function DocComponentsPage() {
           href={`/primitives/docs/components/${frontmatter.subpath.replace(frontmatter.version, '')}`}
         />
       )} */}
+
+      <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
+
+      <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
+
       <MDXProvider frontmatter={frontmatter}>
-        <ThemeTint disable={!isTinted}>
+        <DocsThemeTint>
           <MDXTabs id="type" defaultValue="styled">
             <Component components={components as any} />
           </MDXTabs>
-        </ThemeTint>
+        </DocsThemeTint>
       </MDXProvider>
 
       <DocsQuickNav key={frontmatter.slug} />
     </>
   )
 }
+
+const DocsThemeTint = memo(({ children }: { children: any }) => {
+  const isTinted = useIsDocsTinted()
+  return <ThemeTint disable={!isTinted}>{children}</ThemeTint>
+})

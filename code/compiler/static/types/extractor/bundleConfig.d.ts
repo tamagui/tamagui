@@ -1,4 +1,4 @@
-import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web';
+import { type StaticConfig, type TamaguiInternalConfig } from '@tamagui/web';
 import type { TamaguiOptions } from '../types';
 type NameToPaths = {
     [key: string]: Set<string>;

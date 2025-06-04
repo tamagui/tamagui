@@ -224,11 +224,10 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   const selectors = cssStyleRule.selectorText.split(',')
   if (!selectors.length) return
 
-  if (tokens && !colorVarToVal) {
+  if (tokens?.color && !colorVarToVal) {
     colorVarToVal = {}
     for (const key in tokens.color) {
       const token = tokens.color[key]
-      // @ts-expect-error need to double check why this type is off though
       colorVarToVal[token.name] = token.val
     }
   }
@@ -281,6 +280,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
+    if (selector === ' .tm_xxt') continue
     const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
     const name = selector.slice(lastThemeSelectorIndex).slice(3)
     const [schemeChar] = selector[lastThemeSelectorIndex - 5]
@@ -298,26 +298,22 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   } satisfies DedupedTheme
 }
 
+const tamaguiSelectorRegex = /\.tm_xxt/
+
 function getTamaguiSelector(
   rule: CSSRule | null,
   collectThemes = false
 ): readonly [string, CSSStyleRule] | [string, CSSStyleRule, true] | undefined {
   if (rule instanceof CSSStyleRule) {
     const text = rule.selectorText
-    if (text[0] === ':' && text[1] === 'r') {
-      if (text.startsWith(':root ._')) {
-        return [getIdentifierFromTamaguiSelector(text), rule]
-      }
-      if (collectThemes) {
-        // only matches t_ starting selector chains
-        if (/^(:root\s?(\.t_[a-z0-9_]+\s*)+(,)?\s*)+$/i.test(text)) {
-          return [
-            text.slice(0, 20), // just used as uid
-            rule,
-            true,
-          ]
-        }
-      }
+
+    // only matches t_ starting selector chains
+    if (text[0] === ':' && text[1] === 'r' && tamaguiSelectorRegex.test(text)) {
+      const id = getIdentifierFromTamaguiSelector(
+        // next.js minifies it so its in front
+        text.replace(tamaguiSelectorRegex, '')
+      )
+      return collectThemes ? [id, rule, true] : [id, rule]
     }
   } else if (rule instanceof CSSMediaRule) {
     // tamagui only ever inserts 1 rule per media
@@ -404,7 +400,6 @@ const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
 export function shouldInsertStyleRules(identifier: string) {
   if (process.env.TAMAGUI_REACT_19) {
     return true
-    // biome-ignore lint/style/noUselessElse: <explanation>
   } else {
     if (process.env.IS_STATIC === 'is_static') {
       return true

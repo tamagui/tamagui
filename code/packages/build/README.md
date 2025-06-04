@@ -2,6 +2,12 @@
 
 A small, opinionated build script for libraries that target both React Native and React web.
 
+Path-specific extensions are the only way to support ESM. Bundlers used to be flexible and configure this for you, but to conform to spec your import must specify the full file path now, and not leave out the extension. This is trouble for React Native which has platform file extensions.
+
+We wanted to build packages so we didn't have to deal with all this fuss. What it does, is builds out `.native` and `.web` versions of every file. It then does some transforms to each to support a wide variety of setups - Metro, Vite, modern Node, etc.
+
+The one limitation for now is it doesn't support .ios and .android platform-specifics at least for platform-specific imports. It does output non-specific versions for Metro/older node, so it'll work there.
+
 It has a few features that make it useful for "universal" libraries:
 
 - uses tsc to output declaration files to `./types`

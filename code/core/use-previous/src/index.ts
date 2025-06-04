@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-export function usePrevious<T>(value: T) {
+export function usePrevious<T>(value: T): T {
   const ref = React.useRef({ value, previous: value })
 
   // We compare values before making an update to ensure that

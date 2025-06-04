@@ -2,8 +2,7 @@ import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 import path from 'node:path'
-
-import fs, { writeJSON } from 'fs-extra'
+import fs, { writeJSON, ensureDir } from 'fs-extra'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
@@ -18,27 +17,27 @@ const exec = promisify(proc.exec)
 export const spawn = proc.spawn
 
 // for failed publishes that need to re-run
-const confirmFinalPublish = process.argv.includes('--confirm-final-publish')
 const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
-const finish = process.argv.includes('--finish')
+const shouldFinish = process.argv.includes('--finish')
 const skipFinish = process.argv.includes('--skip-finish')
 
-const skipStarters = process.argv.includes('--skip-starters')
 const canary = process.argv.includes('--canary')
-const skipVersion = finish || rePublish || process.argv.includes('--skip-version')
+const skipStarters = canary || process.argv.includes('--skip-starters')
+const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
-const dirty = finish || process.argv.includes('--dirty')
+const dirty = shouldFinish || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
-  finish ||
+  shouldFinish ||
   rePublish ||
   process.argv.includes('--skip-test') ||
   process.argv.includes('--skip-tests')
-const skipBuild = finish || rePublish || process.argv.includes('--skip-build')
+const skipBuild = shouldFinish || rePublish || process.argv.includes('--skip-build')
+const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
-const isCI = finish || process.argv.includes('--ci')
+const isCI = shouldFinish || process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
@@ -74,21 +73,23 @@ const sleep = (ms) => {
 if (!skipVersion) {
   console.info('Current:', curVersion, '\n')
 } else {
-  console.info(`Re-publishing ${curVersion}`)
+  console.info(`Re-releasing ${curVersion}`)
 }
+
+const isMain = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() === 'main'
 
 async function run() {
   try {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on master
+    // ensure we are on main
     if (!canary) {
-      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
-        throw new Error(`Not on master`)
+      if (!isMain) {
+        throw new Error(`Not on main`)
       }
-      if (!dirty && !rePublish && !finish) {
-        await spawnify(`git pull --rebase origin master`)
+      if (!dirty && !rePublish && !shouldFinish) {
+        await spawnify(`git pull --rebase origin main`)
       }
     }
 
@@ -148,7 +149,7 @@ async function run() {
         return -1
       })
 
-    if (!finish) {
+    if (!shouldFinish) {
       console.info(
         `Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`
       )
@@ -168,12 +169,15 @@ async function run() {
         })
       )
     }
+
+    // ensure right user
     if (tamaguiGitUser) {
       await spawnify(`git config --global user.name 'Tamagui'`)
       await spawnify(`git config --global user.email 'tamagui@users.noreply.github.com`)
     }
 
-    if (!finish) {
+    // get version
+    if (!shouldFinish) {
       const answer =
         isCI || skipVersion
           ? { version: nextVersion }
@@ -190,23 +194,37 @@ async function run() {
 
     console.info('install and build')
 
-    if (!rePublish && !finish) {
+    if (!rePublish && !shouldFinish) {
       await spawnify(`yarn install`)
     }
 
-    if (!skipBuild && !finish) {
+    // build from fresh
+    if (!skipBuild && !shouldFinish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn build:force`)
+      if (buildFast) {
+        await spawnify(`yarn build`)
+      } else {
+        await spawnify(`yarn build:force`)
+      }
       await checkDistDirs()
     }
 
-    if (!finish) {
+    // run checks
+    if (!shouldFinish) {
       console.info('run checks')
       if (!skipTest) {
+        await Promise.all([
+          spawnify(`chmod ug+x ./node_modules/.bin/tamagui`),
+          // spawnify(`yarn playwright install`),
+          spawnify(`yarn check`),
+          spawnify(`yarn lint`),
+        ])
+        await spawnify(`yarn typecheck`)
         await spawnify(`yarn test`)
       }
     }
 
+    // check clean git
     if (!dirty && !dryRun && !rePublish) {
       const out = await exec(`git status --porcelain`)
       if (out.stdout) {
@@ -214,39 +232,23 @@ async function run() {
       }
     }
 
-    if (!skipVersion && !finish) {
+    // update version
+    if (!skipVersion && !shouldFinish) {
       await Promise.all(
         allPackageJsons.map(async ({ json, path }) => {
           const next = { ...json }
-
           next.version = version
-
-          for (const field of [
-            'dependencies',
-            'devDependencies',
-            'optionalDependencies',
-            'peerDependencies',
-          ]) {
-            const nextDeps = next[field]
-            if (!nextDeps) continue
-            for (const depName in nextDeps) {
-              if (allPackageJsons.some((p) => p.name === depName)) {
-                nextDeps[depName] = version
-              }
-            }
-          }
-
           await writeJSON(path, next, { spaces: 2 })
         })
       )
     }
 
-    if (!finish && dryRun) {
+    if (!shouldFinish && dryRun) {
       console.info(`Dry run, exiting before publish`)
       return
     }
 
-    if (!finish && !rePublish) {
+    if (!shouldFinish && !rePublish) {
       await spawnify(`git diff`)
     }
 
@@ -262,162 +264,77 @@ async function run() {
       }
     }
 
-    if (!finish && !rePublish && !skipPublish) {
-      const erroredPackages: { name: string }[] = []
+    if (!shouldFinish && !skipPublish) {
+      const tmpDir = `/tmp/tamagui-publish`
+      await ensureDir(tmpDir)
 
-      // publish with tag
-
+      // pack and publish
       await pMap(
         packageJsons,
-        async (pkg) => {
-          const { cwd, name } = pkg
+        async ({ name, cwd }) => {
+          const publishOptions = [canary && `--tag canary`].filter(Boolean).join(' ')
 
-          console.info(`Publish ${name}`)
+          const absolutePath = `${tmpDir}/${name.replace('/', '_')}-package.tmp.tgz`
+          await spawnify(`yarn pack --out ${absolutePath}`, {
+            cwd,
+            avoidLog: true,
+          })
 
-          // check if already published first as its way faster for re-runs
-          let versionsOut = ''
-          try {
-            versionsOut = await spawnify(`npm view ${name} versions --json`, {
-              avoidLog: true,
-            })
-            const allVersions = JSON.parse(versionsOut.trim().replaceAll(`\n`, ''))
-            const latest = allVersions[allVersions.length - 1]
+          const publishCommand = [
+            'npm publish',
+            absolutePath, // produced by `yarn pack`
+            publishOptions,
+          ]
+            .filter(Boolean)
+            .join(' ')
 
-            if (latest === nextVersion) {
-              console.info(`Already published, skipping`)
-              return
-            }
-          } catch (err) {
-            if (`${err}`.includes(`404`)) {
-              // fails if never published before, ok
-            } else {
-              if (`${err}`.includes(`Unexpected token`)) {
-                console.info(`Bad JSON? ${versionsOut}`)
-              }
-              throw err
-            }
-          }
+          console.info(`Publishing ${name}: ${publishCommand}`)
 
-          try {
-            await spawnify(`npm publish --tag prepub --access public`, {
-              cwd,
-              avoidLog: true,
-            })
-            console.info(` 📢 pre-published ${name}`)
-          } catch (err: any) {
-            // @ts-ignore
-            if (err.includes(`403`)) {
-              console.info('Already published, skipping')
-              return
-            }
-            console.info(`Error publishing!`, `${err}`)
-          }
+          await spawnify(publishCommand, {
+            cwd: tmpDir,
+          }).catch((err) => console.error(err))
         },
         {
-          concurrency: 5,
+          concurrency: 15,
         }
       )
-
-      console.info(
-        `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`
-      )
-    }
-
-    if (!finish && !skipPublish) {
-      if (confirmFinalPublish) {
-        const { confirmed } = await prompts({
-          type: 'confirm',
-          name: 'confirmed',
-          message: 'Ready to publish?',
-        })
-        if (!confirmed) {
-          console.info(`Not confirmed, can re-run with --republish to try again`)
-          process.exit(0)
-        }
-      }
-    }
-
-    if (!finish) {
-      if (!rePublish) {
-        await sleep(4 * 1000)
-      }
-
-      if (rePublish) {
-        // if all successful, re-tag as latest
-        await pMap(
-          packageJsons,
-          async ({ name, cwd }) => {
-            const tag = canary ? ` --tag canary` : ''
-
-            console.info(`Publishing ${name}${tag}`)
-
-            try {
-              await spawnify(`npm publish${tag}`, {
-                cwd,
-              })
-            } catch (err) {
-              if (`${err}`.includes(`E403`)) {
-                // thats fine its already published
-              } else {
-                throw err
-              }
-            }
-
-            const distTag = canary ? 'canary' : 'latest'
-            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
-              cwd,
-            }).catch((err) => console.error(err))
-          },
-          {
-            concurrency: 15,
-          }
-        )
-      } else {
-        const distTag = canary ? 'canary' : 'latest'
-
-        // if all successful, re-tag as latest (try and be fast)
-        await pMap(
-          packageJsons,
-          async ({ name, cwd }) => {
-            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
-              cwd,
-            }).catch((err) => console.error(err))
-          },
-          {
-            concurrency: 20,
-          }
-        )
-      }
 
       console.info(`✅ Published\n`)
     }
 
     if (!skipFinish) {
       // then git tag, commit, push
-      if (!finish) {
+      if (!shouldFinish) {
         await spawnify(`yarn install`)
       }
 
       const tagPrefix = canary ? 'canary' : 'v'
       const gitTag = `${tagPrefix}${version}`
 
-      if (!finish) {
+      if (!shouldFinish) {
         // longer sleep since npm was missing some deps
         await sleep(10 * 1000)
       }
 
       if (!canary && !skipStarters) {
         await spawnify(`yarn upgrade:starters`)
-        const starterFreeDir = join(process.cwd(), '../starter-free')
-        // Run yarn test in starter-free directory
-        await spawnify(`yarn test`, { cwd: starterFreeDir })
-        await finishAndCommit(starterFreeDir)
+
+        if (!shouldFinish) {
+          const starterFreeDir = join(process.cwd(), '../starter-free')
+          // Run yarn test in starter-free directory
+          await spawnify(`yarn test`, { cwd: starterFreeDir })
+          await finishAndCommit(starterFreeDir)
+        }
       }
 
       await finishAndCommit()
 
       async function finishAndCommit(cwd = process.cwd()) {
-        if (!rePublish || reRun || finish) {
+        if (canary && !isMain) {
+          console.info(`Canary off main - avoiding commit`)
+          return
+        }
+        if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
           await spawnify(`git commit -m ${gitTag}`, { cwd })
           if (!canary) {

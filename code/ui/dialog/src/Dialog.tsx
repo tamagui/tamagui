@@ -4,7 +4,14 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
-import { Theme, View, spacedChildren, styled, useThemeName } from '@tamagui/core'
+import {
+  Theme,
+  View,
+  getExpandedShorthand,
+  spacedChildren,
+  styled,
+  useThemeName,
+} from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContext, createContextScope } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
@@ -12,13 +19,14 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { Portal } from '@tamagui/portal'
+import { Portal, PortalItem, resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 
 const DIALOG_NAME = 'Dialog'
@@ -62,6 +70,7 @@ type DialogContextValue = {
   modal: NonNull<DialogProps['modal']>
   allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
   scopeKey: string
+  adaptName: string
 }
 
 const [DialogProvider, useDialogContext] =
@@ -134,7 +143,6 @@ export const DialogPortalFrame = styled(YStack, {
         alignItems: 'center',
         justifyContent: 'center',
         fullscreen: true,
-        zIndex: 100_000,
         ...(isWeb && {
           maxHeight: '100vh',
           position: 'fixed' as any,
@@ -153,6 +161,7 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
 
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
+  const isAdapted = useAdaptIsActive()
 
   let childrenSpaced = children
 
@@ -165,15 +174,23 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
     })
   }
 
+  const content = (
+    <DialogProvider scope={__scopeDialog} {...context}>
+      <Theme name={themeName}>{childrenSpaced}</Theme>
+    </DialogProvider>
+  )
+
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
-
-  return (
-    <AdaptPortalContents>
-      <DialogProvider scope={__scopeDialog} {...context}>
-        <Theme name={themeName}>{childrenSpaced}</Theme>
-      </DialogProvider>
-    </AdaptPortalContents>
+  // when adapted we portal to the adapt, when not we portal to root modal if needed
+  return isAdapted ? (
+    <AdaptPortalContents>{content}</AdaptPortalContents>
+  ) : context.modal ? (
+    <PortalItem hostName={context.modal ? 'root' : context.adaptName}>
+      {content}
+    </PortalItem>
+  ) : (
+    content
   )
 }
 
@@ -195,38 +212,46 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(true)
   }, [])
 
-  if (context.modal) {
-    const contents = (
+  const zIndex = getExpandedShorthand('zIndex', props)
+
+  const contents = (
+    <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
       <AnimatePresence onExitComplete={handleExitComplete}>
         {isShowing || isAdapted ? children : null}
       </AnimatePresence>
-    )
+    </StackZIndexContext>
+  )
 
-    if (isFullyHidden && !isAdapted) {
-      return null
-    }
-
-    const framedContents = (
-      <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-        <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
-          {contents}
-        </DialogPortalFrame>
-      </PortalProvider>
-    )
-
-    if (isWeb) {
-      // no need for portal nonsense on web
-      return (
-        <Portal zIndex={props.zIndex ?? 100_000}>
-          <PassthroughTheme>{framedContents}</PassthroughTheme>
-        </Portal>
-      )
-    }
-
-    return framedContents
+  if (isFullyHidden && !isAdapted) {
+    return null
   }
 
-  return children
+  const framedContents = (
+    <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
+      <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+        {contents}
+      </DialogPortalFrame>
+    </PortalProvider>
+  )
+
+  if (isWeb) {
+    return (
+      <Portal
+        zIndex={zIndex}
+        // set to 1000 which "boosts" it 1000 above baseline for current context
+        // this makes sure its above (this first 1k) popovers on the same layer
+        stackZIndex={1000}
+      >
+        <PassthroughTheme>{framedContents}</PassthroughTheme>
+      </Portal>
+    )
+  }
+
+  return isAdapted ? (
+    framedContents
+  ) : (
+    <DialogPortalItem __scopeDialog={__scopeDialog}>{framedContents}</DialogPortalItem>
+  )
 }
 
 const PassthroughTheme = ({ children }) => {
@@ -281,6 +306,11 @@ const DialogOverlay = DialogOverlayFrame.extractable(
     return (
       <DialogOverlayFrame
         data-state={getState(context.open)}
+        // TODO: this will be apply for v2
+        // onPress={() => {
+        //   // if the overlay is pressed, close the dialog
+        //   context.onOpenChange(false)
+        // }}
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
         pointerEvents={context.open ? 'auto' : 'none'}
         {...overlayProps}
@@ -346,10 +376,14 @@ const DialogContent = DialogContentFrame.extractable(
     const { forceMount = portalContext.forceMount, ...contentProps } = props
     const context = useDialogContext(CONTENT_NAME, __scopeDialog)
 
-    const contents = context.modal ? (
-      <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
-    ) : (
-      <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+    const contents = (
+      <>
+        {context.modal ? (
+          <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
+        ) : (
+          <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+        )}
+      </>
     )
 
     if (!isWeb || context.disableRemoveScroll) {
@@ -389,13 +423,12 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    if (isWeb) {
-      React.useEffect(() => {
-        if (!context.open) return
-        const content = contentRef.current
-        if (content) return hideOthers(content)
-      }, [context.open])
-    }
+    React.useEffect(() => {
+      if (!isWeb) return
+      if (!context.open) return
+      const content = contentRef.current
+      if (content) return hideOthers(content)
+    }, [context.open])
 
     return (
       <DialogContentImpl
@@ -565,7 +598,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           onInteractOutside={onInteractOutside}
           // @ts-ignore
           ref={composedRefs}
-          onDismiss={() => context.onOpenChange(false)}
+          onDismiss={() => context?.onOpenChange?.(false)}
         >
           <FocusScope
             loop
@@ -814,6 +847,7 @@ const Dialog = withStaticProperties(
       modal,
       allowPinchZoom,
       disableRemoveScroll,
+      adaptName,
     }
 
     React.useImperativeHandle(

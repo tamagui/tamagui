@@ -1,9 +1,23 @@
 import { classNames } from '@tamagui/remove-scroll'
+import { href, usePathname, type Href } from 'one'
 import { useEffect, useState } from 'react'
-import { Circle, H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
-import type { Href } from 'one'
+import {
+  Circle,
+  H4,
+  Label,
+  Paragraph,
+  ScrollView,
+  Separator,
+  SizableText,
+  Theme,
+  XGroup,
+  XStack,
+  YStack,
+} from 'tamagui'
 
-import type { LinkProps } from '~/components/Link'
+import { ButtonLink, Link, type LinkProps } from '~/components/Link'
+import { BentoButton } from '../site/BentoButton'
+import { TakeoutButton } from '../site/TakeoutButton'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <a onClick={(e) => [e.stopPropagation()]} href={href as any}>
@@ -16,13 +30,14 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
       hoverStyle={{
         color: '$color12',
       }}
-      {...rest}
+      {...(rest as any)}
     />
   </a>
 )
 
 export function DocsQuickNav() {
   const [headings, setHeadings] = useState<HTMLHeadingElement[]>([])
+  const pathname = usePathname()
 
   useEffect(() => {
     const headingElements: HTMLHeadingElement[] = Array.from(
@@ -86,6 +101,49 @@ export function DocsQuickNav() {
             </ul>
           </YStack>
         </ScrollView>
+      </YStack>
+
+      <YStack gap="$5" my="$6">
+        <XStack ai="center" gap="$3">
+          <XGroup borderRadius="$8">
+            <Label ff="$mono" px="$3" size="$3" bg="$color3">
+              Format:
+            </Label>
+
+            <ButtonLink
+              fontFamily="$mono"
+              href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
+              size="$3"
+              target="_blank"
+            >
+              .md
+            </ButtonLink>
+          </XGroup>
+
+          <Link
+            target="_blank"
+            href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
+          >
+            <SizableText size="$3" ff="$mono">
+              llms.txt
+            </SizableText>
+          </Link>
+        </XStack>
+
+        <Separator />
+
+        <YStack gap="$2">
+          <Theme name="tan">
+            <Link width="100%" href="/bento">
+              <BentoButton />
+            </Link>
+          </Theme>
+          <Theme name="gray">
+            <Link width="100%" href="/takeout">
+              <TakeoutButton />
+            </Link>
+          </Theme>
+        </YStack>
       </YStack>
     </YStack>
   )

@@ -1,7 +1,6 @@
 import type { Endpoint } from 'one'
-import { ensureAuth } from '~/features/api/ensureAuth'
 import { ensureAccess } from '~/features/api/ensureAccess'
-import { getSupabaseServerClient } from '~/features/api/getSupabaseServerClient'
+import { ensureAuth } from '~/features/api/ensureAuth'
 
 export const GET: Endpoint = async (req) => {
   try {

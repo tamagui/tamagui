@@ -4,7 +4,7 @@ export declare function updateTheme({ name, theme, }: {
     theme: Partial<Record<keyof ThemeDefinition, any>>;
 }): {
     themeRaw: import("@tamagui/web").ThemeParsed;
-    theme: import("@tamagui/web").ThemeParsed;
+    theme: {};
     cssRules: string[];
 } | undefined;
 //# sourceMappingURL=updateTheme.d.ts.map

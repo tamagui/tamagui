@@ -14,7 +14,7 @@ export function useAccentTheme(): ThemeProps & { isInAccent?: boolean } {
   if (hasAccent) {
     return {
       isInAccent,
-      name: isInAccent ? 'active' : accentThemeName,
+      name: isInAccent ? 'surface3' : accentThemeName,
       inverse: isInAccent ? false : rootStore.demosOptions.inverseAccent,
     }
   }

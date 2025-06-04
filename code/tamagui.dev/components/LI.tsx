@@ -5,4 +5,7 @@ export const LI = styled(Paragraph, {
   tag: 'li',
   size: '$5',
   pb: '$1',
+  style: {
+    listStyleType: 'disc',
+  },
 })

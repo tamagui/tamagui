@@ -1,21 +1,9 @@
-import JSON5 from 'json5'
+import { resolve } from 'node:path'
 import * as proc from 'node:child_process'
-import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-import {
-  access,
-  existsSync,
-  lstat,
-  pathExists,
-  readFile,
-  readJSON,
-  rm,
-  symlink,
-  writeFile,
-  writeJSON,
-} from 'fs-extra'
+import { copy, lstat, rm, symlink, unlink } from 'fs-extra'
 import pMap from 'p-map'
 
 const exec = promisify(proc.exec)
@@ -113,51 +101,51 @@ async function format() {
 
   // console.info(` repair package.json..`)
 
-  await pMap(
-    packagePaths,
-    async (pkg) => {
-      const cwd = join(process.cwd(), pkg.location)
-      const jsonPath = join(cwd, 'package.json')
-      const fileContents = readFileSync(jsonPath, {
-        encoding: 'utf-8',
-      })
-      if (!fileContents) {
-        return
-      }
-      const pkgJson = JSON.parse(fileContents)
-      // await fixPeerDeps(pkg, pkgJson)
-      // await fixExports(pkg, pkgJson)
-      // await fixExportsPathSpecific(pkg, pkgJson)
+  // await pMap(
+  //   packagePaths,
+  //   async (pkg) => {
+  //     const cwd = join(process.cwd(), pkg.location)
+  //     const jsonPath = join(cwd, 'package.json')
+  //     const fileContents = readFileSync(jsonPath, {
+  //       encoding: 'utf-8',
+  //     })
+  //     if (!fileContents) {
+  //       return
+  //     }
+  //     const pkgJson = JSON.parse(fileContents)
+  //     // await fixPeerDeps(pkg, pkgJson)
+  //     // await fixExports(pkg, pkgJson)
+  //     // await fixExportsPathSpecific(pkg, pkgJson)
 
-      // write your script here:
+  //     // write your script here:
 
-      if (pkgJson.exports) {
-        for (const key in pkgJson.exports) {
-          const exf = pkgJson.exports[key]
-          if (typeof exf === 'object') {
-            const ogi = exf['react-native-import']
-            const ogr = exf['react-native']
+  //     if (pkgJson.exports) {
+  //       for (const key in pkgJson.exports) {
+  //         const exf = pkgJson.exports[key]
+  //         if (typeof exf === 'object') {
+  //           const ogi = exf['react-native-import']
+  //           const ogr = exf['react-native']
 
-            if (ogi) {
-              delete exf['react-native-import']
-              exf['react-native'] = {
-                import: ogi,
-                require: ogr,
-              }
-            }
-          }
-        }
-      }
+  //           if (ogi) {
+  //             delete exf['react-native-import']
+  //             exf['react-native'] = {
+  //               import: ogi,
+  //               require: ogr,
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
 
-      // await fixScripts(pkg, pkgJson)
-      await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-        encoding: 'utf-8',
-      })
-    },
-    {
-      concurrency: 10,
-    }
-  )
+  //     // await fixScripts(pkg, pkgJson)
+  //     await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
+  //       encoding: 'utf-8',
+  //     })
+  //   },
+  //   {
+  //     concurrency: 10,
+  //   }
+  // )
 
   // console.info(` repair contents exclude to exclude /types..`)
 
@@ -210,7 +198,69 @@ async function format() {
   //   }
   // )
 
-  // console.info(` repair biome`)
+  console.info(` repair biome`)
+
+  await pMap(
+    packagePaths,
+    async ({ location, name }) => {
+      if (name === 'tamagui-monorepo') return
+      const biomeFile = toAbsolute(join(location, 'biome.json'))
+      try {
+        if (!(await lstat(biomeFile))) {
+          return
+        }
+      } catch (err) {
+        return
+      }
+
+      const distanceToRoot = location.split('/').length
+      const rootBiome = toAbsolute(
+        join(location, ...new Array(distanceToRoot).fill(0).map(() => '..'), 'biome.json')
+      )
+      console.info(`Copy ${rootBiome} -> ${biomeFile}`)
+      await unlink(biomeFile)
+      await copy(rootBiome, biomeFile)
+    },
+    {
+      concurrency: 1,
+    }
+  )
+
+  // console.info(` repair tsconfig root reference`)
+
+  // await pMap(
+  //   packagePaths,
+  //   async ({ location }) => {
+  //     const tsconfigFile = join(location, 'tsconfig.json')
+  //     if (!(await pathExists(tsconfigFile))) {
+  //       return
+  //     }
+  //     try {
+  //       const contents = JSON5.parse(await readFile(tsconfigFile, 'utf-8'))
+  //       const extendsField = contents.extends
+  //       if (typeof extendsField === 'string') {
+  //         if (extendsField.endsWith('/../tsconfig.json')) {
+  //           const distanceToRoot = location.split('/').length
+  //           // ensure extends field is right no matter depth
+  //           contents.extends = join(
+  //             ...new Array(distanceToRoot).fill(0).map(() => '..'),
+  //             'tsconfig.json'
+  //           )
+  //           await writeJSON(tsconfigFile, contents, {
+  //             spaces: 2,
+  //           })
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.error(`Error parsing/writing json`, tsconfigFile, err)
+  //     }
+  //   },
+  //   {
+  //     concurrency: 10,
+  //   }
+  // )
+
+  // console.info(` repair LICENSE`)
 
   // await pMap(
   //   packagePaths,
@@ -222,23 +272,36 @@ async function format() {
   //       return
   //     }
 
-  //     const distanceToRoot = location.split('/').length
-  //     const biomeFile = join(location, 'biome.json')
-  //     const shouldSymlink =
-  //       // not there
-  //       !(await pathExists(biomeFile)) ||
-  //       // not already a file
-  //       !(await lstat(biomeFile)).isFile()
+  //     let licenseFile = join(process.cwd(), location, 'LICENSE')
+  //     try {
+  //       await access(licenseFile)
+  //     } catch {
+  //       await writeFile(
+  //         licenseFile,
+  //         `
+  // MIT License
 
-  //     if (shouldSymlink) {
-  //       await rm(biomeFile)
-  //       await symlink(
-  //         biomeFile,
-  //         join(
-  //           location,
-  //           ...new Array(distanceToRoot).fill(0).map(() => '..'),
-  //           'biome.json'
-  //         )
+  // Copyright (c) 2020 Nate Wienert
+
+  // Permission is hereby granted, free of charge, to any person obtaining a copy
+  // of this software and associated documentation files (the "Software"), to deal
+  // in the Software without restriction, including without limitation the rights
+  // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  // copies of the Software, and to permit persons to whom the Software is
+  // furnished to do so, subject to the following conditions:
+
+  // The above copyright notice and this permission notice shall be included in all
+  // copies or substantial portions of the Software.
+
+  // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  // SOFTWARE.
+
+  //       `.trim() + '\n'
   //       )
   //     }
   //   },
@@ -246,88 +309,6 @@ async function format() {
   //     concurrency: 10,
   //   }
   // )
-
-  console.info(` repair tsconfig root reference`)
-
-  await pMap(
-    packagePaths,
-    async ({ location }) => {
-      const tsconfigFile = join(location, 'tsconfig.json')
-      if (!(await pathExists(tsconfigFile))) {
-        return
-      }
-      try {
-        const contents = JSON5.parse(await readFile(tsconfigFile, 'utf-8'))
-        const extendsField = contents.extends
-        if (typeof extendsField === 'string') {
-          if (extendsField.endsWith('/../tsconfig.json')) {
-            const distanceToRoot = location.split('/').length
-            // ensure extends field is right no matter depth
-            contents.extends = join(
-              ...new Array(distanceToRoot).fill(0).map(() => '..'),
-              'tsconfig.json'
-            )
-            await writeJSON(tsconfigFile, contents, {
-              spaces: 2,
-            })
-          }
-        }
-      } catch (err) {
-        console.error(`Error parsing/writing json`, tsconfigFile, err)
-      }
-    },
-    {
-      concurrency: 10,
-    }
-  )
-
-  console.info(` repair LICENSE`)
-
-  await pMap(
-    packagePaths,
-    async ({ location }) => {
-      if (
-        !location.startsWith('code/packages') &&
-        !location.startsWith('code/components')
-      ) {
-        return
-      }
-
-      let licenseFile = join(process.cwd(), location, 'LICENSE')
-      try {
-        await access(licenseFile)
-      } catch {
-        await writeFile(
-          licenseFile,
-          `
-  MIT License
-
-  Copyright (c) 2020 Nate Wienert
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-
-        `.trim() + '\n'
-        )
-      }
-    },
-    {
-      concurrency: 10,
-    }
-  )
 }
+
+export const toAbsolute = (p: string) => resolve(process.cwd(), p)

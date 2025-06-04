@@ -1,3 +1,4 @@
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import {
   isAndroid,
   isIos,
@@ -18,7 +19,7 @@ import React, { createContext, useContext, useEffect, useId } from 'react'
 export type AdaptWhen = MediaQueryKeyString | boolean | null
 export type AdaptPlatform = AllPlatforms | 'touch' | null
 
-type AdaptParentContextI = {
+export type AdaptParentContextI = {
   Contents: Component
   scopeName: string
   platform: AdaptPlatform
@@ -51,10 +52,10 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   scopeName: '',
   portalName: '',
   platform: null as any,
-  setPlatform: null as any,
+  setPlatform: (x: AdaptPlatform) => {},
   when: null as any,
   setChildren: null as any,
-  setWhen: null as any,
+  setWhen: () => {},
 })
 
 export const ProvideAdaptContext = ({
@@ -172,13 +173,14 @@ export const Adapt = withStaticProperties(
     const enabled = useAdaptIsActiveGiven(props)
 
     useIsomorphicLayoutEffect(() => {
-      context?.setWhen((when || enabled) as AdaptWhen)
-      context?.setPlatform(platform || null)
-    }, [when, platform, context, enabled])
+      context?.setWhen?.((when || enabled) as AdaptWhen)
+      context?.setPlatform?.(platform || null)
+    }, [when, platform, enabled, context.setWhen, context.setPlatform])
 
     useIsomorphicLayoutEffect(() => {
       return () => {
-        context?.setWhen(null)
+        context?.setWhen?.(null)
+        context?.setPlatform?.(null)
       }
     }, [])
 
@@ -193,16 +195,18 @@ export const Adapt = withStaticProperties(
 
     // TODO this isn't ideal using an effect to set children, will cause double-renders
     // on every change
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (typeof children === 'function' && output !== undefined) {
         context?.setChildren(output)
       }
     }, [output])
 
     return (
-      <CurrentAdaptContextScope.Provider value={scopeName}>
-        {!enabled ? null : output}
-      </CurrentAdaptContextScope.Provider>
+      <StackZIndexContext>
+        <CurrentAdaptContextScope.Provider value={scopeName}>
+          {!enabled ? null : output}
+        </CurrentAdaptContextScope.Provider>
+      </StackZIndexContext>
     )
   },
   {

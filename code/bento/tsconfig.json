@@ -4,7 +4,12 @@
     "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "theme.ts",
+    "example/**/*.ts",
+    "example/**/*.tsx",
+    "tamagui.config.ts",
   ],
   "exclude": [
     "types",
@@ -14,10 +19,10 @@
   ],
   "references": [
     {
-      "path": "../compiler/babel-plugin"
+      "path": "../demos"
     },
     {
-      "path": "../core/animations-reanimated"
+      "path": "../compiler/babel-plugin"
     },
     {
       "path": "../core/cli"
@@ -44,9 +49,6 @@
       "path": "../core/web"
     },
     {
-      "path": "../demos"
-    },
-    {
       "path": "../packages/lucide-icons"
     },
     {
@@ -54,6 +56,6 @@
     },
     {
       "path": "../ui/tamagui"
-    }
+    },
   ]
 }

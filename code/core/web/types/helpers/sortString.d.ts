@@ -1,2 +1,2 @@
-export declare const sortString: (a: string, b: string) => 0 | 1 | -1;
+export declare const sortString: (a: string, b: string) => 1 | 0 | -1;
 //# sourceMappingURL=sortString.d.ts.map

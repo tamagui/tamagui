@@ -1,5 +1,5 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { useLocalStorage } from 'foxact/use-local-storage'
 import {
   Button,
@@ -60,7 +60,7 @@ export const DropTamaguiConfig = () => {
   return (
     <>
       <TooltipSimple label="Upload your Tamagui Config">
-        <Theme name={config ? 'green' : 'active'}>
+        <Theme name={config ? 'green' : 'accent'}>
           <Button
             als="flex-end"
             br="$10"
@@ -71,7 +71,7 @@ export const DropTamaguiConfig = () => {
               dsp: 'none',
             }}
             icon={Paintbrush}
-            color={config ? '$green10' : '$color12'}
+            color={config ? '$green10Light' : '$color12'}
           >
             {config ? 'Customization enabled' : 'Customize'}
           </Button>
@@ -125,7 +125,7 @@ export const DropTamaguiConfig = () => {
               fullscreen
               pe="none"
               o={dragging ? 1 : 0}
-              bg="$background075"
+              bg="$background06"
               ai="center"
               jc="center"
               zi={1000}
@@ -147,7 +147,7 @@ export const DropTamaguiConfig = () => {
                     <Button
                       als="flex-end"
                       icon={X}
-                      theme="red_active"
+                      theme="red"
                       onPress={() => config.setItem('')}
                     >
                       Clear config
@@ -172,23 +172,20 @@ export const DropTamaguiConfig = () => {
 
                     <Features
                       items={[
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                        <>
+                        <React.Fragment key="">
                           Create a <CodeInline>tamagui.build.ts</CodeInline> at the root
                           of your app and move your build configuration into it as a
                           default export. All of the bundler plugins load from this file
                           on startup.
-                        </>,
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                        <>
+                        </React.Fragment>,
+                        <React.Fragment key="">
                           If not using a compiler plugin, run generate —{' '}
                           <Code>npx @tamagui/cli generate</Code>
-                        </>,
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                        <>
+                        </React.Fragment>,
+                        <React.Fragment key="">
                           Drop the generated <Code>.tamagui/tamagui.config.json</Code> on
                           this window.
-                        </>,
+                        </React.Fragment>,
                       ]}
                     />
                   </>

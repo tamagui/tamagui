@@ -12,6 +12,10 @@ export function timer() {
     const out = [
       `Ran ${typeRuns} per-type, ${runs} total`,
       ...[...typesOfRuns].map((name) => {
+        if (name.endsWith('(ignore)')) {
+          // avoid counting (ignore) timings towards total
+          return
+        }
         const avg = `avg ${`${timings[name] / typeRuns}`.slice(0, 9).padEnd(9)}ms`
         const total = timings[name]
         totalTime += total
@@ -30,7 +34,6 @@ export function timer() {
 
       function time(strings: TemplateStringsArray, ...vars: any[]) {
         const elapsed = performance.now() - start
-        start = performance.now()
         const tag = templateToString(strings, ...vars)
         typesOfRuns.add(tag)
         runs++
@@ -43,6 +46,7 @@ export function timer() {
           })
           console.info(`${`${elapsed}ms`.slice(0, 6).padStart(7)} |`, result)
         }
+        start = performance.now()
       }
 
       let start = performance.now()

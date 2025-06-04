@@ -3,7 +3,7 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 
 export const docsRoutes = [
   {
-    isUI: false,
+    section: 'core',
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
@@ -17,11 +17,11 @@ export const docsRoutes = [
   },
 
   {
-    isUI: false,
+    section: 'core',
     title: 'Core',
     pages: [
-      { title: 'Introduction', route: '/docs/core/introduction' },
       { title: 'Configuration', route: '/docs/core/configuration' },
+      { title: '@tamagui/config', route: '/docs/core/config-v4' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'View & Text', route: '/docs/core/stack-and-text' },
       { title: 'Props', route: '/docs/intro/props' },
@@ -39,18 +39,17 @@ export const docsRoutes = [
   },
 
   {
-    isUI: false,
-    title: 'Compiler',
+    section: 'compiler',
     pages: [
-      { title: 'Background', route: '/docs/intro/why-a-compiler' },
       { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
+      { title: 'Background', route: '/docs/intro/why-a-compiler' },
     ],
   },
 
   {
     title: 'Guides',
-    isUI: false,
+    section: 'core',
     pages: [
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
@@ -69,22 +68,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: false,
-    title: 'Tamagui Config',
-    pages: [
-      { title: 'Colors', route: '/docs/intro/colors' },
-      { title: 'Tokens', route: '/docs/intro/tokens' },
-      // { title: 'Themes', route: '/docs/intro/themes' },
-      // { title: 'Fonts', route: '/docs/intro/themes' },
-      // { title: 'Icons', route: '/docs/intro/themes' },
-      // { title: 'Animations', route: '/docs/intro/themes' },
-      // { title: 'Shorthands', route: '/docs/intro/themes' },
-      // { title: 'Media Queries', route: '/docs/intro/themes' },
-    ],
-  },
-
-  {
-    isUI: false,
+    section: 'core',
     title: 'Community',
     pages: [
       { title: `Community`, route: '/community' },
@@ -101,7 +85,7 @@ export const docsRoutes = [
         ),
         route: 'https://github.com/tamagui/tamagui',
       },
-      { title: `Twitter`, route: 'https://twitter.com/tamagui_js' },
+      { title: `X`, route: 'https://x.com/tamagui_js' },
       { title: `Discord`, route: 'https://discord.gg/4qh6tdcVDa' },
     ],
   },
@@ -109,7 +93,7 @@ export const docsRoutes = [
   // UI:
 
   {
-    isUI: true,
+    section: 'ui',
     // title: '@tamagui/ui',
     pages: [
       { title: 'Install', route: '/ui/intro' },
@@ -120,7 +104,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/ui/button' },
@@ -138,7 +122,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/ui/alert-dialog' },
@@ -153,7 +137,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Organize',
     pages: [
       { title: 'Accordion', route: '/ui/accordion' },
@@ -163,7 +147,7 @@ export const docsRoutes = [
   },
 
   {
-    isUI: true,
+    section: 'ui',
     label: 'Content',
     pages: [
       { title: 'Avatar', route: '/ui/avatar' },
@@ -175,7 +159,7 @@ export const docsRoutes = [
 
   {
     label: 'Visual',
-    isUI: true,
+    section: 'ui',
     pages: [
       { title: 'LinearGradient', route: '/ui/linear-gradient' },
       { title: 'Separator', route: '/ui/separator' },
@@ -184,15 +168,10 @@ export const docsRoutes = [
   },
 
   {
-    title: 'Extras',
-    isUI: false,
-    pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
-  },
-
-  {
     label: 'Etc',
-    isUI: true,
+    section: 'ui',
     pages: [
+      { title: 'Lucide Icons', route: '/ui/lucide-icons' },
       { title: 'Anchor', route: '/ui/anchor' },
       { title: 'HTML Elements', route: '/ui/html-elements' },
       { title: 'ScrollView', route: '/ui/scroll-view' },

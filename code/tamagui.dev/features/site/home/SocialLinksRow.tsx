@@ -14,14 +14,14 @@ export const SocialLinksRow = () => {
         $sm={{ width: 'auto' }}
         space="$2"
         tag="a"
-        href="https://twitter.com/tamagui_js"
+        href="https://x.com/tamagui_js"
         target="_blank"
         rel="noopener noreferrer"
         p="$5"
       >
         <TwitterIcon />
         <H4 cursor="pointer" fontFamily="$silkscreen">
-          Twitter
+          X
         </H4>
         <Paragraph cursor="pointer" theme="alt2">
           Announcements and general updates.

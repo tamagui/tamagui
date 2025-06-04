@@ -2,6 +2,7 @@ import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
+import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 import {
   StyleObjectIdentifier,
   StyleObjectRules,
@@ -13,7 +14,6 @@ import {
 } from '@tamagui/web'
 import { basename, relative } from 'node:path'
 import type { ViewStyle } from 'react-native'
-import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -110,9 +110,7 @@ export function createExtractor(
     !process.env.npm_package_dependencies_next &&
     process.env.TAMAGUI_TARGET !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
-    (process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG ||
-      process.env.IDENTIFY_TAGS)
+    (process.env.NODE_ENV === 'development' || process.env.IDENTIFY_TAGS)
 
   let projectInfo: TamaguiProjectInfo | null = null
 
@@ -144,10 +142,12 @@ export function createExtractor(
       return projectInfo?.tamaguiConfig
     },
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
+      globalThis.expo ||= {} // expo-modules-core checks this and avoids loading "native" modules if exists
       const projectInfo = loadSync(props)
       return parseWithConfig(projectInfo || {}, f, props)
     },
     parse: async (f: FileOrPath, props: ExtractorParseProps) => {
+      globalThis.expo ||= {} // expo-modules-core checks this and avoids loading "native" modules if exists
       const projectInfo = await load(props)
       return parseWithConfig(projectInfo || {}, f, props)
     },
@@ -206,11 +206,13 @@ export function createExtractor(
     if (disable === true || (Array.isArray(disable) && disable.includes(sourcePath))) {
       return null
     }
+
     if (!isFullyDisabled(options)) {
       if (!components) {
         throw new Error(`Must provide components`)
       }
     }
+
     if (
       sourcePath &&
       includeExtensions &&
@@ -952,11 +954,17 @@ export function createExtractor(
             .get('openingElement')
             .get('attributes')
             .flatMap((path) => {
+              // avoid work
+              if (shouldDeopt) {
+                return
+              }
+
               try {
                 const res = evaluateAttribute(path)
                 if (!res) {
                   path.remove()
                 }
+
                 return res
               } catch (err: any) {
                 if (shouldPrintDebug) {
@@ -1046,6 +1054,14 @@ export function createExtractor(
             }
 
             const name = attribute.name.name
+
+            // in tamagui style is handled at the end of the style loop so its not as simple as just
+            // adding this as a "style" property
+            // its not used often when using tamagui so not optimizing it for now
+            if (name === 'style') {
+              shouldDeopt = true
+              return null
+            }
 
             if (excludeProps?.has(name)) {
               if (shouldPrintDebug) {
@@ -1174,23 +1190,15 @@ export function createExtractor(
             // never flatten if a prop isn't a valid static attribute
             // only post prop-mapping
             if (!variants[name] && !isValidStyleKey(name, staticConfig)) {
-              let keys = [name]
               let out: any = null
 
               // for now passing empty props {}, a bit odd, need to at least document
               // for now we don't expose custom components so just noting behavior
-              out = propMapper(name, styleValue, propMapperStyleState)
+              propMapper(name, styleValue, propMapperStyleState, false, (key, val) => {
+                out ||= {}
+                out[key] = val
+              })
 
-              if (out) {
-                if (!Array.isArray(out)) {
-                  logger.warn(`Error expected array but got`, out)
-                  couldntParse = true
-                  shouldDeopt = true
-                } else {
-                  out = Object.fromEntries(out)
-                  keys = Object.keys(out)
-                }
-              }
               if (out) {
                 if (isTargetingHTML) {
                   // translate to DOM-compat
@@ -1201,12 +1209,10 @@ export function createExtractor(
                   // remove className - we dont use rnw styling
                   delete out.className
                 }
-
-                keys = Object.keys(out)
               }
 
               let didInline = false
-              const attributes = keys.map((key) => {
+              const attributes = Object.keys(out).map((key) => {
                 const val = out[key]
                 const isStyle = isValidStyleKey(key, staticConfig)
                 if (isStyle) {
@@ -1437,7 +1443,7 @@ export function createExtractor(
               t.isObjectExpression(obj) &&
               obj.properties.every((prop) => {
                 if (!t.isObjectProperty(prop)) {
-                  logger.info(['not object prop', prop].join(' '))
+                  // console.warn('not an object prop?', prop)
                   return false
                 }
                 const propName = prop.key['name']
@@ -1898,9 +1904,17 @@ export function createExtractor(
                       props: completeProps,
                     }
 
-                    let out = Object.fromEntries(
-                      propMapper(name, variantValues.get(name), styleState) || []
+                    let out: Record<string, any> = {}
+                    propMapper(
+                      name,
+                      variantValues.get(name),
+                      styleState,
+                      false,
+                      (key, val) => {
+                        out[key] = val
+                      }
                     )
+
                     if (out && isTargetingHTML) {
                       const cn = out.className
                       // translate to DOM-compat
@@ -2040,12 +2054,15 @@ export function createExtractor(
                   ...styleProps,
                   noClass: true,
                   fallbackProps: completeProps,
+                  ...(options.experimentalFlattenThemesOnNative &&
+                    platform === 'native' && {
+                      resolveValues: 'except-theme',
+                    }),
                 },
                 undefined,
                 undefined,
                 undefined,
                 debugPropValue || shouldPrintDebug
-                // options.experimentalFlattenThemesOnNative
               )
 
               let outProps = {

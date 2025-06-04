@@ -13,5 +13,5 @@ export declare function createOptimizedView(children: any, viewProps: Record<str
 }, React.Component<{
     value: boolean;
 }, any, any>>;
-export declare function getAccessibilityRoleFromRole(role: any): "none" | "alert" | "button" | "checkbox" | "combobox" | "grid" | "header" | "image" | "link" | "list" | "menu" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "search" | "adjustable" | "spinbutton" | "summary" | "switch" | "tab" | "tablist" | "timer" | "toolbar" | undefined;
+export declare function getAccessibilityRoleFromRole(role: any): "alert" | "button" | "checkbox" | "combobox" | "grid" | "header" | "image" | "link" | "list" | "menu" | "menubar" | "menuitem" | "none" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "search" | "adjustable" | "spinbutton" | "summary" | "switch" | "tab" | "tablist" | "timer" | "toolbar" | undefined;
 //# sourceMappingURL=createOptimizedView.native.d.ts.map

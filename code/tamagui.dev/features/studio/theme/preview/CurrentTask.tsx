@@ -32,30 +32,20 @@ export const CurrentTask = () => {
 
       <YStack flex={1} gap="$4" separator={<Separator />}>
         <YStack gap="$6">
-          <XStack {...demoProps.gapPropsMd}>
-            <TaskSection title="Assigned By" f={1}>
-              <XStack {...demoProps.gapPropsLg}>
-                <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
-                  <Avatar.Image src="https://i.pravatar.cc/300?u=johndoe" />
-                </Avatar>
-                <Paragraph size="$3">John Doe</Paragraph>
-              </XStack>
-            </TaskSection>
-            <TaskSection title="Lead" f={1}>
-              <XStack {...demoProps.gapPropsLg}>
-                <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
-                  <Avatar.Image src="https://i.pravatar.cc/300?u=janeee" />
-                </Avatar>
-                <Paragraph size="$3">Jane Doe</Paragraph>
-              </XStack>
-            </TaskSection>
+          <XStack {...demoProps.gapPropsLg}>
+            <XStack {...demoProps.gapPropsMd}>
+              <Avatar circular size="$3" {...demoProps.borderRadiusProps}>
+                <Avatar.Image src="https://i.pravatar.cc/300?u=janeee" />
+              </Avatar>
+              <Paragraph size="$3">Jane Doe</Paragraph>
+            </XStack>
           </XStack>
 
           <TaskSection title="This Sprint">
             <Paragraph size="$2" theme="alt1">
               6/8 tasks done
             </Paragraph>
-            <Progress size="$5" value={60}>
+            <Progress miw={100} size="$5" value={60}>
               <Progress.Indicator bg={accentTokenName} animation="quick" />
             </Progress>
           </TaskSection>
@@ -64,7 +54,7 @@ export const CurrentTask = () => {
             <Paragraph size="$2" theme="alt1">
               1/8 tasks done
             </Paragraph>
-            <Progress size="$5" value={25}>
+            <Progress miw={100} size="$5" value={25}>
               <Progress.Indicator bg={accentTokenName} animation="quick" />
             </Progress>
           </TaskSection>

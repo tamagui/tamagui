@@ -1,7 +1,7 @@
 import { existsSync, lstatSync } from 'node:fs'
 import { dirname, extname, resolve } from 'node:path'
 
-export default function fullySpecifyCommonJS(api) {
+export default function fullySpecifyCommonJS(api: any): babel.PluginObj {
   api.assertVersion(7)
 
   return {
@@ -59,7 +59,7 @@ export default function fullySpecifyCommonJS(api) {
         }
       },
     },
-  }
+  } satisfies babel.PluginObj
 }
 
 function isLocalDirectory(absolutePath) {

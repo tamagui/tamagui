@@ -133,18 +133,10 @@ export const ThemeSwitch = memo(() => {
             size="$2"
             y={0.5}
             onCheckedChange={(light) => {
-              if (
-                themeBuilderStore.selectedSchemes.dark &&
-                themeBuilderStore.selectedSchemes.light
-              ) {
+              if (themeBuilderStore.schemes.dark && themeBuilderStore.schemes.light) {
                 rootStore.theme = light ? 'light' : 'dark'
                 themeBuilderStore.themeSwitchOpen = false
               }
-              // const next = light ? 'light' : 'dark'
-              // rootStore.theme = next
-              // themesStore.toggleFocusedThemeItem({
-              //   id: next,
-              // })
             }}
 
             // rotate="-45deg"

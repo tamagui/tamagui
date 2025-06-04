@@ -15,15 +15,20 @@ export type SwitchProps = SwitchBaseProps & SwitchExtraProps;
 export type SwitchState = boolean;
 export declare function useSwitch<R extends View, P extends SwitchProps>(props: P, [checked, setChecked]: [SwitchState, React.Dispatch<React.SetStateAction<SwitchState>>], ref: React.Ref<R>): {
     switchProps: {
+        onPress(): void;
+    };
+    switchRef: React.Ref<R>;
+    bubbleInput: null;
+} | {
+    switchProps: {
+        'aria-labelledby': string | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
         tabIndex?: 0 | undefined;
         'data-state'?: string | undefined;
         'data-disabled'?: string | undefined;
         disabled?: boolean | undefined;
         role: "switch";
         'aria-checked': boolean;
-    } & P & {
-        'aria-labelledby': string | undefined;
-        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
     };
     switchRef: (node: View) => void;
     /**

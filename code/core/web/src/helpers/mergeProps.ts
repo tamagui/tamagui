@@ -39,6 +39,11 @@ function mergeProp(
 ) {
   const longhand = inverseShorthands?.[key] || null
   const val = a[key]
+
+  if (b && (key in b || (longhand && longhand in b))) {
+    return
+  }
+
   if (key in pseudoDescriptors || mediaKeys.has(key)) {
     out[key] = {
       ...out[key],
@@ -46,8 +51,6 @@ function mergeProp(
     }
     return
   }
-  if (b && (key in b || (longhand && longhand in b))) {
-    return
-  }
+
   out[longhand || key] = val
 }

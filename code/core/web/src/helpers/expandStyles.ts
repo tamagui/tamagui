@@ -1,5 +1,4 @@
 import { isWeb } from '@tamagui/constants'
-
 import { normalizeShadow } from './normalizeShadow'
 
 export function fixStyles(style: Record<string, any>) {

@@ -1,0 +1,28 @@
+{
+  "name": "@my/config",
+  "version": "1.126.14",
+  "sideEffects": [
+    "*.css"
+  ],
+  "private": true,
+  "types": "./src",
+  "main": "src/index.ts",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch"
+  },
+  "dependencies": {
+    "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/font-inter": "workspace:*",
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/themes": "workspace:*",
+    "tamagui": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  }
+}

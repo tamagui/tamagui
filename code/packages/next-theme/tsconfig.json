@@ -1,6 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
+    "isolatedDeclarations": true,
     "composite": true,
     "removeComments": false
   },

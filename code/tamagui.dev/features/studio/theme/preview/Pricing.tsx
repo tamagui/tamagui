@@ -30,15 +30,15 @@ export const PricingCards = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
+      bg="$background"
     >
       <YStack
         borderBottomWidth="$0.25"
         borderBottomColor="$borderColor"
         borderWidth="$0"
         pb="$2"
-        gap="$1"
       >
-        <H4 {...demoProps.headingFontFamilyProps} ta="center">
+        <H4 {...demoProps.headingFontFamilyProps} size="$4" ta="center">
           Subscribe
         </H4>
         <Paragraph theme="alt2" size="$4" ta="center">
@@ -46,7 +46,7 @@ export const PricingCards = () => {
         </Paragraph>
       </YStack>
 
-      <YStack flex={1}>
+      <YStack mx="$-3" flex={1}>
         <RadioGroup {...demoProps.gapPropsMd} value={val} onValueChange={setVal}>
           {options.map((price) => {
             const active = val === price.value
@@ -59,19 +59,22 @@ export const PricingCards = () => {
                 p="$4"
                 height="unset"
                 display="flex"
-                borderColor={active ? '$color7' : '$color5'}
+                bg="$color2"
+                hoverStyle={{
+                  bg: '$color3',
+                }}
                 gap="$4"
                 ai="center"
-                hoverStyle={{
-                  borderColor: active ? '$color10' : '$color7',
-                }}
                 {...demoProps.borderRadiusProps}
+                borderWidth={0}
               >
                 <RadioGroup.Item id={htmlId} size="$3" value={price.value}>
                   <RadioGroup.Indicator />
                 </RadioGroup.Item>
                 <YStack f={1}>
-                  <Paragraph size="$6">{price.title}</Paragraph>
+                  <Paragraph size="$6" mb={-3}>
+                    {price.title}
+                  </Paragraph>
                   <Paragraph size="$3" color="$color11">
                     {price.description}
                   </Paragraph>

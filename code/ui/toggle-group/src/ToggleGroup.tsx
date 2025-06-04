@@ -10,7 +10,13 @@ import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, getVariableValue, styled, useTheme } from '@tamagui/web'
+import {
+  createStyledContext,
+  getVariableValue,
+  styled,
+  usePropsAndStyle,
+  useTheme,
+} from '@tamagui/web'
 import React from 'react'
 
 import type { ToggleProps } from './Toggle'
@@ -49,6 +55,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
 const ToggleGroupItem = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemElement, ToggleGroupItemProps>(
     (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
+      const [_, { color }] = usePropsAndStyle(props)
       const { disablePassStyles, ...rest } = props
       const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
       const context = useToggleGroupContext(props.__scopeToggleGroup)
@@ -70,7 +77,10 @@ const ToggleGroupItem = ToggleFrame.extractable(
         1.2
 
       const theme = useTheme()
-      const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
+      const getThemedIcon = useGetThemedIcon({
+        size: iconSize,
+        color: color ?? theme.color,
+      })
 
       const childrens = React.Children.toArray(props.children)
       const children = childrens.map((child) => {
@@ -86,7 +96,8 @@ const ToggleGroupItem = ToggleFrame.extractable(
         <ToggleGroupItemImpl
           {...commonProps}
           ref={forwardedRef}
-          focusable={!disabled}
+          // focusable={!disabled}
+          tabIndex={disabled ? -1 : 0}
           disabled={disabled}
           {...groupItemProps}
         />

@@ -7,13 +7,10 @@ type ScopedProps<P> = P & {
 type FormContextValue = {
     onSubmit?: () => unknown;
 };
-export declare const FormProvider: {
-    (props: FormContextValue & {
-        scope: Scope<FormContextValue>;
-        children: React.ReactNode;
-    }): import("react/jsx-runtime").JSX.Element;
-    displayName: string;
-}, useFormContext: (consumerName: string, scope: Scope<FormContextValue | undefined>, options?: {
+export declare const FormProvider: (props: FormContextValue & {
+    scope: Scope<FormContextValue>;
+    children: React.ReactNode;
+}) => import("react/jsx-runtime").JSX.Element, useFormContext: (consumerName: string, scope: Scope<FormContextValue | undefined>, options?: {
     warn?: boolean;
     fallback?: Partial<FormContextValue> | undefined;
 } | undefined) => FormContextValue;

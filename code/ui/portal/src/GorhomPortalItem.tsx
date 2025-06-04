@@ -5,13 +5,13 @@ import { createPortal } from 'react-dom'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
   if (!props.hostName) {
-    throw new Error(`No name`)
+    throw new Error(`No hostName`)
   }
 
   const cur = allPortalHosts.get(props.hostName)
   const [node, setNode] = useState(cur)
 
-  if (cur && !node) {
+  if (cur && node !== cur) {
     setNode(cur)
   }
 
@@ -19,8 +19,8 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     if (!props.hostName) return
     if (node) return
 
-    const listener = (node) => {
-      setNode(node)
+    const listener = (newNode: HTMLElement) => {
+      setNode(newNode)
     }
 
     portalListeners[props.hostName] ||= new Set()

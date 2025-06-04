@@ -1,4 +1,4 @@
-import type { YStackProps } from 'tamagui';
+import type { YStackProps } from 'tamagui'
 import { YStack } from 'tamagui'
 
 export const Checkerboard = (props: YStackProps) => (

@@ -5,10 +5,10 @@ description: Tips and tricks
 
 ## Importing from React Native
 
-In general either your Webpack configuration or using `@tamagui/next-plugin`,
+In general, either your Webpack configuration or using `@tamagui/next-plugin`,
 you will be aliasing `react-native` to `react-native-web`. This means you should
-import anything you need from `react-native` directly and never import for
-`react-native-web`. Your bundler will handle automatically changing it.
+import anything you need from `react-native` directly, and never from
+`react-native-web`. Your bundler will handle changing it automatically.
 
 ## Classes generated
 
@@ -69,7 +69,7 @@ show even more information, including more granular timings.
 If you're developing in your design system package that is built with
 @tamagui/build, esbuild will strip this banner. You can try using `//! debug`
 (esbuild only preserves comments at the top that start with `//!`), but still
-occasionally esbuild will insert a helpers above the comment, breaking it, so be
+occasionally esbuild will insert a helper above the comment, breaking it, so be
 sure to check the built file in `dist/jsx`.
 
 ### Debug prop

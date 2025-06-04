@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import type {
   CheckedState,
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
@@ -165,13 +165,16 @@ export function createCheckbox<
         )
       }
 
+      const memoizedContext = useMemo(
+        () => ({
+          checked,
+          disabled: checkboxProps.disabled,
+        }),
+        [checked, checkboxProps.disabled]
+      )
+
       return (
-        <CheckboxContext.Provider
-          value={{
-            checked,
-            disabled: checkboxProps.disabled,
-          }}
-        >
+        <CheckboxContext.Provider value={memoizedContext}>
           <CheckboxStyledContext.Provider
             size={propsActive.size ?? styledContext?.size ?? '$true'}
             scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}

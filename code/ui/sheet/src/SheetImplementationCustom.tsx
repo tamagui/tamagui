@@ -16,7 +16,7 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -151,6 +151,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const hasntMeasured = at.current === hiddenSize
     const [disableAnimation, setDisableAnimation] = useState(hasntMeasured)
 
+    const hasScrollView = React.useRef(false)
+
     useAnimatedNumberReaction(
       {
         value: animatedNumber,
@@ -227,6 +229,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
     const [isDragging, setIsDragging] = React.useState(false)
+    const scrollEnabled = useRef(true)
+
+    const setScrollEnabled = React.useCallback((val: boolean) => {
+      scrollEnabled.current = val
+    }, [])
 
     const panResponder = React.useMemo(() => {
       if (disableDrag) return
@@ -278,6 +285,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // have to call both because state may not change but need to snap back
         setPosition(closestPoint)
         animateTo(closestPoint)
+        setScrollEnabled(closestPoint === 0 && dragAt <= 0)
       }
 
       const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
@@ -294,12 +302,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         { dy }: PanResponderGestureState
       ) => {
         // if dragging handle always allow:
-        if (e.target === providerProps.handleRef.current) {
+        if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
           return true
         }
 
         const isScrolled = scrollBridge.y !== 0
+
+        // Update the dragging direction
         const isDraggingUp = dy < 0
+
         // we can treat near top instead of exactly to avoid trouble with springs
         const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
         if (isScrolled) {
@@ -308,18 +319,16 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
         // prevent drag once at top and pulling up
         if (isNearTop) {
-          if (!isScrolled && isDraggingUp) {
-            // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
-            if (!isWeb) {
-              return false
-            }
+          if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {
+            return false
           }
         }
         // we could do some detection of other touchables and cancel here..
-        return Math.abs(dy) > 5
+        return Math.abs(dy) > 10
       }
 
       const grant = () => {
+        setScrollEnabled(false)
         setPanning(true)
         stopSpring()
         startY = at.current
@@ -438,17 +447,22 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
 
+    const setHasScrollView = React.useCallback((val: boolean) => {
+      hasScrollView.current = val
+    }, [])
     // const id = useId()
     // const { AdaptProvider, when, children } = useAdaptParent({
     //   scope: `${id}Sheet`,
     //   portal: true,
     // })
 
-    console.warn('animatedStyle', animatedStyle)
-
     let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider {...providerProps}>
+        <SheetProvider
+          {...providerProps}
+          scrollEnabled={scrollEnabled.current}
+          setHasScrollView={setHasScrollView}
+        >
           <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
@@ -500,9 +514,14 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       </ParentSheetContext.Provider>
     )
 
-    if (!USE_NATIVE_PORTAL) {
+    if (process.env.TAMAGUI_TARGET === 'native' && !USE_NATIVE_PORTAL) {
       const adaptContext = useAdaptContext()
-      contents = <ProvideAdaptContext {...adaptContext}>{contents}</ProvideAdaptContext>
+      contents = (
+        <ProvideAdaptContext {...adaptContext}>
+          {/* @ts-ignore */}
+          {contents}
+        </ProvideAdaptContext>
+      )
     }
 
     // start mounted so we get an accurate measurement the first time

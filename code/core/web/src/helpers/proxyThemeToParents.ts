@@ -1,4 +1,3 @@
-import { getTokenObject } from '../config'
 import type { DedupedThemes, ThemeParsed } from '../types'
 
 const themesRaw: Record<string, ThemeParsed> = {}
@@ -32,6 +31,7 @@ export function proxyThemesToParents(
 }
 
 export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
+  const out = {}
   const cur: string[] = []
 
   // if theme is dark_blue_alt1_Button
@@ -44,28 +44,9 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
       return cur.join('_')
     })
 
-  const numParents = parents.length
-
-  // proxy fallback values to parent theme values
-  return new Proxy(theme, {
-    get(target, key) {
-      if (
-        !key ||
-        // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
-        // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
-        key == 'undefined' ||
-        Reflect.has(target, key)
-      ) {
-        return Reflect.get(target, key)
-      }
-      // check parents
-      for (let i = numParents - 1; i >= 0; i--) {
-        const parent = themesRaw[parents[i]]
-        if (parent && Reflect.has(parent, key)) {
-          return Reflect.get(parent, key)
-        }
-      }
-      return getTokenObject(key as any)
-    },
-  })
+  for (const parent of parents) {
+    Object.assign(out, themesRaw[parent])
+  }
+  Object.assign(out, theme)
+  return out
 }

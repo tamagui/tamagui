@@ -1,7 +1,16 @@
 import '@tamagui/polyfill-dev'
 
 import type { UseHoverProps } from '@floating-ui/react'
-import { Adapt, AdaptParent, AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
+import {
+  Adapt,
+  AdaptParent,
+  AdaptPortalContents,
+  ProvideAdaptContext,
+  useAdaptContext,
+  useAdaptIsActive,
+  type AdaptParentContextI,
+} from '@tamagui/adapt'
+
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
@@ -38,16 +47,16 @@ import {
   PopperContext,
   usePopperContext,
 } from '@tamagui/popper'
-import { Portal } from '@tamagui/portal'
+import { Portal, resolveViewZIndex } from '@tamagui/portal'
 import type { RemoveScrollProps } from '@tamagui/remove-scroll'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { StackZIndexContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { Platform, ScrollView } from 'react-native'
-
 import { useFloatingContext } from './useFloatingContext'
 
 // adapted from radix-ui popover
@@ -134,10 +143,11 @@ export const PopoverTrigger = React.forwardRef<
   const { __scopePopover, ...rest } = props
   const context = usePopoverContext(__scopePopover)
   const anchorTo = context.anchorTo
-
   const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
-  if (!props.children) return null
+  if (!props.children) {
+    return null
+  }
 
   const trigger = (
     <View
@@ -152,8 +162,11 @@ export const PopoverTrigger = React.forwardRef<
     />
   )
 
-  if (anchorTo) {
-    const virtualRef = {
+  const virtualRef = React.useMemo(() => {
+    if (!anchorTo) {
+      return null
+    }
+    return {
       current: {
         getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
         ...(!isWeb && {
@@ -163,26 +176,29 @@ export const PopoverTrigger = React.forwardRef<
         }),
       },
     }
-    return (
-      <PopperAnchor
-        virtualRef={virtualRef}
-        __scopePopper={__scopePopover || POPOVER_SCOPE}
-      >
-        {trigger}
-      </PopperAnchor>
-    )
-  }
+  }, [
+    context.anchorTo,
+    anchorTo?.x,
+    anchorTo?.y,
+    anchorTo?.x,
+    anchorTo?.height,
+    anchorTo?.width,
+  ])
 
   return context.hasCustomAnchor ? (
     trigger
   ) : (
-    <PopperAnchor __scopePopper={__scopePopover || POPOVER_SCOPE} asChild>
+    <PopperAnchor
+      {...(virtualRef && { virtualRef })}
+      __scopePopper={__scopePopover || POPOVER_SCOPE}
+      asChild={rest.asChild}
+    >
       {trigger}
     </PopperAnchor>
   )
 })
 
-/* -------------------------------------------------------------------------------------------------
+/* -------------------------  ------------------------------------------------------------------------
  * PopoverContent
  * -----------------------------------------------------------------------------------------------*/
 
@@ -196,6 +212,7 @@ export interface PopoverContentTypeProps
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
+
   /** enable animation for content position changing */
   enableAnimationForPositionChange?: boolean
 }
@@ -240,8 +257,12 @@ export const PopoverContent = PopperContentFrame.extractable(
     }
 
     return (
-      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
-        <Stack pointerEvents={context.open ? 'auto' : 'none'}>
+      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={zIndex}>
+        <Stack
+          pointerEvents={
+            context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
+          }
+        >
           <PopoverContentImpl
             {...contentImplProps}
             disableRemoveScroll={disableRemoveScroll}
@@ -252,10 +273,16 @@ export const PopoverContent = PopperContentFrame.extractable(
             // (closed !== unmounted when animating out)
             trapFocus={trapFocus ?? context.open}
             disableOutsidePointerEvents
-            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-              event.preventDefault()
-              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-            })}
+            onCloseAutoFocus={
+              props.onCloseAutoFocus === false
+                ? undefined
+                : composeEventHandlers(props.onCloseAutoFocus, (event) => {
+                    if (event.defaultPrevented) return
+                    event.preventDefault()
+                    if (!isRightClickOutsideRef.current)
+                      context.triggerRef.current?.focus()
+                  })
+            }
             onPointerDownOutside={composeEventHandlers(
               props.onPointerDownOutside,
               (event) => {
@@ -286,11 +313,14 @@ function PopoverRepropagateContext(props: {
   context: any
   popperContext: any
   scope: string
+  adaptContext: AdaptParentContextI
 }) {
   return (
     <PopperContext.Provider scope={props.scope} {...props.popperContext}>
       <PopoverContext.Provider {...props.context}>
-        {props.children}
+        <ProvideAdaptContext {...props.adaptContext}>
+          {props.children}
+        </ProvideAdaptContext>
       </PopoverContext.Provider>
     </PopperContext.Provider>
   )
@@ -298,10 +328,11 @@ function PopoverRepropagateContext(props: {
 
 function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>) {
   const { __scopePopover } = props
-  const zIndex = props.zIndex ?? 150_000
+  const zIndex = props.zIndex
   const context = usePopoverContext(__scopePopover)
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
   const themeName = useThemeName()
+  const adaptContext = useAdaptContext()
 
   let contents = props.children
 
@@ -312,6 +343,7 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
         scope={__scopePopover || POPOVER_SCOPE}
         popperContext={popperContext}
         context={context}
+        adaptContext={adaptContext}
       >
         {props.children}
       </PopoverRepropagateContext>
@@ -320,7 +352,7 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
 
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
-    <Portal zIndex={zIndex}>
+    <Portal stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
       <Theme forceClassName name={themeName}>
@@ -330,7 +362,9 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
           />
         )}
-        {contents}
+        <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
+          {contents}
+        </StackZIndexContext>
       </Theme>
     </Portal>
   )
@@ -364,7 +398,7 @@ export interface PopoverContentImplProps
    * Event handler called when auto-focusing on close.
    * Can be prevented.
    */
-  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false
 
   disableRemoveScroll?: boolean
 
@@ -406,6 +440,8 @@ const PopoverContentImpl = React.forwardRef<
     setIsFullyHidden?.(true)
   }, [setIsFullyHidden])
 
+  let contents = <ResetPresence>{children}</ResetPresence>
+
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
     // TODO this should be disabled through context
@@ -418,21 +454,38 @@ const PopoverContentImpl = React.forwardRef<
       return child
     })
 
-    let content = <ResetPresence>{childrenWithoutScrollView}</ResetPresence>
-
-    if (Platform.OS === 'android' || Platform.OS === 'ios') {
-      content = (
+    return (
+      <AdaptPortalContents>
         <PopperContext.Provider
           scope={__scopePopover || POPOVER_SCOPE}
           {...popperContext}
         >
           {childrenWithoutScrollView}
         </PopperContext.Provider>
-      )
-    }
+      </AdaptPortalContents>
+    )
+  }
 
-    // doesn't show as popover yet on native, must use as sheet
-    return <AdaptPortalContents>{content}</AdaptPortalContents>
+  if (process.env.TAMAGUI_TARGET !== 'native') {
+    contents = (
+      <RemoveScroll
+        enabled={disableRemoveScroll ? false : open}
+        allowPinchZoom
+        // causes lots of bugs on touch web on site
+        removeScrollBar={false}
+        style={dspContentsStyle}
+      >
+        <FocusScope
+          loop
+          enabled={disableFocusScope ? false : open}
+          trapped={trapFocus}
+          onMountAutoFocus={onOpenAutoFocus}
+          onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
+        >
+          <div style={dspContentsStyle}>{contents}</div>
+        </FocusScope>
+      </RemoveScroll>
+    )
   }
 
   // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
@@ -464,25 +517,7 @@ const PopoverContentImpl = React.forwardRef<
         ref={forwardedRef}
         {...contentProps}
       >
-        <RemoveScroll
-          enabled={disableRemoveScroll ? false : open}
-          allowPinchZoom
-          // causes lots of bugs on touch web on site
-          removeScrollBar={false}
-          style={dspContentsStyle}
-        >
-          <ResetPresence>
-            <FocusScope
-              loop
-              enabled={disableFocusScope ? false : open}
-              trapped={trapFocus}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              {isWeb ? <div style={dspContentsStyle}>{children}</div> : children}
-            </FocusScope>
-          </ResetPresence>
-        </RemoveScroll>
+        {contents}
       </PopperContent>
     </Animate>
   )
@@ -510,7 +545,7 @@ export const PopoverClose = React.forwardRef<
       ref={forwardedRef}
       componentName="PopoverClose"
       onPress={composeEventHandlers(props.onPress as any, () =>
-        context.onOpenChange(false, 'press')
+        context?.onOpenChange?.(false, 'press')
       )}
     />
   )

@@ -1,6 +1,6 @@
 import { Info } from '@tamagui/lucide-icons'
 import { useRef, useState } from 'react'
-import { Button, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Button, Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 
 export type FieldsetWithLabelProps = {
   enableEditLabel?: boolean
@@ -31,25 +31,13 @@ export const FieldsetWithLabel = ({
       tag="fieldset"
       br="$4"
       bc={isActive ? '$color9' : '$color6'}
-      bw={1}
+      bw={0}
       px="$3"
-      pt={afterLabel ? '$3' : '$2'}
-      mt="$3"
-      gap="$4"
       onPress={onPress}
     >
       <YStack
-        pos="absolute"
-        t={0}
-        y={-12}
-        l="$2.5"
         zi={100}
-        bg="$color2"
-        br="$10"
         px="$3"
-        {...(tooltip && {
-          pr: '$6',
-        })}
         {...(enableEditLabel && {
           cur: 'pointer',
           onPress: () => {
@@ -83,17 +71,18 @@ export const FieldsetWithLabel = ({
             }}
           />
         ) : (
-          <Paragraph
+          <Heading
             selectable={false}
             tag="label"
-            size="$4"
-            color="$color12"
-            fow="600"
+            size="$5"
+            color="$color11"
+            ta="center"
             {...(tooltip && {
               pr: '$6',
             })}
           >
-            {label}
+            {label[0].toUpperCase()}
+            {label.slice(1)}
 
             {!!tooltip && (
               <TooltipSimple
@@ -123,12 +112,12 @@ export const FieldsetWithLabel = ({
                 />
               </TooltipSimple>
             )}
-          </Paragraph>
+          </Heading>
         )}
       </YStack>
 
       {!!afterLabel && (
-        <XStack pos="absolute" t={-12} r="$4" zi={100} bg="$color2" br="$4" px="$2">
+        <XStack pos="absolute" t={12} r="$4" zi={100} bg="$color2" br="$4" px="$2">
           {afterLabel}
         </XStack>
       )}

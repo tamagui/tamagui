@@ -78,7 +78,7 @@ export const CheckboxFrame = styled(ThemeableStack, {
 
         pressStyle: {
           borderColor: '$borderColor',
-          backgroundColor: '$backgroundColor',
+          backgroundColor: '$background',
         },
 
         focusStyle: {

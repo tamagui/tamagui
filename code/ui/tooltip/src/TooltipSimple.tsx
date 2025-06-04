@@ -17,6 +17,10 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
     const child = React.Children.only(children)
 
+    if (!label) {
+      return children
+    }
+
     return (
       <Tooltip
         disableRTL
@@ -45,6 +49,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           y={0}
           elevation="$0.5"
           opacity={1}
+          pointerEvents="none"
           paddingVertical={getSpace(tooltipProps.size || '$true', {
             shift: -4,
           })}

@@ -3,15 +3,12 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
-  DEFAULT_ROLE_ID,
   getDiscordClient,
-  TAKEOUT_GROUP_ID,
+  TAKEOUT_GENERAL_CHANNEL,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
 } from '~/features/discord/helpers'
-import { getTakeoutPriceInfo } from '~/features/site/purchase/getProductInfo'
-import { getArray } from '~/helpers/getArray'
-import { getSingle } from '~/helpers/getSingle'
+import { ensureSubscription } from '../../../helpers/ensureSubscription'
 
 const roleBitField = '1024' // VIEW_CHANNEL
 
@@ -19,6 +16,7 @@ export type DiscordChannelStatus = {
   discordSeats: number
   currentlyOccupiedSeats: number
 }
+
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
@@ -44,54 +42,81 @@ export default apiRoute(async (req) => {
   const subscriptionId =
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
 
-  const subscription = await supabase
-    .from('subscriptions')
-    .select(
-      'id, metadata, created, subscription_items(id, prices(id, description, products(id, name, metadata)))'
-    )
-    .eq('id', subscriptionId)
-    .single()
+  const {
+    subscription,
+    hasDiscordPrivateChannels,
+    discordSeats: initialDiscordSeats,
+  } = await ensureSubscription(user.id, subscriptionId)
 
-  if (subscription.error) {
-    return Response.json(
-      {
-        message: 'no subscription with the provided id found that belongs to your user.',
-      },
-      {
-        status: 404,
-      }
-    )
+  if (!subscription) {
+    return Response.json({ message: 'No subscription found' }, { status: 400 })
   }
 
-  const starterSubItem = getArray(subscription.data.subscription_items).find(
-    (item) =>
-      (getSingle(getSingle(item?.prices)?.products)?.metadata as Record<string, any>)
-        ?.slug === 'universal-starter'
-  )
-  if (!starterSubItem) {
-    return Response.json(
-      {
-        message: 'the provided subscription does not include the takeout starter',
-      },
-      {
-        status: 401,
-      }
-    )
+  /**
+   * Try to get team subscription to get the total_seats for Tamagui Pro Team Seats plan.
+   * In such case, the user should have more Discord seats given by the team subscription.
+   *
+   * TODO: Ideally, each team seat user would have their own pool of Discord seats.
+   * This would allow users to invite themselves to the Discord channel without
+   * taking up additional seats that should belong to other users.
+   *
+   * However, in the current implementation, the `discord_invites` table only logs
+   * the `subscription_id`, and since a team subscription is treated as a single entity,
+   * we cannot track which user is occupying the seat.
+   * So we have no choice but to share the whole pool of Discord seats across all team members.
+   *
+   * Another edge case we haven't handle here is if a user is a member of multiple teams,
+   * or they are a member of a team and also have their own subscription.
+   * Ideally, we should add up all the seats from all subscriptions and teams.
+   * But given the limitations of the current implementation, we cannot do that
+   * since Discord seats are not tracked per user.
+   */
+  let discordSeats = initialDiscordSeats
+
+  const teamSubscription = await (async () => {
+    // First, try to find the team subscription where the user is the owner.
+    const ownedTeamSubscription = await supabaseAdmin
+      .from('team_subscriptions')
+      .select('*')
+      .eq('owner_id', user.id)
+      .single()
+    if (!ownedTeamSubscription.error) return ownedTeamSubscription.data
+
+    // If the user is not a owner of any team, check if they are a member of a team.
+    const teamMember = await supabaseAdmin
+      .from('team_members')
+      .select('team_subscription_id')
+      .eq('member_id', user.id)
+      .single()
+    if (teamMember.error) return null
+
+    const teamMemberSubscription = await supabaseAdmin
+      .from('team_subscriptions')
+      .select('*')
+      .eq('id', teamMember.data.team_subscription_id)
+      .single()
+    if (!teamMemberSubscription.error) return teamMemberSubscription.data
+  })()
+  // If the user is a member of a team, check if the team subscription has more seats.
+  // If so, use that as the discordSeats.
+  if (teamSubscription) {
+    const teamDiscordSeats = teamSubscription.total_seats
+    if (teamDiscordSeats > discordSeats) {
+      // Add 1 to the team discord seats to account for the owner
+      discordSeats = teamDiscordSeats + 1
+    }
   }
 
   const discordInvites = await supabaseAdmin
     .from('discord_invites')
     .select('*')
-    .eq('subscription_id', subscription.data.id)
+    .eq('subscription_id', subscription.id)
+
   if (discordInvites.error) {
     throw discordInvites.error
   }
 
-  const pricingDescription = getSingle(starterSubItem.prices)?.description?.toLowerCase()
   const currentlyOccupiedSeats = discordInvites.data.length
-  const { hasDiscordPrivateChannels, discordSeats } = getTakeoutPriceInfo(
-    pricingDescription ?? ''
-  )
 
   if (req.method === 'GET') {
     return Response.json({
@@ -103,46 +128,23 @@ export default apiRoute(async (req) => {
   const discordClient = await getDiscordClient()
 
   let discordChannelId: string | null =
-    (subscription.data.metadata as Record<string, any>)?.discord_channel || null
+    (subscription.metadata as Record<string, any>)?.discord_channel || null
+
   if (hasDiscordPrivateChannels && !discordChannelId) {
-    let channelName = subscription.data.id
-    try {
-      const githubData = await fetch('https://api.github.com/user', {
-        headers: {
-          Authorization: `Bearer ${userPrivate.data.github_token}`,
-        },
-      }).then((res) => res.json())
-      channelName = githubData.data.login
-    } catch (error) {}
+    // Pro users get access to the general channel
+    const channels = await discordClient.api.guilds.getChannels(TAMAGUI_DISCORD_GUILD_ID)
+    const generalChannel = channels.find((c: any) => c.name === TAKEOUT_GENERAL_CHANNEL)
 
-    const discordChannel = await discordClient.api.guilds.createChannel(
-      TAMAGUI_DISCORD_GUILD_ID,
-      {
-        name: channelName,
-        parent_id: TAKEOUT_GROUP_ID,
-        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-        topic: `Sub Created at ${subscription.data.created} - ID: ${subscription.data.id}`,
-      }
-    )
-
-    await discordClient.api.channels.createMessage(discordChannel.id, {
-      content: `Hello and welcome to your private Takeout channel! The creators of Takeout are here as well, so feel free to ask any questions and give us feedback as you go.`,
-    })
-
-    discordChannelId = discordChannel.id
-
-    await supabaseAdmin
-      .from('subscriptions')
-      .update({ metadata: { discord_channel: discordChannel.id } })
-      .eq('id', subscription.data.id)
+    if (generalChannel) {
+      discordChannelId = generalChannel.id
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({ metadata: { discord_channel: generalChannel.id } })
+        .eq('id', subscription.id)
+    }
   }
 
   if (req.method === 'DELETE') {
-    if (discordChannelId) {
-      await discordClient.api.channels.edit(discordChannelId, {
-        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-      })
-    }
     await Promise.allSettled(
       discordInvites.data.map((inv) =>
         discordClient.api.guilds.removeRoleFromMember(
@@ -155,8 +157,8 @@ export default apiRoute(async (req) => {
     await supabaseAdmin
       .from('discord_invites')
       .delete()
-      .eq('subscription_id', subscription.data.id)
-    return Response.json({ message: 'discord invites reset' })
+      .eq('subscription_id', subscription.id)
+    return Response.json({ message: 'discord access reset' })
   }
 
   const userDiscordId = body.discord_id
@@ -181,20 +183,21 @@ export default apiRoute(async (req) => {
       )
     }
 
-    if (discordChannelId) {
-      const channel = await discordClient.api.channels.get(discordChannelId)
+    // Check if user is already added to this subscription
+    const existingInvite = discordInvites.data.find(
+      (invite) => invite.discord_user_id === userDiscordId
+    )
 
-      await discordClient.api.channels.edit(discordChannelId, {
-        permission_overwrites: [
-          ...(channel as any).permission_overwrites, // other permissions
-          { id: userDiscordId, type: 1, allow: roleBitField },
-        ],
-      })
+    if (existingInvite) {
+      return Response.json(
+        { message: 'User is already added to the Takeout general channel!' },
+        { status: 400 }
+      )
     }
 
     await supabaseAdmin.from('discord_invites').insert({
       discord_user_id: userDiscordId,
-      subscription_id: subscription.data.id,
+      subscription_id: subscription.id,
     })
 
     await discordClient.api.guilds.addRoleToMember(
@@ -202,7 +205,9 @@ export default apiRoute(async (req) => {
       userDiscordId,
       TAKEOUT_ROLE_ID
     )
+
+    return Response.json({ message: 'Added to the Takeout general channel!' })
   }
 
-  return Response.json({ message: `Done!` })
+  return Response.json({ message: 'Done!' })
 })

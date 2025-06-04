@@ -1,10 +1,13 @@
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { getStudioInternalThemeName } from '../../previewTheme'
+import { getStudioInternalThemeName } from '../../updatePreviewTheme'
 
 export const useBaseThemePreview = () => {
   const store = useThemeBuilderStore()
+  const name = getStudioInternalThemeName(store.themeSuiteUID)
+  const version = store.themeSuiteVersion
   return {
-    name: getStudioInternalThemeName(store.baseTheme.id),
-    version: store.themeSuiteVersion,
+    name,
+    version,
+    key: name.replace(/(dark|light)_?/, '') + version,
   }
 }

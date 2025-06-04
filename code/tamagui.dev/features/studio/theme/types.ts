@@ -1,19 +1,6 @@
-import type { Template, ThemeDefinitions, ThemeWithParent } from '@tamagui/create-theme'
+import type { ThemeSuiteItem } from '@tamagui/theme-builder'
 
 type Component = (props?: any) => any
-
-export type ThemeSuiteItem = {
-  id: string
-  name: string
-  createdAt: number
-  updatedAt: number
-  selectedSchemes: { light: boolean; dark: boolean }
-  baseTheme: BuildTheme
-  subThemes: BuildSubTheme[]
-  palettes: Record<string, BuildPalette>
-  componentThemes: ThemeDefinitions
-  templates: BuildTemplates
-}
 
 export type SectionStep = {
   subTitle: string
@@ -61,33 +48,7 @@ export type ThemeBuilderState = {
   }
 }
 
-export type BuildComponentTheme = {
-  type: 'parent'
-  items: ThemeWithParent[]
-}
-
 export type ThemeSuiteItemData = Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>
-
-export type BuildTemplates = Record<string, Template>
-
-export type BuildSubTheme = BuildTheme
-
-export type BuildPalettes = Record<string, BuildPalette>
-
-export type BuildPalette = {
-  name: string
-  scale?: ScaleTypeName
-  anchors: BuildThemeAnchor[]
-}
-
-export type BuildThemeSuiteProps = Omit<ThemeSuiteItemData, 'name'>
-
-export type BuildThemeSuitePalettes = {
-  light: string[]
-  dark: string[]
-  lightAccent?: string[]
-  darkAccent?: string[]
-}
 
 export type ScaleTypeName =
   | 'custom'
@@ -108,38 +69,9 @@ export type BuildThemeBase = {
   errors?: string[]
 }
 
-export type BuildThemeAnchor = {
-  index: number
-  hue: {
-    light: number
-    dark: number
-    sync?: boolean
-    syncLeft?: boolean
-  }
-  sat: {
-    light: number
-    dark: number
-    sync?: boolean
-    syncLeft?: boolean
-  }
-  lum: {
-    light: number
-    dark: number
-  }
-}
-
-export type BuildPaletteAnchors = BuildThemeAnchor[]
-
 export type BuildTheme = BuildThemeBase & {
   type: 'theme'
   template: string
   palette: string
   accent?: BuildTheme
-}
-
-export type ThemeStepProps = {
-  theme: BuildTheme
-  isAccent?: boolean
-  vertical?: boolean
-  onUpdate: (val: Partial<BuildTheme>) => void
 }

@@ -5,10 +5,6 @@ component: Input
 demoName: Inputs
 ---
 
-# light Input & Textarea
-
-<Description>Web compatible Form fields for text</Description>
-
 <HeroContainer demoMultiple>
   <NewInputsDemo />
 </HeroContainer>
@@ -36,7 +32,7 @@ import { Input } from 'tamagui'
 
 export const App = () => (
   // Accepts size and style properties directly
-  <Input size="$4" borderWidth={2} />
+  <Input gap="$4" borderWidth={2} />
 )
 ```
 
@@ -49,6 +45,6 @@ import { TextArea } from 'tamagui'
 
 export const App = () => (
   // Accepts size and style properties directly
-  <TextArea size="$4" borderWidth={2} />
+  <TextArea gap="$4" borderWidth={2} />
 )
 ```

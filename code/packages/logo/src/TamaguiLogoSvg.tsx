@@ -1,13 +1,19 @@
-export const TamaguiIconSvg = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={424} height={394} viewBox="0 0 424 394" {...props}>
-    <g fill="none" fillRule="evenodd">
-      <path
-        d="M310.786 30v28.75H372.5l-.001 28.75H426.5v86.25h-54.001l.001 28.75h-61.714v115h-28.929V375h-202.5v-57.5H21.5v-230h57.857V30h231.429Z"
-        opacity={0.267}
-      />
-      <g fill="var(--color)">
-        <path d="M279.5 0h-20v20h20zM250.7 0h-20v20h20zM221.9 0h-20v20h20zM193.1 0h-20v20h20zM164.3 0h-20v20h20zM135.5 0h-20v20h20zM106.7 28.714h-20v20h20zM77.9 57.429h-20v20h20zM49.1 86.143h-20v20h20zM49.1 114.857h-20v20h20zM49.1 143.571h-20v20h20zM49.1 172.286h-20v20h20zM20.3 201H.3v20h20zM20.3 229.714H.3v20h20zM20.3 258.429H.3v20h20zM49.1 287.143h-20v20h20zM77.9 315.857h-20v20h20zM106.7 344.571h-20v20h20zM135.5 373.286h-20v20h20zM164.3 373.286h-20v20h20zM193.1 344.571h-20v20h20zM221.9 344.571h-20v20h20zM221.9 373.286h-20v20h20zM250.7 373.286h-20v20h20zM279.5 344.571h-20v20h20zM279.5 315.857h-20v20h20zM308.3 287.143h-20v20h20zM337.1 229.714h-20v20h20zM337.1 258.429h-20v20h20zM337.1 201h-20v20h20zM365.9 172.286h-20v20h20zM394.7 172.286h-20v20h20zM423.5 143.571h-20v20h20zM394.7 114.857h-20v20h20zM365.9 114.857h-20v20h20zM337.1 114.857h-20v20h20zM423.5 86.143h-20v20h20zM423.5 114.857h-20v20h20zM394.7 57.429h-20v20h20z" />
-        <path d="M394.7 57.429h-20v20h20zM365.9 57.429h-20v20h20zM308.3 28.714h-20v20h20zM279.5 57.429h-20v20h20zM193.1 86.143h-20v20h20zM193.1 201h-20v20h20zM193.1 229.714h-20v20h20zM164.3 258.429h-20v20h20zM135.5 229.714h-20v20h20zM135.5 201h-20v20h20zM337.1 57.429h-20v20h20z" />
+import type { JSX } from 'react/jsx-runtime'
+
+export const TamaguiIconSvg = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+  <svg width="160px" height="160px" viewBox="0 0 160 160" {...props}>
+    <g id="duck" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <circle id="Oval" cx="80" cy="80" r="145"></circle>
+      <g id="Group-Copy-5">
+        <path
+          d="M10,110 L10,100 L20,100 L20,90 L30,90 L30,80 L40,80 L40,30 L50,30 L50,10 L70,10 L70,0 L120,0 L120,10 L130,10 L130,20 L140,20 L140,40 L160,40 L160,50 L150,50 L150,60 L160,60 L160,70 L150,70 L150,80 L140,80 L140,100 L150,100 L150,110 L160,110 L160,140 L150,140 L150,150 L130,150 L130,160 L40,160 L40,150 L20,150 L20,140 L10,140 L10,130 L0,130 L0,110 L10,110 Z M90,40 L80,40 L80,50 L90,50 L90,40 Z M120,30 L110,30 L110,40 L120,40 L120,30 Z"
+          id="Combined-Shape"
+          fill="#ECD20A"
+        ></path>
+        <g id="Group" transform="translate(80, 30)" fill="#000000">
+          <rect id="Rectangle-Copy-117" x="0" y="10" width="10" height="10"></rect>
+          <rect id="Rectangle-Copy-141" x="30" y="0" width="10" height="10"></rect>
+        </g>
       </g>
     </g>
   </svg>

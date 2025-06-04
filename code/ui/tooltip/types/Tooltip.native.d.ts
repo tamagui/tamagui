@@ -1,3 +1,5 @@
+export declare const TooltipGroup: () => null;
+export declare const closeOpenTooltips: () => void;
 export declare const Tooltip: ((props: any) => any) & {
     Anchor: (props: any) => any;
     Arrow: (props: any) => null;

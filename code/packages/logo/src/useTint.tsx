@@ -1,41 +1,67 @@
-import React from 'react'
-import type { ThemeName, ThemeProps } from 'tamagui'
-import { Theme } from 'tamagui'
-
+import React, { createContext, useContext } from 'react'
+import type { ThemeName } from 'tamagui'
 import { getTints, setNextTintFamily, useTints } from './tints'
 
-// no localstorage because its not important to remember and causes a flicker
-// const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
-// const tint = tintVal ? +tintVal 0
-export const initialTint = 3
-
-let current = initialTint
+let current = 3
 
 const listeners = new Set<Function>()
 
 export const onTintChange = (listener: (cur: number) => void) => {
   listeners.add(listener)
-  return () => {
+  return (): void => {
     listeners.delete(listener)
   }
 }
 
 const numTints = getTints().tints.length
 
-export const setTintIndex = (next: number) => {
-  const val = next % numTints
+export const setTintIndex = (next: number): void => {
+  const val = Math.max(0, next % numTints)
   if (val === current) return
   current = val
-  React.startTransition(() => {
-    listeners.forEach((x) => x(val))
-  })
+  listeners.forEach((x) => x(val))
 }
 
-export const useTint = (altOffset = -1) => {
+export function getDocsSection(pathname: string): 'compiler' | 'ui' | 'core' | null {
+  return pathname === '/docs/intro/compiler-install' ||
+    pathname === '/docs/intro/benchmarks' ||
+    pathname === '/docs/intro/why-a-compiler'
+    ? 'compiler'
+    : pathname.startsWith('/ui/')
+      ? 'ui'
+      : pathname.startsWith('/docs/')
+        ? 'core'
+        : null
+}
+
+export const InitialPathContext: React.Context<number> = createContext(3)
+
+export const useTint = (
+  altOffset = -1
+): {
+  tints: ThemeName[]
+  tintIndex: number
+  tintAltIndex: number
+  tint: ThemeName
+  tintAlt: ThemeName
+  setTintIndex: (next: number) => void
+  setNextTintFamily: () => void
+  setNextTint: () => void
+  name: string
+  families: {
+    tamagui: string[]
+    xmas: string[]
+    easter: string[]
+    halloween: string[]
+    valentine: string[]
+    lunar: string[]
+  }
+} => {
+  const initial = useContext(InitialPathContext)
   const index = React.useSyncExternalStore(
     onTintChange,
     () => current,
-    () => initialTint
+    () => initial
   )
   const tintsContext = useTints()
   const { tints } = tintsContext
@@ -56,32 +82,4 @@ export const useTint = (altOffset = -1) => {
       })
     },
   } as const
-}
-
-export const ThemeTint = ({
-  disable,
-  children,
-  ...rest
-}: ThemeProps & { disable?: boolean }) => {
-  const curTint = useTint().tint
-  return (
-    <Theme {...rest} name={disable ? null : curTint}>
-      {children}
-    </Theme>
-  )
-}
-
-export const ThemeTintAlt = ({
-  children,
-  disable,
-  offset = 1,
-  ...rest
-}: ThemeProps & { disable?: boolean; offset?: number }) => {
-  const curTint = useTint(offset).tintAlt
-  const name = disable ? null : curTint
-  return (
-    <Theme name={name} {...rest}>
-      {children}
-    </Theme>
-  )
 }

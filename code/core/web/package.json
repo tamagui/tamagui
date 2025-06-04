@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.121.6",
+  "version": "1.126.14",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,28 +27,29 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.121.6",
-    "@tamagui/constants": "1.121.6",
-    "@tamagui/helpers": "1.121.6",
-    "@tamagui/normalize-css-color": "1.121.6",
-    "@tamagui/timer": "1.121.6",
-    "@tamagui/types": "1.121.6",
-    "@tamagui/use-did-finish-ssr": "1.121.6",
-    "@tamagui/use-event": "1.121.6",
-    "@tamagui/use-force-update": "1.121.6"
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/normalize-css-color": "workspace:*",
+    "@tamagui/timer": "workspace:*",
+    "@tamagui/types": "workspace:*",
+    "@tamagui/use-did-finish-ssr": "workspace:*",
+    "@tamagui/use-event": "workspace:*",
+    "@tamagui/use-force-update": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.6",
+    "@tamagui/build": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "react": "*",
     "react-dom": "*",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "react-native": "^0.76.5",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.5"
   },
   "exports": {
     "./package.json": "./package.json",

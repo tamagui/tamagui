@@ -1,3 +1,5 @@
 const { createTamagui } = require('@tamagui/core')
 
-module.exports = createTamagui(require('@tamagui/config').config)
+const conf = require('@tamagui/config/v3').config
+
+module.exports = createTamagui(conf)

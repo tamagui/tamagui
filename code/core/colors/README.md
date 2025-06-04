@@ -1,8 +1,4 @@
-# Radix Colors
-A quick guide on using Radix Colors with Stitches.
-
-## Documentation
-For full documentation, visit [radix-ui.com/docs/colors](https://radix-ui.com/docs/colors).
+Based on radix colors
 
 ## Installation
 

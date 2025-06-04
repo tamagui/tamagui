@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "1.121.6",
+  "version": "1.126.14",
   "sideEffects": [
     "*.css"
   ],
@@ -22,18 +22,32 @@
     "lint:fix": "biome check --write src"
   },
   "dependencies": {
-    "@tamagui/collapsible": "1.121.6",
-    "@tamagui/collection": "1.121.6",
-    "@tamagui/compose-refs": "1.121.6",
-    "@tamagui/constants": "1.121.6",
-    "@tamagui/core": "1.121.6",
-    "@tamagui/create-context": "1.121.6",
-    "@tamagui/polyfill-dev": "1.121.6",
-    "@tamagui/stacks": "1.121.6",
-    "@tamagui/use-controllable-state": "1.121.6"
+    "@tamagui/collapsible": "workspace:*",
+    "@tamagui/collection": "workspace:*",
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/text": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.6",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

@@ -98,24 +98,35 @@ export const Input = InputFrame.styleable<InputExtraProps>((propsIn, forwardedRe
 
 export function useInputProps(props: InputProps, ref: any) {
   const theme = useTheme()
-  const { onChangeText, ref: combinedRef } = useFocusable({
-    // @ts-ignore
+  const focusableProps = useFocusable({
     props,
     ref,
     isInput: true,
   })
 
-  const placeholderColorProp = props.placeholderTextColor
-  const placeholderTextColor =
-    theme[placeholderColorProp as any]?.get() ??
-    placeholderColorProp ??
-    theme.placeholderColor?.get()
+  const placeholderTextColor = React.useMemo(() => {
+    const placeholderColorProp = props.placeholderTextColor
+    return (
+      theme[placeholderColorProp as any]?.get() ??
+      placeholderColorProp ??
+      theme.placeholderColor?.get()
+    )
+  }, [props.placeholderTextColor, theme])
 
-  return {
-    ref: combinedRef,
-    readOnly: props.disabled,
-    ...props,
-    placeholderTextColor,
-    onChangeText,
-  }
+  return React.useMemo(
+    () => ({
+      ref: focusableProps.ref,
+      readOnly: props.disabled,
+      ...props,
+      placeholderTextColor,
+      onChangeText: focusableProps.onChangeText,
+    }),
+    [
+      focusableProps.ref,
+      focusableProps.onChangeText,
+      props.disabled,
+      props,
+      placeholderTextColor,
+    ]
+  )
 }

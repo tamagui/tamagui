@@ -18,7 +18,7 @@ const initialValue: Size = {
   width: 600,
 }
 
-export function configureInitialWindowDimensions(next: Size) {
+export function configureInitialWindowDimensions(next: Size): void {
   Object.assign(initialValue, next)
 }
 
@@ -37,7 +37,7 @@ function subscribe(cb: WindowSizeListener) {
 
 export function useWindowDimensions({
   serverValue = initialValue,
-}: { serverValue?: Size } = {}) {
+}: { serverValue?: Size } = {}): Size {
   return React.useSyncExternalStore(
     subscribe,
     () => Dimensions.get('window'),

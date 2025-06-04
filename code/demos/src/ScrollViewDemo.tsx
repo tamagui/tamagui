@@ -13,7 +13,7 @@ export function ScrollViewDemo() {
         <Square margin="$4" size={120} backgroundColor="$red9" />
         <Circle margin="$4" size={120} backgroundColor="$orange9" />
         <Square margin="$4" size={120} backgroundColor="$yellow9" />
-        <Circle margin="$4" size={120} backgroundColor="$green9" />
+        <Circle margin="$4" size={120} backgroundColor="$red9" />
         <Square margin="$4" size={120} backgroundColor="$blue9" />
         <Circle margin="$4" size={120} backgroundColor="$purple9" />
         <Square margin="$4" size={120} backgroundColor="$pink9" />

@@ -1,7 +1,7 @@
 import { getStore, useStoreSelector } from '@tamagui/use-store'
+import type { Href } from 'one'
 import { createElement, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
-import type { Href } from 'one'
 import { Link } from '~/components/Link'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
 import type { NavItemProps } from './DocsPage'
@@ -40,10 +40,10 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         ai="center"
         jc="flex-end"
         px="$4"
-        py="$1"
+        py="$1.5"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
-          backgroundColor: '$color025',
+          backgroundColor: '$color02',
         }}
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         pos="relative"
@@ -74,7 +74,9 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           />
         )}
         <SizableText
+          ff="$mono"
           size="$4"
+          ls={-0.5}
           lh="$3"
           cursor="pointer"
           userSelect="none"

@@ -1,15 +1,11 @@
 ---
 title: Dialog
-description: A simple dialog component
+description: Show a modal with configurable layout and accessible actions.
 name: dialog
 component: Dialog
 package: dialog
 demoName: Dialog
 ---
-
-# Dialog
-
-<Description>Show a modal with configurable layout and accessible actions</Description>
 
 <InstallBanner name="@tamagui/dialog" />
 
@@ -250,7 +246,7 @@ export default () => (
     </Dialog.Portal>
 
     {/* optionally change to sheet when small screen */}
-    <Dialog.Adapt when="sm">
+    <Dialog.Adapt when="maxMd">
       <Dialog.Sheet>
         <Dialog.Sheet.Frame>
           <Dialog.Adapt.Contents />

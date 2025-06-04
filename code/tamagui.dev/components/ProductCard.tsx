@@ -31,7 +31,7 @@ export function ProductCard({ product, children, ...props }) {
       <Stack
         group="card"
         tag="a"
-        theme="surface4"
+        theme="surface3"
         animation="quickest"
         bg="$background"
         f={1}
@@ -54,7 +54,7 @@ export function ProductCard({ product, children, ...props }) {
             zi={0}
             br="$4"
             style={{
-              background: `linear-gradient(transparent, var(--color05))`,
+              background: `linear-gradient(transparent, var(--color04))`,
               mixBlendMode: 'color',
             }}
           />

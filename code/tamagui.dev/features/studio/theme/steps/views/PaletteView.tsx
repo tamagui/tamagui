@@ -4,32 +4,30 @@ import {
   ArrowLeftRight,
   ArrowRight,
   ArrowUpDown,
+  Lock,
 } from '@tamagui/lucide-icons'
+import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
 import type { XStackProps } from 'tamagui'
 import {
   Button,
-  Label,
   Separator,
   SizableText,
+  Theme,
+  TooltipGroup,
   TooltipSimple,
   XStack,
   YStack,
   useThemeName,
 } from 'tamagui'
-
 import type { HSLA } from '~/features/studio/colors/ColorPicker'
 import { ColorPickerContents } from '~/features/studio/colors/ColorPicker'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
-import {
-  PALETTE_BACKGROUND_OFFSET,
-  getThemeSuitePalettes,
-} from '../../helpers/getThemeSuitePalettes'
 import type { BuildPalette, BuildThemeAnchor } from '../../types'
 import { XLabeledItem } from '../../views/XLabeledItem'
 
@@ -78,9 +76,11 @@ export const PaletteView = memo((props: Props) => {
   const hoveredItem = defaultScaleGrouped[activeColor]
 
   const { anchors } = palette
-  const anchorIndex = anchors.findIndex(
-    (x) => x.index === +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
-  )
+
+  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+
+  const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
+
   const anchor = anchors[anchorIndex]
   const nextAnchor = anchors[anchorIndex + 1]
   const prevAnchor = anchors[anchorIndex - 1]
@@ -219,27 +219,54 @@ export const PaletteView = memo((props: Props) => {
 
   const lightDarkSynced = anchors.every((a) => a.hue.sync && a.sat.sync)
 
+  const syncButtons = (
+    <XStack o={0} $group-content-hover={{ o: 1 }} gap="$4" ai="center" ml={60}>
+      <XStack jc="space-between" w={160}>
+        <SyncButtons
+          anchorKey="hue"
+          {...props}
+          anchor={anchor}
+          prevAnchor={prevAnchor}
+          nextAnchor={nextAnchor}
+        />
+      </XStack>
+      <XStack jc="space-between" w={100} ml={10}>
+        <SyncButtons
+          anchorKey="sat"
+          {...props}
+          anchor={anchor}
+          prevAnchor={prevAnchor}
+          nextAnchor={nextAnchor}
+        />
+      </XStack>
+    </XStack>
+  )
+
   return (
     <YStack contain="paint" p="$4" mx="$-4" mb="$0" f={1} gap="$4">
-      <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
-        <StepThemeHoverablePalette
-          isActive={!isDark}
-          palette={palette}
-          colors={colors.light}
-          onSelect={(color, index) => toggleAnchorAt(index)}
+      <YStack group="content" containerType="normal" gap="$4">
+        {/* <Theme name="white"> */}
+        <ColorPickerContents
+          disabled={!anchor}
+          value={lightPalette[hoveredItem?.value ?? 0]}
+          onChange={onChangeAnchorColor('light')}
+          shouldDim={lightDarkSynced && isDark}
         />
-      </XLabeledItem>
 
-      <PaletteIndices />
+        <YStack mt={-15}>{syncButtons}</YStack>
 
-      <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
-        <StepThemeHoverablePalette
-          isActive={isDark}
-          palette={palette}
-          colors={colors.dark}
-          onSelect={(color, index) => toggleAnchorAt(index)}
-        />
-      </XLabeledItem>
+        <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
+          <StepThemeHoverablePalette
+            palette={palette}
+            colors={colors.light}
+            onSelect={(color, index) => toggleAnchorAt(index)}
+          />
+        </XLabeledItem>
+
+        <PaletteIndices />
+      </YStack>
+
+      {/* </Theme> */}
 
       <XLabeledItem label="">
         <YStack gap="$4">
@@ -291,48 +318,20 @@ export const PaletteView = memo((props: Props) => {
         </YStack>
       </XLabeledItem>
 
-      <XLabeledItem label="Light">
-        <ColorPickerContents
-          isActive={!isDark}
-          disabled={!anchor}
-          value={lightPalette[hoveredItem?.value ?? 0]}
-          onChange={onChangeAnchorColor('light')}
-          shouldDim={lightDarkSynced && isDark}
-        />
-      </XLabeledItem>
+      {/* <Theme name="black"> */}
+      <PaletteIndices />
 
-      <YStack my={-12}>
-        <XLabeledItem label="">
-          <XStack w={115}>
-            <Label pe="none" miw={115} jc="flex-end" size="$1" col="$color10" o={0.5}>
-              Sync:
-            </Label>
-          </XStack>
-
-          <XStack gap="$4" ai="center" ml={10}>
-            <XStack jc="space-between" w={100}>
-              <SyncButtons
-                anchorKey="hue"
-                {...props}
-                anchor={anchor}
-                prevAnchor={prevAnchor}
-                nextAnchor={nextAnchor}
-              />
-            </XStack>
-            <XStack jc="space-between" w={80}>
-              <SyncButtons
-                anchorKey="sat"
-                {...props}
-                anchor={anchor}
-                prevAnchor={prevAnchor}
-                nextAnchor={nextAnchor}
-              />
-            </XStack>
-          </XStack>
+      <YStack group="content" containerType="normal" gap="$4">
+        <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
+          <StepThemeHoverablePalette
+            palette={palette}
+            colors={colors.dark}
+            onSelect={(color, index) => toggleAnchorAt(index)}
+          />
         </XLabeledItem>
-      </YStack>
 
-      <XLabeledItem label="Dark">
+        <YStack mb={-15}>{syncButtons}</YStack>
+
         <ColorPickerContents
           isActive={isDark}
           disabled={!anchor}
@@ -340,7 +339,8 @@ export const PaletteView = memo((props: Props) => {
           onChange={onChangeAnchorColor('dark')}
           shouldDim={lightDarkSynced && !isDark}
         />
-      </XLabeledItem>
+      </YStack>
+      {/* </Theme> */}
     </YStack>
   )
 })
@@ -361,92 +361,95 @@ const SyncButtons = memo(
   }) => {
     return (
       <>
-        <TooltipSimple label="Sync to last anchor">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowLeft}
-            themeInverse={anchor?.[anchorKey].syncLeft}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === anchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          syncLeft: !a[anchorKey].syncLeft,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-            {...(!prevAnchor
-              ? {
-                  o: 0.1,
-                  disabled: true,
-                }
-              : null)}
-          />
-        </TooltipSimple>
+        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowLeft}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!prevAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
 
-        <TooltipSimple label="Sync light and dark">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowUpDown}
-            themeInverse={anchor?.[anchorKey].sync}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === anchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          sync: !a[anchorKey].sync,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-          />
-        </TooltipSimple>
+        <Theme name={anchor?.[anchorKey].sync ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowUpDown}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === anchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            sync: !a[anchorKey].sync,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+            />
+          </TooltipSimple>
+        </Theme>
 
-        <TooltipSimple label="Sync to next anchor">
-          <Button
-            size={16}
-            scaleIcon={1.4}
-            circular
-            icon={ArrowRight}
-            themeInverse={nextAnchor?.[anchorKey].syncLeft}
-            onPress={() => {
-              onUpdate({
-                anchors: palette.anchors.map((a) =>
-                  a === nextAnchor
-                    ? {
-                        ...a,
-                        [anchorKey]: {
-                          ...a[anchorKey],
-                          syncLeft: !a[anchorKey].syncLeft,
-                        },
-                      }
-                    : a
-                ),
-              })
-            }}
-            {...(!nextAnchor
-              ? {
-                  o: 0.1,
-                  disabled: true,
-                }
-              : null)}
-          />
-        </TooltipSimple>
+        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+          <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
+            <Button
+              size={16}
+              scaleIcon={1.4}
+              circular
+              icon={ArrowRight}
+              onPress={() => {
+                onUpdate({
+                  anchors: palette.anchors.map((a) =>
+                    a === nextAnchor
+                      ? {
+                          ...a,
+                          [anchorKey]: {
+                            ...a[anchorKey],
+                            syncLeft: !a[anchorKey].syncLeft,
+                          },
+                        }
+                      : a
+                  ),
+                })
+              }}
+              {...(!nextAnchor
+                ? {
+                    o: 0.1,
+                    disabled: true,
+                  }
+                : null)}
+            />
+          </TooltipSimple>
+        </Theme>
       </>
     )
   }
@@ -488,20 +491,22 @@ type PaletteProps = {
 
 export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
   const { colors, size = 'medium' } = props
-  const borderRadius = size === 'medium' ? 10 : 6
+  const borderRadius = size === 'medium' ? 200 : 100
 
   return (
-    <XStack f={1} br={borderRadius} bw={1} bc="$color7">
-      {colors.map((color, i) => {
-        return <PaletteColor {...props} color={color} index={i} key={i} />
-      })}
-    </XStack>
+    <TooltipGroup delay={0}>
+      <XStack f={1} br={borderRadius} bw={1} bc="$color7">
+        {colors.map((color, i) => {
+          return <PaletteColor {...props} color={color} index={i} key={i} />
+        })}
+      </XStack>
+    </TooltipGroup>
   )
 })
 
 // add some delay but no delay if moving across
 
-const delay = 360
+const delay = 50
 let hovered = -1
 let tm
 
@@ -549,10 +554,9 @@ const PaletteColor = memo(
     } = props
     const store = usePaletteStore(palette.name)
     const { hoveredColor, selectedColor } = store
-    const borderRadius = size === 'medium' ? 10 : 6
+    const borderRadius = size === 'medium' ? 100 : 100
     const { anchors } = palette
-
-    const anchor = anchors.find((x) => x.index === index)
+    const isAnchor = anchors.some((a) => a.index === index)
 
     const doublePressProps = useDoublePress({
       eagerSingle: true,
@@ -588,26 +592,34 @@ const PaletteColor = memo(
         onMouseEnter={() => {
           mouseEnter(index, palette.name)
         }}
+        hoverStyle={{
+          scale: 1.05,
+        }}
+        pos="relative"
         {...(hoveredColor === index && {
           zi: 10000,
-          outlineColor: '$blue10',
+          outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
           shadowColor: '$blue10',
           shadowRadius: 5,
           shadowOpacity: 1,
         })}
-        {...(selectedColor === index && {
+        {...((isAnchor || selectedColor === index) && {
           zi: 10000,
-          outlineColor: 'color-mix(in srgb, currentColor 60%, transparent)',
+          outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 2,
+        })}
+        {...(selectedColor === index && {
+          outlineColor: '$accent1',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {
             shadowColor: '$blue10',
             shadowRadius: 10,
             shadowOpacity: 1,
+            zi: 100000,
           })}
         {...radiusStyle}
         {...doublePressProps}
@@ -619,32 +631,6 @@ const PaletteColor = memo(
           }
         }}
       >
-        {anchor && (
-          <>
-            <XStack
-              pos="absolute"
-              t={1}
-              l={1}
-              r={1}
-              b={1}
-              zi={10}
-              pe="none"
-              {...radiusStyle}
-              bw={1}
-              o={1}
-              bc="$color8"
-            />
-            <XStack
-              fullscreen
-              zi={10}
-              pe="none"
-              {...radiusStyle}
-              bw={1}
-              o={0.5}
-              bc="$background"
-            />
-          </>
-        )}
         <XStack fullscreen bg={color as any} ai="center" jc="center">
           <SizableText
             selectable={false}

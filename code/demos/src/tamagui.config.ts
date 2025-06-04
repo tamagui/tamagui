@@ -1,10 +1,16 @@
-import { config } from '@tamagui/config/v3'
+import { createTamagui } from 'tamagui'
+import { config } from '@tamagui/tamagui-dev-config'
 
-export { config } from '@tamagui/config/v3'
-export default config
+const tamaConf = createTamagui(config)
 
-export type Conf = typeof config
+export type Conf = typeof tamaConf
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
+
+  interface TypeOverride {
+    groupNames(): 'card' | 'takeoutBody' | 'content' | 'item'
+  }
 }
+
+export default tamaConf

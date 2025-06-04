@@ -9,10 +9,14 @@
       ],
       "@tamagui/*": [
         "code/core/*",
-        "code/ui/*"
+        "code/ui/*",
+        "code/packages/*"
       ],
       "@tamagui/bento": [
         "code/bento"
+      ],
+      "@tamagui/bento-example": [
+        "code/bento/example"
       ],
       "@tamagui/demos": [
         "code/demos"
@@ -21,6 +25,8 @@
     "outDir": "dist",
     "importHelpers": true,
     "isolatedModules": true,
+    // TODO: turn on
+    // "isolatedDeclarations": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -101,9 +107,6 @@
       "path": "code/core/animations-react-native"
     },
     {
-      "path": "code/core/animations-reanimated"
-    },
-    {
       "path": "code/core/aria-hidden"
     },
     {
@@ -143,13 +146,7 @@
       "path": "code/core/create-context"
     },
     {
-      "path": "code/core/create-tamagui"
-    },
-    {
       "path": "code/core/create-theme"
-    },
-    {
-      "path": "code/core/create-themes"
     },
     {
       "path": "code/core/cubic-bezier-animator"
@@ -302,25 +299,10 @@
       "path": "code/demos"
     },
     {
-      "path": "code/integration"
-    },
-    {
-      "path": "code/kitchen-sink"
-    },
-    {
-      "path": "code/next-site"
-    },
-    {
       "path": "code/packages/babel-plugin-fully-specified"
     },
     {
       "path": "code/packages/bento-get"
-    },
-    {
-      "path": "code/packages/build/__tests__/fixtures/simple-package"
-    },
-    {
-      "path": "code/packages/build/__tests__/fixtures/watch-package"
     },
     {
       "path": "code/packages/cli-color"
@@ -341,9 +323,6 @@
       "path": "code/packages/next-theme"
     },
     {
-      "path": "code/packages/one-theme"
-    },
-    {
       "path": "code/packages/react-native-svg"
     },
     {
@@ -360,12 +339,6 @@
     },
     {
       "path": "code/packages/vite-plugin-internal"
-    },
-    {
-      "path": "code/takeout"
-    },
-    {
-      "path": "code/tamagui.dev"
     },
     {
       "path": "code/ui/accordion"

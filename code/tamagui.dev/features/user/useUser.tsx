@@ -1,13 +1,17 @@
+import { useRouter } from 'one'
 import { useEffect } from 'react'
 import useSWR, { useSWRConfig } from 'swr'
 import { Spinner, YStack } from 'tamagui'
-import { useRouter } from 'one'
 
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
+import { userSubscriptionStatus } from './subscription/eligibility'
+
+export let currentUser: UserContextType | null = null
 
 export const useUser = () => {
   const { mutate } = useSWRConfig()
+
   const response = useSWR<UserContextType | null>('user', {
     fetcher: async () => {
       if (typeof window === 'undefined') {
@@ -26,9 +30,18 @@ export const useUser = () => {
       return null
     },
     refreshInterval: 0,
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    refreshWhenHidden: false,
   })
+
+  useEffect(() => {
+    currentUser = response.data || null
+  }, [response])
+
   return {
     ...response,
+    subscriptionStatus: userSubscriptionStatus(response.data ?? undefined),
     refresh() {
       mutate('user')
     },

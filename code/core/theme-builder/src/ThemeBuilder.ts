@@ -326,7 +326,9 @@ export class ThemeBuilder<
           this.state.templates?.[`${nameParts[0]}_${templateName}`]
 
         if (!template) {
-          throw new Error(`No template for theme ${themeName}: ${templateName}`)
+          throw new Error(
+            `No template for theme ${themeName}: ${templateName} in templates:\n- ${Object.keys(this.state.templates || {}).join('\n - ')}`
+          )
         }
 
         out[themeName] = createThemeWithPalettes(

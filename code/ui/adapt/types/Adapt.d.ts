@@ -5,7 +5,7 @@ import React from 'react';
  */
 export type AdaptWhen = MediaQueryKeyString | boolean | null;
 export type AdaptPlatform = AllPlatforms | 'touch' | null;
-type AdaptParentContextI = {
+export type AdaptParentContextI = {
     Contents: Component;
     scopeName: string;
     platform: AdaptPlatform;

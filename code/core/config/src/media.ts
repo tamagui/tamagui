@@ -1,12 +1,10 @@
-import { createMedia } from '@tamagui/react-native-media-driver'
-
 export const demoMedia = [500, 620, 780, 900]
 export const widths = [660, 800, 1020, 1280]
 
 // note order is important!
 // earlier defined = less important
 
-export const media = createMedia({
+export const media = {
   // for site
   xl: { maxWidth: 1650 },
   lg: { maxWidth: 1280 },
@@ -19,7 +17,7 @@ export const media = createMedia({
   gtMd: { minWidth: 1020 + 1 },
   gtLg: { minWidth: 1280 + 1 },
   gtXl: { minWidth: 1650 + 1 },
-})
+}
 
 // note all the non "gt" ones should be true to start to match mobile-first
 // were aiming for "xs" to be the default to "gtXs" true too

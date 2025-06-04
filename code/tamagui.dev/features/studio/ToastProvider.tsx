@@ -6,6 +6,7 @@ import {
   useToastController,
   useToastState,
 } from '@tamagui/toast'
+import { AnimatePresence, Theme, YStack } from 'tamagui'
 
 export let toastController: ReturnType<typeof useToastController>
 
@@ -19,38 +20,40 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <ToastProviderOG swipeDirection="vertical" swipeThreshold={80}>
       <ToastHandler />
+
       {children}
       <ToastImportHandler />
-      <ToastViewport m="$0.5" left="50%" x="-50%" top={0} />
+      <ToastViewport m="$0.5" left="50%" x="-50%" bottom={0} />
     </ToastProviderOG>
   )
 }
 
 const ToastHandler = () => {
   const toast = useToastState()
-  if (!toast) return null
+
+  // avoid rendering the toast if it's a demo toast
+  if (!toast || toast?.demo) return null
 
   return (
-    <Toast
-      key={toast.id}
-      duration={toast.duration}
-      animation="100ms"
-      enterStyle={{ opacity: 0, scale: 0.5, y: -45 }}
-      exitStyle={{ opacity: 0, scale: 1, y: -40 }}
-      y={0}
-      x={0}
-      opacity={1}
-      scale={1}
-      elevation="$6"
-      m="$4"
-      br="$10"
-      px="$5"
-      py="$2"
-      {...toast.customData}
-    >
-      <Toast.Title o={0.6}>{toast.title}</Toast.Title>
-      <Toast.Description o={0.6}>{toast.message}</Toast.Description>
-    </Toast>
+    <Theme name="accent">
+      <Toast
+        key={toast.title + toast.message}
+        duration={toast.duration ?? 3000}
+        animation="200ms"
+        enterStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+        exitStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
+        transform={[{ translateY: 0 }]}
+        bottom={0}
+        opacity={1}
+        gap={0}
+        {...toast.customData}
+      >
+        <YStack gap={0}>
+          <Toast.Title>{toast.title}</Toast.Title>
+          <Toast.Description>{toast.message}</Toast.Description>
+        </YStack>
+      </Toast>
+    </Theme>
   )
 }
 

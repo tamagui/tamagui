@@ -60,7 +60,7 @@ export const createIdentityMask = (): CreateMask => ({
   mask: (template, opts) => skipMask.mask(template, opts),
 })
 
-export const createInverseMask = () => {
+export const createInverseMask = (): CreateMask => {
   const mask: CreateMask = {
     name: 'inverse-mask',
     mask: (template, opts) => {
@@ -78,7 +78,7 @@ type ShiftMaskOptions = { inverse?: boolean }
 export const createShiftMask = (
   { inverse }: ShiftMaskOptions = {},
   defaultOptions?: MaskOptions
-) => {
+): CreateMask => {
   const mask: CreateMask = {
     name: 'shift-mask',
     mask: (template, opts) => {
@@ -128,7 +128,8 @@ export const createWeakenMask = (defaultOptions?: MaskOptions): CreateMask => ({
   mask: createShiftMask({}, defaultOptions).mask,
 })
 
-export const createSoftenMask = createWeakenMask
+export const createSoftenMask: (defaultOptions?: MaskOptions) => CreateMask =
+  createWeakenMask
 
 export const createStrengthenMask = (defaultOptions?: MaskOptions): CreateMask => ({
   name: 'strengthen-mask',

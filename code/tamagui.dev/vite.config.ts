@@ -18,6 +18,10 @@ const resolve = (path: string) => {
 }
 
 const include = [
+  '@ai-sdk/deepseek',
+  'secure-json-parse',
+  '@supabase/postgres-js',
+  'ai',
   '@docsearch/react',
   '@leeoniya/ufuzzy',
   'react-hook-form',
@@ -36,7 +40,6 @@ const include = [
   'glob',
   'reading-time',
   'unified',
-  '@discordjs/core',
 ]
 
 export default {
@@ -48,6 +51,7 @@ export default {
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
+      'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -76,12 +80,42 @@ export default {
   },
 
   plugins: [
+    tamaguiPlugin({
+      components: ['tamagui'],
+      logTimings: true,
+      optimize: true,
+      config: '@tamagui/tamagui-dev-config',
+      outputCSS: './tamagui.css',
+      // useReactNativeWebLite: true,
+    }),
+
     one({
       react: {
-        compiler: process.env.NODE_ENV === 'production',
+        compiler: true,
+        // scan: {
+        //   options: {
+        //     showToolbar: true,
+        //     enabled: true,
+        //     // log: true,
+        //   },
+        // },
+      },
+
+      router: {
+        experimental: {
+          preventLayoutRemounting: true,
+        },
+      },
+
+      ssr: {
+        autoDepsOptimization: {
+          include: /.*/,
+        },
       },
 
       deps: {
+        ws: true,
+        url: false,
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
         postmark: true,
@@ -91,13 +125,42 @@ export default {
         octokit: true,
         'node-fetch': true,
         'fetch-blob': true,
+        'discord-api-types/v10': true,
+        'magic-bytes.js': true,
+        '@react-navigation/core': {
+          version: '^7',
+          'lib/module/useOnGetState.js': (contents) => {
+            return contents?.replace(
+              'if (route.state === childState)',
+              'if (!childState || route.state === childState)'
+            )
+          },
+        },
+      },
+
+      build: {
+        api: {
+          config: {
+            build: {
+              rollupOptions: {
+                external: [
+                  '@discordjs/rest',
+                  '@discordjs/ws',
+                  '@vercel/og',
+                  'stripe',
+                  'zlib-sync',
+                ],
+              },
+            },
+          },
+        },
       },
 
       web: {
         redirects: [
           {
             source: '/account/subscriptions',
-            destination: '/account/items',
+            destination: '/account',
             permanent: false,
           },
           {
@@ -125,11 +188,6 @@ export default {
     }),
 
     // removeReactNativeWebAnimatedPlugin(),
-
-    tamaguiPlugin({
-      optimize: process.env.NODE_ENV === 'production',
-      // useReactNativeWebLite: true,
-    }),
   ],
 } satisfies UserConfig
 

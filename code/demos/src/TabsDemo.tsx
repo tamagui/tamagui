@@ -28,7 +28,7 @@ export function TabsDemo() {
         position="absolute"
         bottom="$3"
         left="$4"
-        $xxs={{ display: 'none' }}
+        $maxXs={{ display: 'none' }}
       >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
@@ -44,6 +44,7 @@ const HorizontalTabs = () => {
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
+      $maxMd={{ width: 300 }}
       width={400}
       height={150}
       borderRadius="$4"
@@ -56,14 +57,38 @@ const HorizontalTabs = () => {
         disablePassBorderRadius="bottom"
         aria-label="Manage your account"
       >
-        <Tabs.Tab flex={1} value="tab1">
-          <SizableText fontFamily="$body">Profile</SizableText>
+        <Tabs.Tab
+          focusStyle={{
+            backgroundColor: '$color3',
+          }}
+          flex={1}
+          value="tab1"
+        >
+          <SizableText fontFamily="$body" textAlign="center">
+            Profile
+          </SizableText>
         </Tabs.Tab>
-        <Tabs.Tab flex={1} value="tab2">
-          <SizableText fontFamily="$body">Connections</SizableText>
+        <Tabs.Tab
+          focusStyle={{
+            backgroundColor: '$color3',
+          }}
+          flex={1}
+          value="tab2"
+        >
+          <SizableText fontFamily="$body" textAlign="center">
+            Connections
+          </SizableText>
         </Tabs.Tab>
-        <Tabs.Tab flex={1} value="tab3">
-          <SizableText fontFamily="$body">Notifications</SizableText>
+        <Tabs.Tab
+          focusStyle={{
+            backgroundColor: '$color3',
+          }}
+          flex={1}
+          value="tab3"
+        >
+          <SizableText fontFamily="$body" textAlign="center">
+            Notifications
+          </SizableText>
         </Tabs.Tab>
       </Tabs.List>
       <Separator />

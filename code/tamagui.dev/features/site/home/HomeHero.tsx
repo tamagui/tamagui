@@ -1,4 +1,4 @@
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { memo } from 'react'
 import {
   Button,
@@ -17,12 +17,12 @@ import {
 } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
-import { BentoIcon } from '~/features/icons/BentoIcon'
 import { DiscordIcon } from '~/features/icons/DiscordIcon'
-import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { TwitterIcon } from '~/features/icons/TwitterIcon'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 
+import { BentoButton } from '../BentoButton'
+import { TakeoutButton } from '../TakeoutButton'
 import { InstallInput } from './InstallInput'
 import { useHeroHovered } from './useHeroHovered'
 
@@ -43,24 +43,24 @@ const HeroSubTitle = memo(() => {
 
   return (
     <Subtitle>
-      <Link asChild href="/docs/core/configuration">
-        <Tag theme="green" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+      <Link asChild href="/docs/intro/introduction">
+        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+        <Tag theme="green" onHoverIn={() => setHovered(3)} active={hovered === 3}>
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/ui/stacks">
-        <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="blue" onHoverIn={() => setHovered(4)} active={hovered === 4}>
           UI&nbsp;kit
         </Tag>
       </Link>{' '}
-      for&nbsp;React&nbsp;·&nbsp;every&nbsp;platform
+      for&nbsp;React&nbsp;and&nbsp;React&nbsp;Native
     </Subtitle>
   )
 })
@@ -69,7 +69,7 @@ const HeroContents = memo(function HeroContents() {
   const { name, tint, tintAlt } = useTint()
 
   return (
-    <ContainerLarge contain="layout" pos="relative">
+    <ContainerLarge pos="relative">
       <YStack
         fullscreen
         left={-500}
@@ -103,67 +103,17 @@ const HeroContents = memo(function HeroContents() {
         }}
       >
         <>
-          <XGroup pos="absolute" als="center" y={-80} br="$8">
+          <XGroup elevation="$0.5" pos="absolute" als="center" y={-80} br="$8">
             <Link href="/takeout">
               <XGroup.Item>
-                <Button
-                  // animation="bouncy"
-                  bc="$color6"
-                  size="$3"
-                  br="$10"
-                  elevation="$0.5"
-                  fontFamily="$silkscreen"
-                  fontSize={12}
-                  brw={0.5}
-                >
-                  Takeout
-                  <YStack y={-1} dsp="inline-flex">
-                    <TakeoutIcon scale={0.75} />
-                  </YStack>
-                  <Text
-                    y={-0.5}
-                    ff="$body"
-                    fontSize="$4"
-                    color="$color10"
-                    $sm={{ dsp: 'none' }}
-                  >
-                    starter
-                  </Text>
-                </Button>
+                <TakeoutButton />
               </XGroup.Item>
             </Link>
 
             <Theme name="tan">
               <Link href="/bento">
                 <XGroup.Item>
-                  <Button
-                    // animation="bouncy"
-                    blw={0.5}
-                    bc="$color3"
-                    size="$3"
-                    br="$10"
-                    elevation="$0.5"
-                    fontFamily="$silkscreen"
-                    fontSize={12}
-                    hoverStyle={{
-                      bc: '$color3',
-                      bg: '$color2',
-                    }}
-                  >
-                    Bento
-                    <YStack dsp="inline-flex">
-                      <BentoIcon scale={0.75} />
-                    </YStack>
-                    <Text
-                      y={-0.5}
-                      ff="$body"
-                      fontSize="$4"
-                      color="$color10"
-                      $sm={{ dsp: 'none' }}
-                    >
-                      more ui
-                    </Text>
-                  </Button>
+                  <BentoButton />
                 </XGroup.Item>
               </Link>
             </Theme>
@@ -173,36 +123,25 @@ const HeroContents = memo(function HeroContents() {
           </XGroup>
         </>
 
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
+        <YStack ai="center" gap="$4">
           <H1
-            ta="left"
-            size="$10"
-            // animation="lazy"
-            // enterStyle={{
-            //   y: -10,
-            //   o: 0,
-            // }}
+            ta="center"
+            size="$11"
+            lh={61}
             maw={500}
+            mah={400}
             pos="relative"
-            // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
             $gtSm={{
-              mx: 0,
-              maxWidth: 800,
-              size: '$14',
-              h: 250,
-              ta: 'center',
-              als: 'center',
+              scale: 1.5,
+              m: '5%',
             }}
             $gtMd={{
-              maxWidth: 900,
-              size: '$15',
-              h: 310,
+              scale: 1.6,
+              m: '7%',
             }}
             $gtLg={{
-              size: '$16',
-              lh: 146,
-              maxWidth: 1200,
-              h: 310,
+              scale: 2,
+              my: '8%',
             }}
           >
             <Text
@@ -285,24 +224,27 @@ const HeroContents = memo(function HeroContents() {
           gap="$2"
           $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
-          <Link target="_blank" href="https://twitter.com/tamagui_js">
-            <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
+          <Link target="_blank" href="https://x.com/tamagui_js">
+            <TooltipSimple placement="top" delay={0} restMs={25} label="X">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
-                  <Text>Twitter</Text>
+                  <Text>X</Text>
                 </VisuallyHidden>
-                <TwitterIcon width={24} />
+                <TwitterIcon />
               </YStack>
             </TooltipSimple>
           </Link>
 
-          <ThemeTint>
+          <Theme name="black">
             <Link asChild href="/docs/intro/introduction">
               <Button
                 aria-label="Get started (docs)"
+                group="item"
+                containerType="normal"
                 fontFamily="$silkscreen"
+                componentName=""
                 size="$5"
-                fontSize="$6"
+                fontSize="$2"
                 borderRadius={1000}
                 bordered
                 bw={2}
@@ -312,19 +254,14 @@ const HeroContents = memo(function HeroContents() {
                 pressStyle={{
                   elevation: '$0',
                 }}
-                // TODO this is applying in dark mode...
-                // $theme-light={{
-                //   bg: '$color1',
-                //   hoverStyle: {
-                //     bg: '$color2',
-                //     color: '$color10',
-                //   },
-                // }}
               >
                 Start
+                {/* <YStack $group-item-press={{ scaleX: -1 }}>
+                  <LogoIcon downscale={3} />
+                </YStack> */}
               </Button>
             </Link>
-          </ThemeTint>
+          </Theme>
 
           <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
             <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
@@ -338,7 +275,7 @@ const HeroContents = memo(function HeroContents() {
                 <VisuallyHidden>
                   <Text>Discord</Text>
                 </VisuallyHidden>
-                <DiscordIcon plain width={24} />
+                <DiscordIcon plain width={30} />
               </YStack>
             </Link>
           </TooltipSimple>
@@ -370,23 +307,22 @@ const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
-  ta: 'left',
+  ta: 'center',
   ls: -1,
 
   $gtSm: {
-    ta: 'center',
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 
   $gtMd: {
-    size: '$8',
+    size: '$7',
     ls: -1,
   },
 
   $gtLg: {
-    size: '$9',
-    lh: 50,
+    fontSize: 25,
+    lh: 48,
     ls: -1,
   },
 })
@@ -400,23 +336,23 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color10',
-  bg: '$color3',
+  color: '$color11',
+  bg: '$background02',
 
   hoverStyle: {
     color: '$color',
-    bg: '$color4',
+    bg: '$background04',
   },
 
   variants: {
     active: {
       true: {
-        color: '$color10',
-        bg: '$color5',
+        color: '$color',
+        bg: '$background06',
 
         hoverStyle: {
-          color: '$color12',
-          bg: '$color5',
+          color: '$color',
+          bg: '$background08',
         },
       },
     },
@@ -425,107 +361,87 @@ const Tag = styled(Text, {
 
 const HeroText = styled(Text, {
   position: 'absolute',
+  ta: 'center',
 
   $sm: {
     t: 0,
-    l: -4,
+    l: -2,
   },
 
   $gtSm: {
-    t: 2,
+    t: 1,
   },
 
   $gtMd: {
-    t: 4,
+    t: 3,
   },
 
   $gtLg: {
-    t: 8,
+    t: 7,
   },
 })
 
 const TextWithEffects = ({ text }: { text: string }) => {
-  // for a fade in delay effect
-  // const [show, setShow] = useState(false)
-
-  // useEffect(() => {
-  //   const tm = setTimeout(() => {
-  //     setShow(true)
-  //   }, 500)
-  //   return () => {
-  //     clearTimeout(tm)
-  //   }
-  // }, [])
   return (
     <>
       <span style={{ opacity: 0 }}>{text}</span>
-      <YStack
-        animation="lazy"
-        fullscreen
-        // {...(!show && {
-        //   y: -10,
-        //   o: 0,
-        // })}
-        // {...(show && {
-        //   y: 0,
-        //   o: 1,
-        // })}
-      >
+
+      <YStack fullscreen>
         <HeroText
-          className="clip-text rainbow"
-          l={-4}
-          $sm={{ l: 0 }}
+          className="clip-text rainbow grain"
+          l={-2}
+          o={0.5}
           dangerouslySetInnerHTML={{
             __html: text,
           }}
         />
+
         <ThemeTintAlt offset={2}>
           <HeroText
             className="mask-gradient-down"
-            style={{ mixBlendMode: 'hard-light' }}
             pe="none"
             o={0.5}
-            col="$color8"
-            $sm={{ l: 3 }}
+            x={-1}
+            col="$color9"
             dangerouslySetInnerHTML={{
               __html: text,
             }}
           />
         </ThemeTintAlt>
-        <ThemeTintAlt offset={1}>
+
+        <ThemeTintAlt offset={3}>
           <HeroText
-            l={-3}
+            l={-1}
             className="mask-gradient-up"
-            style={{ mixBlendMode: 'hard-light' }}
+            mixBlendMode="hard-light"
             pe="none"
-            col="$color8"
-            $sm={{ l: 1.5 }}
+            col="$color9"
             dangerouslySetInnerHTML={{
               __html: text,
             }}
           />
         </ThemeTintAlt>
-        <ThemeTintAlt offset={-2}>
+
+        <ThemeTintAlt offset={0}>
           <HeroText
             l={0}
             className="mask-gradient-right"
             pe="none"
-            col="$color8"
+            col="$color9"
             o={0.26}
-            $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}
           />
         </ThemeTintAlt>
+
         <ThemeTintAlt offset={-3}>
           <HeroText
             l={0}
+            // filter="blur(3px)"
             className="mask-gradient-right"
             pe="none"
             col="$color8"
-            o={0.5}
-            $sm={{ l: 3 }}
             dangerouslySetInnerHTML={{
               __html: text,
             }}

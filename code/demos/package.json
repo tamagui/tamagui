@@ -1,22 +1,21 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.121.6",
+  "version": "1.126.14",
   "sideEffects": [
     "*.css"
   ],
   "source": "demos/src/index.tsx",
-  "types": "./types/index.d.ts",
+  "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -30,7 +29,7 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
+      "types": "./src/index.tsx",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
@@ -46,29 +45,30 @@
     }
   },
   "dependencies": {
-    "@tamagui/avatar": "1.121.6",
-    "@tamagui/button": "1.121.6",
-    "@tamagui/config": "1.121.6",
-    "@tamagui/core": "1.121.6",
-    "@tamagui/list-item": "1.121.6",
-    "@tamagui/logo": "1.121.6",
-    "@tamagui/lucide-icons": "1.121.6",
-    "@tamagui/menu": "1.121.6",
-    "@tamagui/popover": "1.121.6",
-    "@tamagui/progress": "1.121.6",
-    "@tamagui/radio-group": "1.121.6",
-    "@tamagui/select": "1.121.6",
-    "@tamagui/sheet": "1.121.6",
-    "@tamagui/slider": "1.121.6",
-    "@tamagui/stacks": "1.121.6",
-    "@tamagui/toast": "1.121.6",
-    "tamagui": "1.121.6"
+    "@tamagui/avatar": "workspace:*",
+    "@tamagui/button": "workspace:*",
+    "@tamagui/config": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/list-item": "workspace:*",
+    "@tamagui/logo": "workspace:*",
+    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/menu": "workspace:*",
+    "@tamagui/popover": "workspace:*",
+    "@tamagui/progress": "workspace:*",
+    "@tamagui/radio-group": "workspace:*",
+    "@tamagui/select": "workspace:*",
+    "@tamagui/sheet": "workspace:*",
+    "@tamagui/slider": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/tamagui-dev-config": "workspace:*",
+    "@tamagui/toast": "workspace:*",
+    "tamagui": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.6",
+    "@tamagui/build": "workspace:*",
     "react": "*"
   },
   "publishConfig": {

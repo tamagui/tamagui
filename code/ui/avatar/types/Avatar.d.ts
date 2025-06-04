@@ -75,6 +75,21 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<impor
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type AvatarProps = GetProps<typeof AvatarFrame>;
+/**
+ * @summary A component that displays an image or a fallback icon.
+ * @see — Docs https://tamagui.dev/ui/avatar
+ *
+ * @example
+ * ```tsx
+ * <Avatar circular size="$10">
+ *  <Avatar.Image
+ *    accessibilityLabel="Cam"
+ *    src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
+ *  />
+ *  <Avatar.Fallback backgroundColor="$blue10" />
+ * </Avatar>
+ * ```
+ */
 declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {

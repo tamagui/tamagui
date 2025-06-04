@@ -4,42 +4,49 @@ import { ToastControl } from 'app/CurrentToast'
 
 export default function TabOneScreen() {
   return (
-    <YStack f={1} ai="center" gap="$8" px="$10" pt="$5" bg="$background">
+    <YStack flex={1} items="center" gap="$8" px="$10" pt="$5" bg="$background">
       <H2>Tamagui + Expo</H2>
 
       <ToastControl />
 
-      <XStack ai="center" jc="center" fw="wrap" gap="$1.5" pos="absolute" b="$8">
-        <Paragraph fos="$5">Add</Paragraph>
+      <XStack
+        items="center"
+        justify="center"
+        flexWrap="wrap"
+        gap="$1.5"
+        position="absolute"
+        b="$8"
+      >
+        <Paragraph fontSize="$5">Add</Paragraph>
 
-        <Paragraph fos="$5" px="$2" py="$1" col="$blue10" bg="$blue5">
+        <Paragraph fontSize="$5" px="$2" py="$1" color="$blue10" bg="$blue5">
           tamagui.config.ts
         </Paragraph>
 
-        <Paragraph fos="$5">to root and follow the</Paragraph>
+        <Paragraph fontSize="$5">to root and follow the</Paragraph>
 
         <XStack
-          ai="center"
+          items="center"
           gap="$1.5"
           px="$2"
           py="$1"
-          br="$3"
-          bg="$purple5"
-          hoverStyle={{ bg: '$purple6' }}
-          pressStyle={{ bg: '$purple4' }}
+          rounded="$3"
+          bg="$green5"
+          hoverStyle={{ bg: '$green6' }}
+          pressStyle={{ bg: '$green4' }}
         >
           <Anchor
             href="https://tamagui.dev/docs/core/configuration"
             textDecorationLine="none"
-            col="$purple10"
-            fos="$5"
+            color="$green10"
+            fontSize="$5"
           >
             Configuration guide
           </Anchor>
-          <ExternalLink size="$1" col="$purple10" />
+          <ExternalLink size="$1" color="$green10" />
         </XStack>
 
-        <Paragraph fos="$5" ta="center">
+        <Paragraph fontSize="$5" text="center">
           to configure your themes and tokens.
         </Paragraph>
       </XStack>

@@ -35,6 +35,7 @@ type DialogContextValue = {
     modal: NonNull<DialogProps['modal']>;
     allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
     scopeKey: string;
+    adaptName: string;
 };
 interface DialogTriggerProps extends StackProps {
 }
@@ -176,16 +177,13 @@ export interface DialogCloseExtraProps {
 }
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps;
 declare const DialogClose: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-declare const DialogWarningProvider: {
-    (props: {
-        contentName: string;
-        titleName: string;
-        docsSlug: string;
-    } & {
-        children: React.ReactNode;
-    }): import("react/jsx-runtime").JSX.Element;
-    displayName: string;
-};
+declare const DialogWarningProvider: (props: {
+    contentName: string;
+    titleName: string;
+    docsSlug: string;
+} & {
+    children: React.ReactNode;
+}) => JSX.Element;
 export type DialogHandle = {
     open: (val: boolean) => void;
 };
@@ -275,13 +273,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     };
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            ({ scope, 
-            /**
-             * @see https://github.com/theKashey/react-remove-scroll#usage
-             */
-            ... /**
-             * @see https://github.com/theKashey/react-remove-scroll#usage
-             */rest }: {
+            ({ scope, ...rest }: {
                 scope?: string;
             }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;

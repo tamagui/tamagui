@@ -1,9 +1,28 @@
-import { H1, YStack } from 'tamagui'
+import { DialogDemo } from '@tamagui/demos'
+import { useLayoutEffect, useState } from 'react'
+import { Button, Text, View, YStack } from 'tamagui'
 
-export default () => {
+export default function Sandbox() {
+  const [x, setX] = useState(Date.now())
+  const [time, setTime] = useState(0)
+
+  useLayoutEffect(() => {
+    if (x) {
+      setTime(Date.now() - x)
+    }
+  }, [x])
+
   return (
-    <YStack f={1} jc="center" ai="center" gap="$8" p="$4" bg="$background">
-      <H1 debug="verbose">hello</H1>
-    </YStack>
+    <>
+      <View
+        width={200}
+        height={200}
+        bg="red"
+        left="20%"
+        onLayout={(e) => {
+          console.log('.', e.nativeEvent.layout)
+        }}
+      />
+    </>
   )
 }

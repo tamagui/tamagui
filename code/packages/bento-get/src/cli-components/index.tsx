@@ -20,6 +20,7 @@ export const ResultsContainer = () => {
           />
         ))}
       </Box>
+
       <Footer />
     </Box>
   )

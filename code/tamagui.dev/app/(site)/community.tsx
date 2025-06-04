@@ -1,7 +1,6 @@
 // import { getAllFrontmatter } from '@lib/mdx'
-import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { useMemo } from 'react'
+import type { Href } from 'one'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -16,8 +15,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-
-import type { Href } from 'one'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'
@@ -27,10 +24,9 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
-export default function Community({ frontmatters }) {
+export default function Community() {
   return (
-    <CommunityLayout>
-      <ThemeNameEffect />
+    <ThemeNameEffect>
       <HeadInfo title="Community" />
 
       <Spacer size="$4" />
@@ -182,7 +178,7 @@ export default function Community({ frontmatters }) {
               />
 
               <StarterRepoCard
-                url="https://github.com/tamagui/tamagui/tree/master/apps/site"
+                url="https://github.com/tamagui/tamagui/tree/main/apps/site"
                 name="tamagui.dev"
                 author="nate"
               />
@@ -225,15 +221,6 @@ export default function Community({ frontmatters }) {
             imageWidth={250}
             imageHeight={250}
           />
-
-          <GoldSponsor
-            name="Medbill AI"
-            bg="#888"
-            link="https://www.medbill.ai"
-            image="/sponsors/medbill-ai.png"
-            imageWidth={800 * 0.3}
-            imageHeight={173 * 0.3}
-          />
         </XStack>
 
         <FlatBubbleCard bw={0}>
@@ -243,6 +230,14 @@ export default function Community({ frontmatters }) {
         </FlatBubbleCard>
 
         <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+          <GoldSponsor
+            name="Medbill AI"
+            bg="#888"
+            link="https://www.medbill.ai"
+            image="/sponsors/medbill-ai.png"
+            imageWidth={150}
+            imageHeight={150}
+          />
           <GoldSponsor
             name="Appfolio"
             link="https://www.appfolio.com/"
@@ -332,19 +327,16 @@ export default function Community({ frontmatters }) {
         </FlatBubbleCard>
 
         <XStack space flexWrap="wrap">
-          <IndividualSponsor
-            name="@barelyreaper"
-            link="https://twitter.com/barelyreaper"
-          />
-          <IndividualSponsor name="@pontusab" link="https://twitter.com/pontusab" />
-          <IndividualSponsor name="@AntelaBrais" link="https://twitter.com/AntelaBrais" />
-          <IndividualSponsor name="Hirbod" link="https://twitter.com/nightstomp" />
-          <IndividualSponsor name="Dimension" link="https://twitter.com/joindimension" />
+          <IndividualSponsor name="@barelyreaper" link="https://x.com/barelyreaper" />
+          <IndividualSponsor name="@pontusab" link="https://x.com/pontusab" />
+          <IndividualSponsor name="@AntelaBrais" link="https://x.com/AntelaBrais" />
+          <IndividualSponsor name="Hirbod" link="https://x.com/nightstomp" />
+          <IndividualSponsor name="Dimension" link="https://x.com/joindimension" />
         </XStack>
       </ContainerLarge>
 
       <Spacer size="$10" />
-    </CommunityLayout>
+    </ThemeNameEffect>
   )
 }
 
@@ -443,11 +435,6 @@ function IndividualSponsor(props: { name: string; link: string }) {
       </YStack>
     </FlatBubbleCard>
   )
-}
-
-function CommunityLayout({ children }: { children: any }) {
-  const { tint } = useTint()
-  return <YStack theme={tint as any}>{useMemo(() => children, [children])}</YStack>
 }
 
 // export function getStaticProps() {

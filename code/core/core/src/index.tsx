@@ -1,3 +1,4 @@
+import { createMedia } from '@tamagui/react-native-media-driver'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
   StackNonStyleProps,
@@ -15,6 +16,7 @@ import {
   Text as WebText,
   View as WebView,
   composeEventHandlers,
+  createTamagui as createTamaguiWeb,
   setupHooks,
 } from '@tamagui/web'
 import React from 'react'
@@ -25,6 +27,16 @@ import { getRect } from './helpers/getRect'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
+import { addNativeValidStyles } from './addNativeValidStyles'
+
+// helpful for usage outside of tamagui
+export {
+  getElementLayoutEvent,
+  type LayoutEvent,
+} from './hooks/useElementLayout'
+
+// add newer style props based on react native version
+addNativeValidStyles()
 
 // adds extra types to View/Stack/Text:
 
@@ -59,6 +71,16 @@ export * from '@tamagui/web'
 // fixes issues with TS saying internal type usage is breaking
 // see https://discord.com/channels/909986013848412191/1146150253490348112/1146150253490348112
 export * from './reactNativeTypes'
+
+// automate using the react native media driver
+export const createTamagui: typeof createTamaguiWeb = (conf) => {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if (conf.media) {
+      conf.media = createMedia(conf.media)
+    }
+  }
+  return createTamaguiWeb(conf)
+}
 
 const baseViews = getBaseViews()
 
@@ -209,7 +231,7 @@ setupHooks({
 
   // attempt at properly fixing RN input, but <Pressable><TextInput /> just doesnt work on RN
   ...(process.env.TAMAGUI_TARGET === 'native' && {
-    useChildren(elementType, children, viewProps, events, staticConfig) {
+    useChildren(elementType, children, viewProps) {
       if (process.env.NODE_ENV === 'test') {
         // test mode - just use regular views since optimizations cause weirdness
         return

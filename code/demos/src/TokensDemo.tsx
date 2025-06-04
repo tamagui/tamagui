@@ -36,7 +36,7 @@ export function TokensDemo() {
             <XGroup.Item key={key}>
               <Button
                 size="$3"
-                theme={section === key ? 'active' : null}
+                theme={section === key ? 'accent' : null}
                 fontFamily="$silkscreen"
                 onPress={() => setSection(key)}
               >

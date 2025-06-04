@@ -50,6 +50,10 @@ type ImageType = FC<ImageProps> & {
 
 let hasWarned = false
 
+/**
+ * @summary An image is a component that displays an image.
+ * @see — Docs https://tamagui.dev/ui/image
+ */
 export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   const [props, style] = usePropsAndStyle(inProps)
   const { src, source, objectFit, ...rest } = props

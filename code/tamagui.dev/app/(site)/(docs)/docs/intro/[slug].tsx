@@ -1,14 +1,14 @@
 import { ThemeTint } from '@tamagui/logo'
-import { useLoader } from 'one'
 import { getMDXComponent } from 'mdx-bundler/client'
+import { useLoader } from 'one'
 import { useMemo } from 'react'
+import { HeadInfo } from '~/components/HeadInfo'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
+import { TamaguiExamples } from '~/components/TamaguiExamples'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { components } from '~/features/mdx/MDXComponents'
-import { HomeH1 } from '~/features/site/home/HomeHeaders'
-import { HeadInfo } from '~/components/HeadInfo'
 import { getOgUrl } from '~/features/site/getOgUrl'
-import { TamaguiExamples } from '~/components/TamaguiExamples'
+import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('@tamagui/mdx-2')

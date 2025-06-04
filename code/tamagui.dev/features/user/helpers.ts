@@ -1,16 +1,23 @@
-import type { Database } from '~/features/supabase/types'
-import { getSingle } from '~/helpers/getSingle'
-import { supabaseAdmin } from '../auth/supabaseAdmin'
 import type { SupabaseClient, User } from '@supabase/supabase-js'
 import {
-  whitelistGithubUsernames,
   whitelistBentoUsernames,
+  whitelistGithubUsernames,
 } from '~/features/github/helpers'
-import { tiersPriority } from '../stripe/tiers'
+import type { Database } from '~/features/supabase/types'
 import { getArray } from '~/helpers/getArray'
+import { getSingle } from '~/helpers/getSingle'
+import { ProductName, ProductSlug, SubscriptionStatus } from '~/shared/types/subscription'
+import { supabaseAdmin } from '../auth/supabaseAdmin'
+import { hasBentoAccess } from '../bento/hasBentoAccess'
+import { tiersPriority } from '../stripe/tiers'
+import { ThemeSuiteSchema } from '../studio/theme/getTheme'
+import type { ThemeSuiteItemData } from '../studio/theme/types'
 
-export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase.from('users').select('*').single()
+export const getUserDetails = async (
+  supabase: SupabaseClient<Database>,
+  userId: string
+) => {
+  const result = await supabase.from('users').select('*').eq('id', userId).single()
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -39,10 +46,62 @@ export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
   return result.data
 }
 
-export const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase
+export const getActiveSubscriptions = async (
+  userId?: string,
+  subscriptionId?: string
+) => {
+  const subscriptions = await getSubscriptions(userId)
+  return subscriptions.find((s) => s.id && s.id === subscriptionId)
+}
+
+export const getAllActiveSubscriptions = async (userId: string) => {
+  const result = await supabaseAdmin
     .from('subscriptions')
-    .select('*, subscription_items(*, prices(*, products(*)), app_installations(*))')
+    .select(`
+      *,
+      subscription_items (
+        *,
+        price:prices (
+          *,
+          product:products (*)
+        )
+      )
+    `)
+    .eq('user_id', userId)
+    .in('status', ['active', 'trialing'])
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
+  return result.data
+}
+
+export const getSubscriptions = async (uuid?: string) => {
+  let userId = uuid
+
+  if (!userId) {
+    return []
+  }
+
+  //NOTE: check user is a team member
+  const { data: teamMember } = await supabaseAdmin
+    .from('team_members')
+    .select(`team_subscriptions (owner_id)`)
+    .eq('member_id', userId)
+    .eq('status', 'active')
+    .single()
+
+  // NOTE: if the user is a team member, we need to get the owner's id ===> to get the subscription
+  const ownerId = teamMember?.team_subscriptions?.owner_id
+  if (ownerId) userId = ownerId
+
+  const select = '*, subscription_items(*, prices(*, products(*)), app_installations(*))'
+
+  const result = await supabaseAdmin
+    .from('subscriptions')
+    .select(select)
+    .eq('user_id', userId)
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -79,22 +138,6 @@ export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
   })
 }
 
-export const getProductOwnerships = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase
-    .from('product_ownership')
-    .select('*, prices(*, products(*))')
-  if (result.error) {
-    throw new Error(result.error.message)
-  }
-  return result.data.map(({ prices, ...sub }) => {
-    const price = getSingle(prices)
-    return {
-      ...sub,
-      price: { ...price, product: getSingle(price?.products) },
-    }
-  })
-}
-
 export function getPersonalTeam(
   teams: Awaited<ReturnType<typeof getUserTeams>>,
   userId: string
@@ -116,6 +159,11 @@ export function getMainTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
   return sortedTeams?.[0]
 }
 
+/**
+ * @deprecated
+ * TODO: we only have to check if the user has a subscription to the Pro plan.
+ * We can remove the check for owned products and the subscription_items.
+ */
 function checkAccessToProduct(
   productSlug: string,
   subscriptions: Awaited<ReturnType<typeof getSubscriptions>>,
@@ -123,10 +171,14 @@ function checkAccessToProduct(
 ) {
   const hasActiveSubscription = subscriptions.some(
     (subscription) =>
-      (subscription.status === 'trialing' || subscription.status === 'active') &&
-      subscription.subscription_items.some(
+      (subscription.status === SubscriptionStatus.Trialing ||
+        subscription.status === SubscriptionStatus.Active) &&
+      (subscription.subscription_items.some(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
-      )
+      ) ||
+        subscription.subscription_items.some((item) =>
+          item.price.product?.name?.includes(ProductName.TamaguiPro)
+        ))
   )
   if (hasActiveSubscription) {
     return {
@@ -149,18 +201,33 @@ function checkAccessToProduct(
   }
 }
 
+/**
+ * @deprecated
+ * TODO: we only have to check if the user has a subscription to the Pro plan.
+ * We can remove the check for owned products and the subscription_items.
+ * However, for the backwards compatibility, we keep the function.
+ */
 export async function getUserAccessInfo(
   supabase: SupabaseClient<Database>,
   user: User | null
 ) {
-  const [subscriptions, ownedProducts] = await Promise.all([
-    getSubscriptions(supabase),
+  if (!user) {
+    return {
+      hasBentoAccess: false,
+      hasTakeoutAccess: false,
+      hasStudioAccess: false,
+      teamsWithAccess: [],
+    }
+  }
+
+  const [subscriptions, ownedProducts, bentoAccess] = await Promise.all([
+    getSubscriptions(user.id),
     getOwnedProducts(supabase),
+    hasBentoAccess(user.id),
   ])
 
-  const bentoAccessInfo = checkAccessToProduct('bento', subscriptions, ownedProducts)
   const takeoutAccessInfo = checkAccessToProduct(
-    'universal-starter',
+    ProductSlug.UniversalStarter,
     subscriptions,
     ownedProducts
   )
@@ -170,24 +237,179 @@ export async function getUserAccessInfo(
     throw teamsResult.error
   }
   const teams = getArray(teamsResult.data)
+
   const teamsWithAccess = teams.filter(
     (team) =>
       team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
   )
+
   const hasTeamAccess = teamsWithAccess.length > 0
 
-  const isBentoWhitelisted = teams.some((team) =>
-    whitelistBentoUsernames.has(team.name || '')
-  )
+  // Determine if the user is directly whitelisted for Bento via their GitHub username or email
+  let isUserDirectlyBentoWhitelisted = false
+  const githubUsername = user.user_metadata?.user_name // GitHub username from user metadata
+  const userEmail = user.email // User's email
+
+  // Check if GitHub username is in the Bento whitelist
+  if (githubUsername && whitelistBentoUsernames.has(githubUsername)) {
+    isUserDirectlyBentoWhitelisted = true
+  } else if (userEmail && whitelistBentoUsernames.has(userEmail)) {
+    // If GitHub username isn't whitelisted or not present, check email
+    isUserDirectlyBentoWhitelisted = true
+  }
 
   const hasStudioAccess =
     takeoutAccessInfo.access || // if the user has purchased takeout, we give them studio access
     hasTeamAccess // if the user is a member of at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give them studio access
 
   return {
-    hasBentoAccess: isBentoWhitelisted || bentoAccessInfo.access,
+    hasBentoAccess: isUserDirectlyBentoWhitelisted || bentoAccess,
     hasTakeoutAccess: takeoutAccessInfo.access,
     hasStudioAccess,
     teamsWithAccess,
   }
+}
+
+/**
+ * Retrieve the theme histories that the user has previously created
+ *
+ * @param supabase - Supabase client instance
+ * @param user - Current user object
+ */
+export async function getUserThemeHistories(
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) {
+  try {
+    if (!user) return []
+    // Get last few theme histories
+    const { data, error } = await supabase
+      .from('theme_histories')
+      .select('theme_data, search_query, created_at, id')
+      .eq('user_id', user.id)
+      .order('updated_at', { ascending: false })
+      .limit(15)
+
+    if (error) {
+      return []
+    }
+
+    return data.map((d) => ({
+      ...d,
+      theme_data: ThemeSuiteSchema.parse(d.theme_data) as ThemeSuiteItemData,
+    }))
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Get the team eligibility for a user
+ * @param supabase - Supabase client instance
+ * @param user - Current user object
+ */
+export async function getTeamEligibility(
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) {
+  if (!user) {
+    return {
+      isProMember: false,
+      subscriptions: undefined,
+    }
+  }
+
+  try {
+    const teamMembership = await getActiveTeamMembership(supabase, user.id)
+    if (!teamMembership.isActive) {
+      return {
+        isProMember: false,
+      }
+    }
+
+    if (!teamMembership.ownerId) {
+      return {
+        isProMember: true,
+      }
+    }
+
+    const subscriptions = await getOwnerSubscriptions(teamMembership.ownerId)
+
+    return {
+      subscriptions,
+      isProMember: true,
+    }
+  } catch (err) {
+    return {
+      subscriptions: undefined,
+      isProMember: false,
+    }
+  }
+}
+
+/**
+ * Get active team membership for a user
+ */
+async function getActiveTeamMembership(
+  supabase: SupabaseClient<Database>,
+  userId: string
+) {
+  const { data: teamMember, error } = await supabase
+    .from('team_members')
+    .select(`
+      team_subscription_id,
+      team_subscriptions (
+        owner_id
+      )
+    `)
+    .eq('member_id', userId)
+    .eq('status', 'active')
+    .single()
+
+  if (error || !teamMember?.team_subscription_id) {
+    return {
+      isActive: false,
+      ownerId: null,
+    }
+  }
+
+  return {
+    isActive: true,
+    ownerId: teamMember.team_subscriptions?.owner_id,
+  }
+}
+
+/**
+ * Get subscriptions for a team owner
+ */
+async function getOwnerSubscriptions(ownerId: string) {
+  const { data: subscriptions, error: subError } = await supabaseAdmin
+    .from('subscriptions')
+    .select(`
+      *,
+      subscription_items (
+        *,
+        prices (
+          *,
+          products (*)
+        ),
+        app_installations (*)
+      )
+    `)
+    .eq('user_id', ownerId)
+
+  if (subError) {
+    throw new Error(subError.message)
+  }
+
+  return subscriptions.map((sub) => ({
+    ...sub,
+    subscription_items: getArray(sub.subscription_items).map(({ prices, ...item }) => ({
+      ...item,
+      price: {
+        ...getSingle(prices),
+        product: getSingle(getSingle(prices)?.products),
+      },
+    })),
+  }))
 }

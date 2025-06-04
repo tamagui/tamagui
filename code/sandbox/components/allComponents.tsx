@@ -9,13 +9,13 @@ export const AllTests = Object.fromEntries(
   })
 )
 
-export const AllBentoByPath = import.meta.glob('../../bento/src/components/**/*.tsx')
+// export const AllBentoByPath = import.meta.glob('../../bento/src/components/**/*.tsx')
 
-export const AllBento = Object.fromEntries(
-  Object.entries(AllBentoByPath).map(([key, value]) => {
-    return [getNameFromPath('test', key), lazy(nameExportToDefault(value) as any)]
-  })
-)
+// export const AllBento = Object.fromEntries(
+//   Object.entries(AllBentoByPath).map(([key, value]) => {
+//     return [getNameFromPath('test', key), lazy(nameExportToDefault(value) as any)]
+//   })
+// )
 
 function nameExportToDefault(maybeNamed: () => Promise<any>) {
   return async () => {

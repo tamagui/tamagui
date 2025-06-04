@@ -67,7 +67,7 @@ function getESBuildConfig(
     bundle: true,
     entryPoints: resolvedEntryPoints,
     format: 'cjs',
-    target: 'node16',
+    target: 'node20',
     jsx: 'transform',
     jsxFactory: 'react',
     allowOverwrite: true,

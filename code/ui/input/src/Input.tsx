@@ -1,11 +1,15 @@
-import React from 'react'
 import { View, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
-
+import React, { type HTMLAttributes, type HTMLInputTypeAttribute } from 'react'
 import { styledBody } from './shared'
 import type { InputProps } from './types'
+
 const StyledInput = styled(View, styledBody[0], styledBody[1])
 
+/**
+ * @summary An input is a text field that allows users to enter text.
+ * @see — Docs https://tamagui.dev/ui/inputs#input
+ */
 export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
   const {
     // some of destructed props are just to avoid passing them to ...rest because they are not in web.
@@ -93,11 +97,52 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
 
   const finalProps = {
     ...rest,
-    inputMode,
     disabled,
     caretColor,
     id,
     enterKeyHint,
+    ...(process.env.TAMAGUI_TARGET === 'web'
+      ? {
+          type: (() => {
+            if (rest?.type) return rest.type
+            if (secureTextEntry) return 'password'
+            switch (keyboardType) {
+              case 'number-pad':
+              case 'numeric':
+                return 'number'
+              case 'email-address':
+                return 'email'
+              case 'phone-pad':
+                return 'tel'
+              case 'url':
+                return 'url'
+              default:
+                return 'text'
+            }
+          })() satisfies HTMLInputTypeAttribute,
+          inputMode: (() => {
+            switch (keyboardType) {
+              case 'number-pad':
+              case 'numeric':
+                return 'numeric'
+              case 'decimal-pad':
+                return 'decimal'
+              case 'email-address':
+                return 'email'
+              case 'phone-pad':
+                return 'tel'
+              case 'url':
+                return 'url'
+              default:
+                return undefined
+            }
+          })() satisfies HTMLAttributes<HTMLInputElement>['inputMode'],
+        }
+      : {
+          keyboardType,
+          secureTextEntry,
+          inputMode,
+        }),
     style: {
       ...(rest.style as any),
       ...(placeholderTextColor && {

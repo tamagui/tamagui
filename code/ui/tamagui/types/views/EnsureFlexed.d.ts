@@ -1,0 +1,2 @@
+export declare const EnsureFlexed: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic>;
+//# sourceMappingURL=EnsureFlexed.d.ts.map

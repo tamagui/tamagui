@@ -1,13 +1,11 @@
 import type { TamaguiOptions } from '@tamagui/static'
+import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
-import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 import { tamaguiExtractPlugin } from './extract'
-import { version } from 'vite'
-import { dirname, join } from 'node:path'
+import { Static, loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
 
-const isVite6 = version.startsWith('6.')
-const resolve = (name: string) => import.meta.resolve?.(name).replace('file://', '')
+const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
 
 export function tamaguiPlugin({
   optimize,
@@ -94,6 +92,7 @@ export function tamaguiPlugin({
             client: {
               define: {
                 'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
+                'process.env.TAMAGUI_ENVIRONMENT': '"client"',
               },
             },
           },

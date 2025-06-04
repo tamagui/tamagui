@@ -1,13 +1,12 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "1.121.6",
+  "version": "1.126.14",
   "sideEffects": false,
   "description": "Utilities for icon packages",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -21,14 +20,27 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "1.121.6"
+    "@tamagui/core": "workspace:*"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
   },
   "peerDependencies": {
     "react": "*",
     "react-native-svg": ">=12"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.6",
+    "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native-svg": "15.8.0"
   }

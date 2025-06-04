@@ -1,4 +1,5 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { useColorScheme } from '@vxrn/color-scheme'
 import { Link, useRouter } from 'one'
 import { memo, useEffect } from 'react'
 import type { HeadingProps } from 'tamagui'
@@ -16,18 +17,16 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { Container, ContainerXL } from '~/components/Containers'
 import { Features } from '~/components/Features'
+import { HeadInfo } from '~/components/HeadInfo'
 import type { DivProps, HoverGlowProps } from '~/components/HoverGlow'
 import { IS_SAFARI, useHoverGlow } from '~/components/HoverGlow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
-import { HeadInfo } from '~/components/HeadInfo'
 import { useUser } from '~/features/user/useUser'
-import { useUserTheme } from '@tamagui/one-theme'
 
 export default function StudioSplashPage() {
   const user = useUser()
   const router = useRouter()
-  const hasStudioAccess = user.data?.accessInfo.hasStudioAccess
+  const hasStudioAccess = user.data?.accessInfo?.hasStudioAccess
 
   useEffect(() => {
     if (hasStudioAccess) {
@@ -38,8 +37,6 @@ export default function StudioSplashPage() {
   return (
     <>
       <HeadInfo title="Tamagui Studio" description="Tamagui Studio" />
-
-      <LoadInter900 />
 
       <ThemeNameEffect />
 
@@ -141,9 +138,9 @@ export default function StudioSplashPage() {
                   soon
                   size="$5"
                   items={[
-                    <span>Animation test environment and visualizer.</span>,
-                    <span>Advanced theme editor.</span>,
-                    <span>Figma and local integrations.</span>,
+                    <span key="">Animation test environment and visualizer.</span>,
+                    <span key="">Advanced theme editor.</span>,
+                    <span key="">Figma and local integrations.</span>,
                   ]}
                 />
               </YStack>
@@ -159,7 +156,7 @@ export default function StudioSplashPage() {
 }
 
 const StudioScreen1 = memo(() => {
-  const [{ resolvedTheme }] = useUserTheme()
+  const [resolvedTheme] = useColorScheme()
   const isLight = resolvedTheme === 'light'
 
   const glow = useHoverGlow({

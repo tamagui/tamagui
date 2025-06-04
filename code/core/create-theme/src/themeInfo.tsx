@@ -26,7 +26,7 @@ export const setThemeInfo = (
   info: Pick<ThemeInfo, 'palette' | 'definition' | 'options'> & {
     name?: string
   }
-) => {
+): void => {
   const next = {
     ...info,
     cache: new Map(),

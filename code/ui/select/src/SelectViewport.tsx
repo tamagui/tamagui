@@ -16,6 +16,7 @@ import type {
   SelectViewportExtraProps,
   SelectViewportProps,
 } from './types'
+import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport
@@ -57,6 +58,11 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     const itemContext = useSelectItemParentContext(VIEWPORT_NAME, __scopeSelect)
     const isAdapted = useAdaptIsActive()
 
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      context.floatingContext?.refs.setFloating
+    )
+
     useIsomorphicLayoutEffect(() => {
       if (context.update) {
         context.update()
@@ -95,11 +101,6 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       className,
       ...floatingProps
     } = itemContext.interactions.getFloatingProps()
-
-    const composedRefs = useComposedRefs(
-      forwardedRef,
-      context.floatingContext?.refs.setFloating
-    )
 
     return (
       <>

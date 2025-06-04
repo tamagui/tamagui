@@ -54,10 +54,10 @@ export const useVictoryTheme = (): VictoryThemeDefinition => {
   // *
   const colors = [
     getVariableValue(theme.color9),
-    getVariableValue(theme.yellow9),
-    getVariableValue(theme.green9),
-    getVariableValue(theme.blue9),
-    getVariableValue(theme.purple9),
+    getVariableValue(theme.color3),
+    getVariableValue(theme.color6),
+    getVariableValue(theme.accent3),
+    getVariableValue(theme.accent6),
     getVariableValue(theme.pink9),
     getVariableValue(theme.red9),
   ]

@@ -1,9 +1,9 @@
-import React from 'react'
 import { Alert } from '@inkjs/ui'
 import { Box } from 'ink'
-import { useInstallComponent } from '../hooks/useInstallComponent.js'
+import React from 'react'
 import { debugLog } from '../commands/index.js'
 import { AppContext } from '../data/AppContext.js'
+import { useInstallComponent } from '../hooks/useInstallComponent.js'
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { error } = useInstallComponent()

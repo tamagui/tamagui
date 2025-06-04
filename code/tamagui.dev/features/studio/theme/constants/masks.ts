@@ -1,6 +1,4 @@
-import type {
-  MaskDefinitions,
-  MaskOptions} from '@tamagui/create-theme';
+import type { MaskDefinitions, MaskOptions } from '@tamagui/create-theme'
 import {
   combineMasks,
   createIdentityMask,

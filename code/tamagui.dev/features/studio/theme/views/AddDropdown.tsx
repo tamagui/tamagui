@@ -1,7 +1,5 @@
 import { Plus } from '@tamagui/lucide-icons'
-import type {
-  ListItemProps,
-  PopoverProps} from 'tamagui';
+import type { ListItemProps, PopoverProps } from 'tamagui'
 import {
   Button,
   H6,
@@ -36,7 +34,7 @@ export const AddDropdown = withStaticProperties(
     return (
       <Popover size="$5" allowFlip placement="top" {...props}>
         <Popover.Trigger asChild>
-          <Button theme="active" size="$3" circular icon={Plus} />
+          <Button theme="surface3" size="$3" circular icon={Plus} />
         </Popover.Trigger>
 
         <Popover.Content

@@ -114,7 +114,7 @@ const TabsAdvancedBackground = () => {
           {activeAt && (
             <TabsRovingIndicator
               borderRadius="$4"
-              theme="active"
+              theme="accent"
               width={activeAt.width}
               height={activeAt.height}
               x={activeAt.x}
@@ -241,7 +241,7 @@ const TabsAdvancedUnderline = () => {
         <AnimatePresence>
           {activeAt && (
             <TabsRovingIndicator
-              theme="active"
+              theme="accent"
               active
               width={activeAt.width}
               height="$0.5"

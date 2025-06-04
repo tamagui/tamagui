@@ -109,6 +109,7 @@ export declare const stylePropsView: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -339,16 +340,6 @@ export declare const stylePropsView: {
     shadowOffset: boolean;
     shadowRadius: boolean;
 };
-export declare const stylePropsFont: {
-    fontFamily: boolean;
-    fontSize: boolean;
-    fontStyle: boolean;
-    fontWeight: boolean;
-    fontVariant: boolean;
-    letterSpacing: boolean;
-    lineHeight: boolean;
-    textTransform: boolean;
-};
 export declare const stylePropsTextOnly: {
     whiteSpace?: boolean | undefined;
     wordWrap?: boolean | undefined;
@@ -408,6 +399,7 @@ export declare const stylePropsText: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -662,6 +654,7 @@ export declare const stylePropsAll: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -900,6 +893,7 @@ export declare const validStyles: {
     transition?: boolean | undefined;
     textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
+    WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -1129,13 +1123,5 @@ export declare const validStyles: {
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
-    focusVisibleStyle?: boolean | undefined;
-    enterStyle: boolean;
-    exitStyle: boolean;
-    hoverStyle: boolean;
-    pressStyle: boolean;
-    focusStyle: boolean;
-    disabledStyle: boolean;
-    focusWithinStyle: boolean;
 };
 //# sourceMappingURL=validStyleProps.d.ts.map

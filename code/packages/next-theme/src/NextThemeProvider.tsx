@@ -10,7 +10,7 @@ import { ThemeSettingContext } from './ThemeSettingContext'
 import type { ValueObject } from './types'
 import type { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 
-export const NextThemeProvider = memo(
+export const NextThemeProvider: React.FunctionComponent<ThemeProviderProps> = memo(
   ({
     forcedTheme,
     disableTransitionOnChange = false,
@@ -27,7 +27,7 @@ export const NextThemeProvider = memo(
       light: 't_light',
     },
     children,
-  }: ThemeProviderProps) => {
+  }) => {
     const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme))
     const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
     const attrs = !value ? themes : Object.values(value)
@@ -118,7 +118,7 @@ export const NextThemeProvider = memo(
 
       const colorScheme =
         // If theme is forced to light or dark, use that
-        forcedTheme && colorSchemes.includes(forcedTheme)
+        forcedTheme && colorSchemes.includes(forcedTheme as 'light' | 'dark')
           ? forcedTheme
           : // If regular theme is light or dark
             theme && colorSchemes.includes(theme)
@@ -167,7 +167,7 @@ export const NextThemeProvider = memo(
         toggle,
         forcedTheme,
         resolvedTheme: theme === 'system' ? resolvedTheme : theme,
-        themes: enableSystem ? [...themes, 'system'] : themes,
+        themes: enableSystem ? [...themes, 'system'] : (themes as string[]),
         systemTheme,
       } as const
       return value

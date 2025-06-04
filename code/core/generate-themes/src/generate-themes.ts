@@ -1,82 +1,46 @@
-import Module from 'module'
-import { join } from 'path'
-
 import type { ThemeBuilder } from '@tamagui/theme-builder'
+import { join } from 'node:path'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
 }
 
-const ogRequire = Module.prototype.require
-
 let didRegisterOnce = false
 
 export async function generateThemes(inputFile: string) {
+  const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
+
   if (!didRegisterOnce) {
+    didRegisterOnce = true
     // the unregsiter does basically nothing and keeps a process running
     require('esbuild-register/dist/node').register({
       hookIgnoreNodeModules: false,
     })
+  } else {
+    purgeCache(inputFilePath)
   }
 
-  const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
-  purgeCache(inputFilePath)
-
-  let promise: Promise<null | ThemeBuilder<any>> | null = null as any
-
-  // @ts-ignore
-  Module.prototype.require = function (id) {
-    // @ts-ignore
-    const out = ogRequire.apply(this, arguments)
-
-    if (id === '@tamagui/theme-builder') {
-      if (!promise) {
-        let resolve: Function
-        promise = new Promise((res) => {
-          resolve = res
-        })
-        return createThemeIntercept(out, {
-          onComplete: (result) => {
-            resolve?.(result.themeBuilder)
-          },
-        })
-      }
-    }
-    return out
-  }
+  let og = process.env.TAMAGUI_KEEP_THEMES
+  process.env.TAMAGUI_KEEP_THEMES = '1'
+  process.env.TAMAGUI_RUN_THEMEBUILDER = '1'
 
   try {
     const requiredThemes = require(inputFilePath)
-    const themes = requiredThemes['default'] || requiredThemes['themes']
+
+    const themes =
+      requiredThemes['default'] ||
+      requiredThemes['themes'] ||
+      requiredThemes[Object.keys(requiredThemes)[0]]
+
     const generatedThemes = generatedThemesToTypescript(themes)
-
-    let tm: any
-    if (promise) {
-      let finished = false
-      promise.then(() => {
-        finished = true
-      })
-      // handle never finishing promise with nice error
-      tm = setTimeout(() => {
-        if (!finished) {
-          console.warn(
-            `Warning: ThemeBuilder didn't finish after a couple seconds, did you forget to call .build()?`
-          )
-        }
-      }, 2000)
-    }
-
-    const themeBuilder = promise ? await promise : null
-    clearTimeout(tm)
 
     return {
       generated: generatedThemes,
-      state: themeBuilder?.state,
     }
   } catch (err) {
-    console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
+    console.warn(` ⚠️ Error running theme builder:\n`, err?.['stack'] || err)
   } finally {
-    Module.prototype.require = ogRequire
+    process.env.TAMAGUI_KEEP_THEMES = og
   }
 }
 
@@ -114,6 +78,10 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
     }
   }
 
+  if (!themes) {
+    throw new Error(`Didn't find any themes exported or returned`)
+  }
+
   const baseKeys = Object.entries(themes.light || themes[Object.keys(themes)[0]]) as [
     string,
     string,
@@ -134,14 +102,14 @@ ${baseKeys
 function t(a: [number, number][]) {
   let res: Record<string,string> = {}
   for (const [ki, vi] of a) {
-    res[ks[ki] as string] = vs[vi] as string
+    res[ks[ki] as string] = colors[vi] as string
   }
   return res as Theme
 }
 `
 
   // add all token variables
-  out += `const vs = [\n`
+  out += `export const colors = [\n`
   let index = 0
   const valueToIndex = {}
   dedupedTokens.forEach((name, value) => {
@@ -159,6 +127,10 @@ function t(a: [number, number][]) {
 
   // add all themes
   let nameI = 0
+
+  let themeTypes = `type ThemeNames =`
+  let exported = `export const themes: Record<ThemeNames, Theme> = {`
+
   dedupedThemes.forEach((theme) => {
     nameI++
     const key = JSON.stringify(theme)
@@ -166,9 +138,16 @@ function t(a: [number, number][]) {
     const name = `n${nameI}`
     const baseTheme = `const ${name} = ${objectToJsString(theme, keys, valueToIndex)}`
     out += `\n${baseTheme}`
-    const duplicateThemes = names.map((n) => `export const ${n} = ${name}`)
-    out += `\n\n` + duplicateThemes.join('\n')
+    names.forEach((n) => {
+      exported += `\n  ${n}: ${name},`
+
+      if (n.toLowerCase() === n) {
+        themeTypes += `\n | '${n}'`
+      }
+    })
   })
+
+  out += `\n\n${themeTypes}\n\n${exported}\n}\n`
 
   return out
 }
@@ -187,58 +166,26 @@ function objectToJsString(
   return `t([${arrItems.join(',')}])`
 }
 
-function createThemeIntercept(
-  createThemeExport: any,
-  themeBuilderInterceptOpts: ThemeBuilderInterceptOpts
-) {
-  return new Proxy(createThemeExport, {
-    get(target, key) {
-      const out = Reflect.get(target, key)
-      if (key === 'createThemeBuilder') {
-        return new Proxy(out, {
-          apply(target, thisArg, argArray) {
-            const builder = Reflect.apply(target, thisArg, argArray) as any
-            return themeBuilderIntercept(builder, themeBuilderInterceptOpts)
-          },
-        })
-      }
-      return out
-    },
-  })
-}
-
-function themeBuilderIntercept(
-  themeBuilder: any,
-  themeBuilderInterceptOpts: ThemeBuilderInterceptOpts
-) {
-  return new Proxy(themeBuilder, {
-    get(target, key) {
-      const out = Reflect.get(target, key)
-      if (key === 'build') {
-        // get the state and return!
-        themeBuilderInterceptOpts.onComplete({
-          themeBuilder,
-        })
-      }
-      return out
-    },
-  })
-}
-
 /**
  * Removes a module from the cache
  */
 function purgeCache(moduleName) {
   // Traverse the cache looking for the files
   // loaded by the specified module name
-  searchCache(moduleName, function (mod) {
+  searchCache(moduleName, (mod) => {
     delete require.cache[mod.id]
   })
+
+  // @ts-ignore
+  if (!module.constructor || !module.constructor._pathCache) {
+    // bun doesn't have this
+    return
+  }
 
   // Remove cached paths to the module.
   // Thanks to @bentael for pointing this out.
   // @ts-ignore
-  Object.keys(module.constructor._pathCache).forEach(function (cacheKey) {
+  Object.keys(module.constructor._pathCache).forEach((cacheKey) => {
     if (cacheKey.indexOf(moduleName) > 0) {
       // @ts-ignore
       delete module.constructor._pathCache[cacheKey]
@@ -266,7 +213,7 @@ function searchCache(moduleName, callback) {
       // Go over each of the module's children and
       // traverse them
       // @ts-ignore
-      mod.children.forEach(function (child) {
+      mod.children.forEach((child) => {
         traverse(child, depth + 1)
       })
 

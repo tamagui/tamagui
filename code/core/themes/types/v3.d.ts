@@ -1,5 +1,4 @@
-import * as generatedThemes from './generated-v3';
-export declare const themes: typeof generatedThemes;
+export { themes } from './generated-v3';
 export { tokens } from './v3-themes';
 export { blue, blueDark } from '@tamagui/colors';
 export { green, greenDark } from '@tamagui/colors';

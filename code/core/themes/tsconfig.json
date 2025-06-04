@@ -4,7 +4,6 @@
     "composite": true
   },
   "exclude": [
-    "generate.ts",
     "types",
     "v2.d.ts",
     "v2.js",
@@ -14,6 +13,8 @@
     "v3.js",
     "v3-themes.js",
     "v3-themes.d.ts",
+    "v4.d.ts",
+    "v4.js",
     "dist",
     "**/__tests__"
   ],

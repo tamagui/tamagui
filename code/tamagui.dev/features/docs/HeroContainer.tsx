@@ -1,6 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Timer, Waves } from '@tamagui/lucide-icons'
-import React from 'react'
 import {
   Configuration,
   Switch,
@@ -164,7 +163,9 @@ const HeroContainerInner = ({
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack gap="$3" px="$8">
-            <Card bg="$color2">{children}</Card>
+            <Theme name="gray">
+              <Card>{children}</Card>
+            </Theme>
             <Theme name="blue">
               <Card>{children}</Card>
             </Theme>

@@ -15,9 +15,9 @@ export const DirectionProvider: React.FC<DirectionProviderProps> = (props) => {
   return <DirectionContext.Provider value={dir}>{children}</DirectionContext.Provider>
 }
 
-export function useDirection(localDir?: Direction) {
+export function useDirection(localDir?: Direction): Direction {
   const globalDir = React.useContext(DirectionContext)
   return localDir || globalDir || 'ltr'
 }
 
-export const Provider = DirectionProvider
+export const Provider: React.FC<DirectionProviderProps> = DirectionProvider

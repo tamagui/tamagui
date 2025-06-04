@@ -1,6 +1,6 @@
 import { isServer, isWeb } from '@tamagui/constants'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -23,7 +23,7 @@ import type {
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
-  { animationDriver, groups }: ComponentContextI,
+  { animationDriver }: ComponentContextI,
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
@@ -125,15 +125,22 @@ export const useComponentState = (
 
   // immediately update disabled state and reset component state
   if (disabled !== state.disabled) {
-    state.disabled = disabled
     // if disabled remove all press/focus/hover states
     if (disabled) {
       Object.assign(state, defaultComponentStateMounted)
     }
+    state.disabled = disabled
     setState({ ...state })
   }
 
-  let setStateShallow = createShallowSetState(setState, disabled, false, props.debug)
+  const groupName = props.group as any as string
+
+  let setStateShallow = createShallowSetState(
+    setState,
+    undefined, // note: allows all state updates even when disabled for the enterStyle animation to work
+    false,
+    props.debug
+  )
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
@@ -190,8 +197,6 @@ export const useComponentState = (
     }
   }
 
-  const groupName = props.group as any as string
-
   if (groupName && !curStateRef.group) {
     const listeners = new Set<GroupStateListener>()
     curStateRef.group = {
@@ -205,24 +210,6 @@ export const useComponentState = (
           listeners.delete(cb)
         }
       },
-    }
-  }
-
-  if (groupName) {
-    // when we set state we also set our group state and emit an event for children listening:
-    const groupContextState = groups.state
-    const og = setStateShallow
-    setStateShallow = (state) => {
-      og(state)
-      curStateRef.group!.emit(groupName, {
-        pseudo: state,
-      })
-      // and mutate the current since its concurrent safe (children throw it in useState on mount)
-      const next = {
-        ...groupContextState[groupName],
-        ...state,
-      }
-      groupContextState[groupName] = next
     }
   }
 

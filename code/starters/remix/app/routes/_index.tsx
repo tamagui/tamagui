@@ -1,5 +1,5 @@
 import type { MetaFunction } from '@remix-run/node'
-import { styled, Text, View } from '@tamagui/web'
+import { styled, Text, type ThemeName, View } from '@tamagui/web'
 import { useState } from 'react'
 
 export const meta: MetaFunction = () => {
@@ -14,28 +14,28 @@ export const meta: MetaFunction = () => {
 
 const Section = styled(View, {
   tag: 'section',
-  padding: '$large',
-  gap: '$large',
-  $smallScreen: {
-    padding: '$medium',
+  p: '$6',
+  gap: '$6',
+  $sm: {
+    p: '$4',
   },
-  $mediumScreen: {
-    padding: '$large',
-    maxWidth: 600,
+  $md: {
+    p: '$6',
+    maxW: 600,
   },
-  $largeScreen: {
-    padding: '$extraLarge',
+  $lg: {
+    p: '$8',
   },
 })
 
 const ButtonOuter = styled(View, {
   tag: 'button',
   themeInverse: true,
-  backgroundColor: '$background',
-  borderRadius: '$medium',
+  bg: '$background',
+  rounded: '$4',
   cursor: 'pointer',
-  padding: '$medium',
-  maxWidth: 'fit-content',
+  p: '$4',
+  maxW: 'fit-content' as any,
   display: 'unset',
   pressStyle: {
     opacity: 0.8,
@@ -52,7 +52,7 @@ const ButtonText = styled(Text, {
 })
 
 export default function Index() {
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState<ThemeName>('light')
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
@@ -61,19 +61,19 @@ export default function Index() {
       theme={theme}
       flexDirection="column"
       gap={16}
-      backgroundColor="$background"
+      bg="$background"
       minHeight="100vh"
     >
       <View
         tag="header"
-        padding="$large"
+        padding="$6"
         borderBottomWidth={1}
         borderBottomColor="$borderColor"
       >
         <Text
           tag="h1"
           fontSize={24}
-          $largeScreen={{
+          $lg={{
             fontSize: 32,
           }}
         >
@@ -84,7 +84,7 @@ export default function Index() {
         <Text
           tag="h2"
           fontSize={24}
-          $largeScreen={{
+          $lg={{
             fontSize: 32,
           }}
         >
@@ -98,7 +98,7 @@ export default function Index() {
         <Text
           tag="h2"
           fontSize={24}
-          $largeScreen={{
+          $lg={{
             fontSize: 32,
           }}
         >
@@ -116,7 +116,7 @@ export default function Index() {
         <Text
           tag="h2"
           fontSize={24}
-          $largeScreen={{
+          $lg={{
             fontSize: 32,
           }}
         >
@@ -134,7 +134,7 @@ export default function Index() {
         <Text
           tag="h2"
           fontSize={24}
-          $largeScreen={{
+          $lg={{
             fontSize: 32,
           }}
         >
@@ -150,7 +150,7 @@ export default function Index() {
       </Section>
       <View
         tag="footer"
-        padding="$large"
+        padding="$6"
         justifyContent="center"
         marginTop="auto"
         paddingTop={100}
@@ -158,7 +158,7 @@ export default function Index() {
         <Text
           tag="p"
           fontSize={16}
-          $largeScreen={{
+          $lg={{
             fontSize: '$3',
           }}
         >

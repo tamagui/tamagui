@@ -7,7 +7,7 @@ on:
       - "code/tamagui.dev/scripts/build-bento.cjs"
       - "code/tamagui.dev/scripts/upload-bento.cjs"
     branches:
-      - master
+      - main
 
 jobs:
   build-and-upload:

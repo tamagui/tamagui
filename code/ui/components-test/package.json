@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/components-test",
-  "version": "1.121.6",
+  "version": "1.126.14",
   "module": "dist/esm",
   "type": "module",
   "private": true,
@@ -16,8 +16,8 @@
     "csstype": "^3.0.10",
     "jsdom": "^25.0.1",
     "react": "*",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.5",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {

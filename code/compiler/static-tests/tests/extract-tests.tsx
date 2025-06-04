@@ -1,7 +1,7 @@
 import {
   createTamagui,
   normalizeStyle,
-  getStylesAtomic,
+  getCSSStylesAtomic,
   StyleObjectRules,
   StyleObjectProperty,
   StyleObjectValue,
@@ -24,7 +24,7 @@ describe('extract-tests', () => {
       borderBottomWidth: 1,
       borderBottomColor: 'blue',
     }
-    const styles = getStylesAtomic(style)
+    const styles = getCSSStylesAtomic(style)
     const style1 = styles.find((x) => x[StyleObjectProperty] === 'backgroundColor')
     const style2 = styles.find((x) => x[StyleObjectProperty] === 'transform')
     const style3 = styles.find((x) => x[StyleObjectProperty] === 'boxShadow')
@@ -43,7 +43,7 @@ describe('extract-tests', () => {
       marginStart: 50,
       marginEnd: 2,
     }
-    const styles = getStylesAtomic(style)
+    const styles = getCSSStylesAtomic(style)
     expect(styles).toMatchSnapshot()
   })
 
@@ -52,7 +52,7 @@ describe('extract-tests', () => {
       padding: 10,
       paddingVertical: 0,
     })
-    const [pT, pR, pB, pL] = getStylesAtomic(style)
+    const [pT, pR, pB, pL] = getCSSStylesAtomic(style)
     expect(pT[StyleObjectValue]).toBe('0px')
     expect(pB[StyleObjectValue]).toBe('0px')
     expect(pL[StyleObjectValue]).toBe('10px')
@@ -61,7 +61,7 @@ describe('extract-tests', () => {
       borderColor: 'yellow',
       borderWidth: 10,
     })
-    const styles2 = getStylesAtomic(style2)
+    const styles2 = getCSSStylesAtomic(style2)
     expect(
       styles2.some((x) => x[StyleObjectProperty] === 'borderRightStyle')
     ).toBeTruthy()

@@ -14,7 +14,11 @@ export function composeEventHandlers<E extends Events>(
     og?.(event)
     if (
       !event ||
-      !(checkDefaultPrevented && 'defaultPrevented' in event) ||
+      !(
+        checkDefaultPrevented &&
+        typeof event === 'object' &&
+        'defaultPrevented' in event
+      ) ||
       // @ts-ignore
       ('defaultPrevented' in event && !event.defaultPrevented)
     ) {

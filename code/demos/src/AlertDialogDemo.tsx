@@ -34,7 +34,7 @@ export function AlertDialogDemo() {
           opacity={1}
           y={0}
         >
-          <YStack space>
+          <YStack gap="$4">
             <AlertDialog.Title>Accept</AlertDialog.Title>
             <AlertDialog.Description>
               By pressing yes, you accept our terms and conditions.
@@ -45,7 +45,7 @@ export function AlertDialogDemo() {
                 <Button>Cancel</Button>
               </AlertDialog.Cancel>
               <AlertDialog.Action asChild>
-                <Button theme="active">Accept</Button>
+                <Button theme="accent">Accept</Button>
               </AlertDialog.Action>
             </XStack>
           </YStack>

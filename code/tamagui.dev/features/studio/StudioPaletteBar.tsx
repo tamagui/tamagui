@@ -15,7 +15,7 @@ export function StudioPaletteBar({
   colors: string[]
 }) {
   return (
-    <YStack userSelect="none">
+    <YStack mx="$2" userSelect="none">
       {showIndices && (
         <XStack ov="hidden">
           {new Array(colors.length).fill(0).map((_, i) => (
@@ -35,11 +35,11 @@ export function StudioPaletteBar({
           ))}
         </XStack>
       )}
-      <XStack ov="hidden" br="$4" bw={1} bc="$color7">
+      <XStack ov="hidden" br="$4" bw={0.5} bc="$color3">
         {colors.map((color, i) => (
           <XStack
             key={color + i}
-            h={32}
+            h={18}
             f={1}
             {...(i > 0 && {
               blw: 0.5,

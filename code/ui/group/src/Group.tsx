@@ -1,10 +1,8 @@
 import type { GetProps, UnionableString, Variable } from '@tamagui/core'
 import {
-  getConfig,
   getTokens,
   getVariableValue,
   isTamaguiElement,
-  mergeProps,
   spacedChildren,
   styled,
   useProps,
@@ -105,6 +103,7 @@ function createGroup(verticalDefault: boolean) {
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
         defaultProp: forceUseItem ? 1 : 0,
       })
+
       const isUsingItems = itemChildrenCount > 0
 
       // 1 off given border to adjust for border radius? This should be user controllable
@@ -137,9 +136,10 @@ function createGroup(verticalDefault: boolean) {
                     vertical,
                     disable: disablePassBorderRadius,
                   })
+
             const props = {
               disabled,
-              ...(isTamaguiElement(child) ? radiusStyles : { style: radiusStyles }),
+              ...radiusStyles,
             }
 
             return cloneElementWithPropOrder(child, props)
@@ -217,17 +217,7 @@ const GroupItem = React.forwardRef(
       return children as any
     }
 
-    if (isTamaguiElement(children)) {
-      return React.cloneElement(children, groupItemProps)
-    }
-
-    return React.cloneElement(children, {
-      style: {
-        // @ts-ignore
-        ...children.props?.['style'],
-        ...groupItemProps,
-      },
-    } as any)
+    return React.cloneElement(children, groupItemProps)
   }
 )
 
@@ -335,6 +325,5 @@ const getBorderRadius = ({
 }
 
 const cloneElementWithPropOrder = (child: any, props: Object) => {
-  const next = mergeProps(child.props, props, getConfig().shorthands)
-  return React.cloneElement({ ...child, props: null }, next)
+  return React.cloneElement({ ...child, props: null }, { ...child.props, ...props })
 }

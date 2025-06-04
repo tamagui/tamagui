@@ -1,7 +1,7 @@
 import {
+  isIos,
   isAndroid,
   isClient,
-  isServer,
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
@@ -14,11 +14,16 @@ import {
   stylePropsTransform,
   tokenCategories,
   validPseudoKeys,
-  validStyles,
+  validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
+import {
+  getDynamicVal,
+  getOppositeScheme,
+  extractValueFromDynamic,
+} from './getDynamicVal'
 
-import { getConfig, getFont } from '../config'
+import { getConfig, getFont, getSetting } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
@@ -50,31 +55,21 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
+import { groupCollapsed, groupEnd } from './consoleLog'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
+import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
 import { getGroupPropParts } from './getGroupPropParts'
-import { getStyleAtomic, getStylesAtomic, styleToCSS } from './getStylesAtomic'
-import {
-  insertStyleRules,
-  insertedTransforms,
-  scanAllSheets,
-  shouldInsertStyleRules,
-  updateRules,
-} from './insertStyleRule'
+import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isActivePlatform } from './isActivePlatform'
 import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
-import {
-  normalizeValueWithProperty,
-  reverseMapClassNameToValue,
-} from './normalizeValueWithProperty'
-import { getPropMappedFontFamily, propMapper } from './propMapper'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
 import { transformsToString } from './transformsToString'
-
-const consoleGroupCollapsed = isWeb ? console.groupCollapsed : console.info
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
@@ -121,12 +116,12 @@ export const PROP_SPLIT = '-'
 //   dynamicThemeAccess,
 // }
 
-function isValidStyleKey(key: string, staticConfig: StaticConfig) {
-  const validStyleProps =
-    staticConfig.validStyles ||
-    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStyles)
-
-  return validStyleProps[key] || staticConfig.accept?.[key]
+function isValidStyleKey(
+  key: string,
+  validStyles: Record<string, boolean>,
+  accept?: Record<string, any>
+) {
+  return key in validStyles ? true : accept && key in accept
 }
 
 export const getSplitStyles: StyleSplitter = (
@@ -173,18 +168,24 @@ export const getSplitStyles: StyleSplitter = (
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
-  // we need to gather these specific to each media query / pseudo
-  // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
-  const transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
   let pseudos: PseudoStyles | null = null
   let space: SpaceTokens | null = props.space
-  let hasMedia: boolean | Record<string, boolean> = false
+  let hasMedia: boolean | Set<string> = false
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
   let className = (props.className as string) || '' // existing classNames
   let mediaStylesSeen = 0
+
+  const validStyles =
+    staticConfig.validStyles ||
+    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
+
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-setup`
+  }
 
   /**
    * Not the biggest fan of creating an object but it is a nice API
@@ -204,13 +205,33 @@ export const getSplitStyles: StyleSplitter = (
     debug,
   }
 
+  // only used by compiler
+  if (process.env.IS_STATIC === 'is_static') {
+    const { fallbackProps } = styleProps
+    if (fallbackProps) {
+      styleState.props = new Proxy(props, {
+        get(_, key, val) {
+          if (!Reflect.has(props, key)) {
+            return Reflect.get(fallbackProps, key)
+          }
+          return Reflect.get(props, key)
+        },
+      })
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`style-state`
+  }
+
   if (
     process.env.NODE_ENV === 'development' &&
     debug &&
     debug !== 'profile' &&
     isClient
   ) {
-    consoleGroupCollapsed('getSplitStyles (collapsed)')
+    groupCollapsed('getSplitStyles (collapsed)')
     log({
       props,
       staticConfig,
@@ -221,7 +242,7 @@ export const getSplitStyles: StyleSplitter = (
       styleState,
       theme: { ...theme },
     })
-    console.groupEnd()
+    groupEnd()
   }
 
   const { asChild } = props
@@ -229,18 +250,22 @@ export const getSplitStyles: StyleSplitter = (
   const { noSkip, disableExpandShorthands, noExpand } = styleProps
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-
   for (const keyOg in props) {
     let keyInit = keyOg
     let valInit = props[keyInit]
 
-    if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
+    if (keyInit === 'children') {
+      viewProps[keyInit] = valInit
       continue
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'profile') {
       // @ts-expect-error
-      time`prop-${keyInit}`
+      time`before-prop-${keyInit}`
+    }
+
+    if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
+      continue
     }
 
     // for custom accept sub-styles
@@ -259,7 +284,7 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // otherwise things just keep nesting - careful don't leave these around
       // they cause big performance dips in Chrome, only use them when debug prop set
-      console.groupEnd()
+      groupEnd()
     }
 
     // normalize shorthands up front
@@ -302,7 +327,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const valInitType = typeof valInit
-    const isValidStyleKeyInit = isValidStyleKey(keyInit, staticConfig)
+    let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -312,32 +337,6 @@ export const getSplitStyles: StyleSplitter = (
         viewProps['dataSet'] ||= {}
         viewProps['dataSet'][keyInit] = valInit
         continue
-      }
-
-      if (isValidStyleKeyInit && valInitType === 'string') {
-        if (valInit[0] === '_') {
-          const isValidClassName = keyInit in validStyles
-          const isMediaOrPseudo =
-            !isValidClassName &&
-            // media are flattened for some reason to color-hover keys,
-            // we should probably just leave them in place to avoid extra complexity
-            keyInit.includes(PROP_SPLIT) &&
-            validStyles[keyInit.split(PROP_SPLIT)[0]]
-
-          if (isValidClassName || isMediaOrPseudo) {
-            if (shouldDoClasses) {
-              mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
-              if (styleState.style) {
-                delete styleState.style[keyInit]
-              }
-            } else {
-              styleState.style ||= {}
-              styleState.style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
-              delete classNames[keyInit]
-            }
-            continue
-          }
-        }
       }
     }
 
@@ -487,11 +486,9 @@ export const getSplitStyles: StyleSplitter = (
      * for if there's a pseudo/media returned from it.
      */
 
-    const isShorthand = keyInit in shorthands
-
     let isVariant = !isValidStyleKeyInit && variants && keyInit in variants
 
-    const isStyleLikeKey = isShorthand || isValidStyleKeyInit || isVariant
+    const isStyleLikeKey = isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
     let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
@@ -511,8 +508,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    const isStyleProp =
-      isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand) || isShorthand
+    const isStyleProp = isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand)
 
     if (isStyleProp && (asChild === 'except-style' || asChild === 'except-style-web')) {
       continue
@@ -527,22 +523,18 @@ export const getSplitStyles: StyleSplitter = (
     const parentVariant = parentVariants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
-        (isShorthand ||
-          isValidStyleKeyInit ||
-          isMediaOrPseudo ||
-          parentVariant ||
-          keyInit in skipProps)
+        (isValidStyleKeyInit || isMediaOrPseudo || parentVariant || keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupEnd() // react native was not nesting right
-      console.groupEnd() // react native was not nesting right
-      consoleGroupCollapsed(
-        `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
-          shouldPassThrough ? '(pass)' : ''
-        }`
+      groupEnd() // react native was not nesting right
+      groupEnd() // react native was not nesting right
+      groupCollapsed(
+        `  🔑 ${keyOg}${
+          keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''
+        } ${shouldPassThrough ? '(pass)' : ''}`
       )
       log({ isVariant, valInit, shouldPassProp })
       if (isClient) {
@@ -582,9 +574,6 @@ export const getSplitStyles: StyleSplitter = (
       // which now has it's own unstyled + the child unstyled...
       // so *don't* skip applying the styles if its different from the parent one
       if (!isVariant) {
-        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.groupEnd()
-        }
         continue
       }
     }
@@ -592,9 +581,6 @@ export const getSplitStyles: StyleSplitter = (
     // after shouldPassThrough
     if (!noSkip) {
       if (keyInit in skipProps) {
-        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.groupEnd()
-        }
         continue
       }
     }
@@ -610,61 +596,43 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
-    const expanded = avoidPropMap ? null : propMapper(keyInit, valInit, styleState)
+    const disablePropMap = isMediaOrPseudo || !isStyleLikeKey
 
-    if (!avoidPropMap) {
-      if (!expanded) continue
-      const next = getPropMappedFontFamily(expanded)
-      if (next) {
-        styleState.fontFamily = next
+    propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
+      const isStyledContextProp =
+        styleProps.styledContextProps && key in styleProps.styledContextProps
+
+      if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
+        viewProps[key] = val
+        return
       }
-    }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      consoleGroupCollapsed('  💠 expanded', keyInit, valInit)
-      try {
-        if (!isServer && isDevTools) {
-          log({
-            expanded,
-            styleProps,
-            componentState,
-            isVariant,
-            variant: variants?.[keyInit],
-            shouldPassProp,
-            isHOCShouldPassThrough,
-            usedKeys: { ...usedKeys },
-          })
-          globalThis.tamaguiAvoidTracking = true
-          log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
-            ...styleState.style,
-          })
-          globalThis.tamaguiAvoidTracking = false
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        groupCollapsed('  💠 expanded', keyInit, '=>', key)
+        log(val)
+        groupEnd()
+      }
+
+      if (val == null) return
+      if (key in usedKeys) return
+
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        if (key === 'pointerEvents') {
+          viewProps[key] = val
+          return
         }
-      } catch {
-        // rn can run into PayloadTooLargeError: request entity too large
-      }
-      console.groupEnd()
-    }
-
-    let key = keyInit
-    let val = valInit
-    const max = expanded ? expanded.length : 1
-
-    // before we just made an array if avoidPropMap, but to avoid making extra arrays in a perf sensitive area
-    // now we do this part more imperatively. saves making a nested array for each prop key on every component
-    for (let i = 0; i < max; i++) {
-      if (expanded) {
-        const [k, v] = expanded[i]
-        key = k
-        val = v
       }
 
-      if (val == null) continue
-      if (key in usedKeys) continue
+      if (
+        (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
+        (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
+      ) {
+        mergeStyle(styleState, key, val)
+        return
+      }
 
       isPseudo = key in validPseudoKeys
-      isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
+      isMedia = !isPseudo && isMediaKey(key)
       isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
 
@@ -684,19 +652,35 @@ export const getSplitStyles: StyleSplitter = (
       if (shouldPassThrough) {
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          consoleGroupCollapsed(` - passing down prop ${key}`)
+          groupCollapsed(` - passing down prop ${key}`)
           log({ val, after: { ...viewProps[key] } })
-          console.groupEnd()
+          groupEnd()
         }
-        continue
+        return
       }
 
       if (isPseudo) {
-        if (!val) continue
+        if (!val) return
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
         // (note: can't because we need to set defaults on enter/exit or else enforce that they should)
-        const pseudoStyleObject = getSubStyle(styleState, key, val, styleProps.noClass)
+        const pseudoStyleObject = getSubStyle(
+          styleState,
+          key,
+          val,
+          styleProps.noClass && !(process.env.IS_STATIC === 'is_static')
+        )
+
+        if (!shouldDoClasses || process.env.IS_STATIC === 'is_static') {
+          pseudos ||= {}
+          pseudos[key] ||= {}
+
+          // if compiler we can just set this and continue on our way
+          if (process.env.IS_STATIC === 'is_static') {
+            Object.assign(pseudos[key], pseudoStyleObject)
+            return
+          }
+        }
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = key === 'enterStyle'
@@ -704,16 +688,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // don't continue here on isEnter && !state.unmounted because we need to merge defaults
         if (!descriptor) {
-          continue
-        }
-
-        if (!shouldDoClasses || process.env.IS_STATIC === 'is_static') {
-          pseudos ||= {}
-          pseudos[key] ||= {}
-          if (process.env.IS_STATIC === 'is_static') {
-            Object.assign(pseudos[key], pseudoStyleObject)
-            continue
-          }
+          return
         }
 
         // on server only generate classes for enterStyle
@@ -721,26 +696,14 @@ export const getSplitStyles: StyleSplitter = (
           const pseudoStyles = getStyleAtomic(pseudoStyleObject, descriptor)
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-            // prettier-ignore
-            consoleGroupCollapsed('pseudo (classes)', key)
-
-            log({ pseudoStyleObject, pseudoStyles })
-            console.groupEnd()
+            console.info('pseudo:', key, pseudoStyleObject, pseudoStyles)
           }
 
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle[StyleObjectProperty]}${PROP_SPLIT}${descriptor.name}`
             if (fullKey in usedKeys) continue
-
             addStyleToInsertRules(rulesToInsert, psuedoStyle)
-            mergeClassName(
-              transforms,
-              classNames,
-              fullKey,
-              psuedoStyle[StyleObjectIdentifier],
-              isMediaOrPseudo,
-              true
-            )
+            classNames[fullKey] = psuedoStyle[StyleObjectIdentifier]
           }
         }
 
@@ -761,9 +724,9 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-            consoleGroupCollapsed('pseudo', key, { isDisabled })
+            groupCollapsed('pseudo', key, { isDisabled })
             log({ pseudoStyleObject, isDisabled, descriptor, componentState })
-            console.groupEnd()
+            groupEnd()
           }
 
           const importance = descriptor.priority
@@ -779,9 +742,11 @@ export const getSplitStyles: StyleSplitter = (
               const shouldMerge = importance >= curImportance
 
               if (shouldMerge) {
-                pseudos ||= {}
-                pseudos[key] ||= {}
-                pseudos[key][pkey] = val
+                if (process.env.IS_STATIC === 'is_static') {
+                  pseudos ||= {}
+                  pseudos[key] ||= {}
+                  pseudos[key][pkey] = val
+                }
                 mergeStyle(styleState, pkey, val)
               }
 
@@ -806,12 +771,12 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
 
-        continue
+        return
       }
 
       // media
       if (isMedia) {
-        if (!val) continue
+        if (!val) return
 
         // for some reason 'space' in val upsetting next ssr during prod build
         // technically i guess this also will not apply if 0 space which makes sense?
@@ -821,16 +786,16 @@ export const getSplitStyles: StyleSplitter = (
         hasMedia ||= true
 
         if (hasSpace || !shouldDoClasses || styleProps.willBeAnimated) {
-          if (typeof hasMedia !== 'object') {
-            hasMedia = {}
+          if (!hasMedia || typeof hasMedia === 'boolean') {
+            hasMedia = new Set()
           }
-          hasMedia[mediaKeyShort] = true
+          hasMedia.add(mediaKeyShort)
         }
 
         // can bail early
         if (isMedia === 'platform') {
           if (!isActivePlatform(key)) {
-            continue
+            return
           }
         }
 
@@ -871,13 +836,13 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          const mediaStyles = getStylesAtomic(mediaStyle)
+          const mediaStyles = getCSSStylesAtomic(mediaStyle)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 
           for (const style of mediaStyles) {
             // handle nested media:
-            // for now we're doing weird stuff, getStylesAtomic will put the
+            // for now we're doing weird stuff, getCSSStylesAtomic will put the
             // $platform-web into property so we can check it here
             const property = style[StyleObjectProperty]
             const isSubStyle = property[0] === '$'
@@ -901,20 +866,13 @@ export const getSplitStyles: StyleSplitter = (
             // property is just $platform-web, it should br $platform-web-bg, so we add extra info from style
             // but that info includes the value too
             const subKey = isSubStyle ? style[2] : ''
-            const fullKey = `${style[StyleObjectProperty]}${subKey}${PROP_SPLIT}${mediaKeyShort}${
-              style[StyleObjectPseudo] || ''
-            }`
+            const fullKey = `${
+              style[StyleObjectProperty]
+            }${subKey}${PROP_SPLIT}${mediaKeyShort}${style[StyleObjectPseudo] || ''}`
 
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
-            mergeClassName(
-              transforms,
-              classNames,
-              fullKey,
-              out[StyleObjectIdentifier],
-              true,
-              true
-            )
+            classNames[fullKey] = out[StyleObjectIdentifier]
           }
         } else {
           const isThemeMedia = isMedia === 'theme'
@@ -926,7 +884,7 @@ export const getSplitStyles: StyleSplitter = (
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 log(`  📺 ❌ DISABLED ${mediaKeyShort}`)
               }
-              continue
+              return
             }
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               log(`  📺 ✅ ENABLED ${mediaKeyShort}`)
@@ -941,8 +899,33 @@ export const getSplitStyles: StyleSplitter = (
             // needed to get updates when theme changes
             dynamicThemeAccess = true
 
-            if (!(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))) {
-              continue
+            if (isIos && getSetting('fastSchemeChange')) {
+              // iOS will use https://reactnative.dev/docs/dynamiccolorios
+              // So need to predefine the dynamic color before merging the styles
+              // For example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
+
+              styleState.style ||= {}
+              const scheme = mediaKeyShort
+              const oppositeScheme = getOppositeScheme(mediaKeyShort)
+
+              for (const subKey in mediaStyle) {
+                let val = extractValueFromDynamic(mediaStyle[subKey], scheme)
+                const oppositeVal = extractValueFromDynamic(
+                  styleState.style[subKey],
+                  oppositeScheme
+                )
+
+                mediaStyle[subKey] = getDynamicVal({
+                  scheme,
+                  val,
+                  oppositeVal,
+                })
+                mergeStyle(styleState, subKey, mediaStyle[subKey])
+              }
+            } else if (
+              !(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))
+            ) {
+              return
             }
           } else if (isGroupMedia) {
             const groupInfo = getGroupPropParts(mediaKeyShort)
@@ -950,11 +933,12 @@ export const getSplitStyles: StyleSplitter = (
 
             // $group-x
             const groupContext = context?.groups.state[groupName]
+
             if (!groupContext) {
               if (process.env.NODE_ENV === 'development' && debug) {
                 log(`No parent with group prop, skipping styles: ${groupName}`)
               }
-              continue
+              return
             }
 
             const groupPseudoKey = groupInfo.pseudo
@@ -966,10 +950,12 @@ export const getSplitStyles: StyleSplitter = (
               mediaGroups.add(groupMediaKey)
               const mediaState = componentGroupState?.media
               let isActive = mediaState?.[groupMediaKey]
+
               // use parent styles if width and height hardcoded we can do an inline media match and avoid double render
               if (!mediaState && groupContext.layout) {
                 isActive = mediaKeyMatch(groupMediaKey, groupContext.layout)
               }
+
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 log(` 🏘️ GROUP media ${groupMediaKey} active? ${isActive}`)
               }
@@ -979,7 +965,7 @@ export const getSplitStyles: StyleSplitter = (
                   applyDefaultStyle(pkey, styleState)
                 }
 
-                continue
+                return
               }
               importanceBump = 2
             }
@@ -992,8 +978,10 @@ export const getSplitStyles: StyleSplitter = (
                 // fallback to context initially
                 context.groups.state[groupName]
               ).pseudo
+
               const isActive = componentGroupPseudoState?.[groupPseudoKey]
               const priority = pseudoPriorities[groupPseudoKey]
+
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 log(
                   ` 🏘️ GROUP pseudo ${groupMediaKey} active? ${isActive}, priority ${priority}`
@@ -1005,7 +993,7 @@ export const getSplitStyles: StyleSplitter = (
                   applyDefaultStyle(pkey, styleState)
                 }
 
-                continue
+                return
               }
               importanceBump = priority
             }
@@ -1044,47 +1032,29 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         }
-        continue
-      }
 
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        if (key === 'pointerEvents') {
-          viewProps[key] = val
-          continue
-        }
-      }
-
-      if (
-        // is HOC we can just pass through the styles as props
-        // this fixes issues where style prop got merged with wrong priority
-        !isHOC &&
-        (isValidStyleKey(key, staticConfig) ||
-          (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation'))
-      ) {
-        mergeStyle(styleState, key, val)
-        continue
+        return // end media
       }
 
       // pass to view props
       if (!isVariant) {
-        if (styleProps.styledContextProps && key in styleProps.styledContextProps) {
-          continue
+        if (isStyledContextProp) {
+          return
         }
 
         viewProps[key] = val
       }
-    }
+    })
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       try {
         log(` ✔️ expand complete`, keyInit)
         log('style', { ...styleState.style })
-        log('transforms', { ...transforms })
         log('viewProps', { ...viewProps })
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
-      console.groupEnd()
+      groupEnd()
     }
   } // end prop loop
 
@@ -1101,9 +1071,11 @@ export const getSplitStyles: StyleSplitter = (
     if (styleState.style) {
       fixStyles(styleState.style)
 
-      // shouldn't this be better? but breaks some tests weirdly, need to check
-      if (isWeb && !isReactNative) {
-        styleToCSS(styleState.style)
+      if (!styleProps.noExpand && !styleProps.noMergeStyle) {
+        // shouldn't this be better? but breaks some tests weirdly, need to check
+        if (isWeb && !isReactNative) {
+          styleToCSS(styleState.style)
+        }
       }
     }
 
@@ -1121,11 +1093,7 @@ export const getSplitStyles: StyleSplitter = (
       // this should work for most (all?) of our cases since the order preservation really only needs to apply
       // to the "flat" transform props
       styleState.style ||= {}
-      Object.entries(styleState.flatTransforms)
-        .sort(([a], [b]) => sortString(a, b))
-        .forEach(([key, val]) => {
-          mergeTransform(styleState.style!, key, val, true)
-        })
+      mergeFlatTransforms(styleState.style, styleState.flatTransforms)
     }
 
     // add in defaults if not set:
@@ -1163,14 +1131,14 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (styleState.style && shouldDoClasses) {
+    if (!styleProps.noMergeStyle && styleState.style && shouldDoClasses) {
       let retainedStyles: ViewStyleWithPseudos | undefined
       let shouldRetain = false
 
       if (styleState.style['$$css']) {
         // avoid re-processing for rnw
       } else {
-        const atomic = getStylesAtomic(styleState.style)
+        const atomic = getCSSStylesAtomic(styleState.style)
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
@@ -1195,44 +1163,20 @@ export const getSplitStyles: StyleSplitter = (
             shouldRetain = true
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
-            mergeClassName(transforms, classNames, key, identifier, false, true)
+            classNames[key] = identifier
           }
         }
 
         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-          console.groupEnd() // ensure group ended from loop above
-          consoleGroupCollapsed(`🔹 getSplitStyles final style object`)
+          groupEnd() // ensure group ended from loop above
+          groupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
           console.info(`retainedStyles`, retainedStyles)
-          console.groupEnd()
+          groupEnd()
         }
 
         if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
           styleState.style = retainedStyles || {}
-        }
-      }
-
-      if (transforms) {
-        for (const namespace in transforms) {
-          if (!transforms[namespace]) {
-            if (process.env.NODE_ENV === 'development') {
-              log('Error no transform', transforms, namespace)
-            }
-            continue
-          }
-          const [hash, val] = transforms[namespace]
-          const identifier = `_transform${hash}`
-          if (isClient && !insertedTransforms[identifier]) {
-            const rule = `.${identifier} { transform: ${val}; }`
-            addStyleToInsertRules(rulesToInsert, [
-              namespace,
-              val,
-              identifier,
-              undefined,
-              [rule],
-            ] satisfies StyleObject)
-          }
-          classNames[namespace] = identifier
         }
       }
     }
@@ -1290,7 +1234,7 @@ export const getSplitStyles: StyleSplitter = (
   // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
   const styleProp = props.style
 
-  if (styleProp) {
+  if (!styleProps.noMergeStyle && styleProp) {
     if (isHOC) {
       viewProps.style = normalizeStyle(styleProp)
     } else {
@@ -1354,78 +1298,69 @@ export const getSplitStyles: StyleSplitter = (
   const asChildExceptStyleLike =
     asChild === 'except-style' || asChild === 'except-style-web'
 
-  if (!asChildExceptStyleLike) {
-    const style = styleState.style
+  if (!styleProps.noMergeStyle) {
+    if (!asChildExceptStyleLike) {
+      const style = styleState.style
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // merge className and style back into viewProps:
-      let fontFamily =
-        isText || isInput
-          ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
-          : null
-      if (fontFamily && fontFamily[0] === '$') {
-        fontFamily = fontFamily.slice(1)
-      }
-      const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
-      const groupClassName = props.group ? `t_group_${props.group}` : ''
-      const componentNameFinal = props.componentName || staticConfig.componentName
-      const componentClassName =
-        props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
+      if (process.env.TAMAGUI_TARGET === 'web') {
+        // merge className and style back into viewProps:
+        let fontFamily =
+          isText || isInput
+            ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
+            : null
+        if (fontFamily && fontFamily[0] === '$') {
+          fontFamily = fontFamily.slice(1)
+        }
+        const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
+        const groupClassName = props.group ? `t_group_${props.group}` : ''
+        const componentNameFinal = props.componentName || staticConfig.componentName
+        const componentClassName =
+          props.asChild || !componentNameFinal ? '' : `is_${componentNameFinal}`
 
-      let classList: string[] = []
-      if (componentClassName) classList.push(componentClassName)
-      if (fontFamilyClassName) classList.push(fontFamilyClassName)
-      if (classNames) classList.push(Object.values(classNames).join(' '))
-      if (groupClassName) classList.push(groupClassName)
-      if (props.className) classList.push(props.className)
-      const finalClassName = classList.join(' ')
+        let classList: string[] = []
+        if (componentClassName) classList.push(componentClassName)
+        if (fontFamilyClassName) classList.push(fontFamilyClassName)
+        if (classNames) classList.push(Object.values(classNames).join(' '))
+        if (groupClassName) classList.push(groupClassName)
+        if (props.className) classList.push(props.className)
+        const finalClassName = classList.join(' ')
 
-      if (styleProps.noMergeStyle) {
-        // this is passed in by useProps() and we want to avoid all .style setting then
-        if (finalClassName) {
-          viewProps.className = finalClassName
+        if (styleProps.isAnimated && !conf.animations.supportsCSSVars && isReactNative) {
+          if (style) {
+            viewProps.style = style as any
+          }
+        } else if (isReactNative) {
+          const cnStyles = { $$css: true }
+          for (const name of finalClassName.split(' ')) {
+            cnStyles[name] = name
+          }
+          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
+        } else {
+          if (finalClassName) {
+            viewProps.className = finalClassName
+          }
+          if (style) {
+            viewProps.style = style as any
+          }
         }
-      } else if (
-        styleProps.isAnimated &&
-        !conf.animations.supportsCSSVars &&
-        isReactNative
-      ) {
-        if (style) {
-          viewProps.style = style as any
-        }
-      } else if (isReactNative) {
-        const cnStyles = { $$css: true }
-        for (const name of finalClassName.split(' ')) {
-          cnStyles[name] = name
-        }
-        viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
       } else {
-        if (finalClassName) {
-          viewProps.className = finalClassName
-        }
         if (style) {
+          // native assign styles
           viewProps.style = style as any
         }
-      }
-    } else {
-      // this is passed in by useProps() and we want to avoid all .style setting then
-      if (style && !styleProps.noMergeStyle) {
-        // native assign styles
-        viewProps.style = style as any
       }
     }
   }
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
-      consoleGroupCollapsed('🔹 getSplitStyles ===>')
+      groupCollapsed('🔹 getSplitStyles ===>')
       try {
         // prettier-ignore
         const logs = {
           ...result,
           className,
           componentState,
-          transforms,
           viewProps,
           rulesToInsert,
           parentSplitStyles,
@@ -1436,7 +1371,7 @@ export const getSplitStyles: StyleSplitter = (
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
-      console.groupEnd()
+      groupEnd()
     }
   }
 
@@ -1448,37 +1383,12 @@ export const getSplitStyles: StyleSplitter = (
   return result
 }
 
-function mergeClassName(
-  transforms: Record<string, any[]>,
-  classNames: Record<string, string>,
-  key: string,
-  val: string,
-  isMediaOrPseudo = false,
-  isInsertingNow = false
-) {
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    // empty classnames passed by compiler sometimes
-    if (!val) return
-    if (!isInsertingNow && val[0] === '_' && val.startsWith('_transform-')) {
-      const ns: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
-      let transform = insertedTransforms[val]
-      if (isClient && !transform) {
-        scanAllSheets() // HMR or loaded a new chunk
-        transform = insertedTransforms[val]
-        if (!transform && isWeb && val[0] !== '_') {
-          transform = val // runtime insert
-        }
-      }
-      transforms[ns] ||= ['', '']
-      transforms[ns][0] += val.replace('_transform', '')
-      // ssr doesn't need to do anything just make the right classname
-      if (transform) {
-        transforms[ns][1] += transform
-      }
-    } else {
-      classNames[key] = val
-    }
-  }
+function mergeFlatTransforms(target: TextStyle, flatTransforms: Record<string, any>) {
+  Object.entries(flatTransforms)
+    .sort(([a], [b]) => sortString(a, b))
+    .forEach(([key, val]) => {
+      mergeTransform(target, key, val, true)
+    })
 }
 
 function mergeStyle(
@@ -1487,11 +1397,8 @@ function mergeStyle(
   val: any,
   disableNormalize = false
 ) {
-  const { classNames, viewProps, usedKeys, styleProps, staticConfig } = styleState
-  if (isWeb && val?.[0] === '_') {
-    classNames[key] = val
-    usedKeys[key] ||= 1
-  } else if (key in stylePropsTransform) {
+  const { viewProps, styleProps, staticConfig } = styleState
+  if (key in stylePropsTransform) {
     styleState.flatTransforms ||= {}
     styleState.flatTransforms[key] = val
   } else {
@@ -1505,7 +1412,10 @@ function mergeStyle(
       viewProps[key] = out
     } else {
       styleState.style ||= {}
-      styleState.style[key] = out
+      styleState.style[key] =
+        // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
+        // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)
+        key === 'transform' && Array.isArray(out) ? [...out] : out
     }
   }
 }
@@ -1522,17 +1432,17 @@ export const getSubStyle = (
   for (let key in styleIn) {
     const val = styleIn[key]
     key = conf.shorthands[key] || key
-    const expanded = propMapper(key, val, styleState)
-    if (!expanded || (!staticConfig.isHOC && key in skipProps && !styleProps.noSkip)) {
+
+    const shouldSkip = !staticConfig.isHOC && key in skipProps && !styleProps.noSkip
+    if (shouldSkip) {
       continue
     }
 
-    for (let [skey, sval] of expanded) {
+    propMapper(key, val, styleState, false, (skey, sval) => {
       // pseudo inside media
       if (skey in validPseudoKeys) {
         sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
       }
-
       if (!avoidMergeTransform && skey in stylePropsTransform) {
         mergeTransform(styleOut, skey, sval)
       } else {
@@ -1540,6 +1450,18 @@ export const getSubStyle = (
           ? sval
           : normalizeValueWithProperty(sval, key)
       }
+    })
+  }
+
+  if (!avoidMergeTransform) {
+    if (Array.isArray(styleOut.transform)) {
+      const parentTransform = styleState.style?.transform
+      if (parentTransform) {
+        styleOut.transform = [...parentTransform, ...styleOut.transform]
+      }
+    }
+    if (styleState.flatTransforms) {
+      mergeFlatTransforms(styleOut, styleState.flatTransforms)
     }
   }
 

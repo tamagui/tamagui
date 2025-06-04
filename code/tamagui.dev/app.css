@@ -1,13 +1,17 @@
 html,
 body {
   max-width: 100vw;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol';
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 body {
-  background: var(--color2) !important;
+  /* fallback to ThemeNameEffect */
+  background: var(--color1);
+}
+
+body.transition {
+  transition: background ease-in-out 1000ms;
 }
 
 body {
@@ -45,7 +49,8 @@ body .preview {
   text-decoration: none;
 }
 
-p a, .t_Link {
+p a,
+.t_Link {
   text-decoration: underline;
 }
 
@@ -78,7 +83,6 @@ a {
   text-decoration-thickness: 4px;
   text-decoration-color: var(--color8);
 }
-
 
 .is_Paragraph:has(> ul) {
   margin-bottom: 0;
@@ -210,12 +214,9 @@ pre {
 .rainbow {
   background-image: -webkit-linear-gradient(
     0deg,
-    var(--orange10),
-    var(--yellow10),
+    var(--red10),
     var(--green10),
-    var(--blue10),
-    var(--pink10),
-    var(--red10)
+    var(--blue10)
   );
 }
 
@@ -308,18 +309,12 @@ iframe {
 .bg-grid {
   contain: paint;
   background-position: center center;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC');
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC");
   opacity: 0.05;
 }
 
 .tamagui-icon {
   pointer-events: none;
-}
-
-@media (prefer-color-scheme: dark) {
-  .bg-grid {
-    opacity: 0.125;
-  }
 }
 
 .mask-gradient-both {
@@ -479,7 +474,7 @@ iframe {
   transition: color 150ms ease;
 }
 
-.highlight-line[data-highlighted='false'] {
+.highlight-line[data-highlighted="false"] {
   color: var(--gray12);
 }
 
@@ -499,7 +494,7 @@ iframe {
   color: var(--yellow10);
 }
 
-*[data-line-numbers='true'].highlight-line {
+*[data-line-numbers="true"].highlight-line {
   position: relative;
   padding-left: var(--t-space-4);
 }
@@ -533,7 +528,7 @@ textarea {
 }
 
 .t_dark .docs-paragraph {
-  opacity: 0.9;
+  opacity: 0.88;
 }
 
 .custom-scroll ::-webkit-scrollbar {
@@ -591,12 +586,12 @@ textarea {
 }
 
 .text-3d {
-  text-shadow: 
-    1px 1px 1px var(--color8), 1px 2px 1px var(--color8),
-    1px 3px 1px var(--color8), 1px 4px 1px var(--color8),
-    1px 5px 1px var(--color8), 1px 6px 1px var(--color8),
-    1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
-    1px 9px 1px var(--color8), 1px 10px 1px var(--color8),
+  text-shadow:
+    1px 1px 1px var(--color10), 1px 2px 1px var(--color10),
+    1px 3px 1px var(--color10), 1px 4px 1px var(--color10),
+    1px 5px 1px var(--color10), 1px 6px 1px var(--color10),
+    1px 7px 1px var(--color10), 1px 8px 1px var(--color10),
+    1px 9px 1px var(--color10), 1px 10px 1px var(--color10),
     1px 28px 30px var(--background025);
 }
 
@@ -611,7 +606,7 @@ textarea {
   outline: none;
 }
 
-.c-target-parent[data-dragging='true'] .target,
+.c-target-parent[data-dragging="true"] .target,
 .c-target-parent:hover > .target {
   opacity: 1;
 }
@@ -648,46 +643,35 @@ textarea {
 }
 
 .font-outlined {
-  -webkit-text-stroke-width: 3px;
-  -webkit-text-stroke-color: var(--color);
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: var(--color12);
+  text-shadow: 4px 4px var(--color5), -4px -4px var(--color6), -4px 4px var(--color6), 4px
+    -4px var(--color7);
 }
 
 .font-outlined-sm {
-  text-shadow: 1px 1px var(--color), -1px -1px var(--color),
-    -1px 1px var(--color), 1px -1px var(--color);
+  text-shadow: 1px 1px var(--color), -1px -1px var(--color), -1px 1px var(--color), 1px
+    -1px var(--color);
 }
 
 .invert {
   filter: invert(100%);
 }
 
-@media (min-resolution: 160dpi) {
-  .pixelate {
-    image-rendering: pixelated;
-    font-smooth: none;
-    -webkit-font-smoothing: none;
-  }
-
-  .font_silkscreen {
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: grayscale;
-  }
-}
-
 @media (hover: hover) {
   .clip-slice {
     mask-image: url(./public/takeouticon.svg);
     mask-size: 20% 20%;
-    transform: rotate(2deg);
-    animation: clip-fade2 70s infinite alternate;
+    transform: rotate(1deg);
+    animation: clip-fade2 50s infinite alternate;
     mix-blend-mode: difference !important;
   }
-  
+
   .clip-slice-2 {
     mask-image: url(./public/takeouticon.svg);
-    mask-size: 30% 30%;
+    mask-size: 25% 25%;
     transform: rotate(-2deg);
-    animation: clip-fade 90s infinite alternate;
+    animation: clip-fade 70s infinite alternate;
     mix-blend-mode: difference !important;
   }
 
@@ -705,7 +689,7 @@ textarea {
 .slice-alt {
   mask-size: 50% 50%;
   animation: clip-fade2 80s infinite alternate;
-  
+  mix-blend-mode: color-burn !important;
 }
 
 @keyframes clip-fade {
@@ -741,7 +725,8 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty, p {
+.text-wrap-pretty,
+p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
 }
@@ -755,18 +740,20 @@ textarea {
     1px 1px var(--color2), 1px 2px 1px var(--color3),
     1px 3px 1px var(--color4), 1px 4px 1px var(--color5),
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
-    1px 7px 1px var(--color7), 1px 8px 1px var(--color7),
-    1px 9px 1px var(--color7), 1px 12px 1px var(--color8),
+    1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
+    1px 9px 1px var(--color8), 1px 12px 1px var(--color9),
     1px 10px 150px rgba(255, 255, 255, 0.3);
 }
 
 .t_dark .bento-shadow {
-  text-shadow: 1px 1px var(--color9), 1px 2px 1px var(--color8),
-    1px 3px 1px var(--color7), 1px 4px 1px var(--color7),
-    1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
-    1px 7px 1px var(--color5), 1px 8px 1px var(--color4),
-    1px 9px 1px var(--color4), 1px 11px 1px var(--color3),
-    1px 10px 40px rgba(255,255,255,0.07);
+  text-shadow:
+    2px 2px 1px var(--color9), 1px 2px 1px var(--color9),
+    1px 3px 1px var(--color9), 1px 4px 1px var(--color8),
+    1px 5px 1px var(--color8), 1px 6px 1px var(--color8),
+    1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
+    1px 9px 1px var(--color8), 1px 11px 1px var(--color7),
+    1px 10px 40px rgba(255, 255, 255, 0.01),
+    1px 0px 30px var(--color02);
 }
 
 .bento-up-text {
@@ -782,7 +769,7 @@ textarea {
 }
 
 .dark-shadow {
-  text-shadow: 0 10px 10px rgba(0,0,0,1);
+  text-shadow: 0 10px 10px rgba(0, 0, 0, 1);
 }
 
 .glow-shadow {
@@ -819,6 +806,6 @@ textarea {
   left: 0 !important;
   right: 0 !important;
   z-index: 10000000000000000 !important;
-  background-color: rgba(0,0,0,0.5) !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(50px) !important;
 }

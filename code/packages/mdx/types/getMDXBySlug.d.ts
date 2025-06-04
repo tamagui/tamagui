@@ -1,5 +1,5 @@
 import type { Frontmatter } from './types';
-export declare const getMDXBySlug: (basePath: string, slug: string) => Promise<{
+export declare function getMDXBySlug(basePath: string, slug: string): Promise<{
     frontmatter: Frontmatter;
     code: string;
 }>;

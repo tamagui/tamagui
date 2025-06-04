@@ -1,5 +1,6 @@
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, PresenceChild } from '@tamagui/animate-presence'
+import type { JSX } from 'react/jsx-runtime'
 
 type BaseProps = {
   children: React.ReactNode
@@ -32,7 +33,7 @@ export type AnimateProps = BaseProps & PresenceProps
  *
  */
 
-export function Animate({ children, type, ...props }: AnimateProps) {
+export function Animate({ children, type, ...props }: AnimateProps): JSX.Element {
   if (type === 'presence') {
     if (props.keepChildrenMounted) {
       return (

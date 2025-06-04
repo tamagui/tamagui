@@ -32,17 +32,18 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "6": {}
 });
+const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui/src/YStack';
+import { YStack } from 'tamagui';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {
   const media = useMedia();
   return <_ReactNativeViewWrapper expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return React.useMemo(() => {
+  return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"], _expressions[2] ? _sheet["5"] : _sheet["6"]];
   }, [..._expressions]);
 });"
@@ -51,20 +52,26 @@ const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _ex
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "backgroundColor": "#050505"
-  },
-  "1": {
-    "backgroundColor": "#151515"
-  }
+  "0": {},
+  "1": {}
 });
+const __ReactUseMemo = require('react').useMemo;
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-// debug
 import { View } from 'tamagui';
 export function Test() {
-  return <__ReactNativeView style={showBackground ? _sheet["0"] : _sheet["1"]} />;
-}"
+  return <_ReactNativeViewWrapper expressions={[showBackground]} />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["0"], _sheet["1"], _expressions[0] ? {
+      "backgroundColor": theme.color1.get()
+    } : {
+      "backgroundColor": theme.color2.get()
+    }];
+  }, [..._expressions]);
+});"
 `;
 
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
@@ -72,7 +79,6 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
 const _sheet = __ReactNativeStyleSheet.create({
   "0": {
     "flexDirection": "column",
-    "backgroundColor": "#151515",
     "transform": [{
       "translateY": 10
     }, {
@@ -82,10 +88,19 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
+const __ReactUseMemo = require('react').useMemo;
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui/src/YStack';
+import { YStack } from 'tamagui';
 export function Test(isLoading) {
-  return <__ReactNativeView style={_sheet["0"]} />;
-}"
+  return <_ReactNativeViewWrapper />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["0"], {
+      "backgroundColor": theme.background.get()
+    }];
+  }, [..._expressions]);
+});"
 `;

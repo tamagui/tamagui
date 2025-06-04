@@ -1,14 +1,13 @@
-import { basename } from 'node:path'
-
 import { type BabelFileResult, transformFromAstSync } from '@babel/core'
 import generator from '@babel/generator'
 import { declare } from '@babel/helper-plugin-utils'
 import { parse } from '@babel/parser'
 import template from '@babel/template'
 import * as t from '@babel/types'
-import { createExtractor } from './createExtractor'
+import { basename } from 'node:path'
 import { getPragmaOptions } from '../getPragmaOptions'
 import type { TamaguiOptions } from '../types'
+import { createExtractor } from './createExtractor'
 import { createLogger } from './createLogger'
 import { isSimpleSpread } from './extractHelpers'
 import { literalToAst } from './literalToAst'
@@ -25,6 +24,10 @@ const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 
 const importWithStyle = template(`
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
+`)
+
+const importReactUseMemo = template(`
+const __ReactUseMemo = require('react').useMemo;
 `)
 
 const extractor = createExtractor({ platform: 'native' })
@@ -349,6 +352,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   ) {
                     if (!hasImportedViewWrapper) {
                       root.unshiftContainer('body', importWithStyle())
+                      root.unshiftContainer('body', importReactUseMemo())
                       hasImportedViewWrapper = true
                     }
 
@@ -368,25 +372,19 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                               [t.identifier('theme'), t.identifier('_expressions')],
                               t.blockStatement([
                                 t.returnStatement(
-                                  t.callExpression(
-                                    t.memberExpression(
-                                      t.identifier('React'),
-                                      t.identifier('useMemo')
+                                  t.callExpression(t.identifier('__ReactUseMemo'), [
+                                    t.arrowFunctionExpression(
+                                      [],
+                                      t.blockStatement([
+                                        t.returnStatement(
+                                          t.arrayExpression([...hocStylesExpr.elements])
+                                        ),
+                                      ])
                                     ),
-                                    [
-                                      t.arrowFunctionExpression(
-                                        [],
-                                        t.blockStatement([
-                                          t.returnStatement(
-                                            t.arrayExpression([...hocStylesExpr.elements])
-                                          ),
-                                        ])
-                                      ),
-                                      t.arrayExpression([
-                                        t.spreadElement(t.identifier('_expressions')),
-                                      ]),
-                                    ]
-                                  )
+                                    t.arrayExpression([
+                                      t.spreadElement(t.identifier('_expressions')),
+                                    ]),
+                                  ])
                                 ),
                               ])
                             ),

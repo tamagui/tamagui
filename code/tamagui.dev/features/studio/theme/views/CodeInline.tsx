@@ -4,7 +4,7 @@ export const CodeInline = styled(Paragraph, {
   name: 'CodeInline',
   tag: 'code',
   fontFamily: '$mono',
-  backgroundColor: '$color3',
+  backgroundColor: '$color02',
   cursor: 'inherit',
   br: '$3',
   // @ts-ignore

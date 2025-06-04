@@ -9,6 +9,8 @@
     "dist",
     "**/__tests__",
     "v2.js",
-    "v2.d.ts"
+    "v2.d.ts",
+    "v4.js",
+    "v4.d.ts"
   ]
 }

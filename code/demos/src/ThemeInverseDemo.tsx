@@ -5,7 +5,7 @@ export function ThemeInverseDemo() {
   const opposite = themeName.includes('dark') ? 'light' : 'dark'
 
   return (
-    <XStack space>
+    <XStack gap="$4">
       <Buttons title="Normal" name={themeName} />
       <Theme inverse>
         <Buttons
@@ -24,7 +24,7 @@ function Buttons(props: { name: string; title: string }) {
       backgroundColor="$background"
       padding="$4"
       borderRadius="$4"
-      space="$3"
+      gap="$3"
     >
       <H5>{props.title}</H5>
       <Button>{props.name}</Button>

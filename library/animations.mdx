@@ -1,0 +1,123 @@
+# Animations
+
+You define animations on `createTamagui` and can choose from three animation drivers: CSS, moti (reanimated), or react-native.
+
+```tsx
+import { View } from 'tamagui'
+
+<View animation="100ms" />
+```
+
+When defined like this, Tamagui will animate all [animatable properties](#animatable-properties) when they change.
+
+If you'd like to limit which properties animate, you have two options: `animateOnly`, or the array-style configuration object passed to `animation`:
+
+```tsx
+// animate only background using animateOnly
+<View animation="100ms" animateOnly={['background']} />
+
+// alternative, more powerful syntax to control per-style animation values
+<View
+  animation={[
+    // this is the default animation
+    '100ms',
+    {
+      // now you can override per-prop using a preset
+      background: '200ms',
+      // or by defining a custom animation that matches the reanimated syntax:
+      // note that `transform` covers all the flat transform animations (x, y, scale, etc), and you can't target those individually yet
+      transform: {
+        type: 'spring',
+        delay: 100,
+        mass: 1,
+        // ...
+      },
+    },
+  ]}
+/>
+```
+
+### Animatable Properties
+
+For the reanimated driver which we use currently, the only properties that are animatable for now are:
+
+- transform (note this includes things like scale, transform, x, y, rotate)
+- opacity
+- height
+- width
+- backgroundColor
+- borderColor
+- borderLeftColor
+- borderRightColor
+- borderTopColor
+- borderBottomColor
+- borderRadius
+- borderTopLeftRadius
+- borderTopRightRadius
+- borderBottomLeftRadius
+- borderBottomRightRadius
+- borderLeftWidth
+- borderRightWidth
+- borderTopWidth
+- borderBottomWidth
+- color
+- left
+- right
+- top
+- bottom
+
+## When to use Tamagui animations
+
+Tamagui doesn't support all types of animations we need. In general use Tamagui for animations by default, but if you notice performance issues you may want to bail out to "using the platform" (ie, CSS on web or Reanimated on native).
+
+Some limitations currently:
+
+- Doesn't support timeline or repeating animations yet.
+- All animations internally will re-render to trigger (ie, hover/press/enter/exit). So not as performant as reanimated worklets or CSS. So use your discretion, if an animation feels laggy it may not be good for Tamagui.
+- Can’t do different animations for “pseudo” or state styles like enter/exit/hover/press (would love to land this, it’s not too hard and we have a spec for it).
+
+### Performance Sensitivity
+
+Right now Tamagui requires re-rendering to trigger animation changes. This can cause stuttering if the re-render is expensive enough to clog the main thread while the animation is running. You can sometimes fix this just by memoizing things below the Tamagui component that animates.
+
+### AnimatePresence
+
+See [the Tamagui docs](https://tamagui.dev/docs/core/animations#animate-presence) for a bit more on AnimatePresence.
+
+AnimatePresence is a super powerful Tamagui component for animations. Typically it's very cumbersome to do an "exit" animation in React, as the component will unmount before the animation runs. With AnimatePresence, you can animate enter and exit styles more easily, and you can even change their variants out as they enter/exit.
+
+Here's some rough pseudo code of how you'd do that, you can find plenty of examples already in the codebase to work from:
+
+```tsx
+function MyComponent() {
+  // you would have your own logic for the "direction" here:
+  const towards = isGoingRight ? -1 : 1
+  
+  return (
+    <AnimatePresence custom={{ towards }} initial={false}>
+      {/* note the key changes when you need to "run" the animation: */}
+      <SlidingPane key={currentPane} animation="200ms">
+        {/* Contents of your pane */}
+      </SlidingPane>
+    </AnimatePresence>
+  )
+}
+
+const SlidingPane = styled(View, {
+  x: 0,
+  opacity: 1,
+
+  variants: {
+    towards: (dir: Direction) => ({
+      enterStyle: {
+        x: dir === -1 ? -10 : 10,
+        opacity: 0,
+      },
+      exitStyle: {
+        x: dir === -1 ? 10 : -10
+        opacity: 0,
+      },
+    }),
+  } as const,
+})
+```

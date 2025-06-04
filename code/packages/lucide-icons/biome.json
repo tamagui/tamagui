@@ -3,6 +3,9 @@
   "organizeImports": {
     "enabled": false
   },
+  "files": {
+    "ignore": ["**/*/generated-*.ts", ".tamagui"]
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -22,8 +25,8 @@
         "noDoubleEquals": "off",
         "noConsoleLog": "error",
         "noAssignInExpressions": "off",
-        "noShadowRestrictedNames": "off",
-        "noRedeclare": "off"
+        "noRedeclare": "off",
+        "noShadowRestrictedNames": "off"
       },
       "style": {
         "noParameterAssign": "off",
@@ -48,6 +51,7 @@
       },
       "complexity": {
         "noForEach": "off",
+        "noUselessTernary": "off",
         "noBannedTypes": "off",
         "noUselessFragments": "off",
         "useLiteralKeys": "off",
@@ -69,7 +73,13 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 90,
-    "lineEnding": "lf"
+    "lineEnding": "lf",
+    "ignore": [
+      "**/*/generated-new.ts",
+      "**/*/generated-v2.ts",
+      ".tamagui",
+      "package.json"
+    ]
   },
   "javascript": {
     "formatter": {

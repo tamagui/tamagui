@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ElementType } from 'react'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
@@ -8,15 +8,15 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 export function SelectDemo() {
   return (
     <YStack gap="$4">
-      <XStack ai="center" gap="$4">
-        <Label htmlFor="select-demo-1" f={1} miw={80}>
+      <XStack w={'100%'} ai="center" gap="$4">
+        <Label htmlFor="select-demo-1" flex={1} miw={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </XStack>
 
-      <XStack ai="center" gap="$4">
-        <Label htmlFor="select-demo-2" f={1} miw={80}>
+      <XStack w={'100%'} ai="center" gap="$4">
+        <Label htmlFor="select-demo-2" flex={1} miw={80}>
           Native
         </Label>
         <SelectDemoItem id="select-demo-2" native />
@@ -25,33 +25,26 @@ export function SelectDemo() {
   )
 }
 
-export function SelectDemoItem(props: SelectProps) {
+export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
   const [val, setVal] = React.useState('apple')
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
-      <Select.Trigger width={220} iconAfter={ChevronDown}>
-        <Select.Value placeholder="Something" />
-      </Select.Trigger>
+      {props?.trigger || (
+        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+          <Select.Value placeholder="Something" />
+        </Select.Trigger>
+      )}
 
-      <Adapt when="sm" platform="touch">
-        <Sheet
-          native={!!props.native}
-          modal
-          dismissOnSnapToBottom
-          animationConfig={{
-            type: 'spring',
-            damping: 20,
-            mass: 1.2,
-            stiffness: 250,
-          }}
-        >
+      <Adapt when="maxMd" platform="touch">
+        <Sheet native={!!props.native} modal dismissOnSnapToBottom animation="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
+            backgroundColor="$shadowColor"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}

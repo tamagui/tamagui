@@ -5,7 +5,8 @@ import { Theme } from '../views/Theme'
 
 export function themeable<ComponentType extends (props: any) => any>(
   Component: ComponentType,
-  staticConfig?: Partial<StaticConfig>
+  staticConfig?: Partial<StaticConfig>,
+  optimize = false
 ) {
   const withThemeComponent = React.forwardRef(function WithTheme(
     props: ThemeableProps,
@@ -39,20 +40,34 @@ export function themeable<ComponentType extends (props: any) => any>(
     // one example of a bug caused by not doing this is in <Select native> on web
     // where it renders to an <option />, and then Theme would wrap a <span /> in that
     // which is not allowed in HTML and causes hydration errors / logs
-    const filteredProps: Partial<ThemeProps> = {
-      componentName: componentName || staticConfig?.componentName,
+    let filteredProps: Partial<ThemeProps> | null = null
+
+    const compName = componentName || staticConfig?.componentName
+    if (compName) {
+      filteredProps ||= {}
+      filteredProps.componentName = compName
     }
     if ('debug' in props) {
+      filteredProps ||= {}
       filteredProps.debug = props.debug
     }
     if ('theme' in props) {
+      filteredProps ||= {}
       filteredProps.name = props.theme
     }
     if ('themeInverse' in props) {
+      filteredProps ||= {}
       filteredProps.inverse = props.themeInverse
     }
     if ('themeReset' in props) {
+      filteredProps ||= {}
       filteredProps.reset = themeReset
+    }
+
+    if (optimize && !filteredProps) {
+      // optimize by avoiding theme! this can re-parent but we should just document that to avoid performance
+      // in cases where you remove/add themes, just keep a theme={x ? '' : null} pattern
+      return element
     }
 
     let contents = (
@@ -79,7 +94,9 @@ export function themeable<ComponentType extends (props: any) => any>(
     (Component as any)?.displayName || (Component as any)?.name || 'Anonymous'
   })`
 
-  return withTheme as ComponentType extends (props: infer P) => infer R
+  type FinalComponentType = ComponentType extends (props: infer P) => infer R
     ? (props: Omit<P, 'theme' | 'themeInverse'> & ThemeableProps) => R
     : unknown
+
+  return withTheme as FinalComponentType
 }

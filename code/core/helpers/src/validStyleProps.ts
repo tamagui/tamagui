@@ -224,6 +224,7 @@ export const stylePropsView = {
     transition: true,
     textWrap: true,
     backdropFilter: true,
+    WebkitBackdropFilter: true,
     background: true,
     backgroundAttachment: true,
     backgroundBlendMode: true,
@@ -284,7 +285,7 @@ export const stylePropsView = {
   ...(isAndroid ? { elevationAndroid: true } : {}),
 }
 
-export const stylePropsFont = {
+const stylePropsFont = {
   fontFamily: true,
   fontSize: true,
   fontStyle: true,
@@ -341,7 +342,4 @@ export const validPseudoKeys = {
   }),
 }
 
-export const validStyles = {
-  ...validPseudoKeys,
-  ...stylePropsView,
-}
+export const validStyles = stylePropsView

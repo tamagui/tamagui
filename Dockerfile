@@ -1,6 +1,5 @@
 FROM node:22.4
 
-ARG APP_PRIVATE_KEY
 ARG CF_API_KEY
 ARG CF_EMAIL
 ARG CF_ZONE_ID
@@ -33,6 +32,8 @@ ARG TRANSCRYPT_PASSWORD
 ARG URL
 ARG ONE_SERVER_URL
 ARG APP_NAME
+ARG TAMAGUI_PRO_SECRET
+ARG DEEPSEEK_API_KEY
 
 # unlock
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common

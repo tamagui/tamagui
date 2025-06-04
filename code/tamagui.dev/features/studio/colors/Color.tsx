@@ -18,7 +18,7 @@ export function Color({
   const state = useGlobalState()
   const palette = state.colors.palettesByScheme[paletteId]
   const scale = palette.scales[scaleId]
-  const indexAsNumber = parseInt(index, 10)
+  const indexAsNumber = Number.parseInt(index, 10)
   const color = scale.colors[indexAsNumber]
 
   if (!color) {
@@ -109,7 +109,7 @@ export function Color({
         <Button
           size="$2"
           onPress={() => {
-            state.colors.deleteColor(parseInt(index))
+            state.colors.deleteColor(Number.parseInt(index))
           }}
         >
           Delete color

@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
-import React from 'react'
+import type React from 'react'
 import { Button, H4, SizableText, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'
 const weekdays = [
@@ -31,6 +31,7 @@ const calendar = Array(weeks)
     }
     return week
   })
+
 export const Calendar = () => {
   const demoProps = useDemoProps()
 
@@ -98,11 +99,11 @@ export const Calendar = () => {
 const LabelCell = ({ children }: { children: React.ReactNode }) => {
   return (
     <YStack
-      width="$4"
-      height="$4"
+      width="$3"
+      height="$3"
       $md={{
-        width: '$3',
-        height: '$3',
+        width: '$2',
+        height: '$2',
       }}
       userSelect="none"
       jc="center"
@@ -119,16 +120,16 @@ const DayCell = ({ day, isDisabled }: { day: number; isDisabled?: boolean }) => 
   const demoProps = useDemoProps()
   return (
     <YStack
-      width="$4"
-      height="$4"
+      width="$3"
+      height="$3"
       $md={{
-        width: '$3',
-        height: '$3',
+        width: '$2',
+        height: '$2',
       }}
       cursor={isDisabled ? 'default' : 'pointer'}
       userSelect="none"
       hoverStyle={isDisabled ? {} : { backgroundColor: '$backgroundHover' }}
-      disabled={isDisabled}
+      disabled={!!isDisabled}
       opacity={isDisabled ? 0.5 : 1}
       jc="center"
       ai="center"

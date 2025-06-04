@@ -81,60 +81,75 @@ export function useSwitch<R extends View, P extends SwitchProps>(
   [checked, setChecked]: [SwitchState, React.Dispatch<React.SetStateAction<SwitchState>>],
   ref: React.Ref<R>
 ) {
-  const { disabled, name, value, required } = props
-  const hasConsumerStoppedPropagationRef = React.useRef(false)
-  const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
-  const composedRefs = useComposedRefs<View>(ref, setButton as any)
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    return {
+      switchProps: {
+        onPress() {
+          setChecked((prevChecked) => !prevChecked)
+        },
+      } satisfies SwitchBaseProps,
+      switchRef: ref,
+      bubbleInput: null,
+    }
+  } else {
+    const { disabled, name, value, required } = props
+    const hasConsumerStoppedPropagationRef = React.useRef(false)
 
-  // We set this to true by default so that events bubble to forms without JS (SSR)
-  const isFormControl = isWeb ? (button ? Boolean(button.closest('form')) : true) : false
+    const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
+    const composedRefs = useComposedRefs<View>(ref, setButton as any)
+    // We set this to true by default so that events bubble to forms without JS (SSR)
+    const isFormControl = isWeb
+      ? button
+        ? Boolean(button.closest('form'))
+        : true
+      : false
 
-  const labelId = useLabelContext(button)
-  const ariaLabelledBy = props['aria-labelledby'] || props.labeledBy || labelId
-  return {
-    switchProps: {
-      role: 'switch',
-      'aria-checked': checked,
-      ...(isWeb
-        ? {
-            tabIndex: disabled ? undefined : 0,
-            'data-state': getState(checked),
-            'data-disabled': disabled ? '' : undefined,
-            disabled: disabled,
+    const labelId = useLabelContext(button)
+    const ariaLabelledBy = props['aria-labelledby'] || props.labeledBy || labelId
+    return {
+      switchProps: {
+        role: 'switch',
+        'aria-checked': checked,
+        ...(isWeb
+          ? {
+              tabIndex: disabled ? undefined : 0,
+              'data-state': getState(checked),
+              'data-disabled': disabled ? '' : undefined,
+              disabled: disabled,
+            }
+          : {}),
+        'aria-labelledby': ariaLabelledBy,
+        onPress: composeEventHandlers(props.onPress, (event: GestureResponderEvent) => {
+          setChecked((prevChecked) => !prevChecked)
+          if (isWeb && isFormControl) {
+            hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+            // if switch is in a form, stop propagation from the button so that we only propagate
+            // one click event (from the input). We propagate changes from an input so that native
+            // form validation works and form events reflect switch updates.
+            if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
           }
-        : {}),
-      ...props,
-      'aria-labelledby': ariaLabelledBy,
-      onPress: composeEventHandlers(props.onPress, (event: GestureResponderEvent) => {
-        setChecked((prevChecked) => !prevChecked)
-        if (isWeb && isFormControl) {
-          hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
-          // if switch is in a form, stop propagation from the button so that we only propagate
-          // one click event (from the input). We propagate changes from an input so that native
-          // form validation works and form events reflect switch updates.
-          if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-        }
-      }),
-    } satisfies SwitchBaseProps,
-    switchRef: composedRefs,
-    /**
-     * insert as a sibling of your switch (should not be inside the switch)
-     */
-    bubbleInput:
-      isWeb && isFormControl ? (
-        <BubbleInput
-          control={button}
-          bubbles={!hasConsumerStoppedPropagationRef.current}
-          name={name}
-          value={value}
-          checked={checked}
-          required={required}
-          disabled={disabled}
-          // We transform because the input is absolutely positioned but we have
-          // rendered it **after** the button. This pulls it back to sit on top
-          // of the button.
-          style={{ transform: 'translateX(-100%)' }}
-        />
-      ) : null,
+        }),
+      } satisfies SwitchBaseProps,
+      switchRef: composedRefs,
+      /**
+       * insert as a sibling of your switch (should not be inside the switch)
+       */
+      bubbleInput:
+        isWeb && isFormControl ? (
+          <BubbleInput
+            control={button}
+            bubbles={!hasConsumerStoppedPropagationRef.current}
+            name={name}
+            value={value}
+            checked={checked}
+            required={required}
+            disabled={disabled}
+            // We transform because the input is absolutely positioned but we have
+            // rendered it **after** the button. This pulls it back to sit on top
+            // of the button.
+            style={{ transform: 'translateX(-100%)' }}
+          />
+        ) : null,
+    }
   }
 }

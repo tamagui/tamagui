@@ -1,4 +1,5 @@
-import React, { memo } from 'react'
+import type React from 'react'
+import { memo } from 'react'
 import type { YStackProps } from 'tamagui'
 import { H4, H5, ScrollView, Spacer, XStack, YStack, styled } from 'tamagui'
 
@@ -41,14 +42,15 @@ export const SidebarLeft = memo(function SidebarLeft(props: {
       bg="$background"
       pos="absolute"
       elevation="$1"
+      data-tauri-drag-region
       t={0}
       l={0}
       b={0}
       w={sidebarWidth}
       zi={1000}
     >
-      <ScrollView>
-        <YStack>{props.children}</YStack>
+      <ScrollView data-tauri-drag-region>
+        <YStack data-tauri-drag-region>{props.children}</YStack>
       </ScrollView>
     </YStack>
   )

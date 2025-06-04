@@ -1,22 +1,26 @@
 import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { H4, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
-import { docsRoutes } from './docsRoutes'
-
+import { H4, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
+import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
 
 // const fuz = new uFuzzy({})
 
 const sections = {
-  docs: docsRoutes
-    .filter((x) => !x.isUI)
+  core: docsRoutes
+    .filter((x) => x.section === 'core')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
   ui: docsRoutes
-    .filter((x) => x.isUI)
+    .filter((x) => x.section === 'ui')
+    .flatMap((section, sectionIndex) =>
+      section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
+    ),
+  compiler: docsRoutes
+    .filter((x) => x.section === 'compiler')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
@@ -31,7 +35,18 @@ const allItems = [
     ),
   },
 
-  ...sections.docs,
+  ...sections.core,
+
+  {
+    children: (
+      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+        Compiler
+      </H4>
+    ),
+  },
+
+  ...sections.compiler,
+
   {
     children: (
       <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
@@ -50,18 +65,20 @@ const allItems = [
 // }
 
 export const DocsMenuContents = React.memo(function DocsMenuContents({
+  section: propsSection,
   inMenu,
-}: { inMenu?: boolean }) {
+}: { inMenu?: boolean; section?: keyof typeof sections }) {
   // const store = useStore(DocsItemsStore)
-  const { currentPath } = useDocsMenu()
-  const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
-  const items = inMenu ? allItems : sections[activeSection]
+  const { currentPath, section: docsSection } = useDocsMenu()
+  const section = propsSection ?? docsSection
+  const items = section ? sections[section] : allItems
+
   // const [items, setItems] = React.useState(activeItems)
   // const isFiltered = items !== activeItems
 
   // React.useEffect(() => {
   //   setItems(activeItems)
-  // }, [activeSection])
+  // }, [section])
 
   return (
     <>
@@ -122,7 +139,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
             setItems(activeItems)
             return
           }
-          const [indexes] = fuz.search(sectionStrings[activeSection], next)
+          const [indexes] = fuz.search(sectionStrings[section], next)
           if (!indexes?.length) {
             setItems(activeItems)
             return
@@ -133,10 +150,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         }}
       /> */}
 
-      <Spacer />
-
       {/* 
-      {!inMenu && activeSection === 'docs' && (
+      {!inMenu && section === 'docs' && (
         <Link href="/docs/intro/1.0.01" index={-1}>
           <XStack p="$4">
             <SizableText>Tamagui UI</SizableText>
@@ -146,8 +161,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
       <div
         style={{ width: '100%' }}
-        tabIndex={0}
-        role="listbox"
+        aria-label="Docs Menu"
         onMouseEnter={() => {
           getStore(DocsItemsStore).hovered = true
         }}
@@ -169,7 +183,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
                 const contents = (
                   <DocsRouteNavItem
-                    inMenu={inMenu}
+                    inMenu={inMenu ?? false}
                     href={page.route}
                     active={currentPath === page.route}
                     pending={page['pending']}
@@ -207,9 +221,9 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                           gap="$3"
                           mt="$4"
                         >
-                          <Separator bc="$color025" o={0.25} my="$2" />
+                          <Separator bc="$color02" o={0.25} my="$2" />
                           <Theme name="gray">
-                            <Paragraph size="$4" fow="600" color="$color10">
+                            <Paragraph ff="$mono" size="$4" fow="600" color="$color10">
                               {section.title}
                             </Paragraph>
                           </Theme>
