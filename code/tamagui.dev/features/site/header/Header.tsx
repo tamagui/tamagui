@@ -763,7 +763,7 @@ const HeaderMenuMoreContents = () => {
 
         <Link asChild href="/docs/intro/compiler-install" onPress={handlePress}>
           <HeadAnchor grid half>
-            Compile
+            Compiler
           </HeadAnchor>
         </Link>
 
