@@ -17,7 +17,8 @@ export const useStackedZIndex = (props: {
     const id = useId()
 
     const zIndex = useMemo(() => {
-      if (stackZIndex && stackZIndex !== 'global') {
+      // should disable stackZIndex when zIndex prop is set
+      if (stackZIndex && stackZIndex !== 'global' && zIndexProp !== undefined) {
         const highest = Object.values(CurrentPortalZIndices).reduce(
           (acc, cur) => Math.max(acc, cur),
           0
