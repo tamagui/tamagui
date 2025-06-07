@@ -245,6 +245,7 @@ const componentsIn = {
   Description: SubTitle,
   UL,
   LI,
+  Link,
 
   TamaguiExamplesCode,
 
