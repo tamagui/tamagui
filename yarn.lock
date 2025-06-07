@@ -6702,15 +6702,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/babel-plugin-fully-specified@npm:1.126.13":
-  version: 1.126.13
-  resolution: "@tamagui/babel-plugin-fully-specified@npm:1.126.13"
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-  checksum: 10/2402ecdd341cd317b3eb3c9372fc5e24baae7a4b5a7640b90a19e177eba25786e4c850c1c5374d2044441befc02ac17cd367ba6db72db3cd85fe74b8b3462a3e
-  languageName: node
-  linkType: hard
-
 "@tamagui/babel-plugin-fully-specified@workspace:*, @tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified"
@@ -6788,32 +6779,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@npm:^1.126.4":
-  version: 1.126.13
-  resolution: "@tamagui/build@npm:1.126.13"
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-    "@swc/core": "npm:^1.7.21"
-    "@tamagui/babel-plugin-fully-specified": "npm:1.126.13"
-    "@types/fs-extra": "npm:^9.0.13"
-    chokidar: "npm:^3.5.2"
-    esbuild: "npm:^0.25.0"
-    esbuild-plugin-es5: "npm:^2.1.1"
-    esbuild-register: "npm:^3.6.0"
-    execa: "npm:^5.0.0"
-    fast-glob: "npm:^3.2.11"
-    fs-extra: "npm:^11.2.0"
-    lodash.debounce: "npm:^4.0.8"
-    oxc-transform: "npm:^0.47.1"
-    typescript: "npm:^5.8.2"
-  bin:
-    tamagui-build: tamagui-build.js
-    teesx: teesx.sh
-  checksum: 10/810a60337ed0eb7ead7cbe325afdf0514c79198bfa053630d718e134e33da5a59df0f70780292a81962b2c189f3a78f565f88c960b564ef7e9a15cdb61e55289
-  languageName: node
-  linkType: hard
-
-"@tamagui/build@workspace:*, @tamagui/build@workspace:code/packages/build":
+"@tamagui/build@npm:^1.126.4, @tamagui/build@workspace:*, @tamagui/build@workspace:code/packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:code/packages/build"
   dependencies:
@@ -8132,14 +8098,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-native-svg@npm:^1.126.4":
-  version: 1.126.13
-  resolution: "@tamagui/react-native-svg@npm:1.126.13"
-  checksum: 10/a5f52c118b6361e9193bfc7f1146dc36adc020f5dae042c6df8bb932e4d391065e4e9713f6465a2dbad3a3acd3ec8c6de63d9d4952dce5357d368ee299a2b6d7
-  languageName: node
-  linkType: hard
-
-"@tamagui/react-native-svg@workspace:*, @tamagui/react-native-svg@workspace:code/packages/react-native-svg":
+"@tamagui/react-native-svg@npm:^1.126.4, @tamagui/react-native-svg@workspace:*, @tamagui/react-native-svg@workspace:code/packages/react-native-svg":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-svg@workspace:code/packages/react-native-svg"
   dependencies:
@@ -8794,16 +8753,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-did-finish-ssr@npm:^1.126.4":
-  version: 1.126.13
-  resolution: "@tamagui/use-did-finish-ssr@npm:1.126.13"
-  peerDependencies:
-    react: "*"
-  checksum: 10/04f9a0ed6bb9be18ddf9fb8aa755a650c6a19c9121030399915b9d45e5848dbbefc4650a05655b4871e65d55acc6230e11c01f9f6d52a97d45232ba303082548
-  languageName: node
-  linkType: hard
-
-"@tamagui/use-did-finish-ssr@workspace:*, @tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr":
+"@tamagui/use-did-finish-ssr@npm:^1.126.4, @tamagui/use-did-finish-ssr@workspace:*, @tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr"
   dependencies:
