@@ -10,6 +10,7 @@ import {
   Separator,
   SizableText,
   Theme,
+  View,
   XGroup,
   XStack,
   YStack,
@@ -19,21 +20,43 @@ import { ButtonLink, Link, type LinkProps } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { TakeoutButton } from '../site/TakeoutButton'
 
-const QuickNavLink = ({ href, ...rest }: LinkProps) => (
-  <a onClick={(e) => [e.stopPropagation()]} href={href as any}>
-    <Paragraph
-      tag="span"
-      size="$3"
-      color="$color11"
-      cursor="pointer"
-      py="$0.5"
-      hoverStyle={{
-        color: '$color12',
-      }}
-      {...(rest as any)}
-    />
-  </a>
-)
+interface QuickNavLinkProps extends LinkProps {
+  level: number
+  showSeparator?: boolean
+}
+
+const QuickNavLink = ({ href, level, showSeparator, ...rest }: QuickNavLinkProps) => {
+  const indentLevel = Math.max(0, level - 2) // H2 = 0, H3 = 1, H4 = 2, etc.
+  const isSubItem = level > 2
+
+  return (
+    <YStack>
+      <XStack ai="center" pl={indentLevel * 16} gap="$2">
+        {isSubItem && <Circle size={4} bg="$color8" flexShrink={0} />}
+        <a
+          onClick={(e) => e.stopPropagation()}
+          href={href as any}
+          style={{ textDecoration: 'none' }}
+        >
+          <Paragraph
+            tag="span"
+            size={level === 2 ? '$3' : '$2'}
+            color={level === 2 ? '$color11' : '$color10'}
+            cursor="pointer"
+            py="$1"
+            fontWeight={level === 2 ? '500' : '400'}
+            hoverStyle={{ color: '$color12' }}
+            {...(rest as any)}
+          />
+        </a>
+      </XStack>
+
+      {showSeparator && isSubItem && (
+        <View h={1} bg="$borderColor" o={0.6} mx="$2" my="$1" />
+      )}
+    </YStack>
+  )
+}
 
 export function DocsQuickNav() {
   const [headings, setHeadings] = useState<HTMLHeadingElement[]>([])
@@ -44,10 +67,10 @@ export function DocsQuickNav() {
       document.querySelectorAll('[data-heading]')
     )
     setHeadings(headingElements)
-  }, [])
+  }, [pathname])
 
   // Function to determine the Heading Level based on `nodeName` (H2, H3, etc)
-  const getLevel = (nodeName) => {
+  const getLevel = (nodeName: string): number => {
     return Number(nodeName.replace('H', ''))
   }
 
@@ -87,18 +110,24 @@ export function DocsQuickNav() {
         <Separator />
 
         <ScrollView maxHeight="calc(100vh - var(--space-25))">
-          <YStack px="$2" py="$2">
-            <ul style={{ margin: 0, padding: 0 }}>
-              {headings.map(({ id, nodeName, innerText }, i) => {
-                const level = getLevel(nodeName)
-                return (
-                  <XStack key={i} tag="li" ai="center">
-                    {level > 2 && <Circle size={4} mx="$2" />}
-                    <QuickNavLink href={`#${id}` as Href}>{innerText}</QuickNavLink>
-                  </XStack>
-                )
-              })}
-            </ul>
+          <YStack px="$2" py="$2" gap="$1">
+            {headings.map(({ id, nodeName, innerText }, index) => {
+              const level = getLevel(nodeName)
+              const nextLevel =
+                index < headings.length - 1 ? getLevel(headings[index + 1].nodeName) : 0
+              const showSeparator = level > 2 && nextLevel > 0 && nextLevel <= level
+
+              return (
+                <QuickNavLink
+                  key={`${id}-${index}`}
+                  href={`#${id}` as Href}
+                  level={level}
+                  showSeparator={showSeparator}
+                >
+                  {innerText}
+                </QuickNavLink>
+              )
+            })}
           </YStack>
         </ScrollView>
       </YStack>
