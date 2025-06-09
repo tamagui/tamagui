@@ -139,7 +139,7 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
-        showMore={showMore !== undefined}
+        showMore={showMore}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
       >
@@ -245,6 +245,7 @@ const componentsIn = {
   Description: SubTitle,
   UL,
   LI,
+  Link,
 
   TamaguiExamplesCode,
 

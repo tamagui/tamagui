@@ -54,8 +54,8 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
         backgroundColor="transparent"
         f={1}
         className={className}
-        size={size ?? '$5'}
-        lineHeight={size ?? '$5'}
+        size={size ?? '$4'}
+        lineHeight={size ?? '$4'}
         {...(showTabs && {
           whiteSpace: 'nowrap',
         })}

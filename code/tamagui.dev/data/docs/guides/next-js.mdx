@@ -190,7 +190,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
-<Notice>
+<Notice theme="blue">
 	Because [_document.tsx](/docs/guides/next-js?#pages_documenttsx) utilizes custom `getCSS()`, include `disableInjectCSS` in `TamaguiProvider`
 </Notice>
 
@@ -258,7 +258,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
-<Notice>We recommend memo-ing children so they don't re-render.</Notice>
+<Notice theme="green">We recommend memo-ing children so they don't re-render.</Notice>
 
 ### Performance
 
@@ -351,13 +351,13 @@ module.exports = function (name, { defaultConfig }) {
 }
 ```
 
-<Notice>You need to pass the `appDir` boolean to `@tamagui/next-plugin`.</Notice>
+<Notice theme="blue">You need to pass the `appDir` boolean to `@tamagui/next-plugin`.</Notice>
 
 ### app/layout.tsx
 
 Create a new component to add `TamaguiProvider`:
 
-<Notice>
+<Notice theme="blue">
   The internal usage of `next/head` is not supported in the app directory, so you need to add the `skipNextHead` prop to your `<NextThemeProvider>`.
 </Notice>
 

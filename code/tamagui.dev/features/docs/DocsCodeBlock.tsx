@@ -47,7 +47,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     children,
     id,
     isHero = false,
-    showMore = false,
+    showMore = true,
     fileName = undefined,
     isHighlightingLines,
     showLineNumbers: showLineNumbersIn,
