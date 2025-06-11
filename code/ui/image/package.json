@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "1.126.14",
+  "version": "1.126.15",
   "sideEffects": [
     "*.css"
   ],
