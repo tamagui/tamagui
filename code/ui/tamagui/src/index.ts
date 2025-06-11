@@ -173,6 +173,7 @@ export {
   mediaObjectToString,
   mediaQueryConfig,
   mediaState,
+  setOnLayoutStrategy,
   spacedChildren,
   styled,
   themeable,

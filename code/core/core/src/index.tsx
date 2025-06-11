@@ -21,17 +21,18 @@ import {
 } from '@tamagui/web'
 import React from 'react'
 
+import { addNativeValidStyles } from './addNativeValidStyles'
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import { getRect } from './helpers/getRect'
 import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
-import { addNativeValidStyles } from './addNativeValidStyles'
 
 // helpful for usage outside of tamagui
 export {
   getElementLayoutEvent,
+  setOnLayoutStrategy,
   type LayoutEvent,
 } from './hooks/useElementLayout'
 

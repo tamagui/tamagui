@@ -117,6 +117,16 @@ If given a `Variable` - which comes from a parsed theme or token returned from `
 
 Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
 
+### setOnLayoutStrategy
+
+This is a low-level utility function for performance. By default, Tamagui `onLayout` on the web is accurate, but can cause slowdowns when layouts change in rapid succession.
+
+This is because it runs a loop on `requestAnimationFrame` and then calls `getBoundingClientRect` each time.
+
+Calling this function with `"inactive"` will pause all `onLayout` callbacks from running. Call it with `"active"` and it will resume.
+
+Our prior implementation was faster by default but would often not update with the correct value. We'd like to bring back this strategy optionally in the future.
+
 ---
 
 ## Hooks

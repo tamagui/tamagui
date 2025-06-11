@@ -9,6 +9,13 @@ import type { RefObject } from 'react'
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const Nodes = new Set<HTMLElement>()
 
+type LayoutMeasurementStatus = 'inactive' | 'active'
+
+let status: LayoutMeasurementStatus = 'active'
+export function setOnLayoutStrategy(state: LayoutMeasurementStatus) {
+  status = state
+}
+
 export type LayoutValue = {
   x: number
   y: number
@@ -78,7 +85,9 @@ if (isClient) {
     // note that getBoundingClientRect() does not thrash layout if its after an animation frame
     rAF!(layoutOnAnimationFrame)
     function layoutOnAnimationFrame() {
-      Nodes.forEach(updateLayoutIfChanged)
+      if (status !== 'inactive') {
+        Nodes.forEach(updateLayoutIfChanged)
+      }
       rAF!(layoutOnAnimationFrame)
     }
   } else {
