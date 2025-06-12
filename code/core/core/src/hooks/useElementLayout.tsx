@@ -44,6 +44,10 @@ if (isClient) {
     let avoidUpdates = true
     const queuedUpdates = new Map<HTMLElement, Function>()
 
+    // track frame timing to detect sync work and avoid updates during heavy periods
+    let lastFrameAt = Date.now()
+    const numDroppedFramesUntilPause = 2 // adjust sensitivity
+
     ___onDidFinishClientRender(() => {
       avoidUpdates = false
       if (queuedUpdates) {
@@ -85,8 +89,19 @@ if (isClient) {
     // note that getBoundingClientRect() does not thrash layout if its after an animation frame
     rAF!(layoutOnAnimationFrame)
     function layoutOnAnimationFrame() {
+      const now = Date.now()
+      const timeSinceLastFrame = now - lastFrameAt
+      lastFrameAt = now
+
       if (status !== 'inactive') {
-        Nodes.forEach(updateLayoutIfChanged)
+        // avoid updates if we've been dropping frames (indicates sync work happening)
+        const expectedFrameTime = 16.67 // ~60fps
+        const hasRecentSyncWork =
+          timeSinceLastFrame > expectedFrameTime * numDroppedFramesUntilPause
+
+        if (!hasRecentSyncWork) {
+          Nodes.forEach(updateLayoutIfChanged)
+        }
       }
       rAF!(layoutOnAnimationFrame)
     }
