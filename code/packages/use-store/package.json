@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-store",
-  "version": "1.126.15",
+  "version": "1.126.16",
   "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
