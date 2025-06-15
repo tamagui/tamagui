@@ -18,11 +18,10 @@
 
 - fix react 19 + nextjs 15
   - https://github.com/gcoakleyjr/React19-Tamagui
-  - right now we have TAMAGUI_REACT_19 but you also need to use react-native-web-lite or patch rnw because it doesn't work, we should:
+  - react-native-web-lite or patch rnw because it doesn't work, we should:
     - somehow fix rnw issue with rn19
     - fix issue with rnw-lite
       - https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
-    - better solution for react 19 mode (properly in settings no more TAMAGUI_REACT_19)
   - eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
   - announcement
 

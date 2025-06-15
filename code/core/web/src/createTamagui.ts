@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/constants'
+import { isWeb, IS_REACT_19 } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
@@ -74,7 +74,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     if (noThemes) {
       foundThemes = scanAllSheets(noThemes, tokensParsed)
     }
-    if (process.env.TAMAGUI_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
+    if (IS_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
       // save some bundle
     } else {
       if (noThemes) {

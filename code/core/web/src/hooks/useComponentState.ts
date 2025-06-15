@@ -1,4 +1,4 @@
-import { isServer, isWeb } from '@tamagui/constants'
+import { isServer, isWeb, IS_REACT_19 } from '@tamagui/constants'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useMemo, useRef, useState } from 'react'
 import {
@@ -28,7 +28,7 @@ export const useComponentState = (
   config: TamaguiInternalConfig
 ) => {
   const isHydrated = useDidFinishSSR()
-  const [startedUnhydrated] = useState(process.env.TAMAGUI_REACT_19 ? !isHydrated : false)
+  const [startedUnhydrated] = useState(IS_REACT_19 ? !isHydrated : false)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
   const stateRef = useRef<TamaguiComponentStateRef>(
