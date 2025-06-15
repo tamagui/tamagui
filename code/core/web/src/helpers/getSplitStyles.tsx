@@ -90,6 +90,7 @@ type StyleSplitter = (
   context?: ComponentContextI,
   // web-only
   elementType?: string,
+  startedUnhydrated?: boolean,
   debug?: DebugProp
 ) => GetStyleResult
 
@@ -134,6 +135,7 @@ export const getSplitStyles: StyleSplitter = (
   parentSplitStyles,
   context,
   elementType,
+  startedUnhydrated,
   debug
 ) => {
   conf = conf || getConfig()
@@ -320,7 +322,7 @@ export const getSplitStyles: StyleSplitter = (
               `.${identifier} { container-name: ${valInit}; container-type: ${containerType}; }`,
             ],
           ] satisfies StyleObject
-          addStyleToInsertRules(rulesToInsert, containerCSS)
+          addStyleToInsertRules(rulesToInsert, containerCSS, startedUnhydrated)
         }
       }
       continue
@@ -1478,12 +1480,13 @@ const useInsertEffectCompat = isWeb
   : () => {}
 
 // perf: ...args a bit expensive on native
-export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
+export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k) => {
   conf = conf || getConfig()
-  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j)
+  const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k)
 
   if (process.env.TAMAGUI_TARGET !== 'native') {
-    if (!process.env.TAMAGUI_REACT_19) {
+    // j = startedUnhydrated
+    if (!j) {
       useInsertEffectCompat(() => {
         insertStyleRules(res.rulesToInsert)
       }, [res.rulesToInsert])
@@ -1493,7 +1496,11 @@ export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
   return res
 }
 
-function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
+function addStyleToInsertRules(
+  rulesToInsert: RulesToInsert,
+  styleObject: StyleObject,
+  startedUnhydrated = false
+) {
   // if (process.env.NODE_ENV === 'development') {
   //   if (rulesToInsert[styleObject[2]!]) {
   //     console.log('already have this style rule to insert?', styleObject, rulesToInsert)
@@ -1501,7 +1508,7 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
   // }
   if (process.env.TAMAGUI_TARGET === 'web') {
     const identifier = styleObject[StyleObjectIdentifier]
-    if (!process.env.TAMAGUI_REACT_19) {
+    if (!startedUnhydrated) {
       if (shouldInsertStyleRules(identifier)) {
         updateRules(identifier, styleObject[StyleObjectRules])
       }

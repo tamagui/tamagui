@@ -361,6 +361,7 @@ export function createComponent<
       supportsCSSVars,
       willBeAnimated,
       willBeAnimatedClient,
+      startedUnhydrated,
     } = useComponentState(props, componentContext, staticConfig, config!)
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
@@ -513,6 +514,7 @@ export function createComponent<
       null,
       componentContext,
       elementType,
+      startedUnhydrated,
       debugProp
     )
 
@@ -1132,11 +1134,14 @@ export function createComponent<
       )
     }
 
+    if (process.env.NODE_ENV === 'development' && time) time`context-override`
+
     // add in <style> tags inline
-    const { rulesToInsert } = splitStyles
-    if (process.env.TAMAGUI_TARGET === 'web' && process.env.TAMAGUI_REACT_19) {
-      content = wrapStyleTags(Object.values(rulesToInsert), content)
+    if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
+      content = wrapStyleTags(Object.values(splitStyles.rulesToInsert), content)
     }
+
+    if (process.env.NODE_ENV === 'development' && time) time`style-tags`
 
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {

@@ -28,6 +28,7 @@ export const useComponentState = (
   config: TamaguiInternalConfig
 ) => {
   const isHydrated = useDidFinishSSR()
+  const [startedUnhydrated] = useState(process.env.TAMAGUI_REACT_19 ? !isHydrated : false)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
   const stateRef = useRef<TamaguiComponentStateRef>(
@@ -214,6 +215,7 @@ export const useComponentState = (
   }
 
   return {
+    startedUnhydrated,
     curStateRef,
     disabled,
     groupName,

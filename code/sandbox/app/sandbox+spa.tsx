@@ -1,28 +1,56 @@
-import { DialogDemo } from '@tamagui/demos'
 import { useLayoutEffect, useState } from 'react'
-import { Button, Text, View, YStack } from 'tamagui'
+import { Circle, Text, View } from 'tamagui'
 
 export default function Sandbox() {
-  const [x, setX] = useState(Date.now())
-  const [time, setTime] = useState(0)
+  return (
+    <>
+      <Performance />
+    </>
+  )
+}
 
-  useLayoutEffect(() => {
-    if (x) {
-      setTime(Date.now() - x)
-    }
-  }, [x])
+const Performance = () => {
+  const [k, setK] = useState(0)
 
   return (
     <>
-      <View
-        width={200}
-        height={200}
-        bg="red"
-        left="20%"
-        onLayout={(e) => {
-          console.log('.', e.nativeEvent.layout)
-        }}
-      />
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+      <div style={{ color: 'red' }} onClick={() => setK(Math.random())}>
+        render
+      </div>
+      <TimedRender key={k}>
+        <Circle
+          debug="profile"
+          size={36}
+          borderWidth={2}
+          bg="yellow"
+          borderColor="red"
+          hoverStyle={{
+            borderColor: 'green',
+          }}
+          onPress={() => {
+            //
+          }}
+        />
+      </TimedRender>
     </>
+  )
+}
+
+import React from 'react'
+
+export function TimedRender(props) {
+  const [start] = React.useState(performance.now())
+  const [end, setEnd] = React.useState(0)
+
+  React.useLayoutEffect(() => {
+    setEnd(performance.now() - start)
+  }, [start])
+
+  return (
+    <View style={{ maxWidth: '100%' }}>
+      {!!end && <Text>Took {end}ms</Text>}
+      <View style={{ flexDirection: 'column' }}>{props.children}</View>
+    </View>
   )
 }

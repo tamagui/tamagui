@@ -1,6 +1,8 @@
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import type { StyleObject } from '../types'
 
+// turns out this is pretty slow, creating a bunch of extra tags...
+
 export function wrapStyleTags(styles: StyleObject[], content?: any) {
   if (process.env.TAMAGUI_REACT_19 && process.env.TAMAGUI_TARGET !== 'native') {
     if (styles.length) {
