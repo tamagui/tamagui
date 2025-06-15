@@ -633,6 +633,7 @@ export function createExtractor(
           undefined,
           undefined,
           undefined,
+          false,
           shouldPrintDebug
         )
 
@@ -2062,6 +2063,7 @@ export function createExtractor(
                 undefined,
                 undefined,
                 undefined,
+                false,
                 debugPropValue || shouldPrintDebug
               )
 
