@@ -1,3 +1,13 @@
+for v2, new site hero that captures:
+
+- 100% features work the same cross-platform
+- optionally compile-time optimized, but 100% runtime feature-set
+- 0-dependency: no / faster than react-native-web
+- fully typesafe styling
+- by far best SSR
+- headless component kit
+- super-powerful: themes, animations
+
 # force railway deploy
 
 - in onejs/chat bug with transforms merging media queries: 

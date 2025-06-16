@@ -172,7 +172,6 @@ export function createExtractor(
       disableExtractVariables,
       disableDebugAttr,
       enableDynamicEvaluation = false,
-      disableOptimizeHooks,
       includeExtensions = ['.ts', '.tsx', '.jsx'],
       extractStyledDefinitions = false,
       prefixLogs,
@@ -180,13 +179,6 @@ export function createExtractor(
       platform,
       ...restProps
     } = options
-
-    const validHooks = disableOptimizeHooks
-      ? {}
-      : {
-          useMedia: true,
-          useTheme: true,
-        }
 
     if (sourcePath.includes('.tamagui-dynamic-eval')) {
       return null
@@ -383,7 +375,7 @@ export function createExtractor(
       if (valid) {
         const names = node.specifiers.map((specifier) => specifier.local.name)
         const isValidComponent = names.some((name) =>
-          Boolean(isValidImport(propsWithFileInfo, moduleName, name) || validHooks[name])
+          Boolean(isValidImport(propsWithFileInfo, moduleName, name))
         )
         if (shouldPrintDebug === 'verbose') {
           logger.info(
@@ -2436,20 +2428,6 @@ export function createExtractor(
     })
 
     tm.mark('jsx-done', !!shouldPrintDebug)
-
-    /**
-     * Step 3: Remove dead code from removed media query / theme hooks
-     */
-    if (modifiedComponents.size) {
-      const all = Array.from(modifiedComponents)
-      if (shouldPrintDebug) {
-        logger.info(`  [🪝] hook check ${all.length}`)
-      }
-      for (const comp of all) {
-        removeUnusedHooks(comp, shouldPrintDebug)
-      }
-    }
-
     tm.done(shouldPrintDebug === 'verbose')
 
     return res

@@ -106,11 +106,6 @@ export interface TamaguiBuildOptions {
   disableExtractVariables?: boolean | 'theme'
 
   /**
-   * Disable optimizing media/theme hooks
-   */
-  disableOptimizeHooks?: boolean
-
-  /**
    * (Advanced) Disables the initial build and attempts to load from the .tamagui directory
    */
   disableInitialBuild?: boolean
