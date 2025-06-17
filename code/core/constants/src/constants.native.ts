@@ -1,5 +1,9 @@
 import { useLayoutEffect, type useEffect } from 'react'
+// @ts-ignore
+import { use } from 'react'
 import { Platform } from 'react-native'
+
+export const IS_REACT_19: boolean = !!use
 
 export const isWeb: boolean = false
 export const isWindowDefined: boolean = false
