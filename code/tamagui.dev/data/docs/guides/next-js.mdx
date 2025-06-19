@@ -323,7 +323,9 @@ import '@tamagui/core/reset.css'
 
 ## App router
 
-Tamagui includes Server Components support for the Next.js app directory with [`use client`](https://nextjs.org/docs/app/building-your-application/rendering/client-components#using-client-components-in-nextjs) support. We're also actively working on a new mode that enables full server-side support with some limitations.
+Tamagui includes Server Components support for the Next.js app directory with [`use client`](https://nextjs.org/docs/app/building-your-application/rendering/client-components#using-client-components-in-nextjs) support.
+
+Note that "use client" does render on the server, and since Tamagui extracts to CSS statically and uses inline `<style />` tags for non-static styling, we get excellent performance as-is.
 
 ### next.config.js
 
