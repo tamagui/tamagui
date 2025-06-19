@@ -6525,9 +6525,9 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/use-presence": "workspace:*"
     "@tamagui/web": "workspace:*"
-    moti: "npm:^0.29.0"
+    moti: "npm:^0.30.0"
     react: "npm:*"
-    react-native-reanimated: "npm:~3.17.4"
+    react-native-reanimated: "npm:^3.18.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -6647,7 +6647,7 @@ __metadata:
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:^0.79.2"
     react-native-gesture-handler: "npm:~2.20.2"
-    react-native-reanimated: "npm:~3.17.4"
+    react-native-reanimated: "npm:^3.18.0"
     react-native-safe-area-context: "npm:5.4.0"
     react-native-svg: "npm:15.11.2"
     react-native-web: "npm:^0.20.0"
@@ -7170,7 +7170,7 @@ __metadata:
     puppeteer: "npm:^24.3.1"
     react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:^0.79.2"
-    react-native-reanimated: "npm:~3.17.4"
+    react-native-reanimated: "npm:^3.18.0"
     react-native-svg: "npm:15.11.2"
     stripe: "npm:^9.1.0"
     subset-font: "npm:^2.1.0"
@@ -7585,7 +7585,7 @@ __metadata:
     react-dom: "npm:*"
     react-native: "npm:^0.79.2"
     react-native-gesture-handler: "npm:~2.20.2"
-    react-native-reanimated: "npm:~3.17.4"
+    react-native-reanimated: "npm:^3.18.0"
     react-native-safe-area-context: "npm:5.4.0"
     react-native-screens: "npm:~4.10.0"
     react-native-svg: "npm:15.11.2"
@@ -22093,14 +22093,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moti@npm:^0.29.0":
-  version: 0.29.0
-  resolution: "moti@npm:0.29.0"
+"moti@npm:^0.30.0":
+  version: 0.30.0
+  resolution: "moti@npm:0.30.0"
   dependencies:
     framer-motion: "npm:^6.5.1"
   peerDependencies:
     react-native-reanimated: "*"
-  checksum: 10/38a7a173739a1ed7c05e3ddb32ef9bb54857dd9a059290c701ffbc97fc36db14902348116f6f0841b1b63bb92355cc469cbbd952a65d6f9ee64b77bda4987456
+  checksum: 10/7b892549cc5b898d21991f0f6b6b92f836d0ce58419f99c8888b87f3419a6199ac4e5933b407667f79cbc1c413ee95370ec7603503edfb6b20a6f0dc1ab4acd3
   languageName: node
   linkType: hard
 
@@ -24703,7 +24703,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:~3.17.1, react-native-reanimated@npm:~3.17.4":
+"react-native-reanimated@npm:^3.18.0":
+  version: 3.18.0
+  resolution: "react-native-reanimated@npm:3.18.0"
+  dependencies:
+    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
+    "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-classes": "npm:^7.0.0-0"
+    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
+    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
+    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
+    "@babel/plugin-transform-unicode-regex": "npm:^7.0.0-0"
+    "@babel/preset-typescript": "npm:^7.16.7"
+    convert-source-map: "npm:^2.0.0"
+    invariant: "npm:^2.2.4"
+    react-native-is-edge-to-edge: "npm:1.1.7"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+    react: "*"
+    react-native: "*"
+  checksum: 10/aec34f97393b3189fc727cee306481af0f6f47309589f04d4ece89cae69144131f896ddc226f786c2261c828091481494cbd6c442d1152461da83334fc643def
+  languageName: node
+  linkType: hard
+
+"react-native-reanimated@npm:~3.17.1":
   version: 3.17.5
   resolution: "react-native-reanimated@npm:3.17.5"
   dependencies:
@@ -26017,7 +26041,7 @@ __metadata:
     one: "npm:1.1.492"
     react: "npm:*"
     react-native: "npm:^0.79.2"
-    react-native-reanimated: "npm:~3.17.4"
+    react-native-reanimated: "npm:^3.18.0"
     react-native-safe-area-context: "npm:5.4.0"
     react-native-screens: "npm:~4.10.0"
     react-native-svg: "npm:15.11.2"

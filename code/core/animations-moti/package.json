@@ -31,12 +31,12 @@
   "dependencies": {
     "@tamagui/use-presence": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "moti": "^0.29.0"
+    "moti": "^0.30.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native-reanimated": "~3.17.4"
+    "react-native-reanimated": "^3.18.0"
   },
   "scripts": {
     "build": "tamagui-build",
