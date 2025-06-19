@@ -7093,7 +7093,7 @@
     "lucide-static": "^0.508.0",
     "prop-types": "^15.7.2",
     "react": "*",
-    "react-native-svg": "15.8.0",
+    "react-native-svg": "15.11.2",
     "uppercamelcase": "^3.0.0"
   },
   "publishConfig": {

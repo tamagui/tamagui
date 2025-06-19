@@ -156,7 +156,7 @@ export const ListItemSubtitle = styled(ListItemText, {
           shift: -1,
           excludeHalfSteps: true,
         })
-        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras)
+        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras as any)
         return fontStyle
       },
     },

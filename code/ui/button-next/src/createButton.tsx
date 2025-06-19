@@ -7,9 +7,9 @@ import type {
 import { createStyledContext, styled } from '@tamagui/web'
 
 export const createButton = <Variants extends Record<string, any>>(options: {
-  Frame: TamaguiComponentExpectingVariants<ViewProps, Variants>
-  Text: TamaguiComponentExpectingVariants<TextProps, Variants>
-  Icon: TamaguiComponentExpectingVariants<TextProps, Variants>
+  Frame: TamaguiComponentExpectingVariants<any, Variants>
+  Text: TamaguiComponentExpectingVariants<any, Variants>
+  Icon: TamaguiComponentExpectingVariants<any, Variants>
   defaultVariants?: { [Key in keyof Variants]: Variants[Key] | undefined }
   name?: string
 }) => {

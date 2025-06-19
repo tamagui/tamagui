@@ -300,14 +300,14 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const onMoveShouldSet = (
         e: GestureResponderEvent,
         { dy }: PanResponderGestureState
-      ) => {
+      ): boolean => {
         // if dragging handle always allow:
         if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
           return true
         }
 
         if (scrollBridge.scrollLock) {
-          return
+          return false
         }
 
         const isScrolled = scrollBridge.y !== 0

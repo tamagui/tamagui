@@ -237,6 +237,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
         end?: number | undefined;
     } | undefined | undefined;
     inputAccessoryViewID?: string | undefined | undefined;
+    disableKeyboardShortcuts?: boolean | undefined | undefined;
     clearButtonMode?: "never" | "while-editing" | "unless-editing" | "always" | undefined | undefined;
     clearTextOnFocus?: boolean | undefined | undefined;
     dataDetectorTypes?: import("react-native").DataDetectorTypes | import("react-native").DataDetectorTypes[] | undefined;
@@ -246,8 +247,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rejectResponderTermination?: boolean | null | undefined | undefined;
     selectionState?: import("react-native").DocumentSelectionState | undefined;
     spellCheck?: boolean | undefined | undefined;
-    textContentType?: "none" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "name" | "namePrefix" | "nameSuffix" | "nickname" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "username" | "password" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | undefined | undefined;
+    textContentType?: "none" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "name" | "namePrefix" | "nameSuffix" | "nickname" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "username" | "password" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | "cellularEID" | "cellularIMEI" | "dateTime" | "flightNumber" | "shipmentTrackingNumber" | undefined | undefined;
     scrollEnabled?: boolean | undefined | undefined;
+    lineBreakModeIOS?: "wordWrapping" | "char" | "clip" | "head" | "middle" | "tail" | undefined | undefined;
     smartInsertDelete?: boolean | undefined | undefined;
     cursorColor?: import("react-native").ColorValue | null | undefined;
     selectionHandleColor?: import("react-native").ColorValue | null | undefined;
@@ -345,6 +347,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     elevation?: number | "unset" | undefined;
     isolation?: "unset" | "auto" | "isolate" | undefined;
     boxShadow?: string | readonly import("react-native").BoxShadowValue[] | undefined;
+    experimental_backgroundImage?: string | readonly import("react-native").GradientValue[] | undefined;
     aspectRatio?: number | string | undefined | undefined;
     borderBottomWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBottomWidth"> | undefined;
     borderEndWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderEndWidth"> | undefined;
@@ -354,6 +357,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderTopWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderTopWidth"> | undefined;
     borderWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderWidth"> | undefined;
     bottom?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"bottom"> | null | undefined;
+    boxSizing?: "unset" | "border-box" | "content-box" | undefined;
     end?: "unset" | import("react-native").DimensionValue | undefined;
     rowGap?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"rowGap"> | undefined;
     gap?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"gap"> | undefined;

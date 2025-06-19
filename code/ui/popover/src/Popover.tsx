@@ -50,6 +50,7 @@ import {
 import { Portal, resolveViewZIndex } from '@tamagui/portal'
 import type { RemoveScrollProps } from '@tamagui/remove-scroll'
 import { RemoveScroll } from '@tamagui/remove-scroll'
+import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
@@ -57,7 +58,6 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { Platform } from 'react-native'
-import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { useFloatingContext } from './useFloatingContext'
 
 // adapted from radix-ui popover
