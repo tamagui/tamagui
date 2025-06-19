@@ -1,6 +1,6 @@
-import type { FontSizeTokens, TextProps, VariantSpreadFunction } from '@tamagui/core';
+import type { FontSizeTokens, TextProps, VariantSpreadFunction } from '@tamagui/web';
 export declare const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens>;
-export declare const SizableText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+export declare const SizableText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: FontSizeTokens | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic>;
 //# sourceMappingURL=index.d.ts.map

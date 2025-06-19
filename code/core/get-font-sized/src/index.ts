@@ -5,8 +5,8 @@ import type {
   TextProps,
   TextStyle,
   VariantSpreadFunction,
-} from '@tamagui/core'
-import { getTokens, styled, Text } from '@tamagui/core'
+} from '@tamagui/web'
+import { getTokens, styled, Text } from '@tamagui/web'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
