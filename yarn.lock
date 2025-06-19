@@ -7746,7 +7746,6 @@ __metadata:
   resolution: "@tamagui/monorepo-test@workspace:code/core/monorepo-test"
   dependencies:
     vitest: "npm:^3.0.5"
-    zx: "npm:^8.5.5"
   languageName: unknown
   linkType: soft
 

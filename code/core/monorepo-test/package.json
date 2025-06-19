@@ -12,7 +12,6 @@
     "test": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts"
   },
   "devDependencies": {
-    "vitest": "^3.0.5",
-    "zx": "^8.5.5"
+    "vitest": "^3.0.5"
   }
 }
