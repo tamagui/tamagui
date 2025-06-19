@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "@tamagui/config-default": "workspace:*",
     "react": "*",
     "vitest": "^3.0.5"
   },

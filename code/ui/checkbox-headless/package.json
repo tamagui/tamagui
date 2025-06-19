@@ -30,7 +30,8 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/label": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-previous": "workspace:*"
+    "@tamagui/use-previous": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "exports": {
     "./package.json": "./package.json",
