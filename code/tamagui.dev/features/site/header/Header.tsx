@@ -371,8 +371,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
       stayInFrame={{
         padding: 20,
       }}
-      // open={!!active}
-      open
+      open={!!active}
       onOpenChange={(val, event) => {
         if (!val) {
           setActive('')
