@@ -425,7 +425,11 @@ async function buildJs(allFiles) {
               'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
             }),
           ],
-          external: ['react', 'react-dom'].filter(Boolean),
+          external: [
+            'react',
+            'react-dom',
+            bundleNativeTest ? 'react-native' : undefined,
+          ].filter(Boolean),
           resolveExtensions: [
             '.native.ts',
             '.native.tsx',

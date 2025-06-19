@@ -7005,6 +7005,7 @@ __metadata:
     "@tamagui/react-native-media-driver": "workspace:*"
     "@tamagui/react-native-use-pressable": "workspace:*"
     "@tamagui/react-native-use-responder-events": "workspace:*"
+    "@tamagui/react-native-web-lite": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     "@tamagui/web": "workspace:*"
     "@testing-library/react": "npm:^16.1.0"

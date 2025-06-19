@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "@tamagui/react-native-web-lite": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "typescript": "^5.8.2",
