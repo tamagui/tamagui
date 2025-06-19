@@ -380,6 +380,13 @@ async function buildJs(allFiles) {
           plugins: [
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
+              'react-native': require.resolve('@tamagui/react-native-web-lite'),
+              'react-native/Libraries/Core/ReactNativeVersion':
+                require.resolve('@tamagui/proxy-worm'),
+              'react-native/Libraries/Components/View/ViewNativeComponent':
+                require.resolve('@tamagui/proxy-worm'),
+              'react-native/Libraries/Text/TextAncestor':
+                require.resolve('@tamagui/proxy-worm'),
 
               // for test mode we want real react-native
               ...(!bundleNativeTest && {
@@ -406,11 +413,7 @@ async function buildJs(allFiles) {
               'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
             }),
           ],
-          external: [
-            'react',
-            'react-dom',
-            bundleNativeTest ? 'react-native' : undefined,
-          ].filter(Boolean),
+          external: ['react', 'react-dom'].filter(Boolean),
           resolveExtensions: [
             '.native.ts',
             '.native.tsx',
