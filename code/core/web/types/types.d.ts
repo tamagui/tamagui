@@ -826,7 +826,6 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     scrollbarWidth?: Properties['scrollbarWidth'];
-    pointerEvents?: ViewProps['pointerEvents'];
     /**
      * The point at which transforms originate from.
      */
@@ -1216,7 +1215,7 @@ export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hit
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
-export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'pointerEvents'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
     /** @deprecated use userSelect instead */
     selectable?: boolean;

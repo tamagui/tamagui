@@ -1410,7 +1410,8 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   scrollbarWidth?: Properties['scrollbarWidth']
-  pointerEvents?: ViewProps['pointerEvents']
+
+  // pointerEvents?: ViewProps['pointerEvents']
 
   /**
    * The point at which transforms originate from.
@@ -1867,6 +1868,7 @@ export interface TextNonStyleProps
       | RNOnlyProps
       | keyof ExtendBaseTextProps
       | 'style'
+      | 'pointerEvents'
     >,
     ExtendBaseTextProps,
     TamaguiComponentPropsBase {

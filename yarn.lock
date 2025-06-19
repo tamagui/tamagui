@@ -7409,7 +7409,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
-    "@tamagui/core": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"

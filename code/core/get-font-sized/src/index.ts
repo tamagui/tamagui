@@ -6,7 +6,7 @@ import type {
   TextStyle,
   VariantSpreadFunction,
 } from '@tamagui/core'
-import { getTokens } from '@tamagui/core'
+import { getTokens, styled, Text } from '@tamagui/core'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
@@ -52,6 +52,21 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
 
   return style
 }
+
+export const SizableText = styled(Text, {
+  name: 'SizableText',
+  fontFamily: '$body',
+
+  variants: {
+    size: {
+      '...fontSize': getFontSized,
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$true',
+  },
+})
 
 const cache = new WeakMap<any, FontSizeTokens>()
 

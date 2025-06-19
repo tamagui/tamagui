@@ -47,7 +47,6 @@
   },
   "scripts": {
     "build": "NEEDS_UNLOCK=1 tamagui-build --skip-types || ./setup-unencrypted.sh",
-    "typecheck": "tsc",
     "watch": "NEEDS_UNLOCK=1 tamagui-build --skip-types --watch",
     "clean": "tamagui-build clean",
     "dev:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
