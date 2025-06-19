@@ -306,6 +306,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           return true
         }
 
+        if (scrollBridge.scrollLock) {
+          return
+        }
+
         const isScrolled = scrollBridge.y !== 0
 
         // Update the dragging direction

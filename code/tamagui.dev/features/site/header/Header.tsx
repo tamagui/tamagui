@@ -371,7 +371,8 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
       stayInFrame={{
         padding: 20,
       }}
-      open={!!active}
+      // open={!!active}
+      open
       onOpenChange={(val, event) => {
         if (!val) {
           setActive('')
@@ -530,6 +531,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
+  const pointerFine = useMedia().pointerFine
 
   useFocusEffect(() => {
     context.close()
@@ -563,7 +565,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       }}
       enableAnimationForPositionChange
       animation="medium"
-      bg="$background08"
+      bg="$color3"
       backdropFilter="blur(40px)"
       maxHeight="90vh"
       maxWidth={360}
@@ -583,26 +585,55 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         opacity: 0,
       }}
     >
-      <Popover.Arrow bg="$background08" size="$3.5" />
+      <Popover.Arrow bg="$color3" size="$3.5" />
 
-      <YStack
-        $pointerFine={{
-          w: 290,
-        }}
-        w="100%"
-        transition="all ease-in 200ms"
-        mih={`calc(min(${heights[active]}px, 80vh))`}
-        ov="hidden"
-        flex={1}
-        br="$6"
-      >
-        <AnimatePresence custom={{ going }} initial={false}>
+      {pointerFine ? (
+        <YStack
+          w="100%"
+          transition="all ease-in 200ms"
+          mih={`calc(min(${heights[active]}px, 80vh))`}
+          ov="hidden"
+          maxHeight="100%"
+          br="$6"
+          flex={1}
+        >
+          <AnimatePresence custom={{ going }} initial={false}>
+            <Frame>
+              {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}
+              <Popover.ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                  flex: 1,
+                  width: '100%',
+                }}
+                contentContainerStyle={{ width: '100%' }}
+              >
+                <YStack w="100%" p="$3">
+                  <HeaderMenuContents key={active} id={active} />
+                </YStack>
+              </Popover.ScrollView>
+            </Frame>
+          </AnimatePresence>
+        </YStack>
+      ) : (
+        <YStack p="$4">
           <HeaderMenuContents key={active} id={active} />
-        </AnimatePresence>
-      </YStack>
+        </YStack>
+      )}
     </Popover.Content>
   )
 })
+
+const ActivePageDocsMenuContents = () => {
+  const pathName = usePathname()
+  const section = pathName.startsWith('/ui/intro')
+    ? 'ui'
+    : pathName.startsWith('/ui/compiler')
+      ? 'compiler'
+      : 'core'
+
+  return <DocsMenuContents inMenu section={section} />
+}
 
 const HeaderMenuContents = (props: { id: ID }) => {
   const { data } = useUser()
@@ -612,125 +643,116 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoTheme = useBentoTheme()
   const pathName = usePathname()
   const isOnBentoPage = pathName.startsWith('/bento')
+  const isMobile = useMedia().maxMd
 
   /**
    * When the theme_histories are fetched,
    * we can apply one of them to Bento components from dropdown
    */
-  const content = (() => {
-    if (props.id === 'menu') {
-      return <HeaderMenuMoreContents />
-    }
+  if (props.id === 'menu') {
+    return (
+      <>
+        <HeaderMenuMoreContents />
+        {isMobile && <ActivePageDocsMenuContents />}
+      </>
+    )
+  }
 
-    if (props.id === 'theme') {
-      return (
-        <YStack flex={1} gap="$2">
-          {!isOnBentoPage || !themeHistories.length ? (
-            <>
-              <PromoCardTheme />
-              <Paragraph
-                bg="$color3"
-                pointerEvents="none"
-                bw={0.5}
-                bc="$color6"
-                br="$5"
-                ff="$mono"
-                size="$4"
-                o={0.5}
-                p="$4"
+  if (props.id === 'theme') {
+    return (
+      <YStack flex={1} gap="$2">
+        {!isOnBentoPage || !themeHistories.length ? (
+          <>
+            <PromoCardTheme />
+            <Paragraph
+              bg="$color3"
+              pointerEvents="none"
+              bw={0.5}
+              bc="$color6"
+              br="$5"
+              ff="$mono"
+              size="$4"
+              o={0.5}
+              p="$4"
+            >
+              Once you create themes, visit the Bento page and open this menu to preview
+              them.
+              {`\n`}
+              <Link href="/bento" theme="blue" style={{ pointerEvents: 'auto' }}>
+                Go to Bento to preview your themes →
+              </Link>
+            </Paragraph>
+          </>
+        ) : (
+          <YStack gap="$2">
+            <XStack>
+              <HeadAnchor
+                grid
+                alignItems="center"
+                onPress={() => {
+                  bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
+                }}
               >
-                Once you create themes, visit the Bento page and open this menu to preview
-                them.
-                {`\n`}
-                <Link href="/bento" theme="blue" style={{ pointerEvents: 'auto' }}>
-                  Go to Bento to preview your themes →
-                </Link>
-              </Paragraph>
-            </>
-          ) : (
-            <YStack gap="$2">
-              <XStack>
-                <HeadAnchor
-                  grid
-                  alignItems="center"
-                  onPress={() => {
-                    bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
-                  }}
-                >
-                  <SizableText size="$3" color="$color11" ellipse>
-                    Enabled
-                  </SizableText>
+                <SizableText size="$3" color="$color11" ellipse>
+                  Enabled
+                </SizableText>
 
-                  {bentoTheme.enabled ? <Check ml="$2" size={12} /> : null}
-                </HeadAnchor>
-                <HeadAnchor
-                  grid
-                  onPress={() => {
-                    bentoStore.disableTint = !bentoStore.disableTint
-                  }}
-                >
-                  <SizableText size="$3" color="$color11" ellipse>
-                    Tint
-                  </SizableText>
-
-                  {!bentoStore.disableTint ? <Check ml="$2" size={12} /> : null}
-                </HeadAnchor>
-              </XStack>
-
-              <Separator mb="$3" opacity={0.5} />
-
-              <SizableText
-                size="$3"
-                fontFamily="$mono"
-                px="$4"
-                color="$color10"
-                theme="alt2"
+                {bentoTheme.enabled ? <Check ml="$2" size={12} /> : null}
+              </HeadAnchor>
+              <HeadAnchor
+                grid
+                onPress={() => {
+                  bentoStore.disableTint = !bentoStore.disableTint
+                }}
               >
-                Recent Themes
-              </SizableText>
+                <SizableText size="$3" color="$color11" ellipse>
+                  Tint
+                </SizableText>
 
-              {themeHistories.map((history) => (
-                <HeadAnchor
-                  key={history.id}
-                  grid
-                  onPress={() => updateGenerate(history.theme_data)}
-                >
-                  <XStack ai="center" jc="space-between">
-                    <SizableText size="$3" color="$color11" ellipse>
-                      {history.search_query}
-                    </SizableText>
-                  </XStack>
-                </HeadAnchor>
-              ))}
+                {!bentoStore.disableTint ? <Check ml="$2" size={12} /> : null}
+              </HeadAnchor>
+            </XStack>
 
-              {themeHistories.length === 0 && (
-                <YStack p="$4" ai="center">
-                  <SizableText size="$2" theme="alt2">
-                    {data?.user ? 'No theme history yet' : 'Login to save themes'}
+            <Separator mb="$3" opacity={0.5} />
+
+            <SizableText
+              size="$3"
+              fontFamily="$mono"
+              px="$4"
+              color="$color10"
+              theme="alt2"
+            >
+              Recent Themes
+            </SizableText>
+
+            {themeHistories.map((history) => (
+              <HeadAnchor
+                key={history.id}
+                grid
+                onPress={() => updateGenerate(history.theme_data)}
+              >
+                <XStack ai="center" jc="space-between">
+                  <SizableText size="$3" color="$color11" ellipse>
+                    {history.search_query}
                   </SizableText>
-                </YStack>
-              )}
-            </YStack>
-          )}
-        </YStack>
-      )
-    }
-    return <DocsMenuContents inMenu section={props.id} />
-  })()
+                </XStack>
+              </HeadAnchor>
+            ))}
 
-  return (
-    <Frame>
-      <Popover.ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, width: '100%' }}
-        contentContainerStyle={{ width: '100%' }}
-      >
-        <YStack miw={230} w="100%" p="$3">
-          {content}
-        </YStack>
-      </Popover.ScrollView>
-    </Frame>
-  )
+            {themeHistories.length === 0 && (
+              <YStack p="$4" ai="center">
+                <SizableText size="$2" theme="alt2">
+                  {data?.user ? 'No theme history yet' : 'Login to save themes'}
+                </SizableText>
+              </YStack>
+            )}
+          </YStack>
+        )}
+      </YStack>
+    )
+  }
+
+  return <DocsMenuContents inMenu section={props.id} />
 }
 
 const HeaderMenuMoreContents = () => {
@@ -934,7 +956,9 @@ const HeadAnchor = styled(Paragraph, {
 })
 
 const Frame = styled(YStack, {
+  className: 'header-popover-frame',
   animation: 'medium',
+  flex: 1,
   br: '$5',
   ov: 'hidden',
   position: 'absolute',

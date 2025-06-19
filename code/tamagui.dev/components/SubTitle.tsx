@@ -31,6 +31,7 @@ export const SubTitle = ({ children, ...props }) => {
   return (
     <H3
       pos="relative"
+      maxWidth="100%"
       color="$gray9"
       width="max-content"
       fontFamily="$mono"
