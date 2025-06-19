@@ -56,7 +56,8 @@ import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
-import { Platform, ScrollView } from 'react-native'
+import { Platform } from 'react-native'
+import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { useFloatingContext } from './useFloatingContext'
 
 // adapted from radix-ui popover
@@ -443,24 +444,13 @@ const PopoverContentImpl = React.forwardRef<
   let contents = <ResetPresence>{children}</ResetPresence>
 
   if (context.breakpointActive) {
-    // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
-    // TODO this should be disabled through context
-    const childrenWithoutScrollView = React.Children.toArray(children).map((child) => {
-      if (React.isValidElement(child)) {
-        if (child.type === ScrollView) {
-          return child.props.children
-        }
-      }
-      return child
-    })
-
     return (
       <AdaptPortalContents>
         <PopperContext.Provider
           scope={__scopePopover || POPOVER_SCOPE}
           {...popperContext}
         >
-          {childrenWithoutScrollView}
+          {children}
         </PopperContext.Provider>
       </AdaptPortalContents>
     )
@@ -594,6 +584,22 @@ export type Popover = {
   setOpen: (open: boolean) => void
 }
 
+const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>(
+  (props: ScrollViewProps, ref) => {
+    const context = usePopoverContext(POPOVER_SCOPE)
+
+    return (
+      <ScrollView
+        ref={ref}
+        // when adapted, no pointer events!
+        pointerEvents={context.breakpointActive ? 'none' : undefined}
+        scrollEnabled={!context.breakpointActive}
+        {...props}
+      />
+    )
+  }
+)
+
 export const Popover = withStaticProperties(
   React.forwardRef<Popover, ScopedPopoverProps<PopoverProps>>(
     function Popover(props, ref) {
@@ -613,7 +619,7 @@ export const Popover = withStaticProperties(
     Content: PopoverContent,
     Close: PopoverClose,
     Adapt,
-    ScrollView: ScrollView,
+    ScrollView: PopoverScrollView,
     Sheet: Sheet.Controlled,
   }
 )
