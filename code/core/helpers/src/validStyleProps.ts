@@ -41,6 +41,9 @@ export const tokenCategories = {
   zIndex: {
     zIndex: true,
   },
+  visual: {
+    opacity: true,
+  },
   color: {
     backgroundColor: true,
     borderColor: true,

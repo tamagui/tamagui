@@ -76,12 +76,16 @@ export declare const useConfiguration: () => {
         zIndex?: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
+        visual?: {
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+        } | undefined;
     }, import("..").TokenCategories> & {
         color: {};
         space: {};
         size: {};
         radius: {};
         zIndex: {};
+        visual: {};
     };
     tokensParsed: Omit<{
         [x: string]: {
@@ -102,12 +106,16 @@ export declare const useConfiguration: () => {
         zIndex?: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
+        visual?: {
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+        } | undefined;
     }, import("..").TokenCategories> & {
         color: {};
         space: {};
         size: {};
         radius: {};
         zIndex: {};
+        visual: {};
     };
     themeConfig: any;
     fontsParsed: import("..").GenericFonts;

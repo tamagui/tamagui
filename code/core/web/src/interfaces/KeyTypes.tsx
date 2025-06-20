@@ -25,6 +25,8 @@ export type ColorKeys =
   | 'borderInlineStartColor'
   | 'borderInlineEndColor'
 
+export type VisualKeys = 'opacity'
+
 export type SpaceKeys =
   | 'space'
   | 'padding'
