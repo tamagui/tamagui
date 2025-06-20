@@ -230,10 +230,7 @@ export function createComponent<
       contextValue = React.useContext(context)
 
       if (contextValue) {
-        if (
-          process.env.NODE_ENV === 'development' &&
-          defaultProps?.['debug'] === 'verbose'
-        ) {
+        if (process.env.NODE_ENV === 'development' && propsIn?.['debug'] === 'verbose') {
           log(` 👇 contextValue`, contextValue)
         }
 
@@ -799,8 +796,11 @@ export function createComponent<
         onBlur ||
         !!componentContext.setParentFocusState
     )
+
+    const hasDynamicGroupChildren = Boolean(groupName && state.hasDynGroupChildren)
+
     const attachPress = Boolean(
-      groupName ||
+      hasDynamicGroupChildren ||
         runtimePressStyle ||
         onPress ||
         onPressOut ||
@@ -813,10 +813,11 @@ export function createComponent<
     )
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
     const needsHoverState = Boolean(
-      groupName || runtimeHoverStyle || onHoverIn || onHoverOut
+      hasDynamicGroupChildren || runtimeHoverStyle || onHoverIn || onHoverOut
     )
     const attachHover =
-      isWeb && !!(groupName || needsHoverState || onMouseEnter || onMouseLeave)
+      isWeb &&
+      !!(hasDynamicGroupChildren || needsHoverState || onMouseEnter || onMouseLeave)
 
     // check presence rather than value to prevent reparenting bugs
     // allows for onPress={x ? function : undefined} without re-ordering dom
@@ -832,7 +833,7 @@ export function createComponent<
           runtimeFocusStyle
       )
 
-    const needsPressState = Boolean(groupName || runtimePressStyle)
+    const needsPressState = Boolean(hasDynamicGroupChildren || runtimePressStyle)
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 

@@ -207,8 +207,12 @@ export const useComponentState = (
       },
       subscribe(cb) {
         listeners.add(cb)
+        setStateShallow({ hasDynGroupChildren: true })
         return () => {
           listeners.delete(cb)
+          if (listeners.size === 0) {
+            setStateShallow({ hasDynGroupChildren: false })
+          }
         }
       },
     }
