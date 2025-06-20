@@ -222,6 +222,7 @@ async function run() {
         ])
         await spawnify(`yarn typecheck`)
         await spawnify(`yarn test`)
+        // await spawnify(`yarn test-ios`)
       }
     }
 
