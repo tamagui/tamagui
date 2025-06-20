@@ -6632,7 +6632,6 @@ __metadata:
     "@tamagui/use-store": "workspace:*"
     "@tanstack/react-table": "npm:^8.11.2"
     "@ts-react/form": "npm:^1.8.3"
-    "@welldone-software/why-did-you-render": "npm:^10.0.1"
     awesome-phonenumber: "npm:^6.4.0"
     expo: "npm:53.0.7"
     expo-document-picker: "npm:~13.1.6"
@@ -7570,7 +7569,6 @@ __metadata:
     "@tamagui/themes": "workspace:*"
     "@tamagui/toast": "workspace:*"
     "@tamagui/web": "workspace:*"
-    "@welldone-software/why-did-you-render": "npm:^10.0.1"
     babel-plugin-module-resolver: "npm:^5.0.2"
     burnt: "npm:^0.12.2"
     expo: "npm:53.0.7"
@@ -10914,17 +10912,6 @@ __metadata:
     webpack-dev-server:
       optional: true
   checksum: 10/0b90c963a6b8424a914a85532e3a7dfe2f7eea1c98acea1c6c1a368bf349733f0d6cb2e83ce9ced7c8208f58d518cced767d1e1d0ab26126d8a9bad3b3f5352e
-  languageName: node
-  linkType: hard
-
-"@welldone-software/why-did-you-render@npm:^10.0.1":
-  version: 10.0.1
-  resolution: "@welldone-software/why-did-you-render@npm:10.0.1"
-  dependencies:
-    lodash: "npm:^4"
-  peerDependencies:
-    react: ^19
-  checksum: 10/da37a677b7e275bf5b4b615cd45bd23c83125d04c9a292b8af5920837d5c65ebf63c8229ff963feb038787938e024dc6d3cfa6c3277e68e24b8b066292453117
   languageName: node
   linkType: hard
 
@@ -20590,7 +20577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21":
+"lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10/c08619c038846ea6ac754abd6dd29d2568aa705feb69339e836dfa8d8b09abbb2f859371e86863eda41848221f9af43714491467b5b0299122431e202bb0c532
@@ -26080,7 +26067,6 @@ __metadata:
     "@tamagui/vite-plugin": "workspace:*"
     "@types/react": "npm:^18.3.11"
     "@vxrn/color-scheme": "npm:^1.1.496"
-    "@welldone-software/why-did-you-render": "npm:^10.0.1"
     expo: "npm:53.0.7"
     one: "npm:1.1.496"
     react: "npm:*"
