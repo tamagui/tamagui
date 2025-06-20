@@ -25,9 +25,10 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@vxrn/color-scheme": "^1.1.492",
+    "@vxrn/color-scheme": "^1.1.496",
+    "@welldone-software/why-did-you-render": "^10.0.1",
     "expo": "53.0.7",
-    "one": "1.1.492",
+    "one": "1.1.496",
     "react": "*",
     "react-native": "^0.79.2",
     "react-native-reanimated": "^3.18.0",
@@ -43,8 +44,8 @@
     "@react-native-community/cli": "15.1.3",
     "@tamagui/vite-plugin": "workspace:*",
     "@types/react": "^18.3.11",
+    "one": "1.1.496",
     "vite": "^6.1.0",
-    "wait-port": "^0.3.0",
-    "zx": "^8.5.5"
+    "wait-port": "^0.3.0"
   }
 }

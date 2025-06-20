@@ -128,6 +128,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // View: Animated.View,
     // Text: Animated.Text,
     isReactNative: true,
+    supportsCSSVars: false,
     animations,
     usePresence,
     ResetPresence,
@@ -323,6 +324,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       ) {
         console.info(`useMotify(`, JSON.stringify(motiProps, null, 2) + ')', {
           'componentState.unmounted': componentState.unmounted,
+          animationProps,
           motiProps,
           moti,
           style: [dontAnimate, moti.style],

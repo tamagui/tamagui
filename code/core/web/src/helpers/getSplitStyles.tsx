@@ -133,18 +133,19 @@ export const getSplitStyles: StyleSplitter = (
   componentState,
   styleProps,
   parentSplitStyles,
-  context,
+  componentContext,
   elementType,
   startedUnhydrated,
   debug
 ) => {
   conf = conf || getConfig()
+  const animationDriver = componentContext?.animationDriver || conf.animations
 
   // a bit icky, we need no normalize but not fully
   if (
     isWeb &&
     styleProps.isAnimated &&
-    conf.animations.isReactNative &&
+    animationDriver.isReactNative &&
     !styleProps.noNormalize
   ) {
     styleProps.noNormalize = 'values'
@@ -203,7 +204,7 @@ export const getSplitStyles: StyleSplitter = (
     theme,
     usedKeys,
     viewProps,
-    context,
+    context: componentContext,
     debug,
   }
 
@@ -504,7 +505,7 @@ export const getSplitStyles: StyleSplitter = (
         (parts.length === 3 && pseudoPriorities[parts[parts.length - 1]])
       ) {
         const name = parts[1]
-        if (context?.groups.subscribe && !context?.groups.state[name]) {
+        if (componentContext?.groups.subscribe && !componentContext?.groups.state[name]) {
           keyInit = keyInit.replace('$group-', `$group-true-`)
         }
       }
@@ -934,7 +935,7 @@ export const getSplitStyles: StyleSplitter = (
             const groupName = groupInfo.name
 
             // $group-x
-            const groupContext = context?.groups.state[groupName]
+            const groupContext = componentContext?.groups.state[groupName]
 
             if (!groupContext) {
               if (process.env.NODE_ENV === 'development' && debug) {
@@ -978,7 +979,7 @@ export const getSplitStyles: StyleSplitter = (
               const componentGroupPseudoState = (
                 componentGroupState ||
                 // fallback to context initially
-                context.groups.state[groupName]
+                componentContext.groups.state[groupName]
               ).pseudo
 
               const isActive = componentGroupPseudoState?.[groupPseudoKey]
@@ -1126,7 +1127,8 @@ export const getSplitStyles: StyleSplitter = (
       !styleProps.noNormalize &&
       !staticConfig.isReactNative &&
       !staticConfig.isHOC &&
-      (!styleProps.isAnimated || conf.animations.supportsCSSVars)
+      (!styleProps.isAnimated || animationDriver.supportsCSSVars)
+
     if (shouldStringifyTransforms && Array.isArray(styleState.style?.transform)) {
       styleState.style.transform = transformsToString(styleState.style!.transform) as any
     }
@@ -1327,7 +1329,7 @@ export const getSplitStyles: StyleSplitter = (
         if (props.className) classList.push(props.className)
         const finalClassName = classList.join(' ')
 
-        if (styleProps.isAnimated && !conf.animations.supportsCSSVars && isReactNative) {
+        if (styleProps.isAnimated && !animationDriver.supportsCSSVars && isReactNative) {
           if (style) {
             viewProps.style = style as any
           }

@@ -1,3 +1,6 @@
+- perf: could avoid parent re-renders on group changes even if dynamic
+  - if they dont themselves have animation, would need to group.emit() in the actual press events not based on an effect based on state
+
 for v2, new site hero that captures:
 
 - 100% features work the same cross-platform

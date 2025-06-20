@@ -39,6 +39,7 @@ export const subscribeToContextGroup = ({
           persist()
         }
       }
+
       function persist() {
         // force it to be referentially different so it always updates
         const group = {

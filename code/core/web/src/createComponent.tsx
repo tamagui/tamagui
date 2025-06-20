@@ -693,7 +693,9 @@ export function createComponent<
     // if its a layout effect it will just skip that first <render >output
     const { pseudoGroups, mediaGroups } = splitStyles
 
-    const unPress = () => setStateShallow({ press: false, pressIn: false })
+    const unPress = () => {
+      setStateShallow({ press: false, pressIn: false })
+    }
 
     if (process.env.NODE_ENV === 'development' && isWeb) {
       useIsomorphicLayoutEffect(() => {
@@ -812,9 +814,7 @@ export function createComponent<
         pseudos?.focusVisibleStyle
     )
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
-    const needsHoverState = Boolean(
-      hasDynamicGroupChildren || runtimeHoverStyle || onHoverIn || onHoverOut
-    )
+    const needsHoverState = Boolean(hasDynamicGroupChildren || runtimeHoverStyle)
     const attachHover =
       isWeb &&
       !!(hasDynamicGroupChildren || needsHoverState || onMouseEnter || onMouseLeave)
@@ -894,7 +894,7 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
-                if (runtimePressStyle || groupName) {
+                if (needsPressState) {
                   setStateShallow({
                     press: true,
                     pressIn: true,

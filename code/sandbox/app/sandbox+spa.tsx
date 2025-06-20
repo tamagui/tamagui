@@ -1,5 +1,6 @@
 import { Configuration, XStack, YStack } from 'tamagui'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
+import { animations } from '../config/tamagui/animations'
 
 export default function Sandbox() {
   return (
@@ -17,13 +18,33 @@ export default function Sandbox() {
 // are dynamic, and *if not* they don't re-render on hover / set group state at all.
 const Drivers = () => {
   return (
-    <Configuration animationDriver={animationsCSS}>
+    <>
+      <Configuration animationDriver={animations}>
+        <YStack group="card">
+          <XStack
+            animation="bouncy"
+            width={100}
+            height={100}
+            bg="red"
+            scale={1}
+            $group-card-hover={{ scale: 1.5 }}
+            debug="verbose"
+          />
+        </YStack>
+      </Configuration>
       {/* because css here and below, this group YStack can avoid re-rendering */}
-      <YStack group="card">
-        <XStack debug="verbose" width={100} height={100} bg="red" />
-        <XStack debug="verbose" width={100} height={100} bg="red" />
-      </YStack>
-    </Configuration>
+      <Configuration animationDriver={animationsCSS}>
+        <YStack group="card">
+          <XStack
+            animation="bouncy"
+            width={100}
+            height={100}
+            bg="red"
+            $group-card-hover={{ scale: 1.5 }}
+          />
+        </YStack>
+      </Configuration>
+    </>
   )
 }
 
