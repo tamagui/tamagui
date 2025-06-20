@@ -36,7 +36,7 @@ on:
 jobs:
   build-ios:
     name: Build
-    runs-on: macos-13
+    runs-on: macos-14
     permissions:
       contents: read
       pull-requests: read
@@ -51,6 +51,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
       - name: Get Built App Path
         id: get-built-app-path
