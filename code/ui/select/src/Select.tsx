@@ -1,4 +1,5 @@
 import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
+import { FocusScope } from '@tamagui/focus-scope'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
@@ -362,6 +363,7 @@ export const Select = withStaticProperties(
     Value: SelectValue,
     Viewport: SelectViewport,
     Sheet: Sheet.Controlled,
+    FocusScope: FocusScope,
   }
 )
 
