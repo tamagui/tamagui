@@ -1503,19 +1503,16 @@ function addStyleToInsertRules(
   styleObject: StyleObject,
   startedUnhydrated = false
 ) {
-  // if (process.env.NODE_ENV === 'development') {
-  //   if (rulesToInsert[styleObject[2]!]) {
-  //     console.log('already have this style rule to insert?', styleObject, rulesToInsert)
-  //   }
-  // }
   if (process.env.TAMAGUI_TARGET === 'web') {
     const identifier = styleObject[StyleObjectIdentifier]
     if (!startedUnhydrated) {
       if (shouldInsertStyleRules(identifier)) {
         updateRules(identifier, styleObject[StyleObjectRules])
+        rulesToInsert[identifier] = styleObject
       }
+    } else {
+      rulesToInsert[identifier] = styleObject
     }
-    rulesToInsert[identifier] = styleObject
   }
 }
 

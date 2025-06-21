@@ -1,12 +1,14 @@
-import { Configuration, XStack, YStack } from 'tamagui'
+// debug
+import { Circle, Configuration, XStack, YStack } from 'tamagui'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 import { animations } from '../config/tamagui/animations'
+import { useEffect, useState } from 'react'
 
 export default function Sandbox() {
   return (
     <>
-      {/* <Performance /> */}
-      <Drivers />
+      <Performance />
+      {/* <Drivers /> */}
     </>
   )
 }
@@ -48,49 +50,65 @@ const Drivers = () => {
   )
 }
 
-// const Performance = () => {
-//   const [k, setK] = useState(0)
+const Performance = () => {
+  const [k, setK] = useState(0)
+  const [m, setM] = useState(false)
 
-//   return (
-//     <>
-//       {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-//       <div style={{ color: 'red' }} onClick={() => setK(Math.random())}>
-//         render
-//       </div>
-//       <TimedRender key={k}>
-//         <Circle
-//           debug="profile"
-//           size={36}
-//           borderWidth={2}
-//           bg="yellow"
-//           borderColor="red"
-//           hoverStyle={{
-//             borderColor: 'green',
-//           }}
-//           onPress={() => {
-//             //
-//           }}
-//         />
-//       </TimedRender>
-//     </>
-//   )
-// }
+  useEffect(() => {
+    setM(true)
+  }, [])
 
-// import React from 'react'
+  return (
+    <>
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+      <div style={{ color: 'red' }} onClick={() => setK(Math.random())}>
+        render
+      </div>
+
+      <Circle
+        size={36}
+        borderWidth={2}
+        bg="yellow"
+        borderColor="red"
+        hoverStyle={{
+          borderColor: 'green',
+        }}
+      />
+
+      {m && (
+        <TimedRender key={k}>
+          <Circle
+            size={36}
+            disableOptimization
+            borderWidth={2}
+            bg="yellow"
+            borderColor="red"
+            hoverStyle={{
+              borderColor: 'green',
+            }}
+          />
+        </TimedRender>
+      )}
+    </>
+  )
+}
+
+import React from 'react'
+import { Text, View } from 'react-native'
 // import { animationsCSS } from '../config/tamagui/animationsCSS'
 
-// export function TimedRender(props) {
-//   const [start] = React.useState(performance.now())
-//   const [end, setEnd] = React.useState(0)
+export function TimedRender(props) {
+  const [start] = React.useState(performance.now())
+  const [end, setEnd] = React.useState(0)
 
-//   React.useLayoutEffect(() => {
-//     setEnd(performance.now() - start)
-//   }, [start])
+  React.useLayoutEffect(() => {
+    setEnd(performance.now() - start)
+  }, [start])
 
-//   return (
-//     <View style={{ maxWidth: '100%' }}>
-//       {!!end && <Text>Took {end}ms</Text>}
-//       <View style={{ flexDirection: 'column' }}>{props.children}</View>
-//     </View>
-//   )
-// }
+  return (
+    <View style={{ maxWidth: '100%' }}>
+      {!!end && <Text style={{ color: 'yellow' }}>Took {end}ms</Text>}
+      <View style={{ flexDirection: 'column' }}>{props.children}</View>
+    </View>
+  )
+}

@@ -396,7 +396,6 @@ export function shouldInsertStyleRules(identifier: string) {
     return true
   }
   const total = totalSelectorsInserted.get(identifier)
-
   if (process.env.NODE_ENV === 'development') {
     if (
       totalSelectorsInserted.size >
