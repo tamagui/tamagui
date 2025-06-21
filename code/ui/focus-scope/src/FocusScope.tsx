@@ -71,7 +71,7 @@ export function useFocusScope(
     onMountAutoFocus: onMountAutoFocusProp,
     onUnmountAutoFocus: onUnmountAutoFocusProp,
     forceUnmount,
-    focusOnIdle = false,
+    focusOnIdle = true,
     children,
     ...scopeProps
   } = props
