@@ -7229,6 +7229,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/start-transition": "workspace:*"
+    "@tamagui/use-async": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     react: "npm:*"
   peerDependencies:
@@ -8591,6 +8592,16 @@ __metadata:
 "@tamagui/types@workspace:*, @tamagui/types@workspace:code/core/types":
   version: 0.0.0-use.local
   resolution: "@tamagui/types@workspace:code/core/types"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/use-async@workspace:*, @tamagui/use-async@workspace:code/packages/use-async":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-async@workspace:code/packages/use-async"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 

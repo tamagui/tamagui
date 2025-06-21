@@ -30,7 +30,7 @@ import {
 import type { DismissableProps } from '@tamagui/dismissable'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
-import { FocusScope } from '@tamagui/focus-scope'
+import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type {
   PopperArrowExtraProps,
@@ -621,7 +621,7 @@ export const Popover = withStaticProperties(
     Adapt,
     ScrollView: PopoverScrollView,
     Sheet: Sheet.Controlled,
-    FocusScope: FocusScope,
+    FocusScope: FocusScopeController,
   }
 )
 

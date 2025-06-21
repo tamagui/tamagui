@@ -1,15 +1,10 @@
-import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
-import { withStaticProperties } from '@tamagui/helpers'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
-
-import { FocusScope } from './FocusScope'
-import type { FocusScopeProps } from './FocusScopeProps'
+import type { FocusScopeProps } from './types'
+import type { ScopedProps } from './types'
 
 const FOCUS_SCOPE_CONTROLLER_NAME = 'FocusScopeController'
-
-type ScopedProps<P> = P & { __scopeFocusScopeController?: Scope }
 
 const [createFocusScopeControllerContext, createFocusScopeControllerScope] =
   createContextScope(FOCUS_SCOPE_CONTROLLER_NAME)
@@ -18,8 +13,7 @@ type FocusScopeControllerContextValue = Omit<FocusScopeProps, 'children'>
 
 const [FocusScopeControllerProvider, useFocusScopeControllerContext] =
   createFocusScopeControllerContext<FocusScopeControllerContextValue>(
-    FOCUS_SCOPE_CONTROLLER_NAME,
-    {}
+    FOCUS_SCOPE_CONTROLLER_NAME
   )
 
 /* -------------------------------------------------------------------------------------------------
@@ -32,7 +26,7 @@ export interface FocusScopeControllerProps extends FocusScopeControllerContextVa
 
 function FocusScopeController(props: ScopedProps<FocusScopeControllerProps>) {
   const {
-    __scopeFocusScopeController,
+    __scopeFocusScope,
     children,
     enabled,
     loop,
@@ -68,7 +62,7 @@ function FocusScopeController(props: ScopedProps<FocusScopeControllerProps>) {
   )
 
   return (
-    <FocusScopeControllerProvider scope={__scopeFocusScopeController} {...contextValue}>
+    <FocusScopeControllerProvider scope={__scopeFocusScope} {...contextValue}>
       {children}
     </FocusScopeControllerProvider>
   )

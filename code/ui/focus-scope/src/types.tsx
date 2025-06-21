@@ -1,4 +1,7 @@
+import type { Scope } from '@tamagui/create-context'
 import type React from 'react'
+
+export type ScopedProps<P> = P & { __scopeFocusScope?: Scope }
 
 export interface FocusScopeProps {
   /**

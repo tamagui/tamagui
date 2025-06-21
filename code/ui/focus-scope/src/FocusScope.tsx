@@ -1,11 +1,10 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { useEvent } from '@tamagui/use-event'
 import { startTransition } from '@tamagui/start-transition'
-import { useAsyncEffect, idle, sleep } from '@tamagui/use-async'
+import { fullyIdle, sleep, useAsyncEffect } from '@tamagui/use-async'
+import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
-
-import type { FocusScopeProps } from './FocusScopeProps'
 import { useFocusScopeControllerContext } from './FocusScopeController'
+import type { FocusScopeProps, ScopedProps } from './types'
 
 // We'll define the controller context hook here to avoid circular imports
 let useFocusScopeControllerContextInternal: any = null
@@ -23,14 +22,18 @@ type FocusableTarget = HTMLElement | { focus(): void }
 type FocusScopeElement = HTMLDivElement
 
 const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>(
-  function FocusScope(props, forwardedRef) {
+  function FocusScope(
+    { __scopeFocusScope, ...props }: ScopedProps<FocusScopeProps>,
+    forwardedRef
+  ) {
     // Check for controller context and merge props
-    const context = useFocusScopeControllerContext('FocusScope', undefined, {
+    const context = useFocusScopeControllerContext('FocusScope', __scopeFocusScope, {
       warn: false,
       fallback: {},
     })
 
     const mergedProps: FocusScopeProps = {
+      ...props,
       enabled: context.enabled ?? props.enabled,
       loop: context.loop ?? props.loop,
       trapped: context.trapped ?? props.trapped,
@@ -38,7 +41,6 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>(
       onUnmountAutoFocus: context.onUnmountAutoFocus ?? props.onUnmountAutoFocus,
       forceUnmount: context.forceUnmount ?? props.forceUnmount,
       focusOnIdle: context.focusOnIdle ?? props.focusOnIdle,
-      ...props,
     }
 
     const childProps = useFocusScope(mergedProps, forwardedRef)
@@ -152,13 +154,10 @@ export function useFocusScope(
         container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
         container.dispatchEvent(mountEvent)
         if (!mountEvent.defaultPrevented) {
-          // Wait for idle or sleep before focusing to prevent reflows during animations
+          // wait for idle before focusing to prevent reflows during animations
           if (focusOnIdle) {
-            if (typeof focusOnIdle === 'number') {
-              await sleep(focusOnIdle, signal)
-            } else {
-              await idle(signal)
-            }
+            await sleep(typeof focusOnIdle === 'number' ? focusOnIdle : 16, signal)
+            await fullyIdle(signal)
           }
 
           const candidates = removeLinks(getTabbableCandidates(container))
@@ -321,6 +320,7 @@ function isSelectableInput(
 }
 
 function focus(element?: FocusableTarget | null, { select = false } = {}) {
+  console.trace('focus', element)
   // only focus if that element is focusable
   if (element?.focus) {
     const previouslyFocusedElement = document.activeElement

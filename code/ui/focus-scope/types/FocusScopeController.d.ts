@@ -1,15 +1,12 @@
-import type { Scope } from '@tamagui/create-context';
 import * as React from 'react';
-import type { FocusScopeProps } from './FocusScopeProps';
-type ScopedProps<P> = P & {
-    __scopeFocusScopeController?: Scope;
-};
+import type { FocusScopeProps } from './types';
+import type { ScopedProps } from './types';
 declare const createFocusScopeControllerScope: import("@tamagui/create-context").CreateScope;
 type FocusScopeControllerContextValue = Omit<FocusScopeProps, 'children'>;
 declare const FocusScopeControllerProvider: (props: FocusScopeControllerContextValue & {
-    scope: Scope<FocusScopeControllerContextValue>;
+    scope: import("@tamagui/create-context").Scope<FocusScopeControllerContextValue>;
     children: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element, useFocusScopeControllerContext: (consumerName: string, scope: Scope<FocusScopeControllerContextValue | undefined>, options?: {
+}) => import("react/jsx-runtime").JSX.Element, useFocusScopeControllerContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<FocusScopeControllerContextValue | undefined>, options?: {
     warn?: boolean;
     fallback?: Partial<FocusScopeControllerContextValue> | undefined;
 } | undefined) => FocusScopeControllerContextValue;

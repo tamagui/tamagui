@@ -125,7 +125,7 @@ interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContent
     forceMount?: true;
 }
 declare const DialogContent: React.ForwardRefExoticComponent<DialogContentProps & React.RefAttributes<TamaguiElement>>;
-interface DialogContentTypeProps extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
+interface DialogContentTypeProps extends DialogContentImplProps {
     context: DialogContextValue;
 }
 type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, 'onDismiss'> & {
@@ -271,6 +271,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
+    FocusScope: React.ForwardRefExoticComponent<FocusScopeProps & React.RefAttributes<HTMLDivElement>>;
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {

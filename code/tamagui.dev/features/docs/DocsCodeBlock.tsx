@@ -78,8 +78,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   const onCommandChange = useEvent(() => {
     try {
-      const codeElement = preRef.current.querySelector('code')
-      if (codeElement) setCode(transformedCommand)
+      const codeElement = preRef.current?.querySelector('code')
+      if (codeElement) {
+        setCode(transformedCommand)
+      }
     } catch (err) {
       console.warn('err', err)
     }
