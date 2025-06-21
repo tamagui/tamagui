@@ -366,6 +366,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
+    FocusScope: React.ForwardRefExoticComponent<FocusScopeProps & React.RefAttributes<HTMLDivElement>>;
 };
 export {};
 //# sourceMappingURL=Popover.d.ts.map

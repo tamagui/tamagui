@@ -621,6 +621,7 @@ export const Popover = withStaticProperties(
     Adapt,
     ScrollView: PopoverScrollView,
     Sheet: Sheet.Controlled,
+    FocusScope: FocusScope,
   }
 )
 
