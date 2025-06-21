@@ -161,9 +161,10 @@ export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
   size?: { [key: GenericKey]: Val }
   radius?: { [key: GenericKey]: Val }
   zIndex?: { [key: GenericKey]: Val }
+  visual?: { [key: GenericKey]: Val }
 }
 
-export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
+export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex' | 'visual'
 
 type Tokenify<A extends GenericTokens> = Omit<
   {
@@ -176,6 +177,7 @@ type Tokenify<A extends GenericTokens> = Omit<
   size: TokenifyRecord<A extends { size: any } ? A['size'] : {}>
   radius: TokenifyRecord<A extends { radius: any } ? A['radius'] : {}>
   zIndex: TokenifyRecord<A extends { zIndex: any } ? A['zIndex'] : {}>
+  visual: TokenifyRecord<A extends { visual: any } ? A['visual'] : {}>
 }
 
 type TokenifyRecord<A extends Object> = {
@@ -324,6 +326,7 @@ type EmptyTokens = {
   size: {}
   radius: {}
   zIndex: {}
+  visual: {}
 }
 type EmptyThemes = {}
 type EmptyShorthands = {}
@@ -1216,7 +1219,7 @@ export type FontSizeKeys = 'fontSize'
 export type FontWeightKeys = 'fontWeight'
 export type FontLetterSpacingKeys = 'letterSpacing'
 export type LineHeightKeys = 'lineHeight'
-export type ZIndexKeys = 'zIndex'
+export type ZIndexKeys = 'zIndex' | 'opacity'
 
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens

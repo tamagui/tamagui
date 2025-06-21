@@ -344,7 +344,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderTopColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderTopColor"> | undefined;
     borderTopEndRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;
     borderTopStartRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;
-    opacity?: "unset" | import("react-native").AnimatableNumericValue | undefined;
+    opacity?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;
     elevation?: number | "unset" | undefined;
     isolation?: "unset" | "auto" | "isolate" | undefined;
     boxShadow?: string | readonly import("react-native").BoxShadowValue[] | undefined;

@@ -27,6 +27,9 @@ export declare const tokenCategories: {
     zIndex: {
         zIndex: boolean;
     };
+    visual: {
+        opacity: boolean;
+    };
     color: {
         outlineColor?: boolean | undefined;
         caretColor?: boolean | undefined;

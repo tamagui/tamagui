@@ -139,7 +139,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
         if (isWeb) {
           registerCSSVariable(variable)
-          declarations.push(variableToCSS(variable, key === 'zIndex'))
+          declarations.push(
+            variableToCSS(variable, key === 'zIndex' || key === 'opacity')
+          )
         }
       }
     }

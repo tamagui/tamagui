@@ -312,10 +312,12 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   return res
 }
 
-const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => ({
-  name,
-  spreadName: `...${name}`,
-}))
+const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex', 'visual'].map(
+  (name) => ({
+    name,
+    spreadName: `...${name}`,
+  })
+)
 
 // goes through specificity finding best matching variant function
 function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalConfig) {
