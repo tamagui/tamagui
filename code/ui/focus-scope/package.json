@@ -36,6 +36,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
+    "@tamagui/use-async": "workspace:*",
     "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {

@@ -30,6 +30,12 @@ export interface FocusScopeProps {
      * If unmount is animated, you want to force re-focus at start of animation not after
      */
     forceUnmount?: boolean;
+    /**
+     * When true, waits for idle before focusing. When a number, waits that many ms.
+     * This prevents reflows during animations.
+     * @default false
+     */
+    focusOnIdle?: boolean | number;
     children?: React.ReactNode | ((props: {
         onKeyDown: (event: React.KeyboardEvent) => void;
         tabIndex: number;

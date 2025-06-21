@@ -1,9 +1,14 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { useEvent } from '@tamagui/use-event'
 import { startTransition } from '@tamagui/start-transition'
+import { useAsyncEffect, idle, sleep } from '@tamagui/use-async'
 import * as React from 'react'
 
 import type { FocusScopeProps } from './FocusScopeProps'
+import { useFocusScopeControllerContext } from './FocusScopeController'
+
+// We'll define the controller context hook here to avoid circular imports
+let useFocusScopeControllerContextInternal: any = null
 
 const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'
@@ -19,13 +24,33 @@ type FocusScopeElement = HTMLDivElement
 
 const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>(
   function FocusScope(props, forwardedRef) {
-    const childProps = useFocusScope(props, forwardedRef)
+    // Check for controller context and merge props
+    const context = useFocusScopeControllerContext('FocusScope', undefined, {
+      warn: false,
+      fallback: {},
+    })
 
-    if (typeof props.children === 'function') {
-      return <>{props.children(childProps)}</>
+    const mergedProps: FocusScopeProps = {
+      enabled: context.enabled ?? props.enabled,
+      loop: context.loop ?? props.loop,
+      trapped: context.trapped ?? props.trapped,
+      onMountAutoFocus: context.onMountAutoFocus ?? props.onMountAutoFocus,
+      onUnmountAutoFocus: context.onUnmountAutoFocus ?? props.onUnmountAutoFocus,
+      forceUnmount: context.forceUnmount ?? props.forceUnmount,
+      focusOnIdle: context.focusOnIdle ?? props.focusOnIdle,
+      ...props,
     }
 
-    return React.cloneElement(React.Children.only(props.children) as any, childProps)
+    const childProps = useFocusScope(mergedProps, forwardedRef)
+
+    if (typeof mergedProps.children === 'function') {
+      return <>{mergedProps.children(childProps)}</>
+    }
+
+    return React.cloneElement(
+      React.Children.only(mergedProps.children) as any,
+      childProps
+    )
   }
 )
 
@@ -44,6 +69,7 @@ export function useFocusScope(
     onMountAutoFocus: onMountAutoFocusProp,
     onUnmountAutoFocus: onUnmountAutoFocusProp,
     forceUnmount,
+    focusOnIdle = false,
     children,
     ...scopeProps
   } = props
@@ -111,45 +137,65 @@ export function useFocusScope(
     }
   }, [trapped, forceUnmount, container, focusScope.paused])
 
-  React.useEffect(() => {
-    if (!enabled) return
-    if (!container) return
-    if (forceUnmount) return
+  useAsyncEffect(
+    async (signal) => {
+      if (!enabled) return
+      if (!container) return
+      if (forceUnmount) return
 
-    focusScopesStack.add(focusScope)
-    const previouslyFocusedElement = document.activeElement as HTMLElement | null
-    const hasFocusedCandidate = container.contains(previouslyFocusedElement)
+      focusScopesStack.add(focusScope)
+      const previouslyFocusedElement = document.activeElement as HTMLElement | null
+      const hasFocusedCandidate = container.contains(previouslyFocusedElement)
 
-    if (!hasFocusedCandidate) {
-      const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS)
-      container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
-      container.dispatchEvent(mountEvent)
-      if (!mountEvent.defaultPrevented) {
-        const candidates = removeLinks(getTabbableCandidates(container))
+      if (!hasFocusedCandidate) {
+        const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS)
+        container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
+        container.dispatchEvent(mountEvent)
+        if (!mountEvent.defaultPrevented) {
+          // Wait for idle or sleep before focusing to prevent reflows during animations
+          if (focusOnIdle) {
+            if (typeof focusOnIdle === 'number') {
+              await sleep(focusOnIdle, signal)
+            } else {
+              await idle(signal)
+            }
+          }
 
-        focusFirst(candidates, { select: true })
+          const candidates = removeLinks(getTabbableCandidates(container))
 
-        if (document.activeElement === previouslyFocusedElement) {
-          focus(container)
+          focusFirst(candidates, { select: true })
+
+          if (document.activeElement === previouslyFocusedElement) {
+            focus(container)
+          }
         }
       }
-    }
 
-    return () => {
-      container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
+      return () => {
+        container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
 
-      const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS)
-      container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
-      container.dispatchEvent(unmountEvent)
-      if (!unmountEvent.defaultPrevented) {
-        focus(previouslyFocusedElement ?? document.body, { select: true })
+        const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS)
+        container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
+        container.dispatchEvent(unmountEvent)
+        if (!unmountEvent.defaultPrevented) {
+          focus(previouslyFocusedElement ?? document.body, { select: true })
+        }
+        // we need to remove the listener after we `dispatchEvent`
+        container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
+
+        focusScopesStack.remove(focusScope)
       }
-      // we need to remove the listener after we `dispatchEvent`
-      container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
-
-      focusScopesStack.remove(focusScope)
-    }
-  }, [enabled, container, forceUnmount, onMountAutoFocus, onUnmountAutoFocus, focusScope])
+    },
+    [
+      enabled,
+      container,
+      forceUnmount,
+      onMountAutoFocus,
+      onUnmountAutoFocus,
+      focusScope,
+      focusOnIdle,
+    ]
+  )
 
   // Takes care of looping focus (when tabbing whilst at the edges)
   const handleKeyDown = React.useCallback(

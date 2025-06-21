@@ -409,8 +409,7 @@ const DialogContent = DialogContentFrame.extractable(
 
 /* -----------------------------------------------------------------------------------------------*/
 
-interface DialogContentTypeProps
-  extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
+interface DialogContentTypeProps extends DialogContentImplProps {
   context: DialogContextValue
 }
 
@@ -882,6 +881,7 @@ const Dialog = withStaticProperties(
     Description: DialogDescription,
     Close: DialogClose,
     Sheet: Sheet.Controlled,
+    FocusScope: FocusScope,
     Adapt,
   }
 )

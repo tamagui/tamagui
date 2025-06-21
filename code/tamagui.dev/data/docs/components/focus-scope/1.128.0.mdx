@@ -1,0 +1,379 @@
+---
+title: FocusScope
+description: Manage focus behavior within elements accessibly.
+name: focus-scope
+component: FocusScope
+package: focus-scope
+---
+
+<IntroParagraph marginTop={-5} marginBottom={30}>
+  A utility component for managing keyboard focus within a container. Controls focus trapping, auto-focus behavior, and focus cycling for accessible interactive components.
+</IntroParagraph>
+
+Note that this is a web-only component, on native it is a no-op.
+
+<Highlights
+  features={[
+    'Trap focus within a container for modal-like behavior.',
+    'Auto-focus on mount and return focus on unmount.',
+    'Loop focus between first and last tabbable elements.',
+    'Prevent reflows during animations with focusOnIdle.',
+  ]}
+/>
+
+## Installation
+
+FocusScope is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/focus-scope
+```
+
+## Usage
+
+Wrap any content that needs focus management:
+
+```tsx
+import { Button, FocusScope, XStack } from 'tamagui'
+
+export default () => (
+  <FocusScope loop trapped>
+    <XStack space="$4">
+      <Button>First</Button>
+      <Button>Second</Button>
+      <Button>Third</Button>
+    </XStack>
+  </FocusScope>
+)
+```
+
+## Focus Trapping
+
+Use `trapped` to prevent focus from escaping the scope:
+
+```tsx
+import { Button, Dialog, FocusScope, XStack, YStack } from 'tamagui'
+
+export default () => (
+  <Dialog>
+    <Dialog.Trigger asChild>
+      <Button>Open Dialog</Button>
+    </Dialog.Trigger>
+    
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <FocusScope trapped>
+          <YStack space="$4">
+            <Dialog.Title>Focused Content</Dialog.Title>
+            <XStack space="$2">
+              <Button>Cancel</Button>
+              <Button>Confirm</Button>
+            </XStack>
+          </YStack>
+        </FocusScope>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog>
+)
+```
+
+## Focus Looping
+
+Enable `loop` to cycle focus between first and last elements:
+
+```tsx
+import { Button, FocusScope, XStack } from 'tamagui'
+
+export default () => (
+  <FocusScope loop>
+    <XStack space="$4">
+      <Button>First</Button>
+      <Button>Second</Button>
+      <Button>Last</Button>
+      {/* Tab from "Last" goes to "First" */}
+    </XStack>
+  </FocusScope>
+)
+```
+
+## Animation-Friendly Focusing
+
+Use `focusOnIdle` to prevent reflows during animations:
+
+```tsx
+import { Button, FocusScope, XStack } from 'tamagui'
+
+export default () => (
+  <FocusScope 
+    focusOnIdle={true} // Wait for idle callback
+    // or focusOnIdle={200} // Wait 200ms
+  >
+    <XStack space="$4">
+      <Button>Animated</Button>
+      <Button>Content</Button>
+    </XStack>
+  </FocusScope>
+)
+```
+
+## Advanced Control with FocusScopeController
+
+Use the controller pattern for managing focus from parent components:
+
+```tsx
+import { Button, FocusScope, XStack, YStack } from 'tamagui'
+import { useState } from 'react'
+
+export default () => {
+  const [trapped, setTrapped] = useState(false)
+  
+  return (
+    <YStack space="$4">
+      <Button onPress={() => setTrapped(!trapped)}>
+        {trapped ? 'Disable' : 'Enable'} Focus Trap
+      </Button>
+      
+      <FocusScope.Controller trapped={trapped} loop>
+        <FocusScope>
+          <XStack space="$4">
+            <Button>Controlled</Button>
+            <Button>Focus</Button>
+            <Button>Behavior</Button>
+          </XStack>
+        </FocusScope>
+      </FocusScope.Controller>
+    </YStack>
+  )
+}
+```
+
+## Function as Children
+
+For advanced use cases, pass a function to get access to focus props:
+
+```tsx
+import { FocusScope, View } from 'tamagui'
+
+export default () => (
+  <FocusScope loop>
+    {({ onKeyDown, tabIndex, ref }) => (
+      <View
+        ref={ref}
+        tabIndex={tabIndex}
+        onKeyDown={onKeyDown}
+        padding="$4"
+        borderWidth={1}
+        borderColor="$borderColor"
+      >
+        Custom focus container
+      </View>
+    )}
+  </FocusScope>
+)
+```
+
+## API Reference
+
+### FocusScope
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      default: 'true',
+      description: 'Whether focus management is enabled',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description: 'When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable',
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      default: 'false',
+      description: 'When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus',
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      default: 'false',
+      description: 'When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations',
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: 'Event handler called when auto-focusing on mount. Can be prevented',
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: 'Event handler called when auto-focusing on unmount. Can be prevented',
+    },
+    {
+      name: 'forceUnmount',
+      type: 'boolean',
+      default: 'false',
+      description: 'If unmount is animated, you want to force re-focus at start of animation not after',
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode | ((props: FocusProps) => React.ReactNode)',
+      description: 'Content to apply focus management to, or function that receives focus props',
+    },
+  ]}
+/>
+
+### FocusScope.Controller
+
+Provides context-based control over FocusScope behavior:
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      description: 'Override enabled state for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      description: 'Override loop state for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      description: 'Override trapped state for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      description: 'Override focusOnIdle behavior for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: 'Override onMountAutoFocus handler for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: 'Override onUnmountAutoFocus handler for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'forceUnmount',
+      type: 'boolean',
+      description: 'Override forceUnmount behavior for all child FocusScope.Controller.Scope components',
+    },
+  ]}
+/>
+
+The FocusScope component automatically inherits props from the nearest FocusScope.Controller, with controller props taking precedence over direct props.
+
+## Usage in Other Components
+
+Many Tamagui components export FocusScope for advanced focus control:
+
+```tsx
+import { Dialog, Popover, Select } from 'tamagui'
+
+// Available on:
+<Dialog.FocusScope />
+<Popover.FocusScope />
+<Select.FocusScope />
+// And more...
+```
+
+## Accessibility
+
+FocusScope follows accessibility best practices:
+
+- Manages `tabindex` appropriately for focus flow
+- Respects user's reduced motion preferences
+- Maintains focus visible indicators
+- Provides proper ARIA support when used with other components
+- Handles edge cases like disabled elements and hidden content
+
+<Notice>
+  FocusScope is primarily designed for web platforms. On React Native, it renders children without focus management since native platforms handle focus differently.
+</Notice>
+
+## Examples
+
+### Modal Focus Management
+
+```tsx
+import { Button, Dialog, FocusScope, Input, XStack, YStack } from 'tamagui'
+
+export default () => (
+  <Dialog>
+    <Dialog.Trigger asChild>
+      <Button>Open Modal</Button>
+    </Dialog.Trigger>
+    
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <FocusScope trapped loop focusOnIdle={100}>
+          <YStack space="$4" padding="$4">
+            <Dialog.Title>User Details</Dialog.Title>
+            <Input placeholder="Name" />
+            <Input placeholder="Email" />
+            <XStack space="$2">
+              <Dialog.Close asChild>
+                <Button variant="outlined">Cancel</Button>
+              </Dialog.Close>
+              <Button>Save</Button>
+            </XStack>
+          </YStack>
+        </FocusScope>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog>
+)
+```
+
+### Custom Focus Container
+
+```tsx
+import { Button, FocusScope, styled, XStack } from 'tamagui'
+
+const FocusContainer = styled(XStack, {
+  borderWidth: 2,
+  borderColor: 'transparent',
+  borderRadius: '$4',
+  padding: '$4',
+  
+  variants: {
+    focused: {
+      true: {
+        borderColor: '$blue10',
+        shadowColor: '$blue10',
+        shadowRadius: 10,
+        shadowOpacity: 0.3,
+      }
+    }
+  }
+})
+
+export default () => (
+  <FocusScope loop>
+    {({ onKeyDown, tabIndex, ref }) => (
+      <FocusContainer
+        ref={ref}
+        tabIndex={tabIndex}
+        onKeyDown={onKeyDown}
+        space="$4"
+        focused
+      >
+        <Button>Action 1</Button>
+        <Button>Action 2</Button>
+        <Button>Action 3</Button>
+      </FocusContainer>
+    )}
+  </FocusScope>
+)
+``` 

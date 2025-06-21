@@ -37,6 +37,13 @@ export interface FocusScopeProps {
    */
   forceUnmount?: boolean
 
+  /**
+   * When true, waits for idle before focusing. When a number, waits that many ms.
+   * This prevents reflows during animations.
+   * @default false
+   */
+  focusOnIdle?: boolean | number
+
   children?:
     | React.ReactNode
     | ((props: {
