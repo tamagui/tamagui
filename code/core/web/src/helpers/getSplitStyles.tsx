@@ -4,6 +4,7 @@ import {
   isClient,
   isWeb,
   useIsomorphicLayoutEffect,
+  IS_REACT_19,
 } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
@@ -1505,7 +1506,7 @@ function addStyleToInsertRules(
 ) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     const identifier = styleObject[StyleObjectIdentifier]
-    if (!startedUnhydrated) {
+    if (!startedUnhydrated || !IS_REACT_19) {
       if (shouldInsertStyleRules(identifier)) {
         updateRules(identifier, styleObject[StyleObjectRules])
         rulesToInsert[identifier] = styleObject
