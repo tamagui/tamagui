@@ -8602,6 +8602,7 @@ __metadata:
   resolution: "@tamagui/use-async@workspace:code/packages/use-async"
   dependencies:
     "@tamagui/build": "workspace:*"
+    react: "npm:*"
   peerDependencies:
     react: "*"
   languageName: unknown
