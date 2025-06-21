@@ -1,3 +1,8 @@
+- perf: could avoid even creating style rules, easy / big win:
+  - note that in addStyleToInsertRules it checks if shouldInsert
+  - note that we create all the style rules before we actually check if should insert
+  - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
+
 - perf: could avoid parent re-renders on group changes even if dynamic
   - if they dont themselves have animation, would need to group.emit() in the actual press events not based on an effect based on state
 

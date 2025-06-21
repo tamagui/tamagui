@@ -393,16 +393,13 @@ async function buildJs(allFiles) {
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
 
-              // for test mode we want real react-native
-              ...(!bundleNativeTest && {
-                'react-native': require.resolve('@tamagui/fake-react-native'),
-                'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-                'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-              }),
+              'react-native': require.resolve('@tamagui/fake-react-native'),
+              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
 
               'react-native/Libraries/Pressability/Pressability': require.resolve(
                 '@tamagui/fake-react-native'
