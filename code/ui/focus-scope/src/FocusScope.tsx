@@ -320,7 +320,6 @@ function isSelectableInput(
 }
 
 function focus(element?: FocusableTarget | null, { select = false } = {}) {
-  console.trace('focus', element)
   // only focus if that element is focusable
   if (element?.focus) {
     const previouslyFocusedElement = document.activeElement
