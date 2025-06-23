@@ -131,3 +131,26 @@ export const MyStack = styled(Stack, {
   width: '$icon.small'
 })
 ```
+
+When creating custom tokens, you can use the `px` helper to ensure values get proper pixel units on web while remaining as raw numbers on native:
+
+```tsx
+import { createTokens, px } from '@tamagui/core'
+
+const tokens = createTokens({
+  customSize: {
+    small: px(100),   // → "100px" on web, 100 on native
+    medium: px(200),
+    large: px(300),
+  },
+  opacity: {
+    low: 0.25,        // → 0.25 (unitless on both platforms)
+    medium: 0.5,
+    high: 0.75,
+  },
+})
+```
+
+<Notice theme="blue">
+  The predefined token categories like `size`, `space`, and `radius` automatically add pixel units where appropriate, so you don't need to use the `px` helper for them.
+</Notice>

@@ -1,3 +1,4 @@
+import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
 import type { Variable } from './createVariable'
@@ -50,8 +51,10 @@ export const createVariables = <A extends DeepTokenObject>(
         name,
         key: keyWithPrefix,
       })
-      // Add needsPx flag to the variable
-      finalValue.needsPx = val.needsPx
+      // Only set needsPx flag on web platform, avoid on native
+      if (isWeb) {
+        finalValue.needsPx = val.needsPx
+      }
       res[key] = finalValue
       continue
     }
