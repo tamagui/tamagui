@@ -124,14 +124,14 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 
 The above code will generally cause weird issues, because Tamagui can't know that it needs to just forward some props down. Instead, Tamagui tries to "resolve" all the style props from `StyledHigherOrderStyledText` before passing them down to `HigherOrderStyledText`. But that causes problems, because now `HigherOrderStyledText` will merge things differently than you'd expect.
 
-The way to fix this is to add a `.styleable` around your `HigherOrderStyledText`. You'll also want to forward the ref, which is forwarded for you:
+The way to fix this is to add a `.styleable` around your `HigherOrderStyledText`. The ref is automatically forwarded for you:
 
 ```tsx
 const StyledText = styled(Text)
 
 // note the styleable wrapper here:
-const HigherOrderStyledText = StyledText.styleable((props, ref) => (
-  <StyledText ref={ref} {...props} />
+const HigherOrderStyledText = StyledText.styleable((props) => (
+  <StyledText {...props} />
 ))
 
 const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
@@ -141,7 +141,7 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 })
 ```
 
-Now your component will handle everything properly, even if a theme is changed on `HigherOrderStyledText`, it will be applied.
+Now your component will handle everything properly, even if a theme is changed on `HigherOrderStyledText`, it will be applied. The `styleable` method automatically handles ref forwarding, so you don't need to manually pass the ref parameter.
 
 A final note: you must pass all Tamagui style props given to `HigherOrderStyledText` down to a single `StyledText`, at least if you want everything to work fully correctly.
 
