@@ -43,6 +43,19 @@ export const createVariables = <A extends DeepTokenObject>(
     const name =
       parentPath && parentPath !== 't-color' ? `${parentPath}-${niceKey}` : `c-${niceKey}`
 
+    // Handle px() helper objects
+    if (val && typeof val === 'object' && 'needsPx' in val && 'val' in val) {
+      const finalValue = createVariable({
+        val: val.val,
+        name,
+        key: keyWithPrefix,
+      })
+      // Add needsPx flag to the variable
+      finalValue.needsPx = val.needsPx
+      res[key] = finalValue
+      continue
+    }
+
     if (val && typeof val === 'object') {
       // recurse
       res[key] = createVariables(
