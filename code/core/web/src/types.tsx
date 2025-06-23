@@ -1217,6 +1217,7 @@ export type FontWeightKeys = 'fontWeight'
 export type FontLetterSpacingKeys = 'letterSpacing'
 export type LineHeightKeys = 'lineHeight'
 export type ZIndexKeys = 'zIndex'
+export type OpacityKeys = 'opacity'
 
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
@@ -1242,7 +1243,9 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
                     ? FontWeightTokens
                     : K extends FontLetterSpacingKeys
                       ? FontLetterSpacingTokens
-                      : never
+                      : K extends OpacityKeys
+                        ? SpecificTokens | ThemeValueFallback
+                        : never
 
 export type GetThemeValueForKey<K extends string | symbol | number> =
   | ThemeValueGet<K>
