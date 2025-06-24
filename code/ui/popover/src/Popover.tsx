@@ -378,6 +378,12 @@ export interface PopoverContentImplProps
   extends PopperContentProps,
     Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
   /**
+   * Rather than mount the content immediately, mounts it in a useEffect
+   * inside a startTransition to clear the main thread
+   */
+  lazyMount?: boolean
+
+  /**
    * Whether focus should be trapped within the `Popover`
    * @default false
    */
@@ -430,6 +436,7 @@ const PopoverContentImpl = React.forwardRef<
     disableRemoveScroll,
     freezeContentsWhenHidden,
     setIsFullyHidden,
+    lazyMount,
     ...contentProps
   } = props
 
@@ -498,6 +505,7 @@ const PopoverContentImpl = React.forwardRef<
       present={Boolean(open)}
       keepChildrenMounted={keepChildrenMounted}
       onExitComplete={handleExitComplete}
+      lazyMount={lazyMount}
     >
       <PopperContent
         __scopePopper={__scopePopover || POPOVER_SCOPE}
