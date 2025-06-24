@@ -199,9 +199,9 @@ export default () => (
     },
     {
       name: 'focusOnIdle',
-      type: 'boolean | number',
+      type: 'boolean | number | { min?: number; max?: number }',
       default: 'false',
-      description: 'When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations',
+      description: 'When true, waits for idle before focusing using requestIdleCallback. When a number, waits that many ms. Object sets a lower and upper bound. Helps to prevent reflows during animations, as focusing inputs easily blocks main thread.',
     },
     {
       name: 'onMountAutoFocus',

@@ -396,14 +396,12 @@ export interface PopoverContentImplProps
   disableFocusScope?: boolean
 
   /**
-   * Event handler called when auto-focusing on open.
-   * Can be prevented.
+   * Event handler called when auto-focusing on open. Can be prevented.
    */
   onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
 
   /**
-   * Event handler called when auto-focusing on close.
-   * Can be prevented.
+   * Event handler called when auto-focusing on close. Can be prevented.
    */
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false
 
