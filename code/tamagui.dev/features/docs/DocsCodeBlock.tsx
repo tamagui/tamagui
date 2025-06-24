@@ -170,7 +170,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               // @ts-ignore
               id={id}
               jc="center"
-              bg="$color2"
+              bg="$color3"
             >
               {showFileName && (
                 <XStack

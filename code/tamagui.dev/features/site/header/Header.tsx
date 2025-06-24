@@ -550,7 +550,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: 1400,
     compiler: 117,
     ui: 1400,
-    theme: data?.user ? 300 : 130,
+    theme: data?.user ? 300 : 240,
     menu: 390,
   }
 
@@ -569,10 +569,11 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       maxHeight="90vh"
       maxWidth={360}
       minWidth={360}
-      elevation="$8"
+      elevation="$2"
+      borderWidth={3}
+      borderColor="$color2"
       padding={0}
       br="$6"
-      borderWidth={0}
       opacity={1}
       y={0}
       enterStyle={{
@@ -597,21 +598,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
           flex={1}
         >
           <AnimatePresence custom={{ going }} initial={false}>
-            <Frame>
-              {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}
-              <Popover.ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{
-                  flex: 1,
-                  width: '100%',
-                }}
-                contentContainerStyle={{ width: '100%' }}
-              >
-                <YStack w="100%" p="$3">
-                  <HeaderMenuContents key={active} id={active} />
-                </YStack>
-              </Popover.ScrollView>
-            </Frame>
+            <HeaderMenuContents key={active} id={active} />
           </AnimatePresence>
         </YStack>
       ) : (
@@ -644,114 +631,134 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const isOnBentoPage = pathName.startsWith('/bento')
   const isMobile = useMedia().maxMd
 
-  /**
-   * When the theme_histories are fetched,
-   * we can apply one of them to Bento components from dropdown
-   */
-  if (props.id === 'menu') {
-    return (
-      <>
-        <HeaderMenuMoreContents />
-        {isMobile && <ActivePageDocsMenuContents />}
-      </>
-    )
-  }
+  const contents = (() => {
+    /**
+     * When the theme_histories are fetched,
+     * we can apply one of them to Bento components from dropdown
+     */
+    if (props.id === 'menu') {
+      return (
+        <>
+          <HeaderMenuMoreContents />
+          {isMobile && <ActivePageDocsMenuContents />}
+        </>
+      )
+    }
 
-  if (props.id === 'theme') {
-    return (
-      <YStack flex={1} gap="$2">
-        {!isOnBentoPage || !themeHistories.length ? (
-          <>
-            <PromoCardTheme />
-            <Paragraph
-              bg="$color3"
-              pointerEvents="none"
-              bw={0.5}
-              bc="$color6"
-              br="$5"
-              ff="$mono"
-              size="$4"
-              o={0.5}
-              p="$4"
-            >
-              Once you create themes, visit the Bento page and open this menu to preview
-              them.
-              {`\n`}
-              <Link href="/bento" theme="blue" style={{ pointerEvents: 'auto' }}>
-                Go to Bento to preview your themes →
-              </Link>
-            </Paragraph>
-          </>
-        ) : (
-          <YStack gap="$2">
-            <XStack>
-              <HeadAnchor
-                grid
-                alignItems="center"
-                onPress={() => {
-                  bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
-                }}
+    if (props.id === 'theme') {
+      return (
+        <YStack flex={1} gap="$2">
+          {!isOnBentoPage || !themeHistories.length ? (
+            <>
+              <PromoCardTheme />
+              <Paragraph
+                bg="$color3"
+                pointerEvents="none"
+                bw={0.5}
+                bc="$color6"
+                br="$5"
+                ff="$mono"
+                size="$4"
+                o={0.5}
+                p="$4"
               >
-                <SizableText size="$3" color="$color11" ellipse>
-                  Enabled
-                </SizableText>
-
-                {bentoTheme.enabled ? <Check ml="$2" size={12} /> : null}
-              </HeadAnchor>
-              <HeadAnchor
-                grid
-                onPress={() => {
-                  bentoStore.disableTint = !bentoStore.disableTint
-                }}
-              >
-                <SizableText size="$3" color="$color11" ellipse>
-                  Tint
-                </SizableText>
-
-                {!bentoStore.disableTint ? <Check ml="$2" size={12} /> : null}
-              </HeadAnchor>
-            </XStack>
-
-            <Separator mb="$3" opacity={0.5} />
-
-            <SizableText
-              size="$3"
-              fontFamily="$mono"
-              px="$4"
-              color="$color10"
-              theme="alt2"
-            >
-              Recent Themes
-            </SizableText>
-
-            {themeHistories.map((history) => (
-              <HeadAnchor
-                key={history.id}
-                grid
-                onPress={() => updateGenerate(history.theme_data)}
-              >
-                <XStack ai="center" jc="space-between">
+                Once you create themes, visit the Bento page and open this menu to preview
+                them.
+                {`\n`}
+                <Link href="/bento" theme="blue" style={{ pointerEvents: 'auto' }}>
+                  Go to Bento to preview your themes →
+                </Link>
+              </Paragraph>
+            </>
+          ) : (
+            <YStack gap="$2">
+              <XStack>
+                <HeadAnchor
+                  grid
+                  alignItems="center"
+                  onPress={() => {
+                    bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
+                  }}
+                >
                   <SizableText size="$3" color="$color11" ellipse>
-                    {history.search_query}
+                    Enabled
                   </SizableText>
-                </XStack>
-              </HeadAnchor>
-            ))}
 
-            {themeHistories.length === 0 && (
-              <YStack p="$4" ai="center">
-                <SizableText size="$2" theme="alt2">
-                  {data?.user ? 'No theme history yet' : 'Login to save themes'}
-                </SizableText>
-              </YStack>
-            )}
-          </YStack>
-        )}
-      </YStack>
-    )
-  }
+                  {bentoTheme.enabled ? <Check ml="$2" size={12} /> : null}
+                </HeadAnchor>
+                <HeadAnchor
+                  grid
+                  onPress={() => {
+                    bentoStore.disableTint = !bentoStore.disableTint
+                  }}
+                >
+                  <SizableText size="$3" color="$color11" ellipse>
+                    Tint
+                  </SizableText>
 
-  return <DocsMenuContents inMenu section={props.id} />
+                  {!bentoStore.disableTint ? <Check ml="$2" size={12} /> : null}
+                </HeadAnchor>
+              </XStack>
+
+              <Separator mb="$3" opacity={0.5} />
+
+              <SizableText
+                size="$3"
+                fontFamily="$mono"
+                px="$4"
+                color="$color10"
+                theme="alt2"
+              >
+                Recent Themes
+              </SizableText>
+
+              {themeHistories.map((history) => (
+                <HeadAnchor
+                  key={history.id}
+                  grid
+                  onPress={() => updateGenerate(history.theme_data)}
+                >
+                  <XStack ai="center" jc="space-between">
+                    <SizableText size="$3" color="$color11" ellipse>
+                      {history.search_query}
+                    </SizableText>
+                  </XStack>
+                </HeadAnchor>
+              ))}
+
+              {themeHistories.length === 0 && (
+                <YStack p="$4" ai="center">
+                  <SizableText size="$2" theme="alt2">
+                    {data?.user ? 'No theme history yet' : 'Login to save themes'}
+                  </SizableText>
+                </YStack>
+              )}
+            </YStack>
+          )}
+        </YStack>
+      )
+    }
+
+    return <DocsMenuContents inMenu section={props.id} />
+  })()
+
+  return (
+    <Frame>
+      {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}
+      <Popover.ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          flex: 1,
+          width: '100%',
+        }}
+        contentContainerStyle={{ width: '100%' }}
+      >
+        <YStack w="100%" p="$3">
+          {contents}
+        </YStack>
+      </Popover.ScrollView>
+    </Frame>
+  )
 }
 
 const HeaderMenuMoreContents = () => {
