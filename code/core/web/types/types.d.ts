@@ -2,7 +2,7 @@ import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
-import type { Variable } from './createVariable';
+import type { PxValue, Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
 import type { ColorKeys, SizeKeys, SpaceKeys } from './interfaces/KeyTypes';
@@ -89,7 +89,7 @@ type LayoutValue = {
 };
 export type DisposeFn = () => void;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
-export type VariableVal = number | string | Variable | VariableValGeneric;
+export type VariableVal = number | string | Variable | VariableValGeneric | PxValue;
 export type VariableColorVal = string | Variable;
 type GenericKey = string;
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
@@ -712,10 +712,11 @@ export type FontWeightKeys = 'fontWeight';
 export type FontLetterSpacingKeys = 'letterSpacing';
 export type LineHeightKeys = 'lineHeight';
 export type ZIndexKeys = 'zIndex';
+export type OpacityKeys = 'opacity';
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens | ThemeValueFallbackSize : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends `${`border${string | ''}Radius`}` ? RadiusTokens | ThemeValueFallbackRadius : K extends SpaceKeys ? K extends 'shadowOffset' ? {
     width: SpaceTokens;
     height: SpaceTokens;
-} : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
+} : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : K extends OpacityKeys ? SpecificTokens | ThemeValueFallback : never;
 export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback | (TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends true | undefined ? SpecificTokens : never : never);

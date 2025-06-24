@@ -32,6 +32,21 @@ import type {
 // config is re-run by @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
 
+/**
+ * Determines if a token category should have px units added.
+ * Following the principle: only add px to predefined categories that need them.
+ * Custom categories default to unitless.
+ */
+function shouldTokenCategoryHaveUnits(category: string): boolean {
+  // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
+  // These are the only predefined categories that should get px units
+  const UNIT_CATEGORIES = new Set(['size', 'space', 'radius'])
+
+  // Only add px to predefined dimensional categories
+  // Custom categories (like 'opacity', 'customWidth') default to unitless
+  return UNIT_CATEGORIES.has(category)
+}
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
@@ -139,7 +154,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
         if (isWeb) {
           registerCSSVariable(variable)
-          declarations.push(variableToCSS(variable, key === 'zIndex'))
+          // Check if this specific variable needs px units
+          const variableNeedsPx = variable.needsPx === true
+          const categoryNeedsPx = shouldTokenCategoryHaveUnits(key)
+          const shouldBeUnitless = !(variableNeedsPx || categoryNeedsPx)
+          declarations.push(variableToCSS(variable, shouldBeUnitless))
         }
       }
     }

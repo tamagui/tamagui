@@ -18,7 +18,7 @@ import type {
   ViewProps,
   ViewStyle,
 } from 'react-native'
-import type { Variable } from './createVariable'
+import type { PxValue, Variable } from './createVariable'
 import type { StyledContext } from './helpers/createStyledContext'
 import type { CSSColorNames } from './interfaces/CSSColorNames'
 import type { ColorKeys, SizeKeys, SpaceKeys } from './interfaces/KeyTypes'
@@ -147,7 +147,7 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
-export type VariableVal = number | string | Variable | VariableValGeneric
+export type VariableVal = number | string | Variable | VariableValGeneric | PxValue
 export type VariableColorVal = string | Variable
 
 type GenericKey = string
@@ -1217,6 +1217,7 @@ export type FontWeightKeys = 'fontWeight'
 export type FontLetterSpacingKeys = 'letterSpacing'
 export type LineHeightKeys = 'lineHeight'
 export type ZIndexKeys = 'zIndex'
+export type OpacityKeys = 'opacity'
 
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
@@ -1242,7 +1243,9 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
                     ? FontWeightTokens
                     : K extends FontLetterSpacingKeys
                       ? FontLetterSpacingTokens
-                      : never
+                      : K extends OpacityKeys
+                        ? SpecificTokens | ThemeValueFallback
+                        : never
 
 export type GetThemeValueForKey<K extends string | symbol | number> =
   | ThemeValueGet<K>

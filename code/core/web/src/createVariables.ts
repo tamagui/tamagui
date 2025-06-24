@@ -1,3 +1,4 @@
+import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
 import type { Variable } from './createVariable'
@@ -42,6 +43,21 @@ export const createVariables = <A extends DeepTokenObject>(
     const niceKey = simpleHash(key, 1000)
     const name =
       parentPath && parentPath !== 't-color' ? `${parentPath}-${niceKey}` : `c-${niceKey}`
+
+    // Handle px() helper objects
+    if (val && typeof val === 'object' && 'needsPx' in val && 'val' in val) {
+      const finalValue = createVariable({
+        val: val.val,
+        name,
+        key: keyWithPrefix,
+      })
+      // Only set needsPx flag on web platform, avoid on native
+      if (isWeb) {
+        finalValue.needsPx = val.needsPx
+      }
+      res[key] = finalValue
+      continue
+    }
 
     if (val && typeof val === 'object') {
       // recurse
