@@ -87,6 +87,11 @@ export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverCont
 } & React.RefAttributes<HTMLElement | import("react-native").View>>;
 export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
     /**
+     * Rather than mount the content immediately, mounts it in a useEffect
+     * inside a startTransition to clear the main thread
+     */
+    lazyMount?: boolean;
+    /**
      * Whether focus should be trapped within the `Popover`
      * @default false
      */

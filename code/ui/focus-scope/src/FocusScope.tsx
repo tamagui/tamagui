@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { startTransition } from '@tamagui/start-transition'
-import { fullyIdle, sleep, useAsyncEffect } from '@tamagui/use-async'
+import { idle, useAsyncEffect } from '@tamagui/use-async'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 import { useFocusScopeControllerContext } from './FocusScopeController'
@@ -156,8 +156,16 @@ export function useFocusScope(
         if (!mountEvent.defaultPrevented) {
           // wait for idle before focusing to prevent reflows during animations
           if (focusOnIdle) {
-            await sleep(typeof focusOnIdle === 'number' ? focusOnIdle : 16, signal)
-            await fullyIdle(signal)
+            await idle(
+              signal,
+              typeof focusOnIdle == 'object'
+                ? focusOnIdle
+                : {
+                    // we can't wait too long or else user can take an action and then we focus
+                    max: 200,
+                    min: typeof focusOnIdle == 'number' ? focusOnIdle : 16,
+                  }
+            )
           }
 
           const candidates = removeLinks(getTabbableCandidates(container))

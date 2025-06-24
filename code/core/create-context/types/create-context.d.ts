@@ -1,11 +1,22 @@
+// from radix
+// https://github.com/radix-ui/primitives/blob/main/packages/react/context/src/createContext.tsx
 import * as React from "react";
 export type ScopedProps<
 	P,
 	K extends string
 > = P & { [Key in `__scope${K}`]? : Scope };
-export declare function createContext<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType): readonly [(props: ContextValueType & { children: React.ReactNode }) => JSX.Element, (consumerName: string) => Exclude<ContextValueType | undefined, undefined>];
-type ScopeHook = (scope: Scope) => { [__scopeProp: string]: Scope };
-export type Scope<C = any> = { [scopeName: string]: React.Context<C>[] } | undefined;
+export declare function createContext<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType): readonly [(props: ContextValueType & {
+	children: React.ReactNode;
+}) => JSX.Element, (consumerName: string) => Exclude<ContextValueType | undefined, undefined>];
+/* -------------------------------------------------------------------------------------------------
+* createContextScope
+* -----------------------------------------------------------------------------------------------*/
+type ScopeHook = (scope: Scope) => {
+	[__scopeProp: string]: Scope;
+};
+export type Scope<C = any> = {
+	[scopeName: string]: React.Context<C>[];
+} | undefined;
 export interface CreateScope {
 	scopeName: string;
 	(): ScopeHook;
