@@ -1,8 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "isolatedDeclarations": true
+    "composite": true
   },
   "exclude": [
     "types",

@@ -4,7 +4,7 @@ import * as normalizeColor from '@react-native/normalize-color'
 const norm = normalizeColor.default || normalizeColor
 export const normalizeCSSColor = norm as (color: string) => number | null
 
-export function rgba(colorInt: number): { r: number; g: number; b: number; a: number } {
+export function rgba(colorInt: number) {
   const r = Math.round((colorInt & 0xff000000) >>> 24)
   const g = Math.round((colorInt & 0x00ff0000) >>> 16)
   const b = Math.round((colorInt & 0x0000ff00) >>> 8)
