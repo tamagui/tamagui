@@ -1259,17 +1259,11 @@ export function createComponent<
   }
 
   function styleable(Component: any, options?: StyleableOptions) {
-    // Check if component already supports forwardRef
-    // For ForwardRefExoticComponent: Component.render?.length === 2
-    // For regular function components: Component.length === 2 (React 19+)
-    const isForwardedRefAlready = Component.render?.length === 2 || Component.length === 2
+    const isForwardedRefAlready = Component.render?.length === 2
 
     let out = isForwardedRefAlready
       ? (Component as any)
-      : React.forwardRef((props: any, ref: any) => {
-          // In React 19, we can pass ref as a prop
-          return <Component {...props} ref={ref} />
-        })
+      : React.forwardRef(Component as any)
 
     const extendedConfig = extendStyledConfig(options?.staticConfig)
 
