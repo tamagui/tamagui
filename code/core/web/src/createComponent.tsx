@@ -1,5 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import {
+  IS_REACT_19,
   isAndroid,
   isClient,
   isServer,
@@ -709,7 +710,7 @@ export function createComponent<
             return styleObject
           }
           const computed = cssStyleDeclarationToObject(
-            getComputedStyle(stateRef.current.host! as any)
+            getComputedStyle(stateRef.current.host! as Element)
           )
           groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
@@ -1062,6 +1063,7 @@ export function createComponent<
       if (!groupState || !groupName) return
       groupState.listeners.clear()
       // change reference so context value updates
+
       return {
         ...componentContext.groups,
         // change reference so as we mutate it doesn't affect siblings etc
@@ -1072,9 +1074,9 @@ export function createComponent<
             // capture just initial width and height if they exist
             // will have top, left, width, height (not x, y)
             layout: {
-              width: fromPx(splitStyles.style?.width as any),
-              height: fromPx(splitStyles.style?.height as any),
-            } as any,
+              width: fromPx(splitStyles.style?.width),
+              height: fromPx(splitStyles.style?.height),
+            },
           },
         },
         emit: groupState.emit,
@@ -1259,21 +1261,14 @@ export function createComponent<
   }
 
   function styleable(Component: any, options?: StyleableOptions) {
-    // Check if component already supports forwardRef
-    // For ForwardRefExoticComponent: Component.render?.length === 2
-    // For regular function components: Component.length === 2 (React 19+)
-    const isForwardedRefAlready = Component.render?.length === 2 || Component.length === 2
+    const skipForwardRef =
+      (IS_REACT_19 && typeof Component === 'function') || Component.render?.length === 2
 
-    let out = isForwardedRefAlready
-      ? (Component as any)
-      : React.forwardRef((props: any, ref: any) => {
-          // In React 19, we can pass ref as a prop
-          return <Component {...props} ref={ref} />
-        })
+    let out = skipForwardRef ? Component : React.forwardRef(Component)
 
     const extendedConfig = extendStyledConfig(options?.staticConfig)
 
-    out = options?.disableTheme ? out : (themeable(out, extendedConfig, true) as any)
+    out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
 
     if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
       out = React.memo(out)
@@ -1314,8 +1309,8 @@ export function Unspaced(props: { children?: any }) {
 Unspaced['isUnspaced'] = true
 
 const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  size = size === true ? '$true' : size
-  const sizePx = tokens.space[size as any] ?? size
+  size = size === false ? 0 : size === true ? '$true' : size
+  const sizePx = tokens.space[size] ?? size
   return {
     width: sizePx,
     height: sizePx,
@@ -1391,9 +1386,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
     return children
   }
 
-  const childrenList = areChildrenArray
-    ? (children as any[])
-    : React.Children.toArray(children)
+  const childrenList = areChildrenArray ? children : React.Children.toArray(children)
 
   const len = childrenList.length
   if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
@@ -1410,11 +1403,12 @@ export function spacedChildren(props: SpacedChildrenProps) {
     // forward space
     if (!isEmpty && React.isValidElement(child) && child.type?.['shouldForwardSpace']) {
       child = React.cloneElement(child, {
+        // @ts-expect-error we explicitly know with shouldForwardSpace
         space,
         spaceFlex,
         separator,
         key: child.key,
-      } as any)
+      })
     }
 
     // push them all, but wrap some in Fragment
@@ -1513,5 +1507,8 @@ const AbsoluteFill: any = createComponent({
   },
 })
 
-const fromPx = (val?: number | string) =>
-  typeof val !== 'string' ? val : +val.replace('px', '')
+const fromPx = (val?: any): number => {
+  if (typeof val === 'number') return val
+  if (typeof val === 'string') return +val.replace('px', '')
+  return 0
+}

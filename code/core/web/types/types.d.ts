@@ -51,9 +51,13 @@ export type ComponentContextI = {
     groups: GroupContextType;
     setParentFocusState: ((next?: Partial<TamaguiComponentState> | undefined) => void) | null;
 };
+export type WidthHeight = {
+    width: number;
+    height: number;
+};
 type ComponentGroupEvent = {
     pseudo?: PseudoGroupState;
-    layout?: LayoutValue;
+    layout?: WidthHeight;
 };
 export type GroupContextType = {
     emit: GroupStateListener;

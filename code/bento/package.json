@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bento",
-  "version": "1.129.0",
+  "version": "1.129.2",
   "private": true,
   "sideEffects": [
     "*.css"

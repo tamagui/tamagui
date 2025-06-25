@@ -94,9 +94,14 @@ export type ComponentContextI = {
     | null
 }
 
+export type WidthHeight = {
+  width: number
+  height: number
+}
+
 type ComponentGroupEvent = {
   pseudo?: PseudoGroupState
-  layout?: LayoutValue
+  layout?: WidthHeight
 }
 
 // this object must stay referentially the same always to avoid every component re-rendering
