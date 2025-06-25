@@ -23,6 +23,12 @@ import {
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { PopoverDemo } from '@tamagui/demos'
 
+const Styyled = styled(View)
+
+const Stylable = Styyled.styleable((props) => {
+  return null
+})
+
 const context = createStyledContext({
   customProp: 'ok',
 })
@@ -40,6 +46,7 @@ const StyledText = styled(Text, {
 })
 
 export default function Sandbox() {
+  return <Stylable />
   return <StyledText customProp="ok">hello world</StyledText>
 
   // const [x, setX] = useState(false)

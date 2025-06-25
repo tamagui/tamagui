@@ -1,5 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import {
+  IS_REACT_19,
   isAndroid,
   isClient,
   isServer,
@@ -1261,7 +1262,7 @@ export function createComponent<
 
   function styleable(Component: any, options?: StyleableOptions) {
     const skipForwardRef =
-      typeof Component === 'function' || Component.render?.length === 2
+      (IS_REACT_19 && typeof Component === 'function') || Component.render?.length === 2
 
     let out = skipForwardRef ? Component : React.forwardRef(Component)
 
