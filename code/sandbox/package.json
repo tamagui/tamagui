@@ -35,7 +35,7 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
     "react-native-svg": "15.11.2",
-    "react-native-web": "^0.20.0",
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
