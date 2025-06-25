@@ -709,7 +709,7 @@ export function createComponent<
             return styleObject
           }
           const computed = cssStyleDeclarationToObject(
-            getComputedStyle(stateRef.current.host! as any)
+            getComputedStyle(stateRef.current.host! as Element)
           )
           groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
@@ -1062,6 +1062,7 @@ export function createComponent<
       if (!groupState || !groupName) return
       groupState.listeners.clear()
       // change reference so context value updates
+
       return {
         ...componentContext.groups,
         // change reference so as we mutate it doesn't affect siblings etc
@@ -1072,9 +1073,9 @@ export function createComponent<
             // capture just initial width and height if they exist
             // will have top, left, width, height (not x, y)
             layout: {
-              width: fromPx(splitStyles.style?.width as any),
-              height: fromPx(splitStyles.style?.height as any),
-            } as any,
+              width: fromPx(splitStyles.style?.width),
+              height: fromPx(splitStyles.style?.height),
+            },
           },
         },
         emit: groupState.emit,
@@ -1307,8 +1308,8 @@ export function Unspaced(props: { children?: any }) {
 Unspaced['isUnspaced'] = true
 
 const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  size = size === true ? '$true' : size
-  const sizePx = tokens.space[size as any] ?? size
+  size = size === false ? 0 : size === true ? '$true' : size
+  const sizePx = tokens.space[size] ?? size
   return {
     width: sizePx,
     height: sizePx,
@@ -1384,9 +1385,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
     return children
   }
 
-  const childrenList = areChildrenArray
-    ? (children as any[])
-    : React.Children.toArray(children)
+  const childrenList = areChildrenArray ? children : React.Children.toArray(children)
 
   const len = childrenList.length
   if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
@@ -1403,11 +1402,12 @@ export function spacedChildren(props: SpacedChildrenProps) {
     // forward space
     if (!isEmpty && React.isValidElement(child) && child.type?.['shouldForwardSpace']) {
       child = React.cloneElement(child, {
+        // @ts-expect-error we explicitly know with shouldForwardSpace
         space,
         spaceFlex,
         separator,
         key: child.key,
-      } as any)
+      })
     }
 
     // push them all, but wrap some in Fragment
@@ -1506,5 +1506,8 @@ const AbsoluteFill: any = createComponent({
   },
 })
 
-const fromPx = (val?: number | string) =>
-  typeof val !== 'string' ? val : +val.replace('px', '')
+const fromPx = (val?: any): number => {
+  if (typeof val === 'number') return val
+  if (typeof val === 'string') return +val.replace('px', '')
+  return 0
+}
