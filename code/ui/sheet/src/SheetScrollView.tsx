@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
 import { composeRefs } from '@tamagui/compose-refs'
-import type { GetRef } from '@tamagui/core'
+import { isWeb, type GetRef } from '@tamagui/core'
 import type { ScrollViewProps } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
-
+import { useControllableState } from '@tamagui/use-controllable-state'
+import React, { useEffect } from 'react'
 import type { ScrollView as RNScrollView } from 'react-native'
-
 import { useSheetContext } from './SheetContext'
 import type { SheetScopedProps } from './types'
 
@@ -26,14 +25,17 @@ export const SheetScrollView = React.forwardRef<
       __scopeSheet,
       children,
       onScroll,
-      scrollEnabled,
+      scrollEnabled: scrollEnabledProp,
       ...props
     }: SheetScopedProps<ScrollViewProps>,
     ref
   ) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const { scrollBridge, scrollEnabled: scrollEnabled_, setHasScrollView } = context
-    // const [scrollEnabled, setScrollEnabled_] = useState(true)
+    const [scrollEnabled, setScrollEnabled_] = useControllableState({
+      prop: scrollEnabledProp,
+      defaultProp: true,
+    })
     const scrollRef = React.useRef<RNScrollView | null>(null)
 
     // could make it so it has negative bottom margin and then pads the bottom content
@@ -41,12 +43,12 @@ export const SheetScrollView = React.forwardRef<
     // or more ideally could use context to register if it has a scrollview and change behavior
     // const offscreenSize = useSheetOffscreenSize(context)
 
-    // const setScrollEnabled = (next: boolean) => {
-    //   scrollRef.current?.setNativeProps?.({
-    //     scrollEnabled: next,
-    //   })
-    //   setScrollEnabled_(next)
-    // }
+    const setScrollEnabled = (next: boolean) => {
+      scrollRef.current?.setNativeProps?.({
+        scrollEnabled: next,
+      })
+      setScrollEnabled_(next)
+    }
 
     const state = React.useRef({
       lastPageY: 0,
@@ -70,7 +72,7 @@ export const SheetScrollView = React.forwardRef<
       state.current.isDragging = false
       scrollBridge.scrollStartY = -1
       state.current.isScrolling = false
-      // setScrollEnabled(true)
+      setScrollEnabled(true)
       let vy = 0
       if (state.current.dys.length) {
         const recentDys = state.current.dys.slice(-10)
@@ -102,6 +104,9 @@ export const SheetScrollView = React.forwardRef<
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
           scrollBridge.y = y
+          if (isWeb) {
+            scrollBridge.scrollLock = y > 0
+          }
           if (y > 0) {
             scrollBridge.scrollStartY = -1
           }
@@ -123,41 +128,50 @@ export const SheetScrollView = React.forwardRef<
           return scrollable
         }}
         // setting to false while onResponderMove is disabled
-        onMoveShouldSetResponder={() => scrollable}
-        // somehow disabling works better, regression, no more nice drag continue scroll
-        // onResponderMove={(e) => {
-        //   const { pageY } = e.nativeEvent
+        onMoveShouldSetResponder={(e) => {
+          return scrollable
+        }}
+        contentContainerStyle={{
+          minHeight: '100%',
+        }}
+        onResponderMove={(e) => {
+          // limiting to web as its tested on web
+          if (isWeb) {
+            const { pageY } = e.nativeEvent
 
-        //   if (state.current.isScrolling) {
-        //     return
-        //   }
+            if (state.current.isScrolling) {
+              e.stopPropagation()
+              return
+            }
 
-        //   if (scrollBridge.scrollStartY === -1) {
-        //     scrollBridge.scrollStartY = pageY
-        //     state.current.lastPageY = pageY
-        //   }
+            if (scrollBridge.scrollStartY === -1) {
+              scrollBridge.scrollStartY = pageY
+              state.current.lastPageY = pageY
+            }
 
-        //   const dragAt = pageY - scrollBridge.scrollStartY
-        //   const dy = pageY - state.current.lastPageY
-        //   state.current.lastPageY = pageY // after dy
-        //   const isDraggingUp = dy < 0
-        //   const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
+            const dragAt = pageY - scrollBridge.scrollStartY
+            const dy = pageY - state.current.lastPageY
+            state.current.lastPageY = pageY // after dy
+            const isDraggingUp = dy < 0
+            const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
 
-        //   if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
-        //     state.current.isScrolling = true
-        //     setScrollEnabled(true)
-        //     return
-        //   }
+            if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
+              state.current.isScrolling = true
+              scrollBridge.scrollLock = true
+              setScrollEnabled(true)
+              return
+            }
 
-        //   setScrollEnabled(false)
-        //   scrollBridge.drag(dragAt)
-        //   state.current.dragAt = dragAt
-        //   state.current.dys.push(dy)
-        //   // only do every so often, cut down to 10 again
-        //   if (state.current.dys.length > 100) {
-        //     state.current.dys = state.current.dys.slice(-10)
-        //   }
-        // }}
+            setScrollEnabled(false)
+            scrollBridge.drag(dragAt)
+            state.current.dragAt = dragAt
+            state.current.dys.push(dy)
+            // only do every so often, cut down to 10 again
+            if (state.current.dys.length > 100) {
+              state.current.dys = state.current.dys.slice(-10)
+            }
+          }
+        }}
         {...props}
       >
         {children}

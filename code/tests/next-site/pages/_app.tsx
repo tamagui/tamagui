@@ -12,9 +12,7 @@ import { TamaguiProvider } from '@tamagui/ui'
 import Head from 'next/head'
 import config from '../tamagui.config'
 
-// import '../lib/wdyr'
-
-Error.stackTraceLimit = Number.POSITIVE_INFINITY
+Error.stackTraceLimit = Infinity
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {

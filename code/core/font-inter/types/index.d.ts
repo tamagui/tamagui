@@ -1,5 +1,6 @@
 import type { FillInFont, GenericFont } from "@tamagui/core";
-export type  { GenericFont, FillInFont } from "@tamagui/core";
+// fix type portability issue?
+export type { GenericFont, FillInFont } from "@tamagui/core";
 export declare const createInterFont: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize }?: {
 	sizeLineHeight?: (fontSize: number) => number;
 	sizeSize?: (size: number) => number;

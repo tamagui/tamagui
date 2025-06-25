@@ -1,6 +1,7 @@
 import React from 'react'
 import type { SizeTokens } from '@tamagui/ui'
 import { Button, Paragraph, Progress, Slider, XStack, YStack } from '@tamagui/ui'
+import { Play, RotateCcw } from '@tamagui/lucide-icons'
 
 export function ProgressDemo() {
   const [key, setKey] = React.useState(0)
@@ -51,18 +52,19 @@ export function ProgressDemo() {
           <Slider.Thumb circular index={0} />
         </Slider>
 
-        <Button size="$2" onPress={() => setProgress((prev) => (prev + 20) % 100)}>
-          Load
-        </Button>
         <Button
           size="$2"
+          icon={Play}
+          onPress={() => setProgress((prev) => (prev + 20) % 100)}
+        />
+        <Button
+          size="$2"
+          icon={RotateCcw}
           onPress={() => {
             setKey(Math.random())
             setProgress(0)
           }}
-        >
-          Reset
-        </Button>
+        />
       </XStack>
     </>
   )

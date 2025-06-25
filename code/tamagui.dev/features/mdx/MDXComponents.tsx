@@ -140,7 +140,7 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
-        showMore={showMore !== undefined}
+        showMore={showMore}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
       >
@@ -247,6 +247,7 @@ const componentsIn = {
   Description: SubTitle,
   UL,
   LI,
+  Link,
 
   TamaguiExamplesCode,
 
@@ -456,7 +457,7 @@ const componentsIn = {
     <H2
       pos="relative"
       width={`fit-content` as any}
-      pt="$7"
+      pt="$6"
       mb="$3"
       data-heading
       {...props}
@@ -466,8 +467,18 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading pt="$8" mb="$1" id={id}>
-      <H3 pos="relative" width={`fit-content` as any} id={id} data-heading {...props}>
+    <LinkHeading pt="$6" mb="$2" id={id}>
+      <H3
+        maxWidth="100%"
+        pos="relative"
+        width={`fit-content` as any}
+        id={id}
+        opacity={0.7}
+        data-heading
+        fontSize={25}
+        fontWeight="500"
+        {...props}
+      >
         {children}
       </H3>
       {getNonTextChildren(children)}
@@ -475,10 +486,17 @@ const componentsIn = {
   ),
 
   h4: (props) => (
-    <H4 pos="relative" width={`fit-content` as any} mt="$4" mb="$3" {...props} />
+    <H4
+      pos="relative"
+      width={`fit-content` as any}
+      mt="$5"
+      mb="$2"
+      {...props}
+      fontWeight="500"
+    />
   ),
 
-  h5: (props) => <H5 mt="$4" {...props} />,
+  h5: (props) => <H5 fontWeight="600" mt="$4" {...props} />,
 
   p: (props) => (
     <Paragraph

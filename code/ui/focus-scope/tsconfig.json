@@ -12,6 +12,9 @@
     },
     {
       "path": "../../core/use-event"
+    },
+    {
+      "path": "../../packages/use-async"
     }
   ],
   "exclude": [

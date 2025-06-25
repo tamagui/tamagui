@@ -530,6 +530,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
+  const pointerFine = useMedia().pointerFine
 
   useFocusEffect(() => {
     context.close()
@@ -549,7 +550,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: 1400,
     compiler: 117,
     ui: 1400,
-    theme: data?.user ? 300 : 130,
+    theme: data?.user ? 300 : 240,
     menu: 390,
   }
 
@@ -563,15 +564,16 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       }}
       enableAnimationForPositionChange
       animation="medium"
-      bg="$background08"
+      bg="$color3"
       backdropFilter="blur(40px)"
       maxHeight="90vh"
       maxWidth={360}
       minWidth={360}
-      elevation="$8"
+      elevation="$2"
+      borderWidth={3}
+      borderColor="$color2"
       padding={0}
       br="$6"
-      borderWidth={0}
       opacity={1}
       y={0}
       enterStyle={{
@@ -583,26 +585,41 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         opacity: 0,
       }}
     >
-      <Popover.Arrow bg="$background08" size="$3.5" />
+      <Popover.Arrow bg="$color3" size="$3.5" />
 
-      <YStack
-        $pointerFine={{
-          w: 290,
-        }}
-        w="100%"
-        transition="all ease-in 200ms"
-        mih={`calc(min(${heights[active]}px, 80vh))`}
-        ov="hidden"
-        flex={1}
-        br="$6"
-      >
-        <AnimatePresence custom={{ going }} initial={false}>
+      {pointerFine ? (
+        <YStack
+          w="100%"
+          transition="all ease-in 200ms"
+          mih={`calc(min(${heights[active]}px, 80vh))`}
+          ov="hidden"
+          maxHeight="100%"
+          br="$6"
+          flex={1}
+        >
+          <AnimatePresence custom={{ going }} initial={false}>
+            <HeaderMenuContents key={active} id={active} />
+          </AnimatePresence>
+        </YStack>
+      ) : (
+        <YStack p="$4">
           <HeaderMenuContents key={active} id={active} />
-        </AnimatePresence>
-      </YStack>
+        </YStack>
+      )}
     </Popover.Content>
   )
 })
+
+const ActivePageDocsMenuContents = () => {
+  const pathName = usePathname()
+  const section = pathName.startsWith('/ui/intro')
+    ? 'ui'
+    : pathName.startsWith('/ui/compiler')
+      ? 'compiler'
+      : 'core'
+
+  return <DocsMenuContents inMenu section={section} />
+}
 
 const HeaderMenuContents = (props: { id: ID }) => {
   const { data } = useUser()
@@ -612,14 +629,20 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoTheme = useBentoTheme()
   const pathName = usePathname()
   const isOnBentoPage = pathName.startsWith('/bento')
+  const isMobile = useMedia().maxMd
 
-  /**
-   * When the theme_histories are fetched,
-   * we can apply one of them to Bento components from dropdown
-   */
-  const content = (() => {
+  const contents = (() => {
+    /**
+     * When the theme_histories are fetched,
+     * we can apply one of them to Bento components from dropdown
+     */
     if (props.id === 'menu') {
-      return <HeaderMenuMoreContents />
+      return (
+        <>
+          <HeaderMenuMoreContents />
+          {isMobile && <ActivePageDocsMenuContents />}
+        </>
+      )
     }
 
     if (props.id === 'theme') {
@@ -715,18 +738,23 @@ const HeaderMenuContents = (props: { id: ID }) => {
         </YStack>
       )
     }
+
     return <DocsMenuContents inMenu section={props.id} />
   })()
 
   return (
     <Frame>
+      {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}
       <Popover.ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1, width: '100%' }}
+        style={{
+          flex: 1,
+          width: '100%',
+        }}
         contentContainerStyle={{ width: '100%' }}
       >
-        <YStack miw={230} w="100%" p="$3">
-          {content}
+        <YStack w="100%" p="$3">
+          {contents}
         </YStack>
       </Popover.ScrollView>
     </Frame>
@@ -763,7 +791,7 @@ const HeaderMenuMoreContents = () => {
 
         <Link asChild href="/docs/intro/compiler-install" onPress={handlePress}>
           <HeadAnchor grid half>
-            Compile
+            Compiler
           </HeadAnchor>
         </Link>
 
@@ -934,7 +962,9 @@ const HeadAnchor = styled(Paragraph, {
 })
 
 const Frame = styled(YStack, {
+  className: 'header-popover-frame',
   animation: 'medium',
+  flex: 1,
   br: '$5',
   ov: 'hidden',
   position: 'absolute',

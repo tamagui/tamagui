@@ -400,7 +400,7 @@ const getThumbSize = (val?: SizeTokens | number) => {
   const size =
     typeof val === 'number'
       ? val
-      : getSize(tokens.size[val as any], {
+      : getSize(tokens.size[val as any] as any, {
           shift: -1,
         })
   return {

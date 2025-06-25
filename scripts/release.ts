@@ -8,8 +8,9 @@ import prompts from 'prompts'
 
 import { spawnify } from './spawnify'
 
-// avoid emitter error
-process.setMaxListeners(0)
+process.setMaxListeners(50)
+process.stdout.setMaxListeners(50)
+process.stderr.setMaxListeners(50)
 
 // --resume would be cool here where it stores the last failed step somewhere and tries resuming
 
@@ -76,6 +77,8 @@ if (!skipVersion) {
   console.info(`Re-releasing ${curVersion}`)
 }
 
+const isMain = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() === 'main'
+
 async function run() {
   try {
     let version = curVersion
@@ -83,7 +86,7 @@ async function run() {
     // ensure we are up to date
     // ensure we are on main
     if (!canary) {
-      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'main') {
+      if (!isMain) {
         throw new Error(`Not on main`)
       }
       if (!dirty && !rePublish && !shouldFinish) {
@@ -219,6 +222,7 @@ async function run() {
         ])
         await spawnify(`yarn typecheck`)
         await spawnify(`yarn test`)
+        // await spawnify(`yarn test-ios`)
       }
     }
 
@@ -328,6 +332,10 @@ async function run() {
       await finishAndCommit()
 
       async function finishAndCommit(cwd = process.cwd()) {
+        if (canary && !isMain) {
+          console.info(`Canary off main - avoiding commit`)
+          return
+        }
         if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
           await spawnify(`git commit -m ${gitTag}`, { cwd })

@@ -22,7 +22,7 @@ export declare const useConfiguration: () => {
     fontLanguages: string[];
     themes: {
         [x: string]: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
             background?: import("..").Variable<string> | import("..").Variable<any> | import("..").Variable<undefined> | undefined;
             backgroundHover?: import("..").Variable<string> | import("..").Variable<any> | import("..").Variable<undefined> | undefined;
             backgroundPress?: import("..").Variable<string> | import("..").Variable<any> | import("..").Variable<undefined> | undefined;
@@ -50,22 +50,22 @@ export declare const useConfiguration: () => {
     settings: import("..").GenericTamaguiSettings & Omit<import("..").GenericTamaguiSettings, keyof import("..").GenericTamaguiSettings>;
     tokens: Omit<{
         [x: string]: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         };
         color?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         space?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         size?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         radius?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         zIndex?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
     }, import("..").TokenCategories> & {
         color: {};
@@ -76,22 +76,22 @@ export declare const useConfiguration: () => {
     };
     tokensParsed: Omit<{
         [x: string]: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         };
         color?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         space?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         size?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         radius?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
         zIndex?: {
-            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
+            [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").PxValue> | import("..").Variable<import("..").VariableValGeneric>;
         } | undefined;
     }, import("..").TokenCategories> & {
         color: {};

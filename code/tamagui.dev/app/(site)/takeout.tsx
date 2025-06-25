@@ -48,7 +48,6 @@ export default function TakeoutPage() {
     <YStack maw="100%">
       <ThemeNameEffect colorKey="$color5" />
       <LoadCherryBomb />
-      <script src="https://cdn.paritydeals.com/banner.js" />
       <HeadInfo
         title="🥡 Tamagui Takeout"
         description="Tamagui Takeout React Native Bootstrap Starter Kit"

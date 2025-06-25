@@ -136,6 +136,15 @@ export default {
             )
           },
         },
+        'react-native-reanimated': {
+          'lib/module/createAnimatedComponent/createAnimatedComponent.js': (contents) => {
+            // if not using layout animations, this saves a super expensive repaint that happens often
+            return contents?.replace(
+              `return this._componentDOMRef.getBoundingClientRect();`,
+              'return null;'
+            )
+          },
+        },
       },
 
       build: {

@@ -30,7 +30,6 @@ export default function BentoPage() {
   return (
     <>
       <LoadCherryBomb />
-      <script src="https://cdn.paritydeals.com/banner.js" />
 
       <HeadInfo
         title="Copy-paste UI for React Native and Web - Tamagui Bento"

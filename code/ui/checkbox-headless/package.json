@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox-headless",
-  "version": "1.126.13-1747874018127",
+  "version": "1.129.1",
   "sideEffects": [
     "*.css"
   ],
@@ -30,7 +30,8 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/label": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-previous": "workspace:*"
+    "@tamagui/use-previous": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "exports": {
     "./package.json": "./package.json",

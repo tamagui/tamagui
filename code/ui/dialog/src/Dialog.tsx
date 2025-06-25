@@ -7,17 +7,17 @@ import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   Theme,
   View,
+  getExpandedShorthand,
+  spacedChildren,
   styled,
-  useProps,
   useThemeName,
 } from '@tamagui/core'
-import { spacedChildren } from '@tamagui/spacer'
 import type { Scope } from '@tamagui/create-context'
 import { createContext, createContextScope } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
-import { FocusScope } from '@tamagui/focus-scope'
+import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { Portal, PortalItem, resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -88,28 +88,29 @@ const DialogTriggerFrame = styled(View, {
 
 interface DialogTriggerProps extends StackProps {}
 
-const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
-  function DialogTrigger(props, forwardedRef) {
-    const { __scopeDialog, ...triggerProps } = props
-    const isInsideButton = React.useContext(ButtonNestingContext)
-    const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
-    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
-    return (
-      <ButtonNestingContext.Provider value={true}>
-        <DialogTriggerFrame
-          tag={isInsideButton ? 'span' : 'button'}
-          aria-haspopup="dialog"
-          aria-expanded={context.open}
-          aria-controls={context.contentId}
-          data-state={getState(context.open)}
-          {...triggerProps}
-          ref={composedTriggerRef}
-          onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-        />
-      </ButtonNestingContext.Provider>
-    )
-  }
-)
+const DialogTrigger = DialogTriggerFrame.styleable(function DialogTrigger(
+  props: ScopedProps<DialogTriggerProps>,
+  forwardedRef
+) {
+  const { __scopeDialog, ...triggerProps } = props
+  const isInsideButton = React.useContext(ButtonNestingContext)
+  const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
+  const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+  return (
+    <ButtonNestingContext.Provider value={true}>
+      <DialogTriggerFrame
+        tag={isInsideButton ? 'span' : 'button'}
+        aria-haspopup="dialog"
+        aria-expanded={context.open}
+        aria-controls={context.contentId}
+        data-state={getState(context.open)}
+        {...triggerProps}
+        ref={composedTriggerRef}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+      />
+    </ButtonNestingContext.Provider>
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * DialogPortal
@@ -156,8 +157,7 @@ export const DialogPortalFrame = styled(YStack, {
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
-  // @ts-ignore
-  const { __scopeDialog, children, space, separator, spaceDirection } = props
+  const { __scopeDialog, children, space, spaceDirection, separator } = props
 
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
@@ -212,7 +212,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(true)
   }, [])
 
-  const zIndex = useProps(props).zIndex
+  const zIndex = getExpandedShorthand('zIndex', props)
 
   const contents = (
     <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
@@ -277,7 +277,7 @@ export const DialogOverlayFrame = styled(Overlay, {
   name: OVERLAY_NAME,
 })
 
-export type DialogOverlayExtraProps = {
+interface DialogOverlayProps extends YStackProps {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -285,10 +285,11 @@ export type DialogOverlayExtraProps = {
   forceMount?: true
 }
 
-type DialogOverlayProps = YStackProps & DialogOverlayExtraProps
-
-const DialogOverlay = DialogOverlayFrame.styleable<ScopedProps<DialogOverlayExtraProps>>(
-  function DialogOverlay({ __scopeDialog, ...props }, forwardedRef) {
+const DialogOverlay = DialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, DialogOverlayProps>(function DialogOverlay(
+    { __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>,
+    forwardedRef
+  ) {
     const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
     const { forceMount = portalContext.forceMount, ...overlayProps } = props
     const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
@@ -316,7 +317,7 @@ const DialogOverlay = DialogOverlayFrame.styleable<ScopedProps<DialogOverlayExtr
         ref={forwardedRef}
       />
     )
-  }
+  })
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -366,8 +367,11 @@ interface DialogContentProps
   forceMount?: true
 }
 
-const DialogContent = DialogContentFrame.styleable<ScopedProps<DialogContentProps>>(
-  function DialogContent({ __scopeDialog, ...props }, forwardedRef) {
+const DialogContent = DialogContentFrame.extractable(
+  React.forwardRef<TamaguiElement, DialogContentProps>(function DialogContent(
+    { __scopeDialog, ...props }: ScopedProps<DialogContentProps>,
+    forwardedRef
+  ) {
     const portalContext = usePortalContext(CONTENT_NAME, __scopeDialog)
     const { forceMount = portalContext.forceMount, ...contentProps } = props
     const context = useDialogContext(CONTENT_NAME, __scopeDialog)
@@ -400,19 +404,14 @@ const DialogContent = DialogContentFrame.styleable<ScopedProps<DialogContentProp
         </div>
       </RemoveScroll>
     )
-  }
+  })
 )
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type DialogContentTypeExtraProps = Omit<
-  DialogContentImplExtraProps,
-  'trapFocus' | 'disableOutsidePointerEvents'
-> & {
+interface DialogContentTypeProps extends DialogContentImplProps {
   context: DialogContextValue
 }
-
-type DialogContentTypeProps = DialogContentImplProps & DialogContentTypeExtraProps
 
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
   (
@@ -519,30 +518,29 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
-  /**
-   * When `true`, focus cannot escape the `Content` via keyboard,
-   * pointer, or a programmatic focus.
-   * @defaultValue false
-   */
-  trapFocus?: FocusScopeProps['trapped']
+type DialogContentImplProps = DialogContentFrameProps &
+  Omit<DismissableProps, 'onDismiss'> & {
+    /**
+     * When `true`, focus cannot escape the `Content` via keyboard,
+     * pointer, or a programmatic focus.
+     * @defaultValue false
+     */
+    trapFocus?: FocusScopeProps['trapped']
 
-  /**
-   * Event handler called when auto-focusing on open.
-   * Can be prevented.
-   */
-  onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
+    /**
+     * Event handler called when auto-focusing on open.
+     * Can be prevented.
+     */
+    onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
 
-  /**
-   * Event handler called when auto-focusing on close.
-   * Can be prevented.
-   */
-  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+    /**
+     * Event handler called when auto-focusing on close.
+     * Can be prevented.
+     */
+    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
-  context: DialogContextValue
-}
-
-type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps
+    context: DialogContextValue
+  }
 
 const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProps>(
   (props: ScopedProps<DialogContentImplProps>, forwardedRef) => {
@@ -689,8 +687,8 @@ export interface DialogCloseExtraProps {
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
-const DialogClose = DialogCloseFrame.styleable<ScopedProps<DialogCloseExtraProps>>(
-  (props, forwardedRef) => {
+const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
+  (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog, {
       warn: false,
@@ -883,6 +881,7 @@ const Dialog = withStaticProperties(
     Description: DialogDescription,
     Close: DialogClose,
     Sheet: Sheet.Controlled,
+    FocusScope: FocusScopeController,
     Adapt,
   }
 )

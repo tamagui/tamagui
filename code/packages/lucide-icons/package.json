@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/lucide-icons",
-  "version": "1.126.13-1747874018127",
+  "version": "1.129.1",
   "sideEffects": false,
   "description": "React Native components for Lucide icons - native and web",
   "source": "src/index.ts",
@@ -7093,7 +7093,7 @@
     "lucide-static": "^0.508.0",
     "prop-types": "^15.7.2",
     "react": "*",
-    "react-native-svg": "15.8.0",
+    "react-native-svg": "15.11.2",
     "uppercamelcase": "^3.0.0"
   },
   "publishConfig": {

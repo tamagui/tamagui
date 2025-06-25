@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.126.13-1747874018127",
+  "version": "1.129.1",
   "private": true,
   "packageManager": "yarn@4.5.0",
   "scripts": {
@@ -18,7 +18,7 @@
     "raf": "^3.4.1",
     "react": "*",
     "react-dom": "*",
-    "react-native": "^0.76.5",
+    "react-native": "^0.79.2",
     "vercel": "latest"
   },
   "devDependencies": {

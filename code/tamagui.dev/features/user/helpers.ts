@@ -8,6 +8,7 @@ import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
 import { ProductName, ProductSlug, SubscriptionStatus } from '~/shared/types/subscription'
 import { supabaseAdmin } from '../auth/supabaseAdmin'
+import { hasBentoAccess } from '../bento/hasBentoAccess'
 import { tiersPriority } from '../stripe/tiers'
 import { ThemeSuiteSchema } from '../studio/theme/getTheme'
 import type { ThemeSuiteItemData } from '../studio/theme/types'
@@ -210,12 +211,21 @@ export async function getUserAccessInfo(
   supabase: SupabaseClient<Database>,
   user: User | null
 ) {
-  const [subscriptions, ownedProducts] = await Promise.all([
-    getSubscriptions(user?.id),
+  if (!user) {
+    return {
+      hasBentoAccess: false,
+      hasTakeoutAccess: false,
+      hasStudioAccess: false,
+      teamsWithAccess: [],
+    }
+  }
+
+  const [subscriptions, ownedProducts, bentoAccess] = await Promise.all([
+    getSubscriptions(user.id),
     getOwnedProducts(supabase),
+    hasBentoAccess(user.id),
   ])
 
-  const bentoAccessInfo = checkAccessToProduct('bento', subscriptions, ownedProducts)
   const takeoutAccessInfo = checkAccessToProduct(
     ProductSlug.UniversalStarter,
     subscriptions,
@@ -237,17 +247,15 @@ export async function getUserAccessInfo(
 
   // Determine if the user is directly whitelisted for Bento via their GitHub username or email
   let isUserDirectlyBentoWhitelisted = false
-  if (user) {
-    const githubUsername = user.user_metadata?.user_name // GitHub username from user metadata
-    const userEmail = user.email // User's email
+  const githubUsername = user.user_metadata?.user_name // GitHub username from user metadata
+  const userEmail = user.email // User's email
 
-    // Check if GitHub username is in the Bento whitelist
-    if (githubUsername && whitelistBentoUsernames.has(githubUsername)) {
-      isUserDirectlyBentoWhitelisted = true
-    } else if (userEmail && whitelistBentoUsernames.has(userEmail)) {
-      // If GitHub username isn't whitelisted or not present, check email
-      isUserDirectlyBentoWhitelisted = true
-    }
+  // Check if GitHub username is in the Bento whitelist
+  if (githubUsername && whitelistBentoUsernames.has(githubUsername)) {
+    isUserDirectlyBentoWhitelisted = true
+  } else if (userEmail && whitelistBentoUsernames.has(userEmail)) {
+    // If GitHub username isn't whitelisted or not present, check email
+    isUserDirectlyBentoWhitelisted = true
   }
 
   const hasStudioAccess =
@@ -255,7 +263,7 @@ export async function getUserAccessInfo(
     hasTeamAccess // if the user is a member of at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give them studio access
 
   return {
-    hasBentoAccess: isUserDirectlyBentoWhitelisted || bentoAccessInfo.access,
+    hasBentoAccess: isUserDirectlyBentoWhitelisted || bentoAccess,
     hasTakeoutAccess: takeoutAccessInfo.access,
     hasStudioAccess,
     teamsWithAccess,

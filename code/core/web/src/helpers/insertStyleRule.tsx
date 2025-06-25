@@ -192,22 +192,20 @@ function updateSheetStyles(
       continue
     }
 
-    if (!process.env.TAMAGUI_REACT_19) {
-      // track references
-      const total = track(identifier, remove)
+    // track references
+    const total = track(identifier, remove)
 
-      if (remove) {
-        if (total === 0) {
-          delete allSelectors[identifier]
-        }
-      } else if (!(identifier in allSelectors)) {
-        const isTransform = identifier.startsWith('_transform-')
-        const shouldInsert = isTransform
-          ? addTransform(identifier, cssRule.cssText, cssRule)
-          : true
-        if (shouldInsert) {
-          allSelectors[identifier] = cssRule.cssText
-        }
+    if (remove) {
+      if (total === 0) {
+        delete allSelectors[identifier]
+      }
+    } else if (!(identifier in allSelectors)) {
+      const isTransform = identifier.startsWith('_transform-')
+      const shouldInsert = isTransform
+        ? addTransform(identifier, cssRule.cssText, cssRule)
+        : true
+      if (shouldInsert) {
+        allSelectors[identifier] = cssRule.cssText
       }
     }
   }
@@ -333,16 +331,14 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
 let sheet: CSSStyleSheet | null = null
 
 export function updateRules(identifier: string, rules: string[]) {
-  if (!process.env.TAMAGUI_REACT_19) {
-    if (identifier in allRules) {
-      return false
-    }
-    allRules[identifier] = rules.join(' ')
-    if (identifier.startsWith('_transform-')) {
-      return addTransform(identifier, rules[0])
-    }
-    return true
+  if (identifier in allRules) {
+    return false
   }
+  allRules[identifier] = rules.join(' ')
+  if (identifier.startsWith('_transform-')) {
+    return addTransform(identifier, rules[0])
+  }
+  return true
 }
 
 let nonce = ''
@@ -351,39 +347,37 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!process.env.TAMAGUI_REACT_19) {
-    if (!sheet && isClient && document.head) {
-      const styleTag = document.createElement('style')
-      if (nonce) {
-        styleTag.nonce = nonce
-      }
-      sheet = document.head.appendChild(styleTag).sheet
+  if (!sheet && isClient && document.head) {
+    const styleTag = document.createElement('style')
+    if (nonce) {
+      styleTag.nonce = nonce
     }
-    if (!sheet) return
+    sheet = document.head.appendChild(styleTag).sheet
+  }
+  if (!sheet) return
 
-    for (const key in rulesToInsert) {
-      const styleObject = rulesToInsert[key]
-      const identifier = styleObject[StyleObjectIdentifier]
+  for (const key in rulesToInsert) {
+    const styleObject = rulesToInsert[key]
+    const identifier = styleObject[StyleObjectIdentifier]
 
-      if (!shouldInsertStyleRules(identifier)) {
-        continue
-      }
+    if (!shouldInsertStyleRules(identifier)) {
+      continue
+    }
 
-      const rules = styleObject[StyleObjectRules]
-      allSelectors[identifier] = rules.join('\n')
-      track(identifier)
-      updateRules(identifier, rules)
+    const rules = styleObject[StyleObjectRules]
+    allSelectors[identifier] = rules.join('\n')
+    track(identifier)
+    updateRules(identifier, rules)
 
-      for (const rule of rules) {
-        if (process.env.NODE_ENV === 'production') {
-          try {
-            sheet.insertRule(rule, sheet.cssRules.length)
-          } catch (err) {
-            console.error(`Error inserting CSS`, err)
-          }
-        } else {
+    for (const rule of rules) {
+      if (process.env.NODE_ENV === 'production') {
+        try {
           sheet.insertRule(rule, sheet.cssRules.length)
+        } catch (err) {
+          console.error(`Error inserting CSS`, err)
         }
+      } else {
+        sheet.insertRule(rule, sheet.cssRules.length)
       }
     }
   }
@@ -398,25 +392,20 @@ const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   : 1
 
 export function shouldInsertStyleRules(identifier: string) {
-  if (process.env.TAMAGUI_REACT_19) {
+  if (process.env.IS_STATIC === 'is_static') {
     return true
-  } else {
-    if (process.env.IS_STATIC === 'is_static') {
-      return true
-    }
-    const total = totalSelectorsInserted.get(identifier)
-
-    if (process.env.NODE_ENV === 'development') {
-      if (
-        totalSelectorsInserted.size >
-        +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10000)
-      ) {
-        console.warn(
-          `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
-        )
-      }
-    }
-    // note we are being conservative allowing duplicates
-    return total === undefined || total < minInsertAmt
   }
+  const total = totalSelectorsInserted.get(identifier)
+  if (process.env.NODE_ENV === 'development') {
+    if (
+      totalSelectorsInserted.size >
+      +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10000)
+    ) {
+      console.warn(
+        `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
+      )
+    }
+  }
+  // note we are being conservative allowing duplicates
+  return total === undefined || total < minInsertAmt
 }

@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.126.13-1747874018127",
+  "version": "1.129.1",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -59,7 +59,7 @@
     "react-router-dom": "7.3.0",
     "swr": "^2.2.5",
     "type-fest": "4.37.0",
-    "zod": "^3.24.1"
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

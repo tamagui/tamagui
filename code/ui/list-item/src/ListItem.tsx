@@ -135,12 +135,9 @@ const ListItemSubtitle = styled(ListItemText, {
         const oneSmaller = getSize(val, {
           shift: -1,
           excludeHalfSteps: true,
-        });
-        const fontStyle = getFontSized(
-          oneSmaller.key as FontSizeTokens,
-          extras
-        );
-        return fontStyle;
+        })
+        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras as any)
+        return fontStyle
       },
     },
   } as const,

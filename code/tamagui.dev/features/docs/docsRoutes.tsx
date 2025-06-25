@@ -170,6 +170,7 @@ export const docsRoutes = [
     section: 'ui',
     pages: [
       { title: 'Lucide Icons', route: '/ui/lucide-icons' },
+      { title: 'FocusScope', route: '/ui/focus-scope' },
       { title: 'Anchor', route: '/ui/anchor' },
       { title: 'HTML Elements', route: '/ui/html-elements' },
       { title: 'ScrollView', route: '/ui/scroll-view' },

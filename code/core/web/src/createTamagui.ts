@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/constants'
+import { isWeb, IS_REACT_19 } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
@@ -31,6 +31,21 @@ import type {
 
 // config is re-run by @tamagui/compiler, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
+
+/**
+ * Determines if a token category should have px units added.
+ * Following the principle: only add px to predefined categories that need them.
+ * Custom categories default to unitless.
+ */
+function shouldTokenCategoryHaveUnits(category: string): boolean {
+  // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
+  // These are the only predefined categories that should get px units
+  const UNIT_CATEGORIES = new Set(['size', 'space', 'radius'])
+
+  // Only add px to predefined dimensional categories
+  // Custom categories (like 'opacity', 'customWidth') default to unitless
+  return UNIT_CATEGORIES.has(category)
+}
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
@@ -74,7 +89,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     if (noThemes) {
       foundThemes = scanAllSheets(noThemes, tokensParsed)
     }
-    if (process.env.TAMAGUI_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
+    if (IS_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
       // save some bundle
     } else {
       if (noThemes) {
@@ -139,7 +154,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
         if (isWeb) {
           registerCSSVariable(variable)
-          declarations.push(variableToCSS(variable, key === 'zIndex'))
+          // Check if this specific variable needs px units
+          const variableNeedsPx = variable.needsPx === true
+          const categoryNeedsPx = shouldTokenCategoryHaveUnits(key)
+          const shouldBeUnitless = !(variableNeedsPx || categoryNeedsPx)
+          declarations.push(variableToCSS(variable, shouldBeUnitless))
         }
       }
     }

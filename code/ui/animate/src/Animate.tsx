@@ -1,5 +1,6 @@
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, PresenceChild } from '@tamagui/animate-presence'
+import { startTransition, useEffect, useState } from 'react'
 import type { JSX } from 'react/jsx-runtime'
 
 type BaseProps = {
@@ -10,6 +11,7 @@ type PresenceProps = AnimatePresenceProps & {
   type: 'presence'
   present: boolean
   keepChildrenMounted?: boolean
+  lazyMount?: boolean
 }
 
 export type AnimateProps = BaseProps & PresenceProps
@@ -33,7 +35,26 @@ export type AnimateProps = BaseProps & PresenceProps
  *
  */
 
-export function Animate({ children, type, ...props }: AnimateProps): JSX.Element {
+export function Animate({
+  children,
+  lazyMount,
+  type,
+  present,
+  ...props
+}: AnimateProps): React.ReactNode {
+  const [lazyMounted, setLazyMounted] = useState(lazyMount ? false : present)
+
+  useEffect(() => {
+    if (!lazyMount) return
+    if (!present) return
+    startTransition(() => {
+      setLazyMounted(present)
+    })
+  }, [lazyMount, present])
+
+  // always immediately unmount
+  const mounted = !present ? false : lazyMount ? lazyMounted : present
+
   if (type === 'presence') {
     if (props.keepChildrenMounted) {
       return (
@@ -46,7 +67,7 @@ export function Animate({ children, type, ...props }: AnimateProps): JSX.Element
           // BUGFIX: this causes continous re-renders if keepChildrenMounted is true, see HeaderMenu
           // but since we always re-render this component on open changes this should be fine to leave off?
           presenceAffectsLayout={false}
-          isPresent={props.present}
+          isPresent={present}
           custom={props.custom}
         >
           {children as any}
@@ -54,7 +75,7 @@ export function Animate({ children, type, ...props }: AnimateProps): JSX.Element
       )
     }
 
-    return <AnimatePresence {...props}>{props.present ? children : null}</AnimatePresence>
+    return <AnimatePresence {...props}>{mounted ? children : null}</AnimatePresence>
   }
 
   return <>{children}</>

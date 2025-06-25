@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.126.13-1747874018127",
+  "version": "1.129.1",
   "sideEffects": false,
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@tamagui/ui": "workspace:*",
-    "one": "1.1.486"
+    "one": "1.1.499"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -66,15 +66,7 @@ export function Highlights({
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-
-          <YStack my="$3" gap="$3">
-            <VersionSwitcher
-              versions={
-                frontmatter.versions?.map((version: string) => ({
-                  name: version,
-                })) || [{ name: "2.0.0" }, { name: "1.0.0" }]
-              }
-            />
+          <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
             <Link
               href={`https://github.com/tamagui/tamagui/tree/main/code/ui/${
                 frontmatter.package

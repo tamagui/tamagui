@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/label",
-  "version": "1.126.13-1747874018127",
+  "version": "1.129.1",
   "sideEffects": [
     "*.css"
   ],
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.76.5"
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"

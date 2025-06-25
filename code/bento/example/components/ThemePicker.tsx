@@ -1,15 +1,13 @@
-import { Image, Text, type ThemeName, XStack, YStack } from '@tamagui/ui'
-import { colors, insets } from '../constant'
+import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
+  runOnJS,
   type SharedValue,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  runOnJS,
 } from 'react-native-reanimated'
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import { Dimensions } from 'react-native'
-import { ReactNode } from 'react'
+import { type ThemeName, XStack, YStack } from '@tamagui/ui'
+import { colors, insets } from '../constant'
 
 type ThemePicker = {
   themeColor?: ThemeName

@@ -346,7 +346,7 @@ export const PopperContent = PopperContentFrame.styleable<
   }, [enableAnimationForPositionChange, x, y])
 
   // default to not showing if positioned at 0, 0
-  let show = true
+  const hide = x === 0 && y === 0
 
   const frameProps = {
     ref: contentRefs,
@@ -355,18 +355,17 @@ export const PopperContent = PopperContentFrame.styleable<
     top: 0,
     left: 0,
     position: strategy,
-    opacity: show ? 1 : 0,
+    opacity: 1,
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animation: rest.animation,
       animateOnly: needsMeasure ? [] : rest.animateOnly,
       animatePresence: false,
     }),
-    ...(x === 0 &&
-      y === 0 && {
-        opacity: 0,
-        animateOnly: [],
-      }),
+    ...(hide && {
+      opacity: 0,
+      animateOnly: [],
+    }),
   }
 
   // outer frame because we explicitly don't want animation to apply to this

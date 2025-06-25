@@ -2,13 +2,13 @@ import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/core'
+import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
-import { H1, type HeadingProps } from '@tamagui/text'
+import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, GetRef, Stack, StackProps, TamaguiElement } from '@tamagui/web'
-import { View, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
@@ -25,11 +25,9 @@ const [Collection, useCollection] = createCollection<AccordionTrigger>(ACCORDION
 type ScopedProps<P> = P & { __scopeAccordion?: string }
 
 type AccordionElement = AccordionImplMultipleElement | AccordionImplSingleElement
-
 interface AccordionSingleProps extends AccordionImplSingleProps {
   type: 'single'
 }
-
 interface AccordionMultipleProps extends AccordionImplMultipleProps {
   type: 'multiple'
 }
@@ -57,28 +55,26 @@ const AccordionComponent = React.forwardRef<
 
 AccordionComponent.displayName = ACCORDION_NAME
 
-if (process.env.NODE_ENV === 'development') {
-  AccordionComponent.propTypes = {
-    type(props) {
-      const value = props.value || props.defaultValue
-      if (props.type && !['single', 'multiple'].includes(props.type)) {
-        return new Error(
-          'Invalid prop `type` supplied to `Accordion`. Expected one of `single | multiple`.'
-        )
-      }
-      if (props.type === 'multiple' && typeof value === 'string') {
-        return new Error(
-          'Invalid prop `type` supplied to `Accordion`. Expected `single` when `defaultValue` or `value` is type `string`.'
-        )
-      }
-      if (props.type === 'single' && Array.isArray(value)) {
-        return new Error(
-          'Invalid prop `type` supplied to `Accordion`. Expected `multiple` when `defaultValue` or `value` is type `string[]`.'
-        )
-      }
-      return null
-    },
-  }
+AccordionComponent.propTypes = {
+  type(props) {
+    const value = props.value || props.defaultValue
+    if (props.type && !['single', 'multiple'].includes(props.type)) {
+      return new Error(
+        'Invalid prop `type` supplied to `Accordion`. Expected one of `single | multiple`.'
+      )
+    }
+    if (props.type === 'multiple' && typeof value === 'string') {
+      return new Error(
+        'Invalid prop `type` supplied to `Accordion`. Expected `single` when `defaultValue` or `value` is type `string`.'
+      )
+    }
+    if (props.type === 'single' && Array.isArray(value)) {
+      return new Error(
+        'Invalid prop `type` supplied to `Accordion`. Expected `multiple` when `defaultValue` or `value` is type `string[]`.'
+      )
+    }
+    return null
+  },
 }
 
 /* -----------------------------------------------------------------------------------------------*/
@@ -231,8 +227,8 @@ const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext }
   createStyledContext<AccordionImplContextValue>()
 
 type AccordionImplElement = TamaguiElement
-
-interface AccordionImplProps extends StackProps {
+type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
+interface AccordionImplProps extends PrimitiveDivProps {
   /**
    * Whether or not an accordion is disabled from user interaction.
    *
@@ -446,7 +442,7 @@ AccordionItem.displayName = ITEM_NAME
 const HEADER_NAME = 'AccordionHeader'
 
 type AccordionHeaderElement = React.ElementRef<typeof H1>
-type PrimitiveHeading3Props = HeadingProps
+type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H1>
 type AccordionHeaderProps = PrimitiveHeading3Props
 
 /**
@@ -586,19 +582,16 @@ const HeightAnimator = View.styleable((props, ref) => {
   const { children, ...rest } = props
   const [height, setHeight] = React.useState(0)
 
-  const onLayout = useEvent(({ nativeEvent }) => {
-    if (nativeEvent.layout.height) {
-      setHeight(nativeEvent.layout.height)
-    }
-  })
-
   return (
     <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
       <View
         position="absolute"
         width="100%"
-        //@ts-ignore
-        onLayout={onLayout}
+        onLayout={({ nativeEvent }) => {
+          if (nativeEvent.layout.height) {
+            setHeight(nativeEvent.layout.height)
+          }
+        }}
       >
         {children}
       </View>
@@ -611,14 +604,15 @@ const HeightAnimator = View.styleable((props, ref) => {
 function getState(open?: boolean) {
   return open ? 'open' : 'closed'
 }
-
-export const Accordion = withStaticProperties(AccordionComponent, {
+const Accordion = withStaticProperties(AccordionComponent, {
   Trigger: AccordionTrigger,
   Header: AccordionHeader,
   Content: AccordionContent,
   Item: AccordionItem,
   HeightAnimator: HeightAnimator,
 })
+
+export { Accordion }
 
 export type {
   AccordionContentProps,

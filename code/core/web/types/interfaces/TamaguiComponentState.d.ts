@@ -13,5 +13,6 @@ export type TamaguiComponentState = {
         avoidClasses?: boolean;
     };
     group?: Record<string, GroupState>;
+    hasDynGroupChildren?: boolean;
 };
 //# sourceMappingURL=TamaguiComponentState.d.ts.map

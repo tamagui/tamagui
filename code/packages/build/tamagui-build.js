@@ -12,6 +12,7 @@ const alias = require('./esbuildAliasPlugin')
 const { es5Plugin } = require('./esbuild-es5')
 const ts = require('typescript')
 const path = require('node:path')
+const childProcess = require('node:child_process')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -177,6 +178,7 @@ async function build({ skipTypes } = {}) {
     console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     console.error(` ❌ Error building in ${process.cwd()}:\n\n`, error.stack + '\n')
+    process.exit(1)
   }
 }
 
@@ -193,6 +195,16 @@ async function buildTsc(allFiles) {
   try {
     const { config, error } = await loadTsConfig()
     if (error) throw error
+
+    // much slower
+    // if (config.options.isolatedDeclarations) {
+    //   console.info(
+    //     childProcess
+    //       .execSync(`npx tsgo --project ./tsconfig.json --emitDeclarationOnly`)
+    //       .toString()
+    //   )
+    //   return
+    // }
 
     const compilerOptions = createCompilerOptions(config.options, targetDir)
 
@@ -381,16 +393,13 @@ async function buildJs(allFiles) {
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
 
-              // for test mode we want real react-native
-              ...(!bundleNativeTest && {
-                'react-native': require.resolve('@tamagui/fake-react-native'),
-                'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-                'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-              }),
+              'react-native': require.resolve('@tamagui/fake-react-native'),
+              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
 
               'react-native/Libraries/Pressability/Pressability': require.resolve(
                 '@tamagui/fake-react-native'
@@ -660,7 +669,14 @@ async function esbuildWriteIfChanged(
     }
   })()
 
-  const built = await esbuild.build(buildSettings)
+  let built
+
+  try {
+    built = await esbuild.build(buildSettings)
+  } catch (err) {
+    console.error(`Error building`, err)
+    process.exit(1)
+  }
 
   if (!built.outputFiles) {
     return

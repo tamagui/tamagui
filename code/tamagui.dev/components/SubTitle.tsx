@@ -31,14 +31,14 @@ export const SubTitle = ({ children, ...props }) => {
   return (
     <H3
       pos="relative"
+      maxWidth="100%"
       color="$gray9"
       width="max-content"
       fontFamily="$mono"
-      size="$5"
+      size="$7"
       ls={-0.25}
       tag="p"
-      mb="$6"
-      mt="$-2"
+      mb="$3"
       {...props}
     >
       {nbspLastWord(childText)}

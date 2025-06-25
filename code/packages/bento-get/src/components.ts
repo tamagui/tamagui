@@ -340,13 +340,26 @@ export const componentsList: ComponentSchema[] = [
     name: 'Shopping Cart',
     fileName: 'Fullpage',
     category: 'ecommerce',
-    categorySection: 'cart',
+    categorySection: 'payment',
     dependencies: ['@ngneat/falso', '@tamagui/lucide-icons'],
     moveFilesToFolder: [
       { file: 'Fullpage', to: '' },
       { file: 'IconCenterButton', to: '../../animation/buttons' },
       { file: 'inputsParts', to: '../../forms/inputs/components' },
     ],
+  },
+  {
+    name: 'Paywall',
+    fileName: 'Paywall',
+    category: 'ecommerce',
+    categorySection: 'payment',
+    dependencies: [
+      'react-native-reanimated',
+      'react-native-gesture-handler',
+      '@tamagui/lucide-icons',
+      'tamagui/linear-gradient',
+    ],
+    moveFilesToFolder: [{ file: 'Paywall', to: '' }],
   },
   {
     name: 'Product with Review',
@@ -642,6 +655,24 @@ export const componentsList: ComponentSchema[] = [
     categorySection: 'list',
     dependencies: ['@ngneat/falso', '@tamagui/lucide-icons'],
     moveFilesToFolder: [{ file: 'ChatList', to: '' }],
+  },
+  {
+    name: 'Chat',
+    fileName: 'Chat',
+    category: 'elements',
+    categorySection: 'list',
+    moveFilesToFolder: [
+      { file: 'Chat', to: '' },
+      { file: 'chipsParts', to: '../../chips/components' },
+      { file: 'BubbleChat', to: 'components/Chat' },
+      { file: 'ChatContext', to: 'components/ChatContext' },
+    ],
+    dependencies: [
+      'react-hook-form',
+      '@tamagui/lucide-icons',
+      'react-native-reanimated',
+      'react-native-gesture-handler',
+    ],
   },
   {
     name: 'Item Value List',
@@ -1080,19 +1111,6 @@ export const componentsList: ComponentSchema[] = [
     moveFilesToFolder: [{ file: 'StatusTracker', to: '' }],
   },
 
-  {
-    name: 'Paywall',
-    fileName: 'Paywall',
-    category: 'user',
-    categorySection: 'payment',
-    dependencies: [
-      'react-native-reanimated',
-      'react-native-gesture-handler',
-      '@tamagui/lucide-icons',
-      '@tamagui/linear-gradient',
-    ],
-    moveFilesToFolder: [{ file: 'Paywall', to: '' }],
-  },
   ...MISSING_COMPONENTS,
 ].map((item) => {
   return { ...item, isOSS: Boolean(OSS_COMPONENTS.includes(item.fileName)) }

@@ -3,6 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import {
   Button,
+  ButtonFrame,
   H1,
   Header,
   SizableText,
@@ -18,7 +19,6 @@ import {
 import config from '../tamagui.config'
 
 // import '@tamagui/core/reset.css'
-// import './wdyr'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
@@ -50,7 +50,7 @@ export function UseCases() {
   )
 }
 
-const CustomButtonFrame = styled(Button.Frame, {
+const CustomButtonFrame = styled(ButtonFrame, {
   variants: {
     backgrounded: {
       true: {

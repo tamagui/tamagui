@@ -1,4 +1,7 @@
+import type { Scope } from '@tamagui/create-context'
 import type React from 'react'
+
+export type ScopedProps<P> = P & { __scopeFocusScope?: Scope }
 
 export interface FocusScopeProps {
   /**
@@ -36,6 +39,13 @@ export interface FocusScopeProps {
    * If unmount is animated, you want to force re-focus at start of animation not after
    */
   forceUnmount?: boolean
+
+  /**
+   * When true, waits for idle before focusing. When a number, waits that many ms.
+   * This prevents reflows during animations.
+   * @default true
+   */
+  focusOnIdle?: boolean | number | { min?: number; max?: number }
 
   children?:
     | React.ReactNode

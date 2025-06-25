@@ -40,9 +40,7 @@ export default function Layout() {
                   <ToggleThemeButton />
                 </XStack>
 
-                <YStack>
-                  <Slot />
-                </YStack>
+                <Slot />
               </SafeAreaView>
             </YStack>
           </TamaguiRootProvider>

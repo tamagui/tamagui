@@ -172,5 +172,6 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
 };
 //# sourceMappingURL=Select.d.ts.map

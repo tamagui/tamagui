@@ -15,4 +15,5 @@ export type TamaguiComponentState = {
   }
   // for groups:
   group?: Record<string, GroupState>
+  hasDynGroupChildren?: boolean
 }

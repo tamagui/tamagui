@@ -18,6 +18,10 @@ export function getConfig(tamaguiPlugin: any) {
           '.ios.tsx',
           '.ios.js',
           '.ios.jsx',
+          '.native.tsx',
+          '.native.ts',
+          '.native.js',
+          '.native.jsx',
           '.cjs',
           '.js',
           '.ts',
@@ -44,7 +48,7 @@ export function getConfig(tamaguiPlugin: any) {
 
   return defineConfig({
     plugins: [
-      // process.env.DISABLE_REACT_NATIVE ? null : reactNative(),
+      // isNative ? null : reactNative(),
       react({}),
 
       tamaguiPlugin({
@@ -69,7 +73,7 @@ export function getConfig(tamaguiPlugin: any) {
               },
 
               optimizeDeps: {
-                include: ['@tamagui/constants'],
+                include: ['@tamagui/constants', '@tamagui/web', '@tamagui/core'],
                 extensions: nativeExtensions,
                 jsx: 'automatic',
               },
@@ -103,12 +107,6 @@ export function getConfig(tamaguiPlugin: any) {
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-      server: {
-        deps: {
-          external: ['react-native'],
-          noExternal: true,
-        },
-      },
     },
   })
 }
