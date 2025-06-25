@@ -152,9 +152,5 @@
     "typescript": "^5.8.2",
     "ultra-runner": "^3.10.5",
     "zx": "^8.5.5"
-  },
-  "resolutions": {
-    "@react-navigation/native": "7.1.10",
-    "@react-navigation/core": "7.8.5"
   }
 }
