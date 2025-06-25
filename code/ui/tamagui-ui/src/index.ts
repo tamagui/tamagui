@@ -170,7 +170,6 @@ export {
   mediaQueryConfig,
   mediaState,
   setOnLayoutStrategy,
-  spacedChildren,
   styled,
   themeable,
   // hooks
