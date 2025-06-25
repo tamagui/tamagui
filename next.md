@@ -1,3 +1,6 @@
+- escape on tamagui sheet doesn't close in general keyboard accessibility
+  - check radix sheet and compare and improve
+
 - perf: could avoid even creating style rules, easy / big win:
   - note that in addStyleToInsertRules it checks if shouldInsert
   - note that we create all the style rules before we actually check if should insert

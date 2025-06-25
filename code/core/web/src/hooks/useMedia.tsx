@@ -13,6 +13,7 @@ import type {
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
+  WidthHeight,
 } from '../types'
 
 export let mediaState: MediaQueryState =
@@ -246,10 +247,7 @@ export function _disableMediaTouch(val: boolean) {
   disableMediaTouch = val
 }
 
-export function getMediaState(
-  mediaGroups: Set<string>,
-  layout: LayoutEvent['nativeEvent']['layout']
-) {
+export function getMediaState(mediaGroups: Set<string>, layout: WidthHeight) {
   disableMediaTouch = true
   let res: Record<string, boolean>
   try {
