@@ -1259,15 +1259,14 @@ export function createComponent<
   }
 
   function styleable(Component: any, options?: StyleableOptions) {
-    const isForwardedRefAlready = Component.render?.length === 2
+    const skipForwardRef =
+      typeof Component === 'function' || Component.render?.length === 2
 
-    let out = isForwardedRefAlready
-      ? (Component as any)
-      : React.forwardRef(Component as any)
+    let out = skipForwardRef ? Component : React.forwardRef(Component)
 
     const extendedConfig = extendStyledConfig(options?.staticConfig)
 
-    out = options?.disableTheme ? out : (themeable(out, extendedConfig, true) as any)
+    out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
 
     if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
       out = React.memo(out)
