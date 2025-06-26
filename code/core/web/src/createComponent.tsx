@@ -1262,7 +1262,8 @@ export function createComponent<
 
   function styleable(Component: any, options?: StyleableOptions) {
     const skipForwardRef =
-      (IS_REACT_19 && typeof Component === 'function') || Component.render?.length === 2
+      (IS_REACT_19 && typeof Component === 'function' && Component.length === 1) ||
+      Component.render?.length === 2
 
     let out = skipForwardRef ? Component : React.forwardRef(Component)
 
