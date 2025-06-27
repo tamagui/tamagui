@@ -6595,7 +6595,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-motion@workspace:code/core/animations-motion":
+"@tamagui/animations-motion@workspace:*, @tamagui/animations-motion@workspace:code/core/animations-motion":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-motion@workspace:code/core/animations-motion"
   dependencies:
@@ -26244,7 +26244,9 @@ __metadata:
     "@playwright/test": "npm:^1.49.1"
     "@react-native-community/cli": "npm:15.1.3"
     "@react-native-masked-view/masked-view": "npm:^0.3.1"
+    "@tamagui/animations-css": "workspace:*"
     "@tamagui/animations-moti": "workspace:*"
+    "@tamagui/animations-motion": "workspace:*"
     "@tamagui/colors": "workspace:*"
     "@tamagui/demos": "workspace:*"
     "@tamagui/image-next": "workspace:*"

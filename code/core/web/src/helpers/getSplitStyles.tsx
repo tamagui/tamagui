@@ -56,7 +56,6 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import { groupCollapsed, groupEnd } from './consoleLog'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
@@ -235,7 +234,7 @@ export const getSplitStyles: StyleSplitter = (
     debug !== 'profile' &&
     isClient
   ) {
-    groupCollapsed('getSplitStyles (collapsed)')
+    console.groupCollapsed('getSplitStyles (collapsed)')
     log({
       props,
       staticConfig,
@@ -246,7 +245,7 @@ export const getSplitStyles: StyleSplitter = (
       styleState,
       theme: { ...theme },
     })
-    groupEnd()
+    console.groupEnd()
   }
 
   const { asChild } = props
@@ -288,7 +287,7 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // otherwise things just keep nesting - careful don't leave these around
       // they cause big performance dips in Chrome, only use them when debug prop set
-      groupEnd()
+      // console.groupEnd()
     }
 
     // normalize shorthands up front
@@ -533,9 +532,8 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      groupEnd() // react native was not nesting right
-      groupEnd() // react native was not nesting right
-      groupCollapsed(
+      // console.groupEnd() // react native was not nesting right
+      console.groupCollapsed(
         `  🔑 ${keyOg}${
           keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''
         } ${shouldPassThrough ? '(pass)' : ''}`
@@ -612,9 +610,9 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        groupCollapsed('  💠 expanded', keyInit, '=>', key)
+        console.groupCollapsed('  💠 expanded', keyInit, '=>', key)
         log(val)
-        groupEnd()
+        console.groupEnd()
       }
 
       if (val == null) return
@@ -656,9 +654,9 @@ export const getSplitStyles: StyleSplitter = (
       if (shouldPassThrough) {
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          groupCollapsed(` - passing down prop ${key}`)
+          console.groupCollapsed(` - passing down prop ${key}`)
           log({ val, after: { ...viewProps[key] } })
-          groupEnd()
+          console.groupEnd()
         }
         return
       }
@@ -728,9 +726,9 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-            groupCollapsed('pseudo', key, { isDisabled })
+            console.groupCollapsed('pseudo', key, { isDisabled })
             log({ pseudoStyleObject, isDisabled, descriptor, componentState })
-            groupEnd()
+            console.groupEnd()
           }
 
           const importance = descriptor.priority
@@ -1058,7 +1056,7 @@ export const getSplitStyles: StyleSplitter = (
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
-      groupEnd()
+      console.groupEnd()
     }
   } // end prop loop
 
@@ -1173,11 +1171,11 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-          groupEnd() // ensure group ended from loop above
-          groupCollapsed(`🔹 getSplitStyles final style object`)
+          // console.groupEnd() // ensure group ended from loop above
+          console.groupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
           console.info(`retainedStyles`, retainedStyles)
-          groupEnd()
+          console.groupEnd()
         }
 
         if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
@@ -1359,7 +1357,7 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
-      groupCollapsed('🔹 getSplitStyles ===>')
+      console.groupCollapsed('🔹 getSplitStyles ===>')
       try {
         // prettier-ignore
         const logs = {
@@ -1376,7 +1374,7 @@ export const getSplitStyles: StyleSplitter = (
       } catch {
         // RN can run into PayloadTooLargeError: request entity too large
       }
-      groupEnd()
+      console.groupEnd()
     }
   }
 
