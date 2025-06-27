@@ -35,12 +35,12 @@ type GetVariantAcceptedValues<V> = V extends Object
 
 export function styled<
   ParentComponent extends StylableComponent,
-  StyledStaticConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledStaticConfig>,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
-  options?: Partial<InferStyledProps<ParentComponent, StyledStaticConfig>> & {
+  options?: Partial<InferStyledProps<ParentComponent, StyledConfig>> & {
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
@@ -48,14 +48,14 @@ export function styled<
     /** @deprecated pass in instead as the third argument to styled() */
     acceptsClassName?: boolean
   },
-  staticExtractionOptions?: StyledStaticConfig
+  config?: StyledConfig
 ) {
   // do type stuff at top for easier readability
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
   // get parent props without pseudos and medias so we can rebuild both with new variants
   type ParentNonStyledProps = GetNonStyledProps<ParentComponent>
-  type ParentStylesBase = GetBaseStyles<ParentComponent, StyledStaticConfig>
+  type ParentStylesBase = GetBaseStyles<ParentComponent, StyledConfig>
   type ParentVariants = GetStyledVariants<ParentComponent>
 
   type OurVariantProps = AreVariantsUndefined<Variants> extends true
@@ -72,15 +72,15 @@ export function styled<
             | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
         }
 
-  type Accepted = StyledStaticConfig['accept']
+  type Accepted = StyledConfig['accept']
   type CustomTokenProps = Accepted extends Record<string, any>
     ? {
         [Key in keyof Accepted]?:
           | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
           | (Accepted[Key] extends 'style'
-              ? Partial<InferStyledProps<ParentComponent, StyledStaticConfig>>
+              ? Partial<InferStyledProps<ParentComponent, StyledConfig>>
               : Accepted[Key] extends 'textStyle'
-                ? Partial<InferStyledProps<typeof Text, StyledStaticConfig>>
+                ? Partial<InferStyledProps<typeof Text, StyledConfig>>
                 : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
       }
     : {}
@@ -103,7 +103,7 @@ export function styled<
       ? ParentStylesBase & CustomTokenProps
       : ParentStylesBase,
     MergedVariants,
-    GetStaticConfig<ParentComponent, StyledStaticConfig>
+    GetStaticConfig<ParentComponent, StyledConfig>
   >
 
   // validate not using a variant over an existing valid style
@@ -131,9 +131,7 @@ export function styled<
     : undefined
 
   const isReactNative = Boolean(
-    reactNativeConfig ||
-      staticExtractionOptions?.isReactNative ||
-      parentStaticConfig?.isReactNative
+    reactNativeConfig || config?.isReactNative || parentStaticConfig?.isReactNative
   )
 
   const staticConfigProps = (() => {
@@ -196,10 +194,10 @@ export function styled<
       }
     }
 
-    const isText = Boolean(staticExtractionOptions?.isText || parentStaticConfig?.isText)
+    const isText = Boolean(config?.isText || parentStaticConfig?.isText)
 
     const acceptsClassName =
-      staticExtractionOptions?.acceptsClassName ??
+      config?.acceptsClassName ??
       acceptsClassNameProp ??
       (isPlainStyledComponent ||
         isReactNative ||
@@ -207,7 +205,7 @@ export function styled<
 
     const conf: Partial<StaticConfig> = {
       ...parentStaticConfig,
-      ...staticExtractionOptions,
+      ...config,
       ...(!isPlainStyledComponent && {
         Component,
       }),

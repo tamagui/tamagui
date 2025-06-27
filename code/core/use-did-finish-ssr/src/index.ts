@@ -1,7 +1,12 @@
 import * as React from 'react'
+import { ClientOnlyContext } from './ClientOnly'
+
+export { ClientOnly, ClientOnlyContext } from './ClientOnly'
 
 export function useDidFinishSSR<A = boolean>(value?: A): A | false {
-  if (process.env.TAMAGUI_TARGET === 'native') {
+  const clientOnly = React.useContext(ClientOnlyContext)
+
+  if (clientOnly || process.env.TAMAGUI_TARGET === 'native') {
     // @ts-expect-error
     return value ?? true
   }

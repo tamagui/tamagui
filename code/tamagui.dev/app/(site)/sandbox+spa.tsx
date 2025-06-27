@@ -46,7 +46,9 @@ const StyledText = styled(Text, {
 })
 
 export default function Sandbox() {
-  return <Stylable />
+  console.warn('render')
+
+  return <Text debug="verbose" />
   // return <StyledText customProp="ok">hello world</StyledText>
 
   // const [x, setX] = useState(false)

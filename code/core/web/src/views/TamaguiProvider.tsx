@@ -10,6 +10,7 @@ import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
 import { updateMediaListeners } from '../hooks/useMedia'
+import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 
 const listeners = new Set<() => void>()
 let didRender = false
@@ -76,7 +77,9 @@ export function TamaguiProvider({
             reset={reset}
             className={className}
           >
-            {children}
+            <ClientOnly enabled={getSetting('disableSSR') || false}>
+              {children}
+            </ClientOnly>
           </ThemeProvider>
         </ComponentContext.Provider>
       </UnmountedClassName>

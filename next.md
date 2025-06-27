@@ -19,6 +19,15 @@ for v2, new site hero that captures:
 - headless component kit
 - super-powerful: themes, animations
 
+v2 big win / lowish effort:
+
+- two fixes for animation drivers
+  - remove <Configuration animationDriver (breaks compiler)
+    - instead `animationDriver` prop on any component
+  - accept multiple animationDrivers at root for proper types
+
+- document <ClientOnly />
+
 # force railway deploy
 
 - in onejs/chat bug with transforms merging media queries: 

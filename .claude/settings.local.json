@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn build)",
+      "Bash(yarn lint)",
+      "Bash(yarn install)"
     ],
     "deny": []
   }

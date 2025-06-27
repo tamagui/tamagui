@@ -1,6 +1,6 @@
-import { isServer, isWeb, IS_REACT_19 } from '@tamagui/constants'
+import { IS_REACT_19, isServer, isWeb } from '@tamagui/constants'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
