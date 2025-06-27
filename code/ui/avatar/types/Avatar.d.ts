@@ -73,7 +73,9 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<impor
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    memo: true;
+}>;
 type AvatarProps = GetProps<typeof AvatarFrame>;
 /**
  * @summary A component that displays an image or a fallback icon.

@@ -2168,6 +2168,11 @@ export type StaticConfigPublic = {
    * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
    */
   acceptsClassName?: boolean
+
+  /**
+   * memoizes component, rarely useful except mostly style components that don't take children
+   */
+  memo?: boolean
 }
 
 type StaticConfigBase = StaticConfigPublic & {

@@ -1,16 +1,16 @@
 import {
+  IS_REACT_19,
   isClient,
   isWeb,
   useIsomorphicLayoutEffect,
-  IS_REACT_19,
 } from '@tamagui/constants'
+import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 import React, { useEffect } from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
+import { updateMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { updateMediaListeners } from '../hooks/useMedia'
-import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 
 const listeners = new Set<() => void>()
 let didRender = false
@@ -62,27 +62,33 @@ export function TamaguiProvider({
     updateMediaListeners()
   }, [])
 
+  let contents = (
+    <UnmountedClassName>
+      <ComponentContext.Provider animationDriver={config?.animations}>
+        <ThemeProvider
+          themeClassNameOnRoot={
+            themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+          }
+          disableRootThemeClass={
+            disableRootThemeClass ?? getSetting('disableRootThemeClass')
+          }
+          defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
+          reset={reset}
+          className={className}
+        >
+          {children}
+        </ThemeProvider>
+      </ComponentContext.Provider>
+    </UnmountedClassName>
+  )
+
+  if (getSetting('disableSSR')) {
+    contents = <ClientOnly>{contents}</ClientOnly>
+  }
+
   return (
     <>
-      <UnmountedClassName>
-        <ComponentContext.Provider animationDriver={config?.animations}>
-          <ThemeProvider
-            themeClassNameOnRoot={
-              themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
-            }
-            disableRootThemeClass={
-              disableRootThemeClass ?? getSetting('disableRootThemeClass')
-            }
-            defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
-            reset={reset}
-            className={className}
-          >
-            <ClientOnly enabled={getSetting('disableSSR') || false}>
-              {children}
-            </ClientOnly>
-          </ThemeProvider>
-        </ComponentContext.Provider>
-      </UnmountedClassName>
+      {contents}
 
       {process.env.TAMAGUI_TARGET !== 'native' &&
         IS_REACT_19 &&
