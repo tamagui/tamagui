@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "1.129.2",
+  "version": "1.129.4",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -36,7 +36,6 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
-    "@tamagui/use-did-finish-ssr": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },

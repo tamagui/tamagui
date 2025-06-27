@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/constants",
-  "version": "1.129.2",
+  "version": "1.129.4",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

@@ -34,7 +34,19 @@ export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<impor
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    transparent?: boolean | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
+    padded?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+}, import("@tamagui/core").StaticConfigPublic & {
+    memo: true;
+}>;
 type AvatarProps = GetProps<typeof AvatarFrame>;
 /**
  * @summary A component that displays an image or a fallback icon.

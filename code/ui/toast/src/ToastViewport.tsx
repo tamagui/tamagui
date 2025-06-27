@@ -7,7 +7,6 @@ import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
-
 import { TOAST_CONTEXT } from './constants'
 import { ToastPortal } from './ToastPortal'
 import type { ScopedProps } from './ToastProvider'
@@ -419,8 +418,8 @@ function getTabbableCandidates(container: TamaguiElement) {
 
 export {
   ToastViewport,
-  type ToastViewportProps,
   VIEWPORT_DEFAULT_HOTKEY,
   VIEWPORT_PAUSE,
   VIEWPORT_RESUME,
+  type ToastViewportProps,
 }

@@ -14,7 +14,6 @@ import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
-import { groupCollapsed, groupEnd } from './helpers/consoleLog'
 import { getShorthandValue } from './helpers/getShorthandValue'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
@@ -429,7 +428,7 @@ export function createComponent<
           (presenceState?.isPresent === false ? '(EXIT)' : '')
 
         const dataIs = propsIn['data-is'] || ''
-        const banner = `${internalID} ${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
+        const banner = `<${name} /> ${internalID} ${dataIs ? ` ${dataIs}` : ''} ${type.trim()}`
         console.info(
           `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
           'background: green; color: white;'
@@ -439,7 +438,7 @@ export function createComponent<
           log({ noClass, isAnimated, isWeb, supportsCSSVars })
         } else {
           // if strict mode or something messes with our nesting this fixes:
-          groupEnd()
+          console.groupEnd()
 
           const ch = propsIn.children
           let childLog =
@@ -448,13 +447,13 @@ export function createComponent<
             childLog = `(children: ${childLog})`
           }
 
-          groupCollapsed(`${childLog} Props:`)
+          console.groupCollapsed(`${childLog} [inspect props, state, context 👇]`)
           log('props in:', propsIn)
           log('final props:', props)
           log({ state, staticConfig, elementType, themeStateProps })
           log({ contextProps: styledContextProps, overriddenContextProps })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
-          groupEnd()
+          console.groupEnd()
         }
       }
     }
@@ -607,7 +606,7 @@ export function createComponent<
         stateRef,
       })
 
-      if ((isAnimated || supportsCSSVars) && animations) {
+      if (animations) {
         animationStyles = animations.style
         viewProps.style = animationStyles
         if (animations.className) {
@@ -704,10 +703,10 @@ export function createComponent<
           const computed = cssStyleDeclarationToObject(
             getComputedStyle(stateRef.current.host! as Element)
           )
-          groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
+          console.groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
           console.warn(computed)
-          groupEnd()
+          console.groupEnd()
         }
       })
     }
@@ -1141,7 +1140,7 @@ export function createComponent<
             log(key, splitStylesStyle[key])
           }
         } else {
-          groupCollapsed(title)
+          console.groupCollapsed(title)
           try {
             log('viewProps', viewProps)
             log('children', content)
@@ -1177,7 +1176,7 @@ export function createComponent<
           } catch {
             // RN can run into PayloadTooLargeError: request entity too large
           } finally {
-            groupEnd()
+            console.groupEnd()
           }
         }
         if (debugProp === 'break') {
@@ -1236,7 +1235,8 @@ export function createComponent<
 
   function styleable(Component: any, options?: StyleableOptions) {
     const skipForwardRef =
-      (IS_REACT_19 && typeof Component === 'function') || Component.render?.length === 2
+      (IS_REACT_19 && typeof Component === 'function' && Component.length === 1) ||
+      Component.render?.length === 2
 
     let out = skipForwardRef ? Component : React.forwardRef(Component)
 

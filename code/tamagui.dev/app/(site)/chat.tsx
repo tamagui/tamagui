@@ -1,6 +1,7 @@
 import { H1, Paragraph, Separator, Spacer } from '@tamagui/ui'
 import { Container } from '../../components/Containers'
 import { Link } from '../../components/Link'
+import { Notice } from '../../components/Notice'
 
 export const ChatPage = () => {
   return (
@@ -18,6 +19,11 @@ export const ChatPage = () => {
           A chatbot and AI code generator, built from scratch to be an expert in all
           things Tamagui.
         </Paragraph>
+
+        <Notice>
+          Chat is in Beta! Chat may go down for long periods of time as we are
+          aggressively developing it into the base of a future version of Takeout.
+        </Notice>
 
         <Paragraph ff="$mono" size="$7" lh="$8" theme="alt1">
           Available today to all Pro members, our chat experience is actually a whole new

@@ -13,7 +13,6 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
-  useState,
 } from 'react'
 import { allPortalHosts, portalListeners } from './constants'
 
@@ -282,13 +281,8 @@ export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
 })
 
 function PortalHostWeb(props: PortalHostProps) {
-  const [mounted, setMounted] = useState(false)
-
   useEffect(() => {
-    setMounted(true)
-
     return () => {
-      setMounted(false)
       allPortalHosts.delete(props.name)
     }
   }, [props.name])
@@ -297,7 +291,7 @@ function PortalHostWeb(props: PortalHostProps) {
     <div
       style={{ display: 'contents' }}
       ref={(node) => {
-        if (node && mounted) {
+        if (node) {
           allPortalHosts.set(props.name, node)
           portalListeners[props.name]?.forEach((x) => x(node))
         }

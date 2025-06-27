@@ -675,7 +675,9 @@ async function esbuildWriteIfChanged(
     built = await esbuild.build(buildSettings)
   } catch (err) {
     console.error(`Error building`, err)
-    process.exit(1)
+    if (!shouldWatch) {
+      process.exit(1)
+    }
   }
 
   if (!built.outputFiles) {

@@ -1,5 +1,5 @@
 // debug
-import { Circle, Configuration, XStack, YStack } from '@tamagui/ui'
+import { Button, Circle, Configuration, Square, XStack, YStack } from '@tamagui/ui'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 import { animations } from '../config/tamagui/animations'
 import { useEffect, useState } from 'react'
@@ -7,8 +7,28 @@ import { useEffect, useState } from 'react'
 export default function Sandbox() {
   return (
     <>
-      <Performance />
+      <Motion />
+      {/* <Performance /> */}
       {/* <Drivers /> */}
+    </>
+  )
+}
+
+const Motion = () => {
+  console.warn('render')
+  const [x, setX] = useState(0)
+  return (
+    <>
+      <Configuration disableSSR animationDriver={animationsMotion}>
+        <Button onPress={() => setX(Math.random())}>asdasdas</Button>
+        <Square
+          animation="bouncy"
+          debug="verbose"
+          bg="red"
+          size={100}
+          pressStyle={{ scale: 2 }}
+        />
+      </Configuration>
     </>
   )
 }
@@ -95,6 +115,7 @@ const Performance = () => {
 
 import React from 'react'
 import { Text, View } from 'react-native'
+import { animationsMotion } from '../config/tamagui/animationMotion'
 // import { animationsCSS } from '../config/tamagui/animationsCSS'
 
 export function TimedRender(props) {

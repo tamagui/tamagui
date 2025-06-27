@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/form",
-  "version": "1.129.2",
+  "version": "1.129.4",
   "sideEffects": [
     "*.css"
   ],
