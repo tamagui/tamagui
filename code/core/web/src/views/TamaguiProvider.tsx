@@ -63,17 +63,7 @@ export function TamaguiProvider({
   let contents = (
     <UnmountedClassName>
       <ComponentContext.Provider animationDriver={config?.animations}>
-        <ThemeProvider
-          themeClassNameOnRoot={
-            themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
-          }
-          disableRootThemeClass={
-            disableRootThemeClass ?? getSetting('disableRootThemeClass')
-          }
-          defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
-          reset={reset}
-          className={className}
-        >
+        <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
           {children}
         </ThemeProvider>
       </ComponentContext.Provider>

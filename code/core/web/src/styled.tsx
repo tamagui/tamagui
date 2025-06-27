@@ -189,7 +189,6 @@ export function styled<
 
     const acceptsClassName =
       config?.acceptsClassName ??
-      acceptsClassNameProp ??
       (isPlainStyledComponent ||
         isReactNative ||
         (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
