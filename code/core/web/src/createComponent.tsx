@@ -16,7 +16,7 @@ import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getShorthandValue } from './helpers/getShorthandValue'
-import { useSplitStyles } from './helpers/getSplitStyles'
+import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
@@ -49,6 +49,7 @@ import type {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseStyleEmitter,
   UseThemeWithStateProps,
 } from './types'
 import { Slot } from './views/Slot'
@@ -339,6 +340,13 @@ export function createComponent<
     const animationDriver = componentContext.animationDriver
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
+    const componentState = useComponentState(
+      props,
+      componentContext,
+      staticConfig,
+      config!
+    )
+
     const {
       curStateRef,
       disabled,
@@ -351,7 +359,6 @@ export function createComponent<
       presence,
       presenceState,
       setState,
-      setStateShallow,
       noClass,
       state,
       stateRef,
@@ -359,7 +366,12 @@ export function createComponent<
       willBeAnimated,
       willBeAnimatedClient,
       startedUnhydrated,
-    } = useComponentState(props, componentContext, staticConfig, config!)
+    } = componentState
+
+    // if our animation driver supports noReRender, we'll replace this below with
+    // a version that essentially uses an internall emitter rather than setting state
+    // but still stores the current state and applies if it it needs to during render
+    let setStateShallow = componentState.setStateShallow
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -516,6 +528,38 @@ export function createComponent<
       debugProp
     )
 
+    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+      const styleListener = stateRef.current.useStyleListener!
+      const ogSetStateShallow = setStateShallow
+      setStateShallow = (next) => {
+        // one thing we have to handle here and where it gets a bit more complex is group styles
+        // but i think we can just emit to the group too?
+        const avoidReRenderKeys = new Set(['hover', 'press'])
+        const canAvoidReRender = Object.keys(next).every((key) =>
+          avoidReRenderKeys.has(key)
+        )
+        if (canAvoidReRender) {
+          const updatedState = { ...state, ...next }
+          const nextStyles = getSplitStyles(
+            props,
+            staticConfig,
+            theme,
+            themeName,
+            updatedState,
+            styleProps,
+            null,
+            componentContext,
+            elementType,
+            startedUnhydrated,
+            debugProp
+          )
+          styleListener(nextStyles.style as any)
+        } else {
+          ogSetStateShallow(next)
+        }
+      }
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
     // hide strategy will set this opacity = 0 until measured
@@ -599,24 +643,23 @@ export function createComponent<
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
     const shouldUseAnimation =
-      // TODO
-      (useAnimations && animationDriver?.['needsWebStyles']) ||
       // if it supports css vars we run it on server too to get matching initial style
-      ((supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
-        useAnimations &&
-        !isHOC)
-
-    if (animationDriver?.['needsWebStyles']) {
-      console.log('wtf', JSON.stringify(splitStylesStyle, null, 2))
-    }
+      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
 
     if (shouldUseAnimation) {
+      const useStyleEmitter: UseStyleEmitter | undefined = animationDriver?.avoidReRenders
+        ? (listener) => {
+            stateRef.current.useStyleListener = listener
+          }
+        : undefined
+
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
         style: splitStylesStyle || {},
         // @ts-ignore
         styleState: splitStyles,
+        useStyleEmitter,
         presence,
         componentState: state,
         styleProps,
@@ -731,6 +774,7 @@ export function createComponent<
       })
     }
 
+    // TODO should this be regular effect to allow the render in-between?
     useIsomorphicLayoutEffect(() => {
       // Note: We removed the early return on disabled to allow animations to work
       // This fixes the issue where animations wouldn't work on disabled components
@@ -751,9 +795,9 @@ export function createComponent<
             setStateShallow({ unmounted: false })
           })
           return () => clearTimeout(tm)
-        } else {
-          setStateShallow({ unmounted: false })
         }
+
+        setStateShallow({ unmounted: false })
         return
       }
 

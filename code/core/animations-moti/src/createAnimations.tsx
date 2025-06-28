@@ -38,9 +38,9 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
   const Component = Animated.createAnimatedComponent(
     forwardRef((propsIn: any, ref) => {
       const { forwardedRef, animation, tag = defaultTag, ...propsRest } = propsIn
-      const hostRef = useRef()
+      const hostRef = useRef(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
-      const stateRef = useRef<any>()
+      const stateRef = useRef<any>(null)
       if (!stateRef.current) {
         stateRef.current = {
           get host() {

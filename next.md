@@ -1,3 +1,9 @@
+v2:
+
+- move to types react/react-dom 19
+
+---
+
 - escape on tamagui sheet doesn't close in general keyboard accessibility
   - check radix sheet and compare and improve
 

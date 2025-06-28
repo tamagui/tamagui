@@ -6,11 +6,16 @@ import {
   defaultComponentStateMounted,
   defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
-import { createShallowSetState } from '../helpers/createShallowSetState'
+import {
+  type CallbackSetState,
+  useCreateShallowSetState,
+} from '../helpers/useCreateShallowSetState'
 import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
+  ComponentStateEmitter,
+  ComponentStateListener,
   GroupStateListener,
   StackProps,
   StaticConfig,
@@ -136,17 +141,12 @@ export const useComponentState = (
       Object.assign(state, defaultComponentStateMounted)
     }
     state.disabled = disabled
-    setState({ ...state })
+    setState((_) => ({ ...state }))
   }
 
   const groupName = props.group as any as string
 
-  let setStateShallow = createShallowSetState(
-    setState,
-    undefined, // note: allows all state updates even when disabled for the enterStyle animation to work
-    false,
-    props.debug
-  )
+  const setStateShallow = useCreateShallowSetState(setState, props.debug)
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
@@ -209,6 +209,26 @@ export const useComponentState = (
       listeners,
       emit(name, state) {
         listeners.forEach((l) => l(name, state))
+      },
+      subscribe(cb) {
+        listeners.add(cb)
+        setStateShallow({ hasDynGroupChildren: true })
+        return () => {
+          listeners.delete(cb)
+          if (listeners.size === 0) {
+            setStateShallow({ hasDynGroupChildren: false })
+          }
+        }
+      },
+    }
+  }
+
+  if (!curStateRef.stateEmitter && hasAnimationProp) {
+    const listeners = new Set<ComponentStateListener>()
+    curStateRef.stateEmitter = {
+      listeners,
+      emit(state) {
+        listeners.forEach((l) => l(state))
       },
       subscribe(cb) {
         listeners.add(cb)

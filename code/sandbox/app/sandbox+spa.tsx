@@ -25,7 +25,7 @@ const Motion = () => {
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
       <Square
         animation="quickest"
-        debug="verbose"
+        // debug="verbose"
         bg="red"
         size={100}
         pressStyle={{ scale: 1 }}

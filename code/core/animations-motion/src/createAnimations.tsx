@@ -1,5 +1,10 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import { isWeb, type AnimationDriver, type UniversalAnimatedNumber } from '@tamagui/web'
+import {
+  type AnimationProp,
+  isWeb,
+  type AnimationDriver,
+  type UniversalAnimatedNumber,
+} from '@tamagui/web'
 import {
   motion,
   useAnimate,
@@ -12,64 +17,85 @@ import React, { forwardRef, useLayoutEffect, useMemo, useRef } from 'react'
 import { Text, View } from 'react-native'
 
 type MotionAnimatedNumber = MotionValue<number>
-
 type AnimationConfig = ValueTransition
-
-const MotionView = forwardRef((props: any, ref) => {
-  const Element = motion[props.tag || 'div']
-  return <Element ref={ref} {...props} />
-})
-
-function animationPropToAnimationConfig(
-  animationProp: string | [string, Object] | Object,
-  animations: Record<string, Object>
-): AnimationOptions {
-  let defaultAnimationKey = ''
-  let specificAnimations = {}
-
-  if (typeof animationProp === 'string') {
-    defaultAnimationKey = animationProp
-  } else if (Array.isArray(animationProp)) {
-    if (typeof animationProp[0] === 'string') {
-      defaultAnimationKey = animationProp[0]
-      specificAnimations = animationProp[1]
-    } else {
-      specificAnimations = animationProp
-    }
-  }
-
-  if (!defaultAnimationKey) {
-    return {}
-  }
-
-  return {
-    default: animations[defaultAnimationKey],
-    ...Object.fromEntries(
-      Object.keys(specificAnimations).flatMap((key) => {
-        if (animations[key]) {
-          return [[key, animations[key]]]
-        }
-        return []
-      })
-    ),
-  }
-}
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animations: A
 ): AnimationDriver<A> {
+  function getMotionAnimatedProps(
+    props: { animation: AnimationProp | null; animateOnly?: string[] },
+    style: Record<string, unknown>
+  ) {
+    const animationOptions = animationPropToAnimationConfig(props.animation)
+
+    let dontAnimate = {}
+    const doAnimate = {}
+
+    const animateOnly = props.animateOnly as string[] | undefined
+    for (const key in style) {
+      const value = style[key]
+      if (animateOnly && !animateOnly.includes(key)) {
+        dontAnimate[key] = value
+      } else {
+        doAnimate[key] = value
+      }
+    }
+
+    return {
+      dontAnimate,
+      doAnimate,
+      animationOptions,
+    }
+  }
+
+  function animationPropToAnimationConfig(
+    animationProp: AnimationProp | null
+  ): AnimationOptions {
+    let defaultAnimationKey = ''
+    let specificAnimations = {}
+
+    if (typeof animationProp === 'string') {
+      defaultAnimationKey = animationProp
+    } else if (Array.isArray(animationProp)) {
+      if (typeof animationProp[0] === 'string') {
+        defaultAnimationKey = animationProp[0]
+        specificAnimations = animationProp[1]
+      } else {
+        specificAnimations = animationProp
+      }
+    }
+
+    if (!defaultAnimationKey) {
+      return {}
+    }
+
+    return {
+      default: animations[defaultAnimationKey],
+      ...Object.fromEntries(
+        Object.keys(specificAnimations).flatMap((key) => {
+          if (animations[key]) {
+            return [[key, animations[key]]]
+          }
+          return []
+        })
+      ),
+    }
+  }
+
   return {
     View: isWeb ? MotionView : View,
     Text: isWeb ? MotionView : Text,
     isReactNative: false,
     supportsCSSVars: true,
     needsWebStyles: true,
+    avoidReRenders: true,
     animations,
     usePresence,
     ResetPresence,
 
     useAnimations: (animationProps) => {
-      const { props, presence, style, componentState, stateRef } = animationProps
+      const { props, presence, style, componentState, stateRef, useStyleEmitter } =
+        animationProps
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
@@ -83,33 +109,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       // const style = styleToCSS(styleIn)
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
-        const animationOptions = animationPropToAnimationConfig(
-          props.animation,
-          animations
-        )
-
-        let dontAnimate = {}
-        const doAnimate = {}
-
-        if (disableAnimation || componentState.unmounted === 'should-enter') {
-          dontAnimate = style
-        } else {
-          const animateOnly = props.animateOnly as string[] | undefined
-          for (const key in style) {
-            const value = style[key]
-            if (animateOnly && !animateOnly.includes(key)) {
-              dontAnimate[key] = value
-            } else {
-              doAnimate[key] = value
-            }
-          }
-        }
-
-        return {
-          dontAnimate,
-          doAnimate,
-          animationOptions,
-        }
+        return getMotionAnimatedProps(props as any, style)
       }, [
         presenceContext,
         presence,
@@ -119,6 +119,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       ])
 
       const curAnimatedStyle = useRef({})
+
+      useStyleEmitter?.((nextStyle) => {
+        const { doAnimate, animationOptions } = getMotionAnimatedProps(
+          props as any,
+          nextStyle
+        )
+        console.log('go for it', doAnimate, animationOptions)
+        animate(stateRef.current.host as any, doAnimate, animationOptions)
+      })
 
       useLayoutEffect(() => {
         curAnimatedStyle.current = doAnimate
@@ -191,3 +200,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     },
   }
 }
+
+const MotionView = forwardRef((props: any, ref) => {
+  const Element = motion[props.tag || 'div']
+  return <Element ref={ref} {...props} />
+})
