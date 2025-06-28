@@ -1,5 +1,5 @@
 import { IS_REACT_19, isServer, isWeb } from '@tamagui/constants'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import {
   defaultComponentState,
@@ -28,6 +28,7 @@ export const useComponentState = (
   config: TamaguiInternalConfig
 ) => {
   const isHydrated = useDidFinishSSR()
+  const needsHydration = !useIsClientOnly()
   const [startedUnhydrated] = useState(IS_REACT_19 ? !isHydrated : false)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
@@ -46,6 +47,10 @@ export const useComponentState = (
   // disable for now still ssr issues
   const supportsCSSVars = animationDriver?.supportsCSSVars
   const curStateRef = stateRef.current
+
+  if (!needsHydration && hasAnimationProp) {
+    curStateRef.hasAnimated = true
+  }
 
   const willBeAnimatedClient = (() => {
     const next = !!(hasAnimationProp && !staticConfig.isHOC && useAnimations)
@@ -167,7 +172,7 @@ export const useComponentState = (
     }
   }
 
-  let noClass = !isWeb || !!props.forceStyle
+  let noClass = !isWeb || !!props.forceStyle || animationDriver?.['needsWebStyles']
 
   // on server for SSR and animation compat added the && isHydrated but perhaps we want
   // disableClassName="until-hydrated" to be more straightforward

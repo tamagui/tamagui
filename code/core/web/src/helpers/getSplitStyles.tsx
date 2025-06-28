@@ -167,7 +167,8 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
-  const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
+  const shouldDoClasses =
+    acceptsClassName && isWeb && !styleProps.noClass && !styleProps.isAnimated
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
@@ -1134,7 +1135,13 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (!styleProps.noMergeStyle && styleState.style && shouldDoClasses) {
+    if (
+      !styleProps.noMergeStyle &&
+      styleState.style &&
+      shouldDoClasses &&
+      // Todo just juse nomergestyle
+      !animationDriver?.['needsWebStyles']
+    ) {
       let retainedStyles: ViewStyleWithPseudos | undefined
       let shouldRetain = false
 
@@ -1328,7 +1335,7 @@ export const getSplitStyles: StyleSplitter = (
         if (props.className) classList.push(props.className)
         const finalClassName = classList.join(' ')
 
-        if (styleProps.isAnimated && !animationDriver.supportsCSSVars && isReactNative) {
+        if (styleProps.isAnimated) {
           if (style) {
             viewProps.style = style as any
           }

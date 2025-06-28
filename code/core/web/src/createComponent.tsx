@@ -495,6 +495,7 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       styledContextProps,
+      noMergeStyle: animationDriver?.['needsWebStyles'],
     } as const
 
     const themeName = themeState?.name || ''
@@ -597,14 +598,25 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    const shouldUseAnimation = // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
+    const shouldUseAnimation =
+      // TODO
+      (useAnimations && animationDriver?.['needsWebStyles']) ||
+      // if it supports css vars we run it on server too to get matching initial style
+      ((supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
+        useAnimations &&
+        !isHOC)
+
+    if (animationDriver?.['needsWebStyles']) {
+      console.log('wtf', JSON.stringify(splitStylesStyle, null, 2))
+    }
 
     if (shouldUseAnimation) {
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
         style: splitStylesStyle || {},
+        // @ts-ignore
+        styleState: splitStyles,
         presence,
         componentState: state,
         styleProps,

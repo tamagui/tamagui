@@ -245,6 +245,9 @@ async function buildTsc(allFiles) {
       console.error(
         `Error building: ${diagnostics.map((x) => `${x.file.fileName}: ${x.messageText?.messageText ?? x.messageText}`).join('\n')}`
       )
+      if (shouldWatch) {
+        return
+      }
       process.exit(1)
     }
 

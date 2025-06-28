@@ -1,36 +1,135 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import { isWeb, type AnimationDriver, type UniversalAnimatedNumber } from '@tamagui/web'
 import {
-  useAnimateMini,
+  motion,
+  useAnimate,
   useSpring,
+  type AnimationOptions,
   type MotionValue,
   type ValueTransition,
 } from 'motion/react'
-import React, { useLayoutEffect, useMemo } from 'react'
-
-// TODO:
-//  - we need a mode where it returns us CSS-like stlye values but on the stlye object
-//  - we memoize them from the first render always and pass to render (for ssr and initial render)
-//  - then use useLayout and call animate() but do logic to split out our animation={{ opacity: {} }}
-//    style config properly, and also animation={['defaultName', { ... }]} style etc
-//  - test the WAAPI mode for no-rerenders
-//  - revisit fernando / my PR on no-rerender pseudo/media animations
+import React, { forwardRef, useLayoutEffect, useMemo, useRef } from 'react'
+import { Text, View } from 'react-native'
 
 type MotionAnimatedNumber = MotionValue<number>
 
 type AnimationConfig = ValueTransition
 
+const MotionView = forwardRef((props: any, ref) => {
+  const Element = motion[props.tag || 'div']
+  return <Element ref={ref} {...props} />
+})
+
+function animationPropToAnimationConfig(
+  animationProp: string | [string, Object] | Object,
+  animations: Record<string, Object>
+): AnimationOptions {
+  let defaultAnimationKey = ''
+  let specificAnimations = {}
+
+  if (typeof animationProp === 'string') {
+    defaultAnimationKey = animationProp
+  } else if (Array.isArray(animationProp)) {
+    if (typeof animationProp[0] === 'string') {
+      defaultAnimationKey = animationProp[0]
+      specificAnimations = animationProp[1]
+    } else {
+      specificAnimations = animationProp
+    }
+  }
+
+  if (!defaultAnimationKey) {
+    return {}
+  }
+
+  return {
+    default: animations[defaultAnimationKey],
+    ...Object.fromEntries(
+      Object.keys(specificAnimations).flatMap((key) => {
+        if (animations[key]) {
+          return [[key, animations[key]]]
+        }
+        return []
+      })
+    ),
+  }
+}
+
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animations: A
 ): AnimationDriver<A> {
   return {
-    View: undefined,
-    Text: undefined,
+    View: isWeb ? MotionView : View,
+    Text: isWeb ? MotionView : Text,
     isReactNative: false,
-    supportsCSSVars: false,
+    supportsCSSVars: true,
+    needsWebStyles: true,
     animations,
     usePresence,
     ResetPresence,
+
+    useAnimations: (animationProps) => {
+      const { props, presence, style, componentState, stateRef } = animationProps
+      const animationKey = Array.isArray(props.animation)
+        ? props.animation[0]
+        : props.animation
+
+      const isHydrating = componentState.unmounted === true
+      const disableAnimation = isHydrating || !animationKey
+      const presenceContext = React.useContext(PresenceContext)
+
+      const [scope, animate] = useAnimate()
+
+      // const style = styleToCSS(styleIn)
+
+      const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
+        const animationOptions = animationPropToAnimationConfig(
+          props.animation,
+          animations
+        )
+
+        let dontAnimate = {}
+        const doAnimate = {}
+
+        if (disableAnimation || componentState.unmounted === 'should-enter') {
+          dontAnimate = style
+        } else {
+          const animateOnly = props.animateOnly as string[] | undefined
+          for (const key in style) {
+            const value = style[key]
+            if (animateOnly && !animateOnly.includes(key)) {
+              dontAnimate[key] = value
+            } else {
+              doAnimate[key] = value
+            }
+          }
+        }
+
+        return {
+          dontAnimate,
+          doAnimate,
+          animationOptions,
+        }
+      }, [
+        presenceContext,
+        presence,
+        animationKey,
+        componentState.unmounted,
+        JSON.stringify(style),
+      ])
+
+      const curAnimatedStyle = useRef({})
+
+      useLayoutEffect(() => {
+        curAnimatedStyle.current = doAnimate
+        animate(stateRef.current.host as any, doAnimate, animationOptions)
+      }, [doAnimate, animationOptions])
+
+      return {
+        style: dontAnimate,
+        ref: scope,
+      }
+    },
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<MotionAnimatedNumber> {
       const motionValue = useSpring(initial)
@@ -89,106 +188,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }, [instance, getStyle])
 
       return style
-    },
-
-    useAnimations: (animationProps) => {
-      const { props, presence, style, componentState, stateRef } = animationProps
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
-
-      const isHydrating = componentState.unmounted === true
-      const disableAnimation = isHydrating || !animationKey
-      const presenceContext = React.useContext(PresenceContext)
-
-      const [scope, animate] = useAnimateMini()
-
-      const out = useMemo(() => {}, [
-        presenceContext,
-        presence,
-        animationKey,
-        componentState.unmounted,
-        JSON.stringify(style),
-      ])
-
-      useLayoutEffect(() => {
-        // console.log('animate', style)
-        animate(
-          stateRef.current.host as any,
-          {},
-          {
-            alignContent: {
-              type: 'spring',
-              delay: 100,
-            },
-          }
-        )
-      }, [style])
-
-      return { style: undefined }
-
-      // const { dontAnimate, animatedStyle } = useMemo(() => {
-      //   let animate = {}
-      //   let dontAnimate = {}
-
-      //   if (disableAnimation) {
-      //     dontAnimate = style
-      //   } else {
-      //     const animateOnly = props.animateOnly as string[]
-      //     for (const key in style) {
-      //       const value = style[key]
-      //       if (
-      //         !animatableKeys[key] ||
-      //         value === 'auto' ||
-      //         (typeof value === 'string' && value.startsWith('calc')) ||
-      //         (animateOnly && !animateOnly.includes(key))
-      //       ) {
-      //         dontAnimate[key] = value
-      //       } else {
-      //         animate[key] = value
-      //       }
-      //     }
-      //   }
-
-      //   // If we're entering, don't animate on first render
-      //   if (componentState.unmounted === 'should-enter') {
-      //     dontAnimate = style
-      //   }
-
-      //   const isExiting = Boolean(presence?.[1])
-
-      //   // Get animation config
-      //   let animationConfig = isHydrating
-      //     ? { type: 'spring', duration: 0 }
-      //     : (animations[animationKey as keyof typeof animations] as any)
-
-      //   // Handle array-based animation config
-      //   if (Array.isArray(props.animation)) {
-      //     const config = props.animation[1]
-      //     if (config && typeof config === 'object') {
-      //       animationConfig = { ...animationConfig, ...config }
-      //     }
-      //   }
-
-      //   return {
-      //     dontAnimate,
-      //     animatedStyle: animate,
-      //     animationConfig,
-      //     isExiting,
-      //   }
-      // }, [
-      //   presenceContext,
-      //   presence,
-      //   animationKey,
-      //   componentState.unmounted,
-      //   JSON.stringify(style),
-      // ])
-
-      // For now, we'll return the combined style
-      // In a more complete implementation, we'd use Motion's animate prop
-      // return {
-      //   style: [dontAnimate, animatedStyle],
-      // }
     },
   }
 }

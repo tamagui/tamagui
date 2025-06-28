@@ -3,11 +3,14 @@ import { Button, Circle, Configuration, Square, XStack, YStack } from 'tamagui'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 import { animations } from '../config/tamagui/animations'
 import { useEffect, useState } from 'react'
+import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 
 export default function Sandbox() {
   return (
     <>
-      <Motion />
+      <ClientOnly>
+        <Motion />
+      </ClientOnly>
       {/* <Performance /> */}
       {/* <Drivers /> */}
     </>
@@ -18,18 +21,17 @@ const Motion = () => {
   console.warn('render')
   const [x, setX] = useState(0)
   return (
-    <>
-      <Configuration disableSSR animationDriver={animationsMotion}>
-        <Button onPress={() => setX(Math.random())}>asdasdas</Button>
-        <Square
-          animation="bouncy"
-          debug="verbose"
-          bg="red"
-          size={100}
-          pressStyle={{ scale: 2 }}
-        />
-      </Configuration>
-    </>
+    <Configuration animationDriver={animationsMotion}>
+      <Button onPress={() => setX(Math.random())}>asdasdas</Button>
+      <Square
+        animation="quickest"
+        debug="verbose"
+        bg="red"
+        size={100}
+        pressStyle={{ scale: 1 }}
+        hoverStyle={{ scale: 2 }}
+      />
+    </Configuration>
   )
 }
 
