@@ -8,7 +8,7 @@ import { SearchContext } from '~/features/site/search/SearchContext'
 export const SearchButton = memo((props: ButtonProps) => {
   const { onOpen, onInput } = useContext(SearchContext)
 
-  const ref = useRef()
+  const ref = useRef(null)
 
   useEffect(() => {
     const onKeyDown = (event: any) => {

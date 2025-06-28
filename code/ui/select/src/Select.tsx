@@ -63,6 +63,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     // We ignore `className` and `style` as this part shouldn't be styled.
     const context = useSelectContext(VALUE_NAME, __scopeSelect)
     const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
+    // @ts-ignore TODO react 19 type needs fix
     const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
     const children = childrenProp ?? context.selectedItem
     const isEmptyValue = context.value == null || context.value === ''
@@ -368,7 +369,7 @@ export const Select = withStaticProperties(
 )
 
 function useEmitter<A>() {
-  const listeners = React.useRef<Set<Function>>()
+  const listeners = React.useRef<Set<Function>>(null)
   if (!listeners.current) {
     listeners.current = new Set()
   }

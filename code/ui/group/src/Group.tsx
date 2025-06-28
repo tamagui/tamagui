@@ -2,7 +2,6 @@ import type { GetProps, UnionableString, Variable } from '@tamagui/core'
 import {
   getTokens,
   getVariableValue,
-  isTamaguiElement,
   spacedChildren,
   styled,
   useProps,
@@ -121,7 +120,8 @@ function createGroup(verticalDefault: boolean) {
             if (!React.isValidElement(child) || child.type === React.Fragment) {
               return child
             }
-            const disabled = child.props.disabled ?? disabledProp
+            const disabled =
+              (child.props as Record<string, unknown>).disabled ?? disabledProp
 
             const isFirst = i === 0
             const isLast = i === childrenArray.length - 1
@@ -208,7 +208,11 @@ const GroupItem = React.forwardRef(
   ) => {
     const { __scopeGroup, children, forcePlacement } = props
     const groupItemProps = useGroupItem(
-      { disabled: React.isValidElement(children) ? children.props.disabled : undefined },
+      {
+        disabled: React.isValidElement(children)
+          ? Boolean((children.props as Record<string, unknown>).disabled)
+          : false,
+      },
       forcePlacement,
       __scopeGroup
     )

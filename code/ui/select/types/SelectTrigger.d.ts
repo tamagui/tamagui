@@ -75,14 +75,8 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
-    icon?: JSX.Element | React.FunctionComponent<{
-        color?: any;
-        size?: any;
-    }> | null;
-    iconAfter?: JSX.Element | React.FunctionComponent<{
-        color?: any;
-        size?: any;
-    }> | null;
+    icon?: any;
+    iconAfter?: any;
     scaleIcon?: number;
     spaceFlex?: number | boolean;
     scaleSpace?: number;

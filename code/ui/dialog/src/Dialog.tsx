@@ -59,8 +59,8 @@ type NonNull<A> = Exclude<A, void | null>
 
 type DialogContextValue = {
   disableRemoveScroll?: boolean
-  triggerRef: React.RefObject<TamaguiElement>
-  contentRef: React.RefObject<TamaguiElement>
+  triggerRef: React.RefObject<TamaguiElement | null>
+  contentRef: React.RefObject<TamaguiElement | null>
   contentId: string
   titleId: string
   descriptionId: string
@@ -558,7 +558,10 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       ...contentProps
     } = props
 
-    const contentRef = React.useRef<HTMLDivElement>(null)
+    const contentRef = React.useRef<HTMLDivElement>(
+      // TODO react 19 type workaround
+      undefined as unknown as HTMLDivElement
+    )
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isAdapted = useAdaptIsActive()
 

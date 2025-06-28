@@ -24,8 +24,8 @@ interface DialogProps {
 type NonNull<A> = Exclude<A, void | null>;
 type DialogContextValue = {
     disableRemoveScroll?: boolean;
-    triggerRef: React.RefObject<TamaguiElement>;
-    contentRef: React.RefObject<TamaguiElement>;
+    triggerRef: React.RefObject<TamaguiElement | null>;
+    contentRef: React.RefObject<TamaguiElement | null>;
     contentId: string;
     titleId: string;
     descriptionId: string;

@@ -7,10 +7,11 @@ import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, Poppe
 import type { RemoveScrollProps } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
+type PopoverVia = 'hover' | 'press';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean, via?: 'hover' | 'press') => void;
+    onOpenChange?: (open: boolean, via?: PopoverVia) => void;
     keepChildrenMounted?: boolean;
     /**
      * Enable staying open while mouseover
@@ -145,7 +146,7 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("
     __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverArrowProps = PopperArrowProps;
-export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<CustomProps extends void ? Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
         top?: number;
@@ -155,7 +156,17 @@ export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit
     } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
+}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps : Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, keyof CustomProps> & CustomProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
         top?: number;
@@ -182,7 +193,7 @@ export type Popover = {
 export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean, via?: "hover" | "press") => void;
+    onOpenChange?: (open: boolean, via?: PopoverVia) => void;
     keepChildrenMounted?: boolean;
     /**
      * Enable staying open while mouseover
@@ -225,7 +236,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     }>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Arrow: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    Arrow: import("@tamagui/core").TamaguiComponent<CustomProps extends void ? Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
             top?: number;
@@ -235,7 +246,17 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         } | null | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
+    }>, keyof PopperArrowExtraProps> & PopperArrowExtraProps : Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        inset?: number | SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, keyof CustomProps> & CustomProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
             top?: number;

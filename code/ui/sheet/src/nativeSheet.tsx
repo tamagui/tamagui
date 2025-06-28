@@ -36,7 +36,7 @@ export function setupNativeSheet(
       const ref = useRef<{
         presentModal: Function
         dismissModal: Function
-      }>()
+      }>(undefined)
 
       useEffect(() => {
         if (open) {

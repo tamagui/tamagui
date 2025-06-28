@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import {
   Button,
   Circle,
@@ -153,7 +153,7 @@ const Switch = memo(
     disabled,
     disabledStyle,
     ...rest
-  }: SwitchProps): JSX.Element => {
+  }: SwitchProps): React.JSX.Element => {
     const [checked, setChecked] = useState(checkedProp)
     // const colors = useTheme()
 

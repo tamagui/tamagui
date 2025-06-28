@@ -111,6 +111,7 @@ const ToastViewport = React.memo(
         },
         [name, context.viewports]
       )
+      // @ts-ignore TODO react 19 type needs fix
       const composedRefs = useComposedRefs(forwardedRef, ref, onViewportChange)
       const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
       const hasToasts = context.toastCount > 0

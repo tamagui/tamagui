@@ -178,7 +178,9 @@ async function build({ skipTypes } = {}) {
     console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     console.error(` ❌ Error building in ${process.cwd()}:\n\n`, error.stack + '\n')
-    process.exit(1)
+    if (!shouldWatch) {
+      process.exit(1)
+    }
   }
 }
 
@@ -390,53 +392,53 @@ async function buildJs(allFiles) {
   const esbuildBundleProps =
     bundleNative || bundleNativeTest
       ? {
-          entryPoints: [bundleNative],
-          bundle: true,
-          plugins: [
-            alias({
-              '@tamagui/web': require.resolve('@tamagui/web/native'),
+        entryPoints: [bundleNative],
+        bundle: true,
+        plugins: [
+          alias({
+            '@tamagui/web': require.resolve('@tamagui/web/native'),
 
-              'react-native': require.resolve('@tamagui/fake-react-native'),
-              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
+            'react-native': require.resolve('@tamagui/fake-react-native'),
+            'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+              '@tamagui/fake-react-native'
+            ),
+            'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+              '@tamagui/fake-react-native'
+            ),
 
-              'react-native/Libraries/Pressability/Pressability': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
+            'react-native/Libraries/Pressability/Pressability': require.resolve(
+              '@tamagui/fake-react-native'
+            ),
 
-              'react-native/Libraries/Pressability/usePressability': require.resolve(
-                '@tamagui/fake-react-native/idFn'
-              ),
+            'react-native/Libraries/Pressability/usePressability': require.resolve(
+              '@tamagui/fake-react-native/idFn'
+            ),
 
-              'react-native-safe-area-context': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
-            }),
-          ],
-          external: [
-            'react',
-            'react-dom',
-            bundleNativeTest ? 'react-native' : undefined,
-          ].filter(Boolean),
-          resolveExtensions: [
-            '.native.ts',
-            '.native.tsx',
-            '.native.js',
-            '.ts',
-            '.tsx',
-            '.js',
-            '.jsx',
-          ],
-          minify: !!process.env.MINIFY,
-          define: {
-            'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
-          },
-        }
+            'react-native-safe-area-context': require.resolve(
+              '@tamagui/fake-react-native'
+            ),
+            'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+          }),
+        ],
+        external: [
+          'react',
+          'react-dom',
+          bundleNativeTest ? 'react-native' : undefined,
+        ].filter(Boolean),
+        resolveExtensions: [
+          '.native.ts',
+          '.native.tsx',
+          '.native.js',
+          '.ts',
+          '.tsx',
+          '.js',
+          '.jsx',
+        ],
+        minify: !!process.env.MINIFY,
+        define: {
+          'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
+        },
+      }
       : {}
 
   const start = Date.now()
@@ -483,101 +485,101 @@ async function buildJs(allFiles) {
     // web output to cjs
     pkgMain
       ? esbuildWriteIfChanged(cjsConfigWeb, {
-          platform: 'web',
-          bundle: shouldBundleFlag,
-          specifyCJS: !avoidCJS,
-        })
+        platform: 'web',
+        bundle: shouldBundleFlag,
+        specifyCJS: !avoidCJS,
+      })
       : null,
 
     // native output to cjs
     pkgMain && !shouldSkipNative
       ? esbuildWriteIfChanged(cjsConfig, {
-          platform: 'native',
-        })
+        platform: 'native',
+      })
       : null,
 
     // for tests to load native-mode from node
     bundleNative && !shouldSkipNative
       ? esbuildWriteIfChanged(
-          {
-            ...esbuildBundleProps,
-            outfile: `dist/native.js`,
-          },
-          {
-            platform: 'native',
-          }
-        )
+        {
+          ...esbuildBundleProps,
+          outfile: `dist/native.js`,
+        },
+        {
+          platform: 'native',
+        }
+      )
       : null,
 
     // for tests to load native-mode from node
     bundleNativeTest && !shouldSkipNative
       ? esbuildWriteIfChanged(
-          {
-            ...esbuildBundleProps,
-            outfile: `dist/test.js`,
-          },
-          {
-            platform: 'native',
-            env: 'test',
-          }
-        )
+        {
+          ...esbuildBundleProps,
+          outfile: `dist/test.js`,
+        },
+        {
+          platform: 'native',
+          env: 'test',
+        }
+      )
       : null,
 
     // web output to esm
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
-          platform: 'web',
-          bundle: shouldBundleFlag,
-        })
+        platform: 'web',
+        bundle: shouldBundleFlag,
+      })
       : null,
 
     // native output to esm
     pkgModule && !shouldSkipNative
       ? esbuildWriteIfChanged(esmConfig, {
-          platform: 'native',
-        })
+        platform: 'native',
+      })
       : null,
 
     // jsx web
     pkgModuleJSX
       ? esbuildWriteIfChanged(
-          {
-            // only diff is jsx preserve and outdir
-            jsx: 'preserve',
-            outdir: flatOut ? 'dist' : 'dist/jsx',
-            entryPoints,
-            bundle: shouldBundleFlag,
-            allowOverwrite: true,
-            target: 'esnext',
-            format: 'esm',
-            minify: !!process.env.MINIFY,
-            platform: 'neutral',
-          },
-          {
-            platform: 'web',
-          }
-        )
+        {
+          // only diff is jsx preserve and outdir
+          jsx: 'preserve',
+          outdir: flatOut ? 'dist' : 'dist/jsx',
+          entryPoints,
+          bundle: shouldBundleFlag,
+          allowOverwrite: true,
+          target: 'esnext',
+          format: 'esm',
+          minify: !!process.env.MINIFY,
+          platform: 'neutral',
+        },
+        {
+          platform: 'web',
+        }
+      )
       : null,
 
     // jsx native
     pkgModuleJSX && !shouldSkipNative
       ? esbuildWriteIfChanged(
-          {
-            // only diff is jsx preserve and outdir
-            jsx: 'preserve',
-            outdir: flatOut ? 'dist' : 'dist/jsx',
-            entryPoints,
-            bundle: shouldBundleFlag,
-            allowOverwrite: true,
-            target: 'node16',
-            format: 'esm',
-            minify: !!process.env.MINIFY,
-            platform: 'neutral',
-          },
-          {
-            platform: 'native',
-          }
-        )
+        {
+          // only diff is jsx preserve and outdir
+          jsx: 'preserve',
+          outdir: flatOut ? 'dist' : 'dist/jsx',
+          entryPoints,
+          bundle: shouldBundleFlag,
+          allowOverwrite: true,
+          target: 'node16',
+          format: 'esm',
+          minify: !!process.env.MINIFY,
+          platform: 'neutral',
+        },
+        {
+          platform: 'native',
+        }
+      )
       : null,
   ]).then(() => {
     if (process.env.DEBUG) {
@@ -642,9 +644,9 @@ async function esbuildWriteIfChanged(
 
         ...(platform === 'native'
           ? [
-              // class isnt supported by hermes
-              es5Plugin(),
-            ]
+            // class isnt supported by hermes
+            es5Plugin(),
+          ]
           : []),
       ].filter(Boolean),
 
@@ -826,13 +828,13 @@ async function esbuildWriteIfChanged(
         const result = opts.bundle
           ? { code: contents }
           : transform(contents, {
-              filename: path,
-              configFile: false,
-              sourceMap: true,
-              plugins: [
-                require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
-              ].filter(Boolean),
-            })
+            filename: path,
+            configFile: false,
+            sourceMap: true,
+            plugins: [
+              require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
+            ].filter(Boolean),
+          })
 
         cleanupNonCjsFiles.push(path)
 
@@ -862,19 +864,19 @@ async function esbuildWriteIfChanged(
       const result = opts.bundle
         ? { code: contents }
         : transform(contents, {
-            filename: mjsOutPath,
-            configFile: false,
-            sourceMap: true,
-            plugins: [
-              [
-                require.resolve('@tamagui/babel-plugin-fully-specified'),
-                {
-                  esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
-                  esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
-                },
-              ],
-            ].filter(Boolean),
-          })
+          filename: mjsOutPath,
+          configFile: false,
+          sourceMap: true,
+          plugins: [
+            [
+              require.resolve('@tamagui/babel-plugin-fully-specified'),
+              {
+                esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
+                esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
+              },
+            ],
+          ].filter(Boolean),
+        })
 
       if (!path.includes('.native.')) {
         cleanupNonMjsFiles.push(path)
@@ -886,7 +888,7 @@ async function esbuildWriteIfChanged(
         await flush(
           mjsOutPath,
           result.code +
-            (result.map ? `\n//# sourceMappingURL=${basename(mjsOutPath)}.map\n` : '')
+          (result.map ? `\n//# sourceMappingURL=${basename(mjsOutPath)}.map\n` : '')
         )
       ) {
         if (result.map) {

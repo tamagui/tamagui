@@ -13,7 +13,7 @@ import {
   styled,
   useProps,
 } from '@tamagui/web'
-import type { FunctionComponent } from 'react'
+import type { FunctionComponent, JSX } from 'react'
 import { useContext } from 'react'
 
 type ButtonVariant = 'outlined'
