@@ -48,7 +48,7 @@ export default {
   resolve: {
     alias: {
       'react-native-svg': '@tamagui/react-native-svg',
-      // 'react-native-web': await resolve('react-native-web-lite'),
+      'react-native-web': resolve('@tamagui/react-native-web-lite'),
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
       'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
