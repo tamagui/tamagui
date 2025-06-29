@@ -8,7 +8,7 @@ export declare const createButton: <Variants extends Record<string, any>>(option
 }) => import("react").ForwardRefExoticComponent<import("@tamagui/web").GetFinalProps<any, any, Variants> & import("react").RefAttributes<import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<any, Variants>>>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<any, Variants>>, any, any, Variants, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<any, Variants>>, any, any, Variants, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Apply: import("react").ProviderExoticComponent<Partial<{ [Key in keyof Variants]: Variants[Key] | undefined; }> & {
+    Apply: import("react").Provider<{ [Key in keyof Variants]: Variants[Key] | undefined; }> & import("react").ProviderExoticComponent<Partial<{ [Key in keyof Variants]: Variants[Key] | undefined; }> & {
         children?: import("react").ReactNode;
         scope?: string;
     }>;

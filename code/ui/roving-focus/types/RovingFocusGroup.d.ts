@@ -35,10 +35,10 @@ interface RovingFocusGroupProps extends RovingFocusGroupImplProps {
 }
 declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & {
     __scopeRovingFocusGroup?: string;
-} & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & {
+} & React.RefAttributes<HTMLElement | import("react-native").View>> & {
     Item: React.ForwardRefExoticComponent<RovingFocusItemProps & {
         __scopeRovingFocusGroup?: string;
-    } & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
 };
 export { RovingFocusGroup };
 export type { RovingFocusGroupProps, RovingFocusItemProps };

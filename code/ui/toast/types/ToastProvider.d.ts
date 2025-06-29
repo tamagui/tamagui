@@ -9,14 +9,14 @@ declare const Collection: {
     }>;
     readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection").CollectionProps & {
         __scopeCollection?: string | undefined;
-    } & React.RefAttributes<TamaguiElement>>;
+    } & React.RefAttributes<TamaguiElement | undefined>>;
     readonly ItemSlot: React.ForwardRefExoticComponent<{
         children: React.ReactNode;
     } & {
         __scopeCollection?: string | undefined;
-    } & React.RefAttributes<TamaguiElement>>;
+    } & React.RefAttributes<TamaguiElement | undefined>>;
 }, useCollection: (__scopeCollection: any) => () => {
-    ref: React.RefObject<TamaguiElement>;
+    ref: React.RefObject<TamaguiElement | undefined>;
 }[];
 export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
 type ToastProviderContextValue = {

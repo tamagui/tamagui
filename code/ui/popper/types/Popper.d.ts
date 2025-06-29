@@ -17,7 +17,7 @@ export type PopperContextValue = UseFloatingReturn & {
     };
 };
 export declare const PopperContext: import("@tamagui/core").StyledContext<PopperContextValue>;
-export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProvider: React.ProviderExoticComponent<Partial<PopperContextValue> & {
+export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProvider: React.Provider<PopperContextValue> & React.ProviderExoticComponent<Partial<PopperContextValue> & {
     children?: React.ReactNode;
     scope?: string;
 }>;
