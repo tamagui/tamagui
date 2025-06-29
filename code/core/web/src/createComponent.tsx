@@ -387,7 +387,15 @@ export function createComponent<
 
     let elementType = isText ? BaseTextComponent : BaseViewComponent
 
-    if (animationDriver && isAnimated) {
+    if (
+      animationDriver &&
+      isAnimated &&
+      // this should really be behind another prop as it's not really related to
+      // "needsWebStyles" basically with motion we just animate a plain div, but
+      // we still have animated.View/Text for Sheet which wants to control
+      // things declaratively
+      !animationDriver.needsWebStyles
+    ) {
       elementType = animationDriver[isText ? 'Text' : 'View'] || elementType
     }
 
@@ -528,13 +536,15 @@ export function createComponent<
       debugProp
     )
 
+    // avoids re-rendering if animation driver supports it
+    // TODO believe we need to set some sort of "pendingState" in case it re-renders
     if (hasAnimationProp && animationDriver?.avoidReRenders) {
       const styleListener = stateRef.current.useStyleListener!
       const ogSetStateShallow = setStateShallow
       setStateShallow = (next) => {
         // one thing we have to handle here and where it gets a bit more complex is group styles
         // but i think we can just emit to the group too?
-        const avoidReRenderKeys = new Set(['hover', 'press'])
+        const avoidReRenderKeys = new Set(['hover', 'press', 'pressIn'])
         const canAvoidReRender = Object.keys(next).every((key) =>
           avoidReRenderKeys.has(key)
         )

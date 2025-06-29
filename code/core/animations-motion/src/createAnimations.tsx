@@ -1,35 +1,26 @@
-import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
+  type AnimationDriver,
+  type AnimationProp,
   getSplitStyles,
   hooks,
   styleToCSS,
   Text,
+  type UniversalAnimatedNumber,
   useComposedRefs,
-  useGet,
   useThemeWithState,
   View,
-  type AnimationDriver,
-  type AnimationProp,
-  type UniversalAnimatedNumber,
-  useEvent,
 } from '@tamagui/core'
+import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
+  type AnimationOptions,
   type MotionValue,
   useAnimate,
   useMotionValue,
   useMotionValueEvent,
-  type AnimationOptions,
   type ValueTransition,
 } from 'motion/react'
-import React, {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -70,8 +61,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     ResetPresence,
 
     useAnimations: (animationProps) => {
-      const { props, presence, style, componentState, stateRef, useStyleEmitter } =
-        animationProps
+      const { props, style, componentState, stateRef, useStyleEmitter } = animationProps
+
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
@@ -81,13 +72,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const presenceContext = React.useContext(PresenceContext)
 
       const [scope, animate] = useAnimate()
+      const firstRenderStyle = useRef<Object | null>(null)
+
+      if (props.style) {
+        styleToCSS(props.style) // ideally this would just come from tamagui
+      }
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
-        console.warn('re-running')
         return getMotionAnimatedProps(props as any, style, disableAnimation)
       }, [presenceContext, animationKey, JSON.stringify(style)])
-
-      const firstRenderStyle = useRef<Object | null>(null)
 
       function runAnimation(
         animationStyle: Record<string, unknown>,
@@ -96,8 +89,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (!(stateRef.current.host instanceof HTMLElement)) {
           return
         }
-
-        styleToCSS(animationStyle) // ideally this would just come from tamagui
 
         if (!firstRenderStyle.current) {
           firstRenderStyle.current = animationStyle
@@ -109,10 +100,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
 
         animate(stateRef.current.host, animationStyle, animationOptions)
-        // idea is - we assign to dontAnimate here so in case there's any renders that don't change style
-        // but do cause it to trigger a React re-render, React doesn't remove the animated styles
-        // need to figure this out better though - what happens if it's currently animating?
-        // Object.assign(dontAnimate, doAnimate)
       }
 
       useStyleEmitter?.((nextStyle) => {
@@ -123,18 +110,30 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         )
         if (doAnimate) {
           runAnimation(doAnimate, animationOptions)
-          Object.assign(dontAnimate, doAnimate)
+          // Object.assign(dontAnimate, doAnimate)
         }
       })
 
+      // strict mode correctness fix, idk why i thought it would clear a useRef
+      // before running strict? if you remove this you'll see the next
+      // useLayoutEffect re-run and animate due to firstRenderStyle.current
+      // being set when in theory it should be clear
+      useEffect(() => {
+        return () => {
+          firstRenderStyle.current = null
+        }
+      }, [])
+
       useLayoutEffect(() => {
         if (!doAnimate) return
+        // debugger
         runAnimation(doAnimate, animationOptions)
-      }, [doAnimate])
+      }, [doAnimate, firstRenderStyle])
 
       return {
         style: dontAnimate,
         ref: scope,
+        tag: 'div',
       }
     },
 
@@ -150,7 +149,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             return motionValue.get()
           },
           setValue(next, config = { type: 'spring' }, onFinish) {
-            console.log('settinv value', next)
             if (config.type === 'direct') {
               MotionValueStrategy.set(motionValue, {
                 type: 'direct',
@@ -350,10 +348,21 @@ function createMotionView(defaultTag: string) {
 
         const webStyle = getProps({ style: nextStyle }).style
 
-        console.log('gogoog', { value, nextStyle, webStyle, animationConfig })
-
         if (webStyle && node instanceof HTMLElement) {
-          animate(node, webStyle as any, animationConfig as any)
+          const motionAnimationConfig =
+            animationConfig?.type === 'timing'
+              ? {
+                  type: 'tween',
+                  duration: (animationConfig?.duration || 0) / 1000,
+                }
+              : animationConfig?.type === 'direct'
+                ? { type: 'tween', duration: 0 }
+                : {
+                    type: 'spring',
+                    ...(animationConfig as any),
+                  }
+
+          animate(node, webStyle as any, motionAnimationConfig)
         }
       })
     }, [animatedStyle])

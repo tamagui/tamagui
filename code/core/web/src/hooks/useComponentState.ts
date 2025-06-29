@@ -6,15 +6,11 @@ import {
   defaultComponentStateMounted,
   defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
-import {
-  type CallbackSetState,
-  useCreateShallowSetState,
-} from '../helpers/useCreateShallowSetState'
 import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
+import { useCreateShallowSetState } from '../helpers/useCreateShallowSetState'
 import type {
   ComponentContextI,
-  ComponentStateEmitter,
   ComponentStateListener,
   GroupStateListener,
   StackProps,

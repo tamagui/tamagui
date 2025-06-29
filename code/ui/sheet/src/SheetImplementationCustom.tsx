@@ -125,8 +125,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       [screenSize, frameSize, snapPoints, snapPointsMode]
     )
 
-    console.log('frameSize', frameSize)
-
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
     const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
@@ -151,7 +149,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const animatedNumber = useAnimatedNumber(startPosition)
     const at = React.useRef(startPosition)
     const hasntMeasured = at.current === hiddenSize
-    console.warn('at?', at.current)
     const [disableAnimation, setDisableAnimation] = useState(hasntMeasured)
 
     const hasScrollView = React.useRef(false)
@@ -181,7 +178,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
 
-      console.warn({ isHidden, position, positions })
       let toValue = isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
@@ -392,7 +388,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
       const translateY = frameSize === 0 ? hiddenSize : val
-      console.log('huh?', { frameSize, val })
 
       return {
         transform: [{ translateY }],

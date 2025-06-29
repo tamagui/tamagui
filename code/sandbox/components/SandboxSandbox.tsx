@@ -34,12 +34,12 @@ const Motion = () => {
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
       <Square
         className="motion-square"
-        animation="quickest"
         // debug="verbose"
+        animation="quick"
         bg="red"
         size={100}
         pressStyle={{ scale: 1 }}
-        hoverStyle={{ scale: 2 }}
+        hoverStyle={{ scale: 1.5 }}
       />
     </Configuration>
   )
