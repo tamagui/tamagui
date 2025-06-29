@@ -30,6 +30,7 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/is-equal-shallow": "workspace:*",
     "@tamagui/normalize-css-color": "workspace:*",
     "@tamagui/timer": "workspace:*",
     "@tamagui/types": "workspace:*",

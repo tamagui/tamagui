@@ -5,23 +5,13 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import { ClientOnly } from '@tamagui/use-did-finish-ssr'
+import { enable } from '@tamagui/use-element-layout'
 import React, { useEffect } from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { updateMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-
-const listeners = new Set<() => void>()
-let didRender = false
-
-export function ___onDidFinishClientRender(cb: () => void) {
-  if (didRender) {
-    cb()
-  } else {
-    listeners.add(cb)
-  }
-}
 
 export function TamaguiProvider({
   children,
@@ -34,11 +24,7 @@ export function TamaguiProvider({
   themeClassNameOnRoot,
 }: TamaguiProviderProps) {
   useEffect(() => {
-    listeners.forEach((cb) => cb())
-    didRender = true
-    return () => {
-      didRender = false
-    }
+    enable()
   }, [])
 
   if (!IS_REACT_19) {

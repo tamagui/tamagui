@@ -1,6 +1,6 @@
 import { getMediaState } from '../hooks/useMedia'
 import type { ComponentContextI, GroupState, TamaguiComponentState } from '../types'
-import { mergeIfNotShallowEqual } from './useCreateShallowSetState'
+import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 
 export const subscribeToContextGroup = ({
   setStateShallow,

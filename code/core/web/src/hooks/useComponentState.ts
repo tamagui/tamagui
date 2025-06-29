@@ -8,7 +8,7 @@ import {
 } from '../defaultComponentState'
 import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
-import { useCreateShallowSetState } from '../helpers/useCreateShallowSetState'
+import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import type {
   ComponentContextI,
   ComponentStateListener,

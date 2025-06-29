@@ -30,7 +30,7 @@
     "build:js": "./scripts/run.sh build --force --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build:verbose": "yarn build -vvv",
-    "build": "turbo run build",
+    "build": "(cd code/packages/babel-plugin-fully-specified && yarn build) && turbo run build",
     "check:deps": "manypkg check",
     "check:tamagui": "./node_modules/.bin/tamagui check",
     "check": "yarn check:deps && yarn check:tamagui",

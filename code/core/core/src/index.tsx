@@ -21,11 +21,10 @@ import {
 } from '@tamagui/web'
 import React from 'react'
 
+import { getRect, measureLayout, useElementLayout } from '@tamagui/use-element-layout'
 import { addNativeValidStyles } from './addNativeValidStyles'
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
-import { getRect } from './helpers/getRect'
-import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
@@ -34,7 +33,7 @@ export {
   getElementLayoutEvent,
   setOnLayoutStrategy,
   type LayoutEvent,
-} from './hooks/useElementLayout'
+} from '@tamagui/use-element-layout'
 
 // add newer style props based on react native version
 addNativeValidStyles()

@@ -7025,6 +7025,7 @@ __metadata:
     "@tamagui/react-native-use-pressable": "workspace:*"
     "@tamagui/react-native-use-responder-events": "workspace:*"
     "@tamagui/react-native-web-lite": "workspace:*"
+    "@tamagui/use-element-layout": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     "@tamagui/web": "workspace:*"
     "@testing-library/react": "npm:^16.1.0"
@@ -7575,6 +7576,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/is-equal-shallow@workspace:*, @tamagui/is-equal-shallow@workspace:code/packages/is-equal-shallow":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/is-equal-shallow@workspace:code/packages/is-equal-shallow"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/kitchen-sink@workspace:code/kitchen-sink":
   version: 0.0.0-use.local
   resolution: "@tamagui/kitchen-sink@workspace:code/kitchen-sink"
@@ -8056,6 +8065,7 @@ __metadata:
     "@tamagui/react-native-use-pressable": "workspace:*"
     "@tamagui/react-native-use-responder-events": "workspace:*"
     "@tamagui/simple-hash": "workspace:*"
+    "@tamagui/use-element-layout": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
   languageName: unknown
@@ -8711,6 +8721,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/use-element-layout@workspace:*, @tamagui/use-element-layout@workspace:code/core/use-element-layout":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-element-layout@workspace:code/core/use-element-layout"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    "@tamagui/constants": "workspace:*"
+    "@tamagui/is-equal-shallow": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/use-escape-keydown@workspace:*, @tamagui/use-escape-keydown@workspace:code/core/use-escape-keydown":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-escape-keydown@workspace:code/core/use-escape-keydown"
@@ -8868,6 +8891,7 @@ __metadata:
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/helpers": "workspace:*"
+    "@tamagui/is-equal-shallow": "workspace:*"
     "@tamagui/normalize-css-color": "workspace:*"
     "@tamagui/timer": "workspace:*"
     "@tamagui/types": "workspace:*"

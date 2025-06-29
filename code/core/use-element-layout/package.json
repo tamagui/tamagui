@@ -1,19 +1,19 @@
 {
-  "name": "@tamagui/react-native-web-internals",
+  "name": "@tamagui/use-element-layout",
   "version": "1.129.5-1751220455565",
-  "description": "React Native for Web",
-  "sideEffects": false,
+  "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "typings": "./types/index.d.ts",
   "files": [
+    "src",
     "types",
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -31,25 +31,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/normalize-css-color": "workspace:*",
-    "@tamagui/react-native-use-pressable": "workspace:*",
-    "@tamagui/react-native-use-responder-events": "workspace:*",
-    "@tamagui/simple-hash": "workspace:*",
-    "@tamagui/use-element-layout": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react": "*"
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/is-equal-shallow": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
   },
-  "license": "MIT",
-  "tags": [
-    "react"
-  ],
-  "keywords": [
-    "react",
-    "react-component",
-    "react-native",
-    "web"
-  ]
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "peerDependencies": {
+    "react": "*"
+  }
 }

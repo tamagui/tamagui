@@ -1,19 +1,19 @@
 import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  isEqualShallow,
-  type TamaguiComponentStateRef,
-  ___onDidFinishClientRender,
-} from '@tamagui/web'
+import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import type { RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const Nodes = new Set<HTMLElement>()
 
+type TamaguiComponentStatePartial = {
+  host?: any
+}
+
 type LayoutMeasurementStrategy = 'off' | 'sync' | 'async'
 
 let strategy: LayoutMeasurementStrategy = 'async'
 
-export function setOnLayoutStrategy(state: LayoutMeasurementStrategy) {
+export function setOnLayoutStrategy(state: LayoutMeasurementStrategy): void {
   strategy = state
 }
 
@@ -42,23 +42,25 @@ const LastChangeTime = new WeakMap<HTMLElement, number>()
 const rAF = typeof window !== 'undefined' ? window.requestAnimationFrame : undefined
 const DEBOUNCE_DELAY = 32 // 32ms debounce (2 frames at 60fps)
 
+// prevent thrashing during first hydration (somewhat, streaming gets trickier)
+let avoidUpdates = true
+const queuedUpdates = new Map<HTMLElement, Function>()
+
+export function enable(): void {
+  if (avoidUpdates) {
+    avoidUpdates = false
+    if (queuedUpdates) {
+      queuedUpdates.forEach((cb) => cb())
+      queuedUpdates.clear()
+    }
+  }
+}
+
 if (isClient) {
   if (rAF) {
-    // prevent thrashing during first hydration (somewhat, streaming gets trickier)
-    let avoidUpdates = true
-    const queuedUpdates = new Map<HTMLElement, Function>()
-
     // track frame timing to detect sync work and avoid updates during heavy periods
     let lastFrameAt = Date.now()
     const numDroppedFramesUntilPause = 2 // adjust sensitivity
-
-    ___onDidFinishClientRender(() => {
-      avoidUpdates = false
-      if (queuedUpdates) {
-        queuedUpdates.forEach((cb) => cb())
-        queuedUpdates.clear()
-      }
-    })
 
     async function updateLayoutIfChanged(node: HTMLElement) {
       const nodeRect = node.getBoundingClientRect()
@@ -185,7 +187,7 @@ export const measureLayout = (
     left: number,
     top: number
   ) => void
-) => {
+): void => {
   const relativeNode = relativeTo || node?.parentElement
   if (relativeNode instanceof HTMLElement) {
     const nodeDim = node.getBoundingClientRect()
@@ -204,34 +206,23 @@ export const measureLayout = (
 export const getElementLayoutEventAsync = async (
   target: HTMLElement
 ): Promise<LayoutEvent> => {
-  let res: LayoutEvent | null = null
-  await measureLayoutAsync(target, null, (x, y, width, height, left, top) => {
-    res = {
-      nativeEvent: {
-        layout: { x, y, width, height, left, top },
-        target,
-      },
-      timeStamp: Date.now(),
-    }
-  })
-  if (!res) {
+  const layout = await measureLayoutAsync(target)
+  if (!layout) {
     throw new Error(`‼️`) // impossible
   }
-  return res
+  return {
+    nativeEvent: {
+      layout,
+      target,
+    },
+    timeStamp: Date.now(),
+  }
 }
 
 export const measureLayoutAsync = async (
   node: HTMLElement,
-  relativeTo: HTMLElement | null,
-  callback: (
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    left: number,
-    top: number
-  ) => void
-) => {
+  relativeTo?: HTMLElement | null
+): Promise<null | LayoutValue> => {
   const relativeNode = relativeTo || node?.parentElement
   if (relativeNode instanceof HTMLElement) {
     const [nodeDim, relativeNodeDim] = await Promise.all([
@@ -244,9 +235,10 @@ export const measureLayoutAsync = async (
         nodeDim,
         relativeNodeDim
       )
-      callback(x, y, width, height, left, top)
+      return { x, y, width, height, left, top }
     }
   }
+  return null
 }
 
 const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
@@ -257,18 +249,17 @@ const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
 }
 
 export function useElementLayout(
-  ref: RefObject<TamaguiComponentStateRef>,
+  ref: RefObject<TamaguiComponentStatePartial>,
   onLayout?: ((e: LayoutEvent) => void) | null
-) {
+): void {
   // ensure always up to date so we can avoid re-running effect
-  const node = ref.current?.host as HTMLElement
+  const node = ensureWebElement(ref.current?.host)
   if (node && onLayout) {
     LayoutHandlers.set(node, onLayout)
   }
 
   useIsomorphicLayoutEffect(() => {
     if (!onLayout) return
-    const node = ref.current?.host as HTMLElement
     if (!node) return
 
     LayoutHandlers.set(node, onLayout)
@@ -289,4 +280,20 @@ export function useElementLayout(
       LastChangeTime.delete(node)
     }
   }, [ref, !!onLayout])
+}
+
+function ensureWebElement<X>(x: X): HTMLElement | undefined {
+  return x instanceof HTMLElement ? x : undefined
+}
+
+const getBoundingClientRect = (node: HTMLElement | null): undefined | DOMRect => {
+  if (!node || node.nodeType !== 1) return
+  return node.getBoundingClientRect?.()
+}
+
+export const getRect = (node: HTMLElement): LayoutValue | undefined => {
+  const rect = getBoundingClientRect(node)
+  if (!rect) return
+  const { x, y, top, left } = rect
+  return { x, y, width: node.offsetWidth, height: node.offsetHeight, top, left }
 }
