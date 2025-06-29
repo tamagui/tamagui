@@ -8,7 +8,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
@@ -22,7 +22,7 @@ import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
 import { themeable } from './helpers/themeable'
-import { wrapStyleTags } from './helpers/wrapStyleTags'
+import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
@@ -1217,8 +1217,18 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`context-override`
 
     // add in <style> tags inline
-    if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
-      content = wrapStyleTags(Object.values(splitStyles.rulesToInsert), content)
+    if (process.env.TAMAGUI_TARGET === 'web' && !startedUnhydrated) {
+      // breaking rules of hooks but it should NEVER change
+      const styleTags = useMemo(() => {
+        return getStyleTags(Object.values(splitStyles.rulesToInsert))
+      }, [])
+      // this is only to appease react hydration really, we could test suppressing it?
+      content = (
+        <>
+          {content}
+          {styleTags}
+        </>
+      )
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`style-tags`

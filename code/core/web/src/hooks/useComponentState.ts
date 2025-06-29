@@ -1,4 +1,5 @@
 import { IS_REACT_19, isServer, isWeb } from '@tamagui/constants'
+import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import {
@@ -8,7 +9,6 @@ import {
 } from '../defaultComponentState'
 import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
-import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import type {
   ComponentContextI,
   ComponentStateListener,

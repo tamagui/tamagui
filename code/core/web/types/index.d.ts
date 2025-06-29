@@ -25,6 +25,7 @@ export * from './_withStableStyle';
 export * from './helpers/createMediaStyle';
 export * from './helpers/getShorthandValue';
 export * from '@tamagui/is-equal-shallow';
+export { insertStyleRules } from './helpers/insertStyleRule';
 export * from './helpers/createStyledContext';
 export * from './helpers/expandStyles';
 export * from './helpers/getExpandedShorthands';
