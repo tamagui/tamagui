@@ -132,6 +132,7 @@ if (isClient) {
 
     // note that getBoundingClientRect() does not thrash layout if its after an animation frame
     rAF!(layoutOnAnimationFrame)
+
     function layoutOnAnimationFrame() {
       const now = Date.now()
       const timeSinceLastFrame = now - lastFrameAt
@@ -260,6 +261,7 @@ export function useElementLayout(
 
   useIsomorphicLayoutEffect(() => {
     if (!onLayout) return
+    const node = ref.current?.host
     if (!node) return
 
     LayoutHandlers.set(node, onLayout)
@@ -283,6 +285,9 @@ export function useElementLayout(
 }
 
 function ensureWebElement<X>(x: X): HTMLElement | undefined {
+  if (typeof HTMLElement === 'undefined') {
+    return undefined
+  }
   return x instanceof HTMLElement ? x : undefined
 }
 

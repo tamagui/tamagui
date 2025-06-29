@@ -5,7 +5,6 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import { ClientOnly } from '@tamagui/use-did-finish-ssr'
-import { enable } from '@tamagui/use-element-layout'
 import React, { useEffect } from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
@@ -23,10 +22,6 @@ export function TamaguiProvider({
   reset,
   themeClassNameOnRoot,
 }: TamaguiProviderProps) {
-  useEffect(() => {
-    enable()
-  }, [])
-
   if (!IS_REACT_19) {
     if (isClient) {
       // inject CSS if asked to (not SSR compliant)
