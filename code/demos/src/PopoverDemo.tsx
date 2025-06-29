@@ -76,7 +76,7 @@ export function Demo({
         borderWidth={1}
         borderColor="$borderColor"
         width={300}
-        height={300}
+        height={200}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate

@@ -1,6 +1,9 @@
 // debug
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Text, View } from 'react-native'
 import { Button, Circle, Configuration, Square, XStack, YStack } from 'tamagui'
+import { PopoverDemo } from '../../demos/src/PopoverDemo'
+import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animations } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 
@@ -8,18 +11,7 @@ export function SandboxSandbox() {
   return (
     <>
       <Motion />
-
-      <XStack
-        height={36}
-        width={30}
-        bg="$black1"
-        hoverStyle={{
-          bg: '$black6',
-        }}
-        pressStyle={{
-          bg: '$black2',
-        }}
-      ></XStack>
+      {/* <PopoverDemo /> */}
       {/* <Performance /> */}
       {/* <Drivers /> */}
     </>
@@ -35,12 +27,13 @@ const Motion = () => {
       <Square
         className="motion-square"
         // debug="verbose"
-        animation="quick"
+        animation="lazy"
         bg="red"
         size={100}
-        pressStyle={{ scale: 1 }}
-        hoverStyle={{ scale: 1.5 }}
-        x={x * 100}
+        borderWidth={2}
+        hoverStyle={{ scale: 1.5, borderColor: 'green', x: 100 }}
+        pressStyle={{ scale: 0.8, borderColor: 'red' }}
+        x={x * 300}
       />
     </Configuration>
   )
@@ -125,11 +118,6 @@ const Performance = () => {
     </>
   )
 }
-
-import React from 'react'
-import { Text, View } from 'react-native'
-import { animationsMotion } from '../config/tamagui/animationMotion'
-// import { animationsCSS } from '../config/tamagui/animationsCSS'
 
 export function TimedRender(props) {
   const [start] = React.useState(performance.now())

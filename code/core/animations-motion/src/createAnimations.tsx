@@ -90,39 +90,53 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       // const id = useId()
 
       const runAnimation = (
-        animationStyle: Record<string, unknown> | null,
+        nextStyle: Record<string, unknown> | null,
         animationOptions: AnimationOptions | undefined
       ) => {
-        if (!animationStyle) return
+        if (!nextStyle) return
         if (!(stateRef.current.host instanceof HTMLElement)) {
           return
         }
 
         // ideally this would just come from tamagui
-        fixStyles(animationStyle)
-        styleToCSS(animationStyle)
+        fixStyles(nextStyle)
+        styleToCSS(nextStyle)
 
         if (!lastAnimationStyle.current) {
           // console.log('first', id, animationStyle)
-          lastAnimationStyle.current = animationStyle
-          controls.current = animate(scope.current, animationStyle, {
+          lastAnimationStyle.current = nextStyle
+          controls.current = animate(scope.current, nextStyle, {
             duration: 0,
             type: 'tween',
           })
           controls.current.complete()
+          scope.animations = []
           return
         }
 
         const diff = {}
-        for (const key in animationStyle) {
-          if (animationStyle[key] !== lastAnimationStyle.current[key]) {
-            diff[key] = animationStyle[key]
+        for (const key in nextStyle) {
+          if (nextStyle[key] !== lastAnimationStyle.current[key]) {
+            diff[key] = nextStyle[key]
           }
         }
 
-        // console.log('animate', id, diff)
+        if (
+          process.env.NODE_ENV === 'development' &&
+          props['debug'] &&
+          props['debug'] !== 'profile'
+        ) {
+          console.info(
+            `[animations-motion] animate (`,
+            JSON.stringify(diff, null, 2) + ')'
+          )
+        }
+
+        scope.animations = scope.animations.filter(
+          (x) => x.state !== 'finished' && x.state !== 'idle'
+        )
         controls.current = animate(scope.current, diff, animationOptions)
-        lastAnimationStyle.current = animationStyle
+        lastAnimationStyle.current = nextStyle
       }
 
       useStyleEmitter?.((nextStyle) => {
@@ -154,15 +168,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         props['debug'] &&
         props['debug'] !== 'profile'
       ) {
-        console.info(`[animations-motion](`, JSON.stringify(doAnimate, null, 2) + ')', {
-          doAnimate,
-          dontAnimate,
-          animationOptions,
-          props,
-        })
+        console.info(
+          `[animations-motion] render (`,
+          JSON.stringify(doAnimate, null, 2) + ')'
+        )
       }
-
-      // console.log('render', id, scope)
 
       return {
         style: dontAnimate,
