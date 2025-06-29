@@ -183,7 +183,7 @@ declare const DialogWarningProvider: (props: {
     docsSlug: string;
 } & {
     children: React.ReactNode;
-}) => JSX.Element;
+}) => React.JSX.Element;
 export type DialogHandle = {
     open: (val: boolean) => void;
 };

@@ -6994,8 +6994,13 @@ __metadata:
     "@tamagui/web": "workspace:*"
     "@testing-library/react": "npm:^16.1.0"
     csstype: "npm:^3.0.10"
+    react: "npm:*"
+    react-native: "npm:^0.79.2"
     typescript: "npm:^5.8.2"
     vitest: "npm:^3.0.5"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7527,6 +7532,7 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
     vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"

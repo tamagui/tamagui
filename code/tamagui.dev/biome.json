@@ -4,7 +4,15 @@
     "enabled": false
   },
   "files": {
-    "ignore": ["**/*/generated-*.ts", ".tamagui"]
+    "ignore": [
+      "**/*/generated-*.ts",
+      ".tamagui",
+      "dist",
+      ".turbo",
+      "node_modules",
+      "routes.d.ts",
+      "tamagui.css"
+    ]
   },
   "linter": {
     "enabled": true,
@@ -72,12 +80,7 @@
     "indentWidth": 2,
     "lineWidth": 90,
     "lineEnding": "lf",
-    "ignore": [
-      "**/*/generated-new.ts",
-      "**/*/generated-v2.ts",
-      ".tamagui",
-      "package.json"
-    ]
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"]
   },
   "javascript": {
     "formatter": {

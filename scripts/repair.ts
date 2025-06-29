@@ -5,6 +5,7 @@ import { promisify } from 'node:util'
 
 import { copy, lstat, readFile, rm, symlink, unlink, writeFile } from 'fs-extra'
 import pMap from 'p-map'
+import { readFileSync } from 'node:fs'
 
 const exec = promisify(proc.exec)
 
@@ -222,13 +223,20 @@ async function format() {
         return
       }
 
-      const distanceToRoot = location.split('/').length
-      const rootBiome = toAbsolute(
-        join(location, ...new Array(distanceToRoot).fill(0).map(() => '..'), 'biome.json')
-      )
-      console.info(`Copy ${rootBiome} -> ${biomeFile}`)
-      await unlink(biomeFile)
-      await copy(rootBiome, biomeFile)
+      // only change if its same as reference
+      if (readFileSync(biomeFile, 'utf-8').trim() === biomeReference) {
+        const distanceToRoot = location.split('/').length
+        const rootBiome = toAbsolute(
+          join(
+            location,
+            ...new Array(distanceToRoot).fill(0).map(() => '..'),
+            'biome.json'
+          )
+        )
+        console.info(`Copy ${rootBiome} -> ${biomeFile}`)
+        await unlink(biomeFile)
+        await copy(rootBiome, biomeFile)
+      }
     },
     {
       concurrency: 1,
@@ -321,3 +329,94 @@ async function format() {
 }
 
 export const toAbsolute = (p: string) => resolve(process.cwd(), p)
+
+const biomeReference = `{
+  "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
+  "organizeImports": {
+    "enabled": false
+  },
+  "files": {
+    "ignore": ["**/*/generated-*.ts", ".tamagui"]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "correctness": {
+        "useExhaustiveDependencies": "off",
+        "noInnerDeclarations": "off",
+        "noUnnecessaryContinue": "off",
+        "noConstructorReturn": "off"
+      },
+      "suspicious": {
+        "noImplicitAnyLet": "off",
+        "noConfusingVoidType": "off",
+        "noEmptyInterface": "off",
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off",
+        "noDoubleEquals": "off",
+        "noConsoleLog": "error",
+        "noAssignInExpressions": "off",
+        "noRedeclare": "off"
+      },
+      "style": {
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off",
+        "noArguments": "off",
+        "noUnusedTemplateLiteral": "off",
+        "useDefaultParameterLast": "off",
+        "useConst": "off",
+        "useEnumInitializers": "off",
+        "useTemplate": "off",
+        "useSelfClosingElements": "off",
+        "useImportType": "error",
+        "noUselessElse": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off",
+        "noDangerouslySetInnerHtmlWithChildren": "off"
+      },
+      "performance": {
+        "noDelete": "off",
+        "noAccumulatingSpread": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noUselessTernary": "off",
+        "noBannedTypes": "off",
+        "noUselessFragments": "off",
+        "useLiteralKeys": "off",
+        "useSimplifiedLogicExpression": "off",
+        "useOptionalChain": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useMediaCaption": "off",
+        "noHeaderScope": "off",
+        "useAltText": "off",
+        "useButtonType": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 90,
+    "lineEnding": "lf",
+    "ignore": [
+      "**/*/generated-new.ts",
+      "**/*/generated-v2.ts",
+      ".tamagui",
+      "package.json"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "trailingCommas": "es5",
+      "jsxQuoteStyle": "double",
+      "semicolons": "asNeeded",
+      "quoteStyle": "single"
+    }
+  }
+}`

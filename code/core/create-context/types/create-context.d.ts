@@ -7,7 +7,7 @@ export type ScopedProps<
 > = P & { [Key in `__scope${K}`]? : Scope };
 export declare function createContext<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType): readonly [(props: ContextValueType & {
 	children: React.ReactNode;
-}) => JSX.Element, (consumerName: string) => Exclude<ContextValueType | undefined, undefined>];
+}) => React.JSX.Element, (consumerName: string) => Exclude<ContextValueType | undefined, undefined>];
 /* -------------------------------------------------------------------------------------------------
 * createContextScope
 * -----------------------------------------------------------------------------------------------*/

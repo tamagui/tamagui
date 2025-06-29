@@ -210,7 +210,7 @@ const GroupItem = React.forwardRef(
     const groupItemProps = useGroupItem(
       {
         disabled: React.isValidElement(children)
-          ? Boolean((children.props as Record<string, unknown>).disabled)
+          ? ((children.props as Record<string, unknown>).disabled as boolean)
           : false,
       },
       forcePlacement,
