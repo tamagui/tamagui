@@ -67,7 +67,7 @@ type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentSta
 
 export const componentSetStates = new Set<ComponentSetState>()
 
-if (typeof document !== 'undefined') {
+if (typeof window !== 'undefined') {
   const cancelTouches = () => {
     // clear all press downs
     componentSetStates.forEach((setState) =>
@@ -108,11 +108,11 @@ if (typeof document !== 'undefined') {
           debugKeyListeners?.forEach((l) => l(val))
         }
 
-        document.addEventListener('blur', () => {
+        window.addEventListener('blur', () => {
           show(false)
         })
 
-        document.addEventListener('keydown', ({ key, defaultPrevented }) => {
+        window.addEventListener('keydown', ({ key, defaultPrevented }) => {
           if (defaultPrevented) return
           clearTimeout(tm) // always clear so we dont trigger on chords
           if (key === options.key) {
@@ -122,7 +122,7 @@ if (typeof document !== 'undefined') {
           }
         })
 
-        document.addEventListener('keyup', ({ key, defaultPrevented }) => {
+        window.addEventListener('keyup', ({ key, defaultPrevented }) => {
           if (defaultPrevented) return
           if (key === options.key) {
             if (isShowing) {
