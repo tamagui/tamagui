@@ -13,7 +13,7 @@ export async function loader(props: LoaderProps) {
   console.info(`Fetching theme`, id)
 
   try {
-    return await getTheme(id)
+    return await getTheme(id, props.request)
   } catch (err) {
     console.error(`Error loading theme`, err)
     return null
