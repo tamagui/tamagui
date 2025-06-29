@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.129.5-1751220455565",
+  "version": "1.129.6",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

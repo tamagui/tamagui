@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.129.5-1751220455565",
+  "version": "1.129.6",
   "module": "dist/esm/index.js",
   "private": true,
   "scripts": {
