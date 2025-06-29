@@ -15,7 +15,7 @@ import {
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,
-  AnimationPlaybackControlsWithThen,
+  type AnimationPlaybackControlsWithThen,
   type MotionValue,
   useAnimate,
   useMotionValue,
