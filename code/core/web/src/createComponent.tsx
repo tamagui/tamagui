@@ -102,6 +102,8 @@ if (typeof document !== 'undefined') {
           ...(typeof devVisualizerConfig === 'object' ? devVisualizerConfig : {}),
         }
 
+        console.warn('starting')
+
         function show(val: boolean) {
           clearTimeout(tm)
           isShowing = val

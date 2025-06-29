@@ -13,8 +13,7 @@ const boolVals = {
   false: false,
 }
 const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ??
-  process.env.NODE_ENV === 'development'
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
 /** @type { import('webpack').Configuration } */
 module.exports = {
@@ -105,7 +104,7 @@ module.exports = {
         output: path.join(
           require.resolve('@tamagui/themes/src/themes-new.ts'),
           '..',
-          'generated-new.ts',
+          'generated-new.ts'
         ),
       },
       // disable: true,

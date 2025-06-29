@@ -15,7 +15,6 @@ import {
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,
-  type AnimationPlaybackControls,
   AnimationPlaybackControlsWithThen,
   type MotionValue,
   useAnimate,
@@ -75,12 +74,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const presenceContext = React.useContext(PresenceContext)
 
       const [scope, animate] = useAnimate()
-      const firstRenderStyle = useRef<Object | null>(null)
+      const lastAnimationStyle = useRef<Object | null>(null)
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
+      const styleKey = JSON.stringify(style)
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
-        return getMotionAnimatedProps(props as any, style, disableAnimation)
-      }, [presenceContext, animationKey, JSON.stringify(style)])
+        const motionAnimationState = getMotionAnimatedProps(
+          props as any,
+          style,
+          disableAnimation
+        )
+        return motionAnimationState
+      }, [presenceContext, animationKey, styleKey])
+
+      // const id = useId()
 
       const runAnimation = (
         animationStyle: Record<string, unknown> | null,
@@ -95,16 +102,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         fixStyles(animationStyle)
         styleToCSS(animationStyle)
 
-        if (!firstRenderStyle.current) {
-          firstRenderStyle.current = animationStyle
+        if (!lastAnimationStyle.current) {
+          // console.log('first', id, animationStyle)
+          lastAnimationStyle.current = animationStyle
           controls.current = animate(scope.current, animationStyle, {
             duration: 0,
             type: 'tween',
           })
+          controls.current.complete()
           return
         }
 
-        controls.current = animate(scope.current, animationStyle, animationOptions)
+        const diff = {}
+        for (const key in animationStyle) {
+          if (animationStyle[key] !== lastAnimationStyle.current[key]) {
+            diff[key] = animationStyle[key]
+          }
+        }
+
+        // console.log('animate', id, diff)
+        controls.current = animate(scope.current, diff, animationOptions)
+        lastAnimationStyle.current = animationStyle
       }
 
       useStyleEmitter?.((nextStyle) => {
@@ -118,18 +136,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       // strict mode correctness fix, idk why i thought it would clear a useRef
       // before running strict? if you remove this you'll see the next
-      // useLayoutEffect re-run and animate due to firstRenderStyle.current
+      // useLayoutEffect re-run and animate due to lastAnimationStyle.current
       // being set when in theory it should be clear
       useEffect(() => {
         return () => {
-          firstRenderStyle.current = null
+          lastAnimationStyle.current = null
         }
       }, [])
 
       useLayoutEffect(() => {
         if (!doAnimate) return
         runAnimation(doAnimate, animationOptions)
-      }, [JSON.stringify(doAnimate), firstRenderStyle])
+      }, [JSON.stringify(doAnimate), lastAnimationStyle])
 
       if (
         process.env.NODE_ENV === 'development' &&
@@ -143,6 +161,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           props,
         })
       }
+
+      // console.log('render', id, scope)
 
       return {
         style: dontAnimate,
