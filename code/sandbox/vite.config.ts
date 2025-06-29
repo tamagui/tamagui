@@ -6,15 +6,17 @@ import { tamaguiPlugin } from '@tamagui/vite-plugin'
 // TODO this optimizeDeps/one.deps conf should be automatically done by one
 
 export default {
-  optimizeDeps: {
-    include: [
-      '@tamagui/toast',
-      '@tamagui/web',
-      '@tamagui/core',
-      'framer-motion',
-      'motion/react',
-      '@tamagui/animations-motion',
-    ],
+  ssr: {
+    optimizeDeps: {
+      include: [
+        '@tamagui/toast',
+        '@tamagui/web',
+        '@tamagui/core',
+        '@tamagui/animations-motion',
+        'framer-motion',
+        'motion/react',
+      ],
+    },
   },
 
   plugins: [
@@ -32,12 +34,6 @@ export default {
         // set to the key of your native app
         // will call AppRegistry.registerComponent(app.key)
         key: 'one-example',
-      },
-
-      deps: {
-        '@tamagui/animations-motion': true,
-        'motion/react': true,
-        'framer-motion': true,
       },
     }),
 

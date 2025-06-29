@@ -22,7 +22,14 @@ import {
   type AnimationOptions,
   type ValueTransition,
 } from 'motion/react'
-import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -76,16 +83,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const [scope, animate] = useAnimate()
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
+        console.warn('re-running')
         return getMotionAnimatedProps(props as any, style, disableAnimation)
-      }, [
-        presenceContext,
-        presence,
-        animationKey,
-        componentState.unmounted,
-        JSON.stringify(style),
-      ])
+      }, [presenceContext, animationKey, JSON.stringify(style)])
 
-      const curAnimatedStyle = useRef({})
+      const firstRenderStyle = useRef<Object | null>(null)
 
       function runAnimation(
         animationStyle: Record<string, unknown>,
@@ -94,9 +96,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (!(stateRef.current.host instanceof HTMLElement)) {
           return
         }
+
         styleToCSS(animationStyle) // ideally this would just come from tamagui
-        console.log('animationStyle', animationStyle)
-        animate(stateRef.current.host, animationStyle, options)
+
+        if (!firstRenderStyle.current) {
+          firstRenderStyle.current = animationStyle
+          animate(stateRef.current.host, animationStyle, {
+            duration: 0,
+            type: 'tween',
+          })
+          return
+        }
+
+        animate(stateRef.current.host, animationStyle, animationOptions)
         // idea is - we assign to dontAnimate here so in case there's any renders that don't change style
         // but do cause it to trigger a React re-render, React doesn't remove the animated styles
         // need to figure this out better though - what happens if it's currently animating?
@@ -117,11 +129,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       useLayoutEffect(() => {
         if (!doAnimate) return
-        curAnimatedStyle.current = doAnimate
         runAnimation(doAnimate, animationOptions)
-      }, [doAnimate, animationOptions])
-
-      console.log('dontAnimate', dontAnimate)
+      }, [doAnimate])
 
       return {
         style: dontAnimate,
