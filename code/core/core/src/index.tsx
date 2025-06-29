@@ -38,7 +38,6 @@ import { usePressability } from './vendor/Pressability'
 
 // helpful for usage outside of tamagui
 export {
-  getElementLayoutEvent,
   setOnLayoutStrategy,
   type LayoutEvent,
 } from '@tamagui/use-element-layout'
