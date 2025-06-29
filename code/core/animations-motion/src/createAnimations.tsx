@@ -15,6 +15,7 @@ import {
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,
+  type AnimationPlaybackControls,
   type MotionValue,
   useAnimate,
   useMotionValue,
@@ -74,24 +75,24 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const [scope, animate] = useAnimate()
       const firstRenderStyle = useRef<Object | null>(null)
-
-      if (props.style) {
-        // ideally this would just come from tamagui
-        fixStyles(props.style)
-        styleToCSS(props.style)
-      }
+      const controls = useRef<AnimationPlaybackControls | null>(null)
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
         return getMotionAnimatedProps(props as any, style, disableAnimation)
       }, [presenceContext, animationKey, JSON.stringify(style)])
 
-      function runAnimation(
-        animationStyle: Record<string, unknown>,
-        options: AnimationOptions
-      ) {
+      const runAnimation = (
+        animationStyle: Record<string, unknown> | null,
+        animationOptions: AnimationOptions | undefined
+      ) => {
+        if (!animationStyle) return
         if (!(stateRef.current.host instanceof HTMLElement)) {
           return
         }
+
+        // ideally this would just come from tamagui
+        fixStyles(animationStyle)
+        styleToCSS(animationStyle)
 
         if (!firstRenderStyle.current) {
           firstRenderStyle.current = animationStyle
@@ -102,7 +103,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           return
         }
 
-        animate(stateRef.current.host, animationStyle, animationOptions)
+        controls.current = animate(
+          stateRef.current.host,
+          animationStyle,
+          animationOptions
+        )
       }
 
       useStyleEmitter?.((nextStyle) => {
@@ -111,10 +116,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           nextStyle,
           disableAnimation
         )
-        if (doAnimate) {
-          runAnimation(doAnimate, animationOptions)
-          // Object.assign(dontAnimate, doAnimate)
-        }
+        runAnimation(doAnimate, animationOptions)
       })
 
       // strict mode correctness fix, idk why i thought it would clear a useRef
@@ -129,9 +131,21 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       useLayoutEffect(() => {
         if (!doAnimate) return
-        // debugger
         runAnimation(doAnimate, animationOptions)
       }, [JSON.stringify(doAnimate), firstRenderStyle])
+
+      if (
+        process.env.NODE_ENV === 'development' &&
+        props['debug'] &&
+        props['debug'] !== 'profile'
+      ) {
+        console.info(`[animations-motion](`, JSON.stringify(doAnimate, null, 2) + ')', {
+          doAnimate,
+          dontAnimate,
+          animationOptions,
+          props,
+        })
+      }
 
       return {
         style: dontAnimate,
@@ -221,7 +235,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     const animationOptions = animationPropToAnimationConfig(props.animation)
 
     let dontAnimate = {}
-    const doAnimate = {}
+    let doAnimate: Record<string, unknown> | null = null
 
     const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
@@ -229,6 +243,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
         dontAnimate[key] = value
       } else {
+        doAnimate ||= {}
         doAnimate[key] = value
       }
     }
@@ -354,8 +369,10 @@ function createMotionView(defaultTag: string) {
 
       // we can definitely get rid of this here
       if (out.viewProps.style) {
+        fixStyles(out.viewProps.style)
         styleToCSS(out.viewProps.style)
       }
+
       return out.viewProps
     }
 
