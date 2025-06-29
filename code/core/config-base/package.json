@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "1.129.6",
+  "version": "1.129.6-1751237024118",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
