@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.129.5",
+  "version": "1.129.5-1751174117974",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

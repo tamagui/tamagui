@@ -6566,6 +6566,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/babel-plugin-fully-specified@npm:1.129.5":
+  version: 1.129.5
+  resolution: "@tamagui/babel-plugin-fully-specified@npm:1.129.5"
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+  checksum: 10/663b8d3ca6301c78f00a46ac36f35507e2ce073f99724b83f20aad85c078679e5939f2d007aaa30c219581bbc1b1467dac3178b8991ef1c8913dd5429b734666
+  languageName: node
+  linkType: hard
+
 "@tamagui/babel-plugin-fully-specified@workspace:*, @tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified"
@@ -6643,7 +6652,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@npm:^1.128.1, @tamagui/build@workspace:*, @tamagui/build@workspace:code/packages/build":
+"@tamagui/build@npm:^1.128.1":
+  version: 1.129.5
+  resolution: "@tamagui/build@npm:1.129.5"
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+    "@swc/core": "npm:^1.7.21"
+    "@tamagui/babel-plugin-fully-specified": "npm:1.129.5"
+    "@types/fs-extra": "npm:^9.0.13"
+    "@typescript/native-preview": "npm:7.0.0-dev.20250619.1"
+    chokidar: "npm:^3.5.2"
+    esbuild: "npm:^0.25.0"
+    esbuild-plugin-es5: "npm:^2.1.1"
+    esbuild-register: "npm:^3.6.0"
+    execa: "npm:^5.0.0"
+    fast-glob: "npm:^3.2.11"
+    fs-extra: "npm:^11.2.0"
+    lodash.debounce: "npm:^4.0.8"
+    oxc-transform: "npm:^0.74.0"
+    typescript: "npm:^5.8.2"
+  bin:
+    tamagui-build: tamagui-build.js
+    teesx: teesx.sh
+  checksum: 10/2fe125e9bad8862cba5aa5567644ba0e044d2b17a0eef8f642612085050e3e021295e05c7d3d928f666ce425cdb89a55a3fe20068e84a9e47406e69adb73686b
+  languageName: node
+  linkType: hard
+
+"@tamagui/build@workspace:*, @tamagui/build@workspace:code/packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:code/packages/build"
   dependencies:
