@@ -39,7 +39,6 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
       <Tooltip.Content
-        debug="verbose"
         enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
         exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
         scale={1}

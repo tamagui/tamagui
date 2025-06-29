@@ -63,9 +63,22 @@ if (isClient) {
     const numDroppedFramesUntilPause = 2 // adjust sensitivity
 
     async function updateLayoutIfChanged(node: HTMLElement) {
-      const nodeRect = node.getBoundingClientRect()
       const parentNode = node.parentElement
-      const parentRect = parentNode?.getBoundingClientRect()
+
+      let nodeRect: DOMRectReadOnly
+      let parentRect: DOMRectReadOnly | undefined
+
+      if (strategy === 'async') {
+        const [nr, pr] = await Promise.all([
+          getBoundingClientRectAsync(node),
+          getBoundingClientRectAsync(parentNode),
+        ])
+        nodeRect = nr
+        parentRect = pr
+      } else {
+        nodeRect = node.getBoundingClientRect()
+        parentRect = parentNode?.getBoundingClientRect()
+      }
 
       const onLayout = LayoutHandlers.get(node)
       if (typeof onLayout !== 'function') return
@@ -77,7 +90,8 @@ if (isClient) {
         !cachedRect ||
         // has changed one rect
         (!isEqualShallow(cachedRect, nodeRect) &&
-          (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
+          (!cachedParentRect ||
+            (parentRect && !isEqualShallow(cachedParentRect, parentRect))))
       ) {
         NodeRectCache.set(node, nodeRect)
         if (parentRect && parentNode) {
@@ -227,8 +241,8 @@ export const measureLayoutAsync = async (
   const relativeNode = relativeTo || node?.parentElement
   if (relativeNode instanceof HTMLElement) {
     const [nodeDim, relativeNodeDim] = await Promise.all([
-      node.getBoundingClientRect(),
-      relativeNode.getBoundingClientRect(),
+      getBoundingClientRectAsync(node),
+      getBoundingClientRectAsync(relativeNode),
     ])
 
     if (relativeNodeDim && nodeDim) {
@@ -289,6 +303,24 @@ function ensureWebElement<X>(x: X): HTMLElement | undefined {
     return undefined
   }
   return x instanceof HTMLElement ? x : undefined
+}
+
+const getBoundingClientRectAsync = (
+  node: HTMLElement | null
+): Promise<DOMRectReadOnly> => {
+  return new Promise<DOMRectReadOnly>((res) => {
+    if (!node || node.nodeType !== 1) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        io.disconnect()
+        return res(entries[0].boundingClientRect)
+      },
+      {
+        threshold: 0,
+      }
+    )
+    io.observe(node)
+  })
 }
 
 const getBoundingClientRect = (node: HTMLElement | null): undefined | DOMRect => {

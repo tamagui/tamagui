@@ -100,7 +100,6 @@ export const LogoWords: React.MemoExoticComponent<
     >
       {animated && (
         <Circle
-          debug
           animation="quicker"
           position="absolute"
           top={0}
