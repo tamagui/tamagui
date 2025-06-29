@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@tamagui/use-presence": "workspace:*",
-    "@tamagui/web": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "motion": "^12.19.1"
   },
   "devDependencies": {

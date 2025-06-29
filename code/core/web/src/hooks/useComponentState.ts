@@ -172,7 +172,8 @@ export const useComponentState = (
     }
   }
 
-  let noClass = !isWeb || !!props.forceStyle || animationDriver?.['needsWebStyles']
+  let noClass =
+    !isWeb || !!props.forceStyle || (isAnimated && animationDriver?.needsWebStyles)
 
   // on server for SSR and animation compat added the && isHydrated but perhaps we want
   // disableClassName="until-hydrated" to be more straightforward

@@ -125,6 +125,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       [screenSize, frameSize, snapPoints, snapPointsMode]
     )
 
+    console.log('frameSize', frameSize)
+
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
     const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
@@ -149,6 +151,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const animatedNumber = useAnimatedNumber(startPosition)
     const at = React.useRef(startPosition)
     const hasntMeasured = at.current === hiddenSize
+    console.warn('at?', at.current)
     const [disableAnimation, setDisableAnimation] = useState(hasntMeasured)
 
     const hasScrollView = React.useRef(false)
@@ -178,6 +181,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
 
+      console.warn({ isHidden, position, positions })
       let toValue = isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
@@ -196,7 +200,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       // then render to bottom of screen without animation (screenSize)
       // then add the animation as it animates from screenSize to position
 
-      if (hasntMeasured && screenSize) {
+      if (hasntMeasured && screenSize && frameSize) {
         at.current = screenSize
         animatedNumber.setValue(
           screenSize,
@@ -388,6 +392,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
       const translateY = frameSize === 0 ? hiddenSize : val
+      console.log('huh?', { frameSize, val })
 
       return {
         transform: [{ translateY }],
@@ -490,10 +495,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
-            {...(!isDragging && {
-              // @ts-ignore for CSS driver this is necessary to attach the transition
-              animation: disableAnimation ? null : animation,
-            })}
+            // @ts-ignore for CSS driver this is necessary to attach the transition
+            // also motion driver at least though i suspect all drivers?
+            animation={isDragging || disableAnimation ? null : animation}
             // @ts-ignore
             disableClassName
             style={[

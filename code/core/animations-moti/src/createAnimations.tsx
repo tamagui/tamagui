@@ -1,4 +1,5 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
+// we need core for hooks.usePropsTransform
 import {
   getSplitStyles,
   hooks,
@@ -9,7 +10,7 @@ import {
   View,
   type AnimationDriver,
   type UniversalAnimatedNumber,
-} from '@tamagui/web'
+} from '@tamagui/core'
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'

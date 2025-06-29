@@ -1561,7 +1561,7 @@ export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = U
     value: V;
     hostRef: RefObject<HTMLElement | View>;
 }, onValue: (current: number) => void) => void;
-export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
+export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: number) => Record<string, unknown>) => any;
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;

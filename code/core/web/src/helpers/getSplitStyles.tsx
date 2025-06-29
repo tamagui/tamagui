@@ -1135,13 +1135,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (
-      !styleProps.noMergeStyle &&
-      styleState.style &&
-      shouldDoClasses &&
-      // Todo just juse nomergestyle
-      !animationDriver?.['needsWebStyles']
-    ) {
+    if (!styleProps.noMergeStyle && styleState.style && shouldDoClasses) {
       let retainedStyles: ViewStyleWithPseudos | undefined
       let shouldRetain = false
 

@@ -507,7 +507,7 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       styledContextProps,
-      noMergeStyle: animationDriver?.['needsWebStyles'],
+      noMergeStyle: isAnimated && animationDriver?.needsWebStyles,
     } as const
 
     const themeName = themeState?.name || ''

@@ -1,16 +1,13 @@
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-motion'
 
 export const animations = createAnimations({
   '75ms': {
-    type: 'timing',
     duration: 75,
   },
   '100ms': {
-    type: 'timing',
     duration: 100,
   },
   '200ms': {
-    type: 'timing',
     duration: 200,
   },
   superBouncy: {

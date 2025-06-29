@@ -2544,7 +2544,7 @@ export type UseAnimatedNumberReaction<
 
 export type UseAnimatedNumberStyle<
   V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
-> = (val: V, getStyle: (current: any) => any) => any
+> = (val: V, getStyle: (current: number) => Record<string, unknown>) => any
 
 export type UseAnimatedNumber<
   N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
