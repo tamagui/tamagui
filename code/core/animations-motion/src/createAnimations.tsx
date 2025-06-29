@@ -16,6 +16,7 @@ import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presen
 import {
   type AnimationOptions,
   type AnimationPlaybackControls,
+  AnimationPlaybackControlsWithThen,
   type MotionValue,
   useAnimate,
   useMotionValue,
@@ -75,7 +76,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const [scope, animate] = useAnimate()
       const firstRenderStyle = useRef<Object | null>(null)
-      const controls = useRef<AnimationPlaybackControls | null>(null)
+      const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
         return getMotionAnimatedProps(props as any, style, disableAnimation)
@@ -96,18 +97,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
         if (!firstRenderStyle.current) {
           firstRenderStyle.current = animationStyle
-          animate(stateRef.current.host, animationStyle, {
+          controls.current = animate(scope.current, animationStyle, {
             duration: 0,
             type: 'tween',
           })
           return
         }
 
-        controls.current = animate(
-          stateRef.current.host,
-          animationStyle,
-          animationOptions
-        )
+        controls.current = animate(scope.current, animationStyle, animationOptions)
       }
 
       useStyleEmitter?.((nextStyle) => {

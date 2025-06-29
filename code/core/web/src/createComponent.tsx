@@ -660,6 +660,8 @@ export function createComponent<
       // if it supports css vars we run it on server too to get matching initial style
       (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
 
+    let animatedRef
+
     if (shouldUseAnimation) {
       const useStyleEmitter: UseStyleEmitter | undefined = animationDriver?.avoidReRenders
         ? (listener) => {
@@ -688,6 +690,11 @@ export function createComponent<
         viewProps.style = animationStyles
         if (animations.className) {
           viewProps.className = `${state.unmounted === 'should-enter' ? 't_unmounted ' : ''}${viewProps.className || ''} ${animations.className}`
+        }
+        // @ts-ignore
+        if (animations.ref) {
+          // @ts-ignore
+          animatedRef = animations.ref
         }
       }
 
@@ -734,7 +741,8 @@ export function createComponent<
       curStateRef.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
         forwardedRef,
-        setElementProps
+        setElementProps,
+        animatedRef
       )
     }
 
