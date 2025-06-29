@@ -102,8 +102,14 @@ if (typeof document !== 'undefined') {
           ...(typeof devVisualizerConfig === 'object' ? devVisualizerConfig : {}),
         }
 
-        document.addEventListener('blur', () => {
+        function show(val: boolean) {
           clearTimeout(tm)
+          isShowing = val
+          debugKeyListeners?.forEach((l) => l(val))
+        }
+
+        document.addEventListener('blur', () => {
+          show(false)
         })
 
         document.addEventListener('keydown', ({ key, defaultPrevented }) => {
@@ -111,8 +117,7 @@ if (typeof document !== 'undefined') {
           clearTimeout(tm) // always clear so we dont trigger on chords
           if (key === options.key) {
             tm = setTimeout(() => {
-              isShowing = true
-              debugKeyListeners?.forEach((l) => l(true))
+              show(true)
             }, options.delay)
           }
         })
@@ -120,9 +125,8 @@ if (typeof document !== 'undefined') {
         document.addEventListener('keyup', ({ key, defaultPrevented }) => {
           if (defaultPrevented) return
           if (key === options.key) {
-            clearTimeout(tm)
             if (isShowing) {
-              debugKeyListeners?.forEach((l) => l(false))
+              show(false)
             }
           }
         })

@@ -2,6 +2,7 @@ import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
   type AnimationProp,
+  fixStyles,
   getSplitStyles,
   hooks,
   styleToCSS,
@@ -75,7 +76,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const firstRenderStyle = useRef<Object | null>(null)
 
       if (props.style) {
-        styleToCSS(props.style) // ideally this would just come from tamagui
+        // ideally this would just come from tamagui
+        fixStyles(props.style)
+        styleToCSS(props.style)
       }
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
@@ -128,7 +131,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (!doAnimate) return
         // debugger
         runAnimation(doAnimate, animationOptions)
-      }, [doAnimate, firstRenderStyle])
+      }, [JSON.stringify(doAnimate), firstRenderStyle])
 
       return {
         style: dontAnimate,
@@ -223,7 +226,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
-      if (animateOnly && !animateOnly.includes(key)) {
+      if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
         dontAnimate[key] = value
       } else {
         doAnimate[key] = value
@@ -271,6 +274,28 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 }
+
+// sort of temporary
+const disableAnimationProps = new Set<string>([
+  'alignContent',
+  'alignItems',
+  'backdropFilter',
+  'boxSizing',
+  'contain',
+  'display',
+  'flexBasis',
+  'flexDirection',
+  'flexShrink',
+  'justifyContent',
+  'maxHeight',
+  'maxWidth',
+  'minHeight',
+  'minWidth',
+  'overflow',
+  'pointerEvents',
+  'position',
+  'textWrap',
+])
 
 const MotionView = createMotionView('div')
 const MotionText = createMotionView('span')

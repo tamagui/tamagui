@@ -40,6 +40,7 @@ const Motion = () => {
         size={100}
         pressStyle={{ scale: 1 }}
         hoverStyle={{ scale: 1.5 }}
+        x={x * 100}
       />
     </Configuration>
   )

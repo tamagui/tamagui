@@ -449,14 +449,14 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
     const [hovered, setHovered] = React.useState(false)
     const getLayout = useGet(layout)
 
-    useImperativeHandle(ref, () => {
-      return {
-        close: () => {
-          context.close()
-          setHovered(false)
-        },
-      }
-    })
+    // useImperativeHandle(ref, () => {
+    //   return {
+    //     close: () => {
+    //       context.close()
+    //       setHovered(false)
+    //     },
+    //   }
+    // }, [context])
 
     React.useEffect(() => {
       if (!hovered) return
