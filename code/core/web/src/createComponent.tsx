@@ -543,7 +543,7 @@ export function createComponent<
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
     if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      const styleListener = stateRef.current.useStyleListener!
+      const styleListener = stateRef.current.useStyleListener
       const ogSetStateShallow = setStateShallow
       setStateShallow = (next) => {
         // one thing we have to handle here and where it gets a bit more complex is group styles
@@ -552,7 +552,7 @@ export function createComponent<
         const canAvoidReRender = Object.keys(next).every((key) =>
           avoidReRenderKeys.has(key)
         )
-        if (canAvoidReRender) {
+        if (canAvoidReRender && styleListener) {
           const updatedState = { ...state, ...next }
           const nextStyles = getSplitStyles(
             props,
