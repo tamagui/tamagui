@@ -33,7 +33,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

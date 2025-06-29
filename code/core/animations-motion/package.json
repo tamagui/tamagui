@@ -29,8 +29,8 @@
     }
   },
   "dependencies": {
-    "@tamagui/use-presence": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/use-presence": "workspace:*",
     "motion": "^12.19.1"
   },
   "devDependencies": {

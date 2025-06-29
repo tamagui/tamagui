@@ -10,7 +10,6 @@
     "enabled": true,
     "rules": {
       "correctness": {
-        "noUnusedImports": "error",
         "useExhaustiveDependencies": "off",
         "noInnerDeclarations": "off",
         "noUnnecessaryContinue": "off",
@@ -25,8 +24,7 @@
         "noDoubleEquals": "off",
         "noConsoleLog": "error",
         "noAssignInExpressions": "off",
-        "noRedeclare": "off",
-        "noShadowRestrictedNames": "off"
+        "noRedeclare": "off"
       },
       "style": {
         "noParameterAssign": "off",

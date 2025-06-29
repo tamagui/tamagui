@@ -51,6 +51,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   }
 }

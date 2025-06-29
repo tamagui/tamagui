@@ -36,7 +36,8 @@
     "react-native": "^0.79.2"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

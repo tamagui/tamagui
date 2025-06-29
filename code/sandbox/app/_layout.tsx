@@ -12,8 +12,6 @@ import oneBall from '~/public/app-icon.png'
 import { animationsMotion } from '../config/tamagui/animationMotion'
 
 export default function Layout() {
-  console.log('rendering on the server')
-
   return (
     <>
       {isWeb && (

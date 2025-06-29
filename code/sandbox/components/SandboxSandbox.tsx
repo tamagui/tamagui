@@ -5,11 +5,21 @@ import { animations } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 
 export function SandboxSandbox() {
-  debugger
-
   return (
     <>
       <Motion />
+
+      <XStack
+        height={36}
+        width={30}
+        bg="$black1"
+        hoverStyle={{
+          bg: '$black6',
+        }}
+        pressStyle={{
+          bg: '$black2',
+        }}
+      ></XStack>
       {/* <Performance /> */}
       {/* <Drivers /> */}
     </>
