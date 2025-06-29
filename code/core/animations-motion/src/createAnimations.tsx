@@ -132,9 +132,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           )
         }
 
-        scope.animations = scope.animations.filter(
-          (x) => x.state !== 'finished' && x.state !== 'idle'
-        )
+        // for some reason it keeps adding and never removes
+        scope.animations = scope.animations.filter((x) => {
+          try {
+            return x.state !== 'finished' && x.state !== 'idle'
+          } catch {
+            // it can error
+            return true
+          }
+        })
         controls.current = animate(scope.current, diff, animationOptions)
         lastAnimationStyle.current = nextStyle
       }
@@ -170,7 +176,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       ) {
         console.info(
           `[animations-motion] render (`,
-          JSON.stringify(doAnimate, null, 2) + ')'
+          JSON.stringify(dontAnimate, null, 2) + ')'
         )
       }
 
