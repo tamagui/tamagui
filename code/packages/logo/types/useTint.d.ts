@@ -1,5 +1,5 @@
 import React from "react";
-import type { ThemeName } from "@tamagui/ui";
+import { type ThemeName } from "@tamagui/ui";
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
 export declare const setTintIndex: (next: number) => void;
 export declare function getDocsSection(pathname: string): "compiler" | "ui" | "core" | null;

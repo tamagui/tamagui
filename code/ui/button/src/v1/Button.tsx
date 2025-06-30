@@ -7,7 +7,7 @@ import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
 import { createStyledContext, getVariableValue, styled, useProps } from '@tamagui/web'
-import type { FunctionComponent } from 'react'
+import type { FunctionComponent, JSX } from 'react'
 import { useContext } from 'react'
 import { spacedChildren } from '@tamagui/spacer'
 

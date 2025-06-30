@@ -1,5 +1,4 @@
-import type { TextParentStyles } from '@tamagui/text';
-import type { FontSizeTokens, GetProps, PropsWithoutMediaStyles, SizeTokens, ThemeableProps } from '@tamagui/web';
+import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web';
 import type { FunctionComponent, ReactNode, JSX } from 'react';
 type ListItemIconProps = {
     color?: any;

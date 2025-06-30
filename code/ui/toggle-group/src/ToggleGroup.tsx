@@ -94,7 +94,7 @@ const ToggleGroupItem = ToggleFrame.styleable<
   const inner = (
     <ToggleGroupItemImpl
       {...commonProps}
-      ref={forwardedRef}
+      ref={forwardedRef as any}
       focusable={!disabled}
       disabled={disabled}
       {...groupItemProps}

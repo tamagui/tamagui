@@ -101,7 +101,10 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Apply: import("react").ProviderExoticComponent<Partial<{
+    Apply: import("react").Provider<{
+        size?: SizeTokens;
+        variant?: ButtonVariant;
+    }> & import("react").ProviderExoticComponent<Partial<{
         size?: SizeTokens;
         variant?: ButtonVariant;
     }> & {
