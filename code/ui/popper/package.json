@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popper",
-  "version": "1.129.7",
+  "version": "1.129.8",
   "sideEffects": [
     "*.css"
   ],
