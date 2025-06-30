@@ -28,7 +28,7 @@ export const useCreateElement = (component, props, options?) => {
   const isHydrated = useDidFinishSSR()
   const styleTags = useMemo(
     () => {
-      return isHydrated || !styles ? null : getStyleTags(styles, element)
+      return isHydrated || !styles ? null : getStyleTags(styles)
     },
     [
       // never changes
@@ -54,10 +54,14 @@ export const useCreateElement = (component, props, options?) => {
 
 const createElement = (component, props, options?) => {
   const { element, styles } = createElementAndStyles(component, props, options)
+  if (!styles) {
+    return element
+  }
+
   return (
     <>
       {element}
-      {styles}
+      {getStyleTags(styles)}
     </>
   )
 }

@@ -4,23 +4,27 @@ import type { StyleObject } from '../types'
 
 // turns out this is pretty slow, creating a bunch of extra tags...
 
-export function getStyleTags(styles: StyleObject[], content?: any) {
+export function getStyleTags(styles: StyleObject[]) {
   if (IS_REACT_19 && process.env.TAMAGUI_TARGET !== 'native') {
     if (styles.length) {
-      return styles.map((styleObject) => {
-        const identifier = styleObject[StyleObjectIdentifier]
-        return (
-          <style
-            key={identifier}
-            // @ts-ignore
-            href={`t_${identifier}`}
-            // @ts-ignore
-            precedence="default"
-          >
-            {styleObject[StyleObjectRules].join('\n')}
-          </style>
-        )
-      })
+      return (
+        <>
+          {styles.map((styleObject) => {
+            const identifier = styleObject[StyleObjectIdentifier]
+            return (
+              <style
+                key={identifier}
+                // @ts-ignore
+                href={`t_${identifier}`}
+                // @ts-ignore
+                precedence="default"
+              >
+                {styleObject[StyleObjectRules].join('\n')}
+              </style>
+            )
+          })}
+        </>
+      )
     }
   }
 }
