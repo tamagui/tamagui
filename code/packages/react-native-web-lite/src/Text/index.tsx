@@ -8,14 +8,10 @@
  * @flow
  */
 
-import * as React from 'react'
 import {
-  StyleSheet,
   TextAncestorContext,
-  getLocaleDirection,
-} from '@tamagui/react-native-web-internals'
-import {
   forwardPropsListText,
+  getLocaleDirection,
   pick,
   useElementLayout,
   useLocaleContext,
@@ -23,8 +19,9 @@ import {
   usePlatformMethods,
   useResponderEvents,
 } from '@tamagui/react-native-web-internals'
+import * as React from 'react'
 
-import createElement from '../createElement/index'
+import { useCreateElement } from '../createElement/index'
 import type { PlatformMethods } from '../types'
 import type { TextProps } from './types'
 
@@ -143,7 +140,7 @@ const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
 
     supportedProps.ref = setRef
 
-    const element = createElement(component, supportedProps, {
+    const element = useCreateElement(component, supportedProps, {
       writingDirection,
     })
 

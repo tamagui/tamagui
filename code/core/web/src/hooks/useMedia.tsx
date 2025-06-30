@@ -7,7 +7,6 @@ import type {
   ComponentContextI,
   DebugProp,
   IsMediaType,
-  LayoutEvent,
   MediaQueries,
   MediaQueryObject,
   MediaQueryState,
@@ -179,14 +178,10 @@ function subscribe(subscriber: () => void) {
   }
 }
 
-type ComponentMediaKeys = Set<string>
-
-type ComponentMediaQueryState = MediaKeysState
-
 export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
   const componentState = cc ? States.get(cc) : null
 
-  const internalRef = useRef<{ keys: Set<string>; lastState?: MediaQueryState }>()
+  const internalRef = useRef<{ keys: Set<string>; lastState?: MediaQueryState }>(null)
   if (!internalRef.current) {
     internalRef.current = {
       keys: new Set(),

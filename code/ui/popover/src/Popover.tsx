@@ -21,7 +21,7 @@ import {
   Stack,
   Theme,
   View,
-  createShallowSetState,
+  useCreateShallowSetState,
   createStyledContext,
   useEvent,
   useGet,
@@ -62,10 +62,12 @@ import { useFloatingContext } from './useFloatingContext'
 
 // adapted from radix-ui popover
 
+type PopoverVia = 'hover' | 'press'
+
 export type PopoverProps = PopperProps & {
   open?: boolean
   defaultOpen?: boolean
-  onOpenChange?: (open: boolean, via?: 'hover' | 'press') => void
+  onOpenChange?: (open: boolean, via?: PopoverVia) => void
   keepChildrenMounted?: boolean
 
   /**
@@ -661,7 +663,7 @@ const PopoverInner = React.forwardRef<
 
   const triggerRef = React.useRef<TamaguiElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
-  const viaRef = React.useRef()
+  const viaRef = React.useRef<PopoverVia>(undefined)
   const [open, setOpen] = useControllableState({
     prop: openProp,
     defaultProp: defaultOpen || false,
@@ -687,7 +689,7 @@ const PopoverInner = React.forwardRef<
 
   const [anchorTo, setAnchorToRaw] = React.useState<Rect>()
 
-  const setAnchorTo = createShallowSetState(
+  const setAnchorTo = useCreateShallowSetState(
     setAnchorToRaw as any
   ) as typeof setAnchorToRaw
 

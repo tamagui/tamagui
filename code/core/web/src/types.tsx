@@ -6,6 +6,7 @@ import type {
   ForwardRefExoticComponent,
   FunctionComponent,
   HTMLAttributes,
+  JSX,
   ReactNode,
   RefAttributes,
   RefObject,
@@ -87,9 +88,34 @@ export type ComponentContextI = {
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
   groups: GroupContextType
-  setParentFocusState:
-    | ((next?: Partial<TamaguiComponentState> | undefined) => void)
-    | null
+  setParentFocusState: ((next: Partial<TamaguiComponentState>) => void) | null
+}
+
+export type TamaguiComponentStateRef = {
+  host?: TamaguiElement
+  composedRef?: (x: TamaguiElement) => void
+  willHydrate?: boolean
+  hasMeasured?: boolean
+  hasAnimated?: boolean
+  themeShallow?: boolean
+  hasEverThemed?: boolean | 'wrapped'
+  isListeningToTheme?: boolean
+  unPress?: Function
+  stateEmitter?: ComponentStateEmitter
+  useStyleListener?: UseStyleListener
+  group?: {
+    listeners: Set<GroupStateListener>
+    layout?: LayoutValue
+    emit: GroupStateListener
+    subscribe: (cb: GroupStateListener) => () => void
+  }
+}
+
+export type ComponentStateListener = (state: TamaguiComponentState) => void
+export type ComponentStateEmitter = {
+  listeners: Set<ComponentStateListener>
+  emit: ComponentStateListener
+  subscribe: (cb: ComponentStateListener) => () => void
 }
 
 export type WidthHeight = {
@@ -108,6 +134,7 @@ export type GroupContextType = {
   emit: GroupStateListener
   subscribe: (cb: GroupStateListener) => DisposeFn
   state: Record<string, ComponentGroupEvent>
+  layout?: LayoutValue
 }
 
 export type GroupStateListener = (name: string, state: ComponentGroupEvent) => void
@@ -123,7 +150,7 @@ type PseudoGroupState = {
 // could just be TamaguiComponentState likely
 export type GroupState = {
   pseudo?: PseudoGroupState
-  media?: Record<MediaQueryKey, boolean>
+  media?: Record<MediaQueryKey extends number ? never : MediaQueryKey, boolean>
 }
 
 export type LayoutEvent = {
@@ -1793,6 +1820,10 @@ export type StyleableOptions = {
   staticConfig?: Partial<StaticConfig>
 }
 
+type React18And19CompatComponent<Props, Ref> =
+  | ((props: Props, ref: RefObject<Ref>) => React.ReactNode)
+  | ((props: Props & { ref?: RefObject<Ref> }) => React.ReactNode)
+
 export type Styleable<
   Props,
   Ref,
@@ -1805,7 +1836,10 @@ export type Styleable<
   MergedProps = CustomProps extends void
     ? Props
     : Omit<Props, keyof CustomProps> & CustomProps,
-  FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>,
+  FunctionDef extends React18And19CompatComponent<
+    MergedProps,
+    Ref
+  > = React18And19CompatComponent<MergedProps, Ref>,
 >(
   a: FunctionDef,
   options?: StyleableOptions
@@ -2398,7 +2432,7 @@ export type UseAnimatedNumberReaction<
 
 export type UseAnimatedNumberStyle<
   V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
-> = (val: V, getStyle: (current: any) => any) => any
+> = (val: V, getStyle: (current: number) => Record<string, unknown>) => any
 
 export type UseAnimatedNumber<
   N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
@@ -2407,6 +2441,8 @@ export type UseAnimatedNumber<
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
   supportsCSSVars?: boolean
+  needsWebStyles?: boolean
+  avoidReRenders?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   ResetPresence: (props: { children?: any }) => JSX.Element
@@ -2420,23 +2456,8 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
-export type TamaguiComponentStateRef = {
-  host?: TamaguiElement
-  composedRef?: (x: TamaguiElement) => void
-  willHydrate?: boolean
-  hasMeasured?: boolean
-  hasAnimated?: boolean
-  themeShallow?: boolean
-  hasEverThemed?: boolean | 'wrapped'
-  isListeningToTheme?: boolean
-  unPress?: Function
-  group?: {
-    listeners: Set<GroupStateListener>
-    layout?: LayoutValue
-    emit: GroupStateListener
-    subscribe: (cb: GroupStateListener) => () => void
-  }
-}
+type UseStyleListener = (nextStyle: Record<string, unknown>) => void
+export type UseStyleEmitter = (cb: UseStyleListener) => void
 
 export type UseAnimationHook = (props: {
   style: Record<string, any>
@@ -2445,6 +2466,7 @@ export type UseAnimationHook = (props: {
   staticConfig: StaticConfig
   styleProps: SplitStyleProps
   componentState: TamaguiComponentState
+  useStyleEmitter?: UseStyleEmitter
   theme: ThemeParsed
   pseudos: WithPseudoProps<ViewStyle> | null
   stateRef: { current: TamaguiComponentStateRef }

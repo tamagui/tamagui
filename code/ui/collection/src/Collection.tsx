@@ -25,10 +25,10 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
   //   createContextScope(PROVIDER_NAME)
 
   type ContextValue = {
-    collectionRef: React.RefObject<CollectionElement>
+    collectionRef: React.RefObject<CollectionElement | undefined>
     itemMap: Map<
-      React.RefObject<ItemElement>,
-      { ref: React.RefObject<ItemElement> } & ItemData
+      React.RefObject<ItemElement | undefined>,
+      { ref: React.RefObject<ItemElement | undefined> } & ItemData
     >
   }
 
@@ -36,7 +36,7 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
 
   const { Provider: CollectionProviderImpl, useStyledContext: useCollectionContext } =
     createStyledContext<ContextValue>({
-      collectionRef: { current: null },
+      collectionRef: { current: undefined },
       itemMap: new Map(),
     })
 
@@ -45,7 +45,7 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
     __scopeCollection: string
   }> = (props) => {
     const { __scopeCollection, children } = props
-    const ref = React.useRef<CollectionElement>(null)
+    const ref = React.useRef<CollectionElement>(undefined)
     const itemMap = React.useRef<ContextValue['itemMap']>(new Map()).current
     return (
       <CollectionProviderImpl
@@ -67,7 +67,7 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
   const COLLECTION_SLOT_NAME = name + 'CollectionSlot'
 
   const CollectionSlot = React.forwardRef<
-    CollectionElement,
+    CollectionElement | undefined,
     ScopedCollectionProps<CollectionProps>
   >((props, forwardedRef) => {
     const { __scopeCollection, children } = props
@@ -90,11 +90,11 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
   }
 
   const CollectionItemSlot = React.forwardRef<
-    ItemElement,
+    ItemElement | undefined,
     ScopedCollectionProps<CollectionItemSlotProps>
   >((props, forwardedRef) => {
     const { __scopeCollection, children, ...itemData } = props
-    const ref = React.useRef<ItemElement>(null)
+    const ref = React.useRef<ItemElement>(undefined)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     const context = useCollectionContext(__scopeCollection)
 

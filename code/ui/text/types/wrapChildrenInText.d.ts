@@ -7,6 +7,6 @@ type Props = TextParentStyles & {
 };
 export declare function wrapChildrenInText(TextComponent: any, propsIn: Props & {
     unstyled?: boolean;
-}, extraProps?: Record<string, any>): React.ReactNode[] | (number | Iterable<React.ReactNode> | import("react/jsx-runtime").JSX.Element)[];
+}, extraProps?: Record<string, any>): React.ReactNode[] | (number | bigint | Iterable<React.ReactNode> | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | import("react/jsx-runtime").JSX.Element)[];
 export {};
 //# sourceMappingURL=wrapChildrenInText.d.ts.map

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/slider",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "sideEffects": [
     "*.css"
   ],
@@ -48,7 +48,8 @@
     "@tamagui/use-direction": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

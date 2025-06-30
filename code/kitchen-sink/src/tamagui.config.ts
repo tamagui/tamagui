@@ -1,5 +1,6 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
+import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
@@ -26,6 +27,54 @@ export const animationsMoti = createAnimationsMoti({
   },
   '200ms': {
     type: 'timing',
+    duration: 200,
+  },
+  bouncy: {
+    type: 'spring',
+    damping: 9,
+    mass: 0.9,
+    stiffness: 150,
+  },
+  lazy: {
+    type: 'spring',
+    damping: 18,
+    stiffness: 50,
+  },
+  slow: {
+    type: 'spring',
+    damping: 15,
+    stiffness: 40,
+  },
+  quick: {
+    type: 'spring',
+    damping: 20,
+    mass: 1.2,
+    stiffness: 250,
+  },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
+  },
+  tooltip: {
+    type: 'spring',
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+})
+
+export const animationsMotion = createAnimationsMotion({
+  '75ms': {
+    type: 'tween',
+    duration: 75,
+  },
+  '100ms': {
+    type: 'tween',
+    duration: 100,
+  },
+  '200ms': {
+    type: 'tween',
     duration: 200,
   },
   bouncy: {
@@ -158,7 +207,10 @@ const tamaConf = createTamagui({
     ? animationsCSS
     : search.includes('animationDriver=native')
       ? animationsNative
-      : animationsMoti, // default moti
+      : search.includes('animationDriver=motion')
+        ? animationsMotion
+        : animationsMoti, // default moti
+  themeClassNameOnRoot: false,
 
   defaultProps: {
     Square: {

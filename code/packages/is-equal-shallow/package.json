@@ -1,0 +1,39 @@
+{
+  "name": "@tamagui/is-equal-shallow",
+  "version": "1.129.11",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

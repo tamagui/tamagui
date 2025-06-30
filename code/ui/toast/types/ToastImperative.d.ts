@@ -1,5 +1,5 @@
-import React from 'react';
 import type { NativePlatform, NativeValue } from '@tamagui/core';
+import React from 'react';
 import type { CreateNativeToastOptions, NativeToastRef } from './types';
 export interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
     /**
@@ -91,5 +91,5 @@ interface ToastImperativeProviderProps {
     options: ToastImperativeOptions;
 }
 export declare const ToastImperativeProvider: ({ children, options, }: ToastImperativeProviderProps) => import("react/jsx-runtime").JSX.Element;
-export type { ToastImperativeProviderProps, NativePlatform, NativeValue };
+export type { NativePlatform, NativeValue, ToastImperativeProviderProps };
 //# sourceMappingURL=ToastImperative.d.ts.map

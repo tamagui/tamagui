@@ -1,16 +1,17 @@
-import { IS_REACT_19, isServer, isWeb } from '@tamagui/constants'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { isServer, isWeb } from '@tamagui/constants'
+import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
+import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
   defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
-import { createShallowSetState } from '../helpers/createShallowSetState'
 import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
+  ComponentStateListener,
   GroupStateListener,
   StackProps,
   StaticConfig,
@@ -29,7 +30,8 @@ export const useComponentState = (
   config: TamaguiInternalConfig
 ) => {
   const isHydrated = useDidFinishSSR()
-  const [startedUnhydrated] = useState(IS_REACT_19 ? !isHydrated : false)
+  const needsHydration = !useIsClientOnly()
+  const [startedUnhydrated] = useState(needsHydration && !isHydrated)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
   const stateRef = useRef<TamaguiComponentStateRef>(
@@ -47,6 +49,10 @@ export const useComponentState = (
   // disable for now still ssr issues
   const supportsCSSVars = animationDriver?.supportsCSSVars
   const curStateRef = stateRef.current
+
+  if (!needsHydration && hasAnimationProp) {
+    curStateRef.hasAnimated = true
+  }
 
   const willBeAnimatedClient = (() => {
     const next = !!(hasAnimationProp && !staticConfig.isHOC && useAnimations)
@@ -132,17 +138,12 @@ export const useComponentState = (
       Object.assign(state, defaultComponentStateMounted)
     }
     state.disabled = disabled
-    setState({ ...state })
+    setState((_) => ({ ...state }))
   }
 
   const groupName = props.group as any as string
 
-  let setStateShallow = createShallowSetState(
-    setState,
-    undefined, // note: allows all state updates even when disabled for the enterStyle animation to work
-    false,
-    props.debug
-  )
+  const setStateShallow = useCreateShallowSetState(setState, props.debug)
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
@@ -168,7 +169,8 @@ export const useComponentState = (
     }
   }
 
-  let noClass = !isWeb || !!props.forceStyle
+  let noClass =
+    !isWeb || !!props.forceStyle || (isAnimated && animationDriver?.needsWebStyles)
 
   // on server for SSR and animation compat added the && isHydrated but perhaps we want
   // disableClassName="until-hydrated" to be more straightforward
@@ -205,6 +207,26 @@ export const useComponentState = (
       listeners,
       emit(name, state) {
         listeners.forEach((l) => l(name, state))
+      },
+      subscribe(cb) {
+        listeners.add(cb)
+        setStateShallow({ hasDynGroupChildren: true })
+        return () => {
+          listeners.delete(cb)
+          if (listeners.size === 0) {
+            setStateShallow({ hasDynGroupChildren: false })
+          }
+        }
+      },
+    }
+  }
+
+  if (!curStateRef.stateEmitter && hasAnimationProp) {
+    const listeners = new Set<ComponentStateListener>()
+    curStateRef.stateEmitter = {
+      listeners,
+      emit(state) {
+        listeners.forEach((l) => l(state))
       },
       subscribe(cb) {
         listeners.add(cb)

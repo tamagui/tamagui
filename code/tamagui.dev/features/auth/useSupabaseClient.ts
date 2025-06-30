@@ -16,6 +16,11 @@ export function useSupabaseClient(given?: SupabaseClient) {
     const run = async () => {
       if (current || client) return
 
+      // ‼️ NOTE YOU DO NEED SSR HERE OR IT WONT DO SSR STYLE REDIRECT
+      //  you could get the client flow working but:
+      //    1. supabase-js also for some reason imports crypto/websockets/buffer etc
+      //    2. would have to redo the oauth callback stuff
+      //    3. at that point just move to better-auth
       const { createBrowserClient } = await import('@supabase/ssr')
 
       if (

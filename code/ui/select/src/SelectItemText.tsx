@@ -44,7 +44,7 @@ export const SelectItemText = SelectItemTextFrame.styleable(function SelectItemT
   const ref = React.useRef<TamaguiTextElement | null>(null)
   const composedRefs = useComposedRefs(forwardedRef, ref)
   const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
-  const contents = React.useRef<React.ReactNode>()
+  const contents = React.useRef<React.ReactNode>(null)
 
   // we portal this to the selected area, which is fine to be a bit unsafe concurrently (mostly? its not changing often)...
   // until react native supports portals this is best i think

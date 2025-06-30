@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -38,6 +38,7 @@
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/react-native-use-pressable": "workspace:*",
     "@tamagui/react-native-use-responder-events": "workspace:*",
+    "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
@@ -46,8 +47,14 @@
     "@tamagui/react-native-web-lite": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
+    "react": "*",
+    "react-native": "^0.79.2",
     "typescript": "^5.8.2",
     "vitest": "^3.0.5"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
   },
   "exports": {
     "./package.json": "./package.json",

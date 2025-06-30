@@ -31,6 +31,11 @@ const exchangeSession = async (supabase: ReturnType<typeof useSupabase>['supabas
   const url = new URL(window.location.href)
   const code = url.searchParams.get('code')
 
+  if (!supabase) {
+    console.error(`no supabase?`)
+    return
+  }
+
   if (!code) {
     // no code is our new flow we can remove old one
     window.opener?.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)

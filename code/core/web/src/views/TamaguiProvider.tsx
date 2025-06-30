@@ -12,17 +12,6 @@ import { updateMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
 
-const listeners = new Set<() => void>()
-let didRender = false
-
-export function ___onDidFinishClientRender(cb: () => void) {
-  if (didRender) {
-    cb()
-  } else {
-    listeners.add(cb)
-  }
-}
-
 export function TamaguiProvider({
   children,
   disableInjectCSS,
@@ -31,14 +20,6 @@ export function TamaguiProvider({
   defaultTheme,
   reset,
 }: TamaguiProviderProps) {
-  useEffect(() => {
-    listeners.forEach((cb) => cb())
-    didRender = true
-    return () => {
-      didRender = false
-    }
-  }, [])
-
   if (!IS_REACT_19) {
     if (isClient) {
       // inject CSS if asked to (not SSR compliant)

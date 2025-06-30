@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "sideEffects": [
     "*.css"
   ],
@@ -58,7 +58,8 @@
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

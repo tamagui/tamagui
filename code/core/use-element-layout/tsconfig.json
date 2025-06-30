@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "isolatedDeclarations": true
+  },
+  "references": [],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

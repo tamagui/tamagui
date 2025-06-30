@@ -4,6 +4,6 @@ import * as React from 'react'
 export const PresenceContext: React.Context<PresenceContextProps | null> =
   React.createContext<PresenceContextProps | null>(null)
 
-export const ResetPresence = (props: { children?: any }): JSX.Element => (
+export const ResetPresence = (props: { children?: any }): React.JSX.Element => (
   <PresenceContext.Provider value={null}>{props.children}</PresenceContext.Provider>
 )

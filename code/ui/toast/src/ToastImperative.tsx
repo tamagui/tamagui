@@ -1,9 +1,7 @@
-import React from 'react'
 import type { NativePlatform, NativeValue } from '@tamagui/core'
 import { isWeb } from '@tamagui/core'
-
+import React from 'react'
 import { Platform } from 'react-native'
-
 import { createNativeToast } from './createNativeToast'
 import type { CreateNativeToastOptions, NativeToastRef } from './types'
 
@@ -190,4 +188,4 @@ export const ToastImperativeProvider = ({
   )
 }
 
-export type { ToastImperativeProviderProps, NativePlatform, NativeValue }
+export type { NativePlatform, NativeValue, ToastImperativeProviderProps }

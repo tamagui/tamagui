@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bento",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -79,7 +79,7 @@
     "@tamagui/use-store": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
-    "@vxrn/color-scheme": "^1.1.499",
+    "@vxrn/color-scheme": "^1.1.502",
     "awesome-phonenumber": "^6.4.0",
     "expo": "53.0.7",
     "expo-document-picker": "~13.1.6",
@@ -109,7 +109,6 @@
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
     "webpack": "^5.88.2",
-    "webpack-bundle-analyzer": "^4.9.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
   }

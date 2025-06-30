@@ -25,8 +25,8 @@ interface DialogProps {
 type NonNull<A> = Exclude<A, void | null>;
 type DialogContextValue = {
     disableRemoveScroll?: boolean;
-    triggerRef: React.RefObject<TamaguiElement>;
-    contentRef: React.RefObject<TamaguiElement>;
+    triggerRef: React.RefObject<TamaguiElement | null>;
+    contentRef: React.RefObject<TamaguiElement | null>;
     contentId: string;
     titleId: string;
     descriptionId: string;
@@ -216,7 +216,7 @@ declare const DialogWarningProvider: (props: {
     docsSlug: string;
 } & {
     children: React.ReactNode;
-}) => JSX.Element;
+}) => React.JSX.Element;
 export type DialogHandle = {
     open: (val: boolean) => void;
 };

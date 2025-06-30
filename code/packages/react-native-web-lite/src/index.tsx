@@ -94,3 +94,7 @@ export function requireNativeComponent(name: string) {
     return null
   }
 }
+
+export const findNodeHandle = (component: any) => {
+  throw new Error('not supported - use ref instead')
+}

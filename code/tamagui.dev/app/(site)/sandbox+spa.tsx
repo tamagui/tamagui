@@ -48,7 +48,7 @@ const StyledText = styled(Text, {
 export default function Sandbox() {
   console.warn('render')
 
-  return <Text debug="verbose" />
+  return <Text />
   // return <StyledText customProp="ok">hello world</StyledText>
 
   // const [x, setX] = useState(false)
@@ -95,7 +95,6 @@ export function MergeStylesTests() {
         animation="bouncy"
         backgroundColor="$color9"
         size={104}
-        debug="verbose"
         borderRadius="$9"
         hoverStyle={{
           scale: 1.2,

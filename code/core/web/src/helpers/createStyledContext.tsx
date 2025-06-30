@@ -1,12 +1,17 @@
-import React from 'react'
 import type { Context, ProviderExoticComponent, ReactNode } from 'react'
+import React from 'react'
 
 import { objectIdentityKey } from './objectIdentityKey'
 
-export type StyledContext<Props extends Object = any> = Omit<
-  Context<Props>,
-  'Provider'
-> & {
+// test types:
+// const x = createContext({})
+// const y = x.Provider
+// export const ButtonContext = createStyledContext({
+//   size: '$4',
+// })
+// const z = useContext(ButtonContext.context)
+
+export type StyledContext<Props extends Object = any> = Context<Props> & {
   context: Context<Props>
   props: Object | undefined
   Provider: ProviderExoticComponent<
@@ -65,7 +70,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     return React.useContext(context!) as VariantProps
   }
 
-  // @ts-ignore
+  // @ts-expect-error we are overriding default provider
   Context.Provider = Provider
   Context.props = defaultValues
   Context.context = OGContext as Context<VariantProps>

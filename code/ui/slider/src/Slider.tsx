@@ -8,7 +8,12 @@ import type {
   SizeTokens,
   TamaguiElement,
 } from '@tamagui/core'
-import { createShallowSetState, getTokens, getVariableValue, styled } from '@tamagui/core'
+import {
+  useCreateShallowSetState,
+  getTokens,
+  getVariableValue,
+  styled,
+} from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
@@ -86,7 +91,7 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
     const isDirectionLTR = direction === 'ltr'
     const sliderRef = React.useRef<View>(null)
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
-    const setState = createShallowSetState(setState_)
+    const setState = useCreateShallowSetState(setState_)
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
@@ -219,7 +224,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       ...sliderProps
     } = props
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
-    const setState = createShallowSetState(setState_)
+    const setState = useCreateShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
 
     function getValueFromPointer(pointerPosition: number) {

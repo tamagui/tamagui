@@ -1,6 +1,10 @@
 /**
  * @jest-environment jsdom
  */
+import type { RenderResult } from '@testing-library/react'
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
+import { StrictMode } from 'react'
+import { afterEach, describe, expect, it } from 'vitest'
 import {
   Store,
   createStore,
@@ -8,13 +12,8 @@ import {
   useGlobalStoreSelector,
   useStore,
 } from '../src'
-import type { RenderResult } from '@testing-library/react'
-import { act, cleanup, fireEvent, render } from '@testing-library/react'
-import { last } from 'lodash'
-import { StrictMode } from 'react'
-import { afterEach, describe, expect, it } from 'vitest'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // configureUseStore({
 //   logLevel: 'debug',
@@ -57,6 +56,8 @@ class Store2 extends Store<{ id: number }> {
     this.x = 1
   }
 }
+
+const last = (x: any[]) => x[x.length - 1]
 
 async function testSimpleStore(id: number) {
   const { getAllByTitle } = render(

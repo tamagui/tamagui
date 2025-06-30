@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/card",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "sideEffects": [
     "*.css"
   ],
@@ -51,6 +51,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   }
 }

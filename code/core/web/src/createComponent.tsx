@@ -8,20 +8,20 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getShorthandValue } from './helpers/getShorthandValue'
-import { useSplitStyles } from './helpers/getSplitStyles'
+import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
 import { themeable } from './helpers/themeable'
-import { wrapStyleTags } from './helpers/wrapStyleTags'
+import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
@@ -42,6 +42,7 @@ import type {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseStyleEmitter,
   UseThemeWithStateProps,
 } from './types'
 import { Slot } from './views/Slot'
@@ -59,7 +60,7 @@ type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentSta
 
 export const componentSetStates = new Set<ComponentSetState>()
 
-if (typeof document !== 'undefined') {
+if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelTouches = () => {
     // clear all press downs
     componentSetStates.forEach((setState) =>
@@ -94,27 +95,31 @@ if (typeof document !== 'undefined') {
           ...(typeof devVisualizerConfig === 'object' ? devVisualizerConfig : {}),
         }
 
-        document.addEventListener('blur', () => {
+        function show(val: boolean) {
           clearTimeout(tm)
+          isShowing = val
+          debugKeyListeners?.forEach((l) => l(val))
+        }
+
+        window.addEventListener('blur', () => {
+          show(false)
         })
 
-        document.addEventListener('keydown', ({ key, defaultPrevented }) => {
+        window.addEventListener('keydown', ({ key, defaultPrevented }) => {
           if (defaultPrevented) return
           clearTimeout(tm) // always clear so we dont trigger on chords
           if (key === options.key) {
             tm = setTimeout(() => {
-              isShowing = true
-              debugKeyListeners?.forEach((l) => l(true))
+              show(true)
             }, options.delay)
           }
         })
 
-        document.addEventListener('keyup', ({ key, defaultPrevented }) => {
+        window.addEventListener('keyup', ({ key, defaultPrevented }) => {
           if (defaultPrevented) return
           if (key === options.key) {
-            clearTimeout(tm)
             if (isShowing) {
-              debugKeyListeners?.forEach((l) => l(false))
+              show(false)
             }
           }
         })
@@ -332,6 +337,13 @@ export function createComponent<
     const animationDriver = componentContext.animationDriver
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
+    const componentState = useComponentState(
+      props,
+      componentContext,
+      staticConfig,
+      config!
+    )
+
     const {
       curStateRef,
       disabled,
@@ -344,7 +356,6 @@ export function createComponent<
       presence,
       presenceState,
       setState,
-      setStateShallow,
       noClass,
       state,
       stateRef,
@@ -352,7 +363,12 @@ export function createComponent<
       willBeAnimated,
       willBeAnimatedClient,
       startedUnhydrated,
-    } = useComponentState(props, componentContext, staticConfig, config!)
+    } = componentState
+
+    // if our animation driver supports noReRender, we'll replace this below with
+    // a version that essentially uses an internall emitter rather than setting state
+    // but still stores the current state and applies if it it needs to during render
+    let setStateShallow = componentState.setStateShallow
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -368,7 +384,15 @@ export function createComponent<
 
     let elementType = isText ? BaseTextComponent : BaseViewComponent
 
-    if (animationDriver && isAnimated) {
+    if (
+      animationDriver &&
+      isAnimated &&
+      // this should really be behind another prop as it's not really related to
+      // "needsWebStyles" basically with motion we just animate a plain div, but
+      // we still have animated.View/Text for Sheet which wants to control
+      // things declaratively
+      !animationDriver.needsWebStyles
+    ) {
       elementType = animationDriver[isText ? 'Text' : 'View'] || elementType
     }
 
@@ -488,6 +512,7 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       styledContextProps,
+      noMergeStyle: isAnimated && animationDriver?.needsWebStyles,
     } as const
 
     const themeName = themeState?.name || ''
@@ -507,6 +532,40 @@ export function createComponent<
       startedUnhydrated,
       debugProp
     )
+
+    // avoids re-rendering if animation driver supports it
+    // TODO believe we need to set some sort of "pendingState" in case it re-renders
+    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+      const styleListener = stateRef.current.useStyleListener
+      const ogSetStateShallow = setStateShallow
+      setStateShallow = (next) => {
+        // one thing we have to handle here and where it gets a bit more complex is group styles
+        // but i think we can just emit to the group too?
+        const avoidReRenderKeys = new Set(['hover', 'press', 'pressIn'])
+        const canAvoidReRender = Object.keys(next).every((key) =>
+          avoidReRenderKeys.has(key)
+        )
+        if (canAvoidReRender && styleListener) {
+          const updatedState = { ...state, ...next }
+          const nextStyles = getSplitStyles(
+            props,
+            staticConfig,
+            theme,
+            themeName,
+            updatedState,
+            styleProps,
+            null,
+            componentContext,
+            elementType,
+            startedUnhydrated,
+            debugProp
+          )
+          styleListener(nextStyles.style as any)
+        } else {
+          ogSetStateShallow(next)
+        }
+      }
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
@@ -589,14 +648,26 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    const shouldUseAnimation = // if it supports css vars we run it on server too to get matching initial style
+    const shouldUseAnimation =
+      // if it supports css vars we run it on server too to get matching initial style
       (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
 
+    let animatedRef
+
     if (shouldUseAnimation) {
+      const useStyleEmitter: UseStyleEmitter | undefined = animationDriver?.avoidReRenders
+        ? (listener) => {
+            stateRef.current.useStyleListener = listener
+          }
+        : undefined
+
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
         style: splitStylesStyle || {},
+        // @ts-ignore
+        styleState: splitStyles,
+        useStyleEmitter,
         presence,
         componentState: state,
         styleProps,
@@ -611,6 +682,11 @@ export function createComponent<
         viewProps.style = animationStyles
         if (animations.className) {
           viewProps.className = `${state.unmounted === 'should-enter' ? 't_unmounted ' : ''}${viewProps.className || ''} ${animations.className}`
+        }
+        // @ts-ignore
+        if (animations.ref) {
+          // @ts-ignore
+          animatedRef = animations.ref
         }
       }
 
@@ -657,7 +733,8 @@ export function createComponent<
       curStateRef.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
         forwardedRef,
-        setElementProps
+        setElementProps,
+        animatedRef
       )
     }
 
@@ -711,6 +788,7 @@ export function createComponent<
       })
     }
 
+    // TODO should this be regular effect to allow the render in-between?
     useIsomorphicLayoutEffect(() => {
       // Note: We removed the early return on disabled to allow animations to work
       // This fixes the issue where animations wouldn't work on disabled components
@@ -731,9 +809,9 @@ export function createComponent<
             setStateShallow({ unmounted: false })
           })
           return () => clearTimeout(tm)
-        } else {
-          setStateShallow({ unmounted: false })
         }
+
+        setStateShallow({ unmounted: false })
         return
       }
 
@@ -1120,7 +1198,17 @@ export function createComponent<
 
     // add in <style> tags inline
     if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
-      content = wrapStyleTags(Object.values(splitStyles.rulesToInsert), content)
+      // breaking rules of hooks but startedUnhydrated NEVER changes
+      const styleTags = useMemo(() => {
+        return getStyleTags(Object.values(splitStyles.rulesToInsert))
+      }, [])
+      // this is only to appease react hydration really
+      content = (
+        <>
+          {content}
+          {styleTags}
+        </>
+      )
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`style-tags`

@@ -7,16 +7,66 @@
  * @noflow
  */
 
-import React from 'react'
 import {
   AccessibilityUtil,
   LocaleProvider,
   createDOMProps,
   stylesFromProps,
 } from '@tamagui/react-native-web-internals'
-import { wrapStyleTags } from '@tamagui/web'
+import {
+  type StyleObject,
+  getStyleTags,
+  insertStyleRules,
+  useDidFinishSSR,
+} from '@tamagui/web'
+import React, { useInsertionEffect, useMemo } from 'react'
+
+// SSR safe create element
+export const useCreateElement = (component, props, options?) => {
+  const { element, styles } = createElementAndStyles(component, props, options)
+
+  const isHydrated = useDidFinishSSR()
+  const styleTags = useMemo(
+    () => {
+      return isHydrated || !styles ? null : getStyleTags(styles)
+    },
+    [
+      // never changes
+    ]
+  )
+
+  useInsertionEffect(() => {
+    if (!styles) return
+    const styleObj: Record<string, StyleObject> = {}
+    for (const style of styles) {
+      styleObj[style[0]] = style
+    }
+    insertStyleRules(styleObj)
+  }, [styles])
+
+  return (
+    <>
+      {element}
+      {styleTags}
+    </>
+  )
+}
 
 const createElement = (component, props, options?) => {
+  const { element, styles } = createElementAndStyles(component, props, options)
+  if (!styles) {
+    return element
+  }
+
+  return (
+    <>
+      {element}
+      {getStyleTags(styles)}
+    </>
+  )
+}
+
+const createElementAndStyles = (component, props, options?) => {
   // Use equivalent platform elements where possible.
   let accessibilityComponent
   if (component && component.constructor === String) {
@@ -29,10 +79,6 @@ const createElement = (component, props, options?) => {
 
   let element = React.createElement(Component, domProps)
 
-  if (styles) {
-    element = wrapStyleTags(styles, element)
-  }
-
   // Update locale context if element's writing direction prop changes
   const elementWithLocaleProvider = domProps.dir ? (
     <LocaleProvider direction={domProps.dir} locale={domProps.lang}>
@@ -42,7 +88,10 @@ const createElement = (component, props, options?) => {
     element
   )
 
-  return elementWithLocaleProvider
+  return {
+    element: elementWithLocaleProvider,
+    styles,
+  }
 }
 
 export default createElement

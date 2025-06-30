@@ -1,6 +1,6 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
-import { createShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
+import { useCreateShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
@@ -442,21 +442,21 @@ const SlidingPopoverContext = React.createContext({
 export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
-    const [layout, setLayout_] = React.useState<LayoutRectangle>()
-    const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
+    const [layout, setLayout_] = React.useState<LayoutRectangle | undefined>()
+    const setLayout = useCreateShallowSetState(setLayout_)
     const triggerRef = React.useRef<HTMLElement>(null)
     const combinedRef = useComposedRefs(ref)
     const [hovered, setHovered] = React.useState(false)
     const getLayout = useGet(layout)
 
-    useImperativeHandle(ref, () => {
-      return {
-        close: () => {
-          context.close()
-          setHovered(false)
-        },
-      }
-    })
+    // useImperativeHandle(ref, () => {
+    //   return {
+    //     close: () => {
+    //       context.close()
+    //       setHovered(false)
+    //     },
+    //   }
+    // }, [context])
 
     React.useEffect(() => {
       if (!hovered) return

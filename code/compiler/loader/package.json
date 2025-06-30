@@ -1,6 +1,6 @@
 {
   "name": "tamagui-loader",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -35,8 +35,7 @@
     "esbuild-loader": "^4.2.2",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
-    "loader-utils": "^3.2.1",
-    "lodash": "^4.17.21"
+    "loader-utils": "^3.2.1"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

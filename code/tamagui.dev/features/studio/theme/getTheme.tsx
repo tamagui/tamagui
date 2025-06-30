@@ -1,5 +1,5 @@
-import { createServerClient } from '@supabase/ssr'
 import z from 'zod'
+import { getSupabaseServerClient } from '../../api/getSupabaseServerClient'
 import type { ThemeSuiteItemData } from './types'
 
 const ColorEntrySchema = z.object({
@@ -42,20 +42,9 @@ export const ThemeSuiteSchema = z.object({
   templateStrategy: z.literal('base'),
 })
 
-const supabase = createServerClient(
-  import.meta.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
-  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
-  {
-    cookies: {
-      getAll() {
-        return []
-      },
-    },
-  }
-)
-
-export const getTheme = async (id: string) => {
-  const { data: currentTheme, error: themeError } = await supabase
+export const getTheme = async (id: string, request?: Request) => {
+  const supabaseServerClient = getSupabaseServerClient(request)
+  const { data: currentTheme, error: themeError } = await supabaseServerClient
     .from('theme_histories')
     .select(`
       theme_data,
@@ -71,7 +60,7 @@ export const getTheme = async (id: string) => {
   let user_name: string | null = null
 
   if (currentTheme?.user_id) {
-    const { data: user, error: userError } = await supabase
+    const { data: user, error: userError } = await supabaseServerClient!
       .from('users')
       .select('full_name')
       .eq('id', currentTheme.user_id)

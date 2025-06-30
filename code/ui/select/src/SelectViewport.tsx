@@ -59,6 +59,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     const isAdapted = useAdaptIsActive()
 
     const composedRefs = useComposedRefs(
+      // @ts-ignore TODO react 19 type needs fix
       forwardedRef,
       context.floatingContext?.refs.setFloating
     )

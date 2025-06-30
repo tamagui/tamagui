@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react'
-import type { ThemeName } from '@tamagui/ui'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { useDidFinishSSR, type ThemeName } from '@tamagui/ui'
 import { getTints, setNextTintFamily, useTints } from './tints'
 
 let current = 3
@@ -58,14 +58,17 @@ export const useTint = (
   }
 } => {
   const initial = useContext(InitialPathContext)
-  const index = React.useSyncExternalStore(
-    onTintChange,
-    () => current,
-    () => initial
-  )
+  const didHydrate = useDidFinishSSR()
+  const [index, setIndex] = useState(didHydrate ? current : initial)
   const tintsContext = useTints()
   const { tints } = tintsContext
   const tintAltIndex = Math.abs((index + altOffset) % tints.length)
+
+  useEffect(() => {
+    return onTintChange((cur) => {
+      setIndex(cur)
+    })
+  }, [])
 
   return {
     ...tintsContext,

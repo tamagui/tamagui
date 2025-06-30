@@ -12,7 +12,7 @@ export type TabsContextValue = {
     unregisterTrigger: () => void;
     triggersCount: number;
 };
-export declare const TabsProvider: import("react").ProviderExoticComponent<Partial<TabsContextValue> & {
+export declare const TabsProvider: import("react").Provider<TabsContextValue> & import("react").ProviderExoticComponent<Partial<TabsContextValue> & {
     children?: import("react").ReactNode;
     scope?: string;
 }>, useTabsContext: (scope?: string) => TabsContextValue;

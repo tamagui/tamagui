@@ -72,7 +72,12 @@
     "indentWidth": 2,
     "lineWidth": 90,
     "lineEnding": "lf",
-    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"]
+    "ignore": [
+      "**/*/generated-new.ts",
+      "**/*/generated-v2.ts",
+      ".tamagui",
+      "package.json"
+    ]
   },
   "javascript": {
     "formatter": {

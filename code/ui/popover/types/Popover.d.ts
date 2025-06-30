@@ -7,10 +7,11 @@ import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, Poppe
 import type { RemoveScrollProps } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
+type PopoverVia = 'hover' | 'press';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean, via?: 'hover' | 'press') => void;
+    onOpenChange?: (open: boolean, via?: PopoverVia) => void;
     keepChildrenMounted?: boolean;
     /**
      * Enable staying open while mouseover
@@ -148,7 +149,7 @@ export type Popover = {
 export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: (open: boolean, via?: "hover" | "press") => void;
+    onOpenChange?: (open: boolean, via?: PopoverVia) => void;
     keepChildrenMounted?: boolean;
     /**
      * Enable staying open while mouseover

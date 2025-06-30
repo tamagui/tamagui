@@ -54,7 +54,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     } = props
 
     const state = useSheetOpenState(props)
-    const [overlayComponent, setOverlayComponent] = React.useState<any>(null)
+    const [overlayComponent, setOverlayComponent] = React.useState<React.ReactNode>(null)
 
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
@@ -74,7 +74,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     } = providerProps
     const { open, controller, isHidden } = state
 
-    const sheetRef = React.useRef<View>(null)
+    const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
 
     // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
@@ -196,7 +196,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       // then render to bottom of screen without animation (screenSize)
       // then add the animation as it animates from screenSize to position
 
-      if (hasntMeasured && screenSize) {
+      if (hasntMeasured && screenSize && frameSize) {
         at.current = screenSize
         animatedNumber.setValue(
           screenSize,
@@ -490,10 +490,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
-            {...(!isDragging && {
-              // @ts-ignore for CSS driver this is necessary to attach the transition
-              animation: disableAnimation ? null : animation,
-            })}
+            // @ts-ignore for CSS driver this is necessary to attach the transition
+            // also motion driver at least though i suspect all drivers?
+            animation={isDragging || disableAnimation ? null : animation}
             // @ts-ignore
             disableClassName
             style={[

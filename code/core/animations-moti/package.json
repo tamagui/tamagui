@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-moti",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -29,8 +29,8 @@
     }
   },
   "dependencies": {
+    "@tamagui/core": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
-    "@tamagui/web": "workspace:*",
     "moti": "^0.30.0"
   },
   "devDependencies": {

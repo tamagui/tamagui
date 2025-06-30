@@ -5,10 +5,11 @@ import './tamagui.css'
 import { Toast, ToastProvider, ToastViewport, useToastState } from '@tamagui/toast'
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, SafeAreaView, Slot } from 'one'
-import { isWeb, TamaguiProvider, XStack, YStack } from '@tamagui/ui'
+import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from '@tamagui/ui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
 import oneBall from '~/public/app-icon.png'
+import { animationsMotion } from '../config/tamagui/animationMotion'
 
 export default function Layout() {
   return (
@@ -40,7 +41,9 @@ export default function Layout() {
                   <ToggleThemeButton />
                 </XStack>
 
-                <Slot />
+                <Configuration animationDriver={animationsMotion}>
+                  <Slot />
+                </Configuration>
               </SafeAreaView>
             </YStack>
           </TamaguiRootProvider>

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -52,12 +52,14 @@
     "@tamagui/visually-hidden": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "burnt": "^0.12.2",
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"

@@ -7,8 +7,8 @@
  * @noflow
  */
 
+import { getCSSStylesAtomic, type StyleObject } from '@tamagui/web'
 import AccessibilityUtil from '../AccessibilityUtil/index'
-import { getCSSStylesAtomic, wrapStyleTags } from '@tamagui/web'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -27,7 +27,7 @@ function processIDRefList(idRefList: string | Array<string>): string {
 
 let pointerEventsStyles
 
-export const stylesFromProps = new WeakMap()
+export const stylesFromProps = new WeakMap<any, StyleObject[]>()
 
 const createDOMProps = (elementType, props, options?) => {
   if (!props) {

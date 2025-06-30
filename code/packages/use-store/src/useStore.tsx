@@ -275,7 +275,7 @@ function useStoreFromInfo(
   options?: UseStoreOptions
 ): any {
   const store = info?.store
-  const internal = React.useRef<StoreTracker>()
+  const internal = React.useRef<StoreTracker>(undefined)
   const component = useCurrentComponent()
   if (!internal.current) {
     internal.current = {

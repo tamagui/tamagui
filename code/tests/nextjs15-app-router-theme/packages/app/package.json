@@ -1,5 +1,5 @@
 {
-  "version": "1.129.4",
+  "version": "1.129.11",
   "name": "app",
   "main": "index.ts",
   "private": true,
@@ -22,7 +22,7 @@
     "solito": "^4.3.0"
   },
   "devDependencies": {
-    "@types/react": "^18.3.11",
+    "@types/react": "^19.1.8",
     "@types/react-native": "^0.73.0"
   }
 }

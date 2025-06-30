@@ -5,7 +5,6 @@ import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
-import { debounce } from 'lodash'
 import { router } from 'one'
 import { useEffect, useMemo, useState } from 'react'
 import useSWR, { mutate } from 'swr'
@@ -14,6 +13,7 @@ import {
   Avatar,
   Button,
   Configuration,
+  debounce,
   Dialog,
   Fieldset,
   Form,
@@ -39,7 +39,7 @@ import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
 import { Pricing, ProductName, SubscriptionStatus } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
-import { AddTeamMemberModalComponent, addTeamMemberModal } from './AddTeamMemberModal'
+import { addTeamMemberModal, AddTeamMemberModalComponent } from './AddTeamMemberModal'
 import { FaqTabContent } from './NewPurchaseModal'
 import { paymentModal } from './StripePaymentModal'
 import { useProducts } from './useProducts'

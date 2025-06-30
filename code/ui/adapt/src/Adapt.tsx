@@ -36,7 +36,7 @@ export type AdaptProps = {
   scope?: string
   when?: AdaptWhen
   platform?: AdaptPlatform
-  children: JSX.Element | ((children: React.ReactNode) => React.ReactNode)
+  children: React.JSX.Element | ((children: React.ReactNode) => React.ReactNode)
 }
 
 type Component = (props: any) => any

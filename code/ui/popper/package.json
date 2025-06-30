@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popper",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "sideEffects": [
     "*.css"
   ],
@@ -46,7 +46,8 @@
     "@tamagui/use-controllable-state": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

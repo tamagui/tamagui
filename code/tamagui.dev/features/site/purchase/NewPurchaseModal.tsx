@@ -286,7 +286,7 @@ export function PurchaseModalContents() {
           </Sheet>
         </Dialog.Adapt>
 
-        <Dialog.Portal>
+        <Dialog.Portal zIndex={1_000_000}>
           <Dialog.Overlay
             backdropFilter="blur(35px)"
             key="overlay"

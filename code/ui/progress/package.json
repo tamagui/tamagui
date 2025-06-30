@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/progress",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "sideEffects": [
     "*.css"
   ],
@@ -44,7 +44,8 @@
     "@tamagui/stacks": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -30,6 +30,7 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/is-equal-shallow": "workspace:*",
     "@tamagui/normalize-css-color": "workspace:*",
     "@tamagui/timer": "workspace:*",
     "@tamagui/types": "workspace:*",
@@ -39,7 +40,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

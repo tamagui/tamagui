@@ -1,4 +1,3 @@
-import React from 'react'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { Moon } from '@tamagui/lucide-icons'
 import type { GetProps, SizeTokens } from '@tamagui/web'
@@ -10,6 +9,7 @@ import {
   useTheme,
   withStaticProperties,
 } from '@tamagui/web'
+import React from 'react'
 
 export const TestBuildAButton = () => {
   return (

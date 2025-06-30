@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "sideEffects": [
     "*.css"
   ],
@@ -39,6 +39,10 @@
     "@tamagui/constants": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
@@ -46,8 +50,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "peerDependencies": {
-    "react": "*"
   }
 }

@@ -3,6 +3,10 @@ import { ClientOnlyContext } from './ClientOnly'
 
 export { ClientOnly, ClientOnlyContext } from './ClientOnly'
 
+export const useIsClientOnly = (): boolean => {
+  return React.useContext(ClientOnlyContext)
+}
+
 export function useDidFinishSSR<A = boolean>(value?: A): A | false {
   const clientOnly = React.useContext(ClientOnlyContext)
 

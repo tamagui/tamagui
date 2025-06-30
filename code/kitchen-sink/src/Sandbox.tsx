@@ -1,3 +1,4 @@
+import type React from 'react'
 import { memo, useEffect, useState } from 'react'
 import {
   Button,
@@ -23,6 +24,11 @@ export const Sandbox = () => {
       <Circle
         size={200}
         bg="green"
+        debug="verbose"
+        animation="bouncy"
+        hoverStyle={{
+          scale: 1.2,
+        }}
         // $group-testy-press={{
         //   bg: 'yellow',
         // }}
@@ -153,7 +159,7 @@ const Switch = memo(
     disabled,
     disabledStyle,
     ...rest
-  }: SwitchProps): JSX.Element => {
+  }: SwitchProps): React.JSX.Element => {
     const [checked, setChecked] = useState(checkedProp)
     // const colors = useTheme()
 

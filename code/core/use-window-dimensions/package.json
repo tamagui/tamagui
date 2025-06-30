@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-window-dimensions",
-  "version": "1.129.4",
+  "version": "1.129.11",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -39,7 +39,8 @@
     "react-native": "^0.79.2"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

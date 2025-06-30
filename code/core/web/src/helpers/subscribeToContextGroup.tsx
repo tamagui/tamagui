@@ -1,6 +1,6 @@
 import { getMediaState } from '../hooks/useMedia'
 import type { ComponentContextI, GroupState, TamaguiComponentState } from '../types'
-import { mergeIfNotShallowEqual } from './createShallowSetState'
+import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 
 export const subscribeToContextGroup = ({
   setStateShallow,
@@ -9,7 +9,7 @@ export const subscribeToContextGroup = ({
   componentContext,
   state,
 }: {
-  setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void
+  setStateShallow: (next: Partial<TamaguiComponentState>) => void
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
   componentContext: ComponentContextI
@@ -33,7 +33,7 @@ export const subscribeToContextGroup = ({
         persist()
       } else if (layout && mediaGroups) {
         const mediaState = getMediaState(mediaGroups, layout)
-        const next = mergeIfNotShallowEqual(current.media, mediaState)
+        const next = mergeIfNotShallowEqual(current.media || {}, mediaState)
         if (next !== current.media) {
           Object.assign(current.media!, next)
           persist()
