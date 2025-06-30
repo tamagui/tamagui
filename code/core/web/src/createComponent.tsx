@@ -1217,7 +1217,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`context-override`
 
     // add in <style> tags inline
-    if (process.env.TAMAGUI_TARGET === 'web' && !startedUnhydrated) {
+    if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
       // breaking rules of hooks but startedUnhydrated NEVER changes
       const styleTags = useMemo(() => {
         return getStyleTags(Object.values(splitStyles.rulesToInsert))
