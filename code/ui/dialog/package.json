@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.129.6-1751237024118",
+  "version": "1.129.7",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

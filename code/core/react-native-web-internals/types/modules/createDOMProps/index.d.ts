@@ -6,7 +6,7 @@
  *
  * @noflow
  */
-import { StyleObject } from '@tamagui/web';
+import { type StyleObject } from '@tamagui/web';
 export declare const stylesFromProps: WeakMap<any, StyleObject[]>;
 declare const createDOMProps: (elementType: any, props: any, options?: any) => any;
 export default createDOMProps;

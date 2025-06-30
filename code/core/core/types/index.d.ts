@@ -1,7 +1,7 @@
 import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiProviderProps, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
 import { createTamagui as createTamaguiWeb } from '@tamagui/web';
 import type { RNTextProps, RNViewProps } from './reactNativeTypes';
-export { getElementLayoutEvent, setOnLayoutStrategy, type LayoutEvent, } from '@tamagui/use-element-layout';
+export { setOnLayoutStrategy, type LayoutEvent, } from '@tamagui/use-element-layout';
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>;
 export interface RNTamaguiViewNonStyleProps extends StackNonStyleProps, RNExclusiveViewProps {
 }
