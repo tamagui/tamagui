@@ -9,6 +9,7 @@ import {
   Text,
   type UniversalAnimatedNumber,
   useComposedRefs,
+  isEqualShallow,
   useThemeWithState,
   View,
 } from '@tamagui/core'
@@ -22,7 +23,15 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -63,7 +72,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     ResetPresence,
 
     useAnimations: (animationProps) => {
-      const { props, style, componentState, stateRef, useStyleEmitter } = animationProps
+      const { props, style, componentState, stateRef, useStyleEmitter, presence } =
+        animationProps
 
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
@@ -72,11 +82,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
       const presenceContext = React.useContext(PresenceContext)
+      const isExiting = presence?.[0] === false
+      const sendExitComplete = presence?.[1]
 
       const [scope, animate] = useAnimate()
       const lastAnimationStyle = useRef<Object | null>(null)
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
+      const currentDontAnimate = useRef<Object>({})
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
         const motionAnimationState = getMotionAnimatedProps(
@@ -86,8 +99,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         )
         return motionAnimationState
       }, [presenceContext, animationKey, styleKey])
-
-      // const id = useId()
 
       const runAnimation = (
         nextStyle: Record<string, unknown> | null,
@@ -132,25 +143,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           )
         }
 
-        // for some reason it keeps adding and never removes
-        scope.animations = scope.animations.filter((x) => {
-          try {
-            return x.state !== 'finished' && x.state !== 'idle'
-          } catch {
-            // it can error
-            return true
-          }
-        })
         controls.current = animate(scope.current, diff, animationOptions)
         lastAnimationStyle.current = nextStyle
+
+        if (isExiting) {
+          controls.current.finished.then(() => {
+            sendExitComplete?.()
+          })
+        }
       }
 
       useStyleEmitter?.((nextStyle) => {
-        const { doAnimate, animationOptions } = getMotionAnimatedProps(
+        const { doAnimate, dontAnimate, animationOptions } = getMotionAnimatedProps(
           props as any,
           nextStyle,
           disableAnimation
         )
+
+        if (!isEqualShallow(dontAnimate, currentDontAnimate.current)) {
+          console.warn('changed dont animate', dontAnimate, currentDontAnimate.current)
+        }
+
         runAnimation(doAnimate, animationOptions)
       })
 
@@ -169,16 +182,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         runAnimation(doAnimate, animationOptions)
       }, [JSON.stringify(doAnimate), lastAnimationStyle])
 
-      if (
-        process.env.NODE_ENV === 'development' &&
-        props['debug'] &&
-        props['debug'] !== 'profile'
-      ) {
-        console.info(
-          `[animations-motion] render (`,
-          JSON.stringify(dontAnimate, null, 2) + ')'
-        )
-      }
+      useEffect(() => {
+        currentDontAnimate.current = dontAnimate
+      }, [dontAnimate])
 
       return {
         style: dontAnimate,

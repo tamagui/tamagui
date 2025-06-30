@@ -104,6 +104,7 @@ export type TamaguiComponentStateRef = {
   isListeningToTheme?: boolean
   unPress?: Function
   stateEmitter?: ComponentStateEmitter
+  nextComponentState?: Partial<TamaguiComponentState>
   useStyleListener?: UseStyleListener
   group?: {
     listeners: Set<GroupStateListener>

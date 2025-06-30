@@ -123,6 +123,13 @@ export const useComponentState = (
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
+  // apply states we never updated from avoiding re-renders in animation driver
+  // unsafe yea yea
+  if (stateRef.current.nextComponentState) {
+    Object.assign(state, stateRef.current.nextComponentState)
+    stateRef.current.nextComponentState = undefined
+  }
+
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
   if (isWeb && hasAnimationThatNeedsHydrate && !staticConfig.isHOC && !isHydrated) {

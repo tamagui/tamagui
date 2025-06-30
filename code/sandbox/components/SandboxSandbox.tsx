@@ -1,7 +1,15 @@
 // debug
 import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
-import { Button, Circle, Configuration, Square, XStack, YStack } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Circle,
+  Configuration,
+  Square,
+  XStack,
+  YStack,
+} from 'tamagui'
 import { PopoverDemo } from '../../demos/src/PopoverDemo'
 import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animations } from '../config/tamagui/animations'
@@ -21,6 +29,7 @@ export function SandboxSandbox() {
 const Motion = () => {
   console.warn('render')
   const [x, setX] = useState(0)
+  const [show, setShow] = useState(false)
   return (
     <Configuration animationDriver={animationsMotion}>
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
@@ -29,12 +38,40 @@ const Motion = () => {
         // debug="verbose"
         animation="lazy"
         bg="red"
-        size={100}
+        size={50}
         borderWidth={2}
         hoverStyle={{ scale: 1.5, borderColor: 'green', x: 100 }}
         pressStyle={{ scale: 0.8, borderColor: 'red' }}
         x={x * 300}
       />
+
+      <Button onPress={() => setShow(!show)}>show</Button>
+      <YStack width="100%" bg="yellow" group="card">
+        <AnimatePresence>
+          {show && (
+            <Square
+              animation="lazy"
+              $group-card-hover={{
+                scale: 2,
+              }}
+              size={50}
+              bg="rgba(255,200,200)"
+              hoverStyle={{
+                bg: 'rgba(200,200,200)',
+                scale: 1.1,
+              }}
+              enterStyle={{
+                y: -100,
+                opacity: 0,
+              }}
+              exitStyle={{
+                y: 100,
+                opacity: 0,
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </YStack>
     </Configuration>
   )
 }

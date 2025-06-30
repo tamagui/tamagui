@@ -554,6 +554,7 @@ export function createComponent<
         )
         if (canAvoidReRender && styleListener) {
           const updatedState = { ...state, ...next }
+          stateRef.current.nextComponentState = updatedState
           const nextStyles = getSplitStyles(
             props,
             staticConfig,
