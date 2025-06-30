@@ -67,7 +67,7 @@ type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentSta
 
 export const componentSetStates = new Set<ComponentSetState>()
 
-if (typeof window !== 'undefined') {
+if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelTouches = () => {
     // clear all press downs
     componentSetStates.forEach((setState) =>
