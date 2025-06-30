@@ -1487,9 +1487,11 @@ export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k) =
 
   if (process.env.TAMAGUI_TARGET !== 'native') {
     // j = startedUnhydrated
-    useInsertEffectCompat(() => {
-      insertStyleRules(res.rulesToInsert)
-    }, [res.rulesToInsert])
+    if (!j) {
+      useInsertEffectCompat(() => {
+        insertStyleRules(res.rulesToInsert)
+      }, [res.rulesToInsert])
+    }
   }
 
   return res

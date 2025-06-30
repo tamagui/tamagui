@@ -7,16 +7,23 @@
  * @noflow
  */
 
-import React from 'react'
 import {
   AccessibilityUtil,
   LocaleProvider,
   createDOMProps,
   stylesFromProps,
 } from '@tamagui/react-native-web-internals'
-import { wrapStyleTags } from '@tamagui/web'
+import {
+  type StyleObject,
+  getStyleTags,
+  insertStyleRules,
+  useDidFinishSSR,
+} from '@tamagui/web'
+import React, { useInsertionEffect, useMemo } from 'react'
 
 const createElement = (component, props, options?) => {
+  const isHydrated = useDidFinishSSR()
+
   // Use equivalent platform elements where possible.
   let accessibilityComponent
   if (component && component.constructor === String) {
@@ -29,9 +36,29 @@ const createElement = (component, props, options?) => {
 
   let element = React.createElement(Component, domProps)
 
-  if (styles) {
-    element = wrapStyleTags(styles, element)
-  }
+  const styleTags = useMemo(
+    () => {
+      return isHydrated ? null : getStyleTags(styles, element)
+    },
+    [
+      // never changes
+    ]
+  )
+
+  element = (
+    <>
+      {element}
+      {styleTags}
+    </>
+  )
+
+  useInsertionEffect(() => {
+    const styleObj: Record<string, StyleObject> = {}
+    for (const style of styles) {
+      styleObj[style[0]] = style
+    }
+    insertStyleRules(styleObj)
+  }, [styles])
 
   // Update locale context if element's writing direction prop changes
   const elementWithLocaleProvider = domProps.dir ? (
