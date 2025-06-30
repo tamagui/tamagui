@@ -40,7 +40,6 @@ const DebounceTimers = new WeakMap<HTMLElement, NodeJS.Timeout>()
 const LastChangeTime = new WeakMap<HTMLElement, number>()
 
 const rAF = typeof window !== 'undefined' ? window.requestAnimationFrame : undefined
-const DEBOUNCE_DELAY = 32 // 32ms debounce (2 frames at 60fps)
 
 // prevent thrashing during first hydration (somewhat, streaming gets trickier)
 let avoidUpdates = true
@@ -62,7 +61,7 @@ if (isClient) {
     let lastFrameAt = Date.now()
     const numDroppedFramesUntilPause = 2 // adjust sensitivity
 
-    async function updateLayoutIfChanged(node: HTMLElement) {
+    async function updateLayoutIfChanged(node: HTMLElement, frameId: number) {
       const parentNode = node.parentElement
 
       let nodeRect: DOMRectReadOnly
@@ -73,11 +72,21 @@ if (isClient) {
           getBoundingClientRectAsync(node),
           getBoundingClientRectAsync(parentNode),
         ])
+
+        // cancel if we skipped a frame
+        if (frameId !== lastFrameAt) {
+          return
+        }
+
         nodeRect = nr
         parentRect = pr
       } else {
         nodeRect = node.getBoundingClientRect()
         parentRect = parentNode?.getBoundingClientRect()
+      }
+
+      if (!parentRect) {
+        return
       }
 
       const onLayout = LayoutHandlers.get(node)
@@ -90,8 +99,7 @@ if (isClient) {
         !cachedRect ||
         // has changed one rect
         (!isEqualShallow(cachedRect, nodeRect) &&
-          (!cachedParentRect ||
-            (parentRect && !isEqualShallow(cachedParentRect, parentRect))))
+          (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
       ) {
         NodeRectCache.set(node, nodeRect)
         if (parentRect && parentNode) {
@@ -100,45 +108,12 @@ if (isClient) {
 
         if (avoidUpdates) {
           // Use sync version for queued updates to avoid promise complications
-          const event = getElementLayoutEvent(node)
+          const event = getElementLayoutEvent(nodeRect, parentRect)
           queuedUpdates.set(node, () => onLayout(event))
         } else if (strategy === 'async') {
-          // For async strategy, debounce the layout update
-          const now = Date.now()
-          LastChangeTime.set(node, now)
-
-          // Clear existing debounce timer
-          const existingTimer = DebounceTimers.get(node)
-          if (existingTimer) {
-            clearTimeout(existingTimer)
-          }
-
-          // Set new debounce timer
-          const timer = setTimeout(async () => {
-            const lastChange = LastChangeTime.get(node) || 0
-            const timeSinceChange = Date.now() - lastChange
-
-            // Only fire if at least DEBOUNCE_DELAY has passed since last change
-            if (timeSinceChange >= DEBOUNCE_DELAY) {
-              const event = await getElementLayoutEventAsync(node)
-              onLayout(event)
-              DebounceTimers.delete(node)
-            } else {
-              // Reschedule if not enough time has passed
-              const remainingDelay = DEBOUNCE_DELAY - timeSinceChange
-              const newTimer = setTimeout(async () => {
-                const event = await getElementLayoutEventAsync(node)
-                onLayout(event)
-                DebounceTimers.delete(node)
-              }, remainingDelay)
-              DebounceTimers.set(node, newTimer)
-            }
-          }, DEBOUNCE_DELAY)
-
-          DebounceTimers.set(node, timer)
         } else {
           // Sync strategy - use sync version
-          const event = getElementLayoutEvent(node)
+          const event = getElementLayoutEvent(nodeRect, parentRect)
           onLayout(event)
         }
       }
@@ -153,15 +128,19 @@ if (isClient) {
       lastFrameAt = now
 
       if (strategy !== 'off') {
+        // for both strategies:
         // avoid updates if we've been dropping frames (indicates sync work happening)
         const expectedFrameTime = 16.67 // ~60fps
         const hasRecentSyncWork =
           timeSinceLastFrame > expectedFrameTime * numDroppedFramesUntilPause
 
         if (!hasRecentSyncWork) {
-          Nodes.forEach(updateLayoutIfChanged)
+          Nodes.forEach((node) => {
+            updateLayoutIfChanged(node, lastFrameAt)
+          })
         }
       }
+
       rAF!(layoutOnAnimationFrame)
     }
   } else {
@@ -173,22 +152,17 @@ if (isClient) {
   }
 }
 
-// Sync versions
-export const getElementLayoutEvent = (target: HTMLElement): LayoutEvent => {
-  let res: LayoutEvent | null = null
-  measureLayout(target, null, (x, y, width, height, left, top) => {
-    res = {
-      nativeEvent: {
-        layout: { x, y, width, height, left, top },
-        target,
-      },
-      timeStamp: Date.now(),
-    }
-  })
-  if (!res) {
-    throw new Error(`‼️`) // impossible
+export const getElementLayoutEvent = (
+  nodeRect: DOMRectReadOnly,
+  parentRect: DOMRectReadOnly
+): LayoutEvent => {
+  return {
+    nativeEvent: {
+      layout: getRelativeDimensions(nodeRect, parentRect),
+      target: nodeRect,
+    },
+    timeStamp: Date.now(),
   }
-  return res
 }
 
 export const measureLayout = (
@@ -280,19 +254,22 @@ export function useElementLayout(
 
     LayoutHandlers.set(node, onLayout)
     Nodes.add(node)
-    onLayout(getElementLayoutEvent(node))
+
+    // always do one immediate sync layout event no matter the strategy for accuracy
+    const parentNode = node.parentNode
+    if (parentNode) {
+      onLayout(
+        getElementLayoutEvent(
+          node.getBoundingClientRect(),
+          parentNode.getBoundingClientRect()
+        )
+      )
+    }
 
     return () => {
       Nodes.delete(node)
       LayoutHandlers.delete(node)
       NodeRectCache.delete(node)
-
-      // Clean up debounce timer and tracking
-      const timer = DebounceTimers.get(node)
-      if (timer) {
-        clearTimeout(timer)
-        DebounceTimers.delete(node)
-      }
       LastChangeTime.delete(node)
     }
   }, [ref, !!onLayout])

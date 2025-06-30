@@ -20,8 +20,7 @@ export type LayoutEvent = {
 	timeStamp: number;
 };
 export declare function enable(): void;
-// Sync versions
-export declare const getElementLayoutEvent: (target: HTMLElement) => LayoutEvent;
+export declare const getElementLayoutEvent: (nodeRect: DOMRectReadOnly, parentRect: DOMRectReadOnly) => LayoutEvent;
 export declare const measureLayout: (node: HTMLElement, relativeTo: HTMLElement | null, callback: (x: number, y: number, width: number, height: number, left: number, top: number) => void) => void;
 export declare const getElementLayoutEventAsync: (target: HTMLElement) => Promise<LayoutEvent>;
 export declare const measureLayoutAsync: (node: HTMLElement, relativeTo?: HTMLElement | null) => Promise<null | LayoutValue>;
