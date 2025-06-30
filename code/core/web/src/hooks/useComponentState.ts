@@ -1,4 +1,4 @@
-import { IS_REACT_19, isServer, isWeb } from '@tamagui/constants'
+import { isServer, isWeb } from '@tamagui/constants'
 import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
@@ -30,7 +30,7 @@ export const useComponentState = (
 ) => {
   const isHydrated = useDidFinishSSR()
   const needsHydration = !useIsClientOnly()
-  const [startedUnhydrated] = useState(IS_REACT_19 ? !isHydrated : false)
+  const [startedUnhydrated] = useState(needsHydration && !isHydrated)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
   const stateRef = useRef<TamaguiComponentStateRef>(

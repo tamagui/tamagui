@@ -1,10 +1,9 @@
 import {
-  isIos,
   isAndroid,
   isClient,
+  isIos,
   isWeb,
   useIsomorphicLayoutEffect,
-  IS_REACT_19,
 } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
@@ -19,9 +18,9 @@ import {
 } from '@tamagui/helpers'
 import React from 'react'
 import {
+  extractValueFromDynamic,
   getDynamicVal,
   getOppositeScheme,
-  extractValueFromDynamic,
 } from './getDynamicVal'
 
 import { getConfig, getFont, getSetting } from '../config'
@@ -705,7 +704,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle[StyleObjectProperty]}${PROP_SPLIT}${descriptor.name}`
             if (fullKey in usedKeys) continue
-            addStyleToInsertRules(rulesToInsert, psuedoStyle)
+            addStyleToInsertRules(rulesToInsert, psuedoStyle, startedUnhydrated)
             classNames[fullKey] = psuedoStyle[StyleObjectIdentifier]
           }
         }
@@ -874,7 +873,7 @@ export const getSplitStyles: StyleSplitter = (
             }${subKey}${PROP_SPLIT}${mediaKeyShort}${style[StyleObjectPseudo] || ''}`
 
             if (fullKey in usedKeys) continue
-            addStyleToInsertRules(rulesToInsert, out as any)
+            addStyleToInsertRules(rulesToInsert, out as any, startedUnhydrated)
             classNames[fullKey] = out[StyleObjectIdentifier]
           }
         } else {
@@ -1166,7 +1165,7 @@ export const getSplitStyles: StyleSplitter = (
             retainedStyles[key] = value
             shouldRetain = true
           } else {
-            addStyleToInsertRules(rulesToInsert, atomicStyle)
+            addStyleToInsertRules(rulesToInsert, atomicStyle, startedUnhydrated)
             classNames[key] = identifier
           }
         }
@@ -1504,7 +1503,7 @@ function addStyleToInsertRules(
 ) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     const identifier = styleObject[StyleObjectIdentifier]
-    if (!startedUnhydrated || !IS_REACT_19) {
+    if (!startedUnhydrated) {
       if (shouldInsertStyleRules(identifier)) {
         updateRules(identifier, styleObject[StyleObjectRules])
         rulesToInsert[identifier] = styleObject

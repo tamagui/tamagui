@@ -1218,11 +1218,11 @@ export function createComponent<
 
     // add in <style> tags inline
     if (process.env.TAMAGUI_TARGET === 'web' && !startedUnhydrated) {
-      // breaking rules of hooks but it should NEVER change
+      // breaking rules of hooks but startedUnhydrated NEVER changes
       const styleTags = useMemo(() => {
         return getStyleTags(Object.values(splitStyles.rulesToInsert))
       }, [])
-      // this is only to appease react hydration really, we could test suppressing it?
+      // this is only to appease react hydration really
       content = (
         <>
           {content}

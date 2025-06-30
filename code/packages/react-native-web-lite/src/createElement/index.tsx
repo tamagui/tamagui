@@ -38,7 +38,7 @@ const createElement = (component, props, options?) => {
 
   const styleTags = useMemo(
     () => {
-      return isHydrated ? null : getStyleTags(styles, element)
+      return isHydrated || !styles ? null : getStyleTags(styles, element)
     },
     [
       // never changes
@@ -53,6 +53,7 @@ const createElement = (component, props, options?) => {
   )
 
   useInsertionEffect(() => {
+    if (!styles) return
     const styleObj: Record<string, StyleObject> = {}
     for (const style of styles) {
       styleObj[style[0]] = style
