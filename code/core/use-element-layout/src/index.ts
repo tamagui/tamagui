@@ -55,17 +55,23 @@ export function enable(): void {
   }
 }
 
+const expectedFrameTime = 16.67 // ~60fps
+const numDroppedFramesUntilPause = 10
+
 if (isClient) {
   if (rAF) {
     // track frame timing to detect sync work and avoid updates during heavy periods
     let lastFrameAt = Date.now()
-    const numDroppedFramesUntilPause = 2 // adjust sensitivity
 
     async function updateLayoutIfChanged(node: HTMLElement, frameId: number) {
+      const onLayout = LayoutHandlers.get(node)
+      if (typeof onLayout !== 'function') return
+
       const parentNode = node.parentElement
+      if (!parentNode) return
 
       let nodeRect: DOMRectReadOnly
-      let parentRect: DOMRectReadOnly | undefined
+      let parentRect: DOMRectReadOnly
 
       if (strategy === 'async') {
         const [nr, pr] = await Promise.all([
@@ -82,18 +88,11 @@ if (isClient) {
         parentRect = pr
       } else {
         nodeRect = node.getBoundingClientRect()
-        parentRect = parentNode?.getBoundingClientRect()
+        parentRect = parentNode.getBoundingClientRect()
       }
-
-      if (!parentRect) {
-        return
-      }
-
-      const onLayout = LayoutHandlers.get(node)
-      if (typeof onLayout !== 'function') return
 
       const cachedRect = NodeRectCache.get(node)
-      const cachedParentRect = parentNode ? NodeRectCache.get(parentNode) : null
+      const cachedParentRect = NodeRectCache.get(parentNode)
 
       if (
         !cachedRect ||
@@ -102,18 +101,13 @@ if (isClient) {
           (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
       ) {
         NodeRectCache.set(node, nodeRect)
-        if (parentRect && parentNode) {
-          ParentRectCache.set(parentNode, parentRect)
-        }
+        ParentRectCache.set(parentNode, parentRect)
+
+        const event = getElementLayoutEvent(nodeRect, parentRect)
 
         if (avoidUpdates) {
-          // Use sync version for queued updates to avoid promise complications
-          const event = getElementLayoutEvent(nodeRect, parentRect)
           queuedUpdates.set(node, () => onLayout(event))
-        } else if (strategy === 'async') {
         } else {
-          // Sync strategy - use sync version
-          const event = getElementLayoutEvent(nodeRect, parentRect)
           onLayout(event)
         }
       }
@@ -122,15 +116,26 @@ if (isClient) {
     // note that getBoundingClientRect() does not thrash layout if its after an animation frame
     rAF!(layoutOnAnimationFrame)
 
+    // only run once in a few frames, this could be adjustable
+    let frameCount = 0
+    const runEveryXFrames = 6
+
     function layoutOnAnimationFrame() {
       const now = Date.now()
       const timeSinceLastFrame = now - lastFrameAt
       lastFrameAt = now
 
+      if (frameCount < runEveryXFrames) {
+        frameCount++
+        rAF!(layoutOnAnimationFrame)
+        return
+      }
+
+      frameCount = 0
+
       if (strategy !== 'off') {
         // for both strategies:
         // avoid updates if we've been dropping frames (indicates sync work happening)
-        const expectedFrameTime = 16.67 // ~60fps
         const hasRecentSyncWork =
           timeSinceLastFrame > expectedFrameTime * numDroppedFramesUntilPause
 
