@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Stack, styled } from '@tamagui/core'
 import { createSwitch } from '@tamagui/switch'
-import { Label, XStack, YStack } from 'tamagui'
+import { Label, XStack, YStack } from '@tamagui/ui'
 
 const Frame = styled(Stack, {
   width: 40,
@@ -47,7 +47,7 @@ export const Switch = createSwitch({
 
 export function SwitchUnstyledDemo() {
   return (
-    <YStack width={200} alignItems="center" space="$3">
+    <YStack width={200} alignItems="center" gap="$3">
       <XStack gap="$3" alignItems="center">
         <Label htmlFor="unstyled-switch">Unstyled</Label>
         <Switch defaultChecked id="unstyled-switch">

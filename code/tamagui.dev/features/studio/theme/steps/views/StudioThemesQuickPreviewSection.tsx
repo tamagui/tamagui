@@ -11,7 +11,7 @@ import {
   Switch,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { AccentTheme } from '~/features/studio/components/AccentTheme'
 import { accentThemeName } from '../../../accentThemeName'
@@ -84,7 +84,7 @@ export const StudioThemesQuickPreviewSection = memo(
 
           <YStack pb="$4" gap="$4">
             <XStack my="$-2" jc="center">
-              <XStack width={300} alignItems="center" space="$4">
+              <XStack width={300} alignItems="center" gap="$4">
                 <Checkbox
                   id={checkId}
                   onCheckedChange={(val) => {

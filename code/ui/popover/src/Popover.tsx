@@ -152,18 +152,18 @@ export const PopoverTrigger = React.forwardRef<
     return null
   }
 
-  const trigger = (
-    <View
-      aria-expanded={context.open}
-      // TODO not matching
-      // aria-controls={context.contentId}
-      data-state={getState(context.open)}
-      {...rest}
-      // @ts-ignore
-      ref={composedTriggerRef}
-      onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-    />
-  )
+    const trigger = (
+      <View
+        aria-expanded={context.open}
+        // TODO not matching
+        // aria-controls={context.contentId}
+        data-state={getState(context.open)}
+        {...rest}
+        // @ts-ignore
+        ref={composedTriggerRef}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+      />
+    )
 
   const virtualRef = React.useMemo(() => {
     if (!anchorTo) {
@@ -207,8 +207,6 @@ export const PopoverTrigger = React.forwardRef<
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-type PopoverContentTypeElement = PopoverContentImplElement
-
 export interface PopoverContentTypeProps
   extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
   /**
@@ -220,44 +218,55 @@ export interface PopoverContentTypeProps
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopoverContent = PopperContentFrame.extractable(
-  React.forwardRef<
-    PopoverContentTypeElement,
-    ScopedPopoverProps<PopoverContentTypeProps>
-  >(function PopoverContent(
-    props: ScopedPopoverProps<PopoverContentTypeProps>,
-    forwardedRef
-  ) {
-    const {
-      allowPinchZoom,
-      trapFocus,
-      disableRemoveScroll = true,
-      zIndex,
-      __scopePopover,
-      ...contentImplProps
-    } = props
-    const context = usePopoverContext(__scopePopover)
-    const contentRef = React.useRef<any>(null)
-    const composedRefs = useComposedRefs(forwardedRef, contentRef)
-    const isRightClickOutsideRef = React.useRef(false)
-    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+export const PopoverContent = PopperContentFrame.styleable<
+  ScopedPopoverProps<PopoverContentTypeProps>
+>(function PopoverContent(
+  props: ScopedPopoverProps<PopoverContentTypeProps>,
+  forwardedRef
+) {
+  const {
+    allowPinchZoom,
+    trapFocus,
+    disableRemoveScroll = true,
+    zIndex,
+    __scopePopover,
+    ...contentImplProps
+  } = props
+  const context = usePopoverContext(__scopePopover)
+  const contentRef = React.useRef<any>(null)
+  const composedRefs = useComposedRefs(forwardedRef, contentRef)
+  const isRightClickOutsideRef = React.useRef(false)
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
-    if (context.open && isFullyHidden) {
-      setIsFullyHidden(false)
+  if (context.open && isFullyHidden) {
+    setIsFullyHidden(false)
+  }
+
+  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+  React.useEffect(() => {
+    if (!context.open) return
+    const content = contentRef.current
+    if (content) return hideOthers(content)
+  }, [context.open])
+
+  if (!context.keepChildrenMounted) {
+    if (isFullyHidden) {
+      return null
     }
+  }
 
-    // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    React.useEffect(() => {
-      if (!context.open) return
-      const content = contentRef.current
-      if (content) return hideOthers(content)
-    }, [context.open])
+  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+  React.useEffect(() => {
+    if (!context.open) return
+    const content = contentRef.current
+    if (content) return hideOthers(content)
+  }, [context.open])
 
-    if (!context.keepChildrenMounted) {
-      if (isFullyHidden) {
-        return null
-      }
+  if (!context.keepChildrenMounted) {
+    if (isFullyHidden) {
+      return null
     }
+  }
 
     return (
       <PopoverContentPortal __scopePopover={__scopePopover} zIndex={zIndex}>
@@ -309,7 +318,6 @@ export const PopoverContent = PopperContentFrame.extractable(
       </PopoverContentPortal>
     )
   })
-)
 
 function PopoverRepropagateContext(props: {
   children: any
@@ -376,9 +384,8 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
 
 type PopoverContentImplElement = React.ElementRef<typeof PopperContent>
 
-export interface PopoverContentImplProps
-  extends PopperContentProps,
-    Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
+export interface PopoverContentExtraProps
+  extends Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
   /**
    * Rather than mount the content immediately, mounts it in a useEffect
    * inside a startTransition to clear the main thread
@@ -413,6 +420,10 @@ export interface PopoverContentImplProps
 
   setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+export interface PopoverContentImplProps
+  extends PopperContentProps,
+    PopoverContentExtraProps {}
 
 const PopoverContentImpl = React.forwardRef<
   PopoverContentImplElement,

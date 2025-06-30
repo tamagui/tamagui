@@ -1,6 +1,6 @@
 import { LogoIcon } from '@tamagui/logo'
 import { useEffect, useState } from 'react'
-import { Paragraph, Spacer, Spinner, XStack, YStack, composeRefs } from 'tamagui'
+import { Paragraph, Spacer, Spinner, XStack, YStack, composeRefs } from '@tamagui/ui'
 import { useHoverGlow } from '~/components/HoverGlow'
 
 export const StudioQueueCard = ({ teamId }: { teamId: number }) => {
@@ -139,7 +139,7 @@ const QueueCardFrame = ({
         </Paragraph>
       </YStack>
 
-      <Spacer flex />
+      <Spacer flex={1} />
 
       <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
         {place}
@@ -156,7 +156,7 @@ const QueueCardFrame = ({
           in the {tierName ?? 'non-sponsor'} tier
         </Paragraph>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <YStack pb="$2">
           <LogoIcon />

@@ -14,7 +14,7 @@ import {
   getMedia,
   styled,
   useThemeName,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import config from '../tamagui.config'
 
@@ -230,7 +230,7 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          {/* <YStack  space="$2" $gtSm={{ space: '$10' }}>
+          {/* <YStack  gap="$2" $gtSm={{ gap: '$10' }}>
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
@@ -282,7 +282,7 @@ export const Sandbox = () => {
           {/* <SheetDemo2 /> */}
           {/* <SheetDemo /> */}
           {/* <SwitchDemo /> */}
-          {/* <XStack space>
+          {/* <XStack gap="$4">
             <Square size={50} bc="red" />
             <Square $sm={{ display: 'none' }} size={50} bc="red" />
             <Square size={50} bc="red" />

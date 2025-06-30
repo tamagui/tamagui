@@ -1,6 +1,6 @@
 import '@tamagui/core/reset.css'
 
-import { View, YStack } from 'tamagui'
+import { View, YStack } from '@tamagui/ui'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 
 import { Provider } from '../src/components/provider/Provider'

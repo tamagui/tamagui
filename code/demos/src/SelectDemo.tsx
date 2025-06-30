@@ -1,9 +1,9 @@
 import React, { ElementType } from 'react'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 
-import type { FontSizeTokens, SelectProps } from 'tamagui'
-import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import type { FontSizeTokens, SelectProps } from '@tamagui/ui'
+import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 
 export function SelectDemo() {
   return (
@@ -81,7 +81,9 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           minWidth={200}
         >
           <Select.Group>
-            <Select.Label>Fruits</Select.Label>
+            <Select.Label>
+              <Select.Label.Text color="$red10">Fruits</Select.Label.Text>
+            </Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>

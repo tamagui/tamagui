@@ -1,10 +1,10 @@
 import * as babel from '@babel/core'
 import type {
-  ExtractToClassNamesProps} from '@tamagui/static';
+  ExtractToClassNamesProps} from '@tamagui/compiler';
 import {
   createExtractor,
   extractToClassNames,
-} from '@tamagui/static'
+} from '@tamagui/compiler'
 
 export async function extractForNative(code: string) {
   return await babel.transformAsync(code, {
@@ -25,7 +25,7 @@ export async function extractForWeb(
     ...opts,
     options: {
       platform: 'web',
-      components: ['tamagui', '@tamagui/core', '@tamagui/test-design-system'],
+      components: ['@tamagui/ui', '@tamagui/core', '@tamagui/test-design-system'],
       config: './tests/lib/tamagui.config.cjs',
       ...opts?.options,
     },

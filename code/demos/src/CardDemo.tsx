@@ -1,5 +1,5 @@
-import type { CardProps } from 'tamagui'
-import { Button, Card, H2, Image, Paragraph, XStack } from 'tamagui'
+import type { CardProps } from '@tamagui/ui'
+import { Button, Card, H2, Image, Paragraph, XStack } from '@tamagui/ui'
 
 export function CardDemo() {
   return (
@@ -20,12 +20,12 @@ export function CardDemo() {
 
 export function DemoCard(props: CardProps) {
   return (
-    <Card elevate size="$4" bordered {...props}>
-      <Card.Header padded>
+    <Card size="$4" borderWidth={1} borderColor="$borderColor" {...props}>
+      <Card.Header padding="$4">
         <H2>Sony A7IV</H2>
         <Paragraph theme="alt2">Now available</Paragraph>
       </Card.Header>
-      <Card.Footer padded>
+      <Card.Footer padding="$4">
         <XStack flex={1} />
         <Button borderRadius="$10">Purchase</Button>
       </Card.Footer>

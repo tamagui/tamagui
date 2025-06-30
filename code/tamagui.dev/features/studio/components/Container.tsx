@@ -1,6 +1,6 @@
 // via site
 
-import { YStack, styled } from 'tamagui'
+import { YStack, styled } from '@tamagui/ui'
 
 const variants = {
   hide: {

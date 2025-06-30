@@ -1,4 +1,4 @@
-import { H4, styled } from 'tamagui'
+import { H4, styled } from '@tamagui/ui'
 
 export const DocsNavHeading = styled(H4, {
   ff: '$mono',

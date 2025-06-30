@@ -1,7 +1,6 @@
 export * from './Tamagui'
 export * from './createComponent'
 export * from './createShorthands'
-export * from './createTheme'
 export * from './createTamagui'
 export * from './createFont'
 export * from './createTokens'
