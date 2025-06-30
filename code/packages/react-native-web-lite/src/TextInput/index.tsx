@@ -22,7 +22,7 @@ import {
   useResponderEvents,
 } from '@tamagui/react-native-web-internals'
 
-import createElement from '../createElement/index'
+import { useCreateElement } from '../createElement/index'
 import type { PlatformMethods } from '../types'
 import type { TextInputProps } from './types'
 
@@ -413,7 +413,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
     const componentDirection = props.dir || langDirection
     const writingDirection = componentDirection || contextDirection
 
-    const element = createElement(component, supportedProps, {
+    const element = useCreateElement(component, supportedProps, {
       writingDirection,
     })
 
