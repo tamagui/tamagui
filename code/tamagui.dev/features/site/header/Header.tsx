@@ -277,6 +277,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
+  const context = React.useContext(SlidingPopoverContext)
   const userSwr = useUser()
   const haveUser = !!userSwr.data?.user
 
@@ -294,6 +295,10 @@ const HeaderMenuButton = () => {
           onPress={(e) => {
             if (isTouchable) {
               setOpen(!open)
+              // Ensure the active state is set for the menu to open properly on mobile
+              // On mobile, we just need to set the active state, not the layout
+              // The Sheet doesn't need positioning data
+              context.setActive('menu')
               return
             }
             if (isOnLink) {
@@ -435,7 +440,7 @@ export const HeaderLink = (props: {
 }
 
 const SlidingPopoverContext = React.createContext({
-  setActive(id: ID, layout: LayoutRectangle) {},
+  setActive(id: ID, layout?: LayoutRectangle) {},
   close() {},
 })
 
