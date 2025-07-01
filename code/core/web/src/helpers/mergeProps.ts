@@ -40,15 +40,16 @@ function mergeProp(
   const longhand = inverseShorthands?.[key] || null
   const val = a[key]
 
-  if (b && (key in b || (longhand && longhand in b))) {
-    return
-  }
-
+  // This ensures styled definition and runtime props are always merged
   if (key in pseudoDescriptors || mediaKeys.has(key)) {
     out[key] = {
       ...out[key],
       ...val,
     }
+    return
+  }
+
+  if (b && (key in b || (longhand && longhand in b))) {
     return
   }
 
