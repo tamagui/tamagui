@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-use-pressable",
-  "version": "1.129.11-1751338700427",
+  "version": "1.129.12",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
