@@ -200,15 +200,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
         lastAnimateAt.current = Date.now()
 
-        if (controls.current && controls.current.time < 0.012) {
-          console.warn(
-            'will glitch',
-            controls.current.time * 1000,
-            scope.animations[scope.animations.length - 1]
-          )
-          scope.animations[scope.animations.length - 1]
-        }
-
         controls.current?.stop()
         controls.current = animate(scope.current, diff, animationOptions)
         lastAnimationStyle.current = { ...nextStyle, ...diff }
