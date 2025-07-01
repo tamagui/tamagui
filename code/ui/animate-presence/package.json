@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate-presence",
-  "version": "1.129.11-1751331636218",
+  "version": "1.129.11-1751338345152",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
