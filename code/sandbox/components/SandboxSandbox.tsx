@@ -11,6 +11,7 @@ import {
   YStack,
 } from 'tamagui'
 import { PopoverDemo } from '../../demos/src/PopoverDemo'
+import { DialogDemo } from '../../demos/src/DialogDemo'
 import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animations } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
@@ -18,7 +19,8 @@ import { animationsCSS } from '../config/tamagui/animationsCSS'
 export function SandboxSandbox() {
   return (
     <>
-      <Motion />
+      {/* <Motion /> */}
+      <DialogDemo />
       {/* <PopoverDemo /> */}
       {/* <Performance /> */}
       {/* <Drivers /> */}

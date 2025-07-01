@@ -6,6 +6,9 @@ export const Fieldset = styled(YStack, {
   name: 'Fieldset',
   tag: 'fieldset',
 
+  // remove browser default styling
+  borderWidth: 0,
+
   variants: {
     horizontal: {
       true: {

@@ -90,6 +90,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
       const currentDontAnimate = useRef<Object>({})
+      const lastRun = useRef<Promise<void> | null>(null)
+      const nextRunDiff = useRef<Object | null>(null)
 
       const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
         const motionAnimationState = getMotionAnimatedProps(
@@ -100,7 +102,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         return motionAnimationState
       }, [presenceContext, animationKey, styleKey])
 
-      const runAnimation = (
+      const runAnimation = async (
         nextStyle: Record<string, unknown> | null,
         animationOptions: AnimationOptions | undefined
       ) => {
@@ -114,22 +116,74 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         styleToCSS(nextStyle)
 
         if (!lastAnimationStyle.current) {
-          // console.log('first', id, animationStyle)
           lastAnimationStyle.current = nextStyle
-          controls.current = animate(scope.current, nextStyle, {
+          const firstAnimation = animate(scope.current, nextStyle, {
             duration: 0,
             type: 'tween',
           })
-          controls.current.complete()
+          firstAnimation.complete()
           scope.animations = []
+
+          if (
+            process.env.NODE_ENV === 'development' &&
+            props['debug'] &&
+            props['debug'] !== 'profile'
+          ) {
+            console.groupCollapsed(`[animations-motion] 🌊 FIRST`)
+            console.info(nextStyle)
+            console.groupEnd()
+          }
           return
         }
 
-        const diff = {}
+        let diff: Record<string, unknown> | null = null
         for (const key in nextStyle) {
           if (nextStyle[key] !== lastAnimationStyle.current[key]) {
+            diff ||= {}
             diff[key] = nextStyle[key]
           }
+        }
+
+        if (nextRunDiff.current) {
+          Object.assign(nextRunDiff.current, diff)
+          console.info('skip this run')
+          return
+        }
+
+        // fixbug where updating twice in under a frame cause NaN issues on animating transforms and glitchy animations
+        const lastRunPromise = lastRun.current
+
+        let resolveLastRun: Function | undefined
+        const runPromise = new Promise<void>((res) => {
+          resolveLastRun = res
+        })
+        lastRun.current = runPromise
+
+        if (lastRunPromise) {
+          nextRunDiff.current = {}
+          console.info(`wait for last`)
+          await lastRunPromise
+        }
+
+        const curControls = controls.current
+        let waits = 0
+
+        // if we check when no animations it breaks
+        if (curControls?.['animations'].length) {
+          while (curControls?.time < 0.012) {
+            lastRun.current ||= runPromise
+            waits++
+            if (waits > 15) {
+              console.info(`broke the waits, too many`, curControls?.time, curControls)
+              break
+            }
+            await new Promise((res) => setTimeout(res, 15))
+          }
+        }
+
+        if (nextRunDiff.current) {
+          diff = { ...diff, ...nextRunDiff.current }
+          nextRunDiff.current = null
         }
 
         if (
@@ -137,20 +191,29 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           props['debug'] &&
           props['debug'] !== 'profile'
         ) {
-          console.info(
-            `[animations-motion] animate (`,
-            JSON.stringify(diff, null, 2) + ')'
+          console.groupCollapsed(
+            `[animations-motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`
           )
+          console.info({ animationProps, nextStyle, lastAnimationStyle })
+          console.groupEnd()
         }
 
+        if (!diff || !Object.keys(diff).length) {
+          resolveLastRun?.()
+          return
+        }
+
+        curControls?.stop()
         controls.current = animate(scope.current, diff, animationOptions)
-        lastAnimationStyle.current = nextStyle
+        lastAnimationStyle.current = { ...nextStyle, ...diff }
 
         if (isExiting) {
           controls.current.finished.then(() => {
             sendExitComplete?.()
           })
         }
+
+        resolveLastRun?.()
       }
 
       useStyleEmitter?.((nextStyle) => {
@@ -185,6 +248,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       useEffect(() => {
         currentDontAnimate.current = dontAnimate
       }, [dontAnimate])
+
+      if (
+        process.env.NODE_ENV === 'development' &&
+        props['debug'] &&
+        props['debug'] !== 'profile'
+      ) {
+        console.groupCollapsed(`[animations-motion] 🌊 render`)
+        console.info({ style, doAnimate, dontAnimate, scope, animationOptions })
+        console.groupEnd()
+      }
 
       return {
         style: dontAnimate,
@@ -349,6 +422,12 @@ const disableAnimationProps = new Set<string>([
   'pointerEvents',
   'position',
   'textWrap',
+  'zIndex',
+  'overflowX',
+  'overflowY',
+  'outlineStyle',
+  'outlineWidth',
+  'outlineColor',
 ])
 
 const MotionView = createMotionView('div')
@@ -356,7 +435,7 @@ const MotionText = createMotionView('span')
 
 function createMotionView(defaultTag: string) {
   // return forwardRef((props: any, ref) => {
-  //   console.log('rendering?', props)
+  //   console.info('rendering?', props)
   //   const Element = motion[props.tag || defaultTag]
   //   return <Element ref={ref} {...props} />
   // })

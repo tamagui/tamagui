@@ -5,7 +5,7 @@ import {
   Theme,
   useThemeWithState,
 } from '@tamagui/web'
-import { memo, useId, useState } from 'react'
+import { memo, useEffect, useId, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -47,6 +47,19 @@ const StyledText = styled(Text, {
 
 export default function Sandbox() {
   console.warn('render')
+
+  useEffect(() => {
+    console.info('freeze main thread interval')
+    const x = setInterval(() => {
+      const startTime = Date.now()
+      while (Date.now() < startTime + 20) {
+        // Do nothing, just wait
+      }
+    }, 100)
+    return () => {
+      clearInterval(x)
+    }
+  }, [])
 
   return <Text />
   // return <StyledText customProp="ok">hello world</StyledText>
