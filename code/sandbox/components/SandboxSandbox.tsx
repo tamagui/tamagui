@@ -17,25 +17,11 @@ import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animations } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 
-import { View as TView } from '@tamagui/web'
-
-const x = (props, x) => {
-  return null
-}
-
-const X = TView.styleable((props, ref) => {
-  return null
-})
-
-const X1 = TView.styleable((props) => {
-  return null
-})
-
 export function SandboxSandbox() {
   return (
     <>
-      {/* <Motion /> */}
-      <DialogDemo />
+      <Motion />
+      {/* <DialogDemo /> */}
       {/* <PopoverDemo /> */}
       {/* <Performance /> */}
       {/* <Drivers /> */}
@@ -47,13 +33,16 @@ const Motion = () => {
   console.warn('render')
   const [x, setX] = useState(0)
   const [show, setShow] = useState(false)
+  const [pressed, setPressed] = useState(false)
+  const pressedStyle = {
+    y: 20,
+    scale: 1.1,
+  }
   return (
     <Configuration animationDriver={animationsMotion}>
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
       <Square
         className="motion-square"
-        // debug="verbose"
-        debug="verbose"
         animation={[
           'superBouncy',
           {
@@ -71,6 +60,26 @@ const Motion = () => {
 
       <Button onPress={() => setShow(!show)}>show</Button>
       <YStack width="100%" bg="yellow" group="card">
+        {/* render during animate update */}
+        <Square
+          animation="lazy"
+          debug="verbose"
+          onMouseDown={() => {
+            setPressed(true)
+          }}
+          onMouseUp={() => {
+            setPressed(false)
+          }}
+          $group-card-hover={{
+            y: 10,
+            scale: 1.1,
+          }}
+          $group-card-press={pressedStyle}
+          {...(pressed && pressedStyle)}
+          size={50}
+          bg="red"
+        />
+
         <AnimatePresence>
           {show && (
             <Square
@@ -117,7 +126,6 @@ const Drivers = () => {
             bg="red"
             scale={1}
             $group-card-hover={{ scale: 1.5 }}
-            debug="verbose"
           />
         </YStack>
       </Configuration>

@@ -103,7 +103,6 @@ export type TamaguiComponentStateRef = {
   hasEverThemed?: boolean | 'wrapped'
   isListeningToTheme?: boolean
   unPress?: Function
-  stateEmitter?: ComponentStateEmitter
   nextComponentState?: Partial<TamaguiComponentState>
   useStyleListener?: UseStyleListener
   group?: {
@@ -112,13 +111,6 @@ export type TamaguiComponentStateRef = {
     emit: GroupStateListener
     subscribe: (cb: GroupStateListener) => () => void
   }
-}
-
-export type ComponentStateListener = (state: TamaguiComponentState) => void
-export type ComponentStateEmitter = {
-  listeners: Set<ComponentStateListener>
-  emit: ComponentStateListener
-  subscribe: (cb: ComponentStateListener) => () => void
 }
 
 export type WidthHeight = {

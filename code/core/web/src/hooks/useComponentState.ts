@@ -11,7 +11,6 @@ import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
-  ComponentStateListener,
   GroupStateListener,
   StackProps,
   StaticConfig,
@@ -125,7 +124,6 @@ export const useComponentState = (
   // unsafe yea yea
   if (stateRef.current.nextComponentState) {
     Object.assign(state, stateRef.current.nextComponentState)
-    stateRef.current.nextComponentState = undefined
   }
 
   // only web server + initial client render run this when not hydrated:
@@ -211,26 +209,6 @@ export const useComponentState = (
       listeners,
       emit(name, state) {
         listeners.forEach((l) => l(name, state))
-      },
-      subscribe(cb) {
-        listeners.add(cb)
-        setStateShallow({ hasDynGroupChildren: true })
-        return () => {
-          listeners.delete(cb)
-          if (listeners.size === 0) {
-            setStateShallow({ hasDynGroupChildren: false })
-          }
-        }
-      },
-    }
-  }
-
-  if (!curStateRef.stateEmitter && hasAnimationProp) {
-    const listeners = new Set<ComponentStateListener>()
-    curStateRef.stateEmitter = {
-      listeners,
-      emit(state) {
-        listeners.forEach((l) => l(state))
       },
       subscribe(cb) {
         listeners.add(cb)

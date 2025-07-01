@@ -66,6 +66,7 @@ let startVisualizer: Function | undefined
 type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentState>>
 
 export const componentSetStates = new Set<ComponentSetState>()
+const avoidReRenderKeys = new Set(['hover', 'press', 'pressIn', 'group', 'media'])
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelTouches = () => {
@@ -547,13 +548,15 @@ export function createComponent<
       const ogSetStateShallow = setStateShallow
       setStateShallow = (next) => {
         // one thing we have to handle here and where it gets a bit more complex is group styles
-        // but i think we can just emit to the group too?
-        const avoidReRenderKeys = new Set(['hover', 'press', 'pressIn'])
         const canAvoidReRender = Object.keys(next).every((key) =>
           avoidReRenderKeys.has(key)
         )
         if (canAvoidReRender && styleListener) {
           const updatedState = { ...state, ...next }
+          curStateRef.group?.emit(groupName, {
+            pseudo: updatedState,
+            layout: curStateRef.group?.layout,
+          })
           stateRef.current.nextComponentState = updatedState
           const nextStyles = getSplitStyles(
             props,
@@ -799,6 +802,9 @@ export function createComponent<
 
     // TODO should this be regular effect to allow the render in-between?
     useIsomorphicLayoutEffect(() => {
+      // always clear after render
+      stateRef.current.nextComponentState = undefined
+
       // Note: We removed the early return on disabled to allow animations to work
       // This fixes the issue where animations wouldn't work on disabled components
       if (state.unmounted === true && hasEnterStyle) {

@@ -959,7 +959,9 @@ export const getSplitStyles: StyleSplitter = (
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                log(` 🏘️ GROUP media ${groupMediaKey} active? ${isActive}`)
+                log(` 🏘️ GROUP media ${groupMediaKey} active? ${isActive}`, {
+                  ...mediaState,
+                })
               }
               if (!isActive) {
                 // ensure we set the defaults so animations work
@@ -986,7 +988,10 @@ export const getSplitStyles: StyleSplitter = (
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 log(
-                  ` 🏘️ GROUP pseudo ${groupMediaKey} active? ${isActive}, priority ${priority}`
+                  ` 🏘️ GROUP pseudo ${groupMediaKey} active? ${isActive}, priority ${priority}`,
+                  {
+                    ...componentGroupPseudoState,
+                  }
                 )
               }
               if (!isActive) {

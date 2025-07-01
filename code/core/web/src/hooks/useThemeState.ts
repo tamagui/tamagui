@@ -146,7 +146,7 @@ export const useThemeState = (
       props.debug &&
       props.debug !== 'profile'
     ) {
-      console.groupCollapsed(` ${id} 🪄 ${rerender}`, local.name, '>', next.name)
+      console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
       console.info({ props, propsKey, isRoot, parentId, local, next, needsUpdate })
       console.groupEnd()
     }
@@ -221,7 +221,7 @@ const getNextState = (
   )
 
   if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
-    const message = ` · useTheme(${id}) => ${name} needsUpdate ${needsUpdate} shouldRerender ${shouldRerender}`
+    const message = ` · useTheme(${id}) getNextState => ${name} needsUpdate ${needsUpdate} shouldRerender ${shouldRerender}`
     if (process.env.TAMAGUI_TARGET === 'native') {
       console.info(message)
     } else {
