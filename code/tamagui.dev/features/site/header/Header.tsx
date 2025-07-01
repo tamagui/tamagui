@@ -742,6 +742,16 @@ const HeaderMenuContents = (props: { id: ID }) => {
     return <DocsMenuContents inMenu section={props.id} />
   })()
 
+  // For mobile, render content directly without Frame wrapper
+  if (isMobile) {
+    return (
+      <YStack w="100%" p="$3">
+        {contents}
+      </YStack>
+    )
+  }
+
+  // For desktop, use Frame wrapper
   return (
     <Frame>
       {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}
