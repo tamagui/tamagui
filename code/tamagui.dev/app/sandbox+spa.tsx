@@ -3,6 +3,7 @@ import {
   createStyledContext,
   styled,
   Theme,
+  useConfiguration,
   useThemeWithState,
 } from '@tamagui/web'
 import { memo, useEffect, useId, useState } from 'react'
@@ -20,33 +21,24 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { animationsCSS } from '@tamagui/tamagui-dev-config'
+import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
 import { PopoverDemo } from '@tamagui/demos'
-
-const Styyled = styled(View)
-
-const Stylable = Styyled.styleable((props) => {
-  return null
-})
-
-const context = createStyledContext({
-  customProp: 'ok',
-})
-
-const StyledText = styled(Text, {
-  context,
-
-  variants: {
-    customProp: {
-      ok: {
-        background: 'red',
-      },
-    },
-  } as const,
-})
+import { LogoWords } from '@tamagui/logo'
 
 export default function Sandbox() {
-  console.warn('render')
+  return (
+    <Configuration animationDriver={animationsMotion}>
+      <YStack p="$10" ai="center" jc="center">
+        <SandboxContent />
+        <LogoWords animated />
+      </YStack>
+    </Configuration>
+  )
+}
+
+function SandboxContent() {
+  const config = useConfiguration()
+  console.warn('render', config)
 
   useEffect(() => {
     console.info('freeze main thread interval')
@@ -76,6 +68,28 @@ export default function Sandbox() {
   //   </>
   // )
 }
+
+const Styyled = styled(View)
+
+const Stylable = Styyled.styleable((props) => {
+  return null
+})
+
+const context = createStyledContext({
+  customProp: 'ok',
+})
+
+const StyledText = styled(Text, {
+  context,
+
+  variants: {
+    customProp: {
+      ok: {
+        background: 'red',
+      },
+    },
+  } as const,
+})
 
 const Y = styled(View, {
   name: 'Button',
