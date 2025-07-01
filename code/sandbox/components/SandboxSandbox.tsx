@@ -1,5 +1,5 @@
 // debug
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import {
   AnimatePresence,
@@ -10,11 +10,26 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+
 import { PopoverDemo } from '../../demos/src/PopoverDemo'
 import { DialogDemo } from '../../demos/src/DialogDemo'
 import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animations } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
+
+import { View as TView } from '@tamagui/web'
+
+const x = (props, x) => {
+  return null
+}
+
+const X = TView.styleable((props, ref) => {
+  return null
+})
+
+const X1 = TView.styleable((props) => {
+  return null
+})
 
 export function SandboxSandbox() {
   return (
