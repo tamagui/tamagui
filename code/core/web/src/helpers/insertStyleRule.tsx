@@ -106,7 +106,7 @@ export function scanAllSheets(
   return themes
 }
 
-function track(id: string, remove = false) {
+function trackInsertedStyle(id: string, remove = false) {
   const next = (totalSelectorsInserted.get(id) || 0) + (remove ? -1 : 1)
   totalSelectorsInserted.set(id, next)
   return next
@@ -193,7 +193,7 @@ function updateSheetStyles(
     }
 
     // track references
-    const total = track(identifier, remove)
+    const total = trackInsertedStyle(identifier, remove)
 
     if (remove) {
       if (total === 0) {
@@ -330,11 +330,15 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
 
 let sheet: CSSStyleSheet | null = null
 
+let trackAllRules = true
+export function stopAccumulatingRules() {
+  trackAllRules = true
+}
+
 export function updateRules(identifier: string, rules: string[]) {
-  if (identifier in allRules) {
-    return false
+  if (trackAllRules) {
+    allRules[identifier] = rules.join(' ')
   }
-  allRules[identifier] = rules.join(' ')
   if (identifier.startsWith('_transform-')) {
     return addTransform(identifier, rules[0])
   }
@@ -347,27 +351,35 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!sheet && isClient && document.head) {
+  if (!isClient) return
+
+  if (!sheet && document.head) {
     const styleTag = document.createElement('style')
     if (nonce) {
       styleTag.nonce = nonce
     }
     sheet = document.head.appendChild(styleTag).sheet
   }
-  if (!sheet) return
+
+  if (!sheet) {
+    console.warn('[tamagui] no sheet')
+    return
+  }
 
   for (const key in rulesToInsert) {
     const styleObject = rulesToInsert[key]
     const identifier = styleObject[StyleObjectIdentifier]
 
     if (!shouldInsertStyleRules(identifier)) {
+      // idk why
+      // trackInsertedStyle(identifier)
       continue
     }
 
     const rules = styleObject[StyleObjectRules]
     allSelectors[identifier] = rules.join('\n')
-    track(identifier)
     updateRules(identifier, rules)
+    trackInsertedStyle(identifier)
 
     for (const rule of rules) {
       if (process.env.NODE_ENV === 'production') {
@@ -387,7 +399,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 // this causes many bugs. We defaulted to "2" here for safety, meaning we sacrificed some performance
 // setting TAMAGUI_INSERT_SELECTOR_TRIES=1 will be faster so long as you are concatting your CSS together
 
-const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
+const maxToInsert = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   ? +process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   : 1
 
@@ -395,17 +407,14 @@ export function shouldInsertStyleRules(identifier: string) {
   if (process.env.IS_STATIC === 'is_static') {
     return true
   }
-  const total = totalSelectorsInserted.get(identifier)
+  const total = totalSelectorsInserted.get(identifier) || 0
   if (process.env.NODE_ENV === 'development') {
-    if (
-      totalSelectorsInserted.size >
-      +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10000)
-    ) {
+    if (total > +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10)) {
       console.warn(
         `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
       )
     }
   }
   // note we are being conservative allowing duplicates
-  return total === undefined || total < minInsertAmt
+  return total < maxToInsert
 }

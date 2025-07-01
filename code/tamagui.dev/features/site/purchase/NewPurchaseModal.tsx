@@ -298,7 +298,6 @@ export function PurchaseModalContents() {
 
           <Dialog.Content
             bordered
-            debug="verbose"
             ov="hidden"
             elevate
             key="content"

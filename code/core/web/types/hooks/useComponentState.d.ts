@@ -16,7 +16,7 @@ export declare const useComponentState: (props: StackProps | TextProps | Record<
     noClass: boolean | undefined;
     state: TamaguiComponentState;
     stateRef: import("react").RefObject<TamaguiComponentStateRef>;
-    supportsCSSVars: boolean | undefined;
+    supportsCSS: boolean | undefined;
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
 };

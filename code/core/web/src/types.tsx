@@ -2553,7 +2553,7 @@ export type UseAnimatedNumber<
 
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
-  supportsCSSVars?: boolean
+  supportsCSS?: boolean
   needsWebStyles?: boolean
   avoidReRenders?: boolean
   useAnimations: UseAnimationHook

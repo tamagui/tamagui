@@ -1566,7 +1566,7 @@ export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = Univ
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
-    supportsCSSVars?: boolean;
+    supportsCSS?: boolean;
     needsWebStyles?: boolean;
     avoidReRenders?: boolean;
     useAnimations: UseAnimationHook;

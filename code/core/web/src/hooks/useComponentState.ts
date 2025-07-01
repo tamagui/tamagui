@@ -46,7 +46,7 @@ export const useComponentState = (
   )
 
   // disable for now still ssr issues
-  const supportsCSSVars = animationDriver?.supportsCSSVars
+  const supportsCSS = animationDriver?.supportsCSS
   const curStateRef = stateRef.current
 
   if (!needsHydration && hasAnimationProp) {
@@ -80,9 +80,7 @@ export const useComponentState = (
   const hasEnterStyle = !!props.enterStyle
 
   const hasAnimationThatNeedsHydrate =
-    hasAnimationProp &&
-    !isHydrated &&
-    (animationDriver?.isReactNative || !supportsCSSVars)
+    hasAnimationProp && !isHydrated && (animationDriver?.isReactNative || !supportsCSS)
 
   const hasEnterState = hasEnterStyle || isEntering
 
@@ -186,7 +184,7 @@ export const useComponentState = (
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc
     if (!isServer || isHydrated) {
-      const isAnimatedAndHydrated = isAnimated && !supportsCSSVars
+      const isAnimatedAndHydrated = isAnimated && !supportsCSS
 
       const isClassNameDisabled =
         !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)
@@ -264,7 +262,7 @@ export const useComponentState = (
     noClass,
     state,
     stateRef,
-    supportsCSSVars,
+    supportsCSS,
     willBeAnimated,
     willBeAnimatedClient,
   }

@@ -366,7 +366,7 @@ export function createComponent<
       noClass,
       state,
       stateRef,
-      supportsCSSVars,
+      supportsCSS,
       willBeAnimated,
       willBeAnimatedClient,
       startedUnhydrated,
@@ -466,7 +466,7 @@ export function createComponent<
         )
 
         if (isServer) {
-          log({ noClass, isAnimated, isWeb, supportsCSSVars })
+          log({ noClass, isAnimated, isWeb, supportsCSS })
         } else {
           // if strict mode or something messes with our nesting this fixes:
           console.groupEnd()
@@ -506,7 +506,7 @@ export function createComponent<
 
     const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
-      (isAnimated && !supportsCSSVars) ||
+      (isAnimated && !supportsCSS) ||
       (isHOC && state.unmounted == false && hasAnimationProp)
         ? 'value'
         : 'auto'
@@ -659,7 +659,7 @@ export function createComponent<
     let animationStyles: any
     const shouldUseAnimation =
       // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
+      (supportsCSS ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
 
     let animatedRef
 
@@ -808,10 +808,7 @@ export function createComponent<
 
       let tm: NodeJS.Timeout
       if (state.unmounted) {
-        if (
-          (animationDriver?.supportsCSSVars ?? config?.animations?.supportsCSSVars) ||
-          isAndroid
-        ) {
+        if (animationDriver?.supportsCSS || isAndroid) {
           // this setTimeout fixes css driver enter animations  - not sure why
           // this setTimeout fixes the conflict when with the safe area view in android
           tm = setTimeout(() => {

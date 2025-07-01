@@ -323,7 +323,7 @@ export const getSplitStyles: StyleSplitter = (
               `.${identifier} { container-name: ${valInit}; container-type: ${containerType}; }`,
             ],
           ] satisfies StyleObject
-          addStyleToInsertRules(rulesToInsert, containerCSS, startedUnhydrated)
+          addStyleToInsertRules(rulesToInsert, containerCSS)
         }
       }
       continue
@@ -704,7 +704,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle[StyleObjectProperty]}${PROP_SPLIT}${descriptor.name}`
             if (fullKey in usedKeys) continue
-            addStyleToInsertRules(rulesToInsert, psuedoStyle, startedUnhydrated)
+            addStyleToInsertRules(rulesToInsert, psuedoStyle)
             classNames[fullKey] = psuedoStyle[StyleObjectIdentifier]
           }
         }
@@ -873,7 +873,7 @@ export const getSplitStyles: StyleSplitter = (
             }${subKey}${PROP_SPLIT}${mediaKeyShort}${style[StyleObjectPseudo] || ''}`
 
             if (fullKey in usedKeys) continue
-            addStyleToInsertRules(rulesToInsert, out as any, startedUnhydrated)
+            addStyleToInsertRules(rulesToInsert, out as any)
             classNames[fullKey] = out[StyleObjectIdentifier]
           }
         } else {
@@ -1126,7 +1126,7 @@ export const getSplitStyles: StyleSplitter = (
       !styleProps.noNormalize &&
       !staticConfig.isReactNative &&
       !staticConfig.isHOC &&
-      (!styleProps.isAnimated || animationDriver.supportsCSSVars)
+      (!styleProps.isAnimated || animationDriver.supportsCSS)
 
     if (shouldStringifyTransforms && Array.isArray(styleState.style?.transform)) {
       styleState.style.transform = transformsToString(styleState.style!.transform) as any
@@ -1165,7 +1165,7 @@ export const getSplitStyles: StyleSplitter = (
             retainedStyles[key] = value
             shouldRetain = true
           } else {
-            addStyleToInsertRules(rulesToInsert, atomicStyle, startedUnhydrated)
+            addStyleToInsertRules(rulesToInsert, atomicStyle)
             classNames[key] = identifier
           }
         }
@@ -1486,29 +1486,19 @@ export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k) =
 
   if (process.env.TAMAGUI_TARGET !== 'native') {
     // j = startedUnhydrated
-    if (!j) {
-      useInsertEffectCompat(() => {
-        insertStyleRules(res.rulesToInsert)
-      }, [res.rulesToInsert])
-    }
+    useInsertEffectCompat(() => {
+      insertStyleRules(res.rulesToInsert)
+    }, [res.rulesToInsert])
   }
 
   return res
 }
 
-function addStyleToInsertRules(
-  rulesToInsert: RulesToInsert,
-  styleObject: StyleObject,
-  startedUnhydrated = false
-) {
+function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     const identifier = styleObject[StyleObjectIdentifier]
-    if (!startedUnhydrated) {
-      if (shouldInsertStyleRules(identifier)) {
-        updateRules(identifier, styleObject[StyleObjectRules])
-        rulesToInsert[identifier] = styleObject
-      }
-    } else {
+    if (shouldInsertStyleRules(identifier)) {
+      updateRules(identifier, styleObject[StyleObjectRules])
       rulesToInsert[identifier] = styleObject
     }
   }

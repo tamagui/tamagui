@@ -38,11 +38,18 @@ const Motion = () => {
       <Square
         className="motion-square"
         // debug="verbose"
-        animation="lazy"
+        debug="verbose"
+        animation={[
+          'superBouncy',
+          {
+            opacity: '100ms',
+          },
+        ]}
         bg="red"
         size={50}
+        opacity={0.25}
         borderWidth={2}
-        hoverStyle={{ scale: 1.5, borderColor: 'green', x: 100 }}
+        hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }}
         pressStyle={{ scale: 0.8, borderColor: 'red' }}
         x={x * 300}
       />

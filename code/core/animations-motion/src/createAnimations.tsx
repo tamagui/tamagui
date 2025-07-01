@@ -5,7 +5,6 @@ import {
   fixStyles,
   getSplitStyles,
   hooks,
-  isEqualShallow,
   styleToCSS,
   Text,
   type UniversalAnimatedNumber,
@@ -56,7 +55,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     View: MotionView,
     Text: MotionText,
     isReactNative: false,
-    supportsCSSVars: true,
+    supportsCSS: true,
     needsWebStyles: true,
     avoidReRenders: true,
     animations,
@@ -81,11 +80,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const lastAnimationStyle = useRef<Object | null>(null)
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
-      const currentDontAnimate = useRef<Object>({})
-      const runningAnimation = useRef<boolean>(false)
-
-      // const lastRun = useRef<Promise<void> | null>(null)
-      // const nextRunDiff = useRef<Object | null>(null)
 
       const shouldDebug =
         process.env.NODE_ENV === 'development' &&
@@ -151,21 +145,21 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
 
       const flushAnimation = (
-        nextStyle: Record<string, unknown> | null,
+        next: Record<string, unknown> | null,
         animationOptions: AnimationOptions | undefined
       ) => {
-        if (!nextStyle) return
+        if (!next) return
         if (!(stateRef.current.host instanceof HTMLElement)) {
           return
         }
 
         // ideally this would just come from tamagui
-        fixStyles(nextStyle)
-        styleToCSS(nextStyle)
+        fixStyles(next)
+        styleToCSS(next)
 
         if (!lastAnimationStyle.current) {
-          lastAnimationStyle.current = nextStyle
-          const firstAnimation = animate(scope.current, nextStyle, {
+          lastAnimationStyle.current = next
+          const firstAnimation = animate(scope.current, next, {
             duration: 0,
             type: 'tween',
           })
@@ -174,23 +168,23 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
           if (shouldDebug) {
             console.groupCollapsed(`[motion] 🌊 FIRST`)
-            console.info(nextStyle)
+            console.info(next)
             console.groupEnd()
           }
           return
         }
 
         let diff: Record<string, unknown> | null = null
-        for (const key in nextStyle) {
-          if (nextStyle[key] !== lastAnimationStyle.current[key]) {
+        for (const key in next) {
+          if (next[key] !== lastAnimationStyle.current[key]) {
             diff ||= {}
-            diff[key] = nextStyle[key]
+            diff[key] = next[key]
           }
         }
 
         if (shouldDebug) {
           console.groupCollapsed(`[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`)
-          console.info({ animationProps, nextStyle, lastAnimationStyle })
+          console.info({ next, animationOptions, animationProps, lastAnimationStyle })
           console.groupEnd()
         }
 
@@ -199,10 +193,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
 
         lastAnimateAt.current = Date.now()
-
         controls.current?.stop()
         controls.current = animate(scope.current, diff, animationOptions)
-        lastAnimationStyle.current = { ...nextStyle, ...diff }
+        lastAnimationStyle.current = next
 
         if (isExiting) {
           controls.current.finished.then(() => {
@@ -217,10 +210,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           nextStyle,
           disableAnimation
         )
-
-        if (!isEqualShallow(dontAnimate, currentDontAnimate.current)) {
-          console.warn('changed dont animate', dontAnimate, currentDontAnimate.current)
-        }
 
         runAnimation(doAnimate, animationOptions)
       })
@@ -239,10 +228,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (!doAnimate) return
         runAnimation(doAnimate, animationOptions)
       }, [JSON.stringify(doAnimate), lastAnimationStyle])
-
-      useEffect(() => {
-        currentDontAnimate.current = dontAnimate
-      }, [dontAnimate])
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
@@ -379,15 +364,30 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       return {}
     }
 
+    const defaultConfig = animations[defaultAnimationKey]
+
     return {
-      default: animations[defaultAnimationKey],
+      default: defaultConfig,
       ...Object.fromEntries(
-        Object.keys(specificAnimations).flatMap((key) => {
-          if (animations[key]) {
-            return [[key, animations[key]]]
+        Object.entries(specificAnimations).flatMap(
+          ([propName, animationNameOrConfig]) => {
+            if (typeof animationNameOrConfig === 'string') {
+              return [[propName, animations[animationNameOrConfig]]]
+            }
+            if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
+              return [
+                [
+                  propName,
+                  {
+                    ...defaultConfig,
+                    ...animationNameOrConfig,
+                  },
+                ],
+              ]
+            }
+            return []
           }
-          return []
-        })
+        )
       ),
     }
   }
