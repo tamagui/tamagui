@@ -610,15 +610,36 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   )
 })
 
+const getDocsSectionFromPath = (pathName: string): 'core' | 'compiler' | 'ui' | null => {
+  if (!pathName || pathName === '/' || pathName === '') return null
+  if (pathName.startsWith('/ui/')) return 'ui'
+  if (
+    pathName.startsWith('/docs/intro/compiler') ||
+    pathName.startsWith('/docs/intro/benchmarks') ||
+    pathName.startsWith('/docs/intro/why-a-compiler')
+  )
+    return 'compiler'
+  if (
+    pathName.startsWith('/docs') ||
+    pathName.startsWith('/community') ||
+    pathName.startsWith('/blog')
+  )
+    return 'core'
+  return null
+}
+
 const ActivePageDocsMenuContents = () => {
   const pathName = usePathname()
-  const section = pathName.startsWith('/ui/intro')
-    ? 'ui'
-    : pathName.startsWith('/ui/compiler')
-      ? 'compiler'
-      : 'core'
+  const section = getDocsSectionFromPath(pathName)
 
-  return <DocsMenuContents inMenu section={section} />
+  if (!section) return null
+
+  return (
+    <>
+      <Separator bc="$color02" o={0.25} my="$4" />
+      <DocsMenuContents inMenu section={section} />
+    </>
+  )
 }
 
 const HeaderMenuContents = (props: { id: ID }) => {
