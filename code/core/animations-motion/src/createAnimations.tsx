@@ -9,6 +9,7 @@ import {
   Text,
   type UniversalAnimatedNumber,
   useComposedRefs,
+  useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
 } from '@tamagui/core'
@@ -35,6 +36,12 @@ type MotionAnimatedNumberStyle = {
 }
 
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
+
+type AnimationProps = {
+  doAnimate?: Record<string, unknown>
+  dontAnimate?: Record<string, unknown>
+  animationOptions?: AnimationOptions
+}
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animationsProp: A
@@ -99,6 +106,25 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const lastAnimateAt = useRef(0)
       const minTimeBetweenAnimations = 16.667
 
+      function collapseAnimationQueue() {
+        // we can actually collapse the queue to one update
+        const nextStyle: Record<string, unknown> = {}
+        const animationOptions: AnimationOptions = {}
+
+        for (const item of animationsQueue.current) {
+          Object.assign(nextStyle, item.nextStyle)
+          Object.assign(animationOptions, item.animationOptions)
+        }
+
+        // unsafe react, i know...
+        animationsQueue.current = []
+
+        return {
+          doAnimate: nextStyle,
+          animationOptions,
+        }
+      }
+
       useLayoutEffect(() => {
         let disposed = false
 
@@ -106,18 +132,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           const elapsed = Date.now() - lastAnimateAt.current
 
           if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
-            // we can actually collapse the queue to one update
-            const nextStyle: Record<string, unknown> = {}
-            const animationOptions: AnimationOptions = {}
-
-            for (const item of animationsQueue.current) {
-              Object.assign(nextStyle, item.nextStyle)
-              Object.assign(animationOptions, item.animationOptions)
-            }
-
-            animationsQueue.current = []
-
-            flushAnimation(nextStyle, animationOptions)
+            const animationProps = collapseAnimationQueue()
+            flushAnimation(animationProps)
           }
 
           if (!disposed) {
@@ -132,34 +148,40 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
       }, [])
 
-      const runAnimation = (
-        nextStyle: Record<string, unknown> | null,
-        animationOptions: AnimationOptions | undefined
-      ) => {
+      const runAnimation = (props: AnimationProps) => {
         const elapsed = Date.now() - lastAnimateAt.current
         if (elapsed > minTimeBetweenAnimations) {
-          flushAnimation(nextStyle, animationOptions)
+          flushAnimation(props)
         } else {
-          animationsQueue.current.push({ nextStyle, animationOptions })
+          animationsQueue.current.push(props)
         }
       }
 
-      const flushAnimation = (
-        next: Record<string, unknown> | null,
-        animationOptions: AnimationOptions | undefined
-      ) => {
-        if (!next) return
+      const flushAnimation = ({
+        doAnimate,
+        dontAnimate,
+        animationOptions = {},
+      }: AnimationProps) => {
         if (!(stateRef.current.host instanceof HTMLElement)) {
+          return
+        }
+        if (!doAnimate && !dontAnimate) {
           return
         }
 
         // ideally this would just come from tamagui
-        fixStyles(next)
-        styleToCSS(next)
+        if (doAnimate) {
+          fixStyles(doAnimate)
+          styleToCSS(doAnimate)
+        }
+        if (dontAnimate) {
+          fixStyles(dontAnimate)
+          styleToCSS(dontAnimate)
+        }
 
         if (!lastAnimationStyle.current) {
-          lastAnimationStyle.current = next
-          const firstAnimation = animate(scope.current, next, {
+          lastAnimationStyle.current = doAnimate || {}
+          const firstAnimation = animate(scope.current, doAnimate || {}, {
             duration: 0,
             type: 'tween',
           })
@@ -168,10 +190,26 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
           if (shouldDebug) {
             console.groupCollapsed(`[motion] 🌊 FIRST`)
-            console.info(next)
+            console.info(doAnimate)
             console.groupEnd()
           }
           return
+        }
+
+        const next = doAnimate || {}
+
+        // handle case where dontAnimate changes
+        // we just set it onto animate + set options to not actually animate
+        if (dontAnimate) {
+          const last = lastDontAnimate.current
+          for (const key in dontAnimate) {
+            const val = dontAnimate[key]
+            if (last && val !== last[key]) {
+              next[key] = val
+              animationOptions[key] = { type: 'tween', duration: 0 }
+            }
+          }
+          lastDontAnimate.current = dontAnimate
         }
 
         let diff: Record<string, unknown> | null = null
@@ -205,13 +243,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
 
       useStyleEmitter?.((nextStyle) => {
-        const { doAnimate, dontAnimate, animationOptions } = getMotionAnimatedProps(
+        const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
           disableAnimation
         )
-
-        runAnimation(doAnimate, animationOptions)
+        runAnimation(animationProps)
       })
 
       // strict mode correctness fix, idk why i thought it would clear a useRef
@@ -224,10 +261,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
       }, [])
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         if (!doAnimate) return
-        runAnimation(doAnimate, animationOptions)
+        runAnimation({
+          doAnimate,
+          animationOptions,
+        })
       }, [JSON.stringify(doAnimate), lastAnimationStyle])
+
+      const lastDontAnimate = useRef<Object>(undefined)
+      useIsomorphicLayoutEffect(() => {
+        lastDontAnimate.current = dontAnimate
+      })
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
@@ -312,18 +357,17 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     props: { animation: AnimationProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
     disable = false
-  ) {
+  ): AnimationProps {
     if (disable) {
       return {
         dontAnimate: style,
-        doAnimate: null,
       }
     }
 
     const animationOptions = animationPropToAnimationConfig(props.animation)
 
     let dontAnimate = {}
-    let doAnimate: Record<string, unknown> | null = null
+    let doAnimate: Record<string, unknown> | undefined
 
     const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {

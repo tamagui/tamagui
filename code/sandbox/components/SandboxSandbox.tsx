@@ -40,9 +40,28 @@ const Motion = () => {
   }
   return (
     <Configuration animationDriver={animationsMotion}>
-      <Button onPress={() => setX(Math.random())}>asdasdas</Button>
+      {/* animateOnly */}
       <Square
-        className="motion-square"
+        animation={[
+          'superBouncy',
+          {
+            opacity: '100ms',
+          },
+        ]}
+        // bg doesnt aniamte
+        animateOnly={['transform', 'opacity']}
+        bg="red"
+        size={50}
+        opacity={0.25}
+        borderWidth={2}
+        hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }}
+        pressStyle={{ scale: 0.8, borderColor: 'red' }}
+        x={x * 300}
+      />
+
+      <Button onPress={() => setX(Math.random())}>asdasdas</Button>
+
+      <Square
         animation={[
           'superBouncy',
           {
@@ -59,11 +78,11 @@ const Motion = () => {
       />
 
       <Button onPress={() => setShow(!show)}>show</Button>
+
       <YStack width="100%" bg="yellow" group="card">
         {/* render during animate update */}
         <Square
           animation="lazy"
-          debug="verbose"
           onMouseDown={() => {
             setPressed(true)
           }}
