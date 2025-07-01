@@ -4,7 +4,6 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 export const docsRoutes = [
   {
     section: 'core',
-    title: 'Overview',
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
@@ -19,7 +18,7 @@ export const docsRoutes = [
 
   {
     section: 'core',
-    title: 'Core / Compiler',
+    title: 'Core',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
       { title: '@tamagui/config', route: '/docs/core/config-v4' },
