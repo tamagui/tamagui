@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-svg",
-  "version": "1.129.12-1751388824960",
+  "version": "1.129.12-1751449245669",
   "main": "dist/cjs",
   "type": "module",
   "module": "dist/esm/index.js",

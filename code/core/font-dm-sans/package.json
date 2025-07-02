@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-dm-sans",
-  "version": "1.129.12-1751388824960",
+  "version": "1.129.12-1751449245669",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
