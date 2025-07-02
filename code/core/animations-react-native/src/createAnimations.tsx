@@ -151,7 +151,7 @@ export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
   value,
   getStyle
 ) => {
-  return getStyle(value.getValue())
+  return getStyle(value.getInstance())
 }
 
 export function createAnimations<A extends AnimationsConfig>(
