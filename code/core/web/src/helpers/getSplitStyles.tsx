@@ -172,7 +172,6 @@ export const getSplitStyles: StyleSplitter = (
 
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
-  const usedKeys: Record<string, number> = {}
   const shouldDoClasses =
     acceptsClassName && isWeb && !styleProps.noClass && !styleProps.isAnimated
   const rulesToInsert: RulesToInsert =
@@ -209,7 +208,7 @@ export const getSplitStyles: StyleSplitter = (
     staticConfig,
     style: null,
     theme,
-    usedKeys,
+    usedKeys: {},
     viewProps,
     context: componentContext,
     debug,
@@ -336,7 +335,6 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    const valInitType = typeof valInit
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
@@ -506,13 +504,14 @@ export const getSplitStyles: StyleSplitter = (
 
     if (isMediaOrPseudo && keyInit.startsWith('$group-')) {
       const parts = keyInit.split('-')
+      const plen = parts.length
       if (
         // check if its actually a simple group selector to avoid breaking selectors
-        parts.length === 2 ||
-        (parts.length === 3 && pseudoPriorities[parts[parts.length - 1]])
+        plen === 2 ||
+        (plen === 3 && pseudoPriorities[parts[parts.length - 1]])
       ) {
         const name = parts[1]
-        if (!groupContext?.[name]) {
+        if (groupContext && !groupContext?.[name]) {
           keyInit = keyInit.replace('$group-', `$group-true-`)
         }
       }
@@ -552,6 +551,7 @@ export const getSplitStyles: StyleSplitter = (
           variant: variants?.[keyInit],
           isVariant,
           isHOCShouldPassThrough,
+          usedKeys: { ...styleState.usedKeys },
           parentStaticConfig,
         })
       }
@@ -745,7 +745,7 @@ export const getSplitStyles: StyleSplitter = (
             if (isDisabled) {
               applyDefaultStyle(pkey, styleState)
             } else {
-              const curImportance = usedKeys[pkey] || 0
+              const curImportance = styleState.usedKeys[pkey] || 0
               const shouldMerge = importance >= curImportance
 
               if (shouldMerge) {
@@ -773,7 +773,7 @@ export const getSplitStyles: StyleSplitter = (
             // mark usedKeys based on pseudoStyleObject
             for (const key in val) {
               const k = shorthands[key] || key
-              usedKeys[k] = Math.max(importance, usedKeys[k] || 0)
+              styleState.usedKeys[k] = Math.max(importance, styleState.usedKeys[k] || 0)
             }
           }
         }
@@ -831,12 +831,12 @@ export const getSplitStyles: StyleSplitter = (
               const importance = getMediaImportanceIfMoreImportant(
                 mediaKeyShort,
                 'space',
-                usedKeys,
+                styleState,
                 true
               )
               if (importance) {
                 space = val['space']
-                usedKeys['space'] = importance
+                styleState.usedKeys['space'] = importance
                 if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                   log(
                     `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
@@ -1020,7 +1020,6 @@ export const getSplitStyles: StyleSplitter = (
               mediaKeyShort,
               key,
               val,
-              usedKeys,
               mediaState[mediaKeyShort],
               importanceBump,
               debug
@@ -1417,16 +1416,16 @@ function mergeStyle(
   importance: number,
   disableNormalize = false
 ) {
-  const { viewProps, styleProps, staticConfig } = styleState
+  const { viewProps, styleProps, staticConfig, usedKeys } = styleState
 
-  const existingImportance = styleState.usedKeys[key]
-  if (importance < existingImportance) {
+  const existingImportance = usedKeys[key] || 0
+  if (existingImportance > importance) {
     return
   }
 
   if (key in stylePropsTransform) {
     styleState.flatTransforms ||= {}
-    styleState.usedKeys[key] ||= 1
+    usedKeys[key] = importance
     styleState.flatTransforms[key] = val
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
@@ -1439,7 +1438,7 @@ function mergeStyle(
       viewProps[key] = out
     } else {
       styleState.style ||= {}
-      styleState.usedKeys[key] ||= 1
+      usedKeys[key] = importance
       styleState.style[key] =
         // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
         // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)
@@ -1598,12 +1597,17 @@ function mergeMediaByImportance(
   mediaKey: string,
   key: string,
   value: any,
-  usedKeys: Record<string, number>,
   isSizeMedia: boolean,
   importanceBump?: number,
   debugProp?: DebugProp
 ) {
-  let importance = getMediaImportanceIfMoreImportant(mediaKey, key, usedKeys, isSizeMedia)
+  const usedKeys = styleState.usedKeys
+  let importance = getMediaImportanceIfMoreImportant(
+    mediaKey,
+    key,
+    styleState,
+    isSizeMedia
+  )
   if (importanceBump) {
     importance = (importance || 0) + importanceBump
   }
@@ -1615,8 +1619,6 @@ function mergeMediaByImportance(
   if (importance === null) {
     return false
   }
-  usedKeys[key] = importance
-
   if (key in pseudoDescriptors) {
     const descriptor = pseudoDescriptors[key as PseudoDescriptorKey]
     const descriptorKey = descriptor.stateKey || descriptor.name

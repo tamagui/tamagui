@@ -131,6 +131,7 @@ export type {
 export {
   Configuration,
   ComponentContext,
+  GroupContext,
   FontLanguage,
   // components
   Spacer,

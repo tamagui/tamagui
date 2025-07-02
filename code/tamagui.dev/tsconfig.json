@@ -4,23 +4,11 @@
     "rootDir": ".",
     "paths": {
       "~/*": ["./*"],
-      "tamagui": [
-        "../ui/tamagui"
-      ],
-      "@tamagui/*": [
-        "../core/*",
-        "../ui/*",
-        "../packages/*"
-      ],
-      "@tamagui/bento": [
-        "../bento"
-      ],
-      "@tamagui/bento-example": [
-        "../bento/example"
-      ],
-      "@tamagui/demos": [
-        "../demos"
-      ]
+      "tamagui": ["../ui/tamagui"],
+      "@tamagui/*": ["../core/*", "../ui/*", "../packages/*"],
+      "@tamagui/bento": ["../bento"],
+      "@tamagui/bento-example": ["../bento/example"],
+      "@tamagui/demos": ["../demos"]
     },
     "outDir": "dist",
     "importHelpers": true,

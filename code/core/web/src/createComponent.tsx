@@ -165,7 +165,7 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 const lastInteractionWasKeyboard = { value: false }
-if (isWeb && globalThis['document']) {
+if (isWeb && typeof document !== 'undefined') {
   document.addEventListener('keydown', () => {
     if (!lastInteractionWasKeyboard.value) {
       lastInteractionWasKeyboard.value = true
@@ -1157,22 +1157,20 @@ export function createComponent<
             }),
           ...(attachFocus && {
             onFocus: (e) => {
+              const next: Partial<typeof state> = {}
               if (componentContext.setParentFocusState) {
-                componentContext.setParentFocusState({ focusWithin: true })
+                next.focusWithin = true
               }
               if (pseudos?.focusVisibleStyle) {
-                setTimeout(() => {
-                  setStateShallow({
-                    focus: true,
-                    focusVisible: !!lastInteractionWasKeyboard.value,
-                  })
-                }, 0)
+                if (lastInteractionWasKeyboard.value) {
+                  next.focusVisible = true
+                } else {
+                  next.focus = true
+                }
               } else {
-                setStateShallow({
-                  focus: true,
-                  focusVisible: false,
-                })
+                next.focus = true
               }
+              setStateShallow(next)
               onFocus?.(e)
             },
             onBlur: (e) => {
@@ -1182,6 +1180,7 @@ export function createComponent<
               setStateShallow({
                 focus: false,
                 focusVisible: false,
+                focusWithin: false,
               })
               onBlur?.(e)
             },
@@ -1296,7 +1295,7 @@ export function createComponent<
       )
     }
 
-    if ('group' in propsIn) {
+    if ('group' in props) {
       content = (
         <GroupContext.Provider value={allGroupContexts}>{content}</GroupContext.Provider>
       )

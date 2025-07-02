@@ -43,7 +43,6 @@ export const useComponentState = (
     'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  // disable for now still ssr issues
   const supportsCSS = animationDriver?.supportsCSS
   const curStateRef = stateRef.current
 
