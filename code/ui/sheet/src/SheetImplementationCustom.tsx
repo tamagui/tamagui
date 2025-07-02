@@ -79,6 +79,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
     const { animationDriver } = useConfiguration()
+
+    if (!animationDriver) {
+      throw new Error(`Sheet reqiures an animation driver to be set`)
+    }
+
     const animationConfig = (() => {
       if (animationDriver.supportsCSS) {
         // for now this detects css driver only, which has no "config"
