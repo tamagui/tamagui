@@ -36,7 +36,8 @@ export declare const pseudoPriorities: {
     focusWithin: number;
     disabled: number;
 };
-export declare const pseudoDescriptors: Record<'hoverStyle' | 'pressStyle' | 'focusStyle' | 'focusVisibleStyle' | 'focusWithinStyle' | 'enterStyle' | 'exitStyle', PseudoDescriptor>;
+export type PseudoDescriptorKey = keyof typeof pseudoDescriptorsBase;
+export declare const pseudoDescriptors: Record<PseudoDescriptorKey | 'enterStyle' | 'exitStyle', PseudoDescriptor>;
 export type PseudoDescriptor = {
     name: string;
     priority: number;

@@ -11,7 +11,6 @@ import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
-  GroupStateListener,
   StackProps,
   StaticConfig,
   TamaguiComponentState,
@@ -23,7 +22,7 @@ import type {
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
-  { animationDriver }: ComponentContextI,
+  animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
@@ -143,7 +142,7 @@ export const useComponentState = (
     setState((_) => ({ ...state }))
   }
 
-  const groupName = props.group as any as string
+  const groupName = props.group as any as string | undefined
 
   const setStateShallow = useCreateShallowSetState(setState, props.debug)
 
@@ -200,26 +199,6 @@ export const useComponentState = (
           })
         }
       }
-    }
-  }
-
-  if (groupName && !curStateRef.group) {
-    const listeners = new Set<GroupStateListener>()
-    curStateRef.group = {
-      listeners,
-      emit(name, state) {
-        listeners.forEach((l) => l(name, state))
-      },
-      subscribe(cb) {
-        listeners.add(cb)
-        setStateShallow({ hasDynGroupChildren: true })
-        return () => {
-          listeners.delete(cb)
-          if (listeners.size === 0) {
-            setStateShallow({ hasDynGroupChildren: false })
-          }
-        }
-      },
     }
   }
 

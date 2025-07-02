@@ -41,14 +41,10 @@ export const pseudoPriorities = {
   disabled: 4,
 }
 
+export type PseudoDescriptorKey = keyof typeof pseudoDescriptorsBase
+
 export const pseudoDescriptors: Record<
-  | 'hoverStyle'
-  | 'pressStyle'
-  | 'focusStyle'
-  | 'focusVisibleStyle'
-  | 'focusWithinStyle'
-  | 'enterStyle'
-  | 'exitStyle',
+  PseudoDescriptorKey | 'enterStyle' | 'exitStyle',
   PseudoDescriptor
 > = {
   ...pseudoDescriptorsBase,

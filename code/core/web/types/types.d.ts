@@ -43,13 +43,13 @@ export type TamaguiProjectInfo = {
 };
 export type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
+export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
     inText: boolean;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
-    groups: GroupContextType;
-    setParentFocusState: ((next: Partial<TamaguiComponentState>) => void) | null;
+    setParentFocusState: ComponentSetStateShallow | null;
 };
 export type TamaguiComponentStateRef = {
     host?: TamaguiElement;
@@ -61,41 +61,37 @@ export type TamaguiComponentStateRef = {
     hasEverThemed?: boolean | 'wrapped';
     isListeningToTheme?: boolean;
     unPress?: Function;
-    nextComponentState?: Partial<TamaguiComponentState>;
+    nextComponentState?: TamaguiComponentState;
+    setStateShallow?: ComponentSetStateShallow;
     useStyleListener?: UseStyleListener;
-    group?: {
-        listeners: Set<GroupStateListener>;
-        layout?: LayoutValue;
-        emit: GroupStateListener;
-        subscribe: (cb: GroupStateListener) => () => void;
-    };
+    group?: ComponentGroupEmitter;
+};
+export type ComponentGroupEmitter = {
+    listeners: Set<GroupStateListener>;
+    emit: GroupStateListener;
+    subscribe: (cb: GroupStateListener) => () => void;
 };
 export type WidthHeight = {
     width: number;
     height: number;
 };
-type ComponentGroupEvent = {
-    pseudo?: PseudoGroupState;
-    layout?: WidthHeight;
-};
-export type GroupContextType = {
-    emit: GroupStateListener;
-    subscribe: (cb: GroupStateListener) => DisposeFn;
-    state: Record<string, ComponentGroupEvent>;
-    layout?: LayoutValue;
-};
-export type GroupStateListener = (name: string, state: ComponentGroupEvent) => void;
-type PseudoGroupState = {
-    hover?: boolean;
-    press?: boolean;
-    focus?: boolean;
-    focusVisible?: boolean;
-    focusWithin?: boolean;
-};
-export type GroupState = {
+export type ChildGroupState = {
     pseudo?: PseudoGroupState;
     media?: Record<MediaQueryKey extends number ? never : MediaQueryKey, boolean>;
 };
+export type ComponentGroupState = {
+    pseudo?: PseudoGroupState;
+    layout?: WidthHeight;
+};
+export type GroupStateListener = (state: ComponentGroupState) => void;
+export type SingleGroupContext = {
+    subscribe: (cb: GroupStateListener) => DisposeFn;
+    state: ComponentGroupState;
+};
+export type AllGroupContexts = {
+    [GroupName: string]: SingleGroupContext;
+};
+export type PseudoGroupState = Pick<TamaguiComponentState, 'disabled' | 'hover' | 'press' | 'pressIn' | 'focus' | 'focusVisible' | 'focusWithin'>;
 export type LayoutEvent = {
     nativeEvent: {
         layout: LayoutValue;

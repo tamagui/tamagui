@@ -1,3 +1,6 @@
+- css driver can noRerender
+- reanimated too but requires testing native + worklets
+
 v2:
 
 - move to types react/react-dom 19

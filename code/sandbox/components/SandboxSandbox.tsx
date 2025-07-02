@@ -38,8 +38,61 @@ const Motion = () => {
     y: 20,
     scale: 1.1,
   }
+
+  const squares = (
+    <>
+      <Square
+        animation="lazy"
+        size={50}
+        bg="green"
+        $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
+        $group-card-press={{ rotate: '5deg' }}
+        $group-hover={{ bg: 'yellow' }}
+        $group-other-press={{ y: 20, bg: 'rgba(255,255,0,0.5)' }}
+      />
+      <Square
+        animation="lazy"
+        size={50}
+        bg="yellow"
+        $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
+        $group-card-press={{ rotate: '5deg' }}
+        $group-other-hover={{ bg: 'black', x: 10 }}
+      />
+      <Square
+        animation="lazy"
+        size={50}
+        bg="green"
+        $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
+        $group-card-press={{ rotate: '5deg' }}
+        $group-hover={{ bg: 'yellow' }}
+        $group-other-press={{ y: 20, bg: 'rgba(255,255,0,0.5)' }}
+      />
+    </>
+  )
+
   return (
     <Configuration animationDriver={animationsMotion}>
+      {/* groups in groups */}
+      <YStack width={600} height={600} group bg="teal">
+        <XStack flexWrap="wrap" width={400} height={400} bg="pink" group="card">
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+        </XStack>
+      </YStack>
+
       {/* animateOnly */}
       <Square
         animation={[
@@ -57,6 +110,10 @@ const Motion = () => {
         hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }}
         pressStyle={{ scale: 0.8, borderColor: 'red' }}
         x={x * 300}
+        // TODO no media re-renders
+        $maxMd={{
+          bg: 'blue',
+        }}
       />
 
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
@@ -83,12 +140,12 @@ const Motion = () => {
         {/* render during animate update */}
         <Square
           animation="lazy"
-          onMouseDown={() => {
-            setPressed(true)
-          }}
-          onMouseUp={() => {
-            setPressed(false)
-          }}
+          // onMouseDown={() => {
+          //   setPressed(true)
+          // }}
+          // onMouseUp={() => {
+          //   setPressed(false)
+          // }}
           $group-card-hover={{
             y: 10,
             scale: 1.1,

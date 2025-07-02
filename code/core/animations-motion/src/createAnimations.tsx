@@ -5,6 +5,7 @@ import {
   fixStyles,
   getSplitStyles,
   hooks,
+  isEqualShallow,
   styleToCSS,
   Text,
   type UniversalAnimatedNumber,
@@ -23,7 +24,14 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -84,16 +92,32 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const sendExitComplete = presence?.[1]
 
       const [scope, animate] = useAnimate()
-      const lastAnimationStyle = useRef<Object | null>(null)
+      const lastAnimationStyle = useRef<Record<string, unknown> | null>(null)
+      const lastDontAnimate = useRef<Record<string, unknown>>({})
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
+
+      function collapseAnimationQueue() {
+        // we just skip to the last one
+        const queue = animationsQueue.current
+        const last = queue[queue.length - 1]
+        if (last) {
+          // unsafe react, i know...
+          animationsQueue.current = []
+          return last
+        }
+      }
 
       const shouldDebug =
         process.env.NODE_ENV === 'development' &&
         props['debug'] &&
         props['debug'] !== 'profile'
 
-      const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
+      const {
+        dontAnimate = {},
+        doAnimate,
+        animationOptions,
+      } = useMemo(() => {
         const motionAnimationState = getMotionAnimatedProps(
           props as any,
           style,
@@ -102,37 +126,22 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         return motionAnimationState
       }, [presenceContext, animationKey, styleKey])
 
-      const animationsQueue = useRef<any[]>([])
+      const animationsQueue = useRef<AnimationProps[]>([])
       const lastAnimateAt = useRef(0)
       const minTimeBetweenAnimations = 16.667
 
-      function collapseAnimationQueue() {
-        // we can actually collapse the queue to one update
-        const nextStyle: Record<string, unknown> = {}
-        const animationOptions: AnimationOptions = {}
-
-        for (const item of animationsQueue.current) {
-          Object.assign(nextStyle, item.nextStyle)
-          Object.assign(animationOptions, item.animationOptions)
-        }
-
-        // unsafe react, i know...
-        animationsQueue.current = []
-
-        return {
-          doAnimate: nextStyle,
-          animationOptions,
-        }
-      }
-
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         let disposed = false
 
         const animationFrame = () => {
           const elapsed = Date.now() - lastAnimateAt.current
+          const animationProps = collapseAnimationQueue()
 
           if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
-            const animationProps = collapseAnimationQueue()
+            console.info('slow', elapsed, { animationProps, props })
+          }
+
+          if (animationProps) {
             flushAnimation(animationProps)
           }
 
@@ -162,7 +171,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         dontAnimate,
         animationOptions = {},
       }: AnimationProps) => {
-        if (!(stateRef.current.host instanceof HTMLElement)) {
+        const node = stateRef.current.host
+        if (!(node instanceof HTMLElement)) {
           return
         }
         if (!doAnimate && !dontAnimate) {
@@ -201,24 +211,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // handle case where dontAnimate changes
         // we just set it onto animate + set options to not actually animate
         if (dontAnimate) {
-          const last = lastDontAnimate.current
-          for (const key in dontAnimate) {
-            const val = dontAnimate[key]
-            if (last && val !== last[key]) {
-              next[key] = val
-              animationOptions[key] = { type: 'tween', duration: 0 }
+          if (node) {
+            const diff = getDiff(lastDontAnimate.current, dontAnimate)
+            if (diff) {
+              lastDontAnimate.current = dontAnimate
+              Object.assign(node.style, dontAnimate)
             }
           }
-          lastDontAnimate.current = dontAnimate
         }
 
-        let diff: Record<string, unknown> | null = null
-        for (const key in next) {
-          if (next[key] !== lastAnimationStyle.current[key]) {
-            diff ||= {}
-            diff[key] = next[key]
-          }
-        }
+        const diff = getDiff(lastAnimationStyle.current, next)
 
         if (shouldDebug) {
           console.groupCollapsed(`[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`)
@@ -231,7 +233,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
 
         lastAnimateAt.current = Date.now()
-        controls.current?.stop()
         controls.current = animate(scope.current, diff, animationOptions)
         lastAnimationStyle.current = next
 
@@ -263,13 +264,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       useIsomorphicLayoutEffect(() => {
         if (!doAnimate) return
+
+        // always clear queue if we re-render
+        animationsQueue.current = []
+
         runAnimation({
           doAnimate,
           animationOptions,
         })
       }, [JSON.stringify(doAnimate), lastAnimationStyle])
 
-      const lastDontAnimate = useRef<Object>(undefined)
       useIsomorphicLayoutEffect(() => {
         lastDontAnimate.current = dontAnimate
       })
@@ -568,4 +572,22 @@ function createMotionView(defaultTag: string) {
   Component['acceptTagProp'] = true
 
   return Component
+}
+
+function getDiff<T extends Record<string, unknown>>(
+  previous: T | null,
+  next: T
+): Record<string, unknown> | null {
+  if (!previous) {
+    return next
+  }
+
+  let diff: Record<string, unknown> | null = null
+  for (const key in next) {
+    if (next[key] !== previous[key]) {
+      diff ||= {}
+      diff[key] = next[key]
+    }
+  }
+  return diff
 }

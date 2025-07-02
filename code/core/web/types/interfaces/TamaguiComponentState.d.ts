@@ -1,4 +1,4 @@
-import type { GroupState } from '../types';
+import type { ChildGroupState } from '../types';
 export type TamaguiComponentState = {
     unmounted: boolean | 'should-enter';
     disabled?: boolean;
@@ -12,7 +12,7 @@ export type TamaguiComponentState = {
         style?: any;
         avoidClasses?: boolean;
     };
-    group?: Record<string, GroupState>;
+    group?: Record<string, ChildGroupState>;
     hasDynGroupChildren?: boolean;
 };
 //# sourceMappingURL=TamaguiComponentState.d.ts.map

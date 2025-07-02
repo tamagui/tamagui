@@ -84,13 +84,17 @@ export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
   Props & RefAttributes<Ref>
 >
 
+// needs to be cb style for subscribeToContextGroup to be able to poke through to last state
+export type ComponentSetStateShallow = React.Dispatch<
+  React.SetStateAction<Partial<TamaguiComponentState>>
+>
+
 export type ComponentContextI = {
   disableSSR?: boolean
   inText: boolean
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
-  groups: GroupContextType
-  setParentFocusState: ((next: Partial<TamaguiComponentState>) => void) | null
+  setParentFocusState: ComponentSetStateShallow | null
 }
 
 export type TamaguiComponentStateRef = {
@@ -103,14 +107,19 @@ export type TamaguiComponentStateRef = {
   hasEverThemed?: boolean | 'wrapped'
   isListeningToTheme?: boolean
   unPress?: Function
-  nextComponentState?: Partial<TamaguiComponentState>
+  nextComponentState?: TamaguiComponentState
+  setStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener
-  group?: {
-    listeners: Set<GroupStateListener>
-    layout?: LayoutValue
-    emit: GroupStateListener
-    subscribe: (cb: GroupStateListener) => () => void
-  }
+
+  // this is only used by group="" components
+  // sets up a context object to track current state + emit
+  group?: ComponentGroupEmitter
+}
+
+export type ComponentGroupEmitter = {
+  listeners: Set<GroupStateListener>
+  emit: GroupStateListener
+  subscribe: (cb: GroupStateListener) => () => void
 }
 
 export type WidthHeight = {
@@ -118,35 +127,31 @@ export type WidthHeight = {
   height: number
 }
 
-type ComponentGroupEvent = {
+export type ChildGroupState = {
+  pseudo?: PseudoGroupState
+  media?: Record<MediaQueryKey extends number ? never : MediaQueryKey, boolean>
+}
+
+export type ComponentGroupState = {
   pseudo?: PseudoGroupState
   layout?: WidthHeight
 }
 
-// this object must stay referentially the same always to avoid every component re-rendering
-// instead `state` is mutated and only used on initial mount, after that emit/subscribe
-export type GroupContextType = {
-  emit: GroupStateListener
+export type GroupStateListener = (state: ComponentGroupState) => void
+
+export type SingleGroupContext = {
   subscribe: (cb: GroupStateListener) => DisposeFn
-  state: Record<string, ComponentGroupEvent>
-  layout?: LayoutValue
+  state: ComponentGroupState
 }
 
-export type GroupStateListener = (name: string, state: ComponentGroupEvent) => void
-
-type PseudoGroupState = {
-  hover?: boolean
-  press?: boolean
-  focus?: boolean
-  focusVisible?: boolean
-  focusWithin?: boolean
+export type AllGroupContexts = {
+  [GroupName: string]: SingleGroupContext
 }
 
-// could just be TamaguiComponentState likely
-export type GroupState = {
-  pseudo?: PseudoGroupState
-  media?: Record<MediaQueryKey extends number ? never : MediaQueryKey, boolean>
-}
+export type PseudoGroupState = Pick<
+  TamaguiComponentState,
+  'disabled' | 'hover' | 'press' | 'pressIn' | 'focus' | 'focusVisible' | 'focusWithin'
+>
 
 export type LayoutEvent = {
   nativeEvent: {

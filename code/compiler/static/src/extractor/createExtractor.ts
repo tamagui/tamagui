@@ -625,6 +625,7 @@ export function createExtractor(
           undefined,
           undefined,
           undefined,
+          undefined,
           false,
           shouldPrintDebug
         )
@@ -2052,6 +2053,7 @@ export function createExtractor(
                       resolveValues: 'except-theme',
                     }),
                 },
+                undefined,
                 undefined,
                 undefined,
                 undefined,

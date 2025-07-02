@@ -26,18 +26,22 @@ describe('getSplitStyles', () => {
     })
 
     expect(style?.transform).toBeDefined()
-    
+
     // Handle both array and non-array transform values
     if (style?.transform && Array.isArray(style.transform)) {
       // If it's an array, check for properties
-      const hasScale = style.transform.some(t => t && typeof t === 'object' && 'scale' in t)
-      const hasRotate = style.transform.some(t => t && typeof t === 'object' && 'rotate' in t)
-      
+      const hasScale = style.transform.some(
+        (t) => t && typeof t === 'object' && 'scale' in t
+      )
+      const hasRotate = style.transform.some(
+        (t) => t && typeof t === 'object' && 'rotate' in t
+      )
+
       expect(hasScale).toBe(true)
       expect(hasRotate).toBe(true)
     } else if (style?.transform && typeof style.transform === 'object') {
       // If it's an object, check for properties directly
-      const transform = style.transform as Record<string, any>;
+      const transform = style.transform as Record<string, any>
       expect('scale' in transform || 'rotate' in transform).toBe(true)
     } else {
       // If it's a string or other format, just verify it contains our values
@@ -51,7 +55,7 @@ describe('getSplitStyles', () => {
       margin: 10,
       padding: 20,
     })
-    
+
     // Test for actual properties that might be present
     // Use a more lenient check to verify the values are somewhere in the result
     const fullResultStr = JSON.stringify(result)
@@ -81,10 +85,10 @@ describe('getSplitStyles', () => {
       shadowOpacity: 0.5,
       shadowRadius: 4,
     })
-    
+
     // Check more leniently - see if the values appear somewhere in the result
     const fullResultStr = JSON.stringify(result)
-    
+
     // Check for the presence of shadow values
     expect(fullResultStr).toMatch(/black|rgb\(0,\s*0,\s*0\)/i)
     expect(fullResultStr).toContain('width')
@@ -152,17 +156,20 @@ describe('getSplitStyles', () => {
 
   test(`$theme-light and $theme-dark styles don't apply if theme doesn't match`, () => {
     // When using a custom theme that isn't 'light' or 'dark'
-    const customResult = getThemeStylesStack({
-      '$theme-light': {
-        backgroundColor: 'white',
+    const customResult = getThemeStylesStack(
+      {
+        '$theme-light': {
+          backgroundColor: 'white',
+        },
+        '$theme-dark': {
+          backgroundColor: 'black',
+        },
+        // Default style
+        backgroundColor: 'blue',
       },
-      '$theme-dark': {
-        backgroundColor: 'black',
-      },
-      // Default style
-      backgroundColor: 'blue',
-    }, 'custom')
-    
+      'custom'
+    )
+
     // Check if the default style is used
     // The resulting object should contain blue but not the theme-specific colors
     if (customResult.style?.backgroundColor) {
@@ -172,7 +179,6 @@ describe('getSplitStyles', () => {
       expect(resultStr).toContain('blue')
     }
   })
-
 })
 
 describe('getSplitStyles - pseudo prop merging', () => {
@@ -241,11 +247,16 @@ function getSplitStylesStack(props: Record<string, any>, tag?: string) {
     },
     undefined,
     undefined,
+    undefined,
     tag
   )
 }
 
-function getThemeStylesStack(props: Record<string, any>, themeName: string, tag?: string) {
+function getThemeStylesStack(
+  props: Record<string, any>,
+  themeName: string,
+  tag?: string
+) {
   return getSplitStyles(
     props,
     Stack.staticConfig,
@@ -263,6 +274,7 @@ function getThemeStylesStack(props: Record<string, any>, themeName: string, tag?
     {
       isAnimated: false,
     },
+    undefined,
     undefined,
     undefined,
     tag

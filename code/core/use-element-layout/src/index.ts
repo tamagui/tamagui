@@ -36,7 +36,6 @@ export type LayoutEvent = {
 
 const NodeRectCache = new WeakMap<HTMLElement, DOMRect>()
 const ParentRectCache = new WeakMap<HTMLElement, DOMRect>()
-const DebounceTimers = new WeakMap<HTMLElement, NodeJS.Timeout>()
 const LastChangeTime = new WeakMap<HTMLElement, number>()
 
 const rAF = typeof window !== 'undefined' ? window.requestAnimationFrame : undefined
@@ -97,7 +96,9 @@ if (isClient) {
       if (
         !cachedRect ||
         // has changed one rect
+        // @ts-expect-error DOMRectReadOnly can go into object
         (!isEqualShallow(cachedRect, nodeRect) &&
+          // @ts-expect-error DOMRectReadOnly can go into object
           (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
       ) {
         NodeRectCache.set(node, nodeRect)

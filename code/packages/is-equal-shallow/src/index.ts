@@ -7,15 +7,19 @@ export type CallbackSetState<State> = (next: (cb: State) => State) => void
 export function useCreateShallowSetState<State extends Record<string, unknown>>(
   setter: CallbackSetState<State>,
   debug?: DebugProp
-): (next: Partial<State>) => void {
+): React.Dispatch<React.SetStateAction<Partial<State>>> {
   // this must be memoized or it ruins performance in components
   return useCallback(
-    (next: Partial<State>) => {
+    (stateOrGetState) => {
       setter((prev) => {
+        const next =
+          typeof stateOrGetState === 'function' ? stateOrGetState(prev) : stateOrGetState
         const update = mergeIfNotShallowEqual(prev, next)
+
         if (process.env.NODE_ENV === 'development') {
           if (debug && update !== prev) {
-            console.groupCollapsed(`setStateShallow CHANGE`, prev, '=>', update)
+            console.groupCollapsed(`setStateShallow CHANGE`, '=>', update)
+            console.info(`previously`, prev)
             console.trace()
             console.groupEnd()
             if (debug === 'break') {
@@ -42,7 +46,10 @@ export function mergeIfNotShallowEqual<State extends Record<string, unknown>>(
   return { ...prev, ...next }
 }
 
-export function isEqualShallow(prev: Object, next: Object): boolean {
+export function isEqualShallow(
+  prev: Record<string, unknown>,
+  next: Record<string, unknown>
+): boolean {
   for (const key in next) {
     if (prev[key] !== next[key]) {
       return false
