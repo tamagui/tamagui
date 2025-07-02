@@ -89,7 +89,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   useEffect(() => {
     onCommandChange()
-  }, [transformedCommand, onCommandChange])
+  }, [transformedCommand, isPreVisible, onCommandChange])
 
   return (
     <YStack
@@ -226,9 +226,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   right="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
-                  onPress={onCopy}
-                  $xs={{
-                    display: 'none',
+                  onPress={() => {
+                    onCopy()
                   }}
                 >
                   Copy
