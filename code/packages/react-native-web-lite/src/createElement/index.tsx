@@ -26,6 +26,8 @@ export const useCreateElement = (component, props, options?) => {
   const { element, styles } = createElementAndStyles(component, props, options)
 
   const isHydrated = useDidFinishSSR()
+
+  // only for ssr
   const styleTags = useMemo(
     () => {
       return isHydrated || !styles ? null : getStyleTags(styles)
@@ -35,6 +37,7 @@ export const useCreateElement = (component, props, options?) => {
     ]
   )
 
+  // after that we insert
   useInsertionEffect(() => {
     if (!styles) return
     const styleObj: Record<string, StyleObject> = {}
@@ -54,14 +57,11 @@ export const useCreateElement = (component, props, options?) => {
 
 const createElement = (component, props, options?) => {
   const { element, styles } = createElementAndStyles(component, props, options)
-  if (!styles) {
-    return element
-  }
 
   return (
     <>
       {element}
-      {getStyleTags(styles)}
+      {styles ? getStyleTags(styles) : null}
     </>
   )
 }

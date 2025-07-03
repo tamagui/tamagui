@@ -16,6 +16,7 @@ import {
 } from '@tamagui/core'
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
+  frame,
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
   type MotionValue,
@@ -146,11 +147,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           }
 
           if (!disposed) {
+            // frame.postRender(animationFrame)
             requestAnimationFrame(animationFrame)
           }
         }
 
         requestAnimationFrame(animationFrame)
+        // frame.postRender(animationFrame)
 
         return () => {
           disposed = true

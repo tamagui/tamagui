@@ -4,17 +4,23 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * @format
  * @format
  */
-'use strict'
 
 import AnimatedInterpolation from './AnimatedInterpolation'
 import AnimatedWithChildren from './AnimatedWithChildren'
 
 class AnimatedDiffClamp extends AnimatedWithChildren {
+  _a
+  _min
+  _max
+  _value
+  _lastValue
+
   constructor(a, min, max) {
     super()
+
     this._a = a
     this._min = min
     this._max = max
@@ -23,7 +29,6 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
 
   __makeNative(platformConfig) {
     this._a.__makeNative(platformConfig)
-
     super.__makeNative(platformConfig)
   }
 
@@ -32,9 +37,8 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
   }
 
   __getValue() {
-    var value = this._a.__getValue()
-
-    var diff = value - this._lastValue
+    const value = this._a.__getValue()
+    const diff = value - this._lastValue
     this._lastValue = value
     this._value = Math.min(Math.max(this._value + diff, this._min), this._max)
     return this._value
@@ -46,7 +50,6 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
 
   __detach() {
     this._a.__removeChild(this)
-
     super.__detach()
   }
 

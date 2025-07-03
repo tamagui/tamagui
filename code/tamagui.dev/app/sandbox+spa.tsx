@@ -17,6 +17,7 @@ import {
   Popover,
   Square,
   Text,
+  TooltipSimple,
   View,
   XStack,
   YStack,
@@ -30,7 +31,7 @@ export default function Sandbox() {
     <Configuration animationDriver={animationsMotion}>
       <YStack p="$10" ai="center" jc="center">
         <SandboxContent />
-        <LogoWords animated />
+        {/* <LogoWords animated /> */}
       </YStack>
     </Configuration>
   )
@@ -40,20 +41,36 @@ function SandboxContent() {
   const config = useConfiguration()
   console.warn('render', config)
 
-  useEffect(() => {
-    console.info('freeze main thread interval')
-    const x = setInterval(() => {
-      const startTime = Date.now()
-      while (Date.now() < startTime + 20) {
-        // Do nothing, just wait
-      }
-    }, 100)
-    return () => {
-      clearInterval(x)
-    }
-  }, [])
+  // useEffect(() => {
+  //   console.info('freeze main thread interval')
+  //   const x = setInterval(() => {
+  //     const startTime = Date.now()
+  //     while (Date.now() < startTime + 20) {
+  //       // Do nothing, just wait
+  //     }
+  //   }, 100)
+  //   return () => {
+  //     clearInterval(x)
+  //   }
+  // }, [])
 
-  return <Text />
+  return (
+    <View>
+      <YStack
+        animation="lazy"
+        w={500}
+        h={500}
+        bg="red"
+        hoverStyle={{
+          y: 100,
+        }}
+      >
+        <TooltipSimple label="test tooltip">
+          <Button>Close</Button>
+        </TooltipSimple>
+      </YStack>
+    </View>
+  )
   // return <StyledText customProp="ok">hello world</StyledText>
 
   // const [x, setX] = useState(false)

@@ -444,15 +444,6 @@ export function createComponent<
     // but still stores the current state and applies if it it needs to during render
     let setStateShallow = componentState.setStateShallow
 
-    const pendingState = stateRef.current.nextComponentState
-    if (pendingState) {
-      stateRef.current.nextComponentState = undefined
-      componentState.setState((prev) => ({
-        ...prev,
-        ...pendingState,
-      }))
-    }
-
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
@@ -1003,9 +994,12 @@ export function createComponent<
     ])
 
     if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      useEffect(() => {
-        // always clear after render
-        stateRef.current.nextComponentState = undefined
+      useIsomorphicLayoutEffect(() => {
+        const pendingState = stateRef.current.nextComponentState
+        if (pendingState) {
+          setStateShallow(pendingState)
+          stateRef.current.nextComponentState = undefined
+        }
       })
     }
 

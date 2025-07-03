@@ -4,10 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * @format
  * @format
  */
-'use strict'
+
+'use strict';
+
 /**
  * NOTE: This is React Native specific export type.
  *
@@ -23,4 +25,13 @@
  * information, native base classes, etc. For now, simply use `void` type as
  * there's nothing to give hint about.
  */
+
 // eslint-disable-next-line no-unused-vars
+export const RCTExport = {
+  getConstants: () => ({}),
+};
+
+// eslint-disable-next-line lint/react-native-modules
+export const TurboModule = {
+  ...RCTExport,
+};

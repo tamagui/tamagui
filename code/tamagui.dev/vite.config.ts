@@ -86,7 +86,7 @@ export default {
       optimize: true,
       config: '@tamagui/tamagui-dev-config',
       outputCSS: './tamagui.css',
-      useReactNativeWebLite: false,
+      // useReactNativeWebLite: true,
     }),
 
     one({

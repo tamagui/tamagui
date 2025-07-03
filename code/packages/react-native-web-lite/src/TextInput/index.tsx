@@ -142,6 +142,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       secureTextEntry = false,
       selection,
       selectTextOnFocus,
+      showSoftInputOnFocus,
       spellCheck,
     } = props
 
@@ -400,8 +401,11 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       styles.textinput$raw,
       styles.placeholder,
       props.style,
+      caretHidden && styles.caretHidden,
     ]
     supportedProps.type = multiline ? undefined : type
+    supportedProps.virtualkeyboardpolicy =
+      showSoftInputOnFocus === false ? 'manual' : 'auto'
 
     const platformMethodsRef = usePlatformMethods(supportedProps)
 
@@ -432,9 +436,23 @@ TextInput.displayName = 'TextInput'
 TextInput.State = TextInputState
 
 const styles = StyleSheet.create({
-  textinput$raw: {},
+  textinput$raw: {
+    MozAppearance: 'textfield',
+    WebkitAppearance: 'none',
+    backgroundColor: 'transparent',
+    border: '0 solid black',
+    borderRadius: 0,
+    boxSizing: 'border-box',
+    font: '14px System',
+    margin: 0,
+    padding: 0,
+    resize: 'none',
+  },
   placeholder: {
     placeholderTextColor: 'var(--placeholderTextColor)',
+  },
+  caretHidden: {
+    caretColor: 'transparent',
   },
 })
 

@@ -27,7 +27,7 @@
     "bento": "yarn profile react-18 && yarn workspace @tamagui/bento start",
     "build:app": "./scripts/ci-build-app.sh",
     "build:force": "yarn clean:build && yarn build:pre && turbo run build --force",
-    "build:js": "./scripts/run.sh build --force --skip-types",
+    "build:js": "yarn build:pre && turbo run build -- --force --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build:verbose": "yarn build -vvv",
     "build": "yarn build:pre && turbo run build",

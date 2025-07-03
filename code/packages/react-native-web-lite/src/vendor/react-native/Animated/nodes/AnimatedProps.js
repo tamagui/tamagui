@@ -4,38 +4,35 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * @format
  * @format
  */
-'use strict'
-
-import { invariant } from '@tamagui/react-native-web-internals'
 
 import { AnimatedEvent } from '../AnimatedEvent'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
 import AnimatedNode from './AnimatedNode'
 import AnimatedStyle from './AnimatedStyle'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+
+import invariant from 'fbjs/lib/invariant'
 
 class AnimatedProps extends AnimatedNode {
   constructor(props, callback) {
     super()
-
     if (props.style) {
-      props = { ...props, style: new AnimatedStyle(props.style) }
+      props = {
+        ...props,
+        style: new AnimatedStyle(props.style),
+      }
     }
-
     this._props = props
     this._callback = callback
-
     this.__attach()
   }
 
   __getValue() {
-    var props = {}
-
-    for (var key in this._props) {
-      var value = this._props[key]
-
+    const props = {}
+    for (const key in this._props) {
+      const value = this._props[key]
       if (value instanceof AnimatedNode) {
         if (!value.__isNative || value instanceof AnimatedStyle) {
           // We cannot use value of natively driven nodes this way as the value we have access from
@@ -48,28 +45,23 @@ class AnimatedProps extends AnimatedNode {
         props[key] = value
       }
     }
-
     return props
   }
 
   __getAnimatedValue() {
-    var props = {}
-
-    for (var key in this._props) {
-      var value = this._props[key]
-
+    const props = {}
+    for (const key in this._props) {
+      const value = this._props[key]
       if (value instanceof AnimatedNode) {
         props[key] = value.__getAnimatedValue()
       }
     }
-
     return props
   }
 
   __attach() {
-    for (var key in this._props) {
-      var value = this._props[key]
-
+    for (const key in this._props) {
+      const value = this._props[key]
       if (value instanceof AnimatedNode) {
         value.__addChild(this)
       }
@@ -80,15 +72,12 @@ class AnimatedProps extends AnimatedNode {
     if (this.__isNative && this._animatedView) {
       this.__disconnectAnimatedView()
     }
-
-    for (var key in this._props) {
-      var value = this._props[key]
-
+    for (const key in this._props) {
+      const value = this._props[key]
       if (value instanceof AnimatedNode) {
         value.__removeChild(this)
       }
     }
-
     super.__detach()
   }
 
@@ -99,15 +88,12 @@ class AnimatedProps extends AnimatedNode {
   __makeNative() {
     if (!this.__isNative) {
       this.__isNative = true
-
-      for (var key in this._props) {
-        var value = this._props[key]
-
+      for (const key in this._props) {
+        const value = this._props[key]
         if (value instanceof AnimatedNode) {
           value.__makeNative()
         }
       }
-
       if (this._animatedView) {
         this.__connectAnimatedView()
       }
@@ -118,9 +104,7 @@ class AnimatedProps extends AnimatedNode {
     if (this._animatedView === animatedView) {
       return
     }
-
     this._animatedView = animatedView
-
     if (this.__isNative) {
       this.__connectAnimatedView()
     }
@@ -128,7 +112,7 @@ class AnimatedProps extends AnimatedNode {
 
   __connectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
-    var nativeViewTag = this._animatedView
+    const nativeViewTag = this._animatedView
     invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
     NativeAnimatedHelper.API.connectAnimatedNodeToView(
       this.__getNativeTag(),
@@ -138,7 +122,7 @@ class AnimatedProps extends AnimatedNode {
 
   __disconnectAnimatedView() {
     invariant(this.__isNative, 'Expected node to be marked as "native"')
-    var nativeViewTag = this._animatedView
+    const nativeViewTag = this._animatedView
     invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree')
     NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(
       this.__getNativeTag(),
@@ -157,18 +141,14 @@ class AnimatedProps extends AnimatedNode {
   }
 
   __getNativeConfig() {
-    var propsConfig = {}
-
-    for (var propKey in this._props) {
-      var value = this._props[propKey]
-
+    const propsConfig = {}
+    for (const propKey in this._props) {
+      const value = this._props[propKey]
       if (value instanceof AnimatedNode) {
         value.__makeNative()
-
         propsConfig[propKey] = value.__getNativeTag()
       }
     }
-
     return {
       type: 'props',
       props: propsConfig,

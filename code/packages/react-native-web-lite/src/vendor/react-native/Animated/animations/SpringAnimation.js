@@ -4,98 +4,77 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
  * @format
  */
-'use strict'
 
-import { invariant } from '@tamagui/react-native-web-internals'
+'use strict';
 
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
-import SpringConfig from '../SpringConfig'
-import Animation from './Animation'
+
+import Animation from './Animation';
+import SpringConfig from '../SpringConfig';
+
+import invariant from 'fbjs/lib/invariant';
+
+import {shouldUseNativeDriver} from '../NativeAnimatedHelper';
+
+
+import AnimatedColor from '../nodes/AnimatedColor';
+
 
 class SpringAnimation extends Animation {
-  constructor(config) {
-    var _config$overshootClam,
-      _config$restDisplacem,
-      _config$restSpeedThre,
-      _config$velocity,
-      _config$velocity2,
-      _config$delay,
-      _config$isInteraction,
-      _config$iterations
+  _overshootClamping;
+  _restDisplacementThreshold;
+  _restSpeedThreshold;
+  _lastVelocity;
+  _startPosition;
+  _lastPosition;
+  _fromValue;
+  _toValue;
+  _stiffness;
+  _damping;
+  _mass;
+  _initialVelocity;
+  _delay;
+  _timeout;
+  _startTime;
+  _lastTime;
+  _frameTime;
+  _onUpdate;
+  _animationFrame;
+  _useNativeDriver;
+  _platformConfig;
 
-    super()
-    this._overshootClamping =
-      (_config$overshootClam = config.overshootClamping) !== null &&
-      _config$overshootClam !== void 0
-        ? _config$overshootClam
-        : false
-    this._restDisplacementThreshold =
-      (_config$restDisplacem = config.restDisplacementThreshold) !== null &&
-      _config$restDisplacem !== void 0
-        ? _config$restDisplacem
-        : 0.001
-    this._restSpeedThreshold =
-      (_config$restSpeedThre = config.restSpeedThreshold) !== null &&
-      _config$restSpeedThre !== void 0
-        ? _config$restSpeedThre
-        : 0.001
-    this._initialVelocity =
-      (_config$velocity = config.velocity) !== null && _config$velocity !== void 0
-        ? _config$velocity
-        : 0
-    this._lastVelocity =
-      (_config$velocity2 = config.velocity) !== null && _config$velocity2 !== void 0
-        ? _config$velocity2
-        : 0
-    this._toValue = config.toValue
-    this._delay =
-      (_config$delay = config.delay) !== null && _config$delay !== void 0
-        ? _config$delay
-        : 0
-    this._useNativeDriver = shouldUseNativeDriver(config)
-    this._platformConfig = config.platformConfig
-    this.__isInteraction =
-      (_config$isInteraction = config.isInteraction) !== null &&
-      _config$isInteraction !== void 0
-        ? _config$isInteraction
-        : !this._useNativeDriver
-    this.__iterations =
-      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
-        ? _config$iterations
-        : 1
+  constructor(config) {
+    super();
+
+    this._overshootClamping = config.overshootClamping ?? false;
+    this._restDisplacementThreshold = config.restDisplacementThreshold ?? 0.001;
+    this._restSpeedThreshold = config.restSpeedThreshold ?? 0.001;
+    this._initialVelocity = config.velocity ?? 0;
+    this._lastVelocity = config.velocity ?? 0;
+    this._toValue = config.toValue;
+    this._delay = config.delay ?? 0;
+    this._useNativeDriver = shouldUseNativeDriver(config);
+    this._platformConfig = config.platformConfig;
+    this.__isInteraction = config.isInteraction ?? !this._useNativeDriver;
+    this.__iterations = config.iterations ?? 1;
 
     if (
       config.stiffness !== undefined ||
       config.damping !== undefined ||
       config.mass !== undefined
     ) {
-      var _config$stiffness, _config$damping, _config$mass
-
       invariant(
         config.bounciness === undefined &&
           config.speed === undefined &&
           config.tension === undefined &&
           config.friction === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
-      )
-      this._stiffness =
-        (_config$stiffness = config.stiffness) !== null && _config$stiffness !== void 0
-          ? _config$stiffness
-          : 100
-      this._damping =
-        (_config$damping = config.damping) !== null && _config$damping !== void 0
-          ? _config$damping
-          : 10
-      this._mass =
-        (_config$mass = config.mass) !== null && _config$mass !== void 0
-          ? _config$mass
-          : 1
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
+      );
+      this._stiffness = config.stiffness ?? 100;
+      this._damping = config.damping ?? 10;
+      this._mass = config.mass ?? 1;
     } else if (config.bounciness !== undefined || config.speed !== undefined) {
-      var _config$bounciness, _config$speed
-
       // Convert the origami bounciness/speed values to stiffness/damping
       // We assume mass is 1.
       invariant(
@@ -104,46 +83,33 @@ class SpringAnimation extends Animation {
           config.stiffness === undefined &&
           config.damping === undefined &&
           config.mass === undefined,
-        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one'
-      )
-      var springConfig = SpringConfig.fromBouncinessAndSpeed(
-        (_config$bounciness = config.bounciness) !== null && _config$bounciness !== void 0
-          ? _config$bounciness
-          : 8,
-        (_config$speed = config.speed) !== null && _config$speed !== void 0
-          ? _config$speed
-          : 12
-      )
-      this._stiffness = springConfig.stiffness
-      this._damping = springConfig.damping
-      this._mass = 1
+        'You can define one of bounciness/speed, tension/friction, or stiffness/damping/mass, but not more than one',
+      );
+      const springConfig = SpringConfig.fromBouncinessAndSpeed(
+        config.bounciness ?? 8,
+        config.speed ?? 12,
+      );
+      this._stiffness = springConfig.stiffness;
+      this._damping = springConfig.damping;
+      this._mass = 1;
     } else {
-      var _config$tension, _config$friction
-
       // Convert the origami tension/friction values to stiffness/damping
       // We assume mass is 1.
-      var _springConfig = SpringConfig.fromOrigamiTensionAndFriction(
-        (_config$tension = config.tension) !== null && _config$tension !== void 0
-          ? _config$tension
-          : 40,
-        (_config$friction = config.friction) !== null && _config$friction !== void 0
-          ? _config$friction
-          : 7
-      )
-
-      this._stiffness = _springConfig.stiffness
-      this._damping = _springConfig.damping
-      this._mass = 1
+      const springConfig = SpringConfig.fromOrigamiTensionAndFriction(
+        config.tension ?? 40,
+        config.friction ?? 7,
+      );
+      this._stiffness = springConfig.stiffness;
+      this._damping = springConfig.damping;
+      this._mass = 1;
     }
 
-    invariant(this._stiffness > 0, 'Stiffness value must be greater than 0')
-    invariant(this._damping > 0, 'Damping value must be greater than 0')
-    invariant(this._mass > 0, 'Mass value must be greater than 0')
+    invariant(this._stiffness > 0, 'Stiffness value must be greater than 0');
+    invariant(this._damping > 0, 'Damping value must be greater than 0');
+    invariant(this._mass > 0, 'Mass value must be greater than 0');
   }
 
   __getNativeAnimationConfig() {
-    var _this$_initialVelocit
-
     return {
       type: 'spring',
       overshootClamping: this._overshootClamping,
@@ -152,47 +118,51 @@ class SpringAnimation extends Animation {
       stiffness: this._stiffness,
       damping: this._damping,
       mass: this._mass,
-      initialVelocity:
-        (_this$_initialVelocit = this._initialVelocity) !== null &&
-        _this$_initialVelocit !== void 0
-          ? _this$_initialVelocit
-          : this._lastVelocity,
+      initialVelocity: this._initialVelocity ?? this._lastVelocity,
       toValue: this._toValue,
       iterations: this.__iterations,
       platformConfig: this._platformConfig,
-    }
+    };
   }
 
-  start(fromValue, onUpdate, onEnd, previousAnimation, animatedValue) {
-    this.__active = true
-    this._startPosition = fromValue
-    this._lastPosition = this._startPosition
-    this._onUpdate = onUpdate
-    this.__onEnd = onEnd
-    this._lastTime = Date.now()
-    this._frameTime = 0.0
+  start(
+    fromValue,
+    onUpdate,
+    onEnd,
+    previousAnimation,
+    animatedValue,
+  ) {
+    this.__active = true;
+    this._startPosition = fromValue;
+    this._lastPosition = this._startPosition;
+
+    this._onUpdate = onUpdate;
+    this.__onEnd = onEnd;
+    this._lastTime = Date.now();
+    this._frameTime = 0.0;
 
     if (previousAnimation instanceof SpringAnimation) {
-      var internalState = previousAnimation.getInternalState()
-      this._lastPosition = internalState.lastPosition
-      this._lastVelocity = internalState.lastVelocity // Set the initial velocity to the last velocity
-
-      this._initialVelocity = this._lastVelocity
-      this._lastTime = internalState.lastTime
+      const internalState = previousAnimation.getInternalState();
+      this._lastPosition = internalState.lastPosition;
+      this._lastVelocity = internalState.lastVelocity;
+      // Set the initial velocity to the last velocity
+      this._initialVelocity = this._lastVelocity;
+      this._lastTime = internalState.lastTime;
     }
 
-    var start = () => {
+    const start = () => {
       if (this._useNativeDriver) {
-        this.__startNativeAnimation(animatedValue)
+        this.__startNativeAnimation(animatedValue);
       } else {
-        this.onUpdate()
+        this.onUpdate();
       }
-    } //  If this._delay is more than 0, we start after the timeout.
+    };
 
+    //  If this._delay is more than 0, we start after the timeout.
     if (this._delay) {
-      this._timeout = setTimeout(start, this._delay)
+      this._timeout = setTimeout(start, this._delay);
     } else {
-      start()
+      start();
     }
   }
 
@@ -201,8 +171,9 @@ class SpringAnimation extends Animation {
       lastPosition: this._lastPosition,
       lastVelocity: this._lastVelocity,
       lastTime: this._lastTime,
-    }
+    };
   }
+
   /**
    * This spring model is based off of a damped harmonic oscillator
    * (https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator).
@@ -224,47 +195,43 @@ class SpringAnimation extends Animation {
    * This algorithm happens to match the algorithm used by CASpringAnimation,
    * a QuartzCore (iOS) API that creates spring animations.
    */
-
   onUpdate() {
     // If for some reason we lost a lot of frames (e.g. process large payload or
     // stopped in the debugger), we only advance by 4 frames worth of
     // computation and will continue on the next frame. It's better to have it
     // running at faster speed than jumping to the end.
-    var MAX_STEPS = 64
-    var now = Date.now()
-
+    const MAX_STEPS = 64;
+    let now = Date.now();
     if (now > this._lastTime + MAX_STEPS) {
-      now = this._lastTime + MAX_STEPS
+      now = this._lastTime + MAX_STEPS;
     }
 
-    var deltaTime = (now - this._lastTime) / 1000
-    this._frameTime += deltaTime
-    var c = this._damping
-    var m = this._mass
-    var k = this._stiffness
-    var v0 = -this._initialVelocity
-    var zeta = c / (2 * Math.sqrt(k * m)) // damping ratio
+    const deltaTime = (now - this._lastTime) / 1000;
+    this._frameTime += deltaTime;
 
-    var omega0 = Math.sqrt(k / m) // undamped angular frequency of the oscillator (rad/ms)
+    const c = this._damping;
+    const m = this._mass;
+    const k = this._stiffness;
+    const v0 = -this._initialVelocity;
 
-    var omega1 = omega0 * Math.sqrt(1.0 - zeta * zeta) // exponential decay
+    const zeta = c / (2 * Math.sqrt(k * m)); // damping ratio
+    const omega0 = Math.sqrt(k / m); // undamped angular frequency of the oscillator (rad/ms)
+    const omega1 = omega0 * Math.sqrt(1.0 - zeta * zeta); // exponential decay
+    const x0 = this._toValue - this._startPosition; // calculate the oscillation from x0 = 1 to x = 0
 
-    var x0 = this._toValue - this._startPosition // calculate the oscillation from x0 = 1 to x = 0
-
-    var position = 0.0
-    var velocity = 0.0
-    var t = this._frameTime
-
+    let position = 0.0;
+    let velocity = 0.0;
+    const t = this._frameTime;
     if (zeta < 1) {
       // Under damped
-      var envelope = Math.exp(-zeta * omega0 * t)
+      const envelope = Math.exp(-zeta * omega0 * t);
       position =
         this._toValue -
         envelope *
           (((v0 + zeta * omega0 * x0) / omega1) * Math.sin(omega1 * t) +
-            x0 * Math.cos(omega1 * t)) // This looks crazy -- it's actually just the derivative of the
+            x0 * Math.cos(omega1 * t));
+      // This looks crazy -- it's actually just the derivative of the
       // oscillation function
-
       velocity =
         zeta *
           omega0 *
@@ -273,74 +240,63 @@ class SpringAnimation extends Animation {
             x0 * Math.cos(omega1 * t)) -
         envelope *
           (Math.cos(omega1 * t) * (v0 + zeta * omega0 * x0) -
-            omega1 * x0 * Math.sin(omega1 * t))
+            omega1 * x0 * Math.sin(omega1 * t));
     } else {
       // Critically damped
-      var _envelope = Math.exp(-omega0 * t)
-
-      position = this._toValue - _envelope * (x0 + (v0 + omega0 * x0) * t)
-      velocity = _envelope * (v0 * (t * omega0 - 1) + t * x0 * (omega0 * omega0))
+      const envelope = Math.exp(-omega0 * t);
+      position = this._toValue - envelope * (x0 + (v0 + omega0 * x0) * t);
+      velocity =
+        envelope * (v0 * (t * omega0 - 1) + t * x0 * (omega0 * omega0));
     }
 
-    this._lastTime = now
-    this._lastPosition = position
-    this._lastVelocity = velocity
+    this._lastTime = now;
+    this._lastPosition = position;
+    this._lastVelocity = velocity;
 
-    this._onUpdate(position)
-
+    this._onUpdate(position);
     if (!this.__active) {
       // a listener might have stopped us in _onUpdate
-      return
-    } // Conditions for stopping the spring animation
-
-    var isOvershooting = false
-
-    if (this._overshootClamping && this._stiffness !== 0) {
-      if (this._startPosition < this._toValue) {
-        isOvershooting = position > this._toValue
-      } else {
-        isOvershooting = position < this._toValue
-      }
+      return;
     }
 
-    var isVelocity = Math.abs(velocity) <= this._restSpeedThreshold
-
-    var isDisplacement = true
-
+    // Conditions for stopping the spring animation
+    let isOvershooting = false;
+    if (this._overshootClamping && this._stiffness !== 0) {
+      if (this._startPosition < this._toValue) {
+        isOvershooting = position > this._toValue;
+      } else {
+        isOvershooting = position < this._toValue;
+      }
+    }
+    const isVelocity = Math.abs(velocity) <= this._restSpeedThreshold;
+    let isDisplacement = true;
     if (this._stiffness !== 0) {
       isDisplacement =
-        Math.abs(this._toValue - position) <= this._restDisplacementThreshold
+        Math.abs(this._toValue - position) <= this._restDisplacementThreshold;
     }
 
     if (isOvershooting || (isVelocity && isDisplacement)) {
       if (this._stiffness !== 0) {
         // Ensure that we end up with a round value
-        this._lastPosition = this._toValue
-        this._lastVelocity = 0
-
-        this._onUpdate(this._toValue)
+        this._lastPosition = this._toValue;
+        this._lastVelocity = 0;
+        this._onUpdate(this._toValue);
       }
 
-      this.__debouncedOnEnd({
-        finished: true,
-      })
-
-      return
-    } // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-
-    this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this))
+      this.__debouncedOnEnd({finished: true});
+      return;
+    }
+    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
+    this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
   }
 
   stop() {
-    super.stop()
-    this.__active = false
-    clearTimeout(this._timeout)
-    global.cancelAnimationFrame(this._animationFrame)
-
-    this.__debouncedOnEnd({
-      finished: false,
-    })
+    super.stop();
+    this.__active = false;
+    clearTimeout(this._timeout);
+    global.cancelAnimationFrame(this._animationFrame);
+    this.__debouncedOnEnd({finished: false});
   }
 }
 
-export default SpringAnimation
+export default SpringAnimation;
