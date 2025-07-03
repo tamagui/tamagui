@@ -9,7 +9,7 @@
 
 import * as React from 'react';
 
-import FlatList from '../../../../exports/FlatList';
+import FlatList from '../../../../FlatList';
 import createAnimatedComponent from '../createAnimatedComponent';
 
 

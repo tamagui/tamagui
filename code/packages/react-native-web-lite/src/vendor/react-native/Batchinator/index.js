@@ -8,9 +8,9 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import InteractionManager from '../../../exports/InteractionManager';
+import { InteractionManager } from '@tamagui/react-native-web-internals'
 
 /**
  * A simple class for batching up invocations of a low-pri callback. A timeout is set to run the
@@ -35,12 +35,12 @@ import InteractionManager from '../../../exports/InteractionManager';
  *   }
  */
 class Batchinator {
-  _callback;
-  _delay;
-  _taskHandle;
+  _callback
+  _delay
+  _taskHandle
   constructor(callback, delayMS) {
-    this._delay = delayMS;
-    this._callback = callback;
+    this._delay = delayMS
+    this._callback = callback
   }
   /*
    * Cleanup any pending tasks.
@@ -48,29 +48,29 @@ class Batchinator {
    * By default, if there is a pending task the callback is run immediately. Set the option abort to
    * true to not call the callback if it was pending.
    */
-  dispose(options = {abort: false}) {
+  dispose(options = { abort: false }) {
     if (this._taskHandle) {
-      this._taskHandle.cancel();
+      this._taskHandle.cancel()
       if (!options.abort) {
-        this._callback();
+        this._callback()
       }
-      this._taskHandle = null;
+      this._taskHandle = null
     }
   }
   schedule() {
     if (this._taskHandle) {
-      return;
+      return
     }
     const timeoutHandle = setTimeout(() => {
       this._taskHandle = InteractionManager.runAfterInteractions(() => {
         // Note that we clear the handle before invoking the callback so that if the callback calls
         // schedule again, it will actually schedule another task.
-        this._taskHandle = null;
-        this._callback();
-      });
-    }, this._delay);
-    this._taskHandle = {cancel: () => clearTimeout(timeoutHandle)};
+        this._taskHandle = null
+        this._callback()
+      })
+    }, this._delay)
+    this._taskHandle = { cancel: () => clearTimeout(timeoutHandle) }
   }
 }
 
-export default Batchinator;
+export default Batchinator

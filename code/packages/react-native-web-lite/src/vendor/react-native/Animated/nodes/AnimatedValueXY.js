@@ -7,7 +7,7 @@
 
 import AnimatedValue from './AnimatedValue'
 import AnimatedWithChildren from './AnimatedWithChildren'
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 let _uniqueId = 1
 

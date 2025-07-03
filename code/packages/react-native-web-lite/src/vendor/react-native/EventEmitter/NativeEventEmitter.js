@@ -7,14 +7,10 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import EventEmitter from '../vendor/emitter/EventEmitter';
-import Platform from '../../../exports/Platform';
-import RCTDeviceEventEmitter from './RCTDeviceEventEmitter';
-import invariant from 'fbjs/lib/invariant';
-
-
+import { Platform, invariant } from '@tamagui/react-native-web-internals'
+import RCTDeviceEventEmitter from './RCTDeviceEventEmitter'
 
 /**
  * `NativeEventEmitter` is intended for use by Native Modules to emit events to
@@ -27,76 +23,60 @@ import invariant from 'fbjs/lib/invariant';
  * can theoretically listen to `RCTDeviceEventEmitter` (although discouraged).
  */
 export default class NativeEventEmitter {
-  _nativeModule;
+  _nativeModule
 
   constructor(nativeModule) {
     if (Platform.OS === 'ios') {
       invariant(
         nativeModule != null,
-        '`new NativeEventEmitter()` requires a non-null argument.',
-      );
-      this._nativeModule = nativeModule;
+        '`new NativeEventEmitter()` requires a non-null argument.'
+      )
+      this._nativeModule = nativeModule
     }
   }
 
-  addListener(
-    eventType,
-    listener,
-    context,
-  ) {
-    this._nativeModule?.addListener(eventType);
-    let subscription = RCTDeviceEventEmitter.addListener(
-      eventType,
-      listener,
-      context,
-    );
+  addListener(eventType, listener, context) {
+    this._nativeModule?.addListener(eventType)
+    let subscription = RCTDeviceEventEmitter.addListener(eventType, listener, context)
 
     return {
       remove: () => {
         if (subscription != null) {
-          this._nativeModule?.removeListeners(1);
+          this._nativeModule?.removeListeners(1)
           // $FlowFixMe[incompatible-use]
-          subscription.remove();
-          subscription = null;
+          subscription.remove()
+          subscription = null
         }
       },
-    };
+    }
   }
 
   /**
    * @deprecated Use `remove` on the EventSubscription from `addListener`.
    */
-  removeListener(
-    eventType,
-    listener,
-  ) {
-    this._nativeModule?.removeListeners(1);
+  removeListener(eventType, listener) {
+    this._nativeModule?.removeListeners(1)
     // NOTE: This will report a deprecation notice via `console.error`.
     // $FlowFixMe[prop-missing] - `removeListener` exists but is deprecated.
-    RCTDeviceEventEmitter.removeListener(eventType, listener);
+    RCTDeviceEventEmitter.removeListener(eventType, listener)
   }
 
-  emit(
-    eventType,
-    ...args
-  ) {
+  emit(eventType, ...args) {
     // Generally, `RCTDeviceEventEmitter` is directly invoked. But this is
     // included for completeness.
-    RCTDeviceEventEmitter.emit(eventType, ...args);
+    RCTDeviceEventEmitter.emit(eventType, ...args)
   }
 
-  removeAllListeners(
-    eventType,
-  ) {
+  removeAllListeners(eventType) {
     invariant(
       eventType != null,
-      '`NativeEventEmitter.removeAllListener()` requires a non-null argument.',
-    );
-    this._nativeModule?.removeListeners(this.listenerCount(eventType));
-    RCTDeviceEventEmitter.removeAllListeners(eventType);
+      '`NativeEventEmitter.removeAllListener()` requires a non-null argument.'
+    )
+    this._nativeModule?.removeListeners(this.listenerCount(eventType))
+    RCTDeviceEventEmitter.removeAllListeners(eventType)
   }
 
   listenerCount(eventType) {
-    return RCTDeviceEventEmitter.listenerCount(eventType);
+    return RCTDeviceEventEmitter.listenerCount(eventType)
   }
 }

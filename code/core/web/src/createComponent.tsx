@@ -67,6 +67,7 @@ import { getThemedChildren } from './views/Theme'
  * All things that need one-time setup after createTamagui is called
  */
 let time: any
+const NextState = new WeakMap<any, TamaguiComponentState | undefined>()
 
 let debugKeyListeners: Set<Function> | undefined
 let startVisualizer: Function | undefined
@@ -395,6 +396,16 @@ export function createComponent<
       startedUnhydrated,
     } = componentState
 
+    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+      useIsomorphicLayoutEffect(() => {
+        const pendingState = NextState.get(stateRef)
+        if (pendingState) {
+          setStateShallow(pendingState)
+          NextState.set(stateRef, undefined)
+        }
+      })
+    }
+
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
       if (!groupName) {
@@ -635,7 +646,7 @@ export function createComponent<
       const ogSetStateShallow = setStateShallow
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
-        const prev = stateRef.current.nextComponentState || state
+        const prev = NextState.get(stateRef) || state
         const next =
           typeof nextOrGetNext === 'function' ? nextOrGetNext(prev) : nextOrGetNext
 
@@ -653,7 +664,7 @@ export function createComponent<
             ...prev,
             ...next,
           }
-          stateRef.current.nextComponentState = updatedState
+          NextState.set(stateRef, updatedState)
 
           if (
             process.env.NODE_ENV === 'development' &&
@@ -992,16 +1003,6 @@ export function createComponent<
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
-
-    if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      useIsomorphicLayoutEffect(() => {
-        const pendingState = stateRef.current.nextComponentState
-        if (pendingState) {
-          setStateShallow(pendingState)
-          stateRef.current.nextComponentState = undefined
-        }
-      })
-    }
 
     const groupEmitter = stateRef.current.group
     useIsomorphicLayoutEffect(() => {

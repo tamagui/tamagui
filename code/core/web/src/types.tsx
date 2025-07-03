@@ -107,7 +107,6 @@ export type TamaguiComponentStateRef = {
   hasEverThemed?: boolean | 'wrapped'
   isListeningToTheme?: boolean
   unPress?: Function
-  nextComponentState?: TamaguiComponentState
   setStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener
 

@@ -120,9 +120,9 @@ export const useComponentState = (
 
   // apply states we never updated from avoiding re-renders in animation driver
   // unsafe yea yea
-  if (stateRef.current.nextComponentState) {
-    Object.assign(state, stateRef.current.nextComponentState)
-  }
+  // if (stateRef.current.nextComponentState) {
+  //   Object.assign(state, stateRef.current.nextComponentState)
+  // }
 
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated

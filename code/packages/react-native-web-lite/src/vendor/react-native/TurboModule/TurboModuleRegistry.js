@@ -8,20 +8,20 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import invariant from 'fbjs/lib/invariant';
+import { invariant } from '@tamagui/react-native-web-internals'
 
 export function get(name) {
-  return null;
+  return null
 }
 
 export function getEnforcing(name) {
-  const module = get(name);
+  const module = get(name)
   invariant(
     module != null,
     `TurboModuleRegistry.getEnforcing(...): '${name}' could not be found. ` +
-      'Verify that a module by this name is registered in the native binary.',
-  );
-  return module;
+      'Verify that a module by this name is registered in the native binary.'
+  )
+  return module
 }

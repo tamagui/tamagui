@@ -8,7 +8,7 @@
  * @format
  */
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 export class CellRenderMask {
   constructor(numCells) {

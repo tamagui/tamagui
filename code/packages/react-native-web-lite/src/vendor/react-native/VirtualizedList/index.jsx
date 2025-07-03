@@ -5,35 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ScrollEvent } from '../Types/CoreEventTypes'
-import { defaultVirtualizedListProps } from './VirtualizedListProps'
-
-import RefreshControl from '../../../exports/RefreshControl'
-import ScrollView from '../../../exports/ScrollView'
-import View from '../../../exports/View'
-import StyleSheet from '../../../exports/StyleSheet'
+import { invariant } from '@tamagui/react-native-web-internals'
+import ScrollView from '../../../ScrollView'
+import RefreshControl from '../../../RefreshControl'
 
 import Batchinator from '../Batchinator'
-import clamp from '../Utilities/clamp'
-import infoLog from '../infoLog'
-import { CellRenderMask } from './CellRenderMask'
 import ChildListCollection from './ChildListCollection'
 import FillRateHelper from '../FillRateHelper'
 import StateSafePureComponent from './StateSafePureComponent'
 import ViewabilityHelper from '../ViewabilityHelper'
 import CellRenderer from './VirtualizedListCellRenderer'
 import {
-  VirtualizedListCellContextProvider,
-  VirtualizedListContext,
-  VirtualizedListContextProvider,
-} from './VirtualizedListContext.jsx'
-import {
-  computeWindowedRenderLimits,
-  keyExtractor as defaultKeyExtractor,
-} from '../VirtualizeUtils'
-import invariant from 'fbjs/lib/invariant'
-import nullthrows from 'nullthrows'
-import * as React from 'react'
+  VirtualizedListContext
+} from './VirtualizedListContext'
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -96,6 +80,38 @@ function findLastWhere(arr, predicate) {
 
 class VirtualizedList extends StateSafePureComponent {
   static contextType = VirtualizedListContext
+
+  constructor(props) {
+    super(props)
+    this._nestedChildLists = new ChildListCollection()
+    this._viewabilityTuples = []
+    this._scrollMetrics = {
+      contentLength: 0,
+      dOffset: 0,
+      dt: 10,
+      offset: 0,
+      timestamp: 0,
+      velocity: 0,
+      visibleLength: 0,
+    }
+    this._highestMeasuredFrameIndex = 0
+    this._headerLength = 0
+    this._footerLength = 0
+    this._averageCellLength = 0
+    this._hasWarned = {}
+    this._fillRateHelper = new FillRateHelper(this._getFrameMetrics)
+    this._updateCellsToRenderBatcher = new Batchinator(
+      this._updateCellsToRender,
+      this.props.updateCellsBatchingPeriod ?? 50
+    )
+
+    if (this.props.viewabilityConfig && this.props.onViewableItemsChanged) {
+      this._viewabilityTuples.push({
+        viewabilityHelper: new ViewabilityHelper(this.props.viewabilityConfig),
+        onViewableItemsChanged: this.props.onViewableItemsChanged,
+      })
+    }
+  }
 
   scrollToEnd(params) {
     const animated = params ? params.animated : true
@@ -194,15 +210,8 @@ class VirtualizedList extends StateSafePureComponent {
     const { data, getItem, getItemCount, horizontal, onScrollToIndexFailed } =
       this.props
     const { animated, item, viewPosition, viewOffset } = params
-    const index = getItem(data, item)
-    if (index != null) {
-      this.scrollToIndex({
-        animated,
-        index,
-        viewOffset,
-        viewPosition,
-      })
-    } else if (getItem(data, index) === item) {
+    const index = this.props.data.indexOf(item)
+    if (index !== -1) {
       this.scrollToIndex({
         animated,
         index,
@@ -226,7 +235,7 @@ class VirtualizedList extends StateSafePureComponent {
   }
 
   scrollToOffset(params) {
-    const { animated, offset, viewPosition } = params
+    const { animated, offset } = params
     if (this._scrollRef == null) {
       return
     }
@@ -308,7 +317,6 @@ class VirtualizedList extends StateSafePureComponent {
       ...restProps
     } = this.props
 
-    const isVirtualizationDisabled = disableVirtualization
     const itemCount = getItemCount(data)
 
     if (itemCount === 0) {
@@ -322,19 +330,13 @@ class VirtualizedList extends StateSafePureComponent {
         onContentSizeChange={this._onContentSizeChange}
         onLayout={this._onLayout}
         onScroll={this._onScroll}
-        onScrollBeginDrag={onScrollBeginDrag}
-        onScrollEndDrag={onScrollEndDrag}
-        onMomentumScrollBegin={onMomentumScrollBegin}
-        onMomentumScrollEnd={onMomentumScrollEnd}
-        scrollEventThrottle={scrollEventThrottleOrDefault(
-          this.props.scrollEventThrottle
-        )}
+        refreshControl={
+          onRefresh && (
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          )
+        }
+        scrollEventThrottle={scrollEventThrottleOrDefault(this.props.scrollEventThrottle)}
         removeClippedSubviews={removeClippedSubviews}
-        style={[styles.base, this.props.style]}
-        contentContainerStyle={this.props.contentContainerStyle}
-        onRefresh={onRefresh}
-        refreshing={refreshing}
-        horizontal={horizontalOrDefault(horizontal)}
       >
         {this._renderChildren()}
       </ScrollView>
@@ -343,16 +345,21 @@ class VirtualizedList extends StateSafePureComponent {
 
   _renderChildren() {
     const { data, getItem, getItemCount, renderItem } = this.props
-    const itemCount = getItemCount(data)
     const items = []
-
-    for (let i = 0; i < itemCount; i++) {
+    
+    for (let i = 0; i < getItemCount(data); i++) {
       const item = getItem(data, i)
-      if (item != null) {
-        items.push(renderItem({ item, index: i }))
-      }
+      items.push(
+        <CellRenderer
+          key={this.props.keyExtractor ? this.props.keyExtractor(item, i) : i}
+          cellKey={String(i)}
+          index={i}
+          item={item}
+          renderItem={renderItem}
+        />
+      )
     }
-
+    
     return items
   }
 
@@ -361,40 +368,28 @@ class VirtualizedList extends StateSafePureComponent {
   }
 
   _onContentSizeChange = (width, height) => {
-    if (this.props.onContentSizeChange) {
-      this.props.onContentSizeChange(width, height)
-    }
+    // Handle content size changes
   }
 
   _onLayout = (event) => {
-    if (this.props.onLayout) {
-      this.props.onLayout(event)
-    }
+    // Handle layout changes
   }
 
   _onScroll = (event) => {
-    if (this.props.onScroll) {
-      this.props.onScroll(event)
-    }
+    // Handle scroll events
   }
 
   __getFrameMetricsApprox(index, props) {
-    return {
-      length: 50,
-      offset: index * 50,
-      index,
+    const frame = {
+      length: this._averageCellLength,
+      offset: this._averageCellLength * index,
     }
+    return frame
   }
 
   _getOffsetApprox(index, props) {
-    return index * 50
+    return this.__getFrameMetricsApprox(index, props).offset
   }
 }
-
-const styles = StyleSheet.create({
-  base: {
-    flex: 1,
-  },
-})
 
 export default VirtualizedList 

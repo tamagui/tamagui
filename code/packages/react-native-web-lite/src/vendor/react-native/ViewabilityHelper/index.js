@@ -8,10 +8,9 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-
-import invariant from 'fbjs/lib/invariant';
+import { invariant } from '@tamagui/react-native-web-internals'
 
 /**
  * A Utility class for calculating viewable items based on current metrics like scroll position and
@@ -26,16 +25,14 @@ import invariant from 'fbjs/lib/invariant';
  * - Entirely visible on screen
  */
 class ViewabilityHelper {
-  _config;
-  _hasInteracted = false;
-  _timers = new Set();
-  _viewableIndices = [];
-  _viewableItems = new Map();
+  _config
+  _hasInteracted = false
+  _timers = new Set()
+  _viewableIndices = []
+  _viewableItems = new Map()
 
-  constructor(
-    config = {viewAreaCoveragePercentThreshold: 0},
-  ) {
-    this._config = config;
+  constructor(config = { viewAreaCoveragePercentThreshold: 0 }) {
+    this._config = config
   }
 
   /**
@@ -45,7 +42,7 @@ class ViewabilityHelper {
     /* $FlowFixMe[incompatible-call] (>=0.63.0 site=react_native_fb) This
      * comment suppresses an error found when Flow v0.63 was deployed. To see
      * the error delete this comment and run Flow. */
-    this._timers.forEach(clearTimeout);
+    this._timers.forEach(clearTimeout)
   }
 
   /**
@@ -57,43 +54,42 @@ class ViewabilityHelper {
     viewportHeight,
     getFrameMetrics,
     // Optional optimization to reduce the scan size
-    renderRange,
+    renderRange
   ) {
-    const itemCount = props.getItemCount(props.data);
-    const {itemVisiblePercentThreshold, viewAreaCoveragePercentThreshold} =
-      this._config;
-    const viewAreaMode = viewAreaCoveragePercentThreshold != null;
+    const itemCount = props.getItemCount(props.data)
+    const { itemVisiblePercentThreshold, viewAreaCoveragePercentThreshold } = this._config
+    const viewAreaMode = viewAreaCoveragePercentThreshold != null
     const viewablePercentThreshold = viewAreaMode
       ? viewAreaCoveragePercentThreshold
-      : itemVisiblePercentThreshold;
+      : itemVisiblePercentThreshold
     invariant(
       viewablePercentThreshold != null &&
         (itemVisiblePercentThreshold != null) !==
           (viewAreaCoveragePercentThreshold != null),
-      'Must set exactly one of itemVisiblePercentThreshold or viewAreaCoveragePercentThreshold',
-    );
-    const viewableIndices = [];
+      'Must set exactly one of itemVisiblePercentThreshold or viewAreaCoveragePercentThreshold'
+    )
+    const viewableIndices = []
     if (itemCount === 0) {
-      return viewableIndices;
+      return viewableIndices
     }
-    let firstVisible = -1;
-    const {first, last} = renderRange || {first: 0, last: itemCount - 1};
+    let firstVisible = -1
+    const { first, last } = renderRange || { first: 0, last: itemCount - 1 }
     if (last >= itemCount) {
       console.warn(
         'Invalid render range computing viewability ' +
-          JSON.stringify({renderRange, itemCount}),
-      );
-      return [];
+          JSON.stringify({ renderRange, itemCount })
+      )
+      return []
     }
     for (let idx = first; idx <= last; idx++) {
-      const metrics = getFrameMetrics(idx, props);
+      const metrics = getFrameMetrics(idx, props)
       if (!metrics) {
-        continue;
+        continue
       }
-      const top = metrics.offset - scrollOffset;
-      const bottom = top + metrics.length;
+      const top = metrics.offset - scrollOffset
+      const bottom = top + metrics.length
       if (top < viewportHeight && bottom > 0) {
-        firstVisible = idx;
+        firstVisible = idx
         if (
           _isViewable(
             viewAreaMode,
@@ -101,16 +97,16 @@ class ViewabilityHelper {
             top,
             bottom,
             viewportHeight,
-            metrics.length,
+            metrics.length
           )
         ) {
-          viewableIndices.push(idx);
+          viewableIndices.push(idx)
         }
       } else if (firstVisible >= 0) {
-        break;
+        break
       }
     }
-    return viewableIndices;
+    return viewableIndices
   }
 
   /**
@@ -125,25 +121,25 @@ class ViewabilityHelper {
     createViewToken,
     onViewableItemsChanged,
     // Optional optimization to reduce the scan size
-    renderRange,
+    renderRange
   ) {
-    const itemCount = props.getItemCount(props.data);
+    const itemCount = props.getItemCount(props.data)
     if (
       (this._config.waitForInteraction && !this._hasInteracted) ||
       itemCount === 0 ||
       !getFrameMetrics(0, props)
     ) {
-      return;
+      return
     }
-    let viewableIndices = [];
+    let viewableIndices = []
     if (itemCount) {
       viewableIndices = this.computeViewableItems(
         props,
         scrollOffset,
         viewportHeight,
         getFrameMetrics,
-        renderRange,
-      );
+        renderRange
+      )
     }
     if (
       this._viewableIndices.length === viewableIndices.length &&
@@ -151,33 +147,28 @@ class ViewabilityHelper {
     ) {
       // We might get a lot of scroll events where visibility doesn't change and we don't want to do
       // extra work in those cases.
-      return;
+      return
     }
-    this._viewableIndices = viewableIndices;
+    this._viewableIndices = viewableIndices
     if (this._config.minimumViewTime) {
       const handle = setTimeout(() => {
         /* $FlowFixMe[incompatible-call] (>=0.63.0 site=react_native_fb) This
          * comment suppresses an error found when Flow v0.63 was deployed. To
          * see the error delete this comment and run Flow. */
-        this._timers.delete(handle);
+        this._timers.delete(handle)
         this._onUpdateSync(
           props,
           viewableIndices,
           onViewableItemsChanged,
-          createViewToken,
-        );
-      }, this._config.minimumViewTime);
+          createViewToken
+        )
+      }, this._config.minimumViewTime)
       /* $FlowFixMe[incompatible-call] (>=0.63.0 site=react_native_fb) This
        * comment suppresses an error found when Flow v0.63 was deployed. To see
        * the error delete this comment and run Flow. */
-      this._timers.add(handle);
+      this._timers.add(handle)
     } else {
-      this._onUpdateSync(
-        props,
-        viewableIndices,
-        onViewableItemsChanged,
-        createViewToken,
-      );
+      this._onUpdateSync(props, viewableIndices, onViewableItemsChanged, createViewToken)
     }
   }
 
@@ -185,52 +176,47 @@ class ViewabilityHelper {
    * clean-up cached _viewableIndices to evaluate changed items on next update
    */
   resetViewableIndices() {
-    this._viewableIndices = [];
+    this._viewableIndices = []
   }
 
   /**
    * Records that an interaction has happened even if there has been no scroll.
    */
   recordInteraction() {
-    this._hasInteracted = true;
+    this._hasInteracted = true
   }
 
-  _onUpdateSync(
-    props,
-    viewableIndicesToCheck,
-    onViewableItemsChanged,
-    createViewToken,
-  ) {
+  _onUpdateSync(props, viewableIndicesToCheck, onViewableItemsChanged, createViewToken) {
     // Filter out indices that have gone out of view since this call was scheduled.
-    viewableIndicesToCheck = viewableIndicesToCheck.filter(ii =>
-      this._viewableIndices.includes(ii),
-    );
-    const prevItems = this._viewableItems;
+    viewableIndicesToCheck = viewableIndicesToCheck.filter((ii) =>
+      this._viewableIndices.includes(ii)
+    )
+    const prevItems = this._viewableItems
     const nextItems = new Map(
-      viewableIndicesToCheck.map(ii => {
-        const viewable = createViewToken(ii, true, props);
-        return [viewable.key, viewable];
-      }),
-    );
+      viewableIndicesToCheck.map((ii) => {
+        const viewable = createViewToken(ii, true, props)
+        return [viewable.key, viewable]
+      })
+    )
 
-    const changed = [];
+    const changed = []
     for (const [key, viewable] of nextItems) {
       if (!prevItems.has(key)) {
-        changed.push(viewable);
+        changed.push(viewable)
       }
     }
     for (const [key, viewable] of prevItems) {
       if (!nextItems.has(key)) {
-        changed.push({...viewable, isViewable: false});
+        changed.push({ ...viewable, isViewable: false })
       }
     }
     if (changed.length > 0) {
-      this._viewableItems = nextItems;
+      this._viewableItems = nextItems
       onViewableItemsChanged({
         viewableItems: Array.from(nextItems.values()),
         changed,
         viewabilityConfig: this._config,
-      });
+      })
     }
   }
 }
@@ -241,33 +227,24 @@ function _isViewable(
   top,
   bottom,
   viewportHeight,
-  itemLength,
+  itemLength
 ) {
   if (_isEntirelyVisible(top, bottom, viewportHeight)) {
-    return true;
+    return true
   } else {
-    const pixels = _getPixelsVisible(top, bottom, viewportHeight);
-    const percent =
-      100 * (viewAreaMode ? pixels / viewportHeight : pixels / itemLength);
-    return percent >= viewablePercentThreshold;
+    const pixels = _getPixelsVisible(top, bottom, viewportHeight)
+    const percent = 100 * (viewAreaMode ? pixels / viewportHeight : pixels / itemLength)
+    return percent >= viewablePercentThreshold
   }
 }
 
-function _getPixelsVisible(
-  top,
-  bottom,
-  viewportHeight,
-) {
-  const visibleHeight = Math.min(bottom, viewportHeight) - Math.max(top, 0);
-  return Math.max(0, visibleHeight);
+function _getPixelsVisible(top, bottom, viewportHeight) {
+  const visibleHeight = Math.min(bottom, viewportHeight) - Math.max(top, 0)
+  return Math.max(0, visibleHeight)
 }
 
-function _isEntirelyVisible(
-  top,
-  bottom,
-  viewportHeight,
-) {
-  return top >= 0 && bottom <= viewportHeight && bottom > top;
+function _isEntirelyVisible(top, bottom, viewportHeight) {
+  return top >= 0 && bottom <= viewportHeight && bottom > top
 }
 
-export default ViewabilityHelper;
+export default ViewabilityHelper

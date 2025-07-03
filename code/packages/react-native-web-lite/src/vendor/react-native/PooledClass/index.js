@@ -9,29 +9,27 @@
  * From React 16.0.0
  */
 
-import invariant from 'fbjs/lib/invariant';
-
-var twoArgumentPooler = function(a1, a2) {
-  var Klass = this;
+var twoArgumentPooler = function (a1, a2) {
+  var Klass = this
   if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, a1, a2);
-    return instance;
+    var instance = Klass.instancePool.pop()
+    Klass.call(instance, a1, a2)
+    return instance
   } else {
-    return new Klass(a1, a2);
+    return new Klass(a1, a2)
   }
-};
+}
 
-var standardReleaser = function(instance) {
-  var Klass = this;
-  instance.destructor();
+var standardReleaser = function (instance) {
+  var Klass = this
+  instance.destructor()
   if (Klass.instancePool.length < Klass.poolSize) {
-    Klass.instancePool.push(instance);
+    Klass.instancePool.push(instance)
   }
-};
+}
 
-var DEFAULT_POOL_SIZE = 10;
-var DEFAULT_POOLER = twoArgumentPooler;
+var DEFAULT_POOL_SIZE = 10
+var DEFAULT_POOLER = twoArgumentPooler
 
 /**
  * Augments `CopyConstructor` to be a poolable class, augmenting only the class
@@ -42,22 +40,22 @@ var DEFAULT_POOLER = twoArgumentPooler;
  * @param {Function} CopyConstructor Constructor that can be used to reset.
  * @param {Function} pooler Customizable pooler.
  */
-var addPoolingTo = function(CopyConstructor, pooler) {
+var addPoolingTo = function (CopyConstructor, pooler) {
   // Casting as any so that flow ignores the actual implementation and trusts
   // it to match the type we declared
-  var NewKlass = CopyConstructor;
-  NewKlass.instancePool = [];
-  NewKlass.getPooled = pooler || DEFAULT_POOLER;
+  var NewKlass = CopyConstructor
+  NewKlass.instancePool = []
+  NewKlass.getPooled = pooler || DEFAULT_POOLER
   if (!NewKlass.poolSize) {
-    NewKlass.poolSize = DEFAULT_POOL_SIZE;
+    NewKlass.poolSize = DEFAULT_POOL_SIZE
   }
-  NewKlass.release = standardReleaser;
-  return NewKlass;
-};
+  NewKlass.release = standardReleaser
+  return NewKlass
+}
 
 var PooledClass = {
   addPoolingTo: addPoolingTo,
-  twoArgumentPooler: twoArgumentPooler
-};
+  twoArgumentPooler: twoArgumentPooler,
+}
 
-export default PooledClass;
+export default PooledClass

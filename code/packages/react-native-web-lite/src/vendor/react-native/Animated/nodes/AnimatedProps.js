@@ -13,7 +13,7 @@ import AnimatedNode from './AnimatedNode'
 import AnimatedStyle from './AnimatedStyle'
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
 
-import invariant from 'fbjs/lib/invariant'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 class AnimatedProps extends AnimatedNode {
   constructor(props, callback) {

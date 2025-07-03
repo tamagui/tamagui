@@ -143,6 +143,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       selection,
       selectTextOnFocus,
       showSoftInputOnFocus,
+      caretHidden,
       spellCheck,
     } = props
 

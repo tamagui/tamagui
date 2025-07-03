@@ -8,12 +8,10 @@
  * @format
  */
 
-import { FocusEvent } from '../Types/CoreEventTypes'
 
-import View from '../../../exports/View'
-import StyleSheet from '../../../exports/StyleSheet'
-import { VirtualizedListCellContextProvider } from './VirtualizedListContext.js'
-import invariant from 'fbjs/lib/invariant'
+import View from '../../../View'
+import { StyleSheet, invariant } from '@tamagui/react-native-web-internals'
+import { VirtualizedListCellContextProvider } from './VirtualizedListContext'
 import * as React from 'react'
 
 export default class CellRenderer extends React.Component {

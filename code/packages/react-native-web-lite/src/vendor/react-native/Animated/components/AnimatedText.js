@@ -7,10 +7,7 @@
  * @format
  */
 
-import * as React from 'react';
+import Text from '../../../../Text'
+import createAnimatedComponent from '../createAnimatedComponent'
 
-import Text from '../../../../exports/Text';
-import createAnimatedComponent from '../createAnimatedComponent.jsx';
-
-
-export default createAnimatedComponent(Text);
+export default createAnimatedComponent(Text)

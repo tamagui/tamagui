@@ -7,21 +7,19 @@
  * @format
  */
 
-import Platform from '../../../exports/Platform';
+import { Platform } from '@tamagui/react-native-web-internals'
 
-import FlatList from './components/AnimatedFlatList.jsx';
-import Image from './components/AnimatedImage';
-import ScrollView from './components/AnimatedScrollView.jsx';
-import SectionList from './components/AnimatedSectionList.jsx';
-import Text from './components/AnimatedText';
-import View from './components/AnimatedView';
+import FlatList from './components/AnimatedFlatList'
+import Image from './components/AnimatedImage'
+import ScrollView from './components/AnimatedScrollView'
+import SectionList from './components/AnimatedSectionList'
+import Text from './components/AnimatedText'
+import View from './components/AnimatedView'
 
-import AnimatedMock from './AnimatedMock';
-import AnimatedImplementation from './AnimatedImplementation';
+import AnimatedMock from './AnimatedMock'
+import AnimatedImplementation from './AnimatedImplementation'
 
-const Animated = Platform.isTesting
-  ? AnimatedMock
-  : AnimatedImplementation;
+const Animated = Platform.isTesting ? AnimatedMock : AnimatedImplementation
 
 export default {
   FlatList,
@@ -31,4 +29,4 @@ export default {
   Text,
   View,
   ...Animated,
-};
+}

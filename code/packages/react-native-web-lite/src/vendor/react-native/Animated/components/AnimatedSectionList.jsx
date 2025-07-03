@@ -9,7 +9,7 @@
 
 import * as React from 'react';
 
-import SectionList from '../../../../exports/SectionList';
+import SectionList from '../../../../SectionList';
 import createAnimatedComponent from '../createAnimatedComponent';
 
 

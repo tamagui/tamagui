@@ -7,10 +7,9 @@
  * @format
  */
 
-import * as React from 'react';
+import * as React from 'react'
 
-import Image from '../../../../exports/Image';
-import createAnimatedComponent from '../createAnimatedComponent.jsx';
+import Image from '../../../../Image'
+import createAnimatedComponent from '../createAnimatedComponent'
 
-
-export default createAnimatedComponent(Image);
+export default createAnimatedComponent(Image)

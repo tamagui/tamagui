@@ -8,19 +8,14 @@
  * @format
  */
 
-import View from '../../../exports/View';
-import StyleSheet from '../../../exports/StyleSheet';
+import View from '../../../View';
 import deepDiffer from '../deepDiffer';
 import Platform from '../../../exports/Platform';
-import invariant from 'fbjs/lib/invariant';
+import { invariant, StyleSheet } from '@tamagui/react-native-web-internals';
 import * as React from 'react';
 
-import {
-  ViewToken,
-  ViewabilityConfigCallbackPair,
-} from '../ViewabilityHelper';
 import VirtualizedList from '../VirtualizedList';
-import {keyExtractor as defaultKeyExtractor} from '../VirtualizeUtils';
+import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
 
 import memoizeOne from 'memoize-one';
 

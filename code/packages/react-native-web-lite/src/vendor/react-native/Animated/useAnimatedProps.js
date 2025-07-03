@@ -8,29 +8,21 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import AnimatedProps from './nodes/AnimatedProps';
-import {AnimatedEvent} from './AnimatedEvent';
-import useRefEffect from '../Utilities/useRefEffect';
-import NativeAnimatedHelper from './NativeAnimatedHelper';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from 'react';
+import AnimatedProps from './nodes/AnimatedProps'
+import { AnimatedEvent } from './AnimatedEvent'
+import useRefEffect from '../Utilities/useRefEffect'
+import NativeAnimatedHelper from './NativeAnimatedHelper'
+import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
 
-import useLayoutEffect from '../../../modules/useLayoutEffect';
+import { useLayoutEffect } from '@tamagui/react-native-web-internals'
 
 // ReducedProps type removed
 
-export default function useAnimatedProps(
-  props,
-) {
-  const [, scheduleUpdate] = useReducer(count => count + 1, 0);
-  const onUpdateRef = useRef(null);
+export default function useAnimatedProps(props) {
+  const [, scheduleUpdate] = useReducer((count) => count + 1, 0)
+  const onUpdateRef = useRef(null)
 
   // TODO: Only invalidate `node` if animated props or `style` change. In the
   // previous implementation, we permitted `style` to override props with the
@@ -38,9 +30,9 @@ export default function useAnimatedProps(
   // The ordering of other props *should* not matter.
   const node = useMemo(
     () => new AnimatedProps(props, () => onUpdateRef.current?.()),
-    [props],
-  );
-  useAnimatedPropsLifecycle(node);
+    [props]
+  )
+  useAnimatedPropsLifecycle(node)
 
   // TODO: This "effect" does three things:
   //
@@ -56,54 +48,52 @@ export default function useAnimatedProps(
   // But there is no way to transparently compose three separate callback refs,
   // so we just combine them all into one for now.
   const refEffect = useCallback(
-    instance => {
+    (instance) => {
       // NOTE: This may be called more often than necessary (e.g. when `props`
       // changes), but `setNativeView` already optimizes for that.
-      node.setNativeView(instance);
+      node.setNativeView(instance)
 
       // NOTE: This callback is only used by the JavaScript animation driver.
       onUpdateRef.current = () => {
         // Schedule an update for this component to update `reducedProps`,
         // but do not compute it immediately. If a parent also updated, we
         // need to merge those new props in before updating.
-        scheduleUpdate();
-      };
+        scheduleUpdate()
+      }
 
-      const target = getEventTarget(instance);
-      const events = [];
+      const target = getEventTarget(instance)
+      const events = []
 
       for (const propName in props) {
-        const propValue = props[propName];
+        const propValue = props[propName]
         if (propValue instanceof AnimatedEvent && propValue.__isNative) {
-          propValue.__attach(target, propName);
-          events.push([propName, propValue]);
+          propValue.__attach(target, propName)
+          events.push([propName, propValue])
         }
       }
 
       return () => {
-        onUpdateRef.current = null;
+        onUpdateRef.current = null
 
         for (const [propName, propValue] of events) {
-          propValue.__detach(target, propName);
+          propValue.__detach(target, propName)
         }
-      };
+      }
     },
-    [props, node],
-  );
-  const callbackRef = useRefEffect(refEffect);
+    [props, node]
+  )
+  const callbackRef = useRefEffect(refEffect)
 
-  return [reduceAnimatedProps(node), callbackRef];
+  return [reduceAnimatedProps(node), callbackRef]
 }
 
-function reduceAnimatedProps(
-  node,
-) {
+function reduceAnimatedProps(node) {
   // Force `collapsable` to be false so that the native view is not flattened.
   // Flattened views cannot be accurately referenced by the native driver.
   return {
     ...node.__getValue(),
     collapsable: false,
-  };
+  }
 }
 
 /**
@@ -114,48 +104,47 @@ function reduceAnimatedProps(
  * unless we are unmounting.
  */
 function useAnimatedPropsLifecycle(node) {
-  const prevNodeRef = useRef(null);
-  const isUnmountingRef = useRef(false);
+  const prevNodeRef = useRef(null)
+  const isUnmountingRef = useRef(false)
 
   useEffect(() => {
     // It is ok for multiple components to call `flushQueue` because it noops
     // if the queue is empty. When multiple animated components are mounted at
     // the same time. Only first component flushes the queue and the others will noop.
-    NativeAnimatedHelper.API.flushQueue();
-  });
+    NativeAnimatedHelper.API.flushQueue()
+  })
 
   useLayoutEffect(() => {
-    isUnmountingRef.current = false;
+    isUnmountingRef.current = false
     return () => {
-      isUnmountingRef.current = true;
-    };
-  }, []);
+      isUnmountingRef.current = true
+    }
+  }, [])
 
   useLayoutEffect(() => {
-    node.__attach();
+    node.__attach()
     if (prevNodeRef.current != null) {
-      const prevNode = prevNodeRef.current;
+      const prevNode = prevNodeRef.current
       // TODO: Stop restoring default values (unless `reset` is called).
-      prevNode.__restoreDefaultValues();
-      prevNode.__detach();
-      prevNodeRef.current = null;
+      prevNode.__restoreDefaultValues()
+      prevNode.__detach()
+      prevNodeRef.current = null
     }
     return () => {
       if (isUnmountingRef.current) {
         // NOTE: Do not restore default values on unmount, see D18197735.
-        node.__detach();
+        node.__detach()
       } else {
-        prevNodeRef.current = node;
+        prevNodeRef.current = node
       }
-    };
-  }, [node]);
+    }
+  }, [node])
 }
 
 function getEventTarget(instance) {
-  return typeof instance === 'object' &&
-    typeof instance?.getScrollableNode === 'function'
+  return typeof instance === 'object' && typeof instance?.getScrollableNode === 'function'
     ? instance.getScrollableNode()
-    : instance;
+    : instance
 }
 
 function isFabricInstance(instance) {
@@ -171,11 +160,11 @@ function isFabricInstance(instance) {
     // would be sufficient.
     hasFabricHandle(instance?.getNativeScrollRef?.()) ||
     hasFabricHandle(instance?.getScrollResponder?.()?.getNativeScrollRef?.())
-  );
+  )
 }
 
 // Legacy instance assumptions.
 function hasFabricHandle(instance) {
   // eslint-disable-next-line dot-notation
-  return instance?.['_internalInstanceHandle']?.stateNode?.canonical != null;
+  return instance?.['_internalInstanceHandle']?.stateNode?.canonical != null
 }

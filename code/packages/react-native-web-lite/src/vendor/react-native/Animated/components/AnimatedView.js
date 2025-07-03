@@ -7,10 +7,7 @@
  * @format
  */
 
-import * as React from 'react';
+import View from '../../../../View'
+import createAnimatedComponent from '../createAnimatedComponent'
 
-import View from '../../../../exports/View';
-import createAnimatedComponent from '../createAnimatedComponent.jsx';
-
-
-export default createAnimatedComponent(View);
+export default createAnimatedComponent(View)

@@ -32,7 +32,7 @@ export { default as Animated } from './vendor/react-native/Animated/Animated'
 export { default as Easing } from './vendor/react-native/Animated/Easing'
 
 // react-native
-export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index'
+export { default as NativeEventEmitter } from './vendor/react-native/EventEmitter/NativeEventEmitter'
 
 // APIs
 export { default as AccessibilityInfo } from './AccessibilityInfo/index'

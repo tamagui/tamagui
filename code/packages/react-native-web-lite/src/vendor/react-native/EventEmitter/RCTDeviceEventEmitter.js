@@ -7,7 +7,7 @@
  * @format
  */
 
-import EventEmitter from '../vendor/emitter/EventEmitter';
+import EventEmitter from '../emitter/EventEmitter'
 
 // FIXME: use typed events
 
@@ -17,4 +17,4 @@ import EventEmitter from '../vendor/emitter/EventEmitter';
  *
  * NativeModules that emit events should instead subclass `NativeEventEmitter`.
  */
-export default new EventEmitter();
+export default new EventEmitter()

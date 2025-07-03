@@ -7,57 +7,55 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { invariant } from '@tamagui/react-native-web-internals'
 
-const NativeAnimatedAPI = NativeAnimatedHelper.API;
-import invariant from 'fbjs/lib/invariant';
+const NativeAnimatedAPI = NativeAnimatedHelper.API
 
-
-
-let _uniqueId = 1;
+let _uniqueId = 1
 
 // Note(vjeux): this would be better as an interface but flow doesn't
 // support them yet
 class AnimatedNode {
-  _listeners;
-  _platformConfig;
-  __nativeAnimatedValueListener;
+  _listeners
+  _platformConfig
+  __nativeAnimatedValueListener
   __attach() {}
   __detach() {
     if (this.__isNative && this.__nativeTag != null) {
-      NativeAnimatedHelper.API.dropAnimatedNode(this.__nativeTag);
-      this.__nativeTag = undefined;
+      NativeAnimatedHelper.API.dropAnimatedNode(this.__nativeTag)
+      this.__nativeTag = undefined
     }
   }
   __getValue() {}
   __getAnimatedValue() {
-    return this.__getValue();
+    return this.__getValue()
   }
   __addChild(child) {}
   __removeChild(child) {}
   __getChildren() {
-    return [];
+    return []
   }
 
   /* Methods and props used by native Animated impl */
-  __isNative;
-  __nativeTag;
-  __shouldUpdateListenersForNewNativeTag;
+  __isNative
+  __nativeTag
+  __shouldUpdateListenersForNewNativeTag
 
   constructor() {
-    this._listeners = {};
+    this._listeners = {}
   }
 
   __makeNative(platformConfig) {
     if (!this.__isNative) {
-      throw new Error('This node cannot be made a "native" animated node');
+      throw new Error('This node cannot be made a "native" animated node')
     }
 
-    this._platformConfig = platformConfig;
+    this._platformConfig = platformConfig
     if (this.hasListeners()) {
-      this._startListeningToNativeValueUpdates();
+      this._startListeningToNativeValueUpdates()
     }
   }
 
@@ -69,12 +67,12 @@ class AnimatedNode {
    * See https://reactnative.dev/docs/animatedvalue#addlistener
    */
   addListener(callback) {
-    const id = String(_uniqueId++);
-    this._listeners[id] = callback;
+    const id = String(_uniqueId++)
+    this._listeners[id] = callback
     if (this.__isNative) {
-      this._startListeningToNativeValueUpdates();
+      this._startListeningToNativeValueUpdates()
     }
-    return id;
+    return id
   }
 
   /**
@@ -84,9 +82,9 @@ class AnimatedNode {
    * See https://reactnative.dev/docs/animatedvalue#removelistener
    */
   removeListener(id) {
-    delete this._listeners[id];
+    delete this._listeners[id]
     if (this.__isNative && !this.hasListeners()) {
-      this._stopListeningForNativeValueUpdates();
+      this._stopListeningForNativeValueUpdates()
     }
   }
 
@@ -96,14 +94,14 @@ class AnimatedNode {
    * See https://reactnative.dev/docs/animatedvalue#removealllisteners
    */
   removeAllListeners() {
-    this._listeners = {};
+    this._listeners = {}
     if (this.__isNative) {
-      this._stopListeningForNativeValueUpdates();
+      this._stopListeningForNativeValueUpdates()
     }
   }
 
   hasListeners() {
-    return !!Object.keys(this._listeners).length;
+    return !!Object.keys(this._listeners).length
   }
 
   _startListeningToNativeValueUpdates() {
@@ -111,84 +109,81 @@ class AnimatedNode {
       this.__nativeAnimatedValueListener &&
       !this.__shouldUpdateListenersForNewNativeTag
     ) {
-      return;
+      return
     }
 
     if (this.__shouldUpdateListenersForNewNativeTag) {
-      this.__shouldUpdateListenersForNewNativeTag = false;
-      this._stopListeningForNativeValueUpdates();
+      this.__shouldUpdateListenersForNewNativeTag = false
+      this._stopListeningForNativeValueUpdates()
     }
 
-    NativeAnimatedAPI.startListeningToAnimatedNodeValue(this.__getNativeTag());
+    NativeAnimatedAPI.startListeningToAnimatedNodeValue(this.__getNativeTag())
     this.__nativeAnimatedValueListener =
       NativeAnimatedHelper.nativeEventEmitter.addListener(
         'onAnimatedValueUpdate',
-        data => {
+        (data) => {
           if (data.tag !== this.__getNativeTag()) {
-            return;
+            return
           }
-          this.__onAnimatedValueUpdateReceived(data.value);
-        },
-      );
+          this.__onAnimatedValueUpdateReceived(data.value)
+        }
+      )
   }
 
   __onAnimatedValueUpdateReceived(value) {
-    this.__callListeners(value);
+    this.__callListeners(value)
   }
 
   __callListeners(value) {
     for (const key in this._listeners) {
-      this._listeners[key]({value});
+      this._listeners[key]({ value })
     }
   }
 
   _stopListeningForNativeValueUpdates() {
     if (!this.__nativeAnimatedValueListener) {
-      return;
+      return
     }
 
-    this.__nativeAnimatedValueListener.remove();
-    this.__nativeAnimatedValueListener = null;
-    NativeAnimatedAPI.stopListeningToAnimatedNodeValue(this.__getNativeTag());
+    this.__nativeAnimatedValueListener.remove()
+    this.__nativeAnimatedValueListener = null
+    NativeAnimatedAPI.stopListeningToAnimatedNodeValue(this.__getNativeTag())
   }
 
   __getNativeTag() {
-    NativeAnimatedHelper.assertNativeAnimatedModule();
+    NativeAnimatedHelper.assertNativeAnimatedModule()
     invariant(
       this.__isNative,
-      'Attempt to get native tag from node not marked as "native"',
-    );
+      'Attempt to get native tag from node not marked as "native"'
+    )
 
-    const nativeTag =
-      this.__nativeTag ?? NativeAnimatedHelper.generateNewNodeTag();
+    const nativeTag = this.__nativeTag ?? NativeAnimatedHelper.generateNewNodeTag()
 
     if (this.__nativeTag == null) {
-      this.__nativeTag = nativeTag;
-      const config = this.__getNativeConfig();
+      this.__nativeTag = nativeTag
+      const config = this.__getNativeConfig()
       if (this._platformConfig) {
-        config.platformConfig = this._platformConfig;
+        config.platformConfig = this._platformConfig
       }
-      NativeAnimatedHelper.API.createAnimatedNode(nativeTag, config);
-      this.__shouldUpdateListenersForNewNativeTag = true;
+      NativeAnimatedHelper.API.createAnimatedNode(nativeTag, config)
+      this.__shouldUpdateListenersForNewNativeTag = true
     }
 
-    return nativeTag;
+    return nativeTag
   }
   __getNativeConfig() {
-    throw new Error(
-      'This JS animated node type cannot be used as native animated node',
-    );
+    throw new Error('This JS animated node type cannot be used as native animated node')
   }
   toJSON() {
-    return this.__getValue();
+    return this.__getValue()
   }
 
   __getPlatformConfig() {
-    return this._platformConfig;
+    return this._platformConfig
   }
   __setPlatformConfig(platformConfig) {
-    this._platformConfig = platformConfig;
+    this._platformConfig = platformConfig
   }
 }
 
-export default AnimatedNode;
+export default AnimatedNode

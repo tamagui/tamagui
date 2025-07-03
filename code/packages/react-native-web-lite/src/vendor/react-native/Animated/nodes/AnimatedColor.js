@@ -10,7 +10,7 @@
 
 import AnimatedValue from './AnimatedValue'
 import AnimatedWithChildren from './AnimatedWithChildren'
-import normalizeColor from '@react-native/normalize-colors'
+import { normalizeColor } from '@tamagui/react-native-web-internals'
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
 
 const NativeAnimatedAPI = NativeAnimatedHelper.API
