@@ -53,7 +53,6 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          debug="verbose"
           backgroundColor="$shadow6"
           animateOnly={['transform', 'opacity']}
           animation={[
