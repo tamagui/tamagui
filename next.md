@@ -1,3 +1,4 @@
+- apply visibility hidden to fully hidden popover for perf gains
 - css driver can noRerender
 - reanimated too but requires testing native + worklets
 
