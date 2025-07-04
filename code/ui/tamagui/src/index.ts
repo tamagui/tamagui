@@ -68,6 +68,7 @@ export type {
   FontLanguages,
   FontLetterSpacingTokens,
   FontLineHeightTokens,
+  FontFamilyTokens,
   FontSizeTokens,
   FontStyleTokens,
   FontTokens,
