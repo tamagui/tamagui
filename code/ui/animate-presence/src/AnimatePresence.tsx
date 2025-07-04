@@ -42,6 +42,7 @@ export const AnimatePresence: FunctionComponent<
   exitBeforeEnter,
   presenceAffectsLayout = true,
   custom,
+  passThrough,
 }) => {
   // We want to force a re-render once all exiting animations have finished. We
   // either use a local forceRender function, or one from a parent context if it exists.
@@ -63,6 +64,11 @@ export const AnimatePresence: FunctionComponent<
   // If this is the initial component render, just deal with logic surrounding whether
   // we play onMount animations or not.
   const isInitialRender = useRef(true)
+
+  if (passThrough) {
+    // match structure returned below
+    return <>{children}</>
+  }
 
   if (isInitialRender.current) {
     isInitialRender.current = false
