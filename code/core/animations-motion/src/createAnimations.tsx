@@ -143,7 +143,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             console.info('slow', elapsed, { animationProps, props })
           }
 
-          if (animationProps) {
+          if (scope.current && animationProps) {
             flushAnimation(animationProps)
           }
 
@@ -159,11 +159,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         return () => {
           disposed = true
         }
-      }, [])
+      }, [scope])
 
       const runAnimation = (props: AnimationProps) => {
         const elapsed = Date.now() - lastAnimateAt.current
-        if (elapsed > minTimeBetweenAnimations) {
+        if (scope.current && elapsed > minTimeBetweenAnimations) {
           flushAnimation(props)
         } else {
           animationsQueue.current.push(props)
