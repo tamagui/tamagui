@@ -122,7 +122,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     groupContext
   )
 
-  const { mediaGroups, pseudoGroups } = splitStyles
+  const { mediaGroups, pseudoGroups } = splitStyles || {}
 
   useIsomorphicLayoutEffect(() => {
     if (disabled) {
@@ -149,5 +149,10 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
   ])
 
-  return [splitStyles.viewProps, splitStyles.style || {}, theme, mediaState] as any
+  return [
+    splitStyles?.viewProps || {},
+    splitStyles?.style || {},
+    theme,
+    mediaState,
+  ] as any
 }

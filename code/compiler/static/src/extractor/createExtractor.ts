@@ -628,7 +628,7 @@ export function createExtractor(
           undefined,
           false,
           shouldPrintDebug
-        )
+        )!
 
         const classNames = {
           ...out.classNames,
@@ -2059,7 +2059,7 @@ export function createExtractor(
                 undefined,
                 false,
                 debugPropValue || shouldPrintDebug
-              )
+              )!
 
               let outProps = {
                 ...(includeProps ? out.viewProps : {}),

@@ -701,11 +701,12 @@ export declare function useInputProps(props: InputProps, ref: any): {
     insetInlineStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     space?: number | boolean | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
-    spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
+    spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
     separator?: React.ReactNode;
     animation?: (import("@tamagui/core").AnimationProp | null) | undefined;
-    animateOnly?: string[] | "unset" | undefined;
-    animatePresence?: boolean | "unset" | undefined;
+    animateOnly?: string[] | undefined;
+    animatePresence?: boolean | undefined;
+    passThrough?: boolean | undefined;
     selectionColor?: "unset" | Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;

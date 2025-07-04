@@ -654,7 +654,7 @@ export function createComponent<
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
     if (splitStyles) {
       if ((!hasAnimationProp || groupName) && animationDriver?.avoidReRenders) {
-        const styleListener = stateRef.current.useStyleListener
+        const useStyleListener = stateRef.current.useStyleListener
         const ogSetStateShallow = setStateShallow
 
         stateRef.current.setStateShallow = (nextOrGetNext) => {
@@ -706,7 +706,7 @@ export function createComponent<
             }
 
             // we just emit and return for group without animation ^
-            if (!hasAnimationProp || !styleListener) {
+            if (!hasAnimationProp || !useStyleListener) {
               return
             }
 
@@ -725,7 +725,7 @@ export function createComponent<
               debugProp
             )
 
-            styleListener(nextStyles.style as any)
+            useStyleListener((nextStyles?.style || {}) as any)
           } else {
             if (
               process.env.NODE_ENV === 'development' &&

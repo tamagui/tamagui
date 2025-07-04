@@ -513,7 +513,7 @@ const PopoverContentImpl = React.forwardRef<
     <Animate
       type="presence"
       present={Boolean(open)}
-      keepChildrenMounted={keepChildrenMounted}
+      keepChildrenMounted={Boolean(keepChildrenMounted)}
       onExitComplete={handleExitComplete}
       lazyMount={lazyMount}
       passThrough={context.breakpointActive}

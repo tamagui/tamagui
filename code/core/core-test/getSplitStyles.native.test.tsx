@@ -212,7 +212,7 @@ describe('getSplitStyles - pseudo prop merging', () => {
       {
         isAnimated: false,
       }
-    )
+    )!
     return style?.backgroundColor
   }
 
@@ -249,7 +249,7 @@ function getSplitStylesStack(props: Record<string, any>, tag?: string) {
     undefined,
     undefined,
     tag
-  )
+  )!
 }
 
 function getThemeStylesStack(
@@ -278,5 +278,5 @@ function getThemeStylesStack(
     undefined,
     undefined,
     tag
-  )
+  )!
 }

@@ -35,5 +35,5 @@ export function simplifiedGetSplitStyles(
     undefined,
     options.tag,
     true
-  )
+  )!
 }

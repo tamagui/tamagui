@@ -67,7 +67,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
         }
       )
 
-      const props = result.viewProps
+      const props = result?.viewProps || {}
       const Element = tag
       const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
 
