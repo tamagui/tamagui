@@ -32,6 +32,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
@@ -182,16 +183,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           return
         }
 
-        // ideally this would just come from tamagui
-        if (doAnimate) {
-          fixStyles(doAnimate)
-          styleToCSS(doAnimate)
-        }
-        if (dontAnimate) {
-          fixStyles(dontAnimate)
-          styleToCSS(dontAnimate)
-        }
-
         if (!lastAnimationStyle.current) {
           lastAnimationStyle.current = doAnimate || {}
           const firstAnimation = animate(scope.current, doAnimate || {}, {
@@ -281,14 +272,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         lastDontAnimate.current = dontAnimate
       })
 
+      const [initialStyle] = useState(() => ({ ...dontAnimate, ...doAnimate }))
+
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
-        console.info({ style, doAnimate, dontAnimate, scope, animationOptions })
+        console.info({
+          style,
+          doAnimate,
+          dontAnimate,
+          scope,
+          animationOptions,
+          initialStyle,
+        })
         console.groupEnd()
       }
 
       return {
-        style: dontAnimate,
+        // avoid first render returning wrong styles - always render all, after that we can just mutate
+        style: {
+          ...initialStyle,
+          ...dontAnimate,
+        },
         ref: scope,
         tag: 'div',
       }
@@ -373,18 +377,29 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
     const animationOptions = animationPropToAnimationConfig(props.animation)
 
-    let dontAnimate = {}
+    let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
 
     const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
       if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
+        dontAnimate ||= {}
         dontAnimate[key] = value
       } else {
         doAnimate ||= {}
         doAnimate[key] = value
       }
+    }
+
+    // ideally this would just come from tamagui
+    if (doAnimate) {
+      fixStyles(doAnimate)
+      styleToCSS(doAnimate)
+    }
+    if (dontAnimate) {
+      fixStyles(dontAnimate)
+      styleToCSS(dontAnimate)
     }
 
     return {
