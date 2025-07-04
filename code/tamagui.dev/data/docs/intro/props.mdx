@@ -8,7 +8,8 @@ Tamagui supports a superset of the React Native props. Start with:
 - [View](https://reactnative.dev/docs/view-style-props), or
 - [Text](https://reactnative.dev/docs/text-style-props)
 
-From there, we add [style props](/docs/intro/styles) directly onto the same object.
+From there, we add [style props](/docs/intro/styles) directly onto the same
+object.
 
 Finally, there are a few non-style props Tamagui adds:
 
@@ -238,6 +239,18 @@ Finally, there are a few non-style props Tamagui adds:
       description: (
         <span>
           When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props. When "except-style", the same behavior except Tamagui won't pass styles down from the parent, only non-style props.
+        </span>
+      ),
+    },
+
+    {
+      name: 'passThrough',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Advanced use only. React will "re-parent" components when it's internal tree structure changes.
+          When making UI that adapts to another look, for better performance and avoiding losing user state (like focus, or uncontrolled text input), you can use passThrough rather than conditionally rendering a wrapping component.
         </span>
       ),
     },
