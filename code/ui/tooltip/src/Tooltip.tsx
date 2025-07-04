@@ -31,7 +31,7 @@ import {
   PopoverTrigger,
 } from '@tamagui/popover'
 import type { PopperProps } from '@tamagui/popper'
-import { Popper, PopperContentFrame, usePopperContext } from '@tamagui/popper'
+import { Popper, PopperContentFrame, usePopperSize } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
@@ -42,11 +42,11 @@ const TooltipContent = PopperContentFrame.extractable(
   React.forwardRef(
     ({ __scopeTooltip, ...props }: ScopedTooltipProps<PopoverContentProps>, ref: any) => {
       const preventAnimation = React.useContext(PreventTooltipAnimationContext)
-      const popper = usePopperContext(__scopeTooltip || TOOLTIP_SCOPE)
+      const popperSize = usePopperSize(__scopeTooltip || TOOLTIP_SCOPE)
       const padding = !props.unstyled
         ? (props.padding ??
           props.size ??
-          popper.size ??
+          popperSize ??
           getSize('$true', {
             shift: -2,
           }))

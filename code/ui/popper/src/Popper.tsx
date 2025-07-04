@@ -55,9 +55,19 @@ export type PopperContextValue = UseFloatingReturn & {
 }
 
 export const PopperContext = createStyledContext<PopperContextValue>({} as any)
+export const PopperPositionContext = createStyledContext
 
 export const { useStyledContext: usePopperContext, Provider: PopperProvider } =
   PopperContext
+
+export const PopperInfrequentContext = createStyledContext<{
+  size?: SizeTokens
+}>({
+  size: undefined,
+})
+
+export const usePopperSize = (scope?: string) =>
+  PopperInfrequentContext.useStyledContext(scope)?.size
 
 export type PopperProps = {
   size?: SizeTokens
@@ -248,7 +258,11 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     ...floating,
   }
 
-  return <PopperProvider {...popperContext}>{children}</PopperProvider>
+  return (
+    <PopperInfrequentContext.Provider size={size}>
+      <PopperProvider {...popperContext}>{children}</PopperProvider>
+    </PopperInfrequentContext.Provider>
+  )
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -300,6 +314,7 @@ type PopperContentElement = HTMLElement | View
 
 export type PopperContentProps = SizableStackProps & {
   enableAnimationForPositionChange?: boolean
+  passThrough?: boolean
 }
 
 export const PopperContentFrame = styled(ThemeableStack, {
@@ -334,7 +349,13 @@ export const PopperContent = React.forwardRef<
   PopperContentElement,
   ScopedPopperProps<PopperContentProps>
 >(function PopperContent(props: ScopedPopperProps<PopperContentProps>, forwardedRef) {
-  const { __scopePopper, enableAnimationForPositionChange, ...rest } = props
+  const {
+    __scopePopper,
+    enableAnimationForPositionChange,
+    children,
+    passThrough,
+    ...rest
+  } = props
   const { strategy, placement, refs, x, y, getFloatingProps, size } =
     usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
@@ -342,10 +363,10 @@ export const PopperContent = React.forwardRef<
   const [needsMeasure, setNeedsMeasure] = React.useState(enableAnimationForPositionChange)
 
   useIsomorphicLayoutEffect(() => {
-    if (x && y) {
+    if (needsMeasure && x && y) {
       setNeedsMeasure(false)
     }
-  }, [enableAnimationForPositionChange, x, y])
+  }, [needsMeasure, enableAnimationForPositionChange, x, y])
 
   // default to not showing if positioned at 0, 0
   const hide = x === 0 && y === 0
@@ -377,16 +398,19 @@ export const PopperContent = React.forwardRef<
     : frameProps
 
   return (
-    <Stack {...floatingProps}>
+    <Stack passThrough={passThrough} {...floatingProps}>
       <PopperContentFrame
         key="popper-content-frame"
         data-placement={placement}
         data-strategy={strategy}
         contain="layout"
         size={size}
+        passThrough={passThrough}
         {...style}
         {...rest}
-      />
+      >
+        {children}
+      </PopperContentFrame>
     </Stack>
   )
 })

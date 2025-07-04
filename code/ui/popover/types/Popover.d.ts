@@ -12,7 +12,13 @@ export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean, via?: PopoverVia) => void;
-    keepChildrenMounted?: boolean;
+    /**
+     * When true, children never un-mount, otherwise they mount on open.
+     * When "lazy", they mount inside a startTransition after first render.
+     *
+     * @default false
+     */
+    keepChildrenMounted?: boolean | 'lazy';
     /**
      * Enable staying open while mouseover
      */
@@ -34,7 +40,7 @@ type PopoverContextValue = {
     onCustomAnchorRemove(): void;
     size?: SizeTokens;
     breakpointActive?: boolean;
-    keepChildrenMounted?: boolean;
+    keepChildrenMounted?: boolean | 'lazy';
     anchorTo?: Rect;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
@@ -184,7 +190,13 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean, via?: PopoverVia) => void;
-    keepChildrenMounted?: boolean;
+    /**
+     * When true, children never un-mount, otherwise they mount on open.
+     * When "lazy", they mount inside a startTransition after first render.
+     *
+     * @default false
+     */
+    keepChildrenMounted?: boolean | "lazy";
     /**
      * Enable staying open while mouseover
      */
