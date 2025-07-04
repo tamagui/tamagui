@@ -317,20 +317,34 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
+        let node: HTMLElement | undefined
         let overlay: HTMLSpanElement | null = null
 
+        const remove = () => {
+          if (overlay) {
+            try {
+              overlay.parentNode?.removeChild(overlay)
+              overlay = null
+            } catch {
+              // may have unmounted
+            }
+          }
+        }
+
         const debugVisualizerHandler = (show = false) => {
-          const node = stateRef.current.host as HTMLElement
+          node = stateRef.current.host as HTMLElement | undefined
           if (!node) return
 
           if (show) {
-            overlay = document.createElement('span')
-            overlay.style.inset = '0px'
-            overlay.style.zIndex = '1000000'
-            overlay.style.position = 'absolute'
-            overlay.style.borderColor = 'red'
-            overlay.style.borderWidth = '1px'
-            overlay.style.borderStyle = 'dotted'
+            if (!overlay) {
+              overlay = document.createElement('span')
+              overlay.style.inset = '0px'
+              overlay.style.zIndex = '1000000'
+              overlay.style.position = 'absolute'
+              overlay.style.borderColor = 'red'
+              overlay.style.borderWidth = '1px'
+              overlay.style.borderStyle = 'dotted'
+            }
 
             const dataAt = node.getAttribute('data-at') || ''
             const dataIn = node.getAttribute('data-in') || ''
@@ -345,20 +359,18 @@ export function createComponent<
             tooltip.style.fontSize = '12px'
             tooltip.style.lineHeight = '12px'
             tooltip.style.fontFamily = 'monospace'
-            tooltip.style['webkitFontSmoothing'] = 'none'
             tooltip.innerText = `${componentName || ''} ${dataAt} ${dataIn}`.trim()
 
             overlay.appendChild(tooltip)
             node.appendChild(overlay)
           } else {
-            if (overlay) {
-              node.removeChild(overlay)
-            }
+            remove()
           }
         }
         debugKeyListeners ||= new Set()
         debugKeyListeners.add(debugVisualizerHandler)
         return () => {
+          remove()
           debugKeyListeners?.delete(debugVisualizerHandler)
         }
       }, [componentName])
