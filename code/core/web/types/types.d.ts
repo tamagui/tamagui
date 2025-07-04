@@ -741,7 +741,7 @@ export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValue
     autocompleteSpecificTokens: infer Val;
 } ? Val extends true | undefined ? SpecificTokens : never : never);
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
+    [K in keyof T]: ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];

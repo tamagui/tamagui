@@ -1288,7 +1288,9 @@ export type GetThemeValueForKey<K extends string | symbol | number> =
 
 export type WithThemeValues<T extends object> = {
   [K in keyof T]: ThemeValueGet<K> extends never
-    ? T[K] | 'unset'
+    ? K extends keyof ExtraBaseProps
+      ? T[K]
+      : T[K] | 'unset'
     : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'
 }
 
