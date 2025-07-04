@@ -250,7 +250,7 @@ class ScrollView extends React.Component<any> {
 
   _handleContentOnLayout(e: any) {
     const { width, height } = e.nativeEvent.layout
-    this.props.onContentSizeChange(width, height)
+    this.props.onContentSizeChange?.(width, height)
   }
 
   _handleScroll(e: Object) {

@@ -37,19 +37,19 @@ export default class CellRenderer extends React.Component {
   _separators = {
     highlight: () => {
       const { cellKey, prevCellKey } = this.props
-      this.props.onUpdateSeparators([cellKey, prevCellKey], {
+      this.props.onUpdateSeparators?.([cellKey, prevCellKey], {
         highlighted: true,
       })
     },
     unhighlight: () => {
       const { cellKey, prevCellKey } = this.props
-      this.props.onUpdateSeparators([cellKey, prevCellKey], {
+      this.props.onUpdateSeparators?.([cellKey, prevCellKey], {
         highlighted: false,
       })
     },
     updateProps: (select, newProps) => {
       const { cellKey, prevCellKey } = this.props
-      this.props.onUpdateSeparators(
+      this.props.onUpdateSeparators?.(
         [select === 'leading' ? prevCellKey : cellKey],
         newProps
       )
@@ -63,12 +63,11 @@ export default class CellRenderer extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.onUnmount(this.props.cellKey)
+    this.props.onUnmount?.(this.props.cellKey)
   }
 
   _onLayout = (nativeEvent) => {
-    this.props.onCellLayout &&
-      this.props.onCellLayout(nativeEvent, this.props.cellKey, this.props.index)
+    this.props.onCellLayout?.(nativeEvent, this.props.cellKey, this.props.index)
   }
 
   _renderElement(renderItem, ListItemComponent, item, index) {
