@@ -1345,12 +1345,18 @@ export const getSplitStyles: StyleSplitter = (
           if (style) {
             viewProps.style = style as any
           }
+          if (animationDriver?.supportsCSS) {
+            viewProps.className = finalClassName
+          }
         } else if (isReactNative) {
-          const cnStyles = { $$css: true }
+          let cnStyles: Record<string, unknown> | undefined
           for (const name of finalClassName.split(' ')) {
+            cnStyles ||= { $$css: true }
             cnStyles[name] = name
           }
-          viewProps.style = [...(Array.isArray(style) ? style : [style]), cnStyles]
+          viewProps.style = cnStyles
+            ? [...(Array.isArray(style) ? style : [style]), cnStyles]
+            : [style]
         } else {
           if (finalClassName) {
             viewProps.className = finalClassName
