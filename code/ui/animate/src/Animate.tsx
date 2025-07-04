@@ -1,10 +1,10 @@
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, PresenceChild } from '@tamagui/animate-presence'
 import { startTransition, useEffect, useState } from 'react'
-import type { JSX } from 'react/jsx-runtime'
 
 type BaseProps = {
   children: React.ReactNode
+  passThrough?: boolean
 }
 
 type PresenceProps = AnimatePresenceProps & {
@@ -40,11 +40,13 @@ export function Animate({
   lazyMount,
   type,
   present,
+  passThrough,
   ...props
 }: AnimateProps): React.ReactNode {
   const [lazyMounted, setLazyMounted] = useState(lazyMount ? false : present)
 
   useEffect(() => {
+    if (passThrough) return
     if (!lazyMount) return
     if (!present) return
     startTransition(() => {
@@ -59,16 +61,19 @@ export function Animate({
     if (props.keepChildrenMounted) {
       return (
         <PresenceChild
-          initial={props.initial ? undefined : false}
-          onExitComplete={props.onExitComplete}
-          enterVariant={props.enterVariant}
-          exitVariant={props.exitVariant}
-          enterExitVariant={props.enterExitVariant}
-          // BUGFIX: this causes continous re-renders if keepChildrenMounted is true, see HeaderMenu
-          // but since we always re-render this component on open changes this should be fine to leave off?
-          presenceAffectsLayout={false}
-          isPresent={present}
-          custom={props.custom}
+          isPresent
+          {...(!passThrough && {
+            initial: props.initial ? undefined : false,
+            onExitComplete: props.onExitComplete,
+            enterVariant: props.enterVariant,
+            exitVariant: props.exitVariant,
+            enterExitVariant: props.enterExitVariant,
+            // BUGFIX: this causes continous re-renders if keepChildrenMounted is true, see HeaderMenu
+            // but since we always re-render this component on open changes this should be fine to leave off?
+            presenceAffectsLayout: false,
+            isPresent: present,
+            custom: props.custom,
+          })}
         >
           {children as any}
         </PresenceChild>

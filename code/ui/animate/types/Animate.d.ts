@@ -1,6 +1,7 @@
 import type { AnimatePresenceProps } from "@tamagui/animate-presence";
 type BaseProps = {
 	children: React.ReactNode;
+	passThrough?: boolean;
 };
 type PresenceProps = AnimatePresenceProps & {
 	type: "presence";
@@ -27,7 +28,7 @@ export type AnimateProps = BaseProps & PresenceProps;
 *
 *
 */
-export declare function Animate({ children, lazyMount, type, present,...props }: AnimateProps): React.ReactNode;
+export declare function Animate({ children, lazyMount, type, present, passThrough,...props }: AnimateProps): React.ReactNode;
 export {};
 
 //# sourceMappingURL=Animate.d.ts.map
