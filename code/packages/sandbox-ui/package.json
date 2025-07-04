@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.129.18",
+  "version": "1.129.19",
   "private": true,
   "sideEffects": [
     "*.css"

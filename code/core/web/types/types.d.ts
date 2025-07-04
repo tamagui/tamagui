@@ -1592,6 +1592,7 @@ export type UseAnimationHook = (props: {
 }) => null | {
     style?: StackStyleBase | StackStyleBase[];
     className?: string;
+    ref?: any;
 };
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = Record<string, StyleObject>;

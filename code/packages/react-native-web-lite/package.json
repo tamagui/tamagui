@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "1.129.18",
+  "version": "1.129.19",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
