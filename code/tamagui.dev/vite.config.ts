@@ -86,6 +86,7 @@ export default {
       optimize: true,
       config: '@tamagui/tamagui-dev-config',
       outputCSS: './tamagui.css',
+      // bento lists some last issues
       // useReactNativeWebLite: true,
     }),
 

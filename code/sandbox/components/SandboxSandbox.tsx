@@ -20,7 +20,13 @@ import { animationsCSS } from '../config/tamagui/animationsCSS'
 export function SandboxSandbox() {
   return (
     <>
-      <Motion />
+      <Configuration animationDriver={animationsMotion}>
+        <Button animation="100ms">
+          hi hello
+          <Button.Text>hi</Button.Text>
+        </Button>
+      </Configuration>
+      {/* <Motion /> */}
       {/* <DialogDemo /> */}
       {/* <PopoverDemo /> */}
       {/* <Performance /> */}
