@@ -4,11 +4,7 @@ import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
-import {
-  getAllRules,
-  listenForSheetChanges,
-  scanAllSheets,
-} from './helpers/insertStyleRule'
+import { getAllRules, scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
 import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
 import { ensureThemeVariable } from './helpers/themes'
@@ -88,13 +84,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const noThemes = Object.keys(configIn.themes).length === 0
     if (noThemes) {
       foundThemes = scanAllSheets(noThemes, tokensParsed)
-    }
-    if (IS_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
-      // save some bundle
-    } else {
-      if (noThemes) {
-        listenForSheetChanges()
-      }
     }
   }
 

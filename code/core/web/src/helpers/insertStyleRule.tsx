@@ -49,26 +49,6 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
 
 // multiple sheets could have the same ids so we have to count
 
-export function listenForSheetChanges() {
-  if (!isClient) return
-
-  const mo = new MutationObserver((entries) => {
-    for (const entry of entries) {
-      if (
-        (entry instanceof HTMLStyleElement && entry.sheet) ||
-        (entry instanceof HTMLLinkElement && entry.href.endsWith('.css'))
-      ) {
-        scanAllSheets()
-        break
-      }
-    }
-  })
-
-  mo.observe(document.head, {
-    childList: true,
-  })
-}
-
 let lastScannedSheets: Set<CSSStyleSheet> | null = null
 
 export function scanAllSheets(
@@ -106,8 +86,8 @@ export function scanAllSheets(
   return themes
 }
 
-function trackInsertedStyle(id: string, remove = false) {
-  const next = (totalSelectorsInserted.get(id) || 0) + (remove ? -1 : 1)
+function trackInsertedStyle(id: string) {
+  const next = (totalSelectorsInserted.get(id) || 0) + 1
   totalSelectorsInserted.set(id, next)
   return next
 }
@@ -190,23 +170,6 @@ function updateSheetStyles(
         dedupedThemes.push(deduped)
       }
       continue
-    }
-
-    // track references
-    const total = trackInsertedStyle(identifier, remove)
-
-    if (remove) {
-      if (total === 0) {
-        delete allSelectors[identifier]
-      }
-    } else if (!(identifier in allSelectors)) {
-      const isTransform = identifier.startsWith('_transform-')
-      const shouldInsert = isTransform
-        ? addTransform(identifier, cssRule.cssText, cssRule)
-        : true
-      if (shouldInsert) {
-        allSelectors[identifier] = cssRule.cssText
-      }
     }
   }
 
@@ -372,25 +335,23 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
     if (!shouldInsertStyleRules(identifier)) {
       // idk why
-      // trackInsertedStyle(identifier)
       continue
     }
 
     const rules = styleObject[StyleObjectRules]
     allSelectors[identifier] = rules.join('\n')
-    updateRules(identifier, rules)
     trackInsertedStyle(identifier)
+    updateRules(identifier, rules)
 
-    for (const rule of rules) {
-      if (process.env.NODE_ENV === 'production') {
-        try {
-          sheet.insertRule(rule, sheet.cssRules.length)
-        } catch (err) {
-          console.error(`Error inserting CSS`, err)
-        }
-      } else {
+    try {
+      for (const rule of rules) {
         sheet.insertRule(rule, sheet.cssRules.length)
       }
+    } catch (err) {
+      if (process.env.NODE_ENV === 'production') {
+        console.error(`Error inserting style rule`, rules)
+      }
+      // in dev throw to show error clearly
     }
   }
 }

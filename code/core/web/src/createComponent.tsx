@@ -845,7 +845,7 @@ export function createComponent<
         stateRef,
       })
 
-      if (animations) {
+      if (isHydrated && animations) {
         animationStyles = animations.style
         viewProps.style = animationStyles
         if (animations.className) {

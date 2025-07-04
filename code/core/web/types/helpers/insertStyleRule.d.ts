@@ -3,7 +3,6 @@ export declare const insertedTransforms: {};
 export declare const getAllSelectors: () => Record<string, string>;
 export declare const getAllRules: () => string[];
 export declare const getAllTransforms: () => {};
-export declare function listenForSheetChanges(): void;
 export declare function scanAllSheets(collectThemes?: boolean, tokens?: TokensParsed): DedupedThemes | undefined;
 export declare function stopAccumulatingRules(): void;
 export declare function updateRules(identifier: string, rules: string[]): true | undefined;

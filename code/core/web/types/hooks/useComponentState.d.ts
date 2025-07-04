@@ -13,7 +13,7 @@ export declare const useComponentState: (props: StackProps | TextProps | Record<
     presenceState: import("../types").PresenceContextProps | null | undefined;
     setState: import("react").Dispatch<import("react").SetStateAction<TamaguiComponentState>>;
     setStateShallow: import("react").Dispatch<import("react").SetStateAction<Partial<TamaguiComponentState>>>;
-    noClass: boolean | undefined;
+    noClass: boolean;
     state: TamaguiComponentState;
     stateRef: import("react").RefObject<TamaguiComponentStateRef>;
     supportsCSS: boolean | undefined;

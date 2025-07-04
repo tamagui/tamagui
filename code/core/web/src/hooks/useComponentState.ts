@@ -169,18 +169,21 @@ export const useComponentState = (
     }
   }
 
-  let noClass =
-    !isWeb || !!props.forceStyle || (isAnimated && animationDriver?.needsWebStyles)
+  let noClass = !isWeb || !!props.forceStyle
 
-  // on server for SSR and animation compat added the && isHydrated but perhaps we want
-  // disableClassName="until-hydrated" to be more straightforward
-  // see issue if not, Button sets disableClassName to true <Button animation="" /> with
-  // the react-native driver errors because it tries to animate var(--color) to rbga(..)
-  if (isWeb) {
+  if (!isHydrated) {
+    noClass = false
+  } else {
+    // on server for SSR and animation compat added the && isHydrated but perhaps we want
+    // disableClassName="until-hydrated" to be more straightforward
+    // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+    // the react-native driver errors because it tries to animate var(--color) to rbga(..)
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc
-    if (!isServer || isHydrated) {
-      const isAnimatedAndHydrated = isAnimated && !supportsCSS
+    if (isWeb && isHydrated) {
+      // the reason we disable class even for css animation driver is i guess due to the logic around looking at transform
+      // in the driver to determine the transition - but that could be improved to not need it and just use classnames
+      const isAnimatedAndHydrated = isAnimated && isHydrated
 
       const isClassNameDisabled =
         !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)

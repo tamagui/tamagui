@@ -173,8 +173,6 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
 
-  // the reason we disable class even for css animation driver is i guess due to the logic around looking at transform
-  // in the driver to determine the transition - but that could be improved to not need it and just use classnames
   const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
 
   const rulesToInsert: RulesToInsert =
