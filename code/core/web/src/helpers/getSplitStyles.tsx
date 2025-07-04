@@ -579,6 +579,10 @@ export const getSplitStyles: StyleSplitter = (
 
       passDownProp(viewProps, keyInit, valInit, isMediaOrPseudo)
 
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        console.groupEnd()
+      }
+
       // if it's a variant here, we have a two layer variant...
       // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
       // which now has it's own unstyled + the child unstyled...
@@ -591,6 +595,9 @@ export const getSplitStyles: StyleSplitter = (
     // after shouldPassThrough
     if (!noSkip) {
       if (keyInit in skipProps) {
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          console.groupEnd()
+        }
         continue
       }
     }
