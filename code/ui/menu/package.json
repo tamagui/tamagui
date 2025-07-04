@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.129.16",
+  "version": "1.129.17",
   "sideEffects": [
     "*.css"
   ],
