@@ -1562,6 +1562,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     usePresence: () => UsePresenceResult;
     ResetPresence: (props: {
         children?: React.ReactNode;
+        disabled?: boolean;
     }) => React.ReactNode;
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
