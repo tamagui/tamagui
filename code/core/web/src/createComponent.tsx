@@ -9,7 +9,7 @@ import {
 } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import React, { type RefObject, useEffect, useId, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
@@ -33,13 +33,13 @@ import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
 import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
 import { hooks } from './setupHooks'
 import type {
-  ComponentGroupEmitter,
-  ComponentGroupState,
-  DebugProp,
   AllGroupContexts,
+  ComponentGroupEmitter,
+  DebugProp,
   GroupStateListener,
   LayoutEvent,
   PseudoGroupState,
+  SingleGroupContext,
   SizeTokens,
   SpaceDirection,
   SpacerProps,
@@ -50,7 +50,6 @@ import type {
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
-  TamaguiComponentStateRef,
   TamaguiElement,
   TamaguiInternalConfig,
   TextProps,
@@ -58,7 +57,6 @@ import type {
   UseAnimationProps,
   UseStyleEmitter,
   UseThemeWithStateProps,
-  SingleGroupContext,
 } from './types'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
@@ -1279,14 +1277,17 @@ export function createComponent<
 
     // needs to reset the presence state for nested children
     const ResetPresence = config?.animations?.ResetPresence
-    if (
-      ResetPresence &&
-      willBeAnimated &&
-      (hasEnterStyle || presenceState) &&
-      content &&
-      typeof content !== 'string'
-    ) {
-      content = <ResetPresence>{content}</ResetPresence>
+    const needsReset = Boolean(
+      !isHOC && ResetPresence && willBeAnimated && (hasEnterStyle || presenceState)
+    )
+    // avoid re-parenting
+    const hasEverReset = stateRef.current.hasEverResetPresence
+    if (needsReset && !hasEverReset) {
+      stateRef.current.hasEverResetPresence = true
+    }
+    const renderReset = needsReset || hasEverReset
+    if (renderReset && ResetPresence) {
+      content = <ResetPresence disabled={!needsReset}>{content}</ResetPresence>
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`

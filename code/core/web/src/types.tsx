@@ -105,6 +105,7 @@ export type TamaguiComponentStateRef = {
   hasAnimated?: boolean
   themeShallow?: boolean
   hasEverThemed?: boolean | 'wrapped'
+  hasEverResetPresence?: boolean
   isListeningToTheme?: boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
@@ -2554,7 +2555,10 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   avoidReRenders?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
-  ResetPresence: (props: { children?: any }) => JSX.Element
+  ResetPresence: (props: {
+    children?: React.ReactNode
+    disabled?: boolean
+  }) => React.ReactNode
   useAnimatedNumber: UseAnimatedNumber
   useAnimatedNumberStyle: UseAnimatedNumberStyle
   useAnimatedNumberReaction: UseAnimatedNumberReaction

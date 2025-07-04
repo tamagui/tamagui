@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, JSX, ReactNode, RefAttributes, RefObject } from 'react';
+import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { PxValue, Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
@@ -59,6 +59,7 @@ export type TamaguiComponentStateRef = {
     hasAnimated?: boolean;
     themeShallow?: boolean;
     hasEverThemed?: boolean | 'wrapped';
+    hasEverResetPresence?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
@@ -1560,8 +1561,8 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     useAnimations: UseAnimationHook;
     usePresence: () => UsePresenceResult;
     ResetPresence: (props: {
-        children?: any;
-    }) => JSX.Element;
+        children?: React.ReactNode;
+    }) => React.ReactNode;
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
     useAnimatedNumberReaction: UseAnimatedNumberReaction;
