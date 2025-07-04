@@ -8226,6 +8226,8 @@ __metadata:
     "@tamagui/use-element-layout": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 

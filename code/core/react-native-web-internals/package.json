@@ -36,11 +36,14 @@
     "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/simple-hash": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react": "*"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "license": "MIT",
   "tags": [
