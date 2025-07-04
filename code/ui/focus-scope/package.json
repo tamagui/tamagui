@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "1.129.14",
+  "version": "1.129.15",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
