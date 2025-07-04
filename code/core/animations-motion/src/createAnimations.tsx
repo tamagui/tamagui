@@ -5,7 +5,6 @@ import {
   fixStyles,
   getSplitStyles,
   hooks,
-  isEqualShallow,
   styleToCSS,
   Text,
   type UniversalAnimatedNumber,
@@ -14,9 +13,8 @@ import {
   useThemeWithState,
   View,
 } from '@tamagui/core'
-import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
-  frame,
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
   type MotionValue,
@@ -25,15 +23,7 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, {
-  forwardRef,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -50,7 +40,9 @@ const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 type AnimationProps = {
   doAnimate?: Record<string, unknown>
   dontAnimate?: Record<string, unknown>
-  animationOptions?: AnimationOptions
+  animationOptions?: AnimationOptions & {
+    isExiting?: boolean
+  }
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -89,8 +81,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
-      const presenceContext = React.useContext(PresenceContext)
-      const isExiting = presence?.[0] === false
+      const isExitingRender = presence?.[0] === false
       const sendExitComplete = presence?.[1]
 
       const [scope, animate] = useAnimate()
@@ -103,6 +94,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // we just skip to the last one
         const queue = animationsQueue.current
         const last = queue[queue.length - 1]
+
         if (last) {
           // unsafe react, i know...
           animationsQueue.current = []
@@ -123,10 +115,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const motionAnimationState = getMotionAnimatedProps(
           props as any,
           style,
-          disableAnimation
+          disableAnimation,
+          isExitingRender
         )
         return motionAnimationState
-      }, [presenceContext, animationKey, styleKey])
+      }, [isExitingRender, animationKey, styleKey])
 
       const animationsQueue = useRef<AnimationProps[]>([])
       const lastAnimateAt = useRef(0)
@@ -230,7 +223,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         controls.current = animate(scope.current, diff, animationOptions)
         lastAnimationStyle.current = next
 
-        if (isExiting) {
+        if (animationOptions.isExiting) {
           controls.current.finished.then(() => {
             sendExitComplete?.()
           })
@@ -241,7 +234,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
-          disableAnimation
+          disableAnimation,
+          isExitingRender
         )
         runAnimation(animationProps)
       })
@@ -367,7 +361,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   function getMotionAnimatedProps(
     props: { animation: AnimationProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
-    disable = false
+    disable: boolean,
+    isExiting: boolean
   ): AnimationProps {
     if (disable) {
       return {
@@ -405,7 +400,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     return {
       dontAnimate,
       doAnimate,
-      animationOptions,
+      animationOptions: isExiting
+        ? {
+            ...animationOptions,
+            isExiting: true,
+          }
+        : animationOptions,
     }
   }
 
