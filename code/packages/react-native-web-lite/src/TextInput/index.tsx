@@ -229,14 +229,13 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
         // added by `usePlatformMethods`. This is temporarily until an API like
         // `TextInput.clear(hostRef)` is added to React Native.
         if (hostNode != null) {
-          hostNode.clear = function () {
+          hostNode.clear = () => {
             if (hostNode != null) {
               hostNode.value = ''
             }
           }
-          hostNode.isFocused = function () {
-            return hostNode != null && TextInputState.currentlyFocusedField() === hostNode
-          }
+          hostNode.isFocused = () =>
+            hostNode != null && TextInputState.currentlyFocusedField() === hostNode
           handleContentSizeChange(hostNode)
         }
       },
@@ -440,14 +439,7 @@ const styles = StyleSheet.create({
   textinput$raw: {
     MozAppearance: 'textfield',
     WebkitAppearance: 'none',
-    backgroundColor: 'transparent',
-    border: '0 solid black',
-    borderRadius: 0,
-    boxSizing: 'border-box',
-    font: '14px System',
-    margin: 0,
-    padding: 0,
-    resize: 'none',
+    appearance: 'none',
   },
   placeholder: {
     placeholderTextColor: 'var(--placeholderTextColor)',
