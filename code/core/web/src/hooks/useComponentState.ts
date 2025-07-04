@@ -237,6 +237,7 @@ function hasAnimatedStyleValue(style: Object) {
 const isDisabled = (props: any) => {
   return (
     props.disabled ||
+    props.passThrough ||
     props.accessibilityState?.disabled ||
     props['aria-disabled'] ||
     props.accessibilityDisabled ||

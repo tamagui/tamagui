@@ -185,7 +185,7 @@ setupHooks({
     }
   },
 
-  useEvents(viewProps, events, { pseudos }, setStateShallow, staticConfig) {
+  useEvents(viewProps, events, splitStyles, setStateShallow, staticConfig) {
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (events) {
         if (events.onFocus) {

@@ -97,7 +97,7 @@ type StyleSplitter = (
   elementType?: string,
   startedUnhydrated?: boolean,
   debug?: DebugProp
-) => GetStyleResult
+) => null | GetStyleResult
 
 export const PROP_SPLIT = '-'
 
@@ -146,6 +146,10 @@ export const getSplitStyles: StyleSplitter = (
 ) => {
   conf = conf || getConfig()
   const animationDriver = componentContext?.animationDriver || conf.animations
+
+  if (props.passThrough) {
+    return null
+  }
 
   // a bit icky, we need no normalize but not fully
   if (

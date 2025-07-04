@@ -632,11 +632,13 @@ export function createComponent<
       debugProp
     )
 
+    // splitStyles === null === passThrough
+
     const groupContext = groupName ? allGroupContexts?.[groupName] || null : null
 
     // one tiny mutation 🙏 get width/height optimistically from raw values if possible
     // if set hardcoded it avoids extra renders
-    if (groupContext) {
+    if (splitStyles && groupContext) {
       const groupState = groupContext?.state
       if (groupState && groupState.layout === undefined) {
         if (splitStyles.style?.width || splitStyles.style?.height) {
@@ -650,116 +652,124 @@ export function createComponent<
 
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
-    if ((hasAnimationProp || groupName) && animationDriver?.avoidReRenders) {
-      const styleListener = stateRef.current.useStyleListener
-      const ogSetStateShallow = setStateShallow
+    if (splitStyles) {
+      if ((!hasAnimationProp || groupName) && animationDriver?.avoidReRenders) {
+        const styleListener = stateRef.current.useStyleListener
+        const ogSetStateShallow = setStateShallow
 
-      stateRef.current.setStateShallow = (nextOrGetNext) => {
-        const prev = NextState.get(stateRef) || state
-        const next =
-          typeof nextOrGetNext === 'function' ? nextOrGetNext(prev) : nextOrGetNext
+        stateRef.current.setStateShallow = (nextOrGetNext) => {
+          const prev = NextState.get(stateRef) || state
+          const next =
+            typeof nextOrGetNext === 'function' ? nextOrGetNext(prev) : nextOrGetNext
 
-        if (next === prev || isEqualShallow(prev, next)) {
-          return
-        }
-
-        // one thing we have to handle here and where it gets a bit more complex is group styles
-        const canAvoidReRender = Object.keys(next).every((key) =>
-          avoidReRenderKeys.has(key)
-        )
-
-        if (canAvoidReRender) {
-          const updatedState = {
-            ...prev,
-            ...next,
-          }
-          NextState.set(stateRef, updatedState)
-
-          if (
-            process.env.NODE_ENV === 'development' &&
-            debugProp &&
-            debugProp !== 'profile'
-          ) {
-            console.groupCollapsed(`[⚡️] avoid setState`, next, { updatedState, props })
-            console.info(stateRef.current.host)
-            console.groupEnd()
-          }
-
-          const {
-            group,
-            hasDynGroupChildren,
-            unmounted,
-            animation,
-            ...childrenGroupState
-          } = updatedState
-
-          // update before getting styles
-          if (groupContext) {
-            notifyGroupSubscribers(
-              groupContext,
-              stateRef.current.group || null,
-              childrenGroupState
-            )
-          }
-
-          // we just emit and return for group without animation ^
-          if (!hasAnimationProp || !styleListener) {
+          if (next === prev || isEqualShallow(prev, next)) {
             return
           }
 
-          const nextStyles = getSplitStyles(
-            props,
-            staticConfig,
-            theme,
-            themeName,
-            updatedState,
-            styleProps,
-            null,
-            componentContext,
-            allGroupContexts,
-            elementType,
-            startedUnhydrated,
-            debugProp
+          // one thing we have to handle here and where it gets a bit more complex is group styles
+          const canAvoidReRender = Object.keys(next).every((key) =>
+            avoidReRenderKeys.has(key)
           )
 
-          styleListener(nextStyles.style as any)
-        } else {
-          if (
-            process.env.NODE_ENV === 'development' &&
-            debugProp &&
-            debugProp !== 'profile'
-          ) {
-            console.info(`[🐌] re-render`, { canAvoidReRender, next })
-          }
-          ogSetStateShallow(next)
-        }
-      }
+          if (canAvoidReRender) {
+            const updatedState = {
+              ...prev,
+              ...next,
+            }
+            NextState.set(stateRef, updatedState)
 
-      // needs to capture latest props (it's called from memoized `events`)
-      setStateShallow = (state) => {
-        stateRef.current.setStateShallow?.(state)
+            if (
+              process.env.NODE_ENV === 'development' &&
+              debugProp &&
+              debugProp !== 'profile'
+            ) {
+              console.groupCollapsed(`[⚡️] avoid setState`, next, { updatedState, props })
+              console.info(stateRef.current.host)
+              console.groupEnd()
+            }
+
+            const {
+              group,
+              hasDynGroupChildren,
+              unmounted,
+              animation,
+              ...childrenGroupState
+            } = updatedState
+
+            // update before getting styles
+            if (groupContext) {
+              notifyGroupSubscribers(
+                groupContext,
+                stateRef.current.group || null,
+                childrenGroupState
+              )
+            }
+
+            // we just emit and return for group without animation ^
+            if (!hasAnimationProp || !styleListener) {
+              return
+            }
+
+            const nextStyles = getSplitStyles(
+              props,
+              staticConfig,
+              theme,
+              themeName,
+              updatedState,
+              styleProps,
+              null,
+              componentContext,
+              allGroupContexts,
+              elementType,
+              startedUnhydrated,
+              debugProp
+            )
+
+            styleListener(nextStyles.style as any)
+          } else {
+            if (
+              process.env.NODE_ENV === 'development' &&
+              debugProp &&
+              debugProp !== 'profile'
+            ) {
+              console.info(`[🐌] re-render`, { canAvoidReRender, next })
+            }
+            ogSetStateShallow(next)
+          }
+        }
+
+        // needs to capture latest props (it's called from memoized `events`)
+        setStateShallow = (state) => {
+          stateRef.current.setStateShallow?.(state)
+        }
       }
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
     // hide strategy will set this opacity = 0 until measured
-    if (props.group && props.untilMeasured === 'hide' && !stateRef.current.hasMeasured) {
-      splitStyles.style ||= {}
-      splitStyles.style.opacity = 0
-    }
+    if (splitStyles) {
+      if (
+        props.group &&
+        props.untilMeasured === 'hide' &&
+        !stateRef.current.hasMeasured
+      ) {
+        splitStyles.style ||= {}
+        splitStyles.style.opacity = 0
+      }
 
-    if (splitStyles.dynamicThemeAccess != null) {
-      stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
+      if (splitStyles.dynamicThemeAccess != null) {
+        stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
+      }
     }
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
-    const hasRuntimeMediaKeys = splitStyles.hasMedia && splitStyles.hasMedia !== true
+    const hasRuntimeMediaKeys = splitStyles?.hasMedia && splitStyles.hasMedia !== true
     const shouldListenForMedia =
       didGetVariableValue() ||
       hasRuntimeMediaKeys ||
-      (noClass && splitStyles.hasMedia === true)
+      (noClass && splitStyles?.hasMedia === true)
 
     const mediaListeningKeys = hasRuntimeMediaKeys
       ? (splitStyles.hasMedia as Set<string>)
@@ -776,7 +786,9 @@ export function createComponent<
       style: splitStylesStyle,
       classNames,
       space,
-    } = splitStyles
+      pseudoGroups,
+      mediaGroups,
+    } = splitStyles || {}
 
     const propsWithAnimation = props as UseAnimationProps
 
@@ -804,7 +816,7 @@ export function createComponent<
       onClick,
       theme: _themeProp,
       ...nonTamaguiProps
-    } = viewPropsIn
+    } = viewPropsIn || {}
 
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
@@ -880,7 +892,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    if (groupContext) {
+    if (splitStyles && groupContext) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
@@ -934,12 +946,6 @@ export function createComponent<
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`events-hooks`
-
-    // combined multiple effects into one for performance so be careful with logic
-    // should not be a layout effect because otherwise it wont render the initial state
-    // for example css driver needs to render once with the first styles, then again with the next
-    // if its a layout effect it will just skip that first <render >output
-    const { pseudoGroups, mediaGroups } = splitStyles
 
     const unPress = () => {
       setStateShallow({ press: false, pressIn: false })
@@ -1226,7 +1232,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
     let content =
-      !children || asChild
+      !children || asChild || !splitStyles
         ? children
         : spacedChildren({
             separator,
@@ -1270,6 +1276,15 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`use-children`
 
+    // passthrough mode - only pass style display contents, nothing else
+    if (!splitStyles) {
+      viewProps = {
+        style: {
+          display: 'contents',
+        },
+      }
+    }
+
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
@@ -1279,7 +1294,15 @@ export function createComponent<
     // needs to reset the presence state for nested children
     const ResetPresence = config?.animations?.ResetPresence
     const needsReset = Boolean(
-      !isHOC && ResetPresence && willBeAnimated && (hasEnterStyle || presenceState)
+      // not when passing down to child
+      !asChild &&
+        // not when passThrough
+        splitStyles &&
+        // not when HOC
+        !isHOC &&
+        ResetPresence &&
+        willBeAnimated &&
+        (hasEnterStyle || presenceState)
     )
     // avoid re-parenting
     const hasEverReset = stateRef.current.hasEverResetPresence
@@ -1312,9 +1335,10 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`group-context`
 
-    content = disableTheme
-      ? content
-      : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
+    content =
+      disableTheme || !splitStyles
+        ? content
+        : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
@@ -1323,7 +1347,7 @@ export function createComponent<
         content = (
           <span
             className="_dsp_contents"
-            {...(isHydrated && events && getWebEvents(events))}
+            {...(splitStyles && isHydrated && events && getWebEvents(events))}
           >
             {content}
           </span>
@@ -1357,6 +1381,7 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
       // breaking rules of hooks but startedUnhydrated NEVER changes
       const styleTags = useMemo(() => {
+        if (!splitStyles) return
         return getStyleTags(Object.values(splitStyles.rulesToInsert))
       }, [])
       // this is only to appease react hydration really
