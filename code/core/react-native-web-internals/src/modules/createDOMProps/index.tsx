@@ -25,6 +25,29 @@ function processIDRefList(idRefList: string | Array<string>): string {
   return isArray(idRefList) ? idRefList.join(' ') : idRefList
 }
 
+function flattenStyle(style: any): any {
+  if (style === null || typeof style !== 'object') {
+    return undefined
+  }
+
+  if (!isArray(style)) {
+    return style
+  }
+
+  const result = {}
+  for (let i = 0, styleLength = style.length; i < styleLength; ++i) {
+    const computedStyle = flattenStyle(style[i])
+    if (computedStyle) {
+      for (const key in computedStyle) {
+        if (hasOwnProperty.call(computedStyle, key)) {
+          result[key] = computedStyle[key]
+        }
+      }
+    }
+  }
+  return result
+}
+
 let pointerEventsStyles
 
 export const stylesFromProps = new WeakMap<any, StyleObject[]>()
@@ -319,18 +342,7 @@ const createDOMProps = (elementType, props, options?) => {
   }
 
   // Resolve styles
-  const flat = []
-    .concat(style)
-    .flat()
-    .flat()
-    .flat()
-    .flat()
-    .reduce((acc, cur) => {
-      if (cur) {
-        Object.assign(acc, cur)
-      }
-      return acc
-    }, {})
+  const flat = flattenStyle(style)
 
   let className = tmgCN || ''
 
