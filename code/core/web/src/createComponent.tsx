@@ -854,17 +854,18 @@ export function createComponent<
         stateRef,
       })
 
-      // @ts-ignore
-      if (animations.ref) {
-        // @ts-ignore
-        animatedRef = animations.ref
-      }
+      if (animations) {
+        if (animations.ref) {
+          // @ts-ignore
+          animatedRef = animations.ref
+        }
 
-      if (isHydrated && animations) {
-        animationStyles = animations.style
-        viewProps.style = animationStyles
-        if (animations.className) {
-          viewProps.className = `${state.unmounted === 'should-enter' ? 't_unmounted ' : ''}${viewProps.className || ''} ${animations.className}`
+        if (isHydrated && animations) {
+          animationStyles = animations.style
+          viewProps.style = animationStyles
+          if (animations.className) {
+            viewProps.className = `${state.unmounted === 'should-enter' ? 't_unmounted ' : ''}${viewProps.className || ''} ${animations.className}`
+          }
         }
       }
 

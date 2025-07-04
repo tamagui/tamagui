@@ -2588,6 +2588,7 @@ export type UseAnimationHook = (props: {
 }) => null | {
   style?: StackStyleBase | StackStyleBase[]
   className?: string
+  ref?: any
 }
 
 export type GestureReponderEvent = Exclude<
