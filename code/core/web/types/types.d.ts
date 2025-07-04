@@ -1156,6 +1156,11 @@ interface ExtraBaseProps {
      * set this to `false` and it will pass through to the next animated child.
      */
     animatePresence?: boolean;
+    /**
+     * Avoids as much work as possible and passes through the children with no changes.
+     * Advanced: Useful for adapting to other element when you want to avoid re-parenting.
+     */
+    passThrough?: boolean;
 }
 interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps, ExtraBaseProps {
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
