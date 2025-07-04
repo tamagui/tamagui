@@ -7,6 +7,18 @@ v2:
 
 - move to types react/react-dom 19
 
+- removing default size based styling, look at this in tooltip!:
+```
+const padding = !props.unstyled
+        ? (props.padding ??
+          props.size ??
+          popperSize ??
+          getSize('$true', {
+            shift: -2,
+          }))
+        : undefined
+```
+
 ---
 
 - escape on tamagui sheet doesn't close in general keyboard accessibility
