@@ -78,6 +78,10 @@ if (isClient) {
           getBoundingClientRectAsync(parentNode),
         ])
 
+        if (nr === false || pr === false) {
+          return
+        }
+
         // cancel if we skipped a frame
         if (frameId !== lastFrameAt) {
           return
@@ -290,11 +294,14 @@ function ensureWebElement<X>(x: X): HTMLElement | undefined {
 
 const getBoundingClientRectAsync = (
   node: HTMLElement | null
-): Promise<DOMRectReadOnly> => {
-  return new Promise<DOMRectReadOnly>((res) => {
+): Promise<DOMRectReadOnly | false> => {
+  return new Promise<DOMRectReadOnly | false>((res) => {
     if (!node || node.nodeType !== 1) return
     const io = new IntersectionObserver(
       (entries) => {
+        if (!entries[0].isIntersecting) {
+          return res(false)
+        }
         io.disconnect()
         return res(entries[0].boundingClientRect)
       },
