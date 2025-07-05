@@ -1,12 +1,32 @@
-import React from 'react'
-import type { ComponentProps } from 'react'
-import { RemoveScroll as RS } from 'react-remove-scroll'
+import React, { type RefObject, useEffect, useRef } from 'react'
+import { disableScroll } from './disableScroll'
 
-export type RemoveScrollProps = ComponentProps<typeof RS>
+export type RemoveScrollProps = {
+  enabled?: boolean
+  children?: React.ReactNode
+}
 
 export const RemoveScroll = React.memo((props: RemoveScrollProps) => {
-  if (!props.children) return null
-  return <RS {...props} />
-})
+  const root = useRef<HTMLElement>(null)
 
-export const classNames = RS.classNames
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return
+    }
+    if (!props.enabled) {
+      return
+    }
+
+    disableScroll.on()
+
+    return () => {
+      disableScroll.off()
+    }
+  }, [props.enabled])
+
+  return (
+    <span ref={root} style={{ display: 'contents' }}>
+      {props.children}
+    </span>
+  )
+})
