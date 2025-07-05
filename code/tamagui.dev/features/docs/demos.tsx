@@ -207,11 +207,11 @@ export const RadioGroupUnstyledDemo = lazyDemo(() =>
   )
 )
 
-export const DropDownMenuDemo = lazyDemo(
+export const DropDownMenuDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/DropDownMenuDemo').then((x) => x.DropDownMenuDemo)
 )
 
-export const ContextMenuDemo = lazyDemo(
+export const ContextMenuDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/ContextMenuDemo').then((x) => x.ContextMenuDemo)
 )
 

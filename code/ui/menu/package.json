@@ -40,8 +40,10 @@
     "@tamagui/popover": "workspace:*"
   },
   "devDependencies": {
+    "@react-native-menu/menu": "^1.2.3",
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "*",
+    "react-native-ios-context-menu": "^3.1.2"
   },
   "publishConfig": {
     "access": "public"

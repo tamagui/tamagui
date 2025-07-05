@@ -1,10 +1,31 @@
 /**
  * Credit to geist-ui/react, it's initialy copied from there and updated.
+ * 
+ * MIT License
+
+Copyright (c) 2020 Geist UI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
  */
 
 import React, {
   Children,
-  type ReactChild,
   type ReactElement,
   type ReactNode,
   cloneElement,
@@ -13,7 +34,7 @@ import React, {
 
 type ReactChildArray = ReturnType<typeof React.Children.toArray>
 
-export function flattenChildrenKeyless(children: React.ReactNode): ReactChildArray {
+export function flattenChildrenKeyless(children: ReactNode): ReactChildArray {
   const childrenArray = React.Children.toArray(children)
   return childrenArray.reduce((flatChildren: ReactChildArray, child) => {
     if ((child as React.ReactElement<any>).type === React.Fragment) {
@@ -31,7 +52,7 @@ export function flattenChildren(
   componentNamesToIgnore?: string[],
   depth = 0,
   keys: (string | number)[] = []
-): ReactChild[] {
+): ReactNode[] {
   return Children.toArray(children)
     .flatMap((elem) => {
       if (isValidElement(elem)) {
@@ -41,12 +62,12 @@ export function flattenChildren(
             (elem.type as any).displayName.includes(skipComponentName)
           )
         ) {
-          return elem.props.children
+          return (elem as any).props.children
         }
       }
       return elem
     })
-    .reduce((acc: ReactChild[], node: any, nodeIndex) => {
+    .reduce((acc: ReactNode[], node: any, nodeIndex) => {
       if (node.type === React.Fragment) {
         acc.push.apply(
           acc,
@@ -73,7 +94,7 @@ export function flattenChildren(
 }
 
 export const pickChildren = <Props = any>(
-  _children: React.ReactNode | undefined,
+  _children: ReactNode | undefined,
   targetChild: React.ElementType,
   componentNamesToIgnore?: string[]
 ) => {
@@ -98,7 +119,7 @@ export const pickChildren = <Props = any>(
 }
 
 export const isInstanceOfComponent = (
-  element: React.ReactElement | React.ReactChild | undefined,
+  element: React.ReactElement | ReactNode | undefined,
   targetElement: React.ElementType
 ) => {
   const matches =

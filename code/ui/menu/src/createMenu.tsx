@@ -1,24 +1,26 @@
 import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
+import type { TamaguiComponent, TextProps } from '@tamagui/core'
 import {
-  Slot,
   Text,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
   useComposedRefs,
 } from '@tamagui/core'
-import type { TamaguiComponent, TextProps } from '@tamagui/core'
-import { Dismissable as DismissableLayer } from '@tamagui/dismissable'
-import { dispatchDiscreteCustomEvent } from '@tamagui/dismissable'
+import {
+  Dismissable as DismissableLayer,
+  dispatchDiscreteCustomEvent,
+} from '@tamagui/dismissable'
 import { useFocusGuards } from '@tamagui/focus-guard'
 import { FocusScope } from '@tamagui/focus-scope'
-import * as PopperPrimitive from '@tamagui/popper'
 import type { PopperContentProps } from '@tamagui/popper'
+import * as PopperPrimitive from '@tamagui/popper'
 import { Portal as PortalPrimitive, type PortalProps } from '@tamagui/portal'
-import { RovingFocusGroup } from '@tamagui/roving-focus'
+import { RemoveScroll } from '@tamagui/remove-scroll'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
 import {
   type SizableStackProps,
   ThemeableStack,
@@ -27,13 +29,12 @@ import {
 } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { type Stack, isAndroid, isWeb, styled, withStaticProperties } from '@tamagui/web'
+import { type Stack, isAndroid, isWeb, withStaticProperties } from '@tamagui/web'
 import type { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
-import { useId } from 'react'
 import * as React from 'react'
+import { useId } from 'react'
 import type { Image, ImageProps } from 'react-native'
-import { RemoveScroll } from 'react-remove-scroll'
 
 import { MenuPredefinied } from './Menu'
 
@@ -698,15 +699,6 @@ export function createMenu({
     const pointerDirRef = React.useRef<Side>('right')
     const lastPointerXRef = React.useRef(0)
 
-    const ScrollLockWrapper = isWeb
-      ? disableOutsideScroll
-        ? RemoveScroll
-        : React.Fragment
-      : Fragment
-    const scrollLockWrapperProps = disableOutsideScroll
-      ? { as: Slot, allowPinchZoom: true }
-      : undefined
-
     const handleTypeaheadSearch = (key: string) => {
       const search = searchRef.current + key
       const items = getItems().filter((item) => !item.disabled)
@@ -862,7 +854,7 @@ export function createMenu({
           pointerGraceIntentRef.current = intent
         }, [])}
       >
-        <ScrollLockWrapper {...scrollLockWrapperProps}>
+        <RemoveScroll enabled={disableOutsideScroll}>
           <FocusScope
             asChild={false}
             trapped={trapFocus}
@@ -900,7 +892,7 @@ export function createMenu({
               </RovingFocusGroup>
             </DismissableLayer>
           </FocusScope>
-        </ScrollLockWrapper>
+        </RemoveScroll>
       </MenuContentProvider>
     )
   })
@@ -1730,21 +1722,21 @@ function whenMouse<E>(
 }
 
 export type {
-  MenuProps,
   MenuAnchorProps,
-  MenuPortalProps,
+  MenuArrowProps,
+  MenuCheckboxItemProps,
   MenuContentProps,
   MenuGroupProps,
-  MenuLabelProps,
+  MenuItemIconProps,
+  MenuItemIndicatorProps,
   MenuItemProps,
-  MenuCheckboxItemProps,
+  MenuItemSubTitleProps,
+  MenuItemTitleProps,
+  MenuLabelProps,
+  MenuPortalProps,
+  MenuProps,
   MenuRadioGroupProps,
   MenuRadioItemProps,
-  MenuItemIndicatorProps,
   MenuSeparatorProps,
-  MenuArrowProps,
   MenuSubTriggerProps,
-  MenuItemTitleProps,
-  MenuItemSubTitleProps,
-  MenuItemIconProps,
 }

@@ -15,7 +15,7 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
 }
 declare const RovingFocusGroupItem: React.ForwardRefExoticComponent<RovingFocusItemProps & {
     __scopeRovingFocusGroup?: string;
-} & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+} & React.RefAttributes<HTMLElement | import("react-native").View>>;
 type Orientation = React.AriaAttributes['aria-orientation'];
 type Direction = 'ltr' | 'rtl';
 interface RovingFocusGroupOptions {

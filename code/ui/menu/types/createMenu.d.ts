@@ -1,8 +1,8 @@
 import type { TamaguiComponent, TextProps } from '@tamagui/core';
 import { Dismissable as DismissableLayer } from '@tamagui/dismissable';
 import { FocusScope } from '@tamagui/focus-scope';
-import * as PopperPrimitive from '@tamagui/popper';
 import type { PopperContentProps } from '@tamagui/popper';
+import * as PopperPrimitive from '@tamagui/popper';
 import { type PortalProps } from '@tamagui/portal';
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus';
 import { type ThemeableStackProps } from '@tamagui/stacks';
@@ -147,7 +147,9 @@ export interface MenuSubContentProps extends Omit<MenuContentImplProps, keyof Me
      */
     forceMount?: true;
 }
-export declare const NativePropProvider: React.ProviderExoticComponent<Partial<{
+export declare const NativePropProvider: React.Provider<{
+    native: boolean;
+}> & React.ProviderExoticComponent<Partial<{
     native: boolean;
 }> & {
     children?: React.ReactNode;
@@ -373,5 +375,5 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
         ItemIcon: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     };
 };
-export type { MenuProps, MenuAnchorProps, MenuPortalProps, MenuContentProps, MenuGroupProps, MenuLabelProps, MenuItemProps, MenuCheckboxItemProps, MenuRadioGroupProps, MenuRadioItemProps, MenuItemIndicatorProps, MenuSeparatorProps, MenuArrowProps, MenuSubTriggerProps, MenuItemTitleProps, MenuItemSubTitleProps, MenuItemIconProps, };
+export type { MenuAnchorProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubTitleProps, MenuItemTitleProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSeparatorProps, MenuSubTriggerProps, };
 //# sourceMappingURL=createMenu.d.ts.map

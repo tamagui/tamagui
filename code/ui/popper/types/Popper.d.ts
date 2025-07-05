@@ -10,7 +10,6 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 export type PopperContextValue = UseFloatingReturn & {
     size?: SizeTokens;
     hasFloating: boolean;
-    show: boolean;
     arrowStyle?: Partial<Coords> & {
         centerOffset: number;
     };

@@ -326,7 +326,7 @@ If you want to use a custom component as your <Content />, you can use the creat
     const mapItemsChildren = (
       children: React.ReactNode
     ): ((MenuItem | MenuConfig) | null)[] => {
-      return Children.map(
+      const out = Children.map(
         flattenChildren(children, [...COMPONENTS_TO_IGNORE, 'Group']),
         (_child, index) => {
           if (isInstanceOfComponent(_child, Item)) {
@@ -402,6 +402,12 @@ If you want to use a custom component as your <Content />, you can use the creat
           return null
         }
       )
+
+      if (!out) {
+        return []
+      }
+
+      return out
     }
 
     const menuItems = mapItemsChildren(content?.props.children).filter(filterNull)

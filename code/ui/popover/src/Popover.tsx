@@ -458,7 +458,6 @@ const PopoverContentImpl = React.forwardRef<
     <ResetPresence disable={context.breakpointActive}>{children}</ResetPresence>
   )
 
-  // i want to avoid reparenting but react-remove-scroll makes it hard
   if (!context.breakpointActive) {
     if (process.env.TAMAGUI_TARGET !== 'native') {
       contents = (

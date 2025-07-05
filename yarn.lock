@@ -2069,7 +2069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dominicstop/ts-event-emitter@npm:1.1.0":
+"@dominicstop/ts-event-emitter@npm:1.1.0, @dominicstop/ts-event-emitter@npm:^1.1.0":
   version: 1.1.0
   resolution: "@dominicstop/ts-event-emitter@npm:1.1.0"
   checksum: 10/279822fc6736b90b73904c30ab1afb70e3ea4e95afe065433a7d41c2c21b890c9e54bf6d4062c1d79da57b42ffd4432a095d36fdaeb12f5111aa214dfe4aae2c
@@ -4963,6 +4963,16 @@ __metadata:
     react: ">=16"
     react-native: ">=0.57"
   checksum: 10/04ffbc01083aa563ca1e2d7ef6759e7b326b8129f5bb1aa5f3142348adab06d5e321a400cf70a5434324dfa906add383f8214640697c48c9e5311b30bfea03d9
+  languageName: node
+  linkType: hard
+
+"@react-native-menu/menu@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@react-native-menu/menu@npm:1.2.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/d1970e96ce782874ebcca6f4f479b423a7fce0377a69bd94ec274372564a684fca543c36350d8d9fb92aee888b82f8beea61962db82c476de5b466d8a4c7460d
   languageName: node
   linkType: hard
 
@@ -7866,11 +7876,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:code/ui/menu"
   dependencies:
+    "@react-native-menu/menu": "npm:^1.2.3"
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/popover": "workspace:*"
     react: "npm:*"
+    react-native-ios-context-menu: "npm:^3.1.2"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -23880,6 +23892,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/64ab125c539ca8c275f5d305f5e11d366e6098d9e24e3cab25cbfd46a8d618fc3925ea86219972ccc63364e578384bb0120a72562312e596894a04ee0518a363
+  languageName: node
+  linkType: hard
+
+"react-native-ios-context-menu@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "react-native-ios-context-menu@npm:3.1.2"
+  dependencies:
+    "@dominicstop/ts-event-emitter": "npm:^1.1.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-ios-utilities: "*"
+  checksum: 10/fed259f900d75e09ed95a826a54a18217effc2786018a53d8210609ba8c0b3b4b72b5e2c51df2a8a495c95900c467c32a10a3432df522c4c7569097ca1760dfc
   languageName: node
   linkType: hard
 

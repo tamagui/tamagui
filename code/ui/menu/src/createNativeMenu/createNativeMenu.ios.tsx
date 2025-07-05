@@ -150,6 +150,7 @@ If you want to use a custom component as your <Content />, you can use the creat
     return <></>
   }, `${MenuType}Preview`)
 
+  // @ts-expect-error TODO can be better
   Preview.defaultProps = {
     isResizeAnimated: true,
   }
@@ -345,7 +346,7 @@ If you want to use a custom component as your <Content />, you can use the creat
     const mapItemsChildren = (
       children: React.ReactNode
     ): ((MenuItem | MenuConfig) | null)[] => {
-      return Children.map(flattenChildren(children), (_child, index) => {
+      const out = Children.map(flattenChildren(children), (_child, index) => {
         if (isInstanceOfComponent(_child, Item)) {
           const child = _child as ReactElement<MenuItemProps>
 
@@ -425,10 +426,16 @@ If you want to use a custom component as your <Content />, you can use the creat
             menuTitle: '',
             menuItems: groupItems,
             menuOptions: ['displayInline'],
-          }
+          } satisfies MenuConfig
         }
         return null
       })
+
+      if (!out) {
+        return []
+      }
+
+      return out
     }
 
     const menuItems = mapItemsChildren(content?.props.children).filter(filterNull)
@@ -485,7 +492,7 @@ If you want to use a custom component as your <Content />, you can use the creat
 
     const auxiliaryProps = auxiliary?.[0]?.props
 
-    const menuRef = useRef<ContextMenuButton>()
+    const menuRef = useRef<ContextMenuButton>(undefined)
 
     return (
       <NativePropProvider
