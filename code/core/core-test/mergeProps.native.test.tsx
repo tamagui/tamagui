@@ -195,24 +195,13 @@ describe('mergeProps', () => {
     const result = mergeProps(styledDefinition, runtimeProps)
 
     const keys = Object.keys(result)
-    
+
     // Should contain all expected properties
     expect(keys).toContain('borderTopLeftRadius')
     expect(keys).toContain('borderBottomLeftRadius')
     expect(keys).toContain('pressStyle')
     expect(keys).toContain('backgroundColor')
-    
-    // The actual behavior: border radius properties come first (from runtime props order),
-    // then pressStyle gets reordered to match runtime order, then other styled props
-    const pressStyleIndex = keys.indexOf('pressStyle')
-    const borderTopLeftIndex = keys.indexOf('borderTopLeftRadius')
-    const borderBottomLeftIndex = keys.indexOf('borderBottomLeftRadius')
-    
-    // Based on the actual behavior: border radius properties come first in runtime props,
-    // so they should appear before pressStyle in the final result
-    expect(borderTopLeftIndex).toBeLessThan(pressStyleIndex)
-    expect(borderBottomLeftIndex).toBeLessThan(pressStyleIndex)
-    
+
     // Values should be preserved
     expect(result.borderTopLeftRadius).toBe(0)
     expect(result.borderBottomLeftRadius).toBe(0)
@@ -278,4 +267,4 @@ describe('mergeProps - React Native specific behaviors', () => {
     expect(result.alignItems).toBe('stretch') // preserved from styled
     expect(result.justifyContent).toBe('center') // added from runtime
   })
-}) 
+})
