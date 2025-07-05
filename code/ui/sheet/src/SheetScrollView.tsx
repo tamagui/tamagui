@@ -105,6 +105,7 @@ export const SheetScrollView = React.forwardRef<
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
           scrollBridge.y = y
+
           if (isWeb) {
             scrollBridge.scrollLock = y > 0
           }

@@ -320,7 +320,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       ): boolean => {
         function getShouldSet() {
           // if dragging handle always allow:
-          if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
+          if (e.target === providerProps.handleRef.current) {
             return true
           }
 
@@ -345,6 +345,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
               return false
             }
           }
+
+          // if (scrollEnabled.current) {
+          //   return false
+          // }
+
           // we could do some detection of other touchables and cancel here..
           return Math.abs(dy) > 10
         }
