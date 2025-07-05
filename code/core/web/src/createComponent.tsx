@@ -1230,13 +1230,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    if (process.env.TAMAGUI_TARGET === 'web' && isReactNative) {
-      Object.assign(viewProps, {
-        onFocus: events?.onFocus,
-        onBlur: events?.onBlur,
-      })
-    }
-
     let content =
       !children || asChild || !splitStyles
         ? children
@@ -1352,16 +1345,22 @@ export function createComponent<
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (isReactNative && !asChild) {
-        content = (
-          <span
-            className="_dsp_contents"
-            {...(splitStyles && isHydrated && events && getWebEvents(events))}
-            // /** we passed these events to the content instead */
-            {...(events && { onFocus: undefined, onBlur: undefined })}
-          >
-            {content}
-          </span>
-        )
+        if (events) {
+          const { onFocus, onBlur, ...webEvents } = getWebEvents(events)
+          // rnw does support these:
+          viewProps.onFocus = onFocus
+          viewProps.onBlur = onBlur
+          content = (
+            <span
+              className="_dsp_contents"
+              {...(splitStyles && isHydrated && events && webEvents)}
+            >
+              {content}
+            </span>
+          )
+        } else {
+          content = <span className="_dsp_contents">{content}</span>
+        }
       }
     }
 

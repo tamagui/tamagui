@@ -9,8 +9,8 @@ package: dropdown-menu
 # Dropdown Menu
 
 <Description>
-  A menu component that is triggered by right click on web and long press on touch devices
-  native
+  A menu component that is triggered by a right-click on the web and a long
+  press on touch devices.
 </Description>
 
 <HeroContainer>
@@ -24,25 +24,27 @@ package: dropdown-menu
 <Highlights
   features={[
     'Full keyboard navigation.',
-    'Support items, icons, images, checkbox, groups, and more ...',
-    'Support submenu',
-    'Suppport modal and non modal',
-    'Support native menu on native',
-    'Customize alignment, offsets and position',
-    'Native ios and android icons support',
-    'Support Preview on iOS',
+    'Supports items, icons, images, checkboxes, groups, and more.',
+    'Supports submenus.',
+    'Supports modal and non-modal modes.',
+    'Supports native menus on native platforms.',
+    'Customizable alignment, offsets, and positioning.',
+    'Support for native iOS and Android icons.',
+    'Supports previews on iOS.',
   ]}
 />
 
 ## Installation
 
-DropdownMenu is already installed in `tamagui`, or you can install it independently:
+DropdownMenu is already installed in `tamagui`, or you can install it
+independently:
 
 ```bash
 yarn add @tamagui/dropdown-menu
 ```
 
-if you want to use native Menus then make sure to install these depedencies in you expo directory
+If you want to use native menus, make sure to install these dependencies in your
+Expo project:
 
 ```bash
 yarn add @react-native-menu/menu
@@ -61,54 +63,57 @@ yarn add react-native-ios-context-menu
 Import all parts and piece them together.
 
 ```jsx
-import { Accordion } from 'tamagui';
+import { Accordion } from 'tamagui'
 
 export default () => (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <Button/>
-      </DropdownMenu.Trigger>
+  <DropdownMenu>
+    <DropdownMenu.Trigger asChild>
+      <Button />
+    </DropdownMenu.Trigger>
 
-      <DropdownMenu.Portal zIndex={100}>
-        <DropdownMenu.Content>
-          <DropdownMenu.Item>
-            <DropdownMenu.ItemTitle>About Notes</DropdownMenu.ItemTitle>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item>
-            <DropdownMenu.ItemTitle>Settings</DropdownMenu.ItemTitle>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item>
-            <DropdownMenu.ItemTitle>
-              <Text>Calender</Text>
-            </DropdownMenu.ItemTitle>
-            <DropdownMenu.ItemIcon>
-              <Calendar color="gray" size="$1" />
-            </DropdownMenu.ItemIcon>
-          </DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger>
-                <DropdownMenu.ItemTitle>Actions</DropdownMenu.ItemTitle>
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.Portal zIndex={200}>
-              <DropdownMenu.SubContent
-              >
-                <DropdownMenu.Label fontSize={'$1'}>Note settings</DropdownMenu.Label>
-                <DropdownMenu.Item onSelect={onSelect} key="create-note">
-                  <DropdownMenu.ItemTitle>Create note</DropdownMenu.ItemTitle>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={onSelect} key="delete-all">
-                  <DropdownMenu.ItemTitle>Delete all notes</DropdownMenu.ItemTitle>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={onSelect} key="sync-all">
-                  <DropdownMenu.ItemTitle>Sync notes</DropdownMenu.ItemTitle>
-                </DropdownMenu.Item>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Sub>
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu>
+    <DropdownMenu.Portal zIndex={100}>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item>
+          <DropdownMenu.ItemTitle>About Notes</DropdownMenu.ItemTitle>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item>
+          <DropdownMenu.ItemTitle>Settings</DropdownMenu.ItemTitle>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item>
+          <DropdownMenu.ItemTitle>
+            <Text>Calender</Text>
+          </DropdownMenu.ItemTitle>
+          <DropdownMenu.ItemIcon>
+            <Calendar color="gray" size="$1" />
+          </DropdownMenu.ItemIcon>
+        </DropdownMenu.Item>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Sub>
+          <DropdownMenu.SubTrigger>
+            <DropdownMenu.ItemTitle>Actions</DropdownMenu.ItemTitle>
+          </DropdownMenu.SubTrigger>
+          <DropdownMenu.Portal zIndex={200}>
+            <DropdownMenu.SubContent>
+              <DropdownMenu.Label fontSize={'$1'}>
+                Note settings
+              </DropdownMenu.Label>
+              <DropdownMenu.Item onSelect={onSelect} key="create-note">
+                <DropdownMenu.ItemTitle>Create note</DropdownMenu.ItemTitle>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item onSelect={onSelect} key="delete-all">
+                <DropdownMenu.ItemTitle>
+                  Delete all notes
+                </DropdownMenu.ItemTitle>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item onSelect={onSelect} key="sync-all">
+                <DropdownMenu.ItemTitle>Sync notes</DropdownMenu.ItemTitle>
+              </DropdownMenu.Item>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Sub>
+      </DropdownMenu.Content>
+    </DropdownMenu.Portal>
+  </DropdownMenu>
 )
 ```
 
@@ -189,7 +194,7 @@ Contains every component for the Dropdown Menu.
 
 ### Portal
 
-This is necessary for Dropdown Menu
+This is necessary for the Dropdown Menu.
 
 <PropsTable
   data={[
@@ -208,7 +213,8 @@ This is necessary for Dropdown Menu
 
 ### Trigger
 
-DropdownMenu will only trigger when user right click or long press inside Trigger area
+The DropdownMenu will only be triggered when the user right-clicks or
+long-presses within the Trigger area.
 
 <PropsTable
   data={[
@@ -219,7 +225,7 @@ DropdownMenu will only trigger when user right click or long press inside Trigge
       default: 'longPress',
       platform: 'android/ios',
       description:
-        'work with native prop and will take press and longPress. by default it is longPress for DropdownMenu',
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for DropdownMenu.",
     },
   ]}
 />
@@ -286,15 +292,14 @@ Dropdown Menu Item
       type: 'string',
       required: false,
       platform: 'ios/android',
-      description: 'when content of ItemTitle is not a string then this value is necessary'
-    }
+      description: 'This value is necessary when the content of ItemTitle is not a string.'
+    },
 
-]}
-/>
+]} />
 
 ### ItemTitle
 
-Dropdown Menu ItemTitle to render Title of the Menu
+Renders the title of the menu item.
 
 <PropsTable
   data={[
@@ -306,17 +311,19 @@ Dropdown Menu ItemTitle to render Title of the Menu
   ]}
 />
 <Notice>
-you can directly pass a text node to the ItemTitle.
-how ever if you use a nested React node like `<Text>` then you need to pass textValue to the `<Item>`
-so that it works with the native menus
+  You can directly pass a text node to the ItemTitle. However, if you use a nested
+  React node like `<Text>`, you need to pass `textValue` to the `<Item>` so that it
+  works with native menus.
 </Notice>
 
 ### ItemIcon
 
-Component to render Icon, for non native Menu you can pass an Icon component
-for native Menus you can pass platform specific icons to the `android`/`ios` props
+A component to render an icon. For non-native menus, you can pass an icon
+component. For native menus, you can pass platform-specific icons to the
+`android`/`ios` props.
 
-on iOS it renders platform [SF Symbol](https://hotpot.ai/free-icons?s=sfSymbols) icons
+On iOS, it renders the native
+[SF Symbols](https://github.com/andrewtavis/sf-symbols-online) icons.
 
 <PropsTable
   data={[
@@ -360,13 +367,13 @@ on iOS it renders platform [SF Symbol](https://hotpot.ai/free-icons?s=sfSymbols)
 
 ### ItemImage
 
-Component Render an Item Image, for the native Menus it only works on ios
-it takes same properties as @tamagui/image
+A component to render an item image. For native menus, it only works on iOS. It
+takes the same properties as `@tamagui/image`.
 
 ### ItemSubtitle
 
-Component Render a subtitle for the Menu Item
-for the native Menus ot only works on ios
+A component to render a subtitle for the menu item. For native menus, it only
+works on iOS.
 
 <PropsTable
   data={[
@@ -380,11 +387,11 @@ for the native Menus ot only works on ios
 
 ### Group
 
-Component that Group multiple Items
+A component that groups multiple items.
 
 ### CheckboxItem
 
-Usage is similar to Item with added checkbox features.
+Usage is similar to Item, with added checkbox features.
 
 <PropsTable
   data={[
@@ -425,7 +432,7 @@ Usage is similar to Item with added checkbox features.
       required: false,
       platform: 'ios/android',
       description:
-        'when content of ItemTitle is not a string then this value is necessary',
+        'This value is necessary when the content of ItemTitle is not a string.',
     },
     {
       name: 'value',
@@ -443,38 +450,39 @@ Usage is similar to Item with added checkbox features.
       name: 'checked',
       type: 'boolean',
       required: true,
-      description: 'this value is necessary for non native Menus',
+      description: 'This value is necessary for non-native menus.',
     },
     {
       name: 'onCheckedChange',
       type: 'function',
       required: true,
-      description: 'this value is necessary for non native Menus',
+      description: 'This value is necessary for non-native menus.',
     },
   ]}
 />
 
 ### ItemIndicator
 
-Use inside CheckboxItem or RadioItem to render when item is checked, so basically conditionally let you render a check mark
+Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
+This allows you to conditionally render a checkmark.
 
 ```jsx line=1
 <DropdownMenu.ItemIndicator>
-  <CheckmarkIcon /> {/* doesn't work with native prop */}
+  <CheckmarkIcon /> {/* This does not work with the native prop. */}
 </DropdownMenu.ItemIndicator>
 ```
 
 ### Lable
 
-Render and non focusable Label
+Renders a non-focusable label.
 
-on native Menus only one Label is supported per each Menu and SubMenu
+On native menus, only one label is supported per menu and submenu.
 
 ### Arrow
 
-Render an Arrow componen
+Renders an arrow component.
 
-on native Menus only one Label is supported per each Menu and SubMenu
+On native menus, only one label is supported per menu and submenu.
 
 <PropsTable
   data={[
@@ -488,17 +496,16 @@ on native Menus only one Label is supported per each Menu and SubMenu
 
 ### Separator
 
-Render a content Separator component
-only work with non Native Menus
+Renders a content separator component. This only works with non-native menus.
 
 ### Sub
 
-Component hold Sub Menu part
+A component that holds sub-menu parts.
 
 ### SubContent
 
-Render Content of SubMenu
+Renders the content of a `SubMenu`.
 
 ### SubTrigger
 
-same as Trigger but for SubMenu
+Same as `Trigger`, but for `SubMenu`.
