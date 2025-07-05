@@ -19,7 +19,7 @@ export const useSheetOpenState = (props: SheetProps) => {
     prop: propVal,
     defaultProp: props.defaultOpen ?? false,
     onChange: onOpenChangeInternal,
-    strategy: 'prop-wins',
+    strategy: 'most-recent-wins',
   })
 
   return {

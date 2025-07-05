@@ -239,11 +239,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
     const [isDragging, setIsDragging] = React.useState(false)
-    const scrollEnabled = useRef(true)
-
-    const setScrollEnabled = React.useCallback((val: boolean) => {
-      scrollEnabled.current = val
-    }, [])
 
     const panResponder = React.useMemo(() => {
       if (disableDrag) return
@@ -256,6 +251,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       function setPanning(val: boolean) {
         setIsDragging(val)
+        scrollBridge.setParentDragging(false)
 
         // make unselectable:
         if (isClient) {
@@ -301,8 +297,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // have to call both because state may not change but need to snap back
         setPosition(closestPoint)
         animateTo(closestPoint)
-
-        setScrollEnabled(closestPoint === 0)
       }
 
       const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
@@ -346,19 +340,20 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             }
           }
 
-          // if (scrollEnabled.current) {
-          //   return false
-          // }
-
           // we could do some detection of other touchables and cancel here..
-          return Math.abs(dy) > 10
+          return Math.abs(dy) > 5
         }
 
-        return getShouldSet()
+        const granted = getShouldSet()
+
+        if (granted) {
+          scrollBridge.setParentDragging(true)
+        }
+
+        return granted
       }
 
       const grant = () => {
-        setScrollEnabled(false)
         setPanning(true)
         stopSpring()
         startY = at.current
@@ -383,6 +378,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         onPanResponderMove: (_e, { dy }) => {
           const toFull = dy + startY
           const to = resisted(toFull, minY)
+
+          // handles the case where you hand off back and forth more than once
+          const isAtTop = to <= minY
+          if (isAtTop) {
+            scrollBridge.setParentDragging(false)
+          } else {
+            scrollBridge.setParentDragging(true)
+          }
+
           animatedNumber.setValue(to, { type: 'direct' })
         },
         onPanResponderEnd: finish,
@@ -488,11 +492,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider
-          {...providerProps}
-          scrollEnabled={scrollEnabled.current}
-          setHasScrollView={setHasScrollView}
-        >
+        <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
           <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>

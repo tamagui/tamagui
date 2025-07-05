@@ -75,6 +75,9 @@ export type ScrollBridge = {
         vy: number;
     }) => void;
     scrollLock: boolean;
+    isParentDragging: boolean;
+    onParentDragging: (props: (val: boolean) => void) => () => void;
+    setParentDragging: (val: boolean) => void;
     onFinishAnimate?: () => void;
 };
 export {};

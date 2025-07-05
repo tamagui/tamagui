@@ -55,7 +55,7 @@ export const SheetScrollView = React.forwardRef<
       dragAt: 0,
       dys: [] as number[], // store a few recent dys to get velocity on release
       isScrolling: false,
-      isDragging: false,
+      isDraggingScrollArea: false,
     })
 
     useEffect(() => {
@@ -66,10 +66,10 @@ export const SheetScrollView = React.forwardRef<
     }, [])
 
     const release = () => {
-      if (!state.current.isDragging) {
+      if (!state.current.isDraggingScrollArea) {
         return
       }
-      state.current.isDragging = false
+      state.current.isDraggingScrollArea = false
       scrollBridge.scrollStartY = -1
       scrollBridge.scrollLock = false
       state.current.isScrolling = false
@@ -90,6 +90,45 @@ export const SheetScrollView = React.forwardRef<
 
     // Override scrollEnabled if provided
     const scrollable = scrollEnabled ?? scrollEnabled_
+
+    useEffect(() => {
+      if (typeof window === 'undefined') return
+      if (!scrollRef.current) return
+
+      const controller = new AbortController()
+
+      const node = scrollRef.current.getScrollableNode() as HTMLElement
+
+      // this is unfortuantely the only way to prevent a scroll once a scroll already started
+      // we just keep setting it back to the last value - it should only ever be 0 as this only
+      // ever runs when you  scroll down, then back to top and start dragging, then back to scroll
+      node.addEventListener(
+        'touchmove',
+        (e) => {
+          if (scrollBridge.isParentDragging) {
+            node.scrollTo({
+              top: scrollBridge.y,
+              behavior: 'instant',
+            })
+            // can't preventdefault its not cancellable
+          }
+        },
+        {
+          signal: controller.signal,
+          passive: false,
+        }
+      )
+
+      const disposeBridgeListen = scrollBridge.onParentDragging((val) => {
+        if (val) {
+        }
+      })
+
+      return () => {
+        disposeBridgeListen()
+        controller.abort()
+      }
+    }, [])
 
     return (
       <ScrollView
@@ -126,7 +165,7 @@ export const SheetScrollView = React.forwardRef<
         }}
         onStartShouldSetResponder={() => {
           scrollBridge.scrollStartY = -1
-          state.current.isDragging = true
+          state.current.isDraggingScrollArea = true
           return scrollable
         }}
         // setting to false while onResponderMove is disabled
@@ -141,14 +180,11 @@ export const SheetScrollView = React.forwardRef<
           if (isWeb) {
             const { pageY } = e.nativeEvent
 
-            if (state.current.isScrolling) {
-              // e.stopPropagation()
-              return
-            }
-
-            if (scrollBridge.scrollStartY === -1) {
-              scrollBridge.scrollStartY = pageY
-              state.current.lastPageY = pageY
+            if (!state.current.isScrolling) {
+              if (scrollBridge.scrollStartY === -1) {
+                scrollBridge.scrollStartY = pageY
+                state.current.lastPageY = pageY
+              }
             }
 
             const dragAt = pageY - scrollBridge.scrollStartY
@@ -159,10 +195,14 @@ export const SheetScrollView = React.forwardRef<
 
             const shouldScrollLock = (dy === 0 || isDraggingUp) && isPaneAtTop
 
-            if (shouldScrollLock) {
+            if (shouldScrollLock && !state.current.isScrolling) {
               state.current.isScrolling = true
               scrollBridge.scrollLock = true
               setScrollEnabled(true)
+              return
+            }
+
+            if (scrollBridge.y >= 0) {
               return
             }
 

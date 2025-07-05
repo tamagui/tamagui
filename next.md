@@ -12,6 +12,8 @@
 
 v2:
 
+- removeScrollEnabled => disableRemoveScroll
+
 - move to types react/react-dom 19
 
 - removing default size based styling, look at this in tooltip!:
