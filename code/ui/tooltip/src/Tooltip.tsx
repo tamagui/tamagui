@@ -47,7 +47,6 @@ const TooltipContent = PopperContentFrame.extractable(
         <PopoverContent
           __scopePopover={__scopeTooltip || TOOLTIP_SCOPE}
           componentName="Tooltip"
-          disableRemoveScroll
           disableFocusScope
           {...(!props.unstyled && {
             pointerEvents: 'none',

@@ -50,7 +50,7 @@ import {
 import { Portal, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import type { RemoveScrollProps } from '@tamagui/remove-scroll'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
+import type { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'

@@ -48,11 +48,6 @@ interface DialogProps {
    * Used to disable the remove scroll functionality when open
    */
   disableRemoveScroll?: boolean
-
-  /**
-   * @see https://github.com/theKashey/react-remove-scroll#usage
-   */
-  allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
 }
 
 type NonNull<A> = Exclude<A, void | null>
@@ -68,7 +63,6 @@ type DialogContextValue = {
   open: NonNull<DialogProps['open']>
   onOpenChange: NonNull<DialogProps['onOpenChange']>
   modal: NonNull<DialogProps['modal']>
-  allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
   scopeKey: string
   adaptName: string
 }
@@ -802,7 +796,6 @@ const Dialog = withStaticProperties(
       defaultOpen = false,
       onOpenChange,
       modal = true,
-      allowPinchZoom = false,
       disableRemoveScroll = false,
     } = props
 
@@ -838,7 +831,6 @@ const Dialog = withStaticProperties(
       onOpenChange: setOpen,
       onOpenToggle,
       modal,
-      allowPinchZoom,
       disableRemoveScroll,
       adaptName,
     }
