@@ -561,7 +561,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         <Portal stackZIndex={zIndex} {...portalProps}>
           {shouldMountChildren && (
             <ContainerComponent>
-              <Theme forceClassName name={themeName}>
+              <Theme contain forceClassName name={themeName}>
                 {contents}
               </Theme>
             </ContainerComponent>
