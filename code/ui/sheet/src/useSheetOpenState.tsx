@@ -11,7 +11,10 @@ export const useSheetOpenState = (props: SheetProps) => {
     props.onOpenChange?.(val)
   }
 
-  const propVal = controller?.open ?? props.open
+  const propVal = props.preferAdaptParentOpenState
+    ? (controller?.open ?? props.open)
+    : (props.open ?? controller?.open)
+
   const [open, setOpen] = useControllableState({
     prop: propVal,
     defaultProp: props.defaultOpen ?? false,

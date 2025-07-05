@@ -10,9 +10,23 @@ export type SheetProps = ScopedProps<
     open?: boolean
     defaultOpen?: boolean
     onOpenChange?: OpenChangeHandler
+
+    /**
+     * Control the index of the position in the `snapPoints` array
+     */
     position?: number
+
+    /**
+     * Initial position from the `snapPoints` array
+     */
     defaultPosition?: number
+
+    /**
+     * Array of pixels or percents the Sheet will attempt to move to when dragged.
+     * The first is the topmost and default when first opened via open prop.
+     */
     snapPoints?: (string | number)[]
+
     snapPointsMode?: SnapPointsMode
     onPositionChange?: PositionChangeHandler
     children?: ReactNode
@@ -20,6 +34,14 @@ export type SheetProps = ScopedProps<
     dismissOnSnapToBottom?: boolean
     forceRemoveScrollEnabled?: boolean
     animationConfig?: AnimatedNumberStrategy
+
+    /**
+     * By default Sheet will prefer the open prop over a parent component that is
+     * controlling it via Adapt. In general if you want to Adapt to a sheet, you'd
+     * leave the open prop undefined. If you'd like to have the parent override the
+     * prop you've set manually on Sheet, set this to true.
+     */
+    preferAdaptParentOpenState?: boolean
 
     /**
      * (experimental) Remove the children while hidden (to save some performance, but can cause issues with animations)
