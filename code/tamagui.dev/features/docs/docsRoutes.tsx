@@ -123,6 +123,15 @@ export const docsRoutes = [
 
   {
     section: 'ui',
+    label: 'Menus',
+    pages: [
+      { title: 'DropDownMenu', route: '/ui/dropdown-menu' },
+      { title: 'ContextMenu', route: '/ui/context-menu' },
+    ],
+  },
+
+  {
+    section: 'ui',
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/ui/alert-dialog' },

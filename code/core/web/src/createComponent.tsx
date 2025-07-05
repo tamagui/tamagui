@@ -1345,14 +1345,22 @@ export function createComponent<
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (isReactNative && !asChild) {
-        content = (
-          <span
-            className="_dsp_contents"
-            {...(splitStyles && isHydrated && events && getWebEvents(events))}
-          >
-            {content}
-          </span>
-        )
+        if (events) {
+          const { onFocus, onBlur, ...webEvents } = getWebEvents(events)
+          // rnw does support these:
+          viewProps.onFocus = onFocus
+          viewProps.onBlur = onBlur
+          content = (
+            <span
+              className="_dsp_contents"
+              {...(splitStyles && isHydrated && events && webEvents)}
+            >
+              {content}
+            </span>
+          )
+        } else {
+          content = <span className="_dsp_contents">{content}</span>
+        }
       }
     }
 

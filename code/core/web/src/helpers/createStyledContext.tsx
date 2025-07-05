@@ -29,7 +29,9 @@ export type StyledContext<Props extends Object = any> = Context<Props> & {
 const createReactContext = React[Math.random() ? 'createContext' : 'createContext']
 
 export function createStyledContext<VariantProps extends Record<string, any>>(
-  defaultValues?: VariantProps
+  defaultValues?: VariantProps,
+  /** for debugging it's recommended to provided a name */
+  name?: string
 ): StyledContext<VariantProps> {
   const OGContext = createReactContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
