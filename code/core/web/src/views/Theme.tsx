@@ -13,12 +13,9 @@ import {
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-const empty = { className: '', style: {} }
+type ThemeComponentPropsOnly = ThemeProps & { passThrough?: boolean; contain?: boolean }
 
-export const Theme = forwardRef(function Theme(
-  props: ThemeProps & { passThrough?: boolean },
-  ref
-) {
+export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, ref) {
   // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children
@@ -67,7 +64,7 @@ Theme['avoidForwardRef'] = true
 export function getThemedChildren(
   themeState: ThemeState,
   children: any,
-  props: ThemeProps,
+  props: ThemeComponentPropsOnly,
   isRoot = false,
   stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>,
   passThrough = false
@@ -147,7 +144,7 @@ export function getThemedChildren(
         forceClassName,
         themeState,
         state,
-        ...getThemeClassNameAndStyle(themeState, props, isRoot),
+        themeSpanProps: getThemeClassNameAndColor(themeState, props, isRoot),
       })
     }
   }
@@ -157,14 +154,15 @@ export function getThemedChildren(
   }
 
   if (isWeb) {
-    const { className = '', style } = passThrough
+    const baseStyle = props.contain ? inertContainedStyle : inertStyle
+    const { className = '', color } = passThrough
       ? {}
-      : getThemeClassNameAndStyle(themeState, props, isRoot)
+      : getThemeClassNameAndColor(themeState, props, isRoot)
 
     children = (
       <span
-        className={`${className} _dsp_contents is_Theme`}
-        style={passThrough ? undefined : style}
+        className={`${className} is_Theme`}
+        style={passThrough ? baseStyle : { color, ...baseStyle }}
       >
         {children}
       </span>
@@ -183,9 +181,13 @@ export function getThemedChildren(
                     ? 't_dark is_inversed'
                     : ''
                 : ''
-            } _dsp_contents`
-          : `_dsp_contents`
-      children = <span className={className}>{children}</span>
+            } `
+          : ``
+      children = (
+        <span style={baseStyle} className={className}>
+          {children}
+        </span>
+      )
     }
 
     return children
@@ -194,7 +196,18 @@ export function getThemedChildren(
   return children
 }
 
-function getThemeClassNameAndStyle(
+const inertStyle = {
+  display: 'contents',
+}
+
+const inertContainedStyle = {
+  display: 'contents',
+  contain: 'strict',
+}
+
+const empty = { className: '', color: undefined }
+
+function getThemeClassNameAndColor(
   themeState: ThemeState,
   props: ThemeProps,
   isRoot = false
@@ -207,12 +220,6 @@ function getThemeClassNameAndStyle(
   const themeColor =
     themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
 
-  const style = themeColor
-    ? {
-        color: themeColor,
-      }
-    : undefined
-
   const maxInverses = getSetting('maxDarkLightNesting') || 3
   const themeClassName =
     themeState.inverses >= maxInverses
@@ -221,7 +228,7 @@ function getThemeClassNameAndStyle(
 
   const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
 
-  return { style, className }
+  return { color: themeColor, className }
 }
 
 const schemePrefix = /^(dark|light)_/
