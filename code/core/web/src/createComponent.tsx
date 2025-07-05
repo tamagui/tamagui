@@ -1538,7 +1538,7 @@ export function createComponent<
 
     out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
 
-    if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
+    if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
       out = React.memo(out)
     }
 
