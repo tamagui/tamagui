@@ -31,7 +31,7 @@ export const SheetScrollView = React.forwardRef<
     ref
   ) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
-    const { scrollBridge, scrollEnabled: scrollEnabled_, setHasScrollView } = context
+    const { scrollBridge, setHasScrollView } = context
     const [scrollEnabled, setScrollEnabled_] = useControllableState({
       prop: scrollEnabledProp,
       defaultProp: true,
@@ -88,8 +88,7 @@ export const SheetScrollView = React.forwardRef<
       })
     }
 
-    // Override scrollEnabled if provided
-    const scrollable = scrollEnabled ?? scrollEnabled_
+    const scrollable = scrollEnabled
 
     useEffect(() => {
       if (typeof window === 'undefined') return
