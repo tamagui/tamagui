@@ -1,9 +1,23 @@
-import { isAndroid, isWeb } from '@tamagui/core'
+import { isAndroid, isWeb, styled } from '@tamagui/core'
 import { DropdownMenu } from '@tamagui/dropdown-menu'
 import { Backpack, Calendar, Check } from '@tamagui/lucide-icons'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Button, Text, useEvent } from 'tamagui'
+
+const DropDownItem = styled(DropdownMenu.Item, {
+  paddingVertical: 4,
+  hoverStyle: {
+    backgroundColor: '$color2',
+  },
+  pressStyle: {
+    backgroundColor: '$color3',
+  },
+})
+
+const DropDownItemTitle = styled(DropdownMenu.ItemTitle, {
+  color: '$color11',
+})
 
 export function DropDownMenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
@@ -21,9 +35,7 @@ export function DropDownMenuDemo() {
       placement="bottom-start"
     >
       <DropdownMenu.Trigger asChild>
-        <Button width={60}>
-          <Backpack />
-        </Button>
+        <Button borderRadius="$10" icon={Backpack} scaleIcon={1.2} />
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal zIndex={100}>
@@ -34,7 +46,6 @@ export function DropDownMenuDemo() {
           borderColor="$borderColor"
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
-          elevate
           animation={[
             'quick',
             {
@@ -44,24 +55,26 @@ export function DropDownMenuDemo() {
             },
           ]}
         >
-          <DropdownMenu.Item onSelect={onSelect} key="about-notes">
-            <DropdownMenu.ItemTitle>About Notes</DropdownMenu.ItemTitle>
-          </DropdownMenu.Item>
+          <DropDownItem onSelect={onSelect} key="about-notes">
+            <DropDownItemTitle>About Notes</DropDownItemTitle>
+          </DropDownItem>
+
           <DropdownMenu.Separator />
+
           <DropdownMenu.Group>
-            <DropdownMenu.Item onSelect={onSelect} key="settings">
-              <DropdownMenu.ItemTitle>Settings</DropdownMenu.ItemTitle>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
+            <DropDownItem onSelect={onSelect} key="settings">
+              <DropDownItemTitle>Settings</DropDownItemTitle>
+            </DropDownItem>
+            <DropDownItem
               onSelect={onSelect}
               jc="space-between"
               // when title is nested inside a React element then you need to use `textValue`
               textValue="Calender"
               key="accounts"
             >
-              <DropdownMenu.ItemTitle>
+              <DropDownItemTitle>
                 <Text>Calender</Text>
-              </DropdownMenu.ItemTitle>
+              </DropDownItemTitle>
               <DropdownMenu.ItemIcon
                 androidIconName="ic_menu_today"
                 ios={{
@@ -70,32 +83,36 @@ export function DropDownMenuDemo() {
                   pointSize: 20,
                 }}
               >
-                <Calendar color="gray" size="$1" />
+                <Calendar color="gray" size={14} />
               </DropdownMenu.ItemIcon>
-            </DropdownMenu.Item>
+            </DropDownItem>
           </DropdownMenu.Group>
+
           <DropdownMenu.Separator />
+
           <DropdownMenu.Group>
-            <DropdownMenu.Item onSelect={onSelect} key="close-notes" disabled>
-              <DropdownMenu.ItemTitle color="gray">locked notes</DropdownMenu.ItemTitle>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item onSelect={onSelect} destructive key="delete-all">
-              <DropdownMenu.ItemTitle>Delete all</DropdownMenu.ItemTitle>
-            </DropdownMenu.Item>
+            <DropDownItem onSelect={onSelect} key="close-notes" disabled>
+              <DropDownItemTitle color="gray">locked notes</DropDownItemTitle>
+            </DropDownItem>
+            <DropDownItem onSelect={onSelect} destructive key="delete-all">
+              <DropDownItemTitle>Delete all</DropDownItemTitle>
+            </DropDownItem>
           </DropdownMenu.Group>
+
           <DropdownMenu.Separator />
+
           <DropdownMenu.Sub placement="right-start">
             <DropdownMenu.SubTrigger jc="space-between" key="actions-trigger">
               <>
-                <DropdownMenu.ItemTitle>Actions</DropdownMenu.ItemTitle>
+                <DropDownItemTitle>Actions</DropDownItemTitle>
                 {!native || isWeb ? <ChevronRight size="$1" /> : null}
               </>
             </DropdownMenu.SubTrigger>
+
             <DropdownMenu.Portal zIndex={200}>
               <DropdownMenu.SubContent
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
-                elevate
                 animation={[
                   'quick',
                   {
@@ -107,19 +124,21 @@ export function DropDownMenuDemo() {
                 paddingHorizontal={0}
               >
                 <DropdownMenu.Label fontSize={'$1'}>Note settings</DropdownMenu.Label>
-                <DropdownMenu.Item onSelect={onSelect} key="create-note">
-                  <DropdownMenu.ItemTitle>Create note</DropdownMenu.ItemTitle>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={onSelect} key="delete-all">
-                  <DropdownMenu.ItemTitle>Delete all notes</DropdownMenu.ItemTitle>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={onSelect} key="sync-all">
-                  <DropdownMenu.ItemTitle>Sync notes</DropdownMenu.ItemTitle>
-                </DropdownMenu.Item>
+                <DropDownItem onSelect={onSelect} key="create-note">
+                  <DropDownItemTitle>Create note</DropDownItemTitle>
+                </DropDownItem>
+                <DropDownItem onSelect={onSelect} key="delete-all">
+                  <DropDownItemTitle>Delete all notes</DropDownItemTitle>
+                </DropDownItem>
+                <DropDownItem onSelect={onSelect} key="sync-all">
+                  <DropDownItemTitle>Sync notes</DropDownItemTitle>
+                </DropDownItem>
               </DropdownMenu.SubContent>
             </DropdownMenu.Portal>
           </DropdownMenu.Sub>
+
           <DropdownMenu.Separator className="DropdownMenuSeparator" />
+
           <DropdownMenu.CheckboxItem
             key="show-hidden"
             checked={bookmarksChecked}
@@ -139,12 +158,13 @@ export function DropDownMenuDemo() {
             <DropdownMenu.ItemIndicator className="DropdownMenuItemIndicator">
               <Check size="$1" />
             </DropdownMenu.ItemIndicator>
-            <DropdownMenu.ItemTitle>Mark as read</DropdownMenu.ItemTitle>
+            <DropDownItemTitle>Mark as read</DropDownItemTitle>
             {/* android native menu treat checkbox as simple MenuItem */}
             {isAndroid && native && bookmarksChecked && (
               <DropdownMenu.ItemIcon androidIconName="checkbox_on_background" />
             )}
           </DropdownMenu.CheckboxItem>
+
           <DropdownMenu.CheckboxItem
             key="show-other-notes"
             checked={native}
@@ -163,7 +183,7 @@ export function DropDownMenuDemo() {
             <DropdownMenu.ItemIndicator>
               <Check size="$1" />
             </DropdownMenu.ItemIndicator>
-            <DropdownMenu.ItemTitle>Enable Native</DropdownMenu.ItemTitle>
+            <DropDownItemTitle>Enable Native</DropDownItemTitle>
             {/* android native menu treat checkbox as simple MenuItem */}
             {isAndroid && native && (
               <DropdownMenu.ItemIcon androidIconName="checkbox_on_background" />

@@ -1,6 +1,5 @@
-import { styled, Text } from '@tamagui/core'
+import { styled, Text, View } from '@tamagui/core'
 import { Image } from '@tamagui/image'
-import { ThemeableStack } from '@tamagui/stacks'
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
@@ -8,7 +7,7 @@ import { ThemeableStack } from '@tamagui/stacks'
 
 const GROUP_NAME = 'MenuGroup'
 
-const MenuGroup = styled(ThemeableStack, {
+const MenuGroup = styled(View, {
   name: GROUP_NAME,
   variants: {
     unstyled: {
@@ -23,8 +22,6 @@ const MenuGroup = styled(ThemeableStack, {
   },
 })
 
-MenuGroup.displayName = GROUP_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * MenuLabel
  * -----------------------------------------------------------------------------------------------*/
@@ -33,22 +30,8 @@ const LABEL_NAME = 'MenuLabel'
 
 const MenuLabel = styled(Text, {
   name: LABEL_NAME,
-  variants: {
-    unstyled: {
-      false: {
-        paddingHorizontal: '$4',
-        color: 'gray',
-        textAlign: 'left',
-        width: '100%',
-      },
-    },
-  } as const,
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  cursor: 'default',
 })
-
-MenuLabel.displayName = LABEL_NAME
 
 /* -------------------------------------------------------------------------------------------------
   MenuSeparator
@@ -56,11 +39,12 @@ MenuLabel.displayName = LABEL_NAME
 
 const SEPARATOR_NAME = 'MenuSeparator'
 
-const MenuSeparator = styled(ThemeableStack, {
+const MenuSeparator = styled(View, {
   name: SEPARATOR_NAME,
   role: 'separator',
   // @ts-ignore
   'aria-orientation': 'horizontal',
+
   variants: {
     unstyled: {
       false: {
@@ -75,18 +59,27 @@ const MenuSeparator = styled(ThemeableStack, {
       },
     },
   } as const,
+
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
-MenuSeparator.displayName = SEPARATOR_NAME
 
-const MenuIcon = ThemeableStack
-const MenuImage = Image
-const MenuIndicator = ThemeableStack
-const MenuItem = styled(ThemeableStack, { flexDirection: 'row', maxWidth: '100%' })
-const Title = Text
-const SubTitle = Text
+const MenuIcon = styled(View, { name: 'MenuIcon' })
+
+const MenuImage = styled(Image, { name: 'MenuImage' })
+
+const MenuIndicator = styled(View, { name: 'MenuIndicator' })
+
+const MenuItem = styled(View, {
+  name: 'MenuItem',
+  flexDirection: 'row',
+  maxWidth: '100%',
+})
+
+const Title = styled(Text, { name: 'MenuTitle', cursor: 'default' })
+
+const SubTitle = styled(Text, { name: 'MenuSubTitle', cursor: 'default' })
 
 export const MenuPredefinied = {
   MenuIcon,
