@@ -653,7 +653,7 @@ export function createComponent<
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
     if (splitStyles) {
-      if ((!hasAnimationProp || groupName) && animationDriver?.avoidReRenders) {
+      if ((hasAnimationProp || groupName) && animationDriver?.avoidReRenders) {
         const useStyleListener = stateRef.current.useStyleListener
         const ogSetStateShallow = setStateShallow
 
