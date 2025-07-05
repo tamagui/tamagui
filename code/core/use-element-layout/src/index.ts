@@ -4,6 +4,10 @@ import type { RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const Nodes = new Set<HTMLElement>()
+const IntersectionState = new WeakMap<HTMLElement, boolean>()
+
+// Single persistent IntersectionObserver for all nodes
+let globalIntersectionObserver: IntersectionObserver | null = null
 
 type TamaguiComponentStatePartial = {
   host?: any
@@ -46,6 +50,8 @@ const queuedUpdates = new Map<HTMLElement, Function>()
 
 export function enable(): void {
   if (avoidUpdates) {
+    startGlobalIntersectionObserver()
+
     avoidUpdates = false
     if (queuedUpdates) {
       queuedUpdates.forEach((cb) => cb())
@@ -57,17 +63,47 @@ export function enable(): void {
 const expectedFrameTime = 16.67 // ~60fps
 const numDroppedFramesUntilPause = 10
 
+function startGlobalIntersectionObserver() {
+  if (!isClient || globalIntersectionObserver) return
+
+  globalIntersectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const node = entry.target as HTMLElement
+        IntersectionState.set(node, entry.isIntersecting)
+      })
+    },
+    {
+      threshold: 0,
+    }
+  )
+}
+
 if (isClient) {
   if (rAF) {
+    const supportsCheckVisibility = 'checkVisibility' in document.body
     // track frame timing to detect sync work and avoid updates during heavy periods
     let lastFrameAt = Date.now()
 
     async function updateLayoutIfChanged(node: HTMLElement, frameId: number) {
+      // Skip work if element is not intersecting
+      if (strategy === 'async' && !IntersectionState.get(node)) {
+        return
+      }
+
       const onLayout = LayoutHandlers.get(node)
       if (typeof onLayout !== 'function') return
 
       const parentNode = node.parentElement
       if (!parentNode) return
+
+      // Check visibility if supported and element is intersecting
+      if (strategy === 'async' && supportsCheckVisibility) {
+        const isVisible = (node as any).checkVisibility()
+        if (!isVisible) {
+          return
+        }
+      }
 
       let nodeRect: DOMRectReadOnly
       let parentRect: DOMRectReadOnly
@@ -265,6 +301,13 @@ export function useElementLayout(
     LayoutHandlers.set(node, onLayout)
     Nodes.add(node)
 
+    // Add node to intersection observer
+    if (globalIntersectionObserver) {
+      globalIntersectionObserver.observe(node)
+      // Initialize as intersecting by default
+      IntersectionState.set(node, true)
+    }
+
     // always do one immediate sync layout event no matter the strategy for accuracy
     const parentNode = node.parentNode
     if (parentNode) {
@@ -281,6 +324,12 @@ export function useElementLayout(
       LayoutHandlers.delete(node)
       NodeRectCache.delete(node)
       LastChangeTime.delete(node)
+      IntersectionState.delete(node)
+
+      // Remove from intersection observer
+      if (globalIntersectionObserver) {
+        globalIntersectionObserver.unobserve(node)
+      }
     }
   }, [ref, !!onLayout])
 }
@@ -296,7 +345,22 @@ const getBoundingClientRectAsync = (
   node: HTMLElement | null
 ): Promise<DOMRectReadOnly | false> => {
   return new Promise<DOMRectReadOnly | false>((res) => {
-    if (!node || node.nodeType !== 1) return
+    if (!node || node.nodeType !== 1) return res(false)
+
+    // For async strategy, we can now use the cached intersection state
+    // and fall back to a simple getBoundingClientRect since we're already
+    // tracking intersection in the global observer
+    if (strategy === 'async') {
+      const isIntersecting = IntersectionState.get(node)
+      if (!isIntersecting) {
+        return res(false)
+      }
+      // Use sync getBoundingClientRect since we know it's intersecting
+      const rect = node.getBoundingClientRect()
+      return res(rect)
+    }
+
+    // Fallback for other strategies or edge cases
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries[0].isIntersecting) {
