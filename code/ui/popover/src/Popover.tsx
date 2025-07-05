@@ -358,10 +358,10 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
   }
 
   return (
-    <Portal stackZIndex zIndex={zIndex}>
+    <Portal stackZIndex zIndex={zIndex as any}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme forceClassName name={themeName}>
+      <Theme contain forceClassName name={themeName}>
         <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
           {contents}
         </StackZIndexContext>
