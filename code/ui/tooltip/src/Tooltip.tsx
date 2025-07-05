@@ -231,6 +231,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
         size={smallerSize?.key as SizeTokens}
         allowFlip
         stayInFrame
+        open={open}
         {...restProps}
       >
         <PopoverContext.Provider

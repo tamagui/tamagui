@@ -30,6 +30,10 @@ export declare const usePopperInfrequentContext: (scope?: string) => {
     size?: SizeTokens;
 };
 export type PopperProps = {
+    /**
+     * Optional, will disable measuring updates when open is false for better performance
+     * */
+    open?: boolean;
     size?: SizeTokens;
     children?: React.ReactNode;
     /**

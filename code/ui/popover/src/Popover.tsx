@@ -752,6 +752,7 @@ const PopoverInner = React.forwardRef<
 
   const contents = (
     <Popper
+      open={open}
       passThrough={isAdapted}
       __scopePopper={__scopePopover || POPOVER_SCOPE}
       stayInFrame

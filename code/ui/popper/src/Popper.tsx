@@ -69,6 +69,11 @@ export const PopperInfrequentContext = createStyledContext<{
 export const usePopperInfrequentContext = PopperInfrequentContext.useStyledContext
 
 export type PopperProps = {
+  /**
+   * Optional, will disable measuring updates when open is false for better performance
+   * */
+  open?: boolean
+
   size?: SizeTokens
   children?: React.ReactNode
 
@@ -149,6 +154,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     disableRTL,
     resize,
     passThrough,
+    open,
     __scopePopper,
   } = props
 
@@ -158,13 +164,11 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   const floatingStyle = React.useRef({})
 
   let floating = useFloating({
-    ...(passThrough && {
-      open: false,
-    }),
+    open: passThrough ? false : open || true,
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: passThrough ? undefined : autoUpdate,
+    whileElementsMounted: passThrough || !open ? undefined : autoUpdate,
     platform:
       (disableRTL ?? setupOptions.disableRTL)
         ? {
