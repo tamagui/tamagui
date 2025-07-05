@@ -48,7 +48,6 @@ import {
   usePopperContext,
 } from '@tamagui/popper'
 import { Portal, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
-import type { RemoveScrollProps } from '@tamagui/remove-scroll'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import type { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
 import { Sheet, SheetController } from '@tamagui/sheet'
@@ -360,11 +359,11 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
 
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
-    <Portal stackZIndex zIndex={zIndex}>
+    <Portal passThrough={!context.breakpointActive} stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme forceClassName name={themeName}>
-        {!!context.open && !context.breakpointActive && (
+      <Theme passThrough={!context.breakpointActive} forceClassName name={themeName}>
+        {!!context.open && context.breakpointActive && (
           <YStack
             fullscreen
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
