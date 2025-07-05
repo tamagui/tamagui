@@ -49,7 +49,7 @@ import {
 } from '@tamagui/popper'
 import { Portal, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import type { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
+import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
@@ -602,17 +602,16 @@ const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>(
   (props: ScrollViewProps, ref) => {
     const context = usePopoverContext(POPOVER_SCOPE)
 
-    return props.children
-    // return (
-    //   <ScrollView
-    //     ref={ref}
-    //     // when adapted, no pointer events!
-    //     pointerEvents={context.breakpointActive ? 'none' : undefined}
-    //     scrollEnabled={!context.breakpointActive}
-    //     passThrough={context.breakpointActive}
-    //     {...props}
-    //   />
-    // )
+    return (
+      <ScrollView
+        ref={ref}
+        // when adapted, no pointer events!
+        pointerEvents={context.breakpointActive ? 'none' : undefined}
+        scrollEnabled={!context.breakpointActive}
+        passThrough={context.breakpointActive}
+        {...props}
+      />
+    )
   }
 )
 

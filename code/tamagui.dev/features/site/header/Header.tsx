@@ -348,7 +348,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
     }
   }, [])
 
-  const check = React.useRef<any>()
+  const check = React.useRef<any>(undefined)
 
   const checkForClose = () => {
     if (isTouchable) return
@@ -786,6 +786,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
         style={{
           flex: 1,
           width: '100%',
+          bg: 'red',
         }}
         contentContainerStyle={{ width: '100%' }}
       >
