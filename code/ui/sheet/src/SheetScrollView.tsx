@@ -1,5 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isWeb, type GetRef } from '@tamagui/core'
+import { isClient, isWeb, type GetRef } from '@tamagui/core'
 import type { ScrollViewProps } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -91,7 +91,7 @@ export const SheetScrollView = React.forwardRef<
     const scrollable = scrollEnabled
 
     useEffect(() => {
-      if (typeof window === 'undefined') return
+      if (!isClient) return
       if (!scrollRef.current) return
 
       const controller = new AbortController()

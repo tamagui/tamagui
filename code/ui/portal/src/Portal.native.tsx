@@ -37,6 +37,8 @@ export const Portal = (propsIn: PortalProps) => {
   const rootTag = React.useContext(RootTagContext)
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
+  const { children, passThrough } = propsIn
+
   const contents = (
     <View
       pointerEvents="box-none"
@@ -44,11 +46,18 @@ export const Portal = (propsIn: PortalProps) => {
       inset={0}
       maxWidth="100%"
       zIndex={zIndex}
-    />
+      passThrough={passThrough}
+    >
+      {children}
+    </View>
   )
 
   if (!createPortal || !USE_NATIVE_PORTAL || !rootTag) {
-    return <GorhomPortalItem hostName="root">{contents}</GorhomPortalItem>
+    return (
+      <GorhomPortalItem passThrough={passThrough} hostName="root">
+        {contents}
+      </GorhomPortalItem>
+    )
   }
 
   return createPortal(contents, rootTag)

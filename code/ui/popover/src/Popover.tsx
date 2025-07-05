@@ -261,8 +261,13 @@ export const PopoverContent = PopperContentFrame.extractable(
     }
 
     return (
-      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={zIndex}>
+      <PopoverPortal
+        passThrough={context.breakpointActive}
+        __scopePopover={__scopePopover}
+        zIndex={zIndex}
+      >
         <Stack
+          passThrough={context.breakpointActive}
           pointerEvents={
             context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
           }
@@ -307,68 +312,95 @@ export const PopoverContent = PopperContentFrame.extractable(
             )}
           />
         </Stack>
-      </PopoverContentPortal>
+      </PopoverPortal>
     )
   })
 )
 
-function PopoverRepropagateContext(props: {
-  children: any
-  context: any
-  scope: string
-  adaptContext: AdaptParentContextI
-  zIndex: any
-}) {
-  const popperContext = usePopperContext(props.scope || POPOVER_SCOPE)
+const useParentContexts = (scope?: string) => {
+  const popperContext = usePopperContext(scope || POPOVER_SCOPE)
+  const adaptContext = useAdaptContext()
+  const context = usePopoverContext(scope || POPOVER_SCOPE)
+  return {
+    popperContext,
+    adaptContext,
+    context,
+  }
+}
 
+type ParentContexts = ReturnType<typeof useParentContexts>
+
+function RepropagateParentContexts({
+  adaptContext,
+  children,
+  context,
+  popperContext,
+  scope,
+}: ParentContexts & {
+  children: React.ReactNode
+  scope: string
+}) {
   return (
-    <PopperContext.Provider scope={props.scope} {...popperContext}>
-      <PopoverContext.Provider {...props.context}>
-        <ProvideAdaptContext {...props.adaptContext}>
-          {props.children}
-        </ProvideAdaptContext>
+    <PopperContext.Provider scope={scope} {...popperContext}>
+      <PopoverContext.Provider {...context}>
+        <ProvideAdaptContext {...adaptContext}>{children}</ProvideAdaptContext>
       </PopoverContext.Provider>
     </PopperContext.Provider>
   )
 }
 
-function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>) {
-  const { __scopePopover } = props
-  const zIndex = props.zIndex
-  const context = usePopoverContext(__scopePopover)
-  const themeName = useThemeName()
-  const adaptContext = useAdaptContext()
-
-  let contents = props.children
-
-  const isSheet = context.breakpointActive
-
-  // native doesnt support portals
-  if (isSheet) {
-    contents = (
-      <PopoverRepropagateContext
-        scope={__scopePopover || POPOVER_SCOPE}
-        context={context}
-        adaptContext={adaptContext}
-        zIndex={zIndex}
-      >
-        {props.children}
-      </PopoverRepropagateContext>
+const PortalAdaptSafe = ({
+  children,
+  __scopePopover,
+}: ScopedPopoverProps<{ children?: React.ReactNode }>) => {
+  if (needsRepropagation) {
+    const scope = __scopePopover || POPOVER_SCOPE
+    const parentContexts = useParentContexts(scope)
+    return (
+      <AdaptPortalContents>
+        <RepropagateParentContexts scope={scope} {...parentContexts}>
+          {children}
+        </RepropagateParentContexts>
+      </AdaptPortalContents>
     )
   }
 
+  return <AdaptPortalContents>{children}</AdaptPortalContents>
+}
+
+function PopoverPortal(props: ScopedPopoverProps<PopoverContentTypeProps>) {
+  const scope = props.__scopePopover || POPOVER_SCOPE
+  const zIndex = props.zIndex
+  const themeName = useThemeName()
+
+  let content = props.children
+
+  // native doesnt support portals
+  if (needsRepropagation) {
+    const parentContexts = useParentContexts(scope)
+
+    content = (
+      <RepropagateParentContexts scope={scope} {...parentContexts}>
+        {content}
+      </RepropagateParentContexts>
+    )
+  }
+
+  return content
+
   return (
-    <Portal stackZIndex zIndex={zIndex as any}>
+    <Portal passThrough={props.passThrough} stackZIndex zIndex={zIndex as any}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
       <Theme contain forceClassName name={themeName}>
         <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-          {contents}
+          {content}
         </StackZIndexContext>
       </Theme>
     </Portal>
   )
 }
+
 /* -----------------------------------------------------------------------------------------------*/
 
 type PopoverContentImplElement = React.ElementRef<typeof PopperContent>
@@ -450,6 +482,7 @@ const PopoverContentImpl = React.forwardRef<
   )
 
   // i want to avoid reparenting but react-remove-scroll makes it hard
+  // TODO its removed now so we can probable do it now
   if (!context.breakpointActive) {
     if (process.env.TAMAGUI_TARGET !== 'native') {
       contents = (
@@ -484,48 +517,31 @@ const PopoverContentImpl = React.forwardRef<
 
   // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
 
+  return <PortalAdaptSafe>{contents}</PortalAdaptSafe>
+
   return (
-    <RepropagatePopperAdapt __scopePopover={__scopePopover || POPOVER_SCOPE}>
-      <Animate
-        type="presence"
-        present={Boolean(open)}
-        keepChildrenMounted={Boolean(keepChildrenMounted)}
-        onExitComplete={handleExitComplete}
-        lazyMount={lazyMount}
+    <Animate
+      type="presence"
+      present={Boolean(open)}
+      keepChildrenMounted={Boolean(keepChildrenMounted)}
+      onExitComplete={handleExitComplete}
+      lazyMount={lazyMount}
+      passThrough={context.breakpointActive}
+    >
+      <PopperContent
+        __scopePopper={__scopePopover || POPOVER_SCOPE}
+        key={context.contentId}
+        data-state={getState(open)}
+        id={context.contentId}
+        ref={forwardedRef}
         passThrough={context.breakpointActive}
+        {...contentProps}
       >
-        <PopperContent
-          __scopePopper={__scopePopover || POPOVER_SCOPE}
-          key={context.contentId}
-          data-state={getState(open)}
-          id={context.contentId}
-          ref={forwardedRef}
-          passThrough={context.breakpointActive}
-          {...contentProps}
-        >
-          {contents}
-        </PopperContent>
-      </Animate>
-    </RepropagatePopperAdapt>
+        <PortalAdaptSafe>{contents}</PortalAdaptSafe>
+      </PopperContent>
+    </Animate>
   )
 })
-
-const RepropagatePopperAdapt = ({
-  children,
-  __scopePopover,
-}: ScopedPopoverProps<{ children?: React.ReactNode }>) => {
-  if (needsRepropagation) {
-    const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
-
-    return (
-      <AdaptPortalContents>
-        <PopperContext.Provider {...popperContext}>{children}</PopperContext.Provider>
-      </AdaptPortalContents>
-    )
-  }
-
-  return <AdaptPortalContents>{children}</AdaptPortalContents>
-}
 
 const dspContentsStyle = {
   display: 'contents',

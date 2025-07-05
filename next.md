@@ -1,3 +1,4 @@
+- popover bring back dismissable - document dismissable etc
 - in SheetImplCustom bad logic for pulling up when scroll view inside
   - if scrollview isn't able to scroll we shouldn't disable that behavior:
     `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`

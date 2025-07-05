@@ -1268,23 +1268,23 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
-    let useChildrenResult: any
-    if (hooks.useChildren) {
-      useChildrenResult = hooks.useChildren(elementType, content, viewProps)
-    }
-
-    if (process.env.NODE_ENV === 'development' && time) time`use-children`
-
     // passthrough mode - only pass style display contents, nothing else
     if (!splitStyles) {
-      elementType = 'span'
       content = propsIn.children
+      elementType = BaseViewComponent
       viewProps = {
         style: {
           display: 'contents',
         },
       }
     }
+
+    let useChildrenResult: any
+    if (hooks.useChildren) {
+      useChildrenResult = hooks.useChildren(elementType, content, viewProps)
+    }
+
+    if (process.env.NODE_ENV === 'development' && time) time`use-children`
 
     if (useChildrenResult) {
       content = useChildrenResult
