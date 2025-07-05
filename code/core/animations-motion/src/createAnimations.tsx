@@ -90,18 +90,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
 
-      function collapseAnimationQueue() {
-        // we just skip to the last one
-        const queue = animationsQueue.current
-        const last = queue[queue.length - 1]
-
-        if (last) {
-          // unsafe react, i know...
-          animationsQueue.current = []
-          return last
-        }
-      }
-
       const shouldDebug =
         process.env.NODE_ENV === 'development' &&
         props['debug'] &&
@@ -124,42 +112,66 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const animationsQueue = useRef<AnimationProps[]>([])
       const lastAnimateAt = useRef(0)
       const minTimeBetweenAnimations = 16.667
+      const disposed = useRef(false)
 
-      useIsomorphicLayoutEffect(() => {
-        let disposed = false
-
-        const animationFrame = () => {
-          const elapsed = Date.now() - lastAnimateAt.current
-          const animationProps = collapseAnimationQueue()
-
-          if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
-            console.info('slow', elapsed, { animationProps, props })
-          }
-
-          if (scope.current && animationProps) {
-            flushAnimation(animationProps)
-          }
-
-          if (!disposed) {
-            // frame.postRender(animationFrame)
-            requestAnimationFrame(animationFrame)
-          }
-        }
-
-        requestAnimationFrame(animationFrame)
-        // frame.postRender(animationFrame)
-
+      useEffect(() => {
         return () => {
-          disposed = true
+          disposed.current = true
         }
-      }, [scope])
+      }, [])
+
+      // useIsomorphicLayoutEffect(() => {
+      //   let disposed = false
+
+      //   // requestAnimationFrame(animationFrame)
+      //   // frame.postRender(animationFrame)
+
+      //   return () => {
+      //     disposed = true
+      //   }
+      // }, [scope])
 
       const runAnimation = (props: AnimationProps) => {
-        const elapsed = Date.now() - lastAnimateAt.current
-        if (scope.current && elapsed > minTimeBetweenAnimations) {
+        const waitForNextAnimationFrame = () => {
+          // we just skip to the last one
+          const queue = animationsQueue.current
+          const last = queue[queue.length - 1]
+          animationsQueue.current = []
+
+          if (!last) {
+            console.error(`Should never hit`)
+            return
+          }
+
+          if (!props) return
+
+          const elapsed = Date.now() - lastAnimateAt.current
+
+          if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
+            console.info('slow', elapsed, { props })
+          }
+
+          if (scope.current) {
+            flushAnimation(props)
+          } else {
+            if (!disposed.current) {
+              // frame.postRender(waitForNextAnimationFrame)
+              requestAnimationFrame(waitForNextAnimationFrame)
+            }
+          }
+        }
+
+        const hasQueue = animationsQueue.current.length
+        const shouldWait =
+          hasQueue || Date.now() - lastAnimateAt.current > minTimeBetweenAnimations
+
+        if (scope.current && !shouldWait) {
           flushAnimation(props)
         } else {
           animationsQueue.current.push(props)
+          if (!hasQueue) {
+            waitForNextAnimationFrame()
+          }
         }
       }
 
