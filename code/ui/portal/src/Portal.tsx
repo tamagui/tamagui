@@ -8,8 +8,6 @@ import { createPortal } from 'react-dom'
 import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
 
-// web only version
-
 export const Portal = React.memo((propsIn: PortalProps) => {
   if (isServer) {
     return null

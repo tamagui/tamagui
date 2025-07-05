@@ -1,5 +1,3 @@
-export declare const useDisableScrollOutsideOf: (nodeRef: React.RefObject<HTMLElement | null>, options?: {
-    enabled?: boolean;
-    keyboardKeys?: number[];
-}) => void;
+export declare const useDisableBodyScroll: (enabled: boolean) => void;
+
 //# sourceMappingURL=useDisableScroll.d.ts.map

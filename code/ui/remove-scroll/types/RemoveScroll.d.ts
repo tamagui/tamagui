@@ -1,7 +1,8 @@
-import React from 'react';
+import { type ReactNode } from "react";
 export type RemoveScrollProps = {
-    enabled?: boolean;
-    children?: React.ReactNode;
+	enabled?: boolean;
+	children?: React.ReactNode;
 };
-export declare const RemoveScroll: React.MemoExoticComponent<(props: RemoveScrollProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const RemoveScroll: (props: RemoveScrollProps) => ReactNode;
+
 //# sourceMappingURL=RemoveScroll.d.ts.map
