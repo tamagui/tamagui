@@ -102,8 +102,9 @@ export const useThemeState = (
   const getSnapshot = () => {
     let local = localStates.get(id)
 
-    const needsUpdate =
-      isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
+    const needsUpdate = props.passThrough
+      ? false
+      : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
         ? true
         : !HasRenderedOnce.get(keys)
           ? true
@@ -202,6 +203,10 @@ const getNextState = (
 ): [boolean, ThemeState] => {
   const { debug } = props
   const parentState = states.get(parentId)
+
+  if (props.passThrough) {
+    return [false, lastState ?? parentState!]
+  }
 
   if (!themes) {
     themes = getConfig().themes

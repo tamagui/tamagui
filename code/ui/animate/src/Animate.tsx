@@ -80,7 +80,11 @@ export function Animate({
       )
     }
 
-    return <AnimatePresence {...props}>{mounted ? children : null}</AnimatePresence>
+    return (
+      <AnimatePresence {...props}>
+        {mounted || passThrough ? children : null}
+      </AnimatePresence>
+    )
   }
 
   return <>{children}</>

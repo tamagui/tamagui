@@ -418,7 +418,7 @@ export function createComponent<
 
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if (!groupName) {
+      if (!groupName || props.passThrough) {
         return groupContextParent
       }
 
@@ -962,9 +962,11 @@ export function createComponent<
             }
             return styleObject
           }
-          const computed = cssStyleDeclarationToObject(
-            getComputedStyle(stateRef.current.host! as Element)
-          )
+          const computed = stateRef.current.host
+            ? cssStyleDeclarationToObject(
+                getComputedStyle(stateRef.current.host as Element)
+              )
+            : {}
           console.groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
           console.warn(computed)
@@ -1278,6 +1280,8 @@ export function createComponent<
 
     // passthrough mode - only pass style display contents, nothing else
     if (!splitStyles) {
+      elementType = 'span'
+      content = propsIn.children
       viewProps = {
         style: {
           display: 'contents',

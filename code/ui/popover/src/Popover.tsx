@@ -61,6 +61,8 @@ import { useFloatingContext } from './useFloatingContext'
 
 // adapted from radix-ui popover
 
+const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+
 type PopoverVia = 'hover' | 'press'
 
 export type PopoverProps = PopperProps & {
@@ -268,6 +270,7 @@ export const PopoverContent = PopperContentFrame.extractable(
     return (
       <PopoverContentPortal __scopePopover={__scopePopover} zIndex={zIndex}>
         <Stack
+          passThrough={context.breakpointActive}
           pointerEvents={
             context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
           }
@@ -346,12 +349,14 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
   const themeName = useThemeName()
   const adaptContext = useAdaptContext()
 
+  const passThrough = !context.breakpointActive
+
   let contents = (
     <>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme forceClassName name={themeName}>
-        {!!context.open && !context.breakpointActive && (
+      <Theme passThrough={passThrough} forceClassName name={themeName}>
+        {!passThrough && !!context.open && !context.breakpointActive && (
           <YStack
             fullscreen
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
@@ -364,8 +369,12 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
     </>
   )
 
+  if (passThrough) {
+    return children
+  }
+
   // native doesnt support portals
-  if (isAndroid || (isIos && !USE_NATIVE_PORTAL)) {
+  if (needsRepropagation) {
     contents = (
       <PopoverRepropagateContext
         scope={__scopePopover || POPOVER_SCOPE}
@@ -378,13 +387,12 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
     )
   } else {
     contents = (
-      <Portal stackZIndex zIndex={zIndex}>
+      <Portal passThrough={passThrough} stackZIndex zIndex={zIndex}>
         {contents}
       </Portal>
     )
   }
 
-  // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return contents
 }
 /* -----------------------------------------------------------------------------------------------*/
@@ -463,9 +471,11 @@ const PopoverContentImpl = React.forwardRef<
     setIsFullyHidden?.(true)
   }, [setIsFullyHidden])
 
-  let contents = <ResetPresence>{children}</ResetPresence>
+  let contents = (
+    <ResetPresence disable={context.breakpointActive}>{children}</ResetPresence>
+  )
 
-  if (isAndroid && context.breakpointActive) {
+  if (needsRepropagation && context.breakpointActive) {
     return (
       <RepropagatePopperAdapt __scopePopover={__scopePopover || POPOVER_SCOPE}>
         {children}
@@ -476,7 +486,7 @@ const PopoverContentImpl = React.forwardRef<
   if (process.env.TAMAGUI_TARGET !== 'native') {
     contents = (
       <RemoveScroll
-        enabled={disableRemoveScroll ? false : open}
+        enabled={context.breakpointActive ? false : disableRemoveScroll ? false : open}
         allowPinchZoom
         // causes lots of bugs on touch web on site
         removeScrollBar={false}

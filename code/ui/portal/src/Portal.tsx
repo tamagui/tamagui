@@ -15,8 +15,18 @@ export const Portal = React.memo((propsIn: PortalProps) => {
     return null
   }
 
-  const { host = globalThis.document?.body, stackZIndex, children, ...props } = propsIn
+  const {
+    host = globalThis.document?.body,
+    stackZIndex,
+    children,
+    passThrough,
+    ...props
+  } = propsIn
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
+
+  if (passThrough) {
+    return children
+  }
 
   return createPortal(
     <YStack

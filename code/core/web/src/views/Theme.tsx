@@ -15,11 +15,16 @@ import { ThemeDebug } from './ThemeDebug'
 
 const empty = { className: '', style: {} }
 
-export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
+export const Theme = forwardRef(function Theme(
+  props: ThemeProps & { passThrough?: boolean },
+  ref
+) {
   // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children
   }
+
+  const { passThrough } = props
 
   const isRoot = !!props['_isRoot']
 
@@ -29,7 +34,7 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(props.children, (child) =>
-        cloneElement(child, { ['data-disable-theme']: true })
+        passThrough ? child : cloneElement(child, { ['data-disable-theme']: true })
       )
     : props.children
 
@@ -47,7 +52,14 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
     hasEverThemed: false,
   })
 
-  return getThemedChildren(themeState, finalChildren, props, isRoot, stateRef)
+  return getThemedChildren(
+    themeState,
+    finalChildren,
+    props,
+    isRoot,
+    stateRef,
+    passThrough
+  )
 })
 
 Theme['avoidForwardRef'] = true
@@ -57,7 +69,8 @@ export function getThemedChildren(
   children: any,
   props: ThemeProps,
   isRoot = false,
-  stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>
+  stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>,
+  passThrough = false
 ) {
   const { shallow, forceClassName } = props
 
@@ -115,11 +128,13 @@ export function getThemedChildren(
       if (!parentState) throw new Error(`‼️010`)
       children = Children.toArray(children).map((child) => {
         return isValidElement(child)
-          ? cloneElement(
-              child,
-              undefined,
-              <Theme name={parentState.name}>{(child as any).props.children}</Theme>
-            )
+          ? passThrough
+            ? child
+            : cloneElement(
+                child,
+                undefined,
+                <Theme name={parentState.name}>{(child as any).props.children}</Theme>
+              )
           : child
       })
     }
@@ -145,7 +160,10 @@ export function getThemedChildren(
     const { className, style } = getThemeClassNameAndStyle(themeState, props, isRoot)
 
     children = (
-      <span className={`${className} _dsp_contents is_Theme`} style={style}>
+      <span
+        className={`${className} _dsp_contents is_Theme`}
+        style={passThrough ? undefined : style}
+      >
         {children}
       </span>
     )
@@ -153,17 +171,18 @@ export function getThemedChildren(
     // to prevent tree structure changes always render this if inverse is true or false
     if (state.hasEverThemed === 'wrapped') {
       // but still calculate if we need the classnames
-      const className = requiresExtraWrapper
-        ? `${
-            isInverse
-              ? name.startsWith('light')
-                ? 't_light is_inversed'
-                : name.startsWith('dark')
-                  ? 't_dark is_inversed'
-                  : ''
-              : ''
-          } _dsp_contents`
-        : `_dsp_contents`
+      const className =
+        !passThrough && requiresExtraWrapper
+          ? `${
+              isInverse
+                ? name.startsWith('light')
+                  ? 't_light is_inversed'
+                  : name.startsWith('dark')
+                    ? 't_dark is_inversed'
+                    : ''
+                : ''
+            } _dsp_contents`
+          : `_dsp_contents`
       children = <span className={className}>{children}</span>
     }
 

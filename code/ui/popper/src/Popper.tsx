@@ -398,16 +398,22 @@ export const PopperContent = React.forwardRef<
     : frameProps
 
   return (
-    <Stack passThrough={passThrough} {...floatingProps}>
+    <Stack
+      debug="verbose"
+      passThrough={passThrough}
+      {...(passThrough ? null : floatingProps)}
+    >
       <PopperContentFrame
         key="popper-content-frame"
-        data-placement={placement}
-        data-strategy={strategy}
-        contain="layout"
-        size={size}
         passThrough={passThrough}
-        {...style}
-        {...rest}
+        {...(!passThrough && {
+          'data-placement': placement,
+          'data-strategy': strategy,
+          contain: 'layout',
+          size,
+          ...style,
+          ...rest,
+        })}
       >
         {children}
       </PopperContentFrame>
