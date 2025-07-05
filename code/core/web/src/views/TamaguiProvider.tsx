@@ -1,21 +1,18 @@
-import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  IS_REACT_19,
+  isClient,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
+import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 import React, { useEffect } from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
+import { updateMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { updateMediaListeners } from '../hooks/useMedia'
-
-const listeners = new Set<() => void>()
-let didRender = false
-
-export function ___onDidFinishClientRender(cb: () => void) {
-  if (didRender) {
-    cb()
-  } else {
-    listeners.add(cb)
-  }
-}
+import { stopAccumulatingRules } from '../helpers/insertStyleRule'
+import { Configuration } from './Configuration'
 
 export function TamaguiProvider({
   children,
@@ -27,15 +24,7 @@ export function TamaguiProvider({
   reset,
   themeClassNameOnRoot,
 }: TamaguiProviderProps) {
-  useEffect(() => {
-    listeners.forEach((cb) => cb())
-    didRender = true
-    return () => {
-      didRender = false
-    }
-  }, [])
-
-  if (!process.env.TAMAGUI_REACT_19) {
+  if (!IS_REACT_19) {
     if (isClient) {
       // inject CSS if asked to (not SSR compliant)
       useIsomorphicLayoutEffect(() => {
@@ -53,31 +42,40 @@ export function TamaguiProvider({
   }
 
   useIsomorphicLayoutEffect(() => {
+    stopAccumulatingRules()
     updateMediaListeners()
   }, [])
 
+  let contents = (
+    <UnmountedClassName>
+      <ComponentContext.Provider animationDriver={config?.animations}>
+        <ThemeProvider
+          themeClassNameOnRoot={
+            themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+          }
+          disableRootThemeClass={
+            disableRootThemeClass ?? getSetting('disableRootThemeClass')
+          }
+          defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
+          reset={reset}
+          className={className}
+        >
+          {children}
+        </ThemeProvider>
+      </ComponentContext.Provider>
+    </UnmountedClassName>
+  )
+
+  if (getSetting('disableSSR')) {
+    contents = <ClientOnly>{contents}</ClientOnly>
+  }
+
   return (
     <>
-      <UnmountedClassName>
-        <ComponentContext.Provider animationDriver={config?.animations}>
-          <ThemeProvider
-            themeClassNameOnRoot={
-              themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
-            }
-            disableRootThemeClass={
-              disableRootThemeClass ?? getSetting('disableRootThemeClass')
-            }
-            defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
-            reset={reset}
-            className={className}
-          >
-            {children}
-          </ThemeProvider>
-        </ComponentContext.Provider>
-      </UnmountedClassName>
+      {contents}
 
       {process.env.TAMAGUI_TARGET !== 'native' &&
-        process.env.TAMAGUI_REACT_19 &&
+        IS_REACT_19 &&
         config &&
         !disableInjectCSS && (
           <style

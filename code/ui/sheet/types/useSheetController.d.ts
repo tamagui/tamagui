@@ -7,6 +7,7 @@ export declare const useSheetController: () => {
 };
 export declare const SheetControllerContext: React.Context<SheetControllerContextValue | null>;
 export type SheetControllerContextValue = {
+    id?: string;
     disableDrag?: boolean;
     open?: boolean;
     hidden?: boolean;

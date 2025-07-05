@@ -22,7 +22,7 @@ import {
   useResponderEvents,
 } from '@tamagui/react-native-web-internals'
 
-import createElement from '../createElement/index'
+import { useCreateElement } from '../createElement/index'
 import type { PlatformMethods } from '../types'
 import type { TextInputProps } from './types'
 
@@ -142,6 +142,8 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       secureTextEntry = false,
       selection,
       selectTextOnFocus,
+      showSoftInputOnFocus,
+      caretHidden,
       spellCheck,
     } = props
 
@@ -227,14 +229,13 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
         // added by `usePlatformMethods`. This is temporarily until an API like
         // `TextInput.clear(hostRef)` is added to React Native.
         if (hostNode != null) {
-          hostNode.clear = function () {
+          hostNode.clear = () => {
             if (hostNode != null) {
               hostNode.value = ''
             }
           }
-          hostNode.isFocused = function () {
-            return hostNode != null && TextInputState.currentlyFocusedField() === hostNode
-          }
+          hostNode.isFocused = () =>
+            hostNode != null && TextInputState.currentlyFocusedField() === hostNode
           handleContentSizeChange(hostNode)
         }
       },
@@ -400,8 +401,11 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       styles.textinput$raw,
       styles.placeholder,
       props.style,
+      caretHidden && styles.caretHidden,
     ]
     supportedProps.type = multiline ? undefined : type
+    supportedProps.virtualkeyboardpolicy =
+      showSoftInputOnFocus === false ? 'manual' : 'auto'
 
     const platformMethodsRef = usePlatformMethods(supportedProps)
 
@@ -413,7 +417,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
     const componentDirection = props.dir || langDirection
     const writingDirection = componentDirection || contextDirection
 
-    const element = createElement(component, supportedProps, {
+    const element = useCreateElement(component, supportedProps, {
       writingDirection,
     })
 
@@ -432,9 +436,16 @@ TextInput.displayName = 'TextInput'
 TextInput.State = TextInputState
 
 const styles = StyleSheet.create({
-  textinput$raw: {},
+  textinput$raw: {
+    MozAppearance: 'textfield',
+    WebkitAppearance: 'none',
+    appearance: 'none',
+  },
   placeholder: {
     placeholderTextColor: 'var(--placeholderTextColor)',
+  },
+  caretHidden: {
+    caretColor: 'transparent',
   },
 })
 

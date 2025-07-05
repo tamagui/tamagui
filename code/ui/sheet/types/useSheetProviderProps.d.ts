@@ -3,7 +3,6 @@ import type { TamaguiElement } from '@tamagui/core';
 import type { ScrollBridge, SheetProps } from './types';
 import type { SheetOpenState } from './useSheetOpenState';
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
-    scrollEnabled: boolean;
     setHasScrollView: (val: boolean) => void;
 };
 export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {
@@ -17,8 +16,8 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     hidden: boolean;
-    contentRef: React.RefObject<TamaguiElement>;
-    handleRef: React.RefObject<TamaguiElement>;
+    contentRef: React.RefObject<TamaguiElement | null>;
+    handleRef: React.RefObject<TamaguiElement | null>;
     frameSize: number;
     setFrameSize: React.Dispatch<React.SetStateAction<number>>;
     dismissOnOverlayPress: boolean;

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 export interface PortalItemProps {
-  passthrough?: boolean
+  passThrough?: boolean
 
   /**
    * Portal's key or name to be used as an identifier.

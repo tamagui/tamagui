@@ -6,6 +6,8 @@ export type ThemeInfo = {
 	cache: Map<any, any>;
 };
 export declare const getThemeInfo: (theme: GenericTheme | ThemeMask, name?: string) => ThemeInfo | undefined;
-export declare const setThemeInfo: (theme: GenericTheme | ThemeMask, info: Pick<ThemeInfo, "palette" | "definition" | "options"> & { name?: string }) => void;
+export declare const setThemeInfo: (theme: GenericTheme | ThemeMask, info: Pick<ThemeInfo, "palette" | "definition" | "options"> & {
+	name?: string;
+}) => void;
 
 //# sourceMappingURL=themeInfo.d.ts.map

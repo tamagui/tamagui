@@ -23,7 +23,7 @@ export function useFocusable({
 }) {
   const { id, onChangeText, value, defaultValue } = props
   const inputValue = React.useRef(value || defaultValue || '')
-  const unregisterFocusable = React.useRef<() => void | undefined>()
+  const unregisterFocusable = React.useRef<() => void | undefined>(undefined)
 
   const focusAndSelect = React.useCallback((input: any) => {
     input.focus()

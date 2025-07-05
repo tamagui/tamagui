@@ -1,4 +1,4 @@
-import type { GroupState } from '../types'
+import type { ChildGroupState } from '../types'
 
 export type TamaguiComponentState = {
   unmounted: boolean | 'should-enter'
@@ -13,6 +13,8 @@ export type TamaguiComponentState = {
     style?: any
     avoidClasses?: boolean
   }
-  // for groups:
-  group?: Record<string, GroupState>
+
+  // this is used by the component itself to figure out group styles:
+  group?: Record<string, ChildGroupState>
+  hasDynGroupChildren?: boolean
 }

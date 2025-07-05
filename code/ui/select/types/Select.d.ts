@@ -234,11 +234,11 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         unstyled?: boolean | undefined;
         active?: boolean | undefined;
     }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
-        icon?: JSX.Element | React.FunctionComponent<{
+        icon?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | null;
-        iconAfter?: JSX.Element | React.FunctionComponent<{
+        iconAfter?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | null;
@@ -324,11 +324,11 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         unstyled?: boolean | undefined;
         active?: boolean | undefined;
     }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
-        icon?: JSX.Element | React.FunctionComponent<{
+        icon?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | null;
-        iconAfter?: JSX.Element | React.FunctionComponent<{
+        iconAfter?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | null;
@@ -453,5 +453,6 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
 };
 //# sourceMappingURL=Select.d.ts.map

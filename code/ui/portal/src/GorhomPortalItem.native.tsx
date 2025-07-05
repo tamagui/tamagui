@@ -15,7 +15,7 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     handleOnUnmount: _providedHandleOnUnmount,
     handleOnUpdate: _providedHandleOnUpdate,
     children,
-    passthrough,
+    passThrough,
   } = props
 
   const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
@@ -47,7 +47,7 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
   })
 
   useIsomorphicLayoutEffect(() => {
-    if (passthrough) return
+    if (passThrough) return
 
     handleOnMount()
     return () => {
@@ -56,10 +56,10 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
   }, [])
 
   useEffect(() => {
-    if (passthrough) return
+    if (passThrough) return
 
     handleOnUpdate()
   }, [children])
 
-  return passthrough ? children : null
+  return passThrough ? children : null
 }

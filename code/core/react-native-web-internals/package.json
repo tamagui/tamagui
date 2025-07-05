@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-internals",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -35,11 +35,15 @@
     "@tamagui/react-native-use-pressable": "workspace:*",
     "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/simple-hash": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react": "*"
+    "@tamagui/use-element-layout": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "license": "MIT",
   "tags": [

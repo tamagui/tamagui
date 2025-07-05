@@ -14,7 +14,7 @@ import type {
   ThemeableProps,
 } from '@tamagui/web'
 import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
-import type { FunctionComponent, ReactNode } from 'react'
+import type { FunctionComponent, ReactNode, JSX } from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
@@ -156,7 +156,7 @@ export const ListItemSubtitle = styled(ListItemText, {
           shift: -1,
           excludeHalfSteps: true,
         })
-        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras)
+        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras as any)
         return fontStyle
       },
     },

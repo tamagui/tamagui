@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-font-sized",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

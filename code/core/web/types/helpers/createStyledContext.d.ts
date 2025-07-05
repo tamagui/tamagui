@@ -1,5 +1,5 @@
 import type { Context, ProviderExoticComponent, ReactNode } from 'react';
-export type StyledContext<Props extends Object = any> = Omit<Context<Props>, 'Provider'> & {
+export type StyledContext<Props extends Object = any> = Context<Props> & {
     context: Context<Props>;
     props: Object | undefined;
     Provider: ProviderExoticComponent<Partial<Props | undefined> & {

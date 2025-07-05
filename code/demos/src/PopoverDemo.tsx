@@ -1,7 +1,17 @@
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import type { PopoverProps } from 'tamagui'
-import { Adapt, Button, Input, isWeb, Label, Popover, XStack, YStack } from 'tamagui'
+import {
+  Adapt,
+  Button,
+  Input,
+  isWeb,
+  Label,
+  Popover,
+  Sheet,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 export function PopoverDemo() {
   const [shouldAdapt, setShouldAdapt] = useState(true)
@@ -58,17 +68,17 @@ export function Demo({
 
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
-          <Popover.Sheet animation="medium" modal dismissOnSnapToBottom>
-            <Popover.Sheet.Frame padding="$4">
+          <Sheet animation="medium" modal dismissOnSnapToBottom>
+            <Sheet.Frame padding="$4">
               <Adapt.Contents />
-            </Popover.Sheet.Frame>
-            <Popover.Sheet.Overlay
+            </Sheet.Frame>
+            <Sheet.Overlay
               backgroundColor="$shadowColor"
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
-          </Popover.Sheet>
+          </Sheet>
         </Adapt>
       )}
 
@@ -76,7 +86,7 @@ export function Demo({
         borderWidth={1}
         borderColor="$borderColor"
         width={300}
-        height={300}
+        height={200}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate

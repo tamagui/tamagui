@@ -57,7 +57,7 @@ export function PropsTable({
             <YStack width="100%">
               <XStack
                 pos="relative"
-                py="$2"
+                py="$1"
                 bg="$background"
                 px="$4"
                 $sm={{ flexDirection: 'column' }}
@@ -70,7 +70,7 @@ export function PropsTable({
                     fontFamily="$mono"
                     textTransform="none"
                     textDecorationLine={deprecated ? 'line-through' : 'none'}
-                    size="$6"
+                    size="$5"
                     width={280}
                   >
                     {name}
@@ -147,7 +147,7 @@ export function PropsTable({
 
               {!!description && (
                 <YStack py="$1" px="$4">
-                  <Paragraph size="$5" o={0.65}>
+                  <Paragraph size="$3" o={0.65}>
                     {description}
                   </Paragraph>
                 </YStack>

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bento",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -47,7 +47,6 @@
   },
   "scripts": {
     "build": "NEEDS_UNLOCK=1 tamagui-build --skip-types || ./setup-unencrypted.sh",
-    "typecheck": "tsc",
     "watch": "NEEDS_UNLOCK=1 tamagui-build --skip-types --watch",
     "clean": "tamagui-build clean",
     "dev:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
@@ -79,23 +78,24 @@
     "@tamagui/use-store": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
+    "@vxrn/color-scheme": "^1.1.502",
     "awesome-phonenumber": "^6.4.0",
-    "expo": "^52.0.23",
-    "expo-document-picker": "~13.0.1",
-    "expo-image-picker": "~16.0.3",
-    "expo-linear-gradient": "~14.0.1",
+    "expo": "53.0.7",
+    "expo-document-picker": "~13.1.6",
+    "expo-image-picker": "~16.1.4",
+    "expo-linear-gradient": "~14.1.5",
     "foxact": "^0.2.33",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
-    "react-native": "^0.76.5",
+    "react-native": "^0.79.2",
     "react-native-gesture-handler": "~2.20.2",
-    "react-native-reanimated": "~3.16.1",
-    "react-native-safe-area-context": "4.12.0",
-    "react-native-svg": "15.8.0",
+    "react-native-reanimated": "^3.18.0",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-svg": "15.11.2",
     "react-native-web": "^0.20.0",
     "swr": "^2.2.5",
     "tamagui": "workspace:*",
-    "zod": "^3.24.1"
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -103,14 +103,12 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/babel-plugin": "workspace:*",
     "@tamagui/build": "workspace:*",
-    "@welldone-software/why-did-you-render": "^7.0.1",
     "html-webpack-plugin": "^5.5.0",
     "metro-runtime": "*",
     "mini-css-extract-plugin": "^2.9.1",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
     "webpack": "^5.88.2",
-    "webpack-bundle-analyzer": "^4.9.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
   }

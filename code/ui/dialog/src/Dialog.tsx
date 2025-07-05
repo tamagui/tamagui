@@ -17,7 +17,7 @@ import { createContext, createContextScope } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
-import { FocusScope } from '@tamagui/focus-scope'
+import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { Portal, PortalItem, resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -48,19 +48,14 @@ interface DialogProps {
    * Used to disable the remove scroll functionality when open
    */
   disableRemoveScroll?: boolean
-
-  /**
-   * @see https://github.com/theKashey/react-remove-scroll#usage
-   */
-  allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
 }
 
 type NonNull<A> = Exclude<A, void | null>
 
 type DialogContextValue = {
   disableRemoveScroll?: boolean
-  triggerRef: React.RefObject<TamaguiElement>
-  contentRef: React.RefObject<TamaguiElement>
+  triggerRef: React.RefObject<TamaguiElement | null>
+  contentRef: React.RefObject<TamaguiElement | null>
   contentId: string
   titleId: string
   descriptionId: string
@@ -68,7 +63,6 @@ type DialogContextValue = {
   open: NonNull<DialogProps['open']>
   onOpenChange: NonNull<DialogProps['onOpenChange']>
   modal: NonNull<DialogProps['modal']>
-  allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
   scopeKey: string
   adaptName: string
 }
@@ -391,14 +385,7 @@ const DialogContent = DialogContentFrame.extractable(
     }
 
     return (
-      <RemoveScroll
-        forwardProps
-        enabled={context.open}
-        allowPinchZoom={context.allowPinchZoom}
-        shards={[context.contentRef]}
-        // causes lots of bugs on touch web on site
-        removeScrollBar={false}
-      >
+      <RemoveScroll enabled={context.open}>
         <div data-remove-scroll-container className="_dsp_contents">
           {contents}
         </div>
@@ -409,8 +396,7 @@ const DialogContent = DialogContentFrame.extractable(
 
 /* -----------------------------------------------------------------------------------------------*/
 
-interface DialogContentTypeProps
-  extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
+interface DialogContentTypeProps extends DialogContentImplProps {
   context: DialogContextValue
 }
 
@@ -559,7 +545,10 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       ...contentProps
     } = props
 
-    const contentRef = React.useRef<HTMLDivElement>(null)
+    const contentRef = React.useRef<HTMLDivElement>(
+      // TODO react 19 type workaround
+      undefined as unknown as HTMLDivElement
+    )
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isAdapted = useAdaptIsActive()
 
@@ -736,9 +725,7 @@ const TitleWarning: React.FC<TitleWarningProps> = ({ titleId }) => {
   if (process.env.NODE_ENV === 'development') {
     const titleWarningContext = useWarningContext(TITLE_WARNING_NAME)
 
-    const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
-
-If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.`
+    const MESSAGE = `\`${titleWarningContext.contentName}\` wants a \`${titleWarningContext.titleName}\` to be accessible. If you want to hide the \`${titleWarningContext.titleName}\`, wrap it with <VisuallyHidden />.`
 
     React.useEffect(() => {
       if (!isWeb) return
@@ -809,7 +796,6 @@ const Dialog = withStaticProperties(
       defaultOpen = false,
       onOpenChange,
       modal = true,
-      allowPinchZoom = false,
       disableRemoveScroll = false,
     } = props
 
@@ -845,7 +831,6 @@ const Dialog = withStaticProperties(
       onOpenChange: setOpen,
       onOpenToggle,
       modal,
-      allowPinchZoom,
       disableRemoveScroll,
       adaptName,
     }
@@ -882,6 +867,7 @@ const Dialog = withStaticProperties(
     Description: DialogDescription,
     Close: DialogClose,
     Sheet: Sheet.Controlled,
+    FocusScope: FocusScopeController,
     Adapt,
   }
 )

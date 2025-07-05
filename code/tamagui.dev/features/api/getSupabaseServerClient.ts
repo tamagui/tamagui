@@ -5,7 +5,7 @@ import {
 } from '@supabase/ssr'
 import { setResponseHeaders } from 'one'
 
-export function getSupabaseServerClient(request: Request) {
+export function getSupabaseServerClient(request?: Request) {
   if (!import.meta.env.NEXT_PUBLIC_SUPABASE_URL) {
     throw new Error(`Missing NEXT_PUBLIC_SUPABASE_URL`)
   }
@@ -13,7 +13,7 @@ export function getSupabaseServerClient(request: Request) {
     throw new Error(`Missing NEXT_PUBLIC_SUPABASE_ANON_KEY`)
   }
 
-  const cookies = parseCookieHeader(request.headers.get('Cookie') ?? '')
+  const cookies = parseCookieHeader(request?.headers.get('Cookie') ?? '')
 
   return createServerClient(
     import.meta.env.NEXT_PUBLIC_SUPABASE_URL!,

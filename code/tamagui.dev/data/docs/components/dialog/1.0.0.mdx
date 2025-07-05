@@ -7,8 +7,6 @@ package: dialog
 demoName: Dialog
 ---
 
-<InstallBanner name="@tamagui/dialog" />
-
 <HeroContainer showAnimationDriverControl>
   <DialogDemo />
 </HeroContainer>
@@ -78,6 +76,13 @@ export default () => (
         {/* ... */}
       </Dialog.Content>
     </Dialog.Portal>
+    
+    {/* Optional: Control focus behavior */}
+    <Dialog.FocusScope loop trapped focusOnIdle={true}>
+      <Dialog.FocusScope.Scope>
+        {/* Focus scope will be applied to children */}
+      </Dialog.FocusScope.Scope>
+    </Dialog.FocusScope>
   </Dialog>
 )
 ```
@@ -219,6 +224,49 @@ Closes the Dialog, accepts the same props as YStack. Recommended to use with you
 />
 
 Just [Tamagui Props](/docs/intro/props).
+
+### Dialog.FocusScope
+
+Provides access to the underlying FocusScope component used by Dialog for focus management. Can be used to control focus behavior from a parent component.
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether focus management is enabled`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      default: 'false',
+      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on mount. Can be prevented`,
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+    },
+  ]}
+/>
 
 ### Dialog.Sheet
 

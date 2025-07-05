@@ -117,6 +117,18 @@ If given a `Variable` - which comes from a parsed theme or token returned from `
 
 Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
 
+### setOnLayoutStrategy
+
+This is a low-level utility to control `onLayout` performance. By default, Tamagui `onLayout` on the web uses the `"async"` strategy (see below), which gives a good balance of accuracy and performance. For extremely accurate to native `onLayout`, you can use `"sync"`, but it can cause performance issues in typical usage.
+
+Call `setOnLayoutStrategy` with a single string argument:
+
+- `"off"` will pause all `onLayout` callbacks from running.
+- `"sync"` will run every frame and update every frame if necessary.
+- `"async"` will use an async getBoundingClientRect strategy that avoids repaints/reflows, and also waits 2 frames of debouncing before triggering the callback.
+
+The `async` stretegy generally has great performance on web, and it will also ensure to call `onLayout` sync on mount the first time, so you avoid jitters.
+
 ---
 
 ## Hooks

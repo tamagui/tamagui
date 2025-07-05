@@ -15,9 +15,18 @@ export interface Variable<A = any> {
   val: A
   name: string
   key: string
+  needsPx?: boolean // Flag to indicate this token should get px units
 }
 
 export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
+
+/**
+ * Type for the px helper object that indicates a token value needs px units
+ */
+export interface PxValue {
+  val: number
+  needsPx: true
+}
 
 function constructCSSVariableName(name: string) {
   return `var(--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${name})`
@@ -114,4 +123,18 @@ export const createCSSVariable = (nameProp: string, includeVar = true) => {
   }
   const name = simpleHash(nameProp, 60)
   return includeVar ? constructCSSVariableName(name) : name
+}
+
+/**
+ * Helper function to mark a token value as needing px units.
+ * Usage: px(100) creates a token that will become "100px" on web, 100 on native.
+ *
+ * @param value - The numeric value
+ * @returns A special object that indicates this value needs px units
+ */
+export function px(value: number): PxValue {
+  return {
+    val: value,
+    needsPx: true,
+  }
 }

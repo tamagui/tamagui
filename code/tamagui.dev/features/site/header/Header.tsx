@@ -1,6 +1,6 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
-import { createShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
+import { useCreateShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
@@ -277,6 +277,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
+  const context = React.useContext(SlidingPopoverContext)
   const userSwr = useUser()
   const haveUser = !!userSwr.data?.user
 
@@ -294,6 +295,10 @@ const HeaderMenuButton = () => {
           onPress={(e) => {
             if (isTouchable) {
               setOpen(!open)
+              // Ensure the active state is set for the menu to open properly on mobile
+              // On mobile, we just need to set the active state, not the layout
+              // The Sheet doesn't need positioning data
+              context.setActive('menu')
               return
             }
             if (isOnLink) {
@@ -435,28 +440,28 @@ export const HeaderLink = (props: {
 }
 
 const SlidingPopoverContext = React.createContext({
-  setActive(id: ID, layout: LayoutRectangle) {},
+  setActive(id: ID, layout?: LayoutRectangle) {},
   close() {},
 })
 
 export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
-    const [layout, setLayout_] = React.useState<LayoutRectangle>()
-    const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
+    const [layout, setLayout_] = React.useState<LayoutRectangle | undefined>()
+    const setLayout = useCreateShallowSetState(setLayout_)
     const triggerRef = React.useRef<HTMLElement>(null)
     const combinedRef = useComposedRefs(ref)
     const [hovered, setHovered] = React.useState(false)
     const getLayout = useGet(layout)
 
-    useImperativeHandle(ref, () => {
-      return {
-        close: () => {
-          context.close()
-          setHovered(false)
-        },
-      }
-    })
+    // useImperativeHandle(ref, () => {
+    //   return {
+    //     close: () => {
+    //       context.close()
+    //       setHovered(false)
+    //     },
+    //   }
+    // }, [context])
 
     React.useEffect(() => {
       if (!hovered) return
@@ -530,6 +535,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
+  const pointerFine = useMedia().pointerFine
 
   useFocusEffect(() => {
     context.close()
@@ -549,7 +555,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: 1400,
     compiler: 117,
     ui: 1400,
-    theme: data?.user ? 300 : 130,
+    theme: data?.user ? 300 : 240,
     menu: 390,
   }
 
@@ -563,15 +569,16 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       }}
       enableAnimationForPositionChange
       animation="medium"
-      bg="$background08"
+      bg="$color3"
       backdropFilter="blur(40px)"
       maxHeight="90vh"
       maxWidth={360}
       minWidth={360}
-      elevation="$8"
+      elevation="$2"
+      borderWidth={3}
+      borderColor="$color2"
       padding={0}
       br="$6"
-      borderWidth={0}
       opacity={1}
       y={0}
       enterStyle={{
@@ -583,26 +590,62 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         opacity: 0,
       }}
     >
-      <Popover.Arrow bg="$background08" size="$3.5" />
+      <Popover.Arrow bg="$color3" size="$3.5" />
 
-      <YStack
-        $pointerFine={{
-          w: 290,
-        }}
-        w="100%"
-        transition="all ease-in 200ms"
-        mih={`calc(min(${heights[active]}px, 80vh))`}
-        ov="hidden"
-        flex={1}
-        br="$6"
-      >
-        <AnimatePresence custom={{ going }} initial={false}>
+      {pointerFine ? (
+        <YStack
+          w="100%"
+          transition="all ease-in 200ms"
+          mih={`calc(min(${heights[active]}px, 80vh))`}
+          ov="hidden"
+          maxHeight="100%"
+          br="$6"
+          flex={1}
+        >
+          <AnimatePresence custom={{ going }} initial={false}>
+            <HeaderMenuContents key={active} id={active} />
+          </AnimatePresence>
+        </YStack>
+      ) : (
+        <YStack p="$4">
           <HeaderMenuContents key={active} id={active} />
-        </AnimatePresence>
-      </YStack>
+        </YStack>
+      )}
     </Popover.Content>
   )
 })
+
+const getDocsSectionFromPath = (pathName: string): 'core' | 'compiler' | 'ui' | null => {
+  if (!pathName || pathName === '/' || pathName === '') return null
+  if (pathName.startsWith('/ui/')) return 'ui'
+  if (
+    pathName.startsWith('/docs/intro/compiler') ||
+    pathName.startsWith('/docs/intro/benchmarks') ||
+    pathName.startsWith('/docs/intro/why-a-compiler')
+  )
+    return 'compiler'
+  if (
+    pathName.startsWith('/docs') ||
+    pathName.startsWith('/community') ||
+    pathName.startsWith('/blog')
+  )
+    return 'core'
+  return null
+}
+
+const ActivePageDocsMenuContents = () => {
+  const pathName = usePathname()
+  const section = getDocsSectionFromPath(pathName)
+
+  if (!section) return null
+
+  return (
+    <>
+      <Separator bc="$color02" o={0.25} my="$4" />
+      <DocsMenuContents inMenu section={section} />
+    </>
+  )
+}
 
 const HeaderMenuContents = (props: { id: ID }) => {
   const { data } = useUser()
@@ -612,14 +655,20 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoTheme = useBentoTheme()
   const pathName = usePathname()
   const isOnBentoPage = pathName.startsWith('/bento')
+  const isMobile = useMedia().maxMd
 
-  /**
-   * When the theme_histories are fetched,
-   * we can apply one of them to Bento components from dropdown
-   */
-  const content = (() => {
+  const contents = (() => {
+    /**
+     * When the theme_histories are fetched,
+     * we can apply one of them to Bento components from dropdown
+     */
     if (props.id === 'menu') {
-      return <HeaderMenuMoreContents />
+      return (
+        <>
+          <HeaderMenuMoreContents />
+          {isMobile && <ActivePageDocsMenuContents />}
+        </>
+      )
     }
 
     if (props.id === 'theme') {
@@ -715,18 +764,33 @@ const HeaderMenuContents = (props: { id: ID }) => {
         </YStack>
       )
     }
+
     return <DocsMenuContents inMenu section={props.id} />
   })()
 
+  // For mobile, render content directly without Frame wrapper
+  if (isMobile) {
+    return (
+      <YStack w="100%" p="$3">
+        {contents}
+      </YStack>
+    )
+  }
+
+  // For desktop, use Frame wrapper
   return (
     <Frame>
+      {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}
       <Popover.ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1, width: '100%' }}
+        style={{
+          flex: 1,
+          width: '100%',
+        }}
         contentContainerStyle={{ width: '100%' }}
       >
-        <YStack miw={230} w="100%" p="$3">
-          {content}
+        <YStack w="100%" p="$3">
+          {contents}
         </YStack>
       </Popover.ScrollView>
     </Frame>
@@ -763,7 +827,7 @@ const HeaderMenuMoreContents = () => {
 
         <Link asChild href="/docs/intro/compiler-install" onPress={handlePress}>
           <HeadAnchor grid half>
-            Compile
+            Compiler
           </HeadAnchor>
         </Link>
 
@@ -934,7 +998,9 @@ const HeadAnchor = styled(Paragraph, {
 })
 
 const Frame = styled(YStack, {
+  className: 'header-popover-frame',
   animation: 'medium',
+  flex: 1,
   br: '$5',
   ov: 'hidden',
   position: 'absolute',

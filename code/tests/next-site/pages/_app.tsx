@@ -12,8 +12,6 @@ import { TamaguiProvider } from 'tamagui'
 import Head from 'next/head'
 import config from '../tamagui.config'
 
-// import '../lib/wdyr'
-
 Error.stackTraceLimit = Infinity
 
 // prevent next.js from prefetching stuff

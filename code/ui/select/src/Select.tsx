@@ -3,6 +3,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
 import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
+import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -62,6 +63,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     // We ignore `className` and `style` as this part shouldn't be styled.
     const context = useSelectContext(VALUE_NAME, __scopeSelect)
     const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
+    // @ts-ignore TODO react 19 type needs fix
     const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
     const children = childrenProp ?? context.selectedItem
     const isEmptyValue = context.value == null || context.value === ''
@@ -319,7 +321,7 @@ const SelectSheetController = (
         }
       }}
       open={context.open}
-      hidden={isAdapted === false}
+      hidden={!isAdapted}
     >
       {props.children}
     </SheetController>
@@ -362,11 +364,12 @@ export const Select = withStaticProperties(
     Value: SelectValue,
     Viewport: SelectViewport,
     Sheet: Sheet.Controlled,
+    FocusScope: FocusScopeController,
   }
 )
 
 function useEmitter<A>() {
-  const listeners = React.useRef<Set<Function>>()
+  const listeners = React.useRef<Set<Function>>(null)
   if (!listeners.current) {
     listeners.current = new Set()
   }

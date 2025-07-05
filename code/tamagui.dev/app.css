@@ -56,12 +56,12 @@ p a,
 
 :root:root .is_Paragraph a {
   text-decoration: underline;
-  text-decoration-color: var(--color025);
+  text-decoration-color: var(--color02);
 }
 
 :root:root .is_Paragraph a:hover {
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color05);
+  text-decoration-color: var(--color04);
 }
 
 a {

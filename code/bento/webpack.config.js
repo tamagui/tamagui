@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { shouldExclude, TamaguiPlugin } = require('tamagui-loader')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'

@@ -1,4 +1,8 @@
 import { useEffect, useLayoutEffect } from 'react'
+// @ts-ignore
+import { use } from 'react'
+
+export const IS_REACT_19: boolean = !!use
 
 export const isWeb: boolean = true
 export const isWindowDefined: boolean = typeof window !== 'undefined'

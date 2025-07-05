@@ -57,7 +57,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const downArrowRef = React.useRef<HTMLDivElement | null>(null)
   const allowSelectRef = React.useRef(false)
   const allowMouseUpRef = React.useRef(true)
-  const selectTimeoutRef = React.useRef<any>()
+  const selectTimeoutRef = React.useRef<any>(null)
   const state = React.useRef({
     isMouseOutside: false,
     isTyping: false,

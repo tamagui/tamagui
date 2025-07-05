@@ -11,12 +11,12 @@ declare function createCollection<ItemElement extends TamaguiElement, ItemData =
     }>;
     readonly Slot: React.ForwardRefExoticComponent<CollectionProps & {
         __scopeCollection?: string | undefined;
-    } & React.RefAttributes<TamaguiElement>>;
+    } & React.RefAttributes<TamaguiElement | undefined>>;
     readonly ItemSlot: React.ForwardRefExoticComponent<React.PropsWithoutRef<ScopedProps<ItemData & {
         children: React.ReactNode;
-    }, "Collection">> & React.RefAttributes<ItemElement>>;
+    }, "Collection">> & React.RefAttributes<ItemElement | undefined>>;
 }, (__scopeCollection: any) => () => ({
-    ref: React.RefObject<ItemElement>;
+    ref: React.RefObject<ItemElement | undefined>;
 } & ItemData)[]];
 export { createCollection };
 export type { CollectionProps };

@@ -2,6 +2,7 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React from 'react'
 import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
+import { GroupContext } from '../contexts/GroupContext'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import { subscribeToContextGroup } from '../helpers/subscribeToContextGroup'
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
@@ -87,10 +88,11 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
       return true
     },
   })
-  const componentContext = React.useContext(ComponentContext as any) as any
+  const componentContext = React.useContext(ComponentContext)
+  const groupContext = React.useContext(GroupContext)
   const { state, disabled, setStateShallow } = useComponentState(
     props,
-    componentContext,
+    componentContext.animationDriver,
     staticConfig,
     getConfig()
   )
@@ -116,10 +118,11 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
       ...opts,
     },
     null,
-    componentContext
+    componentContext,
+    groupContext
   )
 
-  const { mediaGroups, pseudoGroups } = splitStyles
+  const { mediaGroups, pseudoGroups } = splitStyles || {}
 
   useIsomorphicLayoutEffect(() => {
     if (disabled) {
@@ -131,18 +134,25 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
       return
     }
 
-    return subscribeToContextGroup({
-      componentContext,
-      setStateShallow,
-      state,
-      mediaGroups,
-      pseudoGroups,
-    })
+    if (groupContext) {
+      return subscribeToContextGroup({
+        groupContext,
+        setStateShallow,
+        mediaGroups,
+        pseudoGroups,
+      })
+    }
   }, [
     disabled,
+    groupContext,
     pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
     mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
   ])
 
-  return [splitStyles.viewProps, splitStyles.style || {}, theme, mediaState] as any
+  return [
+    splitStyles?.viewProps || {},
+    splitStyles?.style || {},
+    theme,
+    mediaState,
+  ] as any
 }

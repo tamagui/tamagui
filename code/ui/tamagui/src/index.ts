@@ -68,6 +68,7 @@ export type {
   FontLanguages,
   FontLetterSpacingTokens,
   FontLineHeightTokens,
+  FontFamilyTokens,
   FontSizeTokens,
   FontStyleTokens,
   FontTokens,
@@ -131,6 +132,7 @@ export type {
 export {
   Configuration,
   ComponentContext,
+  GroupContext,
   FontLanguage,
   // components
   Spacer,
@@ -173,6 +175,7 @@ export {
   mediaObjectToString,
   mediaQueryConfig,
   mediaState,
+  setOnLayoutStrategy,
   spacedChildren,
   styled,
   themeable,

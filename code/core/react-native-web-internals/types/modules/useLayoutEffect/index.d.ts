@@ -9,6 +9,6 @@ import React from "react"; /**
  *
  * @flow
  */
-declare const useLayoutEffectImpl: typeof React.useLayoutEffect;
+declare const useLayoutEffectImpl: typeof React.useEffect;
 export default useLayoutEffectImpl;
 //# sourceMappingURL=index.d.ts.map

@@ -4,15 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * @format
  * @format
  */
-'use strict'
 
 import AnimatedInterpolation from './AnimatedInterpolation'
 import AnimatedWithChildren from './AnimatedWithChildren'
 
 class AnimatedModulo extends AnimatedWithChildren {
+  _a
+  _modulus
+
   constructor(a, modulus) {
     super()
     this._a = a
@@ -21,7 +23,6 @@ class AnimatedModulo extends AnimatedWithChildren {
 
   __makeNative(platformConfig) {
     this._a.__makeNative(platformConfig)
-
     super.__makeNative(platformConfig)
   }
 
@@ -39,7 +40,6 @@ class AnimatedModulo extends AnimatedWithChildren {
 
   __detach() {
     this._a.__removeChild(this)
-
     super.__detach()
   }
 

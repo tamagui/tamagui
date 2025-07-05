@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -35,7 +35,9 @@
   },
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
+    "@tamagui/use-async": "workspace:*",
     "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {

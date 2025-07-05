@@ -17,7 +17,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const GITHUB_URL = 'https://github.com' as const
   const REPO_NAME = 'tamagui/tamagui' as const
   const editUrl =
-    `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx` as const
+    `${GITHUB_URL}/${REPO_NAME}/edit/main/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx` as const
 
   const pageContents = React.useMemo(() => {
     return (
@@ -144,6 +144,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               title="Edit this page on GitHub."
               rel="noopener noreferrer"
               target="_blank"
+              o={0.4}
             >
               Edit this page on GitHub.
             </Link>

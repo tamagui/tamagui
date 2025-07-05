@@ -7,7 +7,6 @@ import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
-
 import { TOAST_CONTEXT } from './constants'
 import { ToastPortal } from './ToastPortal'
 import type { ScopedProps } from './ToastProvider'
@@ -112,6 +111,7 @@ const ToastViewport = React.memo(
         },
         [name, context.viewports]
       )
+      // @ts-ignore TODO react 19 type needs fix
       const composedRefs = useComposedRefs(forwardedRef, ref, onViewportChange)
       const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
       const hasToasts = context.toastCount > 0
@@ -419,8 +419,8 @@ function getTabbableCandidates(container: TamaguiElement) {
 
 export {
   ToastViewport,
-  type ToastViewportProps,
   VIEWPORT_DEFAULT_HOTKEY,
   VIEWPORT_PAUSE,
   VIEWPORT_RESUME,
+  type ToastViewportProps,
 }

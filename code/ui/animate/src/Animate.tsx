@@ -1,15 +1,17 @@
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, PresenceChild } from '@tamagui/animate-presence'
-import type { JSX } from 'react/jsx-runtime'
+import { startTransition, useEffect, useState } from 'react'
 
 type BaseProps = {
   children: React.ReactNode
+  passThrough?: boolean
 }
 
 type PresenceProps = AnimatePresenceProps & {
   type: 'presence'
   present: boolean
   keepChildrenMounted?: boolean
+  lazyMount?: boolean
 }
 
 export type AnimateProps = BaseProps & PresenceProps
@@ -33,28 +35,56 @@ export type AnimateProps = BaseProps & PresenceProps
  *
  */
 
-export function Animate({ children, type, ...props }: AnimateProps): JSX.Element {
+export function Animate({
+  children,
+  lazyMount,
+  type,
+  present,
+  passThrough,
+  ...props
+}: AnimateProps): React.ReactNode {
+  const [lazyMounted, setLazyMounted] = useState(lazyMount ? false : present)
+
+  useEffect(() => {
+    if (passThrough) return
+    if (!lazyMount) return
+    if (!present) return
+    startTransition(() => {
+      setLazyMounted(present)
+    })
+  }, [lazyMount, present])
+
+  // always immediately unmount
+  const mounted = !present ? false : lazyMount ? lazyMounted : present
+
   if (type === 'presence') {
     if (props.keepChildrenMounted) {
       return (
         <PresenceChild
-          initial={props.initial ? undefined : false}
-          onExitComplete={props.onExitComplete}
-          enterVariant={props.enterVariant}
-          exitVariant={props.exitVariant}
-          enterExitVariant={props.enterExitVariant}
-          // BUGFIX: this causes continous re-renders if keepChildrenMounted is true, see HeaderMenu
-          // but since we always re-render this component on open changes this should be fine to leave off?
-          presenceAffectsLayout={false}
-          isPresent={props.present}
-          custom={props.custom}
+          isPresent
+          {...(!passThrough && {
+            initial: props.initial ? undefined : false,
+            onExitComplete: props.onExitComplete,
+            enterVariant: props.enterVariant,
+            exitVariant: props.exitVariant,
+            enterExitVariant: props.enterExitVariant,
+            // BUGFIX: this causes continous re-renders if keepChildrenMounted is true, see HeaderMenu
+            // but since we always re-render this component on open changes this should be fine to leave off?
+            presenceAffectsLayout: false,
+            isPresent: present,
+            custom: props.custom,
+          })}
         >
           {children as any}
         </PresenceChild>
       )
     }
 
-    return <AnimatePresence {...props}>{props.present ? children : null}</AnimatePresence>
+    return (
+      <AnimatePresence {...props}>
+        {mounted || passThrough ? children : null}
+      </AnimatePresence>
+    )
   }
 
   return <>{children}</>

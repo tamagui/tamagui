@@ -1,11 +1,9 @@
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import { RemoveScroll } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 declare const createDialogScope: import("@tamagui/create-context").CreateScope;
-type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 interface DialogProps {
     children?: React.ReactNode;
     open?: boolean;
@@ -16,16 +14,12 @@ interface DialogProps {
      * Used to disable the remove scroll functionality when open
      */
     disableRemoveScroll?: boolean;
-    /**
-     * @see https://github.com/theKashey/react-remove-scroll#usage
-     */
-    allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 type NonNull<A> = Exclude<A, void | null>;
 type DialogContextValue = {
     disableRemoveScroll?: boolean;
-    triggerRef: React.RefObject<TamaguiElement>;
-    contentRef: React.RefObject<TamaguiElement>;
+    triggerRef: React.RefObject<TamaguiElement | null>;
+    contentRef: React.RefObject<TamaguiElement | null>;
     contentId: string;
     titleId: string;
     descriptionId: string;
@@ -33,7 +27,6 @@ type DialogContextValue = {
     open: NonNull<DialogProps['open']>;
     onOpenChange: NonNull<DialogProps['onOpenChange']>;
     modal: NonNull<DialogProps['modal']>;
-    allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
     scopeKey: string;
     adaptName: string;
 };
@@ -125,7 +118,7 @@ interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContent
     forceMount?: true;
 }
 declare const DialogContent: React.ForwardRefExoticComponent<DialogContentProps & React.RefAttributes<TamaguiElement>>;
-interface DialogContentTypeProps extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
+interface DialogContentTypeProps extends DialogContentImplProps {
     context: DialogContextValue;
 }
 type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, 'onDismiss'> & {
@@ -183,7 +176,7 @@ declare const DialogWarningProvider: (props: {
     docsSlug: string;
 } & {
     children: React.ReactNode;
-}) => JSX.Element;
+}) => React.JSX.Element;
 export type DialogHandle = {
     open: (val: boolean) => void;
 };
@@ -271,6 +264,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
+    FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {

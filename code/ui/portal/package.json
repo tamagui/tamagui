@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -36,16 +36,18 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
-    "@tamagui/use-did-finish-ssr": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "@types/react-dom": "^19.0.3",
-    "react-native": "^0.76.5"
+    "@types/react-dom": "^19.1.6",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "react-native": "*"
   }
 }

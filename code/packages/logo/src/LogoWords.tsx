@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import type { LayoutValue } from '@tamagui/use-element-layout'
+import React, { useEffect, useState } from 'react'
 import type { XStackProps } from 'tamagui'
 import { Circle, XStack } from 'tamagui'
-
 import { useTint } from './useTint'
 
 const rgb = ['#ED0F0F', '#6BCF1A', '#6252F8']
@@ -72,6 +72,8 @@ export const LogoWords: React.MemoExoticComponent<
     index * 18.5 + (18 / 2) * (index / tints.length) + 3 + (index === 6 ? -3 : 0)
   )
 
+  const [layout, setLayout] = useState<LayoutValue>()
+
   return (
     <XStack
       onHoverIn={() => setHovered(true)}
@@ -81,13 +83,15 @@ export const LogoWords: React.MemoExoticComponent<
       marginVertical="$-2"
       position="relative"
       className="logo-words"
+      onLayout={(e) => {
+        setLayout(e.nativeEvent.layout as any)
+      }}
       // @ts-ignore
-      onMouseMove={(e) => {
-        // Get mouse position relative to the element
-        const rect = e.currentTarget.getBoundingClientRect()
-        const x = e.clientX - rect.left
+      onMouseMove={(e: MouseEvent) => {
+        if (!layout) return
+        const x = e.clientX - layout.left
         // Total width divided into 7 sections (one for each letter)
-        const sectionWidth = rect.width / 7
+        const sectionWidth = layout.width / 7
         // Calculate which section we're in (0-6)
         const section = Math.min(6, Math.floor(x / sectionWidth))
         Tint.setTintIndex(section)

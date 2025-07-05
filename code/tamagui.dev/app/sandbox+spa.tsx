@@ -3,9 +3,10 @@ import {
   createStyledContext,
   styled,
   Theme,
+  useConfiguration,
   useThemeWithState,
 } from '@tamagui/web'
-import { memo, useId, useState } from 'react'
+import { memo, useEffect, useId, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -16,12 +17,80 @@ import {
   Popover,
   Square,
   Text,
+  TooltipSimple,
   View,
   XStack,
   YStack,
 } from 'tamagui'
-import { animationsCSS } from '@tamagui/tamagui-dev-config'
+import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
 import { PopoverDemo } from '@tamagui/demos'
+import { LogoWords } from '@tamagui/logo'
+
+export default function Sandbox() {
+  return (
+    <Configuration animationDriver={animationsMotion}>
+      <YStack p="$10" ai="center" jc="center">
+        <SandboxContent />
+        {/* <LogoWords animated /> */}
+      </YStack>
+    </Configuration>
+  )
+}
+
+function SandboxContent() {
+  const config = useConfiguration()
+  console.warn('render', config)
+
+  // useEffect(() => {
+  //   console.info('freeze main thread interval')
+  //   const x = setInterval(() => {
+  //     const startTime = Date.now()
+  //     while (Date.now() < startTime + 20) {
+  //       // Do nothing, just wait
+  //     }
+  //   }, 100)
+  //   return () => {
+  //     clearInterval(x)
+  //   }
+  // }, [])
+
+  return (
+    <View>
+      <YStack
+        animation="lazy"
+        w={500}
+        h={500}
+        bg="red"
+        hoverStyle={{
+          y: 100,
+        }}
+      >
+        <TooltipSimple label="test tooltip">
+          <Button>Close</Button>
+        </TooltipSimple>
+      </YStack>
+    </View>
+  )
+  // return <StyledText customProp="ok">hello world</StyledText>
+
+  // const [x, setX] = useState(false)
+
+  // return (
+  //   <>
+  //     <Button onPress={() => setX(!x)}>go</Button>
+
+  //     <Theme name={x ? 'red' : null}>
+  //       <Y debug="visualize" />
+  //     </Theme>
+  //   </>
+  // )
+}
+
+const Styyled = styled(View)
+
+const Stylable = Styyled.styleable((props) => {
+  return null
+})
 
 const context = createStyledContext({
   customProp: 'ok',
@@ -38,26 +107,6 @@ const StyledText = styled(Text, {
     },
   } as const,
 })
-
-export default function Sandbox() {
-  return (
-    <StyledText debug="verbose" customProp="ok">
-      hello world
-    </StyledText>
-  )
-
-  // const [x, setX] = useState(false)
-
-  // return (
-  //   <>
-  //     <Button onPress={() => setX(!x)}>go</Button>
-
-  //     <Theme name={x ? 'red' : null}>
-  //       <Y debug="visualize" />
-  //     </Theme>
-  //   </>
-  // )
-}
 
 const Y = styled(View, {
   name: 'Button',
@@ -90,7 +139,6 @@ export function MergeStylesTests() {
         animation="bouncy"
         backgroundColor="$color9"
         size={104}
-        debug="verbose"
         borderRadius="$9"
         hoverStyle={{
           scale: 1.2,

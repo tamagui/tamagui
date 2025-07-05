@@ -5,8 +5,8 @@
 
 import type { StyleObject } from '@tamagui/helpers'
 import { simpleHash } from '@tamagui/helpers'
-
-import { getConfig, getConfigMaybe } from '../config'
+import { getConfigMaybe } from '../config'
+import { isMediaKey } from '../hooks/useMedia'
 import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeColor } from './normalizeColor'
@@ -14,7 +14,6 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import type { PseudoDescriptor } from './pseudoDescriptors'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { transformsToString } from './transformsToString'
-import { isMediaKey } from '../hooks/useMedia'
 
 // refactor this file away next...
 

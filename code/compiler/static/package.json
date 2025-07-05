@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -44,7 +44,6 @@
     "@babel/runtime": "^7.25.4",
     "@babel/traverse": "^7.25.4",
     "@babel/types": "^7.25.4",
-    "@tamagui/build": "workspace:*",
     "@tamagui/cli-color": "workspace:*",
     "@tamagui/config-default": "workspace:*",
     "@tamagui/core": "workspace:*",
@@ -68,12 +67,12 @@
     "fs-extra": "^11.2.0",
     "invariant": "^2.2.4",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
     "react-native-web": "^0.20.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
     "@expo/match-media": "^0.4.0",
+    "@tamagui/build": "workspace:*",
     "@types/babel__core": "^7.20.5",
     "@types/find-root": "^1.1.2",
     "@types/node": "^22.1.0",

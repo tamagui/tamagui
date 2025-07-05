@@ -1,4 +1,5 @@
 import type { ScopedProps, SizeTokens } from '@tamagui/core';
+import { createStyledContext } from '@tamagui/core';
 import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, SizeOptions } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
@@ -8,21 +9,32 @@ type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : ne
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
     size?: SizeTokens;
-    placement?: Placement;
-    arrowRef: any;
-    onArrowSize?: (val: number) => void;
     hasFloating: boolean;
     show: boolean;
     arrowStyle?: Partial<Coords> & {
         centerOffset: number;
     };
+    placement?: Placement;
+    arrowRef: any;
+    onArrowSize?: (val: number) => void;
 };
 export declare const PopperContext: import("@tamagui/core").StyledContext<PopperContextValue>;
-export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProvider: React.ProviderExoticComponent<Partial<PopperContextValue> & {
+export declare const PopperPositionContext: typeof createStyledContext;
+export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProvider: React.Provider<PopperContextValue> & React.ProviderExoticComponent<Partial<PopperContextValue> & {
     children?: React.ReactNode;
     scope?: string;
 }>;
+export declare const PopperInfrequentContext: import("@tamagui/core").StyledContext<{
+    size?: SizeTokens;
+}>;
+export declare const usePopperInfrequentContext: (scope?: string) => {
+    size?: SizeTokens;
+};
 export type PopperProps = {
+    /**
+     * Optional, will disable measuring updates when open is false for better performance
+     * */
+    open?: boolean;
     size?: SizeTokens;
     children?: React.ReactNode;
     /**
@@ -54,6 +66,7 @@ export type PopperProps = {
      */
     offset?: OffsetOptions;
     disableRTL?: boolean;
+    passThrough?: boolean;
 };
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>;
 export type PopperSetupOptions = {
@@ -100,6 +113,7 @@ export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("
 type PopperContentElement = HTMLElement | View;
 export type PopperContentProps = SizableStackProps & {
     enableAnimationForPositionChange?: boolean;
+    passThrough?: boolean;
 };
 export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
@@ -177,6 +191,7 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     unstyled?: boolean | undefined;
 }>> & {
     enableAnimationForPositionChange?: boolean;
+    passThrough?: boolean;
 } & {
     __scopePopper?: string | undefined;
 } & React.RefAttributes<PopperContentElement>>;

@@ -3,8 +3,6 @@ title: Next.js Guide
 description: How to set up Tamagui with Next.js
 ---
 
-## Install
-
 <Notice theme="green">
 	Running `npm create tamagui@latest` let's you choose the `starter-free` starter which is a very nicely configured Next.js
 	app where you can take or leave whatever you want.
@@ -190,7 +188,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
-<Notice>
+<Notice theme="blue">
 	Because [_document.tsx](/docs/guides/next-js?#pages_documenttsx) utilizes custom `getCSS()`, include `disableInjectCSS` in `TamaguiProvider`
 </Notice>
 
@@ -258,7 +256,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
-<Notice>We recommend memo-ing children so they don't re-render.</Notice>
+<Notice theme="green">We recommend memo-ing children so they don't re-render.</Notice>
 
 ### Performance
 
@@ -323,7 +321,9 @@ import '@tamagui/core/reset.css'
 
 ## App router
 
-Tamagui includes Server Components support for the Next.js app directory with [`use client`](https://nextjs.org/docs/app/building-your-application/rendering/client-components#using-client-components-in-nextjs) support. We're also actively working on a new mode that enables full server-side support with some limitations.
+Tamagui includes Server Components support for the Next.js app directory with [`use client`](https://nextjs.org/docs/app/building-your-application/rendering/client-components#using-client-components-in-nextjs) support.
+
+Note that "use client" does render on the server, and since Tamagui extracts to CSS statically and uses inline `<style />` tags for non-static styling, we get excellent performance as-is.
 
 ### next.config.js
 
@@ -351,13 +351,13 @@ module.exports = function (name, { defaultConfig }) {
 }
 ```
 
-<Notice>You need to pass the `appDir` boolean to `@tamagui/next-plugin`.</Notice>
+<Notice theme="blue">You need to pass the `appDir` boolean to `@tamagui/next-plugin`.</Notice>
 
 ### app/layout.tsx
 
 Create a new component to add `TamaguiProvider`:
 
-<Notice>
+<Notice theme="blue">
   The internal usage of `next/head` is not supported in the app directory, so you need to add the `skipNextHead` prop to your `<NextThemeProvider>`.
 </Notice>
 

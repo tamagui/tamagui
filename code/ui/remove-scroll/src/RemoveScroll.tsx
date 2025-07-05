@@ -1,12 +1,13 @@
-import React from 'react'
-import type { ComponentProps } from 'react'
-import { RemoveScroll as RS } from 'react-remove-scroll'
+import { type ReactNode, useEffect, useRef } from 'react'
+import { useDisableBodyScroll } from './useDisableScroll'
 
-export type RemoveScrollProps = ComponentProps<typeof RS>
+export type RemoveScrollProps = {
+  enabled?: boolean
+  children?: React.ReactNode
+}
 
-export const RemoveScroll = React.memo((props: RemoveScrollProps) => {
-  if (!props.children) return null
-  return <RS {...props} />
-})
+export const RemoveScroll = (props: RemoveScrollProps): ReactNode => {
+  useDisableBodyScroll(Boolean(props.enabled))
 
-export const classNames = RS.classNames
+  return props.children
+}

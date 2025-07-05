@@ -6,7 +6,7 @@
  */
 
 import { invariant } from '@tamagui/react-native-web-internals'
-import type { FrameMetricProps } from './VirtualizedList/VirtualizedListProps'
+type FrameMetricProps = any
 
 export type ViewToken = {
   item: any

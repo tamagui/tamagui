@@ -27,6 +27,8 @@ export default function SiteLayout() {
       {/* stats */}
       <script defer src="https://assets.onedollarstats.com/stonks.js" />
 
+      <script defer src="https://cdn.paritydeals.com/banner.js" />
+
       <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />

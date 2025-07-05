@@ -36,7 +36,7 @@ export type AdaptProps = {
   scope?: string
   when?: AdaptWhen
   platform?: AdaptPlatform
-  children: JSX.Element | ((children: React.ReactNode) => React.ReactNode)
+  children: React.JSX.Element | ((children: React.ReactNode) => React.ReactNode)
 }
 
 type Component = (props: any) => any
@@ -217,19 +217,13 @@ export const Adapt = withStaticProperties(
 export const AdaptPortalContents = (props: {
   children: React.ReactNode
   scope?: string
+  passThrough?: boolean
 }) => {
-  // const isActive = useAdaptIsActive(props.scope)
+  const isActive = useAdaptIsActive(props.scope)
   const { portalName } = useAdaptContext(props.scope)
 
-  // if (!isActive) {
-  //   return null
-  // }
-
   return (
-    <PortalItem
-      // passthrough={!isWeb && !isActive}
-      hostName={portalName}
-    >
+    <PortalItem passThrough={!isActive} hostName={portalName}>
       {props.children}
     </PortalItem>
   )

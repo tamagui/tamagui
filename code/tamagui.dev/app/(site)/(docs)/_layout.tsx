@@ -240,6 +240,7 @@ export default function DocsLayout() {
                   title="Edit this page on GitHub."
                   rel="noopener noreferrer"
                   target="_blank"
+                  o={0.4}
                 >
                   Edit this page on GitHub.
                 </Link>

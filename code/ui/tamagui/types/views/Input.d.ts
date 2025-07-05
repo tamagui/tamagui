@@ -145,7 +145,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     importantForAccessibility?: ("auto" | "yes" | "no" | "no-hide-descendants") | undefined | undefined;
     'aria-hidden'?: boolean | undefined | undefined;
     'aria-modal'?: boolean | undefined | undefined;
-    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "button" | "dialog" | "figure" | "form" | "img" | "main" | "menu" | "meter" | "option" | "summary" | "table" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "grid" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
+    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "button" | "dialog" | "figure" | "form" | "img" | "main" | "menu" | "meter" | "option" | "summary" | "table" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined | undefined;
     'aria-labelledby'?: string | undefined | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined | undefined;
@@ -237,6 +237,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
         end?: number | undefined;
     } | undefined | undefined;
     inputAccessoryViewID?: string | undefined | undefined;
+    disableKeyboardShortcuts?: boolean | undefined | undefined;
     clearButtonMode?: "never" | "while-editing" | "unless-editing" | "always" | undefined | undefined;
     clearTextOnFocus?: boolean | undefined | undefined;
     dataDetectorTypes?: import("react-native").DataDetectorTypes | import("react-native").DataDetectorTypes[] | undefined;
@@ -246,8 +247,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rejectResponderTermination?: boolean | null | undefined | undefined;
     selectionState?: import("react-native").DocumentSelectionState | undefined;
     spellCheck?: boolean | undefined | undefined;
-    textContentType?: "none" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "name" | "namePrefix" | "nameSuffix" | "nickname" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "username" | "password" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | undefined | undefined;
+    textContentType?: "none" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "name" | "namePrefix" | "nameSuffix" | "nickname" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "username" | "password" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | "cellularEID" | "cellularIMEI" | "dateTime" | "flightNumber" | "shipmentTrackingNumber" | undefined | undefined;
     scrollEnabled?: boolean | undefined | undefined;
+    lineBreakModeIOS?: "wordWrapping" | "char" | "clip" | "head" | "middle" | "tail" | undefined | undefined;
     smartInsertDelete?: boolean | undefined | undefined;
     cursorColor?: import("react-native").ColorValue | null | undefined;
     selectionHandleColor?: import("react-native").ColorValue | null | undefined;
@@ -305,6 +307,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     right?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"right"> | null | undefined;
     fontSize?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontSize"> | undefined;
     lineHeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"lineHeight"> | undefined;
+    pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
     fontFamily?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontFamily"> | undefined;
     fontStyle?: "unset" | "normal" | "italic" | undefined;
     fontWeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
@@ -341,10 +344,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderTopColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderTopColor"> | undefined;
     borderTopEndRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;
     borderTopStartRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;
-    opacity?: "unset" | import("react-native").AnimatableNumericValue | undefined;
+    opacity?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
     elevation?: number | "unset" | undefined;
     isolation?: "unset" | "auto" | "isolate" | undefined;
     boxShadow?: string | readonly import("react-native").BoxShadowValue[] | undefined;
+    experimental_backgroundImage?: string | readonly import("react-native").GradientValue[] | undefined;
     aspectRatio?: number | string | undefined | undefined;
     borderBottomWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBottomWidth"> | undefined;
     borderEndWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderEndWidth"> | undefined;
@@ -354,6 +358,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderTopWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderTopWidth"> | undefined;
     borderWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderWidth"> | undefined;
     bottom?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"bottom"> | null | undefined;
+    boxSizing?: "unset" | "border-box" | "content-box" | undefined;
     end?: "unset" | import("react-native").DimensionValue | undefined;
     rowGap?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"rowGap"> | undefined;
     gap?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"gap"> | undefined;
@@ -604,7 +609,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     userSelect?: import("csstype").Property.UserSelect | undefined;
     scrollbarWidth?: import("csstype").Property.ScrollbarWidth | undefined;
-    pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
     transformOrigin?: "unset" | "center" | "left" | "right" | "bottom" | "top" | (`${number}%` | `${string}%` | `${string}px` | `${number}px`) | "center center" | "center bottom" | "center top" | `center ${number}%` | `center ${string}%` | `center ${string}px` | `center ${number}px` | "left center" | "left bottom" | "left top" | `left ${number}%` | `left ${string}%` | `left ${string}px` | `left ${number}px` | "right center" | "right bottom" | "right top" | `right ${number}%` | `right ${string}%` | `right ${string}px` | `right ${number}px` | `${number}% center` | `${number}% bottom` | `${number}% top` | `${number}% ${number}%` | `${number}% ${string}%` | `${number}% ${string}px` | `${number}% ${number}px` | `${string}% center` | `${string}% bottom` | `${string}% top` | `${string}% ${number}%` | `${string}% ${string}%` | `${string}% ${string}px` | `${string}% ${number}px` | `${string}px center` | `${string}px bottom` | `${string}px top` | `${string}px ${number}%` | `${string}px ${string}%` | `${string}px ${string}px` | `${string}px ${number}px` | `${number}px center` | `${number}px bottom` | `${number}px top` | `${number}px ${number}%` | `${number}px ${string}%` | `${number}px ${string}px` | `${number}px ${number}px` | `center center ${string}px` | `center center ${number}px` | `center bottom ${string}px` | `center bottom ${number}px` | `center top ${string}px` | `center top ${number}px` | `center ${number}% ${string}px` | `center ${number}% ${number}px` | `center ${string}% ${string}px` | `center ${string}% ${number}px` | `center ${string}px ${string}px` | `center ${string}px ${number}px` | `center ${number}px ${string}px` | `center ${number}px ${number}px` | `left center ${string}px` | `left center ${number}px` | `left bottom ${string}px` | `left bottom ${number}px` | `left top ${string}px` | `left top ${number}px` | `left ${number}% ${string}px` | `left ${number}% ${number}px` | `left ${string}% ${string}px` | `left ${string}% ${number}px` | `left ${string}px ${string}px` | `left ${string}px ${number}px` | `left ${number}px ${string}px` | `left ${number}px ${number}px` | `right center ${string}px` | `right center ${number}px` | `right bottom ${string}px` | `right bottom ${number}px` | `right top ${string}px` | `right top ${number}px` | `right ${number}% ${string}px` | `right ${number}% ${number}px` | `right ${string}% ${string}px` | `right ${string}% ${number}px` | `right ${string}px ${string}px` | `right ${string}px ${number}px` | `right ${number}px ${string}px` | `right ${number}px ${number}px` | `${number}% center ${string}px` | `${number}% center ${number}px` | `${number}% bottom ${string}px` | `${number}% bottom ${number}px` | `${number}% top ${string}px` | `${number}% top ${number}px` | `${number}% ${number}% ${string}px` | `${number}% ${number}% ${number}px` | `${number}% ${string}% ${string}px` | `${number}% ${string}% ${number}px` | `${number}% ${string}px ${string}px` | `${number}% ${string}px ${number}px` | `${number}% ${number}px ${string}px` | `${number}% ${number}px ${number}px` | `${string}% center ${string}px` | `${string}% center ${number}px` | `${string}% bottom ${string}px` | `${string}% bottom ${number}px` | `${string}% top ${string}px` | `${string}% top ${number}px` | `${string}% ${number}% ${string}px` | `${string}% ${number}% ${number}px` | `${string}% ${string}% ${string}px` | `${string}% ${string}% ${number}px` | `${string}% ${string}px ${string}px` | `${string}% ${string}px ${number}px` | `${string}% ${number}px ${string}px` | `${string}% ${number}px ${number}px` | `${string}px center ${string}px` | `${string}px center ${number}px` | `${string}px bottom ${string}px` | `${string}px bottom ${number}px` | `${string}px top ${string}px` | `${string}px top ${number}px` | `${string}px ${number}% ${string}px` | `${string}px ${number}% ${number}px` | `${string}px ${string}% ${string}px` | `${string}px ${string}% ${number}px` | `${string}px ${string}px ${string}px` | `${string}px ${string}px ${number}px` | `${string}px ${number}px ${string}px` | `${string}px ${number}px ${number}px` | `${number}px center ${string}px` | `${number}px center ${number}px` | `${number}px bottom ${string}px` | `${number}px bottom ${number}px` | `${number}px top ${string}px` | `${number}px top ${number}px` | `${number}px ${number}% ${string}px` | `${number}px ${number}% ${number}px` | `${number}px ${string}% ${string}px` | `${number}px ${string}% ${number}px` | `${number}px ${string}px ${string}px` | `${number}px ${string}px ${number}px` | `${number}px ${number}px ${string}px` | `${number}px ${number}px ${number}px` | undefined;
     filter?: import("csstype").Property.Filter | undefined;
     mixBlendMode?: import("csstype").Property.MixBlendMode | undefined;
@@ -697,11 +701,12 @@ export declare function useInputProps(props: InputProps, ref: any): {
     insetInlineStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     space?: number | boolean | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
-    spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
+    spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
     separator?: React.ReactNode;
     animation?: (import("@tamagui/core").AnimationProp | null) | undefined;
-    animateOnly?: string[] | "unset" | undefined;
-    animatePresence?: boolean | "unset" | undefined;
+    animateOnly?: string[] | undefined;
+    animatePresence?: boolean | undefined;
+    passThrough?: boolean | undefined;
     selectionColor?: "unset" | Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;

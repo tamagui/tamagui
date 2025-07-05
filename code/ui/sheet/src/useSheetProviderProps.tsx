@@ -8,7 +8,6 @@ import type { ScrollBridge, SheetProps } from './types'
 import type { SheetOpenState } from './useSheetOpenState'
 
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
-  scrollEnabled: boolean
   setHasScrollView: (val: boolean) => void
 }
 
@@ -45,7 +44,6 @@ export function useSheetProviderProps(
     defaultProp: props.defaultPosition || (state.open ? 0 : -1),
     onChange: props.onPositionChange,
     strategy: 'most-recent-wins',
-    transition: true,
   })
 
   const position = state.open === false ? -1 : position_
@@ -139,16 +137,35 @@ export function useSheetProviderProps(
     )
   }
 
-  const scrollBridge = useConstant<ScrollBridge>(() => ({
-    enabled: false,
-    y: 0,
-    paneY: 0,
-    paneMinY: 0,
-    scrollStartY: -1,
-    drag: () => {},
-    release: () => {},
-    scrollLock: false,
-  }))
+  const scrollBridge = useConstant<ScrollBridge>(() => {
+    const parentDragListeners = new Set<Function>()
+
+    const bridge: ScrollBridge = {
+      enabled: false,
+      y: 0,
+      paneY: 0,
+      paneMinY: 0,
+      scrollStartY: -1,
+      drag: () => {},
+      release: () => {},
+      scrollLock: false,
+      isParentDragging: false,
+      onParentDragging: (cb) => {
+        parentDragListeners.add(cb)
+        return () => {
+          parentDragListeners.delete(cb)
+        }
+      },
+      setParentDragging: (val) => {
+        if (val !== bridge.isParentDragging) {
+          bridge.isParentDragging = val
+          parentDragListeners.forEach((cb) => cb(val))
+        }
+      },
+    }
+
+    return bridge
+  })
 
   const removeScrollEnabled = props.forceRemoveScrollEnabled ?? (open && props.modal)
 

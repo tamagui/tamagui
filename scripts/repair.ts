@@ -3,8 +3,9 @@ import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-import { copy, lstat, rm, symlink, unlink } from 'fs-extra'
+import { copy, lstat, readFile, rm, symlink, unlink, writeFile } from 'fs-extra'
 import pMap from 'p-map'
+import { readFileSync } from 'node:fs'
 
 const exec = promisify(proc.exec)
 
@@ -41,6 +42,14 @@ const fixPeerDeps = async ({ location }, pkgJson: any) => {
   if (pkgJson.devDependencies?.['react'] && !pkgJson.peerDependencies?.['react']) {
     pkgJson.peerDependencies ||= {}
     pkgJson.peerDependencies['react'] ||= '*'
+  }
+
+  if (
+    pkgJson.devDependencies?.['react-native'] &&
+    !pkgJson.peerDependencies?.['react-native']
+  ) {
+    pkgJson.peerDependencies ||= {}
+    pkgJson.peerDependencies['react-native'] ||= '*'
   }
 }
 
@@ -99,53 +108,54 @@ async function format() {
 
   console.info(` packages: ${packagePaths.length}`)
 
-  // console.info(` repair package.json..`)
+  console.info(` repair package.json..`)
 
-  // await pMap(
-  //   packagePaths,
-  //   async (pkg) => {
-  //     const cwd = join(process.cwd(), pkg.location)
-  //     const jsonPath = join(cwd, 'package.json')
-  //     const fileContents = readFileSync(jsonPath, {
-  //       encoding: 'utf-8',
-  //     })
-  //     if (!fileContents) {
-  //       return
-  //     }
-  //     const pkgJson = JSON.parse(fileContents)
-  //     // await fixPeerDeps(pkg, pkgJson)
-  //     // await fixExports(pkg, pkgJson)
-  //     // await fixExportsPathSpecific(pkg, pkgJson)
+  await pMap(
+    packagePaths,
+    async (pkg) => {
+      const cwd = join(process.cwd(), pkg.location)
+      const jsonPath = join(cwd, 'package.json')
+      const fileContents = await readFile(jsonPath, {
+        encoding: 'utf-8',
+      })
+      if (!fileContents) {
+        return
+      }
+      const pkgJson = JSON.parse(fileContents)
 
-  //     // write your script here:
+      await fixPeerDeps(pkg, pkgJson)
+      // await fixExports(pkg, pkgJson)
+      // await fixExportsPathSpecific(pkg, pkgJson)
 
-  //     if (pkgJson.exports) {
-  //       for (const key in pkgJson.exports) {
-  //         const exf = pkgJson.exports[key]
-  //         if (typeof exf === 'object') {
-  //           const ogi = exf['react-native-import']
-  //           const ogr = exf['react-native']
+      // write your script here:
 
-  //           if (ogi) {
-  //             delete exf['react-native-import']
-  //             exf['react-native'] = {
-  //               import: ogi,
-  //               require: ogr,
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
+      if (pkgJson.exports) {
+        for (const key in pkgJson.exports) {
+          const exf = pkgJson.exports[key]
+          if (typeof exf === 'object') {
+            const ogi = exf['react-native-import']
+            const ogr = exf['react-native']
 
-  //     // await fixScripts(pkg, pkgJson)
-  //     await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-  //       encoding: 'utf-8',
-  //     })
-  //   },
-  //   {
-  //     concurrency: 10,
-  //   }
-  // )
+            if (ogi) {
+              delete exf['react-native-import']
+              exf['react-native'] = {
+                import: ogi,
+                require: ogr,
+              }
+            }
+          }
+        }
+      }
+
+      // await fixScripts(pkg, pkgJson)
+      await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
+        encoding: 'utf-8',
+      })
+    },
+    {
+      concurrency: 10,
+    }
+  )
 
   // console.info(` repair contents exclude to exclude /types..`)
 
@@ -213,13 +223,20 @@ async function format() {
         return
       }
 
-      const distanceToRoot = location.split('/').length
-      const rootBiome = toAbsolute(
-        join(location, ...new Array(distanceToRoot).fill(0).map(() => '..'), 'biome.json')
-      )
-      console.info(`Copy ${rootBiome} -> ${biomeFile}`)
-      await unlink(biomeFile)
-      await copy(rootBiome, biomeFile)
+      // only change if its same as reference
+      if (readFileSync(biomeFile, 'utf-8').trim() === biomeReference) {
+        const distanceToRoot = location.split('/').length
+        const rootBiome = toAbsolute(
+          join(
+            location,
+            ...new Array(distanceToRoot).fill(0).map(() => '..'),
+            'biome.json'
+          )
+        )
+        console.info(`Copy ${rootBiome} -> ${biomeFile}`)
+        await unlink(biomeFile)
+        await copy(rootBiome, biomeFile)
+      }
     },
     {
       concurrency: 1,
@@ -312,3 +329,94 @@ async function format() {
 }
 
 export const toAbsolute = (p: string) => resolve(process.cwd(), p)
+
+const biomeReference = `{
+  "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
+  "organizeImports": {
+    "enabled": false
+  },
+  "files": {
+    "ignore": ["**/*/generated-*.ts", ".tamagui"]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "correctness": {
+        "useExhaustiveDependencies": "off",
+        "noInnerDeclarations": "off",
+        "noUnnecessaryContinue": "off",
+        "noConstructorReturn": "off"
+      },
+      "suspicious": {
+        "noImplicitAnyLet": "off",
+        "noConfusingVoidType": "off",
+        "noEmptyInterface": "off",
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off",
+        "noDoubleEquals": "off",
+        "noConsoleLog": "error",
+        "noAssignInExpressions": "off",
+        "noRedeclare": "off"
+      },
+      "style": {
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off",
+        "noArguments": "off",
+        "noUnusedTemplateLiteral": "off",
+        "useDefaultParameterLast": "off",
+        "useConst": "off",
+        "useEnumInitializers": "off",
+        "useTemplate": "off",
+        "useSelfClosingElements": "off",
+        "useImportType": "error",
+        "noUselessElse": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off",
+        "noDangerouslySetInnerHtmlWithChildren": "off"
+      },
+      "performance": {
+        "noDelete": "off",
+        "noAccumulatingSpread": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noUselessTernary": "off",
+        "noBannedTypes": "off",
+        "noUselessFragments": "off",
+        "useLiteralKeys": "off",
+        "useSimplifiedLogicExpression": "off",
+        "useOptionalChain": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useMediaCaption": "off",
+        "noHeaderScope": "off",
+        "useAltText": "off",
+        "useButtonType": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 90,
+    "lineEnding": "lf",
+    "ignore": [
+      "**/*/generated-new.ts",
+      "**/*/generated-v2.ts",
+      ".tamagui",
+      "package.json"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "trailingCommas": "es5",
+      "jsxQuoteStyle": "double",
+      "semicolons": "asNeeded",
+      "quoteStyle": "single"
+    }
+  }
+}`

@@ -4,47 +4,48 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * @format
  * @format
  */
+
 'use strict'
 
 import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
 import AnimatedImplementation from './AnimatedImplementation'
-import createAnimatedComponent from './createAnimatedComponent'
-import AnimatedColor from './nodes/AnimatedColor'
 import AnimatedInterpolation from './nodes/AnimatedInterpolation'
 import AnimatedNode from './nodes/AnimatedNode'
 import AnimatedValue from './nodes/AnimatedValue'
 import AnimatedValueXY from './nodes/AnimatedValueXY'
+
+import createAnimatedComponent from './createAnimatedComponent'
+
+import AnimatedColor from './nodes/AnimatedColor'
+
 /**
  * Animations are a source of flakiness in snapshot testing. This mock replaces
  * animation functions from AnimatedImplementation with empty animations for
  * predictability in tests. When possible the animation will run immediately
  * to the final state.
  */
+
 // Prevent any callback invocation from recursively triggering another
 // callback, which may trigger another animation
-
-var inAnimationCallback = false
-
+let inAnimationCallback = false
 function mockAnimationStart(start) {
   return (callback) => {
-    var guardedCallback =
+    const guardedCallback =
       callback == null
         ? callback
-        : function () {
+        : (...args) => {
             if (inAnimationCallback) {
               console.warn(
                 'Ignoring recursive animation callback when running mock animations'
               )
               return
             }
-
             inAnimationCallback = true
-
             try {
-              callback(...arguments)
+              callback(...args)
             } finally {
               inAnimationCallback = false
             }
@@ -53,7 +54,9 @@ function mockAnimationStart(start) {
   }
 }
 
-var emptyAnimation = {
+// CompositeAnimation interface removed
+
+const emptyAnimation = {
   start: () => {},
   stop: () => {},
   reset: () => {},
@@ -63,76 +66,59 @@ var emptyAnimation = {
   },
 }
 
-var mockCompositeAnimation = (animations) => ({
+const mockCompositeAnimation = (animations) => ({
   ...emptyAnimation,
   start: mockAnimationStart((callback) => {
     animations.forEach((animation) => animation.start())
-    callback == null
-      ? void 0
-      : callback({
-          finished: true,
-        })
+    callback?.({ finished: true })
   }),
 })
 
-var spring = function spring(value, config) {
-  var anyValue = value
+const spring = function (value, config) {
+  const anyValue = value
   return {
     ...emptyAnimation,
     start: mockAnimationStart((callback) => {
       anyValue.setValue(config.toValue)
-      callback == null
-        ? void 0
-        : callback({
-            finished: true,
-          })
+      callback?.({ finished: true })
     }),
   }
 }
 
-var timing = function timing(value, config) {
-  var anyValue = value
+const timing = function (value, config) {
+  const anyValue = value
   return {
     ...emptyAnimation,
     start: mockAnimationStart((callback) => {
       anyValue.setValue(config.toValue)
-      callback == null
-        ? void 0
-        : callback({
-            finished: true,
-          })
+      callback?.({ finished: true })
     }),
   }
 }
 
-var decay = function decay(value, config) {
+const decay = function (value, config) {
   return emptyAnimation
 }
 
-var sequence = function sequence(animations) {
+const sequence = function (animations) {
   return mockCompositeAnimation(animations)
 }
 
-var parallel = function parallel(animations, config) {
+const parallel = function (animations, config) {
   return mockCompositeAnimation(animations)
 }
 
-var delay = function delay(time) {
+const delay = function (time) {
   return emptyAnimation
 }
 
-var stagger = function stagger(time, animations) {
+const stagger = function (time, animations) {
   return mockCompositeAnimation(animations)
 }
 
-var loop = function loop(
-  animation, // $FlowFixMe[prop-missing]
-  _temp
-) {
-  var _ref = _temp === void 0 ? {} : _temp,
-    _ref$iterations = _ref.iterations,
-    iterations = _ref$iterations === void 0 ? -1 : _ref$iterations
+// LoopAnimationConfig interface removed
 
+const loop = function (animation, { iterations = -1 } = {}) {
   return emptyAnimation
 }
 

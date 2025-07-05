@@ -1,4 +1,5 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
+// we need core for hooks.usePropsTransform
 import {
   getSplitStyles,
   hooks,
@@ -9,7 +10,7 @@ import {
   View,
   type AnimationDriver,
   type UniversalAnimatedNumber,
-} from '@tamagui/web'
+} from '@tamagui/core'
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'
@@ -38,9 +39,9 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
   const Component = Animated.createAnimatedComponent(
     forwardRef((propsIn: any, ref) => {
       const { forwardedRef, animation, tag = defaultTag, ...propsRest } = propsIn
-      const hostRef = useRef()
+      const hostRef = useRef(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
-      const stateRef = useRef<any>()
+      const stateRef = useRef<any>(null)
       if (!stateRef.current) {
         stateRef.current = {
           get host() {
@@ -66,7 +67,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
         }
       )
 
-      const props = result.viewProps
+      const props = result?.viewProps || {}
       const Element = tag
       const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
 
@@ -128,6 +129,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // View: Animated.View,
     // Text: Animated.Text,
     isReactNative: true,
+    supportsCSS: false,
     animations,
     usePresence,
     ResetPresence,
@@ -323,6 +325,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       ) {
         console.info(`useMotify(`, JSON.stringify(motiProps, null, 2) + ')', {
           'componentState.unmounted': componentState.unmounted,
+          animationProps,
           motiProps,
           moti,
           style: [dontAnimate, moti.style],

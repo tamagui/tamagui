@@ -46,8 +46,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-
-          <YStack my="$3" gap="$3">
+          <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
             <Link
               href={`https://github.com/tamagui/tamagui/tree/main/code/ui/${
                 frontmatter.package

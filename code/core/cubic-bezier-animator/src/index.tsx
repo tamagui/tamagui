@@ -8,6 +8,7 @@ type TransformType = {
 }
 
 type CubicBuzier = [number, number, number, number]
+
 interface AnimateProps {
   from: TransformType
   to: TransformType
@@ -15,7 +16,8 @@ interface AnimateProps {
   onUpdate: (param: TransformType) => void
   cubicBezier?: CubicBuzier
 }
-export function animate(param: AnimateProps) {
+
+export function animate(param: AnimateProps): void {
   let start = null
   const easing = param.cubicBezier ? bezier(...param.cubicBezier) : (v: number) => v
 

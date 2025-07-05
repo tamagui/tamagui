@@ -1,3 +1,65 @@
+- in SheetImplCustom bad logic for pulling up when scroll view inside
+  - if scrollview isn't able to scroll we shouldn't disable that behavior:
+    `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
+    - we can: pass in scrollable node selector
+    - do logic to determine if its actually scrollable
+
+
+- Dialog.Overlay shouldn't need to define key for animation
+- apply visibility hidden to fully hidden popover for perf gains
+- css driver can noRerender
+- reanimated too but requires testing native + worklets
+
+v2:
+
+- removeScrollEnabled => disableRemoveScroll
+
+- move to types react/react-dom 19
+
+- removing default size based styling, look at this in tooltip!:
+```
+const padding = !props.unstyled
+        ? (props.padding ??
+          props.size ??
+          popperSize ??
+          getSize('$true', {
+            shift: -2,
+          }))
+        : undefined
+```
+
+---
+
+- escape on tamagui sheet doesn't close in general keyboard accessibility
+  - check radix sheet and compare and improve
+
+- perf: could avoid even creating style rules, easy / big win:
+  - note that in addStyleToInsertRules it checks if shouldInsert
+  - note that we create all the style rules before we actually check if should insert
+  - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
+
+- perf: could avoid parent re-renders on group changes even if dynamic
+  - if they dont themselves have animation, would need to group.emit() in the actual press events not based on an effect based on state
+
+for v2, new site hero that captures:
+
+- 100% features work the same cross-platform
+- optionally compile-time optimized, but 100% runtime feature-set
+- 0-dependency: no / faster than react-native-web
+- fully typesafe styling
+- by far best SSR
+- headless component kit
+- super-powerful: themes, animations
+
+v2 big win / lowish effort:
+
+- two fixes for animation drivers
+  - remove <Configuration animationDriver (breaks compiler)
+    - instead `animationDriver` prop on any component
+  - accept multiple animationDrivers at root for proper types
+
+- document <ClientOnly />
+
 # force railway deploy
 
 - in onejs/chat bug with transforms merging media queries: 
@@ -18,11 +80,10 @@
 
 - fix react 19 + nextjs 15
   - https://github.com/gcoakleyjr/React19-Tamagui
-  - right now we have TAMAGUI_REACT_19 but you also need to use react-native-web-lite or patch rnw because it doesn't work, we should:
+  - react-native-web-lite or patch rnw because it doesn't work, we should:
     - somehow fix rnw issue with rn19
     - fix issue with rnw-lite
       - https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
-    - better solution for react 19 mode (properly in settings no more TAMAGUI_REACT_19)
   - eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
   - announcement
 

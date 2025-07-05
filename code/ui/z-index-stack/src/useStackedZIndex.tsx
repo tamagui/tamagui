@@ -13,18 +13,18 @@ export const useStackedZIndex = (props: {
   stackZIndex?: StackZIndexProp
 }) => {
   if (process.env.TAMAGUI_STACK_Z_INDEX_GLOBAL) {
-    const { stackZIndex, zIndex: zIndexProp = 1000 } = props
+    const { stackZIndex, zIndex: zIndexProp } = props
     const id = useId()
 
     const zIndex = useMemo(() => {
-      if (stackZIndex && stackZIndex !== 'global') {
+      if (stackZIndex && stackZIndex !== 'global' && zIndexProp === undefined) {
         const highest = Object.values(CurrentPortalZIndices).reduce(
           (acc, cur) => Math.max(acc, cur),
           0
         )
         return Math.max(stackZIndex === true ? 1 : stackZIndex, highest + 1)
       }
-      return zIndexProp || 1000
+      return zIndexProp ?? 1000
     }, [stackZIndex])
 
     useEffect(() => {

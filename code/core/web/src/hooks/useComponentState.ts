@@ -1,17 +1,16 @@
 import { isServer, isWeb } from '@tamagui/constants'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useMemo, useRef, useState } from 'react'
+import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
+import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
+import { useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
   defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
-import { createShallowSetState } from '../helpers/createShallowSetState'
 import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
-  GroupStateListener,
   StackProps,
   StaticConfig,
   TamaguiComponentState,
@@ -23,11 +22,13 @@ import type {
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
-  { animationDriver }: ComponentContextI,
+  animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
   const isHydrated = useDidFinishSSR()
+  const needsHydration = !useIsClientOnly()
+  const [startedUnhydrated] = useState(needsHydration && !isHydrated)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
   const stateRef = useRef<TamaguiComponentStateRef>(
@@ -42,9 +43,12 @@ export const useComponentState = (
     'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  // disable for now still ssr issues
-  const supportsCSSVars = animationDriver?.supportsCSSVars
+  const supportsCSS = animationDriver?.supportsCSS
   const curStateRef = stateRef.current
+
+  if (!needsHydration && hasAnimationProp) {
+    curStateRef.hasAnimated = true
+  }
 
   const willBeAnimatedClient = (() => {
     const next = !!(hasAnimationProp && !staticConfig.isHOC && useAnimations)
@@ -73,9 +77,7 @@ export const useComponentState = (
   const hasEnterStyle = !!props.enterStyle
 
   const hasAnimationThatNeedsHydrate =
-    hasAnimationProp &&
-    !isHydrated &&
-    (animationDriver?.isReactNative || !supportsCSSVars)
+    hasAnimationProp && !isHydrated && (animationDriver?.isReactNative || !supportsCSS)
 
   const hasEnterState = hasEnterStyle || isEntering
 
@@ -116,6 +118,12 @@ export const useComponentState = (
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
+  // apply states we never updated from avoiding re-renders in animation driver
+  // unsafe yea yea
+  // if (stateRef.current.nextComponentState) {
+  //   Object.assign(state, stateRef.current.nextComponentState)
+  // }
+
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
   if (isWeb && hasAnimationThatNeedsHydrate && !staticConfig.isHOC && !isHydrated) {
@@ -130,17 +138,12 @@ export const useComponentState = (
       Object.assign(state, defaultComponentStateMounted)
     }
     state.disabled = disabled
-    setState({ ...state })
+    setState((_) => ({ ...state }))
   }
 
-  const groupName = props.group as any as string
+  const groupName = props.group as any as string | undefined
 
-  let setStateShallow = createShallowSetState(
-    setState,
-    undefined, // note: allows all state updates even when disabled for the enterStyle animation to work
-    false,
-    props.debug
-  )
+  const setStateShallow = useCreateShallowSetState(setState, props.debug)
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
@@ -168,15 +171,19 @@ export const useComponentState = (
 
   let noClass = !isWeb || !!props.forceStyle
 
-  // on server for SSR and animation compat added the && isHydrated but perhaps we want
-  // disableClassName="until-hydrated" to be more straightforward
-  // see issue if not, Button sets disableClassName to true <Button animation="" /> with
-  // the react-native driver errors because it tries to animate var(--color) to rbga(..)
-  if (isWeb) {
+  if (!isHydrated) {
+    noClass = false
+  } else {
+    // on server for SSR and animation compat added the && isHydrated but perhaps we want
+    // disableClassName="until-hydrated" to be more straightforward
+    // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+    // the react-native driver errors because it tries to animate var(--color) to rbga(..)
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc
-    if (!isServer || isHydrated) {
-      const isAnimatedAndHydrated = isAnimated && !supportsCSSVars
+    if (isWeb && isHydrated) {
+      // the reason we disable class even for css animation driver is i guess due to the logic around looking at transform
+      // in the driver to determine the transition - but that could be improved to not need it and just use classnames
+      const isAnimatedAndHydrated = isAnimated && isHydrated
 
       const isClassNameDisabled =
         !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)
@@ -197,23 +204,8 @@ export const useComponentState = (
     }
   }
 
-  if (groupName && !curStateRef.group) {
-    const listeners = new Set<GroupStateListener>()
-    curStateRef.group = {
-      listeners,
-      emit(name, state) {
-        listeners.forEach((l) => l(name, state))
-      },
-      subscribe(cb) {
-        listeners.add(cb)
-        return () => {
-          listeners.delete(cb)
-        }
-      },
-    }
-  }
-
   return {
+    startedUnhydrated,
     curStateRef,
     disabled,
     groupName,
@@ -229,7 +221,7 @@ export const useComponentState = (
     noClass,
     state,
     stateRef,
-    supportsCSSVars,
+    supportsCSS,
     willBeAnimated,
     willBeAnimatedClient,
   }
@@ -245,6 +237,7 @@ function hasAnimatedStyleValue(style: Object) {
 const isDisabled = (props: any) => {
   return (
     props.disabled ||
+    props.passThrough ||
     props.accessibilityState?.disabled ||
     props['aria-disabled'] ||
     props.accessibilityDisabled ||

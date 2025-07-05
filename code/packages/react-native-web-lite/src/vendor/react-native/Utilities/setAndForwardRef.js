@@ -5,9 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- *
+ * @format
  */
-'use strict'
+
+'use strict';
+
+
 
 /**
  * This is a helper function for when a component needs to be able to forward a ref
@@ -39,21 +42,25 @@
  *
  *   module.exports = MyViewWithRef;
  */
-function setAndForwardRef(_ref) {
-  var getForwardedRef = _ref.getForwardedRef,
-    setLocalRef = _ref.setLocalRef
-  return function forwardRef(ref) {
-    var forwardedRef = getForwardedRef()
-    setLocalRef(ref) // Forward to user ref prop (if one has been specified)
 
+function setAndForwardRef({
+  getForwardedRef,
+  setLocalRef,
+}) {
+  return function forwardRef(ref) {
+    const forwardedRef = getForwardedRef();
+
+    setLocalRef(ref);
+
+    // Forward to user ref prop (if one has been specified)
     if (typeof forwardedRef === 'function') {
       // Handle function-based refs. String-based refs are handled as functions.
-      forwardedRef(ref)
+      forwardedRef(ref);
     } else if (typeof forwardedRef === 'object' && forwardedRef != null) {
       // Handle createRef-based refs
-      forwardedRef.current = ref
+      forwardedRef.current = ref;
     }
-  }
+  };
 }
 
-export default setAndForwardRef
+export default setAndForwardRef;

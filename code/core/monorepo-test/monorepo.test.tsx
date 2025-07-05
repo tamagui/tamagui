@@ -1,5 +1,4 @@
-import { $ } from 'zx'
-
+import { execSync } from 'node:child_process'
 import { join } from 'node:path'
 import { expect, test } from 'vitest'
 
@@ -14,9 +13,9 @@ const baseline = Date.now() - start
 console.info('baseline', baseline)
 
 test('performance of types', { retry: 1, timeout: 5 * 60 * 1000 }, async () => {
-  $.cwd = join(__dirname, '..', '..')
-  $.verbose = false
-  const out = (await $`yarn typecheck --extendedDiagnostics || exit 0`).stdout
+  const out = execSync(`yarn typecheck --extendedDiagnostics || exit 0`, {
+    cwd: join(__dirname, '..', '..'),
+  }).toString()
   const [_, checkTime] = out.match(/Check time:\s+([^\s]+)/) ?? []
   const [seconds, ms] = checkTime.replace('s', '').split('.')
 

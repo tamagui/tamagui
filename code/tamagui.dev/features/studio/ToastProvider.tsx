@@ -40,12 +40,13 @@ const ToastHandler = () => {
         key={toast.title + toast.message}
         duration={toast.duration ?? 3000}
         animation="200ms"
-        enterStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
-        exitStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
-        transform={[{ translateY: 0 }]}
+        enterStyle={{ opacity: 0, y: 50 }}
+        exitStyle={{ opacity: 0, y: 50 }}
+        y={-20}
         bottom={0}
         opacity={1}
         gap={0}
+        elevation="$4"
         {...toast.customData}
       >
         <YStack gap={0}>

@@ -2,7 +2,7 @@ import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
-import type { Variable } from './createVariable';
+import type { PxValue, Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
 import type { ColorKeys, SizeKeys, SpaceKeys } from './interfaces/KeyTypes';
@@ -43,35 +43,55 @@ export type TamaguiProjectInfo = {
 };
 export type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
+export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
     inText: boolean;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
-    groups: GroupContextType;
-    setParentFocusState: ((next?: Partial<TamaguiComponentState> | undefined) => void) | null;
+    setParentFocusState: ComponentSetStateShallow | null;
 };
-type ComponentGroupEvent = {
-    pseudo?: PseudoGroupState;
-    layout?: LayoutValue;
+export type TamaguiComponentStateRef = {
+    host?: TamaguiElement;
+    composedRef?: (x: TamaguiElement) => void;
+    willHydrate?: boolean;
+    hasMeasured?: boolean;
+    hasAnimated?: boolean;
+    themeShallow?: boolean;
+    hasEverThemed?: boolean | 'wrapped';
+    hasEverResetPresence?: boolean;
+    isListeningToTheme?: boolean;
+    unPress?: Function;
+    setStateShallow?: ComponentSetStateShallow;
+    useStyleListener?: UseStyleListener;
+    group?: ComponentGroupEmitter;
 };
-export type GroupContextType = {
+export type ComponentGroupEmitter = {
+    listeners: Set<GroupStateListener>;
     emit: GroupStateListener;
-    subscribe: (cb: GroupStateListener) => DisposeFn;
-    state: Record<string, ComponentGroupEvent>;
+    subscribe: (cb: GroupStateListener) => () => void;
 };
-export type GroupStateListener = (name: string, state: ComponentGroupEvent) => void;
-type PseudoGroupState = {
-    hover?: boolean;
-    press?: boolean;
-    focus?: boolean;
-    focusVisible?: boolean;
-    focusWithin?: boolean;
+export type WidthHeight = {
+    width: number;
+    height: number;
 };
-export type GroupState = {
+export type ChildGroupState = {
     pseudo?: PseudoGroupState;
-    media?: Record<MediaQueryKey, boolean>;
+    media?: Record<MediaQueryKey extends number ? never : MediaQueryKey, boolean>;
 };
+export type ComponentGroupState = {
+    pseudo?: PseudoGroupState;
+    layout?: WidthHeight;
+};
+export type GroupStateListener = (state: ComponentGroupState) => void;
+export type SingleGroupContext = {
+    subscribe: (cb: GroupStateListener) => DisposeFn;
+    state: ComponentGroupState;
+};
+export type AllGroupContexts = {
+    [GroupName: string]: SingleGroupContext;
+};
+export type PseudoGroupState = Pick<TamaguiComponentState, 'disabled' | 'hover' | 'press' | 'pressIn' | 'focus' | 'focusVisible' | 'focusWithin'>;
 export type LayoutEvent = {
     nativeEvent: {
         layout: LayoutValue;
@@ -89,7 +109,7 @@ type LayoutValue = {
 };
 export type DisposeFn = () => void;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
-export type VariableVal = number | string | Variable | VariableValGeneric;
+export type VariableVal = number | string | Variable | VariableValGeneric | PxValue;
 export type VariableColorVal = string | Variable;
 type GenericKey = string;
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
@@ -268,6 +288,7 @@ export interface ThemeProps {
 }
 export type UseThemeWithStateProps = ThemeProps & {
     deopt?: boolean;
+    passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
 };
@@ -712,15 +733,16 @@ export type FontWeightKeys = 'fontWeight';
 export type FontLetterSpacingKeys = 'letterSpacing';
 export type LineHeightKeys = 'lineHeight';
 export type ZIndexKeys = 'zIndex';
+export type OpacityKeys = 'opacity';
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens | ThemeValueFallbackSize : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends `${`border${string | ''}Radius`}` ? RadiusTokens | ThemeValueFallbackRadius : K extends SpaceKeys ? K extends 'shadowOffset' ? {
     width: SpaceTokens;
     height: SpaceTokens;
-} : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
+} : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : K extends OpacityKeys ? SpecificTokens | ThemeValueFallback : never;
 export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback | (TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends true | undefined ? SpecificTokens : never : never);
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
+    [K in keyof T]: ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
@@ -826,7 +848,6 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     scrollbarWidth?: Properties['scrollbarWidth'];
-    pointerEvents?: ViewProps['pointerEvents'];
     /**
      * The point at which transforms originate from.
      */
@@ -1136,6 +1157,11 @@ interface ExtraBaseProps {
      * set this to `false` and it will pass through to the next animated child.
      */
     animatePresence?: boolean;
+    /**
+     * Avoids as much work as possible and passes through the children with no changes.
+     * Advanced: Useful for adapting to other element when you want to avoid re-parenting.
+     */
+    passThrough?: boolean;
 }
 interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps, ExtraBaseProps {
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
@@ -1216,7 +1242,7 @@ export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hit
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
-export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'pointerEvents'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
     /** @deprecated use userSelect instead */
     selectable?: boolean;
@@ -1234,7 +1260,10 @@ export type StyleableOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
+type React18And19CompatComponent<Props, Ref> = ((props: Props, ref: RefObject<Ref>) => React.ReactNode) | ((props: Props & {
+    ref?: RefObject<Ref>;
+}) => React.ReactNode);
+export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends React18And19CompatComponent<MergedProps, Ref> = React18And19CompatComponent<MergedProps, Ref>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
@@ -1359,6 +1388,10 @@ export type StaticConfigPublic = {
      * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
      */
     acceptsClassName?: boolean;
+    /**
+     * memoizes component, rarely useful except mostly style components that don't take children
+     */
+    memo?: boolean;
 };
 type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>;
@@ -1528,12 +1561,15 @@ export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = Univ
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
-    supportsCSSVars?: boolean;
+    supportsCSS?: boolean;
+    needsWebStyles?: boolean;
+    avoidReRenders?: boolean;
     useAnimations: UseAnimationHook;
     usePresence: () => UsePresenceResult;
     ResetPresence: (props: {
-        children?: any;
-    }) => JSX.Element;
+        children?: React.ReactNode;
+        disabled?: boolean;
+    }) => React.ReactNode;
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
     useAnimatedNumberReaction: UseAnimatedNumberReaction;
@@ -1542,23 +1578,8 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     Text?: any;
 };
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
-export type TamaguiComponentStateRef = {
-    host?: TamaguiElement;
-    composedRef?: (x: TamaguiElement) => void;
-    willHydrate?: boolean;
-    hasMeasured?: boolean;
-    hasAnimated?: boolean;
-    themeShallow?: boolean;
-    hasEverThemed?: boolean | 'wrapped';
-    isListeningToTheme?: boolean;
-    unPress?: Function;
-    group?: {
-        listeners: Set<GroupStateListener>;
-        layout?: LayoutValue;
-        emit: GroupStateListener;
-        subscribe: (cb: GroupStateListener) => () => void;
-    };
-};
+type UseStyleListener = (nextStyle: Record<string, unknown>) => void;
+export type UseStyleEmitter = (cb: UseStyleListener) => void;
 export type UseAnimationHook = (props: {
     style: Record<string, any>;
     props: Record<string, any>;
@@ -1566,6 +1587,7 @@ export type UseAnimationHook = (props: {
     staticConfig: StaticConfig;
     styleProps: SplitStyleProps;
     componentState: TamaguiComponentState;
+    useStyleEmitter?: UseStyleEmitter;
     theme: ThemeParsed;
     pseudos: WithPseudoProps<ViewStyle> | null;
     stateRef: {
@@ -1576,6 +1598,7 @@ export type UseAnimationHook = (props: {
 }) => null | {
     style?: StackStyleBase | StackStyleBase[];
     className?: string;
+    ref?: any;
 };
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = Record<string, StyleObject>;

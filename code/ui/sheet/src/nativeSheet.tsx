@@ -36,7 +36,7 @@ export function setupNativeSheet(
       const ref = useRef<{
         presentModal: Function
         dismissModal: Function
-      }>()
+      }>(undefined)
 
       useEffect(() => {
         if (open) {
@@ -59,12 +59,7 @@ export function setupNativeSheet(
 
       return (
         <>
-          <SheetProvider
-            scrollEnabled
-            setHasScrollView={emptyFn}
-            {...providerProps}
-            onlyShowFrame
-          >
+          <SheetProvider setHasScrollView={emptyFn} {...providerProps} onlyShowFrame>
             <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
               <ModalSheetViewMainContent>
                 <View style={{ flex: 1 }}>{props.children}</View>

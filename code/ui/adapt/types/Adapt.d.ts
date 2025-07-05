@@ -20,7 +20,7 @@ export type AdaptProps = {
     scope?: string;
     when?: AdaptWhen;
     platform?: AdaptPlatform;
-    children: JSX.Element | ((children: React.ReactNode) => React.ReactNode);
+    children: React.JSX.Element | ((children: React.ReactNode) => React.ReactNode);
 };
 type Component = (props: any) => any;
 export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI>;
@@ -60,6 +60,7 @@ export declare const Adapt: ((props: AdaptProps) => import("react/jsx-runtime").
 export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;
     scope?: string;
+    passThrough?: boolean;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
 export {};

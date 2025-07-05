@@ -47,7 +47,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     children,
     id,
     isHero = false,
-    showMore = false,
+    showMore = true,
     fileName = undefined,
     isHighlightingLines,
     showLineNumbers: showLineNumbersIn,
@@ -78,8 +78,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   const onCommandChange = useEvent(() => {
     try {
-      const codeElement = preRef.current.querySelector('code')
-      if (codeElement) setCode(transformedCommand)
+      const codeElement = preRef.current?.querySelector('code')
+      if (codeElement) {
+        setCode(transformedCommand)
+      }
     } catch (err) {
       console.warn('err', err)
     }
@@ -87,7 +89,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   useEffect(() => {
     onCommandChange()
-  }, [transformedCommand, onCommandChange])
+  }, [transformedCommand, isPreVisible, onCommandChange])
 
   return (
     <YStack
@@ -168,7 +170,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               // @ts-ignore
               id={id}
               jc="center"
-              bg="$color2"
+              bg="$color3"
             >
               {showFileName && (
                 <XStack
@@ -224,9 +226,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   right="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
-                  onPress={onCopy}
-                  $xs={{
-                    display: 'none',
+                  onPress={() => {
+                    onCopy()
                   }}
                 >
                   Copy

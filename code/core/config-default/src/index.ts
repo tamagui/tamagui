@@ -1,5 +1,5 @@
-import { createFont, createTokens } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
+import { createFont, createTokens } from '@tamagui/web'
 // import { animations } from './animations'
 // import { animations as animationsNative } from './animations.native'
 

@@ -1,8 +1,15 @@
-type DebounceSettings = { leading?: boolean };
-export declare function debounce<A extends Function>(func: A, wait?: number, leading?: boolean): A & { cancel: () => void };
+type DebounceSettings = {
+	leading?: boolean;
+};
+// TODO doesn't return value of the function called :/
+export declare function debounce<A extends Function>(func: A, wait?: number, leading?: boolean): A & {
+	cancel: () => void;
+};
 export declare function useDebounce<
 	A extends (...args: any) => any | undefined | null,
-	DebouncedFn extends A & { cancel: () => void }
+	DebouncedFn extends A & {
+		cancel: () => void;
+	}
 >(fn: A, wait: number, options?: DebounceSettings, mountArgs?: any[]): DebouncedFn;
 /**
 * Returns a value once it stops changing after "amt" time.

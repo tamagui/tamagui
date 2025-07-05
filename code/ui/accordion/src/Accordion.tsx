@@ -2,13 +2,13 @@ import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/core'
+import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
-import { View, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
@@ -582,19 +582,16 @@ const HeightAnimator = View.styleable((props, ref) => {
   const { children, ...rest } = props
   const [height, setHeight] = React.useState(0)
 
-  const onLayout = useEvent(({ nativeEvent }) => {
-    if (nativeEvent.layout.height) {
-      setHeight(nativeEvent.layout.height)
-    }
-  })
-
   return (
     <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
       <View
         position="absolute"
         width="100%"
-        //@ts-ignore
-        onLayout={onLayout}
+        onLayout={({ nativeEvent }) => {
+          if (nativeEvent.layout.height) {
+            setHeight(nativeEvent.layout.height)
+          }
+        }}
       >
         {children}
       </View>

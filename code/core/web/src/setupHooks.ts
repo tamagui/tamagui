@@ -22,7 +22,7 @@ type InternalHooks = {
   useEvents?: (
     viewProps: Record<string, any>,
     events: TamaguiComponentEvents | null,
-    splitStyles: GetStyleResult,
+    splitStyles: GetStyleResult | null,
     setStateShallow: (next: Partial<TamaguiComponentState>) => void,
     staticConfig: StaticConfig
   ) => any

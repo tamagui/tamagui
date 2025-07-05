@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch-headless",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "sideEffects": [
     "*.css"
   ],
@@ -43,12 +43,13 @@
     "@tamagui/use-previous": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.76.5"
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"

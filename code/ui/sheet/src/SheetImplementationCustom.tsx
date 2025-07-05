@@ -54,7 +54,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     } = props
 
     const state = useSheetOpenState(props)
-    const [overlayComponent, setOverlayComponent] = React.useState<any>(null)
+    const [overlayComponent, setOverlayComponent] = React.useState<React.ReactNode>(null)
 
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
@@ -74,13 +74,18 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     } = providerProps
     const { open, controller, isHidden } = state
 
-    const sheetRef = React.useRef<View>(null)
+    const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
 
     // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
     const { animationDriver } = useConfiguration()
+
+    if (!animationDriver) {
+      throw new Error(`Sheet reqiures an animation driver to be set`)
+    }
+
     const animationConfig = (() => {
-      if (animationDriver.supportsCSSVars) {
+      if (animationDriver.supportsCSS) {
         // for now this detects css driver only, which has no "config"
         return {}
       }
@@ -190,13 +195,25 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     })
 
+    const isAbleToPosition = (() => {
+      if (disableAnimation) {
+        return false
+      }
+
+      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
+        return false
+      }
+
+      return true
+    })()
+
     useIsomorphicLayoutEffect(() => {
       // we need to do a *three* step process for the css driver
       // first render off screen for ssr safety (hiddenSize)
       // then render to bottom of screen without animation (screenSize)
       // then add the animation as it animates from screenSize to position
 
-      if (hasntMeasured && screenSize) {
+      if (hasntMeasured && screenSize && frameSize) {
         at.current = screenSize
         animatedNumber.setValue(
           screenSize,
@@ -211,29 +228,17 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             }, 10)
           }
         )
-        return
       }
+    }, [hasntMeasured, screenSize, frameSize])
 
-      if (disableAnimation) {
-        return
-      }
-
-      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
-        return
-      }
-
-      // finally, animate
+    useIsomorphicLayoutEffect(() => {
+      if (!isAbleToPosition) return
       animateTo(position)
-    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
+    }, [isAbleToPosition, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
     const [isDragging, setIsDragging] = React.useState(false)
-    const scrollEnabled = useRef(true)
-
-    const setScrollEnabled = React.useCallback((val: boolean) => {
-      scrollEnabled.current = val
-    }, [])
 
     const panResponder = React.useMemo(() => {
       if (disableDrag) return
@@ -246,6 +251,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       function setPanning(val: boolean) {
         setIsDragging(val)
+        scrollBridge.setParentDragging(false)
 
         // make unselectable:
         if (isClient) {
@@ -265,6 +271,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
 
       const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+        if (scrollBridge.scrollLock) {
+          return
+        }
+
         isExternalDrag = false
         previouslyScrolling = false
         setPanning(false)
@@ -274,6 +284,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         const end = at + frameSize * vy * 0.2
         let closestPoint = 0
         let dist = Number.POSITIVE_INFINITY
+
         for (let i = 0; i < positions.length; i++) {
           const position = positions[i]
           const curDist = end > position ? end - position : position - end
@@ -282,10 +293,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             closestPoint = i
           }
         }
+
         // have to call both because state may not change but need to snap back
         setPosition(closestPoint)
         animateTo(closestPoint)
-        setScrollEnabled(closestPoint === 0 && dragAt <= 0)
       }
 
       const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
@@ -300,35 +311,49 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const onMoveShouldSet = (
         e: GestureResponderEvent,
         { dy }: PanResponderGestureState
-      ) => {
-        // if dragging handle always allow:
-        if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
-          return true
-        }
+      ): boolean => {
+        function getShouldSet() {
+          // if dragging handle always allow:
+          if (e.target === providerProps.handleRef.current) {
+            return true
+          }
 
-        const isScrolled = scrollBridge.y !== 0
-
-        // Update the dragging direction
-        const isDraggingUp = dy < 0
-
-        // we can treat near top instead of exactly to avoid trouble with springs
-        const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
-        if (isScrolled) {
-          previouslyScrolling = true
-          return false
-        }
-        // prevent drag once at top and pulling up
-        if (isNearTop) {
-          if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {
+          if (scrollBridge.scrollLock) {
             return false
           }
+
+          const isScrolled = scrollBridge.y !== 0
+
+          // Update the dragging direction
+          const isDraggingUp = dy < 0
+
+          // we can treat near top instead of exactly to avoid trouble with springs
+          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
+          if (isScrolled) {
+            previouslyScrolling = true
+            return false
+          }
+          // prevent drag once at top and pulling up
+          if (isNearTop) {
+            if (hasScrollView.current && isDraggingUp) {
+              return false
+            }
+          }
+
+          // we could do some detection of other touchables and cancel here..
+          return Math.abs(dy) > 5
         }
-        // we could do some detection of other touchables and cancel here..
-        return Math.abs(dy) > 10
+
+        const granted = getShouldSet()
+
+        if (granted) {
+          scrollBridge.setParentDragging(true)
+        }
+
+        return granted
       }
 
       const grant = () => {
-        setScrollEnabled(false)
         setPanning(true)
         stopSpring()
         startY = at.current
@@ -353,6 +378,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         onPanResponderMove: (_e, { dy }) => {
           const toFull = dy + startY
           const to = resisted(toFull, minY)
+
+          // handles the case where you hand off back and forth more than once
+          const isAtTop = to <= minY
+          if (isAtTop) {
+            scrollBridge.setParentDragging(false)
+          } else {
+            scrollBridge.setParentDragging(true)
+          }
+
           animatedNumber.setValue(to, { type: 'direct' })
         },
         onPanResponderEnd: finish,
@@ -458,11 +492,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider
-          {...providerProps}
-          scrollEnabled={scrollEnabled.current}
-          setHasScrollView={setHasScrollView}
-        >
+        <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
           <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
@@ -486,10 +516,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
-            {...(!isDragging && {
-              // @ts-ignore for CSS driver this is necessary to attach the transition
-              animation: disableAnimation ? null : animation,
-            })}
+            // @ts-ignore for CSS driver this is necessary to attach the transition
+            // also motion driver at least though i suspect all drivers?
+            animation={isDragging || disableAnimation ? null : animation}
             // @ts-ignore
             disableClassName
             style={[

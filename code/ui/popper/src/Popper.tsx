@@ -45,21 +45,35 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 
 export type PopperContextValue = UseFloatingReturn & {
   size?: SizeTokens
-  placement?: Placement
-  arrowRef: any
-  onArrowSize?: (val: number) => void
   hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
     centerOffset: number
   }
+  placement?: Placement
+  arrowRef: any
+  onArrowSize?: (val: number) => void
 }
 
 export const PopperContext = createStyledContext<PopperContextValue>({} as any)
+export const PopperPositionContext = createStyledContext
 
 export const { useStyledContext: usePopperContext, Provider: PopperProvider } =
   PopperContext
 
+export const PopperInfrequentContext = createStyledContext<{
+  size?: SizeTokens
+}>({
+  size: undefined,
+})
+
+export const usePopperInfrequentContext = PopperInfrequentContext.useStyledContext
+
 export type PopperProps = {
+  /**
+   * Optional, will disable measuring updates when open is false for better performance
+   * */
+  open?: boolean
+
   size?: SizeTokens
   children?: React.ReactNode
 
@@ -98,6 +112,8 @@ export type PopperProps = {
   offset?: OffsetOptions
 
   disableRTL?: boolean
+
+  passThrough?: boolean
 }
 
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>
@@ -137,6 +153,8 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     offset,
     disableRTL,
     resize,
+    passThrough,
+    open,
     __scopePopper,
   } = props
 
@@ -146,10 +164,11 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   const floatingStyle = React.useRef({})
 
   let floating = useFloating({
+    open: passThrough ? false : open || true,
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: autoUpdate,
+    whileElementsMounted: passThrough || !open ? undefined : autoUpdate,
     platform:
       (disableRTL ?? setupOptions.disableRTL)
         ? {
@@ -170,6 +189,10 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       process.env.TAMAGUI_TARGET !== 'native' && resize
         ? sizeMiddleware({
             apply({ availableHeight, availableWidth }) {
+              if (passThrough) {
+                return
+              }
+
               Object.assign(floatingStyle.current, {
                 maxHeight: `${availableHeight}px`,
                 maxWidth: `${availableWidth}px`,
@@ -234,8 +257,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     }, [])
 
     useIsomorphicLayoutEffect(() => {
+      if (passThrough) return
       floating.update()
-    }, [dimensions, keyboardOpen])
+    }, [passThrough, dimensions, keyboardOpen])
   }
 
   const popperContext = {
@@ -248,7 +272,11 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     ...floating,
   }
 
-  return <PopperProvider {...popperContext}>{children}</PopperProvider>
+  return (
+    <PopperInfrequentContext.Provider size={size}>
+      <PopperProvider {...popperContext}>{children}</PopperProvider>
+    </PopperInfrequentContext.Provider>
+  )
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -300,6 +328,7 @@ type PopperContentElement = HTMLElement | View
 
 export type PopperContentProps = SizableStackProps & {
   enableAnimationForPositionChange?: boolean
+  passThrough?: boolean
 }
 
 export const PopperContentFrame = styled(ThemeableStack, {
@@ -334,7 +363,13 @@ export const PopperContent = React.forwardRef<
   PopperContentElement,
   ScopedPopperProps<PopperContentProps>
 >(function PopperContent(props: ScopedPopperProps<PopperContentProps>, forwardedRef) {
-  const { __scopePopper, enableAnimationForPositionChange, ...rest } = props
+  const {
+    __scopePopper,
+    enableAnimationForPositionChange,
+    children,
+    passThrough,
+    ...rest
+  } = props
   const { strategy, placement, refs, x, y, getFloatingProps, size } =
     usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
@@ -342,13 +377,13 @@ export const PopperContent = React.forwardRef<
   const [needsMeasure, setNeedsMeasure] = React.useState(enableAnimationForPositionChange)
 
   useIsomorphicLayoutEffect(() => {
-    if (x && y) {
+    if (needsMeasure && x && y) {
       setNeedsMeasure(false)
     }
-  }, [enableAnimationForPositionChange, x, y])
+  }, [needsMeasure, enableAnimationForPositionChange, x, y])
 
   // default to not showing if positioned at 0, 0
-  let show = true
+  const hide = x === 0 && y === 0
 
   const frameProps = {
     ref: contentRefs,
@@ -357,18 +392,17 @@ export const PopperContent = React.forwardRef<
     top: 0,
     left: 0,
     position: strategy,
-    opacity: show ? 1 : 0,
+    opacity: 1,
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animation: rest.animation,
       animateOnly: needsMeasure ? [] : rest.animateOnly,
       animatePresence: false,
     }),
-    ...(x === 0 &&
-      y === 0 && {
-        opacity: 0,
-        animateOnly: [],
-      }),
+    ...(hide && {
+      opacity: 0,
+      animateOnly: [],
+    }),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
@@ -378,16 +412,25 @@ export const PopperContent = React.forwardRef<
     : frameProps
 
   return (
-    <Stack {...floatingProps}>
+    <Stack
+      passThrough={passThrough}
+      ref={contentRefs}
+      {...(passThrough ? null : floatingProps)}
+    >
       <PopperContentFrame
         key="popper-content-frame"
-        data-placement={placement}
-        data-strategy={strategy}
-        contain="layout"
-        size={size}
-        {...style}
-        {...rest}
-      />
+        passThrough={passThrough}
+        {...(!passThrough && {
+          'data-placement': placement,
+          'data-strategy': strategy,
+          contain: 'layout',
+          size,
+          ...style,
+          ...rest,
+        })}
+      >
+        {children}
+      </PopperContentFrame>
     </Stack>
   )
 })

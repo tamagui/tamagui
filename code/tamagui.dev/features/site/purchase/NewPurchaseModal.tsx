@@ -271,7 +271,7 @@ export function PurchaseModalContents() {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal dismissOnSnapToBottom={false} animation="medium">
+          <Sheet modal animation="medium">
             <Sheet.Frame bg="$color1" padding={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
@@ -286,7 +286,7 @@ export function PurchaseModalContents() {
           </Sheet>
         </Dialog.Adapt>
 
-        <Dialog.Portal>
+        <Dialog.Portal zIndex={1_000_000}>
           <Dialog.Overlay
             backdropFilter="blur(35px)"
             key="overlay"

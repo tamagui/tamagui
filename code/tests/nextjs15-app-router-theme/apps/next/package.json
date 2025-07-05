@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "private": true,
   "packageManager": "yarn@4.5.0",
   "scripts": {
@@ -14,18 +14,14 @@
     "@tamagui/next-theme": "workspace:*",
     "app": "workspace:^",
     "next": "^15.3.1",
-    "raf": "^3.4.1",
     "react": "*",
     "react-dom": "*",
-    "react-native": "^0.76.5",
+    "react-native": "^0.79.2",
     "react-native-web": "^0.20.0",
-    "tamagui": "workspace:*",
-    "vercel": "latest"
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/next-plugin": "workspace:*",
-    "@types/node": "^22.1.0",
-    "next-compose-plugins": "^2.2.1",
-    "next-transpile-modules": "^10.0.1"
+    "@types/node": "^22.1.0"
   }
 }

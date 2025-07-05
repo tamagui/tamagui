@@ -8,7 +8,7 @@ export function useConstant<T>(fn: () => T): T {
     return React.useMemo(() => fn(), [])
   }
 
-  const ref = React.useRef<ResultBox<T>>()
+  const ref = React.useRef<ResultBox<T>>(undefined)
 
   if (!ref.current) {
     ref.current = { v: fn() }

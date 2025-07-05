@@ -68,7 +68,7 @@ const SelectScrollButtonImpl = React.memo(
 
       const statusRef = React.useRef<'idle' | 'active'>('idle')
       const isVisible = context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']
-      const frameRef = React.useRef<any>()
+      const frameRef = React.useRef<any>(null)
 
       const { x, y, refs, strategy } = useFloating({
         open: open && isVisible,
@@ -81,6 +81,7 @@ const SelectScrollButtonImpl = React.memo(
         whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
       })
 
+      // @ts-ignore TODO react 19 type needs fix
       const composedRef = useComposedRefs(forwardedRef, refs.setFloating)
 
       if (!isVisible) {

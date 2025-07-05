@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "1.126.14",
+  "version": "1.130.3",
   "sideEffects": false,
   "description": "Utilities for icon packages",
   "source": "src/index.ts",
@@ -42,6 +42,6 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native-svg": "15.8.0"
+    "react-native-svg": "15.11.2"
   }
 }

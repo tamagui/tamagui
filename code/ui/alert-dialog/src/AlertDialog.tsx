@@ -273,7 +273,7 @@ AlertDialogCancel.displayName = CANCEL_NAME
 /* ---------------------------------------------------------------------------------------------- */
 
 type DescriptionWarningProps = {
-  contentRef: React.RefObject<TamaguiElement>
+  contentRef: React.RefObject<TamaguiElement | null>
 }
 
 const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) => {
@@ -391,8 +391,10 @@ function forEachChildDeep(
   for (const child of children) {
     if (!React.isValidElement(child)) continue
     if (!onChild(child)) continue
-    if (child.props.children) {
-      forEachChildDeep(React.Children.toArray(child.props.children), onChild)
+    // TODO react 19 doesn't like child.props
+    const childProps = child.props as unknown as any
+    if (childProps.children) {
+      forEachChildDeep(React.Children.toArray(childProps.children), onChild)
     }
   }
 }
@@ -400,8 +402,8 @@ function forEachChildDeep(
 function getStringChildren(child: React.ReactElement) {
   let string = ''
   forEachChildDeep(React.Children.toArray(child), (child) => {
-    if (typeof child.props.children === 'string') {
-      string = child.props.children
+    if (typeof (child.props as Record<string, any>).children === 'string') {
+      string = (child.props as Record<string, any>).children
       return false
     }
     return true

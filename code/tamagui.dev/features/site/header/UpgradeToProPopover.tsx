@@ -48,7 +48,6 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
         <XStack
           br="$10"
           px="$3"
-          animation="medium"
           cur="pointer"
           height={36}
           ai="center"
@@ -111,6 +110,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
         padding={0}
         br="$6"
         borderWidth={0}
+        zIndex={10000}
         enterStyle={{
           y: 3,
           opacity: 0,

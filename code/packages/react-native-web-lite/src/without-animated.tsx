@@ -16,7 +16,7 @@ export { default as render } from './render/index'
 export { default as NativeModules } from './NativeModules/index'
 
 // react-native
-export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index'
+export { default as NativeEventEmitter } from './vendor/react-native/EventEmitter/NativeEventEmitter'
 
 // APIs
 export { default as AccessibilityInfo } from './AccessibilityInfo/index'

@@ -6,13 +6,14 @@ import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   ComponentContextI,
   DebugProp,
+  GetStyleState,
   IsMediaType,
-  LayoutEvent,
   MediaQueries,
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
+  WidthHeight,
 } from '../types'
 
 export let mediaState: MediaQueryState =
@@ -183,14 +184,10 @@ function subscribe(subscriber: () => void) {
   }
 }
 
-type ComponentMediaKeys = Set<string>
-
-type ComponentMediaQueryState = MediaKeysState
-
 export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
   const componentState = cc ? States.get(cc) : null
 
-  const internalRef = useRef<{ keys: Set<string>; lastState?: MediaQueryState }>()
+  const internalRef = useRef<{ keys: Set<string>; lastState?: MediaQueryState }>(null)
   if (!internalRef.current) {
     internalRef.current = {
       keys: new Set(),
@@ -251,10 +248,7 @@ export function _disableMediaTouch(val: boolean) {
   disableMediaTouch = val
 }
 
-export function getMediaState(
-  mediaGroups: Set<string>,
-  layout: LayoutEvent['nativeEvent']['layout']
-) {
+export function getMediaState(mediaGroups: Set<string>, layout: WidthHeight) {
   disableMediaTouch = true
   let res: Record<string, boolean>
   try {
@@ -272,14 +266,15 @@ export function getMediaState(
 export const getMediaImportanceIfMoreImportant = (
   mediaKey: string,
   key: string,
-  importancesUsed: Record<string, number>,
+  styleState: GetStyleState,
   isSizeMedia: boolean
 ) => {
   const importance =
     isSizeMedia && !getSetting('mediaPropOrder')
       ? getMediaKeyImportance(mediaKey)
       : defaultMediaImportance
-  return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
+  const usedKeys = styleState.usedKeys
+  return !usedKeys[key] || importance > usedKeys[key] ? importance : null
 }
 
 function camelToHyphen(str: string) {

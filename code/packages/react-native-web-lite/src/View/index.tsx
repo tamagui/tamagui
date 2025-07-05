@@ -21,7 +21,7 @@ import {
 } from '@tamagui/react-native-web-internals'
 import * as React from 'react'
 
-import createElement from '../createElement/index'
+import { useCreateElement } from '../createElement/index'
 import type { PlatformMethods } from '../types'
 import type { ViewProps } from './types'
 
@@ -115,7 +115,7 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
 
     supportedProps.ref = setRef
 
-    return createElement(component, supportedProps, { writingDirection })
+    return useCreateElement(component, supportedProps, { writingDirection })
   }
 )
 

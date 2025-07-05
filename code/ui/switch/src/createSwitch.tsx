@@ -180,6 +180,7 @@ export function createSwitch<
         // @ts-ignore
         props as any,
         [checked, setChecked],
+        // @ts-ignore TODO tamagui react 19 type error
         forwardedRef
       )
 

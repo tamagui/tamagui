@@ -48,7 +48,7 @@ export default {
   resolve: {
     alias: {
       'react-native-svg': '@tamagui/react-native-svg',
-      // 'react-native-web': await resolve('react-native-web-lite'),
+      // 'react-native-web': resolve('@tamagui/react-native-web-lite'),
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
       'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
@@ -86,6 +86,7 @@ export default {
       optimize: true,
       config: '@tamagui/tamagui-dev-config',
       outputCSS: './tamagui.css',
+      // bento lists some last issues
       // useReactNativeWebLite: true,
     }),
 
@@ -133,6 +134,15 @@ export default {
             return contents?.replace(
               'if (route.state === childState)',
               'if (!childState || route.state === childState)'
+            )
+          },
+        },
+        'react-native-reanimated': {
+          'lib/module/createAnimatedComponent/createAnimatedComponent.js': (contents) => {
+            // if not using layout animations, this saves a super expensive repaint that happens often
+            return contents?.replace(
+              `return this._componentDOMRef.getBoundingClientRect();`,
+              'return null;'
             )
           },
         },

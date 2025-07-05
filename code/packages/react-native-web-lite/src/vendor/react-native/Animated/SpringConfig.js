@@ -5,9 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- *
+ * @format
  */
-'use strict'
+
+const defaultSpringConfig = {
+  stiffness: 0,
+  damping: 0,
+}
 
 function stiffnessFromOrigamiValue(oValue) {
   return (oValue - 30) * 3.62 + 194
@@ -42,15 +46,15 @@ function fromBouncinessAndSpeed(bounciness, speed) {
   }
 
   function b3Friction1(x) {
-    return 0.0007 * Math.pow(x, 3) - 0.031 * Math.pow(x, 2) + 0.64 * x + 1.28
+    return 0.0007 * x ** 3 - 0.031 * x ** 2 + 0.64 * x + 1.28
   }
 
   function b3Friction2(x) {
-    return 0.000044 * Math.pow(x, 3) - 0.006 * Math.pow(x, 2) + 0.36 * x + 2
+    return 0.000044 * x ** 3 - 0.006 * x ** 2 + 0.36 * x + 2
   }
 
   function b3Friction3(x) {
-    return 0.00000045 * Math.pow(x, 3) - 0.000332 * Math.pow(x, 2) + 0.1078 * x + 5.84
+    return 0.00000045 * x ** 3 - 0.000332 * x ** 2 + 0.1078 * x + 5.84
   }
 
   function b3Nobounce(tension) {
@@ -63,11 +67,12 @@ function fromBouncinessAndSpeed(bounciness, speed) {
     }
   }
 
-  var b = normalize(bounciness / 1.7, 0, 20)
+  let b = normalize(bounciness / 1.7, 0, 20)
   b = projectNormal(b, 0, 0.8)
-  var s = normalize(speed / 1.7, 0, 20)
-  var bouncyTension = projectNormal(s, 0.5, 200)
-  var bouncyFriction = quadraticOutInterpolation(b, b3Nobounce(bouncyTension), 0.01)
+  const s = normalize(speed / 1.7, 0, 20)
+  const bouncyTension = projectNormal(s, 0.5, 200)
+  const bouncyFriction = quadraticOutInterpolation(b, b3Nobounce(bouncyTension), 0.01)
+
   return {
     stiffness: stiffnessFromOrigamiValue(bouncyTension),
     damping: dampingFromOrigamiValue(bouncyFriction),

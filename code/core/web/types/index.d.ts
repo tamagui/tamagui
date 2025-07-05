@@ -21,10 +21,12 @@ export { setConfig, getSetting, setupDev, getConfig, getThemes, getTokens, updat
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';
 export * from './contexts/ComponentContext';
+export * from './contexts/GroupContext';
 export * from './_withStableStyle';
 export * from './helpers/createMediaStyle';
 export * from './helpers/getShorthandValue';
-export * from './helpers/createShallowSetState';
+export * from '@tamagui/is-equal-shallow';
+export { insertStyleRules } from './helpers/insertStyleRule';
 export * from './helpers/createStyledContext';
 export * from './helpers/expandStyles';
 export * from './helpers/getExpandedShorthands';

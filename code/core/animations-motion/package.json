@@ -1,0 +1,54 @@
+{
+  "name": "@tamagui/animations-motion",
+  "version": "1.130.3",
+  "source": "src/index.ts",
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "sideEffects": [
+    "polyfill.js",
+    "polyfill.mjs"
+  ],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/use-presence": "workspace:*",
+    "motion": "^12.20.1"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

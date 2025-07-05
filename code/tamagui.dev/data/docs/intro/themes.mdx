@@ -98,7 +98,7 @@ const light_Circle = {
 }
 ```
 
-<Notice>Component themes must have the first letter capitalized.</Notice>
+<Notice theme="blue">Component themes must have the first letter capitalized.</Notice>
 
 - `dark_Circle`
 - `dark_green_Circle`
@@ -199,10 +199,10 @@ const ButtonText = styled(Text, {
 
 type ButtonProps = GetProps<typeof ButtonFrame>
 
-// note: extractable will tell the tamagui compiler to optimize usages of this:
-export const Button = ButtonFrame.extractable(({ children, ...props }: ButtonProps) => {
+// note: styleable will tell the tamagui compiler to optimize usages of this:
+export const Button = ButtonFrame.styleable<ButtonProps>(({ children, ...props }, ref) => {
   return (
-    <ButtonFrame {...props}>
+    <ButtonFrame ref={ref} {...props}>
       <ButtonText>{children}</ButtonText>
     </ButtonFrame>
   )
@@ -244,7 +244,7 @@ declare module 'tamagui' {
 export default config
 ```
 
-<Notice>
+<Notice theme="green">
   If you want to customize the starter themes, we recommend you just grab the `src` for
   `@tamagui/themes` and copy/paste it into your app, and customize from there.
 </Notice>

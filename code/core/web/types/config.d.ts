@@ -25,7 +25,7 @@ export declare const useTokens: ({ prefixed, }?: {
 }) => TokensMerged;
 export declare const getThemes: () => {
     [x: string]: {
-        [x: string]: import("./createVariable").Variable<any> | import("./createVariable").Variable<string> | import("./createVariable").Variable<number> | import("./createVariable").Variable<import("./types").VariableValGeneric>;
+        [x: string]: import("./createVariable").Variable<any> | import("./createVariable").Variable<string> | import("./createVariable").Variable<number> | import("./createVariable").Variable<import("./createVariable").PxValue> | import("./createVariable").Variable<import("./types").VariableValGeneric>;
         background?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
         backgroundHover?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
         backgroundPress?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;

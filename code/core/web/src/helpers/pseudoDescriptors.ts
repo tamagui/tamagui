@@ -4,51 +4,47 @@ export const pseudoDescriptorsBase = {
   // order of keys here important! in priority order
   hoverStyle: {
     name: 'hover',
-    priority: 1,
+    priority: 2,
   },
   pressStyle: {
     name: 'active',
     stateKey: 'press',
-    priority: 2,
+    priority: 3,
   },
   focusVisibleStyle: {
     name: 'focus-visible',
-    priority: 3,
+    priority: 4,
     stateKey: 'focusVisible',
   },
   focusStyle: {
     name: 'focus',
-    priority: 3,
+    priority: 4,
   },
   focusWithinStyle: {
     name: 'focus-within',
-    priority: 3,
+    priority: 4,
     stateKey: 'focusWithin',
   },
   disabledStyle: {
     name: 'disabled',
-    priority: 4,
+    priority: 5,
     stateKey: 'disabled',
   },
 } as const
 
 export const pseudoPriorities = {
-  hover: 1,
-  press: 2,
-  focus: 3,
-  focusVisible: 3,
-  focusWithin: 3,
-  disabled: 4,
+  hover: pseudoDescriptorsBase.hoverStyle.priority,
+  press: pseudoDescriptorsBase.pressStyle.priority,
+  focus: pseudoDescriptorsBase.focusStyle.priority,
+  focusVisible: pseudoDescriptorsBase.focusVisibleStyle.priority,
+  focusWithin: pseudoDescriptorsBase.focusWithinStyle.priority,
+  disabled: pseudoDescriptorsBase.disabledStyle.priority,
 }
 
+export type PseudoDescriptorKey = keyof typeof pseudoDescriptorsBase
+
 export const pseudoDescriptors: Record<
-  | 'hoverStyle'
-  | 'pressStyle'
-  | 'focusStyle'
-  | 'focusVisibleStyle'
-  | 'focusWithinStyle'
-  | 'enterStyle'
-  | 'exitStyle',
+  PseudoDescriptorKey | 'enterStyle' | 'exitStyle',
   PseudoDescriptor
 > = {
   ...pseudoDescriptorsBase,

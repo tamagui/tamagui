@@ -101,4 +101,6 @@ export interface AnimatePresenceProps {
    * @deprecated use `custom` passing it an Object instead
    */
   enterExitVariant?: string | null
+
+  passThrough?: boolean
 }

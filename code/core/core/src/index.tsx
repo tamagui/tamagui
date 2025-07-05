@@ -6,6 +6,7 @@ import type {
   TamaDefer,
   TamaguiComponent,
   TamaguiElement,
+  TamaguiProviderProps,
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,
@@ -13,27 +14,33 @@ import type {
 } from '@tamagui/web'
 import {
   Stack as WebStack,
+  TamaguiProvider as WebTamaguiProvider,
   Text as WebText,
   View as WebView,
   composeEventHandlers,
   createTamagui as createTamaguiWeb,
   setupHooks,
+  useIsomorphicLayoutEffect,
 } from '@tamagui/web'
 import React from 'react'
 
+import {
+  enable,
+  getRect,
+  measureLayout,
+  useElementLayout,
+} from '@tamagui/use-element-layout'
+import { addNativeValidStyles } from './addNativeValidStyles'
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
-import { getRect } from './helpers/getRect'
-import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
-import { addNativeValidStyles } from './addNativeValidStyles'
 
 // helpful for usage outside of tamagui
 export {
-  getElementLayoutEvent,
+  setOnLayoutStrategy,
   type LayoutEvent,
-} from './hooks/useElementLayout'
+} from '@tamagui/use-element-layout'
 
 // add newer style props based on react native version
 addNativeValidStyles()
@@ -71,6 +78,15 @@ export * from '@tamagui/web'
 // fixes issues with TS saying internal type usage is breaking
 // see https://discord.com/channels/909986013848412191/1146150253490348112/1146150253490348112
 export * from './reactNativeTypes'
+
+// adds useElementLayout enable
+export const TamaguiProvider = (props: TamaguiProviderProps) => {
+  useIsomorphicLayoutEffect(() => {
+    enable()
+  }, [])
+
+  return <WebTamaguiProvider {...props} />
+}
 
 // automate using the react native media driver
 export const createTamagui: typeof createTamaguiWeb = (conf) => {
@@ -169,7 +185,7 @@ setupHooks({
     }
   },
 
-  useEvents(viewProps, events, { pseudos }, setStateShallow, staticConfig) {
+  useEvents(viewProps, events, splitStyles, setStateShallow, staticConfig) {
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (events) {
         if (events.onFocus) {
