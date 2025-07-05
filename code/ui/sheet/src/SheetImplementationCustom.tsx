@@ -290,7 +290,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // have to call both because state may not change but need to snap back
         setPosition(closestPoint)
         animateTo(closestPoint)
-        setScrollEnabled(closestPoint === 0 && dragAt <= 0)
+
+        // re-enable if at top point
+        setScrollEnabled(closestPoint === 0)
       }
 
       const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
