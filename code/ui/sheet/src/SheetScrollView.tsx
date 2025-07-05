@@ -71,6 +71,7 @@ export const SheetScrollView = React.forwardRef<
       }
       state.current.isDragging = false
       scrollBridge.scrollStartY = -1
+      scrollBridge.scrollLock = false
       state.current.isScrolling = false
       setScrollEnabled(true)
       let vy = 0
@@ -140,7 +141,7 @@ export const SheetScrollView = React.forwardRef<
             const { pageY } = e.nativeEvent
 
             if (state.current.isScrolling) {
-              e.stopPropagation()
+              // e.stopPropagation()
               return
             }
 
@@ -155,7 +156,9 @@ export const SheetScrollView = React.forwardRef<
             const isDraggingUp = dy < 0
             const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
 
-            if ((dy === 0 || isDraggingUp) && isPaneAtTop) {
+            const shouldScrollLock = (dy === 0 || isDraggingUp) && isPaneAtTop
+
+            if (shouldScrollLock) {
               state.current.isScrolling = true
               scrollBridge.scrollLock = true
               setScrollEnabled(true)

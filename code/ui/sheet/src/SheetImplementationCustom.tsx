@@ -195,6 +195,18 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     })
 
+    const isAbleToPosition = (() => {
+      if (disableAnimation) {
+        return false
+      }
+
+      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
+        return false
+      }
+
+      return true
+    })()
+
     useIsomorphicLayoutEffect(() => {
       // we need to do a *three* step process for the css driver
       // first render off screen for ssr safety (hiddenSize)
@@ -216,20 +228,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             }, 10)
           }
         )
-        return
       }
+    }, [hasntMeasured, screenSize, frameSize])
 
-      if (disableAnimation) {
-        return
-      }
-
-      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
-        return
-      }
-
-      // finally, animate
+    useIsomorphicLayoutEffect(() => {
+      if (!isAbleToPosition) return
       animateTo(position)
-    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
+    }, [isAbleToPosition, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
@@ -270,6 +275,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
 
       const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+        if (scrollBridge.scrollLock) {
+          return
+        }
+
         isExternalDrag = false
         previouslyScrolling = false
         setPanning(false)
@@ -279,6 +288,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         const end = at + frameSize * vy * 0.2
         let closestPoint = 0
         let dist = Number.POSITIVE_INFINITY
+
         for (let i = 0; i < positions.length; i++) {
           const position = positions[i]
           const curDist = end > position ? end - position : position - end
@@ -287,11 +297,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             closestPoint = i
           }
         }
+
         // have to call both because state may not change but need to snap back
         setPosition(closestPoint)
         animateTo(closestPoint)
 
-        // re-enable if at top point
         setScrollEnabled(closestPoint === 0)
       }
 
@@ -308,34 +318,38 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         e: GestureResponderEvent,
         { dy }: PanResponderGestureState
       ): boolean => {
-        // if dragging handle always allow:
-        if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
-          return true
-        }
+        function getShouldSet() {
+          // if dragging handle always allow:
+          if (e.target === providerProps.handleRef.current || !scrollEnabled.current) {
+            return true
+          }
 
-        if (scrollBridge.scrollLock) {
-          return false
-        }
-
-        const isScrolled = scrollBridge.y !== 0
-
-        // Update the dragging direction
-        const isDraggingUp = dy < 0
-
-        // we can treat near top instead of exactly to avoid trouble with springs
-        const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
-        if (isScrolled) {
-          previouslyScrolling = true
-          return false
-        }
-        // prevent drag once at top and pulling up
-        if (isNearTop) {
-          if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {
+          if (scrollBridge.scrollLock) {
             return false
           }
+
+          const isScrolled = scrollBridge.y !== 0
+
+          // Update the dragging direction
+          const isDraggingUp = dy < 0
+
+          // we can treat near top instead of exactly to avoid trouble with springs
+          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
+          if (isScrolled) {
+            previouslyScrolling = true
+            return false
+          }
+          // prevent drag once at top and pulling up
+          if (isNearTop) {
+            if (hasScrollView.current && isDraggingUp) {
+              return false
+            }
+          }
+          // we could do some detection of other touchables and cancel here..
+          return Math.abs(dy) > 10
         }
-        // we could do some detection of other touchables and cancel here..
-        return Math.abs(dy) > 10
+
+        return getShouldSet()
       }
 
       const grant = () => {

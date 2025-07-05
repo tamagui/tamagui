@@ -44,8 +44,7 @@ export function useSheetProviderProps(
     prop: props.position,
     defaultProp: props.defaultPosition || (state.open ? 0 : -1),
     onChange: props.onPositionChange,
-    strategy: 'most-recent-wins',
-    transition: true,
+    strategy: 'prop-wins',
   })
 
   const position = state.open === false ? -1 : position_
