@@ -1,4 +1,4 @@
-import { YStack } from '@tamagui/stacks'
+import { View } from '@tamagui/core'
 import { useStackedZIndex } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { RootTagContext } from 'react-native'
@@ -34,18 +34,15 @@ const createPortal = (() => {
 })()
 
 export const Portal = (propsIn: PortalProps) => {
-  const { stackZIndex, ...props } = propsIn
-
   const rootTag = React.useContext(RootTagContext)
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
   const contents = (
-    <YStack
+    <View
       pointerEvents="box-none"
-      fullscreen
       position="absolute"
+      inset={0}
       maxWidth="100%"
-      {...props}
       zIndex={zIndex}
     />
   )
