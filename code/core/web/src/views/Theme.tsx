@@ -141,7 +141,7 @@ export function getThemedChildren(
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (props.debug) {
+    if (!passThrough && props.debug) {
       console.warn(` getThemedChildren`, {
         requiresExtraWrapper,
         forceClassName,
@@ -157,7 +157,9 @@ export function getThemedChildren(
   }
 
   if (isWeb) {
-    const { className, style } = getThemeClassNameAndStyle(themeState, props, isRoot)
+    const { className = '', style } = passThrough
+      ? {}
+      : getThemeClassNameAndStyle(themeState, props, isRoot)
 
     children = (
       <span

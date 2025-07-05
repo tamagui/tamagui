@@ -322,15 +322,13 @@ function PopoverRepropagateContext(props: {
   const popperContext = usePopperContext(props.scope || POPOVER_SCOPE)
 
   return (
-    <Portal zIndex={props.zIndex}>
-      <PopperContext.Provider scope={props.scope} {...popperContext}>
-        <PopoverContext.Provider {...props.context}>
-          <ProvideAdaptContext {...props.adaptContext}>
-            {props.children}
-          </ProvideAdaptContext>
-        </PopoverContext.Provider>
-      </PopperContext.Provider>
-    </Portal>
+    <PopperContext.Provider scope={props.scope} {...popperContext}>
+      <PopoverContext.Provider {...props.context}>
+        <ProvideAdaptContext {...props.adaptContext}>
+          {props.children}
+        </ProvideAdaptContext>
+      </PopoverContext.Provider>
+    </PopperContext.Provider>
   )
 }
 
@@ -342,6 +340,9 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
   const adaptContext = useAdaptContext()
 
   let contents = props.children
+
+  const isPopover = !context.breakpointActive
+  const isSheet = context.breakpointActive
 
   // native doesnt support portals
   if (needsRepropagation) {
@@ -357,13 +358,14 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
     )
   }
 
-  // Portal the contents and add a transparent bg overlay to handle dismiss on native
+  // portal is for popover
+  // theme is and overlay are for sheet
   return (
-    <Portal passThrough={!context.breakpointActive} stackZIndex zIndex={zIndex}>
+    <Portal stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme passThrough={!context.breakpointActive} forceClassName name={themeName}>
-        {!!context.open && context.breakpointActive && (
+      <Theme passThrough={isPopover} forceClassName name={themeName}>
+        {!!context.open && isSheet && (
           <YStack
             fullscreen
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}

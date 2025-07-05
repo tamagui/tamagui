@@ -205,7 +205,7 @@ const getNextState = (
   const parentState = states.get(parentId)
 
   if (props.passThrough) {
-    return [false, lastState ?? parentState!]
+    return [false, lastState || parentState || ({ name: '' } as any)]
   }
 
   if (!themes) {

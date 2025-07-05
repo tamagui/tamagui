@@ -652,96 +652,93 @@ export function createComponent<
 
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
-    if (splitStyles) {
-      if ((hasAnimationProp || groupName) && animationDriver?.avoidReRenders) {
-        const useStyleListener = stateRef.current.useStyleListener
-        const ogSetStateShallow = setStateShallow
+    if (
+      splitStyles &&
+      (hasAnimationProp || groupName) &&
+      animationDriver?.avoidReRenders
+    ) {
+      const useStyleListener = stateRef.current.useStyleListener
+      const ogSetStateShallow = setStateShallow
 
-        stateRef.current.setStateShallow = (nextOrGetNext) => {
-          const prev = NextState.get(stateRef) || state
-          const next =
-            typeof nextOrGetNext === 'function' ? nextOrGetNext(prev) : nextOrGetNext
+      stateRef.current.setStateShallow = (nextOrGetNext) => {
+        const prev = NextState.get(stateRef) || state
+        const next =
+          typeof nextOrGetNext === 'function' ? nextOrGetNext(prev) : nextOrGetNext
 
-          if (next === prev || isEqualShallow(prev, next)) {
-            return
+        if (next === prev || isEqualShallow(prev, next)) {
+          return
+        }
+
+        // one thing we have to handle here and where it gets a bit more complex is group styles
+        const canAvoidReRender = Object.keys(next).every((key) =>
+          avoidReRenderKeys.has(key)
+        )
+
+        if (canAvoidReRender) {
+          const updatedState = {
+            ...prev,
+            ...next,
+          }
+          NextState.set(stateRef, updatedState)
+
+          if (
+            process.env.NODE_ENV === 'development' &&
+            debugProp &&
+            debugProp !== 'profile'
+          ) {
+            console.groupCollapsed(`[⚡️] avoid setState`, next, { updatedState, props })
+            console.info(stateRef.current.host)
+            console.groupEnd()
           }
 
-          // one thing we have to handle here and where it gets a bit more complex is group styles
-          const canAvoidReRender = Object.keys(next).every((key) =>
-            avoidReRenderKeys.has(key)
+          const {
+            group,
+            hasDynGroupChildren,
+            unmounted,
+            animation,
+            ...childrenGroupState
+          } = updatedState
+
+          // update before getting styles
+          if (groupContext) {
+            notifyGroupSubscribers(
+              groupContext,
+              stateRef.current.group || null,
+              childrenGroupState
+            )
+          }
+
+          const nextStyles = getSplitStyles(
+            props,
+            staticConfig,
+            theme,
+            themeName,
+            updatedState,
+            styleProps,
+            null,
+            componentContext,
+            allGroupContexts,
+            elementType,
+            startedUnhydrated,
+            debugProp
           )
 
-          if (canAvoidReRender) {
-            const updatedState = {
-              ...prev,
-              ...next,
-            }
-            NextState.set(stateRef, updatedState)
-
-            if (
-              process.env.NODE_ENV === 'development' &&
-              debugProp &&
-              debugProp !== 'profile'
-            ) {
-              console.groupCollapsed(`[⚡️] avoid setState`, next, { updatedState, props })
-              console.info(stateRef.current.host)
-              console.groupEnd()
-            }
-
-            const {
-              group,
-              hasDynGroupChildren,
-              unmounted,
-              animation,
-              ...childrenGroupState
-            } = updatedState
-
-            // update before getting styles
-            if (groupContext) {
-              notifyGroupSubscribers(
-                groupContext,
-                stateRef.current.group || null,
-                childrenGroupState
-              )
-            }
-
-            // we just emit and return for group without animation ^
-            if (!hasAnimationProp || !useStyleListener) {
-              return
-            }
-
-            const nextStyles = getSplitStyles(
-              props,
-              staticConfig,
-              theme,
-              themeName,
-              updatedState,
-              styleProps,
-              null,
-              componentContext,
-              allGroupContexts,
-              elementType,
-              startedUnhydrated,
-              debugProp
-            )
-
-            useStyleListener((nextStyles?.style || {}) as any)
-          } else {
-            if (
-              process.env.NODE_ENV === 'development' &&
-              debugProp &&
-              debugProp !== 'profile'
-            ) {
-              console.info(`[🐌] re-render`, { canAvoidReRender, next })
-            }
-            ogSetStateShallow(next)
+          useStyleListener?.((nextStyles?.style || {}) as any)
+        } else {
+          if (
+            process.env.NODE_ENV === 'development' &&
+            debugProp &&
+            debugProp !== 'profile'
+          ) {
+            console.info(`[🐌] re-render`, { canAvoidReRender, next })
           }
+          ogSetStateShallow(next)
         }
+      }
 
-        // needs to capture latest props (it's called from memoized `events`)
-        setStateShallow = (state) => {
-          stateRef.current.setStateShallow?.(state)
-        }
+      // needs to capture latest props (it's called from memoized `events`)
+      setStateShallow = (state) => {
+        stateRef.current.setStateShallow?.(state)
       }
     }
 

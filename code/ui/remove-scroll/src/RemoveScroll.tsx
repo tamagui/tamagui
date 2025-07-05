@@ -9,9 +9,9 @@ export type RemoveScrollProps = {
 export const RemoveScroll = React.memo((props: RemoveScrollProps) => {
   const root = useRef<HTMLElement>(null)
 
-  // useDisableScrollOutsideOf(root, {
-  //   enabled: Boolean(props.enabled),
-  // })
+  useDisableScrollOutsideOf(root, {
+    enabled: Boolean(props.enabled),
+  })
 
   return (
     <span ref={root} style={{ display: 'contents' }}>

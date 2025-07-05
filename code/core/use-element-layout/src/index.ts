@@ -50,8 +50,6 @@ const queuedUpdates = new Map<HTMLElement, Function>()
 
 export function enable(): void {
   if (avoidUpdates) {
-    startGlobalIntersectionObserver()
-
     avoidUpdates = false
     if (queuedUpdates) {
       queuedUpdates.forEach((cb) => cb())
@@ -70,7 +68,9 @@ function startGlobalIntersectionObserver() {
     (entries) => {
       entries.forEach((entry) => {
         const node = entry.target as HTMLElement
-        IntersectionState.set(node, entry.isIntersecting)
+        if (IntersectionState.get(node) !== entry.isIntersecting) {
+          IntersectionState.set(node, entry.isIntersecting)
+        }
       })
     },
     {
@@ -86,8 +86,12 @@ if (isClient) {
     let lastFrameAt = Date.now()
 
     async function updateLayoutIfChanged(node: HTMLElement, frameId: number) {
-      // Skip work if element is not intersecting
-      if (strategy === 'async' && !IntersectionState.get(node)) {
+      if (supportsCheckVisibility && !(node as any).checkVisibility()) {
+        // avoid due to not visible
+        return
+      }
+      if (IntersectionState.get(node) === false) {
+        // avoid due to not intersecting
         return
       }
 
@@ -96,14 +100,6 @@ if (isClient) {
 
       const parentNode = node.parentElement
       if (!parentNode) return
-
-      // Check visibility if supported and element is intersecting
-      if (strategy === 'async' && supportsCheckVisibility) {
-        const isVisible = (node as any).checkVisibility()
-        if (!isVisible) {
-          return
-        }
-      }
 
       let nodeRect: DOMRectReadOnly
       let parentRect: DOMRectReadOnly
@@ -159,20 +155,20 @@ if (isClient) {
 
     // only run once in a few frames, this could be adjustable
     let frameCount = 0
-    const runEveryXFrames = 6
+    const RUN_EVERY_X_FRAMES = 4
 
     function layoutOnAnimationFrame() {
       const now = Date.now()
       const timeSinceLastFrame = now - lastFrameAt
       lastFrameAt = now
 
-      if (frameCount < runEveryXFrames) {
-        frameCount++
+      frameCount++
+
+      if (frameCount % RUN_EVERY_X_FRAMES === 0) {
+        frameCount = 0
         rAF!(layoutOnAnimationFrame)
         return
       }
-
-      frameCount = 0
 
       if (strategy !== 'off') {
         // for both strategies:
@@ -302,6 +298,7 @@ export function useElementLayout(
     Nodes.add(node)
 
     // Add node to intersection observer
+    startGlobalIntersectionObserver()
     if (globalIntersectionObserver) {
       globalIntersectionObserver.observe(node)
       // Initialize as intersecting by default
@@ -347,25 +344,8 @@ const getBoundingClientRectAsync = (
   return new Promise<DOMRectReadOnly | false>((res) => {
     if (!node || node.nodeType !== 1) return res(false)
 
-    // For async strategy, we can now use the cached intersection state
-    // and fall back to a simple getBoundingClientRect since we're already
-    // tracking intersection in the global observer
-    if (strategy === 'async') {
-      const isIntersecting = IntersectionState.get(node)
-      if (!isIntersecting) {
-        return res(false)
-      }
-      // Use sync getBoundingClientRect since we know it's intersecting
-      const rect = node.getBoundingClientRect()
-      return res(rect)
-    }
-
-    // Fallback for other strategies or edge cases
     const io = new IntersectionObserver(
       (entries) => {
-        if (!entries[0].isIntersecting) {
-          return res(false)
-        }
         io.disconnect()
         return res(entries[0].boundingClientRect)
       },
