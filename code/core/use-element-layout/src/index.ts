@@ -154,6 +154,8 @@ if (isClient) {
     }
 
     // note that getBoundingClientRect() does not thrash layout if its after an animation frame
+    // ok new note: *if* it needed recalc then yea, but browsers often skip that, so it does
+    // which is why we use async strategy in general
     rAF!(layoutOnAnimationFrame)
 
     // only run once in a few frames, this could be adjustable
@@ -161,19 +163,20 @@ if (isClient) {
     const RUN_EVERY_X_FRAMES = 4
 
     function layoutOnAnimationFrame() {
-      const now = Date.now()
-      const timeSinceLastFrame = now - lastFrameAt
-      lastFrameAt = now
-
-      frameCount++
-
-      if (frameCount % RUN_EVERY_X_FRAMES === 0) {
-        frameCount = 0
-        rAF!(layoutOnAnimationFrame)
-        return
-      }
-
       if (strategy !== 'off') {
+        const now = Date.now()
+        const timeSinceLastFrame = now - lastFrameAt
+        lastFrameAt = now
+
+        if (frameCount++ % RUN_EVERY_X_FRAMES !== 0) {
+          // skip a few frames to avoid work
+          rAF!(layoutOnAnimationFrame)
+          return
+        }
+
+        // avoid overflow
+        frameCount = 0
+
         // for both strategies:
         // avoid updates if we've been dropping frames (indicates sync work happening)
         const hasRecentSyncWork =
