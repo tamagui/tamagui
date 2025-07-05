@@ -4,7 +4,6 @@ import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
-import type { RemoveScrollProps } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 type PopoverVia = 'hover' | 'press';
@@ -82,10 +81,6 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<import("@ta
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverContentProps = PopoverContentTypeProps;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
-    /**
-     * @see https://github.com/theKashey/react-remove-scroll#usage
-     */
-    allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
     /** enable animation for content position changing */
     enableAnimationForPositionChange?: boolean;
 }
@@ -116,7 +111,7 @@ export interface PopoverContentImplProps extends PopperContentProps, Omit<Dismis
      * Event handler called when auto-focusing on close. Can be prevented.
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false;
-    disableRemoveScroll?: boolean;
+    enableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
     setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -1,5 +1,5 @@
-import React, { type RefObject, useEffect, useRef } from 'react'
-import { disableScroll } from './disableScroll'
+import React, { useRef } from 'react'
+import { useDisableScrollOutsideOf } from './useDisableScroll'
 
 export type RemoveScrollProps = {
   enabled?: boolean
@@ -9,20 +9,9 @@ export type RemoveScrollProps = {
 export const RemoveScroll = React.memo((props: RemoveScrollProps) => {
   const root = useRef<HTMLElement>(null)
 
-  useEffect(() => {
-    if (typeof document === 'undefined') {
-      return
-    }
-    if (!props.enabled) {
-      return
-    }
-
-    disableScroll.on()
-
-    return () => {
-      disableScroll.off()
-    }
-  }, [props.enabled])
+  // useDisableScrollOutsideOf(root, {
+  //   enabled: Boolean(props.enabled),
+  // })
 
   return (
     <span ref={root} style={{ display: 'contents' }}>

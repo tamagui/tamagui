@@ -16,6 +16,7 @@ interface Options {
     disableScroll: boolean;
     disableWheel: boolean;
     keyboardKeys: number[];
+    outsideOf?: HTMLElement;
 }
 declare class DisableScroll {
     element: Element | null;
@@ -25,7 +26,7 @@ declare class DisableScroll {
     /**
      * Disable Page Scroll
      */
-    on(element?: Element, options?: Partial<Options>): void;
+    on(options?: Partial<Options>): void;
     /**
      * Re-enable page scrolls
      */

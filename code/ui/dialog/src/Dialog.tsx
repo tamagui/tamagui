@@ -391,14 +391,7 @@ const DialogContent = DialogContentFrame.extractable(
     }
 
     return (
-      <RemoveScroll
-        forwardProps
-        enabled={context.open}
-        allowPinchZoom={context.allowPinchZoom}
-        shards={[context.contentRef]}
-        // causes lots of bugs on touch web on site
-        removeScrollBar={false}
-      >
+      <RemoveScroll enabled={context.open}>
         <div data-remove-scroll-container className="_dsp_contents">
           {contents}
         </div>
@@ -738,9 +731,7 @@ const TitleWarning: React.FC<TitleWarningProps> = ({ titleId }) => {
   if (process.env.NODE_ENV === 'development') {
     const titleWarningContext = useWarningContext(TITLE_WARNING_NAME)
 
-    const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
-
-If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.`
+    const MESSAGE = `\`${titleWarningContext.contentName}\` wants a \`${titleWarningContext.titleName}\` to be accessible. If you want to hide the \`${titleWarningContext.titleName}\`, wrap it with <VisuallyHidden />.`
 
     React.useEffect(() => {
       if (!isWeb) return

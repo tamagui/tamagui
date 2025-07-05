@@ -60,6 +60,7 @@ export declare const Adapt: ((props: AdaptProps) => import("react/jsx-runtime").
 export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;
     scope?: string;
+    passThrough?: boolean;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
 export {};

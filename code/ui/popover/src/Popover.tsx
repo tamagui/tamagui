@@ -219,11 +219,6 @@ type PopoverContentTypeElement = PopoverContentImplElement
 
 export interface PopoverContentTypeProps
   extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
-  /**
-   * @see https://github.com/theKashey/react-remove-scroll#usage
-   */
-  allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
-
   /** enable animation for content position changing */
   enableAnimationForPositionChange?: boolean
 }
@@ -237,9 +232,8 @@ export const PopoverContent = PopperContentFrame.extractable(
     forwardedRef
   ) {
     const {
-      allowPinchZoom,
       trapFocus,
-      disableRemoveScroll = true,
+      enableRemoveScroll = false,
       zIndex,
       __scopePopover,
       ...contentImplProps
@@ -270,14 +264,13 @@ export const PopoverContent = PopperContentFrame.extractable(
     return (
       <PopoverContentPortal __scopePopover={__scopePopover} zIndex={zIndex}>
         <Stack
-          passThrough={context.breakpointActive}
           pointerEvents={
             context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
           }
         >
           <PopoverContentImpl
             {...contentImplProps}
-            disableRemoveScroll={disableRemoveScroll}
+            enableRemoveScroll={enableRemoveScroll}
             ref={composedRefs}
             setIsFullyHidden={setIsFullyHidden}
             __scopePopover={__scopePopover}
@@ -343,35 +336,13 @@ function PopoverRepropagateContext(props: {
 }
 
 function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>) {
-  const { __scopePopover, children } = props
+  const { __scopePopover } = props
   const zIndex = props.zIndex
   const context = usePopoverContext(__scopePopover)
   const themeName = useThemeName()
   const adaptContext = useAdaptContext()
 
-  const passThrough = !context.breakpointActive
-
-  let contents = (
-    <>
-      {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
-      {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme passThrough={passThrough} forceClassName name={themeName}>
-        {!passThrough && !!context.open && !context.breakpointActive && (
-          <YStack
-            fullscreen
-            onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-          />
-        )}
-        <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-          {children}
-        </StackZIndexContext>
-      </Theme>
-    </>
-  )
-
-  if (passThrough) {
-    return children
-  }
+  let contents = props.children
 
   // native doesnt support portals
   if (needsRepropagation) {
@@ -385,15 +356,26 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
         {props.children}
       </PopoverRepropagateContext>
     )
-  } else {
-    contents = (
-      <Portal passThrough={passThrough} stackZIndex zIndex={zIndex}>
-        {contents}
-      </Portal>
-    )
   }
 
-  return contents
+  // Portal the contents and add a transparent bg overlay to handle dismiss on native
+  return (
+    <Portal stackZIndex zIndex={zIndex}>
+      {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
+      {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
+      <Theme forceClassName name={themeName}>
+        {!!context.open && !context.breakpointActive && (
+          <YStack
+            fullscreen
+            onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+          />
+        )}
+        <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
+          {contents}
+        </StackZIndexContext>
+      </Theme>
+    </Portal>
+  )
 }
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -430,7 +412,7 @@ export interface PopoverContentImplProps
    */
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false
 
-  disableRemoveScroll?: boolean
+  enableRemoveScroll?: boolean
 
   freezeContentsWhenHidden?: boolean
 
@@ -456,7 +438,7 @@ const PopoverContentImpl = React.forwardRef<
     onFocusOutside,
     onInteractOutside,
     children,
-    disableRemoveScroll,
+    enableRemoveScroll,
     freezeContentsWhenHidden,
     setIsFullyHidden,
     lazyMount,
@@ -475,34 +457,25 @@ const PopoverContentImpl = React.forwardRef<
     <ResetPresence disable={context.breakpointActive}>{children}</ResetPresence>
   )
 
-  if (needsRepropagation && context.breakpointActive) {
-    return (
-      <RepropagatePopperAdapt __scopePopover={__scopePopover || POPOVER_SCOPE}>
-        {children}
-      </RepropagatePopperAdapt>
-    )
-  }
-
-  if (process.env.TAMAGUI_TARGET !== 'native') {
-    contents = (
-      <RemoveScroll
-        enabled={context.breakpointActive ? false : disableRemoveScroll ? false : open}
-        allowPinchZoom
-        // causes lots of bugs on touch web on site
-        removeScrollBar={false}
-        style={dspContentsStyle}
-      >
-        <FocusScope
-          loop
-          enabled={disableFocusScope ? false : open}
-          trapped={trapFocus}
-          onMountAutoFocus={onOpenAutoFocus}
-          onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
+  // i want to avoid reparenting but react-remove-scroll makes it hard
+  if (!context.breakpointActive) {
+    if (process.env.TAMAGUI_TARGET !== 'native') {
+      contents = (
+        <RemoveScroll
+          enabled={context.breakpointActive ? false : enableRemoveScroll ? open : false}
         >
-          <div style={dspContentsStyle}>{contents}</div>
-        </FocusScope>
-      </RemoveScroll>
-    )
+          <FocusScope
+            loop
+            enabled={context.breakpointActive ? false : disableFocusScope ? false : open}
+            trapped={context.breakpointActive ? false : trapFocus}
+            onMountAutoFocus={onOpenAutoFocus}
+            onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
+          >
+            <div style={dspContentsStyle}>{contents}</div>
+          </FocusScope>
+        </RemoveScroll>
+      )
+    }
   }
 
   // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
@@ -520,26 +493,28 @@ const PopoverContentImpl = React.forwardRef<
   // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
 
   return (
-    <Animate
-      type="presence"
-      present={Boolean(open)}
-      keepChildrenMounted={Boolean(keepChildrenMounted)}
-      onExitComplete={handleExitComplete}
-      lazyMount={lazyMount}
-      passThrough={context.breakpointActive}
-    >
-      <PopperContent
-        __scopePopper={__scopePopover || POPOVER_SCOPE}
-        key={context.contentId}
-        data-state={getState(open)}
-        id={context.contentId}
-        ref={forwardedRef}
+    <RepropagatePopperAdapt __scopePopover={__scopePopover || POPOVER_SCOPE}>
+      <Animate
+        type="presence"
+        present={Boolean(open)}
+        keepChildrenMounted={Boolean(keepChildrenMounted)}
+        onExitComplete={handleExitComplete}
+        lazyMount={lazyMount}
         passThrough={context.breakpointActive}
-        {...contentProps}
       >
-        {contents}
-      </PopperContent>
-    </Animate>
+        <PopperContent
+          __scopePopper={__scopePopover || POPOVER_SCOPE}
+          key={context.contentId}
+          data-state={getState(open)}
+          id={context.contentId}
+          ref={forwardedRef}
+          passThrough={context.breakpointActive}
+          {...contentProps}
+        >
+          {contents}
+        </PopperContent>
+      </Animate>
+    </RepropagatePopperAdapt>
   )
 })
 
@@ -547,13 +522,17 @@ const RepropagatePopperAdapt = ({
   children,
   __scopePopover,
 }: ScopedPopoverProps<{ children?: React.ReactNode }>) => {
-  const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
+  if (needsRepropagation) {
+    const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
 
-  return (
-    <AdaptPortalContents>
-      <PopperContext.Provider {...popperContext}>{children}</PopperContext.Provider>
-    </AdaptPortalContents>
-  )
+    return (
+      <AdaptPortalContents>
+        <PopperContext.Provider {...popperContext}>{children}</PopperContext.Provider>
+      </AdaptPortalContents>
+    )
+  }
+
+  return <AdaptPortalContents>{children}</AdaptPortalContents>
 }
 
 const dspContentsStyle = {
@@ -631,15 +610,17 @@ const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>(
   (props: ScrollViewProps, ref) => {
     const context = usePopoverContext(POPOVER_SCOPE)
 
-    return (
-      <ScrollView
-        ref={ref}
-        // when adapted, no pointer events!
-        pointerEvents={context.breakpointActive ? 'none' : undefined}
-        scrollEnabled={!context.breakpointActive}
-        {...props}
-      />
-    )
+    return props.children
+    // return (
+    //   <ScrollView
+    //     ref={ref}
+    //     // when adapted, no pointer events!
+    //     pointerEvents={context.breakpointActive ? 'none' : undefined}
+    //     scrollEnabled={!context.breakpointActive}
+    //     passThrough={context.breakpointActive}
+    //     {...props}
+    //   />
+    // )
   }
 )
 
@@ -767,10 +748,15 @@ const PopoverInner = React.forwardRef<
         <PopoverSheetController onOpenChange={setOpen}>{children}</PopoverSheetController>
       </PopoverContext.Provider>
     )
-  }, Object.values(popoverContext))
+  }, [setOpen, children, ...Object.values(popoverContext)])
 
   const contents = (
-    <Popper __scopePopper={__scopePopover || POPOVER_SCOPE} stayInFrame {...restProps}>
+    <Popper
+      passThrough={isAdapted}
+      __scopePopper={__scopePopover || POPOVER_SCOPE}
+      stayInFrame
+      {...restProps}
+    >
       {memoizedChildren}
     </Popper>
   )
@@ -814,7 +800,7 @@ const PopoverSheetController = ({
         }
       }}
       open={context.open}
-      hidden={breakpointActive === false}
+      hidden={!breakpointActive}
     >
       {props.children}
     </SheetController>

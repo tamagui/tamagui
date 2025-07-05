@@ -463,6 +463,7 @@ export interface ThemeProps {
 // more low level
 export type UseThemeWithStateProps = ThemeProps & {
   deopt?: boolean
+  passThrough?: boolean
   disable?: boolean
   needsUpdate?: () => boolean
 }

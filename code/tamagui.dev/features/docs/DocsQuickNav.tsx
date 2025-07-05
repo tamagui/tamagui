@@ -1,22 +1,18 @@
-import { classNames } from '@tamagui/remove-scroll'
 import { href, usePathname, type Href } from 'one'
 import { useEffect, useState } from 'react'
 import {
-  Circle,
   H4,
-  Label,
   Paragraph,
   ScrollView,
   Separator,
   SizableText,
   Theme,
   View,
-  XGroup,
   XStack,
   YStack,
 } from 'tamagui'
 
-import { ButtonLink, Link, type LinkProps } from '~/components/Link'
+import { Link, type LinkProps } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { TakeoutButton } from '../site/TakeoutButton'
 
@@ -77,14 +73,6 @@ export function DocsQuickNav() {
   return (
     <YStack
       tag="aside"
-      // Components that hide the scrollbar (like Dialog) add padding to
-      // account for the scrollbar gap to avoid layout jank. This does not
-      // work for position: fixed elements. Since we use react-remove-scroll
-      // under the hood for those primitives, we can add this helper class
-      // provided by that lib to deal with that for the QuickNav.
-      // https://github.com/radix-ui/website/issues/64
-      // https://github.com/theKashey/react-remove-scroll#positionfixed-elements
-      className={classNames.zeroRight}
       display="none"
       $gtLg={{
         display: 'flex',

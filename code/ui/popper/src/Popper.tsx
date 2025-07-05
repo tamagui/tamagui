@@ -45,13 +45,13 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 
 export type PopperContextValue = UseFloatingReturn & {
   size?: SizeTokens
-  placement?: Placement
-  arrowRef: any
-  onArrowSize?: (val: number) => void
   hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
     centerOffset: number
   }
+  placement?: Placement
+  arrowRef: any
+  onArrowSize?: (val: number) => void
 }
 
 export const PopperContext = createStyledContext<PopperContextValue>({} as any)
@@ -66,8 +66,7 @@ export const PopperInfrequentContext = createStyledContext<{
   size: undefined,
 })
 
-export const usePopperSize = (scope?: string) =>
-  PopperInfrequentContext.useStyledContext(scope)?.size
+export const usePopperInfrequentContext = PopperInfrequentContext.useStyledContext
 
 export type PopperProps = {
   size?: SizeTokens
@@ -108,6 +107,8 @@ export type PopperProps = {
   offset?: OffsetOptions
 
   disableRTL?: boolean
+
+  passThrough?: boolean
 }
 
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>
@@ -147,6 +148,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     offset,
     disableRTL,
     resize,
+    passThrough,
     __scopePopper,
   } = props
 
@@ -156,10 +158,13 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   const floatingStyle = React.useRef({})
 
   let floating = useFloating({
+    ...(passThrough && {
+      open: false,
+    }),
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: autoUpdate,
+    whileElementsMounted: passThrough ? undefined : autoUpdate,
     platform:
       (disableRTL ?? setupOptions.disableRTL)
         ? {
@@ -180,6 +185,10 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       process.env.TAMAGUI_TARGET !== 'native' && resize
         ? sizeMiddleware({
             apply({ availableHeight, availableWidth }) {
+              if (passThrough) {
+                return
+              }
+
               Object.assign(floatingStyle.current, {
                 maxHeight: `${availableHeight}px`,
                 maxWidth: `${availableWidth}px`,
@@ -244,8 +253,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     }, [])
 
     useIsomorphicLayoutEffect(() => {
+      if (passThrough) return
       floating.update()
-    }, [dimensions, keyboardOpen])
+    }, [passThrough, dimensions, keyboardOpen])
   }
 
   const popperContext = {
@@ -399,8 +409,8 @@ export const PopperContent = React.forwardRef<
 
   return (
     <Stack
-      debug="verbose"
       passThrough={passThrough}
+      ref={contentRefs}
       {...(passThrough ? null : floatingProps)}
     >
       <PopperContentFrame

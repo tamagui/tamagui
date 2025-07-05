@@ -210,6 +210,7 @@ export function useFocusScope(
       if (!trapped) return
       if (!loop) return
       if (focusScope.paused) return
+      if (!enabled) return
 
       const isTabKey =
         event.key === 'Tab' && !event.altKey && !event.ctrlKey && !event.metaKey

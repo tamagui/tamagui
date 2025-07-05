@@ -9,13 +9,13 @@ type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : ne
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
     size?: SizeTokens;
-    placement?: Placement;
-    arrowRef: any;
-    onArrowSize?: (val: number) => void;
     hasFloating: boolean;
     arrowStyle?: Partial<Coords> & {
         centerOffset: number;
     };
+    placement?: Placement;
+    arrowRef: any;
+    onArrowSize?: (val: number) => void;
 };
 export declare const PopperContext: import("@tamagui/core").StyledContext<PopperContextValue>;
 export declare const PopperPositionContext: typeof createStyledContext;
@@ -26,7 +26,9 @@ export declare const usePopperContext: (scope?: string) => PopperContextValue, P
 export declare const PopperInfrequentContext: import("@tamagui/core").StyledContext<{
     size?: SizeTokens;
 }>;
-export declare const usePopperSize: (scope?: string) => SizeTokens | undefined;
+export declare const usePopperInfrequentContext: (scope?: string) => {
+    size?: SizeTokens;
+};
 export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
@@ -59,6 +61,7 @@ export type PopperProps = {
      */
     offset?: OffsetOptions;
     disableRTL?: boolean;
+    passThrough?: boolean;
 };
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>;
 export type PopperSetupOptions = {
