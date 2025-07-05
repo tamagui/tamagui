@@ -4,14 +4,14 @@ import type { PortalItemProps } from './types'
 import { createPortal } from 'react-dom'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
-  if (!props.hostName) {
-    throw new Error(`No hostName`)
+  if (!props.hostName && !props.passThrough) {
+    console.warn(`No hostName`)
   }
 
-  const cur = allPortalHosts.get(props.hostName)
+  const cur = allPortalHosts.get(props.hostName || '')
   const [node, setNode] = useState(cur)
 
-  if (cur && node !== cur) {
+  if (!props.passThrough && cur && node !== cur) {
     setNode(cur)
   }
 
@@ -29,6 +29,10 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
       portalListeners[props.hostName!]?.delete(listener)
     }
   }, [node])
+
+  if (props.passThrough) {
+    return props.children
+  }
 
   if (!node) {
     return null
