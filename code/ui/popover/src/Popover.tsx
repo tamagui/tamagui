@@ -341,11 +341,10 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
 
   let contents = props.children
 
-  const isPopover = !context.breakpointActive
   const isSheet = context.breakpointActive
 
   // native doesnt support portals
-  if (needsRepropagation) {
+  if (isSheet) {
     contents = (
       <PopoverRepropagateContext
         scope={__scopePopover || POPOVER_SCOPE}
@@ -358,19 +357,11 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
     )
   }
 
-  // portal is for popover
-  // theme is and overlay are for sheet
   return (
     <Portal stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme passThrough={isPopover} forceClassName name={themeName}>
-        {!!context.open && isSheet && (
-          <YStack
-            fullscreen
-            onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-          />
-        )}
+      <Theme forceClassName name={themeName}>
         <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
           {contents}
         </StackZIndexContext>
