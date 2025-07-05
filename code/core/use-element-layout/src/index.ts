@@ -86,13 +86,16 @@ if (isClient) {
     let lastFrameAt = Date.now()
 
     async function updateLayoutIfChanged(node: HTMLElement, frameId: number) {
-      if (supportsCheckVisibility && !(node as any).checkVisibility()) {
-        // avoid due to not visible
-        return
-      }
       if (IntersectionState.get(node) === false) {
         // avoid due to not intersecting
         return
+      }
+      // triggers style recalculation in safari which is slower than not
+      if (process.env.TAMAGUI_ONLAYOUT_VISIBILITY_CHECK === '1') {
+        if (supportsCheckVisibility && !(node as any).checkVisibility()) {
+          // avoid due to not visible
+          return
+        }
       }
 
       const onLayout = LayoutHandlers.get(node)
