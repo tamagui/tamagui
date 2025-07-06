@@ -37,7 +37,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {},
   "peerDependencies": {
     "react": "*"
   }

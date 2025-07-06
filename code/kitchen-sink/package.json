@@ -37,6 +37,10 @@
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "@shopify/restyle": "^2.4.4",
+    "@tamagui/animations-css": "workspace:*",
+    "@tamagui/animations-moti": "workspace:*",
+    "@tamagui/animations-motion": "workspace:*",
+    "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/bento": "workspace:*",
     "@tamagui/cli": "workspace:*",
     "@tamagui/colors": "workspace:*",
@@ -44,7 +48,10 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/sandbox-ui": "workspace:*",
+    "@tamagui/sheet": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "@tamagui/toast": "workspace:*",
@@ -70,14 +77,7 @@
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
     "vitest": "^3.0.5",
-    "webdriverio": "^9.5.4",
-    "@tamagui/animations-css": "workspace:*",
-    "@tamagui/animations-moti": "workspace:*",
-    "@tamagui/animations-motion": "workspace:*",
-    "@tamagui/animations-react-native": "workspace:*",
-    "@tamagui/sandbox-ui": "workspace:*",
-    "@tamagui/get-token": "workspace:*",
-    "@tamagui/sheet": "workspace:*"
+    "webdriverio": "^9.5.4"
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
@@ -94,6 +94,5 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
-  },
-  "peerDependencies": {}
+  }
 }

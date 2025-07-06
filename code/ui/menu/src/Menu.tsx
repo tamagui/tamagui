@@ -1,6 +1,5 @@
 import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-// import { Drawer, DrawerProvider } from '@tamagui/drawer'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type React from 'react'
 import { useMemo } from 'react'

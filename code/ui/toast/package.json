@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/collection": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
@@ -49,8 +50,7 @@
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/visually-hidden": "workspace:*",
-    "@tamagui/collection": "workspace:*"
+    "@tamagui/visually-hidden": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

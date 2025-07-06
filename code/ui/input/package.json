@@ -40,13 +40,13 @@
     "@tamagui/focusable": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "@tamagui/get-font-sized": "workspace:*",
-    "@tamagui/get-token": "workspace:*"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

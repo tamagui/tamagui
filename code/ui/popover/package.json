@@ -39,6 +39,7 @@
     "@floating-ui/react": "^0.27.12",
     "@tamagui/adapt": "workspace:*",
     "@tamagui/animate": "workspace:*",
+    "@tamagui/animate-presence": "workspace:*",
     "@tamagui/aria-hidden": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
@@ -55,9 +56,8 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "react-freeze": "^1.0.3",
-    "@tamagui/animate-presence": "workspace:*",
-    "@tamagui/z-index-stack": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*",
+    "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
     "react": "*",

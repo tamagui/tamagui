@@ -36,6 +36,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/group": "workspace:*",
@@ -44,8 +45,7 @@
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "@tamagui/core": "workspace:*"
+    "@tamagui/web": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

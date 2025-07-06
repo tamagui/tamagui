@@ -28,11 +28,11 @@
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/helpers": "workspace:*",
     "@tamagui/use-direction": "workspace:*"
   },
   "exports": {

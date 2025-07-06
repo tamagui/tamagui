@@ -33,14 +33,13 @@
   },
   "dependencies": {
     "@tamagui/create-theme": "workspace:*",
-    "color2k": "^2.0.2",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "color2k": "^2.0.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "peerDependencies": {}
+  }
 }

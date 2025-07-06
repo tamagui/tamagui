@@ -23,14 +23,14 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
-    "@tamagui/lucide-icons": "workspace:*",
-    "@tamagui/toast": "workspace:*",
-    "expo-image": "^1.5.1",
-    "solito": "^4.3.0",
-    "tamagui": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "expo-constants": "~17.1.6"
+    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/toast": "workspace:*",
+    "expo-constants": "~17.1.6",
+    "expo-image": "^1.5.1",
+    "solito": "^4.3.0",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

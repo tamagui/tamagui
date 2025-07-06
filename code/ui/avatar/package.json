@@ -37,12 +37,12 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/shapes": "workspace:*",
-    "@tamagui/text": "workspace:*",
-    "@tamagui/create-context": "workspace:*",
-    "@tamagui/stacks": "workspace:*"
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/text": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

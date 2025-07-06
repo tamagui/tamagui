@@ -18,10 +18,10 @@
   },
   "dependencies": {
     "@my/config": "workspace:^",
-    "@tamagui/toast": "workspace:*",
-    "tamagui": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
-    "expo-constants": "~17.1.6"
+    "@tamagui/toast": "workspace:*",
+    "expo-constants": "~17.1.6",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

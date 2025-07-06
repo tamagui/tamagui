@@ -17,14 +17,13 @@
   },
   "dependencies": {
     "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/config": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "tamagui": "workspace:*",
-    "@tamagui/config": "workspace:*"
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
-  },
-  "peerDependencies": {}
+  }
 }

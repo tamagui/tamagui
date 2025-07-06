@@ -36,21 +36,21 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "@tamagui/z-index-stack": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.79.2",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "*"
   }
 }

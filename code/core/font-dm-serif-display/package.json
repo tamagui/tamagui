@@ -22,6 +22,5 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*"
-  },
-  "peerDependencies": {}
+  }
 }

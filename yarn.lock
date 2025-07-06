@@ -486,30 +486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.20.0, @babel/core@npm:^7.23.7, @babel/core@npm:^7.25.2":
-  version: 7.27.1
-  resolution: "@babel/core@npm:7.27.1"
-  dependencies:
-    "@ampproject/remapping": "npm:^2.2.0"
-    "@babel/code-frame": "npm:^7.27.1"
-    "@babel/generator": "npm:^7.27.1"
-    "@babel/helper-compilation-targets": "npm:^7.27.1"
-    "@babel/helper-module-transforms": "npm:^7.27.1"
-    "@babel/helpers": "npm:^7.27.1"
-    "@babel/parser": "npm:^7.27.1"
-    "@babel/template": "npm:^7.27.1"
-    "@babel/traverse": "npm:^7.27.1"
-    "@babel/types": "npm:^7.27.1"
-    convert-source-map: "npm:^2.0.0"
-    debug: "npm:^4.1.0"
-    gensync: "npm:^1.0.0-beta.2"
-    json5: "npm:^2.2.3"
-    semver: "npm:^6.3.1"
-  checksum: 10/3dfec88f84b3ce567e6c482db0119f02f451bd3f86b0835c71c029fedb657969786507fafedd3a0732bd1be9fbc9f0635d734efafabad6dbc67d3eb7b494cdd8
-  languageName: node
-  linkType: hard
-
-"@babel/core@npm:^7.26.8":
+"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.20.0, @babel/core@npm:^7.23.7, @babel/core@npm:^7.25.2, @babel/core@npm:^7.26.8":
   version: 7.27.7
   resolution: "@babel/core@npm:7.27.7"
   dependencies:
@@ -555,7 +532,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/generator@npm:^7.20.5, @babel/generator@npm:^7.25.0, @babel/generator@npm:^7.25.5, @babel/generator@npm:^7.26.10, @babel/generator@npm:^7.26.8, @babel/generator@npm:^7.27.1, @babel/generator@npm:^7.27.3, @babel/generator@npm:^7.27.5":
+"@babel/generator@npm:^7.20.5, @babel/generator@npm:^7.25.0, @babel/generator@npm:^7.25.5, @babel/generator@npm:^7.26.10, @babel/generator@npm:^7.26.8, @babel/generator@npm:^7.27.1, @babel/generator@npm:^7.27.5":
   version: 7.27.5
   resolution: "@babel/generator@npm:7.27.5"
   dependencies:
@@ -768,7 +745,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helpers@npm:^7.26.10, @babel/helpers@npm:^7.27.1, @babel/helpers@npm:^7.27.6":
+"@babel/helpers@npm:^7.26.10, @babel/helpers@npm:^7.27.6":
   version: 7.27.6
   resolution: "@babel/helpers@npm:7.27.6"
   dependencies:
@@ -790,18 +767,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.1.6, @babel/parser@npm:^7.13.16, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.23.6, @babel/parser@npm:^7.25.3, @babel/parser@npm:^7.25.4, @babel/parser@npm:^7.26.10, @babel/parser@npm:^7.26.8, @babel/parser@npm:^7.27.1, @babel/parser@npm:^7.27.2, @babel/parser@npm:^7.27.4, @babel/parser@npm:^7.27.5":
-  version: 7.27.5
-  resolution: "@babel/parser@npm:7.27.5"
-  dependencies:
-    "@babel/types": "npm:^7.27.3"
-  bin:
-    parser: ./bin/babel-parser.js
-  checksum: 10/0ad671be7994dba7d31ec771bd70ea5090aa34faf73e93b1b072e3c0a704ab69f4a7a68ebfb9d6a7fa455e0aa03dfa65619c4df6bae1cf327cba925b1d233fc4
-  languageName: node
-  linkType: hard
-
-"@babel/parser@npm:^7.27.7":
+"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.1.6, @babel/parser@npm:^7.13.16, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.23.6, @babel/parser@npm:^7.25.3, @babel/parser@npm:^7.25.4, @babel/parser@npm:^7.26.10, @babel/parser@npm:^7.26.8, @babel/parser@npm:^7.27.1, @babel/parser@npm:^7.27.2, @babel/parser@npm:^7.27.5, @babel/parser@npm:^7.27.7":
   version: 7.27.7
   resolution: "@babel/parser@npm:7.27.7"
   dependencies:
@@ -1756,22 +1722,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.1.6, @babel/traverse@npm:^7.23.0, @babel/traverse@npm:^7.23.7, @babel/traverse@npm:^7.25.3, @babel/traverse@npm:^7.25.4, @babel/traverse@npm:^7.26.10, @babel/traverse@npm:^7.26.8, @babel/traverse@npm:^7.27.1, @babel/traverse@npm:^7.27.3":
-  version: 7.27.4
-  resolution: "@babel/traverse@npm:7.27.4"
-  dependencies:
-    "@babel/code-frame": "npm:^7.27.1"
-    "@babel/generator": "npm:^7.27.3"
-    "@babel/parser": "npm:^7.27.4"
-    "@babel/template": "npm:^7.27.2"
-    "@babel/types": "npm:^7.27.3"
-    debug: "npm:^4.3.1"
-    globals: "npm:^11.1.0"
-  checksum: 10/4debb80b9068a46e188e478272f3b6820e16d17e2651e82d0a0457176b0c3b2489994f0a0d6e8941ee90218b0a8a69fe52ba350c1aa66eb4c72570d6b2405f91
-  languageName: node
-  linkType: hard
-
-"@babel/traverse@npm:^7.27.7":
+"@babel/traverse@npm:^7.1.6, @babel/traverse@npm:^7.23.0, @babel/traverse@npm:^7.23.7, @babel/traverse@npm:^7.25.3, @babel/traverse@npm:^7.25.4, @babel/traverse@npm:^7.26.10, @babel/traverse@npm:^7.26.8, @babel/traverse@npm:^7.27.1, @babel/traverse@npm:^7.27.3, @babel/traverse@npm:^7.27.7":
   version: 7.27.7
   resolution: "@babel/traverse@npm:7.27.7"
   dependencies:
@@ -1786,17 +1737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.1.6, @babel/types@npm:^7.20.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.23.0, @babel/types@npm:^7.23.6, @babel/types@npm:^7.24.7, @babel/types@npm:^7.25.2, @babel/types@npm:^7.25.4, @babel/types@npm:^7.25.9, @babel/types@npm:^7.26.0, @babel/types@npm:^7.26.10, @babel/types@npm:^7.27.1, @babel/types@npm:^7.27.3, @babel/types@npm:^7.27.6, @babel/types@npm:^7.3.3":
-  version: 7.27.6
-  resolution: "@babel/types@npm:7.27.6"
-  dependencies:
-    "@babel/helper-string-parser": "npm:^7.27.1"
-    "@babel/helper-validator-identifier": "npm:^7.27.1"
-  checksum: 10/174741c667775680628a09117828bbeffb35ea543f59bf80649d0d60672f7815a0740ddece3cca87516199033a039166a6936434131fce2b6a820227e64f91ae
-  languageName: node
-  linkType: hard
-
-"@babel/types@npm:^7.27.7":
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.1.6, @babel/types@npm:^7.20.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.23.0, @babel/types@npm:^7.23.6, @babel/types@npm:^7.24.7, @babel/types@npm:^7.25.2, @babel/types@npm:^7.25.4, @babel/types@npm:^7.25.9, @babel/types@npm:^7.26.0, @babel/types@npm:^7.26.10, @babel/types@npm:^7.27.1, @babel/types@npm:^7.27.3, @babel/types@npm:^7.27.6, @babel/types@npm:^7.27.7, @babel/types@npm:^7.3.3":
   version: 7.27.7
   resolution: "@babel/types@npm:7.27.7"
   dependencies:
@@ -3868,6 +3809,7 @@ __metadata:
   dependencies:
     "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/build": "workspace:*"
+    "@tamagui/config": "workspace:*"
     "@tamagui/font-inter": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
     "@tamagui/themes": "workspace:*"
@@ -3881,8 +3823,13 @@ __metadata:
   dependencies:
     "@my/config": "workspace:^"
     "@tamagui/build": "workspace:*"
+    "@tamagui/next-theme": "workspace:*"
     "@tamagui/toast": "workspace:*"
+    expo-constants: "npm:~17.1.6"
+    react: "npm:*"
     tamagui: "workspace:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -5407,7 +5354,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.3.2":
+"@react-navigation/elements@npm:^2.3.2, @react-navigation/elements@npm:^2.4.2":
   version: 2.5.2
   resolution: "@react-navigation/elements@npm:2.5.2"
   dependencies:
@@ -5424,24 +5371,6 @@ __metadata:
     "@react-native-masked-view/masked-view":
       optional: true
   checksum: 10/f6c472f82487661aee6f41e82e453cb80fea85e3956d94e58aa45b7c3f5ae04e4862df400439d0a58e6c54f8e091d7e08c547a153165d881fa8c74fd3b63d6a3
-  languageName: node
-  linkType: hard
-
-"@react-navigation/elements@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "@react-navigation/elements@npm:2.4.2"
-  dependencies:
-    color: "npm:^4.2.3"
-  peerDependencies:
-    "@react-native-masked-view/masked-view": ">= 0.2.0"
-    "@react-navigation/native": ^7.1.9
-    react: ">= 18.2.0"
-    react-native: "*"
-    react-native-safe-area-context: ">= 4.0.0"
-  peerDependenciesMeta:
-    "@react-native-masked-view/masked-view":
-      optional: true
-  checksum: 10/831a8f1cc334def0355a9f764b89a979907bff413f4bf07c4349443347ae159f16ef85f0d55223795f3e1db9020544c8d8b37e0346f08b38803120117ff8d187
   languageName: node
   linkType: hard
 
@@ -5697,142 +5626,142 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm-eabi@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-android-arm-eabi@npm:4.40.2"
+"@rollup/rollup-android-arm-eabi@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-android-arm-eabi@npm:4.44.2"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm64@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-android-arm64@npm:4.40.2"
+"@rollup/rollup-android-arm64@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-android-arm64@npm:4.44.2"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-arm64@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-darwin-arm64@npm:4.40.2"
+"@rollup/rollup-darwin-arm64@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-darwin-arm64@npm:4.44.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-x64@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-darwin-x64@npm:4.40.2"
+"@rollup/rollup-darwin-x64@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-darwin-x64@npm:4.44.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-arm64@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-freebsd-arm64@npm:4.40.2"
+"@rollup/rollup-freebsd-arm64@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-freebsd-arm64@npm:4.44.2"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-x64@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-freebsd-x64@npm:4.40.2"
+"@rollup/rollup-freebsd-x64@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-freebsd-x64@npm:4.44.2"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-gnueabihf@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.40.2"
+"@rollup/rollup-linux-arm-gnueabihf@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.44.2"
   conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-musleabihf@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.40.2"
+"@rollup/rollup-linux-arm-musleabihf@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.44.2"
   conditions: os=linux & cpu=arm & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-gnu@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.40.2"
+"@rollup/rollup-linux-arm64-gnu@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.44.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-musl@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.40.2"
+"@rollup/rollup-linux-arm64-musl@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.44.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-loongarch64-gnu@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-loongarch64-gnu@npm:4.40.2"
+"@rollup/rollup-linux-loongarch64-gnu@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-loongarch64-gnu@npm:4.44.2"
   conditions: os=linux & cpu=loong64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-powerpc64le-gnu@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-powerpc64le-gnu@npm:4.40.2"
+"@rollup/rollup-linux-powerpc64le-gnu@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-powerpc64le-gnu@npm:4.44.2"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-riscv64-gnu@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.40.2"
+"@rollup/rollup-linux-riscv64-gnu@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.44.2"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-riscv64-musl@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.40.2"
+"@rollup/rollup-linux-riscv64-musl@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.44.2"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-s390x-gnu@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.40.2"
+"@rollup/rollup-linux-s390x-gnu@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.44.2"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.40.2"
+"@rollup/rollup-linux-x64-gnu@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.44.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-musl@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-linux-x64-musl@npm:4.40.2"
+"@rollup/rollup-linux-x64-musl@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-linux-x64-musl@npm:4.44.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-arm64-msvc@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.40.2"
+"@rollup/rollup-win32-arm64-msvc@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.44.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-ia32-msvc@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.40.2"
+"@rollup/rollup-win32-ia32-msvc@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.44.2"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-x64-msvc@npm:4.40.2":
-  version: 4.40.2
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.40.2"
+"@rollup/rollup-win32-x64-msvc@npm:4.44.2":
+  version: 4.44.2
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.44.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -6415,10 +6344,12 @@ __metadata:
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/create-context": "workspace:*"
+    "@tamagui/helpers": "workspace:*"
     "@tamagui/polyfill-dev": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/text": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-direction": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -6435,6 +6366,9 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/portal": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -6478,6 +6412,9 @@ __metadata:
     "@tamagui/use-force-update": "workspace:*"
     "@tamagui/use-presence": "workspace:*"
     "@tamagui/web": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -6487,6 +6424,9 @@ __metadata:
   dependencies:
     "@tamagui/animate-presence": "workspace:*"
     "@tamagui/build": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -6516,9 +6456,11 @@ __metadata:
     "@tamagui/use-presence": "workspace:*"
     moti: "npm:^0.30.0"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
     react-native-reanimated: "npm:^3.18.0"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -6578,9 +6520,11 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/create-context": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/image": "workspace:*"
     "@tamagui/shapes": "workspace:*"
+    "@tamagui/stacks": "workspace:*"
     "@tamagui/text": "workspace:*"
     react: "npm:*"
     react-native: "npm:^0.79.2"
@@ -6732,7 +6676,10 @@ __metadata:
   resolution: "@tamagui/button-next@workspace:code/ui/button-next"
   dependencies:
     "@tamagui/build": "workspace:*"
+    "@tamagui/config-default": "workspace:*"
+    "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
+    "@tamagui/helpers": "workspace:*"
     "@tamagui/helpers-tamagui": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/text": "workspace:*"
@@ -6750,6 +6697,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/config-default": "workspace:*"
+    "@tamagui/core": "workspace:*"
     "@tamagui/font-size": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/helpers": "workspace:*"
@@ -6806,8 +6754,10 @@ __metadata:
     "@tamagui/use-previous": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -6909,6 +6859,7 @@ __metadata:
     "@tamagui/polyfill-dev": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -6982,9 +6933,11 @@ __metadata:
   resolution: "@tamagui/config-default@workspace:code/core/config-default"
   dependencies:
     "@tamagui/animations-css": "workspace:*"
+    "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
+    "@tamagui/web": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -6997,10 +6950,12 @@ __metadata:
     "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/colors": "workspace:*"
+    "@tamagui/core": "workspace:*"
     "@tamagui/font-inter": "workspace:*"
     "@tamagui/font-silkscreen": "workspace:*"
     "@tamagui/react-native-media-driver": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
+    "@tamagui/theme-builder": "workspace:*"
     "@tamagui/themes": "workspace:*"
     "@tamagui/web": "workspace:*"
   languageName: unknown
@@ -7012,8 +6967,10 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -7038,6 +6995,7 @@ __metadata:
   resolution: "@tamagui/core@workspace:code/core/core"
   dependencies:
     "@tamagui/build": "workspace:*"
+    "@tamagui/helpers": "workspace:*"
     "@tamagui/react-native-media-driver": "workspace:*"
     "@tamagui/react-native-use-pressable": "workspace:*"
     "@tamagui/react-native-use-responder-events": "workspace:*"
@@ -7089,11 +7047,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/demos@workspace:code/demos"
   dependencies:
+    "@tamagui/animate-presence": "workspace:*"
     "@tamagui/avatar": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/button": "workspace:*"
+    "@tamagui/checkbox": "workspace:*"
+    "@tamagui/checkbox-headless": "workspace:*"
     "@tamagui/config": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/get-button-sized": "workspace:*"
+    "@tamagui/image-next": "workspace:*"
     "@tamagui/list-item": "workspace:*"
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
@@ -7101,16 +7064,24 @@ __metadata:
     "@tamagui/popover": "workspace:*"
     "@tamagui/progress": "workspace:*"
     "@tamagui/radio-group": "workspace:*"
+    "@tamagui/radio-headless": "workspace:*"
+    "@tamagui/roving-focus": "workspace:*"
     "@tamagui/select": "workspace:*"
     "@tamagui/sheet": "workspace:*"
     "@tamagui/slider": "workspace:*"
     "@tamagui/stacks": "workspace:*"
+    "@tamagui/switch": "workspace:*"
+    "@tamagui/switch-headless": "workspace:*"
+    "@tamagui/tabs": "workspace:*"
     "@tamagui/tamagui-dev-config": "workspace:*"
+    "@tamagui/theme": "workspace:*"
     "@tamagui/toast": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
     tamagui: "workspace:*"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -7157,8 +7128,10 @@ __metadata:
     "@tamagui/use-escape-keydown": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     react: "npm:*"
+    react-dom: "npm:*"
   peerDependencies:
     react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -7224,9 +7197,10 @@ __metadata:
     three: "npm:^0.152.2"
     valibot: "npm:^0.35.0"
     victory: "npm:^37.0.2"
-    vite: "npm:^6.1.0"
+    vite: "npm:^7.0.2"
     vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
+    vite-tsconfig-paths: "npm:^5.1.4"
     vitest: "npm:^3.0.5"
     zod: "npm:^3.25.67"
   languageName: unknown
@@ -7294,7 +7268,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-cherry-bomb@workspace:code/core/font-cherry-bomb":
+"@tamagui/font-cherry-bomb@workspace:*, @tamagui/font-cherry-bomb@workspace:code/core/font-cherry-bomb":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-cherry-bomb@workspace:code/core/font-cherry-bomb"
   dependencies:
@@ -7487,8 +7461,10 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -7524,9 +7500,11 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
     vitest: "npm:^3.0.5"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -7537,6 +7515,9 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/simple-hash": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -7579,6 +7560,8 @@ __metadata:
     "@tamagui/focusable": "workspace:*"
     "@tamagui/font-size": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
+    "@tamagui/get-font-sized": "workspace:*"
+    "@tamagui/get-token": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/helpers-tamagui": "workspace:*"
     "@tamagui/stacks": "workspace:*"
@@ -7598,6 +7581,9 @@ __metadata:
   resolution: "@tamagui/is-equal-shallow@workspace:code/packages/is-equal-shallow"
   dependencies:
     "@tamagui/build": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -7613,6 +7599,10 @@ __metadata:
     "@react-navigation/native": "npm:^7.0.14"
     "@react-navigation/native-stack": "npm:^7.2.0"
     "@shopify/restyle": "npm:^2.4.4"
+    "@tamagui/animations-css": "workspace:*"
+    "@tamagui/animations-moti": "workspace:*"
+    "@tamagui/animations-motion": "workspace:*"
+    "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/babel-plugin": "workspace:*"
     "@tamagui/bento": "workspace:*"
     "@tamagui/cli": "workspace:*"
@@ -7621,7 +7611,10 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/demos": "workspace:*"
     "@tamagui/font-inter": "workspace:*"
+    "@tamagui/get-token": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
+    "@tamagui/sandbox-ui": "workspace:*"
+    "@tamagui/sheet": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
     "@tamagui/themes": "workspace:*"
     "@tamagui/toast": "workspace:*"
@@ -7690,8 +7683,10 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     expo-linear-gradient: "npm:~14.1.5"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -7719,7 +7714,10 @@ __metadata:
   resolution: "@tamagui/logo@workspace:code/packages/logo"
   dependencies:
     "@tamagui/build": "workspace:*"
+    "@tamagui/use-element-layout": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
+    tamagui: "workspace:*"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7752,7 +7750,9 @@ __metadata:
   resolution: "@tamagui/mdx-2@workspace:code/packages/mdx"
   dependencies:
     "@tamagui/build": "workspace:*"
+    "@tamagui/core": "workspace:*"
     compare-versions: "npm:^4.1.3"
+    glob: "npm:^7.1.6"
     gray-matter: "npm:^4.0.3"
     hast-util-to-html: "npm:^8.0.3"
     hast-util-to-string: "npm:^2.0.0"
@@ -7765,6 +7765,7 @@ __metadata:
     rehype-parse: "npm:^8.0.4"
     rehype-slug: "npm:^5.0.1"
     shiki: "npm:1.3.0"
+    tamagui: "workspace:*"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
   languageName: unknown
@@ -7778,6 +7779,7 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/popover": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -7823,6 +7825,7 @@ __metadata:
     next: "npm:^15.3.1"
     tamagui-loader: "workspace:*"
     url-loader: "npm:^4.1.1"
+    webpack: "npm:^5.88.2"
   peerDependencies:
     next: ">=13"
   languageName: unknown
@@ -7852,6 +7855,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/use-event": "workspace:*"
+    next: "npm:^15.3.1"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -7880,6 +7884,7 @@ __metadata:
     "@floating-ui/react": "npm:^0.27.12"
     "@tamagui/adapt": "workspace:*"
     "@tamagui/animate": "workspace:*"
+    "@tamagui/animate-presence": "workspace:*"
     "@tamagui/aria-hidden": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
@@ -7897,6 +7902,7 @@ __metadata:
     "@tamagui/sheet": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-freeze: "npm:^1.0.3"
     react-native: "npm:^0.79.2"
@@ -7936,11 +7942,14 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-event": "workspace:*"
+    "@tamagui/web": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
+    react-dom: "npm:*"
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -8013,9 +8022,12 @@ __metadata:
     "@tamagui/label": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -8082,8 +8094,10 @@ __metadata:
     "@tamagui/use-element-layout": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-dom: "npm:*"
   peerDependencies:
     react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -8096,10 +8110,14 @@ __metadata:
     "@tamagui/react-native-use-pressable": "workspace:*"
     "@tamagui/react-native-use-responder-events": "workspace:*"
     "@tamagui/react-native-web-internals": "workspace:*"
+    "@tamagui/web": "workspace:*"
     invariant: "npm:^2.2.4"
+    memoize-one: "npm:^6.0.0"
     react: "npm:*"
+    react-dom: "npm:*"
   peerDependencies:
     react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -8153,12 +8171,18 @@ __metadata:
   resolution: "@tamagui/sandbox-ui@workspace:code/packages/sandbox-ui"
   dependencies:
     "@expo/vector-icons": "npm:^13.0.0"
+    "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/build": "workspace:*"
+    "@tamagui/core": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/toast": "workspace:*"
+    expo-constants: "npm:~17.1.6"
     expo-image: "npm:^1.5.1"
+    react: "npm:*"
     solito: "npm:^4.3.0"
     tamagui: "workspace:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -8170,8 +8194,10 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -8191,6 +8217,7 @@ __metadata:
     "@tamagui/create-context": "workspace:*"
     "@tamagui/dismissable": "workspace:*"
     "@tamagui/focus-scope": "workspace:*"
+    "@tamagui/focusable": "workspace:*"
     "@tamagui/get-token": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/list-item": "workspace:*"
@@ -8205,9 +8232,11 @@ __metadata:
     "@tamagui/use-event": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
     react: "npm:*"
+    react-dom: "npm:*"
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -8261,8 +8290,10 @@ __metadata:
     "@tamagui/use-keyboard-visible": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -8324,6 +8355,9 @@ __metadata:
   resolution: "@tamagui/start-transition@workspace:code/core/start-transition"
   dependencies:
     "@tamagui/build": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -8370,6 +8404,7 @@ __metadata:
     "@babel/plugin-syntax-typescript": "npm:^7.25.4"
     "@babel/plugin-transform-react-jsx": "npm:^7.25.2"
     "@babel/runtime": "npm:^7.25.4"
+    "@babel/template": "npm:^7.25.0"
     "@babel/traverse": "npm:^7.25.4"
     "@babel/types": "npm:^7.25.4"
     "@expo/match-media": "npm:^0.4.0"
@@ -8386,6 +8421,7 @@ __metadata:
     "@tamagui/react-native-web-lite": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
     "@tamagui/types": "workspace:*"
+    "@tamagui/web": "workspace:*"
     "@types/babel__core": "npm:^7.20.5"
     "@types/find-root": "npm:^1.1.2"
     "@types/node": "npm:^22.1.0"
@@ -8405,10 +8441,12 @@ __metadata:
     js-yaml: "npm:^4.1.0"
     null-loader: "npm:^4.0.1"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
     react-native-web: "npm:^0.20.0"
     typescript: "npm:^5.8.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -8447,8 +8485,10 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -8459,6 +8499,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
+    "@tamagui/core": "workspace:*"
     "@tamagui/create-context": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/group": "workspace:*"
@@ -8469,8 +8510,10 @@ __metadata:
     "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -8478,11 +8521,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tamagui-dev-config@workspace:code/packages/tamagui-dev-config"
   dependencies:
+    "@tamagui/animations-css": "workspace:*"
+    "@tamagui/animations-moti": "workspace:*"
+    "@tamagui/animations-motion": "workspace:*"
     "@tamagui/build": "workspace:*"
+    "@tamagui/colors": "workspace:*"
     "@tamagui/config": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/font-cherry-bomb": "workspace:*"
+    "@tamagui/font-inter": "workspace:*"
+    "@tamagui/font-silkscreen": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
+    "@tamagui/theme-builder": "workspace:*"
     "@tamagui/themes": "workspace:*"
+    color2k: "npm:^2.0.2"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -8535,6 +8587,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/create-theme": "workspace:*"
+    "@tamagui/web": "workspace:*"
     color2k: "npm:^2.0.2"
   languageName: unknown
   linkType: soft
@@ -8545,6 +8598,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
+    "@tamagui/start-transition": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
   peerDependencies:
@@ -8581,6 +8635,7 @@ __metadata:
   dependencies:
     "@tamagui/animate-presence": "workspace:*"
     "@tamagui/build": "workspace:*"
+    "@tamagui/collection": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
@@ -8675,6 +8730,9 @@ __metadata:
   resolution: "@tamagui/use-callback-ref@workspace:code/core/use-callback-ref"
   dependencies:
     "@tamagui/build": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -8754,6 +8812,9 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/use-callback-ref": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -8810,6 +8871,9 @@ __metadata:
   resolution: "@tamagui/use-previous@workspace:code/core/use-previous"
   dependencies:
     "@tamagui/build": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -8870,10 +8934,13 @@ __metadata:
     "@tamagui/vite-plugin": "workspace:*"
     "@vitejs/plugin-react-swc": "npm:^3.7.2"
     happy-dom: "npm:^10.11.2"
+    react: "npm:*"
     vitest: "npm:^3.0.5"
     vitest-axe: "npm:^0.1.0"
     vitest-mock-process: "npm:^1.0.4"
     vitest-react-native: "npm:^0.1.5"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -8891,7 +8958,7 @@ __metadata:
     fs-extra: "npm:^11.2.0"
     outdent: "npm:^0.8.0"
     react-native-web: "npm:^0.20.0"
-    vite: "npm:^6.1.0"
+    vite: "npm:^7.0.2"
   peerDependencies:
     vite: "*"
   languageName: unknown
@@ -9362,10 +9429,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:*, @types/estree@npm:1.0.7, @types/estree@npm:^1.0.0, @types/estree@npm:^1.0.6":
-  version: 1.0.7
-  resolution: "@types/estree@npm:1.0.7"
-  checksum: 10/419c845ece767ad4b21171e6e5b63dabb2eb46b9c0d97361edcd9cabbf6a95fcadb91d89b5fa098d1336fa0b8fceaea82fca97a2ef3971f5c86e53031e157b21
+"@types/estree@npm:*, @types/estree@npm:1.0.8, @types/estree@npm:^1.0.0, @types/estree@npm:^1.0.6":
+  version: 1.0.8
+  resolution: "@types/estree@npm:1.0.8"
+  checksum: 10/25a4c16a6752538ffde2826c2cc0c6491d90e69cd6187bef4a006dd2c3c45469f049e643d7e516c515f21484dc3d48fd5c870be158a5beb72f5baf3dc43e4099
   languageName: node
   linkType: hard
 
@@ -15957,15 +16024,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fdir@npm:^6.4.4":
-  version: 6.4.4
-  resolution: "fdir@npm:6.4.4"
+"fdir@npm:^6.4.4, fdir@npm:^6.4.6":
+  version: 6.4.6
+  resolution: "fdir@npm:6.4.6"
   peerDependencies:
     picomatch: ^3 || ^4
   peerDependenciesMeta:
     picomatch:
       optional: true
-  checksum: 10/d0000d6b790059b35f4ed19acc8847a66452e0bc68b28766c929ffd523e5ec2083811fc8a545e4a1d4945ce70e887b3a610c145c681073b506143ae3076342ed
+  checksum: 10/c186ba387e7b75ccf874a098d9bc5fe0af0e9c52fc56f8eac8e80aa4edb65532684bf2bf769894ff90f53bf221d6136692052d31f07a9952807acae6cbe7ee50
   languageName: node
   linkType: hard
 
@@ -18009,15 +18076,20 @@ __metadata:
     "@tamagui/animations-css": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/create-theme": "workspace:*"
+    "@tamagui/linear-gradient": "workspace:*"
     "@tamagui/react-native-svg": "workspace:*"
+    "@tamagui/shorthands": "workspace:*"
     "@tamagui/vite-plugin": "workspace:*"
     "@vitejs/plugin-react-swc": "npm:^3.7.2"
     async-retry: "npm:1.3.1"
+    react-dom: "npm:*"
     react-native-web: "npm:^0.20.0"
     tamagui: "workspace:*"
-    vite: "npm:^6.1.0"
+    vite: "npm:^7.0.2"
     wait-port: "npm:^0.3.0"
     zx: "npm:^8.5.5"
+  peerDependencies:
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -23072,14 +23144,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.33, postcss@npm:^8.5.3":
-  version: 8.5.3
-  resolution: "postcss@npm:8.5.3"
+"postcss@npm:^8.4.33, postcss@npm:^8.5.3, postcss@npm:^8.5.6":
+  version: 8.5.6
+  resolution: "postcss@npm:8.5.6"
   dependencies:
-    nanoid: "npm:^3.3.8"
+    nanoid: "npm:^3.3.11"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
-  checksum: 10/6d7e21a772e8b05bf102636918654dac097bac013f0dc8346b72ac3604fc16829646f94ea862acccd8f82e910b00e2c11c1f0ea276543565d278c7ca35516a7c
+  checksum: 10/9e4fbe97574091e9736d0e82a591e29aa100a0bf60276a926308f8c57249698935f35c5d2f4e80de778d0cbb8dcffab4f383d85fd50c5649aca421c3df729b86
   languageName: node
   linkType: hard
 
@@ -24849,31 +24921,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^4.29.1, rollup@npm:^4.34.9":
-  version: 4.40.2
-  resolution: "rollup@npm:4.40.2"
+"rollup@npm:^4.29.1, rollup@npm:^4.34.9, rollup@npm:^4.40.0":
+  version: 4.44.2
+  resolution: "rollup@npm:4.44.2"
   dependencies:
-    "@rollup/rollup-android-arm-eabi": "npm:4.40.2"
-    "@rollup/rollup-android-arm64": "npm:4.40.2"
-    "@rollup/rollup-darwin-arm64": "npm:4.40.2"
-    "@rollup/rollup-darwin-x64": "npm:4.40.2"
-    "@rollup/rollup-freebsd-arm64": "npm:4.40.2"
-    "@rollup/rollup-freebsd-x64": "npm:4.40.2"
-    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.40.2"
-    "@rollup/rollup-linux-arm-musleabihf": "npm:4.40.2"
-    "@rollup/rollup-linux-arm64-gnu": "npm:4.40.2"
-    "@rollup/rollup-linux-arm64-musl": "npm:4.40.2"
-    "@rollup/rollup-linux-loongarch64-gnu": "npm:4.40.2"
-    "@rollup/rollup-linux-powerpc64le-gnu": "npm:4.40.2"
-    "@rollup/rollup-linux-riscv64-gnu": "npm:4.40.2"
-    "@rollup/rollup-linux-riscv64-musl": "npm:4.40.2"
-    "@rollup/rollup-linux-s390x-gnu": "npm:4.40.2"
-    "@rollup/rollup-linux-x64-gnu": "npm:4.40.2"
-    "@rollup/rollup-linux-x64-musl": "npm:4.40.2"
-    "@rollup/rollup-win32-arm64-msvc": "npm:4.40.2"
-    "@rollup/rollup-win32-ia32-msvc": "npm:4.40.2"
-    "@rollup/rollup-win32-x64-msvc": "npm:4.40.2"
-    "@types/estree": "npm:1.0.7"
+    "@rollup/rollup-android-arm-eabi": "npm:4.44.2"
+    "@rollup/rollup-android-arm64": "npm:4.44.2"
+    "@rollup/rollup-darwin-arm64": "npm:4.44.2"
+    "@rollup/rollup-darwin-x64": "npm:4.44.2"
+    "@rollup/rollup-freebsd-arm64": "npm:4.44.2"
+    "@rollup/rollup-freebsd-x64": "npm:4.44.2"
+    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.44.2"
+    "@rollup/rollup-linux-arm-musleabihf": "npm:4.44.2"
+    "@rollup/rollup-linux-arm64-gnu": "npm:4.44.2"
+    "@rollup/rollup-linux-arm64-musl": "npm:4.44.2"
+    "@rollup/rollup-linux-loongarch64-gnu": "npm:4.44.2"
+    "@rollup/rollup-linux-powerpc64le-gnu": "npm:4.44.2"
+    "@rollup/rollup-linux-riscv64-gnu": "npm:4.44.2"
+    "@rollup/rollup-linux-riscv64-musl": "npm:4.44.2"
+    "@rollup/rollup-linux-s390x-gnu": "npm:4.44.2"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.44.2"
+    "@rollup/rollup-linux-x64-musl": "npm:4.44.2"
+    "@rollup/rollup-win32-arm64-msvc": "npm:4.44.2"
+    "@rollup/rollup-win32-ia32-msvc": "npm:4.44.2"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.44.2"
+    "@types/estree": "npm:1.0.8"
     fsevents: "npm:~2.3.2"
   dependenciesMeta:
     "@rollup/rollup-android-arm-eabi":
@@ -24920,7 +24992,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 10/ab767c56e37410257864e051fccbdaf448ac7774129bf39295de716af816c49e0247e72749959969efbd892fc64e096880fa269764adf765579100e81abf5e7c
+  checksum: 10/3c43ae885794dad48af75913373b3f9f411b9a5bec750cfbe59b622ff05e300611f4e188648651e60ea3cd8dbd1321e8fa02ba02f8d96c03c01d5ee70e5e92f7
   languageName: node
   linkType: hard
 
@@ -25055,7 +25127,7 @@ __metadata:
     react-native-svg: "npm:15.11.2"
     react-native-web: "npm:^0.20.0"
     tamagui: "workspace:*"
-    vite: "npm:^6.1.0"
+    vite: "npm:^7.0.2"
     wait-port: "npm:^0.3.0"
   languageName: unknown
   linkType: soft
@@ -26737,9 +26809,11 @@ __metadata:
     "@tamagui/visually-hidden": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
+    react-native: "npm:^0.79.2"
     react-native-web: "npm:^0.20.0"
   peerDependencies:
     react: "*"
+    react-native: ^0.79.2
   languageName: unknown
   linkType: soft
 
@@ -27026,13 +27100,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:^0.2.12, tinyglobby@npm:^0.2.13":
-  version: 0.2.13
-  resolution: "tinyglobby@npm:0.2.13"
+"tinyglobby@npm:^0.2.12, tinyglobby@npm:^0.2.13, tinyglobby@npm:^0.2.14":
+  version: 0.2.14
+  resolution: "tinyglobby@npm:0.2.14"
   dependencies:
     fdir: "npm:^6.4.4"
     picomatch: "npm:^4.0.2"
-  checksum: 10/b04557ee58ad2be5f2d2cbb4b441476436c92bb45ba2e1fc464d686b793392b305ed0bcb8b877429e9b5036bdd46770c161a08384c0720b6682b7cd6ac80e403
+  checksum: 10/3d306d319718b7cc9d79fb3f29d8655237aa6a1f280860a217f93417039d0614891aee6fc47c5db315f4fcc6ac8d55eb8e23e2de73b2c51a431b42456d9e5764
   languageName: node
   linkType: hard
 
@@ -28083,16 +28157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-latest-callback@npm:^0.2.1, use-latest-callback@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "use-latest-callback@npm:0.2.3"
-  peerDependencies:
-    react: ">=16.8"
-  checksum: 10/5db2dc0d414508c768ba4d1a337bd73dd0fb2a77eccc9dd7051517b28cd71c849c5e9230b5c97fc76a3811c1500f210cb4e4ebb95fe20347e5f910509a8e533c
-  languageName: node
-  linkType: hard
-
-"use-latest-callback@npm:^0.2.4":
+"use-latest-callback@npm:^0.2.1, use-latest-callback@npm:^0.2.3, use-latest-callback@npm:^0.2.4":
   version: 0.2.4
   resolution: "use-latest-callback@npm:0.2.4"
   peerDependencies:
@@ -28746,7 +28811,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:^5.0.1":
+"vite-tsconfig-paths@npm:^5.0.1, vite-tsconfig-paths@npm:^5.1.4":
   version: 5.1.4
   resolution: "vite-tsconfig-paths@npm:5.1.4"
   dependencies:
@@ -28814,6 +28879,61 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10/7bc3a1c5ef79413ad70daeeaf69b76cd1218d16aa18ed8ee08d74648ef17284f4a17c11f5cf42b573b6dc5e3d5f115110b67b1d23c2c699cfe404757764a634a
+  languageName: node
+  linkType: hard
+
+"vite@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "vite@npm:7.0.2"
+  dependencies:
+    esbuild: "npm:^0.25.0"
+    fdir: "npm:^6.4.6"
+    fsevents: "npm:~2.3.3"
+    picomatch: "npm:^4.0.2"
+    postcss: "npm:^8.5.6"
+    rollup: "npm:^4.40.0"
+    tinyglobby: "npm:^0.2.14"
+  peerDependencies:
+    "@types/node": ^20.19.0 || >=22.12.0
+    jiti: ">=1.21.0"
+    less: ^4.0.0
+    lightningcss: ^1.21.0
+    sass: ^1.70.0
+    sass-embedded: ^1.70.0
+    stylus: ">=0.54.8"
+    sugarss: ^5.0.0
+    terser: ^5.16.0
+    tsx: ^4.8.1
+    yaml: ^2.4.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    jiti:
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    sass-embedded:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+    tsx:
+      optional: true
+    yaml:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 10/7042e7abae4f1dad83d504f3e23936eacde97d7e45dac8761fa06966eff2b0ac739abe89bf7c59617de799e43cdb89d96ec14dd52b444c1be5d8ecc79c7097d1
   languageName: node
   linkType: hard
 

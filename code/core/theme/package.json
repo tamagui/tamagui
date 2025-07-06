@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "@tamagui/start-transition": "workspace:*"
+    "@tamagui/start-transition": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

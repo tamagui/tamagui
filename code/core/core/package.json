@@ -35,13 +35,13 @@
     "native-test.d.ts"
   ],
   "dependencies": {
+    "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/react-native-use-pressable": "workspace:*",
     "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "@tamagui/helpers": "workspace:*"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
