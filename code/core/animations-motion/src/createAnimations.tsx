@@ -409,6 +409,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       styleToCSS(dontAnimate)
     }
 
+    // half works in chrome but janky and stops working after first animation
+    // if (
+    //   typeof doAnimate?.opacity !== 'undefined' &&
+    //   typeof dontAnimate?.backdropFilter === 'string'
+    // ) {
+    //   if (!dontAnimate.backdropFilter.includes('opacity(')) {
+    //     dontAnimate.backdropFilter += ` opacity(${doAnimate.opacity})`
+    //     dontAnimate.WebkitBackdropFilter += ` opacity(${doAnimate.opacity})`
+    //     dontAnimate.transition = 'backdrop-filter ease-in 1000ms'
+    //   }
+    // }
+
     return {
       dontAnimate,
       doAnimate,
