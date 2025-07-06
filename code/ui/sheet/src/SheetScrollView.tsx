@@ -1,9 +1,9 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb, type GetRef } from '@tamagui/core'
+import { isClient, isWeb, View, type GetRef } from '@tamagui/core'
 import type { ScrollViewProps } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { ScrollView as RNScrollView } from 'react-native'
 import { useSheetContext } from './SheetContext'
 import type { SheetScopedProps } from './types'
@@ -18,6 +18,8 @@ const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
 export const SheetScrollView = React.forwardRef<
   GetRef<typeof ScrollView>,
+  // we disallow customizing it because we want to let people know it doens't work well with out measuring of inner content
+  // height using a view
   ScrollViewProps
 >(
   (
@@ -129,8 +131,22 @@ export const SheetScrollView = React.forwardRef<
       }
     }, [])
 
+    const [hasScrollableContent, setHasScrollableContent] = useState(true)
+    const parentHeight = useRef(0)
+    const contentHeight = useRef(0)
+
+    const setIsScrollable = () => {
+      if (parentHeight.current && contentHeight.current) {
+        setHasScrollableContent(contentHeight.current > parentHeight.current)
+      }
+    }
+
     return (
       <ScrollView
+        onLayout={(e) => {
+          parentHeight.current = e.nativeEvent.layout.height
+          setIsScrollable()
+        }}
         ref={composeRefs(scrollRef as any, ref)}
         flex={1}
         scrollEventThrottle={8}
@@ -192,7 +208,8 @@ export const SheetScrollView = React.forwardRef<
             const isDraggingUp = dy < 0
             const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY
 
-            const shouldScrollLock = (dy === 0 || isDraggingUp) && isPaneAtTop
+            const shouldScrollLock =
+              hasScrollableContent && (dy === 0 || isDraggingUp) && isPaneAtTop
 
             if (shouldScrollLock && !state.current.isScrolling) {
               state.current.isScrolling = true
@@ -217,6 +234,18 @@ export const SheetScrollView = React.forwardRef<
         }}
         {...props}
       >
+        {/* content height measurer */}
+        <View
+          position="absolute"
+          inset={0}
+          pointerEvents="none"
+          zIndex={-1}
+          onLayout={(e) => {
+            contentHeight.current = e.nativeEvent.layout.height
+            setIsScrollable()
+          }}
+        />
+
         {children}
       </ScrollView>
     )

@@ -386,8 +386,6 @@ function PopoverPortal(props: ScopedPopoverProps<PopoverContentTypeProps>) {
     )
   }
 
-  return content
-
   return (
     <Portal passThrough={props.passThrough} stackZIndex zIndex={zIndex as any}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
@@ -516,8 +514,6 @@ const PopoverContentImpl = React.forwardRef<
   //   >
 
   // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
-
-  return <PortalAdaptSafe>{contents}</PortalAdaptSafe>
 
   return (
     <Animate

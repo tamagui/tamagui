@@ -251,7 +251,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       function setPanning(val: boolean) {
         setIsDragging(val)
-        scrollBridge.setParentDragging(false)
 
         // make unselectable:
         if (isClient) {
@@ -271,6 +270,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
 
       const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+        scrollBridge.setParentDragging(false)
         if (scrollBridge.scrollLock) {
           return
         }
@@ -345,6 +345,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
 
         const granted = getShouldSet()
+
+        // console.log('DEBUG', granted, scrollBridge.scrollLock, scrollBridge.y)
 
         if (granted) {
           scrollBridge.setParentDragging(true)

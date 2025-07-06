@@ -58,9 +58,6 @@ export function enable(): void {
   }
 }
 
-const expectedFrameTime = 16.67 // ~60fps
-const numDroppedFramesUntilPause = 10
-
 function startGlobalIntersectionObserver() {
   if (!isClient || globalIntersectionObserver) return
 
@@ -82,10 +79,8 @@ function startGlobalIntersectionObserver() {
 if (isClient) {
   if (rAF) {
     const supportsCheckVisibility = 'checkVisibility' in document.body
-    // track frame timing to detect sync work and avoid updates during heavy periods
-    let lastFrameAt = Date.now()
 
-    async function updateLayoutIfChanged(node: HTMLElement, frameId: number) {
+    async function updateLayoutIfChanged(node: HTMLElement) {
       if (IntersectionState.get(node) === false) {
         // avoid due to not intersecting
         return
@@ -114,11 +109,6 @@ if (isClient) {
         ])
 
         if (nr === false || pr === false) {
-          return
-        }
-
-        // cancel if we skipped a frame
-        if (frameId !== lastFrameAt) {
           return
         }
 
@@ -160,33 +150,23 @@ if (isClient) {
 
     // only run once in a few frames, this could be adjustable
     let frameCount = 0
-    const RUN_EVERY_X_FRAMES = 4
+    const RUN_EVERY_X_FRAMES = 8
 
     function layoutOnAnimationFrame() {
       if (strategy !== 'off') {
-        const now = Date.now()
-        const timeSinceLastFrame = now - lastFrameAt
-        lastFrameAt = now
-
         if (frameCount++ % RUN_EVERY_X_FRAMES !== 0) {
           // skip a few frames to avoid work
           rAF!(layoutOnAnimationFrame)
           return
         }
 
-        // avoid overflow
-        frameCount = 0
-
-        // for both strategies:
-        // avoid updates if we've been dropping frames (indicates sync work happening)
-        const hasRecentSyncWork =
-          timeSinceLastFrame > expectedFrameTime * numDroppedFramesUntilPause
-
-        if (!hasRecentSyncWork) {
-          Nodes.forEach((node) => {
-            updateLayoutIfChanged(node, lastFrameAt)
-          })
+        if (frameCount === Number.MAX_SAFE_INTEGER) {
+          frameCount = 0
         }
+
+        Nodes.forEach((node) => {
+          updateLayoutIfChanged(node)
+        })
       }
 
       rAF!(layoutOnAnimationFrame)
@@ -300,7 +280,6 @@ export function useElementLayout(
     const node = ref.current?.host
     if (!node) return
 
-    LayoutHandlers.set(node, onLayout)
     Nodes.add(node)
 
     // Add node to intersection observer
