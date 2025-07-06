@@ -62,12 +62,14 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "^0.79.2",
+    "react-dom": "*"
   },
   "publishConfig": {
     "access": "public"

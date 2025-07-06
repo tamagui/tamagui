@@ -44,10 +44,12 @@
     "shiki": "1.3.0",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "@tamagui/core": "workspace:*"
+    "@tamagui/core": "workspace:*",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "glob": "^7.1.6"
   },
   "publishConfig": {
     "access": "public"

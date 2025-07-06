@@ -41,7 +41,8 @@
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/theme-builder": "workspace:*",
-    "@tamagui/animations-moti": "workspace:*"
+    "@tamagui/animations-moti": "workspace:*",
+    "color2k": "^2.0.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

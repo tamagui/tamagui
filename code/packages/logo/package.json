@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "@tamagui/web": "workspace:*",
-    "@tamagui/use-element-layout": "workspace:*"
+    "@tamagui/use-element-layout": "workspace:*",
+    "tamagui": "workspace:*"
   }
 }

@@ -29,7 +29,8 @@
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
-    "@tamagui/core": "workspace:*"
+    "@tamagui/core": "workspace:*",
+    "expo-constants": "~17.1.6"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

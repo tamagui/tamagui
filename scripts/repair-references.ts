@@ -140,10 +140,11 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
   // Find missing dependencies
   let missingDeps = allImports.filter((imp) => !allDeps.has(imp))
 
-  // Filter out vite and test related dependencies (they're dev dependencies)
+  // Filter out vite, test, and blacklisted dependencies
   missingDeps = missingDeps.filter((dep) => {
     const isViteOrTest = dep.includes('vite') || dep.includes('test')
-    return !isViteOrTest
+    const isBlacklisted = dep === 'expo-linear-gradient'
+    return !isViteOrTest && !isBlacklisted
   })
 
   if (missingDeps.length === 0) {

@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/use-event": "workspace:*"
+    "@tamagui/use-event": "workspace:*",
+    "next": "^15.3.1"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
