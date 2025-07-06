@@ -33,7 +33,15 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "@tamagui/themes": "workspace:*"
+    "@tamagui/themes": "workspace:*",
+    "@tamagui/animations-motion": "workspace:*",
+    "@tamagui/font-cherry-bomb": "workspace:*",
+    "@tamagui/font-inter": "workspace:*",
+    "@tamagui/font-silkscreen": "workspace:*",
+    "@tamagui/animations-css": "workspace:*",
+    "@tamagui/colors": "workspace:*",
+    "@tamagui/theme-builder": "workspace:*",
+    "@tamagui/animations-moti": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

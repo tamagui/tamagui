@@ -45,7 +45,9 @@
     "@tamagui/react-native-use-pressable": "workspace:*",
     "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/react-native-web-internals": "workspace:*",
-    "invariant": "^2.2.4"
+    "invariant": "^2.2.4",
+    "memoize-one": "^7.0.0",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

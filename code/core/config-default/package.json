@@ -17,12 +17,15 @@
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/shorthands": "workspace:*"
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "@tamagui/animations-react-native": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "peerDependencies": {}
 }

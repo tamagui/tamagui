@@ -55,7 +55,9 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "react-freeze": "^1.0.3"
+    "react-freeze": "^1.0.3",
+    "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

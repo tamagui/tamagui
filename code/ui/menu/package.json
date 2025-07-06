@@ -25,7 +25,9 @@
   "dependencies": {
     "@tamagui/core": "workspace:*",
     "@tamagui/helpers": "workspace:*",
-    "@tamagui/popover": "workspace:*"
+    "@tamagui/popover": "workspace:*",
+    "@tamagui/drawer": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

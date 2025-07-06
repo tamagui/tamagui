@@ -44,7 +44,9 @@
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
+    "@tamagui/get-token": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

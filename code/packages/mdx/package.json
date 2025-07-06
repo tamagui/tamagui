@@ -43,12 +43,14 @@
     "rehype-slug": "^5.0.1",
     "shiki": "1.3.0",
     "unified": "^10.1.2",
-    "unist-util-visit": "^2.0.3"
+    "unist-util-visit": "^2.0.3",
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "peerDependencies": {}
 }

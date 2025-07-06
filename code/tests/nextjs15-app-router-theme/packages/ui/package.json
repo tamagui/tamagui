@@ -19,9 +19,14 @@
   "dependencies": {
     "@my/config": "workspace:^",
     "@tamagui/toast": "workspace:*",
-    "tamagui": "workspace:*"
+    "tamagui": "workspace:*",
+    "@tamagui/next-theme": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }

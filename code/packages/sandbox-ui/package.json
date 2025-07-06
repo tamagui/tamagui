@@ -27,9 +27,15 @@
     "@tamagui/toast": "workspace:*",
     "expo-image": "^1.5.1",
     "solito": "^4.3.0",
-    "tamagui": "workspace:*"
+    "tamagui": "workspace:*",
+    "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }

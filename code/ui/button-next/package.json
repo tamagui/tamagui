@@ -40,7 +40,10 @@
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/config-default": "workspace:*",
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

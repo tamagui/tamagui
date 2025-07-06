@@ -42,11 +42,12 @@
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "@tamagui/config-default": "workspace:*",
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "@tamagui/config-default": "workspace:*",
     "react": "*",
     "vitest": "^3.0.5"
   },

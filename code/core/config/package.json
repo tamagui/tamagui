@@ -90,12 +90,15 @@
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "@tamagui/theme-builder": "workspace:*",
+    "@tamagui/core": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "peerDependencies": {}
 }

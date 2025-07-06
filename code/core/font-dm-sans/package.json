@@ -18,7 +18,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "@tamagui/core": "workspace:*",
     "subset-font": "^2.1.0"
-  }
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*"
+  },
+  "peerDependencies": {}
 }

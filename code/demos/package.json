@@ -62,14 +62,27 @@
     "@tamagui/stacks": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "tamagui": "workspace:*"
+    "tamagui": "workspace:*",
+    "@tamagui/theme": "workspace:*",
+    "@tamagui/checkbox": "workspace:*",
+    "@tamagui/switch": "workspace:*",
+    "@tamagui/tabs": "workspace:*",
+    "@tamagui/get-button-sized": "workspace:*",
+    "@tamagui/radio-headless": "workspace:*",
+    "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/image-next": "workspace:*",
+    "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/checkbox-headless": "workspace:*",
+    "@tamagui/switch-headless": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"

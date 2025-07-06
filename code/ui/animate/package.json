@@ -16,7 +16,8 @@
     "@tamagui/animate-presence": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -41,5 +42,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }

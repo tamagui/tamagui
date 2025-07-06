@@ -41,7 +41,8 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/stacks": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

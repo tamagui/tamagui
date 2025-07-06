@@ -20,9 +20,11 @@
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "tamagui": "workspace:*"
+    "tamagui": "workspace:*",
+    "@tamagui/config": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
-  }
+  },
+  "peerDependencies": {}
 }

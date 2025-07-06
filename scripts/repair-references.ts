@@ -134,10 +134,17 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
   const allDeps = new Set([
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
+    ...Object.keys(packageJson.devDependencies || {}),
   ])
 
   // Find missing dependencies
-  const missingDeps = allImports.filter((imp) => !allDeps.has(imp))
+  let missingDeps = allImports.filter((imp) => !allDeps.has(imp))
+
+  // Filter out vite and test related dependencies (they're dev dependencies)
+  missingDeps = missingDeps.filter((dep) => {
+    const isViteOrTest = dep.includes('vite') || dep.includes('test')
+    return !isViteOrTest
+  })
 
   if (missingDeps.length === 0) {
     return null
@@ -187,7 +194,73 @@ async function fixTamaguiDependencies(
   console.info(`   Added ${tamaguiDeps.length} @tamagui/* dependencies to ${pkg.name}`)
 }
 
-async function fixAllDependencies(pkg: Package, report: MissingDepReport): Promise<void> {
+interface DependencyInfo {
+  name: string
+  section: 'dependencies' | 'peerDependencies' | 'devDependencies'
+  version: string
+  count: number
+}
+
+async function collectExistingDependencies(
+  packages: Package[]
+): Promise<Map<string, DependencyInfo>> {
+  const depMap = new Map<string, Map<string, { version: string; count: number }>>()
+
+  for (const pkg of packages) {
+    const packageJson = await getPackageJson(pkg.location)
+    if (!packageJson) continue
+
+    const sections = [
+      { name: 'dependencies', deps: packageJson.dependencies || {} },
+      { name: 'peerDependencies', deps: packageJson.peerDependencies || {} },
+      { name: 'devDependencies', deps: packageJson.devDependencies || {} },
+    ] as const
+
+    for (const section of sections) {
+      for (const [depName, version] of Object.entries(section.deps)) {
+        if (!depMap.has(depName)) {
+          depMap.set(depName, new Map())
+        }
+        const sectionMap = depMap.get(depName)!
+        const key = `${section.name}:${version}`
+        const existing = sectionMap.get(key) || { version, count: 0 }
+        sectionMap.set(key, { version, count: existing.count + 1 })
+      }
+    }
+  }
+
+  // Convert to final format with most common section/version
+  const result = new Map<string, DependencyInfo>()
+  for (const [depName, sectionMap] of depMap.entries()) {
+    let bestMatch: DependencyInfo | null = null
+    let maxCount = 0
+
+    for (const [key, info] of sectionMap.entries()) {
+      if (info.count > maxCount) {
+        maxCount = info.count
+        const [section, version] = key.split(':')
+        bestMatch = {
+          name: depName,
+          section: section as 'dependencies' | 'peerDependencies' | 'devDependencies',
+          version,
+          count: info.count,
+        }
+      }
+    }
+
+    if (bestMatch) {
+      result.set(depName, bestMatch)
+    }
+  }
+
+  return result
+}
+
+async function fixAllDependencies(
+  pkg: Package,
+  report: MissingDepReport,
+  existingDeps: Map<string, DependencyInfo>
+): Promise<void> {
   const jsonPath = join(process.cwd(), pkg.location, 'package.json')
   const packageJson = JSON.parse(await readFile(jsonPath, { encoding: 'utf-8' }))
 
@@ -201,31 +274,45 @@ async function fixAllDependencies(pkg: Package, report: MissingDepReport): Promi
   const reactNativeVersion = await getReactNativeVersion()
 
   for (const dep of report.missingDeps) {
-    // Check if dependency is already in devDependencies
-    if (packageJson.devDependencies[dep]) {
-      // Move from devDependencies to dependencies
-      packageJson.dependencies[dep] = packageJson.devDependencies[dep]
-      delete packageJson.devDependencies[dep]
-      changesCount++
-    } else if (dep.startsWith('@tamagui/')) {
-      // Fix @tamagui/* packages with workspace:*
-      packageJson.dependencies[dep] = 'workspace:*'
+    // Special handling for specific dependencies
+    if (dep === 'react' || dep === 'react-dom') {
+      // Put react/react-dom in both peerDependencies and devDependencies with "*"
+      packageJson.peerDependencies[dep] = '*'
+      packageJson.devDependencies[dep] = '*'
       changesCount++
     } else if (dep === 'react-native') {
       // Put react-native in both peerDependencies and devDependencies
       packageJson.peerDependencies[dep] = reactNativeVersion
       packageJson.devDependencies[dep] = reactNativeVersion
       changesCount++
-    } else if (dep === 'react') {
-      // Put react in both peerDependencies and devDependencies with "*"
-      packageJson.peerDependencies[dep] = '*'
-      packageJson.devDependencies[dep] = '*'
-      changesCount++
-    } else {
-      // For other dependencies, add to regular dependencies
-      packageJson.dependencies[dep] = '*'
-      changesCount++
+    } else if (dep.startsWith('@tamagui/') || dep === 'tamagui') {
+      // Check if dependency is already in devDependencies
+      if (packageJson.devDependencies[dep]) {
+        // Move from devDependencies to dependencies
+        packageJson.dependencies[dep] = packageJson.devDependencies[dep]
+        delete packageJson.devDependencies[dep]
+        changesCount++
+      } else {
+        // Fix @tamagui/* packages and "tamagui" with workspace:*
+        packageJson.dependencies[dep] = 'workspace:*'
+        changesCount++
+      }
+    } else if (existingDeps.has(dep)) {
+      // Use existing dependency info from other packages
+      const depInfo = existingDeps.get(dep)!
+      const section = depInfo.section
+
+      // Only add if it's not already in any section
+      if (
+        !packageJson.dependencies[dep] &&
+        !packageJson.peerDependencies[dep] &&
+        !packageJson.devDependencies[dep]
+      ) {
+        packageJson[section][dep] = depInfo.version
+        changesCount++
+      }
     }
+    // Skip all other dependencies
   }
 
   if (changesCount > 0) {
@@ -278,12 +365,15 @@ async function main() {
   if (fixAll) {
     console.info('Fixing all dependencies...\n')
 
+    // Collect existing dependencies from all packages
+    const existingDeps = await collectExistingDependencies(packages)
+
     await pMap(
       validReports,
       async (report) => {
         const pkg = packages.find((p) => p.name === report.packageName)
         if (pkg) {
-          await fixAllDependencies(pkg, report)
+          await fixAllDependencies(pkg, report, existingDeps)
         }
       },
       { concurrency: 5 }

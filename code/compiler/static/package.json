@@ -67,7 +67,8 @@
     "fs-extra": "^11.2.0",
     "invariant": "^2.2.4",
     "js-yaml": "^4.1.0",
-    "react-native-web": "^0.20.0"
+    "react-native-web": "^0.20.0",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
@@ -81,10 +82,12 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": "*",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "react-native": "^0.79.2"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   }
 }

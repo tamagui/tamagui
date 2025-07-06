@@ -20,7 +20,8 @@
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -46,5 +47,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "peerDependencies": {
+    "react": "*"
+  }
 }

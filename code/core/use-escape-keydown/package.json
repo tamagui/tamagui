@@ -21,7 +21,8 @@
     "@tamagui/use-callback-ref": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -38,5 +39,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }

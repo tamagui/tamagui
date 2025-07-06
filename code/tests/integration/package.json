@@ -18,7 +18,9 @@
     "@tamagui/create-theme": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "react-native-web": "^0.20.0",
-    "tamagui": "workspace:*"
+    "tamagui": "workspace:*",
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/linear-gradient": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.1",
@@ -29,5 +31,6 @@
     "wait-port": "^0.3.0",
     "zx": "^8.5.5"
   },
-  "version": "1.130.5"
+  "version": "1.130.5",
+  "peerDependencies": {}
 }

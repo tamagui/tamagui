@@ -40,7 +40,9 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/shapes": "workspace:*",
-    "@tamagui/text": "workspace:*"
+    "@tamagui/text": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/stacks": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

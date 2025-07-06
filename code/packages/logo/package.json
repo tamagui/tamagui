@@ -52,5 +52,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@tamagui/web": "workspace:*",
+    "@tamagui/use-element-layout": "workspace:*"
   }
 }

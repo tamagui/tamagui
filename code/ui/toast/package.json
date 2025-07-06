@@ -49,7 +49,8 @@
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/visually-hidden": "workspace:*"
+    "@tamagui/visually-hidden": "workspace:*",
+    "@tamagui/collection": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

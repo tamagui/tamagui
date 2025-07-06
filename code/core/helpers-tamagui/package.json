@@ -38,10 +38,12 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.5",
+    "react-native": "^0.79.2"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"
