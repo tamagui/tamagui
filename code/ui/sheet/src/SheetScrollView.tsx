@@ -98,7 +98,7 @@ export const SheetScrollView = React.forwardRef<
 
       const controller = new AbortController()
 
-      const node = scrollRef.current.getScrollableNode() as HTMLElement | undefined
+      const node = scrollRef.current?.getScrollableNode() as HTMLElement | undefined
 
       if (!node) {
         return
