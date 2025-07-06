@@ -8,29 +8,7 @@
  * @noflow
  */
 
-import getBoundingClientRect from '../getBoundingClientRect/index'
-import setValueForStyles from '../setValueForStyles/index'
-
-const getRect = (node) => {
-  // Unlike the DOM's getBoundingClientRect, React Native layout measurements
-  // for "height" and "width" ignore scale transforms.
-  // https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Determining_the_dimensions_of_elements
-  const { x, y, top, left } = getBoundingClientRect(node)!
-  const width = node.offsetWidth
-  const height = node.offsetHeight
-  return { x, y, width, height, top, left }
-}
-
-const measureLayout = (node, relativeToNativeNode, callback) => {
-  const relativeNode = relativeToNativeNode || (node && node.parentNode)
-  if (node && relativeNode) {
-    const relativeRect = getBoundingClientRect(relativeNode)
-    const { height, left, top, width } = getRect(node)
-    const x = left - relativeRect.left
-    const y = top - relativeRect.top
-    callback(x, y, width, height, left, top)
-  }
-}
+import { getRect, measureLayout } from '@tamagui/use-element-layout'
 
 const focusableElements = {
   A: true,
@@ -70,42 +48,17 @@ const UIManager = {
   measureInWindow(node, callback) {
     if (node) {
       setTimeout(() => {
-        const { height, left, top, width } = getRect(node)
-        callback(left, top, width, height)
+        const rect = getRect(node)
+        if (rect) {
+          const { height, left, top, width } = rect
+          callback(left, top, width, height)
+        }
       }, 0)
     }
   },
 
   measureLayout(node, relativeToNativeNode, onFail, onSuccess) {
     measureLayout(node, relativeToNativeNode, onSuccess)
-  },
-
-  updateView(node, props) {
-    for (const prop in props) {
-      if (!Object.prototype.hasOwnProperty.call(props, prop)) {
-        continue
-      }
-
-      const value = props[prop]
-      switch (prop) {
-        case 'style': {
-          setValueForStyles(node, value)
-          break
-        }
-        case 'class':
-        case 'className': {
-          node.setAttribute('class', value)
-          break
-        }
-        case 'text':
-        case 'value':
-          // native platforms use `text` prop to replace text input value
-          node.value = value
-          break
-        default:
-          node.setAttribute(prop, value)
-      }
-    }
   },
 
   configureNextLayoutAnimation(config, onAnimationDidEnd) {

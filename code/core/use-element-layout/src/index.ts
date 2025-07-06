@@ -26,8 +26,8 @@ export type LayoutValue = {
   y: number
   width: number
   height: number
-  left: number
-  top: number
+  pageX: number
+  pageY: number
 }
 
 export type LayoutEvent = {
@@ -58,7 +58,7 @@ export function enable(): void {
   }
 }
 
-function startGlobalIntersectionObserver() {
+function startGlobalObservers() {
   if (!isClient || globalIntersectionObserver) return
 
   globalIntersectionObserver = new IntersectionObserver(
@@ -201,8 +201,8 @@ export const measureLayout = (
     y: number,
     width: number,
     height: number,
-    left: number,
-    top: number
+    pageX: number,
+    pageY: number
   ) => void
 ): void => {
   const relativeNode = relativeTo || node?.parentElement
@@ -211,11 +211,11 @@ export const measureLayout = (
     const relativeNodeDim = relativeNode.getBoundingClientRect()
 
     if (relativeNodeDim && nodeDim) {
-      const { x, y, width, height, left, top } = getRelativeDimensions(
+      const { x, y, width, height, pageX, pageY } = getRelativeDimensions(
         nodeDim,
         relativeNodeDim
       )
-      callback(x, y, width, height, left, top)
+      callback(x, y, width, height, pageX, pageY)
     }
   }
 }
@@ -248,11 +248,11 @@ export const measureLayoutAsync = async (
     ])
 
     if (relativeNodeDim && nodeDim) {
-      const { x, y, width, height, left, top } = getRelativeDimensions(
+      const { x, y, width, height, pageX, pageY } = getRelativeDimensions(
         nodeDim,
         relativeNodeDim
       )
-      return { x, y, width, height, left, top }
+      return { x, y, width, height, pageX, pageY }
     }
   }
   return null
@@ -262,7 +262,7 @@ const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
   const { height, left, top, width } = a
   const x = left - b.left
   const y = top - b.top
-  return { x, y, width, height, left, top }
+  return { x, y, width, height, pageX: a.top, pageY: a.left }
 }
 
 export function useElementLayout(
@@ -283,7 +283,7 @@ export function useElementLayout(
     Nodes.add(node)
 
     // Add node to intersection observer
-    startGlobalIntersectionObserver()
+    startGlobalObservers()
     if (globalIntersectionObserver) {
       globalIntersectionObserver.observe(node)
       // Initialize as intersecting by default
