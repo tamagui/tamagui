@@ -23,7 +23,6 @@ import type {
   PanResponderGestureState,
 } from 'react-native'
 import { PanResponder } from 'react-native'
-
 import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
 import type { ScopedProps, SwipeDirection } from './ToastProvider'
