@@ -81,9 +81,9 @@ export default {
 
   plugins: [
     tamaguiPlugin({
+      optimize: process.env.NODE_ENV === 'production',
       components: ['tamagui'],
       logTimings: true,
-      optimize: true,
       config: '@tamagui/tamagui-dev-config',
       outputCSS: './tamagui.css',
       // bento lists some last issues

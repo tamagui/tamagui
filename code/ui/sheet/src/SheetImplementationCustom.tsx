@@ -234,6 +234,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     useIsomorphicLayoutEffect(() => {
       if (!isAbleToPosition) return
       animateTo(position)
+
+      // reset scroll bridge
+      if (position === -1) {
+        scrollBridge.scrollLock = false
+        scrollBridge.scrollStartY = -1
+      }
     }, [isAbleToPosition, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
@@ -318,25 +324,27 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             return true
           }
 
-          if (scrollBridge.scrollLock) {
-            return false
-          }
-
-          const isScrolled = scrollBridge.y !== 0
-
-          // Update the dragging direction
-          const isDraggingUp = dy < 0
-
-          // we can treat near top instead of exactly to avoid trouble with springs
-          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
-          if (isScrolled) {
-            previouslyScrolling = true
-            return false
-          }
-          // prevent drag once at top and pulling up
-          if (isNearTop) {
-            if (hasScrollView.current && isDraggingUp) {
+          if (scrollBridge.hasScrollableContent === true) {
+            if (scrollBridge.scrollLock) {
               return false
+            }
+
+            const isScrolled = scrollBridge.y !== 0
+
+            // Update the dragging direction
+            const isDraggingUp = dy < 0
+
+            // we can treat near top instead of exactly to avoid trouble with springs
+            const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
+            if (isScrolled) {
+              previouslyScrolling = true
+              return false
+            }
+            // prevent drag once at top and pulling up
+            if (isNearTop) {
+              if (hasScrollView.current && isDraggingUp) {
+                return false
+              }
             }
           }
 
@@ -346,7 +354,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
         const granted = getShouldSet()
 
-        // console.log('DEBUG', granted, scrollBridge.scrollLock, scrollBridge.y)
+        // console.log('DEBUG', { granted, dy }, { ...scrollBridge })
 
         if (granted) {
           scrollBridge.setParentDragging(true)

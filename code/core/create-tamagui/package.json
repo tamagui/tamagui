@@ -52,7 +52,7 @@
     "tar": "4.4.10",
     "tempy": "^3.1.0",
     "update-check": "1.5.4",
-    "vitest": "^3.0.5",
+    "vitest": "^3.2.4",
     "wait-port": "^0.3.0"
   },
   "publishConfig": {

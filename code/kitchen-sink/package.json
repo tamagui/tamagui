@@ -76,7 +76,7 @@
     "react-native-web": "^0.20.0",
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
-    "vitest": "^3.0.5",
+    "vitest": "^3.2.4",
     "webdriverio": "^9.5.4"
   },
   "packageManager": "yarn@4.5.0",

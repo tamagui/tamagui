@@ -69,6 +69,7 @@ export type ScrollBridge = {
     paneY: number;
     paneMinY: number;
     scrollStartY: number;
+    hasScrollableContent: boolean;
     drag: (dy: number) => void;
     release: (state: {
         dragAt: number;

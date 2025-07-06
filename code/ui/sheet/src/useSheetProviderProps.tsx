@@ -141,6 +141,7 @@ export function useSheetProviderProps(
     const parentDragListeners = new Set<Function>()
 
     const bridge: ScrollBridge = {
+      hasScrollableContent: false,
       enabled: false,
       y: 0,
       paneY: 0,

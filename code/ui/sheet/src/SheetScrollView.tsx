@@ -145,10 +145,14 @@ export const SheetScrollView = React.forwardRef<
       }
     }
 
+    useEffect(() => {
+      scrollBridge.hasScrollableContent = hasScrollableContent
+    }, [hasScrollableContent])
+
     return (
       <ScrollView
         onLayout={(e) => {
-          parentHeight.current = e.nativeEvent.layout.height
+          parentHeight.current = Math.ceil(e.nativeEvent.layout.height)
           setIsScrollable()
         }}
         ref={composeRefs(scrollRef as any, ref)}
@@ -245,7 +249,8 @@ export const SheetScrollView = React.forwardRef<
           pointerEvents="none"
           zIndex={-1}
           onLayout={(e) => {
-            contentHeight.current = e.nativeEvent.layout.height
+            // found that contentHeight can be 0.x higher than parent when not scrollable
+            contentHeight.current = Math.floor(e.nativeEvent.layout.height)
             setIsScrollable()
           }}
         />
