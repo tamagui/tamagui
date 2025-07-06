@@ -808,6 +808,7 @@ export function createComponent<
       onBlur,
       separator,
       // ignore from here on out
+      passThrough,
       forceStyle: _forceStyle,
       // @ts-ignore  for next/link compat etc
       onClick,
@@ -823,8 +824,13 @@ export function createComponent<
       viewProps.forceStyle = props.forceStyle
     }
 
-    if (isHOC && _themeProp) {
-      viewProps.theme = _themeProp
+    if (isHOC) {
+      if (typeof _themeProp !== 'undefined') {
+        viewProps.theme = _themeProp
+      }
+      if (typeof passThrough !== 'undefined') {
+        viewProps.passThrough = passThrough
+      }
     }
 
     if (tagProp && elementType['acceptTagProp']) {

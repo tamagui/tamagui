@@ -36,15 +36,13 @@ import {
 } from '../hooks/useMedia'
 import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import type {
+  AllGroupContexts,
   ClassNamesObject,
   ComponentContextI,
   DebugProp,
   GetStyleResult,
   GetStyleState,
-  AllGroupContexts,
   IsMediaType,
-  MediaQueryKey,
-  PseudoPropKeys,
   PseudoStyles,
   RulesToInsert,
   SpaceTokens,
@@ -78,8 +76,6 @@ import { transformsToString } from './transformsToString'
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
-
-type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
 
