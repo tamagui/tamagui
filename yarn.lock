@@ -7719,9 +7719,7 @@ __metadata:
   resolution: "@tamagui/logo@workspace:code/packages/logo"
   dependencies:
     "@tamagui/build": "workspace:*"
-    one: "npm:1.1.502"
     react: "npm:*"
-    tamagui: "workspace:*"
   peerDependencies:
     react: "*"
   languageName: unknown
