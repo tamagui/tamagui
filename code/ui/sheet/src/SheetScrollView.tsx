@@ -98,7 +98,11 @@ export const SheetScrollView = React.forwardRef<
 
       const controller = new AbortController()
 
-      const node = scrollRef.current.getScrollableNode() as HTMLElement
+      const node = scrollRef.current.getScrollableNode() as HTMLElement | undefined
+
+      if (!node) {
+        return
+      }
 
       // this is unfortuantely the only way to prevent a scroll once a scroll already started
       // we just keep setting it back to the last value - it should only ever be 0 as this only
@@ -129,7 +133,7 @@ export const SheetScrollView = React.forwardRef<
         disposeBridgeListen()
         controller.abort()
       }
-    }, [])
+    }, [scrollRef])
 
     const [hasScrollableContent, setHasScrollableContent] = useState(true)
     const parentHeight = useRef(0)
