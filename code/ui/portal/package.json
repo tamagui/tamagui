@@ -40,13 +40,14 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "@types/react-dom": "^19.1.6",
+    "react": "*",
     "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
+    "react": "*",
     "react-native": "*"
   }
 }

@@ -7939,9 +7939,10 @@ __metadata:
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
-    "@types/react-dom": "npm:^19.1.6"
+    react: "npm:*"
     react-native: "npm:^0.79.2"
   peerDependencies:
+    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -8932,6 +8933,9 @@ __metadata:
   resolution: "@tamagui/z-index-stack@workspace:code/ui/z-index-stack"
   dependencies:
     "@tamagui/build": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -9729,15 +9733,6 @@ __metadata:
   version: 1.2.7
   resolution: "@types/range-parser@npm:1.2.7"
   checksum: 10/95640233b689dfbd85b8c6ee268812a732cf36d5affead89e806fe30da9a430767af8ef2cd661024fd97e19d61f3dec75af2df5e80ec3bea000019ab7028629a
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:^19.1.6":
-  version: 19.1.6
-  resolution: "@types/react-dom@npm:19.1.6"
-  peerDependencies:
-    "@types/react": ^19.0.0
-  checksum: 10/b5b20b7f0797f34c5a11915b74dcf8b3b7a9da9fea90279975ce6f150ca5d31bb069dbb0838638a5e9e168098aa4bb4a6f61d078efa1bbb55d7f0bdfe47bb142
   languageName: node
   linkType: hard
 
