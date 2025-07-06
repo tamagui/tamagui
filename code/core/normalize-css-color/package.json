@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color",
-  "version": "1.130.7",
+  "version": "1.130.8",
   "sideEffects": [
     "*.css"
   ],
