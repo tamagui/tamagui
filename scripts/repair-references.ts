@@ -151,6 +151,14 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
   }
 }
 
+async function getReactNativeVersion(): Promise<string> {
+  const kitchenSinkPath = join(process.cwd(), 'code/kitchen-sink/package.json')
+  const kitchenSinkJson = JSON.parse(
+    await readFile(kitchenSinkPath, { encoding: 'utf-8' })
+  )
+  return kitchenSinkJson.dependencies['react-native'] || '^0.79.2'
+}
+
 async function fixTamaguiDependencies(
   pkg: Package,
   report: MissingDepReport
@@ -179,9 +187,60 @@ async function fixTamaguiDependencies(
   console.info(`   Added ${tamaguiDeps.length} @tamagui/* dependencies to ${pkg.name}`)
 }
 
+async function fixAllDependencies(pkg: Package, report: MissingDepReport): Promise<void> {
+  const jsonPath = join(process.cwd(), pkg.location, 'package.json')
+  const packageJson = JSON.parse(await readFile(jsonPath, { encoding: 'utf-8' }))
+
+  let changesCount = 0
+
+  // Initialize sections if they don't exist
+  packageJson.dependencies = packageJson.dependencies || {}
+  packageJson.peerDependencies = packageJson.peerDependencies || {}
+  packageJson.devDependencies = packageJson.devDependencies || {}
+
+  const reactNativeVersion = await getReactNativeVersion()
+
+  for (const dep of report.missingDeps) {
+    // Check if dependency is already in devDependencies
+    if (packageJson.devDependencies[dep]) {
+      // Move from devDependencies to dependencies
+      packageJson.dependencies[dep] = packageJson.devDependencies[dep]
+      delete packageJson.devDependencies[dep]
+      changesCount++
+    } else if (dep.startsWith('@tamagui/')) {
+      // Fix @tamagui/* packages with workspace:*
+      packageJson.dependencies[dep] = 'workspace:*'
+      changesCount++
+    } else if (dep === 'react-native') {
+      // Put react-native in both peerDependencies and devDependencies
+      packageJson.peerDependencies[dep] = reactNativeVersion
+      packageJson.devDependencies[dep] = reactNativeVersion
+      changesCount++
+    } else if (dep === 'react') {
+      // Put react in both peerDependencies and devDependencies with "*"
+      packageJson.peerDependencies[dep] = '*'
+      packageJson.devDependencies[dep] = '*'
+      changesCount++
+    } else {
+      // For other dependencies, add to regular dependencies
+      packageJson.dependencies[dep] = '*'
+      changesCount++
+    }
+  }
+
+  if (changesCount > 0) {
+    await writeFile(jsonPath, JSON.stringify(packageJson, null, 2) + '\n', {
+      encoding: 'utf-8',
+    })
+
+    console.info(`   Fixed ${changesCount} dependencies in ${pkg.name}`)
+  }
+}
+
 async function main() {
   const args = process.argv.slice(2)
   const fixTamagui = args.includes('--fix-tamagui')
+  const fixAll = args.includes('--fix')
 
   console.info('Analyzing package dependencies...\n')
 
@@ -216,7 +275,59 @@ async function main() {
   )
 
   // Apply fixes if requested
-  if (fixTamagui) {
+  if (fixAll) {
+    console.info('Fixing all dependencies...\n')
+
+    await pMap(
+      validReports,
+      async (report) => {
+        const pkg = packages.find((p) => p.name === report.packageName)
+        if (pkg) {
+          await fixAllDependencies(pkg, report)
+        }
+      },
+      { concurrency: 5 }
+    )
+
+    console.info('\nFixed all dependencies!')
+    console.info('Re-analyzing after fixes...\n')
+
+    // Re-analyze to show updated results
+    const newReports = await pMap(
+      packages,
+      async (pkg) => {
+        try {
+          return await analyzePackage(pkg)
+        } catch (err) {
+          return null
+        }
+      },
+      { concurrency: 10 }
+    )
+
+    const newValidReports = newReports.filter(Boolean) as MissingDepReport[]
+
+    if (newValidReports.length === 0) {
+      console.info('All dependencies fixed!')
+      return
+    }
+
+    console.info(`REMAINING MISSING DEPENDENCIES`)
+    console.info(`${'='.repeat(50)}`)
+    console.info(
+      `Found ${newValidReports.length} package(s) with remaining missing dependencies:\n`
+    )
+
+    newValidReports.forEach((report, index) => {
+      console.info(`${index + 1}. ${report.packageName}`)
+      console.info(`    Location: ${report.location}`)
+      console.info(`    Missing dependencies:`)
+      report.missingDeps.forEach((dep) => {
+        console.info(`      - ${dep}`)
+      })
+      console.info()
+    })
+  } else if (fixTamagui) {
     console.info('Fixing @tamagui/* dependencies...\n')
 
     await pMap(
@@ -284,10 +395,11 @@ async function main() {
     'Note: This may include false positives for built-in modules, type-only imports, or monorepo packages.'
   )
 
-  if (!fixTamagui) {
+  if (!fixTamagui && !fixAll) {
     console.info(
       '\nUse --fix-tamagui to automatically add missing @tamagui/* dependencies'
     )
+    console.info('Use --fix to automatically fix all dependencies')
   }
 }
 

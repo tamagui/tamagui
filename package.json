@@ -75,6 +75,7 @@
     "release:canary": "bun release --canary --ci",
     "release": "bun ./scripts/release.ts",
     "repair:references": "node -r esbuild-register ./scripts/repair-references.ts",
+    "repair:references:fix": "node -r esbuild-register ./scripts/repair-references.ts --fix",
     "repair": "node -r esbuild-register ./scripts/repair.ts",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
     "sandbox": "yarn workspace sandbox dev",
