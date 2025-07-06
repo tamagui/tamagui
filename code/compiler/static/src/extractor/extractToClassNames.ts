@@ -31,7 +31,7 @@ export type ExtractedResponse = {
   styles: string
   stylesPath?: string
   ast: t.File
-  map: any // RawSourceMap from 'source-map'
+  map: any
 }
 
 export type ExtractToClassNamesProps = {

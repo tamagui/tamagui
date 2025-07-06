@@ -28,12 +28,7 @@ export function getSourceModule(
 
   const itemNode = itemBinding.path.node
 
-  if (
-    // import x from 'y';
-    t.isImportDefaultSpecifier(itemNode) ||
-    // import {x} from 'y';
-    t.isImportSpecifier(itemNode)
-  ) {
+  if (t.isImportDefaultSpecifier(itemNode) || t.isImportSpecifier(itemNode)) {
     if (t.isImportDeclaration(itemBinding.path.parent)) {
       sourceModule = itemBinding.path.parent.source.value
       local = itemNode.local.name

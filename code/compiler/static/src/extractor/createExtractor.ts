@@ -360,7 +360,7 @@ export function createExtractor(
       }
 
       if (shouldPrintDebug === 'verbose') {
-        logger.info(` - import ${moduleName} ${valid}`)
+        logger.info(` - import via ${moduleName} ${valid}`)
       }
 
       if (extractStyledDefinitions) {
@@ -381,7 +381,7 @@ export function createExtractor(
           logger.info(
             ` - import ${isValidComponent ? '✅' : '⇣'} - ${names.join(
               ', '
-            )} from '${moduleName}' - (valid: ${JSON.stringify(
+            )} via package '${moduleName}' - (valid: ${JSON.stringify(
               getValidComponentsPaths(propsWithFileInfo)
             )})`
           )

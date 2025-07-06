@@ -418,6 +418,9 @@ async function main() {
       })
       console.info()
     })
+
+    // Exit with code 1 since there are still missing dependencies
+    process.exit(1)
   } else if (fixTamagui) {
     console.info('Fixing @tamagui/* dependencies...\n')
 
@@ -470,6 +473,9 @@ async function main() {
       })
       console.info()
     })
+
+    // Exit with code 1 since there are still missing dependencies
+    process.exit(1)
   } else {
     validReports.forEach((report, index) => {
       console.info(`${index + 1}. ${report.packageName}`)
@@ -491,6 +497,8 @@ async function main() {
       '\nUse --fix-tamagui to automatically add missing @tamagui/* dependencies'
     )
     console.info('Use --fix to automatically fix all dependencies')
+    // Exit with code 1 to indicate missing dependencies were found
+    process.exit(1)
   }
 }
 

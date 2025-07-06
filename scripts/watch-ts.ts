@@ -1,5 +1,5 @@
-import type { ChildProcess } from 'child_process'
-import { spawn } from 'child_process'
+import type { ChildProcess } from 'node:child_process'
+import { spawn } from 'node:child_process'
 
 let child: ChildProcess
 
