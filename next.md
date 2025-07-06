@@ -13,6 +13,8 @@
 
 v2:
 
+- remove webpack plugin
+
 - removeScrollEnabled => disableRemoveScroll
 
 - move to types react/react-dom 19

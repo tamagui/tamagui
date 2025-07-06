@@ -12,7 +12,7 @@
  * @param {object} config
  */
 export declare const esbuildAliasPlugin: (config: any) => {
-  name: string
-  setup(build: any): void
-}
+    name: string;
+    setup(build: any): void;
+};
 //# sourceMappingURL=esbuildAliasPlugin.d.ts.map

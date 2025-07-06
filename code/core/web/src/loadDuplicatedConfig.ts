@@ -1,8 +1,8 @@
-import type { GenericTamaguiConfig } from './types'
+import type { GenericTamaguiConfig, TamaguiInternalConfig } from './types'
 
 let hasLogged = false
 
-export function loadDuplicatedConfig(): GenericTamaguiConfig | null {
+export function loadDuplicatedConfig(): TamaguiInternalConfig | null {
   if (process.env.NODE_ENV !== 'production') {
     if (globalThis.__tamaguiConfig) {
       hasLogged = true

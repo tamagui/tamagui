@@ -489,6 +489,5 @@
     {
       "path": "code/ui/visually-hidden"
     }
-  ],
-  "extends": "expo/tsconfig.base"
+  ]
 }

@@ -15,7 +15,6 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node ../../../node_modules/.bin/tamagui-build --skip-native --exclude __tests__",
     "watch": "node ../../../node_modules/.bin/tamagui-build --skip-native --exclude __tests__ --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
