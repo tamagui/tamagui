@@ -56,6 +56,7 @@ declare const DialogPortal: React.FC<DialogPortalProps>;
  * exported for internal use with extractable()
  */
 export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -64,9 +65,8 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
         right?: number;
     } | null | undefined;
     fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
-    transparent?: boolean | undefined;
     circular?: boolean | undefined;
+    transparent?: boolean | undefined;
     unstyled?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -221,6 +221,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             adjustPaddingForOffscreenContent?: boolean;
         }>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+            open?: boolean | undefined;
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
@@ -229,9 +230,8 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
                 right?: number;
             } | null | undefined;
             fullscreen?: boolean | undefined;
-            open?: boolean | undefined;
-            transparent?: boolean | undefined;
             circular?: boolean | undefined;
+            transparent?: boolean | undefined;
             unstyled?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
