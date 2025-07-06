@@ -1,10 +1,10 @@
-import type { ScopedProps, SizeTokens } from '@tamagui/core';
+import type { ScopedProps, SizeTokens, TamaguiElement } from '@tamagui/core';
 import { createStyledContext } from '@tamagui/core';
-import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, SizeOptions } from '@tamagui/floating';
+import type { Coords, OffsetOptions, Placement, SizeOptions, Strategy, UseFloatingReturn } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-import type { View } from 'react-native';
+import { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
@@ -109,12 +109,11 @@ export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("
 } & {
     __scopePopper?: string | undefined;
 } & React.RefAttributes<PopperAnchorRef>>;
-type PopperContentElement = HTMLElement | View;
 export type PopperContentProps = SizableStackProps & {
     enableAnimationForPositionChange?: boolean;
     passThrough?: boolean;
 };
-export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
@@ -193,7 +192,7 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     passThrough?: boolean;
 } & {
     __scopePopper?: string | undefined;
-} & React.RefAttributes<PopperContentElement>>;
+} & React.RefAttributes<TamaguiElement>>;
 export type PopperArrowExtraProps = {
     offset?: number;
     size?: SizeTokens;
@@ -210,7 +209,7 @@ export declare const PopperArrow: import("@tamagui/core").TamaguiComponent<Omit<
     } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
+}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
         top?: number;

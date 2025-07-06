@@ -8,7 +8,6 @@ import {
   ProvideAdaptContext,
   useAdaptContext,
   useAdaptIsActive,
-  type AdaptParentContextI,
 } from '@tamagui/adapt'
 
 import { Animate } from '@tamagui/animate'
@@ -20,6 +19,7 @@ import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamag
 import {
   createStyledContext,
   Stack,
+  styled,
   Theme,
   useCreateShallowSetState,
   useEvent,
@@ -222,7 +222,11 @@ export interface PopoverContentTypeProps
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopoverContent = PopperContentFrame.extractable(
+const PopoverContentFrame = styled(PopperContentFrame, {
+  name: 'Popover',
+})
+
+export const PopoverContent = PopoverContentFrame.extractable(
   React.forwardRef<
     PopoverContentTypeElement,
     ScopedPopoverProps<PopoverContentTypeProps>

@@ -9,6 +9,7 @@ import {
   Label,
   Popover,
   Sheet,
+  styled,
   XStack,
   YStack,
 } from 'tamagui'

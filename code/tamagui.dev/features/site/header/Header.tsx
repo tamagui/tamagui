@@ -3,7 +3,7 @@ import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
 import { useCreateShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
-import type { LayoutRectangle } from 'react-native'
+import { useWindowDimensions, type LayoutRectangle } from 'react-native'
 import {
   type PopoverProps,
   Adapt,
@@ -535,7 +535,8 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
-  const pointerFine = useMedia().pointerFine
+  const pointerFine = !isTouchable
+  const isOnlyShowingMenu = useMedia().maxMd
 
   useFocusEffect(() => {
     context.close()
@@ -551,12 +552,15 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     last.current = active
   }, [active])
 
+  const { height } = useWindowDimensions()
+  const maxHeight = height - 50
+
   const heights = {
-    core: 1400,
+    core: Math.min(maxHeight, 1300),
     compiler: 117,
-    ui: 1400,
+    ui: Math.min(maxHeight, 1300),
     theme: data?.user ? 300 : 240,
-    menu: 390,
+    menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 390),
   }
 
   return (
@@ -655,7 +659,8 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoTheme = useBentoTheme()
   const pathName = usePathname()
   const isOnBentoPage = pathName.startsWith('/bento')
-  const isMobile = useMedia().maxMd
+  const isOnlyShowingMenu = useMedia().maxMd
+  const isMobile = isTouchable && isOnlyShowingMenu
 
   const contents = (() => {
     /**
@@ -666,7 +671,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return (
         <>
           <HeaderMenuMoreContents />
-          {isMobile && <ActivePageDocsMenuContents />}
+          {isOnlyShowingMenu && <ActivePageDocsMenuContents />}
         </>
       )
     }
@@ -786,7 +791,6 @@ const HeaderMenuContents = (props: { id: ID }) => {
         style={{
           flex: 1,
           width: '100%',
-          bg: 'red',
         }}
         contentContainerStyle={{ width: '100%' }}
       >

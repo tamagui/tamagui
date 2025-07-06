@@ -1,14 +1,7 @@
-/**
-* SSR safe useWindowDimensions
-*/
-type Size = {
-	width: number;
-	height: number;
-};
-export declare function configureInitialWindowDimensions(next: Size): void;
+import type { WindowSize } from "./types";
+export declare function configureInitialWindowDimensions(next: WindowSize): void;
 export declare function useWindowDimensions({ serverValue }?: {
-	serverValue?: Size;
-}): Size;
-export {};
+	serverValue?: WindowSize;
+}): WindowSize;
 
 //# sourceMappingURL=index.d.ts.map

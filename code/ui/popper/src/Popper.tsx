@@ -1,9 +1,8 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
+import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
-  Stack,
   View as TamaguiView,
   createStyledContext,
   getVariableValue,
@@ -14,9 +13,9 @@ import type {
   Coords,
   OffsetOptions,
   Placement,
+  SizeOptions,
   Strategy,
   UseFloatingReturn,
-  SizeOptions,
 } from '@tamagui/floating'
 import {
   arrow,
@@ -25,16 +24,15 @@ import {
   offset as offsetFn,
   platform,
   shift,
-  useFloating,
   size as sizeMiddleware,
+  useFloating,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
-import type { View } from 'react-native'
-import { Keyboard, useWindowDimensions } from 'react-native'
+import { Keyboard, View, useWindowDimensions } from 'react-native'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -324,7 +322,7 @@ export const PopperAnchor = YStack.extractable(
  * PopperContent
  * -----------------------------------------------------------------------------------------------*/
 
-type PopperContentElement = HTMLElement | View
+type PopperContentElement = TamaguiElement
 
 export type PopperContentProps = SizableStackProps & {
   enableAnimationForPositionChange?: boolean
@@ -394,9 +392,9 @@ export const PopperContent = React.forwardRef<
     position: strategy,
     opacity: 1,
     ...(enableAnimationForPositionChange && {
-      // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animation: rest.animation,
       animateOnly: needsMeasure ? [] : rest.animateOnly,
+      // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animatePresence: false,
     }),
     ...(hide && {
@@ -412,7 +410,7 @@ export const PopperContent = React.forwardRef<
     : frameProps
 
   return (
-    <Stack
+    <TamaguiView
       passThrough={passThrough}
       ref={contentRefs}
       {...(passThrough ? null : floatingProps)}
@@ -431,7 +429,7 @@ export const PopperContent = React.forwardRef<
       >
         {children}
       </PopperContentFrame>
-    </Stack>
+    </TamaguiView>
   )
 })
 

@@ -1,46 +1,28 @@
 import React from 'react'
 import { isWeb } from '@tamagui/constants'
 
-import type { ScaledSize } from 'react-native'
-import { Dimensions } from 'react-native'
+import { getWindowSize, subscribe } from './helpers'
+import type { WindowSize } from './types'
 
 /**
  * SSR safe useWindowDimensions
  */
 
-type Size = {
-  width: number
-  height: number
+const initialValue: WindowSize = {
+  width: 800,
+  height: 600,
+  scale: 1,
+  fontScale: 1,
 }
 
-const initialValue: Size = {
-  height: 800,
-  width: 600,
-}
-
-export function configureInitialWindowDimensions(next: Size): void {
+export function configureInitialWindowDimensions(next: WindowSize): void {
   Object.assign(initialValue, next)
-}
-
-Dimensions.addEventListener('change', () => {
-  cbs.forEach((cb) => cb(window))
-})
-
-const cbs = new Set<Function>()
-
-type WindowSizeListener = ({ window }: { window: ScaledSize }) => void
-
-function subscribe(cb: WindowSizeListener) {
-  cbs.add(cb)
-  return () => cbs.delete(cb)
 }
 
 export function useWindowDimensions({
   serverValue = initialValue,
-}: { serverValue?: Size } = {}): Size {
-  return React.useSyncExternalStore(
-    subscribe,
-    () => Dimensions.get('window'),
-    () => (isWeb ? serverValue : Dimensions.get('window'))
+}: { serverValue?: WindowSize } = {}): WindowSize {
+  return React.useSyncExternalStore(subscribe, getWindowSize, () =>
+    isWeb ? serverValue : getWindowSize()
   )
 }

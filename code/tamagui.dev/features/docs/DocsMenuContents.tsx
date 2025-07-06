@@ -73,6 +73,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   const section = propsSection ?? docsSection
   const items = section ? sections[section] : allItems
 
+  console.log('propsSection', propsSection)
+
   // const [items, setItems] = React.useState(activeItems)
   // const isFiltered = items !== activeItems
 

@@ -4,7 +4,7 @@ import React, { startTransition, useEffect } from 'react'
 import { allNotPending } from './docsRoutes'
 
 export const useDocsMenu = () => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState<boolean | 'press'>(false)
   const pathname = usePathname()
   const router = useRouter()
   let currentPath = pathname
