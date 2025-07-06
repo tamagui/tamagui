@@ -509,9 +509,9 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
             setLayout({
               ...e.nativeEvent.layout,
               // @ts-ignore
-              x: e.nativeEvent.layout.left,
+              x: e.nativeEvent.layout.pageX,
               // @ts-ignore
-              y: e.nativeEvent.layout.top,
+              y: e.nativeEvent.layout.pageY,
             })
           })
         }}

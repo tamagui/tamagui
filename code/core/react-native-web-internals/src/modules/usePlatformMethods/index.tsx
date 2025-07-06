@@ -7,8 +7,12 @@
  * @flow
  */
 
+import {
+  createMeasure,
+  createMeasureInWindow,
+  createMeasureLayout,
+} from '@tamagui/use-element-layout'
 import type { GenericStyleProp } from '../../types'
-import UIManager from '../UIManager/index'
 import useStable from '../useStable/index'
 
 /**
@@ -26,11 +30,9 @@ export function usePlatformMethods({
   // available to 'setNativeProps' when it is called.
   const ref = useStable(() => (hostNode: any) => {
     if (hostNode != null) {
-      hostNode.measure = (callback) => UIManager.measure(hostNode, callback)
-      hostNode.measureLayout = (relativeToNode, success, failure) =>
-        UIManager.measureLayout(hostNode, relativeToNode, failure, success)
-      hostNode.measureInWindow = (callback) =>
-        UIManager.measureInWindow(hostNode, callback)
+      hostNode.measure = createMeasure(hostNode)
+      hostNode.measureLayout = createMeasureLayout(hostNode)
+      hostNode.measureInWindow = createMeasureInWindow(hostNode)
     }
   })
 

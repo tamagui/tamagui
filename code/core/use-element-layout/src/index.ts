@@ -1,6 +1,6 @@
 import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import type { RefObject } from 'react'
+import { useCallback, type RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const Nodes = new Set<HTMLElement>()
@@ -150,7 +150,9 @@ if (isClient) {
 
     // only run once in a few frames, this could be adjustable
     let frameCount = 0
-    const RUN_EVERY_X_FRAMES = 8
+
+    const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
+    const RUN_EVERY_X_FRAMES = userSkipVal ? +userSkipVal : 10
 
     function layoutOnAnimationFrame() {
       if (strategy !== 'off') {
@@ -193,76 +195,11 @@ export const getElementLayoutEvent = (
   }
 }
 
-export const measureLayout = (
-  node: HTMLElement,
-  relativeTo: HTMLElement | null,
-  callback: (
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    pageX: number,
-    pageY: number
-  ) => void
-): void => {
-  const relativeNode = relativeTo || node?.parentElement
-  if (relativeNode instanceof HTMLElement) {
-    const nodeDim = node.getBoundingClientRect()
-    const relativeNodeDim = relativeNode.getBoundingClientRect()
-
-    if (relativeNodeDim && nodeDim) {
-      const { x, y, width, height, pageX, pageY } = getRelativeDimensions(
-        nodeDim,
-        relativeNodeDim
-      )
-      callback(x, y, width, height, pageX, pageY)
-    }
-  }
-}
-
-export const getElementLayoutEventAsync = async (
-  target: HTMLElement
-): Promise<LayoutEvent> => {
-  const layout = await measureLayoutAsync(target)
-  if (!layout) {
-    throw new Error(`‼️`) // impossible
-  }
-  return {
-    nativeEvent: {
-      layout,
-      target,
-    },
-    timeStamp: Date.now(),
-  }
-}
-
-export const measureLayoutAsync = async (
-  node: HTMLElement,
-  relativeTo?: HTMLElement | null
-): Promise<null | LayoutValue> => {
-  const relativeNode = relativeTo || node?.parentElement
-  if (relativeNode instanceof HTMLElement) {
-    const [nodeDim, relativeNodeDim] = await Promise.all([
-      getBoundingClientRectAsync(node),
-      getBoundingClientRectAsync(relativeNode),
-    ])
-
-    if (relativeNodeDim && nodeDim) {
-      const { x, y, width, height, pageX, pageY } = getRelativeDimensions(
-        nodeDim,
-        relativeNodeDim
-      )
-      return { x, y, width, height, pageX, pageY }
-    }
-  }
-  return null
-}
-
 const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
   const { height, left, top, width } = a
   const x = left - b.left
   const y = top - b.top
-  return { x, y, width, height, pageX: a.top, pageY: a.left }
+  return { x, y, width, height, pageX: a.left, pageY: a.top }
 }
 
 export function useElementLayout(
@@ -323,7 +260,7 @@ function ensureWebElement<X>(x: X): HTMLElement | undefined {
   return x instanceof HTMLElement ? x : undefined
 }
 
-const getBoundingClientRectAsync = (
+export const getBoundingClientRectAsync = (
   node: HTMLElement | null
 ): Promise<DOMRectReadOnly | false> => {
   return new Promise<DOMRectReadOnly | false>((res) => {
@@ -342,14 +279,87 @@ const getBoundingClientRectAsync = (
   })
 }
 
-const getBoundingClientRect = (node: HTMLElement | null): undefined | DOMRect => {
-  if (!node || node.nodeType !== 1) return
-  return node.getBoundingClientRect?.()
+export const measureNode = async (
+  node: HTMLElement,
+  relativeTo?: HTMLElement | null
+): Promise<null | LayoutValue> => {
+  const relativeNode = relativeTo || node?.parentElement
+  if (relativeNode instanceof HTMLElement) {
+    const [nodeDim, relativeNodeDim] = await Promise.all([
+      getBoundingClientRectAsync(node),
+      getBoundingClientRectAsync(relativeNode),
+    ])
+    if (relativeNodeDim && nodeDim) {
+      return getRelativeDimensions(nodeDim, relativeNodeDim)
+    }
+  }
+  return null
 }
 
-export const getRect = (node: HTMLElement): LayoutValue | undefined => {
-  const rect = getBoundingClientRect(node)
-  if (!rect) return
-  const { x, y, top, left } = rect
-  return { x, y, width: node.offsetWidth, height: node.offsetHeight, top, left }
+type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void
+
+type MeasureCb = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  pageX: number,
+  pageY: number
+) => void
+
+export const measure = async (
+  node: HTMLElement,
+  callback: MeasureCb
+): Promise<LayoutValue | null> => {
+  const out = await measureNode(
+    node,
+    node.parentNode instanceof HTMLElement ? node.parentNode : null
+  )
+  if (out) {
+    callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
+  }
+  return out
+}
+
+export function createMeasure(
+  node: HTMLElement
+): (callback: MeasureCb) => Promise<LayoutValue | null> {
+  return (callback) => measure(node, callback)
+}
+
+type WindowLayout = { pageX: number; pageY: number; width: number; height: number }
+
+export const measureInWindow = async (
+  node: HTMLElement,
+  callback: MeasureInWindowCb
+): Promise<WindowLayout | null> => {
+  const out = await measureNode(node, null)
+  if (out) {
+    callback?.(out.pageX, out.pageY, out.width, out.height)
+  }
+  return out
+}
+
+export const createMeasureInWindow = (
+  node: HTMLElement
+): ((callback: MeasureInWindowCb) => Promise<WindowLayout | null>) => {
+  return (callback) => measureInWindow(node, callback)
+}
+
+export const measureLayout = async (
+  node: HTMLElement,
+  relativeNode: HTMLElement,
+  callback: MeasureCb
+): Promise<LayoutValue | null> => {
+  const out = await measureNode(node, relativeNode)
+  if (out) {
+    callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
+  }
+  return out
+}
+
+export function createMeasureLayout(
+  node: HTMLElement
+): (relativeTo: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null> {
+  return (relativeTo, callback) => measureLayout(node, relativeTo, callback)
 }

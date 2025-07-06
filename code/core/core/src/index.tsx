@@ -23,12 +23,12 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/web'
 import React from 'react'
-
 import {
   enable,
-  getRect,
-  measureLayout,
+  createMeasure,
+  createMeasureInWindow,
   useElementLayout,
+  createMeasureLayout,
 } from '@tamagui/use-element-layout'
 import { addNativeValidStyles } from './addNativeValidStyles'
 import { createOptimizedView } from './createOptimizedView'
@@ -106,19 +106,12 @@ setupHooks({
   getBaseViews,
 
   setElementProps: (node) => {
-    // web only
-    if (node && !node['measure']) {
-      // @ts-ignore
-      node.measure ||= (callback) => measureLayout(node, null, callback)
-      // @ts-ignore
-      node.measureLayout ||= (relativeToNode, success) =>
-        measureLayout(node as HTMLElement, relativeToNode, success)
-      // @ts-ignore
-      node.measureInWindow ||= (callback) => {
-        setTimeout(() => {
-          const { height, left, top, width } = getRect(node as HTMLElement)!
-          callback(left, top, width, height)
-        }, 0)
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      // web only
+      if (node && !node['measure']) {
+        node.measure ||= createMeasure(node)
+        node.measureInWindow ||= createMeasureInWindow(node)
+        node.measureLayout ||= createMeasureLayout(node)
       }
     }
   },

@@ -1,4 +1,4 @@
-import type { RefObject } from "react";
+import { type RefObject } from "react";
 type TamaguiComponentStatePartial = {
 	host?: any;
 };
@@ -9,8 +9,8 @@ export type LayoutValue = {
 	y: number;
 	width: number;
 	height: number;
-	left: number;
-	top: number;
+	pageX: number;
+	pageY: number;
 };
 export type LayoutEvent = {
 	nativeEvent: {
@@ -21,11 +21,23 @@ export type LayoutEvent = {
 };
 export declare function enable(): void;
 export declare const getElementLayoutEvent: (nodeRect: DOMRectReadOnly, parentRect: DOMRectReadOnly) => LayoutEvent;
-export declare const measureLayout: (node: HTMLElement, relativeTo: HTMLElement | null, callback: (x: number, y: number, width: number, height: number, left: number, top: number) => void) => void;
-export declare const getElementLayoutEventAsync: (target: HTMLElement) => Promise<LayoutEvent>;
-export declare const measureLayoutAsync: (node: HTMLElement, relativeTo?: HTMLElement | null) => Promise<null | LayoutValue>;
 export declare function useElementLayout(ref: RefObject<TamaguiComponentStatePartial>, onLayout?: ((e: LayoutEvent) => void) | null): void;
-export declare const getRect: (node: HTMLElement) => LayoutValue | undefined;
+export declare const getBoundingClientRectAsync: (node: HTMLElement | null) => Promise<DOMRectReadOnly | false>;
+export declare const measureNode: (node: HTMLElement, relativeTo?: HTMLElement | null) => Promise<null | LayoutValue>;
+type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void;
+type MeasureCb = (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void;
+export declare const measure: (node: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
+export declare function createMeasure(node: HTMLElement): (callback: MeasureCb) => Promise<LayoutValue | null>;
+type WindowLayout = {
+	pageX: number;
+	pageY: number;
+	width: number;
+	height: number;
+};
+export declare const measureInWindow: (node: HTMLElement, callback: MeasureInWindowCb) => Promise<WindowLayout | null>;
+export declare const createMeasureInWindow: (node: HTMLElement) => ((callback: MeasureInWindowCb) => Promise<WindowLayout | null>);
+export declare const measureLayout: (node: HTMLElement, relativeNode: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
+export declare function createMeasureLayout(node: HTMLElement): (relativeTo: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>;
 export {};
 
 //# sourceMappingURL=index.d.ts.map

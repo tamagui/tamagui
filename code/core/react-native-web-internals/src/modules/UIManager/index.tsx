@@ -8,7 +8,7 @@
  * @noflow
  */
 
-import { getRect, measureLayout } from '@tamagui/use-element-layout'
+import { measure, measureInWindow } from '@tamagui/use-element-layout'
 
 const focusableElements = {
   A: true,
@@ -42,23 +42,21 @@ const UIManager = {
   },
 
   measure(node, callback) {
-    measureLayout(node, null, callback)
+    return measure(node, callback)
   },
 
   measureInWindow(node, callback) {
-    if (node) {
-      setTimeout(() => {
-        const rect = getRect(node)
-        if (rect) {
-          const { height, left, top, width } = rect
-          callback(left, top, width, height)
-        }
-      }, 0)
-    }
+    return measureInWindow(node, callback)
   },
 
-  measureLayout(node, relativeToNativeNode, onFail, onSuccess) {
-    measureLayout(node, relativeToNativeNode, onSuccess)
+  // note its flipped fail and success on purpose lol
+  async measureLayout(
+    node: HTMLElement,
+    relativeToNativeNode?: HTMLElement,
+    onFail,
+    onSuccess
+  ) {
+    return measureLayout(node, relativeToNativeNode, onSuccess)
   },
 
   configureNextLayoutAnimation(config, onAnimationDidEnd) {
