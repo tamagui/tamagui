@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/button-next",
-  "version": "1.130.6",
+  "version": "1.130.7",
   "sideEffects": [
     "*.css"
   ],
