@@ -81,7 +81,7 @@ export function Animate({
     }
 
     return (
-      <AnimatePresence {...props}>
+      <AnimatePresence passThrough={passThrough} {...props}>
         {mounted || passThrough ? children : null}
       </AnimatePresence>
     )

@@ -123,7 +123,7 @@ export const PopoverAnchor = React.forwardRef<
   ScopedPopoverProps<PopoverAnchorProps>
 >(function PopoverAnchor(props: ScopedPopoverProps<PopoverAnchorProps>, forwardedRef) {
   const { __scopePopover, ...rest } = props
-  const context = usePopoverContext(__scopePopover)
+  const context = usePopoverContext(__scopePopover || POPOVER_SCOPE)
   const { onCustomAnchorAdd, onCustomAnchorRemove } = context || {}
 
   React.useEffect(() => {
@@ -151,7 +151,7 @@ export const PopoverTrigger = React.forwardRef<
   ScopedPopoverProps<PopoverTriggerProps>
 >(function PopoverTrigger(props: ScopedPopoverProps<PopoverTriggerProps>, forwardedRef) {
   const { __scopePopover, ...rest } = props
-  const context = usePopoverContext(__scopePopover)
+  const context = usePopoverContext(__scopePopover || POPOVER_SCOPE)
   const anchorTo = context.anchorTo
   const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
@@ -237,7 +237,7 @@ export const PopoverContent = PopperContentFrame.extractable(
       __scopePopover,
       ...contentImplProps
     } = props
-    const context = usePopoverContext(__scopePopover)
+    const context = usePopoverContext(__scopePopover || POPOVER_SCOPE)
     const contentRef = React.useRef<any>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isRightClickOutsideRef = React.useRef(false)
@@ -263,7 +263,7 @@ export const PopoverContent = PopperContentFrame.extractable(
     return (
       <PopoverPortal
         passThrough={context.breakpointActive}
-        __scopePopover={__scopePopover}
+        __scopePopover={__scopePopover || POPOVER_SCOPE}
         zIndex={zIndex}
       >
         <Stack
@@ -277,7 +277,7 @@ export const PopoverContent = PopperContentFrame.extractable(
             enableRemoveScroll={enableRemoveScroll}
             ref={composedRefs}
             setIsFullyHidden={setIsFullyHidden}
-            __scopePopover={__scopePopover}
+            __scopePopover={__scopePopover || POPOVER_SCOPE}
             // we make sure we're not trapping once it's been closed
             // (closed !== unmounted when animating out)
             trapFocus={trapFocus ?? context.open}
@@ -390,7 +390,7 @@ function PopoverPortal(props: ScopedPopoverProps<PopoverContentTypeProps>) {
     <Portal passThrough={props.passThrough} stackZIndex zIndex={zIndex as any}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme contain forceClassName name={themeName}>
+      <Theme passThrough={props.passThrough} contain forceClassName name={themeName}>
         <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
           {content}
         </StackZIndexContext>
@@ -467,7 +467,7 @@ const PopoverContentImpl = React.forwardRef<
     ...contentProps
   } = props
 
-  const context = usePopoverContext(__scopePopover)
+  const context = usePopoverContext(__scopePopover || POPOVER_SCOPE)
 
   const { open, keepChildrenMounted } = context
 
@@ -554,7 +554,7 @@ export const PopoverClose = React.forwardRef<
   ScopedPopoverProps<PopoverCloseProps>
 >(function PopoverClose(props: ScopedPopoverProps<PopoverCloseProps>, forwardedRef) {
   const { __scopePopover, ...rest } = props
-  const context = usePopoverContext(__scopePopover)
+  const context = usePopoverContext(__scopePopover || POPOVER_SCOPE)
   return (
     <YStack
       {...rest}
@@ -747,11 +747,14 @@ const PopoverInner = React.forwardRef<
 
   const memoizedChildren = React.useMemo(() => {
     return (
-      <PopoverContext.Provider scope={__scopePopover} {...popoverContext}>
+      <PopoverContext.Provider
+        scope={__scopePopover || POPOVER_SCOPE}
+        {...popoverContext}
+      >
         <PopoverSheetController onOpenChange={setOpen}>{children}</PopoverSheetController>
       </PopoverContext.Provider>
     )
-  }, [setOpen, children, ...Object.values(popoverContext)])
+  }, [__scopePopover, setOpen, children, ...Object.values(popoverContext)])
 
   const contents = (
     <Popper
@@ -791,7 +794,7 @@ const PopoverSheetController = ({
   children: React.ReactNode
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
 }>) => {
-  const context = usePopoverContext(__scopePopover)
+  const context = usePopoverContext(__scopePopover || POPOVER_SCOPE)
   const showSheet = useShowPopoverSheet(context)
   const breakpointActive = context.breakpointActive
   const getShowSheet = useGet(showSheet)
