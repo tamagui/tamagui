@@ -13,13 +13,15 @@ import {
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-const empty = { className: '', style: {} }
+type ThemeComponentPropsOnly = ThemeProps & { passThrough?: boolean; contain?: boolean }
 
-export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
+export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, ref) {
   // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children
   }
+
+  const { passThrough } = props
 
   const isRoot = !!props['_isRoot']
 
@@ -29,7 +31,7 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(props.children, (child) =>
-        cloneElement(child, { ['data-disable-theme']: true })
+        passThrough ? child : cloneElement(child, { ['data-disable-theme']: true })
       )
     : props.children
 
@@ -47,7 +49,14 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
     hasEverThemed: false,
   })
 
-  return getThemedChildren(themeState, finalChildren, props, isRoot, stateRef)
+  return getThemedChildren(
+    themeState,
+    finalChildren,
+    props,
+    isRoot,
+    stateRef,
+    passThrough
+  )
 })
 
 Theme['avoidForwardRef'] = true
@@ -55,9 +64,10 @@ Theme['avoidForwardRef'] = true
 export function getThemedChildren(
   themeState: ThemeState,
   children: any,
-  props: ThemeProps,
+  props: ThemeComponentPropsOnly,
   isRoot = false,
-  stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>
+  stateRef: MutableRefObject<{ hasEverThemed?: boolean | 'wrapped' }>,
+  passThrough = false
 ) {
   const { shallow, forceClassName } = props
 
@@ -115,24 +125,26 @@ export function getThemedChildren(
       if (!parentState) throw new Error(`‼️010`)
       children = Children.toArray(children).map((child) => {
         return isValidElement(child)
-          ? cloneElement(
-              child,
-              undefined,
-              <Theme name={parentState.name}>{(child as any).props.children}</Theme>
-            )
+          ? passThrough
+            ? child
+            : cloneElement(
+                child,
+                undefined,
+                <Theme name={parentState.name}>{(child as any).props.children}</Theme>
+              )
           : child
       })
     }
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (props.debug) {
+    if (!passThrough && props.debug) {
       console.warn(` getThemedChildren`, {
         requiresExtraWrapper,
         forceClassName,
         themeState,
         state,
-        ...getThemeClassNameAndStyle(themeState, props, isRoot),
+        themeSpanProps: getThemeClassNameAndColor(themeState, props, isRoot),
       })
     }
   }
@@ -142,10 +154,16 @@ export function getThemedChildren(
   }
 
   if (isWeb) {
-    const { className, style } = getThemeClassNameAndStyle(themeState, props, isRoot)
+    const baseStyle = props.contain ? inertContainedStyle : inertStyle
+    const { className = '', color } = passThrough
+      ? {}
+      : getThemeClassNameAndColor(themeState, props, isRoot)
 
     children = (
-      <span className={`${className} _dsp_contents is_Theme`} style={style}>
+      <span
+        className={`${className} is_Theme`}
+        style={passThrough ? baseStyle : { color, ...baseStyle }}
+      >
         {children}
       </span>
     )
@@ -171,7 +189,18 @@ export function getThemedChildren(
   return children
 }
 
-function getThemeClassNameAndStyle(
+const inertStyle = {
+  display: 'contents',
+}
+
+const inertContainedStyle = {
+  display: 'contents',
+  contain: 'strict',
+}
+
+const empty = { className: '', color: undefined }
+
+function getThemeClassNameAndColor(
   themeState: ThemeState,
   props: ThemeProps,
   isRoot = false
@@ -200,7 +229,7 @@ function getThemeClassNameAndStyle(
 
   const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
 
-  return { style, className }
+  return { color: themeColor, className }
 }
 
 const schemePrefix = /^(dark|light)_/

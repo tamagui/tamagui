@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -23,13 +23,20 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
+    "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@tamagui/ui": "workspace:*",
+    "expo-constants": "~17.1.6",
     "expo-image": "^1.5.1",
     "solito": "^4.3.0"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }

@@ -4,69 +4,55 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
  * @format
  */
-'use strict'
 
 import Easing from '../Easing'
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
+
 import Animation from './Animation'
 
-var _easeInOut
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
 
+let _easeInOut
 function easeInOut() {
   if (!_easeInOut) {
     _easeInOut = Easing.inOut(Easing.ease)
   }
-
   return _easeInOut
 }
 
 class TimingAnimation extends Animation {
-  constructor(config) {
-    var _config$easing,
-      _config$duration,
-      _config$delay,
-      _config$iterations,
-      _config$isInteraction
+  _startTime
+  _fromValue
+  _toValue
+  _duration
+  _delay
+  _easing
+  _onUpdate
+  _animationFrame
+  _timeout
+  _useNativeDriver
+  _platformConfig
 
+  constructor(config) {
     super()
     this._toValue = config.toValue
-    this._easing =
-      (_config$easing = config.easing) !== null && _config$easing !== void 0
-        ? _config$easing
-        : easeInOut()
-    this._duration =
-      (_config$duration = config.duration) !== null && _config$duration !== void 0
-        ? _config$duration
-        : 500
-    this._delay =
-      (_config$delay = config.delay) !== null && _config$delay !== void 0
-        ? _config$delay
-        : 0
-    this.__iterations =
-      (_config$iterations = config.iterations) !== null && _config$iterations !== void 0
-        ? _config$iterations
-        : 1
+    this._easing = config.easing ?? easeInOut()
+    this._duration = config.duration ?? 500
+    this._delay = config.delay ?? 0
+    this.__iterations = config.iterations ?? 1
     this._useNativeDriver = shouldUseNativeDriver(config)
     this._platformConfig = config.platformConfig
-    this.__isInteraction =
-      (_config$isInteraction = config.isInteraction) !== null &&
-      _config$isInteraction !== void 0
-        ? _config$isInteraction
-        : !this._useNativeDriver
+    this.__isInteraction = config.isInteraction ?? !this._useNativeDriver
   }
 
   __getNativeAnimationConfig() {
-    var frameDuration = 1000.0 / 60.0
-    var frames = []
-    var numFrames = Math.round(this._duration / frameDuration)
-
-    for (var frame = 0; frame < numFrames; frame++) {
+    const frameDuration = 1000.0 / 60.0
+    const frames = []
+    const numFrames = Math.round(this._duration / frameDuration)
+    for (let frame = 0; frame < numFrames; frame++) {
       frames.push(this._easing(frame / numFrames))
     }
-
     frames.push(this._easing(1))
     return {
       type: 'frames',
@@ -83,19 +69,15 @@ class TimingAnimation extends Animation {
     this._onUpdate = onUpdate
     this.__onEnd = onEnd
 
-    var start = () => {
+    const start = () => {
       // Animations that sometimes have 0 duration and sometimes do not
       // still need to use the native driver when duration is 0 so as to
       // not cause intermixed JS and native animations.
       if (this._duration === 0 && !this._useNativeDriver) {
         this._onUpdate(this._toValue)
-
-        this.__debouncedOnEnd({
-          finished: true,
-        })
+        this.__debouncedOnEnd({ finished: true })
       } else {
         this._startTime = Date.now()
-
         if (this._useNativeDriver) {
           this.__startNativeAnimation(animatedValue)
         } else {
@@ -106,7 +88,6 @@ class TimingAnimation extends Animation {
         }
       }
     }
-
     if (this._delay) {
       this._timeout = setTimeout(start, this._delay)
     } else {
@@ -115,8 +96,7 @@ class TimingAnimation extends Animation {
   }
 
   onUpdate() {
-    var now = Date.now()
-
+    const now = Date.now()
     if (now >= this._startTime + this._duration) {
       if (this._duration === 0) {
         this._onUpdate(this._toValue)
@@ -125,11 +105,7 @@ class TimingAnimation extends Animation {
           this._fromValue + this._easing(1) * (this._toValue - this._fromValue)
         )
       }
-
-      this.__debouncedOnEnd({
-        finished: true,
-      })
-
+      this.__debouncedOnEnd({ finished: true })
       return
     }
 
@@ -138,7 +114,6 @@ class TimingAnimation extends Animation {
         this._easing((now - this._startTime) / this._duration) *
           (this._toValue - this._fromValue)
     )
-
     if (this.__active) {
       // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this))
@@ -150,10 +125,7 @@ class TimingAnimation extends Animation {
     this.__active = false
     clearTimeout(this._timeout)
     global.cancelAnimationFrame(this._animationFrame)
-
-    this.__debouncedOnEnd({
-      finished: false,
-    })
+    this.__debouncedOnEnd({ finished: false })
   }
 }
 

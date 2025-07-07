@@ -71,8 +71,8 @@ export function DocComponentsPage() {
   return (
     <>
       <HeadInfo
-        title={`${frontmatter.title} | Tamagui — style library and UI kit for React`}
-        description={frontmatter.description}
+        title={`${frontmatter.title} | Tamagui — style library and UI kit for React Native and React Web`}
+        description={frontmatter.description || 'UI Kit'}
         openGraph={{
           images: [
             {

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "private": true,
   "main": "./dist/cjs/vite.config.js",
   "module": "./dist/esm/vite.config.js",
@@ -26,12 +26,18 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "@tamagui/config-default": "workspace:*",
-    "@tamagui/vite-plugin": "workspace:*",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "happy-dom": "^10.11.2",
-    "vitest": "^3.0.5",
+    "react": "*",
+    "vitest": "^3.2.4",
     "vitest-axe": "^0.1.0",
     "vitest-mock-process": "^1.0.4",
     "vitest-react-native": "^0.1.5"
+  },
+  "dependencies": {
+    "@tamagui/vite-plugin": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }

@@ -3,7 +3,7 @@ import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
 import { useCreateShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
-import type { LayoutRectangle } from 'react-native'
+import { useWindowDimensions, type LayoutRectangle } from 'react-native'
 import {
   type PopoverProps,
   Adapt,
@@ -277,6 +277,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
+  const context = React.useContext(SlidingPopoverContext)
   const userSwr = useUser()
   const haveUser = !!userSwr.data?.user
 
@@ -294,6 +295,10 @@ const HeaderMenuButton = () => {
           onPress={(e) => {
             if (isTouchable) {
               setOpen(!open)
+              // Ensure the active state is set for the menu to open properly on mobile
+              // On mobile, we just need to set the active state, not the layout
+              // The Sheet doesn't need positioning data
+              context.setActive('menu')
               return
             }
             if (isOnLink) {
@@ -343,7 +348,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
     }
   }, [])
 
-  const check = React.useRef<any>()
+  const check = React.useRef<any>(undefined)
 
   const checkForClose = () => {
     if (isTouchable) return
@@ -435,7 +440,7 @@ export const HeaderLink = (props: {
 }
 
 const SlidingPopoverContext = React.createContext({
-  setActive(id: ID, layout: LayoutRectangle) {},
+  setActive(id: ID, layout?: LayoutRectangle) {},
   close() {},
 })
 
@@ -504,9 +509,9 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
             setLayout({
               ...e.nativeEvent.layout,
               // @ts-ignore
-              x: e.nativeEvent.layout.left,
+              x: e.nativeEvent.layout.pageX,
               // @ts-ignore
-              y: e.nativeEvent.layout.top,
+              y: e.nativeEvent.layout.pageY,
             })
           })
         }}
@@ -530,7 +535,8 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
-  const pointerFine = useMedia().pointerFine
+  const pointerFine = !isTouchable
+  const isOnlyShowingMenu = useMedia().maxMd
 
   useFocusEffect(() => {
     context.close()
@@ -546,12 +552,15 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     last.current = active
   }, [active])
 
+  const { height } = useWindowDimensions()
+  const maxHeight = height - 50
+
   const heights = {
-    core: 1400,
+    core: Math.min(maxHeight, 1300),
     compiler: 117,
-    ui: 1400,
+    ui: Math.min(maxHeight, 1300),
     theme: data?.user ? 300 : 240,
-    menu: 390,
+    menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 390),
   }
 
   return (
@@ -610,15 +619,36 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   )
 })
 
+const getDocsSectionFromPath = (pathName: string): 'core' | 'compiler' | 'ui' | null => {
+  if (!pathName || pathName === '/' || pathName === '') return null
+  if (pathName.startsWith('/ui/')) return 'ui'
+  if (
+    pathName.startsWith('/docs/intro/compiler') ||
+    pathName.startsWith('/docs/intro/benchmarks') ||
+    pathName.startsWith('/docs/intro/why-a-compiler')
+  )
+    return 'compiler'
+  if (
+    pathName.startsWith('/docs') ||
+    pathName.startsWith('/community') ||
+    pathName.startsWith('/blog')
+  )
+    return 'core'
+  return null
+}
+
 const ActivePageDocsMenuContents = () => {
   const pathName = usePathname()
-  const section = pathName.startsWith('/ui/intro')
-    ? 'ui'
-    : pathName.startsWith('/ui/compiler')
-      ? 'compiler'
-      : 'core'
+  const section = getDocsSectionFromPath(pathName)
 
-  return <DocsMenuContents inMenu section={section} />
+  if (!section) return null
+
+  return (
+    <>
+      <Separator bc="$color02" o={0.25} my="$4" />
+      <DocsMenuContents inMenu section={section} />
+    </>
+  )
 }
 
 const HeaderMenuContents = (props: { id: ID }) => {
@@ -629,7 +659,8 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoTheme = useBentoTheme()
   const pathName = usePathname()
   const isOnBentoPage = pathName.startsWith('/bento')
-  const isMobile = useMedia().maxMd
+  const isOnlyShowingMenu = useMedia().maxMd
+  const isMobile = isTouchable && isOnlyShowingMenu
 
   const contents = (() => {
     /**
@@ -640,7 +671,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return (
         <>
           <HeaderMenuMoreContents />
-          {isMobile && <ActivePageDocsMenuContents />}
+          {isOnlyShowingMenu && <ActivePageDocsMenuContents />}
         </>
       )
     }
@@ -742,6 +773,16 @@ const HeaderMenuContents = (props: { id: ID }) => {
     return <DocsMenuContents inMenu section={props.id} />
   })()
 
+  // For mobile, render content directly without Frame wrapper
+  if (isMobile) {
+    return (
+      <YStack w="100%" p="$3">
+        {contents}
+      </YStack>
+    )
+  }
+
+  // For desktop, use Frame wrapper
   return (
     <Frame>
       {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}

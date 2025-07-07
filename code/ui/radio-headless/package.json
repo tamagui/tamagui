@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-headless",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "removeSideEffects": "true",
   "sideEffects": [
     "*.css"
@@ -31,7 +31,8 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/label": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-previous": "workspace:*"
+    "@tamagui/use-previous": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -48,13 +49,15 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/collapsible",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -41,7 +41,8 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/stacks": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

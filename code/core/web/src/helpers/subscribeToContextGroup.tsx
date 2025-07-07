@@ -1,55 +1,91 @@
-import { getMediaState } from '../hooks/useMedia'
-import type { ComponentContextI, GroupState, TamaguiComponentState } from '../types'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
+import { getMediaState } from '../hooks/useMedia'
+import type { ComponentSetStateShallow, DisposeFn, AllGroupContexts } from '../types'
 
-export const subscribeToContextGroup = ({
-  setStateShallow,
-  pseudoGroups,
-  mediaGroups,
-  componentContext,
-  state,
-}: {
-  setStateShallow: (next: Partial<TamaguiComponentState>) => void
+type SubscribeToContextGroupProps = {
+  setStateShallow: ComponentSetStateShallow
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
-  componentContext: ComponentContextI
-  state: TamaguiComponentState
-}) => {
-  // parent group pseudo listening
+  groupContext: AllGroupContexts
+}
+
+export const subscribeToContextGroup = (props: SubscribeToContextGroupProps) => {
+  const { pseudoGroups, mediaGroups, groupContext } = props
   if (pseudoGroups || mediaGroups) {
-    if (process.env.NODE_ENV === 'development' && !componentContext.groups) {
+    if (process.env.NODE_ENV === 'development' && !groupContext) {
       console.debug(`No context group found`)
     }
 
-    return componentContext.groups?.subscribe?.((name, { layout, pseudo }) => {
-      const current: GroupState = state.group?.[name] || {
+    const disposables = new Set<DisposeFn>()
+
+    if (pseudoGroups) {
+      for (const name of [...pseudoGroups]) {
+        disposables.add(createGroupListener(name, props))
+      }
+    }
+
+    if (mediaGroups) {
+      for (const name of [...mediaGroups]) {
+        disposables.add(createGroupListener(name, props))
+      }
+    }
+
+    return () => {
+      disposables.forEach((d) => d())
+    }
+  }
+}
+
+const createGroupListener = (
+  name: string,
+  {
+    setStateShallow,
+    pseudoGroups,
+    mediaGroups,
+    groupContext,
+  }: SubscribeToContextGroupProps
+): DisposeFn => {
+  const parent = groupContext?.[name]
+
+  if (!parent) {
+    return () => {}
+  }
+
+  return parent.subscribe(({ layout, pseudo }) => {
+    setStateShallow((prev) => {
+      let didChange = false
+      const group = prev.group?.[name] || {
         pseudo: {},
         media: {},
       }
 
-      if (pseudo && pseudoGroups?.has(String(name))) {
-        // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
-        Object.assign(current.pseudo!, pseudo)
-        persist()
+      if (pseudo && pseudoGroups?.has(name)) {
+        group.pseudo ||= {}
+        const next = mergeIfNotShallowEqual(group.pseudo, pseudo)
+        if (next !== group.pseudo) {
+          Object.assign(group.pseudo, pseudo)
+          didChange = true
+        }
       } else if (layout && mediaGroups) {
+        group.media ||= {}
         const mediaState = getMediaState(mediaGroups, layout)
-        const next = mergeIfNotShallowEqual(current.media || {}, mediaState)
-        if (next !== current.media) {
-          Object.assign(current.media!, next)
-          persist()
+        const next = mergeIfNotShallowEqual(group.media, mediaState)
+        if (next !== group.media) {
+          Object.assign(group.media, next)
+          didChange = true
         }
       }
 
-      function persist() {
-        // force it to be referentially different so it always updates
-        const group = {
-          ...state.group,
-          [name]: current,
+      if (didChange) {
+        return {
+          group: {
+            ...prev.group,
+            [name]: group,
+          },
         }
-        setStateShallow({
-          group,
-        })
       }
+
+      return prev
     })
-  }
+  })
 }

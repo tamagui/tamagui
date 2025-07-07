@@ -9,6 +9,7 @@ import type {
   TokensMerged,
 } from './types'
 import { MISSING_THEME_MESSAGE } from './constants/constants'
+import { loadDuplicatedConfig } from './loadDuplicatedConfig'
 
 let conf: TamaguiInternalConfig | null
 
@@ -45,6 +46,10 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
 }
 
 export const getConfig = () => {
+  const dup = loadDuplicatedConfig()
+  if (dup) {
+    return dup
+  }
   if (!conf) {
     throw new Error(
       process.env.NODE_ENV !== 'production'

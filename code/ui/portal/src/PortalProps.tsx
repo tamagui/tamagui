@@ -1,8 +1,8 @@
-import type { YStackProps } from '@tamagui/stacks'
-import type { StackZIndexProp } from '@tamagui/z-index-stack/types'
+import type { StackZIndexProp } from '@tamagui/z-index-stack'
 
-export type PortalProps = YStackProps & {
-  host?: any // element
-  inactive?: boolean
+export type PortalProps = {
+  zIndex?: number
+  passThrough?: boolean
   stackZIndex?: StackZIndexProp
+  children?: React.ReactNode
 }

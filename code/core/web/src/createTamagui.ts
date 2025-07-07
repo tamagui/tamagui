@@ -1,19 +1,16 @@
-import { isWeb, IS_REACT_19 } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
-import {
-  getAllRules,
-  listenForSheetChanges,
-  scanAllSheets,
-} from './helpers/insertStyleRule'
+import { getAllRules, scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
 import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
 import { ensureThemeVariable } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
+import { loadDuplicatedConfig } from './loadDuplicatedConfig'
 import { Tamagui } from './Tamagui'
 import type {
   CreateTamaguiProps,
@@ -28,9 +25,6 @@ import type {
   TokensMerged,
   TokensParsed,
 } from './types'
-
-// config is re-run by @tamagui/compiler, dont double validate
-const createdConfigs = new WeakMap<any, boolean>()
 
 /**
  * Determines if a token category should have px units added.
@@ -50,15 +44,9 @@ function shouldTokenCategoryHaveUnits(category: string): boolean {
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
-  if (process.env.NODE_ENV === 'test' && globalThis.__tamaguiConfig) {
-    console.warn(
-      `Warning: You somehow have duplicate Tamagui dependencies, this can cause issues. Tamagui is working around this by loading a previously loaded config in test mode. `
-    )
-    return globalThis.__tamaguiConfig
-  }
-
-  if (createdConfigs.has(configIn)) {
-    return configIn as any
+  const dup = loadDuplicatedConfig()
+  if (dup) {
+    return dup as any
   }
 
   // ensure variables
@@ -88,13 +76,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const noThemes = Object.keys(configIn.themes).length === 0
     if (noThemes) {
       foundThemes = scanAllSheets(noThemes, tokensParsed)
-    }
-    if (IS_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
-      // save some bundle
-    } else {
-      if (noThemes) {
-        listenForSheetChanges()
-      }
     }
   }
 
@@ -317,8 +298,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   setConfig(config)
   configureMedia(config)
-
-  createdConfigs.set(config, true)
 
   if (process.env.NODE_ENV === 'test') {
     globalThis.__tamaguiConfig = config

@@ -36,6 +36,7 @@ export { setNonce } from './helpers/insertStyleRule'
 export * from './constants/constants'
 
 export * from './contexts/ComponentContext'
+export * from './contexts/GroupContext'
 
 export * from './_withStableStyle'
 export * from './helpers/createMediaStyle'

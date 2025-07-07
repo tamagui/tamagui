@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-moti",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
+    "react-native": "^0.79.2",
     "react-native-reanimated": "^3.18.0"
   },
   "scripts": {
@@ -47,7 +48,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"

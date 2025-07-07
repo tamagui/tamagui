@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/input",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": [
     "*.css"
   ],
@@ -40,6 +40,8 @@
     "@tamagui/focusable": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
@@ -50,7 +52,7 @@
     "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.79.2",
-    "vitest": "^3.0.5"
+    "vitest": "^3.2.4"
   },
   "publishConfig": {
     "access": "public"

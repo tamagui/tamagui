@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compiler",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -42,9 +42,9 @@
     "@babel/parser": "^7.25.4",
     "@babel/plugin-transform-react-jsx": "^7.25.2",
     "@babel/runtime": "^7.25.4",
+    "@babel/template": "^7.25.0",
     "@babel/traverse": "^7.25.4",
     "@babel/types": "^7.25.4",
-    "@tamagui/build": "workspace:*",
     "@tamagui/cli-color": "workspace:*",
     "@tamagui/config-default": "workspace:*",
     "@tamagui/core": "workspace:*",
@@ -57,6 +57,7 @@
     "@tamagui/react-native-web-lite": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/types": "workspace:*",
+    "@tamagui/web": "workspace:*",
     "babel-literal-to-ast": "^2.1.0",
     "browserslist": "^4.22.2",
     "check-dependency-version-consistency": "^4.1.0",
@@ -73,6 +74,7 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
     "@expo/match-media": "^0.4.0",
+    "@tamagui/build": "workspace:*",
     "@types/babel__core": "^7.20.5",
     "@types/find-root": "^1.1.2",
     "@types/node": "^22.1.0",
@@ -81,10 +83,12 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": "*",
+    "react-native": "^0.79.2",
     "typescript": "^5.8.2"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   }
 }

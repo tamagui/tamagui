@@ -199,10 +199,10 @@ const ButtonText = styled(Text, {
 
 type ButtonProps = GetProps<typeof ButtonFrame>
 
-// note: extractable will tell the tamagui compiler to optimize usages of this:
-export const Button = ButtonFrame.extractable(({ children, ...props }: ButtonProps) => {
+// note: styleable will tell the tamagui compiler to optimize usages of this:
+export const Button = ButtonFrame.styleable<ButtonProps>(({ children, ...props }, ref) => {
   return (
-    <ButtonFrame {...props}>
+    <ButtonFrame ref={ref} {...props}>
       <ButtonText>{children}</ButtonText>
     </ButtonFrame>
   )

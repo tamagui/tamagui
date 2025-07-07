@@ -1,5 +1,5 @@
 import type { Context, ProviderExoticComponent, ReactNode } from 'react'
-import React from 'react'
+import React, { useId } from 'react'
 
 import { objectIdentityKey } from './objectIdentityKey'
 

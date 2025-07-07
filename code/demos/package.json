@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": [
     "*.css"
   ],
@@ -45,10 +45,15 @@
     }
   },
   "dependencies": {
+    "@tamagui/animate-presence": "workspace:*",
     "@tamagui/avatar": "workspace:*",
     "@tamagui/button": "workspace:*",
+    "@tamagui/checkbox": "workspace:*",
+    "@tamagui/checkbox-headless": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/get-button-sized": "workspace:*",
+    "@tamagui/image-next": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
@@ -56,20 +61,28 @@
     "@tamagui/popover": "workspace:*",
     "@tamagui/progress": "workspace:*",
     "@tamagui/radio-group": "workspace:*",
+    "@tamagui/radio-headless": "workspace:*",
+    "@tamagui/roving-focus": "workspace:*",
     "@tamagui/select": "workspace:*",
     "@tamagui/sheet": "workspace:*",
     "@tamagui/slider": "workspace:*",
     "@tamagui/stacks": "workspace:*",
+    "@tamagui/switch": "workspace:*",
+    "@tamagui/switch-headless": "workspace:*",
+    "@tamagui/tabs": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",
+    "@tamagui/theme": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@tamagui/ui": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"

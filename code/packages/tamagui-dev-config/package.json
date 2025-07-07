@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tamagui-dev-config",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./src/index.ts",
@@ -30,10 +30,19 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/animations-css": "workspace:*",
+    "@tamagui/animations-moti": "workspace:*",
+    "@tamagui/animations-motion": "workspace:*",
+    "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/font-cherry-bomb": "workspace:*",
+    "@tamagui/font-inter": "workspace:*",
+    "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "@tamagui/themes": "workspace:*"
+    "@tamagui/theme-builder": "workspace:*",
+    "@tamagui/themes": "workspace:*",
+    "color2k": "^2.0.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -697,8 +697,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     insetInlineStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     animation?: (import("@tamagui/core").AnimationProp | null) | undefined;
-    animateOnly?: string[] | "unset" | undefined;
-    animatePresence?: boolean | "unset" | undefined;
+    animateOnly?: string[] | undefined;
+    animatePresence?: boolean | undefined;
+    passThrough?: boolean | undefined;
     selectionColor?: "unset" | Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;

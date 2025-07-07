@@ -1,3 +1,4 @@
+import { AnimatePresence } from '@tamagui/animate-presence'
 import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core'
 import { styled, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -5,7 +6,6 @@ import { YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import type { CustomData } from './ToastImperative'
@@ -16,7 +16,6 @@ import type { ScopedProps, ToastProviderProps } from './ToastProvider'
 import { ToastProvider } from './ToastProvider'
 import type { ToastViewportProps } from './ToastViewport'
 import { ToastViewport } from './ToastViewport'
-import { AnimatePresence } from '@tamagui/animate-presence'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle

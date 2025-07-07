@@ -9,10 +9,14 @@
 declare const UIManager: {
     blur(node: any): void;
     focus(node: any): void;
-    measure(node: any, callback: any): void;
-    measureInWindow(node: any, callback: any): void;
-    measureLayout(node: any, relativeToNativeNode: any, onFail: any, onSuccess: any): void;
-    updateView(node: any, props: any): void;
+    measure(node: any, callback: any): Promise<import("@tamagui/use-element-layout").LayoutValue | null>;
+    measureInWindow(node: any, callback: any): Promise<{
+        pageX: number;
+        pageY: number;
+        width: number;
+        height: number;
+    } | null>;
+    measureLayout(node: HTMLElement, relativeToNativeNode?: HTMLElement, onFail: any, onSuccess: any): Promise<any>;
     configureNextLayoutAnimation(config: any, onAnimationDidEnd: any): void;
     setLayoutAnimationEnabledExperimental(): void;
 };

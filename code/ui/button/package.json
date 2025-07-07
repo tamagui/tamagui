@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/button",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": [
     "*.css"
   ],
@@ -46,6 +46,8 @@
     }
   },
   "dependencies": {
+    "@tamagui/config-default": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/helpers": "workspace:*",
@@ -57,9 +59,8 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "@tamagui/config-default": "workspace:*",
     "react": "*",
-    "vitest": "^3.0.5"
+    "vitest": "^3.2.4"
   },
   "publishConfig": {
     "access": "public"

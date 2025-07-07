@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -85,10 +85,12 @@
     "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/colors": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
+    "@tamagui/theme-builder": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "@tamagui/web": "workspace:*"
   },

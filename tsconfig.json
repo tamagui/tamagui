@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // THIS MUST BE AT ROOT, if you set baseurl in sub-package it breaks intellisense jump to
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
@@ -45,7 +44,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveConstEnums": true,
-    // DONT DO THIS so jsdoc will remain
     "removeComments": false,
     "skipLibCheck": true,
     "sourceMap": false,

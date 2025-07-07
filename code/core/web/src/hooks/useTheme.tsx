@@ -23,7 +23,7 @@ export const useThemeWithState = (
   const themeState = useThemeState(props, isRoot, keys)
 
   if (process.env.NODE_ENV === 'development') {
-    if (!themeState?.theme) {
+    if (!props.passThrough && !themeState?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
         console.error(
           `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
@@ -34,7 +34,7 @@ export const useThemeWithState = (
     }
   }
 
-  const themeProxied = getThemeProxied(props, themeState, keys)
+  const themeProxied = props.passThrough ? {} : getThemeProxied(props, themeState, keys)
 
   return [themeProxied, themeState]
 }

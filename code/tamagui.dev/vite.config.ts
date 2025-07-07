@@ -82,11 +82,12 @@ export default {
   plugins: [
     tamaguiPlugin({
       components: ['@tamagui/ui'],
+      optimize: process.env.NODE_ENV === 'production',
       logTimings: true,
-      optimize: true,
       config: '@tamagui/tamagui-dev-config',
       outputCSS: './tamagui.css',
-      useReactNativeWebLite: false,
+      // bento lists some last issues
+      // useReactNativeWebLite: true,
     }),
 
     one({

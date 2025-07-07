@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -36,6 +36,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/group": "workspace:*",
@@ -47,11 +48,13 @@
     "@tamagui/web": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "*",
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"

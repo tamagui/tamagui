@@ -1,9 +1,13 @@
 import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import type { RefObject } from 'react'
+import { useCallback, type RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const Nodes = new Set<HTMLElement>()
+const IntersectionState = new WeakMap<HTMLElement, boolean>()
+
+// Single persistent IntersectionObserver for all nodes
+let globalIntersectionObserver: IntersectionObserver | null = null
 
 type TamaguiComponentStatePartial = {
   host?: any
@@ -22,8 +26,8 @@ export type LayoutValue = {
   y: number
   width: number
   height: number
-  left: number
-  top: number
+  pageX: number
+  pageY: number
 }
 
 export type LayoutEvent = {
@@ -36,7 +40,6 @@ export type LayoutEvent = {
 
 const NodeRectCache = new WeakMap<HTMLElement, DOMRect>()
 const ParentRectCache = new WeakMap<HTMLElement, DOMRect>()
-const DebounceTimers = new WeakMap<HTMLElement, NodeJS.Timeout>()
 const LastChangeTime = new WeakMap<HTMLElement, number>()
 
 const rAF = typeof window !== 'undefined' ? window.requestAnimationFrame : undefined
@@ -55,15 +58,41 @@ export function enable(): void {
   }
 }
 
-const expectedFrameTime = 16.67 // ~60fps
-const numDroppedFramesUntilPause = 10
+function startGlobalObservers() {
+  if (!isClient || globalIntersectionObserver) return
+
+  globalIntersectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const node = entry.target as HTMLElement
+        if (IntersectionState.get(node) !== entry.isIntersecting) {
+          IntersectionState.set(node, entry.isIntersecting)
+        }
+      })
+    },
+    {
+      threshold: 0,
+    }
+  )
+}
 
 if (isClient) {
   if (rAF) {
-    // track frame timing to detect sync work and avoid updates during heavy periods
-    let lastFrameAt = Date.now()
+    const supportsCheckVisibility = 'checkVisibility' in document.body
 
-    async function updateLayoutIfChanged(node: HTMLElement, frameId: number) {
+    async function updateLayoutIfChanged(node: HTMLElement) {
+      if (IntersectionState.get(node) === false) {
+        // avoid due to not intersecting
+        return
+      }
+      // triggers style recalculation in safari which is slower than not
+      if (process.env.TAMAGUI_ONLAYOUT_VISIBILITY_CHECK === '1') {
+        if (supportsCheckVisibility && !(node as any).checkVisibility()) {
+          // avoid due to not visible
+          return
+        }
+      }
+
       const onLayout = LayoutHandlers.get(node)
       if (typeof onLayout !== 'function') return
 
@@ -79,8 +108,7 @@ if (isClient) {
           getBoundingClientRectAsync(parentNode),
         ])
 
-        // cancel if we skipped a frame
-        if (frameId !== lastFrameAt) {
+        if (nr === false || pr === false) {
           return
         }
 
@@ -97,7 +125,9 @@ if (isClient) {
       if (
         !cachedRect ||
         // has changed one rect
+        // @ts-expect-error DOMRectReadOnly can go into object
         (!isEqualShallow(cachedRect, nodeRect) &&
+          // @ts-expect-error DOMRectReadOnly can go into object
           (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
       ) {
         NodeRectCache.set(node, nodeRect)
@@ -114,36 +144,31 @@ if (isClient) {
     }
 
     // note that getBoundingClientRect() does not thrash layout if its after an animation frame
+    // ok new note: *if* it needed recalc then yea, but browsers often skip that, so it does
+    // which is why we use async strategy in general
     rAF!(layoutOnAnimationFrame)
 
     // only run once in a few frames, this could be adjustable
     let frameCount = 0
-    const runEveryXFrames = 6
+
+    const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
+    const RUN_EVERY_X_FRAMES = userSkipVal ? +userSkipVal : 10
 
     function layoutOnAnimationFrame() {
-      const now = Date.now()
-      const timeSinceLastFrame = now - lastFrameAt
-      lastFrameAt = now
-
-      if (frameCount < runEveryXFrames) {
-        frameCount++
-        rAF!(layoutOnAnimationFrame)
-        return
-      }
-
-      frameCount = 0
-
       if (strategy !== 'off') {
-        // for both strategies:
-        // avoid updates if we've been dropping frames (indicates sync work happening)
-        const hasRecentSyncWork =
-          timeSinceLastFrame > expectedFrameTime * numDroppedFramesUntilPause
-
-        if (!hasRecentSyncWork) {
-          Nodes.forEach((node) => {
-            updateLayoutIfChanged(node, lastFrameAt)
-          })
+        if (frameCount++ % RUN_EVERY_X_FRAMES !== 0) {
+          // skip a few frames to avoid work
+          rAF!(layoutOnAnimationFrame)
+          return
         }
+
+        if (frameCount === Number.MAX_SAFE_INTEGER) {
+          frameCount = 0
+        }
+
+        Nodes.forEach((node) => {
+          updateLayoutIfChanged(node)
+        })
       }
 
       rAF!(layoutOnAnimationFrame)
@@ -170,76 +195,11 @@ export const getElementLayoutEvent = (
   }
 }
 
-export const measureLayout = (
-  node: HTMLElement,
-  relativeTo: HTMLElement | null,
-  callback: (
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    left: number,
-    top: number
-  ) => void
-): void => {
-  const relativeNode = relativeTo || node?.parentElement
-  if (relativeNode instanceof HTMLElement) {
-    const nodeDim = node.getBoundingClientRect()
-    const relativeNodeDim = relativeNode.getBoundingClientRect()
-
-    if (relativeNodeDim && nodeDim) {
-      const { x, y, width, height, left, top } = getRelativeDimensions(
-        nodeDim,
-        relativeNodeDim
-      )
-      callback(x, y, width, height, left, top)
-    }
-  }
-}
-
-export const getElementLayoutEventAsync = async (
-  target: HTMLElement
-): Promise<LayoutEvent> => {
-  const layout = await measureLayoutAsync(target)
-  if (!layout) {
-    throw new Error(`‼️`) // impossible
-  }
-  return {
-    nativeEvent: {
-      layout,
-      target,
-    },
-    timeStamp: Date.now(),
-  }
-}
-
-export const measureLayoutAsync = async (
-  node: HTMLElement,
-  relativeTo?: HTMLElement | null
-): Promise<null | LayoutValue> => {
-  const relativeNode = relativeTo || node?.parentElement
-  if (relativeNode instanceof HTMLElement) {
-    const [nodeDim, relativeNodeDim] = await Promise.all([
-      getBoundingClientRectAsync(node),
-      getBoundingClientRectAsync(relativeNode),
-    ])
-
-    if (relativeNodeDim && nodeDim) {
-      const { x, y, width, height, left, top } = getRelativeDimensions(
-        nodeDim,
-        relativeNodeDim
-      )
-      return { x, y, width, height, left, top }
-    }
-  }
-  return null
-}
-
 const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
   const { height, left, top, width } = a
   const x = left - b.left
   const y = top - b.top
-  return { x, y, width, height, left, top }
+  return { x, y, width, height, pageX: a.left, pageY: a.top }
 }
 
 export function useElementLayout(
@@ -257,8 +217,15 @@ export function useElementLayout(
     const node = ref.current?.host
     if (!node) return
 
-    LayoutHandlers.set(node, onLayout)
     Nodes.add(node)
+
+    // Add node to intersection observer
+    startGlobalObservers()
+    if (globalIntersectionObserver) {
+      globalIntersectionObserver.observe(node)
+      // Initialize as intersecting by default
+      IntersectionState.set(node, true)
+    }
 
     // always do one immediate sync layout event no matter the strategy for accuracy
     const parentNode = node.parentNode
@@ -276,6 +243,12 @@ export function useElementLayout(
       LayoutHandlers.delete(node)
       NodeRectCache.delete(node)
       LastChangeTime.delete(node)
+      IntersectionState.delete(node)
+
+      // Remove from intersection observer
+      if (globalIntersectionObserver) {
+        globalIntersectionObserver.unobserve(node)
+      }
     }
   }, [ref, !!onLayout])
 }
@@ -287,11 +260,12 @@ function ensureWebElement<X>(x: X): HTMLElement | undefined {
   return x instanceof HTMLElement ? x : undefined
 }
 
-const getBoundingClientRectAsync = (
+export const getBoundingClientRectAsync = (
   node: HTMLElement | null
-): Promise<DOMRectReadOnly> => {
-  return new Promise<DOMRectReadOnly>((res) => {
-    if (!node || node.nodeType !== 1) return
+): Promise<DOMRectReadOnly | false> => {
+  return new Promise<DOMRectReadOnly | false>((res) => {
+    if (!node || node.nodeType !== 1) return res(false)
+
     const io = new IntersectionObserver(
       (entries) => {
         io.disconnect()
@@ -305,14 +279,87 @@ const getBoundingClientRectAsync = (
   })
 }
 
-const getBoundingClientRect = (node: HTMLElement | null): undefined | DOMRect => {
-  if (!node || node.nodeType !== 1) return
-  return node.getBoundingClientRect?.()
+export const measureNode = async (
+  node: HTMLElement,
+  relativeTo?: HTMLElement | null
+): Promise<null | LayoutValue> => {
+  const relativeNode = relativeTo || node?.parentElement
+  if (relativeNode instanceof HTMLElement) {
+    const [nodeDim, relativeNodeDim] = await Promise.all([
+      getBoundingClientRectAsync(node),
+      getBoundingClientRectAsync(relativeNode),
+    ])
+    if (relativeNodeDim && nodeDim) {
+      return getRelativeDimensions(nodeDim, relativeNodeDim)
+    }
+  }
+  return null
 }
 
-export const getRect = (node: HTMLElement): LayoutValue | undefined => {
-  const rect = getBoundingClientRect(node)
-  if (!rect) return
-  const { x, y, top, left } = rect
-  return { x, y, width: node.offsetWidth, height: node.offsetHeight, top, left }
+type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void
+
+type MeasureCb = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  pageX: number,
+  pageY: number
+) => void
+
+export const measure = async (
+  node: HTMLElement,
+  callback: MeasureCb
+): Promise<LayoutValue | null> => {
+  const out = await measureNode(
+    node,
+    node.parentNode instanceof HTMLElement ? node.parentNode : null
+  )
+  if (out) {
+    callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
+  }
+  return out
+}
+
+export function createMeasure(
+  node: HTMLElement
+): (callback: MeasureCb) => Promise<LayoutValue | null> {
+  return (callback) => measure(node, callback)
+}
+
+type WindowLayout = { pageX: number; pageY: number; width: number; height: number }
+
+export const measureInWindow = async (
+  node: HTMLElement,
+  callback: MeasureInWindowCb
+): Promise<WindowLayout | null> => {
+  const out = await measureNode(node, null)
+  if (out) {
+    callback?.(out.pageX, out.pageY, out.width, out.height)
+  }
+  return out
+}
+
+export const createMeasureInWindow = (
+  node: HTMLElement
+): ((callback: MeasureInWindowCb) => Promise<WindowLayout | null>) => {
+  return (callback) => measureInWindow(node, callback)
+}
+
+export const measureLayout = async (
+  node: HTMLElement,
+  relativeNode: HTMLElement,
+  callback: MeasureCb
+): Promise<LayoutValue | null> => {
+  const out = await measureNode(node, relativeNode)
+  if (out) {
+    callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
+  }
+  return out
+}
+
+export function createMeasureLayout(
+  node: HTMLElement
+): (relativeTo: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null> {
+  return (relativeTo, callback) => measureLayout(node, relativeTo, callback)
 }

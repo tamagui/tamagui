@@ -11,6 +11,8 @@ import { ComponentContext } from '../contexts/ComponentContext'
 import { updateMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
+import { stopAccumulatingRules } from '../helpers/insertStyleRule'
+import { Configuration } from './Configuration'
 
 export function TamaguiProvider({
   children,
@@ -38,6 +40,7 @@ export function TamaguiProvider({
   }
 
   useIsomorphicLayoutEffect(() => {
+    stopAccumulatingRules()
     updateMediaListeners()
   }, [])
 

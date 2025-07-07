@@ -8,10 +8,13 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
+import { isEqualShallow } from '@tamagui/is-equal-shallow'
+import { spacedChildren } from '@tamagui/spacer'
 import React, { useMemo } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
+import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getShorthandValue } from './helpers/getShorthandValue'
@@ -30,9 +33,19 @@ import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
 import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
 import { hooks } from './setupHooks'
 import type {
-  ComponentContextI,
+  AllGroupContexts,
+  ComponentGroupEmitter,
   DebugProp,
+  GroupStateListener,
   LayoutEvent,
+  PseudoGroupState,
+  SingleGroupContext,
+  // SizeTokens,
+  // SpaceDirection,
+  // SpacerProps,
+  // SpacerStyleProps,
+  // SpaceValue,
+  // StackNonStyleProps,
   StackProps,
   StaticConfig,
   StyleableOptions,
@@ -52,6 +65,7 @@ import { getThemedChildren } from './views/Theme'
  * All things that need one-time setup after createTamagui is called
  */
 let time: any
+const NextState = new WeakMap<any, TamaguiComponentState | undefined>()
 
 let debugKeyListeners: Set<Function> | undefined
 let startVisualizer: Function | undefined
@@ -59,6 +73,16 @@ let startVisualizer: Function | undefined
 type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentState>>
 
 export const componentSetStates = new Set<ComponentSetState>()
+const avoidReRenderKeys = new Set([
+  'hover',
+  'press',
+  'pressIn',
+  'group',
+  'focus',
+  'focusWithin',
+  'media',
+  'group',
+])
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelTouches = () => {
@@ -85,7 +109,10 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   if (process.env.NODE_ENV === 'development') {
     startVisualizer = () => {
       const devVisualizerConfig = devConfig?.visualizer
-      if (devVisualizerConfig) {
+
+      if (devVisualizerConfig && !globalThis.__tamaguiDevVisualizer) {
+        globalThis.__tamaguiDevVisualizer = true
+
         debugKeyListeners = new Set()
         let tm
         let isShowing = false
@@ -137,15 +164,21 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 const lastInteractionWasKeyboard = { value: false }
-if (isWeb && globalThis['document']) {
+if (isWeb && typeof document !== 'undefined') {
   document.addEventListener('keydown', () => {
-    lastInteractionWasKeyboard.value = true
+    if (!lastInteractionWasKeyboard.value) {
+      lastInteractionWasKeyboard.value = true
+    }
   })
   document.addEventListener('mousedown', () => {
-    lastInteractionWasKeyboard.value = false
+    if (lastInteractionWasKeyboard.value) {
+      lastInteractionWasKeyboard.value = false
+    }
   })
   document.addEventListener('mousemove', () => {
-    lastInteractionWasKeyboard.value = false
+    if (lastInteractionWasKeyboard.value) {
+      lastInteractionWasKeyboard.value = false
+    }
   })
 }
 
@@ -215,8 +248,6 @@ export function createComponent<
       }
     }
 
-    const componentContext = React.useContext(ComponentContext)
-
     // set variants through context
     // order is after default props but before props
     let styledContextProps: Object | undefined
@@ -284,20 +315,34 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
+        let node: HTMLElement | undefined
         let overlay: HTMLSpanElement | null = null
 
+        const remove = () => {
+          if (overlay) {
+            try {
+              overlay.parentNode?.removeChild(overlay)
+              overlay = null
+            } catch {
+              // may have unmounted
+            }
+          }
+        }
+
         const debugVisualizerHandler = (show = false) => {
-          const node = curStateRef.host as HTMLElement
+          node = stateRef.current.host as HTMLElement | undefined
           if (!node) return
 
           if (show) {
-            overlay = document.createElement('span')
-            overlay.style.inset = '0px'
-            overlay.style.zIndex = '1000000'
-            overlay.style.position = 'absolute'
-            overlay.style.borderColor = 'red'
-            overlay.style.borderWidth = '1px'
-            overlay.style.borderStyle = 'dotted'
+            if (!overlay) {
+              overlay = document.createElement('span')
+              overlay.style.inset = '0px'
+              overlay.style.zIndex = '1000000'
+              overlay.style.position = 'absolute'
+              overlay.style.borderColor = 'red'
+              overlay.style.borderWidth = '1px'
+              overlay.style.borderStyle = 'dotted'
+            }
 
             const dataAt = node.getAttribute('data-at') || ''
             const dataIn = node.getAttribute('data-in') || ''
@@ -312,40 +357,36 @@ export function createComponent<
             tooltip.style.fontSize = '12px'
             tooltip.style.lineHeight = '12px'
             tooltip.style.fontFamily = 'monospace'
-            tooltip.style['webkitFontSmoothing'] = 'none'
             tooltip.innerText = `${componentName || ''} ${dataAt} ${dataIn}`.trim()
 
             overlay.appendChild(tooltip)
             node.appendChild(overlay)
           } else {
-            if (overlay) {
-              node.removeChild(overlay)
-            }
+            remove()
           }
         }
         debugKeyListeners ||= new Set()
         debugKeyListeners.add(debugVisualizerHandler)
         return () => {
+          remove()
           debugKeyListeners?.delete(debugVisualizerHandler)
         }
       }, [componentName])
     }
 
-    /**
-     * Component state for tracking animations, pseudos
-     */
+    const componentContext = React.useContext(ComponentContext)
+    const groupContextParent = React.useContext(GroupContext)
     const animationDriver = componentContext.animationDriver
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
     const componentState = useComponentState(
       props,
-      componentContext,
+      animationDriver,
       staticConfig,
       config!
     )
 
     const {
-      curStateRef,
       disabled,
       groupName,
       hasAnimationProp,
@@ -359,11 +400,65 @@ export function createComponent<
       noClass,
       state,
       stateRef,
-      supportsCSSVars,
+      supportsCSS,
       willBeAnimated,
       willBeAnimatedClient,
       startedUnhydrated,
     } = componentState
+
+    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+      useIsomorphicLayoutEffect(() => {
+        const pendingState = NextState.get(stateRef)
+        if (pendingState) {
+          setStateShallow(pendingState)
+          NextState.set(stateRef, undefined)
+        }
+      })
+    }
+
+    // create new context with groups, or else sublings will grab the same one
+    const allGroupContexts = useMemo((): AllGroupContexts | null => {
+      if (!groupName || props.passThrough) {
+        return groupContextParent
+      }
+
+      // TODO this shouldn't be in useMemo
+      stateRef.current.group?.listeners.clear()
+      const listeners = new Set<GroupStateListener>()
+      stateRef.current.group = {
+        listeners,
+        emit(state) {
+          listeners.forEach((l) => l(state))
+        },
+        subscribe(cb) {
+          listeners.add(cb)
+          if (listeners.size === 1) {
+            setStateShallow({ hasDynGroupChildren: true })
+          }
+          return () => {
+            listeners.delete(cb)
+            if (listeners.size === 0) {
+              setStateShallow({ hasDynGroupChildren: false })
+            }
+          }
+        },
+      }
+
+      return {
+        ...groupContextParent,
+        [groupName]: {
+          state: {
+            pseudo: defaultComponentStateMounted,
+          },
+          subscribe: (listener) => {
+            const dispose = stateRef.current.group?.subscribe(listener)
+            return () => {
+              dispose?.()
+            }
+          },
+        },
+      }
+    }, [stateRef, groupName, groupContextParent])
 
     // if our animation driver supports noReRender, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
@@ -405,13 +500,13 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
     if (props.themeShallow) {
-      curStateRef.themeShallow = true
+      stateRef.current.themeShallow = true
     }
 
     const themeStateProps: UseThemeWithStateProps = {
       componentName,
       disable: disableTheme,
-      shallow: curStateRef.themeShallow,
+      shallow: stateRef.current.themeShallow,
       debug: debugProp,
     }
 
@@ -423,7 +518,7 @@ export function createComponent<
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
-    if (typeof curStateRef.isListeningToTheme === 'boolean') {
+    if (typeof stateRef.current.isListeningToTheme === 'boolean') {
       themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
     }
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
@@ -459,7 +554,7 @@ export function createComponent<
         )
 
         if (isServer) {
-          log({ noClass, isAnimated, isWeb, supportsCSSVars })
+          log({ noClass, isAnimated, isWeb, supportsCSS })
         } else {
           // if strict mode or something messes with our nesting this fixes:
           console.groupEnd()
@@ -475,7 +570,11 @@ export function createComponent<
           log('props in:', propsIn)
           log('final props:', props)
           log({ state, staticConfig, elementType, themeStateProps })
-          log({ contextProps: styledContextProps, overriddenContextProps })
+          log({
+            contextProps: styledContextProps,
+            overriddenContextProps,
+            componentContext,
+          })
           log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
           console.groupEnd()
         }
@@ -499,7 +598,7 @@ export function createComponent<
 
     const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
-      (isAnimated && !supportsCSSVars) ||
+      (isAnimated && !supportsCSS) ||
       (isHOC && state.unmounted == false && hasAnimationProp)
         ? 'value'
         : 'auto'
@@ -512,7 +611,6 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       styledContextProps,
-      noMergeStyle: isAnimated && animationDriver?.needsWebStyles,
     } as const
 
     const themeName = themeState?.name || ''
@@ -528,25 +626,88 @@ export function createComponent<
       styleProps,
       null,
       componentContext,
+      allGroupContexts,
       elementType,
       startedUnhydrated,
       debugProp
     )
 
+    // splitStyles === null === passThrough
+
+    const groupContext = groupName ? allGroupContexts?.[groupName] || null : null
+
+    // one tiny mutation 🙏 get width/height optimistically from raw values if possible
+    // if set hardcoded it avoids extra renders
+    if (splitStyles && groupContext) {
+      const groupState = groupContext?.state
+      if (groupState && groupState.layout === undefined) {
+        if (splitStyles.style?.width || splitStyles.style?.height) {
+          groupState.layout = {
+            width: fromPx(splitStyles.style.width),
+            height: fromPx(splitStyles.style.height),
+          }
+        }
+      }
+    }
+
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
-    if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      const styleListener = stateRef.current.useStyleListener
+    if (
+      splitStyles &&
+      (hasAnimationProp || groupName) &&
+      animationDriver?.avoidReRenders
+    ) {
+      const useStyleListener = stateRef.current.useStyleListener
       const ogSetStateShallow = setStateShallow
-      setStateShallow = (next) => {
+
+      stateRef.current.setStateShallow = (nextOrGetNext) => {
+        const prev = NextState.get(stateRef) || state
+        const next =
+          typeof nextOrGetNext === 'function' ? nextOrGetNext(prev) : nextOrGetNext
+
+        if (next === prev || isEqualShallow(prev, next)) {
+          return
+        }
+
         // one thing we have to handle here and where it gets a bit more complex is group styles
-        // but i think we can just emit to the group too?
-        const avoidReRenderKeys = new Set(['hover', 'press', 'pressIn'])
         const canAvoidReRender = Object.keys(next).every((key) =>
           avoidReRenderKeys.has(key)
         )
-        if (canAvoidReRender && styleListener) {
-          const updatedState = { ...state, ...next }
+
+        if (canAvoidReRender) {
+          const updatedState = {
+            ...prev,
+            ...next,
+          }
+          NextState.set(stateRef, updatedState)
+
+          if (
+            process.env.NODE_ENV === 'development' &&
+            debugProp &&
+            debugProp !== 'profile'
+          ) {
+            console.groupCollapsed(`[⚡️] avoid setState`, next, { updatedState, props })
+            console.info(stateRef.current.host)
+            console.groupEnd()
+          }
+
+          const {
+            group,
+            hasDynGroupChildren,
+            unmounted,
+            animation,
+            ...childrenGroupState
+          } = updatedState
+
+          // update before getting styles
+          if (groupContext) {
+            notifyGroupSubscribers(
+              groupContext,
+              stateRef.current.group || null,
+              childrenGroupState
+            )
+          }
+
           const nextStyles = getSplitStyles(
             props,
             staticConfig,
@@ -556,34 +717,56 @@ export function createComponent<
             styleProps,
             null,
             componentContext,
+            allGroupContexts,
             elementType,
             startedUnhydrated,
             debugProp
           )
-          styleListener(nextStyles.style as any)
+
+          useStyleListener?.((nextStyles?.style || {}) as any)
         } else {
+          if (
+            process.env.NODE_ENV === 'development' &&
+            debugProp &&
+            debugProp !== 'profile'
+          ) {
+            console.info(`[🐌] re-render`, { canAvoidReRender, next })
+          }
           ogSetStateShallow(next)
         }
+      }
+
+      // needs to capture latest props (it's called from memoized `events`)
+      setStateShallow = (state) => {
+        stateRef.current.setStateShallow?.(state)
       }
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
     // hide strategy will set this opacity = 0 until measured
-    if (props.group && props.untilMeasured === 'hide' && !curStateRef.hasMeasured) {
-      splitStyles.style ||= {}
-      splitStyles.style.opacity = 0
-    }
+    if (splitStyles) {
+      if (
+        props.group &&
+        props.untilMeasured === 'hide' &&
+        !stateRef.current.hasMeasured
+      ) {
+        splitStyles.style ||= {}
+        splitStyles.style.opacity = 0
+      }
 
-    curStateRef.isListeningToTheme = splitStyles.dynamicThemeAccess
+      if (splitStyles.dynamicThemeAccess != null) {
+        stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
+      }
+    }
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
-    const hasRuntimeMediaKeys = splitStyles.hasMedia && splitStyles.hasMedia !== true
+    const hasRuntimeMediaKeys = splitStyles?.hasMedia && splitStyles.hasMedia !== true
     const shouldListenForMedia =
       didGetVariableValue() ||
       hasRuntimeMediaKeys ||
-      (noClass && splitStyles.hasMedia === true)
+      (noClass && splitStyles?.hasMedia === true)
 
     const mediaListeningKeys = hasRuntimeMediaKeys
       ? (splitStyles.hasMedia as Set<string>)
@@ -599,7 +782,10 @@ export function createComponent<
       pseudos,
       style: splitStylesStyle,
       classNames,
-    } = splitStyles
+      space,
+      pseudoGroups,
+      mediaGroups,
+    } = splitStyles || {}
 
     const propsWithAnimation = props as UseAnimationProps
 
@@ -622,12 +808,13 @@ export function createComponent<
       onBlur,
       separator,
       // ignore from here on out
+      passThrough,
       forceStyle: _forceStyle,
       // @ts-ignore  for next/link compat etc
       onClick,
       theme: _themeProp,
       ...nonTamaguiProps
-    } = viewPropsIn
+    } = viewPropsIn || {}
 
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
@@ -637,8 +824,13 @@ export function createComponent<
       viewProps.forceStyle = props.forceStyle
     }
 
-    if (isHOC && _themeProp) {
-      viewProps.theme = _themeProp
+    if (isHOC) {
+      if (typeof _themeProp !== 'undefined') {
+        viewProps.theme = _themeProp
+      }
+      if (typeof passThrough !== 'undefined') {
+        viewProps.passThrough = passThrough
+      }
     }
 
     if (tagProp && elementType['acceptTagProp']) {
@@ -650,7 +842,7 @@ export function createComponent<
     let animationStyles: any
     const shouldUseAnimation =
       // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
+      (supportsCSS ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
 
     let animatedRef
 
@@ -678,15 +870,17 @@ export function createComponent<
       })
 
       if (animations) {
-        animationStyles = animations.style
-        viewProps.style = animationStyles
-        if (animations.className) {
-          viewProps.className = `${state.unmounted === 'should-enter' ? 't_unmounted ' : ''}${viewProps.className || ''} ${animations.className}`
-        }
-        // @ts-ignore
         if (animations.ref) {
           // @ts-ignore
           animatedRef = animations.ref
+        }
+
+        if (isHydrated && animations) {
+          animationStyles = animations.style
+          viewProps.style = animationStyles
+          if (animations.className) {
+            viewProps.className = `${state.unmounted === 'should-enter' ? 't_unmounted ' : ''}${viewProps.className || ''} ${animations.className}`
+          }
         }
       }
 
@@ -701,16 +895,16 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    if (groupName) {
+    if (splitStyles && groupContext) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
+          // one off update here
           const layout = e.nativeEvent.layout
-          stateRef.current.group!.layout = layout
-          stateRef.current.group!.emit(groupName, {
+          groupContext.state.layout = layout
+          stateRef.current.group?.emit({
             layout,
           })
-
           // force re-render if measure strategy is hide
           if (!stateRef.current.hasMeasured && props.untilMeasured === 'hide') {
             setState((prev) => ({ ...prev }))
@@ -726,11 +920,11 @@ export function createComponent<
         elementType,
         nonTamaguiProps,
         stateRef,
-        curStateRef.willHydrate
+        stateRef.current.willHydrate
       ) || nonTamaguiProps
 
-    if (!curStateRef.composedRef) {
-      curStateRef.composedRef = composeRefs<TamaguiElement>(
+    if (!stateRef.current.composedRef) {
+      stateRef.current.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
         forwardedRef,
         setElementProps,
@@ -738,7 +932,7 @@ export function createComponent<
       )
     }
 
-    viewProps.ref = curStateRef.composedRef
+    viewProps.ref = stateRef.current.composedRef
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
@@ -756,12 +950,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`events-hooks`
 
-    // combined multiple effects into one for performance so be careful with logic
-    // should not be a layout effect because otherwise it wont render the initial state
-    // for example css driver needs to render once with the first styles, then again with the next
-    // if its a layout effect it will just skip that first <render >output
-    const { pseudoGroups, mediaGroups } = splitStyles
-
     const unPress = () => {
       setStateShallow({ press: false, pressIn: false })
     }
@@ -777,9 +965,11 @@ export function createComponent<
             }
             return styleObject
           }
-          const computed = cssStyleDeclarationToObject(
-            getComputedStyle(stateRef.current.host! as Element)
-          )
+          const computed = stateRef.current.host
+            ? cssStyleDeclarationToObject(
+                getComputedStyle(stateRef.current.host as Element)
+              )
+            : {}
           console.groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
           console.warn(stateRef.current.host)
           console.warn(computed)
@@ -799,10 +989,7 @@ export function createComponent<
 
       let tm: NodeJS.Timeout
       if (state.unmounted) {
-        if (
-          (animationDriver?.supportsCSSVars ?? config?.animations?.supportsCSSVars) ||
-          isAndroid
-        ) {
+        if (animationDriver?.supportsCSS || isAndroid) {
           // this setTimeout fixes css driver enter animations  - not sure why
           // this setTimeout fixes the conflict when with the safe area view in android
           tm = setTimeout(() => {
@@ -816,44 +1003,34 @@ export function createComponent<
       }
 
       // Only subscribe to context group if not disabled
-      const dispose =
-        !disabled && (pseudoGroups || mediaGroups)
-          ? subscribeToContextGroup({
-              componentContext,
-              setStateShallow,
-              state,
-              mediaGroups,
-              pseudoGroups,
-            })
-          : null
 
       return () => {
-        dispose?.()
         componentSetStates.delete(setState)
       }
+    }, [state.unmounted, disabled])
+
+    useIsomorphicLayoutEffect(() => {
+      if (disabled) return
+      if (!pseudoGroups && !mediaGroups) return
+      if (!allGroupContexts) return
+      return subscribeToContextGroup({
+        groupContext: allGroupContexts,
+        setStateShallow,
+        mediaGroups,
+        pseudoGroups,
+      })
     }, [
-      state.unmounted,
+      allGroupContexts,
       disabled,
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
+    const groupEmitter = stateRef.current.group
     useIsomorphicLayoutEffect(() => {
-      if (!groupName) return
-      curStateRef.group!.emit(groupName, {
-        pseudo: state,
-        layout: curStateRef.group?.layout,
-      })
-      const groupContextState = componentContext?.groups
-      if (groupContextState) {
-        // and mutate the current since its concurrent safe (children throw it in useState on mount)
-        const next = {
-          ...groupContextState[groupName],
-          ...state,
-        }
-        groupContextState[groupName] = next
-      }
-    }, [groupName, state])
+      if (!groupContext || !groupEmitter) return
+      notifyGroupSubscribers(groupContext, groupEmitter, state)
+    }, [groupContext, groupEmitter, state])
 
     // if its a group its gotta listen for pseudos to emit them to children
 
@@ -883,6 +1060,7 @@ export function createComponent<
         onClick ||
         pseudos?.focusVisibleStyle
     )
+
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
     const needsHoverState = Boolean(hasDynamicGroupChildren || runtimeHoverStyle)
     const attachHover =
@@ -952,10 +1130,8 @@ export function createComponent<
                 next.hover = false
               }
               if (needsPressState) {
-                if (state.pressIn) {
-                  next.press = false
-                  next.pressIn = false
-                }
+                next.press = false
+                next.pressIn = false
               }
               setStateShallow(next)
               onHoverOut?.(e)
@@ -998,22 +1174,20 @@ export function createComponent<
             }),
           ...(attachFocus && {
             onFocus: (e) => {
+              const next: Partial<typeof state> = {}
               if (componentContext.setParentFocusState) {
-                componentContext.setParentFocusState({ focusWithin: true })
+                next.focusWithin = true
               }
               if (pseudos?.focusVisibleStyle) {
-                setTimeout(() => {
-                  setStateShallow({
-                    focus: true,
-                    focusVisible: !!lastInteractionWasKeyboard.value,
-                  })
-                }, 0)
+                if (lastInteractionWasKeyboard.value) {
+                  next.focusVisible = true
+                } else {
+                  next.focus = true
+                }
               } else {
-                setStateShallow({
-                  focus: true,
-                  focusVisible: false,
-                })
+                next.focus = true
               }
+              setStateShallow(next)
               onFocus?.(e)
             },
             onBlur: (e) => {
@@ -1023,6 +1197,7 @@ export function createComponent<
               setStateShallow({
                 focus: false,
                 focusVisible: false,
+                focusWithin: false,
               })
               onBlur?.(e)
             },
@@ -1059,7 +1234,17 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    let content = children
+    let content =
+      !children || asChild || !splitStyles
+        ? children
+        : spacedChildren({
+            separator,
+            children,
+            space,
+            direction: _spaceDirection,
+            isZStack,
+            debug: debugProp,
+          })
 
     if (asChild) {
       elementType = Slot
@@ -1087,6 +1272,17 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
+    // passthrough mode - only pass style display contents, nothing else
+    if (!splitStyles) {
+      content = propsIn.children
+      elementType = BaseViewComponent
+      viewProps = {
+        style: {
+          display: 'contents',
+        },
+      }
+    }
+
     let useChildrenResult: any
     if (hooks.useChildren) {
       useChildrenResult = hooks.useChildren(elementType, content, viewProps)
@@ -1102,50 +1298,33 @@ export function createComponent<
 
     // needs to reset the presence state for nested children
     const ResetPresence = config?.animations?.ResetPresence
-    if (
-      ResetPresence &&
-      willBeAnimated &&
-      (hasEnterStyle || presenceState) &&
-      content &&
-      typeof content !== 'string'
-    ) {
-      content = <ResetPresence>{content}</ResetPresence>
+    const needsReset = Boolean(
+      // not when passing down to child
+      !asChild &&
+        // not when passThrough
+        splitStyles &&
+        // not when HOC
+        !isHOC &&
+        ResetPresence &&
+        willBeAnimated &&
+        (hasEnterStyle || presenceState)
+    )
+    // avoid re-parenting
+    const hasEverReset = stateRef.current.hasEverResetPresence
+    if (needsReset && !hasEverReset) {
+      stateRef.current.hasEverResetPresence = true
+    }
+    const renderReset = needsReset || hasEverReset
+    if (renderReset && ResetPresence) {
+      content = <ResetPresence disabled={!needsReset}>{content}</ResetPresence>
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    // must override context so siblings don't clobber initial state
-    const groupState = curStateRef.group
-    const subGroupContext = React.useMemo(() => {
-      if (!groupState || !groupName) return
-      groupState.listeners.clear()
-      // change reference so context value updates
-
-      return {
-        ...componentContext.groups,
-        // change reference so as we mutate it doesn't affect siblings etc
-        state: {
-          ...componentContext.groups.state,
-          [groupName]: {
-            pseudo: defaultComponentStateMounted,
-            // capture just initial width and height if they exist
-            // will have top, left, width, height (not x, y)
-            layout: {
-              width: fromPx(splitStyles.style?.width),
-              height: fromPx(splitStyles.style?.height),
-            },
-          },
-        },
-        emit: groupState.emit,
-        subscribe: groupState.subscribe,
-      } satisfies ComponentContextI['groups']
-    }, [groupName])
-
-    if ('group' in props || propsIn.focusWithinStyle) {
+    if ('focusWithinStyle' in propsIn) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
-          groups={subGroupContext}
           setParentFocusState={setStateShallow}
         >
           {content}
@@ -1153,11 +1332,18 @@ export function createComponent<
       )
     }
 
+    if ('group' in props) {
+      content = (
+        <GroupContext.Provider value={allGroupContexts}>{content}</GroupContext.Provider>
+      )
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`group-context`
 
-    content = disableTheme
-      ? content
-      : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
+    content =
+      disableTheme || !splitStyles
+        ? content
+        : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
@@ -1166,7 +1352,7 @@ export function createComponent<
         content = (
           <span
             className="_dsp_contents"
-            {...(isHydrated && events && getWebEvents(events))}
+            {...(splitStyles && isHydrated && events && getWebEvents(events))}
           >
             {content}
           </span>
@@ -1200,6 +1386,7 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
       // breaking rules of hooks but startedUnhydrated NEVER changes
       const styleTags = useMemo(() => {
+        if (!splitStyles) return
         return getStyleTags(Object.values(splitStyles.rulesToInsert))
       }, [])
       // this is only to appease react hydration really
@@ -1236,6 +1423,7 @@ export function createComponent<
               log({
                 propsIn,
                 props,
+                attachPress,
                 animationStyles,
                 classNames,
                 content,
@@ -1289,6 +1477,19 @@ export function createComponent<
     return content
   })
 
+  function notifyGroupSubscribers(
+    groupContext: SingleGroupContext | null,
+    groupEmitter: ComponentGroupEmitter | null,
+    pseudo: PseudoGroupState
+  ) {
+    if (!groupContext || !groupEmitter) {
+      return
+    }
+    const nextState = { ...groupContext.state, pseudo }
+    groupEmitter.emit(nextState)
+    groupContext.state = nextState
+  }
+
   // let hasLogged = false
 
   if (staticConfig.componentName) {
@@ -1332,7 +1533,7 @@ export function createComponent<
 
     out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
 
-    if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
+    if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
       out = React.memo(out)
     }
 
@@ -1368,4 +1569,3 @@ const fromPx = (val?: any): number => {
   if (typeof val === 'string') return +val.replace('px', '')
   return 0
 }
-

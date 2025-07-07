@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "types": "./types/index.d.ts",
   "main": "./dist/cjs/index.js",
   "type": "module",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vite": "^6.1.0"
+    "vite": "^7.0.2"
   },
   "publishConfig": {
     "access": "public"

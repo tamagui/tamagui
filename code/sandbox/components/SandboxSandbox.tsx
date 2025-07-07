@@ -1,8 +1,18 @@
 // debug
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
-import { Button, Circle, Configuration, Square, XStack, YStack } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Circle,
+  Configuration,
+  Square,
+  XStack,
+  YStack,
+} from 'tamagui'
+
 import { PopoverDemo } from '../../demos/src/PopoverDemo'
+import { DialogDemo } from '../../demos/src/DialogDemo'
 import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animations } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
@@ -10,7 +20,14 @@ import { animationsCSS } from '../config/tamagui/animationsCSS'
 export function SandboxSandbox() {
   return (
     <>
-      <Motion />
+      <Configuration animationDriver={animationsMotion}>
+        <Button animation="100ms">
+          hi hello
+          <Button.Text>hi</Button.Text>
+        </Button>
+      </Configuration>
+      {/* <Motion /> */}
+      {/* <DialogDemo /> */}
       {/* <PopoverDemo /> */}
       {/* <Performance /> */}
       {/* <Drivers /> */}
@@ -21,20 +38,155 @@ export function SandboxSandbox() {
 const Motion = () => {
   console.warn('render')
   const [x, setX] = useState(0)
+  const [show, setShow] = useState(false)
+  const [pressed, setPressed] = useState(false)
+  const pressedStyle = {
+    y: 20,
+    scale: 1.1,
+  }
+
+  const squares = (
+    <>
+      <Square
+        animation="lazy"
+        size={50}
+        bg="green"
+        $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
+        $group-card-press={{ rotate: '5deg' }}
+        $group-hover={{ bg: 'yellow' }}
+        $group-other-press={{ y: 20, bg: 'rgba(255,255,0,0.5)' }}
+      />
+      <Square
+        animation="lazy"
+        size={50}
+        bg="yellow"
+        $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
+        $group-card-press={{ rotate: '5deg' }}
+        $group-other-hover={{ bg: 'black', x: 10 }}
+      />
+      <Square
+        animation="lazy"
+        size={50}
+        bg="green"
+        $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
+        $group-card-press={{ rotate: '5deg' }}
+        $group-hover={{ bg: 'yellow' }}
+        $group-other-press={{ y: 20, bg: 'rgba(255,255,0,0.5)' }}
+      />
+    </>
+  )
+
   return (
     <Configuration animationDriver={animationsMotion}>
-      <Button onPress={() => setX(Math.random())}>asdasdas</Button>
+      {/* groups in groups */}
+      <YStack width={600} height={600} group bg="teal">
+        <XStack flexWrap="wrap" width={400} height={400} bg="pink" group="card">
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+
+          <YStack m={10} width={150} height={150} group="other" bg="red">
+            {squares}
+          </YStack>
+        </XStack>
+      </YStack>
+
+      {/* animateOnly */}
       <Square
-        className="motion-square"
-        // debug="verbose"
-        animation="lazy"
+        animation={[
+          'superBouncy',
+          {
+            opacity: '100ms',
+          },
+        ]}
+        // bg doesnt aniamte
+        animateOnly={['transform', 'opacity']}
         bg="red"
-        size={100}
+        size={50}
+        opacity={0.25}
         borderWidth={2}
-        hoverStyle={{ scale: 1.5, borderColor: 'green', x: 100 }}
+        hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }}
+        pressStyle={{ scale: 0.8, borderColor: 'red' }}
+        x={x * 300}
+        // TODO no media re-renders
+        $maxMd={{
+          bg: 'blue',
+        }}
+      />
+
+      <Button onPress={() => setX(Math.random())}>asdasdas</Button>
+
+      <Square
+        animation={[
+          'superBouncy',
+          {
+            opacity: '100ms',
+          },
+        ]}
+        bg="red"
+        size={50}
+        opacity={0.25}
+        borderWidth={2}
+        hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }}
         pressStyle={{ scale: 0.8, borderColor: 'red' }}
         x={x * 300}
       />
+
+      <Button onPress={() => setShow(!show)}>show</Button>
+
+      <YStack width="100%" bg="yellow" group="card">
+        {/* render during animate update */}
+        <Square
+          animation="lazy"
+          // onMouseDown={() => {
+          //   setPressed(true)
+          // }}
+          // onMouseUp={() => {
+          //   setPressed(false)
+          // }}
+          $group-card-hover={{
+            y: 10,
+            scale: 1.1,
+          }}
+          $group-card-press={pressedStyle}
+          {...(pressed && pressedStyle)}
+          size={50}
+          bg="red"
+        />
+
+        <AnimatePresence>
+          {show && (
+            <Square
+              animation="lazy"
+              $group-card-hover={{
+                scale: 2,
+              }}
+              size={50}
+              bg="rgba(255,200,200)"
+              hoverStyle={{
+                bg: 'rgba(200,200,200)',
+                scale: 1.1,
+              }}
+              enterStyle={{
+                y: -100,
+                opacity: 0,
+              }}
+              exitStyle={{
+                y: 100,
+                opacity: 0,
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </YStack>
     </Configuration>
   )
 }
@@ -56,7 +208,6 @@ const Drivers = () => {
             bg="red"
             scale={1}
             $group-card-hover={{ scale: 1.5 }}
-            debug="verbose"
           />
         </YStack>
       </Configuration>

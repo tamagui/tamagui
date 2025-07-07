@@ -61,7 +61,7 @@ const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>> = (
   }, [])
 
   return isAnnounced ? null : (
-    <Portal asChild>
+    <Portal>
       <VisuallyHidden {...announceProps}>
         {renderAnnounceText && (
           <Text>

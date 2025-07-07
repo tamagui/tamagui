@@ -4,15 +4,22 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * @format
  * @format
  */
-'use strict'
 
-import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import AnimatedValue from './AnimatedValue'
 import AnimatedNode from './AnimatedNode'
+import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper'
 
 class AnimatedTracking extends AnimatedNode {
+  _value
+  _parent
+  _callback
+  _animationConfig
+  _animationClass
+  _useNativeDriver
+
   constructor(value, parent, animationClass, animationConfig, callback) {
     super()
     this._value = value
@@ -21,17 +28,13 @@ class AnimatedTracking extends AnimatedNode {
     this._animationConfig = animationConfig
     this._useNativeDriver = shouldUseNativeDriver(animationConfig)
     this._callback = callback
-
     this.__attach()
   }
 
   __makeNative() {
     this.__isNative = true
-
     this._parent.__makeNative()
-
     super.__makeNative()
-
     this._value.__makeNative()
   }
 
@@ -41,7 +44,6 @@ class AnimatedTracking extends AnimatedNode {
 
   __attach() {
     this._parent.__addChild(this)
-
     if (this._useNativeDriver) {
       // when the tracking starts we need to convert this node to a "native node"
       // so that the parent node will be made "native" too. This is necessary as
@@ -54,7 +56,6 @@ class AnimatedTracking extends AnimatedNode {
 
   __detach() {
     this._parent.__removeChild(this)
-
     super.__detach()
   }
 
@@ -69,19 +70,12 @@ class AnimatedTracking extends AnimatedNode {
   }
 
   __getNativeConfig() {
-    var animation = new this._animationClass(
-      _objectSpread(
-        _objectSpread({}, this._animationConfig),
-        {},
-        {
-          // remove toValue from the config as it's a ref to Animated.Value
-          toValue: undefined,
-        }
-      )
-    )
-
-    var animationConfig = animation.__getNativeAnimationConfig()
-
+    const animation = new this._animationClass({
+      ...this._animationConfig,
+      // remove toValue from the config as it's a ref to Animated.Value
+      toValue: undefined,
+    })
+    const animationConfig = animation.__getNativeAnimationConfig()
     return {
       type: 'tracking',
       animationId: generateNewAnimationId(),

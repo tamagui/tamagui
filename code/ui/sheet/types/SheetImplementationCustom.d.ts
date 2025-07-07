@@ -15,6 +15,7 @@ export declare const SheetImplementationCustom: React.ForwardRefExoticComponent<
     dismissOnSnapToBottom?: boolean;
     forceRemoveScrollEnabled?: boolean;
     animationConfig?: import("@tamagui/core").AnimatedNumberStrategy;
+    preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
     native?: "ios"[] | boolean;
     animation?: import("@tamagui/core").AnimationProp;

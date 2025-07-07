@@ -11,8 +11,6 @@ import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
-  ComponentStateListener,
-  GroupStateListener,
   StackProps,
   StaticConfig,
   TamaguiComponentState,
@@ -25,7 +23,7 @@ import { getSetting } from '../config'
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
-  { animationDriver }: ComponentContextI,
+  animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
@@ -46,8 +44,7 @@ export const useComponentState = (
     'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  // disable for now still ssr issues
-  const supportsCSSVars = animationDriver?.supportsCSSVars
+  const supportsCSS = animationDriver?.supportsCSS
   const curStateRef = stateRef.current
 
   if (!needsHydration && hasAnimationProp) {
@@ -81,9 +78,7 @@ export const useComponentState = (
   const hasEnterStyle = !!props.enterStyle
 
   const hasAnimationThatNeedsHydrate =
-    hasAnimationProp &&
-    !isHydrated &&
-    (animationDriver?.isReactNative || !supportsCSSVars)
+    hasAnimationProp && !isHydrated && (animationDriver?.isReactNative || !supportsCSS)
 
   const hasEnterState = hasEnterStyle || isEntering
 
@@ -124,6 +119,12 @@ export const useComponentState = (
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
+  // apply states we never updated from avoiding re-renders in animation driver
+  // unsafe yea yea
+  // if (stateRef.current.nextComponentState) {
+  //   Object.assign(state, stateRef.current.nextComponentState)
+  // }
+
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
   if (isWeb && hasAnimationThatNeedsHydrate && !staticConfig.isHOC && !isHydrated) {
@@ -141,7 +142,7 @@ export const useComponentState = (
     setState((_) => ({ ...state }))
   }
 
-  const groupName = props.group as any as string
+  const groupName = props.group as any as string | undefined
 
   const setStateShallow = useCreateShallowSetState(setState, props.debug)
 
@@ -169,18 +170,21 @@ export const useComponentState = (
     }
   }
 
-  let noClass =
-    !isWeb || !!props.forceStyle || (isAnimated && animationDriver?.needsWebStyles)
+  let noClass = !isWeb || !!props.forceStyle
 
-  // on server for SSR and animation compat added the && isHydrated but perhaps we want
-  // disableClassName="until-hydrated" to be more straightforward
-  // see issue if not, Button sets disableClassName to true <Button animation="" /> with
-  // the react-native driver errors because it tries to animate var(--color) to rbga(..)
-  if (isWeb) {
+  if (!isHydrated) {
+    noClass = false
+  } else {
+    // on server for SSR and animation compat added the && isHydrated but perhaps we want
+    // disableClassName="until-hydrated" to be more straightforward
+    // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+    // the react-native driver errors because it tries to animate var(--color) to rbga(..)
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc
-    if (!isServer || isHydrated) {
-      const isAnimatedAndHydrated = isAnimated && !supportsCSSVars
+    if (isWeb && isHydrated) {
+      // the reason we disable class even for css animation driver is i guess due to the logic around looking at transform
+      // in the driver to determine the transition - but that could be improved to not need it and just use classnames
+      const isAnimatedAndHydrated = isAnimated && isHydrated
 
       const isClassNameDisabled =
         !staticConfig.acceptsClassName && (getSetting('disableSSR') || !state.unmounted)
@@ -201,46 +205,6 @@ export const useComponentState = (
     }
   }
 
-  if (groupName && !curStateRef.group) {
-    const listeners = new Set<GroupStateListener>()
-    curStateRef.group = {
-      listeners,
-      emit(name, state) {
-        listeners.forEach((l) => l(name, state))
-      },
-      subscribe(cb) {
-        listeners.add(cb)
-        setStateShallow({ hasDynGroupChildren: true })
-        return () => {
-          listeners.delete(cb)
-          if (listeners.size === 0) {
-            setStateShallow({ hasDynGroupChildren: false })
-          }
-        }
-      },
-    }
-  }
-
-  if (!curStateRef.stateEmitter && hasAnimationProp) {
-    const listeners = new Set<ComponentStateListener>()
-    curStateRef.stateEmitter = {
-      listeners,
-      emit(state) {
-        listeners.forEach((l) => l(state))
-      },
-      subscribe(cb) {
-        listeners.add(cb)
-        setStateShallow({ hasDynGroupChildren: true })
-        return () => {
-          listeners.delete(cb)
-          if (listeners.size === 0) {
-            setStateShallow({ hasDynGroupChildren: false })
-          }
-        }
-      },
-    }
-  }
-
   return {
     startedUnhydrated,
     curStateRef,
@@ -258,7 +222,7 @@ export const useComponentState = (
     noClass,
     state,
     stateRef,
-    supportsCSSVars,
+    supportsCSS,
     willBeAnimated,
     willBeAnimatedClient,
   }
@@ -274,6 +238,7 @@ function hasAnimatedStyleValue(style: Object) {
 const isDisabled = (props: any) => {
   return (
     props.disabled ||
+    props.passThrough ||
     props.accessibilityState?.disabled ||
     props['aria-disabled'] ||
     props.accessibilityDisabled ||

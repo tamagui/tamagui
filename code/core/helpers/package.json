@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -23,7 +23,8 @@
     "@tamagui/simple-hash": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"
@@ -41,5 +42,8 @@
       "default": "./dist/cjs/index.native.js"
     }
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "peerDependencies": {
+    "react": "*"
+  }
 }

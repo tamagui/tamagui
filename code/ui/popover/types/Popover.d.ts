@@ -4,7 +4,6 @@ import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
-import type { RemoveScrollProps } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 type PopoverVia = 'hover' | 'press';
@@ -12,7 +11,13 @@ export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean, via?: PopoverVia) => void;
-    keepChildrenMounted?: boolean;
+    /**
+     * When true, children never un-mount, otherwise they mount on open.
+     * When "lazy", they mount inside a startTransition after first render.
+     *
+     * @default false
+     */
+    keepChildrenMounted?: boolean | 'lazy';
     /**
      * Enable staying open while mouseover
      */
@@ -34,7 +39,7 @@ type PopoverContextValue = {
     onCustomAnchorRemove(): void;
     size?: SizeTokens;
     breakpointActive?: boolean;
-    keepChildrenMounted?: boolean;
+    keepChildrenMounted?: boolean | 'lazy';
     anchorTo?: Rect;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
@@ -58,10 +63,6 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<import("@ta
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverContentProps = PopoverContentTypeProps;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
-    /**
-     * @see https://github.com/theKashey/react-remove-scroll#usage
-     */
-    allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
     /** enable animation for content position changing */
     enableAnimationForPositionChange?: boolean;
 }
@@ -104,7 +105,7 @@ export interface PopoverContentExtraProps extends Omit<DismissableProps, 'onDism
      * Event handler called when auto-focusing on close. Can be prevented.
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false;
-    disableRemoveScroll?: boolean;
+    enableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
     setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -150,7 +151,13 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean, via?: PopoverVia) => void;
-    keepChildrenMounted?: boolean;
+    /**
+     * When true, children never un-mount, otherwise they mount on open.
+     * When "lazy", they mount inside a startTransition after first render.
+     *
+     * @default false
+     */
+    keepChildrenMounted?: boolean | "lazy";
     /**
      * Enable staying open while mouseover
      */

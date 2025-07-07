@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/collection": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",

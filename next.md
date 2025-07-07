@@ -1,6 +1,35 @@
+- popover bring back dismissable - document dismissable etc
+- in SheetImplCustom bad logic for pulling up when scroll view inside
+  - if scrollview isn't able to scroll we shouldn't disable that behavior:
+    `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
+    - we can: pass in scrollable node selector
+    - do logic to determine if its actually scrollable
+
+
+- Dialog.Overlay shouldn't need to define key for animation
+- apply visibility hidden to fully hidden popover for perf gains
+- css driver can noRerender
+- reanimated too but requires testing native + worklets
+
 v2:
 
+- remove webpack plugin
+
+- removeScrollEnabled => disableRemoveScroll
+
 - move to types react/react-dom 19
+
+- removing default size based styling, look at this in tooltip!:
+```
+const padding = !props.unstyled
+        ? (props.padding ??
+          props.size ??
+          popperSize ??
+          getSize('$true', {
+            shift: -2,
+          }))
+        : undefined
+```
 
 ---
 

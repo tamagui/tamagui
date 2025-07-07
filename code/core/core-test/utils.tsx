@@ -32,7 +32,8 @@ export function simplifiedGetSplitStyles(
         state: {},
       },
     } as any,
+    undefined,
     options.tag,
     true
-  )
+  )!
 }

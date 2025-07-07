@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-dm-serif-display",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,9 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "@tamagui/core": "workspace:*",
     "subset-font": "^2.1.0"
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*"
   }
 }

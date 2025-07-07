@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -45,14 +45,18 @@
     "@tamagui/react-native-use-pressable": "workspace:*",
     "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/react-native-web-internals": "workspace:*",
-    "invariant": "^2.2.4"
+    "@tamagui/web": "workspace:*",
+    "invariant": "^2.2.4",
+    "memoize-one": "^6.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "*",
+    "react-dom": "*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-dom": "*"
   },
   "license": "MIT",
   "tags": [

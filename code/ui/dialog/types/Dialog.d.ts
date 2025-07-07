@@ -2,11 +2,9 @@ import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import { RemoveScroll } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 declare const createDialogScope: import("@tamagui/create-context").CreateScope;
-type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 interface DialogProps {
     children?: React.ReactNode;
     open?: boolean;
@@ -17,10 +15,6 @@ interface DialogProps {
      * Used to disable the remove scroll functionality when open
      */
     disableRemoveScroll?: boolean;
-    /**
-     * @see https://github.com/theKashey/react-remove-scroll#usage
-     */
-    allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 type NonNull<A> = Exclude<A, void | null>;
 type DialogContextValue = {
@@ -34,7 +28,6 @@ type DialogContextValue = {
     open: NonNull<DialogProps['open']>;
     onOpenChange: NonNull<DialogProps['onOpenChange']>;
     modal: NonNull<DialogProps['modal']>;
-    allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
     scopeKey: string;
     adaptName: string;
 };
@@ -62,6 +55,7 @@ declare const DialogPortal: React.FC<DialogPortalProps>;
  * exported for internal use with extractable()
  */
 export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     open?: boolean | undefined;

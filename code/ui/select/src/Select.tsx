@@ -336,7 +336,7 @@ const SelectSheetController = (
         }
       }}
       open={context.open}
-      hidden={isAdapted === false}
+      hidden={!isAdapted}
     >
       {props.children}
     </SheetController>

@@ -6,7 +6,7 @@ interface PresenceChildProps {
     onExitComplete?: () => void;
     initial?: false | VariantLabels;
     custom?: any;
-    presenceAffectsLayout: boolean;
+    presenceAffectsLayout?: boolean;
     exitVariant?: string | null;
     enterVariant?: string | null;
     enterExitVariant?: string | null;

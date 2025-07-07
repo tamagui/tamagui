@@ -67,7 +67,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
         }
       )
 
-      const props = result.viewProps
+      const props = result?.viewProps || {}
       const Element = tag
       const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
 
@@ -129,7 +129,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // View: Animated.View,
     // Text: Animated.Text,
     isReactNative: true,
-    supportsCSSVars: false,
+    supportsCSS: false,
     animations,
     usePresence,
     ResetPresence,

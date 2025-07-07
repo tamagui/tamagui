@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin-fully-specified",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
@@ -15,8 +15,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node ../../../node_modules/.bin/tamagui-build --exclude __tests__",
-    "watch": "node ../../../node_modules/.bin/tamagui-build --exclude __tests__ --watch",
+    "watch": "node ../../../node_modules/.bin/tamagui-build --skip-native --exclude __tests__ --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "test": "vitest --run",
@@ -28,14 +27,12 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "react-native": "./dist/cjs/index.js",
       "default": "./dist/cjs/index.js"
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",
       "import": "./dist/esm/commonjs.mjs",
-      "require": "./dist/cjs/commonjs.js",
-      "react-native": "./dist/cjs/commonjs.js"
+      "require": "./dist/cjs/commonjs.js"
     }
   },
   "dependencies": {
@@ -43,7 +40,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.25.4",
-    "vitest": "^3.0.5"
+    "vitest": "^3.2.4"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

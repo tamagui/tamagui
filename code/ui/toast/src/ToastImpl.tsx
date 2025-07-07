@@ -23,7 +23,6 @@ import type {
   PanResponderGestureState,
 } from 'react-native'
 import { PanResponder } from 'react-native'
-
 import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
 import type { ScopedProps, SwipeDirection } from './ToastProvider'
@@ -353,7 +352,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                 context.isFocusedToastEscapeKeyDownRef.current = false
               })}
             >
-              <Theme forceClassName name={themeName}>
+              <Theme contain forceClassName name={themeName}>
                 <AnimatedView
                   {...panResponder?.panHandlers}
                   style={[{ margin: 'auto' }, animatedStyles]}

@@ -1,9 +1,8 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
+import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
-  Stack,
   View as TamaguiView,
   createStyledContext,
   getVariableValue,
@@ -14,9 +13,9 @@ import type {
   Coords,
   OffsetOptions,
   Placement,
+  SizeOptions,
   Strategy,
   UseFloatingReturn,
-  SizeOptions,
 } from '@tamagui/floating'
 import {
   arrow,
@@ -25,16 +24,15 @@ import {
   offset as offsetFn,
   platform,
   shift,
-  useFloating,
   size as sizeMiddleware,
+  useFloating,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
-import type { View } from 'react-native'
-import { Keyboard, useWindowDimensions } from 'react-native'
+import { Keyboard, View, useWindowDimensions } from 'react-native'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -45,21 +43,35 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 
 export type PopperContextValue = UseFloatingReturn & {
   size?: SizeTokens
-  placement?: Placement
-  arrowRef: any
-  onArrowSize?: (val: number) => void
   hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
     centerOffset: number
   }
+  placement?: Placement
+  arrowRef: any
+  onArrowSize?: (val: number) => void
 }
 
 export const PopperContext = createStyledContext<PopperContextValue>({} as any)
+export const PopperPositionContext = createStyledContext
 
 export const { useStyledContext: usePopperContext, Provider: PopperProvider } =
   PopperContext
 
+export const PopperInfrequentContext = createStyledContext<{
+  size?: SizeTokens
+}>({
+  size: undefined,
+})
+
+export const usePopperInfrequentContext = PopperInfrequentContext.useStyledContext
+
 export type PopperProps = {
+  /**
+   * Optional, will disable measuring updates when open is false for better performance
+   * */
+  open?: boolean
+
   size?: SizeTokens
   children?: React.ReactNode
 
@@ -98,6 +110,8 @@ export type PopperProps = {
   offset?: OffsetOptions
 
   disableRTL?: boolean
+
+  passThrough?: boolean
 }
 
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>
@@ -137,6 +151,8 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     offset,
     disableRTL,
     resize,
+    passThrough,
+    open,
     __scopePopper,
   } = props
 
@@ -146,10 +162,11 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   const floatingStyle = React.useRef({})
 
   let floating = useFloating({
+    open: passThrough ? false : open || true,
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: autoUpdate,
+    whileElementsMounted: passThrough || !open ? undefined : autoUpdate,
     platform:
       (disableRTL ?? setupOptions.disableRTL)
         ? {
@@ -170,6 +187,10 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       process.env.TAMAGUI_TARGET !== 'native' && resize
         ? sizeMiddleware({
             apply({ availableHeight, availableWidth }) {
+              if (passThrough) {
+                return
+              }
+
               Object.assign(floatingStyle.current, {
                 maxHeight: `${availableHeight}px`,
                 maxWidth: `${availableWidth}px`,
@@ -234,8 +255,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     }, [])
 
     useIsomorphicLayoutEffect(() => {
+      if (passThrough) return
       floating.update()
-    }, [dimensions, keyboardOpen])
+    }, [passThrough, dimensions, keyboardOpen])
   }
 
   const popperContext = {
@@ -248,7 +270,11 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     ...floating,
   }
 
-  return <PopperProvider {...popperContext}>{children}</PopperProvider>
+  return (
+    <PopperInfrequentContext.Provider size={size}>
+      <PopperProvider {...popperContext}>{children}</PopperProvider>
+    </PopperInfrequentContext.Provider>
+  )
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -295,10 +321,11 @@ export const PopperAnchor = YStack.styleable<ScopedPopperProps<PopperAnchorExtra
  * PopperContent
  * -----------------------------------------------------------------------------------------------*/
 
-type PopperContentElement = HTMLElement | View
+type PopperContentElement = TamaguiElement
 
 export type PopperContentExtraProps = {
   enableAnimationForPositionChange?: boolean
+  passThrough?: boolean
 }
 export type PopperContentProps = SizableStackProps & PopperContentExtraProps
 
@@ -329,10 +356,17 @@ export const PopperContentFrame = styled(YStack, {
   },
 })
 
-export const PopperContent = PopperContentFrame.styleable<
-  ScopedPopperProps<PopperContentExtraProps>
->(function PopperContent(props, forwardedRef) {
-  const { __scopePopper, enableAnimationForPositionChange, ...rest } = props
+export const PopperContent = React.forwardRef<
+  PopperContentElement,
+  ScopedPopperProps<PopperContentProps>
+>(function PopperContent(props: ScopedPopperProps<PopperContentProps>, forwardedRef) {
+  const {
+    __scopePopper,
+    enableAnimationForPositionChange,
+    children,
+    passThrough,
+    ...rest
+  } = props
   const { strategy, placement, refs, x, y, getFloatingProps, size } =
     usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
@@ -340,10 +374,10 @@ export const PopperContent = PopperContentFrame.styleable<
   const [needsMeasure, setNeedsMeasure] = React.useState(enableAnimationForPositionChange)
 
   useIsomorphicLayoutEffect(() => {
-    if (x && y) {
+    if (needsMeasure && x && y) {
       setNeedsMeasure(false)
     }
-  }, [enableAnimationForPositionChange, x, y])
+  }, [needsMeasure, enableAnimationForPositionChange, x, y])
 
   // default to not showing if positioned at 0, 0
   const hide = x === 0 && y === 0
@@ -357,9 +391,9 @@ export const PopperContent = PopperContentFrame.styleable<
     position: strategy,
     opacity: 1,
     ...(enableAnimationForPositionChange && {
-      // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animation: rest.animation,
       animateOnly: needsMeasure ? [] : rest.animateOnly,
+      // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animatePresence: false,
     }),
     ...(hide && {
@@ -375,17 +409,26 @@ export const PopperContent = PopperContentFrame.styleable<
     : frameProps
 
   return (
-    <Stack {...floatingProps}>
+    <TamaguiView
+      passThrough={passThrough}
+      ref={contentRefs}
+      {...(passThrough ? null : floatingProps)}
+    >
       <PopperContentFrame
         key="popper-content-frame"
-        data-placement={placement}
-        data-strategy={strategy}
-        contain="layout"
-        size={size}
-        {...style}
-        {...rest}
-      />
-    </Stack>
+        passThrough={passThrough}
+        {...(!passThrough && {
+          'data-placement': placement,
+          'data-strategy': strategy,
+          contain: 'layout',
+          size,
+          ...style,
+          ...rest,
+        })}
+      >
+        {children}
+      </PopperContentFrame>
+    </TamaguiView>
   )
 })
 

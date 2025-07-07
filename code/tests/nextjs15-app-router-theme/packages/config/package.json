@@ -1,6 +1,6 @@
 {
   "name": "@my/config",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": [
     "*.css"
   ],
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/config": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",

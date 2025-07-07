@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -89,7 +89,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "@tamagui/cli": "workspace:*",
-    "vitest": "^3.0.5"
+    "vitest": "^3.2.4"
   },
   "publishConfig": {
     "access": "public"

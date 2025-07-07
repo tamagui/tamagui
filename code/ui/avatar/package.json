@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/avatar",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": [
     "*.css"
   ],
@@ -37,9 +37,11 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/shapes": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*"
   },
   "devDependencies": {

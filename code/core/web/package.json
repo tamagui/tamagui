@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -51,7 +51,7 @@
     "react-dom": "*",
     "react-native": "^0.79.2",
     "typescript": "^5.8.2",
-    "vitest": "^3.0.5"
+    "vitest": "^3.2.4"
   },
   "exports": {
     "./package.json": "./package.json",

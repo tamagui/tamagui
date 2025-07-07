@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
+    "@tamagui/start-transition": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

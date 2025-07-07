@@ -69,6 +69,7 @@ export type {
   FontLanguages,
   FontLetterSpacingTokens,
   FontLineHeightTokens,
+  FontFamilyTokens,
   FontSizeTokens,
   FontStyleTokens,
   FontTokens,
@@ -131,6 +132,7 @@ export type {
 export {
   Configuration,
   ComponentContext,
+  GroupContext,
   FontLanguage,
   // components
   Stack,

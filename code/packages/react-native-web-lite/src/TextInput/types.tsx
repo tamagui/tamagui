@@ -17,6 +17,8 @@ export type TextInputStyle = {
 } & TextStyle
 
 export type TextInputProps = {
+  showSoftInputOnFocus?: boolean
+  caretHidden?: boolean
   autoCapitalize?: 'characters' | 'none' | 'sentences' | 'words'
   autoComplete?: string | null
   autoCompleteType?: string | null // Compat with React Native (Bug react-native#26003),

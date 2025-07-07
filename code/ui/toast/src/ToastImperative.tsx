@@ -1,7 +1,6 @@
 import type { NativePlatform, NativeValue } from '@tamagui/core'
-import { isWeb } from '@tamagui/core'
+import { isAndroid, isIos, isWeb } from '@tamagui/core'
 import React from 'react'
-import { Platform } from 'react-native'
 import { createNativeToast } from './createNativeToast'
 import type { CreateNativeToastOptions, NativeToastRef } from './types'
 
@@ -132,8 +131,8 @@ export const ToastImperativeProvider = ({
         native === true ||
         (isWeb && isWebNative) ||
         (!isWeb && isMobileNative) ||
-        (Platform.OS === 'android' && isAndroidNative) ||
-        (Platform.OS === 'ios' && isIosNative)
+        (isAndroid && isAndroidNative) ||
+        (isIos && isIosNative)
 
       if (isHandledNatively) {
         const nativeToastResult = createNativeToast(title, showOptions ?? {})

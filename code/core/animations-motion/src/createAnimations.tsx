@@ -9,10 +9,11 @@ import {
   Text,
   type UniversalAnimatedNumber,
   useComposedRefs,
+  useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
 } from '@tamagui/core'
-import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
@@ -22,7 +23,7 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -35,6 +36,14 @@ type MotionAnimatedNumberStyle = {
 }
 
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
+
+type AnimationProps = {
+  doAnimate?: Record<string, unknown>
+  dontAnimate?: Record<string, unknown>
+  animationOptions?: AnimationOptions & {
+    isExiting?: boolean
+  }
+}
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animationsProp: A
@@ -55,7 +64,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     View: MotionView,
     Text: MotionText,
     isReactNative: false,
-    supportsCSSVars: true,
+    supportsCSS: true,
     needsWebStyles: true,
     avoidReRenders: true,
     animations,
@@ -63,7 +72,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     ResetPresence,
 
     useAnimations: (animationProps) => {
-      const { props, style, componentState, stateRef, useStyleEmitter } = animationProps
+      const { props, style, componentState, stateRef, useStyleEmitter, presence } =
+        animationProps
 
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
@@ -71,87 +81,175 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
-      const presenceContext = React.useContext(PresenceContext)
+      const isExitingRender = presence?.[0] === false
+      const sendExitComplete = presence?.[1]
 
       const [scope, animate] = useAnimate()
-      const lastAnimationStyle = useRef<Object | null>(null)
+      const lastAnimationStyle = useRef<Record<string, unknown> | null>(null)
+      const lastDontAnimate = useRef<Record<string, unknown>>({})
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
 
-      const { dontAnimate, doAnimate, animationOptions } = useMemo(() => {
+      const shouldDebug =
+        process.env.NODE_ENV === 'development' &&
+        props['debug'] &&
+        props['debug'] !== 'profile'
+
+      const {
+        dontAnimate = {},
+        doAnimate,
+        animationOptions,
+      } = useMemo(() => {
         const motionAnimationState = getMotionAnimatedProps(
           props as any,
           style,
-          disableAnimation
+          disableAnimation,
+          isExitingRender
         )
         return motionAnimationState
-      }, [presenceContext, animationKey, styleKey])
+      }, [isExitingRender, animationKey, styleKey])
 
-      // const id = useId()
+      const animationsQueue = useRef<AnimationProps[]>([])
+      const lastAnimateAt = useRef(0)
+      const minTimeBetweenAnimations = 16.667
+      const disposed = useRef(false)
 
-      const runAnimation = (
-        nextStyle: Record<string, unknown> | null,
-        animationOptions: AnimationOptions | undefined
-      ) => {
-        if (!nextStyle) return
-        if (!(stateRef.current.host instanceof HTMLElement)) {
+      useEffect(() => {
+        return () => {
+          disposed.current = true
+        }
+      }, [])
+
+      // useIsomorphicLayoutEffect(() => {
+      //   let disposed = false
+
+      //   // requestAnimationFrame(animationFrame)
+      //   // frame.postRender(animationFrame)
+
+      //   return () => {
+      //     disposed = true
+      //   }
+      // }, [scope])
+
+      const runAnimation = (props: AnimationProps) => {
+        const waitForNextAnimationFrame = () => {
+          // we just skip to the last one
+          const queue = animationsQueue.current
+          const last = queue[queue.length - 1]
+          animationsQueue.current = []
+
+          if (!last) {
+            console.error(`Should never hit`)
+            return
+          }
+
+          if (!props) return
+
+          const elapsed = Date.now() - lastAnimateAt.current
+
+          if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
+            console.info('slow', elapsed, { props })
+          }
+
+          if (scope.current) {
+            flushAnimation(props)
+          } else {
+            if (!disposed.current) {
+              // frame.postRender(waitForNextAnimationFrame)
+              requestAnimationFrame(waitForNextAnimationFrame)
+            }
+          }
+        }
+
+        const hasQueue = animationsQueue.current.length
+        const shouldWait =
+          hasQueue || Date.now() - lastAnimateAt.current > minTimeBetweenAnimations
+
+        if (scope.current && !shouldWait) {
+          flushAnimation(props)
+        } else {
+          animationsQueue.current.push(props)
+          if (!hasQueue) {
+            waitForNextAnimationFrame()
+          }
+        }
+      }
+
+      const flushAnimation = ({
+        doAnimate,
+        dontAnimate,
+        animationOptions = {},
+      }: AnimationProps) => {
+        const node = stateRef.current.host
+        if (!(node instanceof HTMLElement)) {
+          return
+        }
+        if (!doAnimate && !dontAnimate) {
           return
         }
 
-        // ideally this would just come from tamagui
-        fixStyles(nextStyle)
-        styleToCSS(nextStyle)
-
         if (!lastAnimationStyle.current) {
-          // console.log('first', id, animationStyle)
-          lastAnimationStyle.current = nextStyle
-          controls.current = animate(scope.current, nextStyle, {
+          lastAnimationStyle.current = doAnimate || {}
+          const firstAnimation = animate(scope.current, doAnimate || {}, {
             duration: 0,
             type: 'tween',
           })
-          controls.current.complete()
+          firstAnimation.complete()
           scope.animations = []
+
+          if (shouldDebug) {
+            console.groupCollapsed(`[motion] 🌊 FIRST`)
+            console.info(doAnimate)
+            console.groupEnd()
+          }
           return
         }
 
-        const diff = {}
-        for (const key in nextStyle) {
-          if (nextStyle[key] !== lastAnimationStyle.current[key]) {
-            diff[key] = nextStyle[key]
+        const next = doAnimate || {}
+
+        // handle case where dontAnimate changes
+        // we just set it onto animate + set options to not actually animate
+        if (dontAnimate) {
+          if (node) {
+            const diff = getDiff(lastDontAnimate.current, dontAnimate)
+            if (diff) {
+              lastDontAnimate.current = dontAnimate
+              Object.assign(node.style, dontAnimate)
+            }
           }
         }
 
-        if (
-          process.env.NODE_ENV === 'development' &&
-          props['debug'] &&
-          props['debug'] !== 'profile'
-        ) {
-          console.info(
-            `[animations-motion] animate (`,
-            JSON.stringify(diff, null, 2) + ')'
-          )
+        const diff = getDiff(lastAnimationStyle.current, next)
+
+        if (shouldDebug) {
+          console.groupCollapsed(`[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`)
+          console.info({ next, animationOptions, animationProps, lastAnimationStyle })
+          console.groupEnd()
         }
 
-        // for some reason it keeps adding and never removes
-        scope.animations = scope.animations.filter((x) => {
-          try {
-            return x.state !== 'finished' && x.state !== 'idle'
-          } catch {
-            // it can error
-            return true
-          }
-        })
+        if (!diff) {
+          return
+        }
+
+        lastAnimateAt.current = Date.now()
         controls.current = animate(scope.current, diff, animationOptions)
-        lastAnimationStyle.current = nextStyle
+        lastAnimationStyle.current = next
+
+        if (animationOptions.isExiting) {
+          controls.current.finished.then(() => {
+            sendExitComplete?.()
+          })
+        }
       }
 
       useStyleEmitter?.((nextStyle) => {
-        const { doAnimate, animationOptions } = getMotionAnimatedProps(
+        const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
-          disableAnimation
+          disableAnimation,
+          isExitingRender
         )
-        runAnimation(doAnimate, animationOptions)
+        runAnimation(animationProps)
       })
 
       // strict mode correctness fix, idk why i thought it would clear a useRef
@@ -164,24 +262,43 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
       }, [])
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         if (!doAnimate) return
-        runAnimation(doAnimate, animationOptions)
+
+        // always clear queue if we re-render
+        animationsQueue.current = []
+
+        runAnimation({
+          doAnimate,
+          animationOptions,
+        })
       }, [JSON.stringify(doAnimate), lastAnimationStyle])
 
-      if (
-        process.env.NODE_ENV === 'development' &&
-        props['debug'] &&
-        props['debug'] !== 'profile'
-      ) {
-        console.info(
-          `[animations-motion] render (`,
-          JSON.stringify(dontAnimate, null, 2) + ')'
-        )
+      useIsomorphicLayoutEffect(() => {
+        lastDontAnimate.current = dontAnimate
+      })
+
+      const [initialStyle] = useState(() => ({ ...dontAnimate, ...doAnimate }))
+
+      if (shouldDebug) {
+        console.groupCollapsed(`[motion] 🌊 render`)
+        console.info({
+          style,
+          doAnimate,
+          dontAnimate,
+          scope,
+          animationOptions,
+          initialStyle,
+        })
+        console.groupEnd()
       }
 
       return {
-        style: dontAnimate,
+        // avoid first render returning wrong styles - always render all, after that we can just mutate
+        style: {
+          ...initialStyle,
+          ...dontAnimate,
+        },
         ref: scope,
         tag: 'div',
       }
@@ -256,24 +373,25 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   function getMotionAnimatedProps(
     props: { animation: AnimationProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
-    disable = false
-  ) {
+    disable: boolean,
+    isExiting: boolean
+  ): AnimationProps {
     if (disable) {
       return {
         dontAnimate: style,
-        doAnimate: null,
       }
     }
 
     const animationOptions = animationPropToAnimationConfig(props.animation)
 
-    let dontAnimate = {}
-    let doAnimate: Record<string, unknown> | null = null
+    let dontAnimate: Record<string, unknown> | undefined
+    let doAnimate: Record<string, unknown> | undefined
 
     const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
       if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
+        dontAnimate ||= {}
         dontAnimate[key] = value
       } else {
         doAnimate ||= {}
@@ -281,10 +399,37 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
+    // ideally this would just come from tamagui
+    if (doAnimate) {
+      fixStyles(doAnimate)
+      styleToCSS(doAnimate)
+    }
+    if (dontAnimate) {
+      fixStyles(dontAnimate)
+      styleToCSS(dontAnimate)
+    }
+
+    // half works in chrome but janky and stops working after first animation
+    // if (
+    //   typeof doAnimate?.opacity !== 'undefined' &&
+    //   typeof dontAnimate?.backdropFilter === 'string'
+    // ) {
+    //   if (!dontAnimate.backdropFilter.includes('opacity(')) {
+    //     dontAnimate.backdropFilter += ` opacity(${doAnimate.opacity})`
+    //     dontAnimate.WebkitBackdropFilter += ` opacity(${doAnimate.opacity})`
+    //     dontAnimate.transition = 'backdrop-filter ease-in 1000ms'
+    //   }
+    // }
+
     return {
       dontAnimate,
       doAnimate,
-      animationOptions,
+      animationOptions: isExiting
+        ? {
+            ...animationOptions,
+            isExiting: true,
+          }
+        : animationOptions,
     }
   }
 
@@ -309,15 +454,30 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       return {}
     }
 
+    const defaultConfig = animations[defaultAnimationKey]
+
     return {
-      default: animations[defaultAnimationKey],
+      default: defaultConfig,
       ...Object.fromEntries(
-        Object.keys(specificAnimations).flatMap((key) => {
-          if (animations[key]) {
-            return [[key, animations[key]]]
+        Object.entries(specificAnimations).flatMap(
+          ([propName, animationNameOrConfig]) => {
+            if (typeof animationNameOrConfig === 'string') {
+              return [[propName, animations[animationNameOrConfig]]]
+            }
+            if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
+              return [
+                [
+                  propName,
+                  {
+                    ...defaultConfig,
+                    ...animationNameOrConfig,
+                  },
+                ],
+              ]
+            }
+            return []
           }
-          return []
-        })
+        )
       ),
     }
   }
@@ -343,6 +503,12 @@ const disableAnimationProps = new Set<string>([
   'pointerEvents',
   'position',
   'textWrap',
+  'zIndex',
+  'overflowX',
+  'overflowY',
+  'outlineStyle',
+  'outlineWidth',
+  'outlineColor',
 ])
 
 const MotionView = createMotionView('div')
@@ -350,7 +516,7 @@ const MotionText = createMotionView('span')
 
 function createMotionView(defaultTag: string) {
   // return forwardRef((props: any, ref) => {
-  //   console.log('rendering?', props)
+  //   console.info('rendering?', props)
   //   const Element = motion[props.tag || defaultTag]
   //   return <Element ref={ref} {...props} />
   // })
@@ -448,4 +614,22 @@ function createMotionView(defaultTag: string) {
   Component['acceptTagProp'] = true
 
   return Component
+}
+
+function getDiff<T extends Record<string, unknown>>(
+  previous: T | null,
+  next: T
+): Record<string, unknown> | null {
+  if (!previous) {
+    return next
+  }
+
+  let diff: Record<string, unknown> | null = null
+  for (const key in next) {
+    if (next[key] !== previous[key]) {
+      diff ||= {}
+      diff[key] = next[key]
+    }
+  }
+  return diff
 }

@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, JSX, ReactNode, RefAttributes, RefObject } from 'react';
+import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { PxValue, Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
@@ -42,13 +42,13 @@ export type TamaguiProjectInfo = {
 };
 export type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
+export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
     inText: boolean;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
-    groups: GroupContextType;
-    setParentFocusState: ((next: Partial<TamaguiComponentState>) => void) | null;
+    setParentFocusState: ComponentSetStateShallow | null;
 };
 export type TamaguiComponentStateRef = {
     host?: TamaguiElement;
@@ -58,49 +58,39 @@ export type TamaguiComponentStateRef = {
     hasAnimated?: boolean;
     themeShallow?: boolean;
     hasEverThemed?: boolean | 'wrapped';
+    hasEverResetPresence?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
-    stateEmitter?: ComponentStateEmitter;
+    setStateShallow?: ComponentSetStateShallow;
     useStyleListener?: UseStyleListener;
-    group?: {
-        listeners: Set<GroupStateListener>;
-        layout?: LayoutValue;
-        emit: GroupStateListener;
-        subscribe: (cb: GroupStateListener) => () => void;
-    };
+    group?: ComponentGroupEmitter;
 };
-export type ComponentStateListener = (state: TamaguiComponentState) => void;
-export type ComponentStateEmitter = {
-    listeners: Set<ComponentStateListener>;
-    emit: ComponentStateListener;
-    subscribe: (cb: ComponentStateListener) => () => void;
+export type ComponentGroupEmitter = {
+    listeners: Set<GroupStateListener>;
+    emit: GroupStateListener;
+    subscribe: (cb: GroupStateListener) => () => void;
 };
 export type WidthHeight = {
     width: number;
     height: number;
 };
-type ComponentGroupEvent = {
-    pseudo?: PseudoGroupState;
-    layout?: WidthHeight;
-};
-export type GroupContextType = {
-    emit: GroupStateListener;
-    subscribe: (cb: GroupStateListener) => DisposeFn;
-    state: Record<string, ComponentGroupEvent>;
-    layout?: LayoutValue;
-};
-export type GroupStateListener = (name: string, state: ComponentGroupEvent) => void;
-type PseudoGroupState = {
-    hover?: boolean;
-    press?: boolean;
-    focus?: boolean;
-    focusVisible?: boolean;
-    focusWithin?: boolean;
-};
-export type GroupState = {
+export type ChildGroupState = {
     pseudo?: PseudoGroupState;
     media?: Record<MediaQueryKey extends number ? never : MediaQueryKey, boolean>;
 };
+export type ComponentGroupState = {
+    pseudo?: PseudoGroupState;
+    layout?: WidthHeight;
+};
+export type GroupStateListener = (state: ComponentGroupState) => void;
+export type SingleGroupContext = {
+    subscribe: (cb: GroupStateListener) => DisposeFn;
+    state: ComponentGroupState;
+};
+export type AllGroupContexts = {
+    [GroupName: string]: SingleGroupContext;
+};
+export type PseudoGroupState = Pick<TamaguiComponentState, 'disabled' | 'hover' | 'press' | 'pressIn' | 'focus' | 'focusVisible' | 'focusWithin'>;
 export type LayoutEvent = {
     nativeEvent: {
         layout: LayoutValue;
@@ -299,6 +289,7 @@ export interface ThemeProps {
 }
 export type UseThemeWithStateProps = ThemeProps & {
     deopt?: boolean;
+    passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
 };
@@ -690,7 +681,7 @@ export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValue
     autocompleteSpecificTokens: infer Val;
 } ? Val extends true | undefined ? SpecificTokens : never : never);
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
+    [K in keyof T]: ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
@@ -1090,6 +1081,11 @@ interface ExtraBaseProps {
      * set this to `false` and it will pass through to the next animated child.
      */
     animatePresence?: boolean;
+    /**
+     * Avoids as much work as possible and passes through the children with no changes.
+     * Advanced: Useful for adapting to other element when you want to avoid re-parenting.
+     */
+    passThrough?: boolean;
 }
 interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps, ExtraBaseProps {
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
@@ -1478,18 +1474,19 @@ export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = U
     value: V;
     hostRef: RefObject<HTMLElement | View>;
 }, onValue: (current: number) => void) => void;
-export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: number) => Record<string, unknown>) => any;
+export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
-    supportsCSSVars?: boolean;
+    supportsCSS?: boolean;
     needsWebStyles?: boolean;
     avoidReRenders?: boolean;
     useAnimations: UseAnimationHook;
     usePresence: () => UsePresenceResult;
     ResetPresence: (props: {
-        children?: any;
-    }) => JSX.Element;
+        children?: React.ReactNode;
+        disabled?: boolean;
+    }) => React.ReactNode;
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
     useAnimatedNumberReaction: UseAnimatedNumberReaction;
@@ -1518,6 +1515,7 @@ export type UseAnimationHook = (props: {
 }) => null | {
     style?: StackStyleBase | StackStyleBase[];
     className?: string;
+    ref?: any;
 };
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = Record<string, StyleObject>;

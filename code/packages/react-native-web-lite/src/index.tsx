@@ -32,7 +32,7 @@ export { default as Animated } from './vendor/react-native/Animated/Animated'
 export { default as Easing } from './vendor/react-native/Animated/Easing'
 
 // react-native
-export { default as NativeEventEmitter } from './vendor/react-native/NativeEventEmitter/index'
+export { default as NativeEventEmitter } from './vendor/react-native/EventEmitter/NativeEventEmitter'
 
 // APIs
 export { default as AccessibilityInfo } from './AccessibilityInfo/index'
@@ -54,16 +54,18 @@ export { default as PixelRatio } from './PixelRatio/index'
 export { default as Share } from './Share/index'
 export { default as Vibration } from './Vibration/index'
 
-// unimplemented
+// implemented components
 export { default as FlatList } from './FlatList'
+export { default as SectionList } from './SectionList'
+export { default as VirtualizedList } from './VirtualizedList'
+export { default as TouchableNativeFeedback } from './TouchableNativeFeedback'
+
+// unimplemented
 export {
   default as DrawerLayoutAndroid,
-  default as SectionList,
   default as Switch,
   default as TouchableHighlight,
-  default as TouchableNativeFeedback,
 } from './UnimplementedView'
-export { default as VirtualizedList } from './vendor/react-native/VirtualizedList'
 
 export { default as Touchable, default as TouchableOpacity } from './TouchableOpacity'
 export { default as TouchableWithoutFeedback } from './TouchableWithoutFeedback'

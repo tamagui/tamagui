@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dot-dev",
-  "version": "1.129.11",
+  "version": "1.130.8",
   "type": "module",
   "private": true,
   "sideEffects": false,
@@ -53,13 +53,13 @@
     "@tamagui/ui": "workspace:*",
     "@tamagui/use-store": "workspace:*",
     "@vercel/og": "^0.6.5",
-    "@vxrn/color-scheme": "^1.1.502",
+    "@vxrn/color-scheme": "^1.1.504",
     "ai": "^4.1.46",
     "color2k": "^2.0.2",
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
     "masonic": "^4.0.1",
-    "one": "1.1.502",
+    "one": "1.1.504",
     "postmark": "^3.0.18",
     "puppeteer": "^24.3.1",
     "react-hotkeys-hook": "^4.5.0",
@@ -71,7 +71,7 @@
     "three": "^0.152.2",
     "valibot": "^0.35.0",
     "victory": "^37.0.2",
-    "vite": "^6.1.0",
+    "vite": "^7.0.2",
     "vite-plugin-inspect": "^0.8.4",
     "zod": "^3.25.67"
   },
@@ -86,6 +86,7 @@
     "mdx-bundler": "^10.0.2",
     "subset-font": "^2.1.0",
     "vite-bundle-analyzer": "^0.9.4",
-    "vitest": "^3.0.5"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }
