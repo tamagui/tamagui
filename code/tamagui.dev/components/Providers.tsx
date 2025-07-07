@@ -1,7 +1,7 @@
 import { getDocsSection, InitialPathContext } from '@tamagui/logo'
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
 import { usePathname } from 'one'
-import { TamaguiProvider } from 'tamagui'
+import { TamaguiProvider } from '@tamagui/ui'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'

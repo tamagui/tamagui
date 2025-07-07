@@ -18,8 +18,8 @@
     "@tamagui/create-theme": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
-    "@tamagui/ui": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
+    "@tamagui/ui": "workspace:*",
     "react-native-web": "^0.20.0"
   },
   "devDependencies": {

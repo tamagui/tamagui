@@ -44,9 +44,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/ui": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "@tamagui/ui": "workspace:*",
     "one": "1.1.504"
   },
   "devDependencies": {

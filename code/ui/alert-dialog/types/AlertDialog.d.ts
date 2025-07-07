@@ -15,18 +15,18 @@ declare const AlertDialogPortal: React.FC<AlertDialogPortalProps>;
 interface AlertDialogOverlayProps extends DialogOverlayProps {
 }
 declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, "forceMount" | "__scopeAlertDialog"> & DialogOverlayExtraProps & {
     __scopeAlertDialog?: Scope;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogOverlayExtraProps & {
     __scopeAlertDialog?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 interface AlertDialogContentProps extends Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'> {
@@ -63,18 +63,18 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
     Trigger: React.ForwardRefExoticComponent<AlertDialogTriggerProps & React.RefAttributes<TamaguiElement>>;
     Portal: React.FC<AlertDialogPortalProps>;
     Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        open?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>, "forceMount" | "__scopeAlertDialog"> & DialogOverlayExtraProps & {
         __scopeAlertDialog?: Scope;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogOverlayExtraProps & {
         __scopeAlertDialog?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        open?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Content: React.ForwardRefExoticComponent<AlertDialogContentProps & React.RefAttributes<TamaguiElement>>;

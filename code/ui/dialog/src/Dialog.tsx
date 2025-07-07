@@ -7,6 +7,7 @@ import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   Theme,
   View,
+  getExpandedShorthand,
   styled,
   useProps,
   useThemeName,
@@ -206,7 +207,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(true)
   }, [])
 
-  const zIndex = useProps(props).zIndex
+  const zIndex = getExpandedShorthand('zIndex', props)
 
   const contents = (
     <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>

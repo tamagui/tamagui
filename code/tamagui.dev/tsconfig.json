@@ -3,12 +3,26 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "~/*": ["./*"],
-      "tamagui": ["../ui/tamagui"],
-      "@tamagui/*": ["../core/*", "../ui/*", "../packages/*"],
-      "@tamagui/bento": ["../bento"],
-      "@tamagui/bento-example": ["../bento/example"],
-      "@tamagui/demos": ["../demos"]
+      "~/*": [
+        "./*"
+      ],
+      "tamagui": [
+        "../ui/tamagui-ui"
+      ],
+      "@tamagui/*": [
+        "../core/*",
+        "../ui/*",
+        "../packages/*"
+      ],
+      "@tamagui/bento": [
+        "../bento"
+      ],
+      "@tamagui/bento-example": [
+        "../bento/example"
+      ],
+      "@tamagui/demos": [
+        "../demos"
+      ]
     },
     "outDir": "dist",
     "importHelpers": true,
@@ -37,10 +51,23 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "es2020",
-    "types": ["node", "react", "vite/client"],
-    "lib": ["dom", "esnext"]
+    "types": [
+      "node",
+      "react",
+      "vite/client"
+    ],
+    "lib": [
+      "dom",
+      "esnext"
+    ]
   },
-  "exclude": ["**/test", "**/dist", "**/types", "**/__tests__", "**/bento-output"],
+  "exclude": [
+    "**/test",
+    "**/dist",
+    "**/types",
+    "**/__tests__",
+    "**/bento-output"
+  ],
   "typeAcquisition": {
     "enable": true
   },

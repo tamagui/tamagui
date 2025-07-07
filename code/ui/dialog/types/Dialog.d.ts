@@ -58,7 +58,6 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type DialogOverlayExtraProps = {
@@ -70,18 +69,18 @@ export type DialogOverlayExtraProps = {
 };
 type DialogOverlayProps = YStackProps & DialogOverlayExtraProps;
 declare const DialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, "__scopeDialog" | "forceMount"> & DialogOverlayExtraProps & {
     __scopeDialog?: Scope;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogOverlayExtraProps & {
     __scopeDialog?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -224,18 +223,18 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Portal: React.FC<DialogPortalProps>;
     Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        open?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>, "__scopeDialog" | "forceMount"> & DialogOverlayExtraProps & {
         __scopeDialog?: Scope;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogOverlayExtraProps & {
         __scopeDialog?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        open?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

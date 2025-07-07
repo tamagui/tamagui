@@ -9,7 +9,6 @@ import {
 } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import { spacedChildren } from '@tamagui/spacer'
 import React, { useMemo } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { isDevTools } from './constants/isDevTools'
@@ -40,12 +39,6 @@ import type {
   LayoutEvent,
   PseudoGroupState,
   SingleGroupContext,
-  // SizeTokens,
-  // SpaceDirection,
-  // SpacerProps,
-  // SpacerStyleProps,
-  // SpaceValue,
-  // StackNonStyleProps,
   StackProps,
   StaticConfig,
   StyleableOptions,
@@ -1234,17 +1227,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    let content =
-      !children || asChild || !splitStyles
-        ? children
-        : spacedChildren({
-            separator,
-            children,
-            space,
-            direction: _spaceDirection,
-            isZStack,
-            debug: debugProp,
-          })
+    let content = children
 
     if (asChild) {
       elementType = Slot
