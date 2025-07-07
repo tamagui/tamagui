@@ -39,7 +39,7 @@
     },
     "plugins": ["expo-font"],
     "experiments": {
-      "reactCanary": false
+      "reactCanary": true
     }
   }
 }

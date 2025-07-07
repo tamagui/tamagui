@@ -3,7 +3,6 @@ import '@tamagui/polyfill-dev'
 
 import {
   Button,
-  ButtonFrame,
   H1,
   Header,
   SizableText,
@@ -50,7 +49,7 @@ export function UseCases() {
   )
 }
 
-const CustomButtonFrame = styled(ButtonFrame, {
+const CustomButtonFrame = styled(Button.Frame, {
   variants: {
     backgrounded: {
       true: {
@@ -174,7 +173,6 @@ export const Sandbox = () => {
           <Button
             onPress={async () => {
               await import('./SecondPage')
-              console.log(`loaded (not navigating)`)
             }}
           >
             Load Second Page
