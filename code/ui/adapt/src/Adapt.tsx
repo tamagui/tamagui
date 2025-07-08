@@ -41,22 +41,19 @@ export type AdaptProps = {
 
 type Component = (props: any) => any
 
-/**
- * Contexts
- */
-
-const CurrentAdaptContextScope = createContext('')
-
-export const AdaptContext = createStyledContext<AdaptParentContextI>({
-  Contents: null as any,
-  scopeName: '',
-  portalName: '',
-  platform: null as any,
-  setPlatform: (x: AdaptPlatform) => {},
-  when: null as any,
-  setChildren: null as any,
-  setWhen: () => {},
-})
+export const AdaptContext = createStyledContext<AdaptParentContextI>(
+  {
+    Contents: null as any,
+    scopeName: '',
+    portalName: '',
+    platform: null as any,
+    setPlatform: (x: AdaptPlatform) => {},
+    when: null as any,
+    setChildren: null as any,
+    setWhen: () => {},
+  },
+  'Adapt'
+)
 
 export const ProvideAdaptContext = ({
   children,
@@ -65,20 +62,14 @@ export const ProvideAdaptContext = ({
   const scope = context.scopeName || ''
 
   return (
-    <CurrentAdaptContextScope.Provider value={scope}>
-      <AdaptContext.Provider scope={scope} {...context}>
-        {children}
-      </AdaptContext.Provider>
-    </CurrentAdaptContextScope.Provider>
+    <AdaptContext.Provider scope={scope} {...context}>
+      {children}
+    </AdaptContext.Provider>
   )
 }
 
 export const useAdaptContext = (scope = '') => {
-  const contextScope = useContext(CurrentAdaptContextScope)
-  const context = AdaptContext.useStyledContext(
-    scope === '' ? contextScope || scope : scope
-  )
-  return context
+  return AdaptContext.useStyledContext(scope)
 }
 
 /**
@@ -169,7 +160,6 @@ export const Adapt = withStaticProperties(
   function Adapt(props: AdaptProps) {
     const { platform, when, children, scope } = props
     const context = useAdaptContext(scope)
-    const scopeName = scope ?? context.scopeName
     const enabled = useAdaptIsActiveGiven(props)
 
     useIsomorphicLayoutEffect(() => {
@@ -201,13 +191,7 @@ export const Adapt = withStaticProperties(
       }
     }, [output])
 
-    return (
-      <StackZIndexContext>
-        <CurrentAdaptContextScope.Provider value={scopeName}>
-          {!enabled ? null : output}
-        </CurrentAdaptContextScope.Provider>
-      </StackZIndexContext>
-    )
+    return <StackZIndexContext>{!enabled ? null : output}</StackZIndexContext>
   },
   {
     Contents: AdaptContents,

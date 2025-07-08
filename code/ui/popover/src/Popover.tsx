@@ -579,10 +579,13 @@ export type PopoverArrowProps = PopperArrowProps
 export const PopoverArrow = PopperArrow.styleable<PopperArrowExtraProps>(
   function PopoverArrow(props, forwardedRef) {
     const { scope, ...rest } = props
-    const isAdapted = useAdaptIsActive()
+    const context = usePopoverContext(scope)
+    const isAdapted = useAdaptIsActive(context.popoverScope)
+
     if (isAdapted) {
       return null
     }
+
     return (
       <PopperArrow
         scope={scope}
@@ -634,9 +637,12 @@ const PopoverScrollView = React.forwardRef<ScrollView, PopoverScrollViewProps>(
   }
 )
 
+// only should be used here at root, the rest should get it from props
+const DEFAULT_SCOPE = ''
+
 export const Popover = withStaticProperties(
   React.forwardRef<Popover, PopoverProps>(function Popover(
-    { scope = '', ...props },
+    { scope = DEFAULT_SCOPE, ...props },
     ref
   ) {
     const id = React.useId()
@@ -659,9 +665,6 @@ export const Popover = withStaticProperties(
     FocusScope: FocusScopeController,
   }
 )
-
-// only should be used here at root, the rest should get it from props
-const DEFAULT_SCOPE = ''
 
 const PopoverInner = React.forwardRef<Popover, PopoverProps & { id: string }>(
   function PopoverInner(props, forwardedRef) {
@@ -825,6 +828,6 @@ const PopoverSheetController = ({
 }
 
 const useShowPopoverSheet = (context: PopoverContextValue) => {
-  const isAdapted = useAdaptIsActive()
+  const isAdapted = useAdaptIsActive(context.popoverScope)
   return context.open === false ? false : isAdapted
 }
