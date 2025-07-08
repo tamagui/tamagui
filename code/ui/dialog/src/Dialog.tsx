@@ -3,17 +3,17 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
+import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   Theme,
   View,
+  createStyledContext,
   getExpandedShorthand,
   spacedChildren,
   styled,
   useThemeName,
 } from '@tamagui/core'
-import type { Scope } from '@tamagui/create-context'
-import { createContext, createContextScope } from '@tamagui/create-context'
+import { createContext } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
@@ -31,13 +31,11 @@ import * as React from 'react'
 
 const DIALOG_NAME = 'Dialog'
 
-type ScopedProps<P> = P & { __scopeDialog?: Scope }
+export type DialogScopes = string
 
-const [createDialogContext, createDialogScope] = createContextScope(DIALOG_NAME)
+type ScopedProps<P> = P & { scope?: DialogScopes }
 
-type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
-
-interface DialogProps {
+type DialogProps = ScopedProps<{
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
@@ -48,11 +46,12 @@ interface DialogProps {
    * Used to disable the remove scroll functionality when open
    */
   disableRemoveScroll?: boolean
-}
+}>
 
 type NonNull<A> = Exclude<A, void | null>
 
 type DialogContextValue = {
+  forceMount?: boolean
   disableRemoveScroll?: boolean
   triggerRef: React.RefObject<TamaguiElement | null>
   contentRef: React.RefObject<TamaguiElement | null>
@@ -63,48 +62,51 @@ type DialogContextValue = {
   open: NonNull<DialogProps['open']>
   onOpenChange: NonNull<DialogProps['onOpenChange']>
   modal: NonNull<DialogProps['modal']>
-  scopeKey: string
+  scope: DialogScopes
   adaptName: string
 }
 
-const [DialogProvider, useDialogContext] =
-  createDialogContext<DialogContextValue>(DIALOG_NAME)
+export const DialogContext = createStyledContext<DialogContextValue>(
+  // since we always provide this we can avoid setting here
+  {} as DialogContextValue,
+  'Dialog__'
+)
+
+export const { useStyledContext: useDialogContext, Provider: DialogProvider } =
+  DialogContext
 
 /* -------------------------------------------------------------------------------------------------
  * DialogTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-const TRIGGER_NAME = 'DialogTrigger'
-
 const DialogTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
+  name: 'DialogTrigger',
 })
 
-interface DialogTriggerProps extends StackProps {}
+type DialogTriggerProps = ScopedProps<ViewProps>
 
-const DialogTrigger = DialogTriggerFrame.styleable(function DialogTrigger(
-  props: ScopedProps<DialogTriggerProps>,
-  forwardedRef
-) {
-  const { __scopeDialog, ...triggerProps } = props
-  const isInsideButton = React.useContext(ButtonNestingContext)
-  const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
-  const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
-  return (
-    <ButtonNestingContext.Provider value={true}>
-      <DialogTriggerFrame
-        tag={isInsideButton ? 'span' : 'button'}
-        aria-haspopup="dialog"
-        aria-expanded={context.open}
-        aria-controls={context.contentId}
-        data-state={getState(context.open)}
-        {...triggerProps}
-        ref={composedTriggerRef}
-        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-      />
-    </ButtonNestingContext.Provider>
-  )
-})
+const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
+  function DialogTrigger(props, forwardedRef) {
+    const { scope, ...triggerProps } = props
+    const isInsideButton = React.useContext(ButtonNestingContext)
+    const context = useDialogContext(scope)
+    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+    return (
+      <ButtonNestingContext.Provider value={true}>
+        <DialogTriggerFrame
+          tag={isInsideButton ? 'span' : 'button'}
+          aria-haspopup="dialog"
+          aria-expanded={context.open}
+          aria-controls={context.contentId}
+          data-state={getState(context.open)}
+          {...triggerProps}
+          ref={composedTriggerRef}
+          onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+        />
+      </ButtonNestingContext.Provider>
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * DialogPortal
@@ -112,21 +114,15 @@ const DialogTrigger = DialogTriggerFrame.styleable(function DialogTrigger(
 
 const PORTAL_NAME = 'DialogPortal'
 
-type PortalContextValue = { forceMount?: true }
-const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValue>(
-  PORTAL_NAME,
-  {
-    forceMount: undefined,
+type DialogPortalProps = ScopedProps<
+  YStackProps & {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
+    forceMount?: true
   }
-)
-
-type DialogPortalProps = YStackProps & {
-  /**
-   * Used to force mounting when more control is needed. Useful when
-   * controlling animation with React animation libraries.
-   */
-  forceMount?: true
-}
+>
 
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
@@ -151,10 +147,10 @@ export const DialogPortalFrame = styled(YStack, {
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
-  const { __scopeDialog, children, space, spaceDirection, separator } = props
+  const { scope, children, space, spaceDirection, separator } = props
 
   const themeName = useThemeName()
-  const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
+  const context = useDialogContext(scope)
   const isAdapted = useAdaptIsActive()
 
   let childrenSpaced = children
@@ -169,7 +165,7 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   }
 
   const content = (
-    <DialogProvider scope={__scopeDialog} {...context}>
+    <DialogProvider {...context}>
       <Theme name={themeName}>{childrenSpaced}</Theme>
     </DialogProvider>
   )
@@ -178,7 +174,7 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   // have to re-propogate context, sketch
   // when adapted we portal to the adapt, when not we portal to root modal if needed
   return isAdapted ? (
-    <AdaptPortalContents>{content}</AdaptPortalContents>
+    <AdaptPortalContents scope={scope}>{content}</AdaptPortalContents>
   ) : context.modal ? (
     <PortalItem hostName={context.modal ? 'root' : context.adaptName}>
       {content}
@@ -188,15 +184,13 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   )
 }
 
-const DialogPortal: React.FC<DialogPortalProps> = (
-  props: ScopedProps<DialogPortalProps>
-) => {
-  const { __scopeDialog, forceMount, children, ...frameProps } = props
+const DialogPortal: React.FC<DialogPortalProps> = (props) => {
+  const { scope, forceMount, children, ...frameProps } = props
 
-  const context = useDialogContext(PORTAL_NAME, __scopeDialog)
+  const context = useDialogContext(scope)
   const isShowing = forceMount || context.open
   const [isFullyHidden, setIsFullyHidden] = React.useState(!isShowing)
-  const isAdapted = useAdaptIsActive()
+  const isAdapted = useAdaptIsActive(scope)
 
   if (isShowing && isFullyHidden) {
     setIsFullyHidden(false)
@@ -221,11 +215,9 @@ const DialogPortal: React.FC<DialogPortalProps> = (
   }
 
   const framedContents = (
-    <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-      <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
-        {contents}
-      </DialogPortalFrame>
-    </PortalProvider>
+    <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+      {contents}
+    </DialogPortalFrame>
   )
 
   if (isWeb) {
@@ -244,7 +236,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
   return isAdapted ? (
     framedContents
   ) : (
-    <DialogPortalItem __scopeDialog={__scopeDialog}>{framedContents}</DialogPortalItem>
+    <DialogPortalItem scope={scope}>{framedContents}</DialogPortalItem>
   )
 }
 
@@ -271,22 +263,23 @@ export const DialogOverlayFrame = styled(Overlay, {
   name: OVERLAY_NAME,
 })
 
-interface DialogOverlayProps extends YStackProps {
-  /**
-   * Used to force mounting when more control is needed. Useful when
-   * controlling animation with React animation libraries.
-   */
-  forceMount?: true
-}
+type DialogOverlayProps = ScopedProps<
+  YStackProps & {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
+    forceMount?: true
+  }
+>
 
 const DialogOverlay = DialogOverlayFrame.extractable(
   React.forwardRef<TamaguiElement, DialogOverlayProps>(function DialogOverlay(
-    { __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>,
+    { scope, ...props }: ScopedProps<DialogOverlayProps>,
     forwardedRef
   ) {
-    const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
-    const { forceMount = portalContext.forceMount, ...overlayProps } = props
-    const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+    const context = useDialogContext(scope)
+    const { forceMount = context.forceMount, ...overlayProps } = props
     const isAdapted = useAdaptIsActive()
 
     if (!forceMount) {
@@ -351,24 +344,22 @@ const DialogContentFrame = styled(ThemeableStack, {
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
-interface DialogContentProps
-  extends DialogContentFrameProps,
-    Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
-  /**
-   * Used to force mounting when more control is needed. Useful when
-   * controlling animation with React animation libraries.
-   */
-  forceMount?: true
-}
+type DialogContentExtraProps = ScopedProps<
+  Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> & {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
+    forceMount?: true
+  }
+>
 
-const DialogContent = DialogContentFrame.extractable(
-  React.forwardRef<TamaguiElement, DialogContentProps>(function DialogContent(
-    { __scopeDialog, ...props }: ScopedProps<DialogContentProps>,
-    forwardedRef
-  ) {
-    const portalContext = usePortalContext(CONTENT_NAME, __scopeDialog)
-    const { forceMount = portalContext.forceMount, ...contentProps } = props
-    const context = useDialogContext(CONTENT_NAME, __scopeDialog)
+type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
+
+const DialogContent = DialogContentFrame.styleable<DialogContentExtraProps>(
+  function DialogContent({ scope, ...props }, forwardedRef) {
+    const context = useDialogContext(scope)
+    const { forceMount = context.forceMount, ...contentProps } = props
 
     const contents = (
       <>
@@ -391,20 +382,17 @@ const DialogContent = DialogContentFrame.extractable(
         </div>
       </RemoveScroll>
     )
-  })
+  }
 )
 
 /* -----------------------------------------------------------------------------------------------*/
 
-interface DialogContentTypeProps extends DialogContentImplProps {
+type DialogContentTypeProps = DialogContentImplProps & {
   context: DialogContextValue
 }
 
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
-  (
-    { children, context, ...props }: ScopedProps<DialogContentTypeProps>,
-    forwardedRef
-  ) => {
+  ({ children, context, ...props }, forwardedRef) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
@@ -459,7 +447,7 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
 /* -----------------------------------------------------------------------------------------------*/
 
 const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
-  (props: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const hasInteractedOutsideRef = React.useRef(false)
 
     return (
@@ -505,34 +493,34 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type DialogContentImplProps = DialogContentFrameProps &
-  Omit<DismissableProps, 'onDismiss'> & {
-    /**
-     * When `true`, focus cannot escape the `Content` via keyboard,
-     * pointer, or a programmatic focus.
-     * @defaultValue false
-     */
-    trapFocus?: FocusScopeProps['trapped']
+type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
+  /**
+   * When `true`, focus cannot escape the `Content` via keyboard,
+   * pointer, or a programmatic focus.
+   * @defaultValue false
+   */
+  trapFocus?: FocusScopeProps['trapped']
 
-    /**
-     * Event handler called when auto-focusing on open.
-     * Can be prevented.
-     */
-    onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
+  /**
+   * Event handler called when auto-focusing on open.
+   * Can be prevented.
+   */
+  onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
 
-    /**
-     * Event handler called when auto-focusing on close.
-     * Can be prevented.
-     */
-    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+  /**
+   * Event handler called when auto-focusing on close.
+   * Can be prevented.
+   */
+  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
-    context: DialogContextValue
-  }
+  context: DialogContextValue
+}
+
+type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps
 
 const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProps>(
-  (props: ScopedProps<DialogContentImplProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const {
-      __scopeDialog,
       trapFocus,
       onOpenAutoFocus,
       onCloseAutoFocus,
@@ -559,7 +547,9 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
         return null
       }
 
-      return <DialogPortalItem>{contentProps.children}</DialogPortalItem>
+      return (
+        <DialogPortalItem scope={context.scope}>{contentProps.children}</DialogPortalItem>
+      )
     }
 
     const contents = (
@@ -622,16 +612,16 @@ const DialogTitleFrame = styled(H2, {
   name: 'DialogTitle',
 })
 
-type DialogTitleProps = GetProps<typeof DialogTitleFrame>
+type DialogTitleExtraProps = ScopedProps<{}>
+type DialogTitleProps = DialogTitleExtraProps & GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = DialogTitleFrame.styleable(function DialogTitle(
-  props: ScopedProps<DialogTitleProps>,
-  forwardedRef
-) {
-  const { __scopeDialog, ...titleProps } = props
-  const context = useDialogContext('DialogTitle', __scopeDialog)
-  return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
-})
+const DialogTitle = DialogTitleFrame.styleable<DialogTitleExtraProps>(
+  function DialogTitle(props, forwardedRef) {
+    const { scope, ...titleProps } = props
+    const context = useDialogContext(scope)
+    return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * DialogDescription
@@ -641,24 +631,23 @@ const DialogDescriptionFrame = styled(Paragraph, {
   name: 'DialogDescription',
 })
 
-type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
+type DialogDescriptionExtraProps = ScopedProps<{}>
+type DialogDescriptionProps = DialogDescriptionExtraProps &
+  GetProps<typeof DialogDescriptionFrame>
 
-const DESCRIPTION_NAME = 'DialogDescription'
-
-const DialogDescription = DialogDescriptionFrame.styleable(function DialogDescription(
-  props: ScopedProps<DialogDescriptionProps>,
-  forwardedRef
-) {
-  const { __scopeDialog, ...descriptionProps } = props
-  const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
-  return (
-    <DialogDescriptionFrame
-      id={context.descriptionId}
-      {...descriptionProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const DialogDescription = DialogDescriptionFrame.styleable<DialogDescriptionExtraProps>(
+  function DialogDescription(props, forwardedRef) {
+    const { scope, ...descriptionProps } = props
+    const context = useDialogContext(scope)
+    return (
+      <DialogDescriptionFrame
+        id={context.descriptionId}
+        {...descriptionProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * DialogClose
@@ -671,19 +660,16 @@ const DialogCloseFrame = styled(View, {
   tag: 'button',
 })
 
-export interface DialogCloseExtraProps {
+export type DialogCloseExtraProps = ScopedProps<{
   displayWhenAdapted?: boolean
-}
+}>
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
 const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
-  (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
-    const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
-    const context = useDialogContext(CLOSE_NAME, __scopeDialog, {
-      warn: false,
-      fallback: {},
-    })
+  (props, forwardedRef) => {
+    const { scope, displayWhenAdapted, ...closeProps } = props
+    const context = useDialogContext(scope)
     const isAdapted = useAdaptIsActive()
     const isInsideButton = React.useContext(ButtonNestingContext)
 
@@ -790,7 +776,7 @@ const Dialog = withStaticProperties(
     ref
   ) {
     const {
-      __scopeDialog,
+      scope = '',
       children,
       open: openProp,
       defaultOpen = false,
@@ -800,12 +786,13 @@ const Dialog = withStaticProperties(
     } = props
 
     const baseId = React.useId()
-    const scopeId = `scope-${baseId}`
-    const contentId = `content-${baseId}`
-    const titleId = `title-${baseId}`
-    const descriptionId = `description-${baseId}`
-    const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
-    const adaptName = getAdaptName({ scopeKey, contentId })
+    const scopeId = `Dialog-${scope}-${baseId}`
+    const contentId = `${scopeId}-content`
+    const titleId = `${scopeId}-title`
+    const descriptionId = `${scopeId}-description`
+
+    // TODO we can avoid this and just use scope
+    const adaptName = getAdaptName({ scope, contentId })
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
 
@@ -820,8 +807,7 @@ const Dialog = withStaticProperties(
     }, [setOpen])
 
     const context = {
-      scope: __scopeDialog,
-      scopeKey,
+      scope,
       triggerRef,
       contentRef,
       contentId,
@@ -851,7 +837,7 @@ const Dialog = withStaticProperties(
         }}
       >
         <DialogProvider {...context}>
-          <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
+          <DialogSheetController onOpenChange={setOpen} scope={scope}>
             {children}
           </DialogSheetController>
         </DialogProvider>
@@ -873,10 +859,9 @@ const Dialog = withStaticProperties(
 )
 
 const getAdaptName = ({
-  scopeKey,
+  scope,
   contentId,
-}: Pick<DialogContextValue, 'scopeKey' | 'contentId'>) =>
-  `${scopeKey || contentId}DialogAdapt`
+}: Pick<DialogContextValue, 'scope' | 'contentId'>) => `${scope || contentId}DialogAdapt`
 
 const DialogSheetController = (
   props: ScopedProps<{
@@ -884,7 +869,7 @@ const DialogSheetController = (
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
   }>
 ) => {
-  const context = useDialogContext('DialogSheetController', props.__scopeDialog)
+  const context = useDialogContext(props.scope)
   const isAdapted = useAdaptIsActive()
 
   return (
@@ -914,7 +899,6 @@ export {
   DialogTrigger,
   //
   DialogWarningProvider,
-  createDialogScope,
 }
 export type {
   DialogCloseProps,
