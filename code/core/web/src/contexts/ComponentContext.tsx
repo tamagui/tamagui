@@ -1,5 +1,5 @@
 import { createStyledContext } from '../helpers/createStyledContext'
-import type { ComponentContextI, GroupStateListener } from '../types'
+import type { ComponentContextI } from '../types'
 
 export const ComponentContext = createStyledContext<ComponentContextI>({
   disableSSR: undefined,

@@ -194,8 +194,7 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
     }
   }
 
-  const { keys, lastState = getSetting('disableSSR') ? mediaState : initState } =
-    internalRef.current
+  const { keys, lastState = mediaState } = internalRef.current
 
   // clear each render to track only rendered touched keys
   if (keys.size) {
