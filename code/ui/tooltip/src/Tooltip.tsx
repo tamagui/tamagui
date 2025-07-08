@@ -69,8 +69,8 @@ const TooltipArrow = React.forwardRef<TamaguiElement, PopperArrowProps>((props, 
   return <PopoverArrow componentName="Tooltip" ref={ref} {...props} />
 })
 
-export type TooltipProps = PopperProps &
-  ScopedProps<{
+export type TooltipProps = ScopedProps<
+  PopperProps & {
     open?: boolean
     unstyled?: boolean
     children?: React.ReactNode
@@ -88,7 +88,8 @@ export type TooltipProps = PopperProps &
           close?: number
         }
     disableAutoCloseOnScroll?: boolean
-  }>
+  }
+>
 
 type Delay =
   | number

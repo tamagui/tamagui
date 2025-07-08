@@ -3,7 +3,7 @@ import type { UseHoverProps } from '@floating-ui/react';
 import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
+import { type PopperArrowProps, type PopperContentProps, type PopperProps } from '@tamagui/popper';
 import { type ScrollViewProps } from '@tamagui/scroll-view';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';

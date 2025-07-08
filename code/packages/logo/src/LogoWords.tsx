@@ -89,7 +89,7 @@ export const LogoWords: React.MemoExoticComponent<
       // @ts-ignore
       onMouseMove={(e: MouseEvent) => {
         if (!layout) return
-        const x = e.clientX - layout.left
+        const x = e.clientX - layout.pageX
         // Total width divided into 7 sections (one for each letter)
         const sectionWidth = layout.width / 7
         // Calculate which section we're in (0-6)

@@ -8,7 +8,7 @@ type ScopedProps<P> = Omit<P, 'scope'> & {
     scope?: TooltipScopes;
 };
 export type TooltipContentProps = ScopedProps<PopoverContentProps>;
-export type TooltipProps = PopperProps & ScopedProps<{
+export type TooltipProps = ScopedProps<PopperProps & {
     open?: boolean;
     unstyled?: boolean;
     children?: React.ReactNode;
@@ -36,7 +36,7 @@ export declare const TooltipGroup: ({ children, delay, preventAnimation, timeout
     timeoutMs?: number;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const closeOpenTooltips: () => void;
-export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & Omit<{
+export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps & {
     open?: boolean;
     unstyled?: boolean;
     children?: React.ReactNode;

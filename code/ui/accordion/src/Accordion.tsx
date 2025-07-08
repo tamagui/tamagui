@@ -43,7 +43,7 @@ const AccordionComponent = React.forwardRef<
   const multipleProps = accordionProps as AccordionImplMultipleProps
 
   return (
-    <Collection.Provider __scopeCollection={props.__scopeAccordion || ACCORDION_CONTEXT}>
+    <Collection.Provider scope={props.__scopeAccordion || ACCORDION_CONTEXT}>
       {type === 'multiple' ? (
         <AccordionImplMultiple {...multipleProps} ref={forwardedRef} />
       ) : (
@@ -352,7 +352,7 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
         direction={dir}
         orientation={orientation}
       >
-        <Collection.Slot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
+        <Collection.Slot scope={__scopeAccordion || ACCORDION_CONTEXT}>
           <YStack
             data-orientation={orientation}
             ref={composedRef}
@@ -519,7 +519,7 @@ const AccordionTrigger = AccordionTriggerFrame.styleable(function AccordionTrigg
   const collapsibleContext = useAccordionCollapsibleContext(__scopeAccordion)
 
   return (
-    <Collection.ItemSlot __scopeCollection={__scopeAccordion || ACCORDION_CONTEXT}>
+    <Collection.ItemSlot scope={__scopeAccordion || ACCORDION_CONTEXT}>
       <AccordionTriggerFrame
         //   @ts-ignore
         __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}

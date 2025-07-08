@@ -352,54 +352,31 @@ export const PopperAnchor = YStack.extractable(
         }
       }, [virtualRef])
 
-      // if (virtualRef) {
-      //   return null
-      // }
-
       const stackProps = anchorProps
 
       const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-
       const composedRefs = useComposedRefs(forwardedRef, ref)
-
-      // React.useLayoutEffect(() => {
-      //   if (!(ref.current instanceof HTMLElement)) return
-      //   if (isCurrentActive) {
-      //     console.warn('SET ACTIVE', ref.current)
-
-      //     update()
-
-      //     return () => {
-      //       // refs.setReference(null)
-      //       // update()
-      //     }
-      //   }
-      // }, [isCurrentActive])
 
       return (
         <TamaguiView
           {...refProps}
           ref={composedRefs}
-          {...(true && {
-            onMouseEnter(e) {
-              if (ref.current instanceof HTMLElement) {
-                console.warn('setting to', ref.current)
-                // floatingRef?.(ref.current)
-                refs.setReference(ref.current)
-                setTimeout(() => {
-                  refProps.onPointerEnter(e)
-                  update()
-                })
-              }
-            },
-            onMouseLeave(e) {
-              refProps?.onMouseLeave?.(e)
-              refs.setReference(null)
+          // this helps us with handling scoped poppers with many different targets
+          // basically we wait for mouseEnter to ever set a reference and remove it on leave
+          // otherwise floating ui gets confused by having >1 reference
+          onMouseEnter={(e) => {
+            if (ref.current instanceof HTMLElement) {
+              refs.setReference(ref.current)
               setTimeout(() => {
+                refProps.onPointerEnter?.(e)
                 update()
               })
-            },
-          })}
+            }
+          }}
+          onMouseLeave={(e) => {
+            refProps?.onMouseLeave?.(e)
+            refs.setReference(null)
+          }}
         />
       )
     }

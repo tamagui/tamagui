@@ -132,9 +132,10 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
           show(false)
         })
 
-        window.addEventListener('keydown', ({ key, defaultPrevented }) => {
-          if (defaultPrevented) return
+        window.addEventListener('keydown', ({ key, metaKey, defaultPrevented }) => {
           clearTimeout(tm) // always clear so we dont trigger on chords
+          if (defaultPrevented) return
+          if (metaKey) return
           if (key === options.key) {
             tm = setTimeout(() => {
               show(true)
@@ -142,12 +143,12 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
           }
         })
 
-        window.addEventListener('keyup', ({ key, defaultPrevented }) => {
+        window.addEventListener('keyup', ({ defaultPrevented }) => {
           if (defaultPrevented) return
-          if (key === options.key) {
-            if (isShowing) {
-              show(false)
-            }
+          clearTimeout(tm)
+          // any key can clear it
+          if (isShowing) {
+            show(false)
           }
         })
       }
@@ -365,8 +366,10 @@ export function createComponent<
             remove()
           }
         }
+
         debugKeyListeners ||= new Set()
         debugKeyListeners.add(debugVisualizerHandler)
+
         return () => {
           remove()
           debugKeyListeners?.delete(debugVisualizerHandler)

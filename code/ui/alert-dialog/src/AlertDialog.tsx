@@ -15,6 +15,7 @@ import type {
   DialogCloseProps,
   DialogContentProps,
   DialogDescriptionProps,
+  DialogOverlayExtraProps,
   DialogOverlayProps,
   DialogPortalProps,
   DialogProps,
@@ -117,21 +118,23 @@ const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
   name: OVERLAY_NAME,
 })
 
-type AlertDialogOverlayProps = ScopedProps<DialogOverlayProps>
+type AlertDialogOverlayExtraProps = ScopedProps<{}> & DialogOverlayExtraProps
+type AlertDialogOverlayProps = AlertDialogOverlayExtraProps & DialogOverlayProps
 
-const AlertDialogOverlay = AlertDialogOverlayFrame.styleable<
-  TamaguiElement,
-  AlertDialogOverlayProps
->(function AlertDialogOverlay(props, forwardedRef) {
-  const { scope, ...overlayProps } = props
-  return (
-    <DialogOverlay
-      scope={getAlertDialogScope(scope)}
-      {...overlayProps}
-      ref={forwardedRef}
-    />
+const AlertDialogOverlay = AlertDialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
+    function AlertDialogOverlay(props, forwardedRef) {
+      const { scope, ...overlayProps } = props
+      return (
+        <DialogOverlay
+          scope={getAlertDialogScope(scope)}
+          {...overlayProps}
+          ref={forwardedRef}
+        />
+      )
+    }
   )
-})
+)
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogContent
@@ -446,7 +449,7 @@ export {
   AlertDialogOverlay,
   AlertDialogPortal,
   AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTrigger,
 }
 
 export type {
@@ -458,6 +461,5 @@ export type {
   AlertDialogPortalProps,
   AlertDialogProps,
   AlertDialogTitleProps,
-  AlertDialogTriggerProps
+  AlertDialogTriggerProps,
 }
-

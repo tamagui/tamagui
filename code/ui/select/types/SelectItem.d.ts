@@ -17,10 +17,10 @@ export interface SelectItemExtraProps {
 }
 export interface SelectItemProps extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {
 }
-export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const SelectItem: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    inset?: number | import("@tamagui/web").SizeTokens | {
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
@@ -38,13 +38,13 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    size?: import("@tamagui/web").SizeTokens | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, import("@tamagui/web").StackStyleBase, {
+}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, import("@tamagui/core").StackStyleBase, {
     disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    inset?: number | import("@tamagui/web").SizeTokens | {
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
@@ -62,9 +62,9 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    size?: import("@tamagui/web").SizeTokens | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItem.d.ts.map

@@ -1,4 +1,4 @@
-import { createStyledContext } from '@tamagui/web'
+import { createStyledContext } from '@tamagui/core'
 import type { SelectContextValue, SelectItemParentContextValue } from './types'
 
 export const { Provider: SelectProvider, useStyledContext: useSelectContext } =

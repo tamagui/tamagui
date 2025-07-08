@@ -275,7 +275,7 @@ export const DialogOverlayFrame = styled(Overlay, {
   name: OVERLAY_NAME,
 })
 
-type DialogOverlayExtraProps = ScopedProps<{
+export type DialogOverlayExtraProps = ScopedProps<{
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.

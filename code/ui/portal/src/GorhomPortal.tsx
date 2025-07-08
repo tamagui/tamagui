@@ -10,7 +10,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useId,
   useMemo,
   useReducer,
 } from 'react'
@@ -290,7 +289,6 @@ function PortalHostWeb(props: PortalHostProps) {
 
   return (
     <div
-      data-is-portal-host={props.name}
       style={{ display: 'contents' }}
       ref={(node) => {
         if (node) {

@@ -12,7 +12,7 @@ export function DialogScopedCase() {
         </Dialog.Trigger>
       </Dialog>
 
-      {/* <Dialog scope="DialogA" modal>
+      <Dialog scope="DialogA" modal>
         <TestDialogContent name="a" shouldAdapt={shouldAdapt} />
 
         <Dialog scope="DialogB" modal>
@@ -26,7 +26,7 @@ export function DialogScopedCase() {
             <Button data-testid={`b-trigger`}>Open B</Button>
           </Dialog.Trigger>
         </Dialog>
-      </Dialog> */}
+      </Dialog>
     </YStack>
   )
 }

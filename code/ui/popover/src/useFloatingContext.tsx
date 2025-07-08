@@ -24,7 +24,6 @@ export const useFloatingContext = ({
         ...props,
         open,
         onOpenChange: (val, event) => {
-          console.log('on open change', val)
           const type =
             event?.type === 'mousemove' ||
             event?.type === 'mouseenter' ||

@@ -90,7 +90,7 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-type DialogOverlayExtraProps = ScopedProps<{
+export type DialogOverlayExtraProps = ScopedProps<{
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
