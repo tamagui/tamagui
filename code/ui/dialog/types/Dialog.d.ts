@@ -32,6 +32,7 @@ type DialogContextValue = {
     onOpenChange: NonNull<DialogProps['onOpenChange']>;
     modal: NonNull<DialogProps['modal']>;
     dialogScope: DialogScopes;
+    adaptScope: string;
 };
 export declare const DialogContext: import("@tamagui/core").StyledContext<DialogContextValue>;
 export declare const useDialogContext: (scope?: string) => DialogContextValue, DialogProvider: React.Provider<DialogContextValue> & React.ProviderExoticComponent<Partial<DialogContextValue> & {

@@ -40,9 +40,7 @@ export type TooltipScopes = string
 
 type ScopedProps<P> = Omit<P, 'scope'> & { scope?: TooltipScopes }
 
-export type TooltipContentProps = ScopedProps<PopoverContentProps> & {
-  pointerEvents?: 'auto' | 'none'
-}
+export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
 const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>(
   React.forwardRef((props, ref) => {

@@ -61,6 +61,7 @@ type DialogContextValue = {
   onOpenChange: NonNull<DialogProps['onOpenChange']>
   modal: NonNull<DialogProps['modal']>
   dialogScope: DialogScopes
+  adaptScope: string
 }
 
 export const DialogContext = createStyledContext<DialogContextValue>(
@@ -148,7 +149,7 @@ const DialogPortalItem = ({
   children,
 }: { context: DialogContextValue; children: React.ReactNode }) => {
   const themeName = useThemeName()
-  const isAdapted = useAdaptIsActive(getAdaptScope(context.dialogScope))
+  const isAdapted = useAdaptIsActive(context.adaptScope)
 
   const content = (
     <DialogProvider {...context}>
@@ -162,11 +163,9 @@ const DialogPortalItem = ({
   // have to re-propogate context, sketch
   // when adapted we portal to the adapt, when not we portal to root modal if needed
   return isAdapted ? (
-    <AdaptPortalContents scope={getAdaptScope(context.dialogScope)}>
-      {content}
-    </AdaptPortalContents>
+    <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
   ) : context.modal ? (
-    <PortalItem hostName={context.modal ? 'root' : getAdaptScope(context.dialogScope)}>
+    <PortalItem hostName={context.modal ? 'root' : context.adaptScope}>
       {content}
     </PortalItem>
   ) : (
@@ -180,7 +179,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (props) => {
   const context = useDialogContext(scope)
   const isShowing = forceMount || context.open
   const [isFullyHidden, setIsFullyHidden] = React.useState(!isShowing)
-  const isAdapted = useAdaptIsActive(getAdaptScope(context.dialogScope))
+  const isAdapted = useAdaptIsActive(context.adaptScope)
   console.log('adapt?', context.dialogScope, isAdapted)
 
   if (isShowing && isFullyHidden) {
@@ -206,7 +205,11 @@ const DialogPortal: React.FC<DialogPortalProps> = (props) => {
   }
 
   const framedContents = (
-    <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+    <DialogPortalFrame
+      // passThrough={isAdapted}
+      pointerEvents={isShowing ? 'auto' : 'none'}
+      {...frameProps}
+    >
       {contents}
     </DialogPortalFrame>
   )
@@ -275,7 +278,7 @@ const DialogOverlay = DialogOverlayFrame.styleable<DialogOverlayExtraProps>(
   function DialogOverlay({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
     const { forceMount = context.forceMount, ...overlayProps } = props
-    const isAdapted = useAdaptIsActive(getAdaptScope(context.dialogScope))
+    const isAdapted = useAdaptIsActive(context.adaptScope)
 
     if (!forceMount) {
       if (!context.modal || isAdapted) {
@@ -533,7 +536,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       undefined as unknown as HTMLDivElement
     )
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
-    const isAdapted = useAdaptIsActive(getAdaptScope(context.dialogScope))
+    const isAdapted = useAdaptIsActive(context.adaptScope)
 
     // TODO this will re-parent, ideally we would not change tree structure
 
@@ -666,7 +669,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
   (props, forwardedRef) => {
     const { scope, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(scope)
-    const isAdapted = useAdaptIsActive(getAdaptScope(context.dialogScope))
+    const isAdapted = useAdaptIsActive(context.adaptScope)
     const isInsideButton = React.useContext(ButtonNestingContext)
 
     if (isAdapted && !displayWhenAdapted) {
@@ -798,8 +801,11 @@ const Dialog = withStaticProperties(
         setOpen((prevOpen) => !prevOpen)
       }, [setOpen])
 
+      const adaptScope = `DialogAdapt${scope}`
+
       const context = {
         dialogScope: scope,
+        adaptScope,
         triggerRef,
         contentRef,
         contentId,
@@ -810,7 +816,7 @@ const Dialog = withStaticProperties(
         onOpenToggle,
         modal,
         disableRemoveScroll,
-      }
+      } satisfies DialogContextValue
 
       React.useImperativeHandle(
         ref,
@@ -822,7 +828,7 @@ const Dialog = withStaticProperties(
 
       return (
         <AdaptParent
-          scope={getAdaptScope(scope)}
+          scope={adaptScope}
           portal={{
             forwardProps: props,
           }}
@@ -859,7 +865,7 @@ const DialogSheetController = (
   }>
 ) => {
   const context = useDialogContext(props.scope)
-  const isAdapted = useAdaptIsActive(getAdaptScope(context.dialogScope))
+  const isAdapted = useAdaptIsActive(context.adaptScope)
 
   return (
     <SheetController

@@ -20,7 +20,7 @@ export function DialogDemo() {
   return (
     <View gap="$4" justifyContent="center" alignItems="center">
       <DialogInstance />
-      <DialogInstance disableAdapt />
+      {/* <DialogInstance disableAdapt /> */}
     </View>
   )
 }
@@ -107,13 +107,13 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
                 </TooltipSimple>
               </Label>
               <XStack flex={1}>
-                <SelectDemoItem
+                {/* <SelectDemoItem
                   trigger={
                     <Select.Trigger flex={1} iconAfter={ChevronDown}>
                       <Select.Value placeholder="Something" />
                     </Select.Trigger>
                   }
-                />
+                /> */}
               </XStack>
             </Fieldset>
 

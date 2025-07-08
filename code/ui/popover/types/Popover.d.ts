@@ -34,6 +34,7 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
 export type PopoverScopes = string;
 type PopoverContextValue = {
     popoverScope: string;
+    adaptScope: string;
     id: string;
     triggerRef: React.RefObject<any>;
     contentId?: string;

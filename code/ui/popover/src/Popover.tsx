@@ -97,6 +97,7 @@ export type PopoverScopes = string
 
 type PopoverContextValue = {
   popoverScope: string
+  adaptScope: string
   id: string
   triggerRef: React.RefObject<any>
   contentId?: string
@@ -322,9 +323,9 @@ export const PopoverContent = PopoverContentFrame.extractable(
 )
 
 const useParentContexts = (scope: string) => {
-  const popperContext = usePopperContext(scope)
-  const adaptContext = useAdaptContext(scope)
   const context = usePopoverContext(scope)
+  const popperContext = usePopperContext(scope)
+  const adaptContext = useAdaptContext(context.adaptScope)
   return {
     popperContext,
     adaptContext,
@@ -358,7 +359,7 @@ const PortalAdaptSafe = ({
   if (needsRepropagation) {
     const parentContexts = useParentContexts(context.popoverScope)
     return (
-      <AdaptPortalContents scope={context.popoverScope}>
+      <AdaptPortalContents scope={context.adaptScope}>
         <RepropagateParentContexts {...parentContexts}>
           {children}
         </RepropagateParentContexts>
@@ -366,9 +367,7 @@ const PortalAdaptSafe = ({
     )
   }
 
-  return (
-    <AdaptPortalContents scope={context.popoverScope}>{children}</AdaptPortalContents>
-  )
+  return <AdaptPortalContents scope={context.adaptScope}>{children}</AdaptPortalContents>
 }
 
 function PopoverPortal({
@@ -580,7 +579,7 @@ export const PopoverArrow = PopperArrow.styleable<PopperArrowExtraProps>(
   function PopoverArrow(props, forwardedRef) {
     const { scope, ...rest } = props
     const context = usePopoverContext(scope)
-    const isAdapted = useAdaptIsActive(context.popoverScope)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
 
     if (isAdapted) {
       return null
@@ -646,10 +645,17 @@ export const Popover = withStaticProperties(
     ref
   ) {
     const id = React.useId()
+    const adaptScope = `PopoverAdapt${scope}`
 
     return (
-      <AdaptParent scope={scope} portal>
-        <PopoverInner ref={ref} id={id} scope={scope} {...props} />
+      <AdaptParent scope={adaptScope} portal>
+        <PopoverInner
+          adaptScope={adaptScope}
+          ref={ref}
+          id={id}
+          scope={scope}
+          {...props}
+        />
       </AdaptParent>
     )
   }),
@@ -666,133 +672,130 @@ export const Popover = withStaticProperties(
   }
 )
 
-const PopoverInner = React.forwardRef<Popover, PopoverProps & { id: string }>(
-  function PopoverInner(props, forwardedRef) {
-    const {
-      children,
-      open: openProp,
-      defaultOpen,
-      onOpenChange,
-      scope = DEFAULT_SCOPE,
-      keepChildrenMounted: keepChildrenMountedProp,
-      hoverable,
-      disableFocus,
-      id,
-      ...restProps
-    } = props
+const PopoverInner = React.forwardRef<
+  Popover,
+  PopoverProps & { id: string; adaptScope: string }
+>(function PopoverInner(props, forwardedRef) {
+  const {
+    children,
+    open: openProp,
+    defaultOpen,
+    onOpenChange,
+    scope = DEFAULT_SCOPE,
+    keepChildrenMounted: keepChildrenMountedProp,
+    hoverable,
+    disableFocus,
+    id,
+    adaptScope,
+    ...restProps
+  } = props
 
-    const triggerRef = React.useRef<TamaguiElement>(null)
-    const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
-    const viaRef = React.useRef<PopoverVia>(undefined)
-    const [keepChildrenMounted] = useControllableState({
-      prop: keepChildrenMountedProp,
-      defaultProp: false,
-      transition: keepChildrenMountedProp === 'lazy',
-    })
-    const [open, setOpen] = useControllableState({
-      prop: openProp,
-      defaultProp: defaultOpen || false,
-      onChange: (val) => {
-        onOpenChange?.(val, viaRef.current)
-      },
-    })
+  const triggerRef = React.useRef<TamaguiElement>(null)
+  const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
+  const viaRef = React.useRef<PopoverVia>(undefined)
+  const [keepChildrenMounted] = useControllableState({
+    prop: keepChildrenMountedProp,
+    defaultProp: false,
+    transition: keepChildrenMountedProp === 'lazy',
+  })
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen || false,
+    onChange: (val) => {
+      onOpenChange?.(val, viaRef.current)
+    },
+  })
 
-    const handleOpenChange = useEvent((val, via) => {
-      viaRef.current = via
-      setOpen(val)
-    })
+  const handleOpenChange = useEvent((val, via) => {
+    viaRef.current = via
+    setOpen(val)
+  })
 
-    const isAdapted = useAdaptIsActive(scope)
+  const isAdapted = useAdaptIsActive(adaptScope)
 
-    const floatingContext = useFloatingContext({
-      open,
-      setOpen: handleOpenChange,
-      disable: isAdapted,
-      hoverable,
-      disableFocus: disableFocus,
-    }) as any
+  const floatingContext = useFloatingContext({
+    open,
+    setOpen: handleOpenChange,
+    disable: isAdapted,
+    hoverable,
+    disableFocus: disableFocus,
+  }) as any
 
-    const [anchorTo, setAnchorToRaw] = React.useState<Rect>()
+  const [anchorTo, setAnchorToRaw] = React.useState<Rect>()
 
-    const setAnchorTo = useCreateShallowSetState(
-      setAnchorToRaw as any
-    ) as typeof setAnchorToRaw
+  const setAnchorTo = useCreateShallowSetState(
+    setAnchorToRaw as any
+  ) as typeof setAnchorToRaw
 
-    React.useImperativeHandle(forwardedRef, () => ({
-      anchorTo: setAnchorTo,
-      toggle: () => setOpen((prev) => !prev),
-      open: () => setOpen(true),
-      close: () => setOpen(false),
-      setOpen,
-    }))
+  React.useImperativeHandle(forwardedRef, () => ({
+    anchorTo: setAnchorTo,
+    toggle: () => setOpen((prev) => !prev),
+    open: () => setOpen(true),
+    close: () => setOpen(false),
+    setOpen,
+  }))
 
-    // needs to be entirely memoized!
-    const popoverContext = {
-      popoverScope: scope,
-      id,
-      contentId: React.useId(),
-      triggerRef,
-      open,
-      breakpointActive: isAdapted,
-      onOpenChange: handleOpenChange,
-      onOpenToggle: useEvent(() => {
-        if (open && isAdapted) {
-          return
-        }
-        setOpen(!open)
-      }),
-      hasCustomAnchor,
-      anchorTo,
-      onCustomAnchorAdd: React.useCallback(() => setHasCustomAnchor(true), []),
-      onCustomAnchorRemove: React.useCallback(() => setHasCustomAnchor(false), []),
-      keepChildrenMounted,
-    } satisfies PopoverContextValue
+  // needs to be entirely memoized!
+  const popoverContext = {
+    popoverScope: scope,
+    adaptScope,
+    id,
+    contentId: React.useId(),
+    triggerRef,
+    open,
+    breakpointActive: isAdapted,
+    onOpenChange: handleOpenChange,
+    onOpenToggle: useEvent(() => {
+      if (open && isAdapted) {
+        return
+      }
+      setOpen(!open)
+    }),
+    hasCustomAnchor,
+    anchorTo,
+    onCustomAnchorAdd: React.useCallback(() => setHasCustomAnchor(true), []),
+    onCustomAnchorRemove: React.useCallback(() => setHasCustomAnchor(false), []),
+    keepChildrenMounted,
+  } satisfies PopoverContextValue
 
-    // // debug if changing too often
-    // if (process.env.NODE_ENV === 'development') {
-    //   Object.keys(popoverContext).forEach((key) => {
-    //     React.useEffect(
-    //       () => console.log(`changed`, key, popoverContext[key]),
-    //       [popoverContext[key]]
-    //     )
-    //   })
-    // }
+  // // debug if changing too often
+  // if (process.env.NODE_ENV === 'development') {
+  //   Object.keys(popoverContext).forEach((key) => {
+  //     React.useEffect(
+  //       () => console.log(`changed`, key, popoverContext[key]),
+  //       [popoverContext[key]]
+  //     )
+  //   })
+  // }
 
-    const memoizedChildren = React.useMemo(() => {
-      return (
-        <PopoverContext.Provider scope={scope} {...popoverContext}>
-          <PopoverSheetController context={popoverContext} onOpenChange={setOpen}>
-            {children}
-          </PopoverSheetController>
-        </PopoverContext.Provider>
-      )
-    }, [scope, setOpen, children, ...Object.values(popoverContext)])
-
-    const contents = (
-      <Popper
-        open={open}
-        passThrough={isAdapted}
-        scope={scope}
-        stayInFrame
-        {...restProps}
-      >
-        {memoizedChildren}
-      </Popper>
-    )
-
+  const memoizedChildren = React.useMemo(() => {
     return (
-      <>
-        {isWeb ? (
-          <FloatingOverrideContext.Provider value={floatingContext}>
-            {contents}
-          </FloatingOverrideContext.Provider>
-        ) : (
-          contents
-        )}
-      </>
+      <PopoverContext.Provider scope={scope} {...popoverContext}>
+        <PopoverSheetController context={popoverContext} onOpenChange={setOpen}>
+          {children}
+        </PopoverSheetController>
+      </PopoverContext.Provider>
     )
-  }
-)
+  }, [scope, setOpen, children, ...Object.values(popoverContext)])
+
+  const contents = (
+    <Popper open={open} passThrough={isAdapted} scope={scope} stayInFrame {...restProps}>
+      {memoizedChildren}
+    </Popper>
+  )
+
+  return (
+    <>
+      {isWeb ? (
+        <FloatingOverrideContext.Provider value={floatingContext}>
+          {contents}
+        </FloatingOverrideContext.Provider>
+      ) : (
+        contents
+      )}
+    </>
+  )
+})
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -828,6 +831,6 @@ const PopoverSheetController = ({
 }
 
 const useShowPopoverSheet = (context: PopoverContextValue) => {
-  const isAdapted = useAdaptIsActive(context.popoverScope)
+  const isAdapted = useAdaptIsActive(context.adaptScope)
   return context.open === false ? false : isAdapted
 }

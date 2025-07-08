@@ -63,5 +63,6 @@ export declare const AdaptPortalContents: (props: {
     passThrough?: boolean;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
+export declare const getCurrentComponentStack: (format?: "short") => any;
 export {};
 //# sourceMappingURL=Adapt.d.ts.map
