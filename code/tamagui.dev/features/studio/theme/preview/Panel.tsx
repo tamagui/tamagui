@@ -98,16 +98,17 @@ export function Panel({
         >
           <Popover size="$5" allowFlip placement="bottom">
             <Popover.Trigger asChild>
-              <Button
-                onPress={(event) => {
-                  event.stopPropagation()
-                }}
-                themeInverse
-                elevation="$2"
-                size="$2"
-                circular
-                icon={<MoreVertical size="$1" />}
-              />
+              <Theme inverse>
+                <Button
+                  onPress={(event) => {
+                    event.stopPropagation()
+                  }}
+                  elevation="$2"
+                  size="$2"
+                  circular
+                  icon={<MoreVertical size="$1" />}
+                />
+              </Theme>
             </Popover.Trigger>
 
             <Adapt when="maxMd" platform="touch">

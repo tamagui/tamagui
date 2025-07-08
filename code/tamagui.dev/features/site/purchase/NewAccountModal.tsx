@@ -30,6 +30,7 @@ import {
   View,
   XStack,
   YStack,
+  Theme,
 } from '@tamagui/ui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -823,7 +824,84 @@ const DiscordPanel = ({
   )
 }
 
+const DiscordMember = ({
+  member,
+  subscriptionId,
+  apiType,
+}: {
+  member: APIGuildMember
+  subscriptionId: string
+  apiType: 'channel' | 'support'
+}) => {
+  const { data, error, isMutating, trigger } = useSWRMutation(
+    [`/api/discord/${apiType}`, 'POST', member.user?.id],
+    async () => {
+      const res = await fetch(`/api/discord/${apiType}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+          discord_id: member.user?.id,
+        }),
+      })
 
+      if (!res.ok) {
+        let errorMessage = `HTTP ${res.status} ${res.statusText}`
+
+        try {
+          const errorData = await res.json()
+          errorMessage = errorData.message || errorMessage
+        } catch {
+          errorMessage = 'An unknown error occurred'
+        }
+        throw new Error(errorMessage)
+      }
+      return await res.json()
+    },
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/${apiType}?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+      },
+    }
+  )
+
+  const name = member.nick || member.user?.global_name
+  const username = `${member.user?.username}${
+    member.user?.discriminator !== '0' ? `#${member.user?.discriminator}` : ''
+  }`
+  const avatarSrc = member.user?.avatar
+    ? `https://cdn.discordapp.com/avatars/${member.user?.id}/${member.user?.avatar}.png`
+    : null
+
+  return (
+    <XStack gap="$2" ai="center" flexWrap="wrap">
+      <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+        {isMutating ? 'Inviting...' : 'Add'}
+      </Button>
+      <Avatar circular size="$2">
+        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Fallback backgroundColor="$blue10" />
+      </Avatar>
+      <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
+      {data && (
+        <Paragraph size="$1" theme="green">
+          {data.message}
+        </Paragraph>
+      )}
+      {error && (
+        <Paragraph size="$1" theme="red">
+          {error.message}
+        </Paragraph>
+      )}
+    </XStack>
+  )
+}
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -1208,14 +1286,15 @@ const ManageTab = ({
         <Paragraph theme="alt1">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
-        <Button
-          themeInverse
-          onPress={() => {
-            paymentModal.show = true
-          }}
-        >
-          Purchase Plan
-        </Button>
+        <Theme inverse>
+          <Button
+            onPress={() => {
+              paymentModal.show = true
+            }}
+          >
+            Purchase Plan
+          </Button>
+        </Theme>
       </YStack>
     )
   }

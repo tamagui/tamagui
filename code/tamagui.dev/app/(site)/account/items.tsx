@@ -21,6 +21,7 @@ import {
   Spinner,
   XStack,
   YStack,
+  Theme,
 } from '@tamagui/ui'
 import type { DiscordChannelStatus } from '~/app/api/discord/channel+api'
 import { Container } from '~/components/Containers'
@@ -362,15 +363,16 @@ const ItemDetails = (
         />
 
         <YStack gap="$2">
-          <Button
-            size="$2"
-            themeInverse
-            onPress={() => handleGrantAccess()}
-            disabled={isLoading}
-            {...(isLoading && { opacity: 0.5 })}
-          >
-            {claimLabel}
-          </Button>
+          <Theme inverse>
+            <Button
+              size="$2"
+              onPress={() => handleGrantAccess()}
+              disabled={isLoading}
+              {...(isLoading && { opacity: 0.5 })}
+            >
+              {claimLabel}
+            </Button>
+          </Theme>
 
           {/* <Button
             disabled={isLoading}
@@ -462,15 +464,16 @@ const BotInstallPanel = ({
       )}
 
       <XStack>
-        <ButtonLink
-          href={installationUrl as any}
-          themeInverse
-          replace={false}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Install GitHub App
-        </ButtonLink>
+        <Theme inverse>
+          <ButtonLink
+            href={installationUrl as any}
+            replace={false}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Install GitHub App
+          </ButtonLink>
+        </Theme>
       </XStack>
     </YStack>
   )

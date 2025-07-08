@@ -313,17 +313,18 @@ const ThemeStudioStepButtonsBar = () => {
       )}
 
       {canGoForward && (
-        <Button
-          themeInverse={!disableForward}
-          size="$3"
-          disabled={disableForward}
-          opacity={disableForward ? 0.5 : 1}
-          cursor={disableForward ? 'not-allowed' : undefined}
-          iconAfter={canGoForward ? ChevronRight : null}
-          onPress={forwardOrFinish}
-        >
-          {currentSection.nextTitle || 'Next'}
-        </Button>
+        <Theme inverse={!disableForward}>
+          <Button
+            size="$3"
+            disabled={disableForward}
+            opacity={disableForward ? 0.5 : 1}
+            cursor={disableForward ? 'not-allowed' : undefined}
+            iconAfter={canGoForward ? ChevronRight : null}
+            onPress={forwardOrFinish}
+          >
+            {currentSection.nextTitle || 'Next'}
+          </Button>
+        </Theme>
       )}
     </XStack>
   )

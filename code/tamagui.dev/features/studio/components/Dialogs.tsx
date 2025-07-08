@@ -2,7 +2,17 @@ import { X } from '@tamagui/lucide-icons'
 import { memo } from 'react'
 import { useWindowDimensions } from 'react-native'
 import type { DialogCloseProps } from '@tamagui/ui'
-import { Button, Dialog, Fieldset, Input, Label, Unspaced, XStack, YStack } from '@tamagui/ui'
+import {
+  Button,
+  Dialog,
+  Fieldset,
+  Input,
+  Label,
+  Unspaced,
+  XStack,
+  YStack,
+  Theme,
+} from '@tamagui/ui'
 import { rootStore } from '../state/RootStore'
 import type {
   ConfirmDeleteDialogProps,
@@ -158,9 +168,9 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
 
         <XStack jc="flex-end" gap="$4">
           <DialogClose>
-            <Button themeInverse aria-label="Ok">
-              Ok
-            </Button>
+            <Theme inverse>
+              <Button aria-label="Ok">Ok</Button>
+            </Theme>
           </DialogClose>
         </XStack>
       </YStack>

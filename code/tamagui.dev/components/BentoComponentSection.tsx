@@ -11,7 +11,7 @@ export class BentoStore {
 }
 
 export const ComponentSection = () => {
-  const inputRef = useRef<HTMLInputElement>()
+  const inputRef = useRef<HTMLInputElement>(null)
   const [filter, setFilter] = useState('')
   const store = useStore(BentoStore)
 

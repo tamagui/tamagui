@@ -13,6 +13,7 @@ import {
   XStack,
   YStack,
   ZStack,
+  Theme,
 } from '@tamagui/ui'
 
 import { Canvas } from '../components/Canvas'
@@ -72,18 +73,20 @@ export const ColorCanvas = memo(function ColorCanvas() {
         <XGroup>
           {Object.entries(visibleCurves).map(([type, isVisible], i) => {
             return (
-              <Button
-                size="$2"
-                px="$3"
-                key={`${type}${i}`}
-                aria-label={`Toggle ${type} curve visibility`}
-                aria-pressed={isVisible}
-                onPress={() => setVisibleCurves({ ...visibleCurves, [type]: !isVisible })}
-                themeInverse={isVisible}
-                opacity={isVisible ? 1 : 0.5}
-              >
-                {type[0].toUpperCase()}
-              </Button>
+              <Theme key={`${type}${i}`} inverse={isVisible}>
+                <Button
+                  size="$2"
+                  px="$3"
+                  aria-label={`Toggle ${type} curve visibility`}
+                  aria-pressed={isVisible}
+                  onPress={() =>
+                    setVisibleCurves({ ...visibleCurves, [type]: !isVisible })
+                  }
+                  opacity={isVisible ? 1 : 0.5}
+                >
+                  {type[0].toUpperCase()}
+                </Button>
+              </Theme>
             )
           })}
         </XGroup>

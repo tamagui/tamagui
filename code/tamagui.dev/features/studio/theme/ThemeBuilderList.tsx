@@ -23,6 +23,7 @@ import {
   XStack,
   YGroup,
   YStack,
+  Theme,
 } from '@tamagui/ui'
 import {
   ModalTitle,
@@ -423,9 +424,9 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
 
               <XStack alignSelf="flex-end" gap="$4">
                 <Form.Trigger asChild>
-                  <Button themeInverse aria-label="Close">
-                    Save changes
-                  </Button>
+                  <Theme inverse>
+                    <Button aria-label="Close">Save changes</Button>
+                  </Theme>
                 </Form.Trigger>
               </XStack>
 
@@ -537,14 +538,15 @@ function CreateDialog(
 
             <XStack alignSelf="flex-end" gap="$4">
               <Form.Trigger>
-                <Button
-                  themeInverse={!disabled}
-                  disabled={disabled}
-                  opacity={disabled ? 0.5 : 1}
-                  aria-label="Continue"
-                >
-                  Continue
-                </Button>
+                <Theme inverse={!disabled}>
+                  <Button
+                    disabled={disabled}
+                    opacity={disabled ? 0.5 : 1}
+                    aria-label="Continue"
+                  >
+                    Continue
+                  </Button>
+                </Theme>
               </Form.Trigger>
             </XStack>
 

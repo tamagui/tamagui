@@ -14,6 +14,7 @@ import {
   Unspaced,
   XStack,
   YStack,
+  Theme,
 } from '@tamagui/ui'
 
 import { generateOutput } from '../state/generateOutput'
@@ -205,9 +206,9 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
 
         <XStack jc="flex-end" gap="$4">
           <DialogClose>
-            <Button themeInverse aria-label="Ok">
-              Ok
-            </Button>
+            <Theme inverse>
+              <Button aria-label="Ok">Ok</Button>
+            </Theme>
           </DialogClose>
         </XStack>
       </YStack>

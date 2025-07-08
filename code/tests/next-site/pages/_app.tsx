@@ -12,7 +12,7 @@ import { TamaguiProvider } from '@tamagui/ui'
 import Head from 'next/head'
 import config from '../tamagui.config'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
@@ -74,12 +74,7 @@ function AppContents(
 ) {
   return (
     <>
-      <TamaguiProvider
-        config={config}
-        disableInjectCSS
-        disableRootThemeClass
-        defaultTheme={props.theme}
-      >
+      <TamaguiProvider config={config} disableInjectCSS defaultTheme={props.theme}>
         <ContentInner {...props} />
       </TamaguiProvider>
     </>
@@ -87,7 +82,7 @@ function AppContents(
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  const getLayout = ((Component as any).getLayout as GetLayout) || ((page) => page)
+  const getLayout = (Component as any).getLayout || ((page) => page)
   const router = useRouter()
   const path = router.asPath
 
