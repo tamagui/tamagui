@@ -197,6 +197,7 @@ export function createSheet<
               // @ts-ignore
               <Frame
                 {...props}
+                data-testid="ensure-sheet-cover-not-overlapping"
                 componentName="SheetCover"
                 // biome-ignore lint/correctness/noChildrenProp: <explanation>
                 children={null}

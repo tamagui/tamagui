@@ -16,7 +16,7 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import type {
   Animated,
   GestureResponderEvent,
