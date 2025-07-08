@@ -1,8 +1,8 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
 import { Stack, Text, styled, useEvent } from '@tamagui/core'
-import { startTransition } from '@tamagui/start-transition'
 import { Portal } from '@tamagui/portal'
+import { startTransition } from '@tamagui/start-transition'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
@@ -12,26 +12,30 @@ import { useToastProviderContext } from './ToastProvider'
 const ToastAnnounceExcludeFrame = styled(Stack, {
   name: 'ToastAnnounceExclude',
 })
+
 type ToastAnnounceExcludeFrameProps = GetProps<typeof ToastAnnounceExcludeFrame>
-type ToastAnnounceExcludeProps = ToastAnnounceExcludeFrameProps & {
+
+type ToastAnnounceExcludeExtraProps = {
   altText?: string
 }
 
-const ToastAnnounceExclude = React.forwardRef<
-  TamaguiElement,
-  ScopedProps<ToastAnnounceExcludeProps>
->((props: ScopedProps<ToastAnnounceExcludeProps>, forwardedRef) => {
-  const { altText, ...announceExcludeProps } = props
+type ToastAnnounceExcludeProps = ToastAnnounceExcludeFrameProps &
+  ToastAnnounceExcludeExtraProps
 
-  return (
-    <ToastAnnounceExcludeFrame
-      data-toast-announce-exclude=""
-      data-toast-announce-alt={altText || undefined}
-      {...announceExcludeProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const ToastAnnounceExclude = React.forwardRef<TamaguiElement, ToastAnnounceExcludeProps>(
+  (props, forwardedRef) => {
+    const { altText, ...announceExcludeProps } = props
+
+    return (
+      <ToastAnnounceExcludeFrame
+        data-toast-announce-exclude=""
+        data-toast-announce-alt={altText || undefined}
+        {...announceExcludeProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -39,11 +43,11 @@ interface ToastAnnounceProps
   extends Omit<GetProps<typeof VisuallyHidden>, 'children'>,
     ScopedProps<{ children: string[] }> {}
 
-const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>> = (
+const ToastAnnounce: React.FC<ToastAnnounceProps> = (
   props: ScopedProps<ToastAnnounceProps>
 ) => {
-  const { __scopeToast, children, ...announceProps } = props
-  const context = useToastProviderContext(__scopeToast)
+  const { scope, children, ...announceProps } = props
+  const context = useToastProviderContext(scope)
   const [renderAnnounceText, setRenderAnnounceText] = React.useState(false)
   const [isAnnounced, setIsAnnounced] = React.useState(false)
 
@@ -92,7 +96,7 @@ function useNextFrame(callback = () => {}) {
 
 export {
   ToastAnnounce,
-  type ToastAnnounceProps,
   ToastAnnounceExclude,
   type ToastAnnounceExcludeProps,
+  type ToastAnnounceProps,
 }

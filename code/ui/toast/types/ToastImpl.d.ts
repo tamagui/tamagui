@@ -2,6 +2,7 @@ import type { GetProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import * as React from 'react';
 import type { GestureResponderEvent } from 'react-native';
+import type { ScopedProps } from './ToastProvider';
 declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -104,8 +105,8 @@ export type ToastExtraProps = {
      */
     id?: string;
 };
-type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps;
-declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "fullscreen" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+type ToastImplProps = ScopedProps<ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps>;
+declare const ToastImpl: React.ForwardRefExoticComponent<Omit<ToastImplPrivateProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "fullscreen" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -168,7 +169,9 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>> & ToastExtraProps & React.RefAttributes<TamaguiElement>>;
+}>> & ToastExtraProps, "scope"> & {
+    scope?: import("./ToastProvider").ToastScopes;
+} & React.RefAttributes<TamaguiElement>>;
 export { ToastImpl, ToastImplFrame, useToastInteractiveContext, type ToastImplProps };
 export type { ToastProps };
 //# sourceMappingURL=ToastImpl.d.ts.map

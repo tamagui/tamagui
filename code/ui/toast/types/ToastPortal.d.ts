@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
-export declare function ToastPortal({ children, zIndex, }: {
+import { type ToastProviderContextValue } from './ToastProvider';
+export declare function ToastPortal(props: {
     children: ReactNode;
     zIndex?: number;
+    context: ToastProviderContextValue;
 }): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=ToastPortal.d.ts.map

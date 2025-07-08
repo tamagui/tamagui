@@ -5,22 +5,24 @@ import type { BurntToastOptions } from './types';
 declare const Collection: {
     readonly Provider: React.FC<{
         children?: React.ReactNode;
-        __scopeCollection: string;
+    } & {
+        scope?: any;
     }>;
     readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection").CollectionProps & {
-        __scopeCollection?: string | undefined;
+        scope?: any;
     } & React.RefAttributes<TamaguiElement | undefined>>;
     readonly ItemSlot: React.ForwardRefExoticComponent<{
         children: React.ReactNode;
     } & {
-        __scopeCollection?: string | undefined;
+        scope?: any;
     } & React.RefAttributes<TamaguiElement | undefined>>;
-}, useCollection: (__scopeCollection: any) => () => {
+}, useCollection: (scope: string) => () => {
     ref: React.RefObject<TamaguiElement | undefined>;
 }[];
 export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
-type ToastProviderContextValue = {
+export type ToastProviderContextValue = {
     id: string;
+    toastScope: string;
     label: string;
     duration: number;
     swipeDirection: SwipeDirection;
@@ -34,8 +36,9 @@ type ToastProviderContextValue = {
     isClosePausedRef: React.MutableRefObject<boolean>;
     options: ToastImperativeOptions;
 };
-type ScopedProps<P> = P & {
-    __scopeToast?: string;
+export type ToastScopes = string;
+type ScopedProps<P> = Omit<P, 'scope'> & {
+    scope?: ToastScopes;
 };
 declare const useToastProviderContext: (scope?: string) => ToastProviderContextValue;
 interface ToastProviderProps {

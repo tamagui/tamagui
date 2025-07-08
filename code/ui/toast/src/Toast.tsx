@@ -6,7 +6,6 @@ import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import type { CustomData } from './ToastImperative'
 import { useToast, useToastController, useToastState } from './ToastImperative'
@@ -42,8 +41,6 @@ const ToastTitle = styled(SizableText, {
 
 type ToastTitleProps = GetProps<typeof ToastTitle>
 
-ToastTitle.displayName = TITLE_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * ToastDescription
  * -----------------------------------------------------------------------------------------------*/
@@ -69,26 +66,26 @@ const ToastDescription = styled(SizableText, {
 
 type ToastDescriptionProps = GetProps<typeof ToastDescription>
 
-ToastDescription.displayName = DESCRIPTION_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * ToastAction
  * -----------------------------------------------------------------------------------------------*/
 
 const ACTION_NAME = 'ToastAction'
 
-type ToastActionProps = ToastCloseProps & {
-  /**
-   * A short description for an alternate way to carry out the action. For screen reader users
-   * who will not be able to navigate to the button easily/quickly.
-   * @example <ToastAction altText="Goto account settings to updgrade">Upgrade</ToastAction>
-   * @example <ToastAction altText="Undo (Alt+U)">Undo</ToastAction>
-   */
-  altText: string
-}
+type ToastActionProps = ScopedProps<
+  ToastCloseProps & {
+    /**
+     * A short description for an alternate way to carry out the action. For screen reader users
+     * who will not be able to navigate to the button easily/quickly.
+     * @example <ToastAction altText="Goto account settings to updgrade">Upgrade</ToastAction>
+     * @example <ToastAction altText="Undo (Alt+U)">Undo</ToastAction>
+     */
+    altText: string
+  }
+>
 
 const ToastAction = React.forwardRef<TamaguiElement, ScopedProps<ToastActionProps>>(
-  (props: ScopedProps<ToastActionProps>, forwardedRef) => {
+  function ToastAction(props, forwardedRef) {
     const { altText, ...actionProps } = props
     if (!altText) return null
     return (
@@ -108,8 +105,6 @@ ToastAction.propTypes = {
   },
 }
 
-ToastAction.displayName = ACTION_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * ToastClose
  * -----------------------------------------------------------------------------------------------*/
@@ -122,12 +117,12 @@ const ToastCloseFrame = styled(ThemeableStack, {
 })
 
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>
-type ToastCloseProps = ToastCloseFrameProps & {}
+type ToastCloseProps = ScopedProps<ToastCloseFrameProps & {}>
 
 const ToastClose = React.forwardRef<TamaguiElement, ToastCloseProps>(
-  (props: ScopedProps<ToastCloseProps>, forwardedRef) => {
-    const { __scopeToast, ...closeProps } = props
-    const interactiveContext = useToastInteractiveContext(__scopeToast)
+  function ToastClose(props, forwardedRef) {
+    const { scope, ...closeProps } = props
+    const interactiveContext = useToastInteractiveContext(scope)
 
     return (
       <ToastAnnounceExclude asChild>
@@ -142,14 +137,12 @@ const ToastClose = React.forwardRef<TamaguiElement, ToastCloseProps>(
   }
 )
 
-ToastClose.displayName = CLOSE_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * Toast
  * -----------------------------------------------------------------------------------------------*/
 
 const ToastComponent = ToastImplFrame.styleable<ToastExtraProps>(
-  (props, forwardedRef) => {
+  function Toast(props, forwardedRef) {
     const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props
     const [open, setOpen] = useControllableState({
       prop: openProp,
@@ -190,8 +183,6 @@ const ToastComponent = ToastImplFrame.styleable<ToastExtraProps>(
     )
   }
 )
-
-ToastComponent.displayName = TOAST_NAME
 
 const Toast = withStaticProperties(ToastComponent, {
   Title: ToastTitle,

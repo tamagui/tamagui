@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { CustomData } from './ToastImperative';
 import { useToast, useToastController, useToastState } from './ToastImperative';
 import type { ToastExtraProps, ToastProps } from './ToastImpl';
-import type { ToastProviderProps } from './ToastProvider';
+import type { ScopedProps, ToastProviderProps } from './ToastProvider';
 import { ToastProvider } from './ToastProvider';
 import type { ToastViewportProps } from './ToastViewport';
 import { ToastViewport } from './ToastViewport';
@@ -17,7 +17,7 @@ declare const ToastDescription: import("@tamagui/core").TamaguiComponent<import(
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastDescriptionProps = GetProps<typeof ToastDescription>;
-type ToastActionProps = ToastCloseProps & {
+type ToastActionProps = ScopedProps<ToastCloseProps & {
     /**
      * A short description for an alternate way to carry out the action. For screen reader users
      * who will not be able to navigate to the button easily/quickly.
@@ -25,7 +25,7 @@ type ToastActionProps = ToastCloseProps & {
      * @example <ToastAction altText="Undo (Alt+U)">Undo</ToastAction>
      */
     altText: string;
-};
+}>;
 declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -48,7 +48,7 @@ declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;
-type ToastCloseProps = ToastCloseFrameProps & {};
+type ToastCloseProps = ScopedProps<ToastCloseFrameProps & {}>;
 declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -165,78 +165,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Action: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }>> & {
-        /**
-         * A short description for an alternate way to carry out the action. For screen reader users
-         * who will not be able to navigate to the button easily/quickly.
-         * @example <ToastAction altText="Goto account settings to updgrade">Upgrade</ToastAction>
-         * @example <ToastAction altText="Undo (Alt+U)">Undo</ToastAction>
-         */
-        altText: string;
-    } & {
-        __scopeToast?: string;
+    Action: React.ForwardRefExoticComponent<Omit<ToastActionProps, "scope"> & {
+        scope?: import("./ToastProvider").ToastScopes;
     } & React.RefAttributes<TamaguiElement>>;
-    Close: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Close: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
@@ -296,7 +228,9 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>> & React.RefAttributes<TamaguiElement>>;
+    }>>, "scope"> & {
+        scope?: import("./ToastProvider").ToastScopes;
+    } & React.RefAttributes<TamaguiElement>>;
 };
 export { Toast, ToastProvider, ToastViewport, useToast, useToastController, useToastState, };
 export type { CustomData, ToastActionProps, ToastCloseProps, ToastDescriptionProps, NativePlatform as ToastNativePlatform, NativeValue as ToastNativeValue, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, };

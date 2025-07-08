@@ -147,12 +147,14 @@ export type ToastExtraProps = {
   id?: string
 }
 
-type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps
+type ToastImplProps = ScopedProps<
+  ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps
+>
 
 const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
-  (props: ScopedProps<ToastImplProps>, forwardedRef) => {
+  (props, forwardedRef) => {
     const {
-      __scopeToast,
+      scope,
       type = 'foreground',
       duration: durationProp,
       open,
@@ -168,7 +170,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       ...toastProps
     } = props
     const isPresent = useIsPresent()
-    const context = useToastProviderContext(__scopeToast)
+    const context = useToastProviderContext(scope)
     const [node, setNode] = React.useState<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, setNode)
     const duration = durationProp || context.duration
@@ -324,7 +326,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       <>
         {announceTextContent && (
           <ToastAnnounce
-            __scopeToast={__scopeToast}
+            scope={scope}
             // Toasts are always role=status to avoid stuttering issues with role=alert in SRs.
             // biome-ignore lint/a11y/useSemanticElements: <explanation>
             role="status"
@@ -338,7 +340,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
         <PortalItem hostName={viewportName ?? 'default'}>
           <ToastInteractiveProvider
             key={props.id}
-            scope={__scopeToast}
+            scope={scope}
             onClose={() => {
               handleClose()
             }}
@@ -357,7 +359,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                   {...panResponder?.panHandlers}
                   style={[{ margin: 'auto' }, animatedStyles]}
                 >
-                  <Collection.ItemSlot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
+                  <Collection.ItemSlot scope={context.toastScope}>
                     <ToastImplFrame
                       // Ensure toasts are announced as status list or status when focused
                       role="status"
