@@ -14,6 +14,7 @@ export type AdaptParentContextI = {
     setWhen: (when: AdaptWhen) => any;
     setChildren: (children: any) => any;
     portalName?: string;
+    lastScope?: string;
 };
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
@@ -63,6 +64,5 @@ export declare const AdaptPortalContents: (props: {
     passThrough?: boolean;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const useAdaptIsActive: (scope?: string) => boolean;
-export declare const getCurrentComponentStack: (format?: "short") => any;
 export {};
 //# sourceMappingURL=Adapt.d.ts.map

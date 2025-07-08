@@ -16,7 +16,7 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
-import React, { useId, useState } from 'react'
+import React, { useState } from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -554,6 +554,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     )
 
     if (process.env.TAMAGUI_TARGET === 'native' && !USE_NATIVE_PORTAL) {
+      // TODO alongside sheet scope="" need to pass scope here
       const adaptContext = useAdaptContext()
       contents = (
         <ProvideAdaptContext {...adaptContext}>

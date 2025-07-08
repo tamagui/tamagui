@@ -28,6 +28,7 @@ export type AdaptParentContextI = {
   setWhen: (when: AdaptWhen) => any
   setChildren: (children: any) => any
   portalName?: string
+  lastScope?: string
 }
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
@@ -62,8 +63,12 @@ export const ProvideAdaptContext = ({
   const lastScope = useContext(LastAdaptContextScope)
 
   return (
-    <LastAdaptContextScope.Provider value={lastScope}>
-      <AdaptContext.Provider scope={scope} {...context}>
+    <LastAdaptContextScope.Provider value={lastScope || context.lastScope || ''}>
+      <AdaptContext.Provider
+        scope={scope}
+        lastScope={lastScope || context.lastScope}
+        {...context}
+      >
         {children}
       </AdaptContext.Provider>
     </LastAdaptContextScope.Provider>
@@ -72,7 +77,8 @@ export const ProvideAdaptContext = ({
 
 export const useAdaptContext = (scope?: string) => {
   const lastScope = useContext(LastAdaptContextScope)
-  return AdaptContext.useStyledContext(scope ?? lastScope)
+  const adaptScope = scope ?? lastScope
+  return AdaptContext.useStyledContext(adaptScope)
 }
 
 /**
@@ -261,53 +267,4 @@ const useAdaptIsActiveGiven = ({
 export const useAdaptIsActive = (scope?: string) => {
   const props = useAdaptContext(scope)
   return useAdaptIsActiveGiven(props)
-}
-
-export const getCurrentComponentStack = (format?: 'short') => {
-  if (process.env.NODE_ENV === 'development') {
-    const stack =
-      React[
-        '__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE'
-      ].getCurrentStack()
-
-    if (format === 'short') {
-      return formatStackToShort(stack)
-    }
-
-    return stack
-  }
-
-  return `(prod, no stack)`
-}
-
-const formatStackToShort = (stack: string): string => {
-  if (process.env.NODE_ENV === 'development') {
-    const lines = stack
-      // huge stack was causing issues
-      .slice(0, 5000)
-      .split('\n')
-    const componentNames: string[] = []
-
-    for (const line of lines) {
-      // Extract component names from patterns like "at ComponentName ("
-      // Also handle cases like "at Route((chat))" or "Route() ("
-      const match = line.match(/\s*at\s+([A-Z][a-zA-Z0-9_]*)\s*\(/)
-      if (match) {
-        const componentName = match[1]
-        // Filter out framework internals and keep user components
-        if (
-          componentName &&
-          componentName !== 'Array' &&
-          componentName !== 'Root' &&
-          componentName !== 'Route'
-        ) {
-          componentNames.push(componentName)
-        }
-      }
-    }
-
-    return componentNames.join(' < ')
-  }
-
-  return stack
 }

@@ -1,17 +1,23 @@
-import { Adapt, AdaptParent, AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
+import {
+  Adapt,
+  AdaptParent,
+  AdaptPortalContents,
+  ProvideAdaptContext,
+  useAdaptContext,
+  useAdaptIsActive,
+} from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isAndroid, isIos, isWeb } from '@tamagui/constants'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
-  Theme,
-  View,
   createStyledContext,
   getExpandedShorthand,
-  spacedChildren,
   styled,
+  Theme,
   useThemeName,
+  View,
 } from '@tamagui/core'
 import { createContext } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
@@ -19,7 +25,7 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { Portal, PortalItem, resolveViewZIndex } from '@tamagui/portal'
+import { Portal, PortalItem, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
@@ -144,18 +150,26 @@ export const DialogPortalFrame = styled(YStack, {
   },
 })
 
+const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+
 const DialogPortalItem = ({
   context,
   children,
 }: { context: DialogContextValue; children: React.ReactNode }) => {
   const themeName = useThemeName()
   const isAdapted = useAdaptIsActive(context.adaptScope)
+  const adaptContext = useAdaptContext(context.adaptScope)
 
-  const content = (
-    <DialogProvider {...context}>
-      <Theme name={themeName}>{children}</Theme>
-    </DialogProvider>
-  )
+  let content = <Theme name={themeName}>{children}</Theme>
+
+  // not just adapted - both sheet and portal for modal need it
+  if (needsRepropagation) {
+    content = (
+      <ProvideAdaptContext {...adaptContext}>
+        <DialogProvider {...context}>{content}</DialogProvider>
+      </ProvideAdaptContext>
+    )
+  }
 
   // until we can use react-native portals natively
   // have to re-propogate context, sketch

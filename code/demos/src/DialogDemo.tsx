@@ -20,7 +20,7 @@ export function DialogDemo() {
   return (
     <View gap="$4" justifyContent="center" alignItems="center">
       <DialogInstance />
-      {/* <DialogInstance disableAdapt /> */}
+      <DialogInstance disableAdapt />
     </View>
   )
 }
@@ -108,9 +108,9 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
             <Fieldset gap="$4" horizontal>
               <Label width={64} htmlFor="username">
-                {/* <TooltipSimple label="Pick your favorite" placement="bottom-start">
+                <TooltipSimple label="Pick your favorite" placement="bottom-start">
                   <Paragraph>Food</Paragraph>
-                </TooltipSimple> */}
+                </TooltipSimple>
               </Label>
               <XStack flex={1}>
                 <SelectDemoContents

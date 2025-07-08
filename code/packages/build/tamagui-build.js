@@ -847,9 +847,9 @@ async function esbuildWriteIfChanged(
               filename: path,
               configFile: false,
               sourceMap: true,
-              plugins: [require.resolve('@tamagui/babel-plugin-fully-specified')].filter(
-                Boolean
-              ),
+              plugins: [
+                require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
+              ].filter(Boolean),
             })
 
         cleanupNonCjsFiles.push(path)
