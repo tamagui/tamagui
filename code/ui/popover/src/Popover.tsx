@@ -260,13 +260,6 @@ export const PopoverContent = PopperContentFrame.styleable<
     }
   }
 
-  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-  React.useEffect(() => {
-    if (!context.open) return
-    const content = contentRef.current
-    if (content) return hideOthers(content)
-  }, [context.open])
-
   if (!context.keepChildrenMounted) {
     if (isFullyHidden) {
       return null
