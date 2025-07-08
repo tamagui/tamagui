@@ -41,7 +41,7 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * Popper
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopperContextValue = UseFloatingReturn & {
+export type PopperContextShared = {
   size?: SizeTokens
   hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
@@ -52,7 +52,9 @@ export type PopperContextValue = UseFloatingReturn & {
   onArrowSize?: (val: number) => void
 }
 
-export const PopperContext = createStyledContext<PopperContextValue>(
+export type PopperContextValue = UseFloatingReturn & PopperContextShared
+
+export const PopperContextFast = createStyledContext<PopperContextValue>(
   // since we always provide this we can avoid setting here
   {} as PopperContextValue,
   'Popper__'
@@ -60,16 +62,57 @@ export const PopperContext = createStyledContext<PopperContextValue>(
 
 export const PopperPositionContext = createStyledContext
 
-export const { useStyledContext: usePopperContext, Provider: PopperProvider } =
-  PopperContext
+export const { useStyledContext: usePopperContext, Provider: PopperProviderFast } =
+  PopperContextFast
 
-export const PopperInfrequentContext = createStyledContext<{
-  size?: SizeTokens
-}>({
-  size: undefined,
-})
+export type PopperContextSlowValue = PopperContextShared &
+  Pick<
+    UseFloatingReturn,
+    'context' | 'getReferenceProps' | 'getFloatingProps' | 'strategy' | 'update' | 'refs'
+  >
 
-export const usePopperInfrequentContext = PopperInfrequentContext.useStyledContext
+export const PopperContextSlow = createStyledContext<PopperContextSlowValue>(
+  // since we always provide this we can avoid setting here
+  {} as PopperContextValue,
+  'PopperSlow__'
+)
+
+export const { useStyledContext: usePopperContextSlow, Provider: PopperProviderSlow } =
+  PopperContextSlow
+
+// handles both slow and fast:
+export const PopperProvider = ({
+  scope,
+  children,
+  ...context
+}: PopperContextValue & { scope?: string; children?: React.ReactNode }) => {
+  const slowContext = getContextSlow(context)
+
+  return (
+    <PopperProviderFast scope={scope} {...context}>
+      <PopperProviderSlow scope={scope} {...slowContext}>
+        {children}
+      </PopperProviderSlow>
+    </PopperProviderFast>
+  )
+}
+
+// avoid position based re-rendering
+function getContextSlow(context: PopperContextValue): PopperContextSlowValue {
+  return {
+    refs: context.refs,
+    size: context.size,
+    arrowRef: context.arrowRef,
+    arrowStyle: context.arrowStyle,
+    onArrowSize: context.onArrowSize,
+    hasFloating: context.hasFloating,
+    strategy: context.strategy,
+    update: context.update,
+    context: context.context,
+    getFloatingProps: context.getFloatingProps,
+    getReferenceProps: context.getFloatingProps,
+  }
+}
 
 export type PopperProps = {
   /**
@@ -276,14 +319,12 @@ export function Popper(props: PopperProps) {
     onArrowSize: setArrowSize,
     hasFloating: middlewareData.checkFloating?.hasFloating,
     ...floating,
-  }
+  } satisfies PopperContextValue
 
   return (
-    <PopperInfrequentContext.Provider scope={scope} size={size}>
-      <PopperProvider scope={scope} {...popperContext}>
-        {children}
-      </PopperProvider>
-    </PopperInfrequentContext.Provider>
+    <PopperProvider scope={scope} {...popperContext}>
+      {children}
+    </PopperProvider>
   )
 }
 
@@ -302,9 +343,8 @@ export const PopperAnchor = YStack.extractable(
   React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
     function PopperAnchor(props, forwardedRef) {
       const { virtualRef, scope, ...anchorProps } = props
-      const { getReferenceProps, refs } = usePopperContext(scope)
+      const { getReferenceProps, refs, update } = usePopperContextSlow(scope)
       const ref = React.useRef<PopperAnchorRef>(null)
-      const composedRefs = useComposedRefs(forwardedRef, ref, refs.setReference as any)
 
       React.useEffect(() => {
         if (virtualRef) {
@@ -316,13 +356,50 @@ export const PopperAnchor = YStack.extractable(
       //   return null
       // }
 
-      const stackProps = {
-        ref: composedRefs,
-        ...anchorProps,
-      }
+      const stackProps = anchorProps
+
+      const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
+
+      const composedRefs = useComposedRefs(forwardedRef, ref)
+
+      // React.useLayoutEffect(() => {
+      //   if (!(ref.current instanceof HTMLElement)) return
+      //   if (isCurrentActive) {
+      //     console.warn('SET ACTIVE', ref.current)
+
+      //     update()
+
+      //     return () => {
+      //       // refs.setReference(null)
+      //       // update()
+      //     }
+      //   }
+      // }, [isCurrentActive])
+
       return (
         <TamaguiView
-          {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)}
+          {...refProps}
+          ref={composedRefs}
+          {...(true && {
+            onMouseEnter(e) {
+              if (ref.current instanceof HTMLElement) {
+                console.warn('setting to', ref.current)
+                // floatingRef?.(ref.current)
+                refs.setReference(ref.current)
+                setTimeout(() => {
+                  refProps.onPointerEnter(e)
+                  update()
+                })
+              }
+            },
+            onMouseLeave(e) {
+              refProps?.onMouseLeave?.(e)
+              refs.setReference(null)
+              setTimeout(() => {
+                update()
+              })
+            },
+          })}
         />
       )
     }
@@ -453,7 +530,7 @@ export type PopperArrowExtraProps = ScopedProps<{
 
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps
 
-const PopperArrowFrame = styled(YStack, {
+export const PopperArrowFrame = styled(YStack, {
   name: 'PopperArrow',
 
   variants: {
@@ -501,7 +578,7 @@ const opposites = {
 
 type Sides = keyof typeof opposites
 
-export const PopperArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
+export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
   function PopperArrow(propsIn, forwardedRef) {
     const { scope, ...rest } = propsIn
     const props = useProps(rest)

@@ -3,7 +3,7 @@ import type { UseHoverProps } from '@floating-ui/react';
 import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import type { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
+import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
 import { type ScrollViewProps } from '@tamagui/scroll-view';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
@@ -115,7 +115,7 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverArrowProps = PopperArrowProps;
-export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
         top?: number;
@@ -130,17 +130,7 @@ export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit
     size?: SizeTokens;
 } & {
     scope?: string | undefined;
-}, "scope" | "size" | "offset"> & {
-    offset?: number;
-    size?: SizeTokens;
-} & {
-    scope?: string | undefined;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-    offset?: number;
-    size?: SizeTokens;
-} & {
-    scope?: string | undefined;
-} & {
     offset?: number;
     size?: SizeTokens;
 } & {
@@ -206,7 +196,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
     }>, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
-    Arrow: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    Arrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
             top?: number;
@@ -221,17 +211,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         size?: SizeTokens;
     } & {
         scope?: string | undefined;
-    }, "scope" | "size" | "offset"> & {
-        offset?: number;
-        size?: SizeTokens;
-    } & {
-        scope?: string | undefined;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-        offset?: number;
-        size?: SizeTokens;
-    } & {
-        scope?: string | undefined;
-    } & {
         offset?: number;
         size?: SizeTokens;
     } & {

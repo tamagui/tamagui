@@ -9,13 +9,12 @@ import {
   useAdaptContext,
   useAdaptIsActive,
 } from '@tamagui/adapt'
-
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isIos, isWeb } from '@tamagui/constants'
-import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
+import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
   Stack,
@@ -32,19 +31,18 @@ import { FloatingOverrideContext } from '@tamagui/floating'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import type {
-  PopperArrowExtraProps,
-  PopperArrowProps,
-  PopperContentProps,
-  PopperProps,
-} from '@tamagui/popper'
 import {
   Popper,
   PopperAnchor,
   PopperArrow,
+  PopperArrowExtraProps,
+  PopperArrowFrame,
+  PopperArrowProps,
   PopperContent,
   PopperContentFrame,
-  PopperContext,
+  PopperContentProps,
+  PopperProps,
+  PopperProvider,
   usePopperContext,
 } from '@tamagui/popper'
 import { Portal, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
@@ -344,11 +342,11 @@ function RepropagateParentContexts({
   children: React.ReactNode
 }) {
   return (
-    <PopperContext.Provider scope={context.popoverScope} {...popperContext}>
+    <PopperProvider scope={context.popoverScope} {...popperContext}>
       <PopoverContext.Provider {...context}>
         <ProvideAdaptContext {...adaptContext}>{children}</ProvideAdaptContext>
       </PopoverContext.Provider>
-    </PopperContext.Provider>
+    </PopperProvider>
   )
 }
 
@@ -575,7 +573,7 @@ export const PopoverClose = React.forwardRef<TamaguiElement, PopoverCloseProps>(
 
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = PopperArrow.styleable<PopperArrowExtraProps>(
+export const PopoverArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
   function PopoverArrow(props, forwardedRef) {
     const { scope, ...rest } = props
     const context = usePopoverContext(scope)

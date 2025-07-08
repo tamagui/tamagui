@@ -7,7 +7,7 @@ import * as React from 'react';
 import { type View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
-export type PopperContextValue = UseFloatingReturn & {
+export type PopperContextShared = {
     size?: SizeTokens;
     hasFloating: boolean;
     arrowStyle?: Partial<Coords> & {
@@ -17,18 +17,23 @@ export type PopperContextValue = UseFloatingReturn & {
     arrowRef: any;
     onArrowSize?: (val: number) => void;
 };
-export declare const PopperContext: import("@tamagui/core").StyledContext<PopperContextValue>;
+export type PopperContextValue = UseFloatingReturn & PopperContextShared;
+export declare const PopperContextFast: import("@tamagui/core").StyledContext<PopperContextValue>;
 export declare const PopperPositionContext: typeof createStyledContext;
-export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProvider: React.Provider<PopperContextValue> & React.ProviderExoticComponent<Partial<PopperContextValue> & {
+export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProviderFast: React.Provider<PopperContextValue> & React.ProviderExoticComponent<Partial<PopperContextValue> & {
     children?: React.ReactNode;
     scope?: string;
 }>;
-export declare const PopperInfrequentContext: import("@tamagui/core").StyledContext<{
-    size?: SizeTokens;
+export type PopperContextSlowValue = PopperContextShared & Pick<UseFloatingReturn, 'context' | 'getReferenceProps' | 'getFloatingProps' | 'strategy' | 'update' | 'refs'>;
+export declare const PopperContextSlow: import("@tamagui/core").StyledContext<PopperContextSlowValue>;
+export declare const usePopperContextSlow: (scope?: string) => PopperContextSlowValue, PopperProviderSlow: React.Provider<PopperContextSlowValue> & React.ProviderExoticComponent<Partial<PopperContextSlowValue> & {
+    children?: React.ReactNode;
+    scope?: string;
 }>;
-export declare const usePopperInfrequentContext: (scope?: string) => {
-    size?: SizeTokens;
-};
+export declare const PopperProvider: ({ scope, children, ...context }: PopperContextValue & {
+    scope?: string;
+    children?: React.ReactNode;
+}) => import("react/jsx-runtime").JSX.Element;
 export type PopperProps = {
     /**
      * Popper is a component used by other components to create interfaces, so scope is required
@@ -202,27 +207,7 @@ export type PopperArrowExtraProps = ScopedProps<{
     size?: SizeTokens;
 }>;
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps;
-export declare const PopperArrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}>, "size" | "offset" | "scope"> & {
-    offset?: number;
-    size?: SizeTokens;
-} & {
-    scope?: string | undefined;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-    offset?: number;
-    size?: SizeTokens;
-} & {
-    scope?: string | undefined;
-}, import("@tamagui/core").StackStyleBase, {
+export declare const PopperArrowFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
         top?: number;
@@ -233,5 +218,38 @@ export declare const PopperArrow: import("@tamagui/core").TamaguiComponent<Omit<
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
+export declare const PopperArrow: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+}>> & {
+    offset?: number;
+    size?: SizeTokens;
+} & {
+    scope?: string | undefined;
+} & React.RefAttributes<TamaguiElement>>;
 export {};
 //# sourceMappingURL=Popper.d.ts.map

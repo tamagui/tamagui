@@ -11,7 +11,7 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react'
-import type { SizeTokens } from '@tamagui/core'
+import type { SizeTokens, TamaguiElement } from '@tamagui/core'
 import { useEvent } from '@tamagui/core'
 import type { UseFloatingFn } from '@tamagui/floating'
 import { FloatingOverrideContext } from '@tamagui/floating'
@@ -29,7 +29,7 @@ import {
   PopoverContext,
   PopoverTrigger,
 } from '@tamagui/popover'
-import type { PopperProps } from '@tamagui/popper'
+import type { PopperArrowProps, PopperProps } from '@tamagui/popper'
 import { Popper, PopperContentFrame } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -42,8 +42,10 @@ type ScopedProps<P> = Omit<P, 'scope'> & { scope?: TooltipScopes }
 
 export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
-const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>(
-  React.forwardRef((props, ref) => {
+// warning: setting to stylebale causes issues with themeInverse across portal root
+
+const TooltipContent = PopperContentFrame.extractable(
+  React.forwardRef<TamaguiElement, TooltipContentProps>((props, ref) => {
     const preventAnimation = React.useContext(PreventTooltipAnimationContext)
 
     return (
@@ -63,7 +65,7 @@ const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>(
   })
 )
 
-const TooltipArrow = PopoverArrow.styleable((props, ref) => {
+const TooltipArrow = React.forwardRef<TamaguiElement, PopperArrowProps>((props, ref) => {
   return <PopoverArrow componentName="Tooltip" ref={ref} {...props} />
 })
 
