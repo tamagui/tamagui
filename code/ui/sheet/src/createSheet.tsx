@@ -19,7 +19,7 @@ import type {
   RefAttributes,
   RefObject,
 } from 'react'
-import { forwardRef, memo, useMemo } from 'react'
+import { forwardRef, memo, useId, useMemo } from 'react'
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
@@ -85,6 +85,8 @@ export function createSheet<
 
       // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
       // so we just pass it up to context
+
+      console.log('?', useId())
 
       const element = useMemo(() => {
         return (

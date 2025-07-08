@@ -31,8 +31,7 @@ type DialogContextValue = {
     open: NonNull<DialogProps['open']>;
     onOpenChange: NonNull<DialogProps['onOpenChange']>;
     modal: NonNull<DialogProps['modal']>;
-    scope: DialogScopes;
-    adaptName: string;
+    dialogScope: DialogScopes;
 };
 export declare const DialogContext: import("@tamagui/core").StyledContext<DialogContextValue>;
 export declare const useDialogContext: (scope?: string) => DialogContextValue, DialogProvider: React.Provider<DialogContextValue> & React.ProviderExoticComponent<Partial<DialogContextValue> & {
@@ -90,14 +89,16 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-type DialogOverlayProps = ScopedProps<YStackProps & {
+type DialogOverlayExtraProps = ScopedProps<{
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
 }>;
-declare const DialogOverlay: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+type DialogOverlayProps = YStackProps & DialogOverlayExtraProps;
+declare const DialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -106,25 +107,19 @@ declare const DialogOverlay: React.ForwardRefExoticComponent<Omit<import("@tamag
         right?: number;
     } | null | undefined;
     fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-}>> & {
+    circular?: boolean | undefined;
+    transparent?: boolean | undefined;
+    unstyled?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
+    padded?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+}>, "scope" | "forceMount"> & {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
@@ -132,7 +127,37 @@ declare const DialogOverlay: React.ForwardRefExoticComponent<Omit<import("@tamag
     forceMount?: true;
 } & {
     scope?: DialogScopes;
-} & React.RefAttributes<TamaguiElement>>;
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries.
+     */
+    forceMount?: true;
+} & {
+    scope?: DialogScopes;
+}, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    transparent?: boolean | undefined;
+    unstyled?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
+    padded?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -350,7 +375,8 @@ declare const Dialog: React.ForwardRefExoticComponent<{
         scope?: DialogScopes;
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Portal: React.FC<DialogPortalProps>;
-    Overlay: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
@@ -359,25 +385,19 @@ declare const Dialog: React.ForwardRefExoticComponent<{
             right?: number;
         } | null | undefined;
         fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & {
+        circular?: boolean | undefined;
+        transparent?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }>, "scope" | "forceMount"> & {
         /**
          * Used to force mounting when more control is needed. Useful when
          * controlling animation with React animation libraries.
@@ -385,7 +405,37 @@ declare const Dialog: React.ForwardRefExoticComponent<{
         forceMount?: true;
     } & {
         scope?: DialogScopes;
-    } & React.RefAttributes<TamaguiElement>>;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
+        /**
+         * Used to force mounting when more control is needed. Useful when
+         * controlling animation with React animation libraries.
+         */
+        forceMount?: true;
+    } & {
+        scope?: DialogScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        transparent?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {

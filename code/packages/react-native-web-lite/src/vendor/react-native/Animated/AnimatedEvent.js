@@ -112,7 +112,6 @@ function validateMapping(argMapping, args) {
 export class AnimatedEvent {
   _argMapping
   _listeners = []
-  _callListeners
   _attachedEvent
   __isNative
 

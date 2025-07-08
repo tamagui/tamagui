@@ -10,10 +10,12 @@ test('scoped dialogs work', async ({ page }) => {
   // Wait for page to load
   await page.waitForLoadState('networkidle')
 
-  async function testDialogScoped(triggerTestId: string, contentTestId: string) {
+  async function testDialogScoped(name: string) {
+    const triggerTestId = `${name}-trigger`
+    const contentTestId = `${name}-dialog-content`
     const trigger = page.getByTestId(triggerTestId)
     const content = page.getByTestId(contentTestId)
-    const closeButton = content.getByTestId('dialog-close')
+    const closeButton = content.getByTestId(`${name}-dialog-close`)
 
     // Check initial state
     await expect(trigger).toBeVisible()
@@ -33,9 +35,9 @@ test('scoped dialogs work', async ({ page }) => {
   }
 
   // Test each scoped dialog
-  await testDialogScoped('plain-trigger', 'plain-dialog-content')
-  await testDialogScoped('a-trigger', 'a-dialog-content')
-  await testDialogScoped('b-trigger', 'b-dialog-content')
+  await testDialogScoped('plain')
+  await testDialogScoped('a')
+  await testDialogScoped('b')
 })
 
 test('dialog scopes are isolated', async ({ page }) => {
@@ -59,7 +61,7 @@ test('dialog scopes are isolated', async ({ page }) => {
   await expect(bContent).not.toBeVisible()
 
   // Close dialog A
-  await aContent.getByTestId('dialog-close').click()
+  await aContent.getByTestId('a-dialog-close').click()
   await expect(aContent).not.toBeVisible()
 
   // Open dialog B
@@ -71,7 +73,7 @@ test('dialog scopes are isolated', async ({ page }) => {
   await expect(aContent).not.toBeVisible()
 
   // Close dialog B
-  await bContent.getByTestId('dialog-close').click()
+  await bContent.getByTestId('b-dialog-close').click()
   await expect(bContent).not.toBeVisible()
 
   // Open plain dialog
@@ -83,6 +85,51 @@ test('dialog scopes are isolated', async ({ page }) => {
   await expect(bContent).not.toBeVisible()
 
   // Close plain dialog
-  await plainContent.getByTestId('dialog-close').click()
+  await plainContent.getByTestId('plain-dialog-close').click()
   await expect(plainContent).not.toBeVisible()
+})
+
+test('scoped dialogs adapt to sheets', async ({ page: pageIn }) => {
+  const page = await setupPage(pageIn, {
+    name: 'DialogScopedCase',
+    type: 'useCase',
+    adapt: true,
+  })
+
+  // Wait for page to load
+  await page.waitForLoadState('networkidle')
+
+  async function testDialogAdapted(name: string) {
+    const trigger = page.getByTestId(`${name}-trigger`)
+    const sheetContents = page.getByTestId(`${name}-sheet-contents`)
+    const dialogContent = page.getByTestId(`${name}-dialog-content`)
+
+    // Click trigger to open sheet
+    await trigger.click()
+
+    // Wait for sheet to be visible
+    await expect(sheetContents).toBeVisible({ timeout: 5000 })
+
+    // Check that dialog content is inside sheet
+    await expect(sheetContents.locator(dialogContent)).toBeVisible()
+
+    // Dialog.Close hides in sheet mode
+    const closeButton = sheetContents.getByTestId('dialog-close')
+    await expect(closeButton).not.toBeVisible()
+
+    // Click sheet backdrop
+    const overlay = page.locator(`#${name}-sheet-overlay`)
+    await expect(overlay).toBeVisible()
+    await overlay.click()
+
+    // await animation
+    await new Promise((res) => setTimeout(res, 1000))
+
+    // Verify sheet is closed
+    await expect(sheetContents).not.toBeInViewport()
+  }
+
+  await testDialogAdapted('plain')
+  await testDialogAdapted('a')
+  await testDialogAdapted('b')
 })

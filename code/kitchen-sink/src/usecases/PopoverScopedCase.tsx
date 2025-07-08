@@ -66,7 +66,7 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
       </Popover.Content>
 
       {shouldAdapt && (
-        <Adapt when="gtXs">
+        <Adapt when={true}>
           <Sheet animation="medium" modal dismissOnSnapToBottom>
             <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
               <Adapt.Contents />

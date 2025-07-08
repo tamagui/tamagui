@@ -115,7 +115,7 @@ test('scoped popovers adapt to sheets', async ({ page }) => {
     await closeButton.click()
 
     // await animation
-    await new Promise((res) => setTimeout(res, 2000))
+    await new Promise((res) => setTimeout(res, 1000))
 
     // Verify sheet is closed
     await expect(sheetContents).not.toBeInViewport()
