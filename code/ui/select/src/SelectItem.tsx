@@ -2,9 +2,9 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItemFrame, useListItem } from '@tamagui/list-item'
+import { createStyledContext } from '@tamagui/web'
 import * as React from 'react'
-
-import { createSelectContext, useSelectItemParentContext } from './context'
+import { useSelectItemParentContext } from './context'
 import type { SelectScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -19,8 +19,10 @@ type SelectItemContextValue = {
   isSelected: boolean
 }
 
-export const [SelectItemContextProvider, useSelectItemContext] =
-  createSelectContext<SelectItemContextValue>(ITEM_NAME)
+export const {
+  Provider: SelectItemContextProvider,
+  useStyledContext: useSelectItemContext,
+} = createStyledContext<SelectItemContextValue>(null as any, ITEM_NAME)
 
 export interface SelectItemExtraProps {
   value: string
@@ -36,7 +38,7 @@ export interface SelectItemProps
 export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
-      __scopeSelect,
+      scope,
       value,
       disabled = false,
       textValue: textValueProp,
@@ -51,7 +53,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
       ...restProps,
     })
 
-    const context = useSelectItemParentContext(ITEM_NAME, __scopeSelect)
+    const context = useSelectItemParentContext(scope)
 
     const {
       setSelectedIndex,
@@ -167,7 +169,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
     return (
       <SelectItemContextProvider
-        scope={__scopeSelect}
+        scope={scope}
         value={value}
         textId={textId || ''}
         isSelected={isSelected}

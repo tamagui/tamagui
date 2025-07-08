@@ -31,19 +31,10 @@ import type { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
-  const {
-    __scopeSelect,
-    children,
-    open = false,
-    selectedIndexRef,
-    listContentRef,
-  } = props
+  const { scope, children, open = false, selectedIndexRef, listContentRef } = props
 
-  const selectContext = useSelectContext('SelectSheetImpl', __scopeSelect)
-  const selectItemParentContext = useSelectItemParentContext(
-    'SelectSheetImpl',
-    __scopeSelect
-  )
+  const selectContext = useSelectContext(scope)
+  const selectItemParentContext = useSelectItemParentContext(scope)
   const { setActiveIndex, selectedIndex, activeIndex, forceUpdate } = selectContext
 
   const { setOpen, setSelectedIndex } = selectItemParentContext
@@ -362,7 +353,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   return (
     <SelectProvider
-      scope={__scopeSelect}
+      scope={scope}
       {...(selectContext as Required<typeof selectContext>)}
       setScrollTop={setScrollTop}
       setInnerOffset={setInnerOffset}
@@ -378,7 +369,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       update={update}
     >
       <SelectItemParentProvider
-        scope={__scopeSelect}
+        scope={scope}
         {...selectItemParentContext}
         allowMouseUpRef={allowMouseUpRef}
         allowSelectRef={allowSelectRef}

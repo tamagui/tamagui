@@ -16,7 +16,6 @@ import type {
   SelectViewportExtraProps,
   SelectViewportProps,
 } from './types'
-import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport
@@ -52,10 +51,10 @@ export const SelectViewportFrame = styled(ThemeableStack, {
 })
 
 export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraProps>(
-  function SelectViewport(props: SelectScopedProps<SelectViewportProps>, forwardedRef) {
-    const { __scopeSelect, children, disableScroll, ...viewportProps } = props
-    const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
-    const itemContext = useSelectItemParentContext(VIEWPORT_NAME, __scopeSelect)
+  function SelectViewport(props, forwardedRef) {
+    const { scope, children, disableScroll, ...viewportProps } = props
+    const context = useSelectContext(scope)
+    const itemContext = useSelectItemParentContext(scope)
     const isAdapted = useAdaptIsActive()
 
     const composedRefs = useComposedRefs(
@@ -77,11 +76,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     if (isAdapted || !isWeb) {
       return (
         <AdaptPortalContents>
-          <ForwardSelectContext
-            __scopeSelect={__scopeSelect}
-            itemContext={itemContext}
-            context={context}
-          >
+          <ForwardSelectContext itemContext={itemContext} context={context}>
             {children}
           </ForwardSelectContext>
         </AdaptPortalContents>

@@ -2,7 +2,13 @@ import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
-import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
+import {
+  createStyledContext,
+  getVariableValue,
+  styled,
+  useEvent,
+  useGet,
+} from '@tamagui/core'
 import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
@@ -19,7 +25,6 @@ import * as React from 'react'
 import {
   SelectItemParentProvider,
   SelectProvider,
-  createSelectContext,
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
@@ -44,25 +49,21 @@ const SelectValueFrame = styled(SizableText, {
   userSelect: 'none',
 })
 
-export interface SelectValueExtraProps {
+export type SelectValueExtraProps = SelectScopedProps<{
   placeholder?: React.ReactNode
-}
+}>
 
 type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
 const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
   function SelectValue(
-    {
-      __scopeSelect,
-      children: childrenProp,
-      placeholder,
-      ...props
-    }: SelectScopedProps<SelectValueProps>,
+    { scope, children: childrenProp, placeholder, ...props },
     forwardedRef
   ) {
     // We ignore `className` and `style` as this part shouldn't be styled.
-    const context = useSelectContext(VALUE_NAME, __scopeSelect)
-    const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
+    const context = useSelectContext(scope)
+    const itemParentContext = useSelectItemParentContext(scope)
+
     // @ts-ignore TODO react 19 type needs fix
     const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
     const children = childrenProp ?? context.selectedItem
@@ -116,19 +117,19 @@ export const SelectIcon = styled(XStack, {
  * SelectItemIndicator
  * -----------------------------------------------------------------------------------------------*/
 
-const ITEM_INDICATOR_NAME = 'SelectItemIndicator'
-
 const SelectItemIndicatorFrame = styled(XStack, {
-  name: ITEM_TEXT_NAME,
+  name: 'SelectItemIndicator',
 })
 
-type SelectItemIndicatorProps = GetProps<typeof SelectItemIndicatorFrame>
+type SelectItemIndicatorProps = SelectScopedProps<
+  GetProps<typeof SelectItemIndicatorFrame>
+>
 
 const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicatorProps>(
-  (props: SelectScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
-    const { __scopeSelect, ...itemIndicatorProps } = props
-    const context = useSelectItemParentContext(ITEM_INDICATOR_NAME, __scopeSelect)
-    const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
+  function SelectItemIndicator(props, forwardedRef) {
+    const { scope, ...itemIndicatorProps } = props
+    const context = useSelectItemParentContext(scope)
+    const itemContext = useSelectItemContext(scope)
 
     if (context.shouldRenderWebNative) {
       return null
@@ -140,8 +141,6 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
   }
 )
 
-SelectItemIndicator.displayName = ITEM_INDICATOR_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * SelectGroup
  * -----------------------------------------------------------------------------------------------*/
@@ -150,8 +149,8 @@ const GROUP_NAME = 'SelectGroup'
 
 type SelectGroupContextValue = { id: string }
 
-const [SelectGroupContextProvider, useSelectGroupContext] =
-  createSelectContext<SelectGroupContextValue>(GROUP_NAME)
+const { Provider: SelectGroupContextProvider, useStyledContext: useSelectGroupContext } =
+  createStyledContext<SelectGroupContextValue>({ id: '' }, 'SelectGroup')
 
 export const SelectGroupFrame = styled(YStack, {
   name: GROUP_NAME,
@@ -199,15 +198,15 @@ const NativeSelectFrame = styled(ThemeableStack, {
   },
 })
 
-type SelectGroupProps = GetProps<typeof SelectGroupFrame>
+type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
 const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
-  (props: SelectScopedProps<SelectGroupProps>, forwardedRef) => {
-    const { __scopeSelect, ...groupProps } = props
+  (props, forwardedRef) => {
+    const { scope, ...groupProps } = props
     const groupId = React.useId()
 
-    const context = useSelectContext(GROUP_NAME, __scopeSelect)
-    const itemParentContext = useSelectItemParentContext(GROUP_NAME, __scopeSelect)
+    const context = useSelectContext(scope)
+    const itemParentContext = useSelectItemParentContext(scope)
     const size = itemParentContext.size ?? '$true'
     const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
@@ -251,7 +250,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
     })()
 
     return (
-      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
+      <SelectGroupContextProvider scope={scope} id={groupId || ''}>
         {content}
       </SelectGroupContextProvider>
     )
@@ -266,13 +265,13 @@ SelectGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'SelectLabel'
 
-export type SelectLabelProps = ListItemProps
+export type SelectLabelProps = SelectScopedProps<ListItemProps>
 
 const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
-  (props: SelectScopedProps<SelectLabelProps>, forwardedRef) => {
-    const { __scopeSelect, ...labelProps } = props
-    const context = useSelectItemParentContext(LABEL_NAME, __scopeSelect)
-    const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
+  (props, forwardedRef) => {
+    const { scope, ...labelProps } = props
+    const context = useSelectItemParentContext(scope)
+    const groupContext = useSelectGroupContext(scope)
 
     if (context.shouldRenderWebNative) {
       return null
@@ -303,12 +302,12 @@ export const SelectSeparator = styled(Separator, {
 })
 
 const SelectSheetController = (
-  props: SelectScopedProps<{}> & {
+  props: SelectScopedProps<{
     children: React.ReactNode
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-  }
+  }>
 ) => {
-  const context = useSelectContext('SelectSheetController', props.__scopeSelect)
+  const context = useSelectContext(props.scope)
   const showSheet = useShowSelectSheet(context)
   const isAdapted = useAdaptIsActive()
   const getShowSheet = useGet(showSheet)
@@ -338,14 +337,11 @@ const SelectSheetImpl = (props: SelectImplProps) => {
 
 export const Select = withStaticProperties(
   function Select(props: SelectScopedProps<SelectProps>) {
-    const internalId = React.useId()
-    const scopeKey = props.__scopeSelect
-      ? (Object.keys(props.__scopeSelect)[0] ?? internalId)
-      : internalId
+    const adaptScope = `AdaptSelect${props.scope || ''}`
 
     return (
-      <AdaptParent scope={`${scopeKey}SheetContents`} portal>
-        <SelectInner scopeKey={scopeKey} {...props} />
+      <AdaptParent scope={adaptScope} portal>
+        <SelectInner scope={props.scope} adaptScope={adaptScope} {...props} />
       </AdaptParent>
     )
   },
@@ -385,9 +381,10 @@ function useEmitter<A>() {
   return [emit, subscribe] as const
 }
 
-function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string }) {
+function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: string }) {
   const {
-    __scopeSelect,
+    scope = '',
+    adaptScope,
     native,
     children,
     open: openProp,
@@ -403,7 +400,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string 
     id,
   } = props
 
-  const isAdapted = useAdaptIsActive()
+  const isAdapted = useAdaptIsActive(adaptScope)
   const SelectImpl = isAdapted || !isWeb ? SelectSheetImpl : SelectInlineImpl
   const forceUpdate = React.useReducer(() => ({}), {})[1]
   const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
@@ -487,7 +484,9 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string 
 
   return (
     <SelectItemParentProvider
-      scope={__scopeSelect}
+      scopeName={scope}
+      scope={scope}
+      adaptScope={adaptScope}
       initialValue={React.useMemo(() => value, [open])}
       size={sizeProp}
       activeIndexSubscribe={activeIndexSubscribe}
@@ -498,8 +497,8 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string 
         setValue(val)
         emitValue(val)
       }, [])}
-      onActiveChange={useEvent((...args) => {
-        onActiveChange?.(...args)
+      onActiveChange={useEvent((value, index) => {
+        onActiveChange?.(value, index)
       })}
       setSelectedIndex={setSelectedIndex}
       setValueAtIndex={React.useCallback((index, value) => {
@@ -508,7 +507,9 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string 
       shouldRenderWebNative={shouldRenderWebNative}
     >
       <SelectProvider
-        scope={__scopeSelect}
+        scope={scope}
+        scopeName={scope}
+        adaptScope={adaptScope}
         disablePreventBodyScroll={disablePreventBodyScroll}
         dir={dir}
         blockSelection={false}
@@ -518,7 +519,6 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string 
         forceUpdate={forceUpdate}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
-        scopeKey={props.scopeKey}
         activeIndex={activeIndex}
         selectedIndex={selectedIndex}
         setActiveIndex={setActiveIndexDebounced}
@@ -526,7 +526,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string 
         open={open}
         native={native}
       >
-        <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
+        <SelectSheetController onOpenChange={setOpen} scope={scope}>
           {shouldRenderWebNative ? (
             children
           ) : (

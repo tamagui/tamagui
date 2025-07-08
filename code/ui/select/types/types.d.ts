@@ -1,11 +1,11 @@
 import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react';
 import type { NativeValue, SizeTokens } from '@tamagui/core';
-import type { Scope } from '@tamagui/create-context';
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks';
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react';
 export type SelectDirection = 'ltr' | 'rtl';
+export type SelectScopes = string;
 export type SelectScopedProps<P> = P & {
-    __scopeSelect?: Scope;
+    scope?: SelectScopes;
 };
 export type SelectImplProps = SelectScopedProps<SelectProps> & {
     activeIndexRef: any;
@@ -41,6 +41,8 @@ export interface SelectProps {
 type DisposeFn = () => void;
 export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn;
 export interface SelectItemParentContextValue {
+    adaptScope: string;
+    scopeName: string;
     id?: string;
     initialValue?: any;
     setSelectedIndex: (index: number) => void;
@@ -65,7 +67,8 @@ export interface SelectItemParentContextValue {
 }
 export interface SelectContextValue {
     dir?: SelectDirection;
-    scopeKey: string;
+    scopeName: string;
+    adaptScope: string;
     value: any;
     selectedItem: ReactNode;
     setSelectedItem: (item: ReactNode) => void;
@@ -92,20 +95,20 @@ export interface SelectContextValue {
     /** update floating-ui to recalculate */
     update?: () => void;
 }
-export interface SelectViewportExtraProps {
+export type SelectViewportExtraProps = SelectScopedProps<{
     size?: SizeTokens;
     disableScroll?: boolean;
     unstyled?: boolean;
-}
+}>;
 export type SelectViewportProps = ThemeableStackProps & SelectViewportExtraProps;
 export type SelectContentProps = SelectScopedProps<{
     children?: React.ReactNode;
     zIndex?: number;
 }>;
-export interface SelectScrollButtonImplProps extends YStackProps {
+export type SelectScrollButtonImplProps = YStackProps & SelectScopedProps<{
     dir: 'up' | 'down';
     componentName: string;
-}
+}>;
 export interface SelectScrollButtonProps extends Omit<SelectScrollButtonImplProps, 'dir' | 'componentName'> {
 }
 export {};

@@ -60,10 +60,10 @@ type SelectScrollButtonImplElement = TamaguiElement
 
 const SelectScrollButtonImpl = React.memo(
   React.forwardRef<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
-    (props: SelectScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
-      const { __scopeSelect, dir, componentName, ...scrollIndicatorProps } = props
+    (props, forwardedRef) => {
+      const { scope, dir, componentName, ...scrollIndicatorProps } = props
       const { forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
-        useSelectContext(componentName, __scopeSelect)
+        useSelectContext(scope)
       const floatingRef = context.floatingContext?.refs.floating
 
       const statusRef = React.useRef<'idle' | 'active'>('idle')

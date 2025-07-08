@@ -1,35 +1,15 @@
-import type { SelectScopedProps, SelectContextValue, SelectItemParentContextValue } from './types';
-export declare const createSelectContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [(props: ContextValueType & {
-    scope: import("@tamagui/create-context").Scope<ContextValueType>;
-    children: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
-    warn?: boolean;
-    fallback?: Partial<ContextValueType>;
-}) => ContextValueType], createSelectScope: import("@tamagui/create-context").CreateScope;
-export declare const SelectProvider: (props: SelectContextValue & {
-    scope: import("@tamagui/create-context").Scope<SelectContextValue>;
-    children: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element, useSelectContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectContextValue | undefined>, options?: {
-    warn?: boolean;
-    fallback?: Partial<SelectContextValue> | undefined;
-} | undefined) => SelectContextValue;
-export declare const createSelectItemParentContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [(props: ContextValueType & {
-    scope: import("@tamagui/create-context").Scope<ContextValueType>;
-    children: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
-    warn?: boolean;
-    fallback?: Partial<ContextValueType>;
-}) => ContextValueType], createSelectItemParentScope: import("@tamagui/create-context").CreateScope;
-export declare const SelectItemParentProvider: (props: SelectItemParentContextValue & {
-    scope: import("@tamagui/create-context").Scope<SelectItemParentContextValue>;
-    children: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element, useSelectItemParentContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemParentContextValue | undefined>, options?: {
-    warn?: boolean;
-    fallback?: Partial<SelectItemParentContextValue> | undefined;
-} | undefined) => SelectItemParentContextValue;
-export declare const ForwardSelectContext: ({ __scopeSelect, context, itemContext, children, }: SelectScopedProps<{
+import type { SelectContextValue, SelectItemParentContextValue } from './types';
+export declare const SelectProvider: import("react").Provider<SelectContextValue> & import("react").ProviderExoticComponent<Partial<SelectContextValue> & {
+    children?: import("react").ReactNode;
+    scope?: string;
+}>, useSelectContext: (scope?: string) => SelectContextValue;
+export declare const SelectItemParentProvider: import("react").Provider<SelectItemParentContextValue> & import("react").ProviderExoticComponent<Partial<SelectItemParentContextValue> & {
+    children?: import("react").ReactNode;
+    scope?: string;
+}>, useSelectItemParentContext: (scope?: string) => SelectItemParentContextValue;
+export declare const ForwardSelectContext: ({ context, itemContext, children, }: {
     children?: any;
     context: SelectContextValue;
     itemContext: SelectItemParentContextValue;
-}>) => import("react/jsx-runtime").JSX.Element;
+}) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=context.d.ts.map

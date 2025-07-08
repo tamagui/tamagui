@@ -2,9 +2,9 @@ import type { FontSizeTokens, TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 import type { SelectProps, SelectScopedProps } from './types';
-export interface SelectValueExtraProps {
+export type SelectValueExtraProps = SelectScopedProps<{
     placeholder?: React.ReactNode;
-}
+}>;
 export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -25,7 +25,7 @@ export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<
     } | null | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export type SelectLabelProps = ListItemProps;
+export type SelectLabelProps = SelectScopedProps<ListItemProps>;
 export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -38,7 +38,7 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
             shouldForwardSpace: boolean;
         };
     };
-    Content: ({ children, __scopeSelect, zIndex, ...focusScopeProps }: import("./types").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
+    Content: ({ children, scope, zIndex, ...focusScopeProps }: import("./types").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
     Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
@@ -66,7 +66,9 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
             right?: number;
         } | null | undefined;
         fullscreen?: boolean | undefined;
-    }>> & React.RefAttributes<TamaguiElement>>;
+    }>> & {
+        scope?: import("./types").SelectScopes;
+    } & React.RefAttributes<TamaguiElement>>;
     Icon: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
@@ -153,11 +155,17 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
             right?: number;
         } | null | undefined;
         fullscreen?: boolean | undefined;
-    }>> & React.RefAttributes<TamaguiElement>>;
-    ItemText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    }>> & {
+        scope?: import("./types").SelectScopes;
+    } & React.RefAttributes<TamaguiElement>>;
+    ItemText: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
+    }>, "scope"> & {
+        scope?: import("./types").SelectScopes;
+    }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
+        scope?: import("./types").SelectScopes;
+    }, import("@tamagui/core").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
@@ -248,6 +256,8 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         title?: React.ReactNode;
         subTitle?: React.ReactNode;
         noTextWrap?: boolean | "all";
+    } & {
+        scope?: import("./types").SelectScopes;
     } & React.RefAttributes<TamaguiElement>>;
     ScrollDownButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
     ScrollUpButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
@@ -338,11 +348,21 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         title?: React.ReactNode;
         subTitle?: React.ReactNode;
         noTextWrap?: boolean | "all";
+    } & {
+        scope?: import("./types").SelectScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Value: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>, "placeholder"> & SelectValueExtraProps, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & SelectValueExtraProps, import("@tamagui/core").TextStylePropsBase, {
+    }>, "scope" | "placeholder"> & {
+        placeholder?: React.ReactNode;
+    } & {
+        scope?: import("./types").SelectScopes;
+    }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
+        placeholder?: React.ReactNode;
+    } & {
+        scope?: import("./types").SelectScopes;
+    }, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
@@ -368,7 +388,19 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
-    }>, keyof import("./types").SelectViewportExtraProps> & import("./types").SelectViewportExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("./types").SelectViewportExtraProps, import("@tamagui/core").StackStyleBase, {
+    }>, "size" | "scope" | "unstyled" | "disableScroll"> & {
+        size?: import("@tamagui/core").SizeTokens;
+        disableScroll?: boolean;
+        unstyled?: boolean;
+    } & {
+        scope?: import("./types").SelectScopes;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
+        size?: import("@tamagui/core").SizeTokens;
+        disableScroll?: boolean;
+        unstyled?: boolean;
+    } & {
+        scope?: import("./types").SelectScopes;
+    }, import("@tamagui/core").StackStyleBase, {
         size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
