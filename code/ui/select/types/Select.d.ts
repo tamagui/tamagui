@@ -1,10 +1,15 @@
-import type { FontSizeTokens, TamaguiElement } from '@tamagui/core';
+import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 import type { SelectProps, SelectScopedProps } from './types';
+declare const SelectValueFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    size?: import("@tamagui/web").FontSizeTokens | undefined;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type SelectValueExtraProps = SelectScopedProps<{
     placeholder?: React.ReactNode;
 }>;
+export type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps;
 export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -487,4 +492,5 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
     };
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
 };
+export {};
 //# sourceMappingURL=Select.d.ts.map

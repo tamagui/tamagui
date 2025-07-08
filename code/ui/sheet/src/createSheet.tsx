@@ -13,13 +13,8 @@ import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
-import type {
-  ForwardRefExoticComponent,
-  FunctionComponent,
-  RefAttributes,
-  RefObject,
-} from 'react'
-import { forwardRef, memo, useId, useMemo } from 'react'
+import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
+import { forwardRef, memo, useMemo } from 'react'
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
@@ -85,8 +80,6 @@ export function createSheet<
 
       // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
       // so we just pass it up to context
-
-      console.log('?', useId())
 
       const element = useMemo(() => {
         return (
@@ -228,12 +221,13 @@ export function createSheet<
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
-    let SheetImplementation = SheetImplementationCustom as any
+    let SheetImplementation = SheetImplementationCustom
 
     if (props.native && Platform.OS === 'ios') {
       if (process.env.TAMAGUI_TARGET === 'native') {
         const impl = getNativeSheet('ios')
         if (impl) {
+          // @ts-expect-error accepting external sheet implementation
           SheetImplementation = impl
         }
       }

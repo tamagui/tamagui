@@ -157,8 +157,6 @@ const DialogPortalItem = ({
     </DialogProvider>
   )
 
-  console.log('adapt?', context.dialogScope)
-
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
   // when adapted we portal to the adapt, when not we portal to root modal if needed
@@ -180,7 +178,6 @@ const DialogPortal: React.FC<DialogPortalProps> = (props) => {
   const isShowing = forceMount || context.open
   const [isFullyHidden, setIsFullyHidden] = React.useState(!isShowing)
   const isAdapted = useAdaptIsActive(context.adaptScope)
-  console.log('adapt?', context.dialogScope, isAdapted)
 
   if (isShowing && isFullyHidden) {
     setIsFullyHidden(false)

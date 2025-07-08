@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { GetProps, TamaguiTextElement } from '@tamagui/core'
-import { styled } from '@tamagui/core'
+import { styled, useIsomorphicLayoutEffect } from '@tamagui/core'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
 
@@ -58,7 +58,7 @@ export const SelectItemText = SelectItemTextFrame.styleable<SelectItemTextExtraP
       />
     )
 
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (
         itemParentContext.initialValue === itemContext.value &&
         !context.selectedIndex
@@ -67,7 +67,7 @@ export const SelectItemText = SelectItemTextFrame.styleable<SelectItemTextExtraP
       }
     }, [])
 
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       return itemParentContext.valueSubscribe((val) => {
         if (val === itemContext.value) {
           context.setSelectedItem(contents.current)

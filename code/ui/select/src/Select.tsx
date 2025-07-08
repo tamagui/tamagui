@@ -53,7 +53,7 @@ export type SelectValueExtraProps = SelectScopedProps<{
   placeholder?: React.ReactNode
 }>
 
-type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
+export type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
 const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
   function SelectValue(
@@ -309,7 +309,7 @@ const SelectSheetController = (
 ) => {
   const context = useSelectContext(props.scope)
   const showSheet = useShowSelectSheet(context)
-  const isAdapted = useAdaptIsActive()
+  const isAdapted = useAdaptIsActive(context.adaptScope)
   const getShowSheet = useGet(showSheet)
 
   return (

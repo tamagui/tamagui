@@ -19,7 +19,6 @@ import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
-
 import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
 import {
   SelectItemParentProvider,
@@ -31,11 +30,11 @@ import type { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
-  const { scope, children, open = false, selectedIndexRef, listContentRef } = props
+  const { scope, children, open = false, listContentRef } = props
 
   const selectContext = useSelectContext(scope)
   const selectItemParentContext = useSelectItemParentContext(scope)
-  const { setActiveIndex, selectedIndex, activeIndex, forceUpdate } = selectContext
+  const { setActiveIndex, selectedIndex, activeIndex } = selectContext
 
   const { setOpen, setSelectedIndex } = selectItemParentContext
 

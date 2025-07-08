@@ -19,7 +19,7 @@ export const SelectViewport = (props: SelectViewportProps) => {
   const adaptContext = useAdaptContext()
 
   return (
-    <AdaptPortalContents>
+    <AdaptPortalContents scope={context.adaptScope}>
       <Theme name={themeName}>
         <ForwardSelectContext itemContext={itemParentContext} context={context}>
           <AdaptContext.Provider {...adaptContext}>{children}</AdaptContext.Provider>

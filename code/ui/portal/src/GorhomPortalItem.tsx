@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { allPortalHosts, portalListeners } from './constants'
 import type { PortalItemProps } from './types'
-import { createPortal } from 'react-dom'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
   if (!props.hostName && !props.passThrough) {
@@ -15,7 +16,7 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     setNode(cur)
   }
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!props.hostName) return
     if (node) return
 

@@ -14,7 +14,7 @@ import {
   View,
   XStack,
 } from 'tamagui'
-import { SelectDemoItem } from './SelectDemo'
+import { SelectDemoContents } from './SelectDemo'
 
 export function DialogDemo() {
   return (
@@ -36,7 +36,13 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
       {!disableAdapt && (
         <Adapt when="maxMd" platform="touch">
-          <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet
+            animation="medium"
+            zIndex={200000}
+            modal
+            dismissOnSnapToBottom
+            unmountChildrenWhenHidden // we're nesting infinitely so need this
+          >
             <Sheet.Frame padding="$4" gap="$4">
               <Adapt.Contents />
             </Sheet.Frame>
@@ -102,18 +108,18 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
             <Fieldset gap="$4" horizontal>
               <Label width={64} htmlFor="username">
-                <TooltipSimple label="Pick your favorite" placement="bottom-start">
+                {/* <TooltipSimple label="Pick your favorite" placement="bottom-start">
                   <Paragraph>Food</Paragraph>
-                </TooltipSimple>
+                </TooltipSimple> */}
               </Label>
               <XStack flex={1}>
-                {/* <SelectDemoItem
+                <SelectDemoContents
                   trigger={
                     <Select.Trigger flex={1} iconAfter={ChevronDown}>
                       <Select.Value placeholder="Something" />
                     </Select.Trigger>
                   }
-                /> */}
+                />
               </XStack>
             </Fieldset>
 

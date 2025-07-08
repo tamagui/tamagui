@@ -1,5 +1,5 @@
-import React, { ElementType } from 'react'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import React from 'react'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
@@ -12,20 +12,20 @@ export function SelectDemo() {
         <Label htmlFor="select-demo-1" flex={1} miw={80}>
           Custom
         </Label>
-        <SelectDemoItem id="select-demo-1" />
+        <SelectDemoContents id="select-demo-1" />
       </XStack>
 
       <XStack w={'100%'} ai="center" gap="$4">
         <Label htmlFor="select-demo-2" flex={1} miw={80}>
           Native
         </Label>
-        <SelectDemoItem id="select-demo-2" native />
+        <SelectDemoContents id="select-demo-2" native />
       </XStack>
     </YStack>
   )
 }
 
-export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
+export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactNode }) {
   const [val, setVal] = React.useState('apple')
 
   return (

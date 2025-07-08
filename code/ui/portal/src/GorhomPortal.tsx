@@ -2,7 +2,7 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {
@@ -10,7 +10,7 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
+  useId,
   useMemo,
   useReducer,
 } from 'react'
@@ -281,7 +281,8 @@ export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
 })
 
 function PortalHostWeb(props: PortalHostProps) {
-  useEffect(() => {
+  // if not layout effect race issues
+  useIsomorphicLayoutEffect(() => {
     return () => {
       allPortalHosts.delete(props.name)
     }
@@ -289,6 +290,7 @@ function PortalHostWeb(props: PortalHostProps) {
 
   return (
     <div
+      data-is-portal-host={props.name}
       style={{ display: 'contents' }}
       ref={(node) => {
         if (node) {
@@ -305,7 +307,7 @@ function PortalHostNonNative(props: PortalHostProps) {
   const state = usePortalState(name)
   const { registerHost, deregisterHost } = usePortal(props.name)
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof window === 'undefined') return
     registerHost()
     return () => {

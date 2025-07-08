@@ -33,8 +33,8 @@ export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
  */
 type AdaptParentProps = {
     children?: React.ReactNode;
-    scope: string;
     Contents?: AdaptParentContextI['Contents'];
+    scope: string;
     portal?: boolean | {
         forwardProps?: any;
     };

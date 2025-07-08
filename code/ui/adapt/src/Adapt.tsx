@@ -10,7 +10,7 @@ import { createStyledContext, useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem } from '@tamagui/portal'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
-import React, { createContext, useContext, useEffect, useId } from 'react'
+import React, { createContext, useContext, useId, useMemo } from 'react'
 
 /**
  * Interfaces
@@ -72,9 +72,6 @@ export const ProvideAdaptContext = ({
 
 export const useAdaptContext = (scope?: string) => {
   const lastScope = useContext(LastAdaptContextScope)
-  console.groupCollapsed('scope', scope, lastScope)
-  console.log(getCurrentComponentStack('short'))
-  console.groupEnd()
   return AdaptContext.useStyledContext(scope ?? lastScope)
 }
 
@@ -84,8 +81,8 @@ export const useAdaptContext = (scope?: string) => {
 
 type AdaptParentProps = {
   children?: React.ReactNode
-  scope: string
   Contents?: AdaptParentContextI['Contents']
+  scope: string
   portal?:
     | boolean
     | {
@@ -99,25 +96,32 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
   const id = useId()
   const portalName = `AdaptPortal${scope}${id}`
 
-  let FinalContents = Contents || AdaptPortals.get(id)
-
-  if (!FinalContents) {
-    FinalContents = () => {
+  const FinalContents = useMemo(() => {
+    if (Contents) {
+      return Contents
+    }
+    if (AdaptPortals.has(portalName)) {
+      return AdaptPortals.get(portalName)
+    }
+    const element = () => {
       return (
         <PortalHost
+          key={id}
           name={portalName}
           forwardProps={typeof portal === 'boolean' ? undefined : portal?.forwardProps}
         />
       )
     }
-    AdaptPortals.set(id, FinalContents)
-  }
+    AdaptPortals.set(portalName, element)
+    return element
+  }, [portalName, Contents])
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
+    AdaptPortals.set(portalName, FinalContents)
     return () => {
-      AdaptPortals.delete(id)
+      AdaptPortals.delete(portalName)
     }
-  }, [])
+  }, [portalName])
 
   const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
