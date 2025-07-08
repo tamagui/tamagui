@@ -223,6 +223,10 @@ const useAdaptIsActiveGiven = ({
     return false
   }
 
+  if (when === true) {
+    return true
+  }
+
   let enabled = false
 
   if (platform === 'touch') enabled = isTouchable
