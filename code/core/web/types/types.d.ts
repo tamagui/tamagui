@@ -50,6 +50,7 @@ export type ComponentContextI = {
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
     setParentFocusState: ComponentSetStateShallow | null;
+    mediaEmit?: (state: UseMediaState) => void;
 };
 export type TamaguiComponentStateRef = {
     host?: TamaguiElement;

@@ -21,10 +21,37 @@ export function SandboxSandbox() {
   return (
     <>
       <Configuration animationDriver={animationsMotion}>
-        <Button animation="100ms">
-          hi hello
-          <Button.Text>hi</Button.Text>
-        </Button>
+        <Square
+          animation="quick"
+          size={100}
+          bg="red"
+          scale={0.95}
+          $md={{ bg: 'blue', scale: 1.1 }}
+        />
+        <Square size={100} bg="red" scale={0.95} $md={{ bg: 'blue', scale: 1.1 }} />
+
+        <YStack
+          group
+          bg="pink"
+          containerType="normal"
+          fullscreen
+          items="center"
+          justify="center"
+        >
+          <Square
+            animation="quick"
+            size={100}
+            bg="red"
+            scale={0.95}
+            $group-md={{ bg: 'blue', scale: 1.1 }}
+          />
+          <Square
+            size={100}
+            bg="red"
+            scale={0.95}
+            $group-md={{ bg: 'blue', scale: 1.1 }}
+          />
+        </YStack>
       </Configuration>
       {/* <Motion /> */}
       {/* <DialogDemo /> */}

@@ -566,6 +566,10 @@ function createMotionView(defaultTag: string) {
         }
       )
 
+      if (!out) {
+        return {}
+      }
+
       // we can definitely get rid of this here
       if (out.viewProps.style) {
         fixStyles(out.viewProps.style)

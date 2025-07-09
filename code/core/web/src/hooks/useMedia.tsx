@@ -150,10 +150,6 @@ export function updateMediaListeners() {
   listeners.forEach((cb) => cb(mediaState))
 }
 
-type MediaKeysState = {
-  [key: string]: any
-}
-
 type MediaState = {
   enabled?: boolean
   keys?: Set<string> | null
@@ -184,17 +180,31 @@ function subscribe(subscriber: () => void) {
   }
 }
 
-export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
-  const componentState = cc ? States.get(cc) : null
+export function useMedia(
+  componentContext?: ComponentContextI,
+  debug?: DebugProp
+): UseMediaState {
+  const componentState = componentContext ? States.get(componentContext) : null
 
-  const internalRef = useRef<{ keys: Set<string>; lastState?: MediaQueryState }>(null)
+  const internalRef = useRef<{
+    keys: Set<string>
+    lastState: MediaQueryState
+    pendingState?: MediaQueryState
+  }>(null)
   if (!internalRef.current) {
     internalRef.current = {
       keys: new Set(),
+      lastState: mediaState,
     }
   }
 
-  const { keys, lastState = mediaState } = internalRef.current
+  // reset on next render
+  if (internalRef.current.pendingState) {
+    internalRef.current.lastState = internalRef.current.pendingState
+    internalRef.current.pendingState = undefined
+  }
+
+  const { keys } = internalRef.current
 
   // clear each render to track only rendered touched keys
   if (keys.size) {
@@ -204,23 +214,28 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
   const state = useSyncExternalStore(
     subscribe,
     () => {
-      if (componentState?.enabled) {
-        internalRef.current!.lastState = mediaState
-        return mediaState
-      }
-
       const curKeys = componentState?.keys || keys
+      const { lastState, pendingState } = internalRef.current!
 
       if (!curKeys.size) {
         return lastState
       }
 
       for (const key of curKeys) {
-        if (mediaState[key] !== lastState[key]) {
+        if (mediaState[key] !== (pendingState || lastState)[key]) {
           if (process.env.NODE_ENV === 'development' && debug) {
             console.warn(`useMedia() ✍️`, key, lastState[key], '=>', mediaState[key])
           }
+
+          // in emitter mode (no-rerender) avoid changing state, instead emit
+          if (componentContext?.mediaEmit) {
+            componentContext.mediaEmit(mediaState)
+            internalRef.current!.pendingState = mediaState
+            return lastState
+          }
+
           internalRef.current!.lastState = mediaState
+
           return mediaState
         }
       }
