@@ -4,6 +4,19 @@ import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
 import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 
+/**
+ * Helper function to extract duration from CSS animation string
+ * Examples: "ease-in 200ms" -> 200, "cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms" -> 400
+ */
+function extractDuration(animation: string): number {
+  const match = animation.match(/(\d+(?:\.\d+)?)\s*ms/)
+  if (match) {
+    return Number.parseInt(match[1], 10)
+  }
+  // Default to 300ms if no duration found
+  return 300
+}
+
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   const reactionListeners = new WeakMap<any, Set<Function>>()
 
@@ -74,12 +87,34 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         const host = stateRef.current.host
         if (!sendExitComplete || !isExiting || !host) return
         const node = host as HTMLElement
+
+        /**
+         * Exit animation handling for Dialog/Modal components
+         *
+         * The Challenge: When users close dialogs (via Escape key or clicking outside),
+         * the element can disappear from the DOM before CSS transitions finish, which causes:
+         * 1. Dialogs to stick around on screen
+         * 2. Event handlers to stop working
+         */
+
+        // Use timeout as primary, transition events as backup for reliable exit handling
+        const fallbackTimeout = animation ? extractDuration(animation) : 200
+
+        const timeoutId = setTimeout(() => {
+          sendExitComplete?.()
+        }, fallbackTimeout)
+
+        // Listen for transition completion events as backup
         const onFinishAnimation = () => {
+          clearTimeout(timeoutId)
           sendExitComplete?.()
         }
+
         node.addEventListener('transitionend', onFinishAnimation)
         node.addEventListener('transitioncancel', onFinishAnimation)
+
         return () => {
+          clearTimeout(timeoutId)
           node.removeEventListener('transitionend', onFinishAnimation)
           node.removeEventListener('transitioncancel', onFinishAnimation)
         }
@@ -178,7 +213,4 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 //     scaleY: height / fromHeight,
 //   }
 
-//   el.style.transform = `translate(${transform.x}px, ${transform.y}px) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
-
-//   return transform
-// }
+//   el.style.transform = `
