@@ -55,6 +55,7 @@ import type {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseMediaState,
   UseStyleEmitter,
   UseThemeWithStateProps,
 } from './types'
@@ -66,6 +67,7 @@ import { getThemedChildren } from './views/Theme'
  */
 let time: any
 const NextState = new WeakMap<any, TamaguiComponentState | undefined>()
+const NextMedia = new WeakMap<any, UseMediaState | undefined>()
 
 let debugKeyListeners: Set<Function> | undefined
 let startVisualizer: Function | undefined
@@ -663,6 +665,49 @@ export function createComponent<
       const useStyleListener = stateRef.current.useStyleListener
       const ogSetStateShallow = setStateShallow
 
+      componentContext.mediaEmit = (next) => {
+        NextMedia.set(stateRef, next)
+        updateStyleListener()
+      }
+
+      const updateStyleListener = () => {
+        const updatedState = NextState.get(stateRef) || state
+        const mediaState = NextMedia.get(stateRef)
+        const {
+          group,
+          hasDynGroupChildren,
+          unmounted,
+          animation,
+          ...childrenGroupState
+        } = updatedState
+
+        // update before getting styles
+        if (groupContext) {
+          notifyGroupSubscribers(
+            groupContext,
+            stateRef.current.group || null,
+            childrenGroupState
+          )
+        }
+
+        const nextStyles = getSplitStyles(
+          props,
+          staticConfig,
+          theme,
+          themeName,
+          updatedState,
+          mediaState ? { ...styleProps, mediaState } : styleProps,
+          null,
+          componentContext,
+          allGroupContexts,
+          elementType,
+          startedUnhydrated,
+          debugProp
+        )
+
+        useStyleListener?.((nextStyles?.style || {}) as any)
+      }
+
       stateRef.current.setStateShallow = (nextOrGetNext) => {
         const prev = NextState.get(stateRef) || state
         const next =
@@ -694,39 +739,7 @@ export function createComponent<
             console.groupEnd()
           }
 
-          const {
-            group,
-            hasDynGroupChildren,
-            unmounted,
-            animation,
-            ...childrenGroupState
-          } = updatedState
-
-          // update before getting styles
-          if (groupContext) {
-            notifyGroupSubscribers(
-              groupContext,
-              stateRef.current.group || null,
-              childrenGroupState
-            )
-          }
-
-          const nextStyles = getSplitStyles(
-            props,
-            staticConfig,
-            theme,
-            themeName,
-            updatedState,
-            styleProps,
-            null,
-            componentContext,
-            allGroupContexts,
-            elementType,
-            startedUnhydrated,
-            debugProp
-          )
-
-          useStyleListener?.((nextStyles?.style || {}) as any)
+          updateStyleListener()
         } else {
           if (
             process.env.NODE_ENV === 'development' &&
