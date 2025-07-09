@@ -34,7 +34,7 @@ import { Popper, PopperContentFrame } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
-const TOOLTIP_SCOPE = 'tooltip'
+const TOOLTIP_SCOPE = ''
 
 export type TooltipScopes = string
 
@@ -50,6 +50,7 @@ const TooltipContent = PopperContentFrame.extractable(
 
     return (
       <PopoverContent
+        scope={props.scope || TOOLTIP_SCOPE}
         componentName="Tooltip"
         disableFocusScope
         {...(!props.unstyled && {
@@ -66,7 +67,14 @@ const TooltipContent = PopperContentFrame.extractable(
 )
 
 const TooltipArrow = React.forwardRef<TamaguiElement, PopperArrowProps>((props, ref) => {
-  return <PopoverArrow componentName="Tooltip" ref={ref} {...props} />
+  return (
+    <PopoverArrow
+      scope={props.scope || TOOLTIP_SCOPE}
+      componentName="Tooltip"
+      ref={ref}
+      {...props}
+    />
+  )
 })
 
 export type TooltipProps = ScopedProps<
@@ -131,9 +139,9 @@ const TooltipComponent = React.forwardRef(function Tooltip(
 ) {
   const {
     children,
-    delay: delayProp,
+    delay: delayProp = 400,
     restMs = typeof delayProp === 'undefined'
-      ? 500
+      ? 0
       : typeof delayProp === 'number'
         ? delayProp
         : 0,
@@ -141,13 +149,13 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     focus,
     open: openProp,
     disableAutoCloseOnScroll,
-    scope,
+    scope = TOOLTIP_SCOPE,
     ...restProps
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
   const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
-  const delay = delayProp ?? delayGroup
+  const delay = delayProp ?? delayGroup ?? 0
   const [open, setOpen] = useControllableState({
     prop: openProp,
     defaultProp: false,
@@ -167,14 +175,14 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     if (!open) return
     if (disableAutoCloseOnScroll) return
     if (typeof document === 'undefined') return
-    const openIt = () => {
+    const closeIt = () => {
       setOpen(false)
     }
     setOpens.add(setOpen)
-    document.documentElement.addEventListener('scroll', openIt)
+    document.documentElement.addEventListener('scroll', closeIt)
     return () => {
       setOpens.delete(setOpen)
-      document.documentElement.removeEventListener('scroll', openIt)
+      document.documentElement.removeEventListener('scroll', closeIt)
     }
   }, [open, disableAutoCloseOnScroll])
 
@@ -186,8 +194,13 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       onOpenChange,
     })
     const { delay: delayContext } = useDelayGroup(floating.context, { id })
+    const delayOut = delay ?? delayContext
+
     const { getReferenceProps, getFloatingProps } = useInteractions([
-      useHover(floating.context, { delay: delay ?? delayContext, restMs }),
+      useHover(floating.context, {
+        delay: delayOut,
+        restMs,
+      }),
       useFocus(floating.context, focus),
       useRole(floating.context, { role: 'tooltip' }),
       useDismiss(floating.context),
@@ -222,7 +235,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     <FloatingOverrideContext.Provider value={useFloatingContext}>
       {/* default tooltip to a smaller size */}
       <Popper
-        scope={scope || TOOLTIP_SCOPE}
+        scope={scope}
         size={smallerSize?.key as SizeTokens}
         allowFlip
         stayInFrame
@@ -230,10 +243,11 @@ const TooltipComponent = React.forwardRef(function Tooltip(
         {...restProps}
       >
         <PopoverContext.Provider
+          popoverScope={scope}
+          scope={scope}
           contentId={contentId}
           triggerRef={triggerRef}
           open={open}
-          scope={scope || TOOLTIP_SCOPE}
           onOpenChange={setOpen}
           onOpenToggle={voidFn}
           hasCustomAnchor={hasCustomAnchor}

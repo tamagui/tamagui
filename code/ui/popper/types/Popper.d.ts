@@ -39,7 +39,7 @@ export type PopperProps = {
      * Popper is a component used by other components to create interfaces, so scope is required
      * For example Popover uses it internally and sets a default "POPOVER_SCOPE".
      */
-    scope: string;
+    scope?: string;
     /**
      * Optional, will disable measuring updates when open is false for better performance
      * */

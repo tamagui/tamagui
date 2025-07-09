@@ -119,7 +119,7 @@ export type PopperProps = {
    * Popper is a component used by other components to create interfaces, so scope is required
    * For example Popover uses it internally and sets a default "POPOVER_SCOPE".
    */
-  scope: string
+  scope?: string
 
   /**
    * Optional, will disable measuring updates when open is false for better performance
@@ -343,7 +343,8 @@ export const PopperAnchor = YStack.extractable(
   React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
     function PopperAnchor(props, forwardedRef) {
       const { virtualRef, scope, ...anchorProps } = props
-      const { getReferenceProps, refs, update } = usePopperContextSlow(scope)
+      const context = usePopperContextSlow(scope)
+      const { getReferenceProps, refs, update } = context
       const ref = React.useRef<PopperAnchorRef>(null)
 
       React.useEffect(() => {
@@ -375,7 +376,9 @@ export const PopperAnchor = YStack.extractable(
           }}
           onMouseLeave={(e) => {
             refProps?.onMouseLeave?.(e)
-            refs.setReference(null)
+            // setTimeout(() => {
+            //   refs.setReference(null)
+            // })
           }}
         />
       )
