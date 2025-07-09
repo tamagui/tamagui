@@ -290,4 +290,5 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
 export const ListItem = withStaticProperties(ListItemComponent, {
   Text: ListItemText,
   Subtitle: ListItemSubtitle,
+  Title: ListItemTitle,
 })

@@ -399,6 +399,10 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         size?: SizeTokens | FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
+    Title: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/web").StaticConfigPublic>;
 };
 export {};
 //# sourceMappingURL=ListItem.d.ts.map
