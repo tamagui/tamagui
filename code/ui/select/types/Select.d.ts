@@ -1,5 +1,5 @@
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core';
-import type { ListItemProps } from '@tamagui/list-item';
+import { type ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 import type { SelectProps, SelectScopedProps } from './types';
 declare const SelectValueFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
@@ -97,7 +97,9 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
         active?: boolean | undefined;
-    }>> & import("@tamagui/list-item").ListItemExtraProps & React.RefAttributes<TamaguiElement>> & {
+    }>> & import("@tamagui/list-item").ListItemExtraProps & {
+        scope?: import("./types").SelectScopes;
+    } & React.RefAttributes<TamaguiElement>> & {
         Text: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
             size?: FontSizeTokens | undefined;
             unstyled?: boolean | undefined;
@@ -120,7 +122,9 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
         active?: boolean | undefined;
-    }>> & import("@tamagui/list-item").ListItemExtraProps & React.RefAttributes<TamaguiElement>>;
+    }>> & import("@tamagui/list-item").ListItemExtraProps & {
+        scope?: import("./types").SelectScopes;
+    } & React.RefAttributes<TamaguiElement>>;
     Value: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;

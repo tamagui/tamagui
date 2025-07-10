@@ -4,7 +4,7 @@ import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetIcon } from '@tamagui/helpers-tamagui'
 import { themeableVariants, YStack } from '@tamagui/stacks'
-import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import { type SizableTextProps, SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, styled, View } from '@tamagui/web'
 import type { FunctionComponent, ReactNode, JSX } from 'react'
@@ -19,6 +19,7 @@ export type ListItemExtraProps = {
   title?: ReactNode
   subTitle?: ReactNode
   iconSize?: SizeTokens
+  fontWeight?: SizableTextProps['fontWeight']
 }
 
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
@@ -180,6 +181,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       subTitle,
       title,
       iconSize,
+      fontWeight,
       ...rest
     } = propsIn
 

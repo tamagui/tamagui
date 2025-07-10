@@ -17,13 +17,13 @@ export interface SelectItemExtraProps {
 }
 export interface SelectItemProps extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {
 }
-export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/web").SizeTokens | undefined;
+export declare const SelectItem: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & SelectItemExtraProps, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/web").SizeTokens | undefined;
+}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps & SelectItemExtraProps, import("@tamagui/core").StackStyleBase, {
+    size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;

@@ -1,7 +1,8 @@
 import { type TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
-export type SelectTriggerProps = ListItemProps;
+import type { SelectScopedProps } from './types';
+export type SelectTriggerProps = SelectScopedProps<ListItemProps>;
 export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase | "active" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -17,5 +18,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}>> & import("@tamagui/list-item").ListItemExtraProps & React.RefAttributes<TamaguiElement>>;
+}>> & import("@tamagui/list-item").ListItemExtraProps & {
+    scope?: import("./types").SelectScopes;
+} & React.RefAttributes<TamaguiElement>>;
 //# sourceMappingURL=SelectTrigger.d.ts.map

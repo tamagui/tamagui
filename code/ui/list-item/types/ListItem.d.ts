@@ -1,3 +1,4 @@
+import { type SizableTextProps } from '@tamagui/text';
 import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web';
 import type { FunctionComponent, ReactNode, JSX } from 'react';
 type ListItemIconProps = {
@@ -12,6 +13,7 @@ export type ListItemExtraProps = {
     title?: ReactNode;
     subTitle?: ReactNode;
     iconSize?: SizeTokens;
+    fontWeight?: SizableTextProps['fontWeight'];
 };
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
 declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {

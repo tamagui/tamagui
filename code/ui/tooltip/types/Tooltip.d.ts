@@ -55,17 +55,8 @@ export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps &
 }, "scope"> & {
     scope?: TooltipScopes;
 } & React.RefAttributes<unknown>> & {
-    Anchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & {
-        __scopeTooltip?: string | undefined;
+    Anchor: React.ForwardRefExoticComponent<Omit<PopoverAnchorProps, "scope"> & {
+        scope?: TooltipScopes;
     } & React.RefAttributes<unknown>>;
     Arrow: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -76,22 +67,25 @@ export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps &
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }>> & import("@tamagui/popper").PopperArrowExtraProps & {
-        __scopeTooltip?: string | undefined;
-    } & React.RefAttributes<unknown>>;
+    }>> & {
+        offset?: number;
+        size?: SizeTokens;
+    } & {
+        scope?: string | undefined;
+    } & React.RefAttributes<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+    }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-        __scopeTooltip?: string | undefined;
+    Trigger: React.ForwardRefExoticComponent<Omit<PopoverTriggerProps, "scope"> & {
+        scope?: TooltipScopes;
     } & React.RefAttributes<unknown>>;
 };
 export {};

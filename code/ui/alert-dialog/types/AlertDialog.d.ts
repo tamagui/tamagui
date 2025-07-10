@@ -16,40 +16,21 @@ type AlertDialogPortalProps = ScopedProps<DialogPortalProps>;
 declare const AlertDialogPortal: React.FC<AlertDialogPortalProps>;
 type AlertDialogOverlayExtraProps = ScopedProps<{}> & DialogOverlayExtraProps;
 type AlertDialogOverlayProps = AlertDialogOverlayExtraProps & DialogOverlayProps;
-declare const AlertDialogOverlay: React.ForwardRefExoticComponent<Omit<{}, "scope"> & {
+declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}>, "scope" | "forceMount"> & Omit<DialogOverlayExtraProps, "scope"> & {
     scope?: AlertDialogScopes;
-} & {
-    forceMount?: true;
-} & {
-    scope?: import("@tamagui/dialog").DialogScopes;
-} & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<DialogOverlayExtraProps, "scope"> & {
+    scope?: AlertDialogScopes;
+}, import("@tamagui/core").StackStyleBase, {
+    open?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
     fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-}>> & React.RefAttributes<TamaguiElement>>;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 type AlertDialogContentProps = ScopedProps<Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'>>;
 declare const AlertDialogContent: React.ForwardRefExoticComponent<Omit<Omit<DialogContentProps, "onPointerDownOutside" | "onInteractOutside">, "scope"> & {
     scope?: AlertDialogScopes;
@@ -75,40 +56,21 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
         scope?: AlertDialogScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Portal: React.FC<AlertDialogPortalProps>;
-    Overlay: React.ForwardRefExoticComponent<Omit<{}, "scope"> & {
+    Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }>, "scope" | "forceMount"> & Omit<DialogOverlayExtraProps, "scope"> & {
         scope?: AlertDialogScopes;
-    } & {
-        forceMount?: true;
-    } & {
-        scope?: import("@tamagui/dialog").DialogScopes;
-    } & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<DialogOverlayExtraProps, "scope"> & {
+        scope?: AlertDialogScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        open?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
         fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & React.RefAttributes<TamaguiElement>>;
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Content: React.ForwardRefExoticComponent<Omit<Omit<DialogContentProps, "onPointerDownOutside" | "onInteractOutside">, "scope"> & {
         scope?: AlertDialogScopes;
     } & React.RefAttributes<TamaguiElement>>;

@@ -340,49 +340,49 @@ export type PopperAnchorExtraProps = {
 }
 export type PopperAnchorProps = YStackProps
 
-export const PopperAnchor = YStack.styleable<ScopedPopperProps<PopperAnchorExtraProps>>(
+export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
   function PopperAnchor(props, forwardedRef) {
     const { virtualRef, scope, ...anchorProps } = props
-      const context = usePopperContextSlow(scope)
-      const { getReferenceProps, refs, update } = context
-      const ref = React.useRef<PopperAnchorRef>(null)
+    const context = usePopperContextSlow(scope)
+    const { getReferenceProps, refs, update } = context
+    const ref = React.useRef<PopperAnchorRef>(null)
 
-      React.useEffect(() => {
-        if (virtualRef) {
-          refs.setReference(virtualRef.current)
-        }
-      }, [virtualRef])
+    React.useEffect(() => {
+      if (virtualRef) {
+        refs.setReference(virtualRef.current)
+      }
+    }, [virtualRef])
 
-      const stackProps = anchorProps
+    const stackProps = anchorProps
 
-      const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-      const composedRefs = useComposedRefs(forwardedRef, ref)
+    const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
+    const composedRefs = useComposedRefs(forwardedRef, ref)
 
-      return (
-        <TamaguiView
-          {...stackProps}
-          {...refProps}
-          ref={composedRefs}
-          // this helps us with handling scoped poppers with many different targets
-          // basically we wait for mouseEnter to ever set a reference and remove it on leave
-          // otherwise floating ui gets confused by having >1 reference
-          onMouseEnter={(e) => {
-            if (ref.current instanceof HTMLElement) {
-              refs.setReference(ref.current)
-              setTimeout(() => {
-                refProps.onPointerEnter?.(e)
-                update()
-              })
-            }
-          }}
-          onMouseLeave={(e) => {
-            refProps?.onMouseLeave?.(e)
-            // setTimeout(() => {
-            //   refs.setReference(null)
-            // })
-          }}
-        />
-      )
+    return (
+      <TamaguiView
+        {...stackProps}
+        {...refProps}
+        ref={composedRefs}
+        // this helps us with handling scoped poppers with many different targets
+        // basically we wait for mouseEnter to ever set a reference and remove it on leave
+        // otherwise floating ui gets confused by having >1 reference
+        onMouseEnter={(e) => {
+          if (ref.current instanceof HTMLElement) {
+            refs.setReference(ref.current)
+            setTimeout(() => {
+              refProps.onPointerEnter?.(e)
+              update()
+            })
+          }
+        }}
+        onMouseLeave={(e) => {
+          refProps?.onMouseLeave?.(e)
+          // setTimeout(() => {
+          //   refs.setReference(null)
+          // })
+        }}
+      />
+    )
   }
 )
 
@@ -395,6 +395,7 @@ type PopperContentElement = TamaguiElement
 export type PopperContentExtraProps = {
   enableAnimationForPositionChange?: boolean
   passThrough?: boolean
+  scope?: string
 }
 export type PopperContentProps = SizableStackProps & PopperContentExtraProps
 

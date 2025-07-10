@@ -63,27 +63,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Action: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & {
-        /**
-         * A short description for an alternate way to carry out the action. For screen reader users
-         * who will not be able to navigate to the button easily/quickly.
-         * @example <ToastAction altText="Goto account settings to updgrade">Upgrade</ToastAction>
-         * @example <ToastAction altText="Undo (Alt+U)">Undo</ToastAction>
-         */
-        altText: string;
-    } & {
-        __scopeToast?: string;
+    Action: React.ForwardRefExoticComponent<Omit<ToastActionProps, "scope"> & {
+        scope?: import("./ToastProvider").ToastScopes;
     } & React.RefAttributes<TamaguiElement>>;
-    Close: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Close: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -92,7 +75,9 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }>> & React.RefAttributes<TamaguiElement>>;
+    }>>, "scope"> & {
+        scope?: import("./ToastProvider").ToastScopes;
+    } & React.RefAttributes<TamaguiElement>>;
 };
 export { Toast, ToastProvider, ToastViewport, useToast, useToastController, useToastState, };
 export type { CustomData, ToastActionProps, ToastCloseProps, ToastDescriptionProps, NativePlatform as ToastNativePlatform, NativeValue as ToastNativeValue, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, };
