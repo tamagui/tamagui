@@ -1,8 +1,9 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "1.131.1",
+  "version": "1.131.2",
   "private": true,
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start:one": "one dev",
     "start:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",

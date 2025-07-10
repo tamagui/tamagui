@@ -353,6 +353,16 @@ function getNewThemeName(
   const { themes } = getConfig()
 
   if (reset) {
+    // For reset, we need to go back to the grandparent theme
+    // If parentName is just a scheme (like "dark" or "light"),
+    // we should return the opposite scheme or a default
+    const isSchemeOnly = parentName === 'light' || parentName === 'dark'
+    if (isSchemeOnly) {
+      // If parent is just a scheme, go to the opposite scheme
+      return parentName === 'light' ? 'dark' : 'light'
+    }
+
+    // For compound themes like "dark_blue", extract the scheme
     const lastPartIndex = parentName.lastIndexOf('_')
     // parentName will have format light_{name} or dark_{name}
     const name = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)

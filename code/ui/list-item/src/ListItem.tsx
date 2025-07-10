@@ -248,4 +248,5 @@ export const ListItem = withStaticProperties(ListItemComponent, {
   Text: ListItemText,
   Subtitle: ListItemSubtitle,
   Icon: ListItemIcon,
+  Title: ListItemTitle,
 })

@@ -54,6 +54,16 @@ async function findImports(location: string): Promise<string[]> {
       return []
     }
 
+    // Check if rg (ripgrep) is available
+    try {
+      await exec('which rg')
+    } catch (err: any) {
+      console.warn(
+        'Warning: ripgrep (rg) is not installed. Please install it with: brew install ripgrep'
+      )
+      process.exit(0)
+    }
+
     // Use rg to find import statements in tsx/ts files
     let stdout = ''
     try {
