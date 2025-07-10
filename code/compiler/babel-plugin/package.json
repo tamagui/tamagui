@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin",
-  "version": "1.130.8",
+  "version": "1.131.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
@@ -19,8 +19,8 @@
     "watch": "tamagui-build --skip-native --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean": "node ../../../node_modules/.bin/tamagui-build clean",
+    "clean:build": "node ../../../node_modules/.bin/tamagui-build clean:build"
   },
   "dependencies": {
     "@babel/core": "^7.25.2",

@@ -13,12 +13,7 @@ import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
-import type {
-  ForwardRefExoticComponent,
-  FunctionComponent,
-  RefAttributes,
-  RefObject,
-} from 'react'
+import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
 import { forwardRef, memo, useMemo } from 'react'
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
@@ -113,6 +108,7 @@ export function createSheet<
     return null
   })
 
+
   /* -------------------------------------------------------------------------------------------------
    * Sheet
    * -----------------------------------------------------------------------------------------------*/
@@ -133,6 +129,7 @@ export function createSheet<
     adjustPaddingForOffscreenContent?: boolean
   }
 
+
   const SheetFrame = Frame.styleable<SheetProps & ExtraFrameProps>(
     (
       {
@@ -144,32 +141,45 @@ export function createSheet<
       },
       forwardedRef
     ) => {
-      const context = useSheetContext(SHEET_NAME, __scopeSheet)
-      const { hasFit, removeScrollEnabled = true, frameSize, contentRef, open } = context
-      const composedContentRef = useComposedRefs(forwardedRef, contentRef)
-      const offscreenSize = useSheetOffscreenSize(context)
+          const context = useSheetContext(SHEET_NAME, __scopeSheet)
+        const {
+          hasFit,
+          removeScrollEnabled = true,
+          frameSize,
+          contentRef,
+          open,
+        } = context
+        const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+        const offscreenSize = useSheetOffscreenSize(context)
 
-      const sheetContents = useMemo(() => {
-        return (
-          // @ts-expect-error
-          <Frame {...props}>
-            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
-              {children}
-            </StackZIndexContext>
+        const sheetContents = useMemo(() => {
+          return (
+            // @ts-expect-error
+            <Frame
+              ref={composedContentRef}
+              flex={hasFit ? 0 : 1}
+              height={hasFit ? undefined : frameSize}
+              pointerEvents={open ? 'auto' : 'none'}
+              {...props}
+            >
+              <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+                {children}
+              </StackZIndexContext>
 
-            {adjustPaddingForOffscreenContent && (
-              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-            )}
-          </Frame>
-        )
-      }, [
-        open,
-        props,
-        frameSize,
-        offscreenSize,
-        adjustPaddingForOffscreenContent,
-        hasFit,
-      ])
+              {adjustPaddingForOffscreenContent && (
+                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+              )}
+            </Frame>
+          )
+        }, [
+          open,
+          props,
+          frameSize,
+          offscreenSize,
+          adjustPaddingForOffscreenContent,
+          hasFit,
+        ])
+
 
       return (
         <>
@@ -209,12 +219,13 @@ export function createSheet<
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
-    let SheetImplementation = SheetImplementationCustom as any
+    let SheetImplementation = SheetImplementationCustom
 
     if (props.native && Platform.OS === 'ios') {
       if (process.env.TAMAGUI_TARGET === 'native') {
         const impl = getNativeSheet('ios')
         if (impl) {
+          // @ts-expect-error accepting external sheet implementation
           SheetImplementation = impl
         }
       }

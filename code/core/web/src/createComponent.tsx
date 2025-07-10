@@ -48,6 +48,7 @@ import type {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseMediaState,
   UseStyleEmitter,
   UseThemeWithStateProps,
 } from './types'
@@ -59,6 +60,7 @@ import { getThemedChildren } from './views/Theme'
  */
 let time: any
 const NextState = new WeakMap<any, TamaguiComponentState | undefined>()
+const NextMedia = new WeakMap<any, UseMediaState | undefined>()
 
 let debugKeyListeners: Set<Function> | undefined
 let startVisualizer: Function | undefined
@@ -125,9 +127,10 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
           show(false)
         })
 
-        window.addEventListener('keydown', ({ key, defaultPrevented }) => {
-          if (defaultPrevented) return
+        window.addEventListener('keydown', ({ key, metaKey, defaultPrevented }) => {
           clearTimeout(tm) // always clear so we dont trigger on chords
+          if (defaultPrevented) return
+          if (metaKey) return
           if (key === options.key) {
             tm = setTimeout(() => {
               show(true)
@@ -135,12 +138,12 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
           }
         })
 
-        window.addEventListener('keyup', ({ key, defaultPrevented }) => {
+        window.addEventListener('keyup', ({ defaultPrevented }) => {
           if (defaultPrevented) return
-          if (key === options.key) {
-            if (isShowing) {
-              show(false)
-            }
+          clearTimeout(tm)
+          // any key can clear it
+          if (isShowing) {
+            show(false)
           }
         })
       }
@@ -358,8 +361,10 @@ export function createComponent<
             remove()
           }
         }
+
         debugKeyListeners ||= new Set()
         debugKeyListeners.add(debugVisualizerHandler)
+
         return () => {
           remove()
           debugKeyListeners?.delete(debugVisualizerHandler)
@@ -653,6 +658,49 @@ export function createComponent<
       const useStyleListener = stateRef.current.useStyleListener
       const ogSetStateShallow = setStateShallow
 
+      componentContext.mediaEmit = (next) => {
+        NextMedia.set(stateRef, next)
+        updateStyleListener()
+      }
+
+      const updateStyleListener = () => {
+        const updatedState = NextState.get(stateRef) || state
+        const mediaState = NextMedia.get(stateRef)
+        const {
+          group,
+          hasDynGroupChildren,
+          unmounted,
+          animation,
+          ...childrenGroupState
+        } = updatedState
+
+        // update before getting styles
+        if (groupContext) {
+          notifyGroupSubscribers(
+            groupContext,
+            stateRef.current.group || null,
+            childrenGroupState
+          )
+        }
+
+        const nextStyles = getSplitStyles(
+          props,
+          staticConfig,
+          theme,
+          themeName,
+          updatedState,
+          mediaState ? { ...styleProps, mediaState } : styleProps,
+          null,
+          componentContext,
+          allGroupContexts,
+          elementType,
+          startedUnhydrated,
+          debugProp
+        )
+
+        useStyleListener?.((nextStyles?.style || {}) as any)
+      }
+
       stateRef.current.setStateShallow = (nextOrGetNext) => {
         const prev = NextState.get(stateRef) || state
         const next =
@@ -684,39 +732,7 @@ export function createComponent<
             console.groupEnd()
           }
 
-          const {
-            group,
-            hasDynGroupChildren,
-            unmounted,
-            animation,
-            ...childrenGroupState
-          } = updatedState
-
-          // update before getting styles
-          if (groupContext) {
-            notifyGroupSubscribers(
-              groupContext,
-              stateRef.current.group || null,
-              childrenGroupState
-            )
-          }
-
-          const nextStyles = getSplitStyles(
-            props,
-            staticConfig,
-            theme,
-            themeName,
-            updatedState,
-            styleProps,
-            null,
-            componentContext,
-            allGroupContexts,
-            elementType,
-            startedUnhydrated,
-            debugProp
-          )
-
-          useStyleListener?.((nextStyles?.style || {}) as any)
+          updateStyleListener()
         } else {
           if (
             process.env.NODE_ENV === 'development' &&

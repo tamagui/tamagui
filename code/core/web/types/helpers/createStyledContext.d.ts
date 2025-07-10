@@ -8,8 +8,8 @@ export type StyledContext<Props extends Object = any> = Context<Props> & {
     }>;
     useStyledContext: (scope?: string) => Props;
 };
-export declare function createStyledContext<VariantProps extends Record<string, any>>(defaultValues?: VariantProps): StyledContext<VariantProps>;
-export type ScopedProps<P, K extends string> = P & {
-    [Key in `__scope${K}`]?: string;
+export declare function createStyledContext<VariantProps extends Record<string, any>>(defaultValues?: VariantProps, namespace?: string): StyledContext<VariantProps>;
+export type ScopedProps<P, Scopes = string> = P & {
+    scope?: Scopes;
 };
 //# sourceMappingURL=createStyledContext.d.ts.map

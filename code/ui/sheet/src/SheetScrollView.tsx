@@ -226,7 +226,10 @@ export const SheetScrollView = React.forwardRef<
               return
             }
 
-            if (scrollBridge.y >= 0) {
+            const isDraggingUpFromTopOnFirstScroll =
+              !state.current.isScrolling && dy > 0 && scrollBridge.y === 0
+
+            if (!isDraggingUpFromTopOnFirstScroll && scrollBridge.y >= 0) {
               return
             }
 

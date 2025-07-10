@@ -5,13 +5,10 @@ type SelectItemContextValue = {
     textId: string;
     isSelected: boolean;
 };
-export declare const SelectItemContextProvider: (props: SelectItemContextValue & {
-    scope: import("@tamagui/create-context").Scope<SelectItemContextValue>;
-    children: React.ReactNode;
-}) => import("react/jsx-runtime").JSX.Element, useSelectItemContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemContextValue | undefined>, options?: {
-    warn?: boolean;
-    fallback?: Partial<SelectItemContextValue> | undefined;
-} | undefined) => SelectItemContextValue;
+export declare const SelectItemContextProvider: React.Provider<SelectItemContextValue> & React.ProviderExoticComponent<Partial<SelectItemContextValue> & {
+    children?: React.ReactNode;
+    scope?: string;
+}>, useSelectItemContext: (scope?: string) => SelectItemContextValue;
 export interface SelectItemExtraProps {
     value: string;
     index: number;
@@ -30,6 +27,6 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItem.d.ts.map

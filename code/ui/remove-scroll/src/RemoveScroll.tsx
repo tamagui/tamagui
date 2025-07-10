@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { useDisableBodyScroll } from './useDisableScroll'
 
 export type RemoveScrollProps = {

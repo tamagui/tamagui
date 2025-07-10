@@ -19,7 +19,6 @@ import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
-
 import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
 import {
   SelectItemParentProvider,
@@ -31,20 +30,11 @@ import type { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
-  const {
-    __scopeSelect,
-    children,
-    open = false,
-    selectedIndexRef,
-    listContentRef,
-  } = props
+  const { scope, children, open = false, listContentRef } = props
 
-  const selectContext = useSelectContext('SelectSheetImpl', __scopeSelect)
-  const selectItemParentContext = useSelectItemParentContext(
-    'SelectSheetImpl',
-    __scopeSelect
-  )
-  const { setActiveIndex, selectedIndex, activeIndex, forceUpdate } = selectContext
+  const selectContext = useSelectContext(scope)
+  const selectItemParentContext = useSelectItemParentContext(scope)
+  const { setActiveIndex, selectedIndex, activeIndex } = selectContext
 
   const { setOpen, setSelectedIndex } = selectItemParentContext
 
@@ -362,7 +352,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   return (
     <SelectProvider
-      scope={__scopeSelect}
+      scope={scope}
       {...(selectContext as Required<typeof selectContext>)}
       setScrollTop={setScrollTop}
       setInnerOffset={setInnerOffset}
@@ -378,7 +368,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       update={update}
     >
       <SelectItemParentProvider
-        scope={__scopeSelect}
+        scope={scope}
         {...selectItemParentContext}
         allowMouseUpRef={allowMouseUpRef}
         allowSelectRef={allowSelectRef}

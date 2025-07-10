@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { ScopedProps, TamaguiElement } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/core'
 import { Slot, createStyledContext } from '@tamagui/core'
 import React from 'react'
 
@@ -32,27 +32,27 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
     >
   }
 
-  type ScopedCollectionProps<P> = ScopedProps<P, 'Collection'>
+  type ScopedCollectionProps<P> = P & { scope?: any }
 
   const { Provider: CollectionProviderImpl, useStyledContext: useCollectionContext } =
-    createStyledContext<ContextValue>({
-      collectionRef: { current: undefined },
-      itemMap: new Map(),
-    })
+    createStyledContext<ContextValue>(
+      {
+        collectionRef: { current: undefined },
+        itemMap: new Map(),
+      },
+      'Toast'
+    )
 
-  const CollectionProvider: React.FC<{
-    children?: React.ReactNode
-    __scopeCollection: string
-  }> = (props) => {
-    const { __scopeCollection, children } = props
+  const CollectionProvider: React.FC<
+    ScopedCollectionProps<{
+      children?: React.ReactNode
+    }>
+  > = (props) => {
+    const { scope, children } = props
     const ref = React.useRef<CollectionElement>(undefined)
     const itemMap = React.useRef<ContextValue['itemMap']>(new Map()).current
     return (
-      <CollectionProviderImpl
-        scope={__scopeCollection}
-        itemMap={itemMap}
-        collectionRef={ref}
-      >
+      <CollectionProviderImpl scope={scope} itemMap={itemMap} collectionRef={ref}>
         {children}
       </CollectionProviderImpl>
     )
@@ -70,8 +70,8 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
     CollectionElement | undefined,
     ScopedCollectionProps<CollectionProps>
   >((props, forwardedRef) => {
-    const { __scopeCollection, children } = props
-    const context = useCollectionContext(__scopeCollection)
+    const { scope, children } = props
+    const context = useCollectionContext(scope)
     const composedRefs = useComposedRefs(forwardedRef, context.collectionRef)
     return <Slot ref={composedRefs}>{children}</Slot>
   })
@@ -93,10 +93,10 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
     ItemElement | undefined,
     ScopedCollectionProps<CollectionItemSlotProps>
   >((props, forwardedRef) => {
-    const { __scopeCollection, children, ...itemData } = props
+    const { scope, children, ...itemData } = props
     const ref = React.useRef<ItemElement>(undefined)
     const composedRefs = useComposedRefs(forwardedRef, ref)
-    const context = useCollectionContext(__scopeCollection)
+    const context = useCollectionContext(scope)
 
     React.useEffect(() => {
       context.itemMap.set(ref, { ref, ...(itemData as unknown as ItemData) })
@@ -116,8 +116,8 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
    * useCollection
    * ---------------------------------------------------------------------------------------------*/
 
-  function useCollection(__scopeCollection: any) {
-    const context = useCollectionContext(__scopeCollection)
+  function useCollection(scope: string) {
+    const context = useCollectionContext(scope)
 
     const getItems = React.useCallback(() => {
       if (!isWeb) {

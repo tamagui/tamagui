@@ -14,6 +14,7 @@ export type AdaptParentContextI = {
     setWhen: (when: AdaptWhen) => any;
     setChildren: (children: any) => any;
     portalName?: string;
+    lastScope?: string;
 };
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
@@ -33,8 +34,8 @@ export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
  */
 type AdaptParentProps = {
     children?: React.ReactNode;
-    scope: string;
     Contents?: AdaptParentContextI['Contents'];
+    scope: string;
     portal?: boolean | {
         forwardProps?: any;
     };

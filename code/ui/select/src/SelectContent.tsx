@@ -1,8 +1,8 @@
-import React from 'react'
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
 import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
+import React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
 import type { SelectContentProps } from './types'
@@ -16,12 +16,12 @@ const CONTENT_NAME = 'SelectContent'
 
 export const SelectContent = ({
   children,
-  __scopeSelect,
+  scope,
   zIndex = 1000,
   ...focusScopeProps
 }: SelectContentProps & FocusScopeProps) => {
-  const context = useSelectContext(CONTENT_NAME, __scopeSelect)
-  const itemParentContext = useSelectItemParentContext(CONTENT_NAME, __scopeSelect)
+  const context = useSelectContext(scope)
+  const itemParentContext = useSelectItemParentContext(scope)
   const themeName = useThemeName()
   const showSheet = useShowSelectSheet(context)
 

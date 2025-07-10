@@ -1,8 +1,8 @@
 import { createCollection } from '@tamagui/collection'
 import type { NativeValue, TamaguiElement } from '@tamagui/core'
 import { createStyledContext } from '@tamagui/core'
-import * as React from 'react'
 import { startTransition } from '@tamagui/start-transition'
+import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
 import type { ToastImperativeOptions } from './ToastImperative'
@@ -19,8 +19,9 @@ const [Collection, useCollection] = createCollection<TamaguiElement>('Toast')
 
 export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right'
 
-type ToastProviderContextValue = {
+export type ToastProviderContextValue = {
   id: string
+  toastScope: string
   label: string
   duration: number
   swipeDirection: SwipeDirection
@@ -35,15 +36,17 @@ type ToastProviderContextValue = {
   options: ToastImperativeOptions
 }
 
-type ScopedProps<P> = P & { __scopeToast?: string }
-// const [createToastContext, createToastScope] = createContextScope('Toast', [
-//   createCollectionScope,
-// ])
-// const [ToastProviderProvider, useToastProviderContext] =
-//   createToastContext<ToastProviderContextValue>(PROVIDER_NAME)
+export type ToastScopes = string
+
+type ScopedProps<P> = Omit<P, 'scope'> & { scope?: ToastScopes }
 
 const { Provider: ToastProviderProvider, useStyledContext: useToastProviderContext } =
-  createStyledContext<ToastProviderContextValue>()
+  createStyledContext<ToastProviderContextValue>(
+    // since we always provide this we can avoid setting here
+    {} as ToastProviderContextValue,
+    'Toast__'
+  )
+
 interface ToastProviderProps {
   children?: React.ReactNode
   /**
@@ -90,7 +93,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   props: ScopedProps<ToastProviderProps>
 ) => {
   const {
-    __scopeToast,
+    scope = TOAST_CONTEXT,
     id: providedId,
     burntOptions,
     native,
@@ -131,9 +134,9 @@ const ToastProvider: React.FC<ToastProviderProps> = (
   }, [JSON.stringify([duration, burntOptions, native, notificationOptions])])
 
   return (
-    <Collection.Provider __scopeCollection={__scopeToast || TOAST_CONTEXT}>
+    <Collection.Provider scope={scope}>
       <ToastProviderProvider
-        scope={__scopeToast}
+        scope={scope}
         id={id}
         label={label}
         duration={duration}
@@ -168,7 +171,7 @@ export function ReprogapateToastProvider(props: {
 }) {
   const { children, context } = props
   return (
-    <Collection.Provider __scopeCollection={TOAST_CONTEXT}>
+    <Collection.Provider scope={context.toastScope}>
       <ToastProviderProvider {...context}>
         <ToastImperativeProvider options={context.options}>
           {children}

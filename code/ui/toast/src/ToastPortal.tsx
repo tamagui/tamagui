@@ -1,21 +1,18 @@
 import { Portal } from '@tamagui/portal'
-import { Platform } from 'react-native'
-import { ReprogapateToastProvider, useToastProviderContext } from './ToastProvider'
 import type { ReactNode } from 'react'
+import { Platform } from 'react-native'
+import { ReprogapateToastProvider, type ToastProviderContextValue } from './ToastProvider'
 
-export function ToastPortal({
-  children,
-  zIndex,
-}: {
+export function ToastPortal(props: {
   children: ReactNode
   zIndex?: number
+  context: ToastProviderContextValue
 }) {
+  const { context, children, zIndex } = props
   let content = children
   if (Platform.OS === 'android' || Platform.OS === 'ios') {
     content = (
-      <ReprogapateToastProvider context={useToastProviderContext()}>
-        {children}
-      </ReprogapateToastProvider>
+      <ReprogapateToastProvider context={context}>{children}</ReprogapateToastProvider>
     )
   }
   return <Portal zIndex={zIndex || Number.MAX_SAFE_INTEGER}>{content}</Portal>

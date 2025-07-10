@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { CustomData } from './ToastImperative';
 import { useToast, useToastController, useToastState } from './ToastImperative';
 import type { ToastExtraProps, ToastProps } from './ToastImpl';
-import type { ToastProviderProps } from './ToastProvider';
+import type { ScopedProps, ToastProviderProps } from './ToastProvider';
 import { ToastProvider } from './ToastProvider';
 import type { ToastViewportProps } from './ToastViewport';
 import { ToastViewport } from './ToastViewport';
@@ -17,7 +17,7 @@ declare const ToastDescription: import("@tamagui/core").TamaguiComponent<import(
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastDescriptionProps = GetProps<typeof ToastDescription>;
-type ToastActionProps = ToastCloseProps & {
+type ToastActionProps = ScopedProps<ToastCloseProps & {
     /**
      * A short description for an alternate way to carry out the action. For screen reader users
      * who will not be able to navigate to the button easily/quickly.
@@ -25,13 +25,13 @@ type ToastActionProps = ToastCloseProps & {
      * @example <ToastAction altText="Undo (Alt+U)">Undo</ToastAction>
      */
     altText: string;
-};
+}>;
 declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;
-type ToastCloseProps = ToastCloseFrameProps & {};
+type ToastCloseProps = ScopedProps<ToastCloseFrameProps & {}>;
 declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;

@@ -7,6 +7,7 @@ type SetupPageArgs = {
   splitView?: boolean
   centered?: boolean
   waitExtra?: boolean
+  adapt?: boolean
 }
 
 export async function setupPage(
@@ -16,6 +17,7 @@ export async function setupPage(
     type,
     theme = 'light',
     splitView = false,
+    adapt = false,
     centered = false,
     waitExtra = false,
   }: SetupPageArgs
@@ -36,8 +38,13 @@ export async function setupPage(
   if (centered) {
     params.append('centered', 'true')
   }
+  if (adapt) {
+    params.append('adapt', 'true')
+  }
 
   const url = `/?${params.toString()}`
   await page.goto(url, { waitUntil: 'networkidle' })
-  await new Promise((res) => setTimeout(res, waitExtra ? 3000 : 500))
+  await new Promise((res) => setTimeout(res, waitExtra ? 3000 : 300))
+
+  return page
 }

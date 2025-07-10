@@ -1,5 +1,5 @@
 import type { Context, ProviderExoticComponent, ReactNode } from 'react'
-import React, { useId } from 'react'
+import React, { useContext, useId } from 'react'
 
 import { objectIdentityKey } from './objectIdentityKey'
 
@@ -29,12 +29,14 @@ export type StyledContext<Props extends Object = any> = Context<Props> & {
 const createReactContext = React[Math.random() ? 'createContext' : 'createContext']
 
 export function createStyledContext<VariantProps extends Record<string, any>>(
-  defaultValues?: VariantProps
+  defaultValues?: VariantProps,
+  namespace = ''
 ): StyledContext<VariantProps> {
   const OGContext = createReactContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
   const scopedContexts = new Map<string, Context<VariantProps | undefined>>()
+  const LastScopeInNamespace = createReactContext<string>(namespace)
 
   function getOrCreateScopedContext(scope: string) {
     let ScopedContext = scopedContexts.get(scope)
@@ -45,11 +47,15 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     return ScopedContext!
   }
 
+  const getNamespacedScope = (scope: string) =>
+    namespace ? `${namespace}--${scope}` : scope
+
   const Provider = ({
     children,
-    scope,
+    scope: scopeIn,
     ...values
   }: VariantProps & { children?: ReactNode; scope: string }) => {
+    const scope = getNamespacedScope(scopeIn)
     const next = React.useMemo(() => {
       return {
         // this ! is a workaround for ts error
@@ -61,13 +67,24 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     if (scope) {
       Provider = getOrCreateScopedContext(scope).Provider
     }
-    return <Provider value={next}>{children}</Provider>
+    return (
+      <LastScopeInNamespace.Provider value={scope}>
+        <Provider value={next}>{children}</Provider>
+      </LastScopeInNamespace.Provider>
+    )
   }
 
   // use consumerComponent just to give a better error message
-  const useStyledContext = (scope?: string) => {
+  const useStyledContext = (scopeIn = '') => {
+    const lastScopeInNamespace = useContext(LastScopeInNamespace)
+    const scope = namespace
+      ? scopeIn
+        ? getNamespacedScope(scopeIn)
+        : lastScopeInNamespace
+      : scopeIn
     const context = scope ? getOrCreateScopedContext(scope) : OGContext
-    return React.useContext(context!) as VariantProps
+    const value = React.useContext(context!) as VariantProps
+    return value
   }
 
   // @ts-expect-error we are overriding default provider
@@ -79,4 +96,4 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   return Context
 }
 
-export type ScopedProps<P, K extends string> = P & { [Key in `__scope${K}`]?: string }
+export type ScopedProps<P, Scopes = string> = P & { scope?: Scopes }

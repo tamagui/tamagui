@@ -171,7 +171,7 @@ const RovingFocusGroupItem = React.forwardRef<
 
   return (
     <Collection.ItemSlot
-      __scopeCollection={__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT}
+      scope={__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT}
       id={id}
       focusable={focusable}
       active={active}
@@ -293,12 +293,10 @@ const RovingFocusGroup = withStaticProperties(
     (props: ScopedProps<RovingFocusGroupProps>, forwardedRef) => {
       return (
         <Collection.Provider
-          __scopeCollection={props.__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT}
+          scope={props.__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT}
         >
           <Collection.Slot
-            __scopeCollection={
-              props.__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT
-            }
+            scope={props.__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT}
           >
             <RovingFocusGroupImpl {...props} ref={forwardedRef} />
           </Collection.Slot>

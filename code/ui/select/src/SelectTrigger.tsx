@@ -12,17 +12,17 @@ import type { SelectScopedProps } from './types'
  * -----------------------------------------------------------------------------------------------*/
 const TRIGGER_NAME = 'SelectTrigger'
 
-export type SelectTriggerProps = ListItemProps
+export type SelectTriggerProps = SelectScopedProps<ListItemProps>
 
 const isPointerCoarse =
   isWeb && isClient ? window.matchMedia('(pointer:coarse)').matches : true
 
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
-  function SelectTrigger(props: SelectScopedProps<SelectTriggerProps>, forwardedRef) {
-    const { __scopeSelect, disabled = false, unstyled = false, ...triggerProps } = props
+  function SelectTrigger(props: SelectTriggerProps, forwardedRef) {
+    const { scope, disabled = false, unstyled = false, ...triggerProps } = props
 
-    const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
-    const itemParentContext = useSelectItemParentContext(TRIGGER_NAME, __scopeSelect)
+    const context = useSelectContext(scope)
+    const itemParentContext = useSelectItemParentContext(scope)
     const composedRefs = useComposedRefs(
       forwardedRef,
       context.floatingContext?.refs.setReference as any

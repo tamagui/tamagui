@@ -2,7 +2,7 @@ import { FloatingFocusManager } from '@floating-ui/react'
 import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import { VIEWPORT_NAME } from './constants'
@@ -11,11 +11,8 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import type {
-  SelectScopedProps,
-  SelectViewportExtraProps,
-  SelectViewportProps,
-} from './types'
+import type { SelectViewportExtraProps } from './types'
+import { USE_NATIVE_PORTAL } from '@tamagui/portal'
 import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
@@ -51,12 +48,14 @@ export const SelectViewportFrame = styled(YStack, {
   },
 })
 
+const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+
 export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraProps>(
-  function SelectViewport(props: SelectScopedProps<SelectViewportProps>, forwardedRef) {
-    const { __scopeSelect, children, disableScroll, ...viewportProps } = props
-    const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
-    const itemContext = useSelectItemParentContext(VIEWPORT_NAME, __scopeSelect)
-    const isAdapted = useAdaptIsActive()
+  function SelectViewport(props, forwardedRef) {
+    const { scope, children, disableScroll, ...viewportProps } = props
+    const context = useSelectContext(scope)
+    const itemContext = useSelectItemParentContext(scope)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
 
     const composedRefs = useComposedRefs(
       // @ts-ignore TODO react 19 type needs fix
@@ -75,16 +74,18 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     }
 
     if (isAdapted || !isWeb) {
-      return (
-        <AdaptPortalContents>
-          <ForwardSelectContext
-            __scopeSelect={__scopeSelect}
-            itemContext={itemContext}
-            context={context}
-          >
-            {children}
+      let content = children
+
+      if (needsRepropagation) {
+        content = (
+          <ForwardSelectContext itemContext={itemContext} context={context}>
+            {content}
           </ForwardSelectContext>
-        </AdaptPortalContents>
+        )
+      }
+
+      return (
+        <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
       )
     }
 

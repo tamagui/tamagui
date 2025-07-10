@@ -884,7 +884,7 @@ const HeaderMenuMoreContents = () => {
         <Link asChild href="/takeout">
           <HeadAnchor grid half tag="a">
             <XStack ai="center">
-              Takeout{' '}
+              <span>Takeout </span>
               <YStack dsp={'inline-block' as any} x={6} my={-20} o={0.8}>
                 <TakeoutIcon scale={0.65} />
               </YStack>
@@ -898,7 +898,7 @@ const HeaderMenuMoreContents = () => {
         <Link asChild href="/bento">
           <HeadAnchor grid half tag="a">
             <XStack ai="center">
-              Bento{' '}
+              <span>Bento </span>
               <YStack ml={3} dsp={'inline-block' as any} x={6} y={-1} my={-10} o={0.8}>
                 <BentoIcon scale={0.65} />
               </YStack>

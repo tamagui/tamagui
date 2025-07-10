@@ -1,8 +1,14 @@
 import '@tamagui/polyfill-dev';
-import type { SizeTokens } from '@tamagui/core';
+import type { SizeTokens, TamaguiElement } from '@tamagui/core';
+import type { PopoverAnchorProps, PopoverContentProps, PopoverTriggerProps } from '@tamagui/popover';
 import type { PopperProps } from '@tamagui/popper';
 import * as React from 'react';
-export type TooltipProps = PopperProps & {
+export type TooltipScopes = string;
+type ScopedProps<P> = Omit<P, 'scope'> & {
+    scope?: TooltipScopes;
+};
+export type TooltipContentProps = ScopedProps<PopoverContentProps>;
+export type TooltipProps = ScopedProps<PopperProps & {
     open?: boolean;
     unstyled?: boolean;
     children?: React.ReactNode;
@@ -18,7 +24,7 @@ export type TooltipProps = PopperProps & {
         close?: number;
     };
     disableAutoCloseOnScroll?: boolean;
-};
+}>;
 type Delay = number | Partial<{
     open: number;
     close: number;
@@ -30,7 +36,7 @@ export declare const TooltipGroup: ({ children, delay, preventAnimation, timeout
     timeoutMs?: number;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const closeOpenTooltips: () => void;
-export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
+export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps & {
     open?: boolean;
     unstyled?: boolean;
     children?: React.ReactNode;
@@ -46,8 +52,8 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         close?: number;
     };
     disableAutoCloseOnScroll?: boolean;
-} & {
-    __scopeTooltip?: string | undefined;
+}, "scope"> & {
+    scope?: TooltipScopes;
 } & React.RefAttributes<unknown>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;

@@ -1,10 +1,11 @@
+- docs on reprop context on ios new arch
+
 - popover bring back dismissable - document dismissable etc
 - in SheetImplCustom bad logic for pulling up when scroll view inside
   - if scrollview isn't able to scroll we shouldn't disable that behavior:
     `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
     - we can: pass in scrollable node selector
     - do logic to determine if its actually scrollable
-
 
 - Dialog.Overlay shouldn't need to define key for animation
 - apply visibility hidden to fully hidden popover for perf gains

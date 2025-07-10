@@ -1,4 +1,4 @@
-import { CheckboxWithLabel, SelectDemoItem, SwitchWithLabel } from '@tamagui/demos'
+import { CheckboxWithLabel, SelectDemoContents, SwitchWithLabel } from '@tamagui/demos'
 import { Filter } from '@tamagui/lucide-icons'
 import {
   Button,
@@ -46,7 +46,7 @@ export const Components = () => {
         <Spacer flex={1} />
 
         <XStack {...demoProps.gapPropsLg} f={1} flexWrap="wrap">
-          <SelectDemoItem size="$3" />
+          <SelectDemoContents size="$3" />
         </XStack>
       </XStack>
 

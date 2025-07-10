@@ -1,4 +1,3 @@
-import { StackZIndexContext } from '@tamagui/z-index-stack'
 import {
   isAndroid,
   isIos,
@@ -10,7 +9,8 @@ import type { AllPlatforms, MediaQueryKey } from '@tamagui/core'
 import { createStyledContext, useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem } from '@tamagui/portal'
-import React, { createContext, useContext, useEffect, useId } from 'react'
+import { StackZIndexContext } from '@tamagui/z-index-stack'
+import React, { createContext, useContext, useId, useMemo } from 'react'
 
 /**
  * Interfaces
@@ -28,6 +28,7 @@ export type AdaptParentContextI = {
   setWhen: (when: AdaptWhen) => any
   setChildren: (children: any) => any
   portalName?: string
+  lastScope?: string
 }
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
@@ -41,12 +42,6 @@ export type AdaptProps = {
 
 type Component = (props: any) => any
 
-/**
- * Contexts
- */
-
-const CurrentAdaptContextScope = createContext('')
-
 export const AdaptContext = createStyledContext<AdaptParentContextI>({
   Contents: null as any,
   scopeName: '',
@@ -58,27 +53,32 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   setWhen: () => {},
 })
 
+const LastAdaptContextScope = createContext('')
+
 export const ProvideAdaptContext = ({
   children,
   ...context
 }: AdaptParentContextI & { children: any }) => {
   const scope = context.scopeName || ''
+  const lastScope = useContext(LastAdaptContextScope)
 
   return (
-    <CurrentAdaptContextScope.Provider value={scope}>
-      <AdaptContext.Provider scope={scope} {...context}>
+    <LastAdaptContextScope.Provider value={lastScope || context.lastScope || ''}>
+      <AdaptContext.Provider
+        scope={scope}
+        lastScope={lastScope || context.lastScope}
+        {...context}
+      >
         {children}
       </AdaptContext.Provider>
-    </CurrentAdaptContextScope.Provider>
+    </LastAdaptContextScope.Provider>
   )
 }
 
-export const useAdaptContext = (scope = '') => {
-  const contextScope = useContext(CurrentAdaptContextScope)
-  const context = AdaptContext.useStyledContext(
-    scope === '' ? contextScope || scope : scope
-  )
-  return context
+export const useAdaptContext = (scope?: string) => {
+  const lastScope = useContext(LastAdaptContextScope)
+  const adaptScope = scope ?? lastScope
+  return AdaptContext.useStyledContext(adaptScope)
 }
 
 /**
@@ -87,8 +87,8 @@ export const useAdaptContext = (scope = '') => {
 
 type AdaptParentProps = {
   children?: React.ReactNode
-  scope: string
   Contents?: AdaptParentContextI['Contents']
+  scope: string
   portal?:
     | boolean
     | {
@@ -99,28 +99,35 @@ type AdaptParentProps = {
 const AdaptPortals = new Map()
 
 export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentProps) => {
-  const portalName = `AdaptPortal${scope}`
   const id = useId()
+  const portalName = `AdaptPortal${scope}${id}`
 
-  let FinalContents = Contents || AdaptPortals.get(id)
-
-  if (!FinalContents) {
-    FinalContents = () => {
+  const FinalContents = useMemo(() => {
+    if (Contents) {
+      return Contents
+    }
+    if (AdaptPortals.has(portalName)) {
+      return AdaptPortals.get(portalName)
+    }
+    const element = () => {
       return (
         <PortalHost
+          key={id}
           name={portalName}
           forwardProps={typeof portal === 'boolean' ? undefined : portal?.forwardProps}
         />
       )
     }
-    AdaptPortals.set(id, FinalContents)
-  }
+    AdaptPortals.set(portalName, element)
+    return element
+  }, [portalName, Contents])
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
+    AdaptPortals.set(portalName, FinalContents)
     return () => {
-      AdaptPortals.delete(id)
+      AdaptPortals.delete(portalName)
     }
-  }, [])
+  }, [portalName])
 
   const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
@@ -129,18 +136,20 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
   const [children2, setChildren] = React.useState(null)
 
   return (
-    <ProvideAdaptContext
-      Contents={FinalContents}
-      when={when}
-      platform={platform}
-      setPlatform={setPlatform}
-      setWhen={setWhen}
-      setChildren={setChildren}
-      portalName={portalName}
-      scopeName={scope}
-    >
-      {children}
-    </ProvideAdaptContext>
+    <LastAdaptContextScope value={scope}>
+      <ProvideAdaptContext
+        Contents={FinalContents}
+        when={when}
+        platform={platform}
+        setPlatform={setPlatform}
+        setWhen={setWhen}
+        setChildren={setChildren}
+        portalName={portalName}
+        scopeName={scope}
+      >
+        {children}
+      </ProvideAdaptContext>
+    </LastAdaptContextScope>
   )
 }
 
@@ -169,7 +178,6 @@ export const Adapt = withStaticProperties(
   function Adapt(props: AdaptProps) {
     const { platform, when, children, scope } = props
     const context = useAdaptContext(scope)
-    const scopeName = scope ?? context.scopeName
     const enabled = useAdaptIsActiveGiven(props)
 
     useIsomorphicLayoutEffect(() => {
@@ -201,13 +209,7 @@ export const Adapt = withStaticProperties(
       }
     }, [output])
 
-    return (
-      <StackZIndexContext>
-        <CurrentAdaptContextScope.Provider value={scopeName}>
-          {!enabled ? null : output}
-        </CurrentAdaptContextScope.Provider>
-      </StackZIndexContext>
-    )
+    return <StackZIndexContext>{!enabled ? null : output}</StackZIndexContext>
   },
   {
     Contents: AdaptContents,
@@ -237,6 +239,10 @@ const useAdaptIsActiveGiven = ({
 
   if (when == null && platform == null) {
     return false
+  }
+
+  if (when === true) {
+    return true
   }
 
   let enabled = false
