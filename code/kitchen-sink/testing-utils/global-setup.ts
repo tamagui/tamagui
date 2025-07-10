@@ -1,4 +1,4 @@
-import { exec, spawn, type ChildProcess } from 'node:child_process'
+import { spawn, type ChildProcess } from 'node:child_process'
 import type { TestProject } from 'vitest/node'
 import { getWebDriverConfig } from './getWebDriverConfig'
 
