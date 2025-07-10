@@ -56,6 +56,40 @@ const Frame = styled(View, {
       },
     },
 
+    // TODO: Consider flipping styled/unstyled defaults in future versions
+    // This would make styled=true the default behavior and unstyled=true opt-in
+    // This would provide better DX by default while maintaining backward compatibility
+    styled: {
+      true: {
+        size: '$true',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+        cursor: 'pointer',
+        backgroundColor: '$background',
+        borderWidth: 1,
+        borderColor: 'transparent',
+        gap: '$2',
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+          borderColor: '$borderColorHover',
+        },
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorHover',
+        },
+
+        focusVisibleStyle: {
+          outlineColor: '$outlineColor',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+        },
+      },
+    },
+
     circular: themeableVariants.circular,
 
     chromeless: themeableVariants.chromeless,
@@ -82,6 +116,9 @@ const Frame = styled(View, {
               focusVisibleStyle: {
                 backgroundColor: 'transparent',
                 borderColor: '$borderColorFocus',
+                outlineColor: '$outlineColor',
+                outlineStyle: 'solid',
+                outlineWidth: 2,
               },
             },
     },
@@ -118,10 +155,22 @@ const Text = styled(SizableText, {
         color: '$color',
       },
     },
+
+    styled: {
+      true: {
+        userSelect: 'none',
+        cursor: 'pointer',
+        flexGrow: 0,
+        flexShrink: 1,
+        ellipsis: true,
+        color: '$color',
+      },
+    },
   } as const,
 
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    styled: false,
   },
 })
 
@@ -161,10 +210,11 @@ const ButtonComponent = Frame.styleable<{
   iconSize?: SizeTokens
   chromeless?: boolean
   circular?: boolean
+  styled?: boolean
   onLayout?: RNExtraProps['onLayout']
 }>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext)
-  const { children, iconSize, icon, iconAfter, scaleIcon = 1, ...props } = propsIn
+  const { children, iconSize, icon, iconAfter, scaleIcon = 1, styled, ...props } = propsIn
 
   const styledContext = context.useStyledContext()
   const size = iconSize ?? propsIn.size ?? styledContext?.size
@@ -186,17 +236,23 @@ const ButtonComponent = Frame.styleable<{
   const wrappedChildren = wrapChildrenInText(
     Text,
     { children },
-    propsIn.unstyled !== true
-      ? {
-          unstyled: process.env.TAMAGUI_HEADLESS === '1',
-          size: propsIn.size ?? styledContext?.size,
-        }
-      : undefined
+    {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
+      styled: styled,
+      size: propsIn.size ?? styledContext?.size,
+    }
   )
 
   return (
     <ButtonNestingContext.Provider value={true}>
-      <Frame ref={ref} {...props} {...(isNested && { tag: 'span' })}>
+      <Frame 
+        ref={ref} 
+        styled={styled}
+        {...props} 
+        {...(isNested && { tag: 'span' })}
+        tabIndex={0}
+        focusable={true}
+      >
         {themedIcon}
         {wrappedChildren}
         {themedIconAfter}
