@@ -7,12 +7,21 @@ import React, { useState } from 'react' // import { animate } from '@tamagui/cub
 /**
  * Helper function to extract duration from CSS animation string
  * Examples: "ease-in 200ms" -> 200, "cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms" -> 400
+ * "ease-in 0.5s" -> 500, "slow 2s" -> 2000
  */
 function extractDuration(animation: string): number {
-  const match = animation.match(/(\d+(?:\.\d+)?)\s*ms/)
-  if (match) {
-    return Number.parseInt(match[1], 10)
+  // Try to match milliseconds first
+  const msMatch = animation.match(/(\d+(?:\.\d+)?)\s*ms/)
+  if (msMatch) {
+    return Number.parseInt(msMatch[1], 10)
   }
+
+  // Try to match seconds and convert to milliseconds
+  const sMatch = animation.match(/(\d+(?:\.\d+)?)\s*s/)
+  if (sMatch) {
+    return Math.round(Number.parseFloat(sMatch[1]) * 1000)
+  }
+
   // Default to 300ms if no duration found
   return 300
 }
