@@ -56,9 +56,7 @@ const Frame = styled(View, {
       },
     },
 
-    // TODO: Consider flipping styled/unstyled defaults in future versions
-    // This would make styled=true the default behavior and unstyled=true opt-in
-    // This would provide better DX by default while maintaining backward compatibility
+    // The 'styled' variant enables v1-like Button styles, including default padding, background, border, and interactive states.
     styled: {
       true: {
         size: '$true',
@@ -170,7 +168,6 @@ const Text = styled(SizableText, {
 
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    styled: false,
   },
 })
 
@@ -245,10 +242,10 @@ const ButtonComponent = Frame.styleable<{
 
   return (
     <ButtonNestingContext.Provider value={true}>
-      <Frame 
-        ref={ref} 
+      <Frame
+        ref={ref}
         styled={styled}
-        {...props} 
+        {...props}
         {...(isNested && { tag: 'span' })}
         tabIndex={0}
         focusable={true}
