@@ -3,19 +3,18 @@
   "version": "1.131.2",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.mjs",
+  "main": "permanent/cjs/index.js",
+  "module": "permanent/esm/index.mjs",
   "files": [
     "src",
     "types",
-    "dist"
+    "permanent"
   ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "watch": "node ../../../node_modules/.bin/tamagui-build --skip-native --exclude __tests__ --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "test": "vitest --run"
@@ -23,14 +22,14 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "default": "./dist/cjs/index.js"
+      "import": "./permanent/esm/index.mjs",
+      "require": "./permanent/cjs/index.js",
+      "default": "./permanent/cjs/index.js"
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",
-      "import": "./dist/esm/commonjs.mjs",
-      "require": "./dist/cjs/commonjs.js"
+      "import": "./permanent/esm/commonjs.mjs",
+      "require": "./permanent/cjs/commonjs.js"
     }
   },
   "dependencies": {
