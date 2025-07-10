@@ -1,5 +1,5 @@
 import type { MetaFunction } from '@remix-run/node'
-import { styled, Text, type ThemeName, View, Theme } from '@tamagui/web'
+import { styled, Text, type ThemeName, View } from '@tamagui/web'
 import { useState } from 'react'
 
 export const meta: MetaFunction = () => {
@@ -125,11 +125,9 @@ export default function Index() {
           Tamagui&apos;s styling system is designed to work with Remix out of the box.
           Server-render initial styles and themes.
         </Text>
-        <Theme inverse>
-          <ButtonOuter onPress={toggleTheme}>
-            <ButtonText>Toggle Theme</ButtonText>
-          </ButtonOuter>
-        </Theme>
+        <ButtonOuter onPress={toggleTheme} theme="accent">
+          <ButtonText>Toggle Theme</ButtonText>
+        </ButtonOuter>
       </Section>
       <Section>
         <Text

@@ -28,9 +28,9 @@ function Buttons(props: { name: string; title: string }) {
     >
       <H5>{props.title}</H5>
       <Button>{props.name}</Button>
-      <Theme inverse>
-        <Button>inversed</Button>
-      </Theme>
+
+      <Button theme="accent">inversed</Button>
+
       <Button theme="alt1">{props.name}_alt1</Button>
       <Theme name="yellow">
         <Button>{props.name.split('_')[0] + '_yellow'}</Button>

@@ -30,7 +30,6 @@ import {
   View,
   XStack,
   YStack,
-  Theme,
 } from '@tamagui/ui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -1286,15 +1285,15 @@ const ManageTab = ({
         <Paragraph theme="alt1">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
-        <Theme inverse>
-          <Button
-            onPress={() => {
-              paymentModal.show = true
-            }}
-          >
-            Purchase Plan
-          </Button>
-        </Theme>
+
+        <Button
+          theme="accent"
+          onPress={() => {
+            paymentModal.show = true
+          }}
+        >
+          Purchase Plan
+        </Button>
       </YStack>
     )
   }

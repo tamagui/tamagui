@@ -12,7 +12,6 @@ import {
   YStack,
   useControllableState,
   useEvent,
-  Theme,
 } from '@tamagui/ui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
@@ -97,18 +96,18 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
               jc="center"
             >
               <YStack fullscreen top="60%" o={0.5} />
-              <Theme inverse>
-                <Button
-                  accessibilityLabel="View more"
-                  y={200}
-                  iconAfter={ArrowDown}
-                  size="$4"
-                  zi={10}
-                  onPress={() => setDisableScrollPane(false)}
-                >
-                  View more
-                </Button>
-              </Theme>
+
+              <Button
+                accessibilityLabel="View more"
+                theme="accent"
+                y={200}
+                iconAfter={ArrowDown}
+                size="$4"
+                zi={10}
+                onPress={() => setDisableScrollPane(false)}
+              >
+                View more
+              </Button>
             </YStack>
 
             <CodeDemoPreParsed

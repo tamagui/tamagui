@@ -104,16 +104,15 @@ export const Themes = memo(({ previewMode }: StepSubThemesProps) => {
       {!store.subThemes.length && (
         <YStack f={1} ai="center" jc="center" gap="$4">
           <Paragraph theme="alt1">Add a theme to get started</Paragraph>
-          <Theme inverse>
-            <Button
-              size="$4"
-              onPress={() => {
-                store.showAddThemeMenu = true
-              }}
-            >
-              Add theme
-            </Button>
-          </Theme>
+          <Button
+            theme="accent"
+            size="$4"
+            onPress={() => {
+              store.showAddThemeMenu = true
+            }}
+          >
+            Add theme
+          </Button>
         </YStack>
       )}
     </YStack>

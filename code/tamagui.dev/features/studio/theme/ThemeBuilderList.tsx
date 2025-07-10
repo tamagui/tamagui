@@ -424,9 +424,9 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
 
               <XStack alignSelf="flex-end" gap="$4">
                 <Form.Trigger asChild>
-                  <Theme inverse>
-                    <Button aria-label="Close">Save changes</Button>
-                  </Theme>
+                  <Button aria-label="Close" theme="accent">
+                    Save changes
+                  </Button>
                 </Form.Trigger>
               </XStack>
 
