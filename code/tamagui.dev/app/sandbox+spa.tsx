@@ -21,7 +21,7 @@ import {
   View,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
 import { PopoverDemo } from '@tamagui/demos'
 import { LogoWords } from '@tamagui/logo'

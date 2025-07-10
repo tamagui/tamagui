@@ -1,4 +1,4 @@
-export const animationCode = `import { Button, Square } from 'tamagui'
+export const animationCode = `import { Button, Square } from '@tamagui/ui'
 
 export default () => {
   const [positionI, setPositionI] = React.useState(0)
@@ -167,7 +167,7 @@ const _cn = "  is_View _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-bo
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { Paragraph, View } from 'tamagui'
+          code: `import { Paragraph, View } from '@tamagui/ui'
 
 const App = (props) => (
   <View
@@ -196,7 +196,7 @@ const _cn4 = "  _bc-1542mo4"
 const _cn3 = " _pb-12bic3x _pl-7ztw5e _pr-g6vdx7 _pt-1vq430g"
 const _cn2 = " _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i"
 const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx "
-import { Paragraph, View } from 'tamagui'
+import { Paragraph, View } from '@tamagui/ui'
 
 const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (props.colorful ? _cn4 : " ")))}>
     <span className={_cn5}>
@@ -238,7 +238,7 @@ const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (pr
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { View } from 'tamagui'
+          code: `import { View } from '@tamagui/ui'
 
 const App = (props) => {
   const media = useMedia()
@@ -271,7 +271,7 @@ const App = (props) => {
         {
           name: 'app.js',
           code: `const _cn = " _bc-1g6456j _d-6koalj _fd-eqz5dr _fs-1q142lx _bc--hover-57dg7b _bc-_gtSm_1542mo4 _bc-_gtSm_-active-98uye2 _bc-_gtSm_abc1234"
-import { View } from 'tamagui'
+import { View } from '@tamagui/ui'
 
 const App = (props) => <div className={_cn + (props.shrinks ? ' _transform-_sm_scale0d0t539907' : '')} />`,
           language: 'tsx',
@@ -302,7 +302,7 @@ const App = (props) => <div className={_cn + (props.shrinks ? ' _transform-_sm_s
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { useMedia, useTheme, View } from 'tamagui'
+          code: `import { useMedia, useTheme, View } from '@tamagui/ui'
 
 const App = () => {
   const theme = useTheme()
@@ -328,7 +328,7 @@ const App = () => {
         {
           name: 'app.js',
           code: `const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx _t-_sm_1exagq _t-_sm0_1wpzndr _bc-_lg_no4z4g _bc-_lg0_1qoifqd _t-_xl_gqa6p0"
-import { View, useMedia, useTheme } from 'tamagui'
+import { View, useMedia, useTheme } from '@tamagui/ui'
 
 const App = () => {
   return <div className={_cn} />

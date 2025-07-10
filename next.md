@@ -130,7 +130,7 @@ does not give the Button a red background when pressed
   - https://share.cleanshot.com/4rKTYFkl
 
 v2
-
+note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 blog post:
 
 - during v2:
@@ -168,12 +168,68 @@ blog post:
   - remove componentName, just allow setting default theme: ""
   - remove builders like themebuilder etc from config
     - do it via plugins automatically
+  - inlineProps => `accept: 'number' | 'string' | value<type>()`
   - remove inlineProps, usedKeys, partial extraction
 
   - must pass in colors separately but it exports the defaults still
   - createSystemFont into package
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
+  - theme inverse only works with sub-themes named _inverse. createThemes.generateInverseSubThemes: boolean 
+    - v4 config can add a boolean to do this by default
+  <!-- - button-next is mostly ready now to replace button:
+    - remove old button, move new button into place, fix issues around the site/bento
+    - docs update: we should show "headless" style and non-headless
+      - <Button.Frame><Button.Icon></Button.Icon></Button.Frame> for headless
+      - <Button> for non-headless -->
+  - input-next
+    - rather than wrapping react-native-web we implement our own
+    - keep it simple, align to web props as much as possible
+  <!-- - swap image-next => image -->
+  - make sure webContainerType is "right" - probably not `normal` default
+    - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
+  - we should fix "tag" and have it so you can pass typed props to the tag
+    - tag => as?
+    - tag={['a', { href: '' }]}
+  - we may need to move the web-only valid style props to a webOnly const and filter it out on native? how does that work currently...
+  - see various `@deprecated` jsdocs
+  - need to copy/paste all the component docs to 2.0.0.mdx
+  - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
+  - see how much of accessibilityDirectMap we can remove for web
+  - Text weirdness fixes (explore)
+    - remove suppressHighlighting / margin 0 default from Text
+    - fix display: inline issue
+    - see what react-strict-dom is doing
+    - move it to <div><span> where div is flex, span is text only props
+        <div {...nonTextStyleProps}>
+          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
+
+          </span>
+        </div>
+  - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
+  - @tamagui/cli => tamagui
+    - `tamagui build` document/announce
+    - `tamagui lint` fix check and document/announce
+  - tamagui => @tamagui/ui
+    - note many are headless
+  - Cleanup Select/ListItem
+    - v2-3 ListItem simplification esp for performance of Select
+    - fix Select hover/type/performance
+  - AnimatePresence: remove deprecated props in favor of `custom`
+
+potential
+
+  - border="1px solid $color" border="$4 solid $color"
+  - deprecate shadow props separated in favor of boxShadow, implement boxShadow
+  - sync AnimatePresence with latest changes from framer-motion
+  - group => container
+
+stretch
+
+  - @tamagui/core => @tamagui/style
+    - styled()
+    - @tamagui/style just style({}) export, takes TextProps
+- // TODO: turn on
   - // TODO on inverse theme changes
 
 is this a bug? the is_static conditional is odd, maybe backward
@@ -233,6 +289,20 @@ jest-preset.js should add (for testing native):
 testEnvironmentOptions: {
   customExportConditions: ['react-native'],
 }
+
+- looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
+
+- deeply nested themeInverse needs a fix see kitchen sink squares
+
+- nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
+
+- button media queries break due to useStyle hook
+- algolia creds
+- can skip a ton of CSS by disabling prefers color theme setting
+  - so long as they use next-theme, or vxrn/color-scheme
+- uniswap/tamagui fixes, see uniswap section
+  - the platform-web type issues should be relatively easy
+  - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
 
 - can skip a ton of CSS by disabling prefers color theme setting
   - so long as they use next-theme, or vxrn/color-scheme

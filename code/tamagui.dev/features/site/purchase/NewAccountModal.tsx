@@ -30,7 +30,7 @@ import {
   View,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { CURRENT_PRODUCTS } from '~/features/stripe/products'
@@ -277,6 +277,9 @@ export const AccountView = () => {
             teamError={teamError}
           />
         )
+
+      case 'faq':
+        return <FaqTabContent />
 
       case 'faq':
         return <FaqTabContent />
@@ -898,7 +901,6 @@ const DiscordMember = ({
     </XStack>
   )
 }
-
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -1283,8 +1285,9 @@ const ManageTab = ({
         <Paragraph theme="alt1">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
+
         <Button
-          themeInverse
+          theme="accent"
           onPress={() => {
             paymentModal.show = true
           }}

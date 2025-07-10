@@ -9,7 +9,7 @@ window['React'] = React
 test('font family across media queries', async () => {
   const output = await extractForWeb(
     `
-    import { H2 } from 'tamagui'
+    import { H2 } from '@tamagui/ui'
     export function Test(props) {
       return (
         <H2

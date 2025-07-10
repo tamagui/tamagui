@@ -29,7 +29,7 @@ import {
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { Keyboard, type View, useWindowDimensions } from 'react-native'
@@ -334,57 +334,56 @@ export function Popper(props: PopperProps) {
 
 type PopperAnchorRef = HTMLElement | View
 
-export type PopperAnchorProps = YStackProps & {
+export type PopperAnchorExtraProps = {
   virtualRef?: React.RefObject<any>
   scope?: string
 }
+export type PopperAnchorProps = YStackProps
 
-export const PopperAnchor = YStack.extractable(
-  React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
-    function PopperAnchor(props, forwardedRef) {
-      const { virtualRef, scope, ...anchorProps } = props
-      const context = usePopperContextSlow(scope)
-      const { getReferenceProps, refs, update } = context
-      const ref = React.useRef<PopperAnchorRef>(null)
+export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
+  function PopperAnchor(props, forwardedRef) {
+    const { virtualRef, scope, ...anchorProps } = props
+    const context = usePopperContextSlow(scope)
+    const { getReferenceProps, refs, update } = context
+    const ref = React.useRef<PopperAnchorRef>(null)
 
-      React.useEffect(() => {
-        if (virtualRef) {
-          refs.setReference(virtualRef.current)
-        }
-      }, [virtualRef])
+    React.useEffect(() => {
+      if (virtualRef) {
+        refs.setReference(virtualRef.current)
+      }
+    }, [virtualRef])
 
-      const stackProps = anchorProps
+    const stackProps = anchorProps
 
-      const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-      const composedRefs = useComposedRefs(forwardedRef, ref)
+    const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
+    const composedRefs = useComposedRefs(forwardedRef, ref)
 
-      return (
-        <TamaguiView
-          {...stackProps}
-          {...refProps}
-          ref={composedRefs}
-          // this helps us with handling scoped poppers with many different targets
-          // basically we wait for mouseEnter to ever set a reference and remove it on leave
-          // otherwise floating ui gets confused by having >1 reference
-          onMouseEnter={(e) => {
-            if (ref.current instanceof HTMLElement) {
-              refs.setReference(ref.current)
-              setTimeout(() => {
-                refProps.onPointerEnter?.(e)
-                update()
-              })
-            }
-          }}
-          onMouseLeave={(e) => {
-            refProps?.onMouseLeave?.(e)
-            // setTimeout(() => {
-            //   refs.setReference(null)
-            // })
-          }}
-        />
-      )
-    }
-  )
+    return (
+      <TamaguiView
+        {...stackProps}
+        {...refProps}
+        ref={composedRefs}
+        // this helps us with handling scoped poppers with many different targets
+        // basically we wait for mouseEnter to ever set a reference and remove it on leave
+        // otherwise floating ui gets confused by having >1 reference
+        onMouseEnter={(e) => {
+          if (ref.current instanceof HTMLElement) {
+            refs.setReference(ref.current)
+            setTimeout(() => {
+              refProps.onPointerEnter?.(e)
+              update()
+            })
+          }
+        }}
+        onMouseLeave={(e) => {
+          refProps?.onMouseLeave?.(e)
+          // setTimeout(() => {
+          //   refs.setReference(null)
+          // })
+        }}
+      />
+    )
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -393,14 +392,14 @@ export const PopperAnchor = YStack.extractable(
 
 type PopperContentElement = TamaguiElement
 
-export type PopperContentProps = ScopedProps<
-  SizableStackProps & {
-    enableAnimationForPositionChange?: boolean
-    passThrough?: boolean
-  }
->
+export type PopperContentExtraProps = {
+  enableAnimationForPositionChange?: boolean
+  passThrough?: boolean
+  scope?: string
+}
+export type PopperContentProps = SizableStackProps & PopperContentExtraProps
 
-export const PopperContentFrame = styled(ThemeableStack, {
+export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
 
   variants: {
@@ -409,7 +408,6 @@ export const PopperContentFrame = styled(ThemeableStack, {
         size: '$true',
         backgroundColor: '$background',
         alignItems: 'center',
-        radiused: true,
       },
     },
 

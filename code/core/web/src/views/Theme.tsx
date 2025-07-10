@@ -97,8 +97,8 @@ export function getThemedChildren(
     </ThemeStateContext.Provider>
   )
 
-  const { isInverse, name } = themeState
-  const requiresExtraWrapper = isInverse || forceClassName
+  const { name } = themeState
+  const requiresExtraWrapper = forceClassName
 
   // it only ever progresses from false => true => 'wrapped'
   if (!state.hasEverThemed) {
@@ -171,23 +171,16 @@ export function getThemedChildren(
     // to prevent tree structure changes always render this if inverse is true or false
     if (state.hasEverThemed === 'wrapped') {
       // but still calculate if we need the classnames
-      const className =
-        !passThrough && requiresExtraWrapper
-          ? `${
-              isInverse
-                ? name.startsWith('light')
-                  ? 't_light is_inversed'
-                  : name.startsWith('dark')
-                    ? 't_dark is_inversed'
-                    : ''
+      const className = requiresExtraWrapper
+        ? `${
+            name.startsWith('light')
+              ? 't_light'
+              : name.startsWith('dark')
+                ? 't_dark'
                 : ''
-            } `
-          : ``
-      children = (
-        <span style={baseStyle} className={className}>
-          {children}
-        </span>
-      )
+          } _dsp_contents`
+        : `_dsp_contents`
+      children = <span className={className}>{children}</span>
     }
 
     return children
@@ -220,11 +213,19 @@ function getThemeClassNameAndColor(
   const themeColor =
     themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
 
-  const maxInverses = getSetting('maxDarkLightNesting') || 3
-  const themeClassName =
-    themeState.inverses >= maxInverses
-      ? themeState.name
-      : themeState.name.replace(schemePrefix, '')
+  const style = themeColor
+    ? {
+        color: themeColor,
+      }
+    : undefined
+
+  // const maxInverses = getSetting('maxDarkLightNesting') || 3
+  // const themeClassName =
+  //   themeState.inverses >= maxInverses
+  //     ? themeState.name
+  //     : themeState.name.replace(schemePrefix, '')
+
+  const themeClassName = themeState.name.replace(schemePrefix, '')
 
   const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
 

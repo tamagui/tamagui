@@ -1,6 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { useRef, useState } from 'react'
-import { Button, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, XStack, YStack } from '@tamagui/ui'
 import { Link } from '~/components/Link'
 
 import { ContainerLarge } from '~/components/Containers'
@@ -58,7 +58,7 @@ export function HomePerformance() {
           {show && <BenchmarkChartWeb />}
         </YStack>
 
-        <XStack space flexWrap="wrap">
+        <XStack gap="$4" flexWrap="wrap">
           <BenchmarksLink />
           <CompilerLink />
         </XStack>

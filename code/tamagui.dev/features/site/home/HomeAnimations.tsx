@@ -12,7 +12,7 @@ import {
   YStack,
   useControllableState,
   useEvent,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'
@@ -53,8 +53,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
   return (
     <YStack>
-      <ContainerLarge position="relative" space="$8">
-        <YStack zi={1} space="$3">
+      <ContainerLarge position="relative" gap="$8">
+        <YStack zi={1} gap="$3">
           <HomeH2 pos="relative">
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
@@ -96,12 +96,13 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
               jc="center"
             >
               <YStack fullscreen top="60%" o={0.5} />
+
               <Button
                 accessibilityLabel="View more"
+                theme="accent"
                 y={200}
                 iconAfter={ArrowDown}
                 size="$4"
-                themeInverse
                 zi={10}
                 onPress={() => setDisableScrollPane(false)}
               >

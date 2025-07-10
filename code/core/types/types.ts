@@ -1,6 +1,6 @@
 export interface TamaguiBuildOptions {
   /**
-   * module paths you want to compile with tamagui (for example ['tamagui'])
+   * module paths you want to compile with tamagui (for example ['@tamagui/ui'])
    * */
   components?: string[]
 

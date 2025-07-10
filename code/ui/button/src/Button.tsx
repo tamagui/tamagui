@@ -1,92 +1,31 @@
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { withStaticProperties } from '@tamagui/helpers'
-import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
-import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
+import { ButtonNestingContext, themeableVariants } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
-import {
-  createStyledContext,
-  getVariableValue,
-  spacedChildren,
-  styled,
-  useProps,
-} from '@tamagui/web'
-import type { FunctionComponent, JSX } from 'react'
+import type { GetProps, RNExtraProps, SizeTokens } from '@tamagui/web'
+import { createStyledContext, styled, View, withStaticProperties } from '@tamagui/web'
 import { useContext } from 'react'
+import { useGetIcon } from '@tamagui/helpers-tamagui'
 
 type ButtonVariant = 'outlined'
 
-export const ButtonContext = createStyledContext<
-  Partial<
-    TextContextStyles & {
-      size: SizeTokens
-      variant?: ButtonVariant
-    }
-  >
->({
-  // keeping these here means they work with styled() passing down color to text
-  color: undefined,
-  ellipse: undefined,
-  fontFamily: undefined,
-  fontSize: undefined,
-  fontStyle: undefined,
-  fontWeight: undefined,
-  letterSpacing: undefined,
-  maxFontSizeMultiplier: undefined,
+export type ButtonProps = GetProps<typeof Frame>
+
+const context = createStyledContext<{
+  size?: SizeTokens
+  variant?: ButtonVariant
+}>({
   size: undefined,
-  textAlign: undefined,
   variant: undefined,
 })
 
-type ButtonIconProps = { color?: any; size?: any }
-type IconProp =
-  | JSX.Element
-  | FunctionComponent<ButtonIconProps>
-  | ((props: ButtonIconProps) => any)
-  | null
-
-type ButtonExtraProps = TextParentStyles &
-  ThemeableProps & {
-    /**
-     * add icon before, passes color and size automatically if Component
-     */
-    icon?: IconProp
-    /**
-     * add icon after, passes color and size automatically if Component
-     */
-    iconAfter?: IconProp
-    /**
-     * adjust icon relative to size
-     *
-     * @default 1
-     */
-    scaleIcon?: number
-    /**
-     * make the spacing elements flex
-     */
-    spaceFlex?: number | boolean
-    /**
-     * adjust internal space relative to icon size
-     */
-    scaleSpace?: number
-    /**
-     * remove default styles
-     */
-    unstyled?: boolean
-  }
-
-type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>
-
-const BUTTON_NAME = 'Button'
-
-const ButtonFrame = styled(ThemeableStack, {
-  name: BUTTON_NAME,
-  tag: 'button',
-  context: ButtonContext,
+const Frame = styled(View, {
+  context,
+  name: 'Button',
+  group: 'Button' as any,
+  containerType: 'normal',
   role: 'button',
-  focusable: true,
+  tag: 'button',
 
   variants: {
     unstyled: {
@@ -97,11 +36,17 @@ const ButtonFrame = styled(ThemeableStack, {
         flexWrap: 'nowrap',
         flexDirection: 'row',
         cursor: 'pointer',
-        hoverTheme: true,
-        pressTheme: true,
-        backgrounded: true,
+        backgroundColor: '$background',
         borderWidth: 1,
         borderColor: 'transparent',
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
 
         focusVisibleStyle: {
           outlineColor: '$outlineColor',
@@ -111,27 +56,69 @@ const ButtonFrame = styled(ThemeableStack, {
       },
     },
 
-    variant: {
-      outlined: {
-        backgroundColor: 'transparent',
-        borderWidth: 2,
-        borderColor: '$borderColor',
+    // The 'styled' variant enables v1-like Button styles, including default padding, background, border, and interactive states.
+    styled: {
+      true: {
+        size: '$true',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+        cursor: 'pointer',
+        backgroundColor: '$background',
+        borderWidth: 1,
+        borderColor: 'transparent',
+        gap: '$2',
 
         hoverStyle: {
-          backgroundColor: 'transparent',
+          backgroundColor: '$backgroundHover',
           borderColor: '$borderColorHover',
         },
 
         pressStyle: {
-          backgroundColor: 'transparent',
-          borderColor: '$borderColorPress',
+          backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorHover',
         },
 
         focusVisibleStyle: {
-          backgroundColor: 'transparent',
-          borderColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
         },
       },
+    },
+
+    circular: themeableVariants.circular,
+
+    chromeless: themeableVariants.chromeless,
+
+    variant: {
+      outlined:
+        process.env.TAMAGUI_HEADLESS === '1'
+          ? {}
+          : {
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              borderColor: '$borderColor',
+
+              hoverStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorHover',
+              },
+
+              pressStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorPress',
+              },
+
+              focusVisibleStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorFocus',
+                outlineColor: '$outlineColor',
+                outlineStyle: 'solid',
+                outlineWidth: 2,
+              },
+            },
     },
 
     size: {
@@ -151,9 +138,8 @@ const ButtonFrame = styled(ThemeableStack, {
   },
 })
 
-const ButtonText = styled(SizableText, {
-  name: 'Button',
-  context: ButtonContext,
+const Text = styled(SizableText, {
+  context,
 
   variants: {
     unstyled: {
@@ -163,7 +149,18 @@ const ButtonText = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
+        color: '$color',
+      },
+    },
+
+    styled: {
+      true: {
+        userSelect: 'none',
+        cursor: 'pointer',
+        flexGrow: 0,
+        flexShrink: 1,
+        ellipsis: true,
         color: '$color',
       },
     },
@@ -174,170 +171,96 @@ const ButtonText = styled(SizableText, {
   },
 })
 
-const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
-  const { children, scaleIcon = 1 } = props
-  const { size, color } = useContext(ButtonContext)
+const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
+  const { children, scaleIcon = 1, marginLeft, marginRight, size } = props as any
+  const styledContext = context.useStyledContext()
+  if (!styledContext) {
+    throw new Error('Button.Icon must be used within a Button')
+  }
+  const getIcon = useGetIcon()
 
-  const iconSize =
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
-    scaleIcon
+  const sizeToken = size ?? styledContext.size
 
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
-  return getThemedIcon(children)
+  const iconSize = getFontSize(sizeToken as any) * scaleIcon
+
+  return getIcon(children, {
+    size: iconSize,
+    marginLeft,
+    marginRight,
+  })
 }
 
-const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
-  function Button(props, ref) {
-    // @ts-ignore
-    const { props: buttonProps } = useButton(props)
-
-    return <ButtonFrame data-disable-theme {...buttonProps} ref={ref} />
-  }
-)
-/**
- * @summary A Button is a clickable element that can be used to trigger actions such as submitting forms, navigating to other pages, or performing other actions.
- * @see — Docs https://tamagui.dev/ui/button
- */
-const Button = withStaticProperties(ButtonComponent, {
-  Text: ButtonText,
-  Icon: ButtonIcon,
+export const ButtonContext = createStyledContext<{
+  size?: SizeTokens
+  variant?: ButtonVariant
+}>({
+  size: undefined,
+  variant: undefined,
 })
 
-/**
- * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
- */
-function useButton<Props extends ButtonProps>(
-  { textProps, ...propsIn }: Props,
-  { Text = Button.Text }: { Text: any } = { Text: Button.Text }
-) {
+const ButtonComponent = Frame.styleable<{
+  variant?: 'outlined'
+  size?: SizeTokens
+  icon?: any
+  iconAfter?: any
+  scaleIcon?: number
+  iconSize?: SizeTokens
+  chromeless?: boolean
+  circular?: boolean
+  styled?: boolean
+  onLayout?: RNExtraProps['onLayout']
+}>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext)
-  const propsActive = useProps(propsIn, {
-    noNormalize: true,
-    noExpand: true,
-  }) as any as ButtonProps
+  const { children, iconSize, icon, iconAfter, scaleIcon = 1, styled, ...props } = propsIn
 
-  // careful not to destructure and re-order props, order is important
-  const {
-    icon,
-    iconAfter,
-    space,
-    spaceFlex,
-    scaleIcon = 1,
-    scaleSpace = 0.66,
-    separator,
-    noTextWrap,
-    fontFamily,
-    fontSize,
-    fontWeight,
-    fontStyle,
-    letterSpacing,
-    tag,
-    ellipse,
-    maxFontSizeMultiplier,
+  const styledContext = context.useStyledContext()
+  const size = iconSize ?? propsIn.size ?? styledContext?.size
+  const iconSizeNumber = getFontSize(size as any) * scaleIcon
 
-    ...restProps
-  } = propsActive
+  const getIcon = useGetIcon()
 
-  const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
-
-  const color = propsActive.color as any
-
-  const iconSize =
-    (typeof size === 'number'
-      ? size * 0.5
-      : getFontSize(size as FontSizeTokens, {
-          font: fontFamily?.[0] === '$' ? (fontFamily as any) : undefined,
-        })) * scaleIcon
-
-  const getThemedIcon = useGetThemedIcon({
-    size: iconSize,
-    color,
-  })
-
-  const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize = space ?? getVariableValue(iconSize) * scaleSpace
-  const contents = noTextWrap
-    ? [propsIn.children]
-    : wrapChildrenInText(
-        Text,
-        {
-          children: propsIn.children,
-          fontFamily,
-          fontSize,
-          textProps,
-          fontWeight,
-          fontStyle,
-          letterSpacing,
-          ellipse,
-          maxFontSizeMultiplier,
-        },
-        Text === ButtonText && propsActive.unstyled !== true
-          ? {
-              unstyled: process.env.TAMAGUI_HEADLESS === '1',
-              size,
-            }
-          : undefined
-      )
-
-  const inner = spacedChildren({
-    // a bit arbitrary but scaling to font size is necessary so long as button does
-    space: spaceSize === false ? 0 : spaceSize == true ? '$true' : spaceSize,
-    spaceFlex,
-    ensureKeys: true,
-    separator,
-    direction:
-      propsActive.flexDirection === 'column' ||
-      propsActive.flexDirection === 'column-reverse'
-        ? 'vertical'
-        : 'horizontal',
-    // for keys to stay the same we keep indices as similar a possible
-    // so even if icons are undefined we still pass them
-    children: [themedIcon, ...contents, themedIconAfter],
-  })
-
-  const props = {
-    size,
-    ...(propsIn.disabled && {
-      // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
-      focusable: undefined,
-      // even with tabIndex unset, it will keep focusVisibleStyle on web so disable it here
-      focusVisibleStyle: {
-        borderColor: '$background',
+  const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
+    if (!icon) return null
+    const isBefore = i === 0
+    return getIcon(icon, {
+      size: iconSizeNumber,
+      ...{
+        [!isBefore ? 'marginLeft' : 'marginRight']: `${iconSizeNumber * 0.4}%`,
       },
-    }),
-    // fixes SSR issue + DOM nesting issue of not allowing button in button
-    tag:
-      tag ??
-      (isNested
-        ? 'span'
-        : // defaults to <a /> when accessibilityRole = link
-          // see https://github.com/tamagui/tamagui/issues/505
-          propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
-          ? 'a'
-          : 'button'),
+    })
+  })
 
-    ...restProps,
+  const wrappedChildren = wrapChildrenInText(
+    Text,
+    { children },
+    {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
+      styled: styled,
+      size: propsIn.size ?? styledContext?.size,
+    }
+  )
 
-    children: (
-      <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
-    ),
-    // forces it to be a runtime pressStyle so it passes through context text colors
-    disableClassName: true,
-  } as Props
+  return (
+    <ButtonNestingContext.Provider value={true}>
+      <Frame
+        ref={ref}
+        styled={styled}
+        {...props}
+        {...(isNested && { tag: 'span' })}
+        tabIndex={0}
+        focusable={true}
+      >
+        {themedIcon}
+        {wrappedChildren}
+        {themedIconAfter}
+      </Frame>
+    </ButtonNestingContext.Provider>
+  )
+})
 
-  return {
-    spaceSize,
-    isNested,
-    props,
-  }
-}
-
-export {
-  Button,
-  ButtonFrame,
-  ButtonIcon,
-  ButtonText,
-  // legacy
-  useButton,
-}
-export type { ButtonProps }
+export const Button = withStaticProperties(ButtonComponent, {
+  Apply: context.Provider,
+  Frame,
+  Text,
+  Icon,
+})

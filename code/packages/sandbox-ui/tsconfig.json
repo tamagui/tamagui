@@ -5,7 +5,7 @@
   },
   "references": [
     {
-      "path": "../../ui/tamagui"
+      "path": "../../ui/tamagui-ui"
     },
     {
       "path": "../../ui/toast"

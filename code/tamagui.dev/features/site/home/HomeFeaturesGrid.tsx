@@ -1,4 +1,4 @@
-import { EnsureFlexed, H4, Paragraph, YStack } from 'tamagui'
+import { EnsureFlexed, H4, Paragraph, YStack } from '@tamagui/ui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { Grid } from '~/components/Grid'
@@ -6,7 +6,7 @@ import { Grid } from '~/components/Grid'
 export function HomeFeaturesGrid() {
   return (
     <>
-      <ContainerLarge space="$8">
+      <ContainerLarge gap="$8">
         <YStack maw={950} als="center">
           <Grid gap={25} itemMinWidth={280}>
             <YStack gap="$4" p="$4">

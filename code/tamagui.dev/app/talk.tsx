@@ -1,6 +1,6 @@
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { useEffect, useState } from 'react'
-import { Spacer, XStack, YStack } from 'tamagui'
+import { Spacer, XStack, YStack } from '@tamagui/ui'
 import slideCoreAnimations from '~/features/talk/slides/slide-core-animations'
 import slideCoreComparison from '~/features/talk/slides/slide-core-comparison'
 import slideCoreFeatures from '~/features/talk/slides/slide-core-features'
@@ -52,7 +52,7 @@ export default function TamaguiTalk() {
           <LogoWords />
         </YStack>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <ThemeToggle borderWidth={0} chromeless />
       </XStack>

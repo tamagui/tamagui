@@ -4,7 +4,7 @@ import { createAnimations as createAnimationsMotion } from '@tamagui/animations-
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
-import { createTamagui } from 'tamagui'
+import { createTamagui } from '@tamagui/ui'
 
 export const animationsCSS = createAnimationsCSS({
   '100ms': 'ease-in 100ms',
@@ -192,9 +192,8 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
-  defaultFont: undefined,
   settings: {
-    defaultFont: undefined,
+    defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
@@ -211,7 +210,8 @@ const tamaConf = createTamagui({
       : search.includes('animationDriver=motion')
         ? animationsMotion
         : animationsMoti, // default moti
-  themeClassNameOnRoot: false,
+  // This setting is now configured in createTamagui settings
+  // themeClassNameOnRoot: false, // moved to createTamagui({ settings: { themeClassNameOnRoot } })
 
   defaultProps: {
     Square: {
@@ -222,7 +222,7 @@ const tamaConf = createTamagui({
 
 export type Conf = typeof tamaConf
 
-declare module 'tamagui' {
+declare module '@tamagui/ui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {
