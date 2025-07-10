@@ -360,6 +360,7 @@ export const PopperAnchor = YStack.extractable(
 
       return (
         <TamaguiView
+          {...stackProps}
           {...refProps}
           ref={composedRefs}
           // this helps us with handling scoped poppers with many different targets
