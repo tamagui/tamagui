@@ -421,12 +421,7 @@ export function createComponent<
 
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if (
-        !groupName ||
-        props.passThrough ||
-        // avoids onLayout
-        props.containerType === 'normal'
-      ) {
+      if (!groupName || props.passThrough) {
         return groupContextParent
       }
 
@@ -646,7 +641,12 @@ export function createComponent<
 
     // one tiny mutation 🙏 get width/height optimistically from raw values if possible
     // if set hardcoded it avoids extra renders
-    if (splitStyles && groupContext) {
+    if (
+      splitStyles &&
+      groupContext &&
+      // avoids onLayout if we don't need it
+      props.containerType !== 'normal'
+    ) {
       const groupState = groupContext?.state
       if (groupState && groupState.layout === undefined) {
         if (splitStyles.style?.width || splitStyles.style?.height) {
@@ -916,7 +916,11 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    if (splitStyles && groupContext) {
+    if (
+      splitStyles &&
+      groupContext && // avoids onLayout if we don't need it
+      props.containerType !== 'normal'
+    ) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {
