@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-site",
-  "version": "1.132.0",
+  "version": "1.132.1",
   "private": true,
   "source": "src",
   "scripts": {
