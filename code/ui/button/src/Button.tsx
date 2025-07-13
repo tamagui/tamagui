@@ -159,7 +159,9 @@ const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
 
   const sizeToken = size ?? styledContext.size
 
-  const iconSize = getFontSize(sizeToken as Token) * scaleIcon
+  const iconSize =
+    (typeof sizeToken === 'number' ? sizeToken * 0.5 : getFontSize(sizeToken as Token)) *
+    scaleIcon
 
   return getIcon(children, {
     size: iconSize,
@@ -194,18 +196,17 @@ const ButtonComponent = Frame.styleable<{
 
   const styledContext = context.useStyledContext()
   const finalSize = iconSize ?? size ?? styledContext?.size
-  const iconSizeNumber = getFontSize(finalSize as any) * scaleIcon
+  const iconSizeNumber =
+    (typeof finalSize === 'number' ? finalSize * 0.5 : getFontSize(finalSize as Token)) *
+    scaleIcon
 
   const getIcon = useGetIcon()
 
-  const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
+  const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon) => {
     if (!icon) return null
-    const isBefore = i === 0
     return getIcon(icon, {
       size: iconSizeNumber,
-      ...{
-        [!isBefore ? 'marginLeft' : 'marginRight']: `${iconSizeNumber * 0.4}%`,
-      },
+      // No marginLeft or marginRight needed - spacing is handled by the gap property in Frame's size variants
     })
   })
 
@@ -222,7 +223,6 @@ const ButtonComponent = Frame.styleable<{
     <ButtonNestingContext.Provider value={true}>
       <Frame
         ref={ref}
-        size={finalSize}
         {...props}
         {...(isNested && { tag: 'span' })}
         tabIndex={0}
