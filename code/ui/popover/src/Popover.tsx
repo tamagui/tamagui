@@ -11,7 +11,6 @@ import {
 } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
-import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isIos, isWeb } from '@tamagui/constants'
 import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
@@ -247,13 +246,6 @@ export const PopoverContent = PopoverContentFrame.extractable(
       if (context.open && isFullyHidden) {
         setIsFullyHidden(false)
       }
-
-      // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-      React.useEffect(() => {
-        if (!context.open) return
-        const content = contentRef.current
-        if (content) return hideOthers(content)
-      }, [context.open])
 
       if (!context.keepChildrenMounted) {
         if (isFullyHidden) {

@@ -40,7 +40,6 @@
     "@tamagui/adapt": "workspace:*",
     "@tamagui/animate": "workspace:*",
     "@tamagui/animate-presence": "workspace:*",
-    "@tamagui/aria-hidden": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
