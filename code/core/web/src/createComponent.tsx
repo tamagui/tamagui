@@ -411,6 +411,14 @@ export function createComponent<
       startedUnhydrated,
     } = componentState
 
+    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+      const pendingState = NextState.get(stateRef)
+      if (pendingState) {
+        NextState.set(stateRef, undefined)
+        componentState.setStateShallow(pendingState)
+      }
+    }
+
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
       if (!groupName || props.passThrough) {
@@ -459,14 +467,6 @@ export function createComponent<
     // a version that essentially uses an internall emitter rather than setting state
     // but still stores the current state and applies if it it needs to during render
     let setStateShallow = componentState.setStateShallow
-
-    if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      const pendingState = NextState.get(stateRef)
-      if (pendingState) {
-        setStateShallow(pendingState)
-        NextState.set(stateRef, undefined)
-      }
-    }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
