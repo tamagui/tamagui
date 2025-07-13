@@ -136,7 +136,7 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
   const [children2, setChildren] = React.useState(null)
 
   return (
-    <LastAdaptContextScope value={scope}>
+    <LastAdaptContextScope.Provider value={scope}>
       <ProvideAdaptContext
         Contents={FinalContents}
         when={when}
@@ -149,7 +149,7 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
       >
         {children}
       </ProvideAdaptContext>
-    </LastAdaptContextScope>
+    </LastAdaptContextScope.Provider>
   )
 }
 
