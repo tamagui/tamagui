@@ -2,7 +2,6 @@ import { Button, type ButtonProps, YStack } from '@tamagui/ui'
 import { BentoIcon } from '../icons/BentoIcon'
 
 export const BentoButton = (props: ButtonProps) => {
-  console.info('Button props', props)
   return (
     <Button.Frame
       blw={0.5}

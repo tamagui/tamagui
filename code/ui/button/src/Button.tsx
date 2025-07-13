@@ -2,8 +2,14 @@ import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { ButtonNestingContext, themeableVariants } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { GetProps, RNExtraProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, styled, View, withStaticProperties } from '@tamagui/web'
+import type { GetProps, RNExtraProps, SizeTokens, Token } from '@tamagui/web'
+import {
+  createStyledContext,
+  getTokenValue,
+  styled,
+  View,
+  withStaticProperties,
+} from '@tamagui/web'
 import { useContext } from 'react'
 import { useGetIcon } from '@tamagui/helpers-tamagui'
 
@@ -42,10 +48,12 @@ const Frame = styled(View, {
 
         hoverStyle: {
           backgroundColor: '$backgroundHover',
+          borderColor: '$borderColorHover',
         },
 
         pressStyle: {
           backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorHover',
         },
 
         focusVisibleStyle: {
@@ -90,10 +98,23 @@ const Frame = styled(View, {
     },
 
     size: {
-      '...size': getButtonSized,
-      ':number': getButtonSized,
+      '...size': (val, extras) => {
+        const buttonStyle = getButtonSized(val, extras)
+        const gap = getTokenValue(val as Token) * 0.4
+        return {
+          ...buttonStyle,
+          gap,
+        }
+      },
+      ':number': (val, extras) => {
+        const buttonStyle = getButtonSized(val, extras)
+        const gap = val * 0.4
+        return {
+          ...buttonStyle,
+          gap,
+        }
+      },
     },
-
     disabled: {
       true: {
         pointerEvents: 'none',
@@ -138,7 +159,7 @@ const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
 
   const sizeToken = size ?? styledContext.size
 
-  const iconSize = getFontSize(sizeToken as any) * scaleIcon
+  const iconSize = getFontSize(sizeToken as Token) * scaleIcon
 
   return getIcon(children, {
     size: iconSize,
@@ -169,9 +190,11 @@ const ButtonComponent = Frame.styleable<{
   const isNested = useContext(ButtonNestingContext)
   const { children, iconSize, icon, iconAfter, scaleIcon = 1, ...props } = propsIn
 
+  const size = propsIn.size || (propsIn.unstyled ? undefined : '$true')
+
   const styledContext = context.useStyledContext()
-  const size = iconSize ?? propsIn.size ?? styledContext?.size
-  const iconSizeNumber = getFontSize(size as any) * scaleIcon
+  const finalSize = iconSize ?? size ?? styledContext?.size
+  const iconSizeNumber = getFontSize(finalSize as any) * scaleIcon
 
   const getIcon = useGetIcon()
 
@@ -191,7 +214,7 @@ const ButtonComponent = Frame.styleable<{
     { children },
     {
       unstyled: process.env.TAMAGUI_HEADLESS === '1',
-      size: propsIn.size ?? styledContext?.size,
+      size: finalSize ?? styledContext?.size,
     }
   )
 
@@ -199,6 +222,7 @@ const ButtonComponent = Frame.styleable<{
     <ButtonNestingContext.Provider value={true}>
       <Frame
         ref={ref}
+        size={finalSize}
         {...props}
         {...(isNested && { tag: 'span' })}
         tabIndex={0}
