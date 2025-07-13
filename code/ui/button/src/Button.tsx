@@ -56,38 +56,6 @@ const Frame = styled(View, {
       },
     },
 
-    // The 'styled' variant enables v1-like Button styles, including default padding, background, border, and interactive states.
-    styled: {
-      true: {
-        size: '$true',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexWrap: 'nowrap',
-        flexDirection: 'row',
-        cursor: 'pointer',
-        backgroundColor: '$background',
-        borderWidth: 1,
-        borderColor: 'transparent',
-        gap: '$2',
-
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-          borderColor: '$borderColorHover',
-        },
-
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-          borderColor: '$borderColorHover',
-        },
-
-        focusVisibleStyle: {
-          outlineColor: '$outlineColor',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-        },
-      },
-    },
-
     circular: themeableVariants.circular,
 
     chromeless: themeableVariants.chromeless,
@@ -153,17 +121,6 @@ const Text = styled(SizableText, {
         color: '$color',
       },
     },
-
-    styled: {
-      true: {
-        userSelect: 'none',
-        cursor: 'pointer',
-        flexGrow: 0,
-        flexShrink: 1,
-        ellipsis: true,
-        color: '$color',
-      },
-    },
   } as const,
 
   defaultVariants: {
@@ -207,11 +164,10 @@ const ButtonComponent = Frame.styleable<{
   iconSize?: SizeTokens
   chromeless?: boolean
   circular?: boolean
-  styled?: boolean
   onLayout?: RNExtraProps['onLayout']
 }>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext)
-  const { children, iconSize, icon, iconAfter, scaleIcon = 1, styled, ...props } = propsIn
+  const { children, iconSize, icon, iconAfter, scaleIcon = 1, ...props } = propsIn
 
   const styledContext = context.useStyledContext()
   const size = iconSize ?? propsIn.size ?? styledContext?.size
@@ -235,7 +191,6 @@ const ButtonComponent = Frame.styleable<{
     { children },
     {
       unstyled: process.env.TAMAGUI_HEADLESS === '1',
-      styled: styled,
       size: propsIn.size ?? styledContext?.size,
     }
   )
@@ -244,7 +199,6 @@ const ButtonComponent = Frame.styleable<{
     <ButtonNestingContext.Provider value={true}>
       <Frame
         ref={ref}
-        styled={styled}
         {...props}
         {...(isNested && { tag: 'span' })}
         tabIndex={0}
