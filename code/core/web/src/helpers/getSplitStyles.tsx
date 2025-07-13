@@ -1089,16 +1089,6 @@ export const getSplitStyles: StyleSplitter = (
 
   const avoidNormalize = styleProps.noNormalize === false
 
-  if (debug) {
-    console.warn(
-      '?',
-      avoidNormalize,
-      styleProps.noExpand,
-      styleProps.noMergeStyle,
-      styleState.style
-    )
-  }
-
   if (!avoidNormalize) {
     if (styleState.style) {
       fixStyles(styleState.style)

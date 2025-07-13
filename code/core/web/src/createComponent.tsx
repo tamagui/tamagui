@@ -660,7 +660,6 @@ export function createComponent<
       (hasAnimationProp || groupName) &&
       animationDriver?.avoidReRenders
     ) {
-      const useStyleListener = stateRef.current.useStyleListener
       const ogSetStateShallow = setStateShallow
 
       stateRef.current.updateStyleListener = () => {
@@ -697,6 +696,8 @@ export function createComponent<
           startedUnhydrated,
           debugProp
         )
+
+        const useStyleListener = stateRef.current.useStyleListener
 
         useStyleListener?.((nextStyles?.style || {}) as any)
       }
