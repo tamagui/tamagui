@@ -80,6 +80,8 @@ if (isClient) {
   if (rAF) {
     const supportsCheckVisibility = 'checkVisibility' in document.body
 
+    const BoundingRects = new WeakMap<any, DOMRectReadOnly | undefined>()
+
     async function updateLayoutIfChanged(node: HTMLElement) {
       if (IntersectionState.get(node) === false) {
         // avoid due to not intersecting
@@ -104,8 +106,8 @@ if (isClient) {
 
       if (strategy === 'async') {
         const [nr, pr] = await Promise.all([
-          getBoundingClientRectAsync(node),
-          getBoundingClientRectAsync(parentNode),
+          BoundingRects.get(node) || getBoundingClientRectAsync(node),
+          BoundingRects.get(parentNode) || getBoundingClientRectAsync(parentNode),
         ])
 
         if (nr === false || pr === false) {
@@ -154,9 +156,9 @@ if (isClient) {
     const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
     const RUN_EVERY_X_FRAMES = userSkipVal ? +userSkipVal : 10
 
-    function layoutOnAnimationFrame() {
+    async function layoutOnAnimationFrame() {
       if (strategy !== 'off') {
-        if (frameCount++ % RUN_EVERY_X_FRAMES !== 0) {
+        if (!Nodes.size || frameCount++ % RUN_EVERY_X_FRAMES !== 0) {
           // skip a few frames to avoid work
           rAF!(layoutOnAnimationFrame)
           return
@@ -165,6 +167,28 @@ if (isClient) {
         if (frameCount === Number.MAX_SAFE_INTEGER) {
           frameCount = 0
         }
+
+        // do a 1 rather than N IntersectionObservers for performance
+        await new Promise<void>((res) => {
+          const io = new IntersectionObserver(
+            (entries) => {
+              io.disconnect()
+              for (const entry of entries) {
+                BoundingRects.set(entry.target, entry.boundingClientRect)
+              }
+              res()
+            },
+            {
+              threshold: 0,
+            }
+          )
+          for (const node of Nodes) {
+            if (node.parentElement instanceof HTMLElement) {
+              io.observe(node)
+              io.observe(node.parentElement)
+            }
+          }
+        })
 
         Nodes.forEach((node) => {
           updateLayoutIfChanged(node)
