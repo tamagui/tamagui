@@ -5,9 +5,6 @@
   },
   "references": [
     {
-      "path": "../../core/aria-hidden"
-    },
-    {
       "path": "../../core/compose-refs"
     },
     {

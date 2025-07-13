@@ -7,9 +7,8 @@ import {
   useAdaptIsActive,
 } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { hideOthers } from '@tamagui/aria-hidden'
-import { useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, isIos, isWeb } from '@tamagui/constants'
+import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
+import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledContext,
@@ -116,8 +115,6 @@ const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
  * DialogPortal
  * -----------------------------------------------------------------------------------------------*/
 
-const PORTAL_NAME = 'DialogPortal'
-
 type DialogPortalProps = ScopedProps<
   YStackProps & {
     /**
@@ -130,6 +127,7 @@ type DialogPortalProps = ScopedProps<
 
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
+  tag: 'dialog',
 
   variants: {
     unstyled: {
@@ -137,10 +135,20 @@ export const DialogPortalFrame = styled(YStack, {
         alignItems: 'center',
         justifyContent: 'center',
         fullscreen: true,
-        ...(isWeb && {
+
+        '$platform-web': {
+          // undo dialog styles
+          borderWidth: 0,
+          backgroundColor: 'transparent',
+          color: 'inherit',
+          maxInlineSize: 'none',
+          margin: 0,
+          width: 'auto',
+          height: 'auto',
+          // ensure always in frame and right height
           maxHeight: '100vh',
           position: 'fixed' as any,
-        }),
+        },
       },
     },
   } as const,
@@ -185,66 +193,89 @@ const DialogPortalItem = ({
   )
 }
 
-const DialogPortal: React.FC<DialogPortalProps> = (props) => {
-  const { scope, forceMount, children, ...frameProps } = props
+const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
+  (props, forwardRef) => {
+    const { scope, forceMount, children, ...frameProps } = props
+    const dialogRef = React.useRef<TamaguiElement>(null)
+    const ref = composeRefs(dialogRef, forwardRef)
 
-  const context = useDialogContext(scope)
-  const isShowing = forceMount || context.open
-  const [isFullyHidden, setIsFullyHidden] = React.useState(!isShowing)
-  const isAdapted = useAdaptIsActive(context.adaptScope)
+    const context = useDialogContext(scope)
+    const isMountedOrOpen = forceMount || context.open
+    const [isFullyHidden, setIsFullyHidden] = React.useState(!isMountedOrOpen)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
+    const isVisible = !isFullyHidden
 
-  if (isShowing && isFullyHidden) {
-    setIsFullyHidden(false)
-  }
+    useIsomorphicLayoutEffect(() => {
+      const node = dialogRef.current
+      if (!(node instanceof HTMLDialogElement)) return
+      if (isVisible) {
+        // not showModal because then we need to handle Select and Popover inside dialog
+        // we can do that later in v2
+        node.show()
+      } else {
+        node.close()
+      }
+    }, [isVisible])
 
-  const handleExitComplete = React.useCallback(() => {
-    setIsFullyHidden(true)
-  }, [])
+    if (isMountedOrOpen && isFullyHidden) {
+      setIsFullyHidden(false)
+    }
 
-  const zIndex = getExpandedShorthand('zIndex', props)
+    const handleExitComplete = React.useCallback(() => {
+      setIsFullyHidden(true)
+    }, [])
 
-  const contents = (
-    <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-      <AnimatePresence passThrough={isAdapted} onExitComplete={handleExitComplete}>
-        {isShowing || isAdapted ? children : null}
-      </AnimatePresence>
-    </StackZIndexContext>
-  )
+    const zIndex = getExpandedShorthand('zIndex', props)
 
-  if (isFullyHidden && !isAdapted) {
-    return null
-  }
+    const contents = (
+      <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
+        <AnimatePresence passThrough={isAdapted} onExitComplete={handleExitComplete}>
+          {isMountedOrOpen || isAdapted ? children : null}
+        </AnimatePresence>
+      </StackZIndexContext>
+    )
 
-  const framedContents = (
-    <DialogPortalFrame
-      // passThrough={isAdapted}
-      pointerEvents={isShowing ? 'auto' : 'none'}
-      {...frameProps}
-    >
-      {contents}
-    </DialogPortalFrame>
-  )
+    if (isFullyHidden && !isAdapted) {
+      return null
+    }
 
-  if (isWeb) {
-    return (
-      <Portal
-        zIndex={zIndex}
-        // set to 1000 which "boosts" it 1000 above baseline for current context
-        // this makes sure its above (this first 1k) popovers on the same layer
-        stackZIndex={1000}
-        passThrough={isAdapted}
+    const framedContents = (
+      <DialogPortalFrame
+        ref={ref}
+        {...(isWeb &&
+          isMountedOrOpen && {
+            'aria-modal': true,
+          })}
+        // passThrough={isAdapted}
+        pointerEvents={isMountedOrOpen ? 'auto' : 'none'}
+        {...frameProps}
+        className={`_no_backdrop ` + (frameProps.className || '')}
       >
-        <PassthroughTheme passThrough={isAdapted}>{framedContents}</PassthroughTheme>
-      </Portal>
+        {contents}
+      </DialogPortalFrame>
+    )
+
+    if (isWeb) {
+      return (
+        <Portal
+          zIndex={zIndex}
+          // set to 1000 which "boosts" it 1000 above baseline for current context
+          // this makes sure its above (this first 1k) popovers on the same layer
+          stackZIndex={1000}
+          passThrough={isAdapted}
+        >
+          <PassthroughTheme passThrough={isAdapted}>{framedContents}</PassthroughTheme>
+        </Portal>
+      )
+    }
+
+    return isAdapted ? (
+      framedContents
+    ) : (
+      <DialogPortalItem context={context}>{framedContents}</DialogPortalItem>
     )
   }
-
-  return isAdapted ? (
-    framedContents
-  ) : (
-    <DialogPortalItem context={context}>{framedContents}</DialogPortalItem>
-  )
-}
+)
 
 const PassthroughTheme = ({
   children,
@@ -404,14 +435,6 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
   ({ children, context, ...props }, forwardedRef) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
-
-    // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    React.useEffect(() => {
-      if (!isWeb) return
-      if (!context.open) return
-      const content = contentRef.current
-      if (content) return hideOthers(content)
-    }, [context.open])
 
     return (
       <DialogContentImpl
