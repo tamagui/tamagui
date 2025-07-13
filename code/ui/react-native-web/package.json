@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web",
-  "version": "1.132.5-1752435204050",
+  "version": "1.132.6",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-motion",
-  "version": "1.132.5-1752435204050",
+  "version": "1.132.6",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",

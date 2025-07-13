@@ -1,6 +1,6 @@
 {
   "name": "tamagui-build-test-watch-package",
-  "version": "1.132.5-1752435204050",
+  "version": "1.132.6",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
