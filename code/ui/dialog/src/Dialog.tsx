@@ -205,17 +205,19 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
     const isAdapted = useAdaptIsActive(context.adaptScope)
     const isVisible = !isFullyHidden
 
-    useIsomorphicLayoutEffect(() => {
-      const node = dialogRef.current
-      if (!(node instanceof HTMLDialogElement)) return
-      if (isVisible) {
-        // not showModal because then we need to handle Select and Popover inside dialog
-        // we can do that later in v2
-        node.show()
-      } else {
-        node.close()
-      }
-    }, [isVisible])
+    if (isWeb) {
+      useIsomorphicLayoutEffect(() => {
+        const node = dialogRef.current
+        if (!(node instanceof HTMLDialogElement)) return
+        if (isVisible) {
+          // not showModal because then we need to handle Select and Popover inside dialog
+          // we can do that later in v2
+          node.show()
+        } else {
+          node.close()
+        }
+      }, [isVisible])
+    }
 
     if (isMountedOrOpen && isFullyHidden) {
       setIsFullyHidden(false)
