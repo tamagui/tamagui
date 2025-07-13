@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-controllable-state",
-  "version": "1.132.1",
+  "version": "1.132.1-1752373919725",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
