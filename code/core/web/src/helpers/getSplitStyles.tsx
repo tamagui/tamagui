@@ -1089,13 +1089,23 @@ export const getSplitStyles: StyleSplitter = (
 
   const avoidNormalize = styleProps.noNormalize === false
 
+  if (debug) {
+    console.warn(
+      '?',
+      avoidNormalize,
+      styleProps.noExpand,
+      styleProps.noMergeStyle,
+      styleState.style
+    )
+  }
+
   if (!avoidNormalize) {
     if (styleState.style) {
       fixStyles(styleState.style)
 
       if (!styleProps.noExpand && !styleProps.noMergeStyle) {
         // shouldn't this be better? but breaks some tests weirdly, need to check
-        if (isWeb && !isReactNative) {
+        if (isWeb && (isReactNative ? !animationDriver.supportsCSS : true)) {
           styleToCSS(styleState.style)
         }
       }

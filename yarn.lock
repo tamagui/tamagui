@@ -6377,7 +6377,6 @@ __metadata:
   resolution: "@tamagui/alert-dialog@workspace:code/ui/alert-dialog"
   dependencies:
     "@tamagui/animate-presence": "workspace:*"
-    "@tamagui/aria-hidden": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
@@ -6491,18 +6490,6 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/aria-hidden@workspace:*, @tamagui/aria-hidden@workspace:code/core/aria-hidden":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/aria-hidden@workspace:code/core/aria-hidden"
-  dependencies:
-    "@tamagui/build": "workspace:*"
-    aria-hidden: "npm:^1.1.3"
-    react: "npm:*"
-  peerDependencies:
-    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -7056,7 +7043,6 @@ __metadata:
   dependencies:
     "@tamagui/adapt": "workspace:*"
     "@tamagui/animate-presence": "workspace:*"
-    "@tamagui/aria-hidden": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
@@ -7850,7 +7836,6 @@ __metadata:
     "@tamagui/adapt": "workspace:*"
     "@tamagui/animate": "workspace:*"
     "@tamagui/animate-presence": "workspace:*"
-    "@tamagui/aria-hidden": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
@@ -11230,15 +11215,6 @@ __metadata:
   version: 2.0.1
   resolution: "argparse@npm:2.0.1"
   checksum: 10/18640244e641a417ec75a9bd38b0b2b6b95af5199aa241b131d4b2fb206f334d7ecc600bd194861610a5579084978bfcbb02baa399dbe442d56d0ae5e60dbaef
-  languageName: node
-  linkType: hard
-
-"aria-hidden@npm:^1.1.3":
-  version: 1.2.4
-  resolution: "aria-hidden@npm:1.2.4"
-  dependencies:
-    tslib: "npm:^2.0.0"
-  checksum: 10/df4bc15423aaaba3729a7d40abcbf6d3fffa5b8fd5eb33d3ac8b7da0110c47552fca60d97f2e1edfbb68a27cae1da499f1c3896966efb3e26aac4e3b57e3cc8b
   languageName: node
   linkType: hard
 
@@ -27498,7 +27474,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.0":
+"tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7

@@ -18,6 +18,8 @@ import { animations } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 
 export function SandboxSandbox() {
+  return <DialogDemo />
+
   return (
     <>
       <Configuration animationDriver={animationsMotion}>

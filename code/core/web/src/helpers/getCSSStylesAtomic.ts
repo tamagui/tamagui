@@ -94,14 +94,21 @@ const getStyleObject = (
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor, shadowOpacity } = style
-  if (shadowRadius || shadowColor) {
+  if (
+    shadowRadius != null ||
+    shadowColor ||
+    shadowOffset != null ||
+    shadowOpacity != null
+  ) {
     const offset = shadowOffset || defaultOffset
     const width = normalizeValueWithProperty(offset.width)
     const height = normalizeValueWithProperty(offset.height)
     const radius = normalizeValueWithProperty(shadowRadius)
     const color = normalizeColor(shadowColor, shadowOpacity)
-    const shadow = `${width} ${height} ${radius} ${color}`
-    style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
+    if (color) {
+      const shadow = `${width} ${height} ${radius} ${color}`
+      style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
+    }
     delete style.shadowOffset
     delete style.shadowRadius
     delete style.shadowColor
