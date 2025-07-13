@@ -312,14 +312,18 @@ export function Popper(props: PopperProps) {
     }, [passThrough, dimensions, keyboardOpen])
   }
 
-  const popperContext = {
-    size,
-    arrowRef: setArrow,
-    arrowStyle: middlewareData.arrow,
-    onArrowSize: setArrowSize,
-    hasFloating: middlewareData.checkFloating?.hasFloating,
-    ...floating,
-  } satisfies PopperContextValue
+  // memoize since we round x/y, floating-ui doesn't by default which can cause tons of updates
+  // if the floating element is inside something animating with a spring
+  const popperContext = React.useMemo(() => {
+    return {
+      size,
+      arrowRef: setArrow,
+      arrowStyle: middlewareData.arrow,
+      onArrowSize: setArrowSize,
+      hasFloating: middlewareData.checkFloating?.hasFloating,
+      ...floating,
+    } satisfies PopperContextValue
+  }, [size, floating.x, floating.y, floating.isPositioned])
 
   return (
     <PopperProvider scope={scope} {...popperContext}>
