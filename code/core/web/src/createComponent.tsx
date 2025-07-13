@@ -421,7 +421,12 @@ export function createComponent<
 
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if (!groupName || props.passThrough) {
+      if (
+        !groupName ||
+        props.passThrough ||
+        // avoids onLayout
+        props.containerType === 'normal'
+      ) {
         return groupContextParent
       }
 
