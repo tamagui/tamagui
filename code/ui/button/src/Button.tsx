@@ -2,11 +2,12 @@ import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { ButtonNestingContext, themeableVariants } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { GetProps, RNExtraProps, SizeTokens, Token } from '@tamagui/web'
+import type { ColorTokens, GetProps, RNExtraProps, SizeTokens, Token } from '@tamagui/web'
 import {
   createStyledContext,
   getTokenValue,
   styled,
+  useProps,
   View,
   withStaticProperties,
 } from '@tamagui/web'
@@ -20,9 +21,11 @@ export type ButtonProps = GetProps<typeof Frame>
 const context = createStyledContext<{
   size?: SizeTokens
   variant?: ButtonVariant
+  color?: ColorTokens | string
 }>({
   size: undefined,
   variant: undefined,
+  color: undefined,
 })
 
 const Frame = styled(View, {
@@ -165,6 +168,7 @@ const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
 
   return getIcon(children, {
     size: iconSize,
+    color: styledContext.color,
     marginLeft,
     marginRight,
   })
@@ -173,9 +177,11 @@ const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
 export const ButtonContext = createStyledContext<{
   size?: SizeTokens
   variant?: ButtonVariant
+  color?: ColorTokens | string
 }>({
   size: undefined,
   variant: undefined,
+  color: undefined,
 })
 
 const ButtonComponent = Frame.styleable<{
@@ -190,7 +196,22 @@ const ButtonComponent = Frame.styleable<{
   onLayout?: RNExtraProps['onLayout']
 }>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext)
-  const { children, iconSize, icon, iconAfter, scaleIcon = 1, ...props } = propsIn
+
+  // Process props through useProps to expand shorthands (like br -> borderRadius)
+  const processedProps = useProps(propsIn, {
+    noNormalize: true,
+    noExpand: true,
+  })
+
+  const {
+    children,
+    iconSize,
+    icon,
+    iconAfter,
+    scaleIcon = 1,
+    noTextWrap,
+    ...props
+  } = processedProps
 
   const size = propsIn.size || (propsIn.unstyled ? undefined : '$true')
 
@@ -206,13 +227,14 @@ const ButtonComponent = Frame.styleable<{
     if (!icon) return null
     return getIcon(icon, {
       size: iconSizeNumber,
+      color: styledContext?.color,
       // No marginLeft or marginRight needed - spacing is handled by the gap property in Frame's size variants
     })
   })
 
   const wrappedChildren = wrapChildrenInText(
     Text,
-    { children },
+    { children, noTextWrap },
     {
       unstyled: process.env.TAMAGUI_HEADLESS === '1',
       size: finalSize ?? styledContext?.size,
@@ -225,6 +247,8 @@ const ButtonComponent = Frame.styleable<{
         ref={ref}
         {...props}
         {...(isNested && { tag: 'span' })}
+        // Pass resolved size to circular variant when no explicit size provided
+        {...(props.circular && !propsIn.size && { size })}
         tabIndex={0}
         focusable={true}
       >

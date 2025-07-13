@@ -1,4 +1,4 @@
-import type { GetProps, RNExtraProps, SizeTokens } from '@tamagui/web';
+import type { ColorTokens, GetProps, RNExtraProps, SizeTokens } from '@tamagui/web';
 type ButtonVariant = 'outlined';
 export type ButtonProps = GetProps<typeof Frame>;
 declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
@@ -12,6 +12,7 @@ declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/we
 export declare const ButtonContext: import("@tamagui/web").StyledContext<{
     size?: SizeTokens;
     variant?: ButtonVariant;
+    color?: ColorTokens | string;
 }>;
 export declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
@@ -104,9 +105,11 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     Apply: import("react").Provider<{
         size?: SizeTokens;
         variant?: ButtonVariant;
+        color?: ColorTokens | string;
     }> & import("react").ProviderExoticComponent<Partial<{
         size?: SizeTokens;
         variant?: ButtonVariant;
+        color?: ColorTokens | string;
     }> & {
         children?: import("react").ReactNode;
         scope?: string;
