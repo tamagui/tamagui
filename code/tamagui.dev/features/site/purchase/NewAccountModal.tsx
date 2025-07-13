@@ -281,9 +281,6 @@ export const AccountView = () => {
       case 'faq':
         return <FaqTabContent />
 
-      case 'faq':
-        return <FaqTabContent />
-
       default:
         return null
     }
@@ -1177,14 +1174,13 @@ const UpgradeTab = () => {
       />
 
       <Button
-        fontFamily="$mono"
         theme="accent"
         br="$10"
         als="flex-end"
         onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
-        {getActionLabel()}
+        <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
       </Button>
 
       <Separator />
