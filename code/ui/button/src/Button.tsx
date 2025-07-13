@@ -71,6 +71,8 @@ const Frame = styled(View, {
 
     chromeless: themeableVariants.chromeless,
 
+    bordered: themeableVariants.bordered,
+
     variant: {
       outlined:
         process.env.TAMAGUI_HEADLESS === '1'
@@ -193,6 +195,7 @@ const ButtonComponent = Frame.styleable<{
   iconSize?: SizeTokens
   chromeless?: boolean
   circular?: boolean
+  bordered?: boolean | number
   onLayout?: RNExtraProps['onLayout']
 }>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext)

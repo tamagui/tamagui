@@ -6,6 +6,7 @@ declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/we
     variant?: "outlined" | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    bordered?: number | boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
@@ -19,9 +20,10 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     variant?: "outlined" | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    bordered?: number | boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "size" | "variant" | "circular" | "chromeless" | "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
+}>, "size" | "variant" | "circular" | "chromeless" | "bordered" | "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
     variant?: "outlined";
     size?: SizeTokens;
     icon?: any;
@@ -30,15 +32,17 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     iconSize?: SizeTokens;
     chromeless?: boolean;
     circular?: boolean;
+    bordered?: boolean | number;
     onLayout?: RNExtraProps["onLayout"];
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    bordered?: number | boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "size" | "variant" | "circular" | "chromeless" | "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
+}>, "size" | "variant" | "circular" | "chromeless" | "bordered" | "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
     variant?: "outlined";
     size?: SizeTokens;
     icon?: any;
@@ -47,6 +51,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     iconSize?: SizeTokens;
     chromeless?: boolean;
     circular?: boolean;
+    bordered?: boolean | number;
     onLayout?: RNExtraProps["onLayout"];
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & {
     variant?: "outlined";
@@ -57,12 +62,14 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     iconSize?: SizeTokens;
     chromeless?: boolean;
     circular?: boolean;
+    bordered?: boolean | number;
     onLayout?: RNExtraProps["onLayout"];
 }, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    bordered?: number | boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
@@ -71,9 +78,10 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         variant?: "outlined" | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        bordered?: number | boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }>, "size" | "variant" | "circular" | "chromeless" | "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
+    }>, "size" | "variant" | "circular" | "chromeless" | "bordered" | "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
         variant?: "outlined";
         size?: SizeTokens;
         icon?: any;
@@ -82,6 +90,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         iconSize?: SizeTokens;
         chromeless?: boolean;
         circular?: boolean;
+        bordered?: boolean | number;
         onLayout?: RNExtraProps["onLayout"];
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & {
         variant?: "outlined";
@@ -92,12 +101,14 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         iconSize?: SizeTokens;
         chromeless?: boolean;
         circular?: boolean;
+        bordered?: boolean | number;
         onLayout?: RNExtraProps["onLayout"];
     }, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        bordered?: number | boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
@@ -119,6 +130,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         variant?: "outlined" | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        bordered?: number | boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
