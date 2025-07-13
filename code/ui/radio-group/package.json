@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-group",
-  "version": "1.132.1-1752373919725",
+  "version": "1.132.2",
   "removeSideEffects": true,
   "sideEffects": [
     "*.css"
