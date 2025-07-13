@@ -323,7 +323,14 @@ export function Popper(props: PopperProps) {
       hasFloating: middlewareData.checkFloating?.hasFloating,
       ...floating,
     } satisfies PopperContextValue
-  }, [size, floating.x, floating.y, floating.isPositioned])
+  }, [
+    size,
+    floating.x,
+    floating.y,
+    floating.placement,
+    JSON.stringify(middlewareData.arrow || null),
+    floating.isPositioned,
+  ])
 
   return (
     <PopperProvider scope={scope} {...popperContext}>
