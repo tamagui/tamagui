@@ -229,7 +229,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
         if (shouldDebug) {
           console.groupCollapsed(`[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`)
-          console.info({ next, animationOptions, animationProps, lastAnimationStyle })
+          console.info({
+            next,
+            animationOptions,
+            animationProps,
+            diff,
+            lastAnimationStyle: { ...lastAnimationStyle.current },
+          })
           console.groupEnd()
         }
 
@@ -301,10 +307,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       return {
         // avoid first render returning wrong styles - always render all, after that we can just mutate
-        style: {
-          ...initialStyle,
-          ...dontAnimate,
-        },
+        style: dontAnimate,
         ref: scope,
         tag: 'div',
       }
