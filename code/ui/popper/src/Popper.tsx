@@ -479,6 +479,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       <TamaguiView
         passThrough={passThrough}
         ref={contentRefs}
+        contain="layout style"
         {...(passThrough ? null : floatingProps)}
       >
         <PopperContentFrame
@@ -487,7 +488,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
           {...(!passThrough && {
             'data-placement': placement,
             'data-strategy': strategy,
-            contain: 'layout',
             size,
             ...style,
             ...rest,
