@@ -111,6 +111,7 @@ export type TamaguiComponentStateRef = {
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener
+  updateStyleListener?: () => void
 
   // this is only used by group="" components
   // sets up a context object to track current state + emit

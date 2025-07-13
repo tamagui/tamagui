@@ -1,5 +1,5 @@
 import type { Context, ProviderExoticComponent, ReactNode } from 'react'
-import React, { useContext, useId } from 'react'
+import React, { useContext } from 'react'
 
 import { objectIdentityKey } from './objectIdentityKey'
 
@@ -56,6 +56,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     ...values
   }: VariantProps & { children?: ReactNode; scope: string }) => {
     const scope = getNamespacedScope(scopeIn)
+
     const next = React.useMemo(() => {
       return {
         // this ! is a workaround for ts error
@@ -63,6 +64,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
         ...values,
       }
     }, [objectIdentityKey(values)])
+
     let Provider = OGProvider
     if (scope) {
       Provider = getOrCreateScopedContext(scope).Provider

@@ -411,16 +411,6 @@ export function createComponent<
       startedUnhydrated,
     } = componentState
 
-    if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      useIsomorphicLayoutEffect(() => {
-        const pendingState = NextState.get(stateRef)
-        if (pendingState) {
-          setStateShallow(pendingState)
-          NextState.set(stateRef, undefined)
-        }
-      })
-    }
-
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
       if (!groupName || props.passThrough) {
@@ -469,6 +459,14 @@ export function createComponent<
     // a version that essentially uses an internall emitter rather than setting state
     // but still stores the current state and applies if it it needs to during render
     let setStateShallow = componentState.setStateShallow
+
+    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+      const pendingState = NextState.get(stateRef)
+      if (pendingState) {
+        setStateShallow(pendingState)
+        NextState.set(stateRef, undefined)
+      }
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -665,12 +663,7 @@ export function createComponent<
       const useStyleListener = stateRef.current.useStyleListener
       const ogSetStateShallow = setStateShallow
 
-      componentContext.mediaEmit = (next) => {
-        NextMedia.set(stateRef, next)
-        updateStyleListener()
-      }
-
-      const updateStyleListener = () => {
+      stateRef.current.updateStyleListener = () => {
         const updatedState = NextState.get(stateRef) || state
         const mediaState = NextMedia.get(stateRef)
         const {
@@ -708,6 +701,12 @@ export function createComponent<
         useStyleListener?.((nextStyles?.style || {}) as any)
       }
 
+      // don't change this ever or else you break ComponentContext and cause re-rendering
+      componentContext.mediaEmit ||= (next) => {
+        NextMedia.set(stateRef, next)
+        stateRef.current.updateStyleListener?.()
+      }
+
       stateRef.current.setStateShallow = (nextOrGetNext) => {
         const prev = NextState.get(stateRef) || state
         const next =
@@ -739,7 +738,7 @@ export function createComponent<
             console.groupEnd()
           }
 
-          updateStyleListener()
+          stateRef.current.updateStyleListener?.()
         } else {
           if (
             process.env.NODE_ENV === 'development' &&
