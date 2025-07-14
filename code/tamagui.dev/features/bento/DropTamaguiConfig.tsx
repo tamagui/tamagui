@@ -31,7 +31,18 @@ export const DropTamaguiConfig = () => {
             if (file) {
               const reader = new FileReader()
               reader.onload = () => {
-                config.setItem(JSON.stringify(JSON.parse(`${reader.result}`)))
+                try {
+                  // Parse the JSON to validate it, but store the original string
+                  const parsed = JSON.parse(`${reader.result}`)
+                  // Only store if it's valid JSON and has the expected structure
+                  if (parsed && typeof parsed === 'object') {
+                    config.setItem(`${reader.result}`)
+                  } else {
+                    console.error('Invalid tamagui config structure')
+                  }
+                } catch (error) {
+                  console.error('Failed to parse tamagui config:', error)
+                }
               }
               reader.readAsText(file)
             }
