@@ -98,7 +98,7 @@ export function getThemedChildren(
   )
 
   const { name } = themeState
-  const requiresExtraWrapper = forceClassName
+  const requiresExtraWrapper = themeState.isInverse || forceClassName
 
   // it only ever progresses from false => true => 'wrapped'
   if (!state.hasEverThemed) {
@@ -173,11 +173,7 @@ export function getThemedChildren(
       // but still calculate if we need the classnames
       const className = requiresExtraWrapper
         ? `${
-            name.startsWith('light')
-              ? 't_light'
-              : name.startsWith('dark')
-                ? 't_dark'
-                : ''
+            name.startsWith('light') ? 't_light' : name.startsWith('dark') ? 't_dark' : ''
           } _dsp_contents`
         : `_dsp_contents`
       children = <span className={className}>{children}</span>
