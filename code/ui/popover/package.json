@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.131.2",
+  "version": "1.132.6",
   "sideEffects": [
     "*.css"
   ],
@@ -40,7 +40,6 @@
     "@tamagui/adapt": "workspace:*",
     "@tamagui/animate": "workspace:*",
     "@tamagui/animate-presence": "workspace:*",
-    "@tamagui/aria-hidden": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",

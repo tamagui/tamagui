@@ -22,5 +22,20 @@ export const FloatingOverrideContext = React.createContext<UseFloatingFn | null>
 
 export const useFloating = (props: UseFloatingProps): UseFloatingReturn => {
   const context = React.useContext(FloatingOverrideContext)
-  return (context || Floating.useFloating)?.(props)
+  return (context || Floating.useFloating)?.({
+    ...props,
+    middleware: [
+      // @ts-ignore
+      ...props.middleware,
+      {
+        name: `rounded`,
+        fn({ x, y }) {
+          return {
+            x: Math.round(x),
+            y: Math.round(y),
+          }
+        },
+      },
+    ],
+  })
 }

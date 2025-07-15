@@ -1057,7 +1057,7 @@ export const getSplitStyles: StyleSplitter = (
 
       if (!styleProps.noExpand && !styleProps.noMergeStyle) {
         // shouldn't this be better? but breaks some tests weirdly, need to check
-        if (isWeb && !isReactNative) {
+        if (isWeb && (isReactNative ? !animationDriver.supportsCSS : true)) {
           styleToCSS(styleState.style)
         }
       }

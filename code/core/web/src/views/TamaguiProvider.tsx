@@ -5,14 +5,13 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import { ClientOnly } from '@tamagui/use-did-finish-ssr'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
+import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { stopAccumulatingRules } from '../helpers/insertStyleRule'
-import { Configuration } from './Configuration'
 
 export function TamaguiProvider({
   children,
@@ -55,6 +54,7 @@ export function TamaguiProvider({
   )
 
   if (getSetting('disableSSR')) {
+    // never changes so conditional render fine, no re-parenting risk
     contents = <ClientOnly>{contents}</ClientOnly>
   }
 

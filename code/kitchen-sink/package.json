@@ -1,9 +1,8 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "1.131.2",
+  "version": "1.132.6",
   "private": true,
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start:one": "one dev",
     "start:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
@@ -28,7 +27,7 @@
     "test:web:driver-rn": "echo 'testing rn\\n' && NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=native node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver-moti": "echo 'testing moti\\n' && NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=moti node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:debug": "yarn test:web --debug",
-    "test-ios": "vitest --config ./vitest.config.ios.ts --run",
+    "test-ios": "vitest --config ./vitest.config.ios.mts --run",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test": "yarn test:web"
   },
@@ -91,7 +90,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.1.504",
+    "one": "1.1.505",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
     "webpack": "^5.88.2",

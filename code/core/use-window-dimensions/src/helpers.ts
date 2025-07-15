@@ -1,38 +1,61 @@
 import { isClient } from '@tamagui/constants'
+import { initialValue } from './initialValue'
 import type { WindowSize, WindowSizeListener } from './types'
+
+let lastSize: WindowSize = initialValue
+let docEl: HTMLElement | null = null
 
 export function getWindowSize(): WindowSize {
   if (!isClient) {
-    return {
-      width: 800,
-      height: 600,
-      scale: 1,
-      fontScale: 1,
-    }
+    return initialValue
   }
-  const win = window
-  const docEl = win.document.documentElement
-  return {
+
+  docEl ||= window.document.documentElement
+
+  const nextSize: WindowSize = {
     fontScale: 1,
     height: docEl.clientHeight,
-    scale: win.devicePixelRatio || 1,
+    scale: window.devicePixelRatio || 1,
     width: docEl.clientWidth,
   }
+
+  if (
+    nextSize.height !== lastSize.height ||
+    nextSize.width !== lastSize.width ||
+    nextSize.scale !== lastSize.scale
+  ) {
+    lastSize = nextSize
+    return nextSize
+  }
+
+  return lastSize
 }
 
 const cbs = new Set<WindowSizeListener>()
-let _raf = 0
 
 if (isClient) {
-  let frame = 0
+  let lastUpdate = Date.now()
+  let tm
+  const USER_MAX_MS = process.env.TAMAGUI_USE_WINDOW_DIMENSIONS_MAX_UPDATE_MS
+  const updateMaxMs = USER_MAX_MS ? +USER_MAX_MS : 100
+
+  function flushUpdate() {
+    lastUpdate = Date.now()
+    cbs.forEach((cb) => cb(getWindowSize()))
+  }
+
   const onResize = () => {
-    cancelAnimationFrame(_raf)
-    _raf = requestAnimationFrame(() => {
-      // throttle to every 4 frames
-      if (++frame % 4 === 0) {
-        cbs.forEach((cb) => cb(getWindowSize()))
-      }
-    })
+    clearTimeout(tm)
+
+    // only update every few frames
+    const timeSinceLast = Date.now() - lastUpdate
+    if (timeSinceLast < updateMaxMs) {
+      setTimeout(() => {
+        flushUpdate()
+      }, updateMaxMs - timeSinceLast)
+    } else {
+      flushUpdate()
+    }
   }
 
   window.addEventListener('resize', onResize)

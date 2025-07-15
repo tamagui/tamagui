@@ -405,13 +405,11 @@ export function createComponent<
     } = componentState
 
     if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      useIsomorphicLayoutEffect(() => {
-        const pendingState = NextState.get(stateRef)
-        if (pendingState) {
-          setStateShallow(pendingState)
-          NextState.set(stateRef, undefined)
-        }
-      })
+      const pendingState = NextState.get(stateRef)
+      if (pendingState) {
+        NextState.set(stateRef, undefined)
+        componentState.setStateShallow(pendingState)
+      }
     }
 
     // create new context with groups, or else sublings will grab the same one
@@ -636,7 +634,12 @@ export function createComponent<
 
     // one tiny mutation 🙏 get width/height optimistically from raw values if possible
     // if set hardcoded it avoids extra renders
-    if (splitStyles && groupContext) {
+    if (
+      splitStyles &&
+      groupContext &&
+      // avoids onLayout if we don't need it
+      props.containerType !== 'normal'
+    ) {
       const groupState = groupContext?.state
       if (groupState && groupState.layout === undefined) {
         if (splitStyles.style?.width || splitStyles.style?.height) {
@@ -655,15 +658,9 @@ export function createComponent<
       (hasAnimationProp || groupName) &&
       animationDriver?.avoidReRenders
     ) {
-      const useStyleListener = stateRef.current.useStyleListener
       const ogSetStateShallow = setStateShallow
 
-      componentContext.mediaEmit = (next) => {
-        NextMedia.set(stateRef, next)
-        updateStyleListener()
-      }
-
-      const updateStyleListener = () => {
+      stateRef.current.updateStyleListener = () => {
         const updatedState = NextState.get(stateRef) || state
         const mediaState = NextMedia.get(stateRef)
         const {
@@ -698,7 +695,15 @@ export function createComponent<
           debugProp
         )
 
+        const useStyleListener = stateRef.current.useStyleListener
+
         useStyleListener?.((nextStyles?.style || {}) as any)
+      }
+
+      // don't change this ever or else you break ComponentContext and cause re-rendering
+      componentContext.mediaEmit ||= (next) => {
+        NextMedia.set(stateRef, next)
+        stateRef.current.updateStyleListener?.()
       }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
@@ -732,7 +737,7 @@ export function createComponent<
             console.groupEnd()
           }
 
-          updateStyleListener()
+          stateRef.current.updateStyleListener?.()
         } else {
           if (
             process.env.NODE_ENV === 'development' &&
@@ -904,7 +909,11 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    if (splitStyles && groupContext) {
+    if (
+      splitStyles &&
+      groupContext && // avoids onLayout if we don't need it
+      props.containerType !== 'normal'
+    ) {
       nonTamaguiProps.onLayout = composeEventHandlers(
         nonTamaguiProps.onLayout,
         (e: LayoutEvent) => {

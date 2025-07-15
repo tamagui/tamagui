@@ -233,6 +233,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       const designSystem = `._ovs-contain {overscroll-behavior:contain;}
   .is_Text .is_Text {display:inline-flex;}
   ._dsp_contents {display:contents;}
+  ._no_backdrop::backdrop {display: none;}
   ${themeConfig.cssRuleSets.join(separator)}`
 
       return `${designSystem}

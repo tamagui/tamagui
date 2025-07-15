@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/input",
-  "version": "1.131.2",
+  "version": "1.132.6",
   "sideEffects": [
     "*.css"
   ],

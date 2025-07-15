@@ -64,6 +64,7 @@ export type TamaguiComponentStateRef = {
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
     useStyleListener?: UseStyleListener;
+    updateStyleListener?: () => void;
     group?: ComponentGroupEmitter;
 };
 export type ComponentGroupEmitter = {

@@ -3,21 +3,9 @@ import { isWeb } from '@tamagui/constants'
 
 import { getWindowSize, subscribe } from './helpers'
 import type { WindowSize } from './types'
+import { initialValue } from './initialValue'
 
-/**
- * SSR safe useWindowDimensions
- */
-
-const initialValue: WindowSize = {
-  width: 800,
-  height: 600,
-  scale: 1,
-  fontScale: 1,
-}
-
-export function configureInitialWindowDimensions(next: WindowSize): void {
-  Object.assign(initialValue, next)
-}
+export { configureInitialWindowDimensions } from './initialValue'
 
 export function useWindowDimensions({
   serverValue = initialValue,

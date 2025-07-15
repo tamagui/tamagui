@@ -312,14 +312,25 @@ export function Popper(props: PopperProps) {
     }, [passThrough, dimensions, keyboardOpen])
   }
 
-  const popperContext = {
+  // memoize since we round x/y, floating-ui doesn't by default which can cause tons of updates
+  // if the floating element is inside something animating with a spring
+  const popperContext = React.useMemo(() => {
+    return {
+      size,
+      arrowRef: setArrow,
+      arrowStyle: middlewareData.arrow,
+      onArrowSize: setArrowSize,
+      hasFloating: middlewareData.checkFloating?.hasFloating,
+      ...floating,
+    } satisfies PopperContextValue
+  }, [
     size,
-    arrowRef: setArrow,
-    arrowStyle: middlewareData.arrow,
-    onArrowSize: setArrowSize,
-    hasFloating: middlewareData.checkFloating?.hasFloating,
-    ...floating,
-  } satisfies PopperContextValue
+    floating.x,
+    floating.y,
+    floating.placement,
+    JSON.stringify(middlewareData.arrow || null),
+    floating.isPositioned,
+  ])
 
   return (
     <PopperProvider scope={scope} {...popperContext}>
@@ -477,6 +488,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       <TamaguiView
         passThrough={passThrough}
         ref={contentRefs}
+        contain="layout style"
         {...(passThrough ? null : floatingProps)}
       >
         <PopperContentFrame
@@ -485,7 +497,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
           {...(!passThrough && {
             'data-placement': placement,
             'data-strategy': strategy,
-            contain: 'layout',
             size,
             ...style,
             ...rest,

@@ -1,4 +1,4 @@
-import { describe, it, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
 import { remote } from 'webdriverio'
 import { getWebDriverConfig } from '../testing-utils/getWebDriverConfig'
 const sharedTestOptions = { timeout: 10 * 60 * 1000, retry: 3 }

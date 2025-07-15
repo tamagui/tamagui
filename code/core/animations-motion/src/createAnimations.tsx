@@ -214,7 +214,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             const diff = getDiff(lastDontAnimate.current, dontAnimate)
             if (diff) {
               lastDontAnimate.current = dontAnimate
-              Object.assign(node.style, dontAnimate)
+              Object.assign(node.style, dontAnimate as any)
+            }
+            for (const key in lastDontAnimate.current) {
+              if (!(key in dontAnimate)) {
+                console.warn('delting', key, { dontAnimate, doAnimate })
+                delete node.style[key]
+              }
             }
           }
         }
@@ -223,7 +229,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
         if (shouldDebug) {
           console.groupCollapsed(`[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`)
-          console.info({ next, animationOptions, animationProps, lastAnimationStyle })
+          console.info({
+            next,
+            animationOptions,
+            animationProps,
+            diff,
+            lastAnimationStyle: { ...lastAnimationStyle.current },
+          })
           console.groupEnd()
         }
 
@@ -295,10 +307,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       return {
         // avoid first render returning wrong styles - always render all, after that we can just mutate
-        style: {
-          ...initialStyle,
-          ...dontAnimate,
-        },
+        style: dontAnimate,
         ref: scope,
         tag: 'div',
       }
@@ -397,16 +406,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         doAnimate ||= {}
         doAnimate[key] = value
       }
-    }
-
-    // ideally this would just come from tamagui
-    if (doAnimate) {
-      fixStyles(doAnimate)
-      styleToCSS(doAnimate)
-    }
-    if (dontAnimate) {
-      fixStyles(dontAnimate)
-      styleToCSS(dontAnimate)
     }
 
     // half works in chrome but janky and stops working after first animation

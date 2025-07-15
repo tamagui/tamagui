@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.131.2",
+  "version": "1.132.6",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -38,7 +38,6 @@
   "dependencies": {
     "@tamagui/adapt": "workspace:*",
     "@tamagui/animate-presence": "workspace:*",
-    "@tamagui/aria-hidden": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
