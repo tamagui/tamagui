@@ -323,6 +323,7 @@ async function run() {
 
         if (!shouldFinish) {
           const starterFreeDir = join(process.cwd(), '../starter-free')
+          await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
           // Run yarn test in starter-free directory
           await spawnify(`yarn test`, { cwd: starterFreeDir })
           await finishAndCommit(starterFreeDir)
