@@ -367,11 +367,12 @@ export const PopperAnchor = YStack.extractable(
       const stackProps = anchorProps
 
       const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
+      const shouldHandleInHover = isWeb && scope
       const composedRefs = useComposedRefs(
         forwardedRef,
         ref,
         // web handles this onMouseEnter below so it can support multiple targets + hovering
-        isWeb ? undefined : (refs.setReference as any)
+        shouldHandleInHover ? undefined : (refs.setReference as any)
       )
 
       return (
@@ -379,22 +380,21 @@ export const PopperAnchor = YStack.extractable(
           {...stackProps}
           {...refProps}
           ref={composedRefs}
-          // this helps us with handling scoped poppers with many different targets
-          // basically we wait for mouseEnter to ever set a reference and remove it on leave
-          // otherwise floating ui gets confused by having >1 reference
-          onMouseEnter={(e) => {
-            if (ref.current instanceof HTMLElement) {
-              refs.setReference(ref.current)
-              refProps.onPointerEnter?.(e)
-              update()
-            }
-          }}
-          onMouseLeave={(e) => {
-            refProps?.onMouseLeave?.(e)
-            // setTimeout(() => {
-            //   refs.setReference(null)
-            // })
-          }}
+          {...(shouldHandleInHover && {
+            // this helps us with handling scoped poppers with many different targets
+            // basically we wait for mouseEnter to ever set a reference and remove it on leave
+            // otherwise floating ui gets confused by having >1 reference
+            onMouseEnter: (e) => {
+              if (ref.current instanceof HTMLElement) {
+                refs.setReference(ref.current)
+                refProps.onPointerEnter?.(e)
+                update()
+              }
+            },
+            onMouseLeave: (e) => {
+              refProps?.onMouseLeave?.(e)
+            },
+          })}
         />
       )
     }
