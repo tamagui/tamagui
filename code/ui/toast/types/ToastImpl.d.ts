@@ -88,8 +88,8 @@ export type ToastExtraProps = {
      */
     id?: string;
 };
-type ToastImplProps = ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps;
-declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+type ToastImplProps = ScopedProps<ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps>;
+declare const ToastImpl: React.ForwardRefExoticComponent<Omit<ToastImplPrivateProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
@@ -101,7 +101,9 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>> & ToastExtraProps & React.RefAttributes<TamaguiElement>>;
+}>> & ToastExtraProps, "scope"> & {
+    scope?: import("./ToastProvider").ToastScopes;
+} & React.RefAttributes<TamaguiElement>>;
 export { ToastImpl, ToastImplFrame, useToastInteractiveContext, type ToastImplProps };
 export type { ToastProps };
 //# sourceMappingURL=ToastImpl.d.ts.map
