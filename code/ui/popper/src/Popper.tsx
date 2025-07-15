@@ -385,10 +385,8 @@ export const PopperAnchor = YStack.extractable(
           onMouseEnter={(e) => {
             if (ref.current instanceof HTMLElement) {
               refs.setReference(ref.current)
-              setTimeout(() => {
-                refProps.onPointerEnter?.(e)
-                update()
-              })
+              refProps.onPointerEnter?.(e)
+              update()
             }
           }}
           onMouseLeave={(e) => {
