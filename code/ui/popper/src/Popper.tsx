@@ -1,6 +1,6 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   View as TamaguiView,
@@ -367,7 +367,12 @@ export const PopperAnchor = YStack.extractable(
       const stackProps = anchorProps
 
       const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-      const composedRefs = useComposedRefs(forwardedRef, ref, refs.setReference as any)
+      const composedRefs = useComposedRefs(
+        forwardedRef,
+        ref,
+        // web handles this onMouseEnter below so it can support multiple targets + hovering
+        isWeb ? undefined : (refs.setReference as any)
+      )
 
       return (
         <TamaguiView
