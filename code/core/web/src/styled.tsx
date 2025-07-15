@@ -270,6 +270,11 @@ export function styled<
 //     },
 //   } as const
 // })
+
+// const TestStyleable = X.styleable<{ abc: 123 }>((props) => {
+//   return null
+// })
+
 // // type variants = GetStyledVariants<typeof X>
 // const y = <X disabled size="$10" />
 
