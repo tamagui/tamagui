@@ -29,7 +29,7 @@ export const Portal = React.memo((propsIn: PortalProps) => {
     <span
       style={{
         zIndex,
-        position: 'absolute',
+        position: 'fixed',
         inset: 0,
         contain: 'strict',
         pointerEvents: 'none',
