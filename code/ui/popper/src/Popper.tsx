@@ -367,7 +367,7 @@ export const PopperAnchor = YStack.extractable(
       const stackProps = anchorProps
 
       const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-      const composedRefs = useComposedRefs(forwardedRef, ref)
+      const composedRefs = useComposedRefs(forwardedRef, ref, refs.setReference as any)
 
       return (
         <TamaguiView
