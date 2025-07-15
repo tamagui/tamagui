@@ -1939,10 +1939,6 @@ export type StyleableOptions = {
   staticConfig?: Partial<StaticConfig>
 }
 
-type React18And19CompatComponent<Props, Ref> =
-  | ((props: Props, ref: RefObject<Ref>) => React.ReactNode)
-  | ((props: Props & { ref?: RefObject<Ref> }) => React.ReactNode)
-
 export type Styleable<
   Props,
   Ref,
@@ -1955,10 +1951,7 @@ export type Styleable<
   MergedProps = CustomProps extends void
     ? Props
     : Omit<Props, keyof CustomProps> & CustomProps,
-  FunctionDef extends React18And19CompatComponent<
-    MergedProps,
-    Ref
-  > = React18And19CompatComponent<MergedProps, Ref>,
+  FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>,
 >(
   a: FunctionDef,
   options?: StyleableOptions
