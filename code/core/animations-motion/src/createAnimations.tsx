@@ -257,7 +257,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           lastAnimationStyle.current = next
         } finally {
           if (isExiting) {
-            console.warn('exiting')
             if (controls.current) {
               controls.current.finished.then(() => {
                 sendExitComplete?.()
