@@ -1,6 +1,6 @@
-import type { Heading, TextProps } from 'tamagui'
+import type { Heading, TextProps } from '@tamagui/ui'
 import { memo, useState, useEffect } from 'react'
-import { Circle, H1, useDidFinishSSR, AnimatePresence } from 'tamagui'
+import { Circle, H1, useDidFinishSSR, AnimatePresence } from '@tamagui/ui'
 
 export default () => {
   return (
@@ -70,7 +70,7 @@ const AnimatedHeading = memo(
           textShadowColor="$shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
-          ellipse
+          ellipsis
           {...rest}
         >
           {children}

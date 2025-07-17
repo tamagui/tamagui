@@ -1,3 +1,4 @@
+import { getSetting } from '../config'
 import { getVariableValue } from '../createVariable'
 import type { GenericFonts, GetStyleState } from '../types'
 import type { LanguageContextType } from '../views/FontLanguage.types'
@@ -23,14 +24,14 @@ export const getVariantExtras = (styleState: GetStyleState) => {
       return (
         getVariableValue(styleState.fontFamily || styleState.props.fontFamily) ||
         props.fontFamily ||
-        getVariableValue(styleState.conf.defaultFont)
+        getVariableValue(getSetting('defaultFont'))
       )
     },
     get font() {
       return (
         fonts[this.fontFamily] ||
         (!props.fontFamily || props.fontFamily[0] === '$'
-          ? fonts[styleState.conf.defaultFont!]
+          ? fonts[getSetting('defaultFont') || '']
           : undefined)
       )
     },

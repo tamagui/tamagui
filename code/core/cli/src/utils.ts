@@ -1,8 +1,8 @@
-import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
+import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/compiler'
 import {
   loadTamaguiBuildConfigSync,
   loadTamagui as loadTamaguiStatic,
-} from '@tamagui/static'
+} from '@tamagui/compiler'
 import type { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'
@@ -28,7 +28,7 @@ export async function getOptions({
 
   const filledOptions = {
     platform: 'native',
-    components: ['tamagui'],
+    components: ['@tamagui/ui'],
     config,
     ...tamaguiOptions,
   } satisfies TamaguiOptions
@@ -80,7 +80,7 @@ export const loadTamagui = async (
   opts: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> => {
   const loaded = await loadTamaguiStatic({
-    components: ['tamagui'],
+    components: ['@tamagui/ui'],
     ...opts,
     config: opts.config ?? (await getDefaultTamaguiConfigPath()),
   })

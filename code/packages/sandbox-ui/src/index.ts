@@ -1,8 +1,8 @@
-import { Stack, ThemeableStack, YStack, styled } from 'tamagui'
+import { Stack, ThemeableStack, YStack, styled } from '@tamagui/ui'
 
 export * as lucideIcons from '@tamagui/lucide-icons'
 
-export * from 'tamagui'
+export * from '@tamagui/ui'
 export * from '@tamagui/toast'
 export * from './SandboxHeading'
 export * from './views'

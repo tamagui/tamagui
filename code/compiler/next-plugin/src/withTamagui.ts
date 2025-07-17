@@ -1,4 +1,4 @@
-import Static from '@tamagui/static'
+import Static from '@tamagui/compiler'
 import browserslist from 'browserslist'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css/index.js'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders/index.js'
@@ -174,7 +174,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           }
           if (webpackConfig.resolve.plugins[0]) {
             delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
-            delete webpackConfig.resolve.plugins[0].paths['tamagui']
+            // delete webpackConfig.resolve.plugins[0].paths['tamagui']
           }
         }
 
@@ -223,7 +223,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             if (
               fullPath.startsWith('moti') ||
               fullPath.startsWith('solito') ||
-              fullPath === 'tamagui' ||
+              // fullPath === 'tamagui' ||
               fullPath.startsWith('@tamagui') ||
               fullPath === 'react-native-safe-area-context' ||
               fullPath === 'expo-linear-gradient' ||

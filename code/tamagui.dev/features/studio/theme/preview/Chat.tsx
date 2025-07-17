@@ -10,7 +10,7 @@ import {
   ScrollView,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 

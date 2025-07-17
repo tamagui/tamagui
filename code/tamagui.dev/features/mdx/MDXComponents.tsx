@@ -9,9 +9,10 @@ import {
   File,
   Link as LinkIcon,
 } from '@tamagui/lucide-icons'
+import type { Href } from 'one'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
-import type { ImageProps, XStackProps } from 'tamagui'
+import type { ImageProps, XStackProps } from '@tamagui/ui'
 import {
   Adapt,
   Button,
@@ -28,16 +29,14 @@ import {
   Spacer,
   Text,
   Theme,
-  ThemeableStack,
   TooltipSimple,
   View,
   XGroup,
   XStack,
   YStack,
   styled,
-} from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
-import type { Href } from 'one'
+} from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -69,9 +68,10 @@ import { HeroContainer } from '../docs/HeroContainer'
 import { Highlights } from '../docs/Highlights'
 import { InlineTabs } from '../docs/InlineTabs'
 import { PropsTable } from '../docs/PropsTable'
+import { VersionSwitcher } from '../docs/VersionSwitcher'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
-import { TabsTabProps } from 'tamagui'
+import { TabsTabProps } from '@tamagui/ui'
 import { Tab } from '~/components/RovingTabs'
 
 if (!React.version.startsWith('19')) {
@@ -95,8 +95,9 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
   )
 }
 
-const TableFrame = styled(ThemeableStack, {
-  bordered: true,
+const TableFrame = styled(YStack, {
+  borderWidth: 1,
+  borderColor: '$borderColor',
   br: '$4',
   ov: 'hidden',
   my: '$4',
@@ -162,7 +163,7 @@ const TableCell = styled(Paragraph, {
   p: '$2',
   px: '$3',
   size: '$5',
-  ellipse: true,
+  ellipsis: true,
 
   variants: {
     head: {
@@ -178,7 +179,7 @@ const TableCell = styled(Paragraph, {
   } as const,
 })
 
-const TableCol = styled(ThemeableStack, {
+const TableCol = styled(YStack, {
   brw: 1,
   brc: '$borderColor',
   f: 1,
@@ -239,6 +240,7 @@ const componentsIn = {
   },
 
   Highlights,
+  VersionSwitcher,
   ThemeTint,
   PropsTable,
   DataTable,
@@ -260,7 +262,7 @@ const componentsIn = {
     } = useBashCommand(`yarn add ${name}`, 'language-bash')
 
     const { transformedCommand: tamaguiCommand } = useBashCommand(
-      `npm install tamagui`,
+      `npm install @tamagui/ui`,
       'language-bash'
     )
     const { onCopy, hasCopied } = useClipboard(transformedCommand)
@@ -714,11 +716,11 @@ const componentsIn = {
   SponsorNotice: () => {
     return (
       <NoticeFrame theme="red">
-        <YStack maw="100%" space>
+        <YStack maw="100%" gap="$4">
           <H4 color="$color10" fontFamily="$silkscreen">
             👋 Hey! Listen!
           </H4>
-          <YStack ov="hidden" f={1} o={0.85} space>
+          <YStack ov="hidden" f={1} o={0.85} gap="$4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
               <a href="https://x.com/natebirdman" target="_blank" rel="noreferrer">
@@ -783,7 +785,7 @@ const componentsIn = {
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
-                    <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
+                    <span style={{ color: 'var(--color12)' }}>@tamagui/compiler</span>
                   </CodeInline>
                 </Link>{' '}
                 is an optimizing compiler that{' '}
@@ -997,12 +999,13 @@ export const components = Object.fromEntries(
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
     tag="a"
+    // @ts-expect-error
     href={`#${id}`}
     id={id}
     data-id={id}
     display="inline-flex"
     ai="center"
-    space
+    gap="$4"
     {...props}
   >
     {children}

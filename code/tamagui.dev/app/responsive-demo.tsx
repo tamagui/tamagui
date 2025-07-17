@@ -4,7 +4,7 @@ import img2 from '@tamagui/demos/photo/photo2'
 import img3 from '@tamagui/demos/photo/photo3'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { MapPin, Star } from '@tamagui/lucide-icons'
-import { H3, H4, H5, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { H3, H4, H5, Image, Paragraph, Spacer, Theme, XStack, YStack } from '@tamagui/ui'
 
 export default function ResponsiveDemo() {
   const header = (
@@ -12,7 +12,7 @@ export default function ResponsiveDemo() {
       <YStack f={1}>
         <Spacer $gtSmall={{ display: 'none' }} flex />
         <H3>Enchanting Garden</H3>
-        <XStack ai="center" space>
+        <XStack ai="center" gap="$4">
           <MapPin size={12} color="var(--color)" />
           <H5>Kailua, HI</H5>
         </XStack>

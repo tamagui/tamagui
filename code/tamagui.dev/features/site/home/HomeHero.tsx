@@ -14,7 +14,7 @@ import {
   XStack,
   YStack,
   styled,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DiscordIcon } from '~/features/icons/DiscordIcon'

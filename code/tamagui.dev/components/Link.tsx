@@ -1,4 +1,4 @@
-import { type ViewProps, Button, Paragraph, Text, type ButtonProps } from 'tamagui'
+import { type ViewProps, Button, Paragraph, Text, type ButtonProps } from '@tamagui/ui'
 import { router, useLinkTo, type LinkProps as OneLinkProps } from 'one'
 
 export type LinkProps = ViewProps &

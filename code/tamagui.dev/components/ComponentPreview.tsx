@@ -9,7 +9,6 @@ import {
   Upload,
   User,
 } from '@tamagui/lucide-icons'
-import { Theme } from 'tamagui'
 
 import {
   Avatar,
@@ -23,8 +22,8 @@ import {
   View,
   XStack,
   ZStack,
-} from 'tamagui'
-import { CardFrame, Text, YStack } from 'tamagui'
+} from '@tamagui/ui'
+import { CardFrame, Text, YStack } from '@tamagui/ui'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 
 const Chip = styled(View, {
@@ -40,21 +39,20 @@ const Chip = styled(View, {
 
 const WindowMacView = () => {
   return (
-    <Theme name="accent">
-      <XStack
-        bg="$backgroundPress"
-        borderBottomWidth={1}
-        borderColor="$color3"
-        py="$1.5"
-        px="$2"
-        gap="$2"
-      >
-        {['$red10', '$yellow10', '$green10'].map((color, index) => (
-          <View bg={color as any} h={6} w={6} borderRadius={1_000_000_000} key={index} />
-        ))}
-        <View flex={1} />
-      </XStack>
-    </Theme>
+    <XStack
+      bg="$backgroundPress"
+      borderBottomWidth={1}
+      borderColor="$color3"
+      py="$1.5"
+      px="$2"
+      gap="$2"
+      theme="accent"
+    >
+      {['$red10', '$yellow10', '$green10'].map((color, index) => (
+        <View bg={color as any} h={6} w={6} borderRadius={1_000_000_000} key={index} />
+      ))}
+      <View flex={1} />
+    </XStack>
   )
 }
 
@@ -330,10 +328,11 @@ const ComponentPreview = {
           alignSelf="center"
           icon={User}
           size="$4"
-          themeInverse
+          theme="accent"
         >
           Follow
         </Button>
+
         <Button mt={'$-6'} ml={'$-6'} alignSelf="center" icon={Share} size="$4">
           Share
         </Button>

@@ -1,7 +1,7 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { Avatar, Card, H5, Paragraph, View, XStack, YStack } from 'tamagui'
+import { Avatar, Card, H5, Paragraph, View, XStack, YStack } from '@tamagui/ui'
 import { Link } from './Link'
 
 export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...props }) {

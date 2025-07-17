@@ -30,7 +30,7 @@ import {
   View,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { CURRENT_PRODUCTS } from '~/features/stripe/products'
@@ -898,7 +898,6 @@ const DiscordMember = ({
     </XStack>
   )
 }
-
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -1175,14 +1174,13 @@ const UpgradeTab = () => {
       />
 
       <Button
-        fontFamily="$mono"
         theme="accent"
         br="$10"
         als="flex-end"
         onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
-        {getActionLabel()}
+        <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
       </Button>
 
       <Separator />
@@ -1283,8 +1281,9 @@ const ManageTab = ({
         <Paragraph theme="alt1">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
+
         <Button
-          themeInverse
+          theme="accent"
           onPress={() => {
             paymentModal.show = true
           }}

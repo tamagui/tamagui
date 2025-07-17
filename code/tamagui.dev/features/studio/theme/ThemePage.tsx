@@ -22,7 +22,7 @@ import {
   View,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
@@ -235,7 +235,7 @@ const StudioThemeBuilderBottomBar = memo(() => {
   return (
     <XStack p="$4" py="$3" ai="center" zi={100} bg="$background02">
       <CurrentStepActionBar />
-      <Spacer flex />
+      <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />
     </XStack>
   )
@@ -313,17 +313,18 @@ const ThemeStudioStepButtonsBar = () => {
       )}
 
       {canGoForward && (
-        <Button
-          themeInverse={!disableForward}
-          size="$3"
-          disabled={disableForward}
-          opacity={disableForward ? 0.5 : 1}
-          cursor={disableForward ? 'not-allowed' : undefined}
-          iconAfter={canGoForward ? ChevronRight : null}
-          onPress={forwardOrFinish}
-        >
-          {currentSection.nextTitle || 'Next'}
-        </Button>
+        <Theme inverse={!disableForward}>
+          <Button
+            size="$3"
+            disabled={disableForward}
+            opacity={disableForward ? 0.5 : 1}
+            cursor={disableForward ? 'not-allowed' : undefined}
+            iconAfter={canGoForward ? ChevronRight : null}
+            onPress={forwardOrFinish}
+          >
+            {currentSection.nextTitle || 'Next'}
+          </Button>
+        </Theme>
       )}
     </XStack>
   )

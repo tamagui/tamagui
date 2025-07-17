@@ -1,5 +1,5 @@
-import type { StaticConfig, ThemeParsed } from 'tamagui'
-import { Theme } from 'tamagui'
+import type { StaticConfig, ThemeParsed } from '@tamagui/ui'
+import { Theme } from '@tamagui/ui'
 
 export type ConfigSubPane =
   | 'settings'

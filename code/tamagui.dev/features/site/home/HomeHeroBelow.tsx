@@ -1,7 +1,7 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import type { YStackProps } from 'tamagui'
-import { H3, Paragraph, XStack, YStack } from 'tamagui'
+import type { YStackProps } from '@tamagui/ui'
+import { H3, Paragraph, XStack, YStack } from '@tamagui/ui'
 import { Link } from '~/components/Link'
 
 import { CodeInline } from '~/components/Code'
@@ -40,7 +40,7 @@ export const HeroBelowContent = memo(() => {
         flex={1}
         overflow="hidden"
         maxWidth="100%"
-        space="$8"
+        gap="$8"
         flexWrap="nowrap"
         px="$2"
         mb={-8}
