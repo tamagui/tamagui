@@ -1,6 +1,6 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   View as TamaguiView,
@@ -367,31 +367,34 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
     const stackProps = anchorProps
 
     const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-    const composedRefs = useComposedRefs(forwardedRef, ref)
+    const shouldHandleInHover = isWeb && scope
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      ref,
+      // web handles this onMouseEnter below so it can support multiple targets + hovering
+      shouldHandleInHover ? undefined : (refs.setReference as any)
+    )
 
     return (
       <TamaguiView
         {...stackProps}
         {...refProps}
         ref={composedRefs}
-        // this helps us with handling scoped poppers with many different targets
-        // basically we wait for mouseEnter to ever set a reference and remove it on leave
-        // otherwise floating ui gets confused by having >1 reference
-        onMouseEnter={(e) => {
-          if (ref.current instanceof HTMLElement) {
-            refs.setReference(ref.current)
-            setTimeout(() => {
+        {...(shouldHandleInHover && {
+          // this helps us with handling scoped poppers with many different targets
+          // basically we wait for mouseEnter to ever set a reference and remove it on leave
+          // otherwise floating ui gets confused by having >1 reference
+          onMouseEnter: (e) => {
+            if (ref.current instanceof HTMLElement) {
+              refs.setReference(ref.current)
               refProps.onPointerEnter?.(e)
               update()
-            })
-          }
-        }}
-        onMouseLeave={(e) => {
-          refProps?.onMouseLeave?.(e)
-          // setTimeout(() => {
-          //   refs.setReference(null)
-          // })
-        }}
+            }
+          },
+          onMouseLeave: (e) => {
+            refProps?.onMouseLeave?.(e)
+          },
+        })}
       />
     )
   }

@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
+import type { CSSProperties, ComponentType, ForwardRefExoticComponent, ForwardRefRenderFunction, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { PxValue, Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
@@ -1181,10 +1181,7 @@ export type StyleableOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-type React18And19CompatComponent<Props, Ref> = ((props: Props, ref: RefObject<Ref>) => React.ReactNode) | ((props: Props & {
-    ref?: RefObject<Ref>;
-}) => React.ReactNode);
-export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends React18And19CompatComponent<MergedProps, Ref> = React18And19CompatComponent<MergedProps, Ref>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
+export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends ForwardRefRenderFunction<Ref, MergedProps> = ForwardRefRenderFunction<Ref, MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
