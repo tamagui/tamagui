@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-constant",
-  "version": "1.132.8",
+  "version": "1.132.8-1752738709483",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
