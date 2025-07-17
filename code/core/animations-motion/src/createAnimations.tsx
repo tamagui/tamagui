@@ -23,7 +23,7 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import React, { forwardRef, RefObject, useEffect, useMemo, useRef, useState } from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -40,9 +40,7 @@ const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 type AnimationProps = {
   doAnimate?: Record<string, unknown>
   dontAnimate?: Record<string, unknown>
-  animationOptions?: AnimationOptions & {
-    isExiting?: boolean
-  }
+  animationOptions?: AnimationOptions
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -81,9 +79,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
-      const isExitingRender = presence?.[0] === false
+      const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
 
+      const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
       const lastAnimationStyle = useRef<Record<string, unknown> | null>(null)
       const lastDontAnimate = useRef<Record<string, unknown>>({})
@@ -103,18 +102,23 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const motionAnimationState = getMotionAnimatedProps(
           props as any,
           style,
-          disableAnimation,
-          isExitingRender
+          disableAnimation
         )
         return motionAnimationState
-      }, [isExitingRender, animationKey, styleKey])
+      }, [isExiting, animationKey, styleKey])
 
       const animationsQueue = useRef<AnimationProps[]>([])
       const lastAnimateAt = useRef(0)
       const minTimeBetweenAnimations = 16.667
       const disposed = useRef(false)
 
+      useIsomorphicLayoutEffect(() => {
+        lastDontAnimate.current = dontAnimate
+      })
+
       useEffect(() => {
+        isFirstRender.current = false
+
         return () => {
           disposed.current = true
         }
@@ -165,7 +169,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const shouldWait =
           hasQueue || Date.now() - lastAnimateAt.current > minTimeBetweenAnimations
 
-        if (scope.current && !shouldWait) {
+        if (isExiting || isFirstRender.current || (scope.current && !shouldWait)) {
           flushAnimation(props)
         } else {
           animationsQueue.current.push(props)
@@ -180,77 +184,88 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         dontAnimate,
         animationOptions = {},
       }: AnimationProps) => {
-        const node = stateRef.current.host
-        if (!(node instanceof HTMLElement)) {
-          return
-        }
-        if (!doAnimate && !dontAnimate) {
-          return
-        }
+        try {
+          const node = stateRef.current.host
 
-        if (!lastAnimationStyle.current) {
-          lastAnimationStyle.current = doAnimate || {}
-          const firstAnimation = animate(scope.current, doAnimate || {}, {
-            duration: 0,
-            type: 'tween',
-          })
-          firstAnimation.complete()
-          scope.animations = []
-
-          if (shouldDebug) {
-            console.groupCollapsed(`[motion] 🌊 FIRST`)
-            console.info(doAnimate)
-            console.groupEnd()
+          if (!(node instanceof HTMLElement)) {
+            return
           }
-          return
-        }
 
-        const next = doAnimate || {}
+          if (!lastAnimationStyle.current) {
+            lastAnimationStyle.current = style
+            const firstAnimation = animate(scope.current, doAnimate || {}, {
+              type: false,
+            })
+            firstAnimation.complete()
+            // scope.animations = []
 
-        // handle case where dontAnimate changes
-        // we just set it onto animate + set options to not actually animate
-        if (dontAnimate) {
-          if (node) {
-            const diff = getDiff(lastDontAnimate.current, dontAnimate)
-            if (diff) {
-              lastDontAnimate.current = dontAnimate
-              Object.assign(node.style, dontAnimate as any)
+            if (shouldDebug) {
+              console.groupCollapsed(`[motion] 🌊 FIRST`)
+              console.info(doAnimate)
+              console.groupEnd()
             }
-            for (const key in lastDontAnimate.current) {
-              if (!(key in dontAnimate)) {
-                console.warn('delting', key, { dontAnimate, doAnimate })
-                delete node.style[key]
+            return
+          }
+
+          if (!doAnimate && !dontAnimate) {
+            return
+          }
+
+          const next = doAnimate || {}
+
+          // handle case where dontAnimate changes
+          // we just set it onto animate + set options to not actually animate
+          if (dontAnimate) {
+            if (node) {
+              const diff = getDiff(lastDontAnimate.current, dontAnimate)
+              if (diff) {
+                lastDontAnimate.current = dontAnimate
+                Object.assign(node.style, dontAnimate as any)
+              }
+              for (const key in lastDontAnimate.current) {
+                if (!(key in dontAnimate)) {
+                  console.info('deleting!', key, { dontAnimate, doAnimate })
+                  delete node.style[key]
+                }
               }
             }
           }
-        }
 
-        const diff = getDiff(lastAnimationStyle.current, next)
+          const diff = getDiff(lastAnimationStyle.current, next)
 
-        if (shouldDebug) {
-          console.groupCollapsed(`[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`)
-          console.info({
-            next,
-            animationOptions,
-            animationProps,
-            diff,
-            lastAnimationStyle: { ...lastAnimationStyle.current },
-          })
-          console.groupEnd()
-        }
+          if (shouldDebug) {
+            console.groupCollapsed(
+              `[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`
+            )
+            console.info({
+              next,
+              animationOptions,
+              animationProps,
+              diff,
+              lastAnimationStyle: { ...lastAnimationStyle.current },
+              isExiting,
+            })
+            console.groupEnd()
+          }
 
-        if (!diff) {
-          return
-        }
+          if (!diff) {
+            return
+          }
 
-        lastAnimateAt.current = Date.now()
-        controls.current = animate(scope.current, diff, animationOptions)
-        lastAnimationStyle.current = next
-
-        if (animationOptions.isExiting) {
-          controls.current.finished.then(() => {
-            sendExitComplete?.()
-          })
+          lastAnimateAt.current = Date.now()
+          controls.current = animate(scope.current, diff, animationOptions)
+          lastAnimationStyle.current = next
+        } finally {
+          if (isExiting) {
+            console.warn('exiting')
+            if (controls.current) {
+              controls.current.finished.then(() => {
+                sendExitComplete?.()
+              })
+            } else {
+              sendExitComplete?.()
+            }
+          }
         }
       }
 
@@ -258,8 +273,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
-          disableAnimation,
-          isExitingRender
+          disableAnimation
         )
         runAnimation(animationProps)
       })
@@ -275,7 +289,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }, [])
 
       useIsomorphicLayoutEffect(() => {
-        if (!doAnimate) return
+        if (!doAnimate && !isExiting) return
 
         // always clear queue if we re-render
         animationsQueue.current = []
@@ -284,11 +298,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           doAnimate,
           animationOptions,
         })
-      }, [JSON.stringify(doAnimate), lastAnimationStyle])
-
-      useIsomorphicLayoutEffect(() => {
-        lastDontAnimate.current = dontAnimate
-      })
+      }, [JSON.stringify(doAnimate), isExiting, lastAnimationStyle])
 
       const [initialStyle] = useState(() => ({ ...dontAnimate, ...doAnimate }))
 
@@ -301,13 +311,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           scope,
           animationOptions,
           initialStyle,
+          isExiting,
         })
         console.groupEnd()
       }
 
       return {
         // avoid first render returning wrong styles - always render all, after that we can just mutate
-        style: dontAnimate,
+        style: isFirstRender.current ? style : dontAnimate,
         ref: scope,
         tag: 'div',
       }
@@ -382,8 +393,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   function getMotionAnimatedProps(
     props: { animation: AnimationProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
-    disable: boolean,
-    isExiting: boolean
+    disable: boolean
   ): AnimationProps {
     if (disable) {
       return {
@@ -423,12 +433,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     return {
       dontAnimate,
       doAnimate,
-      animationOptions: isExiting
-        ? {
-            ...animationOptions,
-            isExiting: true,
-          }
-        : animationOptions,
+      animationOptions,
     }
   }
 
@@ -486,28 +491,31 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 const disableAnimationProps = new Set<string>([
   'alignContent',
   'alignItems',
+  'aspectRatio',
   'backdropFilter',
   'boxSizing',
   'contain',
   'display',
   'flexBasis',
   'flexDirection',
+  'flexGrow',
   'flexShrink',
   'justifyContent',
   'maxHeight',
   'maxWidth',
   'minHeight',
   'minWidth',
+  'outlineColor',
+  'outlineStyle',
+  'outlineWidth',
   'overflow',
+  'overflowX',
+  'overflowY',
   'pointerEvents',
   'position',
   'textWrap',
+  'transformOrigin',
   'zIndex',
-  'overflowX',
-  'overflowY',
-  'outlineStyle',
-  'outlineWidth',
-  'outlineColor',
 ])
 
 const MotionView = createMotionView('div')

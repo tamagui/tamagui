@@ -70,6 +70,7 @@ export const useComponentState = (
       props['animatePresence'] !== false &&
       animationDriver?.usePresence?.()) ||
     null
+
   const presenceState = presence?.[2]
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
