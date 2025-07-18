@@ -357,7 +357,6 @@ const CONTENT_NAME = 'DialogContent'
 
 const DialogContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
-  tag: 'dialog',
 
   variants: {
     size: {
