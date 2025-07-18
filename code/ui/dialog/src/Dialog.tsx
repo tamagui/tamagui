@@ -203,7 +203,11 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
     const isMountedOrOpen = forceMount || context.open
     const [isFullyHidden, setIsFullyHidden] = React.useState(!isMountedOrOpen)
     const isAdapted = useAdaptIsActive(context.adaptScope)
-    const isVisible = !isFullyHidden
+    const isVisible = isMountedOrOpen ? true : !isFullyHidden
+
+    if (isMountedOrOpen && isFullyHidden) {
+      setIsFullyHidden(false)
+    }
 
     if (isWeb) {
       useIsomorphicLayoutEffect(() => {
@@ -217,10 +221,6 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
           node.close()
         }
       }, [isVisible])
-    }
-
-    if (isMountedOrOpen && isFullyHidden) {
-      setIsFullyHidden(false)
     }
 
     const handleExitComplete = React.useCallback(() => {
