@@ -23,7 +23,14 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, { forwardRef, RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -85,14 +92,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
       const lastAnimationStyle = useRef<Record<string, unknown> | null>(null)
-      const lastDontAnimate = useRef<Record<string, unknown>>({})
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
 
+      // until fully stable allow debugging in prod to help debugging prod issues
       const shouldDebug =
-        process.env.NODE_ENV === 'development' &&
-        props['debug'] &&
-        props['debug'] !== 'profile'
+        // process.env.NODE_ENV === 'development' &&
+        props['debug'] && props['debug'] !== 'profile'
 
       const {
         dontAnimate = {},
@@ -111,14 +117,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const lastAnimateAt = useRef(0)
       const minTimeBetweenAnimations = 16.667
       const disposed = useRef(false)
+      const [firstRenderStyle] = useState(style)
 
-      useIsomorphicLayoutEffect(() => {
-        lastDontAnimate.current = dontAnimate
-      })
+      // avoid first render returning wrong styles - always render all, after that we can just mutate
+      const lastDontAnimate = useRef<Record<string, unknown>>(firstRenderStyle)
 
-      useEffect(() => {
-        isFirstRender.current = false
-
+      useLayoutEffect(() => {
         return () => {
           disposed.current = true
         }
@@ -167,7 +171,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
         const hasQueue = animationsQueue.current.length
         const shouldWait =
-          hasQueue || Date.now() - lastAnimateAt.current > minTimeBetweenAnimations
+          hasQueue ||
+          (lastAnimateAt.current &&
+            Date.now() - lastAnimateAt.current > minTimeBetweenAnimations)
 
         if (isExiting || isFirstRender.current || (scope.current && !shouldWait)) {
           flushAnimation(props)
@@ -177,6 +183,32 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             waitForNextAnimationFrame()
           }
         }
+      }
+
+      const updateFirstAnimationStyle = () => {
+        const node = stateRef.current.host
+
+        if (!(node instanceof HTMLElement)) {
+          return false
+        }
+
+        if (!lastAnimationStyle.current) {
+          lastAnimationStyle.current = style
+          const firstAnimation = animate(scope.current, doAnimate || {}, {
+            type: false,
+          })
+          firstAnimation.complete()
+          scope.animations = []
+
+          if (shouldDebug) {
+            console.groupCollapsed(`[motion] 🌊 FIRST`)
+            console.info(doAnimate)
+            console.groupEnd()
+          }
+          return true
+        }
+
+        return false
       }
 
       const flushAnimation = ({
@@ -191,22 +223,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             return
           }
 
-          if (!lastAnimationStyle.current) {
-            lastAnimationStyle.current = style
-            const firstAnimation = animate(scope.current, doAnimate || {}, {
-              type: false,
-            })
-            firstAnimation.complete()
-            // scope.animations = []
-
-            if (shouldDebug) {
-              console.groupCollapsed(`[motion] 🌊 FIRST`)
-              console.info(doAnimate)
-              console.groupEnd()
-            }
-            return
-          }
-
           if (!doAnimate && !dontAnimate) {
             return
           }
@@ -216,19 +232,25 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           // handle case where dontAnimate changes
           // we just set it onto animate + set options to not actually animate
           if (dontAnimate) {
-            if (node) {
-              const diff = getDiff(lastDontAnimate.current, dontAnimate)
-              if (diff) {
-                lastDontAnimate.current = dontAnimate
-                Object.assign(node.style, dontAnimate as any)
-              }
-              for (const key in lastDontAnimate.current) {
-                if (!(key in dontAnimate)) {
+            const curDontAnimate = lastDontAnimate.current
+            if (node && curDontAnimate) {
+              for (const key in curDontAnimate) {
+                if (!(key in style)) {
                   console.info('deleting!', key, { dontAnimate, doAnimate })
                   delete node.style[key]
                 }
               }
+              const newDontAnimate = getDiff(curDontAnimate, dontAnimate)
+              if (newDontAnimate) {
+                Object.assign(node.style, newDontAnimate as any)
+              }
             }
+          }
+
+          lastDontAnimate.current = dontAnimate || {}
+
+          if (updateFirstAnimationStyle()) {
+            return
           }
 
           const diff = getDiff(lastAnimationStyle.current, next)
@@ -245,16 +267,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               lastAnimationStyle: { ...lastAnimationStyle.current },
               isExiting,
             })
+            console.trace()
             console.groupEnd()
           }
+
+          lastAnimationStyle.current = next
+          lastAnimateAt.current = Date.now()
 
           if (!diff) {
             return
           }
 
-          lastAnimateAt.current = Date.now()
           controls.current = animate(scope.current, diff, animationOptions)
-          lastAnimationStyle.current = next
         } finally {
           if (isExiting) {
             if (controls.current) {
@@ -287,17 +311,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
       }, [])
 
+      const animateKey = JSON.stringify(doAnimate)
+
       useIsomorphicLayoutEffect(() => {
+        if (isFirstRender.current) {
+          updateFirstAnimationStyle()
+          isFirstRender.current = false
+          return
+        }
+
         if (!doAnimate && !isExiting) return
 
         // always clear queue if we re-render
         animationsQueue.current = []
 
-        runAnimation({
+        // don't ever queue on a render
+        flushAnimation({
           doAnimate,
+          dontAnimate,
           animationOptions,
         })
-      }, [JSON.stringify(doAnimate), isExiting, lastAnimationStyle])
+      }, [animateKey, isExiting, lastAnimationStyle])
 
       const [initialStyle] = useState(() => ({ ...dontAnimate, ...doAnimate }))
 
@@ -307,17 +341,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           style,
           doAnimate,
           dontAnimate,
+          animateKey,
           scope,
           animationOptions,
           initialStyle,
           isExiting,
+          isFirstRender: isFirstRender.current,
         })
         console.groupEnd()
       }
 
       return {
-        // avoid first render returning wrong styles - always render all, after that we can just mutate
-        style: isFirstRender.current ? style : dontAnimate,
+        // we never change this, after first render on
+        style: firstRenderStyle,
         ref: scope,
         tag: 'div',
       }
@@ -500,6 +536,10 @@ const disableAnimationProps = new Set<string>([
   'flexGrow',
   'flexShrink',
   'justifyContent',
+  'marginRight',
+  'marginLeft',
+  'marginBottom',
+  'marginTop',
   'maxHeight',
   'maxWidth',
   'minHeight',
@@ -515,6 +555,7 @@ const disableAnimationProps = new Set<string>([
   'textWrap',
   'transformOrigin',
   'zIndex',
+  'WebkitBackdropFilter',
 ])
 
 const MotionView = createMotionView('div')
