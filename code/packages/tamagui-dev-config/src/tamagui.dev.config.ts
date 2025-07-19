@@ -40,6 +40,7 @@ export const config = {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
     maxDarkLightNesting: 2,
+    styleCompat: 'legacy',
     // These settings are now configured in createTamagui settings
     // themeClassNameOnRoot: true, // moved to createTamagui({ settings: { themeClassNameOnRoot } })
     // disableRootThemeClass: true, // moved to createTamagui({ settings: { disableRootThemeClass } })
