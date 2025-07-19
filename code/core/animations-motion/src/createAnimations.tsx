@@ -115,7 +115,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const animationsQueue = useRef<AnimationProps[]>([])
       const lastAnimateAt = useRef(0)
-      const minTimeBetweenAnimations = 16.667
+      const minTimeBetweenAnimations = 32
       const disposed = useRef(false)
       const [firstRenderStyle] = useState(style)
 
@@ -128,61 +128,50 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
       }, [])
 
-      // useIsomorphicLayoutEffect(() => {
-      //   let disposed = false
+      // const runAnimation = (props: AnimationProps) => {
+      //   const waitForNextAnimationFrame = () => {
+      //     if (disposed.current) return
+      //     // we just skip to the last one
+      //     const queue = animationsQueue.current
+      //     const last = queue[queue.length - 1]
+      //     animationsQueue.current = []
 
-      //   // requestAnimationFrame(animationFrame)
-      //   // frame.postRender(animationFrame)
+      //     if (!last) {
+      //       console.error(`Should never hit`)
+      //       return
+      //     }
 
-      //   return () => {
-      //     disposed = true
+      //     if (!props) return
+
+      //     const elapsed = Date.now() - lastAnimateAt.current
+
+      //     if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
+      //       console.info('slow', elapsed, { props })
+      //     }
+
+      //     if (scope.current) {
+      //       flushAnimation(props)
+      //     } else {
+      //       // frame.postRender(waitForNextAnimationFrame)
+      //       requestAnimationFrame(waitForNextAnimationFrame)
+      //     }
       //   }
-      // }, [scope])
 
-      const runAnimation = (props: AnimationProps) => {
-        const waitForNextAnimationFrame = () => {
-          if (disposed.current) return
-          // we just skip to the last one
-          const queue = animationsQueue.current
-          const last = queue[queue.length - 1]
-          animationsQueue.current = []
+      //   const hasQueue = animationsQueue.current.length
+      //   const shouldWait =
+      //     hasQueue ||
+      //     (lastAnimateAt.current &&
+      //       Date.now() - lastAnimateAt.current > minTimeBetweenAnimations)
 
-          if (!last) {
-            console.error(`Should never hit`)
-            return
-          }
-
-          if (!props) return
-
-          const elapsed = Date.now() - lastAnimateAt.current
-
-          if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
-            console.info('slow', elapsed, { props })
-          }
-
-          if (scope.current) {
-            flushAnimation(props)
-          } else {
-            // frame.postRender(waitForNextAnimationFrame)
-            requestAnimationFrame(waitForNextAnimationFrame)
-          }
-        }
-
-        const hasQueue = animationsQueue.current.length
-        const shouldWait =
-          hasQueue ||
-          (lastAnimateAt.current &&
-            Date.now() - lastAnimateAt.current > minTimeBetweenAnimations)
-
-        if (isExiting || isFirstRender.current || (scope.current && !shouldWait)) {
-          flushAnimation(props)
-        } else {
-          animationsQueue.current.push(props)
-          if (!hasQueue) {
-            waitForNextAnimationFrame()
-          }
-        }
-      }
+      //   if (isExiting || isFirstRender.current || (scope.current && !shouldWait)) {
+      //     flushAnimation(props)
+      //   } else {
+      //     animationsQueue.current.push(props)
+      //     if (!hasQueue) {
+      //       waitForNextAnimationFrame()
+      //     }
+      //   }
+      // }
 
       const updateFirstAnimationStyle = () => {
         const node = stateRef.current.host
@@ -192,12 +181,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
 
         if (!lastDoAnimate.current) {
+          lastAnimateAt.current = Date.now()
           lastDoAnimate.current = doAnimate || {}
           const firstAnimation = animate(scope.current, doAnimate || {}, {
             type: false,
           })
           firstAnimation.complete()
-          scope.animations = []
+          // scope.animations = []
 
           if (shouldDebug) {
             console.groupCollapsed(`[motion] 🌊 FIRST`)
@@ -215,6 +205,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         animationOptions = {},
         dontAnimate,
       }: AnimationProps) => {
+        // if (shouldDebug) {
+        //   if (Date.now() - lastAnimateAt.current < minTimeBetweenAnimations) {
+        //     console.warn('TO SOON')
+        //   }
+        // }
+
         try {
           const node = stateRef.current.host
 
@@ -293,7 +289,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           nextStyle,
           disableAnimation
         )
-        runAnimation(animationProps)
+
+        flushAnimation(animationProps)
       })
 
       const animateKey = JSON.stringify(style)
