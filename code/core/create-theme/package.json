@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-theme",
-  "version": "1.132.10",
+  "version": "1.132.10-1752884366504",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

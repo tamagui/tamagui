@@ -1,6 +1,6 @@
 {
   "name": "tamagui-build-test-simple-tpackage",
-  "version": "1.132.10",
+  "version": "1.132.10-1752884366504",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
