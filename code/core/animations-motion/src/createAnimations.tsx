@@ -91,7 +91,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
-      const lastAnimationStyle = useRef<Record<string, unknown> | null>(null)
+      const lastDoAnimate = useRef<Record<string, unknown> | null>(null)
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
 
@@ -141,6 +141,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const runAnimation = (props: AnimationProps) => {
         const waitForNextAnimationFrame = () => {
+          if (disposed.current) return
           // we just skip to the last one
           const queue = animationsQueue.current
           const last = queue[queue.length - 1]
@@ -162,10 +163,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           if (scope.current) {
             flushAnimation(props)
           } else {
-            if (!disposed.current) {
-              // frame.postRender(waitForNextAnimationFrame)
-              requestAnimationFrame(waitForNextAnimationFrame)
-            }
+            // frame.postRender(waitForNextAnimationFrame)
+            requestAnimationFrame(waitForNextAnimationFrame)
           }
         }
 
@@ -192,8 +191,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           return false
         }
 
-        if (!lastAnimationStyle.current) {
-          lastAnimationStyle.current = style
+        if (!lastDoAnimate.current) {
+          lastDoAnimate.current = doAnimate || {}
           const firstAnimation = animate(scope.current, doAnimate || {}, {
             type: false,
           })
@@ -212,37 +211,51 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
 
       const flushAnimation = ({
-        doAnimate,
-        dontAnimate,
+        doAnimate = {},
         animationOptions = {},
+        dontAnimate,
       }: AnimationProps) => {
         try {
           const node = stateRef.current.host
+
+          if (shouldDebug) {
+            console.groupCollapsed(
+              `[motion] 🌊 animate (${JSON.stringify(getDiff(lastDoAnimate.current, doAnimate), null, 2)})`
+            )
+            console.info({
+              doAnimate,
+              dontAnimate,
+              animationOptions,
+              animationProps,
+              lastDoAnimate: { ...lastDoAnimate.current },
+              lastDontAnimate: { ...lastDontAnimate.current },
+              isExiting,
+              style,
+              node,
+            })
+            console.groupCollapsed(`trace >`)
+            console.trace()
+            console.groupEnd()
+            console.groupEnd()
+          }
 
           if (!(node instanceof HTMLElement)) {
             return
           }
 
-          if (!doAnimate && !dontAnimate) {
-            return
-          }
-
-          const next = doAnimate || {}
-
           // handle case where dontAnimate changes
           // we just set it onto animate + set options to not actually animate
           if (dontAnimate) {
-            const curDontAnimate = lastDontAnimate.current
-            if (node && curDontAnimate) {
-              for (const key in curDontAnimate) {
-                if (!(key in style)) {
-                  console.info('deleting!', key, { dontAnimate, doAnimate })
-                  delete node.style[key]
+            const prev = lastDontAnimate.current
+            if (prev) {
+              for (const key in prev) {
+                if (!(key in dontAnimate)) {
+                  node.style[key] = ''
                 }
               }
-              const newDontAnimate = getDiff(curDontAnimate, dontAnimate)
-              if (newDontAnimate) {
-                Object.assign(node.style, newDontAnimate as any)
+              const changed = getDiff(prev, dontAnimate)
+              if (changed) {
+                Object.assign(node.style, changed as any)
               }
             }
           }
@@ -253,32 +266,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             return
           }
 
-          const diff = getDiff(lastAnimationStyle.current, next)
+          const diff = getDiff(lastDoAnimate.current, doAnimate)
 
-          if (shouldDebug) {
-            console.groupCollapsed(
-              `[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`
-            )
-            console.info({
-              next,
-              animationOptions,
-              animationProps,
-              diff,
-              lastAnimationStyle: { ...lastAnimationStyle.current },
-              isExiting,
-            })
-            console.trace()
-            console.groupEnd()
-          }
-
-          lastAnimationStyle.current = next
+          lastDoAnimate.current = doAnimate
           lastAnimateAt.current = Date.now()
 
-          if (!diff) {
-            return
+          if (diff) {
+            controls.current = animate(scope.current, diff, animationOptions)
           }
-
-          controls.current = animate(scope.current, diff, animationOptions)
         } finally {
           if (isExiting) {
             if (controls.current) {
@@ -301,26 +296,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         runAnimation(animationProps)
       })
 
-      // strict mode correctness fix, idk why i thought it would clear a useRef
-      // before running strict? if you remove this you'll see the next
-      // useLayoutEffect re-run and animate due to lastAnimationStyle.current
-      // being set when in theory it should be clear
-      useEffect(() => {
-        return () => {
-          lastAnimationStyle.current = null
-        }
-      }, [])
-
-      const animateKey = JSON.stringify(doAnimate)
+      const animateKey = JSON.stringify(style)
 
       useIsomorphicLayoutEffect(() => {
         if (isFirstRender.current) {
           updateFirstAnimationStyle()
           isFirstRender.current = false
+          lastDontAnimate.current = dontAnimate
           return
         }
-
-        if (!doAnimate && !isExiting) return
 
         // always clear queue if we re-render
         animationsQueue.current = []
@@ -331,9 +315,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [animateKey, isExiting, lastAnimationStyle])
-
-      const [initialStyle] = useState(() => ({ ...dontAnimate, ...doAnimate }))
+      }, [animateKey, isExiting])
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
@@ -344,7 +326,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           animateKey,
           scope,
           animationOptions,
-          initialStyle,
           isExiting,
           isFirstRender: isFirstRender.current,
         })
