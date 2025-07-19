@@ -4,9 +4,7 @@ export const THEME_NAME_SEPARATOR = '_'
 export const THEME_CLASSNAME_PREFIX = 't_'
 export const FONT_DATA_ATTRIBUTE_NAME = 'data-tamagui-font'
 
-export const stackDefaultStyles = {
-  position: 'static',
-}
+export const stackDefaultStyles = {}
 
 export const webViewFlexCompatStyles: StackStyle = {
   display: 'flex',
@@ -14,7 +12,7 @@ export const webViewFlexCompatStyles: StackStyle = {
   flexDirection: 'column',
   flexBasis: 'auto',
   boxSizing: 'border-box',
-  position: process.env.TAMAGUI_POSITION_STATIC === '1' ? 'static' : 'relative',
+  position: process.env.TAMAGUI_POSITION_RELATIVE === '1' ? 'relative' : 'static',
   minHeight: 0,
   minWidth: 0,
   flexShrink: 0,
