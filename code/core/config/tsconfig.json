@@ -5,6 +5,8 @@
   },
   "exclude": [
     "types",
+    "v5.d.ts",
+    "v5.js",
     "v4.d.ts",
     "v4.js",
     "v3.js",
