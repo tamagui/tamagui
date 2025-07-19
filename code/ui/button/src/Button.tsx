@@ -1,6 +1,6 @@
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { ButtonNestingContext, themeableVariants } from '@tamagui/stacks'
+import { ButtonNestingContext, getElevation, themeableVariants } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, GetProps, RNExtraProps, SizeTokens, Token } from '@tamagui/web'
 import {
@@ -22,10 +22,12 @@ const context = createStyledContext<{
   size?: SizeTokens
   variant?: ButtonVariant
   color?: ColorTokens | string
+  elevation?: SizeTokens | number
 }>({
   size: undefined,
   variant: undefined,
   color: undefined,
+  elevation: undefined,
 })
 
 const Frame = styled(View, {
@@ -67,12 +69,6 @@ const Frame = styled(View, {
       },
     },
 
-    circular: themeableVariants.circular,
-
-    chromeless: themeableVariants.chromeless,
-
-    bordered: themeableVariants.bordered,
-
     variant: {
       outlined:
         process.env.TAMAGUI_HEADLESS === '1'
@@ -102,6 +98,12 @@ const Frame = styled(View, {
             },
     },
 
+    circular: themeableVariants.circular,
+
+    chromeless: themeableVariants.chromeless,
+
+    bordered: themeableVariants.bordered,
+
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
@@ -120,6 +122,12 @@ const Frame = styled(View, {
         }
       },
     },
+
+    elevation: {
+      '...size': getElevation,
+      ':number': getElevation,
+    },
+
     disabled: {
       true: {
         pointerEvents: 'none',

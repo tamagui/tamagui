@@ -4,6 +4,7 @@ export type ButtonProps = GetProps<typeof Frame>;
 declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
@@ -18,6 +19,7 @@ export declare const ButtonContext: import("@tamagui/web").StyledContext<{
 export declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
@@ -37,6 +39,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
@@ -67,6 +70,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
 }, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
@@ -76,6 +80,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         bordered?: number | boolean | undefined;
@@ -106,6 +111,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     }, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         bordered?: number | boolean | undefined;
@@ -117,10 +123,12 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         size?: SizeTokens;
         variant?: ButtonVariant;
         color?: ColorTokens | string;
+        elevation?: SizeTokens | number;
     }> & import("react").ProviderExoticComponent<Partial<{
         size?: SizeTokens;
         variant?: ButtonVariant;
         color?: ColorTokens | string;
+        elevation?: SizeTokens | number;
     }> & {
         children?: import("react").ReactNode;
         scope?: string;
@@ -128,6 +136,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         bordered?: number | boolean | undefined;
