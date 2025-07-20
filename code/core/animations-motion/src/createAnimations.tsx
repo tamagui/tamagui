@@ -23,7 +23,14 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 // TODO: useAnimatedNumber style could avoid re-rendering
 
@@ -40,9 +47,7 @@ const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 type AnimationProps = {
   doAnimate?: Record<string, unknown>
   dontAnimate?: Record<string, unknown>
-  animationOptions?: AnimationOptions & {
-    isExiting?: boolean
-  }
+  animationOptions?: AnimationOptions
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -81,19 +86,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
-      const isExitingRender = presence?.[0] === false
+      const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
 
+      const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
-      const lastAnimationStyle = useRef<Record<string, unknown> | null>(null)
-      const lastDontAnimate = useRef<Record<string, unknown>>({})
+      const lastDoAnimate = useRef<Record<string, unknown> | null>(null)
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
 
+      // until fully stable allow debugging in prod to help debugging prod issues
       const shouldDebug =
-        process.env.NODE_ENV === 'development' &&
-        props['debug'] &&
-        props['debug'] !== 'profile'
+        // process.env.NODE_ENV === 'development' &&
+        props['debug'] && props['debug'] !== 'profile'
 
       const {
         dontAnimate = {},
@@ -103,154 +108,178 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const motionAnimationState = getMotionAnimatedProps(
           props as any,
           style,
-          disableAnimation,
-          isExitingRender
+          disableAnimation
         )
         return motionAnimationState
-      }, [isExitingRender, animationKey, styleKey])
+      }, [isExiting, animationKey, styleKey])
 
       const animationsQueue = useRef<AnimationProps[]>([])
       const lastAnimateAt = useRef(0)
-      const minTimeBetweenAnimations = 16.667
+      const minTimeBetweenAnimations = 32
       const disposed = useRef(false)
+      const [firstRenderStyle] = useState(style)
 
-      useEffect(() => {
+      // avoid first render returning wrong styles - always render all, after that we can just mutate
+      const lastDontAnimate = useRef<Record<string, unknown>>(firstRenderStyle)
+
+      useLayoutEffect(() => {
         return () => {
           disposed.current = true
         }
       }, [])
 
-      // useIsomorphicLayoutEffect(() => {
-      //   let disposed = false
+      // const runAnimation = (props: AnimationProps) => {
+      //   const waitForNextAnimationFrame = () => {
+      //     if (disposed.current) return
+      //     // we just skip to the last one
+      //     const queue = animationsQueue.current
+      //     const last = queue[queue.length - 1]
+      //     animationsQueue.current = []
 
-      //   // requestAnimationFrame(animationFrame)
-      //   // frame.postRender(animationFrame)
+      //     if (!last) {
+      //       console.error(`Should never hit`)
+      //       return
+      //     }
 
-      //   return () => {
-      //     disposed = true
+      //     if (!props) return
+
+      //     const elapsed = Date.now() - lastAnimateAt.current
+
+      //     if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
+      //       console.info('slow', elapsed, { props })
+      //     }
+
+      //     if (scope.current) {
+      //       flushAnimation(props)
+      //     } else {
+      //       // frame.postRender(waitForNextAnimationFrame)
+      //       requestAnimationFrame(waitForNextAnimationFrame)
+      //     }
       //   }
-      // }, [scope])
 
-      const runAnimation = (props: AnimationProps) => {
-        const waitForNextAnimationFrame = () => {
-          // we just skip to the last one
-          const queue = animationsQueue.current
-          const last = queue[queue.length - 1]
-          animationsQueue.current = []
+      //   const hasQueue = animationsQueue.current.length
+      //   const shouldWait =
+      //     hasQueue ||
+      //     (lastAnimateAt.current &&
+      //       Date.now() - lastAnimateAt.current > minTimeBetweenAnimations)
 
-          if (!last) {
-            console.error(`Should never hit`)
-            return
-          }
+      //   if (isExiting || isFirstRender.current || (scope.current && !shouldWait)) {
+      //     flushAnimation(props)
+      //   } else {
+      //     animationsQueue.current.push(props)
+      //     if (!hasQueue) {
+      //       waitForNextAnimationFrame()
+      //     }
+      //   }
+      // }
 
-          if (!props) return
-
-          const elapsed = Date.now() - lastAnimateAt.current
-
-          if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
-            console.info('slow', elapsed, { props })
-          }
-
-          if (scope.current) {
-            flushAnimation(props)
-          } else {
-            if (!disposed.current) {
-              // frame.postRender(waitForNextAnimationFrame)
-              requestAnimationFrame(waitForNextAnimationFrame)
-            }
-          }
-        }
-
-        const hasQueue = animationsQueue.current.length
-        const shouldWait =
-          hasQueue || Date.now() - lastAnimateAt.current > minTimeBetweenAnimations
-
-        if (scope.current && !shouldWait) {
-          flushAnimation(props)
-        } else {
-          animationsQueue.current.push(props)
-          if (!hasQueue) {
-            waitForNextAnimationFrame()
-          }
-        }
-      }
-
-      const flushAnimation = ({
-        doAnimate,
-        dontAnimate,
-        animationOptions = {},
-      }: AnimationProps) => {
+      const updateFirstAnimationStyle = () => {
         const node = stateRef.current.host
+
         if (!(node instanceof HTMLElement)) {
-          return
-        }
-        if (!doAnimate && !dontAnimate) {
-          return
+          return false
         }
 
-        if (!lastAnimationStyle.current) {
-          lastAnimationStyle.current = doAnimate || {}
+        if (!lastDoAnimate.current) {
+          lastAnimateAt.current = Date.now()
+          lastDoAnimate.current = doAnimate || {}
           const firstAnimation = animate(scope.current, doAnimate || {}, {
-            duration: 0,
-            type: 'tween',
+            type: false,
           })
           firstAnimation.complete()
-          scope.animations = []
+          // scope.animations = []
 
           if (shouldDebug) {
             console.groupCollapsed(`[motion] 🌊 FIRST`)
             console.info(doAnimate)
             console.groupEnd()
           }
-          return
+          return true
         }
 
-        const next = doAnimate || {}
+        return false
+      }
 
-        // handle case where dontAnimate changes
-        // we just set it onto animate + set options to not actually animate
-        if (dontAnimate) {
-          if (node) {
-            const diff = getDiff(lastDontAnimate.current, dontAnimate)
-            if (diff) {
-              lastDontAnimate.current = dontAnimate
-              Object.assign(node.style, dontAnimate as any)
-            }
-            for (const key in lastDontAnimate.current) {
-              if (!(key in dontAnimate)) {
-                console.warn('delting', key, { dontAnimate, doAnimate })
-                delete node.style[key]
+      const flushAnimation = ({
+        doAnimate = {},
+        animationOptions = {},
+        dontAnimate,
+      }: AnimationProps) => {
+        // if (shouldDebug) {
+        //   if (Date.now() - lastAnimateAt.current < minTimeBetweenAnimations) {
+        //     console.warn('TO SOON')
+        //   }
+        // }
+
+        try {
+          const node = stateRef.current.host
+
+          if (shouldDebug) {
+            console.groupCollapsed(
+              `[motion] 🌊 animate (${JSON.stringify(getDiff(lastDoAnimate.current, doAnimate), null, 2)})`
+            )
+            console.info({
+              doAnimate,
+              dontAnimate,
+              animationOptions,
+              animationProps,
+              lastDoAnimate: { ...lastDoAnimate.current },
+              lastDontAnimate: { ...lastDontAnimate.current },
+              isExiting,
+              style,
+              node,
+            })
+            console.groupCollapsed(`trace >`)
+            console.trace()
+            console.groupEnd()
+            console.groupEnd()
+          }
+
+          if (!(node instanceof HTMLElement)) {
+            return
+          }
+
+          // handle case where dontAnimate changes
+          // we just set it onto animate + set options to not actually animate
+          if (dontAnimate) {
+            const prev = lastDontAnimate.current
+            if (prev) {
+              for (const key in prev) {
+                if (!(key in dontAnimate)) {
+                  node.style[key] = ''
+                }
+              }
+              const changed = getDiff(prev, dontAnimate)
+              if (changed) {
+                Object.assign(node.style, changed as any)
               }
             }
           }
-        }
 
-        const diff = getDiff(lastAnimationStyle.current, next)
+          lastDontAnimate.current = dontAnimate || {}
 
-        if (shouldDebug) {
-          console.groupCollapsed(`[motion] 🌊 animate (${JSON.stringify(diff, null, 2)})`)
-          console.info({
-            next,
-            animationOptions,
-            animationProps,
-            diff,
-            lastAnimationStyle: { ...lastAnimationStyle.current },
-          })
-          console.groupEnd()
-        }
+          if (updateFirstAnimationStyle()) {
+            return
+          }
 
-        if (!diff) {
-          return
-        }
+          const diff = getDiff(lastDoAnimate.current, doAnimate)
 
-        lastAnimateAt.current = Date.now()
-        controls.current = animate(scope.current, diff, animationOptions)
-        lastAnimationStyle.current = next
+          lastDoAnimate.current = doAnimate
+          lastAnimateAt.current = Date.now()
 
-        if (animationOptions.isExiting) {
-          controls.current.finished.then(() => {
-            sendExitComplete?.()
-          })
+          if (diff) {
+            controls.current = animate(scope.current, diff, animationOptions)
+          }
+        } finally {
+          if (isExiting) {
+            if (controls.current) {
+              controls.current.finished.then(() => {
+                sendExitComplete?.()
+              })
+            } else {
+              sendExitComplete?.()
+            }
+          }
         }
       }
 
@@ -258,39 +287,32 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
-          disableAnimation,
-          isExitingRender
+          disableAnimation
         )
-        runAnimation(animationProps)
+
+        flushAnimation(animationProps)
       })
 
-      // strict mode correctness fix, idk why i thought it would clear a useRef
-      // before running strict? if you remove this you'll see the next
-      // useLayoutEffect re-run and animate due to lastAnimationStyle.current
-      // being set when in theory it should be clear
-      useEffect(() => {
-        return () => {
-          lastAnimationStyle.current = null
-        }
-      }, [])
+      const animateKey = JSON.stringify(style)
 
       useIsomorphicLayoutEffect(() => {
-        if (!doAnimate) return
+        if (isFirstRender.current) {
+          updateFirstAnimationStyle()
+          isFirstRender.current = false
+          lastDontAnimate.current = dontAnimate
+          return
+        }
 
         // always clear queue if we re-render
         animationsQueue.current = []
 
-        runAnimation({
+        // don't ever queue on a render
+        flushAnimation({
           doAnimate,
+          dontAnimate,
           animationOptions,
         })
-      }, [JSON.stringify(doAnimate), lastAnimationStyle])
-
-      useIsomorphicLayoutEffect(() => {
-        lastDontAnimate.current = dontAnimate
-      })
-
-      const [initialStyle] = useState(() => ({ ...dontAnimate, ...doAnimate }))
+      }, [animateKey, isExiting])
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
@@ -298,16 +320,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           style,
           doAnimate,
           dontAnimate,
+          animateKey,
           scope,
           animationOptions,
-          initialStyle,
+          isExiting,
+          isFirstRender: isFirstRender.current,
         })
         console.groupEnd()
       }
 
       return {
-        // avoid first render returning wrong styles - always render all, after that we can just mutate
-        style: dontAnimate,
+        // we never change this, after first render on
+        style: firstRenderStyle,
         ref: scope,
         tag: 'div',
       }
@@ -382,8 +406,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   function getMotionAnimatedProps(
     props: { animation: AnimationProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
-    disable: boolean,
-    isExiting: boolean
+    disable: boolean
   ): AnimationProps {
     if (disable) {
       return {
@@ -423,12 +446,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     return {
       dontAnimate,
       doAnimate,
-      animationOptions: isExiting
-        ? {
-            ...animationOptions,
-            isExiting: true,
-          }
-        : animationOptions,
+      animationOptions,
     }
   }
 
@@ -486,28 +504,36 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 const disableAnimationProps = new Set<string>([
   'alignContent',
   'alignItems',
+  'aspectRatio',
   'backdropFilter',
   'boxSizing',
   'contain',
   'display',
   'flexBasis',
   'flexDirection',
+  'flexGrow',
   'flexShrink',
   'justifyContent',
+  'marginRight',
+  'marginLeft',
+  'marginBottom',
+  'marginTop',
   'maxHeight',
   'maxWidth',
   'minHeight',
   'minWidth',
+  'outlineColor',
+  'outlineStyle',
+  'outlineWidth',
   'overflow',
+  'overflowX',
+  'overflowY',
   'pointerEvents',
   'position',
   'textWrap',
+  'transformOrigin',
   'zIndex',
-  'overflowX',
-  'overflowY',
-  'outlineStyle',
-  'outlineWidth',
-  'outlineColor',
+  'WebkitBackdropFilter',
 ])
 
 const MotionView = createMotionView('div')

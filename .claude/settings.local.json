@@ -10,7 +10,8 @@
       "Bash(yarn install)",
       "Bash(cp:*)",
       "Bash(mv:*)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(git filter-branch:*)"
     ],
     "deny": []
   }
