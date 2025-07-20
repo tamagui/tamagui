@@ -244,11 +244,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           if (dontAnimate) {
             const prev = lastDontAnimate.current
             if (prev) {
-              for (const key in prev) {
-                if (!(key in dontAnimate)) {
-                  node.style[key] = ''
-                }
-              }
+              removeRemovedStyles(prev, dontAnimate, node)
               const changed = getDiff(prev, dontAnimate)
               if (changed) {
                 Object.assign(node.style, changed as any)
@@ -260,6 +256,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
           if (updateFirstAnimationStyle()) {
             return
+          }
+
+          const lastAnimated = lastDoAnimate.current
+          if (lastAnimated) {
+            removeRemovedStyles(lastAnimated, doAnimate, node)
           }
 
           const diff = getDiff(lastDoAnimate.current, doAnimate)
@@ -496,6 +497,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           }
         )
       ),
+    }
+  }
+}
+
+function removeRemovedStyles(prev: Object, next: Object, node: HTMLElement) {
+  for (const key in prev) {
+    if (!(key in next)) {
+      node.style[key] = ''
     }
   }
 }
