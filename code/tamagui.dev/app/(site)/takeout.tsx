@@ -1163,7 +1163,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
         },
       }}
     >
-      <YStack f={1} py="$3" space="$1">
+      <YStack f={1} py="$3" gap="$1">
         <Paragraph fontFamily="$mono" tt="uppercase" ls={4} size="$4">
           {props.title}
         </Paragraph>

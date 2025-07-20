@@ -68,7 +68,6 @@ export default function StudioSplashPage() {
                       mt={60}
                       animation="quick"
                       bg="$color10"
-                      color="$color1"
                       size="$6"
                       borderRadius="$10"
                       elevation="$2"
@@ -85,7 +84,7 @@ export default function StudioSplashPage() {
                         scale: 0.98,
                       }}
                     >
-                      Sponsor for early access
+                      <Button.Text color="$color1">Sponsor for early access</Button.Text>
                     </Button>
                   </Link>
                 </ThemeTintAlt>
@@ -243,7 +242,7 @@ const StudioScreen1 = memo(() => {
       })
 
       const Component = (
-        <YStack key={letter} pos="relative" scale={scale} zIndex={zIndex}>
+        <YStack key={letter} pos="relative" scale={scale || 1} zIndex={zIndex || 0}>
           <Glow.Component>
             <YStack
               animation={[
@@ -269,7 +268,7 @@ const StudioScreen1 = memo(() => {
                 fos={320}
                 lh={300}
                 fow="900"
-                rotate={rotate}
+                rotate={rotate || '0deg'}
                 zIndex={5}
                 {...headingProps}
               >
@@ -286,7 +285,7 @@ const StudioScreen1 = memo(() => {
                 fos={320}
                 lh={300}
                 fow="900"
-                rotate={rotate}
+                rotate={rotate || '0deg'}
                 zIndex={6}
                 {...headingProps}
               >

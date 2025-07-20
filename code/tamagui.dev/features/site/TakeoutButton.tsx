@@ -17,7 +17,7 @@ export const TakeoutButton = (props: ButtonProps) => {
       <Button.Text ff="$silkscreen" fontSize={12}>
         Takeout
       </Button.Text>
-      <YStack y={-1} dsp="inline-flex" mx={9}>
+      <YStack y={-1} dsp="inline-flex" mx="$1.5">
         <TakeoutIcon scale={0.75} />
       </YStack>
       <Button.Text
