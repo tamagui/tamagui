@@ -69,9 +69,9 @@ export const ExamplePalette = ({
         </XStack>
       )}
       <PaletteExample
-        showIndices={showIndices}
-        showNegativeIndices={showNegativeIndices}
-        theme={theme}
+        showIndices={showIndices ?? false}
+        showNegativeIndices={showNegativeIndices ?? false}
+        theme={theme ?? ''}
       />
     </YStack>
   )

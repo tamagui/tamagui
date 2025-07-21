@@ -1,5 +1,5 @@
-import { Check, CheckCircle, XCircle } from '@tamagui/lucide-icons'
-import type { ButtonProps, CheckboxProps, RadioGroupItemProps } from '@tamagui/ui'
+import { Check, CheckCircle } from '@tamagui/lucide-icons'
+import type { CheckboxProps, RadioGroupItemProps } from '@tamagui/ui'
 import {
   Button,
   Checkbox,
@@ -29,11 +29,11 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function PurchaseButton(props: ButtonProps) {
+export function PurchaseButton({ children, ...props }) {
   return (
     <Button size="$4" $gtXs={{ size: '$5' }} br="$10" {...props}>
       <Button.Text size="$5" ff="$mono">
-        {props.children}
+        {children}
       </Button.Text>
     </Button>
   )
@@ -48,7 +48,7 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
   return (
     <Label
       f={1}
-      htmlFor={props.id}
+      {...(props.id && { htmlFor: props.id })}
       p="$4"
       className="3d"
       height="unset"
@@ -75,9 +75,9 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
           bg: '$color4',
           bc: '$color6',
         }}
-        checked={props.checked}
-        size="$6"
         {...props}
+        checked={props.checked ?? false}
+        size="$6"
       >
         <Checkbox.Indicator
         // backgroundColor={props.checked ? '$color8' : '$color1'}
@@ -101,7 +101,7 @@ export const RadioGroupItem = ({
   return (
     <Label
       f={1}
-      htmlFor={props.id}
+      {...(props.id && { htmlFor: props.id })}
       p="$4"
       height="unset"
       display="flex"
@@ -250,4 +250,3 @@ export const TakeoutTable = ({
 }
 
 const checkCircle = <CheckCircle color="$green9" />
-const xCircle = <XCircle size={28} color="$red9" />

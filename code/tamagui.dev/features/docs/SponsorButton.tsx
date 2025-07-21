@@ -19,13 +19,12 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       borderWidth={props.tiny ? 0 : 1}
       borderColor="$borderColor"
       size={props.tiny ? '$3' : '$4'}
-      fontFamily="$silkscreen"
       br="$10"
       circular={props.tiny ? true : false}
       chromeless={props.tiny ? true : false}
       accessibilityLabel="Support OSS development of Tamagui"
     >
-      {props.tiny ? '' : 'Sponsor'}
+      <Button.Text ff="$silkscreen">{props.tiny ? '' : 'Sponsor'}</Button.Text>
     </Button>
   )
   return (

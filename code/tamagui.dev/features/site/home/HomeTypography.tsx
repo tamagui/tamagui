@@ -26,7 +26,7 @@ const families = ['silkscreen', 'mono', 'heading']
 
 export const HomeTypography = memo(() => {
   const [family, setFamily] = useState(`silkscreen`)
-  const ref = useRef<any>()
+  const ref = useRef<any>(null)
   const isIntersecting = useIsIntersecting(ref)
 
   useEffect(() => {
@@ -167,11 +167,7 @@ const OverlayCard = () => {
         </Paragraph>
 
         <Link asChild href="/docs/core/configuration">
-          <Button
-            accessibilityLabel="Fonts docs"
-            als="flex-end"
-            theme={tint as any}
-          >
+          <Button accessibilityLabel="Fonts docs" als="flex-end" theme={tint as any}>
             <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
           </Button>
         </Link>

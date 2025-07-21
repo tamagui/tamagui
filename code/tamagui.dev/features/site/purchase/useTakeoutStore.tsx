@@ -5,6 +5,9 @@ class TakeoutStore {
 
   showProAgreement = false
   showProPolicies = false
+  
+  showTakeoutFaq = false
+  showTakeoutAgreement = false
 }
 
 export const useTakeoutStore = createUseStore(TakeoutStore)

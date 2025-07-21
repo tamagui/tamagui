@@ -12,19 +12,7 @@ import { IconStack } from './IconStack'
 export const HomeHeroBelow = memo(() => {
   return (
     <>
-      <YStack
-        pos="relative"
-        zi={1000}
-        // elevation="$4"
-        // $theme-light={{
-        //   elevation: '$1',
-        // }}
-        py="$4"
-        pt="$6"
-        pb="$10"
-      >
-        {/* <YStack fullscreen bg="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" /> */}
-
+      <YStack pos="relative" zi={1000} py="$4" pt="$6" pb="$10">
         <HeroBelowContent />
       </YStack>
     </>

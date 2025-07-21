@@ -193,7 +193,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                 {title}
               </Heading>
             </Theme>
-            <XGroup size="$2" bordered>
+            <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button

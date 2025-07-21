@@ -381,7 +381,7 @@ const AccountHeader = () => {
       </Avatar>
 
       <YStack gap="$3" ai="flex-start" jc="center" f={1}>
-        <XStack jc="space-between" space ai="center">
+        <XStack jc="space-between" gap="$4" ai="center">
           <YStack f={1}>
             <H3
               mt={-5}
