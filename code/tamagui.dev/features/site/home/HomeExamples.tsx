@@ -77,9 +77,8 @@ export const HomeExamples = memo(
                       chromeless={i !== activeIndex}
                       borderRadius={0}
                       size="$3"
-                      fontFamily="$silkscreen"
                     >
-                      {example.name}
+                      <Button.Text fontFamily="$silkscreen">{example.name}</Button.Text>
                     </Button>
                   </XGroup.Item>
                 )
@@ -204,7 +203,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     size="$2"
                     borderRadius="$0"
                   >
-                    {example.name}
+                    <Button.Text>{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}

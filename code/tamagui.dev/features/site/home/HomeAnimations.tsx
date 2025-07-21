@@ -106,7 +106,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
                 zi={10}
                 onPress={() => setDisableScrollPane(false)}
               >
-                View more
+                <Button.Text>View more</Button.Text>
               </Button>
             </YStack>
 
@@ -125,8 +125,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
         <XStack als="center" gap="$3">
           <Link href="/docs/core/animations">
-            <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen">
-              Docs &raquo;
+            <Button accessibilityLabel="Animation docs">
+              <Button.Text fontFamily="$silkscreen">Docs &raquo;</Button.Text>
             </Button>
           </Link>
         </XStack>

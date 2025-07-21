@@ -2,7 +2,6 @@ import type { GetProps, ButtonProps as TamaguiButtonProps } from '@tamagui/ui'
 import {
   Button,
   styled,
-  useButton,
   useTheme,
   useThemeName,
 } from '@tamagui/ui'
@@ -22,8 +21,11 @@ export type CustomButtonProps = TamaguiButtonProps &
 
 export const CustomButton = CustomButtonFrame.styleable<CustomButtonProps>(
   (propsIn, ref) => {
-    const { props } = useButton(propsIn, { Text: CustomButtonText })
-    return <CustomButtonFrame {...props} ref={ref} />
+    return (
+      <CustomButtonFrame {...propsIn} ref={ref}>
+        <CustomButtonText>{propsIn.children}</CustomButtonText>
+      </CustomButtonFrame>
+    )
   }
 )
 
@@ -43,10 +45,13 @@ export type CustomButtonProps2 = TamaguiButtonProps &
   CustomButtonFrameProps2 &
   CustomButtonTextProps2
 
-export const CustomButton2 = CustomButtonFrame.styleable<CustomButtonProps>(
+export const CustomButton2 = CustomButtonFrame2.styleable<CustomButtonProps2>(
   (propsIn, ref) => {
-    const { props } = useButton(propsIn, { Text: CustomButtonText2 })
-    return <CustomButtonFrame2 {...props} ref={ref} />
+    return (
+      <CustomButtonFrame2 {...propsIn} ref={ref}>
+        <CustomButtonText2>{propsIn.children}</CustomButtonText2>
+      </CustomButtonFrame2>
+    )
   }
 )
 

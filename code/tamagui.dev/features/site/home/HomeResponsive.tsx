@@ -302,12 +302,11 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
           left={0}
           y={-20}
           x={-17}
-          fontSize={12}
           onPress={() => {
             onPress(name)
           }}
         >
-          {name}
+          <Button.Text fontSize={12}>{name}</Button.Text>
         </Button>
       </XStack>
     </YStack>

@@ -167,13 +167,12 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
                   <Button
                     br="$10"
                     my="$3"
-                    fontFamily="$mono"
                     onPress={() => {
                       showAppropriateModal()
                       setOpen(false)
                     }}
                   >
-                    More info
+                    <Button.Text fontFamily="$mono">More info</Button.Text>
                   </Button>
                 </Theme>
               )}

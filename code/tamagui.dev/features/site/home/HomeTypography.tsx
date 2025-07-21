@@ -169,11 +169,10 @@ const OverlayCard = () => {
         <Link asChild href="/docs/core/configuration">
           <Button
             accessibilityLabel="Fonts docs"
-            fontFamily="$silkscreen"
             als="flex-end"
             theme={tint as any}
           >
-            Fonts &raquo;
+            <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
           </Button>
         </Link>
       </YStack>

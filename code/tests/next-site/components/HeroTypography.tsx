@@ -1,13 +1,22 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { memo, useEffect, useRef, useState } from 'react'
 import type { Heading, TextProps } from '@tamagui/ui'
-import { Button, Card, H1, H2, Paragraph, XStack, YStack, useDidFinishSSR } from '@tamagui/ui'
+import {
+  Button,
+  Card,
+  H1,
+  H2,
+  Paragraph,
+  XStack,
+  YStack,
+  useDidFinishSSR,
+} from '@tamagui/ui'
 
 const families = ['silkscreen', 'mono', 'heading']
 
 export const HeroTypography = memo(() => {
   const [family, setFamily] = useState(`silkscreen`)
-  const ref = useRef<any>()
+  const ref = useRef<any>(null)
   const isIntersecting = false
 
   useEffect(() => {
@@ -140,8 +149,8 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <Button aria-label="Fonts docs" fontFamily="$silkscreen" als="flex-end">
-          Fonts &raquo;
+        <Button aria-label="Fonts docs" als="flex-end">
+          <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
         </Button>
       </YStack>
     </Card>

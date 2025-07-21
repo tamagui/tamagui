@@ -73,10 +73,9 @@ const BenchmarksLink = () => {
     <Link href="/docs/intro/benchmarks">
       <Button
         accessibilityLabel="Performance benchmarks"
-        fontFamily="$silkscreen"
         theme={tint as any}
       >
-        Benchmarks &raquo;
+        <Button.Text fontFamily="$silkscreen">Benchmarks &raquo;</Button.Text>
       </Button>
     </Link>
   )
@@ -86,8 +85,8 @@ const CompilerLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/why-a-compiler">
-      <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint as any}>
-        About &raquo;
+      <Button accessibilityLabel="Compiler" theme={tint as any}>
+        <Button.Text fontFamily="$silkscreen">About &raquo;</Button.Text>
       </Button>
     </Link>
   )

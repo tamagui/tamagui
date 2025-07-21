@@ -411,7 +411,6 @@ const PaymentForm = ({
               }}
             >
               <Button
-                fontFamily="$mono"
                 br="$10"
                 als="flex-end"
                 $maxMd={{
@@ -419,7 +418,9 @@ const PaymentForm = ({
                 }}
                 disabled={isProcessing || !stripe || !elements}
               >
-                {isProcessing ? 'Processing...' : 'Complete purchase'}
+                <Button.Text fontFamily="$mono">
+                  {isProcessing ? 'Processing...' : 'Complete purchase'}
+                </Button.Text>
               </Button>
             </YStack>
           </Theme>
@@ -529,7 +530,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             icon={GithubIcon}
             disabled={!supabaseClient}
           >
-            Continue with GitHub
+            <Button.Text>Continue with GitHub</Button.Text>
           </Button>
         </YStack>
       )
@@ -730,7 +731,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   onChangeText={setCouponCode}
                 />
                 <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
-                  Apply
+                  <Button.Text>Apply</Button.Text>
                 </Button>
               </XStack>
             )}

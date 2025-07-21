@@ -72,7 +72,7 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         left="$4"
         circular
-        elevate
+        elevation="$4"
         onPress={() => paginate(-1)}
         zIndex={100}
       />
@@ -84,7 +84,7 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         right="$4"
         circular
-        elevate
+        elevation="$4"
         onPress={() => paginate(1)}
         zIndex={100}
       />

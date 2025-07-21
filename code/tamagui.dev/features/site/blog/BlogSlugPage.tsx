@@ -41,7 +41,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
               <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
-                {isDraft ? 'Drafts' : 'Blog'}
+                <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>
           </ThemeTint>
@@ -88,7 +88,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             {frontmatter.type === 'changelog' && (
               <>
                 <Separator vertical mx="$2" />
-                <Button>Changelog</Button>
+                <Button><Button.Text>Changelog</Button.Text></Button>
               </>
             )}
           </YStack>
