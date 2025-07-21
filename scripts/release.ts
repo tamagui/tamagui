@@ -320,7 +320,9 @@ async function run() {
 
       if (!canary && !skipStarters) {
         const starterFreeDir = join(process.cwd(), '../starter-free')
-        await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
+        if (!dirty) {
+          await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
+        }
 
         await spawnify(`yarn upgrade:starters`)
 
