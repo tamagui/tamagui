@@ -32,8 +32,6 @@ import React, {
   useState,
 } from 'react'
 
-// TODO: useAnimatedNumber style could avoid re-rendering
-
 type MotionAnimatedNumber = MotionValue<number>
 type AnimationConfig = ValueTransition
 
@@ -115,7 +113,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const animationsQueue = useRef<AnimationProps[]>([])
       const lastAnimateAt = useRef(0)
-      const minTimeBetweenAnimations = 32
       const disposed = useRef(false)
       const [firstRenderStyle] = useState(style)
 
@@ -254,23 +251,24 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
           lastDontAnimate.current = dontAnimate || {}
 
-          if (updateFirstAnimationStyle()) {
-            return
-          }
+          if (doAnimate) {
+            if (updateFirstAnimationStyle()) {
+              return
+            }
 
-          const lastAnimated = lastDoAnimate.current
-          if (lastAnimated) {
-            removeRemovedStyles(lastAnimated, doAnimate, node)
-          }
+            const lastAnimated = lastDoAnimate.current
+            if (lastAnimated) {
+              removeRemovedStyles(lastAnimated, doAnimate, node)
+            }
 
-          const diff = getDiff(lastDoAnimate.current, doAnimate)
+            const diff = getDiff(lastDoAnimate.current, doAnimate)
+            if (diff) {
+              controls.current = animate(scope.current, diff, animationOptions)
+            }
+          }
 
           lastDoAnimate.current = doAnimate
           lastAnimateAt.current = Date.now()
-
-          if (diff) {
-            controls.current = animate(scope.current, diff, animationOptions)
-          }
         } finally {
           if (isExiting) {
             if (controls.current) {
@@ -301,6 +299,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           updateFirstAnimationStyle()
           isFirstRender.current = false
           lastDontAnimate.current = dontAnimate
+          lastDoAnimate.current = doAnimate || {}
           return
         }
 
