@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.132.10-1753040935992",
+  "version": "1.132.11",
   "sideEffects": [
     "*.css"
   ],
