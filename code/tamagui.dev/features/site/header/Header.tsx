@@ -711,7 +711,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
                   }}
                 >
-                  <SizableText size="$3" color="$color11" ellipse>
+                  <SizableText size="$3" color="$color11" ellipsis>
                     Enabled
                   </SizableText>
 
@@ -723,7 +723,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     bentoStore.disableTint = !bentoStore.disableTint
                   }}
                 >
-                  <SizableText size="$3" color="$color11" ellipse>
+                  <SizableText size="$3" color="$color11" ellipsis>
                     Tint
                   </SizableText>
 
@@ -750,7 +750,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                   onPress={() => updateGenerate(history.theme_data)}
                 >
                   <XStack ai="center" jc="space-between">
-                    <SizableText size="$3" color="$color11" ellipse>
+                    <SizableText size="$3" color="$color11" ellipsis>
                       {history.search_query}
                     </SizableText>
                   </XStack>
