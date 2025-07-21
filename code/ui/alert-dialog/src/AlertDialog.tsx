@@ -69,29 +69,29 @@ const NativeAlertDialogTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
 })
 
-const AlertDialogTrigger = React.forwardRef<TamaguiElement, AlertDialogTriggerProps>(
-  function AlertDialogTrigger(props, forwardedRef) {
-    if (props['__native']) {
-      const { __native, onPress, __onPress, ...rest } = props as any
+const AlertDialogTrigger =
+  NativeAlertDialogTriggerFrame.styleable<AlertDialogTriggerProps>(
+    function AlertDialogTrigger(props, forwardedRef) {
+      if (props['__native']) {
+        const { __native, onPress, __onPress, ...rest } = props as any
+        return (
+          <NativeAlertDialogTriggerFrame
+            {...rest}
+            onPress={composeEventHandlers(onPress, __onPress)}
+          />
+        )
+      }
+
+      const { scope, ...triggerProps } = props
       return (
-        <NativeAlertDialogTriggerFrame
-          {...rest}
-          onPress={composeEventHandlers(onPress, __onPress)}
+        <DialogTrigger
+          scope={getAlertDialogScope(scope)}
+          {...triggerProps}
+          ref={forwardedRef}
         />
       )
     }
-
-    const { scope, ...triggerProps } = props
-
-    return (
-      <DialogTrigger
-        scope={getAlertDialogScope(scope)}
-        {...triggerProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+  )
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogPortal
@@ -121,19 +121,17 @@ const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
 type AlertDialogOverlayExtraProps = ScopedProps<{}> & DialogOverlayExtraProps
 type AlertDialogOverlayProps = AlertDialogOverlayExtraProps & DialogOverlayProps
 
-const AlertDialogOverlay = AlertDialogOverlayFrame.extractable(
-  React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
-    function AlertDialogOverlay(props, forwardedRef) {
-      const { scope, ...overlayProps } = props
-      return (
-        <DialogOverlay
-          scope={getAlertDialogScope(scope)}
-          {...overlayProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
+const AlertDialogOverlay = AlertDialogOverlayFrame.styleable<AlertDialogOverlayProps>(
+  function AlertDialogOverlay(props, forwardedRef) {
+    const { scope, ...overlayProps } = props
+    return (
+      <DialogOverlay
+        scope={getAlertDialogScope(scope)}
+        {...overlayProps}
+        ref={forwardedRef}
+      />
+    )
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -214,8 +212,12 @@ const TITLE_NAME = 'AlertDialogTitle'
 
 type AlertDialogTitleProps = ScopedProps<DialogTitleProps>
 
-const AlertDialogTitle = React.forwardRef<TamaguiElement, AlertDialogTitleProps>(
-  function AlertDialogTitle(props: ScopedProps<AlertDialogTitleProps>, forwardedRef) {
+const AlertDialogTitleFrame = styled(View, {
+  name: TITLE_NAME,
+})
+
+const AlertDialogTitle = AlertDialogTitleFrame.styleable<AlertDialogTitleProps>(
+  function AlertDialogTitle(props, forwardedRef) {
     const { scope, ...titleProps } = props
     return (
       <DialogTitle
@@ -235,19 +237,23 @@ const DESCRIPTION_NAME = 'AlertDialogDescription'
 
 type AlertDialogDescriptionProps = ScopedProps<DialogDescriptionProps>
 
-const AlertDialogDescription = React.forwardRef<
-  TamaguiElement,
-  AlertDialogDescriptionProps
->(function AlertDialogDescription(props, forwardedRef) {
-  const { scope, ...descriptionProps } = props
-  return (
-    <DialogDescription
-      scope={getAlertDialogScope(scope)}
-      {...descriptionProps}
-      ref={forwardedRef}
-    />
-  )
+const AlertDialogDescriptionFrame = styled(View, {
+  name: DESCRIPTION_NAME,
 })
+
+const AlertDialogDescription =
+  AlertDialogDescriptionFrame.styleable<AlertDialogDescriptionProps>(
+    function AlertDialogDescription(props, forwardedRef) {
+      const { scope, ...descriptionProps } = props
+      return (
+        <DialogDescription
+          scope={getAlertDialogScope(scope)}
+          {...descriptionProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogAction
@@ -257,7 +263,11 @@ const ACTION_NAME = 'AlertDialogAction'
 
 type AlertDialogActionProps = ScopedProps<DialogCloseProps>
 
-const AlertDialogAction = React.forwardRef<TamaguiElement, AlertDialogActionProps>(
+const AlertDialogActionFrame = styled(View, {
+  name: ACTION_NAME,
+})
+
+const AlertDialogAction = AlertDialogActionFrame.styleable<AlertDialogActionProps>(
   function AlertDialogAction(props, forwardedRef) {
     const { scope, ...actionProps } = props
     return (
@@ -278,7 +288,11 @@ const CANCEL_NAME = 'AlertDialogCancel'
 
 type AlertDialogCancelProps = ScopedProps<DialogCloseProps>
 
-const AlertDialogCancel = React.forwardRef<TamaguiElement, AlertDialogCancelProps>(
+const AlertDialogCancelFrame = styled(View, {
+  name: CANCEL_NAME,
+})
+
+const AlertDialogCancel = AlertDialogCancelFrame.styleable<AlertDialogCancelProps>(
   function AlertDialogCancel(props, forwardedRef) {
     const { scope, ...cancelProps } = props
     const { cancelRef } = useAlertDialogContentContext(scope)
