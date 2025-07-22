@@ -33,10 +33,21 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./v1": {
+      "react-native": {
+        "import": "./dist/esm/v1/index.native.js",
+        "require": "./dist/cjs/v1/index.native.js"
+      },
+      "types": "./types/v1/index.d.ts",
+      "import": "./dist/esm/v1/index.mjs",
+      "require": "./dist/cjs/v1/index.cjs",
+      "default": "./dist/cjs/v1/index.native.js"
     }
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "peerDependencies": {
