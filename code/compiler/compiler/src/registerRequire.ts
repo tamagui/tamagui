@@ -51,7 +51,7 @@ export function registerRequire(
 
   function tamaguiRequire(this: any, path: string) {
     if (path === '@tamagui/ui' && platform === 'native') {
-      return og.apply(this, ['tamagui/native'])
+      return og.apply(this, ['@tamagui/ui/native'])
     }
 
     if (path === '@tamagui/core' || path === '@tamagui/web') {
