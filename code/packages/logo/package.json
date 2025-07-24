@@ -47,7 +47,7 @@
     "@tamagui/ui": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "one": "1.1.505"
+    "one": "1.1.506"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

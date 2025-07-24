@@ -59,7 +59,7 @@
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
     "masonic": "^4.0.1",
-    "one": "1.1.505",
+    "one": "1.1.506",
     "postmark": "^3.0.18",
     "puppeteer": "^24.3.1",
     "react-hotkeys-hook": "^4.5.0",
