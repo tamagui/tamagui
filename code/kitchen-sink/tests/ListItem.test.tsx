@@ -48,7 +48,7 @@ test('ListItem renders correctly with dark theme', async ({ page }) => {
 
 test('ListItem with themeInverse renders correctly in light theme', async ({ page }) => {
   const listItem = page.locator('#themed-list-item-light-inverse')
-  const title = listItem.getByText('<ListItem themeInverse/>', { exact: true })
+  const title = listItem.getByText('<Theme inverse>', { exact: true })
   const subTitle = listItem.getByText('Forcing dark theme - light + inverse', {
     exact: true,
   })
@@ -63,7 +63,7 @@ test('ListItem with themeInverse renders correctly in light theme', async ({ pag
 
 test('ListItem with themeInverse renders correctly in dark theme', async ({ page }) => {
   const listItem = page.locator('#themed-list-item-dark-inverse')
-  const title = listItem.getByText('<ListItem themeInverse/>', { exact: true })
+  const title = listItem.getByText('<Theme inverse>', { exact: true })
   const subTitle = listItem.getByText('Forcing light theme - dark + inverse', {
     exact: true,
   })

@@ -1,4 +1,4 @@
-import { Button, Paragraph, Tooltip, TooltipSimple, YStack } from 'tamagui'
+import { Button, Paragraph, Tooltip, TooltipSimple, YStack } from '@tamagui/ui'
 
 export function TooltipCase() {
   return (

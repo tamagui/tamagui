@@ -43,12 +43,12 @@ type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>;
 declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     fullscreen?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -74,12 +74,12 @@ declare const ButtonIcon: (props: {
 declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     fullscreen?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -122,12 +122,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     fullscreen?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -200,12 +200,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
 }, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     fullscreen?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -219,12 +219,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         disabled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
         fullscreen?: boolean | undefined;
         backgrounded?: boolean | undefined;
@@ -297,12 +297,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     }, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         disabled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
         fullscreen?: boolean | undefined;
         backgrounded?: boolean | undefined;
