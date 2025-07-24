@@ -16,22 +16,23 @@ import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilder
 import { NoticeParagraph, StudioNotice } from '../../../StudioNotice'
 import { defaultBaseTheme } from '../../constants/defaultBaseTheme'
 import { getUniqueId } from '../../helpers/getUniqueId'
-import type { BuildPalette, BuildTheme } from '../../types'
+import type { BuildTheme } from '../../types'
+import type { BuildPalette } from '@tamagui/theme-builder'
 import { AddDropdown } from '../../views/AddDropdown'
 import { ColorThemeIndicator } from '../../views/ColorThemeIndicator'
 import { BuildThemeItem } from '../views/BuildThemeItem'
 import { Stage, StageButtonBar, useSteps } from '../views/Stage'
 import { ThemeBuilderPalettesPane } from '../views/ThemeBuilderPalettesPane'
 
-type StepSubThemesProps = {
-  previewMode?: boolean
-}
+// type StepSubThemesProps = {
+//   previewMode?: boolean
+// }
 
 const useSubThemesSteps = () => {
   return useSteps({ id: 'step-sub-themes', total: 2, initial: 1 })
 }
 
-export const StepSubThemes = memo(({ previewMode }: StepSubThemesProps) => {
+export const StepSubThemes = memo(() => {
   const store = useThemeBuilderStore()
   const steps = useSubThemesSteps()
 
@@ -61,20 +62,20 @@ export const StepSubThemes = memo(({ previewMode }: StepSubThemesProps) => {
   return (
     <YStack mx="$-5" f={1}>
       <StageButtonBar steps={steps} />
-      <Stage current={steps.index} steps={[<ThemeBuilderPalettesPane />, <Themes />]} />
+      <Stage current={steps.index} steps={[<ThemeBuilderPalettesPane key="palettes" />, <Themes key="themes" />]} />
     </YStack>
   )
 })
 
-export const Themes = memo(({ previewMode }: StepSubThemesProps) => {
+export const Themes = memo(() => {
   const store = useThemeBuilderStore()
 
   return (
     <YStack f={1} gap="$4" py="$4" px="$2">
       {store.subThemes
         // .sort((a, b) => (a.id === store.selectedSubTheme ? -1 : 1))
-        .map((theme, index) => {
-          const handleUpdate = (next) => {
+        .map((theme) => {
+          const handleUpdate = (next: Partial<BuildTheme>) => {
             store.updateSubTheme({
               ...theme,
               ...next,
@@ -297,7 +298,7 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
 ]
 
 export function BaseThemesStepPreviewThemes() {
-  return <StepSubThemes previewMode />
+  return <StepSubThemes />
 }
 
 export function BaseThemesStepPreview() {

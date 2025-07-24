@@ -8,7 +8,6 @@ import type { XStackProps } from '@tamagui/ui'
 import {
   Anchor,
   Button,
-  Separator,
   SizableText,
   Theme,
   TooltipGroup,
@@ -312,7 +311,7 @@ const PaletteView = memo((props: Props) => {
           <StepThemeHoverablePalette
             palette={palette}
             colors={colors.light}
-            onSelect={(color, index) => toggleAnchorAt(index)}
+            onSelect={(_, index) => toggleAnchorAt(index)}
           />
         </XLabeledItem>
 
@@ -323,7 +322,7 @@ const PaletteView = memo((props: Props) => {
 
       <XLabeledItem label="">
         <YStack gap="$4">
-          <XStack gap="$4" separator={<Separator vertical />}>
+          <XStack gap="$4">
             <DataItem
               width={50}
               labelTop=""
@@ -379,7 +378,7 @@ const PaletteView = memo((props: Props) => {
           <StepThemeHoverablePalette
             palette={palette}
             colors={colors.dark}
-            onSelect={(color, index) => toggleAnchorAt(index)}
+            onSelect={(_, index) => toggleAnchorAt(index)}
           />
         </XLabeledItem>
 
@@ -540,7 +539,7 @@ const sliceToPalette = (colors: string[]) => {
 type PaletteProps = {
   colors: string[]
   size?: 'small' | 'medium'
-  children?: (color: string, index: number) => JSX.Element
+  children?: (color: string, index: number) => React.ReactElement
   palette: BuildPalette
   onSelect?: (color: string, index: number) => void
   isActive?: boolean
@@ -565,7 +564,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
 
 const delay = 50
 let hovered = -1
-let tm
+let tm: ReturnType<typeof setTimeout> | undefined
 
 const mouseEnter = (i: number, name: string) => {
   clearTimeout(tm)

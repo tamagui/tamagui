@@ -90,7 +90,7 @@ const Option = ({
       }}
     >
       <Checkbox
-        checked={active}
+        checked={active ?? false}
         onCheckedChange={onChange}
         id={id}
         size="$6"

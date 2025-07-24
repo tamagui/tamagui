@@ -39,6 +39,23 @@ export class ThemeBuilderStore {
   schemes = defaultThemeSuiteItem.schemes
   accentSetting: AccentSetting = 'color'
   templateStrategy: TemplateStrategy = 'base'
+  
+  // Sub-themes related properties
+  subThemes: BuildTheme[] = []
+  selectedSubTheme: string | null = null
+  showAddThemeMenu = false
+  baseTheme: BuildTheme = {
+    id: 'base',
+    name: 'base',
+    type: 'theme',
+    template: 'base',
+    palette: 'base'
+  }
+  
+  // Component themes related properties
+  componentThemes: BuildTheme[] = []
+  selectedComponentTheme: string | null = null
+  componentParentTheme: string | null = null
 
   private async sync(state: ThemeBuilderState) {
     if (!this.themeSuiteId) {
@@ -299,6 +316,39 @@ export class ThemeBuilderStore {
       },
     }
     await this.refreshThemeSuite()
+  }
+
+  setSelectedSubTheme(id: string) {
+    this.selectedSubTheme = id
+  }
+
+  addSubTheme(theme: BuildTheme) {
+    this.subThemes = [...this.subThemes, theme]
+    if (!this.selectedSubTheme) {
+      this.selectedSubTheme = theme.id
+    }
+  }
+
+  updateSubTheme(theme: BuildTheme) {
+    this.subThemes = this.subThemes.map(t => t.id === theme.id ? theme : t)
+  }
+
+  deleteSubTheme(theme: BuildTheme) {
+    this.subThemes = this.subThemes.filter(t => t.id !== theme.id)
+    if (this.selectedSubTheme === theme.id) {
+      this.selectedSubTheme = this.subThemes[0]?.id || null
+    }
+  }
+
+  addPalette(palette: BuildPalette) {
+    this.palettes = {
+      ...this.palettes,
+      [palette.name]: palette
+    }
+  }
+
+  setSelectedComponentTheme(id: string) {
+    this.selectedComponentTheme = id
   }
 
   get sectionsFlat() {

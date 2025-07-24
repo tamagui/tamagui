@@ -1,4 +1,4 @@
-import { useStore, useStoreSelector } from '@tamagui/use-store'
+import { useStoreSelector } from '@tamagui/use-store'
 import { memo, useEffect } from 'react'
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   YStack,
 } from '@tamagui/ui'
 
-import { Select } from '../../../components/Select'
+import { Select } from '../../../../../components/Select'
 import {
   ThemeBuilderStore,
   themeBuilderStore,
@@ -20,8 +20,8 @@ import {
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { AddDropdown } from '../../views/AddDropdown'
 import { Stage, StageButtonBar, useSteps } from '../views/Stage'
-import { ThemeBuilderPalettesPane } from '../views/ThemeBuilderPalettesPane'
-import type { PreviewComponent } from './components'
+// import { ThemeBuilderPalettesPane } from '../views/ThemeBuilderPalettesPane'
+// import type { PreviewComponent } from './components'
 import { components } from './components'
 
 const useComponentThemesSteps = () => {
@@ -58,14 +58,14 @@ export const StepComponentThemes = memo(() => {
       </XStack>
       <Separator />
       <StageButtonBar steps={steps} />
-      <Stage current={steps.index} steps={[<ThemeBuilderPalettesPane />, <Themes />]} />
+      <Stage current={steps.index} steps={[<YStack key="palettes" />, <Themes key="themes" />]} />
     </YStack>
   )
 })
 
 const SelectComponentTheme = () => {
-  const store = useThemeBuilderStore()
-  const selected = store.selectedComponentTheme
+  // const store = useThemeBuilderStore()
+  // const selected = store.selectedComponentTheme
 
   return (
     <XStack ai="center" gap="$3">
@@ -78,13 +78,13 @@ const SelectComponentTheme = () => {
 }
 
 export const Themes = memo(() => {
-  const store = useThemeBuilderStore()
+  // const store = useThemeBuilderStore()
 
   return (
     <YStack gap="$4" py="$4" px="$2">
       {[]
         // .sort((a, b) => (a.id === store.selectedComponentTheme ? -1 : 1))
-        .map((theme, index) => {
+        .map(() => {
           return null
           // const handleUpdate = (next) => {
           //   store.updateComponentTheme({
@@ -127,7 +127,7 @@ export function StepComponentThemesActions() {
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>
           {[].map(
-            ({ theme, palette }) => null
+            () => null
             // <AddDropdown.Item
             //   size="$3"
             //   key={theme.name}
@@ -184,7 +184,7 @@ const SelectParentTheme = () => {
         w={200}
         value="base"
         onValueChange={(val) => {
-          store.componentParentTheme = val as any
+          store.componentParentTheme = val
         }}
       >
         <Select.Item index={0} value="base">
@@ -200,7 +200,9 @@ const SelectParentTheme = () => {
 }
 
 const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
-  const { Preview, parts } = components[name] as PreviewComponent
+  const component = components.find(c => c.name === name)
+  const Preview = component?.component || (() => null)
+  const parts: any[] = []
   const isActive = useStoreSelector(
     ThemeBuilderStore,
     (x) => x.selectedComponentTheme === name
@@ -255,7 +257,7 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
         <XStack maw="100%" ov="hidden">
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack ai="center" jc="center" gap="$2" px="$4" py="$2">
-              {parts.map((part) => {
+              {parts.map((part: any) => {
                 return (
                   <YStack key={part.name}>
                     <Button size="$3">{part.name}</Button>
