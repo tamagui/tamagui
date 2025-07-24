@@ -51,7 +51,7 @@ const createGroupListener = (
     return () => {}
   }
 
-  return parent.subscribe(({ layout, pseudo }) => {
+  const dispose = parent.subscribe(({ layout, pseudo }) => {
     setStateShallow((prev) => {
       let didChange = false
       const group = prev.group?.[name] || {
@@ -88,4 +88,12 @@ const createGroupListener = (
       return prev
     })
   })
+
+  return () => {
+    dispose()
+    // we no longer have any active group, need to remove state so the style updates
+    setStateShallow({
+      group: {},
+    })
+  }
 }

@@ -21,6 +21,7 @@ import { getShorthandValue } from './helpers/getShorthandValue'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
+import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
 import { themeable } from './helpers/themeable'
@@ -425,9 +426,8 @@ export function createComponent<
         return groupContextParent
       }
 
-      // TODO this shouldn't be in useMemo
-      stateRef.current.group?.listeners.clear()
       const listeners = new Set<GroupStateListener>()
+      stateRef.current.group?.listeners?.clear()
       stateRef.current.group = {
         listeners,
         emit(state) {
@@ -635,6 +635,8 @@ export function createComponent<
       debugProp
     )
 
+    const isPassthrough = !splitStyles
+
     // splitStyles === null === passThrough
 
     const groupContext = groupName ? allGroupContexts?.[groupName] || null : null
@@ -642,7 +644,7 @@ export function createComponent<
     // one tiny mutation 🙏 get width/height optimistically from raw values if possible
     // if set hardcoded it avoids extra renders
     if (
-      splitStyles &&
+      !isPassthrough &&
       groupContext &&
       // avoids onLayout if we don't need it
       props.containerType !== 'normal'
@@ -661,7 +663,7 @@ export function createComponent<
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
     if (
-      splitStyles &&
+      !isPassthrough &&
       (hasAnimationProp || groupName) &&
       animationDriver?.avoidReRenders
     ) {
@@ -670,22 +672,6 @@ export function createComponent<
       stateRef.current.updateStyleListener = () => {
         const updatedState = NextState.get(stateRef) || state
         const mediaState = NextMedia.get(stateRef)
-        const {
-          group,
-          hasDynGroupChildren,
-          unmounted,
-          animation,
-          ...childrenGroupState
-        } = updatedState
-
-        // update before getting styles
-        if (groupContext) {
-          notifyGroupSubscribers(
-            groupContext,
-            stateRef.current.group || null,
-            childrenGroupState
-          )
-        }
 
         const nextStyles = getSplitStyles(
           props,
@@ -705,6 +691,24 @@ export function createComponent<
         const useStyleListener = stateRef.current.useStyleListener
 
         useStyleListener?.((nextStyles?.style || {}) as any)
+      }
+
+      function updateGroupListeners() {
+        const updatedState = NextState.get(stateRef)!
+        if (groupContext) {
+          const {
+            group,
+            hasDynGroupChildren,
+            unmounted,
+            animation,
+            ...childrenGroupState
+          } = updatedState
+          notifyGroupSubscribers(
+            groupContext,
+            stateRef.current.group || null,
+            childrenGroupState
+          )
+        }
       }
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
@@ -739,11 +743,15 @@ export function createComponent<
             debugProp &&
             debugProp !== 'profile'
           ) {
-            console.groupCollapsed(`[⚡️] avoid setState`, next, { updatedState, props })
+            console.groupCollapsed(`[⚡️] avoid setState`, componentName, next, {
+              updatedState,
+              props,
+            })
             console.info(stateRef.current.host)
             console.groupEnd()
           }
 
+          updateGroupListeners()
           stateRef.current.updateStyleListener?.()
         } else {
           if (
@@ -917,7 +925,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
     if (
-      splitStyles &&
+      !isPassthrough &&
       groupContext && // avoids onLayout if we don't need it
       props.containerType !== 'normal'
     ) {
@@ -1036,6 +1044,7 @@ export function createComponent<
 
     useIsomorphicLayoutEffect(() => {
       if (disabled) return
+
       if (!pseudoGroups && !mediaGroups) return
       if (!allGroupContexts) return
       return subscribeToContextGroup({
@@ -1047,13 +1056,14 @@ export function createComponent<
     }, [
       allGroupContexts,
       disabled,
-      pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
-      mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
+      pseudoGroups ? objectIdentityKey(pseudoGroups) : 0,
+      mediaGroups ? objectIdentityKey(mediaGroups) : 0,
     ])
 
     const groupEmitter = stateRef.current.group
     useIsomorphicLayoutEffect(() => {
       if (!groupContext || !groupEmitter) return
+
       notifyGroupSubscribers(groupContext, groupEmitter, state)
     }, [groupContext, groupEmitter, state])
 
@@ -1299,8 +1309,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
-    // passthrough mode - only pass style display contents, nothing else
-    if (!splitStyles) {
+    if (isPassthrough) {
       content = propsIn.children
       elementType = BaseViewComponent
       viewProps = {
@@ -1379,7 +1388,7 @@ export function createComponent<
         content = (
           <span
             className="_dsp_contents"
-            {...(splitStyles && isHydrated && events && getWebEvents(events))}
+            {...(!isPassthrough && isHydrated && events && getWebEvents(events))}
           >
             {content}
           </span>
@@ -1413,7 +1422,7 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
       // breaking rules of hooks but startedUnhydrated NEVER changes
       const styleTags = useMemo(() => {
-        if (!splitStyles) return
+        if (isPassthrough) return
         return getStyleTags(Object.values(splitStyles.rulesToInsert))
       }, [])
       // this is only to appease react hydration really

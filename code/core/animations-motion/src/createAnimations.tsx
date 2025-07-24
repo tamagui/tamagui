@@ -325,6 +325,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           animationOptions,
           isExiting,
           isFirstRender: isFirstRender.current,
+          animationProps,
         })
         console.groupEnd()
       }
