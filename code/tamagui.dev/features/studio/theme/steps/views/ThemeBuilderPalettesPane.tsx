@@ -40,7 +40,7 @@ export const ThemeBuilderPalettesPane = memo(() => {
             </YStack>
           </XStack>
         ))}
-        
+
         {palettes.length === 0 && (
           <YStack f={1} ai="center" jc="center" gap="$4">
             <Paragraph theme="alt1">No palettes defined yet</Paragraph>

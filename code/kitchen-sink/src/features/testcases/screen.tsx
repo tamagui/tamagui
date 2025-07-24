@@ -17,7 +17,7 @@ export function TestCasesScreen() {
             {Object.keys(TestCases).map((page) => {
               return (
                 <YGroup.Item key={page}>
-                  <LinkListItem href={`/test/${page}`} pressTheme size="$4">
+                  <LinkListItem href={`/test/${page}`} size="$4">
                     {page}
                   </LinkListItem>
                 </YGroup.Item>

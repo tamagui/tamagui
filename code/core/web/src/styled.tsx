@@ -133,13 +133,7 @@ export function styled<
   )
 
   const staticConfigProps = (() => {
-    let {
-      variants,
-      name,
-      defaultVariants,
-      context,
-      ...defaultProps
-    } = options || {}
+    let { variants, name, defaultVariants, context, ...defaultProps } = options || {}
 
     let parentDefaultVariants
     let parentDefaultProps

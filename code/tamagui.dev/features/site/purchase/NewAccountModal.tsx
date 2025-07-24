@@ -686,7 +686,9 @@ const DiscordPanel = ({
         </Fieldset>
 
         <Form.Trigger>
-          <Button icon={Search}><Button.Text>Search</Button.Text></Button>
+          <Button icon={Search}>
+            <Button.Text>Search</Button.Text>
+          </Button>
         </Form.Trigger>
       </Form>
 

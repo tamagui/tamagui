@@ -39,7 +39,7 @@ export class ThemeBuilderStore {
   schemes = defaultThemeSuiteItem.schemes
   accentSetting: AccentSetting = 'color'
   templateStrategy: TemplateStrategy = 'base'
-  
+
   // Sub-themes related properties
   subThemes: BuildTheme[] = []
   selectedSubTheme: string | null = null
@@ -49,9 +49,9 @@ export class ThemeBuilderStore {
     name: 'base',
     type: 'theme',
     template: 'base',
-    palette: 'base'
+    palette: 'base',
   }
-  
+
   // Component themes related properties
   componentThemes: BuildTheme[] = []
   selectedComponentTheme: string | null = null
@@ -330,11 +330,11 @@ export class ThemeBuilderStore {
   }
 
   updateSubTheme(theme: BuildTheme) {
-    this.subThemes = this.subThemes.map(t => t.id === theme.id ? theme : t)
+    this.subThemes = this.subThemes.map((t) => (t.id === theme.id ? theme : t))
   }
 
   deleteSubTheme(theme: BuildTheme) {
-    this.subThemes = this.subThemes.filter(t => t.id !== theme.id)
+    this.subThemes = this.subThemes.filter((t) => t.id !== theme.id)
     if (this.selectedSubTheme === theme.id) {
       this.selectedSubTheme = this.subThemes[0]?.id || null
     }
@@ -343,7 +343,7 @@ export class ThemeBuilderStore {
   addPalette(palette: BuildPalette) {
     this.palettes = {
       ...this.palettes,
-      [palette.name]: palette
+      [palette.name]: palette,
     }
   }
 

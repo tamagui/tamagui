@@ -29,7 +29,7 @@ export function HomeScreen() {
 
   return (
     <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>

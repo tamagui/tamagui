@@ -16,7 +16,7 @@ export function SectionScreen() {
                 {parts.map(({ name, route }) => {
                   return (
                     <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
+                      <LinkListItem bg="$color1" href={route} size="$4">
                         {name}
                       </LinkListItem>
                     </YGroup.Item>

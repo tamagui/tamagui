@@ -25,10 +25,12 @@ export function VersionSwitcherItem({
 }: {
   versions: { name: string }[]
 }) {
-    const router = useRouter()
-    
-    const pathname = usePathname()
-    const [val, setVal] = React.useState(() => pathname.split('/').pop() ?? versions[0].name)
+  const router = useRouter()
+
+  const pathname = usePathname()
+  const [val, setVal] = React.useState(
+    () => pathname.split('/').pop() ?? versions[0].name
+  )
 
   const switchVersion = (version: string) => {
     setVal(version)

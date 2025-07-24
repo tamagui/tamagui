@@ -58,7 +58,10 @@ export const StepComponentThemes = memo(() => {
       </XStack>
       <Separator />
       <StageButtonBar steps={steps} />
-      <Stage current={steps.index} steps={[<YStack key="palettes" />, <Themes key="themes" />]} />
+      <Stage
+        current={steps.index}
+        steps={[<YStack key="palettes" />, <Themes key="themes" />]}
+      />
     </YStack>
   )
 })
@@ -200,7 +203,7 @@ const SelectParentTheme = () => {
 }
 
 const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
-  const component = components.find(c => c.name === name)
+  const component = components.find((c) => c.name === name)
   const Preview = component?.component || (() => null)
   const parts: any[] = []
   const isActive = useStoreSelector(

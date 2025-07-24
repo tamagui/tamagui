@@ -71,10 +71,7 @@ const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/benchmarks">
-      <Button
-        accessibilityLabel="Performance benchmarks"
-        theme={tint as any}
-      >
+      <Button accessibilityLabel="Performance benchmarks" theme={tint as any}>
         <Button.Text fontFamily="$silkscreen">Benchmarks &raquo;</Button.Text>
       </Button>
     </Link>

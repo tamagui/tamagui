@@ -37,7 +37,7 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
             {theme.type === 'theme' ? `Palette: ${theme.palette}` : 'Mask theme'}
           </SizableText>
         </YStack>
-        
+
         {onDelete && (
           <Button
             size="$2"

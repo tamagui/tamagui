@@ -35,7 +35,7 @@ export function BuildAButtonDemo() {
 function ButtonCol(props: any) {
   const { subTheme, ...buttonProps } = props
   const subThemeSuffix = subTheme ? `_${subTheme}` : ''
-  
+
   return (
     <YStack padding="$2" gap="$3">
       <Button theme={subTheme} {...buttonProps}>

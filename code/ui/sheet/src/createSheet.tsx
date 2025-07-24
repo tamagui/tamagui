@@ -108,7 +108,6 @@ export function createSheet<
     return null
   })
 
-
   /* -------------------------------------------------------------------------------------------------
    * Sheet
    * -----------------------------------------------------------------------------------------------*/
@@ -129,7 +128,6 @@ export function createSheet<
     adjustPaddingForOffscreenContent?: boolean
   }
 
-
   const SheetFrame = Frame.styleable<SheetProps & ExtraFrameProps>(
     (
       {
@@ -141,45 +139,38 @@ export function createSheet<
       },
       forwardedRef
     ) => {
-          const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const {
-          hasFit,
-          removeScrollEnabled = true,
-          frameSize,
-          contentRef,
-          open,
-        } = context
-        const composedContentRef = useComposedRefs(forwardedRef, contentRef)
-        const offscreenSize = useSheetOffscreenSize(context)
+      const context = useSheetContext(SHEET_NAME, __scopeSheet)
+      const { hasFit, removeScrollEnabled = true, frameSize, contentRef, open } = context
+      const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+      const offscreenSize = useSheetOffscreenSize(context)
 
-        const sheetContents = useMemo(() => {
-          return (
-            // @ts-expect-error
-            <Frame
-              ref={composedContentRef}
-              flex={hasFit ? 0 : 1}
-              height={hasFit ? undefined : frameSize}
-              pointerEvents={open ? 'auto' : 'none'}
-              {...props}
-            >
-              <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
-                {children}
-              </StackZIndexContext>
+      const sheetContents = useMemo(() => {
+        return (
+          // @ts-expect-error
+          <Frame
+            ref={composedContentRef}
+            flex={hasFit ? 0 : 1}
+            height={hasFit ? undefined : frameSize}
+            pointerEvents={open ? 'auto' : 'none'}
+            {...props}
+          >
+            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+              {children}
+            </StackZIndexContext>
 
-              {adjustPaddingForOffscreenContent && (
-                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-              )}
-            </Frame>
-          )
-        }, [
-          open,
-          props,
-          frameSize,
-          offscreenSize,
-          adjustPaddingForOffscreenContent,
-          hasFit,
-        ])
-
+            {adjustPaddingForOffscreenContent && (
+              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+            )}
+          </Frame>
+        )
+      }, [
+        open,
+        props,
+        frameSize,
+        offscreenSize,
+        adjustPaddingForOffscreenContent,
+        hasFit,
+      ])
 
       return (
         <>

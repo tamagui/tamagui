@@ -88,7 +88,9 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             {frontmatter.type === 'changelog' && (
               <>
                 <Separator vertical mx="$2" />
-                <Button><Button.Text>Changelog</Button.Text></Button>
+                <Button>
+                  <Button.Text>Changelog</Button.Text>
+                </Button>
               </>
             )}
           </YStack>

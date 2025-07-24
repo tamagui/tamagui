@@ -36,7 +36,6 @@ export function TokensDemo() {
               <Button
                 size="$3"
                 theme={section === key ? 'accent' : null}
-                fontFamily="$silkscreen"
                 onPress={() => setSection(key)}
               >
                 {name}

@@ -62,7 +62,10 @@ export const StepSubThemes = memo(() => {
   return (
     <YStack mx="$-5" f={1}>
       <StageButtonBar steps={steps} />
-      <Stage current={steps.index} steps={[<ThemeBuilderPalettesPane key="palettes" />, <Themes key="themes" />]} />
+      <Stage
+        current={steps.index}
+        steps={[<ThemeBuilderPalettesPane key="palettes" />, <Themes key="themes" />]}
+      />
     </YStack>
   )
 })

@@ -1,10 +1,5 @@
 import type { GetProps, UnionableString, Variable } from '@tamagui/core'
-import {
-  getTokens,
-  getVariableValue,
-  styled,
-  useProps,
-} from '@tamagui/core'
+import { getTokens, getVariableValue, styled, useProps } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'

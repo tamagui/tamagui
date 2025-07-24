@@ -1,5 +1,5 @@
-import { ExternalLink } from "@tamagui/lucide-icons";
-import React from "react";
+import { ExternalLink } from '@tamagui/lucide-icons'
+import React from 'react'
 import {
   H2,
   Paragraph,
@@ -8,20 +8,15 @@ import {
   VisuallyHidden,
   XStack,
   YStack,
-} from "@tamagui/ui";
-import { VersionSwitcher } from "./VersionSwitcher";
+} from '@tamagui/ui'
+import { VersionSwitcher } from './VersionSwitcher'
 
-import { Features } from "~/components/Features";
-import { Link } from "~/components/Link";
-import { FrontmatterContext } from "./FrontmatterContext";
+import { Features } from '~/components/Features'
+import { Link } from '~/components/Link'
+import { FrontmatterContext } from './FrontmatterContext'
 
-export function Highlights({
-  features,
-  disableLinks,
-  disableTitle,
-  large,
-}: any) {
-  const frontmatter = React.useContext(FrontmatterContext);
+export function Highlights({ features, disableLinks, disableTitle, large }: any) {
+  const frontmatter = React.useContext(FrontmatterContext)
 
   return (
     <YStack
@@ -29,8 +24,8 @@ export function Highlights({
       f={1}
       flex={1}
       $gtSm={{
-        fd: "row",
-        justifyContent: "space-between",
+        fd: 'row',
+        justifyContent: 'space-between',
       }}
       {...(disableTitle && {
         mt: 0,
@@ -41,8 +36,8 @@ export function Highlights({
         mih={142}
         $gtSm={{
           flex: 1,
-          maw: disableLinks ? "100%" : 400,
-          mr: "$5",
+          maw: disableLinks ? '100%' : 400,
+          mr: '$5',
         }}
       >
         {!disableTitle && (
@@ -57,12 +52,7 @@ export function Highlights({
       </YStack>
 
       {!disableLinks && (
-        <YStack
-          gap="$3"
-          tag="nav"
-          aria-labelledby="site-component-info-header"
-          miw={140}
-        >
+        <YStack gap="$3" tag="nav" aria-labelledby="site-component-info-header" miw={140}>
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
@@ -82,10 +72,7 @@ export function Highlights({
                 </YStack>
               </XStack>
             </Link>
-            <Link
-              href={`https://www.npmjs.com/package/tamagui`}
-              target="_blank"
-            >
+            <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
               <XStack ai="center" gap="$1">
                 <SizableText size="$3">View on npm</SizableText>
                 <YStack opacity={0.5} ml="$0.5">
@@ -127,5 +114,5 @@ export function Highlights({
         </YStack>
       )}
     </YStack>
-  );
+  )
 }

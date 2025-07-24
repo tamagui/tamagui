@@ -5,7 +5,7 @@ class TakeoutStore {
 
   showProAgreement = false
   showProPolicies = false
-  
+
   showTakeoutFaq = false
   showTakeoutAgreement = false
 }

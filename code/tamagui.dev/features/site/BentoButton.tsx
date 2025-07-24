@@ -17,7 +17,7 @@ export const BentoButton = (props: ButtonProps) => {
       <Button.Text ff="$silkscreen" fontSize={12}>
         Bento
       </Button.Text>
-      <YStack dsp="inline-flex" mx='$2'>
+      <YStack dsp="inline-flex" mx="$2">
         <BentoIcon scale={0.75} />
       </YStack>
       <Button.Text

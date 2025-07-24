@@ -94,7 +94,7 @@ const Item = ({ item: { name, route, numberOfComponents } }) => {
 
   return (
     <YGroup.Item key={name}>
-      <LinkListItem gap="$4" bg="$color1" href={'/' + route} pressTheme size="$5">
+      <LinkListItem gap="$4" bg="$color1" href={'/' + route} size="$5">
         <View
           p="$2"
           bg="$backgroundPress"
