@@ -55,10 +55,6 @@ export function themeable<ComponentType extends (props: any) => any>(
       filteredProps ||= {}
       filteredProps.name = props.theme
     }
-    // if ('themeInverse' in props) {
-    //   filteredProps ||= {}
-    //   filteredProps.inverse = props.themeInverse
-    // }
     if ('themeReset' in props) {
       filteredProps ||= {}
       filteredProps.reset = themeReset

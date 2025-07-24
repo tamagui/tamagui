@@ -97,8 +97,8 @@ export function getThemedChildren(
     </ThemeStateContext.Provider>
   )
 
-  const { name } = themeState
-  const requiresExtraWrapper = themeState.isInverse || forceClassName
+  const { isInverse, name } = themeState
+  const requiresExtraWrapper = isInverse || forceClassName
 
   // it only ever progresses from false => true => 'wrapped'
   if (!state.hasEverThemed) {
