@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "1.132.11",
+  "version": "1.132.12",
   "sideEffects": [
     "*.css"
   ],
