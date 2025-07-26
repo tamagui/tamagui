@@ -25,9 +25,8 @@
       "Bash(lsof:*)",
       "Bash(rm:*)",
       "Bash(curl:*)",
-      "Bash(SKIP_POKE_DEV_SERVER=1 IOS_TEST_CONTAINER_PATH_DEV=/Users/n8/Library/Developer/Xcode/DerivedData/tamaguikitchensink-clggibvvuwnaxlapmazckhrjogmh/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app SIMULATOR_UDID=00A69263-4B86-41E0-83A6-C7B84E78E72B yarn vitest --config ./vitest.config.ios.mts --run tests/sample.test.ios.tsx --reporter=verbose --no-coverage)",
-      "Bash(SKIP_POKE_DEV_SERVER=1 IOS_TEST_CONTAINER_PATH_DEV=/Users/n8/Library/Developer/Xcode/DerivedData/tamaguikitchensink-clggibvvuwnaxlapmazckhrjogmh/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app SIMULATOR_UDID=00A69263-4B86-41E0-83A6-C7B84E78E72B yarn test-ios)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(yarn test:web:driver-css:*)"
     ],
     "deny": []
   }

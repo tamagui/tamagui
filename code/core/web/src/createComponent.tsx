@@ -127,7 +127,7 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
           clearTimeout(tm)
           isShowing = val
           debugKeyListeners?.forEach((l) => l(val))
-          
+
           // Remove resize listener when hiding
           if (!val && resizeListener) {
             window.removeEventListener('resize', resizeListener)

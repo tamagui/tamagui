@@ -6,7 +6,7 @@ export function PopoverFocusScopeCase() {
   return (
     <YStack padding="$4" gap="$4">
       {/* Basic Popover with Focus Trap */}
-      <Popover trapFocus>
+      <Popover>
         <Popover.Trigger asChild>
           <Button data-testid="basic-popover-trigger" iconAfter={ChevronDown}>
             Open Basic Popover
@@ -33,7 +33,7 @@ export function PopoverFocusScopeCase() {
               placeholder="Enter your name"
               autoComplete="name"
             />
-            
+
             <Label htmlFor="popover-email">Email</Label>
             <Input
               id="popover-email"
@@ -41,7 +41,7 @@ export function PopoverFocusScopeCase() {
               placeholder="your@email.com"
               autoComplete="email"
             />
-            
+
             <Label htmlFor="popover-notes">Notes</Label>
             <TextArea
               id="popover-notes"
@@ -49,7 +49,7 @@ export function PopoverFocusScopeCase() {
               placeholder="Add some notes..."
               size="$4"
             />
-            
+
             <XStack gap="$3" justifyContent="flex-end">
               <Popover.Close asChild>
                 <Button variant="outlined" data-testid="popover-cancel-button">
@@ -65,13 +65,14 @@ export function PopoverFocusScopeCase() {
       </Popover>
 
       {/* Popover without Focus Trap */}
-      <Popover trapFocus={false}>
+      <Popover>
         <Popover.Trigger asChild>
           <Button data-testid="no-trap-popover-trigger" iconAfter={ChevronDown}>
             Open Popover (No Focus Trap)
           </Button>
         </Popover.Trigger>
         <Popover.Content
+          trapFocus={false}
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
@@ -91,7 +92,7 @@ export function PopoverFocusScopeCase() {
               data-testid="no-trap-input"
               placeholder="Focus can leave this popover"
             />
-            
+
             <Popover.Close asChild>
               <Button data-testid="no-trap-close-button">Close</Button>
             </Popover.Close>
@@ -100,7 +101,7 @@ export function PopoverFocusScopeCase() {
       </Popover>
 
       {/* Nested Popovers */}
-      <Popover trapFocus>
+      <Popover>
         <Popover.Trigger asChild>
           <Button data-testid="parent-popover-trigger" iconAfter={ChevronDown}>
             Open Nested Popovers
@@ -126,9 +127,9 @@ export function PopoverFocusScopeCase() {
               data-testid="parent-popover-input"
               placeholder="Parent popover input"
             />
-            
+
             {/* Nested Popover */}
-            <Popover trapFocus>
+            <Popover>
               <Popover.Trigger asChild>
                 <Button data-testid="nested-popover-trigger" size="$3">
                   Open Nested
@@ -148,10 +149,7 @@ export function PopoverFocusScopeCase() {
                 ]}
               >
                 <YStack gap="$3" padding="$3" data-testid="nested-popover-content">
-                  <Input
-                    data-testid="nested-popover-input"
-                    placeholder="Nested input"
-                  />
+                  <Input data-testid="nested-popover-input" placeholder="Nested input" />
                   <Popover.Close asChild>
                     <Button data-testid="nested-popover-close" size="$3">
                       Close Nested
@@ -161,7 +159,7 @@ export function PopoverFocusScopeCase() {
                 <Popover.Arrow />
               </Popover.Content>
             </Popover>
-            
+
             <Popover.Close asChild>
               <Button data-testid="parent-popover-close">Close Parent</Button>
             </Popover.Close>
