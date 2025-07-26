@@ -11,8 +11,7 @@ export function useDidFinishSSR(): boolean {
   const clientOnly = React.useContext(ClientOnlyContext)
 
   if (clientOnly || process.env.TAMAGUI_TARGET === 'native') {
-    // @ts-expect-error
-    return value ?? true
+    return true
   }
 
   return React.useSyncExternalStore(
