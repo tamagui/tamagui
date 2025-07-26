@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { createFont } from '../core/src'
-import type { GenericFont } from '../core/src'
+import { createFont } from '@tamagui/core'
+import type { GenericFont } from '@tamagui/core'
 
 const font: GenericFont = {
   family: 'Inter',

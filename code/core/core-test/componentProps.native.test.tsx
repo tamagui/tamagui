@@ -2,7 +2,7 @@ import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
 import { describe, expect, test } from 'vitest'
 
-import { getDefaultTamaguiConfig } from '../config-default'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 

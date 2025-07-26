@@ -7074,6 +7074,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/core-test@workspace:code/core/core-test"
   dependencies:
+    "@tamagui/config-default": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@testing-library/react": "npm:^16.1.0"
     "@testing-library/react-native": "npm:^12.9.0"
