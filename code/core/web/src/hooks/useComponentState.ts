@@ -31,17 +31,14 @@ export const useComponentState = (
   const needsHydration = !useIsClientOnly()
   const [startedUnhydrated] = useState(needsHydration && !isHydrated)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
+  const { isHOC } = staticConfig
 
-  const stateRef = useRef<TamaguiComponentStateRef>(
-    undefined as any as TamaguiComponentStateRef
-  )
-  if (!stateRef.current) {
-    stateRef.current = {}
-  }
+  const stateRef = useRef<TamaguiComponentStateRef>({})
 
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
-    'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
+    (!isHOC && 'animation' in props) ||
+      (props.style && hasAnimatedStyleValue(props.style))
   )
 
   const supportsCSS = animationDriver?.supportsCSS
@@ -52,7 +49,7 @@ export const useComponentState = (
   }
 
   const willBeAnimatedClient = (() => {
-    const next = !!(hasAnimationProp && !staticConfig.isHOC && useAnimations)
+    const next = !!(hasAnimationProp && !isHOC && useAnimations)
     return Boolean(next || curStateRef.hasAnimated)
   })()
 
@@ -67,7 +64,8 @@ export const useComponentState = (
 
   // HOOK
   const presence =
-    (willBeAnimated &&
+    (!isHOC &&
+      willBeAnimated &&
       props['animatePresence'] !== false &&
       animationDriver?.usePresence?.()) ||
     null
@@ -81,15 +79,17 @@ export const useComponentState = (
   const hasAnimationThatNeedsHydrate =
     hasAnimationProp && !isHydrated && (animationDriver?.isReactNative || !supportsCSS)
 
-  const hasEnterState = hasEnterStyle || isEntering
+  const canImmediatelyEnter = hasEnterStyle || isEntering
 
   // this can be conditional because its only ever needed with animations
   const shouldEnter =
-    hasEnterState ||
-    hasAnimationThatNeedsHydrate ||
-    // disableClassName doesnt work server side, only client, so needs hydrate
-    // this is just for a better ux, supports css variables for light/dark, media queries, etc
-    disableClassName
+    !isHOC &&
+    (hasEnterStyle ||
+      isEntering ||
+      hasAnimationThatNeedsHydrate ||
+      // disableClassName doesnt work server side, only client, so needs hydrate
+      // this is just for a better ux, supports css variables for light/dark, media queries, etc
+      disableClassName)
 
   // two stage enter: because we switch from css driver to spring driver
   //   - first render: render to match server with css driver
@@ -102,7 +102,7 @@ export const useComponentState = (
       // without flickers of the wrong colors.
       // but once we do that initial hydration and we are in client side rendering mode,
       // we can avoid the extra re-render on mount
-      hasEnterState
+      canImmediatelyEnter
       ? defaultComponentStateShouldEnter
       : defaultComponentState
     : defaultComponentStateMounted

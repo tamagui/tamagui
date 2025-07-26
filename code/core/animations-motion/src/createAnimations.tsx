@@ -40,6 +40,8 @@ type MotionAnimatedNumberStyle = {
   motionValue: MotionValue<number>
 }
 
+const minTimeBetweenAnimations = 1000 / 60
+
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 
 type AnimationProps = {
@@ -140,12 +142,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       //     if (!props) return
 
-      //     const elapsed = Date.now() - lastAnimateAt.current
-
-      //     if (elapsed > minTimeBetweenAnimations && animationsQueue.current.length) {
-      //       console.info('slow', elapsed, { props })
-      //     }
-
       //     if (scope.current) {
       //       flushAnimation(props)
       //     } else {
@@ -180,10 +176,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (!lastDoAnimate.current) {
           lastAnimateAt.current = Date.now()
           lastDoAnimate.current = doAnimate || {}
-          const firstAnimation = animate(scope.current, doAnimate || {}, {
+          controls.current = animate(scope.current, doAnimate || {}, {
             type: false,
           })
-          firstAnimation.complete()
+          controls.current.complete()
           // scope.animations = []
 
           if (shouldDebug) {
@@ -264,14 +260,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             const diff = getDiff(lastDoAnimate.current, doAnimate)
             if (diff) {
               controls.current = animate(scope.current, diff, animationOptions)
+              lastAnimateAt.current = Date.now()
             }
           }
 
           lastDoAnimate.current = doAnimate
-          lastAnimateAt.current = Date.now()
         } finally {
-          if (isExiting) {
-            if (controls.current) {
+          if (controls.current) {
+            if (isExiting) {
               controls.current.finished.then(() => {
                 sendExitComplete?.()
               })
@@ -304,7 +300,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
 
         // always clear queue if we re-render
-        animationsQueue.current = []
+        // animationsQueue.current = []
 
         // don't ever queue on a render
         flushAnimation({
@@ -325,6 +321,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           animationOptions,
           isExiting,
           isFirstRender: isFirstRender.current,
+          animationProps,
         })
         console.groupEnd()
       }

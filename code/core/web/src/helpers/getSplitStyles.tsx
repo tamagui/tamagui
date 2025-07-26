@@ -911,16 +911,18 @@ export const getSplitStyles: StyleSplitter = (
 
             // $group-x
             const groupState = groupContext?.[groupName]?.state
+            const groupPseudoKey = groupInfo.pseudo
+            const groupMediaKey = groupInfo.media
 
             if (!groupState) {
               if (process.env.NODE_ENV === 'development' && debug) {
                 log(`No parent with group prop, skipping styles: ${groupName}`)
               }
+              // we still want to indicate we should listen! this is how subscribeToGroupContext knows to run
+              pseudoGroups ||= new Set()
               return
             }
 
-            const groupPseudoKey = groupInfo.pseudo
-            const groupMediaKey = groupInfo.media
             const componentGroupState = componentState.group?.[groupName]
 
             if (groupMediaKey) {

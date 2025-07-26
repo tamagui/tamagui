@@ -115,6 +115,10 @@ export type TamaguiComponentStateRef = {
   // this is only used by group="" components
   // sets up a context object to track current state + emit
   group?: ComponentGroupEmitter
+
+  // avoid re-render animation support
+  nextState?: TamaguiComponentState
+  nextMedia?: UseMediaState
 }
 
 export type ComponentGroupEmitter = {

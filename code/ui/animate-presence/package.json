@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate-presence",
-  "version": "1.132.11",
+  "version": "1.132.13",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -13,6 +13,7 @@
     "dist"
   ],
   "dependencies": {
+    "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/use-constant": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
