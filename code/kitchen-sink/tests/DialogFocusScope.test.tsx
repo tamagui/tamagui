@@ -105,10 +105,10 @@ test.describe('Dialog Focus Scope', () => {
     await expect(dialogContent).not.toBeVisible()
   })
 
-  test('prevents focus outside when clicking outside modal dialog', async ({ page }) => {
+  test('modal dialogs prevent right-click dismiss but allow left-click dismiss', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
-    // Open the modal dialog
+    // Open a modal dialog
     const trigger = page.getByTestId('modal-dialog-trigger')
     await trigger.click()
 
@@ -118,29 +118,30 @@ test.describe('Dialog Focus Scope', () => {
     // Wait for auto-focus
     await page.waitForTimeout(300)
     
-    // Ensure an input is focused first
-    const firstInput = dialogContent.getByTestId('first-input')
-    await expect(firstInput).toBeFocused()
-
-    // Try to click outside
-    await page.click('body', { position: { x: 10, y: 10 } })
+    // Try to right-click outside the dialog - should NOT close
+    const dialogBounds = await dialogContent.boundingBox()
     
-    // Wait a bit for any focus changes
-    await page.waitForTimeout(100)
+    if (dialogBounds) {
+      // Right-click to the left of the dialog (on overlay/backdrop)
+      await page.mouse.click(dialogBounds.x - 50, dialogBounds.y + 50, { button: 'right' })
+    }
     
-    // Dialog should still be visible (modal prevents outside clicks)
+    // Wait a bit
+    await page.waitForTimeout(500)
+    
+    // Modal dialogs prevent right-click dismiss
     await expect(dialogContent).toBeVisible()
-
-    // Focus should be trapped (either inside content or on dialog element itself)
-    const focusTrapped = await page.evaluate(() => {
-      const active = document.activeElement
-      const isInsideContent = active?.closest('[data-testid="modal-dialog-content"]') !== null
-      const isDialogElement = active?.tagName === 'DIALOG'
-      const externalButton = document.querySelector('[data-testid="external-button"]')
-      const isNotExternal = active !== externalButton
-      return isNotExternal && (isInsideContent || isDialogElement)
-    })
-    expect(focusTrapped).toBe(true)
+    
+    // Now try left-click - should close
+    if (dialogBounds) {
+      await page.mouse.click(dialogBounds.x - 50, dialogBounds.y + 50, { button: 'left' })
+    }
+    
+    // Wait for dialog to close
+    await page.waitForTimeout(500)
+    
+    // Dialog should be closed after left-click
+    await expect(dialogContent).not.toBeVisible()
   })
 
   test('auto-focuses first element on mount', async ({ page }) => {

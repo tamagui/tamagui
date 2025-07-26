@@ -29,8 +29,6 @@ export const useComponentState = (
   const isHydrated = useDidFinishSSR()
   const needsHydration = !useIsClientOnly()
 
-  if (props.debug) console.log({ isHydrated, needsHydration })
-
   const [startedUnhydrated] = useState(needsHydration && !isHydrated)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
   const { isHOC } = staticConfig

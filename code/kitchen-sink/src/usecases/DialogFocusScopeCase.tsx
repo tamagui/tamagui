@@ -27,6 +27,7 @@ export function DialogFocusScopeCase() {
         />
       </Dialog>
 
+
       {/* Nested Dialogs */}
       <Dialog modal>
         <Dialog.Trigger asChild>
@@ -137,10 +138,12 @@ function DialogContent({
   testId,
   title,
   description,
+  disableOutsidePointerEvents,
 }: {
   testId: string
   title: string
   description: string
+  disableOutsidePointerEvents?: boolean
 }) {
   return (
     <Dialog.Portal>
@@ -155,6 +158,7 @@ function DialogContent({
         key="content"
         bordered
         elevate
+        disableOutsidePointerEvents={disableOutsidePointerEvents}
         animation={[
           'quick',
           {

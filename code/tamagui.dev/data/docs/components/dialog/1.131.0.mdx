@@ -131,6 +131,39 @@ export default () => (
 
 Note that the `Trigger` scope ties to the `Dialog` scope.
 
+## Dismissal Behavior
+
+By default, dialogs can be dismissed by:
+- Clicking outside the dialog content (on the overlay)
+- Pressing the Escape key
+- Clicking a Dialog.Close element
+
+### Modal vs Non-Modal Dialogs
+
+- **Modal dialogs** (`modal={true}`, which is the default):
+  - In v1, have `disableOutsidePointerEvents` set to `true` by default
+  - Still dismiss on outside click, but prevent interaction with elements behind the dialog
+  - Prevent right-click dismissal (right-clicks on the overlay are ignored)
+  
+- **Non-modal dialogs** (`modal={false}`):
+  - Allow interaction with elements behind the dialog
+  - Dismiss on any outside click
+  - Do not trap focus
+
+### Preventing Outside Dismissal
+
+To prevent a dialog from closing when clicking outside:
+
+```tsx
+<Dialog.Content
+  onPointerDownOutside={(event) => {
+    event.preventDefault()
+  }}
+>
+  {/* Dialog contents */}
+</Dialog.Content>
+```
+
 ## API Reference
 
 ### Dialog
@@ -224,6 +257,12 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
       required: false,
       type: `boolean`,
       description: `Removes all default Tamagui styles.`,
+    },
+    {
+      name: 'disableOutsidePointerEvents',
+      type: 'boolean',
+      required: false,
+      description: `When true, hover/focus/click interactions will be disabled on elements outside the Dialog. Users will need to click twice on outside elements to interact with them: once to close the Dialog, and again to trigger the element. Note: In v1, modal dialogs have this set to true by default.`,
     },
   ]}
 />
