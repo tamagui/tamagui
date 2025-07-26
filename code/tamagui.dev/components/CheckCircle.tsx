@@ -1,5 +1,5 @@
 import { Check } from '@tamagui/lucide-icons'
-import { YStack } from 'tamagui'
+import { YStack } from '@tamagui/ui'
 
 export const CheckCircle = () => (
   <YStack bg="$backgroundHover" w={25} h={25} ai="center" jc="center" br={100} mr="$2.5">

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, StyleSheet, View } from 'react-native'
-import { Stack, Text, styled } from 'tamagui'
+import { Stack, Text, styled } from '@tamagui/ui'
 
 // 123
 

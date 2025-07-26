@@ -2,7 +2,7 @@ import type { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
+import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from '@tamagui/ui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Notice } from '~/components/Notice'
 import { useSupabase } from '~/features/auth/useSupabaseClient'
@@ -130,7 +130,7 @@ function SignIn() {
 
           {!emailAuthDisabledFlag && (
             <>
-              <XStack mx="$4" jc="center" space ai="center">
+              <XStack mx="$4" jc="center" gap="$4" ai="center">
                 <Separator />
                 <Paragraph size="$2">Or</Paragraph>
                 <Separator />

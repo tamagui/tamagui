@@ -4,11 +4,11 @@ import { useSwitch } from '@tamagui/switch-headless'
 
 import type { View } from 'react-native'
 import { Animated, Pressable } from 'react-native'
-import { Label, XStack, YStack } from 'tamagui'
+import { Label, XStack, YStack } from '@tamagui/ui'
 
 export function SwitchHeadlessDemo() {
   return (
-    <YStack width={200} alignItems="center" space="$3">
+    <YStack width={200} alignItems="center" gap="$3">
       <XStack gap="$3" alignItems="center">
         <Label htmlFor="headless">Headless</Label>
         <HeadlessSwitch defaultChecked id="headless" />

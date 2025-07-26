@@ -1,13 +1,21 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons'
 import { memo, useState } from 'react'
-import { Button, Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Heading,
+  Paragraph,
+  ScrollView,
+  XGroup,
+  XStack,
+  YStack,
+} from '@tamagui/ui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { IconStack } from './IconStack'
-import { Theme } from 'tamagui'
+import { Theme } from '@tamagui/ui'
 
 const defaultExample = {
   input: {
@@ -57,7 +65,8 @@ export const HomeExamples = memo(
           <ThemeTint>
             <XGroup
               scrollable
-              bordered
+              borderWidth={1}
+              borderColor="$borderColor"
               bg="$color2"
               maxWidth="100%"
               als="center"
@@ -76,9 +85,8 @@ export const HomeExamples = memo(
                       chromeless={i !== activeIndex}
                       borderRadius={0}
                       size="$3"
-                      fontFamily="$silkscreen"
                     >
-                      {example.name}
+                      <Button.Text fontFamily="$silkscreen">{example.name}</Button.Text>
                     </Button>
                   </XGroup.Item>
                 )
@@ -193,7 +201,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                 {title}
               </Heading>
             </Theme>
-            <XGroup size="$2" bordered>
+            <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button
@@ -203,7 +211,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     size="$2"
                     borderRadius="$0"
                   >
-                    {example.name}
+                    <Button.Text>{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}

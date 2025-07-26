@@ -1,0 +1,247 @@
+---
+title: ListItem
+description: A component for showing columns of items.
+name: list-item
+component: ListItem
+package: list-item
+demoName: ListItem
+---
+
+<InstallBanner name="@tamagui/list-item" />
+
+<HeroContainer>
+  <ListItemDemo />
+</HeroContainer>
+
+```tsx hero template=ListItem
+
+```
+
+<Highlights
+  features={[
+    'Accepts size prop that works on all styles.',
+    'Place an icon before or after.',
+    'Works with themes, animations, Group.', 
+  ]}
+/>
+
+## Installation
+
+ListItem is already installed in `@tamagui/ui`, or you can install it independently:
+
+```bash
+npm install @tamagui/list-item
+```
+## Usage
+
+Basic usage involves providing children, or using the `title` and `subTitle` props.
+
+```tsx
+import { ListItem, Separator, YGroup } from '@tamagui/ui'
+import { ChevronRight } from '@tamagui/lucide-icons' // Example icon
+
+export default () => (
+  <YGroup als="center" bordered width={240} size="$4">
+    <YGroup.Item>
+      <ListItem  title="Star" icon={ChevronRight} />
+    </YGroup.Item>
+    <YGroup.Item>
+      <ListItem title="Moon" subTitle="Subtitle for Moon" iconAfter={ChevronRight} />
+    </YGroup.Item>
+    <YGroup.Item>
+      <ListItem>
+        Custom children content
+      </ListItem>
+    </YGroup.Item>
+  </YGroup>
+)
+```
+
+## Sizing
+
+The `size` prop adjusts various properties of the ListItem, including padding, minimum height, and the default size for text elements within it. It accepts theme size tokens (e.g., `"$3"`, `"$4"`).
+
+```tsx
+import { ListItem } from '@tamagui/ui'
+
+export default () => <ListItem size="$5" title="Large List Item" />
+```
+
+## Title and SubTitle
+
+Use the `title` and `subTitle` props for a structured layout. These props accept `ReactNode`, so you can pass strings or more complex JSX.
+
+-   If `title` or `subTitle` is provided, children will be rendered inside the main text area (under title/subtitle).
+-   `ListItem.Title` and `ListItem.Subtitle` components are used internally and can be targeted for styling (see Customization).
+
+```tsx
+import { ListItem, Avatar } from '@tamagui/ui'
+import { User } from '@tamagui/lucide-icons'
+
+export default () => (
+  <ListItem
+    icon={<Avatar circular size="$3"><Avatar.Image src="/placeholder.png" /><Avatar.Fallback bc="$backgroundFocus" /></Avatar>}
+    title="User Profile"
+    subTitle="View and edit your profile details."
+    iconAfter={User}
+    size="$4"
+  />
+)
+```
+
+## Icon Theming
+
+Icons can be passed to `icon` (before content) or `iconAfter` (after content) props.
+
+-   **Automatic Sizing & Spacing**: Icons are automatically sized based on the ListItem's `size` prop. You can override this with the `iconSize` prop (accepts `SizeTokens`). Spacing between the icon and text is also automatically applied (40% of the icon's final size).
+-   **Scaling**: Use `scaleIcon` (number, default: 1) to further adjust the icon size relative to its base size.
+-   **Component Props**: If you pass a component as an icon, it will receive `size` (the calculated pixel size) as a prop.
+
+```tsx
+import { ListItem } from '@tamagui/ui'
+import { Star, Settings } from '@tamagui/lucide-icons'
+
+export default () => (
+  <>
+    <ListItem icon={Star} title="Default Icon Size" size="$4" />
+    <ListItem icon={Settings} iconSize="$2" title="Explicit Icon Size" subTitle="iconSize='$2'" size="$5" />
+    <ListItem icon={Star} scaleIcon={1.5} title="Scaled Icon" subTitle="scaleIcon={1.5}" size="$4" />
+  </>
+)
+```
+
+## Customization
+
+
+For customization, Tamagui exports the building blocks: `ListItem.Frame`, `ListItem.Text`, `ListItem.Title`, `ListItem.Subtitle`, and `ListItem.Icon`.
+
+```tsx
+import { YStack, ListItem as TamaguiListItem } from '@tamagui/ui'
+import { GetProps, styled } from '@tamagui/web'
+
+const CustomFrame = styled(TamaguiListItem.Frame, {
+  padding: '$5',
+  backgroundColor: '$backgroundHover',
+})
+
+const CustomTitle = styled(TamaguiListItem.Title, {
+  color: '$pink10',
+  fontWeight: 'bold',
+})
+
+const CustomSubtitle = styled(TamaguiListItem.Subtitle, {
+  color: '$gray10',
+  fontStyle: 'italic',
+})
+
+// Recompose, for example, if you need a different internal structure
+export const MyAdvancedListItem = ({ icon, title, subTitle, children, ...frameProps }) => {
+  return (
+    <CustomFrame {...frameProps}>
+      {icon && <TamaguiListItem.Icon>{icon}</TamaguiListItem.Icon>}
+      <YStack f={1} jc="center">
+        {title && <CustomTitle>{title}</CustomTitle>}
+        {subTitle && <CustomSubtitle>{subTitle}</CustomSubtitle>}
+        {children && <TamaguiListItem.Text>{children}</TamaguiListItem.Text>}
+      </YStack>
+      {/* iconAfter could go here */}
+    </CustomFrame>
+  )
+}
+```
+
+## API Reference
+
+### ListItem
+
+ListItems extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'title',
+      required: false,
+      type: 'React.ReactNode',
+      description: 'Main text content of the list item. Renders using `ListItem.Title`.',
+    },
+    {
+      name: 'subTitle',
+      required: false,
+      type: 'React.ReactNode',
+      description: 'Secondary text content, rendered below the title. Renders using `ListItem.Subtitle`.',
+    },
+    {
+      name: 'size',
+      required: false,
+      type: 'SizeTokens',
+      description: 'Adjusts padding, min-height, and default font/icon sizes. Uses theme size tokens (e.g., "$3", "$4").',
+    },
+    {
+      name: 'icon',
+      required: false,
+      type: 'JSX.Element | React.ComponentType<{ size?: number }>',
+      description: 'Icon element or component displayed before the main content. Receives `size` prop if a component.',
+    },
+    {
+      name: 'iconAfter',
+      required: false,
+      type: 'JSX.Element | React.ComponentType<{ size?: number }>',
+      description: 'Icon element or component displayed after the main content. Receives `size` prop if a component.',
+    },
+    {
+      name: 'iconSize',
+      required: false,
+      type: 'SizeTokens',
+      description: "Explicitly set the size of the icon, overriding the default size derived from the ListItem's `size` prop. Uses theme size tokens (e.g., \"$2\").",
+    },
+    {
+      name: 'scaleIcon',
+      required: false,
+      type: 'number',
+      description: 'Scale factor for the icon (default: 1). Applied after `iconSize` or default size calculation.',
+    },
+    {
+      name: 'active',
+      required: false,
+      type: 'boolean',
+      description: 'If true, disables hover style changes, useful for indicating the current/active item.',
+    },
+    {
+      name: 'disabled',
+      required: false,
+      type: 'boolean',
+      description: 'If true, reduces opacity and disables pointer events.',
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: 'boolean',
+      description: 'Removes all default Tamagui styles (padding, background, etc.). Default is `false` unless `TAMAGUI_HEADLESS` is set.',
+    },
+    {
+      name: '// Styling Text',
+      type: '---',
+      description: 'To style the `title`, `subTitle`, or general `children` text, use `styled(ListItem, { ... })` to target nested `ListItem.Title`, `ListItem.Subtitle`, or `ListItem.Text` components, or compose your own with these parts. Direct text styling props are not passed for simplicity and performance.',
+    }
+  ]}
+/>
+
+### ListItem.Frame
+
+The base `View` component for the ListItem. Inherits `Stack` props.
+
+### ListItem.Text
+
+Used for wrapping `children` when `title` or `subTitle` are not used. Extends `SizableText`.
+
+### ListItem.Title
+
+Used for rendering the `title` prop. Extends `SizableText`.
+
+### ListItem.Subtitle
+
+Used for rendering the `subTitle` prop. Extends `SizableText`. Its font size is automatically set to one step smaller than the ListItem's main `size`.
+
+### ListItem.Icon
+
+A helper component for rendering icons within ListItem, handling size and color. Typically used internally but can be leveraged in custom compositions. */} 

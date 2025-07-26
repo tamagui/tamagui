@@ -1,13 +1,13 @@
 import { Moon, Sun } from '@tamagui/lucide-icons'
-import type { ListItemProps } from 'tamagui'
-import { Button, ListItem, Spacer, Switch } from 'tamagui'
+import type { ListItemProps } from '@tamagui/ui'
+import { Button, ListItem, Spacer, Switch } from '@tamagui/ui'
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export const ColorSchemeListItem = (props: ListItemProps) => {
   return (
-    <ListItem {...props} bg="$color1" pressTheme paddingVertical={0}>
+    <ListItem {...props} bg="$color1" paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
-      <Spacer flex />
+      <Spacer flex={1} />
       <ColorSchemeToggle />
     </ListItem>
   )

@@ -1,6 +1,6 @@
 import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons'
-import { Button, Square, useControllableState, useEvent } from 'tamagui'
+import { Button, Square, useControllableState, useEvent } from '@tamagui/ui'
 
 export function AnimationsDemo(props) {
   const [positionI, setPositionI] = useControllableState({

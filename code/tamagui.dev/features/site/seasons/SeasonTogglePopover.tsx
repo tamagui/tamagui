@@ -1,5 +1,5 @@
 import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
-import { Popover, SizableText, Square, View, YStack } from 'tamagui'
+import { Popover, SizableText, Square, View, YStack } from '@tamagui/ui'
 
 export const seasons = {
   tamagui: <TamaguiLogo downscale={2} />,

@@ -2,7 +2,7 @@ import React from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 
-import { Button, Image, XStack, YStack, styled } from 'tamagui'
+import { Button, Image, XStack, YStack, styled } from '@tamagui/ui'
 
 // @ts-ignore
 import photo1 from '../../public/photo1.jpg'
@@ -72,7 +72,7 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         left="$4"
         circular
-        elevate
+        elevation="$4"
         onPress={() => paginate(-1)}
         zIndex={100}
       />
@@ -84,7 +84,7 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         right="$4"
         circular
-        elevate
+        elevation="$4"
         onPress={() => paginate(1)}
         zIndex={100}
       />

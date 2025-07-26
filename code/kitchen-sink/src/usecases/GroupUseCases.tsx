@@ -1,8 +1,8 @@
-import { Button, XGroup, YStack } from 'tamagui'
+import { Button, XGroup, YStack } from '@tamagui/ui'
 
 export function GroupUseCases() {
   return (
-    <YStack space>
+    <YStack gap="$4">
       <XGroup testID="simple-api-group">
         <Button>this</Button>
         <Button>is</Button>

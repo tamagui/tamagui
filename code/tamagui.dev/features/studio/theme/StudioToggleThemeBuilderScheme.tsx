@@ -1,4 +1,4 @@
-import { Button, XGroup } from 'tamagui'
+import { Button, XGroup } from '@tamagui/ui'
 
 import { useRootStore } from '../state/useGlobalState'
 

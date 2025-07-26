@@ -1,6 +1,15 @@
 import { ExternalLink } from '@tamagui/lucide-icons'
 import React from 'react'
-import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import {
+  H2,
+  Paragraph,
+  SizableText,
+  Text,
+  VisuallyHidden,
+  XStack,
+  YStack,
+} from '@tamagui/ui'
+import { VersionSwitcher } from './VersionSwitcher'
 
 import { Features } from '~/components/Features'
 import { Link } from '~/components/Link'
@@ -13,6 +22,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
     <YStack
       mb="$2"
       f={1}
+      flex={1}
       $gtSm={{
         fd: 'row',
         justifyContent: 'space-between',

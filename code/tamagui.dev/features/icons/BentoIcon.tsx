@@ -1,4 +1,4 @@
-import { YStack } from 'tamagui'
+import { YStack } from '@tamagui/ui'
 import { forwardRef } from 'react'
 
 export const BentoIcon = forwardRef(

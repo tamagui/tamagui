@@ -1,5 +1,5 @@
 import { useWindowDimensions } from 'react-native'
-import { Button, H1, Dialog as TDialog, YStack } from 'tamagui'
+import { Button, H1, Dialog as TDialog, YStack } from '@tamagui/ui'
 
 /* Minimal test case for reproducing crashes */
 export function TestModal() {
@@ -39,7 +39,7 @@ export function TestModal() {
 
       <TDialog.Portal>
         <TDialog.Content>
-          <YStack space p="$4">
+          <YStack gap="$4" p="$4">
             <H1>
               Esse nulla magna reprehenderit sunt ea elit. Voluptate amet elit
               reprehenderit tempor duis duis. Nostrud adipisicing duis in sunt adipisicing

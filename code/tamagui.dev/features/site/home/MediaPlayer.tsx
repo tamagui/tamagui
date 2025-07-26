@@ -1,8 +1,8 @@
 import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import type { ThemeName, YStackProps } from 'tamagui'
-import { Image } from '@tamagui/image-next'
-import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import type { ThemeName, YStackProps } from '@tamagui/ui'
+import { Image } from '@tamagui/image'
+import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from '@tamagui/ui'
 
 import image from './mj.jpg'
 
@@ -45,7 +45,7 @@ export const MediaPlayer = memo(
             mb={40}
             {...cardProps}
           >
-            <XStack ai="center" p="$4" space="$5">
+            <XStack ai="center" p="$4" gap="$5">
               <Square pos="relative" ov="hidden" br="$6" size="$8">
                 <Image src={image} width={90} height={90} />
               </Square>
@@ -72,7 +72,7 @@ export const MediaPlayer = memo(
               bbrr={17}
               bblr={17}
               ai="center"
-              space="$5"
+              gap="$5"
               jc="center"
               pointerEvents={pointerEvents}
             >

@@ -1,6 +1,6 @@
 import { MoreVertical } from '@tamagui/lucide-icons'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import type { YStackProps } from 'tamagui'
+import type { YStackProps } from '@tamagui/ui'
 import {
   Adapt,
   Button,
@@ -11,7 +11,7 @@ import {
   Theme,
   YGroup,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { accentThemeName } from '../../accentThemeName'
 import { useHasAccent } from '../../hooks/useHasAccent'
 import { useThemeBuilderStore } from '../store/ThemeBuilderStore'
@@ -77,7 +77,7 @@ export function Panel({
         )}
       >
         <Theme
-          name={accent ? accentThemeName : undefined}
+          name={accent ? accentThemeName : null}
           // TODO shouldn't need this
           key={`${accent}`}
           inverse={inverse}
@@ -99,10 +99,10 @@ export function Panel({
           <Popover size="$5" allowFlip placement="bottom">
             <Popover.Trigger asChild>
               <Button
+                theme="accent"
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                themeInverse
                 elevation="$2"
                 size="$2"
                 circular

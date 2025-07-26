@@ -1,4 +1,4 @@
-import { Text as TamaguiText, styled } from 'tamagui'
+import { Text as TamaguiText, styled } from '@tamagui/ui'
 
 export const FontTokensInVariants = styled(TamaguiText, {
   borderRadius: 100_000_000,

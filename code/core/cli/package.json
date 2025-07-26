@@ -23,9 +23,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/compiler": "workspace:*",
     "@tamagui/create-theme": "workspace:*",
     "@tamagui/generate-themes": "workspace:*",
-    "@tamagui/static": "workspace:*",
     "@tamagui/types": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
     "arg": "^5.0.2",

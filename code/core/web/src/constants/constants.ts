@@ -12,7 +12,8 @@ export const webViewFlexCompatStyles: StackStyle = {
   flexDirection: 'column',
   flexBasis: 'auto',
   boxSizing: 'border-box',
-  position: process.env.TAMAGUI_POSITION_STATIC === '1' ? 'static' : 'relative',
+  // Default position to static
+  position: process.env.TAMAGUI_POSITION_RELATIVE === '1' ? 'relative' : 'static',
   minHeight: 0,
   minWidth: 0,
   flexShrink: 0,

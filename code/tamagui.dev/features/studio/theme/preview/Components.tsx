@@ -11,7 +11,7 @@ import {
   XGroup,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { RadioGroupItemWithLabel } from '../views/RadioGroupItemWithLabel'
 import { AccentTheme } from '../../components/AccentTheme'
@@ -43,7 +43,7 @@ export const Components = () => {
           </Button>
         </XStack>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <XStack {...demoProps.gapPropsLg} f={1} flexWrap="wrap">
           <SelectDemoContents size="$3" />

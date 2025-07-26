@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, useIsomorphicLayoutEffect } from 'tamagui'
+import { Button, useIsomorphicLayoutEffect } from '@tamagui/ui'
 import { useThemeSetting, useRootTheme } from '@tamagui/next-theme'
 
 export const SwitchThemeButton = () => {
