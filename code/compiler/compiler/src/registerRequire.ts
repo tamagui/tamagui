@@ -50,8 +50,15 @@ export function registerRequire(
   Module.prototype.require = tamaguiRequire
 
   function tamaguiRequire(this: any, path: string) {
-    if (path === '@tamagui/ui' && platform === 'native') {
-      return og.apply(this, ['@tamagui/ui/native'])
+    // Only rewrite to /native for runtime, not during static extraction
+    // This prevents issues with workspace packages in CI where /native doesn't exist in node_modules
+    if (
+      (path === 'tamagui' || path === '@tamagui/ui') &&
+      platform === 'native' &&
+      !process.env.IS_STATIC
+    ) {
+      const nativePath = path === 'tamagui' ? 'tamagui/native' : '@tamagui/ui/native'
+      return og.apply(this, [nativePath])
     }
 
     if (path === '@tamagui/core' || path === '@tamagui/web') {
