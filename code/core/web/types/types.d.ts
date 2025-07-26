@@ -67,6 +67,8 @@ export type TamaguiComponentStateRef = {
     useStyleListener?: UseStyleListener;
     updateStyleListener?: () => void;
     group?: ComponentGroupEmitter;
+    nextState?: TamaguiComponentState;
+    nextMedia?: UseMediaState;
 };
 export type ComponentGroupEmitter = {
     listeners: Set<GroupStateListener>;

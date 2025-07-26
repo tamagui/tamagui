@@ -56,7 +56,6 @@ import type {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
-  UseMediaState,
   UseStyleEmitter,
   UseThemeWithStateProps,
 } from './types'
@@ -67,8 +66,6 @@ import { getThemedChildren } from './views/Theme'
  * All things that need one-time setup after createTamagui is called
  */
 let time: any
-const NextState = new WeakMap<any, TamaguiComponentState | undefined>()
-const NextMedia = new WeakMap<any, UseMediaState | undefined>()
 
 let debugKeyListeners: Set<Function> | undefined
 let startVisualizer: Function | undefined
@@ -413,11 +410,14 @@ export function createComponent<
     } = componentState
 
     if (hasAnimationProp && animationDriver?.avoidReRenders) {
-      const pendingState = NextState.get(stateRef)
-      if (pendingState) {
-        NextState.set(stateRef, undefined)
-        componentState.setStateShallow(pendingState)
-      }
+      useIsomorphicLayoutEffect(() => {
+        const pendingState = stateRef.current.nextState
+        if (pendingState) {
+          if (debugProp) console.log(`‼️ set pending state`, pendingState)
+          stateRef.current.nextState = undefined
+          componentState.setStateShallow(pendingState)
+        }
+      })
     }
 
     // create new context with groups, or else sublings will grab the same one
@@ -670,8 +670,8 @@ export function createComponent<
       const ogSetStateShallow = setStateShallow
 
       stateRef.current.updateStyleListener = () => {
-        const updatedState = NextState.get(stateRef) || state
-        const mediaState = NextMedia.get(stateRef)
+        const updatedState = stateRef.current.nextState || state
+        const mediaState = stateRef.current.nextMedia
 
         const nextStyles = getSplitStyles(
           props,
@@ -694,7 +694,7 @@ export function createComponent<
       }
 
       function updateGroupListeners() {
-        const updatedState = NextState.get(stateRef)!
+        const updatedState = stateRef.current.nextState!
         if (groupContext) {
           const {
             group,
@@ -713,12 +713,12 @@ export function createComponent<
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
       componentContext.mediaEmit ||= (next) => {
-        NextMedia.set(stateRef, next)
+        stateRef.current.nextMedia = next
         stateRef.current.updateStyleListener?.()
       }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
-        const prev = NextState.get(stateRef) || state
+        const prev = stateRef.current.nextState || state
         const next =
           typeof nextOrGetNext === 'function' ? nextOrGetNext(prev) : nextOrGetNext
 
@@ -731,13 +731,13 @@ export function createComponent<
           avoidReRenderKeys.has(key)
         )
 
-        if (canAvoidReRender) {
-          const updatedState = {
-            ...prev,
-            ...next,
-          }
-          NextState.set(stateRef, updatedState)
+        const updatedState = {
+          ...prev,
+          ...next,
+        }
+        stateRef.current.nextState = updatedState
 
+        if (canAvoidReRender) {
           if (
             process.env.NODE_ENV === 'development' &&
             debugProp &&
@@ -1029,6 +1029,7 @@ export function createComponent<
             setStateShallow({ unmounted: false })
           })
           return () => clearTimeout(tm)
+          // don't clearTimeout! safari gets bugs it just doesn't ever set unmounted: false
         }
 
         setStateShallow({ unmounted: false })
