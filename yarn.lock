@@ -8467,8 +8467,13 @@ __metadata:
   dependencies:
     "@babel/plugin-syntax-typescript": "npm:^7.25.4"
     "@babel/types": "npm:^7.25.4"
+    "@tamagui/babel-plugin": "workspace:*"
+    "@tamagui/compiler": "workspace:*"
+    "@tamagui/config": "workspace:*"
+    "@tamagui/core": "workspace:*"
     "@tamagui/sandbox-ui": "workspace:*"
     "@tamagui/test-design-system": "workspace:*"
+    "@tamagui/ui": "workspace:*"
     "@testing-library/react": "npm:^16.1.0"
     "@types/babel__generator": "npm:^7.6.4"
     "@types/babel__traverse": "npm:^7.18.2"
