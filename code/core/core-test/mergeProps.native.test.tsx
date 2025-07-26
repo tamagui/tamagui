@@ -1,10 +1,10 @@
 import { createTamagui, mergeProps } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { getDefaultTamaguiConfig } from '@tamagui/config-default'
+import config from '../config-default'
 
 beforeAll(() => {
-  createTamagui(getDefaultTamaguiConfig('native'))
+  createTamagui(config.getDefaultTamaguiConfig('native'))
 })
 
 describe('mergeProps', () => {

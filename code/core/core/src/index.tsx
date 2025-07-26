@@ -149,6 +149,7 @@ setupHooks({
         accessibilityDisabled,
 
         onLayout,
+        hrefAttrs,
 
         ...plainDOMProps
       } = propsIn
@@ -159,6 +160,19 @@ setupHooks({
       }
 
       if (isDOM) {
+        // TODO move into getSplitStyles
+        if (plainDOMProps.href && hrefAttrs) {
+          const { download, rel, target } = hrefAttrs
+          if (download != null) {
+            plainDOMProps.download = download
+          }
+          if (rel) {
+            plainDOMProps.rel = rel
+          }
+          if (typeof target === 'string') {
+            plainDOMProps.target = target.charAt(0) !== '_' ? `_${target}` : target
+          }
+        }
         return plainDOMProps
       }
     }

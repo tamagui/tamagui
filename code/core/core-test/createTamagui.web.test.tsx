@@ -3,7 +3,7 @@ process.env.TAMAGUI_TARGET = 'web'
 import { describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { createTamagui } from '@tamagui/core'
+import { createTamagui } from '../core/src'
 
 describe('createTamagui', () => {
   test(`z-index resolves to correct unitless values`, () => {

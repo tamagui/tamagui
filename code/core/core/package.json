@@ -4,7 +4,7 @@
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "@tamagui/ui": {
+  "tamagui": {
     "bundle.native": "./src/index.tsx",
     "bundle.native.test": "./src/index.tsx"
   },

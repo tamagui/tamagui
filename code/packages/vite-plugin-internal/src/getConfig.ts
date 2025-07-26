@@ -52,7 +52,7 @@ export function getConfig(tamaguiPlugin: any) {
       react({}),
 
       tamaguiPlugin({
-        components: ['@tamagui/ui'],
+        components: ['tamagui'],
         config: './tamagui.config.ts',
         disableWatchTamaguiConfig: true,
       }),
