@@ -1,8 +1,7 @@
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useForceUpdate } from '@tamagui/use-force-update'
-import type { ReactElement, ReactNode } from 'react'
-import type { FunctionComponent, PropsWithChildren } from 'react'
+import type { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Children, cloneElement, isValidElement, useContext, useRef } from 'react'
-
 import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'
 import type { AnimatePresenceProps } from './types'
@@ -70,8 +69,11 @@ export const AnimatePresence: FunctionComponent<
     return <>{children}</>
   }
 
-  if (isInitialRender.current) {
+  useIsomorphicLayoutEffect(() => {
     isInitialRender.current = false
+  }, [])
+
+  if (isInitialRender.current) {
     return (
       <>
         {filteredChildren.map((child) => (
