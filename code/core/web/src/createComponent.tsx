@@ -413,7 +413,6 @@ export function createComponent<
       useIsomorphicLayoutEffect(() => {
         const pendingState = stateRef.current.nextState
         if (pendingState) {
-          if (debugProp) console.log(`‼️ set pending state`, pendingState)
           stateRef.current.nextState = undefined
           componentState.setStateShallow(pendingState)
         }

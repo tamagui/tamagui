@@ -13,6 +13,7 @@
     "dist"
   ],
   "dependencies": {
+    "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/use-constant": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
