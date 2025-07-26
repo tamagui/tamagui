@@ -281,19 +281,16 @@ declare module 'tamagui' {
 export default config
 ```
 
-The `createTamagui` function receives a configuration object:
+The `createTamagui` function receives a configuration object with properties:
 
-- `tokens`: Use `createTokens` to generate variables in your theme and app.
-- `theme`: Define your design [theme](/docs/intro/themes), which map to CSS
-  properties.
-- `media`: Define reusable responsive [media queries](/docs/core/use-media).
-- `shorthands`: Define any props you want to expand to style values, keys being
-  the shorthand and values being the expanded style prop.
-- `defaultProps`: Deprecated, use styled() on any component to change it's
-  styles. ~~For more advanced uses, you can override all named `styled()`
-  components initial values.~~
-- `onlyAllowShorthands`: When set to true will ensure that if you define
-  shorthands, they override existing long-form style props.
+- [`animations`](#animations): Configurable animation drivers.
+- [`media`](#media): Cross-platform, typed
+  [media queries](/docs/core/use-media).
+- [`themes`](#themes): Define [themes](/docs/intro/themes) to style contextually
+  anywhere in the tree, much like CSS variables.
+- [`tokens`](#tokens): Your base tokens are much like static CSS variables.
+- [`settings`](#settings): Many options for strictness and style behavior.
+- [`shorthands`](#shorthands): Define shorter names for any style property.
 
 <Notice theme="blue">
   On Android you need to set the `face` option in `createFont` or else fonts
