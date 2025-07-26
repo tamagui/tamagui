@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/select",
-  "version": "1.132.13",
+  "version": "1.132.14",
   "removeSideEffects": "true",
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
