@@ -11,4 +11,5 @@ export * from './extractor/watchTamaguiConfig';
 export * from './extractor/createLogger';
 export * from './registerRequire';
 export * from './getPragmaOptions';
+export { getBabelPlugin } from './extractor/extractToNative';
 //# sourceMappingURL=exports.d.ts.map
