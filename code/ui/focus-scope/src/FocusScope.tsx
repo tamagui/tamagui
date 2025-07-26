@@ -108,6 +108,8 @@ export function useFocusScope(
     function handleFocusIn(event: FocusEvent) {
       if (focusScope.paused || !container) return
       const target = event.target as HTMLElement | null
+      
+      
       if (container.contains(target)) {
         // Set container as lastFocusedElement to prevent inputs
         // to be refocused on blur events
@@ -174,6 +176,13 @@ export function useFocusScope(
           const visibleCandidates = linkedRemoved.filter(candidate => !isHidden(candidate, { upTo: container }))
 
           focusFirst(visibleCandidates, { select: true })
+          
+          // Set the lastFocusedElement to the first visible candidate or container
+          if (visibleCandidates.length > 0) {
+            lastFocusedElementRef.current = visibleCandidates[0]
+          } else {
+            lastFocusedElementRef.current = container
+          }
 
           // Don't focus the container if no visible candidates were found
           if (document.activeElement === previouslyFocusedElement && visibleCandidates.length === 0) {
