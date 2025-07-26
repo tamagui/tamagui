@@ -587,6 +587,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
     const contents = (
       <DialogContentFrame
+        ref={composedRefs}
         id={context.contentId}
         aria-describedby={context.descriptionId}
         aria-labelledby={context.titleId}
@@ -608,8 +609,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           onPointerDownOutside={onPointerDownOutside}
           onFocusOutside={onFocusOutside}
           onInteractOutside={onInteractOutside}
-          // @ts-ignore
-          ref={composedRefs}
           onDismiss={() => context?.onOpenChange?.(false)}
         >
           <FocusScope

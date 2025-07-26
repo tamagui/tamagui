@@ -153,6 +153,7 @@ export function useFocusScope(
         const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS)
         container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
         container.dispatchEvent(mountEvent)
+        
         if (!mountEvent.defaultPrevented) {
           // wait for idle before focusing to prevent reflows during animations
           if (focusOnIdle) {
@@ -168,11 +169,14 @@ export function useFocusScope(
             )
           }
 
-          const candidates = removeLinks(getTabbableCandidates(container))
+          const allCandidates = getTabbableCandidates(container)
+          const linkedRemoved = removeLinks(allCandidates)
+          const visibleCandidates = linkedRemoved.filter(candidate => !isHidden(candidate, { upTo: container }))
 
-          focusFirst(candidates, { select: true })
+          focusFirst(visibleCandidates, { select: true })
 
-          if (document.activeElement === previouslyFocusedElement) {
+          // Don't focus the container if no visible candidates were found
+          if (document.activeElement === previouslyFocusedElement && visibleCandidates.length === 0) {
             focus(container)
           }
         }
@@ -206,20 +210,21 @@ export function useFocusScope(
 
   // Takes care of looping focus (when tabbing whilst at the edges)
   const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent) => {
+    (event: React.KeyboardEvent | KeyboardEvent) => {
       if (!trapped) return
       if (!loop) return
       if (focusScope.paused) return
       if (!enabled) return
+      if (!container) return
 
       const isTabKey =
         event.key === 'Tab' && !event.altKey && !event.ctrlKey && !event.metaKey
       const focusedElement = document.activeElement as HTMLElement | null
 
       if (isTabKey && focusedElement) {
-        const container = event.currentTarget as HTMLElement
         const [first, last] = getTabbableEdges(container)
         const hasTabbableElementsInside = first && last
+
 
         // we can only wrap focus if we have tabbable edges
         if (!hasTabbableElementsInside) {
@@ -235,14 +240,45 @@ export function useFocusScope(
         }
       }
     },
-    [loop, trapped, focusScope.paused]
+    [loop, trapped, focusScope.paused, enabled, container]
   )
 
+  // Add keydown listener directly to the container for focus trap looping
+  React.useEffect(() => {
+    if (!container) return
+    if (!trapped) return
+    if (!loop) return
+    if (!enabled) return
+
+    const handleKeyDownCapture = (event: KeyboardEvent) => {
+      // Only handle Tab key events for focus trap looping
+      if (event.key === 'Tab') {
+        handleKeyDown(event)
+      }
+    }
+
+    // Use capture phase to ensure we handle it before other handlers
+    container.addEventListener('keydown', handleKeyDownCapture, true)
+    
+    return () => {
+      container.removeEventListener('keydown', handleKeyDownCapture, true)
+    }
+  }, [container, trapped, loop, enabled, handleKeyDown])
+  
+  const existingOnKeyDown = (scopeProps as any).onKeyDown
+  
+  const composedOnKeyDown = React.useCallback(
+    (event: React.KeyboardEvent) => {
+      existingOnKeyDown?.(event)
+      // Don't call handleKeyDown here since we're handling it via addEventListener
+    },
+    [existingOnKeyDown]
+  )
+  
   return {
-    tabIndex: -1,
     ...scopeProps,
     ref: composedRefs,
-    onKeyDown: handleKeyDown,
+    onKeyDown: composedOnKeyDown,
   }
 }
 
@@ -269,6 +305,8 @@ function getTabbableEdges(container: HTMLElement) {
   const candidates = getTabbableCandidates(container)
   const first = findVisible(candidates, container)
   const last = findVisible(candidates.reverse(), container)
+  
+  
   return [first, last] as const
 }
 
@@ -333,10 +371,14 @@ function focus(element?: FocusableTarget | null, { select = false } = {}) {
   if (element?.focus) {
     const previouslyFocusedElement = document.activeElement
     // NOTE: we prevent scrolling on focus, to minimize jarring transitions for users
-    element.focus({ preventScroll: true })
-    // only select if its not the same element, it supports selection and we need to select
-    if (element !== previouslyFocusedElement && isSelectableInput(element) && select)
-      element.select()
+    try {
+      element.focus({ preventScroll: true })
+      // only select if its not the same element, it supports selection and we need to select
+      if (element !== previouslyFocusedElement && isSelectableInput(element) && select)
+        element.select()
+    } catch (error) {
+      // In some cases focus might fail, ignore silently
+    }
   }
 }
 

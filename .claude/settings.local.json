@@ -11,7 +11,20 @@
       "Bash(cp:*)",
       "Bash(mv:*)",
       "Bash(rg:*)",
-      "Bash(git filter-branch:*)"
+      "Bash(git filter-branch:*)",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list)",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list --grep \"traps focus within dialog when modal\" --headed)",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list --grep \"traps focus within dialog when modal\" -g)",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list --grep \"traps focus within dialog when modal\")",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list --grep \"traps focus within dialog when modal\" --workers=1)",
+      "Bash(cat:*)",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list --grep \"traps focus within dialog when modal\" --workers=1 --ui)",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list --grep \"auto-focuses first element\" --workers=1)",
+      "Bash(NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test DialogFocusScope.test.tsx --reporter=list --grep \"auto-focuses first element\" --workers=1 --config=/dev/null --project=chromium)",
+      "Bash(npx playwright test:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run:*)",
+      "Bash(yarn typecheck:*)"
     ],
     "deny": []
   }

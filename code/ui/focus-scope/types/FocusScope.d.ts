@@ -5,7 +5,6 @@ declare const FocusScope: React.ForwardRefExoticComponent<FocusScopeProps & Reac
 export declare function useFocusScope(props: FocusScopeProps, forwardedRef: React.ForwardedRef<FocusScopeElement>): {
     ref: (node: HTMLDivElement) => void;
     onKeyDown: (event: React.KeyboardEvent) => void;
-    tabIndex: number;
 };
 export { FocusScope };
 export type { FocusScopeProps };
