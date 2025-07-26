@@ -29,7 +29,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>
-        <Button>
+        <Button debug="verbose">
           <Button.Text>Show Dialog{disableAdapt ? ` (No Sheet)` : ''}</Button.Text>
         </Button>
       </Dialog.Trigger>

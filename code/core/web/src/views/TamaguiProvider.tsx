@@ -67,7 +67,7 @@ export function TamaguiProvider({
 
   if (getSetting('disableSSR')) {
     // never changes so conditional render fine, no re-parenting risk
-    contents = <ClientOnly>{contents}</ClientOnly>
+    contents = <ClientOnly enabled>{contents}</ClientOnly>
   }
 
   return (

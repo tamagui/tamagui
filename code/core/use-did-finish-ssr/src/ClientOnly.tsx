@@ -1,10 +1,15 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 export const ClientOnlyContext: React.Context<boolean> = createContext(false)
 
 export const ClientOnly = ({
   children,
-  value = true,
-}: { children: any; value?: boolean }): React.ReactNode => {
-  return <ClientOnlyContext.Provider value={value}>{children}</ClientOnlyContext.Provider>
+  enabled,
+}: { children: any; enabled?: boolean }): React.ReactNode => {
+  const existingValue = useContext(ClientOnlyContext)
+  return (
+    <ClientOnlyContext.Provider value={enabled ?? existingValue}>
+      {children}
+    </ClientOnlyContext.Provider>
+  )
 }

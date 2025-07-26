@@ -1503,6 +1503,7 @@ export function createComponent<
                 themeState,
                 viewProps,
                 willBeAnimated,
+                startedUnhydrated,
               })
             }
           } catch {
