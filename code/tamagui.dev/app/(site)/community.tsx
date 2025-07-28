@@ -31,7 +31,7 @@ export default function Community() {
 
       <Spacer size="$4" />
 
-      <ContainerLarge space="$4">
+      <ContainerLarge gap="$4">
         <Spacer />
 
         <H1 als="center">Community</H1>
@@ -146,7 +146,7 @@ export default function Community() {
             Starter repos & Guides
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <XStack py="$2" space="$4">
+            <XStack py="$2" gap="$4">
               <StarterRepoCard
                 url="https://galaxies.dev/course/react-native-tamagui  "
                 name="Universal Apps with Tamagui (Guide)"
@@ -207,109 +207,65 @@ export default function Community() {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center" className="rainbow clip-text">
-            Enterprise Sponsors
+          <H2 size="$10" ta="center" className="rainbow clip-text">
+            Our Sponsors
           </H2>
+          <Paragraph ta="center" theme="alt1" size="$5" mt="$2">
+            Thank you to all our sponsors who help make Tamagui possible
+          </Paragraph>
         </FlatBubbleCard>
 
         <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
-          <GoldSponsor
+          <SponsorCard
             name="Uniswap"
-            bg="#FF007A"
             link="https://uniswap.org"
             image="/sponsors/uniswap.jpeg"
-            imageWidth={250}
-            imageHeight={250}
-          />
-        </XStack>
-
-        <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center" color="$yellow10">
-            Gold Sponsors
-          </H2>
-        </FlatBubbleCard>
-
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
-          <GoldSponsor
-            name="Medbill AI"
-            bg="#888"
-            link="https://www.medbill.ai"
-            image="/sponsors/medbill-ai.png"
-            imageWidth={150}
-            imageHeight={150}
-          />
-          <GoldSponsor
-            name="Appfolio"
-            link="https://www.appfolio.com/"
-            image="/sponsors/appfolio.jpeg"
-            imageWidth={150}
-            imageHeight={150}
-          />
-          <GoldSponsor
-            name="Manifold Finance"
-            link="https://www.manifoldfinance.com"
-            image="/sponsors/manifold.png"
             imageWidth={100}
             imageHeight={100}
           />
-        </XStack>
-
-        <Spacer />
-
-        <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center">
-            Bronze Sponsors
-          </H2>
-        </FlatBubbleCard>
-
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
-          <GoldSponsor
+          <SponsorCard
+            name="Granted"
+            link="https://grantedhealth.com"
+            image="/sponsors/granted.png"
+            imageWidth={100}
+            imageHeight={100}
+          />
+          <SponsorCard
             name="Bounty"
             link="https://bounty.co"
             image="/sponsors/bounty.png"
             imageWidth={100}
             imageHeight={100}
           />
-          <GoldSponsor
+          <SponsorCard
             name="Meteor"
             link="https://meteorwallet.app"
             image="/sponsors/meteor.png"
             imageWidth={100}
             imageHeight={100}
           />
-        </XStack>
-
-        <Spacer />
-
-        <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center">
-            Indie Sponsors
-          </H2>
-        </FlatBubbleCard>
-
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
-          <GoldSponsor
-            name="CodingScape"
-            link="https://codingscape.com"
-            image="/sponsors/coding-scape.png"
-            imageWidth={566 * 0.35}
-            imageHeight={162 * 0.35}
-          />
-          <GoldSponsor
-            name="Quest Portal"
-            link="https://www.questportal.com"
-            image="/sponsors/quest-portal.png"
-            imageWidth={200 * 0.3}
-            imageHeight={200 * 0.3}
-          />
-          <GoldSponsor
+          <SponsorCard
             name="BeatGig"
             link="https://beatgig.com"
             image="/sponsors/beatgig.jpg"
             imageWidth={400 * 0.5}
             imageHeight={84 * 0.5}
           />
-          <GoldSponsor
+          <SponsorCard
+            name="CodingScape"
+            link="https://codingscape.com"
+            image="/sponsors/coding-scape.png"
+            imageWidth={566 * 0.35}
+            imageHeight={162 * 0.35}
+          />
+          <SponsorCard
+            name="Quest Portal"
+            link="https://www.questportal.com"
+            image="/sponsors/quest-portal.png"
+            imageWidth={200 * 0.3}
+            imageHeight={200 * 0.3}
+          />
+          <SponsorCard
             name="Pineapples.dev"
             link="http://pineapples.dev"
             image="/sponsors/pineapple.jpg"
@@ -320,13 +276,7 @@ export default function Community() {
 
         <Spacer />
 
-        <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center">
-            Early Sponsors
-          </H2>
-        </FlatBubbleCard>
-
-        <XStack space flexWrap="wrap">
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
           <IndividualSponsor name="@barelyreaper" link="https://x.com/barelyreaper" />
           <IndividualSponsor name="@pontusab" link="https://x.com/pontusab" />
           <IndividualSponsor name="@AntelaBrais" link="https://x.com/AntelaBrais" />
@@ -360,6 +310,13 @@ const StarterRepoCard = ({
       target="_blank"
       p="$5"
       jc="space-between"
+      hoverStyle={{
+        scale: 1.02,
+        opacity: 0.9,
+      }}
+      pressStyle={{
+        scale: 0.98,
+      }}
     >
       <YStack gap="$2">
         <GithubIcon />
@@ -374,44 +331,75 @@ const StarterRepoCard = ({
   )
 }
 
-function GoldSponsor(props: {
+function SponsorCard(props: {
   name: string
   link: Href
   image: string
   imageWidth: number
   imageHeight: number
   bg?: any
+  width?: number | string
+  w?: number | string
 }) {
   return (
-    <FlatBubbleCard mb="$4" flat p={0} fb={0} bg={props.bg}>
-      <Link href={props.link} target="_blank">
+    <FlatBubbleCard
+      mb="$4"
+      flat
+      w={300}
+      p={0}
+      fb={0}
+      f={1}
+      bg={props.bg || '$background'}
+      animation="quick"
+      hoverStyle={{
+        scale: 1.02,
+        opacity: 0.9,
+      }}
+      pressStyle={{
+        scale: 0.98,
+      }}
+      bw={1}
+      bc={'$borderColor'}
+    >
+      <Link href={props.link} target="_blank" style={{ textDecoration: 'none' }}>
         <YStack
           ai="center"
           jc="center"
           f={1}
           cursor="pointer"
           target="_blank"
-          p="$8"
+          p="$6"
           br="$4"
-          space
+          gap="$3"
         >
-          <Image
-            accessibilityLabel={props.name}
-            source={{
-              uri: props.image,
-              height: props.imageHeight,
-              width: props.imageWidth,
-            }}
-          />
-          <H5 ta="center" cursor="inherit" als="center" letterSpacing={4} ai="center">
-            {props.name}
-          </H5>
+          <YStack
+            br="$3"
+            overflow="hidden"
+            shac="$shadowColor"
+            shar="$2"
+            bg="$background"
+            p="$2"
+          >
+            <Image
+              accessibilityLabel={props.name}
+              source={{
+                uri: props.image,
+                height: props.imageHeight,
+                width: props.imageWidth,
+              }}
+              br="$2"
+            />
+          </YStack>
+          <YStack ai="center" gap="$1">
+            <H5 ta="center" cursor="inherit" als="center" letterSpacing={4} ai="center">
+              {props.name}
+            </H5>
+          </YStack>
         </YStack>
       </Link>
     </FlatBubbleCard>
   )
 }
-
 function IndividualSponsor(props: { name: string; link: string }) {
   return (
     <FlatBubbleCard flat mb="$4">
@@ -424,7 +412,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
               br="$4"
               hoverStyle={{ bg: 'rgba(0,0,0,0.1)' }}
               pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
-              space
+              gap="$4"
             >
               <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
                 {props.name}
