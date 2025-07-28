@@ -72,6 +72,7 @@ export const InputFrame = styled(
     accept: {
       placeholderTextColor: 'color',
       selectionColor: 'color',
+      borderColor: 'color',
     } as const,
   }
 )

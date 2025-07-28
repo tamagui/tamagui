@@ -57,8 +57,16 @@ export const themeableVariants = {
   },
 } as const
 
-export const ThemeableStack = styled(YStack, {
-  variants: themeableVariants,
-})
+export const ThemeableStack = styled(
+  YStack,
+  {
+    variants: themeableVariants,
+  },
+  {
+    accept: {
+      borderColor: 'color',
+    } as const,
+  }
+)
 
 export type ThemeableStackProps = GetProps<typeof ThemeableStack>
