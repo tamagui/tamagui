@@ -90,7 +90,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
             </Paragraph>
 
             <Button
-              accessibilityLabel="Carousel left"
+              aria-label="Carousel left"
               icon={ChevronLeft}
               size="$2"
               circular
@@ -98,7 +98,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
               onPress={() => paginate(-1)}
             />
             <Button
-              accessibilityLabel="Carousel left"
+              aria-label="Carousel left"
               icon={ChevronRight}
               size="$2"
               circular

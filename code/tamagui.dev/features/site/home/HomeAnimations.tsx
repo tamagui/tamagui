@@ -98,7 +98,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
               <YStack fullscreen top="60%" o={0.5} />
 
               <Button
-                accessibilityLabel="View more"
+                aria-label="View more"
                 theme="accent"
                 y={200}
                 iconAfter={ArrowDown}
@@ -125,7 +125,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
         <XStack als="center" gap="$3">
           <Link href="/docs/core/animations">
-            <Button accessibilityLabel="Animation docs">
+            <Button aria-label="Animation docs">
               <Button.Text fontFamily="$silkscreen">Docs &raquo;</Button.Text>
             </Button>
           </Link>

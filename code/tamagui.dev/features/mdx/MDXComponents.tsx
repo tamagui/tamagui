@@ -404,7 +404,7 @@ const componentsIn = {
 
   Beta: () => (
     <Button
-      accessibilityLabel="Beta blog post"
+      aria-label="Beta blog post"
       pe="none"
       size="$2"
       theme="pink"

@@ -20,11 +20,9 @@ export const Image = StyledImage.styleable<ImageProps>(
       onPartialLoad,
       progressiveRenderingEnabled,
       resizeMethod,
-      resizeMode,
       tintColor,
       ...rest
     } = inProps
-
     return <StyledImage ref={ref} {...rest} />
   },
   {

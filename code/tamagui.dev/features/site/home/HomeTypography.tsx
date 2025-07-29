@@ -167,7 +167,7 @@ const OverlayCard = () => {
         </Paragraph>
 
         <Link asChild href="/docs/core/configuration">
-          <Button accessibilityLabel="Fonts docs" als="flex-end" theme={tint as any}>
+          <Button aria-label="Fonts docs" als="flex-end" theme={tint as any}>
             <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
           </Button>
         </Link>

@@ -639,7 +639,7 @@ const DiscordMember = ({
         {isMutating ? 'Inviting...' : 'Add'}
       </Button>
       <Avatar circular size="$2">
-        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Image aria-label={`avatar for ${username}`} src={avatarSrc!} />
         <Avatar.Fallback backgroundColor="$blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>

@@ -713,7 +713,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
 
     return (
       <DialogCloseFrame
-        accessibilityLabel="Dialog Close"
+        aria-label="Dialog Close"
         tag={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}

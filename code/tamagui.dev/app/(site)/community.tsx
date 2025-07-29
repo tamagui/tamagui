@@ -397,7 +397,7 @@ function GoldSponsor(props: {
           gap="$4"
         >
           <Image
-            accessibilityLabel={props.name}
+            aria-label={props.name}
             source={{
               uri: props.image,
               height: props.imageHeight,

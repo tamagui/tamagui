@@ -88,7 +88,7 @@ export const MediaPlayer = memo(
                 size="$8"
                 circular
                 elevation="$2"
-                accessibilityLabel="Pause"
+                aria-label="Pause"
                 pointerEvents={pointerEventsControls}
               />
               <FastForward size={20} />

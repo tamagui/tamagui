@@ -22,7 +22,7 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
       br="$10"
       circular={props.tiny ? true : false}
       chromeless={props.tiny ? true : false}
-      accessibilityLabel="Support OSS development of Tamagui"
+      aria-label="Support OSS development of Tamagui"
     >
       <Button.Text ff="$silkscreen">{props.tiny ? '' : 'Sponsor'}</Button.Text>
     </Button>

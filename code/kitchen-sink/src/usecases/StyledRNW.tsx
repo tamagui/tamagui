@@ -2,7 +2,7 @@ import { Platform } from 'react-native'
 import { Input as TamaguiInput, styled, useThemeName } from '@tamagui/ui'
 
 export function StyledRNW() {
-  return <Input id="styled-rnw-input" accessibilityLabel="ok" placeholder="search" />
+  return <Input id="styled-rnw-input" aria-label="ok" placeholder="search" />
 }
 
 const TextInput = styled(

@@ -1,4 +1,4 @@
-import { Image, ImageProps } from '@tamagui/image'
+import { Image } from '@tamagui/image'
 
 export function ImageDemo() {
   return (

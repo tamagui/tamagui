@@ -31,7 +31,7 @@ export function Slides(props: { slides: Slides }) {
   const PreviewCurrentSlideComponent = props.slides[index]
   const PreviewNextSlideComponent = props.slides[index + 1]
 
-  const goToNextStep = useRef<(inc: number) => boolean>()
+  const goToNextStep = useRef<(inc: number) => boolean>(null)
   const slideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
@@ -41,7 +41,7 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
-  const previewSlideGoToNextStep = useRef<(inc: number) => boolean>()
+  const previewSlideGoToNextStep = useRef<(inc: number) => boolean>(null)
   const previewSlideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
@@ -107,23 +107,23 @@ export function Slides(props: { slides: Slides }) {
         </AnimatePresence>
 
         <Button
-          accessibilityLabel="Carousel left"
+          aria-label="Carousel left"
           icon={ArrowLeft}
           size="$3"
           position="absolute"
           left="$4"
           circular
-          elevate
+          elevation="$2"
           onPress={prevStep}
         />
         <Button
-          accessibilityLabel="Carousel right"
+          aria-label="Carousel right"
           icon={ArrowRight}
           size="$3"
           position="absolute"
           right="$4"
           circular
-          elevate
+          elevation="$2"
           onPress={nextStep}
         />
 

@@ -104,7 +104,7 @@ export function Demo3() {
       </AnimatePresence>
 
       <Button
-        accessibilityLabel="Carousel left"
+        aria-label="Carousel left"
         icon={ArrowLeft}
         size="$5"
         position="absolute"
@@ -116,7 +116,7 @@ export function Demo3() {
       />
 
       <Button
-        accessibilityLabel="Carousel right"
+        aria-label="Carousel right"
         icon={ArrowRight}
         size="$5"
         position="absolute"

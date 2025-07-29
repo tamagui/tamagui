@@ -401,7 +401,7 @@ const AccountHeader = () => {
         icon={<LogOut />}
         size="$2"
         alignSelf="flex-end"
-        accessibilityLabel="Logout"
+        aria-label="Logout"
       >
         <Button.Text>Logout</Button.Text>
       </Button>
@@ -885,7 +885,7 @@ const DiscordMember = ({
         <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
       <Avatar circular size="$2">
-        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Image aria-label={`avatar for ${username}`} src={avatarSrc!} />
         <Avatar.Fallback backgroundColor="$blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>

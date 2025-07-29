@@ -79,7 +79,7 @@ export const HomeExamples = memo(
                 return (
                   <XGroup.Item key={i}>
                     <Button
-                      accessibilityLabel="See example"
+                      aria-label="See example"
                       onPress={() => setActiveIndex(i)}
                       theme={i === activeIndex ? 'surface2' : null}
                       chromeless={i !== activeIndex}
@@ -205,7 +205,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button
-                    accessibilityLabel="See example"
+                    aria-label="See example"
                     onPress={() => setActiveIndex(i)}
                     theme={i === activeIndex ? (tint as any) : 'alt1'}
                     size="$2"

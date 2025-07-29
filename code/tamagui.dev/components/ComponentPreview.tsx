@@ -310,7 +310,7 @@ const ComponentPreview = {
             x={0}
           >
             <Avatar bw={1.5} borderColor={'$background'} circular size="$5">
-              <Avatar.Image accessibilityLabel="Nate Wienert" src={`${img}?&w=100`} />
+              <Avatar.Image aria-label="Nate Wienert" src={`${img}?&w=100`} />
               <Avatar.Fallback delayMs={600} backgroundColor="$color3" />
             </Avatar>
           </View>
