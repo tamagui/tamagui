@@ -119,8 +119,8 @@ export class StepExportStore {
 import { defaultConfig } from '@tamagui/config/v4'
 
 export const config = createTamagui({
-  themes,
   ...defaultConfig,
+  themes,
 })
 `,
                   },
