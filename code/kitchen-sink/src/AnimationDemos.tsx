@@ -99,7 +99,7 @@ export function Demo3() {
     >
       <AnimatePresence initial={false} custom={{ going }}>
         <GalleryItem key={page} animation="lazy" going={going}>
-          <Image source={{ uri: photos[imageIndex], width: 500, height: 300 }} />
+          <Image src={photos[imageIndex]} width={500} height={300} objectFit="cover" />
         </GalleryItem>
       </AnimatePresence>
 
