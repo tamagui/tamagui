@@ -27,7 +27,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Atom color={color as any} />,
           headerRight: () => (
             <Link href="/modal" asChild>
-              <Button mr="$4" bg="$green8" color="$green12">
+              <Button mr="$4" size="$2.5">
                 Hello!
               </Button>
             </Link>
