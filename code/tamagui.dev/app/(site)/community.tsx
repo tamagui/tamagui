@@ -1,4 +1,3 @@
-// import { getAllFrontmatter } from '@lib/mdx'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import type { Href } from 'one'
 import { ScrollView } from 'react-native'
@@ -20,6 +19,7 @@ import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Link } from '~/components/Link'
+import { SponsorCarousel } from '~/components/SponsorCarousel'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
@@ -206,83 +206,9 @@ export default function Community() {
 
         <Spacer />
 
-        <FlatBubbleCard bw={0}>
-          <H2 size="$10" ta="center" className="rainbow clip-text">
-            Our Sponsors
-          </H2>
-          <Paragraph ta="center" theme="alt1" size="$5" mt="$2">
-            Thank you to all our sponsors who help make Tamagui possible
-          </Paragraph>
-        </FlatBubbleCard>
-
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
-          <SponsorCard
-            name="Uniswap"
-            link="https://uniswap.org"
-            image="/sponsors/uniswap.jpeg"
-            imageWidth={100}
-            imageHeight={100}
-          />
-          <SponsorCard
-            name="Granted"
-            link="https://grantedhealth.com"
-            image="/sponsors/granted.png"
-            imageWidth={100}
-            imageHeight={100}
-          />
-          <SponsorCard
-            name="Bounty"
-            link="https://bounty.co"
-            image="/sponsors/bounty.png"
-            imageWidth={100}
-            imageHeight={100}
-          />
-          <SponsorCard
-            name="Meteor"
-            link="https://meteorwallet.app"
-            image="/sponsors/meteor.png"
-            imageWidth={100}
-            imageHeight={100}
-          />
-          <SponsorCard
-            name="BeatGig"
-            link="https://beatgig.com"
-            image="/sponsors/beatgig.jpg"
-            imageWidth={400 * 0.5}
-            imageHeight={84 * 0.5}
-          />
-          <SponsorCard
-            name="CodingScape"
-            link="https://codingscape.com"
-            image="/sponsors/coding-scape.png"
-            imageWidth={566 * 0.35}
-            imageHeight={162 * 0.35}
-          />
-          <SponsorCard
-            name="Quest Portal"
-            link="https://www.questportal.com"
-            image="/sponsors/quest-portal.png"
-            imageWidth={200 * 0.3}
-            imageHeight={200 * 0.3}
-          />
-          <SponsorCard
-            name="Pineapples.dev"
-            link="http://pineapples.dev"
-            image="/sponsors/pineapple.jpg"
-            imageWidth={520 * 0.5}
-            imageHeight={186 * 0.5}
-          />
-        </XStack>
+        <SponsorCarousel />
 
         <Spacer />
-
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
-          <IndividualSponsor name="@barelyreaper" link="https://x.com/barelyreaper" />
-          <IndividualSponsor name="@pontusab" link="https://x.com/pontusab" />
-          <IndividualSponsor name="@AntelaBrais" link="https://x.com/AntelaBrais" />
-          <IndividualSponsor name="Hirbod" link="https://x.com/nightstomp" />
-          <IndividualSponsor name="Dimension" link="https://x.com/joindimension" />
-        </XStack>
       </ContainerLarge>
 
       <Spacer size="$10" />
@@ -328,100 +254,6 @@ const StarterRepoCard = ({
         by {author}
       </Paragraph>
     </Card>
-  )
-}
-
-function SponsorCard(props: {
-  name: string
-  link: Href
-  image: string
-  imageWidth: number
-  imageHeight: number
-  bg?: any
-  width?: number | string
-  w?: number | string
-}) {
-  return (
-    <FlatBubbleCard
-      mb="$4"
-      flat
-      w={300}
-      p={0}
-      fb={0}
-      f={1}
-      bg={props.bg || '$background'}
-      animation="quick"
-      hoverStyle={{
-        scale: 1.02,
-        opacity: 0.9,
-      }}
-      pressStyle={{
-        scale: 0.98,
-      }}
-      bw={1}
-      bc={'$borderColor'}
-    >
-      <Link href={props.link} target="_blank" style={{ textDecoration: 'none' }}>
-        <YStack
-          ai="center"
-          jc="center"
-          f={1}
-          cursor="pointer"
-          target="_blank"
-          p="$6"
-          br="$4"
-          gap="$3"
-        >
-          <YStack
-            br="$3"
-            overflow="hidden"
-            shac="$shadowColor"
-            shar="$2"
-            bg="$background"
-            p="$2"
-          >
-            <Image
-              accessibilityLabel={props.name}
-              source={{
-                uri: props.image,
-                height: props.imageHeight,
-                width: props.imageWidth,
-              }}
-              br="$2"
-            />
-          </YStack>
-          <YStack ai="center" gap="$1">
-            <H5 ta="center" cursor="inherit" als="center" letterSpacing={4} ai="center">
-              {props.name}
-            </H5>
-          </YStack>
-        </YStack>
-      </Link>
-    </FlatBubbleCard>
-  )
-}
-function IndividualSponsor(props: { name: string; link: string }) {
-  return (
-    <FlatBubbleCard flat mb="$4">
-      <YStack maxWidth="100%" fs={0} als="center">
-        <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
-          <Link href={props.link as any} target="_blank">
-            <YStack
-              cursor="pointer"
-              p="$4"
-              br="$4"
-              hoverStyle={{ bg: 'rgba(0,0,0,0.1)' }}
-              pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
-              gap="$4"
-            >
-              <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
-                {props.name}
-              </H5>
-            </YStack>
-          </Link>
-        </XStack>
-      </YStack>
-    </FlatBubbleCard>
   )
 }
 
