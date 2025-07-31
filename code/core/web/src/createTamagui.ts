@@ -2,6 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
+import { createVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { getAllRules, scanAllSheets } from './helpers/insertStyleRule'
@@ -179,7 +180,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     const themesIn = configIn.themes as ThemesLikeObject
-    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
+    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
     const themes = proxyThemesToParents(dedupedThemes)
 
     return {
@@ -332,7 +333,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 }
 
 // dedupes the themes if given them via JS config
-function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
+function getThemesDeduped(
+  themes: ThemesLikeObject,
+  colorTokens?: Record<string, any>
+): DedupedThemes {
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
 
@@ -361,6 +365,21 @@ function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
     // ensure each theme object unique for dedupe
     // is ThemeParsed because we call ensureThemeVariable
     const theme = { ...rawTheme } as any as ThemeParsed
+
+    // automatically merge color tokens into themes
+    if (colorTokens) {
+      for (const colorKey in colorTokens) {
+        if (!(colorKey in theme)) {
+          const colorVar = colorTokens[colorKey]
+          // Create a new variable with the proper theme key name
+          theme[colorKey] = createVariable({
+            key: colorKey,
+            name: colorKey,
+            val: colorVar.val,
+          })
+        }
+      }
+    }
     // parse into variables
     for (const key in theme) {
       // make sure properly names theme variables
