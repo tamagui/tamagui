@@ -179,7 +179,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     const themesIn = configIn.themes as ThemesLikeObject
-    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
+    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
     const themes = proxyThemesToParents(dedupedThemes)
 
     return {
@@ -332,7 +332,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 }
 
 // dedupes the themes if given them via JS config
-function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
+function getThemesDeduped(
+  themes: ThemesLikeObject,
+  colorTokens?: Record<string, any>
+): DedupedThemes {
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
 
@@ -361,6 +364,12 @@ function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
     // ensure each theme object unique for dedupe
     // is ThemeParsed because we call ensureThemeVariable
     const theme = { ...rawTheme } as any as ThemeParsed
+
+    // automatically merge color tokens into themes
+    if (colorTokens) {
+      Object.assign(theme, colorTokens)
+    }
+
     // parse into variables
     for (const key in theme) {
       // make sure properly names theme variables
