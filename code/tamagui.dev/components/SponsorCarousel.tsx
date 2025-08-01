@@ -17,6 +17,13 @@ const sponsors = [
     gradient: 'linear-gradient(135deg, #FAFFF5 0%,#E7F0B9 100%)',
   },
   {
+    id: 'healthy',
+    name: 'Healthy',
+    link: 'https://gethealthy.com',
+    image: '/sponsors/healthy.png',
+    gradient: 'linear-gradient(135deg, #84CAC3 0%,#306C75 100%)',
+  },
+  {
     id: 'appfolio',
     name: 'AppFolio',
     link: 'https://www.appfolio.com',
@@ -107,8 +114,8 @@ const CarouselContainer = styled(YStack, {
 })
 
 const SponsorCardStyled = styled(YStack, {
-  width: 200,
-  height: 200,
+  width: 220,
+  height: 220,
   borderRadius: '$6',
   overflow: 'visible',
   position: 'relative',
@@ -147,14 +154,14 @@ export function SponsorCarousel() {
       <CarouselContainer>
         {/* Title section */}
         <YStack mb="$4">
-          <H2 size="$10" ta="center" className="rainbow clip-text">
+          <H2 size="$10" ta="center" color="$color">
             Our Sponsors
           </H2>
           <Paragraph ta="center" theme="alt1" size="$5" mt="$2">
-            Thank you to all our sponsors who help make Tamagui possible
+            Sponsors who made Tamagui possible
           </Paragraph>
         </YStack>
-        <XStack flexWrap="wrap" jc="center" gap="$4" maw={1200}>
+        <XStack flexWrap="wrap" jc="center" gap="$6" px="$6" maw={1200}>
           {sponsors.map((sponsor) => (
             <SponsorCard key={sponsor.id} {...sponsor} />
           ))}
