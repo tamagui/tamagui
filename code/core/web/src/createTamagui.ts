@@ -2,7 +2,6 @@ import { isWeb } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
-import { createVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { getAllRules, scanAllSheets } from './helpers/insertStyleRule'
@@ -368,18 +367,9 @@ function getThemesDeduped(
 
     // automatically merge color tokens into themes
     if (colorTokens) {
-      for (const colorKey in colorTokens) {
-        if (!(colorKey in theme)) {
-          const colorVar = colorTokens[colorKey]
-          // Create a new variable with the proper theme key name
-          theme[colorKey] = createVariable({
-            key: colorKey,
-            name: colorKey,
-            val: colorVar.val,
-          })
-        }
-      }
+      Object.assign(theme, colorTokens)
     }
+
     // parse into variables
     for (const key in theme) {
       // make sure properly names theme variables

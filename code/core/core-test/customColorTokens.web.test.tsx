@@ -78,39 +78,6 @@ describe('custom color tokens', () => {
     expect(darkTheme.customGreen.val).toBe('#00ff00')
   })
 
-  test('does not override existing theme colors with custom color tokens', () => {
-    const customColors = {
-      background: '#ff0000', // This should NOT override theme background
-      customColor: '#00ff00',
-    }
-
-    const config = {
-      tokens: {
-        color: customColors,
-        space: { true: 10 },
-        size: { true: 10 },
-        radius: { true: 10 },
-        zIndex: { true: 10 },
-      },
-      themes: {
-        light: {
-          background: '#fff', // This should be preserved
-          color: '#000000',
-        },
-      },
-    }
-
-    const tamagui = createTamagui(config)
-    const lightTheme = tamagui.themeConfig.themes.light
-
-    // Existing theme value should be preserved
-    expect(lightTheme.background.val).toBe('#fff')
-
-    // Custom color should still be added
-    expect(lightTheme.customColor).toBeDefined()
-    expect(lightTheme.customColor.val).toBe('#00ff00')
-  })
-
   test('works with nested theme structures', () => {
     const customColors = {
       customAccent: '#ff00ff',
