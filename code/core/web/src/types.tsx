@@ -679,6 +679,12 @@ export interface GenericTamaguiSettings {
    * @default html
    */
   addThemeClassName?: 'body' | 'html' | false
+
+  /**
+   * Sets the default position value for all Tamagui components.
+   * @default 'static'
+   */
+  defaultPosition?: 'static' | 'relative'
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -716,6 +722,7 @@ export type CreateTamaguiProps = {
   defaultProps?: Record<string, any> & {
     Stack?: StackProps
     Text?: TextProps
+    View?: StackProps
   }
 }
 

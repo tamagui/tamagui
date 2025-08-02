@@ -27,6 +27,7 @@ export declare const settings: {
     onlyAllowShorthands: true;
     maxDarkLightNesting: number;
     styleCompat: "legacy";
+    defaultPosition: "relative";
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
@@ -396,6 +397,7 @@ export declare const defaultConfig: {
         onlyAllowShorthands: true;
         maxDarkLightNesting: number;
         styleCompat: "legacy";
+        defaultPosition: "relative";
     };
 };
 //# sourceMappingURL=v4.d.ts.map

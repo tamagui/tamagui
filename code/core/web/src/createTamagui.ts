@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
+import { stackDefaultStyles } from './constants/constants'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
@@ -256,6 +257,22 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return val
   })()
 
+  const defaultPositionSetting = configIn.settings?.defaultPosition || 'static'
+
+  const defaultProps = configIn.defaultProps || {}
+  // Apply defaultPosition to stackDefaultStyles directly
+  // This avoids the deprecated defaultProps pattern in createComponent
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    defaultProps.Stack = {
+      ...defaultProps.Stack,
+      position: defaultPositionSetting,
+    }
+    defaultProps.View = {
+      ...defaultProps.View,
+      position: defaultPositionSetting,
+    }
+  }
+
   // ensure prefixed with $
   const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
 
@@ -271,6 +288,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: {} as any,
     media: {},
     ...configIn,
+    defaultProps,
     unset,
     settings: {
       webContainerType: 'inline-size',

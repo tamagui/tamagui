@@ -41,6 +41,7 @@ export const config = {
     shouldAddPrefersColorThemes: true,
     maxDarkLightNesting: 2,
     styleCompat: 'legacy',
+    defaultPosition: 'relative',
     // These settings are now configured in createTamagui settings
     // themeClassNameOnRoot: true, // moved to createTamagui({ settings: { themeClassNameOnRoot } })
     // disableRootThemeClass: true, // moved to createTamagui({ settings: { disableRootThemeClass } })
