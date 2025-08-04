@@ -67,5 +67,7 @@ export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
     return <Component {...finalProps} />
   }
 
+  wrapped.acceptsSize = true
+
   return wrapped
 }
