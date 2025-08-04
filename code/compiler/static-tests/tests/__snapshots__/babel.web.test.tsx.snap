@@ -1,12 +1,13 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = " _bg-blue";
-const _cn2 = " _bg-red";
-const _cn = " _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-static _mih-0px _miw-0px _fs-0 _w-10px  ";
+"const _cn4 = " _bg-blue";
+const _cn3 = " _bg-red";
+const _cn2 = " _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px  ";
+const _cn = "  is_Stack";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <div className={concatClassName("" + (_cn + (props.green ? _cn2 : _cn3) + (props.className ? " " + props.className : "")))} />;
+  return <div className={concatClassName(_cn + (_cn2 + (props.green ? _cn3 : _cn4) + (props.className ? " " + props.className : "")))} />;
 }
 import { concatClassName } from "@tamagui/helpers";"
 `;
@@ -17,7 +18,6 @@ exports[`className + conditional styles get full base styles merged onto + short
 :root ._fd-column{flex-direction:column;}
 :root ._fb-auto{flex-basis:auto;}
 :root ._bxs-border-box{box-sizing:border-box;}
-:root ._pos-static{position:static;}
 :root ._mih-0px{min-height:0px;}
 :root ._miw-0px{min-width:0px;}
 :root ._fs-0{flex-shrink:0;}
@@ -27,12 +27,13 @@ exports[`className + conditional styles get full base styles merged onto + short
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = " _bg-blue";
-const _cn2 = " _bg-red";
-const _cn = " _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-static _mih-0px _miw-0px _fs-0 _w-10px  ";
+"const _cn4 = " _bg-blue";
+const _cn3 = " _bg-red";
+const _cn2 = " _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px  ";
+const _cn = "  is_Stack";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <div className={concatClassName("" + (_cn + (props.green ? _cn2 : _cn3)))} />;
+  return <div className={concatClassName(_cn + (_cn2 + (props.green ? _cn3 : _cn4)))} />;
 }
 import { concatClassName } from "@tamagui/helpers";"
 `;
@@ -43,7 +44,6 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 :root ._fd-column{flex-direction:column;}
 :root ._fb-auto{flex-basis:auto;}
 :root ._bxs-border-box{box-sizing:border-box;}
-:root ._pos-static{position:static;}
 :root ._mih-0px{min-height:0px;}
 :root ._miw-0px{min-width:0px;}
 :root ._fs-0{flex-shrink:0;}
