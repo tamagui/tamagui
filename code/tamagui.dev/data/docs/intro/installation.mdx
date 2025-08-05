@@ -4,11 +4,11 @@ description: Get Tamagui set up, step by step
 ---
 
 <IntroParagraph>
-Setting up Tamagui can be easy, or take a bit of investment. Many people incorrectly try
-to customize everything right away - resist that temptation. We recommend starting with starter templates, or at least preset config.
+  Setting up Tamagui can be easy, or take a bit of investment. We highly
+  recommend starting with our starter templates and preset config.
 </IntroParagraph>
 
-Use `npm create tamagui@latest` to start from one of our many starter templates.
+Use `npm create tamagui@latest` to pick one of our starter templates.
 
 To install from scratch:
 
@@ -16,15 +16,18 @@ To install from scratch:
 yarn add @tamagui/core
 ```
 
-If you plan to use the full UI kit, `tamagui`, you can avoid installing `@tamagui/core` altogether and instead:
+Core is just the style library. If you plan to use our full UI kit, you can
+avoid installing `@tamagui/core` and instead:
 
 ```bash
 yarn add tamagui
 ```
 
-The `tamagui` package is a superset of core, so anywhere in the docs `@tamagui/core` is used, you can replace it with `tamagui`.
+The `tamagui` package is a superset of core, so anywhere the docs reference
+`@tamagui/core`, you can replace it with `tamagui`.
 
-Adding the optional `TamaguiProvider` is recommended as it lets you configure a variety of things:
+Next, you'll want to set up your [configuration](/docs/core/configuration) and
+provide it with `TamaguiProvider`:
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, View } from '@tamagui/core'
@@ -32,22 +35,20 @@ import config from './tamagui.config' // your configuration
 
 export default function App() {
   return (
-  <TamaguiProvider config={config}>
-    <View width={200} height={200} backgroundColor="$background" />
-  </TamaguiProvider>
+    <TamaguiProvider config={config}>
+      <View width={200} height={200} backgroundColor="$background" />
+    </TamaguiProvider>
   )
 }
 ```
 
-See the [configuration documentation](/docs/core/configuration) docs for a comprehensive overview of what can be in your config. 
-
-If you'd like to get started more quickly with presets, we have `@tamagui/config`:
+We have a recommended preset configuration called `@tamagui/config`:
 
 ```bash
-yarn add @tamagui/core @tamagui/config
+yarn add @tamagui/config
 ```
 
-And then provide it near your root:
+You can use it like so:
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
@@ -65,14 +66,12 @@ declare module '@tamagui/core' {
 
 export default () => {
   return (
-    <TamaguiProvider config={config}>
-      {/* your app here */}
-    </TamaguiProvider>
+    <TamaguiProvider config={config}>{/* your app here */}</TamaguiProvider>
   )
 }
 ```
 
-You are ready to go.
+And that's it!
 
 <Preview>
   <DemoButton />
@@ -86,24 +85,68 @@ export default function Demo() {
 }
 ```
 
-From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). Tamagui works across 100% of it's features at runtime and compile-time. This means you can wait until you absolutely need more performance to [set up the compiler](/docs/intro/compiler-install).
+From here, we recommend
+[spending some time understanding configuration](/docs/core/configuration).
+
+100% of Tamagui features work at both runtime and compile-time, which makes it
+both easy to use and fast. Because it works fully at runtime, and because we've
+invested a lot into building it such that it doesn't need any special bundler
+configuration to work on either native or web, you can begin using Tamagui with
+just the above setup.
+
+Later on, you can [set up the compiler](/docs/intro/compiler-install) to gain
+more performance and some nice development helpers.
 
 ---
 
 ## Guides
 
-Tamagui generally doesn't require any special bundler setup as we've worked hard to make it "just work" without configuration in a wide variety of environments.
+Tamagui generally doesn't require any special bundler setup as we've worked hard
+to make it "just work" without configuration in a wide variety of environments.
 
-That said, the broader React Native and React Native Web ecosystem is filled with packages that do need configuration. Tamagui provides a variety of bundler plugins that help improve that compatibility, as well as letting you opt into the optimizing compiler.
+That said, the broader React Native and React Native Web ecosystem is filled
+with packages that do need configuration. Tamagui provides a variety of bundler
+plugins that help with that:
 
-For more in-depth guides:
-
-<Spacer/>
+<Spacer />
 
 <Grid gap="$4">
-  <LogoCard title="Webpack" img="/logos/webpack.svg" link="/docs/guides/webpack" subtitle="Powerful module bundler for modern JavaScript applications." colorOffset={0} />
-  <LogoCard title="Metro" img="/logos/metro.svg" link="/docs/guides/metro" subtitle="Fast, scalable, and serverless JavaScript bundler for react Native." colorOffset={3} />
-  <LogoCard title="Vite" img="/logos/vite.svg" link="/docs/guides/vite" subtitle="Fast and modern development server and build tool." colorOffset={1} />
-  <LogoCard title="Expo" img="/logos/expo.svg" link="/docs/guides/expo" subtitle="Platform for creating universal native apps with JavaScript and React." colorOffset={6} />
-  <LogoCard fg={0} w="49%" $xs={{fg:0, w:"100%"}} title="Next.js" img="/logos/next-js.svg" link="/docs/guides/next-js" subtitle="Full-featured React framework with great developer experience." colorOffset={2}  />
+  <LogoCard
+    title="Webpack"
+    img="/logos/webpack.svg"
+    link="/docs/guides/webpack"
+    subtitle="Powerful module bundler for modern JavaScript applications."
+    colorOffset={0}
+  />
+  <LogoCard
+    title="Metro"
+    img="/logos/metro.svg"
+    link="/docs/guides/metro"
+    subtitle="Fast, scalable, and serverless JavaScript bundler for react Native."
+    colorOffset={3}
+  />
+  <LogoCard
+    title="Vite"
+    img="/logos/vite.svg"
+    link="/docs/guides/vite"
+    subtitle="Fast and modern development server and build tool."
+    colorOffset={1}
+  />
+  <LogoCard
+    title="Expo"
+    img="/logos/expo.svg"
+    link="/docs/guides/expo"
+    subtitle="Platform for creating universal native apps with JavaScript and React."
+    colorOffset={6}
+  />
+  <LogoCard
+    fg={0}
+    w="49%"
+    $xs={{ fg: 0, w: '100%' }}
+    title="Next.js"
+    img="/logos/next-js.svg"
+    link="/docs/guides/next-js"
+    subtitle="Full-featured React framework with great developer experience."
+    colorOffset={2}
+  />
 </Grid>
