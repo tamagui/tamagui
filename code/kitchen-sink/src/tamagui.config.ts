@@ -184,6 +184,9 @@ const tokens = {
   color: {
     ...config.tokens.color,
     testsomethingdifferent: '#ff0000',
+    customRed: '#ff0000',
+    customBlue: '#0000ff',
+    customGreen: '#00ff00',
   },
   // size: {
   //   0: 10,
