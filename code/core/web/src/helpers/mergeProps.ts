@@ -55,8 +55,6 @@ export const mergeProps = (
     }
   }
 
-
-
   // Targeted reordering: only reorder pseudo props and variants that need runtime order
   if (b && Object.keys(b).length > 0) {
     // Check if we have any pseudo props or variants that need reordering
@@ -102,7 +100,6 @@ export const mergeProps = (
           reordered[key] = out[key]
         }
       }
-
 
       return reordered
     }
