@@ -29,6 +29,9 @@
  *   case 2: pressStyle first, then variant
  *   <StyledButton pressStyle={{ bg: 'orange' }} variant='default' />
  *   output: {pressStyle: {bg: 'orange'}, variant: 'default'}
+ *
+ * When defaultVariants are present, all runtime props that override defaults
+ * need to maintain their runtime order.
  */
 
 import { mediaKeys } from '../hooks/useMedia'
@@ -36,7 +39,12 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 
 type AnyRecord = Record<string, any>
 
-export const mergeProps = (a: Object, b?: Object, inverseShorthands?: AnyRecord) => {
+export const mergeProps = (
+  a: Object,
+  b?: Object,
+  inverseShorthands?: AnyRecord,
+  variants?: AnyRecord
+) => {
   const out: AnyRecord = {}
   for (const key in a) {
     mergeProp(out, a, b, key, inverseShorthands)
@@ -47,29 +55,54 @@ export const mergeProps = (a: Object, b?: Object, inverseShorthands?: AnyRecord)
     }
   }
 
+
+
   // Targeted reordering: only reorder pseudo props and variants that need runtime order
   if (b && Object.keys(b).length > 0) {
     // Check if we have any pseudo props or variants that need reordering
-    const hasPropsNeedingReorder = Object.keys(b).some(
-      (key) => (key in pseudoDescriptors || key === 'variant') && key in a && key in out
-    )
+    // We need to check for:
+    // 1. Pseudo props or 'variant' that override defaults (exist in both a and b)
+    // 2. If we have variants defined and any variant prop is being overridden
+    const hasPropsNeedingReorder = Object.keys(b).some((key) => {
+      // Always reorder if it's a pseudo prop or 'variant' being overridden
+      if ((key in pseudoDescriptors || key === 'variant') && key in a && key in out) {
+        return true
+      }
+      // If we have variant definitions and this runtime prop is overriding a default,
+      // we may need to reorder other variant props too
+      if (variants && key in variants && key in a && key in out) {
+        return true
+      }
+      return false
+    })
 
     if (hasPropsNeedingReorder) {
       const reordered: AnyRecord = {}
 
-      // First: Add pseudo props and variants that need specific ordering from runtime props (b)
-      for (const key in b) {
-        if ((key in pseudoDescriptors || key === 'variant') && key in out) {
+      // First: Add all non-variant/non-pseudo props (base styles should come first)
+      for (const key in out) {
+        if (
+          !(key in pseudoDescriptors) &&
+          key !== 'variant' &&
+          !(variants && key in variants)
+        ) {
           reordered[key] = out[key]
         }
       }
 
-      // Second: Add all other props in their original order
-      for (const key in out) {
-        if (!(key in reordered)) {
+      // Second: Add pseudo props and variant props from runtime props (b) in their runtime order
+      // This ensures variant props override base styles
+      for (const key in b) {
+        if (
+          (key in pseudoDescriptors ||
+            key === 'variant' ||
+            (variants && key in variants)) &&
+          key in out
+        ) {
           reordered[key] = out[key]
         }
       }
+
 
       return reordered
     }

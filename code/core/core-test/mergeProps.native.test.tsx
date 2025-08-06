@@ -14,6 +14,35 @@ describe('mergeProps', () => {
     expect(result).toEqual({ b: 1, a: 2 })
   })
 
+  test('base styles come before runtime variant props', () => {
+    // Simulates styled(View, { bg: 'red', variants: { alt: { true: { bg: 'blue' } } } })
+    const variants = { alt: { true: { bg: 'blue' } } }
+    const defaultProps = { bg: 'red' }
+    const runtimeProps = { alt: true }
+
+    const result = mergeProps(defaultProps, runtimeProps, undefined, variants)
+
+    // Base styles should come first, then variant props
+    expect(Object.keys(result)).toEqual(['bg', 'alt'])
+  })
+
+  test('runtime prop order determines override priority', () => {
+    // Test case: <StyledView alt bg="green" /> vs <StyledView bg="green" alt />
+    // Based on: styled(Stack, { bg: 'red', width: 50, height: 50, variants: { alt: { true: { bg: 'blue' } } } })
+    const variants = { alt: { true: { bg: 'blue' } } }
+    const defaultProps = { bg: 'red', width: 50, height: 50 }
+
+    // Case 1: alt first, then bg="green" - bg should win
+    const runtimeProps1 = { alt: true, bg: 'green' }
+    const result1 = mergeProps(defaultProps, runtimeProps1, undefined, variants)
+    expect(Object.keys(result1)).toEqual(['width', 'height', 'alt', 'bg'])
+
+    // Case 2: bg="green" first, then alt - alt should win
+    const runtimeProps2 = { bg: 'green', alt: true }
+    const result2 = mergeProps(defaultProps, runtimeProps2, undefined, variants)
+    expect(Object.keys(result2)).toEqual(['width', 'height', 'bg', 'alt'])
+  })
+
   test('simple order test', () => {
     const result = mergeProps(
       { pressStyle: { bg: 'blue' }, variant: 'default' },
@@ -109,10 +138,43 @@ describe('mergeProps', () => {
     const result = mergeProps(styledDefinition, runtimeProps)
 
     // Should follow runtime props order: variant first, then pressStyle
-    expect(Object.keys(result)).toEqual(['variant', 'pressStyle', 'name', 'variants'])
+    expect(Object.keys(result)).toEqual(['name', 'variants', 'variant', 'pressStyle'])
     expect(result.variant).toBe('prim')
     // Runtime pressStyle should merge with styled pressStyle, overriding backgroundColor
     expect(result.pressStyle).toEqual({ backgroundColor: 'orange' })
+  })
+
+  test('variant props with defaultVariants should preserve runtime order', () => {
+    // Simulates ViewCustomWithDefaults with defaultVariants: { variant: 'solid' }
+    const variants = {
+      variant: { solid: { bg: 'green' }, ghost: { bg: 'blue' } },
+      iconOnly: { true: { width: 25, height: 25 } },
+    }
+    const defaultProps = {
+      background: 'red',
+      width: 50,
+      height: 50,
+      variant: 'solid', // from defaultVariants
+    }
+
+    // Runtime props: variant="ghost" iconOnly
+    const runtimeProps = {
+      variant: 'ghost',
+      iconOnly: true,
+    }
+
+    const result = mergeProps(defaultProps, runtimeProps, undefined, variants)
+
+    // Base styles first, then runtime props in order
+    expect(Object.keys(result)).toEqual([
+      'background',
+      'width',
+      'height',
+      'variant',
+      'iconOnly',
+    ])
+    expect(result.variant).toBe('ghost')
+    expect(result.iconOnly).toBe(true)
   })
 
   test('styled component with variant-based pressStyle - case 2: pressStyle first', () => {
@@ -148,7 +210,7 @@ describe('mergeProps', () => {
     const result = mergeProps(styledDefinition, runtimeProps)
 
     // Should follow runtime props order: pressStyle first, then variant
-    expect(Object.keys(result)).toEqual(['pressStyle', 'variant', 'name', 'variants'])
+    expect(Object.keys(result)).toEqual(['name', 'variants', 'pressStyle', 'variant'])
     expect(result.variant).toBe('prim')
     // Runtime pressStyle should merge with styled pressStyle, overriding backgroundColor
     expect(result.pressStyle).toEqual({ backgroundColor: 'orange' })

@@ -29,8 +29,11 @@
  *   case 2: pressStyle first, then variant
  *   <StyledButton pressStyle={{ bg: 'orange' }} variant='default' />
  *   output: {pressStyle: {bg: 'orange'}, variant: 'default'}
+ *
+ * When defaultVariants are present, all runtime props that override defaults
+ * need to maintain their runtime order.
  */
 type AnyRecord = Record<string, any>;
-export declare const mergeProps: (a: Object, b?: Object, inverseShorthands?: AnyRecord) => AnyRecord;
+export declare const mergeProps: (a: Object, b?: Object, inverseShorthands?: AnyRecord, variants?: AnyRecord) => AnyRecord;
 export {};
 //# sourceMappingURL=mergeProps.d.ts.map
