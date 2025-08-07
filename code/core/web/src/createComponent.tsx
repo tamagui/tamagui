@@ -329,7 +329,12 @@ export function createComponent<
     // order important so we do loops, you can't just spread because JS does weird things
     let props: StackProps | TextProps = propsIn
     if (curDefaultProps) {
-      props = mergeProps(curDefaultProps, propsIn)
+      props = mergeProps(
+        curDefaultProps,
+        propsIn,
+        config?.shorthands,
+        staticConfig.variants
+      )
     }
 
     const componentName = props.componentName || staticConfig.componentName
