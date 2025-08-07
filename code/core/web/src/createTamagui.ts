@@ -283,7 +283,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const config: TamaguiInternalConfig = {
     fonts: {},
-    onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,
     media: {},

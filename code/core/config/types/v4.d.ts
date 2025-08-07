@@ -24,7 +24,6 @@ export declare const settings: {
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
     addThemeClassName: "html";
-    onlyAllowShorthands: true;
     maxDarkLightNesting: number;
     styleCompat: "legacy";
     defaultPosition: "relative";
@@ -394,7 +393,6 @@ export declare const defaultConfig: {
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
         addThemeClassName: "html";
-        onlyAllowShorthands: true;
         maxDarkLightNesting: number;
         styleCompat: "legacy";
         defaultPosition: "relative";

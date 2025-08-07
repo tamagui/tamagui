@@ -291,11 +291,6 @@ export interface TamaguiConfig
   extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
     TamaguiCustomConfig {}
 
-export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
-  onlyAllowShorthands: infer X
-}
-  ? X
-  : false
 
 export type CreateTamaguiConfig<
   A extends GenericTokens,
@@ -606,11 +601,6 @@ export interface GenericTamaguiSettings {
     | 'revert-layer'
     | 'unset'
 
-  /**
-   * Only allow shorthands when enabled. Recommended to be true to avoid having
-   * two ways to style the same property.
-   */
-  onlyAllowShorthands?: boolean | undefined
 
   /**
    * Define a default font, for better types and default font on Text
@@ -1226,8 +1216,6 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands']
-
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
@@ -1270,9 +1258,7 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 export type WithThemeAndShorthands<
   A extends Object,
   Variants = {},
-> = OnlyAllowShorthands extends true
-  ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
+> = WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...

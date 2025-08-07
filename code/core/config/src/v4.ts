@@ -30,7 +30,6 @@ export const settings = {
   shouldAddPrefersColorThemes: true,
   allowedStyleValues: 'somewhat-strict-web',
   addThemeClassName: 'html',
-  onlyAllowShorthands: true,
   maxDarkLightNesting: 2,
   styleCompat: 'legacy',
   defaultPosition: 'relative',
