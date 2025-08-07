@@ -1,14 +1,15 @@
 import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { mergeProps, StyleObjectIdentifier, StyleObjectRules } from '@tamagui/web'
+import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/web'
 import * as path from 'node:path'
 import * as util from 'node:util'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
-import type { TamaguiOptions, Ternary } from '../types'
+import type { StyleObject, TamaguiOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
 import type { Extractor } from './createExtractor'
 import { createLogger } from './createLogger'
+import { extractMediaStyle } from './extractMediaStyle'
 import { normalizeTernaries } from './normalizeTernaries'
 import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
 import { timer } from './timer'
@@ -43,7 +44,7 @@ export async function extractToClassNames({
   shouldPrintDebug,
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
-  const { getCSSStylesAtomic } = requireTamaguiCore('web')
+  const { getCSSStylesAtomic, mergeProps, createMediaStyle } = requireTamaguiCore('web')
 
   if (sourcePath.includes('node_modules')) {
     return null
@@ -86,29 +87,7 @@ export async function extractToClassNames({
   tm.mark(`babel-parse`, shouldPrintDebug === 'verbose')
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
-
-  function addStyles(style: Object, comment: string) {
-    const cssStyles = getCSSStylesAtomic(style as any)
-    const classNames: string[] = []
-
-    for (const style of cssStyles) {
-      const identifier = style[StyleObjectIdentifier]
-      const rules = style[StyleObjectRules]
-      const selector = `.${identifier}`
-      classNames.push(identifier)
-      if (cssMap.has(selector)) {
-        const val = cssMap.get(selector)!
-        val.commentTexts.push(comment)
-      } else if (rules.length) {
-        cssMap.set(selector, {
-          css: rules.join('\n'),
-          commentTexts: [comment],
-        })
-      }
-    }
-
-    return classNames
-  }
+  const tamaguiConfig = extractor.getTamagui()!
 
   const res = await extractor.parse(ast, {
     shouldPrintDebug,
@@ -127,6 +106,7 @@ export async function extractToClassNames({
       return tag
     },
     onExtractTag: ({
+      parserProps,
       attrs,
       node,
       attemptEval,
@@ -173,6 +153,57 @@ export async function extractToClassNames({
       let mergeForwardBaseStyle: Object | null = null
       let attrClassName: t.Expression | null = null
       let baseFontFamily = ''
+      let mediaStylesSeen = 1
+
+      const comment = util.format(
+        '/* %s:%s (%s) */',
+        filePath,
+        lineNumbers,
+        originalNodeName
+      )
+
+      function addStyle(style: StyleObject) {
+        const identifier = style[StyleObjectIdentifier]
+        const rules = style[StyleObjectRules]
+        const selector = `.${identifier}`
+        if (cssMap.has(selector)) {
+          const val = cssMap.get(selector)!
+          val.commentTexts.push(comment)
+        } else if (rules.length) {
+          cssMap.set(selector, {
+            css: rules.join('\n'),
+            commentTexts: [comment],
+          })
+        }
+        return identifier
+      }
+
+      function addStyles(style: Object) {
+        const cssStyles = getCSSStylesAtomic(style as any)
+        const classNames: string[] = []
+
+        for (const style of cssStyles) {
+          const mediaName = style[0].slice(1)
+          if (tamaguiConfig.media[mediaName]) {
+            const mediaStyle = createMediaStyle(
+              style,
+              mediaName,
+              extractor.getTamagui()!.media,
+              true,
+              false,
+              mediaStylesSeen
+            )
+            const identifier = addStyle(mediaStyle)
+            classNames.push(identifier)
+            continue
+          }
+
+          const identifier = addStyle(style)
+          classNames.push(identifier)
+        }
+
+        return classNames
+      }
 
       const onlyTernaries: Ternary[] = attrs.flatMap((attr) => {
         if (attr.type === 'attr') {
@@ -212,29 +243,46 @@ export async function extractToClassNames({
           return []
         }
 
+        let ternary = attr.value
+
+        if (ternary.inlineMediaQuery) {
+          const mediaExtraction = extractMediaStyle(
+            parserProps,
+            attr.value,
+            jsxPath,
+            extractor.getTamagui()!,
+            sourcePath || '',
+            mediaStylesSeen++,
+            shouldPrintDebug
+          )
+
+          if (mediaExtraction) {
+            if (mediaExtraction.mediaStyles) {
+              mergeForwardBaseStyle = mergeProps(mergeForwardBaseStyle || {}, {
+                [`$${ternary.inlineMediaQuery}`]: attr.value.consequent!,
+              })
+            }
+            if (mediaExtraction.ternaryWithoutMedia) {
+              ternary = mediaExtraction.ternaryWithoutMedia
+            } else {
+              return []
+            }
+          }
+        }
+
         // merge the base style forward into both sides
         return {
-          ...attr.value,
+          ...ternary,
           fontFamily: baseFontFamily,
-          alternate: mergeProps(mergeForwardBaseStyle || {}, attr.value.alternate || {}),
-          consequent: mergeProps(
-            mergeForwardBaseStyle || {},
-            attr.value.consequent || {}
-          ),
+          alternate: mergeProps(mergeForwardBaseStyle || {}, ternary.alternate || {}),
+          consequent: mergeProps(mergeForwardBaseStyle || {}, ternary.consequent || {}),
         }
       })
-
-      const comment = util.format(
-        '/* %s:%s (%s) */',
-        filePath,
-        lineNumbers,
-        originalNodeName
-      )
 
       const hasTernaries = Boolean(onlyTernaries.length)
 
       const baseClassNames = mergeForwardBaseStyle
-        ? addStyles(mergeForwardBaseStyle, comment)
+        ? addStyles(mergeForwardBaseStyle)
         : null
 
       let baseClassNameStr =
@@ -349,7 +397,7 @@ export async function extractToClassNames({
       if (hasTernaries) {
         for (const ternary of expandedTernaries) {
           if (!ternary.consequent) continue
-          const classNames = addStyles(ternary.consequent, comment)
+          const classNames = addStyles(ternary.consequent)
           if (ternary.fontFamily) {
             classNames.unshift(`font_${ternary.fontFamily}`)
           }
@@ -384,6 +432,7 @@ export async function extractToClassNames({
             : ternaryClassNameExpr
       }
 
+      // console.info('attrs', JSON.stringify(attrs, null, 2))
       // console.info('expandedTernaries', JSON.stringify(expandedTernaries, null, 2))
       // console.info('finalExpression', JSON.stringify(finalExpression, null, 2))
 

@@ -96,6 +96,7 @@ export interface Ternary {
   consequent: Object | null
   alternate: Object | null
   fontFamily?: string
+  inlineMediaQuery?: string
 }
 
 export type ClassNameToStyleObj = {

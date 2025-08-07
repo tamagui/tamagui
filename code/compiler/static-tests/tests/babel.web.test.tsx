@@ -27,6 +27,34 @@ import { View } from '@tamagui/core'
   expect(output?.js).toContain(`<_TamaguiTheme name="green"><div className={`)
 })
 
+test('theme + media queries + conditionals extract', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Stack
+          theme="surface1"
+          $sm={{ flexDirection: 'column' }}
+          {...(onlyDemo && {
+            flexDirection: 'column',
+          })}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toMatchSnapshot()
+  expect(output?.styles).toMatchSnapshot()
+})
+
 // floating && floating2 && p2 pb18 mr2 btrr10 br5 btlr7
 // floating && !floating2 && p2 pb18 mr1 btrr10 br5
 // !floating && floating2 && p2 pb15 mr2 btrr10 br2 btlr7

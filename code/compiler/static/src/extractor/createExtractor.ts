@@ -1090,6 +1090,29 @@ export function createExtractor(
               return attr
             }
 
+            // shorthand media queries
+            if (name[0] === '$' && t.isJSXExpressionContainer(attribute?.value)) {
+              const shortname = name.slice(1)
+              if (mediaQueryConfig[shortname]) {
+                const expression = attribute.value.expression
+                if (!t.isJSXEmptyExpression(expression)) {
+                  const ternaries = flattenNestedTernaries(
+                    t.stringLiteral(shortname),
+                    expression,
+                    {
+                      inlineMediaQuery: shortname,
+                    }
+                  )
+                  if (ternaries) {
+                    return ternaries.map((value) => ({
+                      type: 'ternary',
+                      value,
+                    }))
+                  }
+                }
+              }
+            }
+
             const [value, valuePath] = (() => {
               if (t.isJSXExpressionContainer(attribute?.value)) {
                 return [attribute.value.expression!, path.get('value')!] as const
