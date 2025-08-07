@@ -77,6 +77,7 @@ export interface Ternary {
     remove: Function;
     consequent: Object | null;
     alternate: Object | null;
+    fontFamily?: string;
 }
 export type ClassNameToStyleObj = {
     [key: string]: StyleObject;

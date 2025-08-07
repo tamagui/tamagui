@@ -10,6 +10,7 @@ import { babelParse } from './babelParse'
 import type { Extractor } from './createExtractor'
 import { createLogger } from './createLogger'
 import { normalizeTernaries } from './normalizeTernaries'
+import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
 import { timer } from './timer'
 
 export type ExtractedResponse = {
@@ -171,6 +172,7 @@ export async function extractToClassNames({
 
       let mergeForwardBaseStyle: Object | null = null
       let attrClassName: t.Expression | null = null
+      let baseFontFamily = ''
 
       const onlyTernaries: Ternary[] = attrs.flatMap((attr) => {
         if (attr.type === 'attr') {
@@ -206,12 +208,14 @@ export async function extractToClassNames({
 
         if (attr.type === 'style') {
           mergeForwardBaseStyle = mergeProps(mergeForwardBaseStyle || {}, attr.value)
+          baseFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
           return []
         }
 
         // merge the base style forward into both sides
         return {
           ...attr.value,
+          fontFamily: baseFontFamily,
           alternate: mergeProps(mergeForwardBaseStyle || {}, attr.value.alternate || {}),
           consequent: mergeProps(
             mergeForwardBaseStyle || {},
@@ -232,8 +236,13 @@ export async function extractToClassNames({
       const baseClassNames = mergeForwardBaseStyle
         ? addStyles(mergeForwardBaseStyle, comment)
         : null
-      const baseClassNameStr =
+
+      let baseClassNameStr =
         hasTernaries || !baseClassNames ? '' : ` ${baseClassNames.join(' ')}`
+
+      if (!hasTernaries && baseFontFamily) {
+        baseClassNameStr = `font_${baseFontFamily} ${baseClassNameStr}`
+      }
 
       let base = staticConfig.componentName
         ? t.stringLiteral(`is_${staticConfig.componentName}${baseClassNameStr}`)
@@ -341,6 +350,9 @@ export async function extractToClassNames({
         for (const ternary of expandedTernaries) {
           if (!ternary.consequent) continue
           const classNames = addStyles(ternary.consequent, comment)
+          if (ternary.fontFamily) {
+            classNames.unshift(`font_${ternary.fontFamily}`)
+          }
           const baseString = t.isStringLiteral(baseClassNameExpression)
             ? baseClassNameExpression.value
             : ''
