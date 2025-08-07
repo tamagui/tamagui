@@ -39,6 +39,7 @@ export type ExtractorOptions = {
 export type ExtractedAttrAttr = {
   type: 'attr'
   value: t.JSXAttribute | t.JSXSpreadAttribute
+  extraClassNames?: string
 }
 
 export type ExtractedAttrStyle = {
@@ -46,19 +47,15 @@ export type ExtractedAttrStyle = {
   value: ViewStyle & PseudoStyles
   attr?: t.JSXAttribute | t.JSXSpreadAttribute
   name?: string
+  extraClassNames?: string
 }
 
-export type ExtractedDynAttrStyle = {
-  type: 'dynamic-style'
-  name?: string
-  value: t.Expression | t.JSXEmptyExpression
+export type ExtractedTernaryAttr = {
+  type: 'ternary'
+  value: Ternary
 }
 
-export type ExtractedAttr =
-  | ExtractedAttrAttr
-  | { type: 'ternary'; value: Ternary }
-  | ExtractedAttrStyle
-  | ExtractedDynAttrStyle
+export type ExtractedAttr = ExtractedAttrAttr | ExtractedTernaryAttr | ExtractedAttrStyle
 
 export type ExtractTagProps = {
   parserProps: TamaguiOptionsWithFileInfo
@@ -70,7 +67,6 @@ export type ExtractTagProps = {
   originalNodeName: string
   lineNumbers: string
   filePath: string
-  isFlattened: boolean
   completeProps: Record<string, any>
   staticConfig: StaticConfig
   config: TamaguiConfig
@@ -91,13 +87,11 @@ export type ExtractorParseProps = Omit<
   getFlattenedNode?: (props: { isTextView: boolean; tag: string }) => string
   extractStyledDefinitions?: boolean
   // identifer, rule
-  onStyleRule?: (identifier: string, rules: string[]) => void
+  onStyledDefinitionRule?: (identifier: string, rules: string[]) => void
 }
 
 export interface Ternary {
   test: t.Expression
-  // shorthand props that don't use hooks
-  inlineMediaQuery?: string
   remove: Function
   consequent: Object | null
   alternate: Object | null

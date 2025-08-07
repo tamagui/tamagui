@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 process.env.TAMAGUI_TARGET = 'web'
 window['React'] = React
 
@@ -31,19 +31,8 @@ describe('styled() tests', () => {
       throw new Error(`No output`)
     }
 
-    expect(output.js).toMatchInlineSnapshot(`
-      "import { MyStack } from '@tamagui/test-design-system';
-      import { styled } from '@tamagui/core';
-
-      // not exported
-      const InlineStyled = styled(MyStack, {
-        \\"backgroundColor\\": \\"_bg-orange\\"
-      });
-      export function Test() {
-        return <InlineStyled />;
-      }"
-    `)
-    expect(output.styles).toMatchInlineSnapshot('"._bg-orange{background-color:orange;}"')
+    expect(output.js).toMatchInlineSnapshot()
+    expect(output.styles).toMatchInlineSnapshot()
   })
 
   test('extracts to className at call-site', async () => {

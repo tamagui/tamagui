@@ -163,10 +163,6 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
               ]),
               shouldPrintDebug,
               ...finalOptions,
-              // disable this extraction for now at least, need to figure out merging theme vs non-theme
-              // because theme need to stay in render(), whereas non-theme can be extracted
-              // for now just turn it off entirely at a small perf loss
-              disableExtractInlineMedia: true,
               // disable extracting variables as no native concept of them (only theme values)
               disableExtractVariables: options.experimentalFlattenThemesOnNative
                 ? false
@@ -188,13 +184,6 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
               },
 
               onExtractTag(props) {
-                const { isFlattened } = props
-
-                if (!isFlattened) {
-                  // we aren't optimizing at all if not flattened anymore
-                  return
-                }
-
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
                 const hocStylesExpr = t.arrayExpression([])
@@ -285,37 +274,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                         consExpr || t.nullLiteral(),
                         altExpr || t.nullLiteral()
                       )
-                      addStyleExpression(
-                        styleExpr
-                        // TODO: what is this for ?
-                        // isFlattened ? simpleHash(JSON.stringify({ consequent, alternate })) : undefined
-                      )
-                      break
-                    }
-
-                    case 'dynamic-style': {
-                      hasDynamicStyle = true
-                      expressions.push(attr.value as t.Expression)
-                      if (options.experimentalFlattenDynamicValues) {
-                        addStyleExpression(
-                          t.objectExpression([
-                            t.objectProperty(
-                              t.identifier(attr.name as string),
-                              t.identifier(`_expressions[${expressions.length - 1}]`)
-                            ),
-                          ]),
-                          true
-                        )
-                      } else {
-                        addStyleExpression(
-                          t.objectExpression([
-                            t.objectProperty(
-                              t.identifier(attr.name as string),
-                              attr.value as t.Expression
-                            ),
-                          ])
-                        )
-                      }
+                      addStyleExpression(styleExpr)
                       break
                     }
 
@@ -343,83 +302,81 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
 
                 props.node.attributes = finalAttrs
 
-                if (props.isFlattened) {
-                  if (
-                    options.experimentalFlattenThemesOnNative &&
-                    (themeKeysUsed.size ||
-                      hocStylesExpr.elements.length > 1 ||
-                      hasDynamicStyle)
-                  ) {
-                    if (!hasImportedViewWrapper) {
-                      root.unshiftContainer('body', importWithStyle())
-                      root.unshiftContainer('body', importReactUseMemo())
-                      hasImportedViewWrapper = true
-                    }
+                if (
+                  options.experimentalFlattenThemesOnNative &&
+                  (themeKeysUsed.size ||
+                    hocStylesExpr.elements.length > 1 ||
+                    hasDynamicStyle)
+                ) {
+                  if (!hasImportedViewWrapper) {
+                    root.unshiftContainer('body', importWithStyle())
+                    root.unshiftContainer('body', importReactUseMemo())
+                    hasImportedViewWrapper = true
+                  }
 
-                    const name = props.node.name['name']
-                    const WrapperIdentifier = root.scope.generateUidIdentifier(
-                      name + 'Wrapper'
-                    )
+                  const name = props.node.name['name']
+                  const WrapperIdentifier = root.scope.generateUidIdentifier(
+                    name + 'Wrapper'
+                  )
 
-                    root.pushContainer(
-                      'body',
-                      t.variableDeclaration('const', [
-                        t.variableDeclarator(
-                          WrapperIdentifier,
-                          t.callExpression(t.identifier('__withStableStyle'), [
-                            t.identifier(name),
-                            t.arrowFunctionExpression(
-                              [t.identifier('theme'), t.identifier('_expressions')],
-                              t.blockStatement([
-                                t.returnStatement(
-                                  t.callExpression(t.identifier('__ReactUseMemo'), [
-                                    t.arrowFunctionExpression(
-                                      [],
-                                      t.blockStatement([
-                                        t.returnStatement(
-                                          t.arrayExpression([...hocStylesExpr.elements])
-                                        ),
-                                      ])
-                                    ),
-                                    t.arrayExpression([
-                                      t.spreadElement(t.identifier('_expressions')),
-                                    ]),
-                                  ])
-                                ),
-                              ])
-                            ),
-                          ])
-                        ),
-                      ])
-                    )
+                  root.pushContainer(
+                    'body',
+                    t.variableDeclaration('const', [
+                      t.variableDeclarator(
+                        WrapperIdentifier,
+                        t.callExpression(t.identifier('__withStableStyle'), [
+                          t.identifier(name),
+                          t.arrowFunctionExpression(
+                            [t.identifier('theme'), t.identifier('_expressions')],
+                            t.blockStatement([
+                              t.returnStatement(
+                                t.callExpression(t.identifier('__ReactUseMemo'), [
+                                  t.arrowFunctionExpression(
+                                    [],
+                                    t.blockStatement([
+                                      t.returnStatement(
+                                        t.arrayExpression([...hocStylesExpr.elements])
+                                      ),
+                                    ])
+                                  ),
+                                  t.arrayExpression([
+                                    t.spreadElement(t.identifier('_expressions')),
+                                  ]),
+                                ])
+                              ),
+                            ])
+                          ),
+                        ])
+                      ),
+                    ])
+                  )
 
+                  // @ts-ignore
+                  props.node.name = WrapperIdentifier
+                  if (props.jsxPath.node.closingElement) {
                     // @ts-ignore
-                    props.node.name = WrapperIdentifier
-                    if (props.jsxPath.node.closingElement) {
-                      // @ts-ignore
-                      props.jsxPath.node.closingElement.name = WrapperIdentifier
-                    }
+                    props.jsxPath.node.closingElement.name = WrapperIdentifier
+                  }
 
-                    if (expressions.length) {
-                      props.node.attributes.push(
-                        t.jsxAttribute(
-                          t.jsxIdentifier('expressions'),
-                          t.jsxExpressionContainer(t.arrayExpression(expressions))
-                        )
-                      )
-                    }
-                  } else {
+                  if (expressions.length) {
                     props.node.attributes.push(
                       t.jsxAttribute(
-                        t.jsxIdentifier('style'),
-                        t.jsxExpressionContainer(
-                          stylesExpr.elements.length === 1
-                            ? (stylesExpr.elements[0] as any)
-                            : stylesExpr
-                        )
+                        t.jsxIdentifier('expressions'),
+                        t.jsxExpressionContainer(t.arrayExpression(expressions))
                       )
                     )
                   }
+                } else {
+                  props.node.attributes.push(
+                    t.jsxAttribute(
+                      t.jsxIdentifier('style'),
+                      t.jsxExpressionContainer(
+                        stylesExpr.elements.length === 1
+                          ? (stylesExpr.elements[0] as any)
+                          : stylesExpr
+                      )
+                    )
+                  )
                 }
               },
             })

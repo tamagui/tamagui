@@ -27,6 +27,43 @@ import { View } from '@tamagui/core'
   expect(output?.js).toContain(`<_TamaguiTheme name="green"><div className={`)
 })
 
+// floating && floating2 && p2 pb18 mr2 btrr10 br5 btlr7
+// floating && !floating2 && p2 pb18 mr1 btrr10 br5
+// !floating && floating2 && p2 pb15 mr2 btrr10 br2 btlr7
+// !floating && !floating2 && p2 pb15 mr1 btrr10 br2
+
+test('conditional specific after generic style overrides', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Stack
+          p="$2"                              // base padding
+          pb={floating ? 18 : 15}             // should override bottom
+          mr={floating2 ? 2 : 1}              // unrelated ternary
+          borderTopRightRadius={10}           // base tr radius
+          borderRadius={floating ? 5 : 2}     // should override the tr radius always
+          {...floating2 && {
+            borderTopLeftRadius: 7
+          }}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toMatchSnapshot()
+  expect(output?.styles).toMatchSnapshot()
+})
+
 test('conditional styles get full base styles merged onto + shorthand', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
