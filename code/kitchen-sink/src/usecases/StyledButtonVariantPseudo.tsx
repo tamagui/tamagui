@@ -1,4 +1,4 @@
-import { Button, styled } from 'tamagui'
+import { Button, styled } from '@tamagui/ui'
 
 const StyledButton = styled(Button, {
   variants: {

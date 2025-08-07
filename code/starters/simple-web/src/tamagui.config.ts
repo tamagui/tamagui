@@ -8,7 +8,6 @@ const config = createTamagui({
   defaultFont: 'body',
   animations,
   shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
   shorthands,
   fonts,
   themes,
@@ -18,7 +17,7 @@ const config = createTamagui({
 
 type AppConfig = typeof config
 
-declare module 'tamagui' {
+declare module '@tamagui/ui' {
   // overrides TamaguiCustomConfig so that custom types
   // work everywhere `tamagui` is imported
   interface TamaguiCustomConfig extends AppConfig {}

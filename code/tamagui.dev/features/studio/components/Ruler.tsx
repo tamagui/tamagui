@@ -1,4 +1,4 @@
-import { Unspaced, XStack, YStack } from 'tamagui'
+import { Unspaced, XStack, YStack } from '@tamagui/ui'
 
 // TODO: rendering these is very expensive, converting to svg might help
 export const Ruler = ({
@@ -17,7 +17,7 @@ export const Ruler = ({
   const applied = Math.floor(size / 10)
   const Stack = orientation === 'horizontal' ? XStack : YStack
   return (
-    <Stack ai={rotate ? 'flex-end' : undefined} space={9}>
+    <Stack ai={rotate ? 'flex-end' : undefined} gap={9}>
       <Unspaced>
         <YStack
           pos="absolute"

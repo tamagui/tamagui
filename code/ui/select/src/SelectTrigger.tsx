@@ -42,11 +42,6 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         type="button"
         id={itemParentContext.id}
         {...(!unstyled && {
-          backgrounded: true,
-          radiused: true,
-          hoverTheme: true,
-          pressTheme: true,
-          focusable: true,
           focusVisibleStyle: {
             outlineStyle: 'solid',
             outlineWidth: 2,

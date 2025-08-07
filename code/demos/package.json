@@ -53,7 +53,7 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
-    "@tamagui/image-next": "workspace:*",
+    "@tamagui/image": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
@@ -73,7 +73,7 @@
     "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/theme": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "tamagui": "workspace:*"
+    "@tamagui/ui": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

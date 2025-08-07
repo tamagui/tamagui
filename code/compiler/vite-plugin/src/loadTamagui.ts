@@ -1,7 +1,7 @@
-import type { Logger, TamaguiOptions } from '@tamagui/static'
+import type { Logger, TamaguiOptions } from '@tamagui/compiler'
 
 const importStatic = async () => {
-  return (await import('@tamagui/static')).default
+  return (await import('@tamagui/compiler')).default
 }
 
 type StaticI = Awaited<ReturnType<typeof importStatic>>
@@ -53,7 +53,7 @@ export async function loadTamaguiBuildConfig(
 
     if (extractor) {
       await extractor.loadTamagui({
-        components: ['tamagui'],
+        components: ['@tamagui/ui'],
         platform: 'web',
         ...tamaguiOptions,
       } satisfies TamaguiOptions)

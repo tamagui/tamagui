@@ -1,6 +1,6 @@
 import { memo, useState } from 'react'
-import type { TabLayout, TabsTabProps, YStackProps } from 'tamagui'
-import { AnimatePresence, Circle, Tabs, YStack } from 'tamagui'
+import type { TabLayout, TabsTabProps, YStackProps } from '@tamagui/ui'
+import { AnimatePresence, Circle, Tabs, YStack } from '@tamagui/ui'
 
 export const BarTabs = memo(function HeaderTabs({
   currentTab,
@@ -104,7 +104,7 @@ export const BarTabs = memo(function HeaderTabs({
         disablePassBorderRadius
         loop={false}
         aria-label="Manage your account"
-        space="$2"
+        gap="$2"
         backgroundColor="transparent"
       >
         {tabs.map(({ component, value, hasChanges }) => (

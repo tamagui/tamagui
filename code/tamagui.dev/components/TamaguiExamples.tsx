@@ -1,6 +1,6 @@
 import type { getCompilationExamples } from '@tamagui/mdx-2'
 import { createContext, useContext } from 'react'
-import { Spacer } from 'tamagui'
+import { Spacer } from '@tamagui/ui'
 import { HeroContainer } from '~/features/docs/HeroContainer'
 import { HomeExamples } from '~/features/site/home/HomeExamples'
 

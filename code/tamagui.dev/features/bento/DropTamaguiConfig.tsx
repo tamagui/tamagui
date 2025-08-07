@@ -10,7 +10,7 @@ import {
   Theme,
   TooltipSimple,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { Features } from '~/components/Features'
 import { Code, CodeInline } from '~/components/Code'
 import { useLocalStorageWatcher } from '~/hooks/useLocalStorageWatcher'
@@ -82,9 +82,10 @@ export const DropTamaguiConfig = () => {
               dsp: 'none',
             }}
             icon={Paintbrush}
-            color={config ? '$green10Light' : '$color12'}
           >
-            {config ? 'Customization enabled' : 'Customize'}
+            <Button.Text color={config ? '$green10Light' : '$color12'}>
+              {config ? 'Customization enabled' : 'Customize'}
+            </Button.Text>
           </Button>
         </Theme>
       </TooltipSimple>

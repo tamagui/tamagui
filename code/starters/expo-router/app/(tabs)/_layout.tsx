@@ -1,5 +1,5 @@
 import { Link, Tabs } from 'expo-router'
-import { Button, useTheme } from 'tamagui'
+import { Button, useTheme } from '@tamagui/ui'
 import { Atom, AudioWaveform } from '@tamagui/lucide-icons'
 
 export default function TabLayout() {

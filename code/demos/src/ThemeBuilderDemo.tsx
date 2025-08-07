@@ -1,5 +1,5 @@
-import type { SquareProps, ThemeName } from 'tamagui'
-import { Square, XStack, YStack } from 'tamagui'
+import type { SquareProps, ThemeName } from '@tamagui/ui'
+import { Square, XStack, YStack } from '@tamagui/ui'
 
 export function ThemeBuilderDemo() {
   return (
@@ -34,7 +34,7 @@ function Col(
 ) {
   const subTheme = props.subTheme ? `_${props.subTheme}` : ''
   return (
-    <YStack padding="$2.5" space="$3.5">
+    <YStack padding="$2.5" gap="$3.5">
       <Square
         borderRadius="$6"
         size="$10"

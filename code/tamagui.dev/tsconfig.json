@@ -4,7 +4,7 @@
     "rootDir": ".",
     "paths": {
       "~/*": ["./*"],
-      "tamagui": ["../ui/tamagui"],
+      "tamagui": ["../ui/tamagui-ui"],
       "@tamagui/*": ["../core/*", "../ui/*", "../packages/*"],
       "@tamagui/bento": ["../bento"],
       "@tamagui/bento-example": ["../bento/example"],
@@ -77,12 +77,6 @@
     },
     {
       "path": "../packages/use-store"
-    },
-    {
-      "path": "../ui/image-next"
-    },
-    {
-      "path": "../ui/tamagui"
     }
   ]
 }

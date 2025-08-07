@@ -23,9 +23,11 @@ export declare const settings: {
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
-    themeClassNameOnRoot: true;
+    addThemeClassName: "html";
     onlyAllowShorthands: true;
     maxDarkLightNesting: number;
+    styleCompat: "legacy";
+    defaultPosition: "relative";
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
@@ -391,9 +393,11 @@ export declare const defaultConfig: {
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
-        themeClassNameOnRoot: true;
+        addThemeClassName: "html";
         onlyAllowShorthands: true;
         maxDarkLightNesting: number;
+        styleCompat: "legacy";
+        defaultPosition: "relative";
     };
 };
 //# sourceMappingURL=v4.d.ts.map

@@ -1,6 +1,6 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
-import type { TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/compiler'
 import path from 'node:path'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, type Environment } from 'vite'

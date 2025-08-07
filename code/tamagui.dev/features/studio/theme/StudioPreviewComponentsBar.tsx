@@ -10,7 +10,7 @@ import {
   TooltipSimple,
   XStack,
   styled,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { optionValues } from './demoOptions'
 

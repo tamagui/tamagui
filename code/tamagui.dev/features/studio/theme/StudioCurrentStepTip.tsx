@@ -1,6 +1,6 @@
 import { Lightbulb, X } from '@tamagui/lucide-icons'
 import { useEffect, useState } from 'react'
-import { Button, Popover, Theme } from 'tamagui'
+import { Button, Popover, Theme } from '@tamagui/ui'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 

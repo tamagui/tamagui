@@ -36,8 +36,8 @@ const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
-import { useMedia } from 'tamagui';
+import { YStack } from '@tamagui/ui';
+import { useMedia } from '@tamagui/ui';
 export function Test(isLoading) {
   const media = useMedia();
   return <_ReactNativeViewWrapper expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
@@ -59,7 +59,7 @@ const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { View } from 'tamagui';
+import { View } from '@tamagui/ui';
 export function Test() {
   return <_ReactNativeViewWrapper expressions={[showBackground]} />;
 }
@@ -92,7 +92,7 @@ const __ReactUseMemo = require('react').useMemo;
 const __withStableStyle = require('@tamagui/core')._withStableStyle;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { YStack } from 'tamagui';
+import { YStack } from '@tamagui/ui';
 export function Test(isLoading) {
   return <_ReactNativeViewWrapper />;
 }

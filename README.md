@@ -29,7 +29,7 @@
 <br />
 
 - `@tamagui/core` - Universal style library for React.
-- `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
+- `@tamagui/compiler` - Optimizing compiler that works with `core` and `tamagui`.
 - `tamagui` - UI kit that adapts to every platform.
 
 <br />

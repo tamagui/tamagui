@@ -5,7 +5,7 @@
   },
   "references": [
     {
-      "path": "../../compiler/static"
+      "path": "../../compiler/compiler"
     },
     {
       "path": "../../compiler/vite-plugin"

@@ -3,7 +3,6 @@ import '@tamagui/polyfill-dev'
 
 import {
   Button,
-  ButtonFrame,
   H1,
   Header,
   SizableText,
@@ -14,7 +13,7 @@ import {
   getMedia,
   styled,
   useThemeName,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import config from '../tamagui.config'
 
@@ -50,7 +49,7 @@ export function UseCases() {
   )
 }
 
-const CustomButtonFrame = styled(ButtonFrame, {
+const CustomButtonFrame = styled(Button.Frame, {
   variants: {
     backgrounded: {
       true: {
@@ -174,7 +173,6 @@ export const Sandbox = () => {
           <Button
             onPress={async () => {
               await import('./SecondPage')
-              console.log(`loaded (not navigating)`)
             }}
           >
             Load Second Page
@@ -230,7 +228,7 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          {/* <YStack  space="$2" $gtSm={{ space: '$10' }}>
+          {/* <YStack  gap="$2" $gtSm={{ gap: '$10' }}>
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
@@ -282,7 +280,7 @@ export const Sandbox = () => {
           {/* <SheetDemo2 /> */}
           {/* <SheetDemo /> */}
           {/* <SwitchDemo /> */}
-          {/* <XStack space>
+          {/* <XStack gap="$4">
             <Square size={50} bc="red" />
             <Square $sm={{ display: 'none' }} size={50} bc="red" />
             <Square size={50} bc="red" />

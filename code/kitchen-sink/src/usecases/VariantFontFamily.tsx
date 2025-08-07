@@ -1,4 +1,4 @@
-import { Text, styled } from 'tamagui'
+import { Text, styled } from '@tamagui/ui'
 
 export const Heading = styled(Text, {
   name: 'Heading',
