@@ -1,7 +1,7 @@
 export declare const ClientOnlyContext: React.Context<boolean>;
-export declare const ClientOnly: ({ children, value }: {
+export declare const ClientOnly: ({ children, enabled }: {
 	children: any;
-	value?: boolean;
+	enabled?: boolean;
 }) => React.ReactNode;
 
 //# sourceMappingURL=ClientOnly.d.ts.map

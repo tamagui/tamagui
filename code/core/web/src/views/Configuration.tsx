@@ -13,16 +13,8 @@ export const Configuration = (props: ConfigurationProps) => {
   const current = React.useContext(ComponentContext)
 
   return (
-    <ClientOnly
-      value={
-        typeof props.disableSSR === 'boolean' && props.disableSSR !== current.disableSSR
-          ? props.disableSSR
-          : current.disableSSR
-      }
-    >
+    <ClientOnly enabled={props.disableSSR ?? current.disableSSR}>
       <ComponentContext.Provider {...current} {...props} />
     </ClientOnly>
   )
 }
-
-Configuration['displayName'] = 'Configuration'

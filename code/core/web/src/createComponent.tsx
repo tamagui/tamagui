@@ -109,6 +109,7 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
         debugKeyListeners = new Set()
         let tm
         let isShowing = false
+        let resizeListener: (() => void) | null = null
         const options = {
           key: 'Alt',
           delay: 800,
@@ -119,6 +120,20 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
           clearTimeout(tm)
           isShowing = val
           debugKeyListeners?.forEach((l) => l(val))
+
+          // Remove resize listener when hiding
+          if (!val && resizeListener) {
+            window.removeEventListener('resize', resizeListener)
+            resizeListener = null
+          }
+        }
+
+        function cancelShow() {
+          clearTimeout(tm)
+          if (resizeListener) {
+            window.removeEventListener('resize', resizeListener)
+            resizeListener = null
+          }
         }
 
         window.addEventListener('blur', () => {
@@ -130,6 +145,11 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
           if (defaultPrevented) return
           if (metaKey) return
           if (key === options.key) {
+            // Add resize listener immediately when Alt is pressed
+            if (!resizeListener) {
+              resizeListener = () => cancelShow()
+              window.addEventListener('resize', resizeListener)
+            }
             tm = setTimeout(() => {
               show(true)
             }, options.delay)
@@ -138,7 +158,7 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
 
         window.addEventListener('keyup', ({ defaultPrevented }) => {
           if (defaultPrevented) return
-          clearTimeout(tm)
+          cancelShow()
           // any key can clear it
           if (isShowing) {
             show(false)
@@ -1461,6 +1481,7 @@ export function createComponent<
                 themeState,
                 viewProps,
                 willBeAnimated,
+                startedUnhydrated,
               })
             }
           } catch {

@@ -1,6 +1,6 @@
 {
   "name": "@my/config",
-  "version": "1.132.13",
+  "version": "1.132.16",
   "sideEffects": [
     "*.css"
   ],

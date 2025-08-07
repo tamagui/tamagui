@@ -7,20 +7,17 @@ export const useIsClientOnly = (): boolean => {
   return React.useContext(ClientOnlyContext)
 }
 
-export function useDidFinishSSR<A = boolean>(value?: A): A | false {
+export function useDidFinishSSR(): boolean {
   const clientOnly = React.useContext(ClientOnlyContext)
 
   if (clientOnly || process.env.TAMAGUI_TARGET === 'native') {
-    // @ts-expect-error
-    return value ?? true
+    return true
   }
 
   return React.useSyncExternalStore(
     subscribe,
-    () => value ?? true,
-    () => {
-      return false as any
-    }
+    () => true,
+    () => false
   )
 }
 

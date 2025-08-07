@@ -11,7 +11,7 @@ export default defineConfig({
   },
   // Run your local dev server before starting the tests.
   webServer: {
-    command: 'yarn start:web',
+    command: 'npm run start:web',
     url: 'http://localhost:9000',
     reuseExistingServer: !process.env.CI,
   },

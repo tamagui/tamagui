@@ -479,7 +479,7 @@ const PopoverContentImpl = React.forwardRef<
           enabled={context.breakpointActive ? false : enableRemoveScroll ? open : false}
         >
           <FocusScope
-            loop
+            loop={trapFocus !== false}
             enabled={context.breakpointActive ? false : disableFocusScope ? false : open}
             trapped={context.breakpointActive ? false : trapFocus}
             onMountAutoFocus={onOpenAutoFocus}
