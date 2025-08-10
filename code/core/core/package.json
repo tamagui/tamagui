@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.132.16-1754534218765",
+  "version": "1.132.16-1754855349219",
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
