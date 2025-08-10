@@ -11,7 +11,10 @@ import type { Extractor } from './createExtractor'
 import { createLogger } from './createLogger'
 import { extractMediaStyle } from './extractMediaStyle'
 import { normalizeTernaries } from './normalizeTernaries'
-import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
+import {
+  forwardFontFamilyName,
+  getFontFamilyNameFromProps,
+} from './propsToFontFamilyCache'
 import { timer } from './timer'
 
 export type ExtractedResponse = {
@@ -239,7 +242,7 @@ export async function extractToClassNames({
 
         if (attr.type === 'style') {
           mergeForwardBaseStyle = mergeProps(mergeForwardBaseStyle || {}, attr.value)
-          baseFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
+          baseFontFamily = getFontFamilyNameFromProps(attr.value) || ''
           return []
         }
 
@@ -270,12 +273,23 @@ export async function extractToClassNames({
           }
         }
 
+        const mergedAlternate = mergeProps(
+          mergeForwardBaseStyle || {},
+          ternary.alternate || {}
+        )
+        const mergedConsequent = mergeProps(
+          mergeForwardBaseStyle || {},
+          ternary.consequent || {}
+        )
+
+        forwardFontFamilyName(ternary.alternate, mergedAlternate)
+        forwardFontFamilyName(ternary.consequent, mergedConsequent)
+
         // merge the base style forward into both sides
         return {
           ...ternary,
-          fontFamily: baseFontFamily,
-          alternate: mergeProps(mergeForwardBaseStyle || {}, ternary.alternate || {}),
-          consequent: mergeProps(mergeForwardBaseStyle || {}, ternary.consequent || {}),
+          alternate: mergedAlternate,
+          consequent: mergedConsequent,
         }
       })
 
@@ -289,12 +303,12 @@ export async function extractToClassNames({
         hasTernaries || !baseClassNames ? '' : ` ${baseClassNames.join(' ')}`
 
       if (!hasTernaries && baseFontFamily) {
-        baseClassNameStr = `font_${baseFontFamily} ${baseClassNameStr}`
+        baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr}`
       }
 
       let base = staticConfig.componentName
         ? t.stringLiteral(`is_${staticConfig.componentName}${baseClassNameStr}`)
-        : t.stringLiteral(baseClassNameStr || ' ')
+        : t.stringLiteral(baseClassNameStr || '')
 
       attrClassName = attrClassName as t.Expression | null // actual typescript bug, flatMap doesn't update from never
 
@@ -336,7 +350,10 @@ export async function extractToClassNames({
       function expandTernary(ternary: Ternary, prev?: Ternary) {
         // need to diverge into two (or four if alternate)
         if (ternary.consequent && Object.keys(ternary.consequent).length) {
+          const fontFamily = getFontFamilyNameFromProps(ternary.consequent)
+
           expandedTernaries.push({
+            fontFamily,
             // prevTest && test: merge consequent
             test: prev
               ? t.logicalExpression('&&', prev.test, ternary.test)
@@ -350,6 +367,7 @@ export async function extractToClassNames({
 
           if (prev) {
             expandedTernaries.push({
+              fontFamily,
               // !prevTest && test: just consequent
               test: t.logicalExpression(
                 '&&',
@@ -364,12 +382,14 @@ export async function extractToClassNames({
         }
 
         if (ternary.alternate && Object.keys(ternary.alternate).length) {
+          const fontFamily = getFontFamilyNameFromProps(ternary.alternate)
           const negated = t.unaryExpression('!', ternary.test)
           expandedTernaries.push({
+            fontFamily,
             // prevTest && !test: merge alternate
             test: prev ? t.logicalExpression('&&', prev.test, negated) : negated,
             consequent: prev
-              ? mergeProps(prev.consequent!, ternary.alternate)
+              ? mergeProps(prev.alternate!, ternary.alternate)
               : ternary.alternate,
             remove,
             alternate: null,
@@ -377,7 +397,7 @@ export async function extractToClassNames({
 
           if (prev) {
             expandedTernaries.push({
-              // !prevTest && !test: just alternate
+              fontFamily,
               test: t.logicalExpression(
                 '&&',
                 t.unaryExpression('!', prev.test),
@@ -435,6 +455,7 @@ export async function extractToClassNames({
       // console.info('attrs', JSON.stringify(attrs, null, 2))
       // console.info('expandedTernaries', JSON.stringify(expandedTernaries, null, 2))
       // console.info('finalExpression', JSON.stringify(finalExpression, null, 2))
+      // console.info({ baseClassNameExpression })
 
       if (finalExpression) {
         // hoist to global variables

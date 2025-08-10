@@ -136,3 +136,52 @@ test('className + conditional styles get full base styles merged onto + shorthan
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })
+
+test('font classNames are extracted properly', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Text fontFamily="$body" />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(
+    output?.js.includes(
+      `_cn = "font_body _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family"`
+    )
+  )
+})
+
+test('ternaries + font families works', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Text fontFamily={window ? "$body" : "$heading"} />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toMatchSnapshot()
+  expect(output?.styles).toMatchSnapshot()
+})

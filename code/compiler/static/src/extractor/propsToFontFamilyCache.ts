@@ -3,16 +3,16 @@
 const cache = new WeakMap<any, string>()
 
 export function setPropsToFontFamily(props: any, ff: string) {
-  cache.set(props, ff)
+  cache.set(props, ff.replace('$', '').trim())
 }
 
-export function getPropsToFontFamily(props: any) {
+export function getFontFamilyNameFromProps(props: any) {
   return cache.get(props)
 }
 
-export function getFontFamilyClassNameFromProps(props: any) {
-  const ff = getPropsToFontFamily(props)
+export function forwardFontFamilyName(prev: any, next: any) {
+  const ff = getFontFamilyNameFromProps(prev)
   if (ff) {
-    return ` font_${ff.replace('$', '')}`
+    setPropsToFontFamily(next, ff)
   }
 }
