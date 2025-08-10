@@ -441,16 +441,7 @@ export async function extractToClassNames({
       }
 
       let finalExpression: t.Expression | null =
-        !hasTernaries || !t.isStringLiteral(baseClassNameExpression)
-          ? baseClassNameExpression
-          : null
-
-      if (ternaryClassNameExpr) {
-        finalExpression =
-          baseClassNameExpression && baseClassNameExpression !== spaceString
-            ? t.binaryExpression('+', baseClassNameExpression, ternaryClassNameExpr)
-            : ternaryClassNameExpr
-      }
+        ternaryClassNameExpr || baseClassNameExpression || null
 
       // console.info('attrs', JSON.stringify(attrs, null, 2))
       // console.info('expandedTernaries', JSON.stringify(expandedTernaries, null, 2))
@@ -554,10 +545,20 @@ function hoistClassName(path: NodePath<t.JSXElement>, str: string) {
   const parent = path.findParent((path) => path.isProgram())
   if (!parent) throw new Error(`no program?`)
   const variable = t.variableDeclaration('const', [
-    // adding a space for extra safety
-    t.variableDeclarator(uid, t.stringLiteral(str)),
+    t.variableDeclarator(uid, t.stringLiteral(cleanupClassName(str))),
   ])
   // @ts-ignore
   parent.unshiftContainer('body', variable)
   return uid
+}
+
+function cleanupClassName(inStr: string) {
+  const out = new Set<string>()
+  for (const part of inStr.split(' ')) {
+    if (part === ' ') continue
+    if (part === 'font_') continue
+    out.add(part)
+  }
+  // always a space after for joining
+  return [...out].join(' ') + ' '
 }

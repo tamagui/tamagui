@@ -832,7 +832,7 @@ export function createExtractor(
             console.info(` Start tag ${tagName}`)
           }
 
-          const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
+          const flatNodeName = getFlattenedNode?.({ isTextView, tag: tagName })
 
           const inlineProps = new Set([
             // adding some always inline props
@@ -1544,7 +1544,7 @@ export function createExtractor(
           const canFlattenProps = inlined.size === 0
 
           let shouldFlatten = Boolean(
-            flatNode &&
+            flatNodeName &&
               !shouldDeopt &&
               canFlattenProps &&
               !hasSpread &&
@@ -2265,7 +2265,7 @@ export function createExtractor(
               logger.info(
                 `Disabled flattening except for simple cases on native for now: ${JSON.stringify(
                   {
-                    flatNode,
+                    flatNode: flatNodeName,
                     shouldDeopt,
                     canFlattenProps,
                     hasSpread,
@@ -2303,6 +2303,7 @@ export function createExtractor(
             lineNumbers,
             filePath,
             config: tamaguiConfig!,
+            flatNodeName,
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,
@@ -2313,14 +2314,14 @@ export function createExtractor(
 
           if (shouldFlatten) {
             if (shouldPrintDebug) {
-              logger.info(['  [✅] flattened', originalNodeName, flatNode].join(' '))
+              logger.info(['  [✅] flattened', originalNodeName, flatNodeName].join(' '))
             }
             // @ts-ignore
-            node.name.name = flatNode
+            node.name.name = flatNodeName
             res.flattened++
             if (closingElement) {
               // @ts-ignore
-              closingElement.name.name = flatNode
+              closingElement.name.name = flatNodeName
             }
           }
         } catch (err: any) {

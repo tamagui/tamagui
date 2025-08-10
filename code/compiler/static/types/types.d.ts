@@ -48,6 +48,7 @@ export type ExtractTagProps = {
     attrs: ExtractedAttr[];
     node: t.JSXOpeningElement;
     attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any;
+    flatNodeName?: string;
     jsxPath: NodePath<t.JSXElement>;
     programPath: NodePath<t.Program>;
     originalNodeName: string;

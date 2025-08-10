@@ -314,7 +314,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                     hasImportedViewWrapper = true
                   }
 
-                  const name = props.node.name['name']
+                  const name = props.flatNodeName || props.node.name['name']
                   const WrapperIdentifier = root.scope.generateUidIdentifier(
                     name + 'Wrapper'
                   )

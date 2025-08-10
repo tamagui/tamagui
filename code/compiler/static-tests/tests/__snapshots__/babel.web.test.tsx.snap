@@ -3,11 +3,11 @@
 exports[`bails from non-deterministic values 1`] = `undefined`;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-red";
-const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-blue";
+"const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-red ";
+const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-blue ";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <div className={(props.className ? props.className + " " : "") + (!props.green ? _cn : _cn2)} />;
+  return <div className={!props.green ? _cn : _cn2} />;
 }"
 `;
 
@@ -27,20 +27,19 @@ exports[`className + conditional styles get full base styles merged onto + short
 `;
 
 exports[`conditional specific after generic style overrides 1`] = `
-"const _cn1 = "_btlr-5px _bbrr-5px _bblr-5px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-18px";
-const _cn0 = "_btlr-2px _bbrr-2px _bblr-2px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-15px";
-const _cn9 = "_bbrr-5px _bblr-5px _btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn8 = "_btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn7 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-const _cn6 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-const _cn5 = "_bbrr-2px _bblr-2px _btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn4 = "_btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn3 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-const _cn = "";
+"const _cn0 = "_btlr-5px _bbrr-5px _bblr-5px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-18px ";
+const _cn9 = "_btlr-2px _bbrr-2px _bblr-2px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-15px ";
+const _cn8 = "_bbrr-5px _bblr-5px _btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn7 = "_btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn6 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
+const _cn5 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
+const _cn4 = "_bbrr-2px _bblr-2px _btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn3 = "_btlr-7px _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
+const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <div className={_cn + (!!floating && floating2 ? _cn2 : !floating && !floating2 ? _cn3 : !!floating && floating2 ? _cn4 : !floating && floating2 ? _cn5 : !floating && floating2 ? _cn6 : floating && !floating2 ? _cn7 : !floating && floating2 ? _cn8 : floating && floating2 ? _cn9 : !floating ? _cn0 : _cn1)} />;
+  return <div className={!!floating && floating2 ? _cn : !floating && !floating2 ? _cn2 : !!floating && floating2 ? _cn3 : !floating && floating2 ? _cn4 : !floating && floating2 ? _cn5 : floating && !floating2 ? _cn6 : !floating && floating2 ? _cn7 : floating && floating2 ? _cn8 : !floating ? _cn9 : _cn0} />;
 }"
 `;
 
@@ -73,12 +72,11 @@ exports[`conditional specific after generic style overrides 2`] = `
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-red";
-const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-blue";
-const _cn = "";
+"const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-red ";
+const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _bg-blue ";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <div className={_cn + (!props.green ? _cn2 : _cn3)} />;
+  return <div className={!props.green ? _cn : _cn2} />;
 }"
 `;
 
@@ -114,13 +112,14 @@ export function Test(props) {
 }"
 `;
 
+exports[`specific className + ternary 1`] = `undefined`;
+
 exports[`ternaries + font families works 1`] = `
-"const _cn3 = "font_body _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family";
-const _cn2 = "font_heading _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family";
-const _cn = "";
+"const _cn2 = "font_body _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
+const _cn = "font_heading _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
 import { Text } from '@tamagui/core';
 export function Test(props) {
-  return <span className={_cn + (!window ? _cn2 : _cn3)} />;
+  return <span className={!window ? _cn : _cn2} />;
 }"
 `;
 
@@ -137,12 +136,11 @@ exports[`ternaries + font families works 2`] = `
 `;
 
 exports[`theme + media queries + conditionals extract 1`] = `
-"const _cn3 = "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-_sm_column _fd-column";
-const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-_sm_column";
-const _cn = "";
+"const _cn2 = "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-_sm_column _fd-column ";
+const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-_sm_column ";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <_TamaguiTheme name="surface1"><div className={_cn + (!onlyDemo ? _cn2 : _cn3)} /></_TamaguiTheme>;
+  return <_TamaguiTheme name="surface1"><div className={!onlyDemo ? _cn : _cn2} /></_TamaguiTheme>;
 }
 import { Theme as _TamaguiTheme } from "@tamagui/web";"
 `;

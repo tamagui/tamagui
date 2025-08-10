@@ -245,7 +245,7 @@ test('non-flattened works', async () => {
 test('fontFamily shorthand + styled + flatten works', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
-    `// debug
+    `
     import { MySizableText } from '@tamagui/test-design-system'
     export function Test(props) {
       return (
@@ -263,7 +263,7 @@ test('fontFamily shorthand + styled + flatten works', async () => {
 test('fontFamily shorthand + styled + flatten + ternaries', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
-    `// debug
+    `
     import { MySizableText } from '@tamagui/test-design-system'
     export function Test(props) {
       return (
@@ -275,6 +275,28 @@ test('fontFamily shorthand + styled + flatten + ternaries', async () => {
     }
   `
   )
+
+  expect(output?.js).toMatchSnapshot()
+})
+
+test('specific className + ternary', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `
+    import { MySizableText } from '@tamagui/test-design-system'
+    export function Test(props) {
+      return (
+        <MySizableText
+          className="test-class-name"
+          ff="$mono"
+          opacity={active ? 1 : 0.65}
+        />
+      )
+    }
+  `
+  )
+
+  console.log('WTF', output)
 
   expect(output?.js).toMatchSnapshot()
 })
