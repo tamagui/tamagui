@@ -300,14 +300,14 @@ export async function extractToClassNames({
         : null
 
       let baseClassNameStr =
-        hasTernaries || !baseClassNames ? '' : ` ${baseClassNames.join(' ')}`
+        hasTernaries || !baseClassNames ? '' : baseClassNames.join(' ')
 
       if (!hasTernaries && baseFontFamily) {
         baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr}`
       }
 
       let base = staticConfig.componentName
-        ? t.stringLiteral(`is_${staticConfig.componentName}${baseClassNameStr}`)
+        ? t.stringLiteral(`is_${staticConfig.componentName} ${baseClassNameStr}`)
         : t.stringLiteral(baseClassNameStr || '')
 
       attrClassName = attrClassName as t.Expression | null // actual typescript bug, flatMap doesn't update from never
