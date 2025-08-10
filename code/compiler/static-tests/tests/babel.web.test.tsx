@@ -185,3 +185,59 @@ test('ternaries + font families works', async () => {
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })
+
+test('bails from non-deterministic values', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `// debug
+    import { Text } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Text
+          color={Math.random()}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toMatchSnapshot()
+})
+
+test('non-flattened works', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `// debug
+    import { Text } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Text
+          textAlign={inMenu ? props.hello : 'right'}
+          width="100%"
+          hoverStyle={{
+            o: 0.85,
+          }}
+          {...(active && {
+            fow: '700',
+            opacity: 1,
+          })}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toMatchSnapshot()
+})

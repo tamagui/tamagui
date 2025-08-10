@@ -1,7 +1,7 @@
 import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/web'
+import { mergeProps, StyleObjectIdentifier, StyleObjectRules } from '@tamagui/web'
 import * as path from 'node:path'
 import * as util from 'node:util'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -16,6 +16,7 @@ import {
   getFontFamilyNameFromProps,
 } from './propsToFontFamilyCache'
 import { timer } from './timer'
+import { BailOptimizationError } from './errors'
 
 export type ExtractedResponse = {
   js: string | Buffer
@@ -47,7 +48,7 @@ export async function extractToClassNames({
   shouldPrintDebug,
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
-  const { getCSSStylesAtomic, mergeProps, createMediaStyle } = requireTamaguiCore('web')
+  const { getCSSStylesAtomic, createMediaStyle } = requireTamaguiCore('web')
 
   if (sourcePath.includes('node_modules')) {
     return null
@@ -121,10 +122,7 @@ export async function extractToClassNames({
     }) => {
       // bail out of views that don't accept className (falls back to runtime + style={})
       if (staticConfig.acceptsClassName === false) {
-        if (shouldPrintDebug) {
-          console.info(`bail, acceptsClassName is false`)
-        }
-        return
+        throw new BailOptimizationError()
       }
 
       // re-worked how we do this

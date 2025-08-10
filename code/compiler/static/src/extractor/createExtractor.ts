@@ -48,6 +48,7 @@ import { normalizeTernaries } from './normalizeTernaries'
 import { setPropsToFontFamily } from './propsToFontFamilyCache'
 import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
+import { BailOptimizationError } from './errors'
 
 const UNTOUCHED_PROPS = {
   key: true,
@@ -2250,20 +2251,6 @@ export function createExtractor(
             return true
           })
 
-          if (shouldFlatten) {
-            // DO FLATTEN
-            if (shouldPrintDebug) {
-              logger.info(['  [✅] flattening', originalNodeName, flatNode].join(' '))
-            }
-            // @ts-ignore
-            node.name.name = flatNode
-            res.flattened++
-            if (closingElement) {
-              // @ts-ignore
-              closingElement.name.name = flatNode
-            }
-          }
-
           const isNativeNotFlat = !shouldFlatten && platform === 'native'
           if (isNativeNotFlat) {
             if (shouldPrintDebug) {
@@ -2315,13 +2302,29 @@ export function createExtractor(
             completeProps,
             staticConfig,
           })
+
+          if (shouldFlatten) {
+            if (shouldPrintDebug) {
+              logger.info(['  [✅] flattened', originalNodeName, flatNode].join(' '))
+            }
+            // @ts-ignore
+            node.name.name = flatNode
+            res.flattened++
+            if (closingElement) {
+              // @ts-ignore
+              closingElement.name.name = flatNode
+            }
+          }
         } catch (err: any) {
           node.attributes = ogAttributes
-          console.error(
-            `@tamagui/static error, reverting optimization. In ${filePath} ${lineNumbers} on ${originalNodeName}: ${err.message}. For stack trace set environment TAMAGUI_DEBUG=1`
-          )
-          if (process.env.TAMAGUI_DEBUG === '1') {
-            console.error(err.stack)
+
+          if (!(err instanceof BailOptimizationError)) {
+            console.error(
+              `@tamagui/static error, reverting optimization. In ${filePath} ${lineNumbers} on ${originalNodeName}: ${err.message}. For stack trace set environment TAMAGUI_DEBUG=1`
+            )
+            if (process.env.TAMAGUI_DEBUG === '1') {
+              console.error(err.stack)
+            }
           }
         } finally {
           if (debugPropValue) {

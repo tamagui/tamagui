@@ -28,6 +28,7 @@ export function createEvaluator({
     if (t.isIdentifier(n) && typeof staticNamespace[n.name] !== 'undefined') {
       return staticNamespace[n.name]
     }
+
     const evalContext = vm.createContext(staticNamespace)
     // @ts-ignore
     const codeWithTypescriptAnnotations = `(${generate(n as any).code})`
@@ -38,7 +39,31 @@ export function createEvaluator({
     if (shouldPrintDebug) {
       console.info('evaluating', code)
     }
-    return vm.runInContext(code, evalContext)
+
+    const result1 = vm.runInContext(code, evalContext)
+    const result2 = vm.runInContext(code, evalContext)
+
+    const isDeterministic =
+      Object.is(result1, result2) ||
+      (typeof result1 === 'object' &&
+        typeof result2 === 'object' &&
+        JSON.stringify(result1) === JSON.stringify(result2))
+
+    if (!isDeterministic) {
+      if (shouldPrintDebug) {
+        console.info(
+          'Bailing on non-deterministic expression:',
+          code,
+          '\nFirst result:',
+          result1,
+          'Second result:',
+          result2
+        )
+      }
+      throw new Error(`Non-deterministic value, bailing`)
+    }
+
+    return result1
   }
 
   return (n: t.Node) => {

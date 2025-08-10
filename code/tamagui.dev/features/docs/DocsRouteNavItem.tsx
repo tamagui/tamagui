@@ -27,7 +27,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
 }) {
   const isActive = useStoreSelector(DocsItemsStore, (x) => x.hovered && x.index === index)
   const isExternal = external || href.startsWith('http')
-  const ref = useRef<any>()
+  const ref = useRef<any>(undefined)
 
   return (
     <Link

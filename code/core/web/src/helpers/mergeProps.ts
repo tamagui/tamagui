@@ -51,7 +51,8 @@ export const mergeProps = (a: Object, b?: Object, inverseShorthands?: AnyRecord)
   if (b && Object.keys(b).length > 0) {
     // Check if we have any pseudo props or variants that need reordering
     const hasPropsNeedingReorder = Object.keys(b).some(
-      (key) => (key in pseudoDescriptors || key === 'variant') && key in a && key in out
+      (key) =>
+        (key in pseudoDescriptors || key === 'variant') && a && key in a && key in out
     )
 
     if (hasPropsNeedingReorder) {
