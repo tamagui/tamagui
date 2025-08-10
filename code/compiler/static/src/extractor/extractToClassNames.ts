@@ -280,8 +280,8 @@ export async function extractToClassNames({
           ternary.consequent || {}
         )
 
-        forwardFontFamilyName(ternary.alternate, mergedAlternate)
-        forwardFontFamilyName(ternary.consequent, mergedConsequent)
+        forwardFontFamilyName(ternary.alternate, mergedAlternate, baseFontFamily)
+        forwardFontFamilyName(ternary.consequent, mergedConsequent, baseFontFamily)
 
         // merge the base style forward into both sides
         return {

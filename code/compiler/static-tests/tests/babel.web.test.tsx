@@ -241,3 +241,40 @@ test('non-flattened works', async () => {
 
   expect(output?.js).toMatchSnapshot()
 })
+
+test('fontFamily shorthand + styled + flatten works', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `// debug
+    import { MySizableText } from '@tamagui/test-design-system'
+    export function Test(props) {
+      return (
+        <MySizableText
+          ff="$mono"
+        />
+      )
+    }
+  `
+  )
+
+  expect(output?.js).toMatchSnapshot()
+})
+
+test('fontFamily shorthand + styled + flatten + ternaries', async () => {
+  // one sanity check debug output test
+  const output = await extractForWeb(
+    `// debug
+    import { MySizableText } from '@tamagui/test-design-system'
+    export function Test(props) {
+      return (
+        <MySizableText
+          ff="$mono"
+          opacity={active ? 1 : 0.65}
+        />
+      )
+    }
+  `
+  )
+
+  expect(output?.js).toMatchSnapshot()
+})

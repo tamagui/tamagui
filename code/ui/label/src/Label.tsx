@@ -151,9 +151,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
 LabelComponent.displayName = NAME
 
 export const Label: ReactComponentWithRef<LabelProps, HTMLButtonElement | View> =
-  LabelFrame.extractable(themeable(LabelComponent as any) as any, {
-    neverFlatten: true,
-  })
+  LabelFrame.extractable(themeable(LabelComponent as any) as any)
 
 export const useLabelContext = (element?: HTMLElement | null) => {
   const context = useLabelContextImpl('LabelConsumer')

@@ -97,6 +97,10 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 :root ._bg-blue{background-color:blue;}"
 `;
 
+exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `undefined`;
+
+exports[`fontFamily shorthand + styled + flatten works 1`] = `undefined`;
+
 exports[`non-flattened works 1`] = `
 "// debug
 import { Text } from '@tamagui/core';

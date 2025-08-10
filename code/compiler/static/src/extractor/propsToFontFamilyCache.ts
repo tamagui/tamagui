@@ -10,8 +10,8 @@ export function getFontFamilyNameFromProps(props: any) {
   return cache.get(props)
 }
 
-export function forwardFontFamilyName(prev: any, next: any) {
-  const ff = getFontFamilyNameFromProps(prev)
+export function forwardFontFamilyName(prev: any, next: any, fallback?: string) {
+  const ff = getFontFamilyNameFromProps(prev) || fallback
   if (ff) {
     setPropsToFontFamily(next, ff)
   }

@@ -1570,7 +1570,15 @@ export function createExtractor(
           if (!shouldFlatten) {
             // were no longer partially optimizing, it adds a lot of complexity for dubious performance
             if (shouldPrintDebug) {
-              logger.info(`Deopting ${shouldDeopt} ${shouldFlatten}`)
+              logger.info(
+                `Deopting ${JSON.stringify({
+                  shouldFlatten,
+                  shouldDeopt,
+                  canFlattenProps,
+                  hasSpread,
+                  neverFlatten: staticConfig.neverFlatten,
+                })}`
+              )
             }
             node.attributes = ogAttributes
             return
