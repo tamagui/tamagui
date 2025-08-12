@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text-test",
-  "version": "1.132.17",
+  "version": "1.132.18",
   "main": "dist/cjs",
   "type": "module",
   "private": true,
