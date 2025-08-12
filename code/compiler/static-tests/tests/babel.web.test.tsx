@@ -6,7 +6,6 @@ import { extractForWeb } from './lib/extract'
 window['React'] = React
 
 test('theme props get extracted properly', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
     `
 import { View } from '@tamagui/core'
@@ -61,7 +60,6 @@ test('theme + media queries + conditionals extract', async () => {
 // !floating && !floating2 && p2 pb15 mr1 btrr10 br2
 
 test('conditional specific after generic style overrides', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
     `
     import { Stack } from '@tamagui/core'
@@ -93,7 +91,6 @@ test('conditional specific after generic style overrides', async () => {
 })
 
 test('conditional styles get full base styles merged onto + shorthand', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
     `
 import { Stack } from '@tamagui/core'
@@ -116,7 +113,6 @@ import { Stack } from '@tamagui/core'
 })
 
 test('className + conditional styles get full base styles merged onto + shorthand', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
     `
     import { Stack } from '@tamagui/core'
@@ -189,7 +185,7 @@ test('ternaries + font families works', async () => {
 test('bails from non-deterministic values', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
-    `// debug
+    `
     import { Text } from '@tamagui/core'
     export function Test(props) {
       return (
@@ -211,9 +207,8 @@ test('bails from non-deterministic values', async () => {
 })
 
 test('non-flattened works', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
-    `// debug
+    `
     import { Text } from '@tamagui/core'
     export function Test(props) {
       return (
@@ -243,7 +238,6 @@ test('non-flattened works', async () => {
 })
 
 test('fontFamily shorthand + styled + flatten works', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
     `
     import { MySizableText } from '@tamagui/test-design-system'
@@ -261,7 +255,6 @@ test('fontFamily shorthand + styled + flatten works', async () => {
 })
 
 test('fontFamily shorthand + styled + flatten + ternaries', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
     `
     import { MySizableText } from '@tamagui/test-design-system'
@@ -280,7 +273,6 @@ test('fontFamily shorthand + styled + flatten + ternaries', async () => {
 })
 
 test('specific className + ternary', async () => {
-  // one sanity check debug output test
   const output = await extractForWeb(
     `
     import { MySizableText } from '@tamagui/test-design-system'
@@ -296,7 +288,31 @@ test('specific className + ternary', async () => {
   `
   )
 
-  console.log('WTF', output)
+  expect(output?.js).toMatchSnapshot()
+})
+
+test('double ternary + spread', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test({ isSettings, isVertical, children }) {
+      return (
+        <View
+          flex={isSettings || isVertical ? 'unset' : 5}
+          alignItems="center"
+          {...(isVertical && {
+            flexDirection: 'column',
+            flex: 'unset',
+            alignItems: 'flex-start',
+          })}
+        >
+          {children}
+        </View>
+      )
+    }
+  `
+  )
 
   expect(output?.js).toMatchSnapshot()
 })

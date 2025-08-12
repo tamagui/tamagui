@@ -271,17 +271,24 @@ export async function extractToClassNames({
           }
         }
 
-        const mergedAlternate = mergeProps(
-          mergeForwardBaseStyle || {},
-          ternary.alternate || {}
-        )
-        const mergedConsequent = mergeProps(
-          mergeForwardBaseStyle || {},
-          ternary.consequent || {}
-        )
+        let mergedAlternate
+        let mergedConsequent
 
-        forwardFontFamilyName(ternary.alternate, mergedAlternate, baseFontFamily)
-        forwardFontFamilyName(ternary.consequent, mergedConsequent, baseFontFamily)
+        if (ternary.alternate && Object.keys(ternary.alternate).length) {
+          mergedAlternate = mergeProps(
+            mergeForwardBaseStyle || {},
+            ternary.alternate || {}
+          )
+          forwardFontFamilyName(ternary.alternate, mergedAlternate, baseFontFamily)
+        }
+
+        if (ternary.consequent && Object.keys(ternary.consequent).length) {
+          mergedConsequent = mergeProps(
+            mergeForwardBaseStyle || {},
+            ternary.consequent || {}
+          )
+          forwardFontFamilyName(ternary.consequent, mergedConsequent, baseFontFamily)
+        }
 
         // merge the base style forward into both sides
         return {

@@ -95,13 +95,28 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 :root ._bg-blue{background-color:blue;}"
 `;
 
+exports[`double ternary + spread 1`] = `
+"const _cn3 = "_dsp-flex _fd-column _bxs-border-box _pos-relative _mih-0px _miw-0px _ai-center _fg-5 _fs-1 _fb-auto ";
+const _cn2 = "_fg-5 _dsp-flex _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ai-flex-start _fd-column ";
+const _cn = "_dsp-flex _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ai-flex-start _fd-column ";
+import { View } from '@tamagui/core';
+export function Test({
+  isSettings,
+  isVertical,
+  children
+}) {
+  return <div className={!!(isSettings || isVertical) && isVertical ? _cn : !(isSettings || isVertical) && isVertical ? _cn2 : _cn3}>
+          {children}
+        </div>;
+}"
+`;
+
 exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `undefined`;
 
 exports[`fontFamily shorthand + styled + flatten works 1`] = `undefined`;
 
 exports[`non-flattened works 1`] = `
-"// debug
-import { Text } from '@tamagui/core';
+"import { Text } from '@tamagui/core';
 export function Test(props) {
   return <Text textAlign={inMenu ? props.hello : 'right'} width="100%" hoverStyle={{
     o: 0.85
@@ -136,11 +151,10 @@ exports[`ternaries + font families works 2`] = `
 `;
 
 exports[`theme + media queries + conditionals extract 1`] = `
-"const _cn2 = "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-_sm_column _fd-column ";
-const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-_sm_column ";
+"const _cn = "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-_sm_column _fd-column ";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
-  return <_TamaguiTheme name="surface1"><div className={!onlyDemo ? _cn : _cn2} /></_TamaguiTheme>;
+  return <_TamaguiTheme name="surface1"><div className={_cn} /></_TamaguiTheme>;
 }
 import { Theme as _TamaguiTheme } from "@tamagui/web";"
 `;
