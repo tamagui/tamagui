@@ -17,6 +17,7 @@ import {
 } from './propsToFontFamilyCache'
 import { timer } from './timer'
 import { BailOptimizationError } from './errors'
+import { concatClassName } from './concatClassName'
 
 export type ExtractedResponse = {
   js: string | Buffer
@@ -304,8 +305,7 @@ export async function extractToClassNames({
         ? addStyles(mergeForwardBaseStyle)
         : null
 
-      let baseClassNameStr =
-        hasTernaries || !baseClassNames ? '' : baseClassNames.join(' ')
+      let baseClassNameStr = !baseClassNames ? '' : baseClassNames.join(' ')
 
       if (!hasTernaries && baseFontFamily) {
         baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
@@ -431,12 +431,20 @@ export async function extractToClassNames({
           const baseString = t.isStringLiteral(baseClassNameExpression)
             ? baseClassNameExpression.value
             : ''
-          const fullClassName =
+
+          // we concat here as the base could be conditionally overriden by our classNames
+          const fullClassName = concatClassName(
             (baseString ? `${baseString} ` : '') + classNames.join(' ')
+          )
+
           const classNameLiteral = t.stringLiteral(fullClassName)
 
           if (!ternaryClassNameExpr) {
-            ternaryClassNameExpr = classNameLiteral
+            ternaryClassNameExpr = t.conditionalExpression(
+              ternary.test,
+              classNameLiteral,
+              baseClassNameExpression
+            )
           } else {
             ternaryClassNameExpr = t.conditionalExpression(
               ternary.test,
@@ -458,6 +466,8 @@ export async function extractToClassNames({
       if (finalExpression) {
         // hoist to global variables
         finalExpression = hoistClassNames(jsxPath, finalExpression)
+
+        // console.log('finalExpression', finalExpression)
 
         const classNameProp = t.jsxAttribute(
           t.jsxIdentifier('className'),
@@ -522,14 +532,14 @@ function hoistClassNames(path: NodePath<t.JSXElement>, expr: t.Expression) {
     return hoistClassName(path, expr.value)
   }
 
-  if (t.isBinaryExpression(expr)) {
+  if (t.isLogicalExpression(expr)) {
     const left = t.isStringLiteral(expr.left)
       ? hoistClassName(path, expr.left.value)
       : expr.left
     const right = t.isStringLiteral(expr.right)
       ? hoistClassName(path, expr.right.value)
       : hoistClassNames(path, expr.right)
-    return t.binaryExpression(expr.operator, left, right)
+    return t.logicalExpression(expr.operator, left, right)
   }
 
   if (t.isConditionalExpression(expr)) {

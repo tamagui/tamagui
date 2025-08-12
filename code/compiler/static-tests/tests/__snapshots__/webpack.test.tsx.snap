@@ -32,7 +32,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
       class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
     />
     <div
-      class="ease-in-out-top _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px "
+      class="_t-0px ease-in-out-top _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px  "
     >
       <span
         class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -57,7 +57,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
       class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
     />
     <div
-      class="ease-in-out-top _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _bg-00035 _pt-2px _pb-2px _t-0px "
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
     >
       <span
         class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -79,10 +79,10 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
     style="display: contents;"
   >
     <div
-      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue  "
     >
       <div
-        class="hello-world _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+        class="hello-world _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue  "
       />
     </div>
     <div
@@ -99,7 +99,7 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
     style="display: contents;"
   >
     <div
-      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue  "
     >
       <span
         class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -121,7 +121,7 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
     style="display: contents;"
   >
     <div
-      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-red "
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-red  "
     >
       <span
         class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -146,7 +146,7 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
       class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _fs-0 _fd-column _pr-11px _pl-11px _pb-10px _w-6637 _miw-500px _maw-3037"
     >
       <div
-        class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _h-10px _w-10px "
+        class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _h-10px _w-10px  "
       />
     </div>
     <div
@@ -229,7 +229,7 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
     style="display: contents;"
   >
     <div
-      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _transform- _o-1 "
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _transform- _o-1  "
     />
     <div
       style="display: contents;"

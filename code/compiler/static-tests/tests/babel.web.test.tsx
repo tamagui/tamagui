@@ -291,6 +291,33 @@ test('specific className + ternary', async () => {
   expect(output?.js).toMatchSnapshot()
 })
 
+test('spread + className', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test(props) {
+      return (
+        <View
+          className="ease-in-out-top"
+          backgroundColor="#000"
+          paddingVertical={2}
+          top={0}
+          {...(props.conditional && {
+            top: -14,
+            backgroundColor: '#fff',
+          })}
+        >
+          {child}
+        </View>
+      )
+    }
+  `
+  )
+
+  expect(output?.js).toMatchSnapshot()
+})
+
 test('double ternary + spread', async () => {
   const output = await extractForWeb(
     `
