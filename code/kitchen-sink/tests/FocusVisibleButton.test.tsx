@@ -10,6 +10,9 @@ test(`button + focusVisibleStyle`, async ({ page }) => {
 
   await page.keyboard.press('Tab')
 
+  // some flake prevention on slower cpu
+  await page.waitForTimeout(300)
+
   const styles = await button.evaluate((el) => {
     return window.getComputedStyle(el)
   })
