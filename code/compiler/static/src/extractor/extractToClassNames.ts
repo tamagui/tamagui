@@ -432,10 +432,11 @@ export async function extractToClassNames({
             ? baseClassNameExpression.value
             : ''
 
-          // we concat here as the base could be conditionally overriden by our classNames
-          const fullClassName = concatClassName(
+          const fullClassNameWithDups =
             (baseString ? `${baseString} ` : '') + classNames.join(' ')
-          )
+
+          // we concat here as the base could be conditionally overriden by our classNames
+          const fullClassName = concatClassName(fullClassNameWithDups)
 
           const classNameLiteral = t.stringLiteral(fullClassName)
 
