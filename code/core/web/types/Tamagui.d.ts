@@ -8,7 +8,6 @@ export declare const Tamagui: {
     readonly config: import("./types").TamaguiInternalConfig;
     readonly insertedRules: string[];
     readonly allSelectors: Record<string, string>;
-    readonly allTransforms: {};
     readonly identifierToValue: Map<string, any>;
 } | undefined;
 export declare const getValueFromIdentifier: (identifier: string) => any;

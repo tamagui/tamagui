@@ -1,7 +1,7 @@
 import * as Helpers from '@tamagui/helpers'
 
 import { getConfig } from './config'
-import { getAllRules, getAllSelectors, getAllTransforms } from './helpers/insertStyleRule'
+import { getAllRules, getAllSelectors } from './helpers/insertStyleRule'
 import { mediaState } from './hooks/useMedia'
 
 // easy introspection
@@ -26,10 +26,6 @@ export const Tamagui = (() => {
 
       get allSelectors() {
         return getAllSelectors()
-      }
-
-      get allTransforms() {
-        return getAllTransforms()
       }
 
       get identifierToValue() {
