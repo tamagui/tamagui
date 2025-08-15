@@ -11,27 +11,19 @@
     "src"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "tamagui-build --watch --skip-types",
+    "build": "tamagui-build --skip-types --skip-native",
+    "watch": "tamagui-build --watch --skip-types --skip-native",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native": {
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./without-animated": {
-      "react-native": {
-        "import": "./dist/esm/without-animated.native.js",
-        "require": "./dist/cjs/without-animated.native.js"
-      },
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.cjs"
     },
