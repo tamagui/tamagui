@@ -27,10 +27,26 @@
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.cjs"
     },
-    "./dist/exports/StyleSheet/compiler/createReactDOMStyle": "./dist/esm/createReactDOMStyle.mjs",
-    "./dist/modules/*": "./dist/esm/modules/*/index.mjs",
-    "./dist/exports/*": "./dist/esm/exports/*/index.mjs",
-    "./dist/*": "./dist/cjs/*/index.mjs"
+    "./Libraries/Utilities/codegenNativeComponent": {
+      "import": "./dist/esm/codegenNativeComponent.mjs",
+      "require": "./dist/cjs/codegenNativeComponent.cjs"
+    },
+    "./dist/exports/StyleSheet/compiler/createReactDOMStyle": {
+      "import": "./dist/esm/createReactDOMStyle.mjs",
+      "require": "./dist/cjs/createReactDOMStyle.cjs"
+    },
+    "./dist/modules/*": {
+      "import": "./dist/esm/modules/*/index.mjs",
+      "require": "./dist/cjs/modules/*/index.cjs"
+    },
+    "./dist/exports/*": {
+      "import": "./dist/esm/exports/*/index.mjs",
+      "require": "./dist/cjs/exports/*/index.cjs"
+    },
+    "./dist/*": {
+      "import": "./dist/esm/*/index.mjs",
+      "require": "./dist/cjs/*/index.cjs"
+    }
   },
   "dependencies": {
     "@tamagui/normalize-css-color": "workspace:*",
