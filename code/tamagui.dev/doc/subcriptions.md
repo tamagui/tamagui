@@ -52,7 +52,7 @@ This document provides a comprehensive guide to the Tamagui subscription system,
 
 - **🥉 Tier 1**: $800/month
 - **🥈 Tier 2**: $1,600/month  
-- **🥇 Tier 3**: $3,000/month
+- **🥇 Tier 3**: $2,400/month
 - **🎁 Benefits per tier**:
   - ⏰ 4 hours of development time per month
   - 🚀 Faster response times

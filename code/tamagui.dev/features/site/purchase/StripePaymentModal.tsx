@@ -31,7 +31,7 @@
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { X } from '@tamagui/lucide-icons'
+import { Info, X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useMemo, useState } from 'react'
 import {
@@ -705,7 +705,16 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </H3>
             </YStack>
           </XStack>
-
+          {!disableAutoRenew && (
+            <XStack gap="$2" alignItems="center">
+              <Info size={16} color="$color11" />
+              <YStack f={1}>
+                <Paragraph py="$2" theme="alt1" fontSize="$2">
+                  Pro subscription is billed yearly for the full amount up front.
+                </Paragraph>
+              </YStack>
+            </XStack>
+          )}
           <YStack gap="$2">
             <SizableText
               theme="alt1"

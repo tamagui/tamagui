@@ -1208,7 +1208,7 @@ const SupportTabContent = ({
     { value: '0', label: 'None', price: 0 },
     { value: '1', label: 'Tier 1', price: 800 },
     { value: '2', label: 'Tier 2', price: 1600 },
-    { value: '3', label: 'Tier 3', price: 3000 },
+    { value: '3', label: 'Tier 3', price: 2400 },
   ]
 
   const formatCurrency = (price: number) => {
