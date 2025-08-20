@@ -110,7 +110,7 @@ function getContextSlow(context: PopperContextValue): PopperContextSlowValue {
     update: context.update,
     context: context.context,
     getFloatingProps: context.getFloatingProps,
-    getReferenceProps: context.getFloatingProps,
+    getReferenceProps: context.getReferenceProps,
   }
 }
 
