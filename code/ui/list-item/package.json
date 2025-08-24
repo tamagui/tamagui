@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/list-item",
-  "version": "1.132.20",
+  "version": "1.132.21",
   "sideEffects": [
     "*.css"
   ],

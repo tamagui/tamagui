@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-token",
-  "version": "1.132.20",
+  "version": "1.132.21",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
