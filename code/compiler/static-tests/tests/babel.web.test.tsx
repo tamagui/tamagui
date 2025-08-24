@@ -343,3 +343,24 @@ test('double ternary + spread', async () => {
 
   expect(output?.js).toMatchSnapshot()
 })
+
+test(`conditional classname keeps base and concats properly`, async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test(props) {
+      return (
+        <View
+          flex={1}
+          className={isEnabled ? '' : 'disable-all-pointer-events'}
+        >
+          {props.child}
+        </View>
+      )
+    }
+  `
+  )
+
+  expect(output?.js).toMatchSnapshot()
+})

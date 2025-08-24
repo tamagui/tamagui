@@ -327,13 +327,14 @@ export async function extractToClassNames({
             )
           } else {
             // space after to ensure its a string and its spaced
-            return t.conditionalExpression(
-              attrClassName,
+            return t.binaryExpression(
+              '+',
               t.binaryExpression('+', attrClassName, spaceString),
               base
             )
           }
         }
+
         return base
       })()
 
@@ -459,10 +460,12 @@ export async function extractToClassNames({
       let finalExpression: t.Expression | null =
         ternaryClassNameExpr || baseClassNameExpression || null
 
-      // console.info('attrs', JSON.stringify(attrs, null, 2))
-      // console.info('expandedTernaries', JSON.stringify(expandedTernaries, null, 2))
-      // console.info('finalExpression', JSON.stringify(finalExpression, null, 2))
-      // console.info({ baseClassNameExpression })
+      if (shouldPrintDebug) {
+        console.info('attrs', JSON.stringify(attrs, null, 2))
+        console.info('expandedTernaries', JSON.stringify(expandedTernaries, null, 2))
+        console.info('finalExpression', JSON.stringify(finalExpression, null, 2))
+        console.info({ hasTernaries, baseClassNameExpression })
+      }
 
       if (finalExpression) {
         // hoist to global variables
