@@ -161,6 +161,10 @@ export function tamaguiPlugin({
       // },
 
       config() {
+        if (enableNativeEnv) {
+          return {}
+        }
+
         if (tamaguiOptions?.useReactNativeWebLite) {
           const rnwl = resolve(
             tamaguiOptions?.useReactNativeWebLite === 'without-animated'
