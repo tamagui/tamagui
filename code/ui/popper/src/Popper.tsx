@@ -354,7 +354,7 @@ export const PopperAnchor = YStack.extractable(
   React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
     function PopperAnchor(props, forwardedRef) {
       const { virtualRef, scope, ...anchorProps } = props
-      const context = usePopperContextSlow(scope)
+      const context = usePopperContext(scope)
       const { getReferenceProps, refs, update } = context
       const ref = React.useRef<PopperAnchorRef>(null)
 
