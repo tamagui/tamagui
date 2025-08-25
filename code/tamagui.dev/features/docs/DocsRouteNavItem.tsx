@@ -1,7 +1,7 @@
 import { getStore, useStoreSelector } from '@tamagui/use-store'
 import type { Href } from 'one'
 import { createElement, useRef } from 'react'
-import { SizableText, Spacer, XStack, YStack } from 'tamagui'
+import { SizableText, Spacer, XStack, YStack } from '@tamagui/ui'
 import { Link } from '~/components/Link'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
 import type { NavItemProps } from './DocsPage'
@@ -27,7 +27,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
 }) {
   const isActive = useStoreSelector(DocsItemsStore, (x) => x.hovered && x.index === index)
   const isExternal = external || href.startsWith('http')
-  const ref = useRef<any>(undefined)
+  const ref = useRef<any>(null)
 
   return (
     <Link

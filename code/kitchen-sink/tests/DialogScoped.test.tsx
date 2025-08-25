@@ -101,7 +101,7 @@ test('scoped dialogs adapt to sheets', async ({ page: pageIn }) => {
 
   async function testDialogAdapted(name: string) {
     const trigger = page.getByTestId(`${name}-trigger`)
-    const sheetContents = page.getByTestId(`${name}-sheet-contents`)
+    const sheetContents = page.getByTestId(`${name}-sheet-contents`).first()
     const dialogContent = page.getByTestId(`${name}-dialog-content`)
 
     // Click trigger to open sheet

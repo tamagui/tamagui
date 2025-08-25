@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, StyleSheet, Text, View } from 'react-native';
-import { Button, TooltipSimple } from 'tamagui';
+import { Button, TooltipSimple } from '@tamagui/ui';
 
 export function ZIndex() {
   return <TooltipInModal />;
@@ -82,8 +82,8 @@ function Modalception({ depth = 1 }) {
           {isVisible ? <Modalception depth={depth + 1} /> : null}
           <Gap />
           <TooltipSimple label="test tooltip">
-            <Button color="red" onPress={() => setIsVisible(false)}>
-              Close
+            <Button onPress={() => setIsVisible(false)}>
+              <Button.Text color="red">Close</Button.Text>
             </Button>
           </TooltipSimple>
         </View>

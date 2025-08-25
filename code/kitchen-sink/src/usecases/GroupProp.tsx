@@ -1,4 +1,4 @@
-import { Square, Stack, XStack, styled } from 'tamagui'
+import { Square, Stack, XStack, styled } from '@tamagui/ui'
 
 const GroupTest = styled(Stack, {
   group: 'testy',

@@ -8,39 +8,37 @@ import { Theme } from './Theme'
 export type ThemeProviderProps = {
   className?: string
   defaultTheme: string
-  /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
-  disableRootThemeClass?: boolean
-  /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
-  themeClassNameOnRoot?: boolean
   children?: any
   reset?: boolean
 }
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
-  const disableRootThemeClass =
-    props.disableRootThemeClass ?? getSetting('disableRootThemeClass')
-  const themeClassNameOnRoot =
-    props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+  const addThemeClassName = getSetting('addThemeClassName')
 
   // ensure theme is attached to root body node as well to work with modals by default
   if (isClient) {
     useIsomorphicLayoutEffect(() => {
-      if (disableRootThemeClass) return
+      if (addThemeClassName === false) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
-      const target = themeClassNameOnRoot ? document.documentElement : document.body
+      const target =
+        getSetting('addThemeClassName') === 'body'
+          ? document.documentElement
+          : document.body
       target.classList.add(cn)
       return () => {
         target.classList.remove(cn)
       }
-    }, [props.defaultTheme, disableRootThemeClass, themeClassNameOnRoot])
+    }, [props.defaultTheme, addThemeClassName])
   }
 
   return (
     <Theme
       className={props.className}
       name={props.defaultTheme}
-      // if root class disabled, force class here
-      forceClassName={!disableRootThemeClass && !themeClassNameOnRoot}
+      // we completely disable the className here if its set to any value, 'root', 'body', or false
+      // because in all cases we are putting the classname elsewhere
+      // if its undefined, then the default behavior applies and we use the className here
+      forceClassName={addThemeClassName === undefined}
       // @ts-expect-error
       _isRoot={useId}
     >

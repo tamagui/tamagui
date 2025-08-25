@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SheetProps } from '@tamagui/sheet'
 import { Sheet } from '@tamagui/sheet'
 import React from 'react'
-import { Button, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, H2, Input, Paragraph, XStack, YStack } from '@tamagui/ui'
 
 export const NativeSheetDemo = () => {
   const [position, setPosition] = React.useState(0)

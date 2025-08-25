@@ -12,7 +12,7 @@ const config = getDefaultConfig(__dirname, {
 // Enable Tamagui and add nice web support with optimizing compiler + CSS extraction
 const { withTamagui } = require('@tamagui/metro-plugin')
 module.exports = withTamagui(config, {
-  components: ['tamagui'],
+  components: ['@tamagui/ui'],
   config: './tamagui.config.ts',
   outputCSS: './tamagui-web.css',
 })
@@ -41,12 +41,12 @@ if (process.env.IS_TAMAGUI_DEV && __dirname.includes('tamagui')) {
       force: true,
     })
   } catch {}
-  try {
-    fs.rmSync(path.join(projectRoot, 'node_modules', 'tamagui'), {
-      recursive: true,
-      force: true,
-    })
-  } catch {}
+  // try {
+  //   fs.rmSync(path.join(projectRoot, 'node_modules', 'tamagui'), {
+  //     recursive: true,
+  //     force: true,
+  //   })
+  // } catch {}
   try {
     fs.rmSync(path.join(projectRoot, 'node_modules', 'react'), {
       recursive: true,

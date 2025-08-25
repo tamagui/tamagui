@@ -1,6 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { useRef, useState } from 'react'
-import { Button, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, XStack, YStack } from '@tamagui/ui'
 import { Link } from '~/components/Link'
 
 import { ContainerLarge } from '~/components/Containers'
@@ -58,7 +58,7 @@ export function HomePerformance() {
           {show && <BenchmarkChartWeb />}
         </YStack>
 
-        <XStack space flexWrap="wrap">
+        <XStack gap="$4" flexWrap="wrap">
           <BenchmarksLink />
           <CompilerLink />
         </XStack>
@@ -71,12 +71,8 @@ const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/benchmarks">
-      <Button
-        accessibilityLabel="Performance benchmarks"
-        fontFamily="$silkscreen"
-        theme={tint as any}
-      >
-        Benchmarks &raquo;
+      <Button aria-label="Performance benchmarks" theme={tint as any}>
+        <Button.Text fontFamily="$silkscreen">Benchmarks &raquo;</Button.Text>
       </Button>
     </Link>
   )
@@ -86,8 +82,8 @@ const CompilerLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/why-a-compiler">
-      <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint as any}>
-        About &raquo;
+      <Button aria-label="Compiler" theme={tint as any}>
+        <Button.Text fontFamily="$silkscreen">About &raquo;</Button.Text>
       </Button>
     </Link>
   )

@@ -11,6 +11,8 @@
     "v2.js",
     "v2.d.ts",
     "v4.js",
-    "v4.d.ts"
+    "v4.d.ts",
+    "v5.js",
+    "v5.d.ts"
   ]
 }

@@ -11,7 +11,7 @@ import {
   getVariableValue,
   useForceUpdate,
   useIsomorphicLayoutEffect,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 const colors = config.tokens.color
 const colorKeys = Object.keys(colors)
@@ -32,7 +32,7 @@ export function UpdateThemeDemo() {
   }, [])
 
   return (
-    <YStack alignItems="center" space>
+    <YStack alignItems="center" gap="$4">
       <XStack gap={'$5'}>
         <Theme name={theme ?? null}>
           <Square borderRadius="$8" size={100} backgroundColor="$color" />

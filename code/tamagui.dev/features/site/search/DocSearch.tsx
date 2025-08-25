@@ -5,11 +5,7 @@ import { DocSearchModal } from '@docsearch/react'
 export default function DocSearch(props: DocSearchModalProps) {
   return (
     <>
-      <style
-        // @ts-ignore
-        href="docsearch"
-        precedence="default"
-      >
+      <style href="docsearch" precedence="default">
         {docSearchCSS}
       </style>
       <DocSearchModal {...props} />

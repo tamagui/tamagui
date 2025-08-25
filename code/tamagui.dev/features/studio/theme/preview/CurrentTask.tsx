@@ -1,4 +1,4 @@
-import type { XStackProps } from 'tamagui'
+import type { XStackProps } from '@tamagui/ui'
 import {
   Avatar,
   H4,
@@ -9,7 +9,7 @@ import {
   Spacer,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { accentTokenName } from '../../accentThemeName'
 import { useDemoProps } from '../hooks/useDemoProps'
@@ -30,7 +30,7 @@ export const CurrentTask = () => {
 
       <Separator mb="$2" />
 
-      <YStack flex={1} gap="$4" separator={<Separator />}>
+      <YStack flex={1} gap="$4">
         <YStack gap="$6">
           <XStack {...demoProps.gapPropsLg}>
             <XStack {...demoProps.gapPropsMd}>

@@ -1,4 +1,4 @@
-import { Paragraph, Separator, XStack, YStack } from 'tamagui'
+import { Paragraph, Separator, XStack, YStack } from '@tamagui/ui'
 
 const PaletteExample = ({
   showIndices,
@@ -57,7 +57,7 @@ export const ExamplePalette = ({
   theme?: string
 }) => {
   return (
-    <YStack my="$4" space="$2">
+    <YStack my="$4" gap="$2">
       {showLabels && (
         <XStack jc="space-between">
           <Paragraph size="$2" theme="alt2">
@@ -69,9 +69,9 @@ export const ExamplePalette = ({
         </XStack>
       )}
       <PaletteExample
-        showIndices={showIndices}
-        showNegativeIndices={showNegativeIndices}
-        theme={theme}
+        showIndices={showIndices ?? false}
+        showNegativeIndices={showNegativeIndices ?? false}
+        theme={theme ?? ''}
       />
     </YStack>
   )
@@ -79,7 +79,7 @@ export const ExamplePalette = ({
 
 export const ExampleTemplate = () => {
   return (
-    <YStack my="$4" space="$2">
+    <YStack my="$4" gap="$2">
       <XStack jc="space-between">
         <Paragraph size="$2" theme="alt2">
           Background

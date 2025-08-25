@@ -17,8 +17,8 @@ import {
   XStack,
   YStack,
   useEvent,
-} from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+} from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
 import { RovingTabs } from '~/components/RovingTabs'

@@ -3,7 +3,7 @@ import { Components } from '@tamagui/bento'
 import { FlatList } from 'react-native'
 
 import { createParam } from 'solito'
-import { Separator, YGroup } from 'tamagui'
+import { Separator, YGroup } from '@tamagui/ui'
 import { LinkListItem } from '../home/screen'
 
 const { useParam } = createParam<{ id: string }>()
@@ -32,7 +32,7 @@ export function BentoPartScreenItem({ navigation }) {
 
   const renderItem = ({ item: Component }) => (
     <YGroup.Item key={Component.name}>
-      <LinkListItem bg="$color1" href={'/' + Component.name} pressTheme size="$5">
+      <LinkListItem bg="$color1" href={'/' + Component.name} size="$5">
         {Component.name}
       </LinkListItem>
     </YGroup.Item>

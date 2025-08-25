@@ -1,7 +1,7 @@
 'use client'
 
 import { toHsla, toRgba } from 'color2k'
-import { Button, Input, Label, Paragraph, XStack, YStack, styled } from 'tamagui'
+import { Button, Input, Label, Paragraph, XStack, YStack, styled } from '@tamagui/ui'
 import { SidebarPanel } from '../components/Sidebar'
 import { useGlobalState } from '../state/useGlobalState'
 import { getColor, colorToHex } from './helpers'
@@ -30,10 +30,10 @@ export function Color({
 
   return (
     <SidebarPanel title={`${scale.name}.${index}`}>
-      <YStack space="$3">
+      <YStack gap="$3">
         <YStack bw={1} bc="$borderColor" w="100%" h={48} bg={hex as any} br="$2" />
-        <XStack ov="hidden" f={1} space="$2">
-          <XStack ai="center" space="$2">
+        <XStack ov="hidden" f={1} gap="$2">
+          <XStack ai="center" gap="$2">
             <Label size="$2" htmlFor="color-hue">
               {scale.curves.hue ? 'H offset' : 'H'}
             </Label>
@@ -53,7 +53,7 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack ai="center" space="$2">
+          <XStack ai="center" gap="$2">
             <Label size="$2" htmlFor="color-saturation">
               {scale.curves.saturation ? 'S offset' : 'S'}
             </Label>
@@ -73,7 +73,7 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack ai="center" space="$2">
+          <XStack ai="center" gap="$2">
             <Label size="$2" htmlFor="color-lightness">
               {scale.curves.lightness ? 'L offset' : 'L'}
             </Label>

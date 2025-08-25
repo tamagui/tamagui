@@ -7,7 +7,7 @@
   },
   "references": [
     {
-      "path": "../../ui/tamagui"
+      "path": "../../ui/tamagui-ui"
     }
   ],
   "exclude": [

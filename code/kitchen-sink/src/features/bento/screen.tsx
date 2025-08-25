@@ -1,5 +1,5 @@
 import { Data } from '@tamagui/bento'
-import { H4, H5, Input, ListItem, styled, Text, View, YGroup, YStack } from 'tamagui'
+import { H4, H5, Input, ListItem, styled, Text, View, YGroup, YStack } from '@tamagui/ui'
 import { LinkListItem } from '../home/screen'
 import { useState } from 'react'
 import { useMemo } from 'react'
@@ -94,7 +94,7 @@ const Item = ({ item: { name, route, numberOfComponents } }) => {
 
   return (
     <YGroup.Item key={name}>
-      <LinkListItem gap="$4" bg="$color1" href={'/' + route} pressTheme size="$5">
+      <LinkListItem gap="$4" bg="$color1" href={'/' + route} size="$5">
         <View
           p="$2"
           bg="$backgroundPress"

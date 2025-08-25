@@ -1,5 +1,13 @@
 import { X } from '@tamagui/lucide-icons'
-import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
+import {
+  Button,
+  Dialog,
+  Paragraph,
+  ScrollView,
+  Sheet,
+  Unspaced,
+  YStack,
+} from '@tamagui/ui'
 import { Link } from '~/components/Link'
 import { ProLicense } from '../../pro/ProLicense'
 import { useTakeoutStore } from './useTakeoutStore'
@@ -16,7 +24,7 @@ export const ProAgreementModal = () => {
     >
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
+          <Sheet.Frame padding="$4" gap="$4">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -57,7 +65,7 @@ export const ProAgreementModal = () => {
           maw={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+            <YStack $gtSm={{ maxHeight: '90vh' }} gap="$4">
               <Paragraph>
                 <Link href="/pro-license">Permalink to the license</Link>.
               </Paragraph>
