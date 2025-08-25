@@ -100,3 +100,7 @@ export function requireNativeComponent(name: string) {
 export const findNodeHandle = (component: any) => {
   throw new Error('not supported - use ref instead')
 }
+
+// compat with rn:
+
+export { unstable_batchedUpdates } from 'react-dom'

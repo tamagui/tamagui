@@ -18,10 +18,20 @@ And then build once:
 yarn build:js
 ```
 
-As you develop you should run this in a separate terminal:
+As you develop you should run this in a separate terminal, we use `bun` as a quick ts runner:
 
 ```bash
+npm i -g bun
 yarn watch
+```
+
+### Linking tamagui into your existing project
+
+Most package managers have a `link` command that lets you link in the local tamagui to your project, we've build a package we found useful that works with `bun` or `yarn` depending on your configuration:
+
+```bash
+npm i -g lllink
+lllink ~/path/to/tamagui
 ```
 
 ### Running native apps

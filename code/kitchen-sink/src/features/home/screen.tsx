@@ -40,7 +40,7 @@ export function HomeScreen() {
           </YGroup.Item>
         </YGroup>
 
-        <YStack gap="$4" maw={600}>
+        <YStack gap="$4" maxWidth={600}>
           {demos.map(({ pages }, i) => {
             return (
               <YGroup key={i} size="$4" separator={<Separator />}>

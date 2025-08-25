@@ -513,6 +513,7 @@ const disableAnimationProps = new Set<string>([
   'backdropFilter',
   'boxSizing',
   'contain',
+  'containerType',
   'display',
   'flexBasis',
   'flexDirection',

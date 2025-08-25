@@ -29,33 +29,31 @@ export type ExtractorOptions = {
 export type ExtractedAttrAttr = {
     type: 'attr';
     value: t.JSXAttribute | t.JSXSpreadAttribute;
+    extraClassNames?: string;
 };
 export type ExtractedAttrStyle = {
     type: 'style';
     value: ViewStyle & PseudoStyles;
     attr?: t.JSXAttribute | t.JSXSpreadAttribute;
     name?: string;
+    extraClassNames?: string;
 };
-export type ExtractedDynAttrStyle = {
-    type: 'dynamic-style';
-    name?: string;
-    value: t.Expression | t.JSXEmptyExpression;
-};
-export type ExtractedAttr = ExtractedAttrAttr | {
+export type ExtractedTernaryAttr = {
     type: 'ternary';
     value: Ternary;
-} | ExtractedAttrStyle | ExtractedDynAttrStyle;
+};
+export type ExtractedAttr = ExtractedAttrAttr | ExtractedTernaryAttr | ExtractedAttrStyle;
 export type ExtractTagProps = {
     parserProps: TamaguiOptionsWithFileInfo;
     attrs: ExtractedAttr[];
     node: t.JSXOpeningElement;
     attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any;
+    flatNodeName?: string;
     jsxPath: NodePath<t.JSXElement>;
     programPath: NodePath<t.Program>;
     originalNodeName: string;
     lineNumbers: string;
     filePath: string;
-    isFlattened: boolean;
     completeProps: Record<string, any>;
     staticConfig: StaticConfig;
     config: TamaguiConfig;
@@ -73,14 +71,15 @@ export type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedCom
         tag: string;
     }) => string;
     extractStyledDefinitions?: boolean;
-    onStyleRule?: (identifier: string, rules: string[]) => void;
+    onStyledDefinitionRule?: (identifier: string, rules: string[]) => void;
 };
 export interface Ternary {
     test: t.Expression;
-    inlineMediaQuery?: string;
     remove: Function;
     consequent: Object | null;
     alternate: Object | null;
+    fontFamily?: string;
+    inlineMediaQuery?: string;
 }
 export type ClassNameToStyleObj = {
     [key: string]: StyleObject;

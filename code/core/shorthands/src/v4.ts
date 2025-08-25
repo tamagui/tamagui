@@ -51,10 +51,15 @@ type NonDefinedShorthandValues = Exclude<keyof TextStyle, Shorthands[ShorthandKe
 
 // we want no types but compiler/runtime uses it for short classname generation
 const nonCompilerShorthands: [string, NonDefinedShorthandValues][] = [
+  ['fd', 'flexDirection'],
+  ['fb', 'flexBasis'],
+  ['bblr', 'borderBottomLeftRadius'],
+  ['bbrr', 'borderBottomRightRadius'],
   ['fwr', 'flexWrap'],
   ['col', 'color'],
   ['ff', 'fontFamily'],
   ['fst', 'fontStyle'],
+  ['tr', 'transform'],
   ['tt', 'textTransform'],
   ['td', 'textDecorationLine'],
   ['va', 'verticalAlign'],

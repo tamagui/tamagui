@@ -10,7 +10,7 @@
 export function concatClassName(...args: any[]): any
 export function concatClassName(_cn: Record<string, any> | null | undefined): string {
   const args = arguments
-  const usedPrefixes: string[] = []
+  const usedPrefixes = new Set<string>()
   let final = ''
 
   const len = args.length
@@ -53,17 +53,17 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       // commenting out three things to make pseudos override properly
       // (leave in for a bit to see if other bugs pop up later):
       // 1. const isPseudoQuery = nextChar === '0'
-      const styleKey = name.slice(1, name.lastIndexOf('-'))
+      const styleKey = name.slice(1, name.indexOf('-'))
       // 2. isMediaQuery || isPseudoQuery
       const mediaKey = isMediaQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
       const uid = mediaKey ? styleKey + mediaKey : styleKey
       // 3. && !isPseudoQuery
 
-      if (usedPrefixes.indexOf(uid) > -1) {
+      if (usedPrefixes.has(uid)) {
         // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
         continue
       }
-      usedPrefixes.push(uid)
+      usedPrefixes.add(uid)
 
       // overrides for full safety
       const propName = styleKey
@@ -87,7 +87,7 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
     }
   }
 
-  return final
+  return final.trim()
 }
 
 const pseudoInvert = {

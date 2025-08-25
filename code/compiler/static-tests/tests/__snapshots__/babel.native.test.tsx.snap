@@ -28,16 +28,16 @@ import { YStack } from '@tamagui/ui';
 let x = true;
 export function Test() {
   return <>
-          <_ReactNativeViewWrapper expressions={[x]} />
-          <_ReactNativeViewWrapper2 expressions={[x]} />
+          <__ReactNativeView expressions={[x]} />
+          <__ReactNativeView expressions={[x]} />
         </>;
 }
-const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
   }, [..._expressions]);
 });
-const _ReactNativeViewWrapper2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]];
   }, [..._expressions]);
@@ -117,9 +117,9 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from '@tamagui/ui';
 export function Test(isLoading) {
-  return <_ReactNativeViewWrapper expressions={[isLoading]} />;
+  return <__ReactNativeView expressions={[isLoading]} />;
 }
-const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
   }, [..._expressions]);
@@ -158,9 +158,9 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from '@tamagui/ui';
 export function Test(props) {
-  return <_ReactNativeViewWrapper />;
+  return <__ReactNativeView />;
 }
-const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "backgroundColor": theme.color.get()
@@ -233,9 +233,9 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from '@tamagui/ui';
 export function Test() {
-  return <_ReactNativeTextWrapper>hello world</_ReactNativeTextWrapper>;
+  return <__ReactNativeText>hello world</__ReactNativeText>;
 }
-const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
+const __ReactNativeText = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "color": theme.color.get()

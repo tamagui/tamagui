@@ -40,9 +40,9 @@ import { YStack } from '@tamagui/ui';
 import { useMedia } from '@tamagui/ui';
 export function Test(isLoading) {
   const media = useMedia();
-  return <_ReactNativeViewWrapper expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
+  return <__ReactNativeView expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
 }
-const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"], _expressions[2] ? _sheet["5"] : _sheet["6"]];
   }, [..._expressions]);
@@ -61,9 +61,9 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { View } from '@tamagui/ui';
 export function Test() {
-  return <_ReactNativeViewWrapper expressions={[showBackground]} />;
+  return <__ReactNativeView expressions={[showBackground]} />;
 }
-const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _sheet["1"], _expressions[0] ? {
       "backgroundColor": theme.color1.get()
@@ -94,9 +94,9 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from '@tamagui/ui';
 export function Test(isLoading) {
-  return <_ReactNativeViewWrapper />;
+  return <__ReactNativeView />;
 }
-const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "backgroundColor": theme.background.get()

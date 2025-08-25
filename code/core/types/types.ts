@@ -133,10 +133,7 @@ export interface TamaguiBuildOptions {
    * (Experimental) Will flatten theme and other dynamic values on native
    */
   experimentalFlattenThemesOnNative?: boolean
-  /**
-   * (Experimental) flatten dynamic values on native ( like <YStack width={props.width} /> )
-   */
-  experimentalFlattenDynamicValues?: boolean
+
   /**
    * combine all css files into one file
    */

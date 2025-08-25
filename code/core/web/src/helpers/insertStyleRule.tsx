@@ -15,29 +15,9 @@ const scannedCache = new WeakMap<CSSStyleSheet, string>()
 const totalSelectorsInserted = new Map<string, number>()
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
-export const insertedTransforms = {}
 
 export const getAllSelectors = () => allSelectors
 export const getAllRules = () => Object.values(allRules)
-export const getAllTransforms = () => insertedTransforms
-
-// keep transforms in map for merging later
-function addTransform(identifier: string, css: string, rule?: CSSRule) {
-  const s = css.indexOf('transform:')
-  if (s === -1) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error(`❌ Invalid transform, likely used deg/% improperly ${identifier}`)
-    }
-    return
-  }
-  const startI = s + 'transform:'.length
-  const endI = css.indexOf(';')
-  const value = css.slice(startI, endI)
-  if (!insertedTransforms[identifier]) {
-    insertedTransforms[identifier] = value
-    return true
-  }
-}
 
 // once react 19 onyl supported we can remove most of this
 // gets existing ones (client side)
@@ -93,7 +73,7 @@ function trackInsertedStyle(id: string) {
 }
 
 const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
-const bailAfter = bailAfterEnv ? +bailAfterEnv : 700
+const bailAfter = bailAfterEnv ? +bailAfterEnv : 400
 
 function updateSheetStyles(
   sheet: CSSStyleSheet,
@@ -295,15 +275,12 @@ let sheet: CSSStyleSheet | null = null
 
 let trackAllRules = true
 export function stopAccumulatingRules() {
-  trackAllRules = true
+  trackAllRules = false
 }
 
 export function updateRules(identifier: string, rules: string[]) {
   if (trackAllRules) {
     allRules[identifier] = rules.join(' ')
-  }
-  if (identifier.startsWith('_transform-')) {
-    return addTransform(identifier, rules[0])
   }
   return true
 }
@@ -318,23 +295,20 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
   if (!sheet && document.head) {
     const styleTag = document.createElement('style')
+    styleTag.id = '_tamagui-styles'
     if (nonce) {
       styleTag.nonce = nonce
     }
     sheet = document.head.appendChild(styleTag).sheet
   }
 
-  if (!sheet) {
-    console.warn('[tamagui] no sheet')
-    return
-  }
+  if (!sheet) return
 
   for (const key in rulesToInsert) {
     const styleObject = rulesToInsert[key]
     const identifier = styleObject[StyleObjectIdentifier]
 
     if (!shouldInsertStyleRules(identifier)) {
-      // idk why
       continue
     }
 
@@ -346,6 +320,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     try {
       for (const rule of rules) {
         sheet.insertRule(rule, sheet.cssRules.length)
+        if (identifier === '_dsp-_groupframe-maxMd_none') console.warn('INSERT', rule)
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'production') {

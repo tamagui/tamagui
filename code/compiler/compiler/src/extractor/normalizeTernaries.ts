@@ -1,8 +1,9 @@
 import generate from '@babel/generator'
 import * as t from '@babel/types'
+import { mergeProps } from '@tamagui/web'
 import invariant from 'invariant'
-
 import type { Ternary } from '../types'
+import { forwardFontFamilyName } from './propsToFontFamilyCache'
 
 export function normalizeTernaries(ternaries: Ternary[]) {
   invariant(
@@ -56,8 +57,14 @@ export function normalizeTernaries(ternaries: Ternary[]) {
     }
     const altStyle = (shouldSwap ? consequent : alternate) ?? {}
     const consStyle = (shouldSwap ? alternate : consequent) ?? {}
-    Object.assign(ternariesByKey[key].alternate!, altStyle)
-    Object.assign(ternariesByKey[key].consequent!, consStyle)
+
+    const nextAlt = ternariesByKey[key].alternate!
+    ternariesByKey[key].alternate = mergeProps(altStyle, nextAlt)
+    forwardFontFamilyName(altStyle, ternariesByKey[key].alternate)
+
+    const nextCons = ternariesByKey[key].consequent!
+    ternariesByKey[key].consequent = mergeProps(consStyle, nextCons)
+    forwardFontFamilyName(consStyle, ternariesByKey[key].consequent)
   }
 
   const ternaryExpression = Object.keys(ternariesByKey).map((key) => {

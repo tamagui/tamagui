@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, Label, YStack, XStack, Button } from 'tamagui'
+import { Select, Label, YStack, XStack, Button } from '@tamagui/ui'
 import { ChevronDown } from '@tamagui/lucide-icons'
 
 export function SelectFocusScopeCase() {
@@ -126,4 +126,4 @@ export function SelectFocusScopeCase() {
 }
 
 // Add missing import
-import { View } from 'tamagui'
+import { View } from '@tamagui/ui'

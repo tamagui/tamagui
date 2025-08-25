@@ -46,9 +46,9 @@ import { loadTamagui, loadTamaguiSync } from './loadTamagui'
 import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { setPropsToFontFamily } from './propsToFontFamilyCache'
-import { removeUnusedHooks } from './removeUnusedHooks'
 import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
+import { BailOptimizationError } from './errors'
 
 const UNTOUCHED_PROPS = {
   key: true,
@@ -164,11 +164,10 @@ export function createExtractor(
       evaluateVars = true,
       sourcePath = '',
       onExtractTag,
-      onStyleRule,
+      onStyledDefinitionRule,
       getFlattenedNode,
       disable,
       disableExtraction,
-      disableExtractInlineMedia,
       disableExtractVariables,
       disableDebugAttr,
       enableDynamicEvaluation = false,
@@ -676,7 +675,7 @@ export function createExtractor(
         if (out.rulesToInsert) {
           for (const key in out.rulesToInsert) {
             const styleObject = out.rulesToInsert[key]
-            onStyleRule?.(
+            onStyledDefinitionRule?.(
               styleObject[StyleObjectIdentifier],
               styleObject[StyleObjectRules]
             )
@@ -833,7 +832,7 @@ export function createExtractor(
             console.info(` Start tag ${tagName}`)
           }
 
-          const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
+          const flatNodeName = getFlattenedNode?.({ isTextView, tag: tagName })
 
           const inlineProps = new Set([
             ...(restProps.inlineProps || []),
@@ -1016,12 +1015,9 @@ export function createExtractor(
                 }
                 // split into individual ternaries per object property
                 return [
-                  ...(createTernariesFromObjectProperties(test, alt) || []),
+                  ...(flattenNestedTernaries(test, alt) || []),
                   ...((cons &&
-                    createTernariesFromObjectProperties(
-                      t.unaryExpression('!', test),
-                      cons
-                    )) ||
+                    flattenNestedTernaries(t.unaryExpression('!', test), cons)) ||
                     []),
                 ].map((ternary) => ({
                   type: 'ternary',
@@ -1097,18 +1093,9 @@ export function createExtractor(
             if (name[0] === '$' && t.isJSXExpressionContainer(attribute?.value)) {
               const shortname = name.slice(1)
               if (mediaQueryConfig[shortname]) {
-                if (platform === 'native') {
-                  shouldDeopt = true
-                }
-
-                // allow disabling this extraction
-                if (disableExtractInlineMedia) {
-                  return attr
-                }
-
                 const expression = attribute.value.expression
                 if (!t.isJSXEmptyExpression(expression)) {
-                  const ternaries = createTernariesFromObjectProperties(
+                  const ternaries = flattenNestedTernaries(
                     t.stringLiteral(shortname),
                     expression,
                     {
@@ -1330,17 +1317,6 @@ export function createExtractor(
               return { type: 'ternary', value: staticLogical }
             }
 
-            // Disabling: this probably doesn't optimize much and needs to be done a bit differently
-            if (options.experimentalFlattenDynamicValues) {
-              if (isValidStyleKey(name, staticConfig)) {
-                return {
-                  type: 'dynamic-style',
-                  value,
-                  name: tamaguiConfig?.shorthands[name] || name,
-                }
-              }
-            }
-
             // if we've made it this far, the prop stays inline
             inlined.set(name, true)
             if (shouldPrintDebug) {
@@ -1459,7 +1435,7 @@ export function createExtractor(
           // => Ternary<test && x, { background: 'red' }, null>
           // => Ternary<test && !x, { background: 'green' }, null>
           // => Ternary<test && '$gtSm', { color: 'green' }, null>
-          function createTernariesFromObjectProperties(
+          function flattenNestedTernaries(
             test: t.Expression,
             side: t.Expression | null,
             ternaryPartial: Partial<Ternary> = {}
@@ -1473,34 +1449,6 @@ export function createExtractor(
             return side.properties.flatMap((property) => {
               if (!t.isObjectProperty(property)) {
                 throw new Error('expected object property')
-              }
-              // handle media queries inside spread/conditional objects
-              if (t.isIdentifier(property.key)) {
-                const key = property.key.name
-                const mediaQueryKey = key.slice(1)
-                const isMediaQuery = key[0] === '$' && mediaQueryConfig[mediaQueryKey]
-                if (isMediaQuery) {
-                  if (t.isExpression(property.value)) {
-                    const ternaries = createTernariesFromObjectProperties(
-                      t.stringLiteral(mediaQueryKey),
-                      property.value,
-                      {
-                        inlineMediaQuery: mediaQueryKey,
-                      }
-                    )
-                    if (ternaries) {
-                      return ternaries.map((value) => ({
-                        ...ternaryPartial,
-                        ...value,
-                        // ensure media query test stays on left side (see getMediaQueryTernary)
-                        test: t.logicalExpression('&&', value.test, test),
-                      }))
-                    }
-                    logger.info(['⚠️ no ternaries?', property].join(' '))
-                  } else {
-                    logger.info(['⚠️ not expression', property].join(' '))
-                  }
-                }
               }
               // this could be a recurse here if we want to get fancy
               if (t.isConditionalExpression(property.value)) {
@@ -1594,7 +1542,7 @@ export function createExtractor(
           const canFlattenProps = inlined.size === 0
 
           let shouldFlatten = Boolean(
-            flatNode &&
+            flatNodeName &&
               !shouldDeopt &&
               canFlattenProps &&
               !hasSpread &&
@@ -1617,66 +1565,78 @@ export function createExtractor(
             }
           })
 
-          // only if we flatten, ensure the default styles are there
-          if (shouldFlatten) {
-            let skipMap = false
-            const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
-              if (skipMap) return []
-              const value = defaultProps[key]
-              if (key === 'theme' && !themeVal) {
-                if (platform === 'native') {
-                  shouldFlatten = false
-                  skipMap = true
-                  inlined.set('theme', { value: t.stringLiteral(value) })
-                }
-                themeVal = { value: t.stringLiteral(value) }
-                return []
-              }
-              if (!isValidStyleKey(key, staticConfig)) {
-                return []
-              }
-              const name = tamaguiConfig?.shorthands[key] || key
-              if (value === undefined) {
-                logger.warn(
-                  `⚠️ Error evaluating default style for component, prop ${key} ${value}`
-                )
-                shouldDeopt = true
-                return
-              }
-              if (name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
-                defaultProps[key] = undefined
-                return evaluateAttribute({
-                  node: t.jsxAttribute(
-                    t.jsxIdentifier(name),
-                    t.jsxExpressionContainer(
-                      t.objectExpression(
-                        Object.keys(value)
-                          .filter((k) => {
-                            return typeof value[k] !== 'undefined'
-                          })
-                          .map((k) => {
-                            return t.objectProperty(
-                              t.identifier(k),
-                              literalToAst(value[k])
-                            )
-                          })
-                      )
-                    )
-                  ),
-                } as any)
-              }
-              const attr: ExtractedAttrStyle = {
-                type: 'style',
-                name,
-                value: { [name]: value },
-              }
-              return attr
-            }) as ExtractedAttr[]
+          if (!shouldFlatten) {
+            // were no longer partially optimizing, it adds a lot of complexity for dubious performance
+            if (shouldPrintDebug) {
+              logger.info(
+                `Deopting ${JSON.stringify({
+                  shouldFlatten,
+                  shouldDeopt,
+                  canFlattenProps,
+                  hasSpread,
+                  neverFlatten: staticConfig.neverFlatten,
+                })}`
+              )
+            }
+            node.attributes = ogAttributes
+            return
+          }
 
-            if (!skipMap) {
-              if (defaultStyleAttrs.length) {
-                attrs = [...defaultStyleAttrs, ...attrs]
+          // ensure the default styles are there
+          let skipMap = false
+          const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
+            if (skipMap) return []
+            const value = defaultProps[key]
+            if (key === 'theme' && !themeVal) {
+              if (platform === 'native') {
+                shouldFlatten = false
+                skipMap = true
+                inlined.set('theme', { value: t.stringLiteral(value) })
               }
+              themeVal = { value: t.stringLiteral(value) }
+              return []
+            }
+            if (!isValidStyleKey(key, staticConfig)) {
+              return []
+            }
+            const name = tamaguiConfig?.shorthands[key] || key
+            if (value === undefined) {
+              logger.warn(
+                `⚠️ Error evaluating default style for component, prop ${key} ${value}`
+              )
+              shouldDeopt = true
+              return
+            }
+            if (name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
+              defaultProps[key] = undefined
+              return evaluateAttribute({
+                node: t.jsxAttribute(
+                  t.jsxIdentifier(name),
+                  t.jsxExpressionContainer(
+                    t.objectExpression(
+                      Object.keys(value)
+                        .filter((k) => {
+                          return typeof value[k] !== 'undefined'
+                        })
+                        .map((k) => {
+                          return t.objectProperty(t.identifier(k), literalToAst(value[k]))
+                        })
+                    )
+                  )
+                ),
+              } as any)
+            }
+            const attr: ExtractedAttrStyle = {
+              type: 'style',
+              name,
+              value: { [name]: value },
+            }
+            return attr
+          }) as ExtractedAttr[]
+
+          if (!skipMap) {
+            if (defaultStyleAttrs.length) {
+              attrs = [...defaultStyleAttrs, ...attrs]
             }
           }
 
@@ -1721,10 +1681,9 @@ export function createExtractor(
             }, [])
             .flat()
 
-          const shouldWrapTheme = shouldFlatten && themeVal
           // wrap theme around children on flatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
-          if (shouldWrapTheme) {
+          if (themeVal) {
             if (!programPath) {
               console.warn(
                 `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
@@ -1770,38 +1729,6 @@ export function createExtractor(
                 )
               )
             }
-          }
-
-          if (shouldPrintDebug) {
-            try {
-              // prettier-ignore
-              logger.info(
-                [
-                  ' flatten?',
-                  shouldFlatten,
-                  objToStr({
-                    hasSpread,
-                    shouldDeopt,
-                    canFlattenProps,
-                    shouldWrapTheme,
-                    hasOnlyStringChildren,
-                  }),
-                  'inlined',
-                  inlined.size,
-                  [...inlined],
-                ].join(' ')
-              )
-            } catch {
-              // ok
-            }
-          }
-
-          if (shouldDeopt || !shouldFlatten) {
-            if (shouldPrintDebug) {
-              logger.info(`Deopting ${shouldDeopt} ${shouldFlatten}`)
-            }
-            node.attributes = ogAttributes
-            return
           }
 
           if (shouldPrintDebug) {
@@ -2099,12 +2026,10 @@ export function createExtractor(
           }
 
           // add default props
-          if (shouldFlatten) {
-            attrs.unshift({
-              type: 'style',
-              value: defaultProps,
-            })
-          }
+          attrs.unshift({
+            type: 'style',
+            value: defaultProps,
+          })
 
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
             if (cur.type === 'style') {
@@ -2294,15 +2219,6 @@ export function createExtractor(
                 }
               }
             }
-
-            if (attr.type === 'dynamic-style') {
-              if (existingStyleKeys.has(attr.name)) {
-                //@ts-ignore
-                attrs[i] = undefined
-              } else {
-                existingStyleKeys.add(attr.name)
-              }
-            }
           }
 
           if (options.experimentalFlattenThemesOnNative) {
@@ -2335,28 +2251,11 @@ export function createExtractor(
 
           // delete empty styles:
           attrs = attrs.filter((x) => {
-            if (
-              (x.type === 'style' || x.type === 'dynamic-style') &&
-              Object.keys(x.value).length === 0
-            ) {
+            if (x.type === 'style' && Object.keys(x.value).length === 0) {
               return false
             }
             return true
           })
-
-          if (shouldFlatten) {
-            // DO FLATTEN
-            if (shouldPrintDebug) {
-              logger.info(['  [✅] flattening', originalNodeName, flatNode].join(' '))
-            }
-            // @ts-ignore
-            node.name.name = flatNode
-            res.flattened++
-            if (closingElement) {
-              // @ts-ignore
-              closingElement.name.name = flatNode
-            }
-          }
 
           const isNativeNotFlat = !shouldFlatten && platform === 'native'
           if (isNativeNotFlat) {
@@ -2364,7 +2263,7 @@ export function createExtractor(
               logger.info(
                 `Disabled flattening except for simple cases on native for now: ${JSON.stringify(
                   {
-                    flatNode,
+                    flatNode: flatNodeName,
                     shouldDeopt,
                     canFlattenProps,
                     hasSpread,
@@ -2392,7 +2291,6 @@ export function createExtractor(
                 staticConfig.neverFlatten ? 'neverFlatten' : '',
               ].join(' ')
             )
-            logger.info(`  - shouldFlatten/isFlattened: ${shouldFlatten}`)
             logger.info(`  - attrs (end):\n ${logLines(attrs.map(attrStr).join(', '))}`)
           }
 
@@ -2403,14 +2301,27 @@ export function createExtractor(
             lineNumbers,
             filePath,
             config: tamaguiConfig!,
+            flatNodeName,
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,
-            isFlattened: shouldFlatten,
             programPath: programPath!,
             completeProps,
             staticConfig,
           })
+
+          if (shouldFlatten) {
+            if (shouldPrintDebug) {
+              logger.info(['  [✅] flattened', originalNodeName, flatNodeName].join(' '))
+            }
+            // @ts-ignore
+            node.name.name = flatNodeName
+            res.flattened++
+            if (closingElement) {
+              // @ts-ignore
+              closingElement.name.name = flatNodeName
+            }
+          }
         } catch (err: any) {
           node.attributes = ogAttributes
           console.error(

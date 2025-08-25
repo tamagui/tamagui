@@ -343,7 +343,10 @@ function RepropagateParentContexts({
 const PortalAdaptSafe = ({
   children,
   context,
-}: { children?: React.ReactNode; context: PopoverContextValue }) => {
+}: {
+  children?: React.ReactNode
+  context: PopoverContextValue
+}) => {
   if (needsRepropagation) {
     const parentContexts = useParentContexts(context.popoverScope)
     return (
@@ -363,7 +366,8 @@ function PopoverPortal({
   zIndex,
   passThrough,
   children,
-}: Pick<PopoverContentProps, 'zIndex' | 'passThrough' | 'children'> & {
+  onPress,
+}: Pick<PopoverContentProps, 'zIndex' | 'passThrough' | 'children' | 'onPress'> & {
   context: PopoverContextValue
 }) {
   const themeName = useThemeName()
@@ -384,6 +388,13 @@ function PopoverPortal({
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
       <Theme passThrough={passThrough} contain forceClassName name={themeName}>
+        {!!context.open && !context.breakpointActive && (
+          <YStack
+            fullscreen
+            onPress={composeEventHandlers(onPress as any, context.onOpenToggle)}
+          />
+        )}
+
         <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
           {content}
         </StackZIndexContext>

@@ -1,30 +1,23 @@
+import generate from '@babel/generator'
+import type { NodePath } from '@babel/traverse'
+import * as t from '@babel/types'
+import { mergeProps, StyleObjectIdentifier, StyleObjectRules } from '@tamagui/web'
 import * as path from 'node:path'
 import * as util from 'node:util'
-
-import generate from '@babel/generator'
-import * as t from '@babel/types'
-import * as helpers from '@tamagui/helpers'
-import type { ViewStyle } from 'react-native'
-
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
-import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'
+import type { StyleObject, TamaguiOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
-import { buildClassName } from './buildClassName'
 import type { Extractor } from './createExtractor'
 import { createLogger } from './createLogger'
-import { ensureImportingConcat } from './ensureImportingConcat'
-import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
-import { hoistClassNames } from './hoistClassNames'
-import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
+import { normalizeTernaries } from './normalizeTernaries'
+import {
+  forwardFontFamilyName,
+  getFontFamilyNameFromProps,
+} from './propsToFontFamilyCache'
 import { timer } from './timer'
-
-const mergeStyleGroups = {
-  shadowOpacity: true,
-  shadowRadius: true,
-  shadowColor: true,
-  shadowOffset: true,
-}
+import { BailOptimizationError } from './errors'
+import { concatClassName } from './concatClassName'
 
 export type ExtractedResponse = {
   js: string | Buffer
@@ -42,6 +35,12 @@ export type ExtractToClassNamesProps = {
   shouldPrintDebug: boolean | 'verbose'
 }
 
+// we only expand into ternaries or plain attr, all style is turned into a always-true ternary
+// this lets us more easily combine everything easily
+// all ternaries in this array ONLY have consequent, they are normalized
+const remove = () => {} // we dont remove after this step
+const spaceString = t.stringLiteral(' ')
+
 export async function extractToClassNames({
   extractor,
   source,
@@ -50,7 +49,7 @@ export async function extractToClassNames({
   shouldPrintDebug,
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
-  const { getCSSStylesAtomic } = requireTamaguiCore('web')
+  const { getCSSStylesAtomic, createMediaStyle } = requireTamaguiCore('web')
 
   if (sourcePath.includes('node_modules')) {
     return null
@@ -93,9 +92,7 @@ export async function extractToClassNames({
   tm.mark(`babel-parse`, shouldPrintDebug === 'verbose')
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
-  const existingHoists: { [key: string]: t.Identifier } = {}
-
-  let hasFlattened = false
+  const tamaguiConfig = extractor.getTamagui()!
 
   const res = await extractor.parse(ast, {
     shouldPrintDebug,
@@ -103,7 +100,7 @@ export async function extractToClassNames({
     platform: 'web',
     sourcePath,
     extractStyledDefinitions: true,
-    onStyleRule(identifier, rules) {
+    onStyledDefinitionRule(identifier, rules) {
       const css = rules.join(';')
       if (shouldPrintDebug) {
         console.info(`adding styled() rule: .${identifier} ${css}`)
@@ -111,7 +108,6 @@ export async function extractToClassNames({
       cssMap.set(`.${identifier}`, { css, commentTexts: [] })
     },
     getFlattenedNode: ({ tag }) => {
-      hasFlattened = true
       return tag
     },
     onExtractTag: ({
@@ -123,275 +119,43 @@ export async function extractToClassNames({
       originalNodeName,
       filePath,
       lineNumbers,
-      programPath,
-      isFlattened,
       staticConfig,
     }) => {
       // bail out of views that don't accept className (falls back to runtime + style={})
       if (staticConfig.acceptsClassName === false) {
-        if (shouldPrintDebug) {
-          console.info(`bail, acceptsClassName is false`)
-        }
-        return
+        throw new BailOptimizationError()
       }
 
-      // reset hasFlattened
-      const didFlattenThisTag = hasFlattened
-      hasFlattened = false
+      // re-worked how we do this
+      // merging ternaries on top of base styles is not simple, because we need to ensure the final
+      // className has no duplicate style props and selector order is preserved
+      // before we tried to be smart and build a big binary expression
+      // instead, what we'll do now is pre-calculate the entire className for every possible path
+      // for super complex components that means we *will* output a lot of bigger classNames
+      // but its so much simpler than trying to implement a multi-stage solver here
+      // and in the end its just strings that gzip very well
+      // its also much easier to intuit/debug for end users and ourselves
 
-      let finalClassNames: ClassNameObject[] = []
-      const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
-      let finalStyles: StyleObject[] = []
+      // example:
+      //    a ? 'a' : 'b'
+      //    b ? 'c' : 'd'
+      // we want:
+      //    a && b ? 'a c' : ''
+      //    !a && b ? 'b c' : ''
+      //    a && !b ? 'a d' : ''
+      //    !a && !b ? 'b d' : ''
 
-      let viewStyles = {}
-      for (const attr of attrs) {
-        if (attr.type === 'style') {
-          viewStyles = {
-            ...viewStyles,
-            ...attr.value,
-          }
-        }
-      }
+      // we also simplified the compiler to only handle views that can be fully flattened
+      // this means we don't need to account for strange in-between spreads, so we can merge things
+      // fairly simply. first, we just merge forward all the non-ternary styles into ternaries.
 
-      const ensureNeededPrevStyle = (style: ViewStyle) => {
-        // ensure all group keys are merged
-        const keys = Object.keys(style)
-        if (!keys.some((key) => mergeStyleGroups[key])) {
-          return style
-        }
-        for (const k in mergeStyleGroups) {
-          if (k in viewStyles) {
-            style[k] = style[k] ?? viewStyles[k]
-          }
-        }
-        return style
-      }
+      // save for the end
+      const finalAttrs: t.JSXAttribute[] = []
 
-      const addStyles = (style: ViewStyle | null): StyleObject[] => {
-        if (!style) return []
-        const styleWithPrev = ensureNeededPrevStyle(style)
-        const res = getCSSStylesAtomic(styleWithPrev as any)
-        if (res.length) {
-          finalStyles = [...finalStyles, ...res]
-        }
-        return res
-      }
-
-      // 1 to start above any :hover styles
-      let lastMediaImportance = 1
-      for (const attr of attrs) {
-        switch (attr.type) {
-          case 'style': {
-            if (!isFlattened) {
-              const styles = getCSSStylesAtomic(attr.value as any)
-
-              finalStyles = [...finalStyles, ...styles]
-
-              for (const style of styles) {
-                //  leave them  as attributes
-                const prop = style[helpers.StyleObjectPseudo]
-                  ? `${style[helpers.StyleObjectProperty]}-${
-                      style[helpers.StyleObjectPseudo]
-                    }`
-                  : style[helpers.StyleObjectProperty]
-                finalAttrs.push(
-                  t.jsxAttribute(
-                    t.jsxIdentifier(prop),
-                    t.stringLiteral(style[helpers.StyleObjectIdentifier])
-                  )
-                )
-              }
-            } else {
-              const styles = addStyles(attr.value)
-              const newFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
-              const newClassNames = helpers.concatClassName(
-                styles.map((x) => x[helpers.StyleObjectIdentifier]).join(' ') +
-                  newFontFamily
-              )
-              const existing = finalClassNames.find(
-                (x) => x.type == 'StringLiteral'
-              ) as t.StringLiteral | null
-
-              if (existing) {
-                let previous = existing.value
-                // replace existing font_ with new one
-                if (newFontFamily) {
-                  if (shouldPrintDebug) {
-                    console.info(` newFontFamily: ${newFontFamily}`)
-                  }
-                  previous = previous.replace(/font_[a-z]+/i, '')
-                }
-                existing.value = `${previous} ${newClassNames}`
-              } else {
-                finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
-              }
-            }
-
-            break
-          }
-          case 'attr': {
-            const val = attr.value
-            if (t.isJSXSpreadAttribute(val)) {
-              if (isSimpleSpread(val)) {
-                finalClassNames.push(
-                  t.logicalExpression(
-                    '&&',
-                    val.argument,
-                    t.memberExpression(val.argument, t.identifier('className'))
-                  )
-                )
-              }
-            } else if (val.name.name === 'className') {
-              const value = val.value
-              if (value) {
-                try {
-                  const evaluatedValue = attemptEval(value)
-                  finalClassNames.push(t.stringLiteral(evaluatedValue))
-                } catch (e) {
-                  finalClassNames.push(value['expression'])
-                }
-              }
-              continue
-            }
-            finalAttrs.push(val)
-            break
-          }
-          case 'ternary': {
-            const mediaExtraction = extractMediaStyle(
-              parserProps,
-              attr.value,
-              jsxPath,
-              extractor.getTamagui()!,
-              sourcePath || '',
-              lastMediaImportance,
-              shouldPrintDebug
-            )
-            if (shouldPrintDebug) {
-              if (mediaExtraction) {
-                console.info(
-                  'ternary (mediaStyles)',
-                  mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
-                  mediaExtraction.mediaStyles
-                    .map((x) => x[helpers.StyleObjectIdentifier])
-                    .join('.')
-                )
-              }
-            }
-            if (!mediaExtraction) {
-              if (shouldPrintDebug) {
-                if (mediaExtraction) {
-                  console.info('add ternary')
-                }
-              }
-              addTernaryStyle(
-                attr.value,
-                addStyles(attr.value.consequent),
-                addStyles(attr.value.alternate)
-              )
-              continue
-            }
-            lastMediaImportance++
-            if (mediaExtraction.mediaStyles) {
-              finalStyles = [...finalStyles, ...mediaExtraction.mediaStyles]
-            }
-            if (mediaExtraction.ternaryWithoutMedia) {
-              addTernaryStyle(
-                mediaExtraction.ternaryWithoutMedia,
-                mediaExtraction.mediaStyles,
-                []
-              )
-            } else {
-              finalClassNames = [
-                ...finalClassNames,
-                ...mediaExtraction.mediaStyles.map((x) =>
-                  t.stringLiteral(x[helpers.StyleObjectIdentifier])
-                ),
-              ]
-            }
-            break
-          }
-        }
-      }
-
-      function addTernaryStyle(ternary: Ternary, a: StyleObject[], b: StyleObject[]) {
-        const cCN = a.map((x) => x[helpers.StyleObjectIdentifier]).join(' ')
-        const aCN = b.map((x) => x[helpers.StyleObjectIdentifier]).join(' ')
-
-        if (a.length && b.length) {
-          finalClassNames.push(
-            t.conditionalExpression(
-              ternary.test,
-              t.stringLiteral(cCN),
-              t.stringLiteral(aCN)
-            )
-          )
-        } else {
-          finalClassNames.push(
-            t.conditionalExpression(
-              ternary.test,
-              t.stringLiteral(' ' + cCN),
-              t.stringLiteral(' ' + aCN)
-            )
-          )
-        }
-      }
-
-      if (shouldPrintDebug === 'verbose') {
-        console.info('  finalClassNames AST\n', JSON.stringify(finalClassNames, null, 2))
-      }
-
-      node.attributes = finalAttrs
-
-      if (finalClassNames.length) {
-        const extraClassNames = (() => {
-          let value = ''
-          if (!isFlattened) {
-            return value
-          }
-
-          // helper to see how many get flattened
-          if (process.env.TAMAGUI_DEBUG_OPTIMIZATIONS) {
-            value += `is_tamagui_flattened`
-          }
-
-          // add is_Component className
-          if (staticConfig.componentName) {
-            value += ` is_${staticConfig.componentName}`
-          }
-
-          return value
-        })()
-
-        // inserts the _cn variable and uses it for className
-        const names = buildClassName(finalClassNames, extraClassNames)
-
-        const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
-        let expr = nameExpr
-
-        // if has some spreads, use concat helper
-        if (nameExpr && !t.isIdentifier(nameExpr)) {
-          if (!didFlattenThisTag) {
-            // not flat
-          } else {
-            ensureImportingConcat(programPath)
-            const simpleSpreads = attrs.filter((x) => {
-              return (
-                x.type === 'attr' &&
-                t.isJSXSpreadAttribute(x.value) &&
-                isSimpleSpread(x.value)
-              )
-            })
-            expr = t.callExpression(t.identifier('concatClassName'), [
-              expr,
-              ...simpleSpreads.map((val) => val.value['argument']),
-            ])
-          }
-        }
-
-        node.attributes.push(
-          t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(expr))
-        )
-      }
+      let mergeForwardBaseStyle: Object | null = null
+      let attrClassName: t.Expression | null = null
+      let baseFontFamily = ''
+      let mediaStylesSeen = 1
 
       const comment = util.format(
         '/* %s:%s (%s) */',
@@ -400,23 +164,323 @@ export async function extractToClassNames({
         originalNodeName
       )
 
-      for (const styleObject of finalStyles) {
-        const identifier = styleObject[helpers.StyleObjectIdentifier]
-        const rules = styleObject[helpers.StyleObjectRules]
-        const className = `.${identifier}`
-        if (cssMap.has(className)) {
-          if (comment) {
-            const val = cssMap.get(className)!
-            val.commentTexts.push(comment)
-            cssMap.set(className, val)
-          }
+      function addStyle(style: StyleObject) {
+        const identifier = style[StyleObjectIdentifier]
+        const rules = style[StyleObjectRules]
+        const selector = `.${identifier}`
+        if (cssMap.has(selector)) {
+          const val = cssMap.get(selector)!
+          val.commentTexts.push(comment)
         } else if (rules.length) {
-          cssMap.set(className, {
+          cssMap.set(selector, {
             css: rules.join('\n'),
             commentTexts: [comment],
           })
         }
+        return identifier
       }
+
+      function addStyles(style: Object) {
+        const cssStyles = getCSSStylesAtomic(style as any)
+        const classNames: string[] = []
+
+        for (const style of cssStyles) {
+          const mediaName = style[0].slice(1)
+          if (tamaguiConfig.media[mediaName]) {
+            const mediaStyle = createMediaStyle(
+              style,
+              mediaName,
+              extractor.getTamagui()!.media,
+              true,
+              false,
+              mediaStylesSeen
+            )
+            const identifier = addStyle(mediaStyle)
+            classNames.push(identifier)
+            continue
+          }
+
+          const identifier = addStyle(style)
+          classNames.push(identifier)
+        }
+
+        return classNames
+      }
+
+      const onlyTernaries: Ternary[] = attrs.flatMap((attr) => {
+        if (attr.type === 'attr') {
+          const value = attr.value
+
+          if (t.isJSXSpreadAttribute(value)) {
+            // we only handle flattened stuff now so skip this
+            console.error(`Should never happen`)
+            return []
+          }
+
+          if (value.name.name === 'className') {
+            let inner: any = value.value
+            if (t.isJSXExpressionContainer(inner)) {
+              inner = inner.expression
+            }
+            try {
+              const evaluatedValue = inner ? attemptEval(inner) : null
+              if (typeof evaluatedValue === 'string') {
+                attrClassName = t.stringLiteral(evaluatedValue)
+              }
+            } catch (e) {
+              if (inner) {
+                attrClassName ||= inner
+              }
+            }
+            return []
+          }
+
+          finalAttrs.push(value)
+          return []
+        }
+
+        if (attr.type === 'style') {
+          mergeForwardBaseStyle = mergeProps(mergeForwardBaseStyle || {}, attr.value)
+          baseFontFamily = getFontFamilyNameFromProps(attr.value) || ''
+          return []
+        }
+
+        let ternary = attr.value
+
+        if (ternary.inlineMediaQuery) {
+          const mediaExtraction = extractMediaStyle(
+            parserProps,
+            attr.value,
+            jsxPath,
+            extractor.getTamagui()!,
+            sourcePath || '',
+            mediaStylesSeen++,
+            shouldPrintDebug
+          )
+
+          if (mediaExtraction) {
+            if (mediaExtraction.mediaStyles) {
+              mergeForwardBaseStyle = mergeProps(mergeForwardBaseStyle || {}, {
+                [`$${ternary.inlineMediaQuery}`]: attr.value.consequent!,
+              })
+            }
+            if (mediaExtraction.ternaryWithoutMedia) {
+              ternary = mediaExtraction.ternaryWithoutMedia
+            } else {
+              return []
+            }
+          }
+        }
+
+        let mergedAlternate
+        let mergedConsequent
+
+        if (ternary.alternate && Object.keys(ternary.alternate).length) {
+          mergedAlternate = mergeProps(
+            mergeForwardBaseStyle || {},
+            ternary.alternate || {}
+          )
+          forwardFontFamilyName(ternary.alternate, mergedAlternate, baseFontFamily)
+        }
+
+        if (ternary.consequent && Object.keys(ternary.consequent).length) {
+          mergedConsequent = mergeProps(
+            mergeForwardBaseStyle || {},
+            ternary.consequent || {}
+          )
+          forwardFontFamilyName(ternary.consequent, mergedConsequent, baseFontFamily)
+        }
+
+        // merge the base style forward into both sides
+        return {
+          ...ternary,
+          alternate: mergedAlternate,
+          consequent: mergedConsequent,
+        }
+      })
+
+      const hasTernaries = Boolean(onlyTernaries.length)
+
+      const baseClassNames = mergeForwardBaseStyle
+        ? addStyles(mergeForwardBaseStyle)
+        : null
+
+      let baseClassNameStr = !baseClassNames ? '' : baseClassNames.join(' ')
+
+      if (!hasTernaries && baseFontFamily) {
+        baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
+      }
+
+      let base = staticConfig.componentName
+        ? t.stringLiteral(
+            `is_${staticConfig.componentName}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
+          )
+        : t.stringLiteral(baseClassNameStr || '')
+
+      attrClassName = attrClassName as t.Expression | null // actual typescript bug, flatMap doesn't update from never
+
+      const baseClassNameExpression: t.Expression = (() => {
+        if (attrClassName) {
+          if (t.isStringLiteral(attrClassName)) {
+            return t.stringLiteral(
+              base.value ? `${base.value} ${attrClassName.value}` : attrClassName.value
+            )
+          } else {
+            // space after to ensure its a string and its spaced
+            return t.binaryExpression(
+              '+',
+              t.binaryExpression('+', attrClassName, spaceString),
+              base
+            )
+          }
+        }
+
+        return base
+      })()
+
+      const expandedTernaries: Ternary[] = []
+
+      if (onlyTernaries.length) {
+        // normalize tests to reduce duplicates
+        const normalizedTernaries = normalizeTernaries(onlyTernaries)
+
+        for (const ternary of normalizedTernaries) {
+          if (!expandedTernaries.length) {
+            expandTernary(ternary)
+            continue
+          }
+          for (const prev of [...expandedTernaries]) {
+            expandTernary(ternary, prev)
+          }
+        }
+      }
+
+      function expandTernary(ternary: Ternary, prev?: Ternary) {
+        // need to diverge into two (or four if alternate)
+        if (ternary.consequent && Object.keys(ternary.consequent).length) {
+          const fontFamily = getFontFamilyNameFromProps(ternary.consequent)
+
+          expandedTernaries.push({
+            fontFamily,
+            // prevTest && test: merge consequent
+            test: prev
+              ? t.logicalExpression('&&', prev.test, ternary.test)
+              : ternary.test,
+            consequent: prev
+              ? mergeProps(prev.consequent!, ternary.consequent)
+              : ternary.consequent,
+            remove,
+            alternate: null,
+          })
+
+          if (prev) {
+            expandedTernaries.push({
+              fontFamily,
+              // !prevTest && test: just consequent
+              test: t.logicalExpression(
+                '&&',
+                t.unaryExpression('!', prev.test),
+                ternary.test
+              ),
+              consequent: ternary.consequent,
+              alternate: null,
+              remove,
+            })
+          }
+        }
+
+        if (ternary.alternate && Object.keys(ternary.alternate).length) {
+          const fontFamily = getFontFamilyNameFromProps(ternary.alternate)
+          const negated = t.unaryExpression('!', ternary.test)
+          expandedTernaries.push({
+            fontFamily,
+            // prevTest && !test: merge alternate
+            test: prev ? t.logicalExpression('&&', prev.test, negated) : negated,
+            consequent: prev
+              ? mergeProps(prev.alternate!, ternary.alternate)
+              : ternary.alternate,
+            remove,
+            alternate: null,
+          })
+
+          if (prev) {
+            expandedTernaries.push({
+              fontFamily,
+              test: t.logicalExpression(
+                '&&',
+                t.unaryExpression('!', prev.test),
+                ternary.test
+              ),
+              consequent: ternary.alternate,
+              remove,
+              alternate: null,
+            })
+          }
+        }
+      }
+
+      let ternaryClassNameExpr: t.Expression | null = null
+
+      // next: create all CSS, build className strings and hoist, and create final node with props
+      if (hasTernaries) {
+        for (const ternary of expandedTernaries) {
+          if (!ternary.consequent) continue
+          const classNames = addStyles(ternary.consequent)
+          if (ternary.fontFamily) {
+            classNames.unshift(`font_${ternary.fontFamily}`)
+          }
+          const baseString = t.isStringLiteral(baseClassNameExpression)
+            ? baseClassNameExpression.value
+            : ''
+
+          const fullClassNameWithDups =
+            (baseString ? `${baseString} ` : '') + classNames.join(' ')
+
+          // we concat here as the base could be conditionally overriden by our classNames
+          const fullClassName = concatClassName(fullClassNameWithDups)
+
+          const classNameLiteral = t.stringLiteral(fullClassName)
+
+          if (!ternaryClassNameExpr) {
+            ternaryClassNameExpr = t.conditionalExpression(
+              ternary.test,
+              classNameLiteral,
+              baseClassNameExpression
+            )
+          } else {
+            ternaryClassNameExpr = t.conditionalExpression(
+              ternary.test,
+              classNameLiteral,
+              ternaryClassNameExpr
+            )
+          }
+        }
+      }
+
+      let finalExpression: t.Expression | null =
+        ternaryClassNameExpr || baseClassNameExpression || null
+
+      if (shouldPrintDebug) {
+        console.info('attrs', JSON.stringify(attrs, null, 2))
+        console.info('expandedTernaries', JSON.stringify(expandedTernaries, null, 2))
+        console.info('finalExpression', JSON.stringify(finalExpression, null, 2))
+        console.info({ hasTernaries, baseClassNameExpression })
+      }
+
+      if (finalExpression) {
+        // hoist to global variables
+        finalExpression = hoistClassNames(jsxPath, finalExpression)
+
+        // console.log('finalExpression', finalExpression)
+
+        const classNameProp = t.jsxAttribute(
+          t.jsxIdentifier('className'),
+          t.jsxExpressionContainer(finalExpression!)
+        )
+        finalAttrs.unshift(classNameProp)
+      }
+
+      node.attributes = finalAttrs
     },
   })
 
@@ -465,4 +529,57 @@ export async function extractToClassNames({
     js: result.code,
     map: result.map,
   }
+}
+
+function hoistClassNames(path: NodePath<t.JSXElement>, expr: t.Expression) {
+  if (t.isStringLiteral(expr)) {
+    return hoistClassName(path, expr.value)
+  }
+
+  if (t.isLogicalExpression(expr)) {
+    const left = t.isStringLiteral(expr.left)
+      ? hoistClassName(path, expr.left.value)
+      : expr.left
+    const right = t.isStringLiteral(expr.right)
+      ? hoistClassName(path, expr.right.value)
+      : hoistClassNames(path, expr.right)
+    return t.logicalExpression(expr.operator, left, right)
+  }
+
+  if (t.isConditionalExpression(expr)) {
+    const cons = t.isStringLiteral(expr.consequent)
+      ? hoistClassName(path, expr.consequent.value)
+      : hoistClassNames(path, expr.consequent)
+
+    const alt = t.isStringLiteral(expr.alternate)
+      ? hoistClassName(path, expr.alternate.value)
+      : hoistClassNames(path, expr.alternate)
+
+    return t.conditionalExpression(expr.test, cons, alt)
+  }
+
+  return expr
+}
+
+function hoistClassName(path: NodePath<t.JSXElement>, str: string) {
+  const uid = path.scope.generateUidIdentifier('cn')
+  const parent = path.findParent((path) => path.isProgram())
+  if (!parent) throw new Error(`no program?`)
+  const variable = t.variableDeclaration('const', [
+    t.variableDeclarator(uid, t.stringLiteral(cleanupClassName(str))),
+  ])
+  // @ts-ignore
+  parent.unshiftContainer('body', variable)
+  return uid
+}
+
+function cleanupClassName(inStr: string) {
+  const out = new Set<string>()
+  for (const part of inStr.split(' ')) {
+    if (part === ' ') continue
+    if (part === 'font_') continue
+    out.add(part)
+  }
+  // always a space after for joining
+  return [...out].join(' ') + ' '
 }

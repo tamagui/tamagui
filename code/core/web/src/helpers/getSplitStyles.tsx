@@ -837,10 +837,12 @@ export const getSplitStyles: StyleSplitter = (
               false,
               priority
             )
+
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               log(`📺 media style:`, out)
             }
-            // this is imperfect it should be fixed fruther down, we mess up property when dealing with
+
+            // this is imperfect it should be fixed further down, we mess up property when dealing with
             // media-sub-style, like $sm={{ $platform-web: {} }}
             // property is just $platform-web, it should br $platform-web-bg, so we add extra info from style
             // but that info includes the value too

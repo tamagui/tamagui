@@ -1,4 +1,4 @@
-import { Button, Dialog, Input, Label, XStack, YStack } from 'tamagui'
+import { Button, Dialog, Input, Label, XStack, YStack } from '@tamagui/ui'
 
 export function DialogFocusScopeCase() {
   return (
