@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "1.132.21",
+  "version": "1.132.22",
   "sideEffects": [
     "*.css"
   ],
