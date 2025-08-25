@@ -31,6 +31,10 @@
       "import": "./dist/esm/codegenNativeComponent.mjs",
       "require": "./dist/cjs/codegenNativeComponent.cjs"
     },
+    "./Libraries/Utilities/codegenNativeCommand": {
+      "import": "./dist/esm/codegenNativeCommand.mjs",
+      "require": "./dist/cjs/codegenNativeCommand.cjs"
+    },
     "./dist/exports/StyleSheet/compiler/createReactDOMStyle": {
       "import": "./dist/esm/createReactDOMStyle.mjs",
       "require": "./dist/cjs/createReactDOMStyle.cjs"

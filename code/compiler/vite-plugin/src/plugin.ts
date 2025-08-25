@@ -184,16 +184,16 @@ export function tamaguiPlugin({
                   replacement: rnwl,
                 },
                 {
-                  find: /^react-native\/(.*)$/,
-                  replacement: rnwl,
+                  find: /^react-native\/(.+)$/,
+                  replacement: `${rnwl}/$1`,
                 },
                 {
                   find: /^react-native-web$/,
                   replacement: rnwl,
                 },
                 {
-                  find: /^react-native-web\/(.*)$/,
-                  replacement: rnwl,
+                  find: /^react-native-web\/(.+)$/,
+                  replacement: `${rnwl}/$1`,
                 },
               ],
             },
