@@ -39,9 +39,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { Alert } from 'react-native'
 
-const AlertScopePrefix = 'Alert__'
-
-const getAlertDialogScope = (scope?: string) => AlertScopePrefix + scope
+const getAlertDialogScope = (scope?: string) =>  scope
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialog
