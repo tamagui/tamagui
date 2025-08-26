@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-button-sized",
-  "version": "1.132.22",
+  "version": "1.132.23",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
