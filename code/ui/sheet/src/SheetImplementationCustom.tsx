@@ -467,6 +467,24 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }, [moveOnKeyboardChange, positions, position, isHidden])
 
+    // Animate the sheet up from the bottom
+    React.useEffect(() => {
+      if (open) {
+        // Calculate the correct target position for the sheet
+        // TODO this fails if the user is on web and opens the Device emulator in Chrome dev tools because sheet content will be empty. Works on native and regular web.
+        const to = screenSize - frameSize
+
+        scrollBridge.setParentDragging(true);
+        animatedNumber.setValue(to, {
+          type: "spring"
+        });
+      }
+    }, [
+      frameSize,
+      open,
+      screenSize,
+    ])
+
     // we need to set this *after* fully closed to 0, to avoid it overlapping
     // the page when resizing quickly on web for example
     const [opacity, setOpacity] = React.useState(open ? 1 : 0)
@@ -478,7 +496,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // need to wait for animation complete, for now lets just do it naively
         const tm = setTimeout(() => {
           setOpacity(0)
-        }, 400)
+        }, 0) // Setting this to > 0 causes a visual glitch where a rectangle flies down after the sheet is already visibly offscreen
         return () => {
           clearTimeout(tm)
         }
