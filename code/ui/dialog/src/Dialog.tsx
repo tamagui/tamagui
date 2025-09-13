@@ -237,25 +237,25 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
       </StackZIndexContext>
     )
 
-    if (isFullyHidden && !isAdapted) {
-      return null
-    }
-
-    const framedContents = (
-      <DialogPortalFrame
-        ref={ref}
-        {...(isWeb &&
-          isMountedOrOpen && {
-            'aria-modal': true,
-          })}
-        // passThrough={isAdapted}
-        pointerEvents={isMountedOrOpen ? 'auto' : 'none'}
-        {...frameProps}
-        className={`_no_backdrop ` + (frameProps.className || '')}
-      >
-        {contents}
-      </DialogPortalFrame>
-    )
+    const framedContents =
+      // NOTE: we remove the inner frame, but not the portal itself
+      // saw a bug when we removed and re-added portals that caused stale inner contents of the portal
+      // seems like a React bug itself but leaving this for now as it fixes
+      isFullyHidden && !isAdapted ? null : (
+        <DialogPortalFrame
+          ref={ref}
+          {...(isWeb &&
+            isMountedOrOpen && {
+              'aria-modal': true,
+            })}
+          // passThrough={isAdapted}
+          pointerEvents={isMountedOrOpen ? 'auto' : 'none'}
+          {...frameProps}
+          className={`_no_backdrop ` + (frameProps.className || '')}
+        >
+          {contents}
+        </DialogPortalFrame>
+      )
 
     if (isWeb) {
       return (
