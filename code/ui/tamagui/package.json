@@ -142,7 +142,7 @@
     "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.79.2",
-    "react-native-web": "^0.20.0"
+    "react-native-web": "^0.21.0"
   },
   "repository": {
     "type": "git",

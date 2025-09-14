@@ -6587,7 +6587,7 @@ __metadata:
     react-native-reanimated: "npm:^3.18.0"
     react-native-safe-area-context: "npm:5.4.0"
     react-native-svg: "npm:15.11.2"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     swr: "npm:^2.2.5"
     tamagui: "workspace:*"
     tilg: "npm:0.1.1"
@@ -7592,7 +7592,7 @@ __metadata:
     react-native-safe-area-context: "npm:5.4.0"
     react-native-screens: "npm:~4.10.0"
     react-native-svg: "npm:15.11.2"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     solito: "npm:^4.3.0"
     tamagui: "workspace:*"
     tilg: "npm:0.1.1"
@@ -8331,7 +8331,7 @@ __metadata:
     esbuild-loader: "npm:^4.2.2"
     null-loader: "npm:^4.0.1"
     react: "npm:*"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     react-test-renderer: "npm:^19.0.0"
     style-loader: "npm:^3.3.3"
     typescript: "npm:^5.8.2"
@@ -8392,7 +8392,7 @@ __metadata:
     null-loader: "npm:^4.0.1"
     react: "npm:*"
     react-native: "npm:^0.79.2"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     typescript: "npm:^5.8.2"
   peerDependencies:
     react: "*"
@@ -8907,7 +8907,7 @@ __metadata:
     esm-resolve: "npm:^1.0.8"
     fs-extra: "npm:^11.2.0"
     outdent: "npm:^0.8.0"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     vite: "npm:^7.0.2"
   peerDependencies:
     vite: "*"
@@ -17963,7 +17963,7 @@ __metadata:
     "@vitejs/plugin-react-swc": "npm:^3.7.2"
     async-retry: "npm:1.3.1"
     react-dom: "npm:*"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     tamagui: "workspace:*"
     vite: "npm:^7.0.2"
     wait-port: "npm:^0.3.0"
@@ -21457,7 +21457,7 @@ __metadata:
     react: "npm:*"
     react-dom: "npm:*"
     react-native: "npm:^0.79.2"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     tamagui: "workspace:*"
   languageName: unknown
   linkType: soft
@@ -23828,9 +23828,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:^0.20.0":
-  version: 0.20.0
-  resolution: "react-native-web@npm:0.20.0"
+"react-native-web@npm:^0.21.0":
+  version: 0.21.1
+  resolution: "react-native-web@npm:0.21.1"
   dependencies:
     "@babel/runtime": "npm:^7.18.6"
     "@react-native/normalize-colors": "npm:^0.74.1"
@@ -23843,7 +23843,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
-  checksum: 10/2a2e84ca647b1b1422941f5d8e0a4f513ad61a34c5e47fb6888fc8ca3aca5cc105bc0c6207a3db4727a8333dfd9c7b27eb8d2acdab3bd4ca1abc6fe32459da92
+  checksum: 10/62cc21b514fd4abe3f9705bd9c835a7f6b910b41869f3c52d136e7ce758bbfa03f04e5df08ad430834faae236c575611430d69b4ca9cb87fb086c1a90392a784
   languageName: node
   linkType: hard
 
@@ -25026,7 +25026,7 @@ __metadata:
     react-native-safe-area-context: "npm:5.4.0"
     react-native-screens: "npm:~4.10.0"
     react-native-svg: "npm:15.11.2"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     tamagui: "workspace:*"
     vite: "npm:^7.0.2"
     wait-port: "npm:^0.3.0"
@@ -26720,7 +26720,7 @@ __metadata:
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-native: "npm:^0.79.2"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
   peerDependencies:
     react: "*"
     react-native: ^0.79.2

@@ -92,7 +92,7 @@
     "react-native-reanimated": "^3.18.0",
     "react-native-safe-area-context": "5.4.0",
     "react-native-svg": "15.11.2",
-    "react-native-web": "^0.20.0",
+    "react-native-web": "^0.21.0",
     "swr": "^2.2.5",
     "tamagui": "workspace:*",
     "zod": "^3.25.67"

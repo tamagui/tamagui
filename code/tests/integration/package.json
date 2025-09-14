@@ -19,7 +19,7 @@
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "react-native-web": "^0.20.0",
+    "react-native-web": "^0.21.0",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
