@@ -20,7 +20,7 @@
     "expo-linear-gradient": "^12.7.2",
     "react": "*",
     "react-dom": "*",
-    "react-native-web": "^0.20.0",
+    "react-native-web": "^0.21.0",
     "tamagui": "^1.132.23"
   },
   "devDependencies": {
