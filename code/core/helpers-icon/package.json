@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "1.132.23",
+  "version": "1.132.24",
   "sideEffects": false,
   "description": "Utilities for icon packages",
   "source": "src/index.ts",
