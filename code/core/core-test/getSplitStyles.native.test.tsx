@@ -1,4 +1,4 @@
-import { Stack, createTamagui, getSplitStyles, styled } from '@tamagui/core'
+import { Stack, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -8,8 +8,31 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test(`styled with variants`, () => {
+    const ViewVariants = styled(Text, {
+      color: 'blue',
+
+      variants: {
+        test: {
+          true: {
+            color: 'red',
+          },
+        },
+      },
+    })
+
+    const styles = getSplitStylesFor(
+      {
+        test: true,
+      },
+      ViewVariants
+    )
+
+    expect(styles.style).toEqual({ color: 'red' })
+  })
+
   test(`prop "accessibilityRequired" becomes "aria-required" and "required"`, () => {
-    const { style } = getSplitStylesStack({
+    const { style } = getSplitStylesFor({
       columnGap: 10,
       rowGap: 10,
     })
@@ -19,7 +42,7 @@ describe('getSplitStyles', () => {
   })
 
   test(`transform properties are correctly applied`, () => {
-    const { style } = getSplitStylesStack({
+    const { style } = getSplitStylesFor({
       scale: 1.5,
       rotate: '45deg',
       translateX: 20,
@@ -51,7 +74,7 @@ describe('getSplitStyles', () => {
   })
 
   test(`shorthand properties are expanded`, () => {
-    const result = getSplitStylesStack({
+    const result = getSplitStylesFor({
       margin: 10,
       padding: 20,
     })
@@ -64,7 +87,7 @@ describe('getSplitStyles', () => {
   })
 
   test(`border properties are correctly applied`, () => {
-    const result = getSplitStylesStack({
+    const result = getSplitStylesFor({
       borderWidth: 2,
       borderColor: 'red',
       borderStyle: 'solid',
@@ -79,7 +102,7 @@ describe('getSplitStyles', () => {
   })
 
   test(`shadow properties are correctly combined`, () => {
-    const result = getSplitStylesStack({
+    const result = getSplitStylesFor({
       shadowColor: 'black',
       shadowOffset: { width: 2, height: 2 },
       shadowOpacity: 0.5,
@@ -99,7 +122,7 @@ describe('getSplitStyles', () => {
   })
 
   test(`flex properties are correctly applied`, () => {
-    const { style } = getSplitStylesStack({
+    const { style } = getSplitStylesFor({
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
@@ -113,7 +136,7 @@ describe('getSplitStyles', () => {
   })
 
   test(`style prop gets merged correctly`, () => {
-    const { style } = getSplitStylesStack({
+    const { style } = getSplitStylesFor({
       backgroundColor: 'blue',
       style: {
         opacity: 0.8,
@@ -227,10 +250,10 @@ describe('getSplitStyles - pseudo prop merging', () => {
   })
 })
 
-function getSplitStylesStack(props: Record<string, any>, tag?: string) {
+function getSplitStylesFor(props: Record<string, any>, Component = Stack) {
   return getSplitStyles(
     props,
-    Stack.staticConfig,
+    Component.staticConfig,
     {} as any,
     '',
     {
@@ -248,7 +271,7 @@ function getSplitStylesStack(props: Record<string, any>, tag?: string) {
     undefined,
     undefined,
     undefined,
-    tag
+    undefined
   )!
 }
 

@@ -17,6 +17,26 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test(`styled with variants`, () => {
+    const ViewVariants = styled(Text, {
+      color: 'blue',
+
+      variants: {
+        test: {
+          true: {
+            color: 'red',
+          },
+        },
+      },
+    })
+
+    const styles = simplifiedGetSplitStyles(ViewVariants, {
+      test: true,
+    })
+
+    expect(styles.classNames).toEqual({ color: '_col-red' })
+  })
+
   test(`prop "accessibilityRequired" becomes "aria-required" and "required"`, () => {
     const { viewProps } = simplifiedGetSplitStyles(
       Stack,
@@ -108,74 +128,67 @@ describe('getSplitStyles', () => {
 
   test(`$theme-light and $theme-dark styles generate the correct CSS selectors`, () => {
     // Test light theme styles
-    const lightThemeStyles = simplifiedGetSplitStyles(
-      Stack,
-      {
-        '$theme-light': {
-          backgroundColor: 'white',
-          color: 'black',
-        },
-      }
-    )
-    
+    const lightThemeStyles = simplifiedGetSplitStyles(Stack, {
+      '$theme-light': {
+        backgroundColor: 'white',
+        color: 'black',
+      },
+    })
+
     // Check the entire structure for expected values
     const lightThemeString = JSON.stringify(lightThemeStyles.rulesToInsert)
     expect(lightThemeString).toContain('backgroundColor')
     expect(lightThemeString).toContain('white')
     expect(lightThemeString).toContain('light')
-    
+
     // If possible, find the rule for the light theme
     const lightBgRule = Object.values(lightThemeStyles.rulesToInsert).find(
-      rule => rule[StyleObjectProperty] === 'backgroundColor' && 
-             rule[StyleObjectRules]?.[0]?.includes('light')
+      (rule) =>
+        rule[StyleObjectProperty] === 'backgroundColor' &&
+        rule[StyleObjectRules]?.[0]?.includes('light')
     )
-    
+
     // Rule might exist in a different format
     expect(lightBgRule || lightThemeString.includes('white')).toBeTruthy()
-    
+
     // Test dark theme styles
-    const darkThemeStyles = simplifiedGetSplitStyles(
-      Stack,
-      {
-        '$theme-dark': {
-          backgroundColor: 'black',
-          color: 'white',
-        },
-      }
-    )
-    
+    const darkThemeStyles = simplifiedGetSplitStyles(Stack, {
+      '$theme-dark': {
+        backgroundColor: 'black',
+        color: 'white',
+      },
+    })
+
     // Check the entire structure for expected values
     const darkThemeString = JSON.stringify(darkThemeStyles.rulesToInsert)
     expect(darkThemeString).toContain('backgroundColor')
     expect(darkThemeString).toContain('black')
     expect(darkThemeString).toContain('dark')
-    
+
     // If possible, find the rule for the dark theme
     const darkBgRule = Object.values(darkThemeStyles.rulesToInsert).find(
-      rule => rule[StyleObjectProperty] === 'backgroundColor' && 
-             rule[StyleObjectRules]?.[0]?.includes('dark')
+      (rule) =>
+        rule[StyleObjectProperty] === 'backgroundColor' &&
+        rule[StyleObjectRules]?.[0]?.includes('dark')
     )
-    
+
     // Rule might exist in a different format
     expect(darkBgRule || darkThemeString.includes('black')).toBeTruthy()
   })
-  
+
   test(`$theme-light and $theme-dark styles are combined in the same component`, () => {
     // Test both light and dark theme styles in the same component
-    const combinedThemeStyles = simplifiedGetSplitStyles(
-      Stack,
-      {
-        '$theme-light': {
-          backgroundColor: 'white',
-          color: 'black',
-        },
-        '$theme-dark': {
-          backgroundColor: 'black',
-          color: 'white',
-        },
-      }
-    )
-    
+    const combinedThemeStyles = simplifiedGetSplitStyles(Stack, {
+      '$theme-light': {
+        backgroundColor: 'white',
+        color: 'black',
+      },
+      '$theme-dark': {
+        backgroundColor: 'black',
+        color: 'white',
+      },
+    })
+
     // Check the entire structure for expected values
     const combinedThemeString = JSON.stringify(combinedThemeStyles.rulesToInsert)
     expect(combinedThemeString).toContain('backgroundColor')
@@ -184,20 +197,16 @@ describe('getSplitStyles', () => {
     expect(combinedThemeString).toContain('light')
     expect(combinedThemeString).toContain('dark')
   })
-  
+
   test(`$theme conditional styles work with nested theme names`, () => {
     // Test more specific theme names like dark_blue
-    const nestedThemeStyles = simplifiedGetSplitStyles(
-      Stack,
-      {
-        '$theme-dark_blue': {
-          backgroundColor: 'darkblue',
-          color: 'lightblue',
-        },
-      }
-    )
-    
-    
+    const nestedThemeStyles = simplifiedGetSplitStyles(Stack, {
+      '$theme-dark_blue': {
+        backgroundColor: 'darkblue',
+        color: 'lightblue',
+      },
+    })
+
     // Check the entire structure for expected values
     const nestedThemeString = JSON.stringify(nestedThemeStyles.rulesToInsert)
     expect(nestedThemeString).toContain('backgroundColor')
@@ -419,31 +428,22 @@ describe('getSplitStyles - pseudo prop merging', () => {
   })
 
   test('inline pressStyle should override variant pressStyle', () => {
-    const { viewProps } = simplifiedGetSplitStyles(
-      StyledButton,
-      {
-        variant: 'prim',
-        pressStyle: { backgroundColor: 'red' },
-      }
-    )
+    const { viewProps } = simplifiedGetSplitStyles(StyledButton, {
+      variant: 'prim',
+      pressStyle: { backgroundColor: 'red' },
+    })
     expect(viewProps.className).toContain('_bg-0active-red')
   })
 
   test('variant pressStyle should be used if no inline pressStyle', () => {
-    const { viewProps } = simplifiedGetSplitStyles(
-      StyledButton,
-      {
-        variant: 'prim',
-      }
-    )
+    const { viewProps } = simplifiedGetSplitStyles(StyledButton, {
+      variant: 'prim',
+    })
     expect(viewProps.className).toContain('_bg-0active-blue')
   })
 
   test('default pressStyle should not generate a class if not used', () => {
-    const { viewProps } = simplifiedGetSplitStyles(
-      StyledButton,
-      {}
-    )
+    const { viewProps } = simplifiedGetSplitStyles(StyledButton, {})
     // No press state simulated, so no class is generated
     expect(viewProps.className).not.toContain('_bg-0active-green')
   })
