@@ -428,10 +428,17 @@ export const getTokenForKey = (
       }
       for (const cat in tokenCategories) {
         if (key in tokenCategories[cat]) {
-          const res = tokensParsed[cat][value]
+          const res = tokensParsed[cat]?.[value]
+
           if (res != null) {
             valOrVar = res
             hasSet = true
+          } else {
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(
+                `[tamagui] ⚠️ missing token ${key} in category ${cat} - ${value}`
+              )
+            }
           }
         }
       }
