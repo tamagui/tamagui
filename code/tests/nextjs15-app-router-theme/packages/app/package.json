@@ -1,5 +1,5 @@
 {
-  "version": "1.132.24",
+  "version": "1.132.25",
   "name": "app",
   "main": "index.ts",
   "private": true,
