@@ -19,19 +19,24 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type GenericProps = Record<string, any>
 
-export const mergeProps = (a: Object, b?: Object) => {
+export const mergeProps = (defaultProps: Object, props: Object) => {
   const out: GenericProps = {}
 
-  // objects keys are sorted by order of insertion, insert a first
+  // in general objects keys are sorted by order of insertion
+  // we merge "defaultProps" first as they should come first
+  // (so Object.keys(finalProps) will list [...defaultPropKeys] first)
+  // but we ignore any keys from props, and merge it after, that way
+  // final order is [...defaultPropKeys, ...propKeys]
 
   // ⚠️ keep in sync with mergeComponentProps logic
-  for (const key in a) {
-    mergeProp(out, a, b, key)
+
+  for (const key in defaultProps) {
+    if (key in props) continue
+    out[key] = defaultProps[key]
   }
-  if (b) {
-    for (const key in b) {
-      mergeProp(out, b, undefined, key)
-    }
+
+  for (const key in props) {
+    mergeProp(out, defaultProps, props, key)
   }
 
   return out
@@ -61,48 +66,46 @@ export const mergeComponentProps = (
   const out: GenericProps = {}
 
   // ⚠️ keep in sync with mergeProps logic
-  // this is the same logic as mergeProps but tracking overrides!
+  // same logic as mergeProps but tracking overrides!
 
   for (const key in defaultProps) {
-    mergeProp(out, defaultProps, props, key)
+    if (key in props) continue
+    out[key] = defaultProps[key]
   }
 
-  if (props) {
-    for (const key in props) {
-      if (mergeProp(out, props, undefined, key)) {
-        if (contextProps && key in contextProps) {
-          overriddenContext ||= {}
-          overriddenContext[key] = props[key]
-        }
-      }
-    }
-  }
-
+  // styled context props go after defaultProps but before props
   for (const key in contextProps) {
-    if (!(key in props)) {
-      mergeProp(out, contextProps, props, key)
+    if (key in props) continue
+    out[key] = contextProps[key]
+  }
+
+  for (const key in props) {
+    mergeProp(out, defaultProps, props, key)
+    if (contextProps && key in contextProps) {
+      overriddenContext ||= {}
+      overriddenContext[key] = props[key]
     }
   }
 
   return [out, overriddenContext] as const
 }
 
-function mergeProp(out: GenericProps, a: Object, b: Object | undefined, key: string) {
-  const val = a[key]
+function mergeProp(
+  out: Object,
+  defaultProps: Object | undefined | null,
+  props: Object,
+  key: string
+) {
+  let val = props[key]
 
-  // This ensures styled definition and runtime props are always merged
-  if (key in pseudoDescriptors || key[0] === '$') {
-    out[key] = {
-      ...out[key],
-      ...val,
-    }
-    return true
-  }
-
-  if (b && key in b) {
-    return false
+  // one special case - we merge tamagui style sub-objects
+  if (
+    defaultProps &&
+    key in defaultProps &&
+    (key in pseudoDescriptors || key[0] === '$')
+  ) {
+    val = { ...defaultProps[key], ...val }
   }
 
   out[key] = val
-  return true
 }

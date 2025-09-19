@@ -109,7 +109,7 @@ describe('mergeProps', () => {
     const result = mergeProps(styledDefinition, runtimeProps)
 
     // Should follow runtime props order: variant first, then pressStyle
-    expect(Object.keys(result)).toEqual(['variant', 'pressStyle', 'name', 'variants'])
+    expect(Object.keys(result)).toEqual(['name', 'variants', 'variant', 'pressStyle'])
     expect(result.variant).toBe('prim')
     // Runtime pressStyle should merge with styled pressStyle, overriding backgroundColor
     expect(result.pressStyle).toEqual({ backgroundColor: 'orange' })
@@ -148,7 +148,7 @@ describe('mergeProps', () => {
     const result = mergeProps(styledDefinition, runtimeProps)
 
     // Should follow runtime props order: pressStyle first, then variant
-    expect(Object.keys(result)).toEqual(['pressStyle', 'variant', 'name', 'variants'])
+    expect(Object.keys(result)).toEqual(['name', 'variants', 'pressStyle', 'variant'])
     expect(result.variant).toBe('prim')
     // Runtime pressStyle should merge with styled pressStyle, overriding backgroundColor
     expect(result.pressStyle).toEqual({ backgroundColor: 'orange' })
