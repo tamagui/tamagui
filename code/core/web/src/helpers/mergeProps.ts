@@ -2,6 +2,8 @@
  * Preserves prop ordering, so that the order most closely matches the last spread objects
  * Useful for having { ...defaultProps, ...props } that ensure props ordering is always kept
  *
+ * Merges sub-objects if they match tamagui pseudo descriptors or media keys
+ *
  *    Given:
  *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
  *    The final key order will be:

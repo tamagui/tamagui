@@ -29,6 +29,7 @@ import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
+  getMediaKey,
   mediaState as globalMediaState,
   isMediaKey,
   mediaKeyMatch,
@@ -500,7 +501,7 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleLikeKey = isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
-    let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
+    let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && getMediaKey(keyInit)
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     if (isMediaOrPseudo && keyInit.startsWith('$group-')) {

@@ -45,12 +45,18 @@ export const mediaKeys = new Set<string>() // with $ prefix
 
 const mediaKeyRegex = /\$(platform|theme|group)-/
 
-export const isMediaKey = (key: string): IsMediaType => {
+export const isMediaKey = (key: string): boolean => {
+  if (key[0] !== '$') return false
   if (mediaKeys.has(key)) return true
-  if (key[0] === '$') {
-    const match = key.match(mediaKeyRegex)
-    if (match) return match[1] as 'platform' | 'theme' | 'group'
-  }
+  if (mediaKeyRegex.test(key)) return true
+  return false
+}
+
+export const getMediaKey = (key: string): IsMediaType => {
+  if (key[0] !== '$') return false
+  if (mediaKeys.has(key)) return true
+  const match = key.match(mediaKeyRegex)
+  if (match) return match[1] as 'platform' | 'theme' | 'group'
   return false
 }
 
