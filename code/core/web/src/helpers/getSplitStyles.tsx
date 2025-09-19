@@ -617,7 +617,7 @@ export const getSplitStyles: StyleSplitter = (
 
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
       const isStyledContextProp =
-        styleProps.styledContextProps && key in styleProps.styledContextProps
+        styleProps.styledContext && key in styleProps.styledContext
 
       if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
         viewProps[key] = val

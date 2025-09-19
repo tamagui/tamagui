@@ -1,4 +1,5 @@
 - v2 - whitelist more web-only events like onKeyDown in types
+  - react 19 only (can move some stuff to conditional use())
 
 via chat
 

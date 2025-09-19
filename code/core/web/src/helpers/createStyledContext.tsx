@@ -1,6 +1,7 @@
 import type { Context, ProviderExoticComponent, ReactNode } from 'react'
 import React, { useContext } from 'react'
 
+import { mergeProps } from './mergeProps'
 import { objectIdentityKey } from './objectIdentityKey'
 
 // test types:
@@ -53,25 +54,27 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   const Provider = ({
     children,
     scope: scopeIn,
+    // performance: avoid creating objects
+    __disableMergeDefaultValues,
     ...values
   }: VariantProps & { children?: ReactNode; scope: string }) => {
     const scope = getNamespacedScope(scopeIn)
 
     const next = React.useMemo(() => {
-      return {
-        // this ! is a workaround for ts error
-        ...defaultValues!,
-        ...values,
+      if (__disableMergeDefaultValues) {
+        // we already merged and want to keep ordering
+        return values
       }
+      return mergeProps(values, defaultValues!)
     }, [objectIdentityKey(values)])
 
-    let Provider = OGProvider
+    let ScopedProvider = OGProvider
     if (scope) {
-      Provider = getOrCreateScopedContext(scope).Provider
+      ScopedProvider = getOrCreateScopedContext(scope).Provider
     }
     return (
       <LastScopeInNamespace.Provider value={scope}>
-        <Provider value={next}>{children}</Provider>
+        <ScopedProvider value={next as VariantProps}>{children}</ScopedProvider>
       </LastScopeInNamespace.Provider>
     )
   }

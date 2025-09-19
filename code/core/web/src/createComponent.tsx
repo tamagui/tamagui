@@ -17,10 +17,9 @@ import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
-import { getShorthandValue } from './helpers/getShorthandValue'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
-import { mergeProps } from './helpers/mergeProps'
+import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
@@ -271,40 +270,12 @@ export function createComponent<
 
     // set variants through context
     // order is after default props but before props
-    let styledContextProps: Object | undefined
-    let overriddenContextProps: Object | undefined
-    let contextValue: Object | null | undefined
     const { context, isReactNative } = staticConfig
 
-    if (context) {
-      contextValue = React.useContext(context)
-
-      if (contextValue) {
-        if (process.env.NODE_ENV === 'development' && propsIn?.['debug'] === 'verbose') {
-          log(` 👇 contextValue`, contextValue)
-        }
-
-        for (const key in context.props) {
-          const propVal = getShorthandValue(propsIn, key)
-
-          // if not set, use context
-          if (propVal === undefined) {
-            const val = contextValue?.[key]
-            if (val !== undefined) {
-              styledContextProps ||= {}
-              styledContextProps[key] = val
-            }
-          }
-
-          // update context if needed (including value from defaultProps)
-          const finalVal = propVal ?? defaultProps?.[key]
-          if (finalVal !== undefined) {
-            overriddenContextProps ||= {}
-            overriddenContextProps[key] = finalVal
-          }
-        }
-      }
-    }
+    const styledContextValue: GenericProps | undefined = context
+      ? React.useContext(context)
+      : undefined
+    let overriddenContextProps: GenericProps | null = null
 
     const debugProp = propsIn['debug'] as DebugProp
 
@@ -320,16 +291,21 @@ export function createComponent<
     }
     if (process.env.NODE_ENV === 'development' && time) time`non-tamagui time (ignore)`
 
-    // context overrides defaults but not props
-    const curDefaultProps = styledContextProps
-      ? { ...defaultProps, ...styledContextProps }
-      : defaultProps
-
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
     let props: StackProps | TextProps = propsIn
-    if (curDefaultProps) {
-      props = mergeProps(curDefaultProps, propsIn)
+
+    // merge both default props and styled context props - ensure order is preserved
+    if (styledContextValue || defaultProps) {
+      const [nextProps, overrides] = mergeComponentProps(
+        defaultProps,
+        styledContextValue,
+        propsIn
+      )
+      if (nextProps) {
+        props = nextProps as StackProps | TextProps
+      }
+      overriddenContextProps = overrides
     }
 
     const componentName = props.componentName || staticConfig.componentName
@@ -590,10 +566,10 @@ export function createComponent<
 
           console.groupCollapsed(`${childLog} [inspect props, state, context 👇]`)
           log('props in:', propsIn)
-          log('final props:', props)
+          log('final props:', props, Object.keys(props))
           log({ state, staticConfig, elementType, themeStateProps })
           log({
-            contextProps: styledContextProps,
+            context,
             overriddenContextProps,
             componentContext,
           })
@@ -632,7 +608,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
-      styledContextProps,
+      styledContext: context,
     } as const
 
     const themeName = themeState?.name || ''
@@ -1429,8 +1405,16 @@ export function createComponent<
 
     if (overriddenContextProps) {
       const Provider = staticConfig.context!.Provider!
+
+      // make sure we re-order styled context keys based on how we pass them here:
+      for (const key in styledContextValue) {
+        if (!(key in overriddenContextProps)) {
+          overriddenContextProps[key] = styledContextValue[key]
+        }
+      }
+
       content = (
-        <Provider {...contextValue} {...overriddenContextProps}>
+        <Provider __disableMergeDefaultValues {...overriddenContextProps}>
           {content}
         </Provider>
       )
