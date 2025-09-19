@@ -43,7 +43,6 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
-  IsMediaType,
   PseudoStyles,
   RulesToInsert,
   SpaceTokens,
@@ -501,7 +500,7 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleLikeKey = isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
-    let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && getMediaKey(keyInit)
+    let isMedia = !isStyleLikeKey && !isPseudo ? getMediaKey(keyInit) : false
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     if (isMediaOrPseudo && keyInit.startsWith('$group-')) {

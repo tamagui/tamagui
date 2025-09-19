@@ -21,8 +21,9 @@ export const ChatPage = () => {
         </Paragraph>
 
         <Notice>
-          Chat is in Beta! Chat may go down for long periods of time as we are
-          aggressively developing it into the base of a future version of Takeout.
+          Chat is in early alpha, it may go down for extended periods of time. We are
+          dog-fooding it as the base of the next version of Takeout, so our focus is on
+          testing architectures and refactoring primitives over stability at the moment.
         </Notice>
 
         <Paragraph ff="$mono" size="$7" lh="$8" theme="alt1">

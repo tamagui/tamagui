@@ -2,7 +2,11 @@
  * Preserves prop ordering, so that the order most closely matches the last spread objects
  * Useful for having { ...defaultProps, ...props } that ensure props ordering is always kept
  *
- * Merges sub-objects if they match tamagui pseudo descriptors or media keys
+ * Honestly this is somehwat backwards logically from Object.assign, reason was that we typically
+ * are merging defaultProps, givenProps, but we started using it elsewhere and now its a bit confusing
+ * Should look into refactoring this to match common usage
+ *
+ * Merges sub-objects if they start are pseudo-keys or media-key-like (start with "$")
  *
  *    Given:
  *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
@@ -11,13 +15,14 @@
  *
  */
 
-import { mediaKeys } from '../hooks/useMedia'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type GenericProps = Record<string, any>
 
 export const mergeProps = (a: Object, b?: Object) => {
   const out: GenericProps = {}
+
+  // objects keys are sorted by order of insertion, insert a first
 
   // ⚠️ keep in sync with mergeComponentProps logic
   for (const key in a) {
@@ -86,7 +91,7 @@ function mergeProp(out: GenericProps, a: Object, b: Object | undefined, key: str
   const val = a[key]
 
   // This ensures styled definition and runtime props are always merged
-  if (key in pseudoDescriptors || mediaKeys.has(key)) {
+  if (key in pseudoDescriptors || key[0] === '$') {
     out[key] = {
       ...out[key],
       ...val,

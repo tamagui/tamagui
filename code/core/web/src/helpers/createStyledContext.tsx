@@ -65,7 +65,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
         // we already merged and want to keep ordering
         return values
       }
-      return mergeProps(values, defaultValues!)
+      return mergeProps(defaultValues!, values)
     }, [objectIdentityKey(values)])
 
     let ScopedProvider = OGProvider
