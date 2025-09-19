@@ -31,7 +31,6 @@ import {
   getMediaImportanceIfMoreImportant,
   getMediaKey,
   mediaState as globalMediaState,
-  isMediaKey,
   mediaKeyMatch,
   mediaQueryConfig,
 } from '../hooks/useMedia'
@@ -503,7 +502,7 @@ export const getSplitStyles: StyleSplitter = (
     let isMedia = !isStyleLikeKey && !isPseudo ? getMediaKey(keyInit) : false
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
-    if (isMediaOrPseudo && keyInit.startsWith('$group-')) {
+    if (isMediaOrPseudo && isMedia === 'group') {
       const parts = keyInit.split('-')
       const plen = parts.length
       if (
@@ -647,8 +646,9 @@ export const getSplitStyles: StyleSplitter = (
         return
       }
 
+      // re-run with expanded key
       isPseudo = key in validPseudoKeys
-      isMedia = !isPseudo && isMediaKey(key)
+      isMedia = isPseudo ? false : getMediaKey(key)
       isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
 
