@@ -520,9 +520,9 @@ const disableAnimationProps = new Set<string>([
   'flexGrow',
   'flexShrink',
   'justifyContent',
-  'marginRight',
-  'marginLeft',
   'marginBottom',
+  'marginLeft',
+  'marginRight',
   'marginTop',
   'maxHeight',
   'maxWidth',
@@ -535,8 +535,9 @@ const disableAnimationProps = new Set<string>([
   'position',
   'textWrap',
   'transformOrigin',
-  'zIndex',
+  'userSelect',
   'WebkitBackdropFilter',
+  'zIndex',
 ])
 
 const MotionView = createMotionView('div')
