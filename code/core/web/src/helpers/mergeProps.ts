@@ -104,7 +104,8 @@ function mergeProp(
     key in defaultProps &&
     (key in pseudoDescriptors || key[0] === '$')
   ) {
-    val = { ...defaultProps[key], ...val }
+    // use merge props so we prefer the key ordering the the last merged
+    val = mergeProps(defaultProps[key], val)
   }
 
   out[key] = val

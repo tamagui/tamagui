@@ -271,13 +271,12 @@ export function createComponent<
     // set variants through context
     // order is after default props but before props
     const { context, isReactNative } = staticConfig
+    const debugProp = propsIn['debug'] as DebugProp
 
     const styledContextValue: GenericProps | undefined = context
       ? React.useContext(context)
       : undefined
     let overriddenContextProps: GenericProps | null = null
-
-    const debugProp = propsIn['debug'] as DebugProp
 
     if (
       !process.env.TAMAGUI_IS_CORE_NODE &&
@@ -608,7 +607,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
-      styledContext: context,
+      styledContext: styledContextValue,
     } as const
 
     const themeName = themeState?.name || ''

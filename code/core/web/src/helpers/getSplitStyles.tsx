@@ -257,7 +257,7 @@ export const getSplitStyles: StyleSplitter = (
 
   const { asChild } = props
   const { accept } = staticConfig
-  const { noSkip, disableExpandShorthands, noExpand } = styleProps
+  const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
   for (const keyOg in props) {
@@ -615,8 +615,7 @@ export const getSplitStyles: StyleSplitter = (
     const disablePropMap = isMediaOrPseudo || !isStyleLikeKey
 
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
-      const isStyledContextProp =
-        styleProps.styledContext && key in styleProps.styledContext
+      const isStyledContextProp = styledContext && key in styledContext
 
       if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
         viewProps[key] = val
