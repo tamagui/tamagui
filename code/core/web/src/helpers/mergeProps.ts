@@ -102,10 +102,15 @@ function mergeProp(
   if (
     defaultProps &&
     key in defaultProps &&
-    (key in pseudoDescriptors || key[0] === '$')
+    (key in pseudoDescriptors || key[0] === '$') &&
+    val &&
+    typeof val === 'object'
   ) {
-    // use merge props so we prefer the key ordering the the last merged
-    val = mergeProps(defaultProps[key], val)
+    const defaultVal = defaultProps[key]
+    if (defaultVal && typeof defaultVal === 'object') {
+      // use merge props so we prefer the key ordering the the last merged
+      val = mergeProps(defaultVal, val)
+    }
   }
 
   out[key] = val
