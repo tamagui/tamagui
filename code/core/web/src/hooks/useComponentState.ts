@@ -195,7 +195,7 @@ export const useComponentState = (
       if (isAnimatedAndHydrated || isDisabledManually || isClassNameDisabled) {
         noClass = true
 
-        if (process.env.NODE_ENV === 'development' && props.debug) {
+        if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
           log(`avoiding className`, {
             isAnimatedAndHydrated,
             isDisabledManually,

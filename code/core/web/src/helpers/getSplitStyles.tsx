@@ -234,12 +234,7 @@ export const getSplitStyles: StyleSplitter = (
     time`style-state`
   }
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    debug &&
-    debug !== 'profile' &&
-    isClient
-  ) {
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose' && isClient) {
     if (isDevTools) {
       console.groupCollapsed('🔹 getSplitStyles 👇')
       log({
@@ -1384,7 +1379,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isClient && isDevTools) {
       // end collapsed log above
       console.groupEnd()

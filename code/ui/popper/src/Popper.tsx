@@ -473,8 +473,8 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     const disableAnimationProp =
       // if they want to animate also when re-positioning allow it
       enableAnimationForPositionChange === 'even-when-repositioning'
-        ? !needsMeasure || hide
-        : !isPositioned || needsMeasure || hide
+        ? needsMeasure
+        : !isPositioned || needsMeasure
 
     const [disableAnimation, setDisableAnimation] = React.useState(disableAnimationProp)
 
