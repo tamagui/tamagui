@@ -42,6 +42,7 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * -----------------------------------------------------------------------------------------------*/
 
 export type PopperContextShared = {
+  open: boolean
   size?: SizeTokens
   hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
@@ -111,6 +112,7 @@ function getContextSlow(context: PopperContextValue): PopperContextSlowValue {
     context: context.context,
     getFloatingProps: context.getFloatingProps,
     getReferenceProps: context.getReferenceProps,
+    open: context.open,
   }
 }
 
@@ -321,9 +323,11 @@ export function Popper(props: PopperProps) {
       arrowStyle: middlewareData.arrow,
       onArrowSize: setArrowSize,
       hasFloating: middlewareData.checkFloating?.hasFloating,
+      open: !!open,
       ...floating,
     } satisfies PopperContextValue
   }, [
+    open,
     size,
     floating.x,
     floating.y,
@@ -409,7 +413,7 @@ type PopperContentElement = TamaguiElement
 
 export type PopperContentProps = ScopedProps<
   SizableStackProps & {
-    enableAnimationForPositionChange?: boolean
+    enableAnimationForPositionChange?: boolean | 'even-when-repositioning'
     passThrough?: boolean
   }
 >
@@ -446,8 +450,11 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
   function PopperContent(props, forwardedRef) {
     const { scope, enableAnimationForPositionChange, children, passThrough, ...rest } =
       props
-    const { strategy, placement, refs, x, y, getFloatingProps, size } =
-      usePopperContext(scope)
+    const context = usePopperContext(scope)
+
+    const { strategy, placement, refs, x, y, getFloatingProps, size, isPositioned } =
+      context
+
     const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
     const [needsMeasure, setNeedsMeasure] = React.useState(
@@ -463,6 +470,19 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     // default to not showing if positioned at 0, 0
     const hide = x === 0 && y === 0
 
+    const disableAnimationProp =
+      // if they want to animate also when re-positioning allow it
+      enableAnimationForPositionChange === 'even-when-repositioning'
+        ? !needsMeasure || hide
+        : !isPositioned || needsMeasure || hide
+
+    const [disableAnimation, setDisableAnimation] = React.useState(disableAnimationProp)
+
+    // we set this delayed because we need to pass to the animation driver the value and then update it
+    React.useEffect(() => {
+      setDisableAnimation(disableAnimationProp)
+    }, [disableAnimationProp])
+
     const frameProps = {
       ref: contentRefs,
       x: x || 0,
@@ -473,7 +493,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       opacity: 1,
       ...(enableAnimationForPositionChange && {
         animation: rest.animation,
-        animateOnly: needsMeasure ? [] : rest.animateOnly,
+        animateOnly: disableAnimation ? [] : rest.animateOnly,
         // apply animation but disable it on initial render to avoid animating from 0 to the first position
         animatePresence: false,
       }),

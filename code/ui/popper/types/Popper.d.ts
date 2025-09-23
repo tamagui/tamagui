@@ -8,6 +8,7 @@ import { type View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextShared = {
+    open: boolean;
     size?: SizeTokens;
     hasFloating: boolean;
     arrowStyle?: Partial<Coords> & {
@@ -119,7 +120,7 @@ export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("
     scope?: string;
 } & React.RefAttributes<PopperAnchorRef>>;
 export type PopperContentProps = ScopedProps<SizableStackProps & {
-    enableAnimationForPositionChange?: boolean;
+    enableAnimationForPositionChange?: boolean | 'even-when-repositioning';
     passThrough?: boolean;
 }>;
 export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -197,7 +198,7 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 }>> & {
-    enableAnimationForPositionChange?: boolean;
+    enableAnimationForPositionChange?: boolean | "even-when-repositioning";
     passThrough?: boolean;
 } & {
     scope?: string | undefined;
