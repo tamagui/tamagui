@@ -26,6 +26,7 @@ import {
 import React, {
   forwardRef,
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -113,7 +114,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         return motionAnimationState
       }, [isExiting, animationKey, styleKey])
 
-      const animationsQueue = useRef<AnimationProps[]>([])
+      // const animationsQueue = useRef<AnimationProps[]>([])
+      const debugId = process.env.NODE_ENV === 'development' ? useId() : ''
       const lastAnimateAt = useRef(0)
       const disposed = useRef(false)
       const [firstRenderStyle] = useState(style)
@@ -183,7 +185,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           // scope.animations = []
 
           if (shouldDebug) {
-            console.groupCollapsed(`[motion] 🌊 FIRST`)
+            console.groupCollapsed(`[motion] ${debugId} 🌊 FIRST`)
             console.info(doAnimate)
             console.groupEnd()
           }
@@ -209,7 +211,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
           if (shouldDebug) {
             console.groupCollapsed(
-              `[motion] 🌊 animate (${JSON.stringify(getDiff(lastDoAnimate.current, doAnimate), null, 2)})`
+              `[motion] ${debugId} 🌊 animate (${JSON.stringify(getDiff(lastDoAnimate.current, doAnimate), null, 2)})`
             )
             console.info({
               doAnimate,
@@ -235,13 +237,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           // handle case where dontAnimate changes
           // we just set it onto animate + set options to not actually animate
           if (dontAnimate) {
+            // we need to tell motion where the last value is in case it gets animated again next
+            animate(scope.current, dontAnimate, { type: false })
             const prev = lastDontAnimate.current
             if (prev) {
               removeRemovedStyles(prev, dontAnimate, node)
-              const changed = getDiff(prev, dontAnimate)
-              if (changed) {
-                Object.assign(node.style, changed as any)
-              }
+              // const changed = getDiff(prev, dontAnimate)
+              // if (changed) {
+              //   Object.assign(node.style, changed as any)
+              // }
             }
           }
 
@@ -311,7 +315,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }, [animateKey, isExiting])
 
       if (shouldDebug) {
-        console.groupCollapsed(`[motion] 🌊 render`)
+        console.groupCollapsed(`[motion] ${debugId} 🌊 render`)
         console.info({
           style,
           doAnimate,
