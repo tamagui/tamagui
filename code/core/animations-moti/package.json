@@ -36,8 +36,8 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.79.2",
-    "react-native-reanimated": "^3.18.0"
+    "react-native": "^0.81.4",
+    "react-native-reanimated": "^4.1.0"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -49,7 +49,7 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "^0.81.4"
   },
   "publishConfig": {
     "access": "public"

@@ -83,12 +83,12 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": "*",
-    "react-native": "^0.79.2",
+    "react-native": "^0.81.4",
     "typescript": "^5.8.2"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "^0.81.4"
   }
 }
