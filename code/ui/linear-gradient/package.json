@@ -43,13 +43,13 @@
     "@tamagui/build": "workspace:*",
     "expo-linear-gradient": "~14.1.5",
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "^0.81.4"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "^0.81.4"
   }
 }

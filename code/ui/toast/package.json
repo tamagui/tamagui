@@ -60,7 +60,7 @@
     "@tamagui/build": "workspace:*",
     "burnt": "^0.12.2",
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "^0.81.4"
   },
   "publishConfig": {
     "access": "public"
