@@ -53,7 +53,6 @@
     "@tamagui/cli": "^1.134.0",
     "@tamagui/metro-plugin": "^1.134.0",
     "@types/react": "~19.1.10",
-    "@types/react-native": "^0.81.4",
     "typescript": "~5.9.2"
   }
 }

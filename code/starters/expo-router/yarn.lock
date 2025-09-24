@@ -2150,7 +2150,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-config@npm:54.0.5, @expo/metro-config@npm:~54.0.5":
+"@expo/metro-config@npm:54.0.5, @expo/metro-config@npm:~54.0.2, @expo/metro-config@npm:~54.0.5":
   version: 54.0.5
   resolution: "@expo/metro-config@npm:54.0.5"
   dependencies:
@@ -7264,6 +7264,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-router@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "expo-router@workspace:."
+  dependencies:
+    "@babel/core": "npm:^7.24.6"
+    "@expo/metro-config": "npm:~54.0.2"
+    "@expo/metro-runtime": "npm:~6.1.2"
+    "@react-navigation/native": "npm:^7.1.6"
+    "@tamagui/babel-plugin": "npm:^1.134.0"
+    "@tamagui/cli": "npm:^1.134.0"
+    "@tamagui/config": "npm:^1.134.0"
+    "@tamagui/lucide-icons": "npm:^1.134.0"
+    "@tamagui/metro-plugin": "npm:^1.134.0"
+    "@tamagui/toast": "npm:^1.134.0"
+    "@types/react": "npm:~19.1.10"
+    babel-preset-expo: "npm:~54.0.0"
+    burnt: "npm:^0.12.2"
+    expo: "npm:54.0.10"
+    expo-build-properties: "npm:~1.0.9"
+    expo-constants: "npm:~18.0.9"
+    expo-font: "npm:~14.0.8"
+    expo-linking: "npm:~8.0.8"
+    expo-router: "npm:~6.0.8"
+    expo-splash-screen: "npm:~31.0.10"
+    expo-status-bar: "npm:~3.0.8"
+    expo-system-ui: "npm:~6.0.7"
+    expo-web-browser: "npm:~15.0.7"
+    react: "npm:19.1.0"
+    react-dom: "npm:19.1.0"
+    react-native: "npm:0.81.4"
+    react-native-reanimated: "npm:~4.1.0"
+    react-native-safe-area-context: "npm:~5.6.0"
+    react-native-screens: "npm:~4.16.0"
+    react-native-svg: "npm:15.12.1"
+    react-native-web: "npm:^0.21.0"
+    react-native-worklets: "npm:0.5.1"
+    tamagui: "npm:^1.134.0"
+    typescript: "npm:~5.9.2"
+  languageName: unknown
+  linkType: soft
+
 "expo-splash-screen@npm:~31.0.10":
   version: 31.0.10
   resolution: "expo-splash-screen@npm:31.0.10"
@@ -11922,46 +11963,6 @@ __metadata:
   checksum: 10/2946162eb87a91b9bf4283214d26830db96f09cf517eff18e7501d47a4770c529b432bb54c9394337c3dfd6c8dbf66581f76edb37e9838beb6ec394080af4ac2
   languageName: node
   linkType: hard
-
-"tamagui-expo-router-starter@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "tamagui-expo-router-starter@workspace:."
-  dependencies:
-    "@babel/core": "npm:^7.24.6"
-    "@expo/metro-runtime": "npm:~6.1.2"
-    "@react-navigation/native": "npm:^7.1.6"
-    "@tamagui/babel-plugin": "npm:^1.134.0"
-    "@tamagui/cli": "npm:^1.134.0"
-    "@tamagui/config": "npm:^1.134.0"
-    "@tamagui/lucide-icons": "npm:^1.134.0"
-    "@tamagui/metro-plugin": "npm:^1.134.0"
-    "@tamagui/toast": "npm:^1.134.0"
-    "@types/react": "npm:~19.1.10"
-    babel-preset-expo: "npm:~54.0.0"
-    burnt: "npm:^0.12.2"
-    expo: "npm:54.0.10"
-    expo-build-properties: "npm:~1.0.9"
-    expo-constants: "npm:~18.0.9"
-    expo-font: "npm:~14.0.8"
-    expo-linking: "npm:~8.0.8"
-    expo-router: "npm:~6.0.8"
-    expo-splash-screen: "npm:~31.0.10"
-    expo-status-bar: "npm:~3.0.8"
-    expo-system-ui: "npm:~6.0.7"
-    expo-web-browser: "npm:~15.0.7"
-    react: "npm:19.1.0"
-    react-dom: "npm:19.1.0"
-    react-native: "npm:0.81.4"
-    react-native-reanimated: "npm:~4.1.0"
-    react-native-safe-area-context: "npm:~5.6.0"
-    react-native-screens: "npm:~4.16.0"
-    react-native-svg: "npm:15.12.1"
-    react-native-web: "npm:^0.21.0"
-    react-native-worklets: "npm:0.5.1"
-    tamagui: "npm:^1.134.0"
-    typescript: "npm:~5.9.2"
-  languageName: unknown
-  linkType: soft
 
 "tamagui@npm:^1.134.0":
   version: 1.134.0
