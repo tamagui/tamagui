@@ -33,7 +33,7 @@
     "one": "1.1.515",
     "react": "*",
     "react-native": "^0.81.4",
-    "react-native-reanimated": "^3.18.0",
+    "react-native-reanimated": "^4.1.0",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
     "react-native-svg": "15.11.2",
