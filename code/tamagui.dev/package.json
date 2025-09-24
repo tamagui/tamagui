@@ -62,7 +62,7 @@
     "postmark": "^3.0.18",
     "puppeteer": "^24.3.1",
     "react-hotkeys-hook": "^4.5.0",
-    "react-native": "^0.79.2",
+    "react-native": "^0.81.4",
     "react-native-reanimated": "^3.18.0",
     "react-native-svg": "15.11.2",
     "stripe": "^9.1.0",
