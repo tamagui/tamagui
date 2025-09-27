@@ -1398,15 +1398,15 @@ export function createComponent<
     }
 
     // ensure we override new context with style resolved values - why?
-    if (staticConfig.context) {
-      const contextProps = staticConfig.context.props
-      for (const key in contextProps) {
-        if ((viewProps.style && key in viewProps.style) || key in viewProps) {
-          overriddenContextProps ||= {}
-          overriddenContextProps[key] = viewProps.style?.[key] ?? viewProps[key]
-        }
-      }
-    }
+    // if (staticConfig.context) {
+    //   const contextProps = staticConfig.context.props
+    //   for (const key in contextProps) {
+    //     if ((viewProps.style && key in viewProps.style) || key in viewProps) {
+    //       overriddenContextProps ||= {}
+    //       overriddenContextProps[key] = viewProps.style?.[key] ?? viewProps[key]
+    //     }
+    //   }
+    // }
 
     if (overriddenContextProps) {
       const Provider = staticConfig.context!.Provider!
