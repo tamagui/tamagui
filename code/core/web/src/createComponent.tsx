@@ -544,36 +544,42 @@ export function createComponent<
           (presenceState?.isPresent === false ? '(EXIT)' : '')
 
         const dataIs = propsIn['data-is'] || ''
-        const banner = `<${name} /> ${internalID} ${dataIs ? ` ${dataIs}` : ''} ${type.trim()}`
-        console.info(
-          `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
-          'background: green; color: white;'
-        )
+        const banner = `<${name} /> ${internalID} ${dataIs ? ` ${dataIs}` : ''} ${type.trim()} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`
 
-        if (isServer) {
-          log({ noClass, isAnimated, isWeb, supportsCSS })
-        } else {
-          // if strict mode or something messes with our nesting this fixes:
-          console.groupEnd()
+        const ch = propsIn.children
+        let childLog =
+          typeof ch === 'string' ? (ch.length > 4 ? ch.slice(0, 4) + '...' : ch) : ''
+        if (childLog.length) {
+          childLog = `(children: ${childLog})`
+        }
 
-          const ch = propsIn.children
-          let childLog =
-            typeof ch === 'string' ? (ch.length > 4 ? ch.slice(0, 4) + '...' : ch) : ''
-          if (childLog.length) {
-            childLog = `(children: ${childLog})`
+        if (isWeb) {
+          console.info(`%c ${banner}`, 'background: green; color: white;')
+          if (isServer) {
+            log({ noClass, isAnimated, isWeb, supportsCSS })
+          } else {
+            // if strict mode or something messes with our nesting this fixes:
+            console.groupEnd()
+
+            console.groupCollapsed(`${childLog} [inspect props, state, context 👇]`)
+            log('props in:', propsIn)
+            log('final props:', props, Object.keys(props))
+            log({ state, staticConfig, elementType, themeStateProps })
+            log({
+              context,
+              overriddenContextProps,
+              componentContext,
+            })
+            log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
+            console.groupEnd()
           }
-
-          console.groupCollapsed(`${childLog} [inspect props, state, context 👇]`)
-          log('props in:', propsIn)
-          log('final props:', props, Object.keys(props))
-          log({ state, staticConfig, elementType, themeStateProps })
-          log({
-            context,
-            overriddenContextProps,
-            componentContext,
-          })
-          log({ presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
-          console.groupEnd()
+        } else {
+          console.info(
+            `\n\n------------------------------\n${banner}\n------------------------------\n`
+          )
+          log(`children:`, props.children)
+          log({ overriddenContextProps, styledContextValue })
+          log({ noClass, isAnimated, isWeb, supportsCSS })
         }
       }
     }
@@ -1391,7 +1397,7 @@ export function createComponent<
       }
     }
 
-    // ensure we override new context with style resolved values
+    // ensure we override new context with style resolved values - why?
     if (staticConfig.context) {
       const contextProps = staticConfig.context.props
       for (const key in contextProps) {
@@ -1410,6 +1416,10 @@ export function createComponent<
         if (!(key in overriddenContextProps)) {
           overriddenContextProps[key] = styledContextValue[key]
         }
+      }
+
+      if (debugProp) {
+        console.info('overriddenContextProps', overriddenContextProps)
       }
 
       content = (

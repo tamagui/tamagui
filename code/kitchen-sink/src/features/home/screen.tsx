@@ -29,14 +29,23 @@ export function HomeScreen() {
   //   </>
   // )
 
+  // return (
+  //   <>
+  //     <ColorSchemeToggle />
+  //     <Button color="$white1">
+  //       <Button.Text debug="verbose">test</Button.Text>
+  //     </Button>
+
+  //     <Button color="$white1">test</Button>
+  //   </>
+  // )
+
   return (
     <ScrollView>
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
-
-        <ViewVariants test>testing</ViewVariants>
 
         <YGroup size="$4">
           <YGroup.Item>
