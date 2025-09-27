@@ -181,7 +181,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           controls.current = animate(scope.current, doAnimate || {}, {
             type: false,
           })
-          controls.current.complete()
           // scope.animations = []
 
           if (shouldDebug) {
