@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch-headless",
-  "version": "1.134.2",
+  "version": "1.134.3",
   "sideEffects": [
     "*.css"
   ],
