@@ -44,12 +44,9 @@ const fixPeerDeps = async ({ location }, pkgJson: any) => {
     pkgJson.peerDependencies['react'] ||= '*'
   }
 
-  if (
-    pkgJson.devDependencies?.['react-native'] &&
-    !pkgJson.peerDependencies?.['react-native']
-  ) {
+  if (pkgJson.devDependencies?.['react-native']) {
     pkgJson.peerDependencies ||= {}
-    pkgJson.peerDependencies['react-native'] ||= '*'
+    pkgJson.peerDependencies['react-native'] = '*'
   }
 }
 

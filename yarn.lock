@@ -6460,7 +6460,7 @@ __metadata:
     react-native-reanimated: "npm:^3.18.0"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6709,7 +6709,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6922,7 +6922,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7033,7 +7033,7 @@ __metadata:
     tamagui: "workspace:*"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7415,7 +7415,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7455,7 +7455,7 @@ __metadata:
     vitest: "npm:^3.2.4"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7637,7 +7637,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7977,7 +7977,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -8147,7 +8147,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -8243,7 +8243,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -8396,7 +8396,7 @@ __metadata:
     typescript: "npm:^5.8.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -8438,7 +8438,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -8463,7 +8463,7 @@ __metadata:
     react-native: "npm:^0.79.2"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -26723,7 +26723,7 @@ __metadata:
     react-native-web: "npm:^0.20.0"
   peerDependencies:
     react: "*"
-    react-native: ^0.79.2
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
