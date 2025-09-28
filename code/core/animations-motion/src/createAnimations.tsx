@@ -177,7 +177,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (!lastDoAnimate.current) {
           lastAnimateAt.current = Date.now()
           lastDoAnimate.current = doAnimate || {}
-          controls.current = animate(scope.current, doAnimate || {}, {
+          animate(scope.current, doAnimate || {}, {
             type: false,
           })
           // scope.animations = []
@@ -279,8 +279,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           lastDontAnimate.current = dontAnimate || {}
           lastDoAnimate.current = doAnimate
         } finally {
-          if (controls.current) {
-            if (isExiting) {
+          if (isExiting) {
+            if (controls.current) {
               controls.current.finished.then(() => {
                 sendExitComplete?.()
               })
