@@ -1,8 +1,7 @@
 import { type ReactNode, type RefObject } from "react";
 // internal testing - advanced helper to turn off layout measurement for extra performance
-// ideally we'd avoid re-rendering here and just have it check in the layout loop if enabled
 // TODO document!
-export declare const LayoutMeasurementController: (props: {
+export declare const LayoutMeasurementController: ({ disable, children }: {
 	disable: boolean;
 	children: ReactNode;
 }) => ReactNode;

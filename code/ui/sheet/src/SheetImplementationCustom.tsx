@@ -8,6 +8,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import {
+  LayoutMeasurementController,
   Stack,
   Theme,
   useConfiguration,
@@ -501,56 +502,58 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // })
 
     let contents = (
-      <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
-          <AnimatePresence custom={{ open }}>
-            {shouldHideParentSheet || !open ? null : overlayComponent}
-          </AnimatePresence>
+      <LayoutMeasurementController disable={!open}>
+        <ParentSheetContext.Provider value={nextParentContext}>
+          <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
+            <AnimatePresence custom={{ open }}>
+              {shouldHideParentSheet || !open ? null : overlayComponent}
+            </AnimatePresence>
 
-          {snapPointsMode !== 'percent' && (
-            <View
-              style={{
-                opacity: 0,
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                pointerEvents: 'none',
-              }}
-              onLayout={handleMaxContentViewLayout}
-            />
-          )}
-
-          <AnimatedView
-            ref={ref}
-            {...panResponder?.panHandlers}
-            onLayout={handleAnimationViewLayout}
-            // @ts-ignore for CSS driver this is necessary to attach the transition
-            // also motion driver at least though i suspect all drivers?
-            animation={isDragging || disableAnimation ? null : animation}
-            // @ts-ignore
-            disableClassName
-            style={[
-              {
-                position: 'absolute',
-                zIndex,
-                width: '100%',
-                height: forcedContentHeight,
-                minHeight: forcedContentHeight,
-                opacity: !shouldHideParentSheet ? opacity : 0,
-                ...((shouldHideParentSheet || !open) && {
+            {snapPointsMode !== 'percent' && (
+              <View
+                style={{
+                  opacity: 0,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                   pointerEvents: 'none',
-                }),
-              },
-              animatedStyle,
-            ]}
-          >
-            {/* <AdaptProvider>{props.children}</AdaptProvider> */}
-            {props.children}
-          </AnimatedView>
-        </SheetProvider>
-      </ParentSheetContext.Provider>
+                }}
+                onLayout={handleMaxContentViewLayout}
+              />
+            )}
+
+            <AnimatedView
+              ref={ref}
+              {...panResponder?.panHandlers}
+              onLayout={handleAnimationViewLayout}
+              // @ts-ignore for CSS driver this is necessary to attach the transition
+              // also motion driver at least though i suspect all drivers?
+              animation={isDragging || disableAnimation ? null : animation}
+              // @ts-ignore
+              disableClassName
+              style={[
+                {
+                  position: 'absolute',
+                  zIndex,
+                  width: '100%',
+                  height: forcedContentHeight,
+                  minHeight: forcedContentHeight,
+                  opacity: !shouldHideParentSheet ? opacity : 0,
+                  ...((shouldHideParentSheet || !open) && {
+                    pointerEvents: 'none',
+                  }),
+                },
+                animatedStyle,
+              ]}
+            >
+              {/* <AdaptProvider>{props.children}</AdaptProvider> */}
+              {props.children}
+            </AnimatedView>
+          </SheetProvider>
+        </ParentSheetContext.Provider>
+      </LayoutMeasurementController>
     )
 
     if (process.env.TAMAGUI_TARGET === 'native' && !USE_NATIVE_PORTAL) {

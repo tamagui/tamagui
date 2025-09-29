@@ -1,24 +1,35 @@
 import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import { createContext, useContext, type ReactNode, type RefObject } from 'react'
+import { createContext, useContext, useId, type ReactNode, type RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
+const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
 const IntersectionState = new WeakMap<HTMLElement, boolean>()
 
-const DisableLayoutContext = createContext(false)
+// separating to avoid all re-rendering
+const DisableLayoutContextValues: Record<string, boolean> = {}
+const DisableLayoutContextKey = createContext<string>('')
 
 // internal testing - advanced helper to turn off layout measurement for extra performance
-// ideally we'd avoid re-rendering here and just have it check in the layout loop if enabled
 // TODO document!
-export const LayoutMeasurementController = (props: {
+export const LayoutMeasurementController = ({
+  disable,
+  children,
+}: {
   disable: boolean
   children: ReactNode
 }): ReactNode => {
+  const id = useId()
+
+  useIsomorphicLayoutEffect(() => {
+    DisableLayoutContextValues[id] = disable
+  }, [disable, id])
+
   return (
-    <DisableLayoutContext.Provider value={props.disable}>
-      {props.children}
-    </DisableLayoutContext.Provider>
+    <DisableLayoutContextKey.Provider value={id}>
+      {children}
+    </DisableLayoutContextKey.Provider>
   )
 }
 
@@ -192,13 +203,13 @@ if (isClient) {
           )
 
           for (const node of Nodes) {
-            if (node.parentElement instanceof HTMLElement) {
-              if (IntersectionState.get(node) !== false) {
-                io.observe(node)
-                io.observe(node.parentElement)
-                visibleNodes.push(node)
-              }
-            }
+            if (!(node.parentElement instanceof HTMLElement)) continue
+            const disableKey = LayoutDisableKey.get(node)
+            if (disableKey && DisableLayoutContextValues[disableKey] === true) continue
+            if (IntersectionState.get(node) === false) continue
+            io.observe(node)
+            io.observe(node.parentElement)
+            visibleNodes.push(node)
           }
         })
 
@@ -242,18 +253,16 @@ export function useElementLayout(
   ref: RefObject<TamaguiComponentStatePartial>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ): void {
-  const disable = useContext(DisableLayoutContext)
+  const disableKey = useContext(DisableLayoutContextKey)
 
   // ensure always up to date so we can avoid re-running effect
-  if (!disable) {
-    const node = ensureWebElement(ref.current?.host)
-    if (node && onLayout) {
-      LayoutHandlers.set(node, onLayout)
-    }
+  const node = ensureWebElement(ref.current?.host)
+  if (node && onLayout) {
+    LayoutHandlers.set(node, onLayout)
+    LayoutDisableKey.set(node, disableKey)
   }
 
   useIsomorphicLayoutEffect(() => {
-    if (disable) return
     if (!onLayout) return
     const node = ref.current?.host
     if (!node) return
@@ -291,7 +300,7 @@ export function useElementLayout(
         globalIntersectionObserver.unobserve(node)
       }
     }
-  }, [disable, ref, !!onLayout])
+  }, [ref, !!onLayout])
 }
 
 function ensureWebElement<X>(x: X): HTMLElement | undefined {

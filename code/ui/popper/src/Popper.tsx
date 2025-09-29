@@ -3,6 +3,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
+  LayoutMeasurementController,
   View as TamaguiView,
   createStyledContext,
   getVariableValue,
@@ -214,13 +215,14 @@ export function Popper(props: PopperProps) {
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
   const floatingStyle = React.useRef({})
+  const isOpen = passThrough ? false : open || true
 
   let floating = useFloating({
-    open: passThrough ? false : open || true,
+    open: isOpen,
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: passThrough || !open ? undefined : autoUpdate,
+    whileElementsMounted: !isOpen ? undefined : autoUpdate,
     platform:
       (disableRTL ?? setupOptions.disableRTL)
         ? {
@@ -337,9 +339,11 @@ export function Popper(props: PopperProps) {
   ])
 
   return (
-    <PopperProvider scope={scope} {...popperContext}>
-      {children}
-    </PopperProvider>
+    <LayoutMeasurementController disable={!isOpen}>
+      <PopperProvider scope={scope} {...popperContext}>
+        {children}
+      </PopperProvider>
+    </LayoutMeasurementController>
   )
 }
 
