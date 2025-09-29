@@ -1,10 +1,25 @@
 import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import { useCallback, type RefObject } from 'react'
+import { createContext, useContext, type ReactNode, type RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const Nodes = new Set<HTMLElement>()
 const IntersectionState = new WeakMap<HTMLElement, boolean>()
+
+const DisableLayoutContext = createContext(false)
+
+// advanced helper to turn off layout measurement for extra performance
+// TODO document!
+export const LayoutController = (props: {
+  disable: boolean
+  children: ReactNode
+}): ReactNode => {
+  return (
+    <DisableLayoutContext.Provider value={props.disable}>
+      {props.children}
+    </DisableLayoutContext.Provider>
+  )
+}
 
 // Single persistent IntersectionObserver for all nodes
 let globalIntersectionObserver: IntersectionObserver | null = null
@@ -39,7 +54,6 @@ export type LayoutEvent = {
 }
 
 const NodeRectCache = new WeakMap<HTMLElement, DOMRect>()
-const ParentRectCache = new WeakMap<HTMLElement, DOMRect>()
 const LastChangeTime = new WeakMap<HTMLElement, number>()
 
 const rAF = typeof window !== 'undefined' ? window.requestAnimationFrame : undefined
@@ -78,23 +92,9 @@ function startGlobalObservers() {
 
 if (isClient) {
   if (rAF) {
-    const supportsCheckVisibility = 'checkVisibility' in document.body
-
     const BoundingRects = new WeakMap<any, DOMRectReadOnly | undefined>()
 
     async function updateLayoutIfChanged(node: HTMLElement) {
-      if (IntersectionState.get(node) === false) {
-        // avoid due to not intersecting
-        return
-      }
-      // triggers style recalculation in safari which is slower than not
-      if (process.env.TAMAGUI_ONLAYOUT_VISIBILITY_CHECK === '1') {
-        if (supportsCheckVisibility && !(node as any).checkVisibility()) {
-          // avoid due to not visible
-          return
-        }
-      }
-
       const onLayout = LayoutHandlers.get(node)
       if (typeof onLayout !== 'function') return
 
@@ -106,11 +106,11 @@ if (isClient) {
 
       if (strategy === 'async') {
         const [nr, pr] = await Promise.all([
-          BoundingRects.get(node) || getBoundingClientRectAsync(node),
-          BoundingRects.get(parentNode) || getBoundingClientRectAsync(parentNode),
+          BoundingRects.get(node),
+          BoundingRects.get(parentNode),
         ])
 
-        if (nr === false || pr === false) {
+        if (!nr || !pr) {
           return
         }
 
@@ -121,19 +121,24 @@ if (isClient) {
         parentRect = parentNode.getBoundingClientRect()
       }
 
+      if (!nodeRect || !parentRect) {
+        return
+      }
+
       const cachedRect = NodeRectCache.get(node)
       const cachedParentRect = NodeRectCache.get(parentNode)
 
       if (
         !cachedRect ||
+        !cachedParentRect ||
         // has changed one rect
         // @ts-expect-error DOMRectReadOnly can go into object
-        (!isEqualShallow(cachedRect, nodeRect) &&
-          // @ts-expect-error DOMRectReadOnly can go into object
-          (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
+        !isEqualShallow(cachedRect, nodeRect) ||
+        // @ts-expect-error DOMRectReadOnly can go into object
+        !isEqualShallow(cachedParentRect, parentRect)
       ) {
         NodeRectCache.set(node, nodeRect)
-        ParentRectCache.set(parentNode, parentRect)
+        NodeRectCache.set(parentNode, parentRect)
 
         const event = getElementLayoutEvent(nodeRect, parentRect)
 
@@ -168,6 +173,8 @@ if (isClient) {
           frameCount = 0
         }
 
+        const visibleNodes: HTMLElement[] = []
+
         // do a 1 rather than N IntersectionObservers for performance
         await new Promise<void>((res) => {
           const io = new IntersectionObserver(
@@ -182,15 +189,19 @@ if (isClient) {
               threshold: 0,
             }
           )
+
           for (const node of Nodes) {
             if (node.parentElement instanceof HTMLElement) {
-              io.observe(node)
-              io.observe(node.parentElement)
+              if (IntersectionState.get(node) !== false) {
+                io.observe(node)
+                io.observe(node.parentElement)
+                visibleNodes.push(node)
+              }
             }
           }
         })
 
-        Nodes.forEach((node) => {
+        visibleNodes.forEach((node) => {
           updateLayoutIfChanged(node)
         })
       }
@@ -230,13 +241,18 @@ export function useElementLayout(
   ref: RefObject<TamaguiComponentStatePartial>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ): void {
+  const disable = useContext(DisableLayoutContext)
+
   // ensure always up to date so we can avoid re-running effect
-  const node = ensureWebElement(ref.current?.host)
-  if (node && onLayout) {
-    LayoutHandlers.set(node, onLayout)
+  if (!disable) {
+    const node = ensureWebElement(ref.current?.host)
+    if (node && onLayout) {
+      LayoutHandlers.set(node, onLayout)
+    }
   }
 
   useIsomorphicLayoutEffect(() => {
+    if (disable) return
     if (!onLayout) return
     const node = ref.current?.host
     if (!node) return
@@ -274,7 +290,7 @@ export function useElementLayout(
         globalIntersectionObserver.unobserve(node)
       }
     }
-  }, [ref, !!onLayout])
+  }, [disable, ref, !!onLayout])
 }
 
 function ensureWebElement<X>(x: X): HTMLElement | undefined {

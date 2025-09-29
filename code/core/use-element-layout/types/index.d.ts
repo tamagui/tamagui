@@ -1,4 +1,10 @@
-import { type RefObject } from "react";
+import { type ReactNode, type RefObject } from "react";
+// advanced helper to turn off layout measurement for extra performance
+// TODO document!
+export declare const LayoutController: (props: {
+	disable: boolean;
+	children: ReactNode;
+}) => ReactNode;
 type TamaguiComponentStatePartial = {
 	host?: any;
 };
