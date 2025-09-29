@@ -6797,6 +6797,7 @@ __metadata:
     react: "npm:*"
     react-native: "npm:^0.81.4"
     react-native-reanimated: "npm:^4.1.0"
+    react-native-worklets: "npm:0.5.1"
   peerDependencies:
     react: "*"
     react-native: ^0.81.4
@@ -6927,6 +6928,7 @@ __metadata:
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-svg: "npm:15.12.1"
     react-native-web: "npm:^0.21.0"
+    react-native-worklets: "npm:0.5.1"
     swr: "npm:^2.2.5"
     tamagui: "workspace:*"
     tilg: "npm:0.1.1"
@@ -7480,6 +7482,7 @@ __metadata:
     react-native: "npm:^0.81.4"
     react-native-reanimated: "npm:^4.1.0"
     react-native-svg: "npm:15.11.2"
+    react-native-worklets: "npm:0.5.1"
     stripe: "npm:^9.1.0"
     subset-font: "npm:^2.1.0"
     swr: "npm:^2.2.5"
@@ -7932,6 +7935,7 @@ __metadata:
     react-native-screens: "npm:~4.16.0"
     react-native-svg: "npm:15.12.1"
     react-native-web: "npm:^0.21.0"
+    react-native-worklets: "npm:0.5.1"
     solito: "npm:^4.3.0"
     tamagui: "workspace:*"
     tilg: "npm:0.1.1"
@@ -24761,6 +24765,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-worklets@npm:0.5.1":
+  version: 0.5.1
+  resolution: "react-native-worklets@npm:0.5.1"
+  dependencies:
+    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
+    "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-classes": "npm:^7.0.0-0"
+    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
+    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
+    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
+    "@babel/plugin-transform-unicode-regex": "npm:^7.0.0-0"
+    "@babel/preset-typescript": "npm:^7.16.7"
+    convert-source-map: "npm:^2.0.0"
+    semver: "npm:7.7.2"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+    react: "*"
+    react-native: "*"
+  checksum: 10/39e70b64560cc4b031ac329bfbd0686b744b6940bbe1d1768a227bb9e142a0e2bad5ef16752003e83374db49d8d6396c72236b9c279e1465a7177f887ae12d48
+  languageName: node
+  linkType: hard
+
 "react-native@npm:*":
   version: 0.79.4
   resolution: "react-native@npm:0.79.4"
@@ -26000,6 +26027,7 @@ __metadata:
     react-native-screens: "npm:~4.16.0"
     react-native-svg: "npm:15.12.1"
     react-native-web: "npm:^0.21.0"
+    react-native-worklets: "npm:0.5.1"
     tamagui: "workspace:*"
     vite: "npm:^7.0.2"
     wait-port: "npm:^0.3.0"

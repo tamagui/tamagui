@@ -93,6 +93,7 @@
     "react-native-safe-area-context": "~5.6.0",
     "react-native-svg": "15.12.1",
     "react-native-web": "^0.21.0",
+    "react-native-worklets": "0.5.1",
     "swr": "^2.2.5",
     "tamagui": "workspace:*",
     "zod": "^3.25.67"

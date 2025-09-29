@@ -37,7 +37,8 @@
     "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.81.4",
-    "react-native-reanimated": "^4.1.0"
+    "react-native-reanimated": "^4.1.0",
+    "react-native-worklets": "0.5.1"
   },
   "scripts": {
     "build": "tamagui-build",
