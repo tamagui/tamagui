@@ -174,7 +174,7 @@ async function getReactNativeVersion(): Promise<string> {
   const kitchenSinkJson = JSON.parse(
     await readFile(kitchenSinkPath, { encoding: 'utf-8' })
   )
-  return kitchenSinkJson.dependencies['react-native'] || '^0.79.2'
+  return kitchenSinkJson.dependencies['react-native'] || '^0.81.4'
 }
 
 async function fixTamaguiDependencies(
