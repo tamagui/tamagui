@@ -65,6 +65,7 @@ function transformFile(file, options) {
         syntax: isTs ? 'typescript' : 'ecmascript',
         tsx: isReact && isTs,
         jsx: isReact && !isTs,
+        preserveAllComments: true,
       },
     },
     module: { type: 'es6' },
@@ -79,16 +80,10 @@ exports.es5Plugin = function es5Plugin() {
   return {
     name: 'es5',
     setup(build) {
-      const buildOptions = build.initialOptions
-      const enableSourcemap = !!buildOptions.sourcemap
-
       build.onLoad({ filter: /\.([tj]sx?|mjs)$/ }, (args) => {
         return new Promise((resolve) => {
           transformFile(args.path, {
-            /**
-             * Generate inline source maps to enable esbuild to properly handle sourcemaps.
-             */
-            sourceMaps: enableSourcemap ? 'inline' : false,
+            sourceMaps: false,
           })
             .then(({ code }) => {
               resolve({ contents: code, loader: 'js' })
