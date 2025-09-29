@@ -8,9 +8,10 @@ const IntersectionState = new WeakMap<HTMLElement, boolean>()
 
 const DisableLayoutContext = createContext(false)
 
-// advanced helper to turn off layout measurement for extra performance
+// internal testing - advanced helper to turn off layout measurement for extra performance
+// ideally we'd avoid re-rendering here and just have it check in the layout loop if enabled
 // TODO document!
-export const LayoutController = (props: {
+export const LayoutMeasurementController = (props: {
   disable: boolean
   children: ReactNode
 }): ReactNode => {
