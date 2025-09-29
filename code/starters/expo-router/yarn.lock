@@ -2150,7 +2150,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-config@npm:54.0.5, @expo/metro-config@npm:~54.0.2, @expo/metro-config@npm:~54.0.5":
+"@expo/metro-config@npm:54.0.5, @expo/metro-config@npm:~54.0.5":
   version: 54.0.5
   resolution: "@expo/metro-config@npm:54.0.5"
   dependencies:
@@ -7269,7 +7269,6 @@ __metadata:
   resolution: "expo-router@workspace:."
   dependencies:
     "@babel/core": "npm:^7.24.6"
-    "@expo/metro-config": "npm:~54.0.2"
     "@expo/metro-runtime": "npm:~6.1.2"
     "@react-navigation/native": "npm:^7.1.6"
     "@tamagui/babel-plugin": "npm:^1.134.0"

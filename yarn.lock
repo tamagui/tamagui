@@ -24813,7 +24813,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.81.4, react-native@npm:^0.81.4":
+"react-native@npm:^0.81.4":
   version: 0.81.4
   resolution: "react-native@npm:0.81.4"
   dependencies:
@@ -25994,7 +25994,7 @@ __metadata:
     expo: "npm:54.0.10"
     one: "npm:1.1.515"
     react: "npm:*"
-    react-native: "npm:0.81.4"
+    react-native: "npm:^0.81.4"
     react-native-reanimated: "npm:^4.1.0"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
