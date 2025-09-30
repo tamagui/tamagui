@@ -196,18 +196,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     })
 
-    const isAbleToPosition = (() => {
-      if (disableAnimation) {
-        return false
-      }
-
-      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
-        return false
-      }
-
-      return true
-    })()
-
     useIsomorphicLayoutEffect(() => {
       // we need to do a *three* step process for the css driver
       // first render off screen for ssr safety (hiddenSize)
@@ -229,11 +217,18 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             }, 10)
           }
         )
+        return
       }
-    }, [hasntMeasured, screenSize, frameSize])
 
-    useIsomorphicLayoutEffect(() => {
-      if (!isAbleToPosition) return
+      if (disableAnimation) {
+        return
+      }
+
+      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
+        return
+      }
+
+      // finally, animate
       animateTo(position)
 
       // reset scroll bridge
@@ -241,7 +236,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         scrollBridge.scrollLock = false
         scrollBridge.scrollStartY = -1
       }
-    }, [isAbleToPosition, position])
+    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
