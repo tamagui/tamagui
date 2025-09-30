@@ -8,11 +8,16 @@ test.beforeEach(async ({ page }) => {
 test(`button + focusVisibleStyle`, async ({ page }) => {
   const button = page.locator('#focus-visible-button')
 
-  // Focus the button using keyboard navigation
+  // Ensure the button is visible and ready
+  await button.waitFor({ state: 'visible' })
+
+  // Click the button first to ensure it's interactable, then focus via keyboard
+  await button.click()
   await page.keyboard.press('Tab')
+  await page.keyboard.press('Shift+Tab')
 
   // Wait for focus to be applied and styles to update
-  await page.waitForTimeout(500)
+  await page.waitForTimeout(100)
 
   // Verify the button is focused
   const isFocused = await button.evaluate((el) => {
