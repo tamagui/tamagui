@@ -8,6 +8,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import {
+  LayoutMeasurementController,
   Stack,
   Theme,
   useConfiguration,
@@ -195,18 +196,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     })
 
-    const isAbleToPosition = (() => {
-      if (disableAnimation) {
-        return false
-      }
-
-      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
-        return false
-      }
-
-      return true
-    })()
-
     useIsomorphicLayoutEffect(() => {
       // we need to do a *three* step process for the css driver
       // first render off screen for ssr safety (hiddenSize)
@@ -228,11 +217,18 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             }, 10)
           }
         )
+        return
       }
-    }, [hasntMeasured, screenSize, frameSize])
 
-    useIsomorphicLayoutEffect(() => {
-      if (!isAbleToPosition) return
+      if (disableAnimation) {
+        return
+      }
+
+      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
+        return
+      }
+
+      // finally, animate
       animateTo(position)
 
       // reset scroll bridge
@@ -240,7 +236,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         scrollBridge.scrollLock = false
         scrollBridge.scrollStartY = -1
       }
-    }, [isAbleToPosition, position])
+    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
@@ -501,56 +497,58 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // })
 
     let contents = (
-      <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
-          <AnimatePresence custom={{ open }}>
-            {shouldHideParentSheet || !open ? null : overlayComponent}
-          </AnimatePresence>
+      <LayoutMeasurementController disable={!open}>
+        <ParentSheetContext.Provider value={nextParentContext}>
+          <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
+            <AnimatePresence custom={{ open }}>
+              {shouldHideParentSheet || !open ? null : overlayComponent}
+            </AnimatePresence>
 
-          {snapPointsMode !== 'percent' && (
-            <View
-              style={{
-                opacity: 0,
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                pointerEvents: 'none',
-              }}
-              onLayout={handleMaxContentViewLayout}
-            />
-          )}
-
-          <AnimatedView
-            ref={ref}
-            {...panResponder?.panHandlers}
-            onLayout={handleAnimationViewLayout}
-            // @ts-ignore for CSS driver this is necessary to attach the transition
-            // also motion driver at least though i suspect all drivers?
-            animation={isDragging || disableAnimation ? null : animation}
-            // @ts-ignore
-            disableClassName
-            style={[
-              {
-                position: 'absolute',
-                zIndex,
-                width: '100%',
-                height: forcedContentHeight,
-                minHeight: forcedContentHeight,
-                opacity: !shouldHideParentSheet ? opacity : 0,
-                ...((shouldHideParentSheet || !open) && {
+            {snapPointsMode !== 'percent' && (
+              <View
+                style={{
+                  opacity: 0,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                   pointerEvents: 'none',
-                }),
-              },
-              animatedStyle,
-            ]}
-          >
-            {/* <AdaptProvider>{props.children}</AdaptProvider> */}
-            {props.children}
-          </AnimatedView>
-        </SheetProvider>
-      </ParentSheetContext.Provider>
+                }}
+                onLayout={handleMaxContentViewLayout}
+              />
+            )}
+
+            <AnimatedView
+              ref={ref}
+              {...panResponder?.panHandlers}
+              onLayout={handleAnimationViewLayout}
+              // @ts-ignore for CSS driver this is necessary to attach the transition
+              // also motion driver at least though i suspect all drivers?
+              animation={isDragging || disableAnimation ? null : animation}
+              // @ts-ignore
+              disableClassName
+              style={[
+                {
+                  position: 'absolute',
+                  zIndex,
+                  width: '100%',
+                  height: forcedContentHeight,
+                  minHeight: forcedContentHeight,
+                  opacity: !shouldHideParentSheet ? opacity : 0,
+                  ...((shouldHideParentSheet || !open) && {
+                    pointerEvents: 'none',
+                  }),
+                },
+                animatedStyle,
+              ]}
+            >
+              {/* <AdaptProvider>{props.children}</AdaptProvider> */}
+              {props.children}
+            </AnimatedView>
+          </SheetProvider>
+        </ParentSheetContext.Provider>
+      </LayoutMeasurementController>
     )
 
     if (process.env.TAMAGUI_TARGET === 'native' && !USE_NATIVE_PORTAL) {

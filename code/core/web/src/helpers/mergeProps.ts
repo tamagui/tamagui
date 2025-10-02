@@ -2,105 +2,116 @@
  * Preserves prop ordering, so that the order most closely matches the last spread objects
  * Useful for having { ...defaultProps, ...props } that ensure props ordering is always kept
  *
+ * Honestly this is somehwat backwards logically from Object.assign, reason was that we typically
+ * are merging defaultProps, givenProps, but we started using it elsewhere and now its a bit confusing
+ * Should look into refactoring this to match common usage
+ *
+ * Merges sub-objects if they start are pseudo-keys or media-key-like (start with "$")
+ *
  *    Given:
  *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
  *    The final key order will be:
  *      b, a
  *
- * Handles a couple special tamagui cases
- *   - classNames can be extracted out separately
- *   - shorthands can be expanded before merging
- *   - pseudo props and variants maintain runtime order for proper priority
- *
- * Example of variant/pseudo prop ordering importance:
- *   const StyledButton = styled(Button, {
- *     pressStyle: { bg: '$blue10' },
- *     variants: {
- *       variant: {
- *         default: { pressStyle: { bg: 'red', scale: 1.05 } }
- *       }
- *     }
- *   })
- *
- *   case 1: variant first, then pressStyle
- *   <StyledButton variant='default' pressStyle={{ bg: 'orange' }} />
- *   output: {variant: 'default', pressStyle: {bg: 'orange'}}
- *
- *   case 2: pressStyle first, then variant
- *   <StyledButton pressStyle={{ bg: 'orange' }} variant='default' />
- *   output: {pressStyle: {bg: 'orange'}, variant: 'default'}
  */
 
-import { mediaKeys } from '../hooks/useMedia'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
-type AnyRecord = Record<string, any>
+export type GenericProps = Record<string, any>
 
-export const mergeProps = (a: Object, b?: Object, inverseShorthands?: AnyRecord) => {
-  const out: AnyRecord = {}
-  for (const key in a) {
-    mergeProp(out, a, b, key, inverseShorthands)
+export const mergeProps = (defaultProps: Object, props: Object) => {
+  const out: GenericProps = {}
+
+  // in general objects keys are sorted by order of insertion
+  // we merge "defaultProps" first as they should come first
+  // (so Object.keys(finalProps) will list [...defaultPropKeys] first)
+  // but we ignore any keys from props, and merge it after, that way
+  // final order is [...defaultPropKeys, ...propKeys]
+
+  // ⚠️ keep in sync with mergeComponentProps logic
+
+  for (const key in defaultProps) {
+    if (key in props) continue
+    out[key] = defaultProps[key]
   }
-  if (b) {
-    for (const key in b) {
-      mergeProp(out, b, undefined, key, inverseShorthands)
-    }
-  }
 
-  // Targeted reordering: only reorder pseudo props and variants that need runtime order
-  if (b && Object.keys(b).length > 0) {
-    // Check if we have any pseudo props or variants that need reordering
-    const hasPropsNeedingReorder = Object.keys(b).some(
-      (key) =>
-        (key in pseudoDescriptors || key === 'variant') && a && key in a && key in out
-    )
-
-    if (hasPropsNeedingReorder) {
-      const reordered: AnyRecord = {}
-
-      // First: Add pseudo props and variants that need specific ordering from runtime props (b)
-      for (const key in b) {
-        if ((key in pseudoDescriptors || key === 'variant') && key in out) {
-          reordered[key] = out[key]
-        }
-      }
-
-      // Second: Add all other props in their original order
-      for (const key in out) {
-        if (!(key in reordered)) {
-          reordered[key] = out[key]
-        }
-      }
-
-      return reordered
-    }
+  for (const key in props) {
+    mergeProp(out, defaultProps, props, key)
   }
 
   return out
 }
 
-function mergeProp(
-  out: AnyRecord,
-  a: Object,
-  b: Object | undefined,
-  key: string,
-  inverseShorthands?: AnyRecord
-) {
-  const longhand = inverseShorthands?.[key] || null
-  const val = a[key]
+// merge props but also handles defaultProps + styledContext
+export const mergeComponentProps = (
+  // this is "a" in mergeProps
+  defaultProps: Object | null | undefined,
+  contextProps: Object | undefined,
+  // this is "b" in mergeProps
+  props: Object
+) => {
+  let overriddenContext: GenericProps | null = null
 
-  // This ensures styled definition and runtime props are always merged
-  if (key in pseudoDescriptors || mediaKeys.has(key)) {
-    out[key] = {
-      ...out[key],
-      ...val,
+  if (!defaultProps && !contextProps) {
+    return [props, overriddenContext] as const
+  }
+
+  if (defaultProps && !contextProps) {
+    return [mergeProps(defaultProps, props), overriddenContext] as const
+  }
+
+  // the only unique case is contextProps, we need to track overrides and do something a bit tricky
+  // since we respect prop order for styles, we want to preserve the object key order in overriddenContext
+
+  const out: GenericProps = {}
+
+  // ⚠️ keep in sync with mergeProps logic
+  // same logic as mergeProps but tracking overrides!
+
+  for (const key in defaultProps) {
+    if (key in props) continue
+    out[key] = defaultProps[key]
+  }
+
+  // styled context props go after defaultProps but before props
+  for (const key in contextProps) {
+    if (key in props) continue
+    out[key] = contextProps[key]
+  }
+
+  for (const key in props) {
+    mergeProp(out, defaultProps, props, key)
+    if (contextProps && key in contextProps) {
+      overriddenContext ||= {}
+      overriddenContext[key] = props[key]
     }
-    return
   }
 
-  if (b && (key in b || (longhand && longhand in b))) {
-    return
+  return [out, overriddenContext] as const
+}
+
+function mergeProp(
+  out: Object,
+  defaultProps: Object | undefined | null,
+  props: Object,
+  key: string
+) {
+  let val = props[key]
+
+  // one special case - we merge tamagui style sub-objects
+  if (
+    defaultProps &&
+    key in defaultProps &&
+    (key in pseudoDescriptors || key[0] === '$') &&
+    val &&
+    typeof val === 'object'
+  ) {
+    const defaultVal = defaultProps[key]
+    if (defaultVal && typeof defaultVal === 'object') {
+      // use merge props so we prefer the key ordering the the last merged
+      val = mergeProps(defaultVal, val)
+    }
   }
 
-  out[longhand || key] = val
+  out[key] = val
 }

@@ -26,6 +26,7 @@ import {
 import React, {
   forwardRef,
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -113,7 +114,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         return motionAnimationState
       }, [isExiting, animationKey, styleKey])
 
-      const animationsQueue = useRef<AnimationProps[]>([])
+      const debugId = process.env.NODE_ENV === 'development' ? useId() : ''
       const lastAnimateAt = useRef(0)
       const disposed = useRef(false)
       const [firstRenderStyle] = useState(style)
@@ -176,14 +177,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (!lastDoAnimate.current) {
           lastAnimateAt.current = Date.now()
           lastDoAnimate.current = doAnimate || {}
-          controls.current = animate(scope.current, doAnimate || {}, {
+          animate(scope.current, doAnimate || {}, {
             type: false,
           })
-          controls.current.complete()
           // scope.animations = []
 
           if (shouldDebug) {
-            console.groupCollapsed(`[motion] 🌊 FIRST`)
+            console.groupCollapsed(`[motion] ${debugId} 🌊 FIRST`)
             console.info(doAnimate)
             console.groupEnd()
           }
@@ -209,9 +209,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
           if (shouldDebug) {
             console.groupCollapsed(
-              `[motion] 🌊 animate (${JSON.stringify(getDiff(lastDoAnimate.current, doAnimate), null, 2)})`
+              `[motion] ${debugId} 🌊 animate (${JSON.stringify(getDiff(lastDoAnimate.current, doAnimate), null, 2)})`
             )
             console.info({
+              props,
+              componentState,
               doAnimate,
               dontAnimate,
               animationOptions,
@@ -234,22 +236,32 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
           // handle case where dontAnimate changes
           // we just set it onto animate + set options to not actually animate
+          const prevDont = lastDontAnimate.current
           if (dontAnimate) {
-            const prev = lastDontAnimate.current
-            if (prev) {
-              removeRemovedStyles(prev, dontAnimate, node)
-              const changed = getDiff(prev, dontAnimate)
+            if (prevDont) {
+              removeRemovedStyles(prevDont, dontAnimate, node)
+              const changed = getDiff(prevDont, dontAnimate)
               if (changed) {
                 Object.assign(node.style, changed as any)
               }
             }
           }
 
-          lastDontAnimate.current = dontAnimate || {}
-
           if (doAnimate) {
             if (updateFirstAnimationStyle()) {
               return
+            }
+
+            // bugfix: going from non-animated to animated in motion -
+            // motion batches things so the above removal can happen a frame before casuing flickering
+            // we see this with tooltips, this is not an ideal solution though, ideally we can remove/update
+            // in the same batch/frame as motion
+            if (prevDont) {
+              for (const key in prevDont) {
+                if (key in doAnimate) {
+                  node.style[key] = prevDont[key]
+                }
+              }
             }
 
             const lastAnimated = lastDoAnimate.current
@@ -264,10 +276,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             }
           }
 
+          lastDontAnimate.current = dontAnimate || {}
           lastDoAnimate.current = doAnimate
         } finally {
-          if (controls.current) {
-            if (isExiting) {
+          if (isExiting) {
+            if (controls.current) {
               controls.current.finished.then(() => {
                 sendExitComplete?.()
               })
@@ -520,9 +533,9 @@ const disableAnimationProps = new Set<string>([
   'flexGrow',
   'flexShrink',
   'justifyContent',
-  'marginRight',
-  'marginLeft',
   'marginBottom',
+  'marginLeft',
+  'marginRight',
   'marginTop',
   'maxHeight',
   'maxWidth',
@@ -535,8 +548,9 @@ const disableAnimationProps = new Set<string>([
   'position',
   'textWrap',
   'transformOrigin',
-  'zIndex',
+  'userSelect',
   'WebkitBackdropFilter',
+  'zIndex',
 ])
 
 const MotionView = createMotionView('div')

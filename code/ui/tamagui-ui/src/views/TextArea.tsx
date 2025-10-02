@@ -6,6 +6,8 @@ import { textAreaSizeVariant } from '../helpers/inputHelpers'
 import type { Input, InputExtraProps, InputProps } from './Input'
 import { InputFrame, defaultStyles, useInputProps } from './Input'
 
+export type TextArea = Input
+
 /**
  * Is basically Input but with rows = 4 to start
  */

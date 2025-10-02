@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "1.132.21",
+  "version": "1.135.0",
   "sideEffects": [
     "*.css"
   ],
@@ -50,6 +50,6 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "*"
   }
 }

@@ -142,11 +142,7 @@ export const useThemeState = (
       localStates.set(id, local)
     }
 
-    if (
-      process.env.NODE_ENV === 'development' &&
-      props.debug &&
-      props.debug !== 'profile'
-    ) {
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
       console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
       console.info({ props, propsKey, isRoot, parentId, local, next, needsUpdate })
       console.groupEnd()
@@ -177,11 +173,7 @@ export const useThemeState = (
       HadTheme.set(keys, false)
       return
     }
-    if (
-      process.env.NODE_ENV === 'development' &&
-      props.debug &&
-      props.debug !== 'profile'
-    ) {
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
       console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
     }
     scheduleUpdate(id)
@@ -225,7 +217,7 @@ const getNextState = (
     needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
   )
 
-  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     const message = ` · useTheme(${id}) getNextState => ${name} needsUpdate ${needsUpdate} shouldRerender ${shouldRerender}`
     if (process.env.TAMAGUI_TARGET === 'native') {
       console.info(message)
@@ -286,7 +278,7 @@ const getNextState = (
     !needsUpdate &&
     nextState.name === lastState.name
 
-  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(
       ` · useTheme(${id}) ⏭️ ${name} shouldAvoidRerender: ${shouldAvoidRerender}`
     )

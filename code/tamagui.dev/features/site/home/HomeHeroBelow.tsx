@@ -59,9 +59,8 @@ export const HeroBelowContent = memo(() => {
             <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           </XStack>
           <Paragraph o={0.7} size="$5">
-            A smart optimizer that makes your app fast with partial analysis, extracting
-            CSS, flattening your tree, and removing code. Next, Webpack, Vite, Babel,
-            Metro.
+            An optimizer that makes Core faster via partial analysis, CSS extraction, tree
+            flattening, and dead code elimination. Next, Webpack, Vite, Babel, Metro.
           </Paragraph>
         </Section>
 

@@ -2,29 +2,20 @@ import {
   Configuration,
   createStyledContext,
   styled,
-  Theme,
   useConfiguration,
-  useThemeWithState,
 } from '@tamagui/web'
-import { memo, useEffect, useId, useState } from 'react'
+import { useState } from 'react'
 import {
   AnimatePresence,
   Button,
   Circle,
-  type CircleProps,
-  Dialog,
-  Input,
-  Popover,
   Square,
   Text,
   TooltipSimple,
   View,
-  XStack,
   YStack,
 } from '@tamagui/ui'
 import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
-import { PopoverDemo } from '@tamagui/demos'
-import { LogoWords } from '@tamagui/logo'
 
 export default function Sandbox() {
   return (

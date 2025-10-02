@@ -435,8 +435,10 @@ depth on [the tokens page](/docs/core/tokens).
 The font tokens are a bit special and are created with `createFont`:
 
 ```tsx
+import { isWeb } from 'tamagui'
+
 const interFont = createFont({
-  family: 'Inter, Helvetica, Arial, sans-serif',
+  family: isWeb ? 'Inter, Helvetica, Arial, sans-serif' : 'Inter',
   size: {
     1: 12,
     2: 14,
@@ -458,12 +460,12 @@ const interFont = createFont({
     8: -1,
   },
 
-  // for native only, alternate family based on weight/style
+  // because android handles fonts differently, you need to map the weight
+  // to the actual name of the font in the font-file
+  // you can get the name with `otfinfo`: otfinfo --family Inter.ttf
   face: {
-    // pass in weights as keys
-    700: { normal: 'InterBold', italic: 'InterBold-Italic' },
-    800: { normal: 'InterBold', italic: 'InterBold-Italic' },
-    900: { normal: 'InterBold', italic: 'InterBold-Italic' },
+    400: { normal: 'Inter', italic: 'Inter-Italic' },
+    500: { normal: 'InterBold', italic: 'InterBold-Italic' },
   },
 })
 ```

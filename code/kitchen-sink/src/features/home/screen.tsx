@@ -3,18 +3,20 @@ import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from '@tamagui/ui'
-import {
-  H1,
-  ListItem,
-  Paragraph,
-  Separator,
-  Square,
-  Theme,
-  XStack,
-  YGroup,
-  YStack,
-} from '@tamagui/ui'
+import { H1, ListItem, Separator, styled, Text, YGroup, YStack } from '@tamagui/ui'
 import { ColorSchemeListItem } from './ColorSchemeListItem'
+
+const ViewVariants = styled(Text, {
+  color: 'blue',
+
+  variants: {
+    test: {
+      true: {
+        color: 'red',
+      },
+    },
+  } as const,
+})
 
 export function HomeScreen() {
   // To test a single case easily:
@@ -24,6 +26,17 @@ export function HomeScreen() {
   //     <ScrollView>
   //       <ThemeChange />
   //     </ScrollView>
+  //   </>
+  // )
+
+  // return (
+  //   <>
+  //     <ColorSchemeToggle />
+  //     <Button color="$white1">
+  //       <Button.Text debug="verbose">test</Button.Text>
+  //     </Button>
+
+  //     <Button color="$white1">test</Button>
   //   </>
   // )
 

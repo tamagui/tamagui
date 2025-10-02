@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.132.21",
+  "version": "1.135.0",
   "removeSideEffects": true,
   "sideEffects": [
     "*.css"
@@ -51,7 +51,7 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

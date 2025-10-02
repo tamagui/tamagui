@@ -2352,7 +2352,7 @@ export type ResolveVariableAs =
   | 'except-theme'
 
 export type SplitStyleProps = {
-  styledContextProps?: Record<string, any>
+  styledContext?: Record<string, any>
   mediaState?: Record<string, boolean>
   noClass?: boolean
   noExpand?: boolean

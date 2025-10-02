@@ -29,8 +29,8 @@ import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
+  getMediaKey,
   mediaState as globalMediaState,
-  isMediaKey,
   mediaKeyMatch,
   mediaQueryConfig,
 } from '../hooks/useMedia'
@@ -42,7 +42,6 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
-  IsMediaType,
   PseudoStyles,
   RulesToInsert,
   SpaceTokens,
@@ -235,12 +234,7 @@ export const getSplitStyles: StyleSplitter = (
     time`style-state`
   }
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    debug &&
-    debug !== 'profile' &&
-    isClient
-  ) {
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose' && isClient) {
     if (isDevTools) {
       console.groupCollapsed('🔹 getSplitStyles 👇')
       log({
@@ -258,7 +252,7 @@ export const getSplitStyles: StyleSplitter = (
 
   const { asChild } = props
   const { accept } = staticConfig
-  const { noSkip, disableExpandShorthands, noExpand } = styleProps
+  const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
   for (const keyOg in props) {
@@ -486,10 +480,10 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleLikeKey = isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
-    let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
+    let isMedia = !isStyleLikeKey && !isPseudo ? getMediaKey(keyInit) : false
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
-    if (isMediaOrPseudo && keyInit.startsWith('$group-')) {
+    if (isMediaOrPseudo && isMedia === 'group') {
       const parts = keyInit.split('-')
       const plen = parts.length
       if (
@@ -602,8 +596,7 @@ export const getSplitStyles: StyleSplitter = (
     const disablePropMap = isMediaOrPseudo || !isStyleLikeKey
 
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
-      const isStyledContextProp =
-        styleProps.styledContextProps && key in styleProps.styledContextProps
+      const isStyledContextProp = styledContext && key in styledContext
 
       if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
         viewProps[key] = val
@@ -633,8 +626,9 @@ export const getSplitStyles: StyleSplitter = (
         return
       }
 
+      // re-run with expanded key
       isPseudo = key in validPseudoKeys
-      isMedia = !isPseudo && isMediaKey(key)
+      isMedia = isPseudo ? false : getMediaKey(key)
       isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
 
@@ -1297,7 +1291,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isClient && isDevTools) {
       // end collapsed log above
       console.groupEnd()

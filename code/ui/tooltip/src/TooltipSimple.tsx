@@ -43,11 +43,9 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
 
         <Tooltip.Content
           zIndex={1_000_000_000}
-          enterStyle={{ x: 0, y: -4, opacity: 0, scale: 0.96 }}
-          exitStyle={{ x: 0, y: -4, opacity: 0, scale: 0.96 }}
-          x={0}
+          enterStyle={{ y: -4, opacity: 0, scale: 0.96 }}
+          exitStyle={{ y: -4, opacity: 0, scale: 0.96 }}
           scale={1}
-          y={0}
           elevation="$0.5"
           opacity={1}
           pointerEvents="none"

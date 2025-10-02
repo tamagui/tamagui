@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/group",
-  "version": "1.132.21",
+  "version": "1.135.0",
   "sideEffects": [
     "*.css"
   ],
@@ -54,6 +54,6 @@
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "*"
   }
 }
