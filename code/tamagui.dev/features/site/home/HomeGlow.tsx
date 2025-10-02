@@ -1,6 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { memo, useMemo, useState } from 'react'
-import { AnimatePresence, YStack, isClient } from 'tamagui'
+import { AnimatePresence, YStack, isClient } from '@tamagui/ui'
 
 import { useTintSectionIndex } from './TintSection'
 

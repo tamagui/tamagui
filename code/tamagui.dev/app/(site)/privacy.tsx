@@ -25,7 +25,7 @@ export default function PrivacyPage() {
     <>
       <HeadInfo
         title={`${frontmatter.title} | Tamagui`}
-        description={frontmatter.description}
+        description={frontmatter.description || ''}
       />
 
       <Container py="$10">

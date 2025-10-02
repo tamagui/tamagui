@@ -15,8 +15,7 @@ import {
   styled,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { withStaticProperties } from '@tamagui/helpers'
-import { clamp, composeEventHandlers } from '@tamagui/helpers'
+import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -749,14 +748,14 @@ const Range = SliderTrackActive
 const Thumb = SliderThumb
 
 export {
+  Range,
   Slider,
+  SliderThumb,
   SliderTrack,
   SliderTrackActive,
-  SliderThumb,
+  Thumb,
   //
   Track,
-  Range,
-  Thumb,
 }
 
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps }
+export type { SliderProps, SliderTrackActiveProps, SliderTrackProps }

@@ -2,7 +2,7 @@ import { useThemeSetting } from '@tamagui/next-theme'
 import type { DivProps, HoverGlowProps } from '~/components/HoverGlow'
 import { IS_SAFARI, useHoverGlow } from '~/components/HoverGlow'
 import { memo } from 'react'
-import type { HeadingProps } from 'tamagui'
+import type { HeadingProps } from '@tamagui/ui'
 import {
   H1,
   H2,
@@ -13,7 +13,7 @@ import {
   XStack,
   YStack,
   useComposedRefs,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { Container } from '~/components/Containers'
 import { Slide } from '../Slide'
 
@@ -200,7 +200,7 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
                   <Container mt={-200} ai="center">
                     <>
                       <Spacer size="$8" />
-                      <XStack maw={790} space="$8" separator={<Separator vertical />}>
+                      <XStack maw={790} gap="$8">
                         <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
                           {subTitle || 'Better apps with less code'}
                         </H2>
@@ -208,7 +208,7 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
 
                       <Spacer />
 
-                      <XStack space ai="center">
+                      <XStack gap="$4" ai="center">
                         <SizableText o={0.5} size="$3">
                           By Nate Wienert
                         </SizableText>

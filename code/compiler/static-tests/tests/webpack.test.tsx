@@ -115,8 +115,12 @@ describe('webpack-tests', () => {
     const { container: containerOn } = renderOn()
     const { container: containerOff } = renderOff()
 
-    const outCn = containerOn.firstChild?.firstChild?.['className']
-    const out2Cn = containerOff.firstChild?.firstChild?.['className']
+    // Find the div with is_MyComponent class which has the padding classes
+    const divOn = containerOn.querySelector('.is_MyComponent')
+    const divOff = containerOff.querySelector('.is_MyComponent')
+
+    const outCn = divOn?.className
+    const out2Cn = divOff?.className
 
     expect(outCn).not.toContain(`_pl-t-space-4`)
     expect(out2Cn).toContain(`_pl-t-space-4`)

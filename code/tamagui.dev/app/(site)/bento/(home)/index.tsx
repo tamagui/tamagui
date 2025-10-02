@@ -13,7 +13,7 @@ import {
   Theme,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'
 import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'

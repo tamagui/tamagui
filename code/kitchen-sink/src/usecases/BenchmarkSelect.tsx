@@ -1,7 +1,7 @@
 import React from "react";import { SelectDemo } from '@tamagui/demos';
 
 import { StyleSheet, View } from 'react-native';
-import { Button, ListItem, Text, XStack, YStack } from 'tamagui';
+import { Button, ListItem, Text, XStack, YStack } from '@tamagui/ui';
 
 import { TimedRender } from '../components/TimedRender';
 

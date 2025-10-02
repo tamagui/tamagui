@@ -1,35 +1,15 @@
 import type { GetProps } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import React from 'react';
+import { type SpaceProps } from '@tamagui/spacer';
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
 export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export type GroupExtraProps = {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: 'horizontal' | 'vertical';
+export type GroupExtraProps = SpaceProps & {
     orientation?: 'horizontal' | 'vertical';
     scrollable?: boolean;
     /**
@@ -57,123 +37,103 @@ export declare const useGroupItem: (childrenProps: {
 }, forcePlacement?: GroupItemProps["forcePlacement"], __scopeGroup?: Scope) => Record<string, any>;
 export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & GroupExtraProps & {
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
         size?: any;
         unstyled?: boolean | undefined;
-    }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+    }>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
+        /**
+         * @default false
+         */
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
+        /**
+         * forces the group to use the Group.Item API
+         */
+        forceUseItem?: boolean;
+    } & {
         __scopeGroup?: Scope;
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & GroupExtraProps & {
+    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
+        /**
+         * @default false
+         */
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
+        /**
+         * forces the group to use the Group.Item API
+         */
+        forceUseItem?: boolean;
+    } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
         size?: any;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
@@ -184,123 +144,103 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
 };
 export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & GroupExtraProps & {
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
         size?: any;
         unstyled?: boolean | undefined;
-    }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+    }>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
+        /**
+         * @default false
+         */
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
+        /**
+         * forces the group to use the Group.Item API
+         */
+        forceUseItem?: boolean;
+    } & {
         __scopeGroup?: Scope;
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & GroupExtraProps & {
+    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
+        /**
+         * @default false
+         */
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
+        /**
+         * forces the group to use the Group.Item API
+         */
+        forceUseItem?: boolean;
+    } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
         size?: any;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
@@ -311,123 +251,103 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
 };
 export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & GroupExtraProps & {
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    /**
+     * @default false
+     */
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
+    /**
+     * forces the group to use the Group.Item API
+     */
+    forceUseItem?: boolean;
+} & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
         size?: any;
         unstyled?: boolean | undefined;
-    }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
+    }>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
+        /**
+         * @default false
+         */
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
+        /**
+         * forces the group to use the Group.Item API
+         */
+        forceUseItem?: boolean;
+    } & {
         __scopeGroup?: Scope;
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & GroupExtraProps & {
+    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
+        /**
+         * @default false
+         */
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
+        /**
+         * forces the group to use the Group.Item API
+         */
+        forceUseItem?: boolean;
+    } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | null | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
         size?: any;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];

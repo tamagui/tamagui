@@ -1,6 +1,6 @@
 import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast'
 import React from 'react'
-import { Button, YStack } from 'tamagui'
+import { Button, YStack } from '@tamagui/ui'
 
 export function ToastCase() {
   const [count, setCount] = React.useState(0)
@@ -19,7 +19,7 @@ export function ToastCase() {
         {[...Array(count)].map((_, index) => {
           const identifier = index + 1
           return (
-            <Toast key={index} open data-testid={`toast-${identifier}`}>
+            <Toast key={index} open data-testid={`toast-${identifier}`} tabIndex={0}>
               <Toast.Title>Toast {identifier} title</Toast.Title>
               <Toast.Description>Toast {identifier} description</Toast.Description>
 

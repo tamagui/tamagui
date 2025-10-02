@@ -1,5 +1,5 @@
 import { throttle } from '@github/mini-throttle'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/tamagui-dev-config'
@@ -12,7 +12,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import type { YStackProps } from 'tamagui'
+import type { YStackProps } from '@tamagui/ui'
 import {
   Button,
   Circle,
@@ -30,8 +30,8 @@ import {
   useGet,
   useIsomorphicLayoutEffect,
   useMedia,
-} from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+} from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
 import favicon from '~/public/favicon.svg'
@@ -194,7 +194,7 @@ export const HomeResponsive = memo(() => {
           pos="absolute"
           zi={1}
           f={1}
-          space="$1"
+          gap="$1"
           // mostly keeping this to make sure we get a good ACID test of useMedia().sm
           {...(media.sm && {
             scale,
@@ -293,7 +293,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
       <XStack y={-60} ai="flex-start">
         <YStack w={1} h={70} bg="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
-          accessibilityLabel={`Responsive size ${name}`}
+          aria-label={`Responsive size ${name}`}
           borderWidth={1}
           size="$3"
           circular
@@ -302,12 +302,11 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
           left={0}
           y={-20}
           x={-17}
-          fontSize={12}
           onPress={() => {
             onPress(name)
           }}
         >
-          {name}
+          <Button.Text fontSize={12}>{name}</Button.Text>
         </Button>
       </XStack>
     </YStack>
@@ -316,7 +315,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const ResponsiveHeader = memo(() => {
   return (
-    <YStack f={1} space="$3">
+    <YStack f={1} gap="$3">
       <XStack>
         <HomeH2 ta="left" als="flex-start">
           Easily responsive
@@ -358,7 +357,7 @@ export const Safari = memo(
     return (
       <SafariFrame>
         <YStack bg="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
-          <XStack pos="relative" ai="center" space="$4">
+          <XStack pos="relative" ai="center" gap="$4">
             <XStack gap="$2">
               <Circle bg="$red10" size={10} />
               <Circle bg="$yellow10" size={10} />
@@ -384,7 +383,7 @@ export const Safari = memo(
                 ai="center"
                 px="$2"
                 jc="center"
-                space
+                gap="$4"
               >
                 <Lock color="var(--colorPress)" size={12} />
                 <Paragraph theme="alt1" size="$2">
@@ -445,7 +444,7 @@ export const Safari = memo(
                   <XStack>
                     <YStack f={1}>
                       <H3>Enchanting Garden</H3>
-                      <XStack ai="center" space>
+                      <XStack ai="center" gap="$4">
                         <MapPin size={12} color="var(--color)" />
                         <H5>Kailua, HI</H5>
                       </XStack>
@@ -462,13 +461,13 @@ export const Safari = memo(
 
               <YStack px="$4">
                 <XStack>
-                  <XStack ai="center" space>
+                  <XStack ai="center" gap="$4">
                     <Paragraph theme="alt2">4 guests</Paragraph>
                     <Paragraph theme="alt2">&middot;</Paragraph>
                     <Paragraph theme="alt2">Entire house</Paragraph>
                   </XStack>
                   <Spacer flex={1} />
-                  <XStack ai="center" space>
+                  <XStack ai="center" gap="$4">
                     <Star size={20} color="var(--purple10)" />
                     <Paragraph theme="purple">4.55</Paragraph>
                   </XStack>
@@ -517,7 +516,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
           <Image width={10} height={10} src={favicon} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
+        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipsis>
           {children}
         </Paragraph>
       </XStack>

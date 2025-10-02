@@ -2,7 +2,7 @@ import {
   createExtractor,
   loadTamaguiBuildConfigSync,
   type TamaguiOptions,
-} from '@tamagui/static'
+} from '@tamagui/compiler'
 import type { IntermediateConfigT } from 'metro-config'
 
 export function withTamagui(

@@ -1,4 +1,4 @@
-import { Input, Label, Switch, XStack, YStack } from 'tamagui'
+import { Input, Label, Switch, XStack, YStack } from '@tamagui/ui'
 
 export function LabelDemo() {
   return (
@@ -10,7 +10,7 @@ export function LabelDemo() {
         <Input flex={1} id="name" defaultValue="Nate Wienert" />
       </XStack>
 
-      <XStack alignItems="center" space="$4">
+      <XStack alignItems="center" gap="$4">
         <Label width={90} htmlFor="notify">
           Notifications
         </Label>

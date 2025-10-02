@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, H4, Label, Paragraph, RadioGroup, XStack, YStack } from 'tamagui'
+import { Button, H4, Label, Paragraph, RadioGroup, XStack, YStack } from '@tamagui/ui'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { AccentTheme } from '../../components/AccentTheme'
 const options = [

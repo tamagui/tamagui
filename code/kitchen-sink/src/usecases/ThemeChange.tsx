@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Square, Theme, YStack, Text } from 'tamagui'
+import { Button, Card, Square, Theme, YStack, Text } from '@tamagui/ui'
 
 import { TEST_IDS } from '../constants/test-ids'
 
@@ -62,7 +62,9 @@ export function Inner({
         <SandboxThemeChildStatic level={level} />
         <SandboxThemeChildDynamic level={level} />
         <YStack gap="$2">
-          <Button themeInverse>Inverse</Button>
+          <Theme inverse>
+            <Button>Inverse</Button>
+          </Theme>
           <Button>Normal</Button>
         </YStack>
 

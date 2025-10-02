@@ -1,7 +1,7 @@
 'use client'
 
 import { Lock } from '@tamagui/lucide-icons'
-import { H2, Paragraph, YStack } from 'tamagui'
+import { H2, Paragraph, YStack } from '@tamagui/ui'
 
 // import { ButtonLink } from './Link'
 
@@ -45,7 +45,7 @@ export const NotSignedInWithGithub = () => {
 
 const ErrorContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <YStack padding="$2" alignItems="center" space>
+    <YStack padding="$2" alignItems="center" gap="$4">
       <Lock size="$10" />
       {children}
     </YStack>

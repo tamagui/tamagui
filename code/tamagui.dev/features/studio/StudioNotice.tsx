@@ -2,7 +2,7 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/lucide-icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
-import type { ScrollViewProps, XStackProps } from 'tamagui'
+import type { ScrollViewProps, XStackProps } from '@tamagui/ui'
 import {
   AnimatePresence,
   Button,
@@ -13,7 +13,7 @@ import {
   XStack,
   YStack,
   styled,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 type PanelProps = XStackProps & {
   title?: React.ReactNode
@@ -90,7 +90,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
             </Paragraph>
 
             <Button
-              accessibilityLabel="Carousel left"
+              aria-label="Carousel left"
               icon={ChevronLeft}
               size="$2"
               circular
@@ -98,7 +98,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
               onPress={() => paginate(-1)}
             />
             <Button
-              accessibilityLabel="Carousel left"
+              aria-label="Carousel left"
               icon={ChevronRight}
               size="$2"
               circular
@@ -334,6 +334,6 @@ const NoticeFrame = styled(YStack, {
   py: '$3',
   bg: '$background',
   br: '$4',
-  space: '$3',
+  gap: '$3',
   pos: 'relative',
 })

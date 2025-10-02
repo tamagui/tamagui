@@ -29,7 +29,6 @@ export type TamaguiComponentPropsBaseBase = {
      * If given a theme it will only apply to this element, instead of passing down to children
      */
     themeShallow?: boolean;
-    themeInverse?: boolean;
     /**
      * Same as the web id property for setting a uid on an element
      */

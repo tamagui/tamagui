@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
+import { stackDefaultStyles } from './constants/constants'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
@@ -156,7 +157,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         }
       }
 
-      const sep = configIn.cssStyleSeparator || ''
+      const sep = configIn.settings?.cssStyleSeparator || ''
       function declarationsToRuleSet(decs: string[], selector = '') {
         return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
       }
@@ -246,7 +247,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const defaultFontSetting = configIn.settings?.defaultFont ?? configIn.defaultFont
+  const defaultFontSetting = configIn.settings?.defaultFont
 
   const defaultFont = (() => {
     let val = defaultFontSetting
@@ -255,6 +256,22 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
     return val
   })()
+
+  const defaultPositionSetting = configIn.settings?.defaultPosition || 'static'
+
+  const defaultProps = configIn.defaultProps || {}
+  // Apply defaultPosition to stackDefaultStyles directly
+  // This avoids the deprecated defaultProps pattern in createComponent
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    defaultProps.Stack = {
+      ...defaultProps.Stack,
+      position: defaultPositionSetting,
+    }
+    defaultProps.View = {
+      ...defaultProps.View,
+      position: defaultPositionSetting,
+    }
+  }
 
   // ensure prefixed with $
   const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
@@ -266,23 +283,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const config: TamaguiInternalConfig = {
     fonts: {},
-    onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,
     media: {},
     ...configIn,
+    defaultProps,
     unset,
     settings: {
-      // move deprecated settings here so we can reference them all using `getSetting`
-      // TODO remove this on v2
-      disableSSR: configIn.disableSSR,
-      defaultFont: configIn.defaultFont,
-      disableRootThemeClass: configIn.disableRootThemeClass,
-      onlyAllowShorthands: configIn.onlyAllowShorthands,
-      mediaQueryDefaultActive: configIn.mediaQueryDefaultActive,
-      themeClassNameOnRoot: configIn.themeClassNameOnRoot,
-      cssStyleSeparator: configIn.cssStyleSeparator,
-
       webContainerType: 'inline-size',
       ...configIn.settings,
     },

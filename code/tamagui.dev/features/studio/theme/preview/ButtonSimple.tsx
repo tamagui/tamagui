@@ -1,4 +1,4 @@
-import { type ButtonProps, SizableText, YStack } from 'tamagui'
+import { type ButtonProps, SizableText, YStack } from '@tamagui/ui'
 
 export const ButtonSimple = ({
   color = '$color12',
