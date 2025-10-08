@@ -76,7 +76,11 @@ export const mergeComponentProps = (
   // styled context props go after defaultProps but before props
   for (const key in contextProps) {
     if (key in props) continue
-    out[key] = contextProps[key]
+    const contextValue = contextProps[key]
+    // don't merge undefined context values to preserve inheritance
+    if (contextValue !== undefined) {
+      out[key] = contextValue
+    }
   }
 
   for (const key in props) {
