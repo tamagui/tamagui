@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-async",
-  "version": "1.135.2",
+  "version": "1.135.3",
   "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
