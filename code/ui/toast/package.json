@@ -50,7 +50,8 @@
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/visually-hidden": "workspace:*"
+    "@tamagui/visually-hidden": "workspace:*",
+    "burnt": "^0.12.2"
   },
   "peerDependencies": {
     "react": "*",
@@ -58,7 +59,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "burnt": "^0.12.2",
     "react": "*",
     "react-native": "^0.79.2"
   },
