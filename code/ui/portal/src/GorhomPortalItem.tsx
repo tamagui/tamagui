@@ -12,44 +12,35 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
   const cur = allPortalHosts.get(props.hostName || '')
   const [node, setNode] = useState<HTMLElement | null | undefined>(cur)
 
-  // Check if current node is disconnected and clear it immediately
-  const actualNode = node?.isConnected ? node : null
-
-  if (!props.passThrough && cur && actualNode !== cur) {
-    setNode(cur)
-  }
-
+  // Register listener only once per hostName
   useIsomorphicLayoutEffect(() => {
     if (!props.hostName) return
 
-    // Check if current node is still in the document
-    if (node && !node.isConnected) {
-      setNode(null)
-      return
-    }
-
-    if (actualNode) return
-
-    // If we already have cur from Map, use it immediately
-    if (cur) {
-      setNode(cur)
-      return
-    }
-
-    const listener = (newNode: HTMLElement) => {
+    const listener = (newNode: HTMLElement | null) => {
       setNode(newNode)
     }
 
     portalListeners[props.hostName] ||= new Set()
     portalListeners[props.hostName].add(listener)
+
     return () => {
       portalListeners[props.hostName!]?.delete(listener)
     }
-  }, [node, actualNode, cur, props.hostName])
+  }, [props.hostName])
+
+  // Sync with Map value in separate effect
+  useIsomorphicLayoutEffect(() => {
+    if (cur && cur !== node) {
+      setNode(cur)
+    }
+  }, [cur, node])
 
   if (props.passThrough) {
     return props.children
   }
+
+  // Check if node is connected before using it
+  const actualNode = node?.isConnected ? node : null
 
   if (!actualNode) {
     return null
