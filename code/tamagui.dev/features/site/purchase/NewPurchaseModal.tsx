@@ -81,7 +81,6 @@ export function PurchaseModalContents() {
   const takeoutStore = useTakeoutStore()
   const [lastTab, setLastTab] = useState<Tab>('purchase')
   const [currentTab, setCurrentTab] = useState<Tab>('purchase')
-  const [disableAutoRenew, setDisableAutoRenew] = useState(false)
   const [chatSupport, setChatSupport] = useState(false)
   const [supportTier, setSupportTier] = useState('0')
   const [isProcessing, setIsProcessing] = useState(false)
@@ -153,12 +152,12 @@ export function PurchaseModalContents() {
     paymentModal.show = true
     paymentModal.yearlyTotal = yearlyTotal
     paymentModal.monthlyTotal = monthlyTotal
-    paymentModal.disableAutoRenew = disableAutoRenew
+    paymentModal.disableAutoRenew = false
     paymentModal.chatSupport = chatSupport
     paymentModal.supportTier = Number(supportTier)
     paymentModal.teamSeats = teamSeats
     paymentModal.selectedPrices = {
-      disableAutoRenew,
+      disableAutoRenew: false,
       chatSupport,
       supportTier: Number(supportTier),
       teamSeats,
@@ -169,7 +168,7 @@ export function PurchaseModalContents() {
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
 
   // Calculate prices
-  const basePrice = disableAutoRenew ? 400 : 240 // yearly base price
+  const basePrice = 240 // yearly subscription price
   const chatSupportMonthly = chatSupport ? 200 : 0 // $200/month for chat support
   const supportTierMonthly = Number(supportTier) * 800 // $800/month per tier
   const teamSeatsPrice = teamSeats * 100 // $100 per seat
@@ -183,30 +182,17 @@ export function PurchaseModalContents() {
     const hasChat = chatSupport
     const hasSupportTier = Number(supportTier) > 0
 
-    if (disableAutoRenew) {
-      if (hasChat && hasSupportTier) {
-        return 'One-time payment for yearly base, monthly billing for chat and support tier.'
-      }
-      if (hasChat) {
-        return 'One-time payment for yearly base, monthly billing for chat support.'
-      }
-      if (hasSupportTier) {
-        return 'One-time payment for yearly base, monthly billing for support tier.'
-      }
-      return 'One-time payment, no renewal'
-    } else {
-      if (hasChat && hasSupportTier) {
-        return 'Yearly base + monthly chat and support tier, easy 1-click cancel.'
-      }
-      if (hasChat) {
-        return 'Yearly base + monthly chat support, easy 1-click cancel.'
-      }
-      if (hasSupportTier) {
-        return 'Yearly base + monthly support tier, easy 1-click cancel.'
-      }
-      return 'Pay one year up-front, easy one-click cancel.'
+    if (hasChat && hasSupportTier) {
+      return 'Yearly base + monthly chat and support tier, easy 1-click cancel.'
     }
-  }, [chatSupport, supportTier, disableAutoRenew])
+    if (hasChat) {
+      return 'Yearly base + monthly chat support, easy 1-click cancel.'
+    }
+    if (hasSupportTier) {
+      return 'Yearly base + monthly support tier, easy 1-click cancel.'
+    }
+    return 'Pay one year up-front, easy one-click cancel.'
+  }, [chatSupport, supportTier])
 
   const tabContents = {
     purchase: () => {
@@ -219,15 +205,14 @@ export function PurchaseModalContents() {
             </BigP>
 
             <XStack mx="$-4" fw="wrap" gap="$3" ai="center" justifyContent="center">
-              <PromoCards disableAutoRenew={disableAutoRenew} />
+              <PromoCards />
             </XStack>
 
             <YStack gap="$3">
               <P color="$color10" size="$4">
                 For a one year term you get access to the private Takeout Github repo,
-                Bento components
-                {disableAutoRenew ? `` : `, and the private community chat room`}. You get
-                lifetime rights to all code and assets, even after subscription expires.
+                Bento components, and the private community chat room. You get lifetime
+                rights to all code and assets, even after subscription expires.
               </P>
             </YStack>
           </YStack>
@@ -398,40 +383,17 @@ export function PurchaseModalContents() {
                       <H3 size="$11">
                         $
                         {Intl.NumberFormat('en-US').format(
-                          disableAutoRenew
-                            ? yearlyTotal
-                            : monthlyTotal + Math.ceil(yearlyTotal / 12)
+                          monthlyTotal + Math.ceil(yearlyTotal / 12)
                         )}
                         <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
-                          {disableAutoRenew ? ` once` : `/month`}
+                          /month
                         </Paragraph>
-                        {disableAutoRenew && monthlyTotal > 0 && (
-                          <>
-                            <Paragraph> + </Paragraph>${monthlyTotal}
-                            <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
-                              /month
-                            </Paragraph>
-                          </>
-                        )}
                       </H3>
                     </XStack>
 
                     <Paragraph theme="alt2" ellipse size="$4" mb="$3">
                       {subscriptionMessage}
                     </Paragraph>
-
-                    <XStack alignItems="center" gap="$4">
-                      <Switch
-                        onCheckedChange={(x) => setDisableAutoRenew(!disableAutoRenew)}
-                        checked={!disableAutoRenew}
-                        id="auto-renew"
-                      />
-                      <Label htmlFor="auto-renew">
-                        <Paragraph theme="green" color="$color10" ff="$mono" size="$5">
-                          {disableAutoRenew ? `One-time` : `Subscription`}
-                        </Paragraph>
-                      </Label>
-                    </XStack>
                   </YStack>
 
                   <YStack gap="$2" width="100%" $gtXs={{ width: '42%' }}>
@@ -547,7 +509,7 @@ export function PurchaseModalContents() {
       <StripePaymentModal
         yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : yearlyTotal} // if they have a pro subscription or have subscribed before, the yearly total is 0
         monthlyTotal={monthlyTotal}
-        disableAutoRenew={disableAutoRenew}
+        disableAutoRenew={false}
         chatSupport={chatSupport}
         supportTier={Number(supportTier)}
         teamSeats={teamSeats}
@@ -566,13 +528,6 @@ const Question = styled(P, {
 export const FaqTabContent = () => {
   return (
     <YStack gap="$6">
-      <Question>Do I have to subscribe?</Question>
-      <P>
-        Nope. There's a checkbox at the bottom to disable auto-renew. It raises the price
-        a bit and you lose access to the private community Discord, but otherwise is
-        identical.
-      </P>
-
       <Question>Do I own the code? Can I publish it publicly?</Question>
       <P>
         For Bento - yes. For Takeout - no. Takeout is closed source, but the Bento license

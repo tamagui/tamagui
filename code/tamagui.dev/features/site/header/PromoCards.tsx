@@ -13,10 +13,7 @@ const Card = styled(YStack, {
   borderColor: '$color4',
 })
 
-export const PromoCards = ({
-  less,
-  disableAutoRenew,
-}: { less?: boolean; disableAutoRenew?: boolean }) => {
+export const PromoCards = ({ less }: { less?: boolean }) => {
   return (
     <>
       <Card>
@@ -60,7 +57,7 @@ export const PromoCards = ({
 
       {!less && (
         <>
-          <Card opacity={disableAutoRenew ? 0.1 : 1}>
+          <Card>
             <TooltipLabelLarge
               icon={null as any}
               title="#takeout"
