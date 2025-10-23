@@ -4,7 +4,7 @@
  * StripePaymentModal handles the payment flow for Pro plan, Team plan, and additional support options.
  *
  * Pro Plan Options:
- * - One-time payment: $400
+ * - One-time payment: $400 - Currently disabled
  * - Yearly subscription: $240/year
  *    - This is processed as an invoice payment for one-time payment
  *    - For subscription, client-side confirmation is needed to verify card ownership
@@ -250,14 +250,9 @@ const PaymentForm = ({
           return
         }
 
-        // Confirm payment if needed (for both subscriptions and one-time payments)
+        // Confirm payment if needed for subscriptions
         // Payment confirmation is required when amount_due > 0 and clientSecret exists
-        if (
-          !selectedPrices.disableAutoRenew &&
-          data.amount_due &&
-          data.amount_due > 0 &&
-          data.clientSecret
-        ) {
+        if (data.amount_due && data.amount_due > 0 && data.clientSecret) {
           const result = await stripe.confirmPayment({
             elements,
             redirect: 'if_required',
@@ -293,7 +288,7 @@ const PaymentForm = ({
         const upgradeData = await upgradeResponse.json()
         if (!upgradeResponse.ok) {
           // If upgrade fails and Pro is a subscription, cancel it
-          if (data?.id && !selectedPrices.disableAutoRenew) {
+          if (data?.id) {
             await fetch('/api/handle-failed-payment-subscription', {
               method: 'POST',
               headers: {
@@ -328,7 +323,7 @@ const PaymentForm = ({
 
           if (monthlyResult.error) {
             // If monthly payment fails and Pro is a subscription, cancel it
-            if (data?.id && !selectedPrices.disableAutoRenew) {
+            if (data?.id) {
               await fetch('/api/handle-failed-payment-subscription', {
                 method: 'POST',
                 headers: {
@@ -566,15 +561,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           {yearlyTotal > 0 && (
             <XStack jc="space-between">
               <Paragraph ff="$mono" lineHeight={24}>
-                {disableAutoRenew ? (
-                  <>
-                    Pro - One year
-                    <br />
-                    One-time payment
-                  </>
-                ) : (
-                  'Pro subscription'
-                )}
+                Pro subscription
               </Paragraph>
               <YStack ai="flex-end">
                 {finalCoupon && (
@@ -584,19 +571,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     o={0.5}
                     textDecorationLine="line-through"
                   >
-                    ${disableAutoRenew ? yearlyTotal : Math.ceil(yearlyTotal / 12)}
-                    {!disableAutoRenew && '/month'}
+                    ${Math.ceil(yearlyTotal / 12)}/month
                   </Paragraph>
                 )}
                 <Paragraph ff="$mono">
-                  $
-                  {Math.ceil(
-                    calculateDiscountedAmount(
-                      disableAutoRenew ? yearlyTotal : yearlyTotal / 12,
-                      finalCoupon
-                    )
-                  )}
-                  {!disableAutoRenew && '/month'}
+                  ${Math.ceil(calculateDiscountedAmount(yearlyTotal / 12, finalCoupon))}
+                  /month
                 </Paragraph>
               </YStack>
             </XStack>
@@ -705,16 +685,14 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </H3>
             </YStack>
           </XStack>
-          {!disableAutoRenew && (
-            <XStack gap="$2" alignItems="center">
-              <Info size={16} color="$color11" />
-              <YStack f={1}>
-                <Paragraph py="$2" theme="alt1" fontSize="$2">
-                  Pro subscription is billed yearly for the full amount up front.
-                </Paragraph>
-              </YStack>
-            </XStack>
-          )}
+          <XStack gap="$2" alignItems="center">
+            <Info size={16} color="$color11" />
+            <YStack f={1}>
+              <Paragraph py="$2" theme="alt1" fontSize="$2">
+                Pro subscription is billed yearly for the full amount up front.
+              </Paragraph>
+            </YStack>
+          </XStack>
           <YStack gap="$2">
             <SizableText
               theme="alt1"
