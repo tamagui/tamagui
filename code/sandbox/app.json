@@ -2,7 +2,6 @@
   "expo": {
     "name": "one-example",
     "slug": "one-example",
-    "sdkVersion": "52.0.0",
     "newArchEnabled": true,
     "platforms": ["ios", "android"],
     "plugins": ["vxrn/expo-plugin"],
