@@ -1,10 +1,40 @@
 import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import { useCallback, type RefObject } from 'react'
+import { createContext, useContext, useId, type ReactNode, type RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
+const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
 const IntersectionState = new WeakMap<HTMLElement, boolean>()
+
+// separating to avoid all re-rendering
+const DisableLayoutContextValues: Record<string, boolean> = {}
+const DisableLayoutContextKey = createContext<string>('')
+
+const ENABLE = isClient && typeof IntersectionObserver !== 'undefined'
+
+// internal testing - advanced helper to turn off layout measurement for extra performance
+// TODO document!
+// TODO could add frame skip control here
+export const LayoutMeasurementController = ({
+  disable,
+  children,
+}: {
+  disable: boolean
+  children: ReactNode
+}): ReactNode => {
+  const id = useId()
+
+  useIsomorphicLayoutEffect(() => {
+    DisableLayoutContextValues[id] = disable
+  }, [disable, id])
+
+  return (
+    <DisableLayoutContextKey.Provider value={id}>
+      {children}
+    </DisableLayoutContextKey.Provider>
+  )
+}
 
 // Single persistent IntersectionObserver for all nodes
 let globalIntersectionObserver: IntersectionObserver | null = null
@@ -39,10 +69,7 @@ export type LayoutEvent = {
 }
 
 const NodeRectCache = new WeakMap<HTMLElement, DOMRect>()
-const ParentRectCache = new WeakMap<HTMLElement, DOMRect>()
 const LastChangeTime = new WeakMap<HTMLElement, number>()
-
-const rAF = typeof window !== 'undefined' ? window.requestAnimationFrame : undefined
 
 // prevent thrashing during first hydration (somewhat, streaming gets trickier)
 let avoidUpdates = true
@@ -59,7 +86,7 @@ export function enable(): void {
 }
 
 function startGlobalObservers() {
-  if (!isClient || globalIntersectionObserver) return
+  if (!ENABLE || globalIntersectionObserver) return
 
   globalIntersectionObserver = new IntersectionObserver(
     (entries) => {
@@ -76,134 +103,120 @@ function startGlobalObservers() {
   )
 }
 
-if (isClient) {
-  if (rAF) {
-    const supportsCheckVisibility = 'checkVisibility' in document.body
+if (ENABLE) {
+  const BoundingRects = new WeakMap<any, DOMRectReadOnly | undefined>()
 
-    const BoundingRects = new WeakMap<any, DOMRectReadOnly | undefined>()
+  async function updateLayoutIfChanged(node: HTMLElement) {
+    const onLayout = LayoutHandlers.get(node)
+    if (typeof onLayout !== 'function') return
 
-    async function updateLayoutIfChanged(node: HTMLElement) {
-      if (IntersectionState.get(node) === false) {
-        // avoid due to not intersecting
+    const parentNode = node.parentElement
+    if (!parentNode) return
+
+    let nodeRect: DOMRectReadOnly
+    let parentRect: DOMRectReadOnly
+
+    if (strategy === 'async') {
+      const [nr, pr] = await Promise.all([
+        BoundingRects.get(node),
+        BoundingRects.get(parentNode),
+      ])
+
+      if (!nr || !pr) {
         return
       }
-      // triggers style recalculation in safari which is slower than not
-      if (process.env.TAMAGUI_ONLAYOUT_VISIBILITY_CHECK === '1') {
-        if (supportsCheckVisibility && !(node as any).checkVisibility()) {
-          // avoid due to not visible
-          return
-        }
-      }
 
-      const onLayout = LayoutHandlers.get(node)
-      if (typeof onLayout !== 'function') return
-
-      const parentNode = node.parentElement
-      if (!parentNode) return
-
-      let nodeRect: DOMRectReadOnly
-      let parentRect: DOMRectReadOnly
-
-      if (strategy === 'async') {
-        const [nr, pr] = await Promise.all([
-          BoundingRects.get(node) || getBoundingClientRectAsync(node),
-          BoundingRects.get(parentNode) || getBoundingClientRectAsync(parentNode),
-        ])
-
-        if (nr === false || pr === false) {
-          return
-        }
-
-        nodeRect = nr
-        parentRect = pr
-      } else {
-        nodeRect = node.getBoundingClientRect()
-        parentRect = parentNode.getBoundingClientRect()
-      }
-
-      const cachedRect = NodeRectCache.get(node)
-      const cachedParentRect = NodeRectCache.get(parentNode)
-
-      if (
-        !cachedRect ||
-        // has changed one rect
-        // @ts-expect-error DOMRectReadOnly can go into object
-        (!isEqualShallow(cachedRect, nodeRect) &&
-          // @ts-expect-error DOMRectReadOnly can go into object
-          (!cachedParentRect || !isEqualShallow(cachedParentRect, parentRect)))
-      ) {
-        NodeRectCache.set(node, nodeRect)
-        ParentRectCache.set(parentNode, parentRect)
-
-        const event = getElementLayoutEvent(nodeRect, parentRect)
-
-        if (avoidUpdates) {
-          queuedUpdates.set(node, () => onLayout(event))
-        } else {
-          onLayout(event)
-        }
-      }
+      nodeRect = nr
+      parentRect = pr
+    } else {
+      nodeRect = node.getBoundingClientRect()
+      parentRect = parentNode.getBoundingClientRect()
     }
 
-    // note that getBoundingClientRect() does not thrash layout if its after an animation frame
-    // ok new note: *if* it needed recalc then yea, but browsers often skip that, so it does
-    // which is why we use async strategy in general
-    rAF!(layoutOnAnimationFrame)
+    if (!nodeRect || !parentRect) {
+      return
+    }
 
-    // only run once in a few frames, this could be adjustable
-    let frameCount = 0
+    const cachedRect = NodeRectCache.get(node)
+    const cachedParentRect = NodeRectCache.get(parentNode)
 
-    const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
-    const RUN_EVERY_X_FRAMES = userSkipVal ? +userSkipVal : 10
+    if (
+      !cachedRect ||
+      !cachedParentRect ||
+      // has changed one rect
+      // @ts-expect-error DOMRectReadOnly can go into object
+      !isEqualShallow(cachedRect, nodeRect) ||
+      // @ts-expect-error DOMRectReadOnly can go into object
+      !isEqualShallow(cachedParentRect, parentRect)
+    ) {
+      NodeRectCache.set(node, nodeRect)
+      NodeRectCache.set(parentNode, parentRect)
 
-    async function layoutOnAnimationFrame() {
-      if (strategy !== 'off') {
-        if (!Nodes.size || frameCount++ % RUN_EVERY_X_FRAMES !== 0) {
-          // skip a few frames to avoid work
-          rAF!(layoutOnAnimationFrame)
-          return
-        }
+      const event = getElementLayoutEvent(nodeRect, parentRect)
 
-        if (frameCount === Number.MAX_SAFE_INTEGER) {
-          frameCount = 0
-        }
+      if (avoidUpdates) {
+        queuedUpdates.set(node, () => onLayout(event))
+      } else {
+        onLayout(event)
+      }
+    }
+  }
 
-        // do a 1 rather than N IntersectionObservers for performance
-        await new Promise<void>((res) => {
-          const io = new IntersectionObserver(
-            (entries) => {
-              io.disconnect()
-              for (const entry of entries) {
-                BoundingRects.set(entry.target, entry.boundingClientRect)
-              }
-              res()
-            },
-            {
-              threshold: 0,
+  // note that getBoundingClientRect() does not thrash layout if its after an animation frame
+  // ok new note: *if* it needed recalc then yea, but browsers often skip that, so it does
+  // which is why we use async strategy in general
+
+  const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
+  const RUN_EVERY_X_FRAMES = userSkipVal ? +userSkipVal : 14
+
+  async function layoutOnAnimationFrame() {
+    if (strategy !== 'off') {
+      const visibleNodes: HTMLElement[] = []
+
+      // do a 1 rather than N IntersectionObservers for performance
+      const didRun = await new Promise<boolean>((res) => {
+        const io = new IntersectionObserver(
+          (entries) => {
+            io.disconnect()
+            for (const entry of entries) {
+              BoundingRects.set(entry.target, entry.boundingClientRect)
             }
-          )
-          for (const node of Nodes) {
-            if (node.parentElement instanceof HTMLElement) {
-              io.observe(node)
-              io.observe(node.parentElement)
-            }
+            res(true)
+          },
+          {
+            threshold: 0,
           }
-        })
+        )
 
-        Nodes.forEach((node) => {
+        let didObserve = false
+
+        for (const node of Nodes) {
+          if (!(node.parentElement instanceof HTMLElement)) continue
+          const disableKey = LayoutDisableKey.get(node)
+          if (disableKey && DisableLayoutContextValues[disableKey] === true) continue
+          if (IntersectionState.get(node) === false) continue
+          didObserve = true
+          io.observe(node)
+          io.observe(node.parentElement)
+          visibleNodes.push(node)
+        }
+
+        if (!didObserve) {
+          res(false)
+        }
+      })
+
+      if (didRun) {
+        visibleNodes.forEach((node) => {
           updateLayoutIfChanged(node)
         })
       }
+    }
 
-      rAF!(layoutOnAnimationFrame)
-    }
-  } else {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn(
-        `No requestAnimationFrame - please polyfill for onLayout to work correctly`
-      )
-    }
+    setTimeout(layoutOnAnimationFrame, 16.6667 * RUN_EVERY_X_FRAMES)
   }
+
+  layoutOnAnimationFrame()
 }
 
 export const getElementLayoutEvent = (
@@ -230,10 +243,13 @@ export function useElementLayout(
   ref: RefObject<TamaguiComponentStatePartial>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ): void {
+  const disableKey = useContext(DisableLayoutContextKey)
+
   // ensure always up to date so we can avoid re-running effect
   const node = ensureWebElement(ref.current?.host)
   if (node && onLayout) {
     LayoutHandlers.set(node, onLayout)
+    LayoutDisableKey.set(node, disableKey)
   }
 
   useIsomorphicLayoutEffect(() => {

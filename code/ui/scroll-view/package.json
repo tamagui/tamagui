@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "1.134.0",
+  "version": "1.135.4",
   "sideEffects": [
     "*.css"
   ],
@@ -42,13 +42,13 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.81.4"
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.81.4"
+    "react-native": "*"
   }
 }

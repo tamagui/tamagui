@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "1.134.0",
+  "version": "1.135.4",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -38,12 +38,12 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.81.4",
+    "react-native": "^0.79.2",
     "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.81.4"
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

@@ -244,25 +244,9 @@ async function buildTsc(allFiles) {
 
     // exit on errors
     if (diagnostics.some((x) => x.code) && !shouldWatch) {
-      try {
-        console.error(
-          `Error building: ${diagnostics.map((x) => `${x.file.fileName}: ${x.messageText?.messageText ?? x.messageText}`).join('\n')}`
-        )
-      } catch (err) {
-        console.error(
-          `Error building`,
-          JSON.stringify(
-            {
-              diagnostics,
-              pkg,
-              fileNames: config.fileNames,
-              compilerOptions,
-            },
-            null,
-            2
-          )
-        )
-      }
+      console.error(
+        `Error building: ${diagnostics.map((x) => JSON.stringify(x.messageText)).join('\n')}`
+      )
       if (shouldWatch) {
         return
       }

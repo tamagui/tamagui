@@ -262,6 +262,7 @@ function useButton<Props extends ButtonProps>(
         Text,
         {
           children: propsIn.children,
+          color,
           fontFamily,
           fontSize,
           textProps,

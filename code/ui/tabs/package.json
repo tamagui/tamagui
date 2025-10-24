@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs",
-  "version": "1.134.0",
+  "version": "1.135.4",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -49,12 +49,12 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "^0.81.4"
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.81.4"
+    "react-native": "^0.79.2"
   },
   "publishConfig": {
     "access": "public"
