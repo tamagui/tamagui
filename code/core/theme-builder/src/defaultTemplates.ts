@@ -108,6 +108,18 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
 
   const surface3 = {
     ...baseColors,
+    color1: base.color1,
+    color2: base.color2,
+    color3: base.color3,
+    color4: base.color4,
+    color5: base.color5,
+    color6: base.color6,
+    color7: base.color7,
+    color8: base.color8,
+    color9: base.color9,
+    color10: base.color10,
+    color11: base.color11,
+    color12: base.color12,
     background: base.background + 3,
     backgroundHover: base.backgroundHover + 3,
     backgroundPress: base.backgroundPress + 3,
