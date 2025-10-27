@@ -25026,7 +25026,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:4.10.0, react-native-screens@npm:~4.10.0":
+"react-native-screens@npm:4.10.0":
   version: 4.10.0
   resolution: "react-native-screens@npm:4.10.0"
   dependencies:
@@ -28016,9 +28016,9 @@ __metadata:
     npm-run-all: "npm:^4.1.5"
     p-map: "npm:^7.0.3"
     prompts: "npm:2.1.0"
-    react-native-screens: "npm:~4.10.0"
+    react-native-screens: "npm:~4.16.0"
     turbo: "npm:^2.1.3"
-    typescript: "npm:^5.8.2"
+    typescript: "npm:~5.9.2"
     ultra-runner: "npm:^3.10.5"
     zx: "npm:^8.5.5"
   languageName: unknown
@@ -28888,6 +28888,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:~5.9.2":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/c089d9d3da2729fd4ac517f9b0e0485914c4b3c26f80dc0cffcb5de1719a17951e92425d55db59515c1a7ddab65808466debb864d0d56dcf43f27007d0709594
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.8.2#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=8c6c40"
@@ -28895,6 +28905,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/98470634034ec37fd9ea61cc82dcf9a27950d0117a4646146b767d085a2ec14b137aae9642a83d1c62732d7fdcdac19bb6288b0bb468a72f7a06ae4e1d2c72c9
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A~5.9.2#optional!builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=8c6c40"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/5d416ad4f2ea564f515a3f919e901edbfa4b497cc17dd325c5726046c3eef7ed22d1f59c787267d478311f6f0a265ff790f8a6c7e9df3ea3471458f5ec81e8b7
   languageName: node
   linkType: hard
 
