@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/react-native-web-internals",
   "version": "1.135.4",
-  "type": "module",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -13,22 +12,17 @@
     "src"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native": {
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.cjs"
     }
   },
   "dependencies": {

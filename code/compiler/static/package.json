@@ -4,15 +4,15 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "files": [
     "src",
     "types",
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
@@ -22,10 +22,8 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js",
-      "react-native": "./dist/index.native.js",
-      "default": "./dist/index.native.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.cjs"
     }
   },
   "tests": {

@@ -571,7 +571,7 @@ async function buildJs(allFiles) {
             entryPoints,
             bundle: shouldBundleFlag,
             allowOverwrite: true,
-            target: 'node16',
+            target: 'node20',
             format: 'esm',
             minify: !!process.env.MINIFY,
             platform: 'neutral',
@@ -614,7 +614,7 @@ async function esbuildWriteIfChanged(
     // compat with jsx and hermes back a few versions generally:
     /** @type { import('esbuild').BuildOptions } */
     const nativeEsbuildSettings = {
-      target: isESM ? 'esnext' : 'node16',
+      target: isESM ? 'esnext' : 'node20',
       supported: {
         'logical-assignment': false,
       },
@@ -624,7 +624,7 @@ async function esbuildWriteIfChanged(
 
     /** @type { import('esbuild').BuildOptions } */
     const webEsbuildSettings = {
-      target: 'esnext',
+      target: specifyCJS ? 'node20' : 'esnext',
       jsx: 'automatic',
       platform: opts.bundle ? 'node' : 'neutral',
       tsconfigRaw: {
@@ -873,7 +873,9 @@ async function esbuildWriteIfChanged(
                 {
                   esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
                   esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
-                  convertProcessEnvToImportMetaEnv: platform === 'web',
+                  // disabled - was causing warnings on "yarn dev" - "import.meta" is not available with the "cjs" output format and will be empty
+                  // need to investigate more, its happening when tamagui plugin bundles your components which outputs to cjs
+                  // convertProcessEnvToImportMetaEnv: platform === 'web' && !specifyCJS,
                 },
               ],
             ].filter(Boolean),
