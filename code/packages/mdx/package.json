@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/mdx-2",
   "version": "1.135.4",
+  "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
