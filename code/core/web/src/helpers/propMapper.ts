@@ -435,9 +435,19 @@ export const getTokenForKey = (
             hasSet = true
           } else {
             if (process.env.NODE_ENV === 'development') {
-              console.warn(
-                `[tamagui] ⚠️ missing token ${key} in category ${cat} - ${value}`
+              console.groupCollapsed(
+                `[tamagui] ⚠️ missing token ${key} in category ${cat} - ${value} (open for details)`
               )
+              console.info(
+                `Note: this often is because you have a duplicated Tamagui in your bundle.`
+              )
+              console.info(
+                `In Chrome DevTools, hit CMD+P and type TamaguiProvider - if you see a .cjs and a .mjs entry, this is causing the issue.`
+              )
+              console.info(
+                `This can lead to tricky bugs and should be resolved, if you set a breakpoint at the top of each file you may see the reason why it imports both in the Call Stack in Sources pane.`
+              )
+              console.groupEnd()
             }
           }
         }
