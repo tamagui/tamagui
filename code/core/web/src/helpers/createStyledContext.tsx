@@ -1,6 +1,6 @@
 import type { Context, ReactNode } from 'react'
 import React, { useContext } from 'react'
-import { StyledContext } from '../types'
+import type { StyledContext } from '../types'
 import { mergeProps } from './mergeProps'
 import { objectIdentityKey } from './objectIdentityKey'
 

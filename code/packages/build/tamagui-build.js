@@ -446,6 +446,7 @@ async function buildJs(allFiles) {
 
   const entryPoints = shouldBundleFlag ? [pkgSource || './src/index.ts'] : allFiles
 
+  /** @type { import('esbuild').BuildOptions } */
   const cjsConfig = {
     format: 'cjs',
     entryPoints,
@@ -639,7 +640,8 @@ async function esbuildWriteIfChanged(
       },
     }
 
-    return {
+    /** @type { import('esbuild').BuildOptions } */
+    const out = {
       ...opts,
 
       plugins: [
@@ -653,13 +655,16 @@ async function esbuildWriteIfChanged(
           : []),
       ].filter(Boolean),
 
-      treeShaking: true,
-      minifySyntax: true,
+      ...(!opts.bundle && {
+        treeShaking: true,
+        minifySyntax: true,
+        keepNames: false,
+      }),
+
       write: false,
 
       color: true,
       allowOverwrite: true,
-      keepNames: false,
       sourcemap: true,
       sourcesContent: false,
       logLevel: 'error',
@@ -675,11 +680,17 @@ async function esbuildWriteIfChanged(
         ...opts.define,
       },
     }
+
+    return out
   })()
 
   let built
 
   try {
+    if (buildSettings.bundle) {
+      console.info(`build`, buildSettings)
+    }
+
     built = await esbuild.build(buildSettings)
   } catch (err) {
     console.error(`Error building`, err)

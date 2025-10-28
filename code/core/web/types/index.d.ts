@@ -1,3 +1,5 @@
+export * from './contexts/ComponentContext';
+export * from './contexts/GroupContext';
 export * from '@tamagui/is-equal-shallow';
 export * from './_withStableStyle';
 export * from './createComponent';
@@ -26,8 +28,6 @@ export * from './helpers/themeable';
 export * from './helpers/themes';
 export * from './helpers/transformsToString';
 export * from './helpers/wrapStyleTags';
-export * from './contexts/ComponentContext';
-export * from './contexts/GroupContext';
 export * from './createComponent';
 export * from './createFont';
 export * from './createShorthands';
