@@ -449,4 +449,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default TextInput
+export { TextInput }

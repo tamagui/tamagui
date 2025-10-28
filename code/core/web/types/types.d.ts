@@ -1,20 +1,187 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { CSSProperties, ComponentType, ForwardRefExoticComponent, ForwardRefRenderFunction, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
-import type { Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
-import type { PxValue, Variable } from './createVariable';
-import type { StyledContext } from './helpers/createStyledContext';
+import type { CSSProperties, ComponentType, Context, ForwardRefExoticComponent, ForwardRefRenderFunction, FunctionComponent, HTMLAttributes, ProviderExoticComponent, ReactNode, RefAttributes, RefObject } from 'react';
+import type { PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
-import type { ColorKeys, SizeKeys, SpaceKeys } from './interfaces/KeyTypes';
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
-import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase';
-import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
-import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents';
-import type { LanguageContextType } from './views/FontLanguage.types';
-import type { ThemeProviderProps } from './views/ThemeProvider';
-export * from './interfaces/KeyTypes';
-export * from './interfaces/TamaguiComponentState';
+export type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
+export type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'outlineColor' | 'textShadowColor' | 'borderBlockColor' | 'borderBlockEndColor' | 'borderBlockStartColor' | 'borderInlineColor' | 'borderInlineStartColor' | 'borderInlineEndColor';
+export type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'marginBlock' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInline' | 'marginInlineStart' | 'marginInlineEnd' | 'paddingBlock' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInline' | 'paddingInlineStart' | 'paddingInlineEnd' | 'x' | 'y' | 'gap' | 'rowGap' | 'columnGap' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset' | 'borderBlockWidth' | 'borderBlockStartWidth' | 'borderBlockEndWidth' | 'borderInlineWidth' | 'borderInlineStartWidth' | 'borderInlineEndWidth';
+export type StyledContext<Props extends Object = any> = Context<Props> & {
+    context: Context<Props>;
+    props: Object | undefined;
+    Provider: ProviderExoticComponent<Partial<Props | undefined> & {
+        children?: ReactNode;
+        scope?: string;
+    }>;
+    useStyledContext: (scope?: string) => Props;
+};
+export type TamaguiComponentState = {
+    unmounted: boolean | 'should-enter';
+    disabled?: boolean;
+    hover?: boolean;
+    press?: boolean;
+    pressIn?: boolean;
+    focus?: boolean;
+    focusVisible?: boolean;
+    focusWithin?: boolean;
+    animation?: null | {
+        style?: any;
+        avoidClasses?: boolean;
+    };
+    group?: Record<string, ChildGroupState>;
+    hasDynGroupChildren?: boolean;
+};
+export type Role = 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'button' | 'cell' | 'checkbox' | 'columnheader' | 'combobox' | 'complementary' | 'contentinfo' | 'definition' | 'dialog' | 'directory' | 'document' | 'feed' | 'figure' | 'form' | 'grid' | 'group' | 'heading' | 'img' | 'link' | 'list' | 'listitem' | 'log' | 'main' | 'marquee' | 'math' | 'menu' | 'menubar' | 'menuitem' | 'meter' | 'navigation' | 'none' | 'note' | 'option' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'region' | 'row' | 'rowgroup' | 'rowheader' | 'scrollbar' | 'searchbox' | 'separator' | 'slider' | 'spinbutton' | 'status' | 'summary' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem';
+export type TamaguiComponentPropsBaseBase = {
+    target?: string;
+    htmlFor?: string;
+    /**
+     * When truthy passes through all props to a single child element, and avoids rendering its own element.
+     * Must pass just one child React element that will receive all the props.
+     *
+     * The option "except-style" will avoid passing any style related props.
+     *
+     * The option "web" will map all React Native style props to web props (onPress becomes onClick).
+     *
+     * The option "except-style-web" combines the except-style and web options.
+     *
+     */
+    asChild?: boolean | 'except-style' | 'except-style-web' | 'web';
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    };
+    children?: any | any[];
+    debug?: DebugProp;
+    disabled?: boolean;
+    /**
+     * Same as the web className property, useful for applying styles from CSS on web only
+     */
+    className?: string;
+    /**
+     * If given a theme it will only apply to this element, instead of passing down to children
+     */
+    themeShallow?: boolean;
+    themeInverse?: boolean;
+    /**
+     * Same as the web id property for setting a uid on an element
+     */
+    id?: string;
+    /**
+     * Controls the output tag on web
+     * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
+     */
+    tag?: keyof HTMLElementTagNameMap | (string & {});
+    /**
+     * Applies a theme to this element
+     */
+    theme?: ThemeName | null;
+    /**
+     * Marks this component as a group for use in styling children based on parents named group
+     * See: https://tamagui.dev/docs/intro/props
+     */
+    group?: GroupNames | boolean;
+    /**
+     * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
+     * See: https://tamagui.dev/docs/intro/props
+     */
+    untilMeasured?: 'hide' | 'show';
+    /**
+     * Equivalent to "name" property on styled() for automatically applying a theme
+     */
+    componentName?: string;
+    /**
+     * Used for controlling the order of focus with keyboard or assistive device enavigation
+     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
+     */
+    tabIndex?: string | number;
+    /**
+     * Equivalent to role="" attribute on web for accessibility
+     */
+    role?: Role;
+    /**
+     * Disable all compiler optimization
+     */
+    disableOptimization?: boolean;
+    /**
+     * Forces the pseudo style state to be on
+     */
+    forceStyle?: 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
+    /**
+     * Disables className output of styles, instead using only inline styles
+     */
+    disableClassName?: boolean;
+    /**
+     * Adds some area outside the typical bounds of the component for touch actions to register.
+     * Tamagui uses Pressable internally so it supports `number | Insets` rather than just `Insets`
+     */
+    hitSlop?: number | Insets | null;
+};
+export interface Insets {
+    top?: number;
+    left?: number;
+    bottom?: number;
+    right?: number;
+}
+export interface WebOnlyPressEvents {
+    onPress?: PressableProps['onPress'];
+    onLongPress?: PressableProps['onLongPress'];
+    onPressIn?: PressableProps['onPress'];
+    onPressOut?: PressableProps['onPress'];
+    onHoverIn?: DivAttributes['onMouseEnter'];
+    onHoverOut?: DivAttributes['onMouseLeave'];
+    onMouseEnter?: DivAttributes['onMouseEnter'];
+    onMouseLeave?: DivAttributes['onMouseLeave'];
+    onMouseDown?: DivAttributes['onMouseDown'];
+    onMouseUp?: DivAttributes['onMouseUp'];
+    onFocus?: DivAttributes['onFocus'];
+    onBlur?: DivAttributes['onBlur'];
+}
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
+type FontFamilies = FontTokens extends `$${infer Token}` ? Token : never;
+export type LanguageContextType = Partial<{
+    [key in FontFamilies]: FontLanguages | 'default';
+}>;
+export type FontLanguageProps = LanguageContextType & {
+    children?: React.ReactNode;
+};
+export type ThemeProviderProps = {
+    className?: string;
+    defaultTheme: string;
+    /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
+    disableRootThemeClass?: boolean;
+    /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
+    themeClassNameOnRoot?: boolean;
+    children?: any;
+    reset?: boolean;
+};
+export type ThemeState = {
+    id: string;
+    name: string;
+    theme: ThemeParsed;
+    inverses: number;
+    parentName?: string;
+    isInverse?: boolean;
+    isNew?: boolean;
+    parentId?: string;
+    scheme?: 'light' | 'dark';
+};
+export interface Variable<A = any> {
+    isVar: true;
+    variable?: string;
+    val: A;
+    name: string;
+    key: string;
+    needsPx?: boolean;
+}
+export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A;
+/**
+ * Type for the px helper object that indicates a token value needs px units
+ */
+export interface PxValue {
+    val: number;
+    needsPx: true;
+}
 export type ColorScheme = 'light' | 'dark';
 export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';

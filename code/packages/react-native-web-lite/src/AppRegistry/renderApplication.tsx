@@ -13,10 +13,10 @@ import React from 'react'
 import { StyleSheet } from '@tamagui/react-native-web-internals'
 import { invariant } from '@tamagui/react-native-web-internals'
 
-import renderLegacy, { hydrate, hydrateLegacy, render } from '../render/index'
-import AppContainer from './AppContainer'
+import { renderLegacy, hydrate, hydrateLegacy, render } from '../render/index'
+import { AppContainer } from './AppContainer'
 
-export default function renderApplication<Props extends Object>(
+export function renderApplication<Props extends Object>(
   RootComponent: ComponentType<Props>,
   WrapperComponent: FunctionComponent<any> | null = null,
   callback: () => void = () => {},

@@ -7,10 +7,10 @@
  * @flow
  */
 
-import isWebColor from '../isWebColor/index'
+import { isWebColor } from '../isWebColor/index'
 import { processColor } from '../processColor/index'
 
-const normalizeColor = (
+export const normalizeColor = (
   color: number | string | null | undefined,
   opacity = 1
 ): void | string => {
@@ -30,5 +30,3 @@ const normalizeColor = (
     return `rgba(${r},${g},${b},${alpha})`
   }
 }
-
-export default normalizeColor

@@ -17,5 +17,5 @@ export type HoverEventsConfig = {
     onHoverUpdate?: ((e: any) => void) | null;
     onHoverEnd?: ((e: any) => void) | null;
 };
-export default function useHover(targetRef: any, config: HoverEventsConfig): void;
+export declare function useHover(targetRef: any, config: HoverEventsConfig): void;
 //# sourceMappingURL=index.d.ts.map

@@ -52,7 +52,7 @@ function normalizeIdentifier(identifier) {
  * Converts a native DOM event to a ResponderEvent.
  * Mouse events are transformed into fake touch events.
  */
-export default function createResponderEvent(
+export function createResponderEvent(
   domEvent: any,
   responderTouchHistoryStore: ResponderTouchHistoryStore
 ): ResponderEvent {

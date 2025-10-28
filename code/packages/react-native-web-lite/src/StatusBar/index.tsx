@@ -9,7 +9,7 @@
 
 const emptyFunction = () => {}
 
-function StatusBar(): null {
+export function StatusBar(): null {
   return null
 }
 
@@ -18,5 +18,3 @@ StatusBar.setBarStyle = emptyFunction
 StatusBar.setHidden = emptyFunction
 StatusBar.setNetworkActivityIndicatorVisible = emptyFunction
 StatusBar.setTranslucent = emptyFunction
-
-export default StatusBar

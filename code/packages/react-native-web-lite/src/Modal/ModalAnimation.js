@@ -10,7 +10,7 @@
 import * as React from 'react'
 import { StyleSheet } from '@tamagui/react-native-web-internals'
 
-import createElement from '../createElement/index'
+import { createElement } from '../createElement/index'
 
 var ANIMATION_DURATION = 300
 
@@ -26,7 +26,7 @@ function getAnimationStyle(animationType, visible) {
   return visible ? styles.container : styles.hidden
 }
 
-function ModalAnimation(props) {
+export function ModalAnimation(props) {
   var animationType = props.animationType,
     children = props.children,
     onDismiss = props.onDismiss,
@@ -176,4 +176,3 @@ var animatedSlideInStyles = [styles.container, styles.animatedIn, styles.slideIn
 var animatedSlideOutStyles = [styles.container, styles.animatedOut, styles.slideOut]
 var animatedFadeInStyles = [styles.container, styles.animatedIn, styles.fadeIn]
 var animatedFadeOutStyles = [styles.container, styles.animatedOut, styles.fadeOut]
-export default ModalAnimation

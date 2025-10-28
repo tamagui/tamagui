@@ -15,7 +15,7 @@ function toHyphenLower(match) {
   return '-' + match.toLowerCase()
 }
 
-function hyphenateStyleName(name: string): string {
+export function hyphenateStyleName(name: string): string {
   if (name in cache) {
     return cache[name]
   }
@@ -23,5 +23,3 @@ function hyphenateStyleName(name: string): string {
   const hName = name.replace(uppercasePattern, toHyphenLower)
   return (cache[name] = msPattern.test(hName) ? '-' + hName : hName)
 }
-
-export default hyphenateStyleName

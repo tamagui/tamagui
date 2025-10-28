@@ -8,8 +8,8 @@
  * @flow
  */
 
-import canUseDOM from '../../modules/canUseDOM'
-import normalizeValueWithProperty from './normalizeValueWithProperty'
+import { canUseDOM } from '../../modules/canUseDOM'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
 type Style = {
   [K in string]: any
@@ -110,7 +110,7 @@ export const createTransformValue = (style: Style): string => {
  * Reducer
  */
 
-const createReactDOMStyle = (style: Style, isInline?: boolean): Style => {
+export const createReactDOMStyle = (style: Style, isInline?: boolean): Style => {
   if (!style) {
     return emptyObject
   }
@@ -213,5 +213,3 @@ const createReactDOMStyle = (style: Style, isInline?: boolean): Style => {
 
   return resolvedStyle
 }
-
-export default createReactDOMStyle

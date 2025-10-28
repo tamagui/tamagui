@@ -1,7 +1,6 @@
 import type { MutableRefObject } from 'react';
 import React from 'react';
-import { type ThemeState } from '../hooks/useThemeState';
-import type { ThemeProps } from '../types';
+import type { ThemeProps, ThemeState } from '../types';
 type ThemeComponentPropsOnly = ThemeProps & {
     passThrough?: boolean;
     contain?: boolean;

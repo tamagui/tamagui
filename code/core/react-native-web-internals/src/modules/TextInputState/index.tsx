@@ -8,14 +8,14 @@
  * @flow
  */
 
-import UIManager from '../UIManager'
+import { UIManager } from '../UIManager'
 
 /**
  * This class is responsible for coordinating the "focused"
  * state for TextInputs. All calls relating to the keyboard
  * should be funneled through here
  */
-const TextInputState = {
+export const TextInputState = {
   /**
    * Internal state
    */
@@ -60,5 +60,3 @@ const TextInputState = {
     }
   },
 }
-
-export default TextInputState

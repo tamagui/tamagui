@@ -6,7 +6,7 @@
  *
  * @noflow
  */
-declare const UIManager: {
+export declare const UIManager: {
     blur(node: any): void;
     focus(node: any): void;
     measure(node: any, callback: any): Promise<import("@tamagui/use-element-layout").LayoutValue | null>;
@@ -20,5 +20,4 @@ declare const UIManager: {
     configureNextLayoutAnimation(config: any, onAnimationDidEnd: any): void;
     setLayoutAnimationEnabledExperimental(): void;
 };
-export default UIManager;
 //# sourceMappingURL=index.d.ts.map

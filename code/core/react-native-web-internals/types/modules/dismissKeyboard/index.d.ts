@@ -6,6 +6,5 @@
  *
  * @flow
  */
-declare const dismissKeyboard: () => void;
-export default dismissKeyboard;
+export declare const dismissKeyboard: () => void;
 //# sourceMappingURL=index.d.ts.map

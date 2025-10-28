@@ -11,7 +11,7 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { canUseDOM } from '@tamagui/react-native-web-internals'
 
-function ModalPortal(props) {
+export function ModalPortal(props) {
   var children = props.children
   var elementRef = React.useRef(null)
 
@@ -38,5 +38,3 @@ function ModalPortal(props) {
     ? /*#__PURE__*/ ReactDOM.createPortal(children, elementRef.current)
     : null
 }
-
-export default ModalPortal

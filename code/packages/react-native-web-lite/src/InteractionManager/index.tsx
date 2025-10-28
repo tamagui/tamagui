@@ -9,8 +9,8 @@
 import { invariant } from '@tamagui/react-native-web-internals'
 import EventEmitter from '../vendor/react-native/emitter/_EventEmitter'
 import type { Task } from './TaskQueue'
-import TaskQueue from './TaskQueue'
-import requestIdleCallback from '../modules/requestIdleCallback'
+import { TaskQueue } from './TaskQueue'
+import { requestIdleCallback } from '../modules/requestIdleCallback'
 
 type EventSubscription = any
 
@@ -137,4 +137,4 @@ function _processUpdate() {
   _deleteInteractionSet.clear()
 }
 
-export default InteractionManager
+export { InteractionManager }

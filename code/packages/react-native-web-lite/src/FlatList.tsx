@@ -327,4 +327,4 @@ const styles = {
   row: { flexDirection: 'row' },
 }
 
-export default FlatList
+export { FlatList }

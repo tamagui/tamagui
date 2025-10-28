@@ -5,5 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import UnimplementedView from './UnimplementedView'
-export default UnimplementedView
+export { UnimplementedView as TouchableNativeFeedback } from './UnimplementedView'

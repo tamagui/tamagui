@@ -1,1 +1,1 @@
-export default () => null
+export const Modal = () => null

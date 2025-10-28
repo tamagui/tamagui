@@ -6,6 +6,5 @@
  *
  * @flow
  */
-declare const isWebColor: (color: string) => boolean;
-export default isWebColor;
+export declare const isWebColor: (color: string) => boolean;
 //# sourceMappingURL=index.d.ts.map

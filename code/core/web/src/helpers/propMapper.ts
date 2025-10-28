@@ -1,7 +1,6 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 import { getConfig } from '../config'
-import type { Variable } from '../createVariable'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
@@ -10,6 +9,7 @@ import type {
   SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
+  Variable,
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'

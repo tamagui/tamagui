@@ -1,4 +1,4 @@
-import type { FontLanguageProps } from './FontLanguage.types';
+import type { FontLanguageProps } from '../types';
 export declare const FontLanguage: {
     ({ children, ...props }: FontLanguageProps): import("react/jsx-runtime").JSX.Element;
     displayName: string;

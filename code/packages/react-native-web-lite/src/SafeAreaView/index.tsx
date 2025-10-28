@@ -12,7 +12,7 @@ import * as React from 'react'
 import { StyleSheet, canUseDOM } from '@tamagui/react-native-web-internals'
 
 import type { ViewProps } from '../View/index'
-import View from '../View/index'
+import { View } from '../View/index'
 
 const cssFunction: 'constant' | 'env' = (() => {
   if (
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default SafeAreaView
+export { SafeAreaView }

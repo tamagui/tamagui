@@ -8,6 +8,4 @@
  */
 import type { Context } from 'react';
 export declare const TextAncestorContext: Context<boolean>;
-declare const _default: Context<boolean>;
-export default _default;
 //# sourceMappingURL=TextAncestorContext.d.ts.map

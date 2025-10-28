@@ -10,7 +10,7 @@
 
 import { dismissKeyboard } from '@tamagui/react-native-web-internals'
 
-const Keyboard = {
+export const Keyboard = {
   addListener(): {
     remove: () => void
   } {
@@ -22,5 +22,3 @@ const Keyboard = {
   removeAllListeners() {},
   removeListener() {},
 }
-
-export default Keyboard

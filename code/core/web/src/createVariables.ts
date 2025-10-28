@@ -1,8 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
-
-import type { Variable } from './createVariable'
 import { createVariable, isVariable } from './createVariable'
+import type { Variable } from './types'
 
 type DeepTokenObject<Val extends string | number = any> = {
   [key: string]: Val | DeepTokenObject<Val>

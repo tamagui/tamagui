@@ -31,7 +31,7 @@ const forwardPropsList = {
 
 const pickProps = (props) => pick(props, forwardPropsList)
 
-function TouchableWithoutFeedback(props, forwardedRef) {
+function TouchableWithoutFeedbackImpl(props, forwardedRef) {
   const {
     delayPressIn,
     delayPressOut,
@@ -89,9 +89,7 @@ function TouchableWithoutFeedback(props, forwardedRef) {
   return React.cloneElement(element, elementProps, ...children)
 }
 
-const MemoedTouchableWithoutFeedback = React.memo(
-  React.forwardRef(TouchableWithoutFeedback)
+export const TouchableWithoutFeedback = React.memo(
+  React.forwardRef(TouchableWithoutFeedbackImpl)
 )
-MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback'
-
-export default MemoedTouchableWithoutFeedback
+TouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback'

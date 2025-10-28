@@ -6,5 +6,5 @@
  *
  * @flow
  */
-export default function isSelectionValid(): boolean;
+export declare function isSelectionValid(): boolean;
 //# sourceMappingURL=index.d.ts.map

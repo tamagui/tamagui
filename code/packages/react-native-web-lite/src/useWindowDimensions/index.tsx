@@ -11,9 +11,9 @@
 import React from 'react'
 
 import type { DisplayMetrics } from '../Dimensions/index'
-import Dimensions from '../Dimensions/index'
+import { Dimensions } from '../Dimensions/index'
 
-export default function useWindowDimensions(): DisplayMetrics {
+export function useWindowDimensions(): DisplayMetrics {
   const [dims, setDims] = React.useState(() => Dimensions.get('window'))
   React.useEffect(() => {
     function handleChange({ window }) {

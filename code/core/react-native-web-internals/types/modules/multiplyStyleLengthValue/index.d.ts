@@ -6,6 +6,5 @@
  *
  * @noflow
  */
-declare const multiplyStyleLengthValue: (value: string | number, multiple: any) => string | number | undefined;
-export default multiplyStyleLengthValue;
+export declare const multiplyStyleLengthValue: (value: string | number, multiple: any) => string | number | undefined;
 //# sourceMappingURL=index.d.ts.map

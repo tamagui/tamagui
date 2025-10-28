@@ -6,6 +6,5 @@
  *
  * @flow
  */
-declare const normalizeColor: (color: number | string | null | undefined, opacity?: number) => void | string;
-export default normalizeColor;
+export declare const normalizeColor: (color: number | string | null | undefined, opacity?: number) => void | string;
 //# sourceMappingURL=index.d.ts.map

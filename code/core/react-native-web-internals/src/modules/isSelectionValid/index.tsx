@@ -7,7 +7,7 @@
  * @flow
  */
 
-export default function isSelectionValid(): boolean {
+export function isSelectionValid(): boolean {
   const selection = window.getSelection()
   if (!selection) return false
   const string = selection.toString()

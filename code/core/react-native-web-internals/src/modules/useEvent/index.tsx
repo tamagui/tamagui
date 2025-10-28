@@ -7,9 +7,9 @@
  * @flow
  */
 
-import createEventHandle from '../createEventHandle/index'
-import useLayoutEffect from '../useLayoutEffect/index'
-import useStable from '../useStable/index'
+import { createEventHandle } from '../createEventHandle/index'
+import { useLayoutEffectImpl as useLayoutEffect } from '../useLayoutEffect/index'
+import { useStable } from '../useStable/index'
 
 type Callback = null | ((arg0: any) => void)
 type AddListener = (
@@ -26,7 +26,7 @@ type AddListener = (
  *   return () => click.clear();
  * }).
  */
-export default function useEvent(
+export function useEvent(
   event: string,
   options?: {
     capture?: boolean

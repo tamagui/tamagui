@@ -211,7 +211,7 @@ async function buildTsc(allFiles) {
     const compilerOptions = createCompilerOptions(config.options, targetDir)
 
     if (config.options.isolatedDeclarations) {
-      const oxc = require('oxc-transform')
+      const oxc = await import('oxc-transform')
 
       await Promise.all(
         allFiles.map(async (file) => {
@@ -392,8 +392,9 @@ async function buildJs(allFiles) {
   const esbuildBundleProps =
     bundleNative || bundleNativeTest
       ? {
-          entryPoints: [bundleNative],
           bundle: true,
+          // format: 'cjs',
+          // target: 'node',
           plugins: [
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
@@ -503,7 +504,8 @@ async function buildJs(allFiles) {
       ? esbuildWriteIfChanged(
           {
             ...esbuildBundleProps,
-            outfile: `dist/native.js`,
+            entryPoints: [bundleNative],
+            outfile: `dist/native.cjs`,
           },
           {
             platform: 'native',
@@ -516,6 +518,7 @@ async function buildJs(allFiles) {
       ? esbuildWriteIfChanged(
           {
             ...esbuildBundleProps,
+            entryPoints: [bundleNativeTest],
             outfile: `dist/test.js`,
           },
           {
@@ -645,7 +648,7 @@ async function esbuildWriteIfChanged(
         ...(platform === 'native'
           ? [
               // class isnt supported by hermes
-              es5Plugin(),
+              es5Plugin(isESM ? 'esm' : 'cjs'),
             ]
           : []),
       ].filter(Boolean),

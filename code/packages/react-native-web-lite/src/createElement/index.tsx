@@ -55,7 +55,7 @@ export const useCreateElement = (component, props, options?) => {
   )
 }
 
-const createElement = (component, props, options?) => {
+export const createElement = (component, props, options?) => {
   const { element, styles } = createElementAndStyles(component, props, options)
 
   return (
@@ -93,5 +93,3 @@ const createElementAndStyles = (component, props, options?) => {
     styles,
   }
 }
-
-export default createElement

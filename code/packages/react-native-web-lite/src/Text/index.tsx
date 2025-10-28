@@ -204,4 +204,4 @@ const styles = {
   },
 }
 
-export default Text
+export { Text }

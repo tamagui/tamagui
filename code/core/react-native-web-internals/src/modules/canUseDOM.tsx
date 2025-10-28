@@ -12,5 +12,3 @@ export const canUseDOM = !!(
   window.document &&
   window.document.createElement
 )
-
-export default canUseDOM

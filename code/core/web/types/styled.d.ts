@@ -1,6 +1,5 @@
-import type { StyledContext } from './helpers/createStyledContext';
 import type { GetRef } from './interfaces/GetRef';
-import type { GetBaseStyles, GetNonStyledProps, GetStaticConfig, GetStyledVariants, GetVariantValues, InferStyledProps, StaticConfigPublic, StylableComponent, TamaDefer, TamaguiComponent, ThemeValueGet, VariantDefinitions, VariantSpreadFunction } from './types';
+import type { GetBaseStyles, GetNonStyledProps, GetStaticConfig, GetStyledVariants, GetVariantValues, InferStyledProps, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, ThemeValueGet, VariantDefinitions, VariantSpreadFunction } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;

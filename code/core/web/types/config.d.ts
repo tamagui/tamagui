@@ -11,7 +11,7 @@ export declare const getTokens: ({ prefixed, }?: {
      */
     prefixed?: boolean;
 }) => TokensMerged;
-export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./createVariable").Variable<any>;
+export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./types").Variable<any>;
 export declare const getToken: (value: Token, group?: keyof Tokens, useVariable?: boolean) => any;
 export declare const getTokenValue: (value: Token | "unset" | "auto", group?: keyof Tokens) => any;
 /**
@@ -25,23 +25,23 @@ export declare const useTokens: ({ prefixed, }?: {
 }) => TokensMerged;
 export declare const getThemes: () => {
     [x: string]: {
-        [x: string]: import("./createVariable").Variable<any> | import("./createVariable").Variable<string> | import("./createVariable").Variable<number> | import("./createVariable").Variable<import("./createVariable").PxValue> | import("./createVariable").Variable<import("./types").VariableValGeneric>;
-        background?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        backgroundHover?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        backgroundPress?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        backgroundFocus?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        color?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        colorHover?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        colorPress?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        colorFocus?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        borderColor?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        borderColorHover?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        borderColorPress?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        borderColorFocus?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        shadowColor?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        shadowColorHover?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        shadowColorPress?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
-        shadowColorFocus?: import("./createVariable").Variable<string> | import("./createVariable").Variable<any> | import("./createVariable").Variable<undefined> | undefined;
+        [x: string]: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<number> | import("./types").Variable<import("./types").VariableValGeneric> | import("./types").Variable<import("./types").PxValue>;
+        background?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        backgroundHover?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        backgroundPress?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        backgroundFocus?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        color?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        colorHover?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        colorPress?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        colorFocus?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        borderColor?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        borderColorHover?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        borderColorPress?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        borderColorFocus?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        shadowColor?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        shadowColorHover?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        shadowColorPress?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
+        shadowColorFocus?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
     };
 };
 export declare const configListeners: Set<ConfigListener>;

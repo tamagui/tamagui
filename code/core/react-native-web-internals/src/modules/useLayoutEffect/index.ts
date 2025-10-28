@@ -12,8 +12,6 @@ import React from "react"; /**
 
 
 
-import canUseDOM from '../canUseDOM';
+import { canUseDOM } from '../canUseDOM';
 
-const useLayoutEffectImpl = canUseDOM ? React.useLayoutEffect : React.useEffect;
-
-export default useLayoutEffectImpl;
+export const useLayoutEffectImpl = canUseDOM ? React.useLayoutEffect : React.useEffect;

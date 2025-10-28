@@ -1,7 +1,5 @@
 import type { MutableRefObject } from 'react';
-import type { Variable } from '../createVariable';
-import type { ThemeParsed, Tokens, UseThemeWithStateProps, VariableVal, VariableValGeneric } from '../types';
-import type { ThemeState } from './useThemeState';
+import type { ThemeParsed, ThemeState, Tokens, UseThemeWithStateProps, Variable, VariableVal, VariableValGeneric } from '../types';
 export type ThemeProxied = {
     [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>>;
 } & {

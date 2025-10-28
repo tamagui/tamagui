@@ -10,8 +10,6 @@
 import { UIManager } from '@tamagui/react-native-web-internals'
 
 // NativeModules shim
-const NativeModules = {
+export const NativeModules = {
   UIManager,
 }
-
-export default NativeModules

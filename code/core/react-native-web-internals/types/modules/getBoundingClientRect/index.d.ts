@@ -6,6 +6,5 @@
  *
  * @flow strict
  */
-declare const getBoundingClientRect: (node: HTMLElement | null) => void | ClientRect;
-export default getBoundingClientRect;
+export declare const getBoundingClientRect: (node: HTMLElement | null) => void | ClientRect;
 //# sourceMappingURL=index.d.ts.map

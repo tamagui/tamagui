@@ -5,5 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import SectionList from './vendor/react-native/SectionList'
-export default SectionList
+export { default as SectionList } from './vendor/react-native/SectionList'

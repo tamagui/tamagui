@@ -1,4 +1,4 @@
-import type { GenericTamaguiConfig, TamaguiInternalConfig } from './types'
+import type { TamaguiInternalConfig } from './types'
 
 let hasLogged = false
 

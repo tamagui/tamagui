@@ -7,10 +7,10 @@
  * @flow
  */
 
-import isWebColor from '../../modules/isWebColor'
+import { isWebColor } from '../../modules/isWebColor'
 import { processColor } from '../../modules/processColor'
 
-const normalizeColor = (color?: number | string, opacity = 1): void | string => {
+export const normalizeColor = (color?: number | string, opacity = 1): void | string => {
   if (color == null) return
 
   if (typeof color === 'string' && isWebColor(color)) {
@@ -33,5 +33,3 @@ const normalizeColor = (color?: number | string, opacity = 1): void | string => 
     }
   }
 }
-
-export default normalizeColor

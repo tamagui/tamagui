@@ -1,24 +1,4 @@
-import type { TokenCategories } from './types';
-/**
- * Should rename this to Token
- * Moving to objects for React Server Components support
- */
-export interface Variable<A = any> {
-    isVar: true;
-    variable?: string;
-    val: A;
-    name: string;
-    key: string;
-    needsPx?: boolean;
-}
-export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A;
-/**
- * Type for the px helper object that indicates a token value needs px units
- */
-export interface PxValue {
-    val: number;
-    needsPx: true;
-}
+import type { PxValue, TokenCategories, Variable } from './types';
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>;
 export declare const createVariable: <A extends string | number | Variable = any>(props: VariableIn<A>, skipHash?: boolean) => Variable<A>;
 export declare function variableToString(vrble?: any, getValue?: boolean): string;

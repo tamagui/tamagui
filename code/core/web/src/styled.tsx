@@ -1,5 +1,4 @@
 import { createComponent } from './createComponent'
-import type { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
@@ -12,12 +11,11 @@ import type {
   InferStyledProps,
   StaticConfig,
   StaticConfigPublic,
-  StylableComponent,
-  TamaDefer,
+  StylableComponent, StyledContext, TamaDefer,
   TamaguiComponent,
   ThemeValueGet,
   VariantDefinitions,
-  VariantSpreadFunction,
+  VariantSpreadFunction
 } from './types'
 import type { Text } from './views/Text'
 

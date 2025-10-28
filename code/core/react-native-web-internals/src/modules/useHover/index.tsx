@@ -8,8 +8,8 @@
  */
 
 import { getModality } from '../modality/index'
-import useEvent from '../useEvent/index'
-import useLayoutEffect from '../useLayoutEffect/index'
+import { useEvent } from '../useEvent/index'
+import { useLayoutEffectImpl as useLayoutEffect } from '../useLayoutEffect/index'
 
 /**
  * Types
@@ -58,7 +58,7 @@ function getPointerType(event) {
   return pointerType != null ? pointerType : getModality()
 }
 
-export default function useHover(targetRef: any, config: HoverEventsConfig): void {
+export function useHover(targetRef: any, config: HoverEventsConfig): void {
   const { contain, disabled, onHoverStart, onHoverChange, onHoverUpdate, onHoverEnd } =
     config
 

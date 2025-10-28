@@ -22,7 +22,7 @@ type Content =
       url?: string
     }
 
-class Share {
+export class Share {
   static share(content: Content, options: Object = {}): Promise<void> {
     invariant(
       typeof content === 'object' && content !== null,
@@ -67,5 +67,3 @@ class Share {
     return 'dismissedAction'
   }
 }
-
-export default Share

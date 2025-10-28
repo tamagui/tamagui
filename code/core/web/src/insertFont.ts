@@ -1,11 +1,10 @@
 import { setConfigFont } from './config'
 import { FONT_DATA_ATTRIBUTE_NAME } from './constants/constants'
 import { createFont } from './createFont'
-import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
-import type { GenericFont } from './types'
+import type { GenericFont, Variable } from './types'
 
 /**
  * Runtime dynamic insert font

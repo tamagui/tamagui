@@ -10,7 +10,7 @@
 
 'use strict'
 
-import canUseDOM from '../canUseDOM'
+import { canUseDOM } from '../canUseDOM'
 
 type Listener = (e: any) => void
 type EventHandle = (target: EventTarget, callback: Listener | null) => () => void
@@ -73,7 +73,7 @@ function normalizeEvent(event: any) {
 /**
  *
  */
-export default function createEventHandle(
+export function createEventHandle(
   type: string,
   options?: EventOptions | null
 ): EventHandle {

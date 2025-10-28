@@ -8,9 +8,8 @@ import {
   getThemeState,
   hasThemeUpdatingProps,
   ThemeStateContext,
-  type ThemeState,
 } from '../hooks/useThemeState'
-import type { ThemeProps } from '../types'
+import type { ThemeProps, ThemeState } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
 type ThemeComponentPropsOnly = ThemeProps & { passThrough?: boolean; contain?: boolean }

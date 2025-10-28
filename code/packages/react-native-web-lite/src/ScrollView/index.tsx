@@ -752,7 +752,7 @@ const ForwardedScrollView = React.forwardRef((props, forwardedRef) => {
 
 ForwardedScrollView.displayName = 'ScrollView'
 
-export default ForwardedScrollView
+export { ForwardedScrollView as ScrollView }
 
 /**
  * Mixin that can be integrated in order to handle scrolling that plays well

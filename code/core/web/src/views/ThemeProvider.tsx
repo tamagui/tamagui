@@ -1,20 +1,9 @@
 import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useId } from 'react'
-
 import { getSetting } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
+import type { ThemeProviderProps } from '../types'
 import { Theme } from './Theme'
-
-export type ThemeProviderProps = {
-  className?: string
-  defaultTheme: string
-  /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
-  disableRootThemeClass?: boolean
-  /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
-  themeClassNameOnRoot?: boolean
-  children?: any
-  reset?: boolean
-}
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
   const disableRootThemeClass =

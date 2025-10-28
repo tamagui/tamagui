@@ -73,7 +73,7 @@ function handleResize() {
   }
 }
 
-export default class Dimensions {
+export class Dimensions {
   static get(dimension: DimensionKey): DisplayMetrics {
     if (shouldInit) {
       shouldInit = false

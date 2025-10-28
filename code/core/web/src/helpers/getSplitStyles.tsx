@@ -34,7 +34,6 @@ import {
   mediaKeyMatch,
   mediaQueryConfig,
 } from '../hooks/useMedia'
-import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState'
 import type {
   AllGroupContexts,
   ClassNamesObject,
@@ -48,6 +47,7 @@ import type {
   SplitStyleProps,
   StaticConfig,
   StyleObject,
+  TamaguiComponentState,
   TamaguiInternalConfig,
   TextStyle,
   ThemeParsed,

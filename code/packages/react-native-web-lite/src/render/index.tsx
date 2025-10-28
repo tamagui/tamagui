@@ -13,4 +13,4 @@ export function render(element, root) {}
 
 export function hydrateLegacy(element, root, callback) {}
 
-export default function renderLegacy(element, root, callback) {}
+export function renderLegacy(element, root, callback) {}

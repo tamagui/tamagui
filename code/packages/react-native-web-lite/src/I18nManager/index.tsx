@@ -18,7 +18,7 @@ type Constants = {
   isRTL: boolean
 }
 
-const I18nManager: I18nManagerStatus = {
+export const I18nManager: I18nManagerStatus = {
   allowRTL() {
     return
   },
@@ -29,5 +29,3 @@ const I18nManager: I18nManagerStatus = {
     return { isRTL: false }
   },
 }
-
-export default I18nManager

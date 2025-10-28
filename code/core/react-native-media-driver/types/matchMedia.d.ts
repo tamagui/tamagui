@@ -1,4 +1,3 @@
-// web-only use platform:
 import type { MatchMedia } from "@tamagui/web";
 export declare const matchMedia: MatchMedia;
 

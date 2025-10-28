@@ -10,9 +10,9 @@
 import * as React from 'react'
 import { StyleSheet, canUseDOM } from '@tamagui/react-native-web-internals'
 
-import View from '../View'
+import { View } from '../View'
 
-var ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
+export const ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
   const { active, children, onRequestClose, transparent, ...rest } = props
 
   React.useEffect(() => {
@@ -71,4 +71,3 @@ var styles = StyleSheet.create({
     flex: 1,
   },
 })
-export default ModalContent

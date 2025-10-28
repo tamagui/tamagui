@@ -7,7 +7,7 @@
  * @flow
  */
 
-export default function pick(
+export function pick(
   obj: Object,
   list: {
     [K in string]: boolean

@@ -47,4 +47,5 @@ export type PseudoDescriptor = {
 export type PseudoDescriptors = {
     [Key in keyof typeof pseudoDescriptors]: PseudoDescriptor;
 };
+export declare const defaultMediaImportance: number;
 //# sourceMappingURL=pseudoDescriptors.d.ts.map

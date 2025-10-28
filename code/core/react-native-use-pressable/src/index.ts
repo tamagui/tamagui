@@ -10,7 +10,7 @@ import React from 'react'
  * @format
  */
 
-import PressResponder from './PressResponder'
+import { PressResponder } from './PressResponder'
 
 // todo
 export type PressResponderConfig = any

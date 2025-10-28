@@ -155,7 +155,7 @@ const DEFAULT_PRESS_DELAY_MS = 50
  * `click` event is `onPress` invoked.
  */
 
-export default class PressResponder {
+export class PressResponder {
   _touchActivatePosition = null as any
   _pressDelayTimeout = 0 as any
   _selectionTerminated = false

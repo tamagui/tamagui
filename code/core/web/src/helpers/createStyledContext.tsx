@@ -1,6 +1,6 @@
-import type { Context, ProviderExoticComponent, ReactNode } from 'react'
+import type { Context, ReactNode } from 'react'
 import React, { useContext } from 'react'
-
+import { StyledContext } from '../types'
 import { mergeProps } from './mergeProps'
 import { objectIdentityKey } from './objectIdentityKey'
 
@@ -11,19 +11,6 @@ import { objectIdentityKey } from './objectIdentityKey'
 //   size: '$4',
 // })
 // const z = useContext(ButtonContext.context)
-
-export type StyledContext<Props extends Object = any> = Context<Props> & {
-  context: Context<Props>
-  props: Object | undefined
-  Provider: ProviderExoticComponent<
-    Partial<Props | undefined> & {
-      children?: ReactNode
-      scope?: string
-    }
-  >
-
-  useStyledContext: (scope?: string) => Props
-}
 
 // avoid react compiler - we aren't breaking its rules but it shouldn't compile this file because
 // it will mis-interpret how we change the context value. in
@@ -100,5 +87,3 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
 
   return Context
 }
-
-export type ScopedProps<P, Scopes = string> = P & { scope?: Scopes }

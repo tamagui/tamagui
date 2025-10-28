@@ -10,7 +10,7 @@
  * @noflow
  */
 
-import isUnitlessNumber from '../unitlessNumbers/index'
+import { unitlessNumbers as isUnitlessNumber } from '../unitlessNumbers/index'
 
 /**
  * Convert a value into the proper css writable value. The style name `name`
@@ -21,7 +21,7 @@ import isUnitlessNumber from '../unitlessNumbers/index'
  * @param {*} value CSS property value such as `10px`.
  * @return {string} Normalized style value with dimensions applied.
  */
-function dangerousStyleValue(name, value, isCustomProperty) {
+export function dangerousStyleValue(name, value, isCustomProperty) {
   // Note that we've removed escapeTextForBrowser() calls here since the
   // whole string will be escaped when the attribute is injected into
   // the markup. If you provide unsafe user data here they can inject
@@ -48,5 +48,3 @@ function dangerousStyleValue(name, value, isCustomProperty) {
 
   return ('' + value).trim()
 }
-
-export default dangerousStyleValue

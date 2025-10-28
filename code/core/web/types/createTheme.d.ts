@@ -1,4 +1,4 @@
-import type { Variable } from './createVariable';
+import type { Variable } from './types';
 type GenericTheme = {
     [key: string]: string | Variable;
 };

@@ -8,10 +8,10 @@
  * @flow strict-local
  */
 
-import canUseDOM from '../../modules/canUseDOM'
-import createCSSStyleSheet from './createCSSStyleSheet'
+import { canUseDOM } from '../../modules/canUseDOM'
+import { createCSSStyleSheet } from './createCSSStyleSheet'
 import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet'
-import createOrderedCSSStyleSheet from './createOrderedCSSStyleSheet'
+import { createOrderedCSSStyleSheet } from './createOrderedCSSStyleSheet'
 
 type Sheet = {
   id: string

@@ -8,22 +8,15 @@ import {
   type MutableRefObject,
 } from 'react'
 import { getConfig } from '../config'
-import type { ThemeParsed, ThemeProps, UseThemeWithStateProps } from '../types'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
+import type {
+  ThemeParsed,
+  ThemeProps,
+  ThemeState,
+  UseThemeWithStateProps,
+} from '../types'
 
 type ID = string
-
-export type ThemeState = {
-  id: ID
-  name: string
-  theme: ThemeParsed
-  inverses: number
-  parentName?: string
-  isInverse?: boolean
-  isNew?: boolean
-  parentId?: ID
-  scheme?: 'light' | 'dark'
-}
 
 export const ThemeStateContext = createContext<ID>('')
 

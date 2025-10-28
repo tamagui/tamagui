@@ -47,7 +47,7 @@ let hasBoundVisibilityChangeEvent = false
 
 const changeEmitter = new EventEmitter()
 
-export default class AppState {
+export class AppState {
   static isAvailable = canUseDOM && document[VISIBILITY_STATE_PROPERTY]
 
   static get currentState() {

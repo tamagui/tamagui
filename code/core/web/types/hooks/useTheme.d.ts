@@ -1,6 +1,5 @@
-import type { ThemeParsed, ThemeProps, UseThemeWithStateProps } from '../types';
+import type { ThemeParsed, ThemeProps, ThemeState, UseThemeWithStateProps } from '../types';
 import { type ThemeProxied } from './getThemeProxied';
-import type { ThemeState } from './useThemeState';
 export declare const useTheme: (props?: ThemeProps) => ThemeProxied;
 export type ThemeWithState = [ThemeParsed, ThemeState];
 /**

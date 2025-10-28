@@ -11,7 +11,7 @@ import { useMergeRefs } from '@tamagui/react-native-web-internals'
 import * as React from 'react'
 
 import type { ViewProps } from '../View/index'
-import View from '../View/index'
+import { View } from '../View/index'
 
 type Props = ViewProps & {
   onMomentumScrollBegin?: (e: any) => void
@@ -174,4 +174,4 @@ const styles = {
   },
 }
 
-export default ScrollViewBase
+export { ScrollViewBase }

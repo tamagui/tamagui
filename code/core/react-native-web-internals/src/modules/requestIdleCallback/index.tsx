@@ -6,7 +6,7 @@
  *
  * @flow
  */
-import canUseDOM from '../canUseDOM'
+import { canUseDOM } from '../canUseDOM'
 
 const _requestIdleCallback = function (cb: Function, options?: Object) {
   return setTimeout(() => {
@@ -26,11 +26,8 @@ const _cancelIdleCallback = function (id) {
 
 const isSupported = canUseDOM && typeof window.requestIdleCallback !== 'undefined'
 
-const requestIdleCallback = isSupported
+export const requestIdleCallback = isSupported
   ? window.requestIdleCallback
   : _requestIdleCallback
 
-const cancelIdleCallback = isSupported ? window.cancelIdleCallback : _cancelIdleCallback
-
-export default requestIdleCallback
-export { cancelIdleCallback }
+export const cancelIdleCallback = isSupported ? window.cancelIdleCallback : _cancelIdleCallback

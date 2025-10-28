@@ -16,9 +16,9 @@ import {
 } from '@tamagui/react-native-web-internals'
 import { ImageLoader, getAssetByID } from '@tamagui/react-native-web-internals'
 
-import createElement from '../createElement/index'
-import PixelRatio from '../PixelRatio/index'
-import View from '../View/index'
+import { createElement } from '../createElement/index'
+import { PixelRatio } from '../PixelRatio/index'
+import { View } from '../View/index'
 import type { ImageProps } from './types'
 
 export type { ImageProps }
@@ -397,4 +397,4 @@ const resizeModeStyles = StyleSheet.create({
   },
 })
 
-export default ImageWithStatics
+export { ImageWithStatics as Image }

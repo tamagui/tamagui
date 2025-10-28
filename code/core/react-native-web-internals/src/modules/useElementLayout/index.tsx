@@ -5,7 +5,7 @@ import {
 import { type RefObject, useEffect, useMemo } from 'react'
 import type { LayoutEvent } from '../../types'
 
-export default function useElementLayout(
+export function useElementLayout(
   ref: RefObject<any>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ) {

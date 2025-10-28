@@ -13,5 +13,4 @@ export declare const AccessibilityUtil: {
         accessibilityRole?: string;
     }) => string | void;
 };
-export default AccessibilityUtil;
 //# sourceMappingURL=index.d.ts.map
