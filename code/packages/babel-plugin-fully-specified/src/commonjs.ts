@@ -62,6 +62,6 @@ export default function fullySpecifyCommonJS(api: any): babel.PluginObj {
   } satisfies babel.PluginObj
 }
 
-function isLocalDirectory(absolutePath) {
+function isLocalDirectory(absolutePath: string): boolean {
   return existsSync(absolutePath) && lstatSync(absolutePath).isDirectory()
 }

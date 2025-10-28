@@ -1,7 +1,8 @@
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __getProtoOf = Object.getPrototypeOf, __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: !0 });
@@ -11,18 +12,26 @@ var __export = (target, all) => {
       !__hasOwnProp.call(to, key) && key !== except && __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: !0 }), mod);
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: !0 }) : target,
+  mod
+)), __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: !0 }), mod);
 var index_exports = {};
 __export(index_exports, {
   default: () => FullySpecified
 });
 module.exports = __toCommonJS(index_exports);
-var import_node_fs = require("node:fs"), import_node_path = require("node:path");
+var import_node_fs = require("node:fs"), import_node_path = require("node:path"), t = __toESM(require("@babel/types"));
 const DEFAULT_OPTIONS = {
   ensureFileExists: !0,
   esExtensionDefault: ".mjs",
   tryExtensions: [".js"],
-  esExtensions: [".mjs"]
+  esExtensions: [".mjs"],
+  convertProcessEnvToImportMetaEnv: !1
 };
 function FullySpecified(api, rawOptions) {
   api.assertVersion(7);
@@ -78,6 +87,18 @@ function FullySpecified(api, rawOptions) {
           }
         );
         fullySpecifiedModuleSpecifier && (firstArgOfImportCall.value = fullySpecifiedModuleSpecifier);
+      },
+      MemberExpression: (path) => {
+        if (!options.convertProcessEnvToImportMetaEnv) return;
+        const { node } = path;
+        if (node.object.type === "MemberExpression" && node.object.object.type === "Identifier" && node.object.object.name === "process" && node.object.property.type === "Identifier" && node.object.property.name === "env") {
+          if (node.property.type === "Identifier" && node.property.name === "NODE_ENV")
+            return;
+          node.object = t.memberExpression(
+            t.metaProperty(t.identifier("import"), t.identifier("meta")),
+            t.identifier("env")
+          );
+        }
       }
     }
   };

@@ -2,7 +2,7 @@ import path from 'node:path'
 import { describe, expect, test } from 'vitest'
 import { type TransformOptions, transform, transformFileSync } from '@babel/core'
 
-import plugin, { type FullySpecifiedOptions } from '../'
+import plugin, { type FullySpecifiedOptions } from '../src'
 
 /** A helper function to get the default transform options for the plugin to test. */
 const getTransformOptions = ({
