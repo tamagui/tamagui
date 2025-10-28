@@ -4607,28 +4607,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reach/auto-id@npm:^0.18.0":
-  version: 0.18.0
-  resolution: "@reach/auto-id@npm:0.18.0"
-  dependencies:
-    "@reach/utils": "npm:0.18.0"
-  peerDependencies:
-    react: ^16.8.0 || 17.x
-    react-dom: ^16.8.0 || 17.x
-  checksum: 10/545ff94eb4898ad0e1359e604deeebbabc753e004ca3ed5a817272e61422413faf4f68268ba41b61432c157999f3be0d18cf2c52c7d57ae2b988a88a602e4a0c
-  languageName: node
-  linkType: hard
-
-"@reach/utils@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@reach/utils@npm:0.18.0"
-  peerDependencies:
-    react: ^16.8.0 || 17.x
-    react-dom: ^16.8.0 || 17.x
-  checksum: 10/7686b0cba3653fcddfc49b7887a77c438c1f3d4da35fda0694f771f64669a615129edebf7c62fb2e960c39cb23ab1518a10bb3e818330d57df976de77ada4e5b
-  languageName: node
-  linkType: hard
-
 "@react-hook/debounce@npm:^3.0.0":
   version: 3.0.0
   resolution: "@react-hook/debounce@npm:3.0.0"
@@ -7923,12 +7901,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/proxy-tabbable@workspace:code/core/tabbable":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/proxy-tabbable@workspace:code/core/tabbable"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/proxy-worm@workspace:*, @tamagui/proxy-worm@workspace:code/core/proxy-worm":
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:code/core/proxy-worm"
@@ -7978,15 +7950,6 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/react-17-patch@workspace:code/core/react-17-patch":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/react-17-patch@workspace:code/core/react-17-patch"
-  dependencies:
-    "@reach/auto-id": "npm:^0.18.0"
-    use-sync-external-store: "npm:^1.2.0"
   languageName: unknown
   linkType: soft
 
@@ -28076,7 +28039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.2.0, use-sync-external-store@npm:^1.2.2, use-sync-external-store@npm:^1.4.0, use-sync-external-store@npm:^1.5.0":
+"use-sync-external-store@npm:^1.2.2, use-sync-external-store@npm:^1.4.0, use-sync-external-store@npm:^1.5.0":
   version: 1.5.0
   resolution: "use-sync-external-store@npm:1.5.0"
   peerDependencies:
