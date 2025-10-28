@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/font-cherry-bomb",
   "version": "1.135.4",
+  "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -11,6 +12,19 @@
     "otf",
     "woff2"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
   "scripts": {
     "build": "tamagui-build",
     "subset": "node -r esbuild-register subset.ts",

@@ -873,6 +873,7 @@ async function esbuildWriteIfChanged(
                 {
                   esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
                   esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
+                  convertProcessEnvToImportMetaEnv: platform === 'web',
                 },
               ],
             ].filter(Boolean),

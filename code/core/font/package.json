@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/font",
   "version": "1.135.4",
+  "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -11,6 +12,19 @@
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
