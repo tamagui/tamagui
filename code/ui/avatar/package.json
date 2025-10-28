@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/avatar",
   "version": "1.135.4",
-  "type": "module",
   "sideEffects": [
     "*.css"
   ],
