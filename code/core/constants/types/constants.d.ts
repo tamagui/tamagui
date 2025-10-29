@@ -8,7 +8,6 @@ export declare const useIsomorphicLayoutEffect: typeof useEffect;
 export declare const isChrome: boolean;
 export declare const isWebTouchable: boolean;
 export declare const isTouchable: boolean;
-// set :boolean to avoid inferring type to false
 export declare const isAndroid: boolean;
 export declare const isIos: boolean;
 export declare const currentPlatform: "web" | "ios" | "native" | "android";

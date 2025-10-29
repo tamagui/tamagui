@@ -638,6 +638,9 @@ async function esbuildWriteIfChanged(
         ...(env && {
           'process.env.NODE_ENV': `"${env}"`,
         }),
+        ...(shouldBundleNodeModules && {
+          'process.env.ESBUILD_BINARY_PATH': `"true"`,
+        }),
         ...opts.define,
       },
     }

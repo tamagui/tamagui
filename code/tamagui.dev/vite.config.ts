@@ -71,7 +71,7 @@ export default {
   },
 
   ssr: {
-    external: ['@tamagui/mdx-2'],
+    external: ['@tamagui/mdx-2', 'ws'],
     noExternal: true,
   },
 

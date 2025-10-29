@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import waitPort from 'wait-port'
-import { $ } from 'zx'
+import 'zx/globals'
 
 const port = 5008
 const domain = `http://localhost:${port}`

@@ -1,5 +1,3 @@
-// from radix
-// https://github.com/radix-ui/primitives/blob/main/packages/react/context/src/createContext.tsx
 import * as React from "react";
 export type ScopedProps<
 	P,
@@ -8,9 +6,6 @@ export type ScopedProps<
 export declare function createContext<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType): readonly [(props: ContextValueType & {
 	children: React.ReactNode;
 }) => React.JSX.Element, (consumerName: string) => Exclude<ContextValueType | undefined, undefined>];
-/* -------------------------------------------------------------------------------------------------
-* createContextScope
-* -----------------------------------------------------------------------------------------------*/
 type ScopeHook = (scope: Scope) => {
 	[__scopeProp: string]: Scope;
 };
