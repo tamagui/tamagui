@@ -407,8 +407,16 @@ async function buildJs(allFiles) {
           !args.path.startsWith('.') &&
           !args.path.startsWith('/')
         ) {
-          // Externalize all npm packages except esbuild and mdx-bundler
-          return { external: !/^(esbuild|mdx-bundler)$/.test(args.path) }
+          // Keep esbuild external - it cannot be bundled
+          if (args.path === 'esbuild' || args.path.startsWith('esbuild/')) {
+            return { external: true }
+          }
+          // Bundle mdx-bundler and its dependencies
+          if (args.path === 'mdx-bundler' || args.path.startsWith('mdx-bundler/')) {
+            return { external: false }
+          }
+          // Externalize all other npm packages
+          return { external: true }
         }
       })
     },
