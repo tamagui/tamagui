@@ -73,8 +73,8 @@
     "./native": {
       "types": "./types/index.d.ts",
       "import": "./dist/native.mjs",
-      "require": "./dist/native.cjs",
-      "react-native": "./dist/native.cjs"
+      "require": "./dist/native.js",
+      "react-native": "./dist/native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",

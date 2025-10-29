@@ -1,4 +1,7 @@
 import { type ReactNode, type RefObject } from "react";
+// internal testing - advanced helper to turn off layout measurement for extra performance
+// TODO document!
+// TODO could add frame skip control here
 export declare const LayoutMeasurementController: ({ disable, children }: {
 	disable: boolean;
 	children: ReactNode;

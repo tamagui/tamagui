@@ -1,3 +1,4 @@
+// forked from https://github.com/radix-ui/primitives/blob/main/packages/react/direction/src/Direction.tsx
 import * as React from "react";
 type Direction = "ltr" | "rtl";
 interface DirectionProviderProps {

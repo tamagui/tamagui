@@ -127,7 +127,6 @@ export type SpaceKeys =
   | 'borderInlineStartWidth'
   | 'borderInlineEndWidth'
 
-
 export type StyledContext<Props extends Object = any> = Context<Props> & {
   context: Context<Props>
   props: Object | undefined
@@ -140,7 +139,6 @@ export type StyledContext<Props extends Object = any> = Context<Props> & {
 
   useStyledContext: (scope?: string) => Props
 }
-
 
 export type TamaguiComponentState = {
   unmounted: boolean | 'should-enter'

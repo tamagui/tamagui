@@ -1,3 +1,4 @@
+// all exports here for better tree shaking compat
 export { amber as amberDark } from "./dark/amber";
 export { blue as blueDark } from "./dark/blue";
 export { bronze as bronzeDark } from "./dark/bronze";

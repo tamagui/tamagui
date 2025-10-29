@@ -35,7 +35,7 @@ function transformFile(file, options) {
   let transformOptions = {
     env: {
       targets: {
-        node: '20',
+        node: '4',
       },
       include: [],
       // this breaks the uniswap app for any file with a ...spread
@@ -68,6 +68,7 @@ function transformFile(file, options) {
         preserveAllComments: true,
       },
     },
+    module: { type: 'es6' },
     sourceFileName: file,
     isModule: true,
     ...options,
@@ -75,7 +76,7 @@ function transformFile(file, options) {
   return _transformFile(file, transformOptions)
 }
 
-exports.es5Plugin = function es5Plugin(moduleType) {
+exports.es5Plugin = function es5Plugin() {
   return {
     name: 'es5',
     setup(build) {
@@ -83,7 +84,6 @@ exports.es5Plugin = function es5Plugin(moduleType) {
         return new Promise((resolve) => {
           transformFile(args.path, {
             sourceMaps: false,
-            module: { type: moduleType === 'esm' ? 'es6' : 'commonjs' },
           })
             .then(({ code }) => {
               resolve({ contents: code, loader: 'js' })

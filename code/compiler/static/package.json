@@ -4,7 +4,7 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "files": [
     "src",
     "types",
@@ -22,8 +22,8 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.cjs"
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
     }
   },
   "tests": {

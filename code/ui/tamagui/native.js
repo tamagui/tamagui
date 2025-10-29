@@ -1,1 +1,1 @@
-Object.assign(module.exports, require('./dist/native.cjs'))
+Object.assign(module.exports, require('./dist/native'))

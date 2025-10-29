@@ -1,7 +1,7 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
+import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
@@ -415,12 +415,11 @@ export const PopperAnchor = YStack.extractable(
 
 type PopperContentElement = TamaguiElement
 
-export type PopperContentProps = ScopedProps<
-  SizableStackProps & {
-    enableAnimationForPositionChange?: boolean | 'even-when-repositioning'
-    passThrough?: boolean
-  }
->
+export type PopperContentProps = SizableStackProps & {
+  scope?: string
+  enableAnimationForPositionChange?: boolean | 'even-when-repositioning'
+  passThrough?: boolean
+}
 
 export const PopperContentFrame = styled(ThemeableStack, {
   name: 'PopperContent',
@@ -542,10 +541,11 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
  * PopperArrow
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopperArrowExtraProps = ScopedProps<{
+export type PopperArrowExtraProps = {
   offset?: number
   size?: SizeTokens
-}>
+  scope?: string
+}
 
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps
 

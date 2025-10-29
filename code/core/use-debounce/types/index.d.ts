@@ -1,6 +1,7 @@
 type DebounceSettings = {
 	leading?: boolean;
 };
+// TODO doesn't return value of the function called :/
 export declare function debounce<A extends Function>(func: A, wait?: number, leading?: boolean): A & {
 	cancel: () => void;
 };

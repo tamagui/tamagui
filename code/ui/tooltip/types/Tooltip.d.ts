@@ -85,12 +85,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps &
             right?: number;
         } | null | undefined;
         fullscreen?: boolean | undefined;
-    }>> & {
-        offset?: number;
-        size?: SizeTokens;
-    } & {
-        scope?: string | undefined;
-    } & React.RefAttributes<TamaguiElement>>;
+    }>> & import("@tamagui/popper").PopperArrowExtraProps & React.RefAttributes<TamaguiElement>>;
     Content: React.ForwardRefExoticComponent<Omit<import("@tamagui/popover").PopoverContentTypeProps, "scope"> & {
         scope?: TooltipScopes;
     } & React.RefAttributes<TamaguiElement>>;

@@ -211,7 +211,7 @@ async function buildTsc(allFiles) {
     const compilerOptions = createCompilerOptions(config.options, targetDir)
 
     if (config.options.isolatedDeclarations) {
-      const oxc = await import('oxc-transform')
+      const oxc = require('oxc-transform')
 
       await Promise.all(
         allFiles.map(async (file) => {
@@ -392,9 +392,8 @@ async function buildJs(allFiles) {
   const esbuildBundleProps =
     bundleNative || bundleNativeTest
       ? {
+          entryPoints: [bundleNative],
           bundle: true,
-          // format: 'cjs',
-          // target: 'node',
           plugins: [
             alias({
               '@tamagui/web': require.resolve('@tamagui/web/native'),
@@ -446,7 +445,6 @@ async function buildJs(allFiles) {
 
   const entryPoints = shouldBundleFlag ? [pkgSource || './src/index.ts'] : allFiles
 
-  /** @type { import('esbuild').BuildOptions } */
   const cjsConfig = {
     format: 'cjs',
     entryPoints,
@@ -505,8 +503,7 @@ async function buildJs(allFiles) {
       ? esbuildWriteIfChanged(
           {
             ...esbuildBundleProps,
-            entryPoints: [bundleNative],
-            outfile: `dist/native.cjs`,
+            outfile: `dist/native.js`,
           },
           {
             platform: 'native',
@@ -519,7 +516,6 @@ async function buildJs(allFiles) {
       ? esbuildWriteIfChanged(
           {
             ...esbuildBundleProps,
-            entryPoints: [bundleNativeTest],
             outfile: `dist/test.js`,
           },
           {
@@ -575,7 +571,7 @@ async function buildJs(allFiles) {
             entryPoints,
             bundle: shouldBundleFlag,
             allowOverwrite: true,
-            target: 'node20',
+            target: 'node16',
             format: 'esm',
             minify: !!process.env.MINIFY,
             platform: 'neutral',
@@ -618,7 +614,7 @@ async function esbuildWriteIfChanged(
     // compat with jsx and hermes back a few versions generally:
     /** @type { import('esbuild').BuildOptions } */
     const nativeEsbuildSettings = {
-      target: isESM ? 'esnext' : 'node20',
+      target: isESM ? 'esnext' : 'node16',
       supported: {
         'logical-assignment': false,
       },
@@ -628,7 +624,7 @@ async function esbuildWriteIfChanged(
 
     /** @type { import('esbuild').BuildOptions } */
     const webEsbuildSettings = {
-      target: specifyCJS ? 'node20' : 'esnext',
+      target: 'esnext',
       jsx: 'automatic',
       platform: opts.bundle ? 'node' : 'neutral',
       tsconfigRaw: {
@@ -640,8 +636,7 @@ async function esbuildWriteIfChanged(
       },
     }
 
-    /** @type { import('esbuild').BuildOptions } */
-    const out = {
+    return {
       ...opts,
 
       plugins: [
@@ -650,21 +645,18 @@ async function esbuildWriteIfChanged(
         ...(platform === 'native'
           ? [
               // class isnt supported by hermes
-              es5Plugin(isESM ? 'esm' : 'cjs'),
+              es5Plugin(),
             ]
           : []),
       ].filter(Boolean),
 
-      ...(!opts.bundle && {
-        treeShaking: true,
-        minifySyntax: true,
-        keepNames: false,
-      }),
-
+      treeShaking: true,
+      minifySyntax: true,
       write: false,
 
       color: true,
       allowOverwrite: true,
+      keepNames: false,
       sourcemap: true,
       sourcesContent: false,
       logLevel: 'error',
@@ -680,17 +672,11 @@ async function esbuildWriteIfChanged(
         ...opts.define,
       },
     }
-
-    return out
   })()
 
   let built
 
   try {
-    if (buildSettings.bundle) {
-      console.info(`build`, buildSettings)
-    }
-
     built = await esbuild.build(buildSettings)
   } catch (err) {
     console.error(`Error building`, err)
@@ -887,9 +873,6 @@ async function esbuildWriteIfChanged(
                 {
                   esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
                   esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
-                  // disabled - was causing warnings on "yarn dev" - "import.meta" is not available with the "cjs" output format and will be empty
-                  // need to investigate more, its happening when tamagui plugin bundles your components which outputs to cjs
-                  // convertProcessEnvToImportMetaEnv: platform === 'web' && !specifyCJS,
                 },
               ],
             ].filter(Boolean),
