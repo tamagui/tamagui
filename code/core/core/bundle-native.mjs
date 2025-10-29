@@ -10,10 +10,12 @@ await bundleNative({
 })
 
 // Bundle for tests (test.native.cjs)
+// Externalizes react-native so it can be mocked at runtime by vitest-react-native
 await bundleNative({
   entry: 'src/index.tsx',
   outDir: 'dist',
   fileName: 'test.native.cjs',
+  isTest: true,
   define: {
     'process.env.NODE_ENV': JSON.stringify('test'),
   },

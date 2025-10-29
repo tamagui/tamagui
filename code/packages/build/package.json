@@ -29,6 +29,6 @@
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "devDependencies": {
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   }
 }

@@ -50,7 +50,7 @@
     "react": "*",
     "react-native": "^0.79.2",
     "typescript": "^5.8.2",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   },
   "peerDependencies": {
     "react": "*",
@@ -71,10 +71,12 @@
     },
     "./native": {
       "types": "./types/index.d.ts",
+      "import": "./dist/native.cjs",
       "require": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
+      "import": "./dist/test.native.cjs",
       "require": "./dist/test.native.cjs"
     },
     "./inject-styles": {

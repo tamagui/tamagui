@@ -1,6 +1,8 @@
 /// <reference types="vitest" />
 
-import react from '@vitejs/plugin-react'
+// @ts-ignore
+// import react from '@vitejs/plugin-react'
+// import react from '@vitejs/plugin-react-swc'
 import { join } from 'node:path'
 import { type Plugin, defineConfig } from 'vite'
 import { createRequire } from 'node:module'
@@ -52,7 +54,7 @@ export function getConfig(tamaguiPlugin: any) {
   return defineConfig({
     plugins: [
       // isNative ? null : reactNative(),
-      react({}),
+      // react({}),
 
       tamaguiPlugin({
         components: ['tamagui'],
@@ -94,9 +96,11 @@ export function getConfig(tamaguiPlugin: any) {
     },
 
     resolve: {
-      alias: {
-        'react-native': '@tamagui/react-native-web-lite',
-      },
+      alias: isNative
+        ? {}
+        : {
+            'react-native': '@tamagui/react-native-web-lite',
+          },
     },
 
     // @ts-ignore
@@ -105,7 +109,9 @@ export function getConfig(tamaguiPlugin: any) {
       globals: true,
       setupFiles: [
         join(__dirname, 'test-setup.ts'),
-        requireResolve('vitest-react-native/setup'),
+        ...(isNative
+          ? [join(__dirname, 'vitest-react-native-setup.cjs')]
+          : [requireResolve('vitest-react-native/setup')]),
       ],
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',

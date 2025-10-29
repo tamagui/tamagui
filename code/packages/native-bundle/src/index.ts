@@ -36,6 +36,13 @@ export interface BundleOptions {
    * @default false
    */
   minify?: boolean
+
+  /**
+   * Whether this is a test bundle
+   * If true, react-native will be externalized for testing
+   * @default false
+   */
+  isTest?: boolean
 }
 
 /**
@@ -49,6 +56,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
     cwd = process.cwd(),
     define = {},
     minify = false,
+    isTest = false,
   } = options
 
   const resolvePath = (name: string) => {
@@ -69,6 +77,24 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
     'process.env.TAMAGUI_IS_CORE_NODE': JSON.stringify('1'),
   }
 
+  // For test bundles, externalize react-native so it can be mocked at runtime
+  // For production bundles, bundle react-native-web-lite for a single file output
+  const external = isTest
+    ? ['react', /^react-native($|\/)/]
+    : ['react']
+  const alias = isTest
+    ? []
+    : [
+        {
+          find: /^react-native$/,
+          replacement: rnwl,
+        },
+        {
+          find: /^react-native\/(.+)$/,
+          replacement: `${rnwl}/$1`,
+        },
+      ]
+
   await build({
     configFile: false,
     root: cwd,
@@ -82,8 +108,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
       outDir,
       emptyOutDir: false,
       rollupOptions: {
-        // Only externalize react
-        external: ['react'],
+        external,
         output: {
           // Ensure CommonJS output
           format: 'cjs',
@@ -106,16 +131,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
         '.jsx',
       ],
       conditions: ['react-native', 'import', 'module', 'default'],
-      alias: [
-        {
-          find: /^react-native$/,
-          replacement: rnwl,
-        },
-        {
-          find: /^react-native\/(.+)$/,
-          replacement: `${rnwl}/$1`,
-        },
-      ],
+      alias,
     },
     define: {
       ...defaultDefine,

@@ -87,6 +87,6 @@
     "subset-font": "^2.1.0",
     "vite-bundle-analyzer": "^0.9.4",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   }
 }

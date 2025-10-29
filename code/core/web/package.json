@@ -52,7 +52,7 @@
     "react-dom": "*",
     "react-native": "^0.79.2",
     "typescript": "^5.8.2",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   },
   "exports": {
     "./package.json": "./package.json",
