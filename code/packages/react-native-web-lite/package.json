@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "1.135.4-1761749240853",
+  "version": "1.135.4-1761754084520",
   "type": "module",
   "description": "React Native for Web",
   "sideEffects": false,

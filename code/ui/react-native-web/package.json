@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web",
-  "version": "1.135.4-1761749240853",
+  "version": "1.135.4-1761754084520",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
