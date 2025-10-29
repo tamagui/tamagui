@@ -65,8 +65,8 @@
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "require": "./dist/native.cjs",
-      "react-native": "./dist/native.native.cjs"
+      "require": "./dist/native.js",
+      "react-native": "./dist/native.native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",

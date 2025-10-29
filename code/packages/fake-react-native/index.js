@@ -1,5 +1,7 @@
 module.exports = proxyWorm()
 
+const emtpyComponent = () => null
+
 function proxyWorm() {
   return new Proxy(
     {
@@ -9,13 +11,13 @@ function proxyWorm() {
       Platform: {
         OS: 'web',
       },
-      Image: 'Image',
-      View: 'View',
-      Text: 'Text',
-      TextInput: 'TextInput',
-      ScrollView: 'ScrollView',
+      Image: emtpyComponent,
+      View: emtpyComponent,
+      Text: emtpyComponent,
+      TextInput: emtpyComponent,
+      ScrollView: emtpyComponent,
       Dimensions: {
-        addEventListener(cb) {}
+        addEventListener(cb) {},
       },
       addPoolingTo() {},
     },
