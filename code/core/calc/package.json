@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/calc",
-  "version": "1.135.4-1761748186554",
+  "version": "1.135.4-1761749240853",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
