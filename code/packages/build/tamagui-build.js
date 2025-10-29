@@ -397,6 +397,11 @@ async function buildJs(allFiles) {
   const bundlePlugin = {
     name: `external-most-modules`,
     setup(build) {
+      // Alias esbuild to esbuild-wasm (but keep it external)
+      build.onResolve({ filter: /^esbuild$/ }, (args) => {
+        return { path: 'esbuild-wasm', external: true }
+      })
+
       build.onResolve({ filter: /.*/ }, (args) => {
         // Externalize node built-ins
         if (args.path.startsWith('node:')) {
@@ -407,8 +412,8 @@ async function buildJs(allFiles) {
           !args.path.startsWith('.') &&
           !args.path.startsWith('/')
         ) {
-          // Keep esbuild external - it cannot be bundled
-          if (args.path === 'esbuild' || args.path.startsWith('esbuild/')) {
+          // Keep esbuild-wasm external (it needs access to WASM files)
+          if (args.path === 'esbuild-wasm' || args.path.startsWith('esbuild-wasm/')) {
             return { external: true }
           }
           // Bundle mdx-bundler and its dependencies
@@ -812,6 +817,11 @@ async function esbuildWriteIfChanged(
         await FSE.writeFile(path.replace(/\.js$/, '.cjs'), result.code)
       })
     )
+    return
+  }
+
+  // Skip mjs transformation if --skip-mjs flag is set
+  if (shouldSkipMJS) {
     return
   }
 
