@@ -20,5 +20,5 @@ function clamp(min, value, max) {
   return value;
 }
 
-export { clamp };
+export { clamp }
 export default clamp;

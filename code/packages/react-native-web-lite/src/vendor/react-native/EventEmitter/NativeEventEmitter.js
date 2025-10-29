@@ -10,7 +10,7 @@
 'use strict'
 
 import { Platform, invariant } from '@tamagui/react-native-web-internals'
-import RCTDeviceEventEmitter from './RCTDeviceEventEmitter'
+import { RCTDeviceEventEmitter } from './RCTDeviceEventEmitter'
 
 /**
  * `NativeEventEmitter` is intended for use by Native Modules to emit events to
@@ -81,5 +81,5 @@ class NativeEventEmitter {
   }
 }
 
-export { NativeEventEmitter };
+export { NativeEventEmitter }
 export default NativeEventEmitter

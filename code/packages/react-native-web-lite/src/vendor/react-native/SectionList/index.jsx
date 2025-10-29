@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import VirtualizedSectionList from '../VirtualizedSectionList'
+import { VirtualizedSectionList } from '../VirtualizedSectionList'
 import * as React from 'react'
 
 class SectionList extends React.PureComponent {
@@ -96,5 +96,5 @@ class SectionList extends React.PureComponent {
   }
 }
 
-export { SectionList };
+export { SectionList }
 export default SectionList;

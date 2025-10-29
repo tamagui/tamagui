@@ -8,10 +8,10 @@
  * @format
  */
 
-import AnimatedNode from './AnimatedNode'
-import AnimatedTransform from './AnimatedTransform'
-import AnimatedWithChildren from './AnimatedWithChildren'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { AnimatedNode } from './AnimatedNode'
+import { AnimatedTransform } from './AnimatedTransform'
+import { AnimatedWithChildren } from './AnimatedWithChildren'
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper'
 
 import { StyleSheet } from '@tamagui/react-native-web-internals'
 
@@ -133,5 +133,5 @@ class AnimatedStyle extends AnimatedWithChildren {
   }
 }
 
-export { AnimatedStyle };
+export { AnimatedStyle }
 export default AnimatedStyle

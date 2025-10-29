@@ -84,5 +84,5 @@ const SpringConfig = {
   fromBouncinessAndSpeed,
 };
 
-export { SpringConfig };
+export { SpringConfig }
 export default SpringConfig

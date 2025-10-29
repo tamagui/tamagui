@@ -11,11 +11,13 @@ import type {
   InferStyledProps,
   StaticConfig,
   StaticConfigPublic,
-  StylableComponent, StyledContext, TamaDefer,
+  StylableComponent,
+  StyledContext,
+  TamaDefer,
   TamaguiComponent,
   ThemeValueGet,
   VariantDefinitions,
-  VariantSpreadFunction
+  VariantSpreadFunction,
 } from './types'
 import type { Text } from './views/Text'
 

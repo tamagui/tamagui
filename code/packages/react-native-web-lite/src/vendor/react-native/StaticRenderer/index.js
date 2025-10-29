@@ -23,5 +23,5 @@ class StaticRenderer extends React.Component {
   }
 }
 
-export { StaticRenderer };
+export { StaticRenderer }
 export default StaticRenderer;

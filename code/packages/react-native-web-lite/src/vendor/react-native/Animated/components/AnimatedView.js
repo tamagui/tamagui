@@ -7,9 +7,9 @@
  * @format
  */
 
-import View from '../../../../View'
-import createAnimatedComponent from '../createAnimatedComponent'
+import { View } from '../../../../View'
+import { createAnimatedComponent } from '../createAnimatedComponent'
 
 const AnimatedView = createAnimatedComponent(View);
-export { AnimatedView };
+export { AnimatedView }
 export default AnimatedView

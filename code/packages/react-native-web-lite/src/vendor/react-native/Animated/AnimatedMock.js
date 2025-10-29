@@ -11,15 +11,15 @@
 'use strict'
 
 import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
-import AnimatedImplementation from './AnimatedImplementation'
-import AnimatedInterpolation from './nodes/AnimatedInterpolation'
-import AnimatedNode from './nodes/AnimatedNode'
-import AnimatedValue from './nodes/AnimatedValue'
-import AnimatedValueXY from './nodes/AnimatedValueXY'
+import { AnimatedImplementation } from './AnimatedImplementation'
+import { AnimatedInterpolation } from './nodes/AnimatedInterpolation'
+import { AnimatedNode } from './nodes/AnimatedNode'
+import { AnimatedValue } from './nodes/AnimatedValue'
+import { AnimatedValueXY } from './nodes/AnimatedValueXY'
 
-import createAnimatedComponent from './createAnimatedComponent'
+import { createAnimatedComponent } from './createAnimatedComponent'
 
-import AnimatedColor from './nodes/AnimatedColor'
+import { AnimatedColor } from './nodes/AnimatedColor'
 
 /**
  * Animations are a source of flakiness in snapshot testing. This mock replaces
@@ -150,5 +150,6 @@ const AnimatedMockExports = {
   Event: AnimatedEvent,
 };
 
-export { AnimatedMockExports as AnimatedMock };
+export { AnimatedMockExports }
+export { AnimatedMockExports as AnimatedMock }
 export default AnimatedMockExports

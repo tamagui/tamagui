@@ -8,8 +8,8 @@
  * @format
  */
 
-import AnimatedValue from './AnimatedValue'
-import AnimatedNode from './AnimatedNode'
+import { AnimatedValue } from './AnimatedValue'
+import { AnimatedNode } from './AnimatedNode'
 import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper'
 
 class AnimatedTracking extends AnimatedNode {
@@ -86,5 +86,5 @@ class AnimatedTracking extends AnimatedNode {
   }
 }
 
-export { AnimatedTracking };
+export { AnimatedTracking }
 export default AnimatedTracking

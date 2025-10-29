@@ -61,5 +61,5 @@ const spec = {
 };
 
 const NativeAnimatedTurboModule = TurboModuleRegistry.get('NativeAnimatedTurboModule') || spec;
-export { NativeAnimatedTurboModule };
+export { NativeAnimatedTurboModule }
 export default NativeAnimatedTurboModule;

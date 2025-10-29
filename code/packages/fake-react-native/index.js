@@ -1,5 +1,3 @@
-module.exports = proxyWorm()
-
 const emtpyComponent = () => null
 
 function proxyWorm() {
@@ -31,3 +29,15 @@ function proxyWorm() {
     }
   )
 }
+
+const proxy = proxyWorm()
+
+module.exports = proxy
+module.exports.Platform = proxy.Platform
+module.exports.StyleSheet = proxy.StyleSheet
+module.exports.Image = proxy.Image
+module.exports.View = proxy.View
+module.exports.Text = proxy.Text
+module.exports.TextInput = proxy.TextInput
+module.exports.ScrollView = proxy.ScrollView
+module.exports.Dimensions = proxy.Dimensions

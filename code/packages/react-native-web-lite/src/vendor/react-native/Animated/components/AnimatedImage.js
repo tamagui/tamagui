@@ -9,9 +9,9 @@
 
 import * as React from 'react'
 
-import Image from '../../../../Image'
-import createAnimatedComponent from '../createAnimatedComponent'
+import { Image } from '../../../../Image'
+import { createAnimatedComponent } from '../createAnimatedComponent'
 
 const AnimatedImage = createAnimatedComponent(Image);
-export { AnimatedImage };
+export { AnimatedImage }
 export default AnimatedImage

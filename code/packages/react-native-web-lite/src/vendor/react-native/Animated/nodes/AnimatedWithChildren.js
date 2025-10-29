@@ -11,8 +11,8 @@
 'use strict';
 
 
-import AnimatedNode from './AnimatedNode';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import { AnimatedNode } from './AnimatedNode';
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper';
 
 class AnimatedWithChildren extends AnimatedNode {
   _children;
@@ -86,5 +86,5 @@ class AnimatedWithChildren extends AnimatedNode {
   }
 }
 
-export { AnimatedWithChildren };
+export { AnimatedWithChildren }
 export default AnimatedWithChildren;

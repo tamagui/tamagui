@@ -30,5 +30,5 @@ class _EventSubscription {
   }
 }
 
-export { _EventSubscription };
+export { _EventSubscription }
 export default _EventSubscription

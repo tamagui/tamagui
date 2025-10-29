@@ -181,5 +181,5 @@ const styles = StyleSheet.create({
   },
 })
 
-export { CellRenderer }
 export default CellRenderer
+export { CellRenderer }

@@ -9,7 +9,7 @@
 
 'use strict';
 
-import Animation from './Animation';
+import { Animation } from './Animation';
 
 import {shouldUseNativeDriver} from '../NativeAnimatedHelper';
 
@@ -92,5 +92,5 @@ class DecayAnimation extends Animation {
   }
 }
 
-export { DecayAnimation };
+export { DecayAnimation }
 export default DecayAnimation;

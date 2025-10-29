@@ -40,5 +40,5 @@ function useMergeRefs(
   );
 }
 
-export { useMergeRefs };
+export { useMergeRefs }
 export default useMergeRefs;

@@ -43,5 +43,5 @@ function useRefEffect(
   );
 }
 
-export { useRefEffect };
+export { useRefEffect }
 export default useRefEffect;

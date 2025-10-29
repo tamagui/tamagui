@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import AnimatedValue from './AnimatedValue'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import { AnimatedValue } from './AnimatedValue'
+import { AnimatedWithChildren } from './AnimatedWithChildren'
 import { invariant } from '@tamagui/react-native-web-internals'
 
 let _uniqueId = 1
@@ -104,5 +104,5 @@ class AnimatedValueXY extends AnimatedWithChildren {
   }
 }
 
-export { AnimatedValueXY };
+export { AnimatedValueXY }
 export default AnimatedValueXY

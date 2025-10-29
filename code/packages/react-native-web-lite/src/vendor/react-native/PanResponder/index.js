@@ -128,5 +128,5 @@ const PanResponder = {
   },
 }
 
-export { PanResponder };
+export { PanResponder }
 export default PanResponder

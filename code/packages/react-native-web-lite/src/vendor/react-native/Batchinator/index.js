@@ -73,5 +73,5 @@ class Batchinator {
   }
 }
 
-export { Batchinator };
+export { Batchinator }
 export default Batchinator

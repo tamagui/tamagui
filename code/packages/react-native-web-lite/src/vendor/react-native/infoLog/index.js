@@ -17,5 +17,5 @@ function infoLog(...args) {
   return console.log(...args);
 }
 
-export { infoLog };
+export { infoLog }
 export default infoLog;

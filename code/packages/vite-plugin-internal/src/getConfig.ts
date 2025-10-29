@@ -1,10 +1,13 @@
 /// <reference types="vitest" />
 
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import { join } from 'node:path'
 import { type Plugin, defineConfig } from 'vite'
-import { requireResolve } from './requireResolve'
+import { createRequire } from 'node:module'
 
+export const requireResolve =
+  'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
+  
 export function getConfig(tamaguiPlugin: any) {
   const isNative =
     !process.env.DISABLE_REACT_NATIVE &&

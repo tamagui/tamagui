@@ -152,5 +152,5 @@ function bezier(
   };
 };
 
-export { bezier };
+export { bezier }
 export default bezier;

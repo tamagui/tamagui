@@ -27,9 +27,9 @@
     "dist",
     "src",
     "reset.css",
-    "native.js",
+    "native.cjs",
     "native.d.ts",
-    "native-test.js",
+    "native-test.cjs",
     "native-test.d.ts"
   ],
   "dependencies": {
@@ -75,8 +75,7 @@
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "import": "./dist/test.native.js",
-      "require": "./dist/test.native.js"
+      "require": "./dist/test.native.cjs"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",

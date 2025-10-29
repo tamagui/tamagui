@@ -150,4 +150,3 @@ export const ScrollEvent = {
   responder: null,
 };
 
-export { SyntheticEvent, ResponderSyntheticEvent, Layout, TextLayout, LayoutEvent, TextLayoutEvent };

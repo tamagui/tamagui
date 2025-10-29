@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import _EventSubscription from './_EventSubscription'
+import { _EventSubscription } from './_EventSubscription'
 
 /**
  * EmitterSubscription represents a subscription with listener and context data.
@@ -43,5 +43,5 @@ class EmitterSubscription extends _EventSubscription {
   }
 }
 
-export { EmitterSubscription };
+export { EmitterSubscription }
 export default EmitterSubscription

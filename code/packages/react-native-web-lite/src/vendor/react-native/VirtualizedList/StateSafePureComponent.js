@@ -20,8 +20,6 @@ import * as React from 'react'
  * variables are read in a state updater function, instead of the ones passed
  * in.
  */
-export { StateSafePureComponent };
-export default StateSafePureComponent;
 class StateSafePureComponent extends React.PureComponent {
   _inAsyncStateUpdate = false
 
@@ -79,3 +77,6 @@ class StateSafePureComponent extends React.PureComponent {
     })
   }
 }
+
+export { StateSafePureComponent }
+export default StateSafePureComponent

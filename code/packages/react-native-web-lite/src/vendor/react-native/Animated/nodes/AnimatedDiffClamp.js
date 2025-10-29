@@ -8,8 +8,8 @@
  * @format
  */
 
-import AnimatedInterpolation from './AnimatedInterpolation'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import { AnimatedInterpolation } from './AnimatedInterpolation'
+import { AnimatedWithChildren } from './AnimatedWithChildren'
 
 class AnimatedDiffClamp extends AnimatedWithChildren {
   _a
@@ -63,5 +63,5 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
   }
 }
 
-export { AnimatedDiffClamp };
+export { AnimatedDiffClamp }
 export default AnimatedDiffClamp

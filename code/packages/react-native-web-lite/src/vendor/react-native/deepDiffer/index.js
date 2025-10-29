@@ -69,5 +69,5 @@ const deepDiffer = function(
   return false;
 };
 
-export { deepDiffer };
+export { deepDiffer }
 export default deepDiffer;

@@ -1,3 +1,3 @@
 import { Platform } from '@tamagui/react-native-web-internals'
-export { Platform };
+export { Platform }
 export default Platform

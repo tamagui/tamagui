@@ -150,5 +150,5 @@ const TouchHistoryMath = {
   noCentroid: -1,
 };
 
-export { TouchHistoryMath };
+export { TouchHistoryMath }
 export default TouchHistoryMath;

@@ -52,8 +52,6 @@ class Registration {
  *   emitter.emit('error', new Error('Resource not found'));
  *
  */
-export { EventEmitter };
-export default EventEmitter;
 class EventEmitter {
   _registry = {}
 
@@ -118,3 +116,6 @@ function allocate(registry, eventType) {
   }
   return registrations
 }
+
+export { EventEmitter }
+export default EventEmitter

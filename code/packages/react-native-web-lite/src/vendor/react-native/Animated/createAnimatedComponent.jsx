@@ -7,8 +7,8 @@
  * @format
  */
 
-import useAnimatedProps from './useAnimatedProps';
-import useMergeRefs from '../Utilities/useMergeRefs';
+import { useAnimatedProps } from './useAnimatedProps';
+import { useMergeRefs } from '../Utilities/useMergeRefs';
 import * as React from 'react';
 
 
@@ -45,5 +45,5 @@ function createAnimatedComponent(
   });
 }
 
-export { createAnimatedComponent };
+export { createAnimatedComponent }
 export default createAnimatedComponent;

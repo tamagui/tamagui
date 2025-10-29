@@ -92,5 +92,5 @@ class EventSubscriptionVendor {
   }
 }
 
-export { EventSubscriptionVendor };
+export { EventSubscriptionVendor }
 export default EventSubscriptionVendor

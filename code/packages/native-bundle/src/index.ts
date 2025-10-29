@@ -66,6 +66,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
   const defaultDefine = {
     'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
     'process.env.NODE_ENV': JSON.stringify('production'),
+    'process.env.TAMAGUI_IS_CORE_NODE': JSON.stringify('1'),
   }
 
   await build({
@@ -95,7 +96,15 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
     resolve: {
       // Prefer react-native exports
       mainFields: ['react-native', 'module', 'main'],
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
+      extensions: [
+        '.native.ts',
+        '.native.tsx',
+        '.native.js',
+        '.ts',
+        '.tsx',
+        '.js',
+        '.jsx',
+      ],
       conditions: ['react-native', 'import', 'module', 'default'],
       alias: [
         {

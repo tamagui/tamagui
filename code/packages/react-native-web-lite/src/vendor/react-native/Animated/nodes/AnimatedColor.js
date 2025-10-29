@@ -8,10 +8,10 @@
  * @format
  */
 
-import AnimatedValue from './AnimatedValue'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import { AnimatedValue } from './AnimatedValue'
+import { AnimatedWithChildren } from './AnimatedWithChildren'
 import { normalizeColor } from '@tamagui/react-native-web-internals'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper'
 
 const NativeAnimatedAPI = NativeAnimatedHelper.API
 
@@ -74,8 +74,6 @@ function isRgbaAnimatedValue(value) {
   )
 }
 
-export { AnimatedColor };
-export default AnimatedColor;
 class AnimatedColor extends AnimatedWithChildren {
   constructor(valueIn, config) {
     super()
@@ -290,3 +288,6 @@ class AnimatedColor extends AnimatedWithChildren {
     }
   }
 }
+
+export { AnimatedColor }
+export default AnimatedColor

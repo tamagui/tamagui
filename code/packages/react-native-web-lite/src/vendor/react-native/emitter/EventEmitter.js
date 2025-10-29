@@ -9,6 +9,6 @@
  */
 'use strict'
 
-import EventEmitter from './_EventEmitter'
-export { EventEmitter };
+import { EventEmitter } from './_EventEmitter'
+export { EventEmitter }
 export default EventEmitter
