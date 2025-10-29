@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/timer",
-  "version": "1.135.4-1761754084520",
+  "version": "1.135.5",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
