@@ -125,3 +125,5 @@ export class Dimensions {
 if (canUseDOM) {
   window.addEventListener('resize', handleResize, false)
 }
+
+export default Dimensions

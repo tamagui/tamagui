@@ -63,4 +63,5 @@ function setAndForwardRef({
   };
 }
 
+export { setAndForwardRef };
 export default setAndForwardRef;

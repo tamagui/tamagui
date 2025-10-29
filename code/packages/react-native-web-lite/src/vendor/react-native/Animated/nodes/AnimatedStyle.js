@@ -133,4 +133,5 @@ class AnimatedStyle extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedStyle };
 export default AnimatedStyle

@@ -156,4 +156,5 @@ class AnimatedProps extends AnimatedNode {
   }
 }
 
+export { AnimatedProps };
 export default AnimatedProps

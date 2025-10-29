@@ -74,7 +74,9 @@ function isRgbaAnimatedValue(value) {
   )
 }
 
-export default class AnimatedColor extends AnimatedWithChildren {
+export { AnimatedColor };
+export default AnimatedColor;
+class AnimatedColor extends AnimatedWithChildren {
   constructor(valueIn, config) {
     super()
     this._listeners = {}

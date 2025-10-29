@@ -175,3 +175,4 @@ const styles = {
 }
 
 export { ScrollViewBase }
+export default ScrollViewBase

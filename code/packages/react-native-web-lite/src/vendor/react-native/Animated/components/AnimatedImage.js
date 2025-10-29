@@ -12,4 +12,6 @@ import * as React from 'react'
 import Image from '../../../../Image'
 import createAnimatedComponent from '../createAnimatedComponent'
 
-export default createAnimatedComponent(Image)
+const AnimatedImage = createAnimatedComponent(Image);
+export { AnimatedImage };
+export default AnimatedImage

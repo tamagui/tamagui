@@ -398,3 +398,4 @@ const resizeModeStyles = StyleSheet.create({
 })
 
 export { ImageWithStatics as Image }
+export default ImageWithStatics

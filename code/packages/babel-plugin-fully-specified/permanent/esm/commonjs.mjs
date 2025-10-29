@@ -1,6 +1,6 @@
 import { existsSync, lstatSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
-function fullySpecifyCommonJS(api) {
+function fullySpecifyCommonJS(api, options) {
   return api.assertVersion(7), {
     name: "babel-plugin-fully-specified-cjs",
     visitor: {
@@ -15,7 +15,7 @@ function fullySpecifyCommonJS(api) {
               const filePath = state.file.opts.filename;
               if (!filePath) return;
               const fileDir = dirname(filePath),
-                cjsExtension = ".cjs",
+                cjsExtension = options.esExtensionDefault || ".cjs",
                 jsExtension = ".js";
               if (!extname(moduleSpecifier)) {
                 const resolvedPath = resolve(fileDir, moduleSpecifier);

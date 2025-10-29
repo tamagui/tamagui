@@ -186,4 +186,5 @@ class AnimatedNode {
   }
 }
 
+export { AnimatedNode };
 export default AnimatedNode

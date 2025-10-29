@@ -52,7 +52,9 @@ class Registration {
  *   emitter.emit('error', new Error('Resource not found'));
  *
  */
-export default class EventEmitter {
+export { EventEmitter };
+export default EventEmitter;
+class EventEmitter {
   _registry = {}
 
   /**

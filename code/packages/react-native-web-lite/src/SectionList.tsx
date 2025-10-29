@@ -6,3 +6,4 @@
  */
 
 export { default as SectionList } from './vendor/react-native/SectionList'
+export { SectionList as default } from './vendor/react-native/SectionList'

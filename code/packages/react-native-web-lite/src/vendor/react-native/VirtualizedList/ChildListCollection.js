@@ -10,7 +10,9 @@
 
 import { invariant } from '@tamagui/react-native-web-internals'
 
-export default class ChildListCollection {
+export { ChildListCollection };
+export default ChildListCollection;
+class ChildListCollection {
   _cellKeyToChildren = new Map()
   _childrenToCellKey = new Map()
 

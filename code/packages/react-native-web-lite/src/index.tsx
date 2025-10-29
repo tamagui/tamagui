@@ -1,3 +1,5 @@
+import { createContext } from 'react'
+
 export {
   AccessibilityUtil,
   canUseDOM,
@@ -104,3 +106,5 @@ export const findNodeHandle = (component: any) => {
 // compat with rn:
 
 export { unstable_batchedUpdates } from 'react-dom'
+
+export const RootTagContext = createContext(null)

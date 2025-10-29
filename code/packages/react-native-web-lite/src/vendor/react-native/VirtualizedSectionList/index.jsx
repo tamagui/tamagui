@@ -145,4 +145,5 @@ class VirtualizedSectionList extends React.PureComponent {
 
 VirtualizedSectionList.defaultProps = defaultProps
 
+export { VirtualizedSectionList };
 export default VirtualizedSectionList

@@ -59,4 +59,5 @@ class AnimatedSubtraction extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedSubtraction };
 export default AnimatedSubtraction;

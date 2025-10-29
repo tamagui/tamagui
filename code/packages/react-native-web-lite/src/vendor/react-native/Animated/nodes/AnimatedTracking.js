@@ -86,4 +86,5 @@ class AnimatedTracking extends AnimatedNode {
   }
 }
 
+export { AnimatedTracking };
 export default AnimatedTracking

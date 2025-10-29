@@ -73,4 +73,5 @@ class Animation {
   }
 }
 
+export { Animation };
 export default Animation;

@@ -104,4 +104,5 @@ class AnimatedValueXY extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedValueXY };
 export default AnimatedValueXY

@@ -46,3 +46,5 @@ export function RefreshControl(props: RefreshControlProps): ReactNode {
 
   return <View {...rest} />
 }
+
+export default RefreshControl

@@ -18,3 +18,5 @@ StatusBar.setBarStyle = emptyFunction
 StatusBar.setHidden = emptyFunction
 StatusBar.setNetworkActivityIndicatorVisible = emptyFunction
 StatusBar.setTranslucent = emptyFunction
+
+export default StatusBar

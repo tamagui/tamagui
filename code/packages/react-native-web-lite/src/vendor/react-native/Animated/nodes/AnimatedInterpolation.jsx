@@ -326,4 +326,5 @@ class AnimatedInterpolation extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedInterpolation };
 export default AnimatedInterpolation

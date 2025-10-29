@@ -16,7 +16,7 @@ import * as React from 'react';
  * Experimental implementation of `createAnimatedComponent` that is intended to
  * be compatible with concurrent rendering.
  */
-export default function createAnimatedComponent(
+function createAnimatedComponent(
   Component,
 ) {
   return React.forwardRef((props, forwardedRef) => {
@@ -44,3 +44,6 @@ export default function createAnimatedComponent(
     );
   });
 }
+
+export { createAnimatedComponent };
+export default createAnimatedComponent;

@@ -43,4 +43,5 @@ export const defaultVirtualizedListProps = {
   windowSize: 21,
 }
 
+// Named export is already available above
 export default defaultVirtualizedListProps

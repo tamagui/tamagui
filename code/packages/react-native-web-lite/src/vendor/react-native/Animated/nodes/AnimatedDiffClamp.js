@@ -63,4 +63,5 @@ class AnimatedDiffClamp extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedDiffClamp };
 export default AnimatedDiffClamp

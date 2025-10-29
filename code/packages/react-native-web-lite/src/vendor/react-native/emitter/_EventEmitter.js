@@ -171,4 +171,5 @@ class EventEmitter {
   }
 }
 
+export { EventEmitter };
 export default EventEmitter

@@ -13,3 +13,5 @@ export const LogBox = {
   uninstall() {},
   install() {},
 }
+
+export default LogBox

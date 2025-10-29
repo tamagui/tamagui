@@ -526,4 +526,5 @@ const styles = StyleSheet.create({
   row: {flexDirection: 'row'},
 });
 
+export { FlatList };
 export default FlatList;

@@ -118,4 +118,5 @@ const LayoutAnimation = {
   spring: configureNext.bind(null, Presets.spring),
 };
 
+export { LayoutAnimation };
 export default LayoutAnimation;

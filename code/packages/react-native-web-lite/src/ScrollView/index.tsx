@@ -21,9 +21,9 @@ import {
   warning,
 } from '@tamagui/react-native-web-internals'
 
-import Dimensions from '../Dimensions/index'
-import View from '../View/index'
-import ScrollViewBase from './ScrollViewBase'
+import { Dimensions } from '../Dimensions/index'
+import { View } from '../View/index'
+import { ScrollViewBase } from './ScrollViewBase'
 
 const emptyObject = {} as any
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16
@@ -753,6 +753,7 @@ const ForwardedScrollView = React.forwardRef((props, forwardedRef) => {
 ForwardedScrollView.displayName = 'ScrollView'
 
 export { ForwardedScrollView as ScrollView }
+export default ForwardedScrollView
 
 /**
  * Mixin that can be integrated in order to handle scrolling that plays well

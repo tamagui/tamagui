@@ -59,4 +59,5 @@ class AnimatedMultiplication extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedMultiplication };
 export default AnimatedMultiplication;

@@ -466,7 +466,7 @@ const event = function (argMapping, config) {
  *
  * See https://reactnative.dev/docs/animated
  */
-export default {
+const AnimatedImplementationExports = {
   /**
    * Standard value class for driving animations.  Typically initialized with
    * `new Animated.Value(0);`
@@ -642,4 +642,7 @@ export default {
    * Expose Event class, so it can be used as a type for type checkers.
    */
   Event: AnimatedEvent,
-}
+};
+
+export { AnimatedImplementationExports as AnimatedImplementation };
+export default AnimatedImplementationExports

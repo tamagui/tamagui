@@ -1,0 +1,29 @@
+{
+  "name": "@tamagui/native-bundle",
+  "version": "1.135.4",
+  "type": "module",
+  "description": "Vite-based bundler for creating native CommonJS bundles for Tamagui packages",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Nate Wienert"
+  },
+  "dependencies": {
+    "vite": "^7.1.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

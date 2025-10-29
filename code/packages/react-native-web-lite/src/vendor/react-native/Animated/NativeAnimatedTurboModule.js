@@ -60,4 +60,6 @@ const spec = {
   removeListeners: (count) => {},
 };
 
-export default TurboModuleRegistry.get('NativeAnimatedTurboModule') || spec;
+const NativeAnimatedTurboModule = TurboModuleRegistry.get('NativeAnimatedTurboModule') || spec;
+export { NativeAnimatedTurboModule };
+export default NativeAnimatedTurboModule;

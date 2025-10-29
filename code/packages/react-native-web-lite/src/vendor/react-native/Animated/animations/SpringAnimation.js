@@ -287,4 +287,5 @@ class SpringAnimation extends Animation {
   }
 }
 
+export { SpringAnimation };
 export default SpringAnimation

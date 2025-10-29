@@ -14,10 +14,6 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "tamagui": {
-    "bundle.native": "./src/index.ts",
-    "bundle.native.test": "./src/index.ts"
-  },
   "files": [
     "src",
     "types",
@@ -28,6 +24,7 @@
   ],
   "scripts": {
     "build": "tamagui-build",
+    "afterBuild": "node bundle-native.mjs",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
@@ -65,8 +62,7 @@
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "require": "./dist/native.js",
-      "react-native": "./dist/native.native.js"
+      "require": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",

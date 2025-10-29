@@ -92,4 +92,5 @@ class DecayAnimation extends Animation {
   }
 }
 
+export { DecayAnimation };
 export default DecayAnimation;

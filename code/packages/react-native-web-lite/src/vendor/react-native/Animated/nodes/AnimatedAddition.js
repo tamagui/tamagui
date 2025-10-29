@@ -60,4 +60,5 @@ class AnimatedAddition extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedAddition };
 export default AnimatedAddition;

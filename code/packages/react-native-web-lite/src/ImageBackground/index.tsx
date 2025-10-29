@@ -63,3 +63,4 @@ const ImageBackground = forwardRef<React.ElementRef<typeof View>, ImageBackgroun
 ImageBackground.displayName = 'ImageBackground'
 
 export { ImageBackground }
+export default ImageBackground

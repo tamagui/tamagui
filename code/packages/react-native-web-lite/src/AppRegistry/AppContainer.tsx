@@ -19,7 +19,7 @@ type Props = {
   rootTag: any
 }
 
-const RootTagContext: React.Context<any> = React.createContext(null)
+export const RootTagContext: React.Context<any> = React.createContext(null)
 
 const AppContainer = React.forwardRef((props: Props, forwardedRef?: React.Ref<any>) => {
   const { children, WrapperComponent } = props

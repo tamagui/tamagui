@@ -17,4 +17,6 @@ import EventEmitter from '../emitter/EventEmitter'
  *
  * NativeModules that emit events should instead subclass `NativeEventEmitter`.
  */
-export default new EventEmitter()
+const RCTDeviceEventEmitter = new EventEmitter();
+export { RCTDeviceEventEmitter };
+export default RCTDeviceEventEmitter

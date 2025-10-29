@@ -113,3 +113,4 @@ const indicatorSizes = StyleSheet.create({
 })
 
 export { ActivityIndicator }
+export default ActivityIndicator

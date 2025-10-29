@@ -43,4 +43,5 @@ class EmitterSubscription extends _EventSubscription {
   }
 }
 
+export { EmitterSubscription };
 export default EmitterSubscription

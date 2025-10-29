@@ -1,13 +1,10 @@
 {
   "name": "@tamagui/core",
   "version": "1.135.4",
+  "type": "module",
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "tamagui": {
-    "bundle.native": "./src/index.tsx",
-    "bundle.native.test": "./src/index.tsx"
-  },
   "types": "./types/index.d.ts",
   "license": "MIT",
   "author": {
@@ -18,6 +15,7 @@
   ],
   "scripts": {
     "build": "tamagui-build",
+    "afterBuild": "node bundle-native.mjs",
     "watch": "tamagui-build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
@@ -45,6 +43,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "@tamagui/native-bundle": "workspace:*",
     "@tamagui/react-native-web-lite": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
@@ -72,21 +71,20 @@
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "import": "./dist/native.mjs",
-      "require": "./dist/native.js",
-      "react-native": "./dist/native.js"
+      "require": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
       "import": "./dist/test.native.js",
-      "require": "./dist/test.native.js",
-      "react-native": "./dist/test.native.js"
+      "require": "./dist/test.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",
-      "react-native": "./dist/cjs/inject-styles.native.js"
+      "react-native": {
+        "require": "./dist/cjs/inject-styles.native.js"
+      }
     },
     "./reactNativeTypes": {
       "types": "./types/reactNativeTypes.d.ts",

@@ -45,3 +45,4 @@ const styles = StyleSheet.create({
 })
 
 export { SafeAreaView }
+export default SafeAreaView

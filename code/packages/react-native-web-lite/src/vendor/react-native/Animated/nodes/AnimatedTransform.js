@@ -118,4 +118,5 @@ class AnimatedTransform extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedTransform };
 export default AnimatedTransform;

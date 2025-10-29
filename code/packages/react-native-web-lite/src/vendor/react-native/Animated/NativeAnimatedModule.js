@@ -64,4 +64,6 @@ const spec = {
   queueAndExecuteBatchedOperations: (operationsAndArgs) => {},
 };
 
-export default TurboModuleRegistry.get('NativeAnimatedModule') || spec;
+const NativeAnimatedModule = TurboModuleRegistry.get('NativeAnimatedModule') || spec;
+export { NativeAnimatedModule };
+export default NativeAnimatedModule;

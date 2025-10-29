@@ -21,7 +21,7 @@ import AnimatedImplementation from './AnimatedImplementation'
 
 const Animated = Platform.isTesting ? AnimatedMock : AnimatedImplementation
 
-export default {
+const AnimatedExports = {
   FlatList,
   Image,
   ScrollView,
@@ -29,4 +29,7 @@ export default {
   Text,
   View,
   ...Animated,
-}
+};
+
+export { AnimatedExports as Animated };
+export default AnimatedExports

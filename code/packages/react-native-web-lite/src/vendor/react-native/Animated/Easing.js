@@ -250,4 +250,5 @@ class Easing {
   }
 }
 
+export { Easing };
 export default Easing;

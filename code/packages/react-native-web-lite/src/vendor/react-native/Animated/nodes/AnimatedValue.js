@@ -288,4 +288,5 @@ class AnimatedValue extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedValue };
 export default AnimatedValue

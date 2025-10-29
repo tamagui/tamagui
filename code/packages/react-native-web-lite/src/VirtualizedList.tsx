@@ -6,3 +6,4 @@
  */
 
 export { default as VirtualizedList } from './vendor/react-native/VirtualizedList'
+export { VirtualizedList as default } from './vendor/react-native/VirtualizedList'

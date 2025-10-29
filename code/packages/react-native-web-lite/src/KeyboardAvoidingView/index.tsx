@@ -51,3 +51,5 @@ export class KeyboardAvoidingView extends React.Component<KeyboardAvoidingViewPr
     return <View onLayout={this.onLayout} {...rest} />
   }
 }
+
+export default KeyboardAvoidingView

@@ -3,10 +3,12 @@ import type { ExtractToClassNamesProps } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'
 
 export async function extractForNative(code: string) {
-  return await babel.transformAsync(code, {
+  const out = await babel.transformAsync(code, {
     configFile: './babel-config-test.cjs',
     filename: 'test.tsx',
   })
+
+  return out
 }
 
 export async function extractForWeb(

@@ -122,7 +122,7 @@ const loop = function (animation, { iterations = -1 } = {}) {
   return emptyAnimation
 }
 
-export default {
+const AnimatedMockExports = {
   Value: AnimatedValue,
   ValueXY: AnimatedValueXY,
   Color: AnimatedColor,
@@ -148,4 +148,7 @@ export default {
   forkEvent: AnimatedImplementation.forkEvent,
   unforkEvent: AnimatedImplementation.unforkEvent,
   Event: AnimatedEvent,
-}
+};
+
+export { AnimatedMockExports as AnimatedMock };
+export default AnimatedMockExports

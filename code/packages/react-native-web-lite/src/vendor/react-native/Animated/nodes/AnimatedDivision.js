@@ -75,4 +75,5 @@ class AnimatedDivision extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedDivision };
 export default AnimatedDivision;

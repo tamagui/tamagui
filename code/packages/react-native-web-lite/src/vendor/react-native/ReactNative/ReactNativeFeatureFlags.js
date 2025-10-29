@@ -16,4 +16,5 @@ const ReactNativeFeatureFlags = {
   animatedShouldUseSingleOp: () => false,
 }
 
+export { ReactNativeFeatureFlags };
 export default ReactNativeFeatureFlags

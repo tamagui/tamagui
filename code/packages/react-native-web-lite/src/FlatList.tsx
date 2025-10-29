@@ -9,13 +9,13 @@
 import { invariant, Platform } from '@tamagui/react-native-web-internals'
 import memoizeOne from 'memoize-one'
 import React from 'react'
-import deepDiffer from './vendor/react-native/deepDiffer'
+import { deepDiffer } from './vendor/react-native/deepDiffer'
 import type { ViewabilityConfigCallbackPair } from './vendor/react-native/ViewabilityHelper'
 import type { RenderItemType } from './vendor/react-native/VirtualizedList'
-import VirtualizedList from './vendor/react-native/VirtualizedList'
+import { VirtualizedList } from './vendor/react-native/VirtualizedList'
 import type { ViewProps } from './View'
 import { keyExtractor as defaultKeyExtractor } from './vendor/react-native/VirtualizeUtils'
-import View from './View'
+import { View } from './View'
 
 type ScrollViewNativeComponent = any
 type ViewStyleProp = ViewProps['style']
@@ -328,3 +328,4 @@ const styles = {
 }
 
 export { FlatList }
+export default FlatList

@@ -67,14 +67,6 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
-    "./native": {
-      "react-native": {
-        "import": "./dist/esm/index.native.native.js",
-        "require": "./dist/cjs/index.native.native.js"
-      },
-      "import": "./dist/esm/index.native.js",
-      "require": "./dist/cjs/index.native.js"
-    },
     "./inject-styles": {
       "react-native": {
         "import": "./dist/esm/inject-styles.native.js",

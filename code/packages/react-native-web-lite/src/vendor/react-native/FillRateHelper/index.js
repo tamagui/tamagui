@@ -209,4 +209,5 @@ class FillRateHelper {
   }
 }
 
+export { FillRateHelper };
 export default FillRateHelper

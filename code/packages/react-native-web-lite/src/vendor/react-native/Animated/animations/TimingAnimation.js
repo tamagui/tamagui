@@ -129,4 +129,5 @@ class TimingAnimation extends Animation {
   }
 }
 
+export { TimingAnimation };
 export default TimingAnimation

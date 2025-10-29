@@ -233,3 +233,4 @@ const PressableComponent = memo(forwardRef(Pressable as any))
 PressableComponent.displayName = 'Pressable'
 
 export { PressableComponent as Pressable }
+export default PressableComponent
