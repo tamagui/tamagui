@@ -97,7 +97,16 @@ export function getConfig(tamaguiPlugin: any) {
 
     resolve: {
       alias: isNative
-        ? {}
+        ? [
+            {
+              find: /^react-native$/,
+              replacement: '@tamagui/fake-react-native',
+            },
+            {
+              find: /^react-native\//,
+              replacement: '@tamagui/fake-react-native',
+            },
+          ]
         : {
             'react-native': '@tamagui/react-native-web-lite',
           },
@@ -110,7 +119,7 @@ export function getConfig(tamaguiPlugin: any) {
       setupFiles: [
         join(__dirname, 'test-setup.ts'),
         ...(isNative
-          ? [join(__dirname, 'vitest-react-native-setup.cjs')]
+          ? [join(__dirname, 'test-setup-native.cjs')]
           : [requireResolve('vitest-react-native/setup')]),
       ],
       // happy-dom has issues with components-test

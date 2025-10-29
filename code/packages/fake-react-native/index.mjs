@@ -37,14 +37,21 @@ function proxyWorm() {
 
 const proxy = proxyWorm()
 
-module.exports = proxy
-module.exports.default = proxy
-module.exports.Platform = proxy.Platform
-module.exports.StyleSheet = proxy.StyleSheet
-module.exports.Image = proxy.Image
-module.exports.View = proxy.View
-module.exports.Text = proxy.Text
-module.exports.TextInput = proxy.TextInput
-module.exports.ScrollView = proxy.ScrollView
-module.exports.Dimensions = proxy.Dimensions
-module.exports.Appearance = proxy.Appearance
+// Named exports that can be tree-shaken
+export const Platform = proxy.Platform
+export const StyleSheet = proxy.StyleSheet
+export const Image = proxy.Image
+export const View = proxy.View
+export const Text = proxy.Text
+export const TextInput = proxy.TextInput
+export const ScrollView = proxy.ScrollView
+export const Dimensions = proxy.Dimensions
+export const Pressable = proxy.Pressable
+export const Animated = proxy.Animated
+export const Easing = proxy.Easing
+export const Appearance = proxy.Appearance
+export const findNodeHandle = proxy.findNodeHandle
+export const unstable_batchedUpdates = proxy.unstable_batchedUpdates
+
+// Default export
+export default proxy

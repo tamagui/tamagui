@@ -1,6 +1,9 @@
 import { build } from 'vite'
 import { fileURLToPath } from 'node:url'
-import { resolve } from 'node:path'
+import { resolve, dirname } from 'node:path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export interface BundleOptions {
   /**
@@ -39,7 +42,7 @@ export interface BundleOptions {
 
   /**
    * Whether this is a test bundle
-   * If true, react-native will be externalized for testing
+   * If true, react-native will be replaced with fake-react-native mocks
    * @default false
    */
   isTest?: boolean
@@ -69,6 +72,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
   }
 
   const rnwl = resolvePath('@tamagui/react-native-web-lite')
+  const fakeRN = resolvePath('@tamagui/fake-react-native')
   const entryPath = resolve(cwd, entry)
 
   const defaultDefine = {
@@ -77,13 +81,13 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
     'process.env.TAMAGUI_IS_CORE_NODE': JSON.stringify('1'),
   }
 
-  // For test bundles, externalize react-native so it can be mocked at runtime
-  // For production bundles, bundle react-native-web-lite for a single file output
-  const external = isTest
-    ? ['react', /^react-native($|\/)/]
-    : ['react']
+  // For test bundles, bundle a fake react-native implementation
+  // For production bundles, bundle react-native-web-lite
+  const external = isTest ? ['react', /^react-native($|\/)/] : ['react']
   const alias = isTest
-    ? []
+    ? [
+        // Aliases don't work for pre-bundled deps, so we externalize and alias in vitest config
+      ]
     : [
         {
           find: /^react-native$/,
