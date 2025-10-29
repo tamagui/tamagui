@@ -349,6 +349,7 @@ const fontShorthand = {
 }
 
 let lastFontFamilyToken: any = null
+let didLogMissingToken = false
 
 export const getTokenForKey = (
   key: string,
@@ -435,19 +436,29 @@ export const getTokenForKey = (
             hasSet = true
           } else {
             if (process.env.NODE_ENV === 'development') {
-              console.groupCollapsed(
-                `[tamagui] ⚠️ missing token ${key} in category ${cat} - ${value} (open for details)`
-              )
-              console.info(
-                `Note: this often is because you have a duplicated Tamagui in your bundle.`
-              )
-              console.info(
-                `In Chrome DevTools, hit CMD+P and type TamaguiProvider - if you see a .cjs and a .mjs entry, this is causing the issue.`
-              )
-              console.info(
-                `This can lead to tricky bugs and should be resolved, if you set a breakpoint at the top of each file you may see the reason why it imports both in the Call Stack in Sources pane.`
-              )
-              console.groupEnd()
+              if (process.env.TAMAGUI_DISABLE_MISSING_TOKEN_LOG !== '1') {
+                if (!didLogMissingToken) {
+                  didLogMissingToken = true
+                  console.groupCollapsed(
+                    `[tamagui] Warning: missing token ${key} in category ${cat} - ${value} (open for details)`
+                  )
+                  console.info(
+                    `Note: this could just be due to you not setting all the theme tokens Tamagui expects, which is harmless, but
+                    it also often can be because you have a duplicated Tamagui in your bundle, which can cause tricky bugs.`
+                  )
+                  console.info(
+                    `To see if you have duplicated dependencies, in Chrome DevTools hit CMD+P and type TamaguiProvider.
+                    If you see both a .cjs and a .mjs entry, it's duplicated.`
+                  )
+                  console.info(
+                    `You can debug that issue by opening the .mjs and .cjs files and setting a breakpoint at the top of each.`
+                  )
+                  console.info(
+                    `We only log this warning one time as it's sometimes harmless, to disable this log entirely set process.env.TAMAGUI_DISABLE_MISSING_TOKEN_LOG=1.`
+                  )
+                  console.groupEnd()
+                }
+              }
             }
           }
         }

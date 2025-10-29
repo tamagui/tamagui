@@ -31,9 +31,9 @@ import Animated_, {
 // fix for building with type module
 // see https://github.com/evanw/esbuild/issues/2480#issuecomment-1833104754
 const safeESModule = <T,>(a: T | { default: T }): T => {
-    const b = a as any;
-    return b.__esModule || b[Symbol.toStringTag] === "Module" ? b.default : b;
-};
+  const b = a as any
+  return b.__esModule || b[Symbol.toStringTag] === 'Module' ? b.default : b
+}
 
 const Animated = safeESModule(Animated_)
 
