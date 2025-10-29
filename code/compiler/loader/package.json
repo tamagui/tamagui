@@ -11,8 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -24,8 +24,7 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "react-native": "./dist/cjs/index.native.js",
-      "default": "./dist/cjs/index.native.js"
+      "default": "./dist/cjs/index.cjs"
     }
   },
   "dependencies": {
