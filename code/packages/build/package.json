@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
-    "@swc/core": "1.13.5",
+    "@swc/core": "^1.14.0",
     "@tamagui/babel-plugin-fully-specified": "workspace:*",
     "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
