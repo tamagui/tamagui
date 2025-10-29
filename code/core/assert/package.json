@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/assert",
   "version": "1.135.4",
+  "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

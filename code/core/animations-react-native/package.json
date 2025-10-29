@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/animations-react-native",
   "version": "1.135.4",
+  "type": "module",
   "source": "src/index.ts",
   "removeSideEffects": true,
   "sideEffects": [
