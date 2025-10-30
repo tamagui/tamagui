@@ -5,7 +5,7 @@
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
-  "module": "dist/cjs",
+  "module": "dist/esm",
   "files": [
     "types",
     "dist",

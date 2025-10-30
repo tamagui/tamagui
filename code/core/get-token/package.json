@@ -3,8 +3,8 @@
   "version": "1.135.6",
   "type": "module",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index",
-  "module": "dist/esm/index",
+  "main": "dist/cjs",
+  "module": "dist/esm",
   "files": [
     "src",
     "types",
