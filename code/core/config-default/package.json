@@ -1,10 +1,8 @@
 {
   "name": "@tamagui/config-default",
   "version": "1.135.6",
-  "type": "module",
   "source": "src/index.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "main": "dist/index.cjs",
   "types": "./types/index.d.ts",
   "scripts": {
     "build": "tamagui-build",
@@ -14,22 +12,8 @@
   },
   "files": [
     "types",
-    "dist",
-    "src"
+    "dist"
   ],
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "react-native": {
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
-      "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
-    }
-  },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
