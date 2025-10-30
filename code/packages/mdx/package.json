@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --bundle --bundle-modules",
+    "build": "tamagui-build --skip-native --bundle --bundle-modules",
     "watch": "yarn build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
@@ -24,8 +24,7 @@
       "// 👋 note - import === require here, mdx-bundler is cjs only must await import() this package": "./",
       "import": "./dist/index.js",
       "require": "./dist/index.js",
-      "react-native": "./dist/index.native.js",
-      "default": "./dist/index.native.js"
+      "default": "./dist/index.js"
     }
   },
   "dependencies": {

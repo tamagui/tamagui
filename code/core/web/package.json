@@ -68,13 +68,10 @@
       "default": "./dist/cjs/index.native.js"
     },
     "./inject-styles": {
-      "react-native": {
-        "import": "./dist/esm/inject-styles.native.js",
-        "require": "./dist/cjs/inject-styles.native.js"
-      },
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
-      "require": "./dist/cjs/inject-styles.cjs"
+      "require": "./dist/cjs/inject-styles.cjs",
+      "default": "./dist/cjs/inject-styles.cjs"
     }
   },
   "repository": {

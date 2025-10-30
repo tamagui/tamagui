@@ -83,9 +83,7 @@
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",
-      "react-native": {
-        "require": "./dist/cjs/inject-styles.native.js"
-      }
+      "default": "./dist/cjs/inject-styles.cjs"
     },
     "./reactNativeTypes": {
       "types": "./types/reactNativeTypes.d.ts",
