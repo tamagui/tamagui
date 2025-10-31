@@ -1,6 +1,14 @@
 import { Info } from '@tamagui/lucide-icons'
 import { useRef, useState } from 'react'
-import { Button, Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Heading,
+  Input,
+  Paragraph,
+  TooltipSimple,
+  XStack,
+  YStack,
+} from '@tamagui/ui'
 
 export type FieldsetWithLabelProps = {
   enableEditLabel?: boolean
@@ -72,7 +80,7 @@ export const FieldsetWithLabel = ({
           />
         ) : (
           <Heading
-            selectable={false}
+            userSelect="none"
             tag="label"
             size="$5"
             color="$color11"

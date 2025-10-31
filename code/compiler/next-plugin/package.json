@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/next-plugin",
   "version": "1.135.7",
-  "type": "module",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -13,8 +12,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -24,17 +23,21 @@
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.cjs"
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
     "@babel/preset-react": "^7.24.7",
+    "@tamagui/compiler": "workspace:*",
     "@tamagui/proxy-worm": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
-    "@tamagui/static": "workspace:*",
     "babel-loader": "^9.1.3",
     "browserslist": "^4.22.2",
     "css-loader": "^6.7.4",

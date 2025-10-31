@@ -1,0 +1,35 @@
+---
+title: Tamagui UI
+---
+
+<IntroParagraph>
+Tamagui UI is a complete suite of components that render nicely on both React web and React native and come in both
+styled and unstyled forms.
+</IntroParagraph>
+
+You can install each component separately, or all of them at once with:
+
+```bash
+yarn add @tamagui/ui
+```
+
+## Setup
+
+The package `@tamagui/ui` is a superset of `@tamagui/core`, so if you've already installed core you can change all the references to `@tamagui/ui`.
+
+You'll need to add a provider to the root of your app (unlike core, where that is optional), as it will set up the root portal for components like dialogs and popovers.
+
+```tsx
+import { createTamagui,TamaguiProvider, View } from '@tamagui/ui'
+import { defaultConfig } from '@tamagui/config/v4' // for quick config install this
+
+const config = createTamagui(defaultConfig)
+
+export default () => (
+  <TamaguiProvider config={config}>
+    <View />
+  </TamaguiProvider>
+)
+```
+
+For a full guide configuration with `createTamagui`, check [the core configuration docs](/docs/core/configuration). 

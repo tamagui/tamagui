@@ -1,4 +1,4 @@
-import { Input as TamaguiInput, styled } from 'tamagui'
+import { Input as TamaguiInput, styled } from '@tamagui/ui'
 
 const TextInput2 = styled(TamaguiInput, {
   unstyled: true,

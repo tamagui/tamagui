@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/list-item",
   "version": "1.135.7",
-  "type": "module",
   "sideEffects": [
     "*.css"
   ],
@@ -42,6 +41,7 @@
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
+    "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/web": "workspace:*"

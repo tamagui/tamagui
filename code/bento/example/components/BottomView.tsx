@@ -1,6 +1,6 @@
-import { Image, Text, type ThemeName, XStack, YStack } from 'tamagui'
+import { Image, Text, type ThemeName, XStack, YStack } from '@tamagui/ui'
 import { insets } from '../constant'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { SafeAreaView } from 'react-native'
 
 type BottomViewProps = {

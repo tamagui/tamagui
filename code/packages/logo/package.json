@@ -43,6 +43,12 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/ui": "workspace:*",
+    "@tamagui/use-element-layout": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "one": "1.1.515"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*"
@@ -52,10 +58,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@tamagui/use-element-layout": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "tamagui": "workspace:*"
   }
 }

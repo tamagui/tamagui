@@ -15,15 +15,15 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/static": "workspace:*",
+    "@tamagui/compiler": "workspace:*",
     "fs-extra": "^11.2.0",
     "metro-config": "*",
     "metro-transform-worker": "*",

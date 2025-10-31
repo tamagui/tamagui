@@ -1,6 +1,15 @@
 import React from 'react'
-import type { TabsContentProps } from 'tamagui'
-import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb } from 'tamagui'
+import type { TabsContentProps } from '@tamagui/ui'
+import {
+  Button,
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  XStack,
+  YStack,
+  isWeb,
+} from '@tamagui/ui'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -24,7 +33,7 @@ export function TabsDemo() {
 
       <XStack
         alignItems="center"
-        space
+        gap="$4"
         position="absolute"
         bottom="$3"
         left="$4"
@@ -52,11 +61,7 @@ const HorizontalTabs = () => {
       overflow="hidden"
       borderColor="$borderColor"
     >
-      <Tabs.List
-        separator={<Separator vertical />}
-        disablePassBorderRadius="bottom"
-        aria-label="Manage your account"
-      >
+      <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
         <Tabs.Tab
           focusStyle={{
             backgroundColor: '$color3',
@@ -119,11 +124,7 @@ const VerticalTabs = () => {
       overflow="hidden"
       borderColor="$borderColor"
     >
-      <Tabs.List
-        disablePassBorderRadius="end"
-        aria-label="Manage your account"
-        separator={<Separator />}
-      >
+      <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
         <Tabs.Tab value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>

@@ -1,5 +1,5 @@
 import { Toast, useToastState } from '@tamagui/toast'
-import { YStack } from 'tamagui'
+import { YStack } from '@tamagui/ui'
 
 export const NativeToast = () => {
   const currentToast = useToastState()

@@ -30,7 +30,7 @@ import {
   View,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { CURRENT_PRODUCTS } from '~/features/stripe/products'
@@ -381,7 +381,7 @@ const AccountHeader = () => {
       </Avatar>
 
       <YStack gap="$3" ai="flex-start" jc="center" f={1}>
-        <XStack jc="space-between" space ai="center">
+        <XStack jc="space-between" gap="$4" ai="center">
           <YStack f={1}>
             <H3
               mt={-5}
@@ -401,9 +401,9 @@ const AccountHeader = () => {
         icon={<LogOut />}
         size="$2"
         alignSelf="flex-end"
-        accessibilityLabel="Logout"
+        aria-label="Logout"
       >
-        Logout
+        <Button.Text>Logout</Button.Text>
       </Button>
     </XStack>
   )
@@ -503,7 +503,7 @@ const ServiceCard = ({
           theme="accent"
           onPress={onAction}
         >
-          {actionLabel}
+          <Button.Text>{actionLabel}</Button.Text>
         </Button>
 
         {!!secondAction && (
@@ -515,7 +515,7 @@ const ServiceCard = ({
             theme="accent"
             onPress={secondAction.onPress}
           >
-            {secondAction.label}
+            <Button.Text>{secondAction.label}</Button.Text>
           </Button>
         )}
       </XStack>
@@ -686,7 +686,9 @@ const DiscordPanel = ({
         </Fieldset>
 
         <Form.Trigger>
-          <Button icon={Search}>Search</Button>
+          <Button icon={Search}>
+            <Button.Text>Search</Button.Text>
+          </Button>
         </Form.Trigger>
       </Form>
 
@@ -749,7 +751,9 @@ const DiscordPanel = ({
             onPress={() => resetChannelMutation.trigger()}
             disabled={resetChannelMutation.isMutating}
           >
-            {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+            <Button.Text>
+              {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+            </Button.Text>
           </Button>
         )}
       </XStack>
@@ -878,10 +882,10 @@ const DiscordMember = ({
   return (
     <XStack gap="$2" ai="center" flexWrap="wrap">
       <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
-        {isMutating ? 'Inviting...' : 'Add'}
+        <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
       <Avatar circular size="$2">
-        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Image aria-label={`avatar for ${username}`} src={avatarSrc!} />
         <Avatar.Fallback backgroundColor="$blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
@@ -898,7 +902,6 @@ const DiscordMember = ({
     </XStack>
   )
 }
-
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -1175,14 +1178,13 @@ const UpgradeTab = () => {
       />
 
       <Button
-        fontFamily="$mono"
         theme="accent"
         br="$10"
         als="flex-end"
         onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
-        {getActionLabel()}
+        <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
       </Button>
 
       <Separator />
@@ -1283,13 +1285,14 @@ const ManageTab = ({
         <Paragraph theme="alt1">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
+
         <Button
-          themeInverse
+          theme="accent"
           onPress={() => {
             paymentModal.show = true
           }}
         >
-          Purchase Plan
+          <Button.Text>Purchase Plan</Button.Text>
         </Button>
       </YStack>
     )
@@ -1456,9 +1459,11 @@ const ManageTab = ({
                   disabled={isLoading || !!subscription.cancel_at_period_end}
                   onPress={() => handleCancelSubscription(subscription.id)}
                 >
-                  {subscription.cancel_at_period_end
-                    ? 'Cancellation Scheduled'
-                    : 'Cancel Subscription'}
+                  <Button.Text>
+                    {subscription.cancel_at_period_end
+                      ? 'Cancellation Scheduled'
+                      : 'Cancel Subscription'}
+                  </Button.Text>
                 </Button>
               </>
             ) : null}
@@ -1540,7 +1545,7 @@ const TeamTab = ({
             paymentModal.teamSeats = 1
           }}
         >
-          Purchase Team Seats
+          <Button.Text>Purchase Team Seats</Button.Text>
         </Button>
       </YStack>
     )
@@ -1661,7 +1666,7 @@ const GitHubUserRow = ({
         onPress={() => inviteTeamMember({ user_id: String(user.id) })}
         disabled={isInviting}
       >
-        {isInviting ? 'Inviting...' : 'Invite'}
+        <Button.Text>{isInviting ? 'Inviting...' : 'Invite'}</Button.Text>
       </Button>
     </XStack>
   )
@@ -1714,7 +1719,7 @@ const TeamMemberRow = ({
           onPress={() => removeTeamMember({ team_member_id: member.user?.id ?? '' })}
           disabled={isRemoving}
         >
-          {isRemoving ? 'Removing...' : 'Remove'}
+          <Button.Text>{isRemoving ? 'Removing...' : 'Remove'}</Button.Text>
         </Button>
       </XStack>
     </XStack>

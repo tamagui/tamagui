@@ -1,5 +1,5 @@
 import { ChevronDown } from '@tamagui/lucide-icons'
-import { Accordion, Paragraph, Square } from 'tamagui'
+import { Accordion, Paragraph, Square } from '@tamagui/ui'
 
 export function AccordionDemo() {
   return (

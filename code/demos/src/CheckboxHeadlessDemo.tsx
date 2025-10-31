@@ -5,7 +5,7 @@ import { Check, Minus } from '@tamagui/lucide-icons'
 
 import type { View } from 'react-native'
 import { Pressable } from 'react-native'
-import { Label, XStack, YStack } from 'tamagui'
+import { Label, XStack, YStack } from '@tamagui/ui'
 
 export function CheckboxHeadlessDemo() {
   return (

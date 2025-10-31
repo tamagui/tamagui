@@ -1,7 +1,7 @@
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import type { YStackProps } from 'tamagui'
-import { H3, Paragraph, XStack, YStack } from 'tamagui'
+import type { YStackProps } from '@tamagui/ui'
+import { H3, Paragraph, XStack, YStack } from '@tamagui/ui'
 import { Link } from '~/components/Link'
 
 import { CodeInline } from '~/components/Code'
@@ -12,19 +12,7 @@ import { IconStack } from './IconStack'
 export const HomeHeroBelow = memo(() => {
   return (
     <>
-      <YStack
-        pos="relative"
-        zi={1000}
-        // elevation="$4"
-        // $theme-light={{
-        //   elevation: '$1',
-        // }}
-        py="$4"
-        pt="$6"
-        pb="$10"
-      >
-        {/* <YStack fullscreen bg="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" /> */}
-
+      <YStack pos="relative" zi={1000} py="$4" pt="$6" pb="$10">
         <HeroBelowContent />
       </YStack>
     </>
@@ -40,7 +28,7 @@ export const HeroBelowContent = memo(() => {
         flex={1}
         overflow="hidden"
         maxWidth="100%"
-        space="$8"
+        gap="$8"
         flexWrap="nowrap"
         px="$2"
         mb={-8}

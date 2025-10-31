@@ -1,5 +1,5 @@
 import type { JSX } from "react/jsx-runtime";
-import type { XStackProps } from "tamagui";
+import type { XStackProps } from "@tamagui/ui";
 type LogoProps = {
 	showWords?: boolean;
 	downscale?: number;

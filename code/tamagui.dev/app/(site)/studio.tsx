@@ -2,7 +2,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useColorScheme } from '@vxrn/color-scheme'
 import { Link, useRouter } from 'one'
 import { memo, useEffect } from 'react'
-import type { HeadingProps } from 'tamagui'
+import type { HeadingProps } from '@tamagui/ui'
 import {
   Button,
   EnsureFlexed,
@@ -13,8 +13,8 @@ import {
   XStack,
   YStack,
   useComposedRefs,
-} from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+} from '@tamagui/ui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerXL } from '~/components/Containers'
 import { Features } from '~/components/Features'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -68,7 +68,6 @@ export default function StudioSplashPage() {
                       mt={60}
                       animation="quick"
                       bg="$color10"
-                      color="$color1"
                       size="$6"
                       borderRadius="$10"
                       elevation="$2"
@@ -85,7 +84,7 @@ export default function StudioSplashPage() {
                         scale: 0.98,
                       }}
                     >
-                      Sponsor for early access
+                      <Button.Text color="$color1">Sponsor for early access</Button.Text>
                     </Button>
                   </Link>
                 </ThemeTintAlt>
@@ -97,7 +96,7 @@ export default function StudioSplashPage() {
                 </Link>
               </YStack>
 
-              <XStack maw={790} space="$8" separator={<Separator vertical />}>
+              <XStack maw={790} gap="$8">
                 <H2
                   theme="alt1"
                   className="text-glow"
@@ -243,7 +242,7 @@ const StudioScreen1 = memo(() => {
       })
 
       const Component = (
-        <YStack key={letter} pos="relative" scale={scale} zIndex={zIndex}>
+        <YStack key={letter} pos="relative" scale={scale || 1} zIndex={zIndex || 0}>
           <Glow.Component>
             <YStack
               animation={[
@@ -269,7 +268,7 @@ const StudioScreen1 = memo(() => {
                 fos={320}
                 lh={300}
                 fow="900"
-                rotate={rotate}
+                rotate={rotate || '0deg'}
                 zIndex={5}
                 {...headingProps}
               >
@@ -286,7 +285,7 @@ const StudioScreen1 = memo(() => {
                 fos={320}
                 lh={300}
                 fow="900"
-                rotate={rotate}
+                rotate={rotate || '0deg'}
                 zIndex={6}
                 {...headingProps}
               >

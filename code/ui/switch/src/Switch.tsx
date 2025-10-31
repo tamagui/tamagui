@@ -1,9 +1,9 @@
 import type { SizeTokens } from '@tamagui/core'
 import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 
-export const SwitchThumb = styled(ThemeableStack, {
+export const SwitchThumb = styled(YStack, {
   name: 'SwitchThumb',
 
   variants: {

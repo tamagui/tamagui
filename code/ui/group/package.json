@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/group",
   "version": "1.135.7",
-  "type": "module",
   "sideEffects": [
     "*.css"
   ],
@@ -40,6 +39,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },

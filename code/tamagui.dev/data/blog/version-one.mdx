@@ -30,7 +30,7 @@ Tamagui comes in three parts:
 
 [**Tamagui Core**](#overview-of-tamaguicore) (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a library that only depends on React. It adds all the [goodies of modern style libraries](#overview) into a cohesive package.
 
-[**Tamagui Static**](#overview-of-tamaguistatic) (`@tamagui/static`) is an optimizing compiler on top of Core, turning even inline styles sprinkled with logic into atomic CSS and minimal JS, flattening your view tree for maximum performance.
+[**Tamagui Static**](#overview-of-tamaguistatic) (`@tamagui/compiler`) is an optimizing compiler on top of Core, turning even inline styles sprinkled with logic into atomic CSS and minimal JS, flattening your view tree for maximum performance.
 
 [**Tamagui UI**](#overview-of-tamagui) (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside compound-component APIs and complete size control enables a new level of control not seen before in a UI kit.
 
@@ -38,7 +38,7 @@ Tamagui comes in three parts:
 
 ## Overview
 
-Lets get familiar with both `@tamagui/core` (the styling library) and `@tamagui/static` (the compiler), and how the latter optimizes the former.
+Lets get familiar with both `@tamagui/core` (the styling library) and `@tamagui/compiler` (the compiler), and how the latter optimizes the former.
 
 <Spacer />
 <Wide>
@@ -319,7 +319,7 @@ export default () => (
 
 ---
 
-## Overview of `@tamagui/static`
+## Overview of `@tamagui/compiler`
 
 [Static](/docs/intro/why-a-compiler) is a babel and node-based optimizing compiler, specifically for frontend React code. It supports web and native through a plugin interface that has adapters for Webpack, Vite, Next, React Native, and Expo. Over a dozen major improvements to the compiler have made their way in since beta. Some of the highlights are:
 
@@ -340,7 +340,7 @@ For more information on how it works and why it's important, read our [introduct
 
 ---
 
-## What's new in `@tamagui/static`
+## What's new in `@tamagui/compiler`
 
 ### Performance
 

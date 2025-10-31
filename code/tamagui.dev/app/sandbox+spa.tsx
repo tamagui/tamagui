@@ -14,8 +14,8 @@ import {
   TooltipSimple,
   View,
   YStack,
-} from 'tamagui'
-// import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
+} from '@tamagui/ui'
+import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
 
 export default function Sandbox() {
   return (

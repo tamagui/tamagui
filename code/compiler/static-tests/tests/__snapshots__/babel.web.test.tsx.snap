@@ -17,7 +17,6 @@ exports[`className + conditional styles get full base styles merged onto + short
 :root ._fd-column{flex-direction:column;}
 :root ._fb-auto{flex-basis:auto;}
 :root ._bxs-border-box{box-sizing:border-box;}
-:root ._pos-relative{position:relative;}
 :root ._mih-0px{min-height:0px;}
 :root ._miw-0px{min-width:0px;}
 :root ._fs-0{flex-shrink:0;}
@@ -97,7 +96,6 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 :root ._fd-column{flex-direction:column;}
 :root ._fb-auto{flex-basis:auto;}
 :root ._bxs-border-box{box-sizing:border-box;}
-:root ._pos-relative{position:relative;}
 :root ._mih-0px{min-height:0px;}
 :root ._miw-0px{min-width:0px;}
 :root ._fs-0{flex-shrink:0;}

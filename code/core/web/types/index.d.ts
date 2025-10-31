@@ -32,7 +32,6 @@ export * from './createComponent';
 export * from './createFont';
 export * from './createShorthands';
 export * from './createTamagui';
-export * from './createTheme';
 export * from './createTokens';
 export * from './createVariable';
 export * from './createVariables';

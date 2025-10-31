@@ -2,7 +2,7 @@ import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { startTransition, useEffect, useMemo, useState } from 'react'
-import type { TabsProps } from 'tamagui'
+import type { TabsProps } from '@tamagui/ui'
 import {
   Button,
   Dialog,
@@ -22,7 +22,7 @@ import {
   useMedia,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
@@ -391,7 +391,7 @@ export function PurchaseModalContents() {
                       </H3>
                     </XStack>
 
-                    <Paragraph theme="alt2" ellipse size="$4" mb="$3">
+                    <Paragraph theme="alt2" ellipsis size="$4" mb="$3">
                       {subscriptionMessage}
                     </Paragraph>
                   </YStack>
@@ -407,7 +407,11 @@ export function PurchaseModalContents() {
                           borderColor="$color8"
                           p="$2"
                         >
-                          <Paragraph size="$3" color="$color11" textWrap="balance">
+                          <Paragraph
+                            size="$3"
+                            color="$color11"
+                            style={{ textWrap: 'balance' }}
+                          >
                             You are from {parityDeals.country}.{`\n`} Use code{' '}
                             <Text fontWeight="bold" fontFamily="$mono" color="$color12">
                               {parityDeals.couponCode}
@@ -427,7 +431,11 @@ export function PurchaseModalContents() {
                           borderColor="$color8"
                           p="$2"
                         >
-                          <Paragraph size="$3" color="$color11" textWrap="balance">
+                          <Paragraph
+                            size="$3"
+                            color="$color11"
+                            style={{ textWrap: 'balance' }}
+                          >
                             You have subscribed before so you are eligible for a 25%
                             discount.
                             <br />

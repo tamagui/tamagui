@@ -1,11 +1,11 @@
 import { Data } from '@tamagui/bento'
-import { ListItem, ScrollView, Separator, YGroup, YStack } from 'tamagui'
+import { ListItem, ScrollView, Separator, YGroup, YStack } from '@tamagui/ui'
 import { LinkListItem } from '../home/screen'
 
 export function SectionScreen() {
   return (
     <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
         <YGroup size="$4" separator={<Separator />}>
           {Data.listingData.sections.map(({ parts, sectionName }) => {
             return (
@@ -16,7 +16,7 @@ export function SectionScreen() {
                 {parts.map(({ name, route }) => {
                   return (
                     <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
+                      <LinkListItem bg="$color1" href={route} size="$4">
                         {name}
                       </LinkListItem>
                     </YGroup.Item>

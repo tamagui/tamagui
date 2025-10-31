@@ -10,7 +10,7 @@ import {
   View,
   XStack,
   YStack,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import { Link, type LinkProps } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
@@ -88,9 +88,7 @@ export function DocsQuickNav() {
       <YStack gap="$5">
         <XStack ai="center" gap="$5">
           <Link
-            fontFamily="$mono"
             href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
-            size="$3"
             target="_blank"
           >
             <SizableText size="$3" ff="$mono">

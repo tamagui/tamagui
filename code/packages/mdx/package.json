@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-native --bundle --bundle-modules",
+    "build": "tamagui-build --bundle --bundle-modules",
     "watch": "yarn build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
@@ -24,13 +24,14 @@
       "// 👋 note - import === require here, mdx-bundler is cjs only must await import() this package": "./",
       "import": "./dist/index.js",
       "require": "./dist/index.js",
-      "default": "./dist/index.js"
+      "react-native": "./dist/index.native.js",
+      "default": "./dist/index.native.js"
     }
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/ui": "workspace:*",
     "compare-versions": "^4.1.3",
-    "esbuild-wasm": "^0.25.11",
     "gray-matter": "^4.0.3",
     "hast-util-to-html": "^8.0.3",
     "hast-util-to-string": "^2.0.0",
@@ -43,7 +44,6 @@
     "rehype-parse": "^8.0.4",
     "rehype-slug": "^5.0.1",
     "shiki": "1.3.0",
-    "tamagui": "workspace:*",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3"
   },

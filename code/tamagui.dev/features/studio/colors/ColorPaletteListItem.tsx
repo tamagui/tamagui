@@ -7,7 +7,7 @@ import {
   XStack,
   YStack,
   styled,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 import type { Palette, Scale } from '../state/types'
 import { ColorPicker } from './ColorPicker'
@@ -61,7 +61,7 @@ export const ColorPaletteListItem = ({
             </H5>
           )}
 
-          <YStack w="100%" pos="relative" space="$2" zi={100}>
+          <YStack w="100%" pos="relative" gap="$2" zi={100}>
             {showOffsetIndicators && (
               <XStack>
                 {colors.map((_, index) => (

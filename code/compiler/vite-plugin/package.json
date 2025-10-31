@@ -2,11 +2,11 @@
   "name": "@tamagui/vite-plugin",
   "version": "1.135.7",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "./dist/cjs/index.js",
   "type": "module",
-  "module": "dist/esm",
+  "module": "./dist/esm/index.js",
   "license": "MIT",
-  "tamagui": {
+  "@tamagui/ui": {
     "build": {
       "skipEnvToMeta": true
     }
@@ -17,26 +17,30 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "require": "./dist/cjs/index.cjs",
       "import": "./dist/esm/index.mjs",
-      "default": "./dist/cjs/index.cjs"
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
+    "@tamagui/compiler": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/proxy-worm": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/react-native-web-lite": "workspace:*",
-    "@tamagui/static": "workspace:*",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
     "outdent": "^0.8.0",
@@ -44,7 +48,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vite": "^7.1.12"
+    "vite": "^7.0.2"
   },
   "publishConfig": {
     "access": "public"
