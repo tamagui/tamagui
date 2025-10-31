@@ -27,7 +27,7 @@ function getQuery(): MediaQueryList | null {
 const query = getQuery()
 const listenerMapping = new WeakMap<AppearanceListener, DOMAppearanceListener>()
 
-const Appearance = {
+export const Appearance = {
   getColorScheme(): ColorSchemeName {
     return query && query.matches ? 'dark' : 'light'
   },
@@ -57,5 +57,3 @@ const Appearance = {
     return { remove }
   },
 }
-
-export default Appearance

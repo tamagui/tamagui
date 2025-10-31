@@ -10,7 +10,7 @@
 
 'use strict';
 
-import _bezier from './bezier';
+import { bezier as _bezier } from './bezier';
 
 let ease;
 
@@ -250,4 +250,5 @@ class Easing {
   }
 }
 
+export { Easing }
 export default Easing;

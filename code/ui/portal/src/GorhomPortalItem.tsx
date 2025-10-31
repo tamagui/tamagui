@@ -10,34 +10,41 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
   }
 
   const cur = allPortalHosts.get(props.hostName || '')
-  const [node, setNode] = useState(cur)
+  const [node, setNode] = useState<HTMLElement | null | undefined>(cur)
 
-  if (!props.passThrough && cur && node !== cur) {
-    setNode(cur)
-  }
-
+  // Register listener only once per hostName
   useIsomorphicLayoutEffect(() => {
     if (!props.hostName) return
-    if (node) return
 
-    const listener = (newNode: HTMLElement) => {
+    const listener = (newNode: HTMLElement | null) => {
       setNode(newNode)
     }
 
     portalListeners[props.hostName] ||= new Set()
     portalListeners[props.hostName].add(listener)
+
     return () => {
       portalListeners[props.hostName!]?.delete(listener)
     }
-  }, [node])
+  }, [props.hostName])
+
+  // Sync with Map value in separate effect
+  useIsomorphicLayoutEffect(() => {
+    if (cur && cur !== node) {
+      setNode(cur)
+    }
+  }, [cur, node])
 
   if (props.passThrough) {
     return props.children
   }
 
-  if (!node) {
+  // Check if node is connected before using it
+  const actualNode = node?.isConnected ? node : null
+
+  if (!actualNode) {
     return null
   }
 
-  return createPortal(props.children, node)
+  return createPortal(props.children, actualNode)
 }

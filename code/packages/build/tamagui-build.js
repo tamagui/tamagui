@@ -56,8 +56,6 @@ const pkg = FSE.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
 const pkgSource = pkg.source
-const bundleNative = pkg.tamagui?.['bundle.native']
-const bundleNativeTest = pkg.tamagui?.['bundle.native.test']
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
 const pkgTypes = Boolean(pkg.types || pkg.typings)
@@ -176,10 +174,35 @@ async function build({ skipTypes } = {}) {
     ])
 
     console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
+
+    // Run afterBuild script if defined
+    await runAfterBuild()
   } catch (error) {
     console.error(` ❌ Error building in ${process.cwd()}:\n\n`, error.stack + '\n')
     if (!shouldWatch) {
       process.exit(1)
+    }
+  }
+}
+
+async function runAfterBuild() {
+  const afterBuild = pkg.scripts?.afterBuild
+  if (!afterBuild) return
+
+  try {
+    console.info('Running afterBuild script...')
+    const start = Date.now()
+
+    childProcess.execSync(afterBuild, {
+      stdio: 'inherit',
+      cwd: process.cwd()
+    })
+
+    console.info('afterBuild completed in', Date.now() - start, 'ms')
+  } catch (error) {
+    console.error('afterBuild failed:', error.message)
+    if (!shouldWatch) {
+      throw error
     }
   }
 }
@@ -244,25 +267,9 @@ async function buildTsc(allFiles) {
 
     // exit on errors
     if (diagnostics.some((x) => x.code) && !shouldWatch) {
-      try {
-        console.error(
-          `Error building: ${diagnostics.map((x) => `${x.file.fileName}: ${x.messageText?.messageText ?? x.messageText}`).join('\n')}`
-        )
-      } catch (err) {
-        console.error(
-          `Error building`,
-          JSON.stringify(
-            {
-              diagnostics,
-              pkg,
-              fileNames: config.fileNames,
-              compilerOptions,
-            },
-            null,
-            2
-          )
-        )
-      }
+      console.error(
+        `Error building: ${diagnostics.map((x) => JSON.stringify(x.messageText)).join('\n')}`
+      )
       if (shouldWatch) {
         return
       }
@@ -390,13 +397,31 @@ async function buildJs(allFiles) {
   const bundlePlugin = {
     name: `external-most-modules`,
     setup(build) {
+      // Alias esbuild to esbuild-wasm (but keep it external)
+      build.onResolve({ filter: /^esbuild$/ }, (args) => {
+        return { path: 'esbuild-wasm', external: true }
+      })
+
       build.onResolve({ filter: /.*/ }, (args) => {
+        // Externalize node built-ins
+        if (args.path.startsWith('node:')) {
+          return { external: true }
+        }
+
         if (
           !args.path.startsWith('.') &&
-          !args.path.startsWith('/') &&
-          !args.path.startsWith('node:')
+          !args.path.startsWith('/')
         ) {
-          return { external: /^(esbuild|mdx-bundler)$/.test(args.path) }
+          // Keep esbuild-wasm external (it needs access to WASM files)
+          if (args.path === 'esbuild-wasm' || args.path.startsWith('esbuild-wasm/')) {
+            return { external: true }
+          }
+          // Bundle mdx-bundler and its dependencies
+          if (args.path === 'mdx-bundler' || args.path.startsWith('mdx-bundler/')) {
+            return { external: false }
+          }
+          // Externalize all other npm packages
+          return { external: true }
         }
       })
     },
@@ -404,58 +429,6 @@ async function buildJs(allFiles) {
 
   const external = shouldBundleFlag ? ['@swc/*', '*.node'] : undefined
 
-  /** @type { import('esbuild').BuildOptions } */
-  const esbuildBundleProps =
-    bundleNative || bundleNativeTest
-      ? {
-          entryPoints: [bundleNative],
-          bundle: true,
-          plugins: [
-            alias({
-              '@tamagui/web': require.resolve('@tamagui/web/native'),
-
-              'react-native': require.resolve('@tamagui/fake-react-native'),
-              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-
-              'react-native/Libraries/Pressability/Pressability': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-
-              'react-native/Libraries/Pressability/usePressability': require.resolve(
-                '@tamagui/fake-react-native/idFn'
-              ),
-
-              'react-native-safe-area-context': require.resolve(
-                '@tamagui/fake-react-native'
-              ),
-              'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
-            }),
-          ],
-          external: [
-            'react',
-            'react-dom',
-            bundleNativeTest ? 'react-native' : undefined,
-          ].filter(Boolean),
-          resolveExtensions: [
-            '.native.ts',
-            '.native.tsx',
-            '.native.js',
-            '.ts',
-            '.tsx',
-            '.js',
-            '.jsx',
-          ],
-          minify: !!process.env.MINIFY,
-          define: {
-            'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
-          },
-        }
-      : {}
 
   const start = Date.now()
 
@@ -512,33 +485,6 @@ async function buildJs(allFiles) {
       ? esbuildWriteIfChanged(cjsConfig, {
           platform: 'native',
         })
-      : null,
-
-    // for tests to load native-mode from node
-    bundleNative && !shouldSkipNative
-      ? esbuildWriteIfChanged(
-          {
-            ...esbuildBundleProps,
-            outfile: `dist/native.js`,
-          },
-          {
-            platform: 'native',
-          }
-        )
-      : null,
-
-    // for tests to load native-mode from node
-    bundleNativeTest && !shouldSkipNative
-      ? esbuildWriteIfChanged(
-          {
-            ...esbuildBundleProps,
-            outfile: `dist/test.js`,
-          },
-          {
-            platform: 'native',
-            env: 'test',
-          }
-        )
       : null,
 
     // web output to esm
@@ -630,12 +576,12 @@ async function esbuildWriteIfChanged(
     // compat with jsx and hermes back a few versions generally:
     /** @type { import('esbuild').BuildOptions } */
     const nativeEsbuildSettings = {
-      target: isESM ? 'esnext' : 'node16',
+      target: 'esnext',
       supported: {
         'logical-assignment': false,
       },
       jsx: 'automatic',
-      platform: 'node',
+      platform: 'neutral',
     }
 
     /** @type { import('esbuild').BuildOptions } */
@@ -652,19 +598,26 @@ async function esbuildWriteIfChanged(
       },
     }
 
-    return {
+    /** @type { import('esbuild').BuildOptions } */
+    const out = {
       ...opts,
+
+      conditions: platform === 'native' ? ['react-native'] : [],
+      mainFields: isESM ? ['import', 'module', 'main'] : ['require', 'main'],
 
       plugins: [
         ...(opts.plugins || []),
 
-        ...(platform === 'native'
+        ...(platform === 'native' && !opts.bundle
           ? [
               // class isnt supported by hermes
               es5Plugin(),
             ]
           : []),
       ].filter(Boolean),
+
+
+      format: isESM ? 'esm' : 'cjs',
 
       treeShaking: true,
       minifySyntax: true,
@@ -685,9 +638,14 @@ async function esbuildWriteIfChanged(
         ...(env && {
           'process.env.NODE_ENV': `"${env}"`,
         }),
+        ...(shouldBundleNodeModules && {
+          'process.env.ESBUILD_BINARY_PATH': `"true"`,
+        }),
         ...opts.define,
       },
     }
+
+    return out
   })()
 
   let built
@@ -848,7 +806,12 @@ async function esbuildWriteIfChanged(
               configFile: false,
               sourceMap: true,
               plugins: [
-                require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
+                [
+                  require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
+                  {
+                    esExtensionDefault: platform === 'native' ? '.native.cjs' : '.cjs',
+                  },
+                ],
               ].filter(Boolean),
             })
 
@@ -860,7 +823,8 @@ async function esbuildWriteIfChanged(
     return
   }
 
-  if (shouldSkipMJS || !isESM) {
+  // Skip mjs transformation if --skip-mjs flag is set
+  if (shouldSkipMJS) {
     return
   }
 
@@ -873,19 +837,21 @@ async function esbuildWriteIfChanged(
       if (!path.endsWith('.js')) return
 
       // for web do mjs, for native keep js since rollup gets confused when you have both
-      const mjsOutPath = platform === 'native' ? path : path.replace('.js', '.mjs')
+      const newOutPath = platform === 'native' ? path : path.replace('.js', '.mjs')
 
       // if bundling no need to specify as its all internal
       // and babel is bad on huge bundled files
       const result = opts.bundle
         ? { code: contents }
         : transform(contents, {
-            filename: mjsOutPath,
+            filename: newOutPath,
             configFile: false,
             sourceMap: true,
             plugins: [
               [
-                require.resolve('@tamagui/babel-plugin-fully-specified'),
+                isESM
+                  ? require.resolve('@tamagui/babel-plugin-fully-specified')
+                  : require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
                 {
                   esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
                   esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
@@ -902,13 +868,13 @@ async function esbuildWriteIfChanged(
       // output to mjs fully specified
       if (
         await flush(
-          mjsOutPath,
+          newOutPath,
           result.code +
-            (result.map ? `\n//# sourceMappingURL=${basename(mjsOutPath)}.map\n` : '')
+            (result.map ? `\n//# sourceMappingURL=${basename(newOutPath)}.map\n` : '')
         )
       ) {
         if (result.map) {
-          await FSE.writeFile(mjsOutPath + '.map', JSON.stringify(result.map), 'utf8')
+          await FSE.writeFile(newOutPath + '.map', JSON.stringify(result.map), 'utf8')
         }
       }
     })

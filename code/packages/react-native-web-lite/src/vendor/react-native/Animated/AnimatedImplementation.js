@@ -11,25 +11,25 @@
 'use strict'
 
 import { AnimatedEvent, attachNativeEvent } from './AnimatedEvent'
-import AnimatedAddition from './nodes/AnimatedAddition'
-import AnimatedDiffClamp from './nodes/AnimatedDiffClamp'
-import AnimatedDivision from './nodes/AnimatedDivision'
-import AnimatedInterpolation from './nodes/AnimatedInterpolation'
-import AnimatedModulo from './nodes/AnimatedModulo'
-import AnimatedMultiplication from './nodes/AnimatedMultiplication'
-import AnimatedNode from './nodes/AnimatedNode'
-import AnimatedProps from './nodes/AnimatedProps'
-import AnimatedSubtraction from './nodes/AnimatedSubtraction'
-import AnimatedTracking from './nodes/AnimatedTracking'
-import AnimatedValue from './nodes/AnimatedValue'
-import AnimatedValueXY from './nodes/AnimatedValueXY'
-import DecayAnimation from './animations/DecayAnimation'
-import SpringAnimation from './animations/SpringAnimation'
-import TimingAnimation from './animations/TimingAnimation'
+import { AnimatedAddition } from './nodes/AnimatedAddition'
+import { AnimatedDiffClamp } from './nodes/AnimatedDiffClamp'
+import { AnimatedDivision } from './nodes/AnimatedDivision'
+import { AnimatedInterpolation } from './nodes/AnimatedInterpolation'
+import { AnimatedModulo } from './nodes/AnimatedModulo'
+import { AnimatedMultiplication } from './nodes/AnimatedMultiplication'
+import { AnimatedNode } from './nodes/AnimatedNode'
+import { AnimatedProps } from './nodes/AnimatedProps'
+import { AnimatedSubtraction } from './nodes/AnimatedSubtraction'
+import { AnimatedTracking } from './nodes/AnimatedTracking'
+import { AnimatedValue } from './nodes/AnimatedValue'
+import { AnimatedValueXY } from './nodes/AnimatedValueXY'
+import { DecayAnimation } from './animations/DecayAnimation'
+import { SpringAnimation } from './animations/SpringAnimation'
+import { TimingAnimation } from './animations/TimingAnimation'
 
-import createAnimatedComponent from './createAnimatedComponent'
+import { createAnimatedComponent } from './createAnimatedComponent'
 import { AnimationConfig, EndCallback, EndResult } from './animations/Animation'
-import AnimatedColor from './nodes/AnimatedColor'
+import { AnimatedColor } from './nodes/AnimatedColor'
 
 // CompositeAnimation interface removed
 
@@ -466,7 +466,7 @@ const event = function (argMapping, config) {
  *
  * See https://reactnative.dev/docs/animated
  */
-export default {
+const AnimatedImplementationExports = {
   /**
    * Standard value class for driving animations.  Typically initialized with
    * `new Animated.Value(0);`
@@ -642,4 +642,8 @@ export default {
    * Expose Event class, so it can be used as a type for type checkers.
    */
   Event: AnimatedEvent,
-}
+};
+
+export { AnimatedImplementationExports }
+export { AnimatedImplementationExports as AnimatedImplementation }
+export default AnimatedImplementationExports

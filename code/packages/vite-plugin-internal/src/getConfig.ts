@@ -1,10 +1,15 @@
 /// <reference types="vitest" />
 
-import react from '@vitejs/plugin-react-swc'
+// @ts-ignore
+// import react from '@vitejs/plugin-react'
+// import react from '@vitejs/plugin-react-swc'
 import { join } from 'node:path'
 import { type Plugin, defineConfig } from 'vite'
-import { requireResolve } from './requireResolve'
+import { createRequire } from 'node:module'
 
+export const requireResolve =
+  'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
+  
 export function getConfig(tamaguiPlugin: any) {
   const isNative =
     !process.env.DISABLE_REACT_NATIVE &&
@@ -49,7 +54,7 @@ export function getConfig(tamaguiPlugin: any) {
   return defineConfig({
     plugins: [
       // isNative ? null : reactNative(),
-      react({}),
+      // react({}),
 
       tamaguiPlugin({
         components: ['tamagui'],
@@ -91,9 +96,20 @@ export function getConfig(tamaguiPlugin: any) {
     },
 
     resolve: {
-      alias: {
-        'react-native': '@tamagui/react-native-web-lite',
-      },
+      alias: isNative
+        ? [
+            {
+              find: /^react-native$/,
+              replacement: '@tamagui/fake-react-native',
+            },
+            {
+              find: /^react-native\//,
+              replacement: '@tamagui/fake-react-native',
+            },
+          ]
+        : {
+            'react-native': '@tamagui/react-native-web-lite',
+          },
     },
 
     // @ts-ignore
@@ -102,7 +118,9 @@ export function getConfig(tamaguiPlugin: any) {
       globals: true,
       setupFiles: [
         join(__dirname, 'test-setup.ts'),
-        requireResolve('vitest-react-native/setup'),
+        ...(isNative
+          ? [join(__dirname, 'test-setup-native.cjs')]
+          : [requireResolve('vitest-react-native/setup')]),
       ],
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',

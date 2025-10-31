@@ -7,9 +7,7 @@
  * @flow
  */
 
-const isDisabled = (props: Record<string, any>): boolean =>
+export const isDisabled = (props: Record<string, any>): boolean =>
   props.disabled ||
   (Array.isArray(props.accessibilityStates) &&
     props.accessibilityStates.indexOf('disabled') > -1)
-
-export default isDisabled

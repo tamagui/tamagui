@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/input",
-  "version": "1.135.0",
+  "version": "1.135.7",
+  "type": "module",
   "sideEffects": [
     "*.css"
   ],
@@ -52,7 +53,7 @@
     "@tamagui/build": "workspace:*",
     "react": "*",
     "react-native": "^0.79.2",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   },
   "publishConfig": {
     "access": "public"

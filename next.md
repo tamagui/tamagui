@@ -39,6 +39,10 @@ Recoverable error extracting attribute Cannot destructure property 'shadowOffset
 
 v2:
 
+- move away from default theme and just had the examples be copy-paste with defaults i think, we have unstyled now but that would simplify this
+was thinking v3 but maybe its worht just doing it. maybe just add a import 'tamagui/apply-default-styles' or something with some api to set the defaults
+if people want v1 compat
+
 - remove webpack plugin
 
 - removeScrollEnabled => disableRemoveScroll

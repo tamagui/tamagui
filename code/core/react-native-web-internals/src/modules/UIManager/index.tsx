@@ -17,7 +17,7 @@ const focusableElements = {
   TEXTAREA: true,
 }
 
-const UIManager = {
+export const UIManager = {
   blur(node) {
     try {
       node.blur()
@@ -66,5 +66,3 @@ const UIManager = {
   // mocks
   setLayoutAnimationEnabledExperimental() {},
 }
-
-export default UIManager

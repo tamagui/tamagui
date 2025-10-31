@@ -1,18 +1,18 @@
 import { isIos } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
 import { getConfig, getSetting } from '../config'
-import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
+import { getDynamicVal } from '../helpers/getDynamicVal'
 import type {
   ThemeParsed,
+  ThemeState,
   Tokens,
   UseThemeWithStateProps,
+  Variable,
   VariableVal,
   VariableValGeneric,
 } from '../types'
 import { doesRootSchemeMatchSystem } from './doesRootSchemeMatchSystem'
-import type { ThemeState } from './useThemeState'
-import { getDynamicVal } from '../helpers/getDynamicVal'
 
 export type ThemeProxied = {
   [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<

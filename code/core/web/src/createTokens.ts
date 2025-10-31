@@ -1,6 +1,5 @@
-import type { Variable } from './createVariable'
 import { createVariables } from './createVariables'
-import type { CreateTokens } from './types'
+import type { CreateTokens, Variable } from './types'
 
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
   return createVariables(tokens, process.env.TAMAGUI_TOKEN_PREFIX ?? 't') as any

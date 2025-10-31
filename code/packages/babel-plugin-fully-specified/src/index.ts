@@ -2,11 +2,13 @@ import { existsSync, lstatSync } from 'node:fs'
 import { dirname, extname, resolve } from 'node:path'
 
 import type { ConfigAPI, NodePath, PluginObj, PluginPass } from '@babel/core'
+import * as t from '@babel/types'
 import type {
   ExportAllDeclaration,
   ExportNamedDeclaration,
   Import,
   ImportDeclaration,
+  MemberExpression,
 } from '@babel/types'
 
 export interface FullySpecifiedOptions {
@@ -16,6 +18,8 @@ export interface FullySpecifiedOptions {
   tryExtensions: Array<string>
   /** List of extensions that can run in Node.js or in the Browser. */
   esExtensions: Array<string>
+  /** Convert process.env.XYZ to import.meta.env.XYZ */
+  convertProcessEnvToImportMetaEnv?: boolean
 }
 
 const DEFAULT_OPTIONS = {
@@ -23,6 +27,7 @@ const DEFAULT_OPTIONS = {
   esExtensionDefault: '.mjs',
   tryExtensions: ['.js'],
   esExtensions: ['.mjs'],
+  convertProcessEnvToImportMetaEnv: false,
 }
 
 export default function FullySpecified(
@@ -115,6 +120,33 @@ export default function FullySpecified(
     }
   }
 
+  /** For converting process.env to import.meta.env */
+  const memberExpressionVisitor = (path: NodePath<MemberExpression>) => {
+    if (!options.convertProcessEnvToImportMetaEnv) return
+
+    const { node } = path
+
+    // Check if this is process.env.SOMETHING
+    if (
+      node.object.type === 'MemberExpression' &&
+      node.object.object.type === 'Identifier' &&
+      node.object.object.name === 'process' &&
+      node.object.property.type === 'Identifier' &&
+      node.object.property.name === 'env'
+    ) {
+      // Skip process.env.NODE_ENV - leave it as is
+      if (node.property.type === 'Identifier' && node.property.name === 'NODE_ENV') {
+        return
+      }
+
+      // Replace process.env with import.meta.env
+      node.object = t.memberExpression(
+        t.metaProperty(t.identifier('import'), t.identifier('meta')),
+        t.identifier('env')
+      )
+    }
+  }
+
   return {
     name: 'babel-plugin-fully-specified',
     visitor: {
@@ -122,6 +154,7 @@ export default function FullySpecified(
       ExportNamedDeclaration: exportDeclarationVisitor,
       ExportAllDeclaration: exportDeclarationVisitor,
       Import: importVisitor,
+      MemberExpression: memberExpressionVisitor,
     },
   }
 }
@@ -192,7 +225,7 @@ function evaluateTargetModule({
   esExtensions,
   esExtensionDefault,
   ensureFileExists,
-}) {
+}: any): string | false {
   if (currentModuleExtension && !esExtensions.includes(currentModuleExtension)) {
     return false
   }

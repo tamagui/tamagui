@@ -1,7 +1,6 @@
 import { getSetting } from '../config'
 import { getVariableValue } from '../createVariable'
-import type { GenericFonts, GetStyleState } from '../types'
-import type { LanguageContextType } from '../views/FontLanguage.types'
+import type { GenericFonts, GetStyleState, LanguageContextType } from '../types'
 
 const cache = new WeakMap()
 

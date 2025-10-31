@@ -12,9 +12,9 @@ import { forwardRef } from 'react'
 import { StyleSheet } from '@tamagui/react-native-web-internals'
 
 import type { ImageProps } from '../Image/index'
-import Image from '../Image/index'
+import { Image } from '../Image/index'
 import type { ViewProps } from '../View/index'
-import View from '../View/index'
+import { View } from '../View/index'
 
 type ImageBackgroundProps = ImageProps & {
   imageRef?: any
@@ -62,4 +62,5 @@ const ImageBackground = forwardRef<React.ElementRef<typeof View>, ImageBackgroun
 
 ImageBackground.displayName = 'ImageBackground'
 
+export { ImageBackground }
 export default ImageBackground

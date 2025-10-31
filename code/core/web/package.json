@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/web",
-  "version": "1.135.0",
+  "version": "1.135.7",
+  "type": "module",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -51,7 +52,7 @@
     "react-dom": "*",
     "react-native": "^0.79.2",
     "typescript": "^5.8.2",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -66,22 +67,11 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
-    "./native": {
-      "react-native": {
-        "import": "./dist/esm/index.native.native.js",
-        "require": "./dist/cjs/index.native.native.js"
-      },
-      "import": "./dist/esm/index.native.js",
-      "require": "./dist/cjs/index.native.js"
-    },
     "./inject-styles": {
-      "react-native": {
-        "import": "./dist/esm/inject-styles.native.js",
-        "require": "./dist/cjs/inject-styles.native.js"
-      },
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
-      "require": "./dist/cjs/inject-styles.cjs"
+      "require": "./dist/cjs/inject-styles.cjs",
+      "default": "./dist/cjs/inject-styles.cjs"
     }
   },
   "repository": {

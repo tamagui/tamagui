@@ -10,7 +10,7 @@
  * @noflow
  */
 
-import dangerousStyleValue from './dangerousStyleValue'
+import { dangerousStyleValue } from './dangerousStyleValue'
 
 /**
  * Sets the value for multiple styles on a node.  If a value is specified as
@@ -19,7 +19,7 @@ import dangerousStyleValue from './dangerousStyleValue'
  * @param {DOMElement} node
  * @param {object} styles
  */
-function setValueForStyles(node, styles) {
+export function setValueForStyles(node, styles) {
   const style = node.style
   for (let styleName in styles) {
     if (!styles.hasOwnProperty(styleName)) {
@@ -37,5 +37,3 @@ function setValueForStyles(node, styles) {
     }
   }
 }
-
-export default setValueForStyles

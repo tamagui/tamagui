@@ -6,15 +6,15 @@
  */
 
 import { invariant } from '@tamagui/react-native-web-internals'
-import ScrollView from '../../../ScrollView'
-import RefreshControl from '../../../RefreshControl'
+import { ScrollView } from '../../../ScrollView'
+import { RefreshControl } from '../../../RefreshControl'
 
-import Batchinator from '../Batchinator'
-import ChildListCollection from './ChildListCollection'
-import FillRateHelper from '../FillRateHelper'
-import StateSafePureComponent from './StateSafePureComponent'
-import ViewabilityHelper from '../ViewabilityHelper'
-import CellRenderer from './VirtualizedListCellRenderer'
+import { Batchinator } from '../Batchinator'
+import { ChildListCollection } from './ChildListCollection'
+import { FillRateHelper } from '../FillRateHelper'
+import { StateSafePureComponent } from './StateSafePureComponent'
+import { ViewabilityHelper } from '../ViewabilityHelper'
+import { CellRenderer } from './VirtualizedListCellRenderer'
 import {
   VirtualizedListContext
 } from './VirtualizedListContext'
@@ -392,4 +392,5 @@ class VirtualizedList extends StateSafePureComponent {
   }
 }
 
+export { VirtualizedList }
 export default VirtualizedList 

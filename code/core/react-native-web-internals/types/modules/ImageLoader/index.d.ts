@@ -14,7 +14,7 @@ export declare class ImageUriCache {
     static remove(uri: string): void;
     static _cleanUpIfNeeded(): void;
 }
-declare const ImageLoader: {
+export declare const ImageLoader: {
     abort(requestId: number): void;
     getSize(uri: string, success: (width: number, height: number) => void, failure: () => void): void;
     has(uri: string): boolean;
@@ -24,5 +24,4 @@ declare const ImageLoader: {
         [uri: string]: "disk/memory";
     }>;
 };
-export default ImageLoader;
 //# sourceMappingURL=index.d.ts.map

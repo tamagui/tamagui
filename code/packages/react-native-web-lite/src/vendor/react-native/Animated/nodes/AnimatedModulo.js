@@ -8,8 +8,8 @@
  * @format
  */
 
-import AnimatedInterpolation from './AnimatedInterpolation'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import { AnimatedInterpolation } from './AnimatedInterpolation'
+import { AnimatedWithChildren } from './AnimatedWithChildren'
 
 class AnimatedModulo extends AnimatedWithChildren {
   _a
@@ -52,4 +52,5 @@ class AnimatedModulo extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedModulo }
 export default AnimatedModulo

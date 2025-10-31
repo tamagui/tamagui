@@ -1,7 +1,6 @@
-import React from 'react'
 import { isWeb } from '@tamagui/constants'
 import { styled, useComposedRefs } from '@tamagui/core'
-
+import React from 'react'
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
 import type { Input, InputExtraProps, InputProps } from './Input'
 import { InputFrame, defaultStyles, useInputProps } from './Input'

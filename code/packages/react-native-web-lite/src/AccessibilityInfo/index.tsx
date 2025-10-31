@@ -43,7 +43,7 @@ function removeChangeListener(fn) {
 
 const handlers = {}
 
-const AccessibilityInfo = {
+export const AccessibilityInfo = {
   /**
    * Query whether a screen reader is currently enabled.
    *
@@ -111,5 +111,3 @@ const AccessibilityInfo = {
     return
   },
 }
-
-export default AccessibilityInfo

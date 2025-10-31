@@ -1,8 +1,7 @@
 {
   "name": "@tamagui/babel-plugin-fully-specified",
-  "version": "1.135.0",
+  "version": "1.135.7",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
   "main": "permanent/cjs/index.js",
   "module": "permanent/esm/index.mjs",
   "files": [
@@ -37,7 +36,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.25.4",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

@@ -9,7 +9,7 @@
 
 'use strict';
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper';
 
 
 let startNativeAnimationNextId = 1;
@@ -73,4 +73,5 @@ class Animation {
   }
 }
 
+export { Animation }
 export default Animation;

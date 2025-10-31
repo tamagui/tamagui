@@ -12,7 +12,7 @@
  * state for TextInputs. All calls relating to the keyboard
  * should be funneled through here
  */
-declare const TextInputState: {
+export declare const TextInputState: {
     /**
      * Internal state
      */
@@ -35,5 +35,4 @@ declare const TextInputState: {
      */
     blurTextInput(textFieldNode: Object | null): void;
 };
-export default TextInputState;
 //# sourceMappingURL=index.d.ts.map

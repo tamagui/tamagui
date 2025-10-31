@@ -1,9 +1,10 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.135.0",
+  "version": "1.135.7",
+  "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
@@ -12,12 +13,21 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "tamagui-build --skip-types --watch",
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.js"
+    }
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",

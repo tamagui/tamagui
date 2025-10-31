@@ -10,8 +10,8 @@
  */
 import { invariant } from '@tamagui/react-native-web-internals'
 
-import EmitterSubscription from './_EmitterSubscription'
-import EventSubscriptionVendor from './_EventSubscriptionVendor'
+import { EmitterSubscription } from './_EmitterSubscription'
+import { EventSubscriptionVendor } from './_EventSubscriptionVendor'
 
 var sparseFilterPredicate = () => true
 
@@ -171,4 +171,5 @@ class EventEmitter {
   }
 }
 
+export { EventEmitter }
 export default EventEmitter

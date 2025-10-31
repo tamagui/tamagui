@@ -16,7 +16,7 @@ type AddListener = (target: EventTarget, listener: null | ((arg0: any) => void))
  *   return () => click.clear();
  * }).
  */
-export default function useEvent(event: string, options?: {
+export declare function useEvent(event: string, options?: {
     capture?: boolean;
     passive?: boolean;
 } | null): AddListener;

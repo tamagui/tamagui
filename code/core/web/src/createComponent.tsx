@@ -28,8 +28,6 @@ import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
-import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
-import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
 import { hooks } from './setupHooks'
 import type {
   AllGroupContexts,
@@ -43,6 +41,7 @@ import type {
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
+  TamaguiComponentState,
   TamaguiElement,
   TamaguiInternalConfig,
   TextProps,
@@ -50,6 +49,7 @@ import type {
   UseAnimationProps,
   UseStyleEmitter,
   UseThemeWithStateProps,
+  WebOnlyPressEvents,
 } from './types'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'

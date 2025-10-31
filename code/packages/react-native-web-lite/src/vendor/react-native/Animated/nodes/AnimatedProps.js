@@ -9,9 +9,9 @@
  */
 
 import { AnimatedEvent } from '../AnimatedEvent'
-import AnimatedNode from './AnimatedNode'
-import AnimatedStyle from './AnimatedStyle'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { AnimatedNode } from './AnimatedNode'
+import { AnimatedStyle } from './AnimatedStyle'
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper'
 
 import { invariant } from '@tamagui/react-native-web-internals'
 
@@ -156,4 +156,5 @@ class AnimatedProps extends AnimatedNode {
   }
 }
 
+export { AnimatedProps }
 export default AnimatedProps

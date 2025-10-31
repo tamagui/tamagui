@@ -17,7 +17,7 @@ import type { CSSProperties } from 'react'
 import React, { forwardRef, useMemo, useRef } from 'react'
 import type { TextStyle } from 'react-native'
 import type { SharedValue } from 'react-native-reanimated'
-import Animated, {
+import Animated_, {
   cancelAnimation,
   runOnJS,
   useAnimatedReaction,
@@ -27,6 +27,17 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
+
+// fix for building with type module
+// see https://github.com/evanw/esbuild/issues/2480#issuecomment-1833104754
+const safeESModule = <T,>(a: T | { default: T }): T => {
+  const b = a as any
+  const out = b.__esModule || b[Symbol.toStringTag] === 'Module' ? b.default : b
+  // add metro support
+  return out || a
+}
+
+const Animated = safeESModule(Animated_)
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 

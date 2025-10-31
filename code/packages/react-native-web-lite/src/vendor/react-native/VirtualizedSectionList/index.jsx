@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import VirtualizedList from '../VirtualizedList'
+import { VirtualizedList } from '../VirtualizedList'
 import * as React from 'react'
 
 const defaultProps = {
@@ -145,4 +145,5 @@ class VirtualizedSectionList extends React.PureComponent {
 
 VirtualizedSectionList.defaultProps = defaultProps
 
+export { VirtualizedSectionList }
 export default VirtualizedSectionList

@@ -6,11 +6,7 @@ export default defineConfig({
     include: ['**/*.{test.ios,spec.ios}.?(c|m)[jt]s?(x)'],
     retry: 1,
     // Ensure tests run sequentially
-    poolOptions: {
-      threads: {
-        singleThread: true,
-      },
-    },
+    fileParallelism: false,
     // Add reasonable timeouts
     testTimeout: 30000,
     hookTimeout: 30000,

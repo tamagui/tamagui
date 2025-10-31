@@ -11,9 +11,9 @@
 import * as React from 'react'
 
 import type { ColorSchemeName } from '../Appearance/index'
-import Appearance from '../Appearance/index'
+import { Appearance } from '../Appearance/index'
 
-export default function useColorScheme(): ColorSchemeName {
+export function useColorScheme(): ColorSchemeName {
   const [colorScheme, setColorScheme] = React.useState(Appearance.getColorScheme())
 
   React.useEffect(() => {

@@ -8,7 +8,7 @@
  */
 
 import { unitlessNumbers } from '../../modules/unitlessNumbers/index'
-import normalizeColor from './normalizeColor'
+import { normalizeColor } from './normalizeColor'
 
 const colorProps = {
   backgroundColor: true,
@@ -23,7 +23,7 @@ const colorProps = {
   textShadowColor: true,
 }
 
-export default function normalizeValueWithProperty(
+export function normalizeValueWithProperty(
   value: any,
   property?: string | null
 ): any {

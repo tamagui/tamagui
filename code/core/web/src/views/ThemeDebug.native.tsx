@@ -1,5 +1,4 @@
-import type { ThemeState } from '../hooks/useThemeState'
-import type { ThemeProps } from '../types'
+import type { ThemeProps, ThemeState } from '../types'
 
 export function ThemeDebug({
   themeState,

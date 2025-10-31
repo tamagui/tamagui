@@ -73,7 +73,7 @@ function handleResize() {
   }
 }
 
-export default class Dimensions {
+export class Dimensions {
   static get(dimension: DimensionKey): DisplayMetrics {
     if (shouldInit) {
       shouldInit = false
@@ -125,3 +125,5 @@ export default class Dimensions {
 if (canUseDOM) {
   window.addEventListener('resize', handleResize, false)
 }
+
+export default Dimensions

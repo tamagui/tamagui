@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.135.0",
+  "version": "1.135.7",
+  "type": "module",
   "sideEffects": [
     "*.css"
   ],
@@ -14,6 +15,19 @@
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

@@ -1,4 +1,4 @@
-module.exports = proxyWorm()
+const emtpyComponent = () => null
 
 function proxyWorm() {
   return new Proxy(
@@ -9,13 +9,18 @@ function proxyWorm() {
       Platform: {
         OS: 'web',
       },
-      Image: 'Image',
-      View: 'View',
-      Text: 'Text',
-      TextInput: 'TextInput',
-      ScrollView: 'ScrollView',
+      Image: emtpyComponent,
+      View: emtpyComponent,
+      Text: emtpyComponent,
+      TextInput: emtpyComponent,
+      ScrollView: emtpyComponent,
       Dimensions: {
-        addEventListener(cb) {}
+        addEventListener(cb) {},
+      },
+      Appearance: {
+        getColorScheme: () => 'light',
+        addChangeListener: () => {},
+        removeChangeListener: () => {},
       },
       addPoolingTo() {},
     },
@@ -29,3 +34,17 @@ function proxyWorm() {
     }
   )
 }
+
+const proxy = proxyWorm()
+
+module.exports = proxy
+module.exports.default = proxy
+module.exports.Platform = proxy.Platform
+module.exports.StyleSheet = proxy.StyleSheet
+module.exports.Image = proxy.Image
+module.exports.View = proxy.View
+module.exports.Text = proxy.Text
+module.exports.TextInput = proxy.TextInput
+module.exports.ScrollView = proxy.ScrollView
+module.exports.Dimensions = proxy.Dimensions
+module.exports.Appearance = proxy.Appearance

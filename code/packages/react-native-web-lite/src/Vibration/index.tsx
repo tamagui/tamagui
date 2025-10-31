@@ -16,7 +16,7 @@ const vibrate = (pattern: VibratePattern) => {
   }
 }
 
-const Vibration = {
+export const Vibration = {
   cancel() {
     vibrate(0)
   },
@@ -24,5 +24,3 @@ const Vibration = {
     vibrate(pattern)
   },
 }
-
-export default Vibration

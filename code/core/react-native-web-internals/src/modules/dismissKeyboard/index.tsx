@@ -7,10 +7,8 @@
  * @flow
  */
 
-import TextInputState from '../TextInputState/index'
+import { TextInputState } from '../TextInputState/index'
 
-const dismissKeyboard = () => {
+export const dismissKeyboard = () => {
   TextInputState.blurTextInput(TextInputState.currentlyFocusedField())
 }
-
-export default dismissKeyboard

@@ -8,8 +8,8 @@
  * @flow
  */
 
-import normalizeColor from './compiler/normalizeColor'
-import normalizeValueWithProperty from './compiler/normalizeValueWithProperty'
+import { normalizeColor } from './compiler/normalizeColor'
+import { normalizeValueWithProperty } from './compiler/normalizeValueWithProperty'
 
 const emptyObject = {}
 

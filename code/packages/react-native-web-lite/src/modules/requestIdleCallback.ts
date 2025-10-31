@@ -23,12 +23,9 @@ const _cancelIdleCallback = function (id: any) {
 
 const isSupported = typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined'
 
-const requestIdleCallback: (cb: any, options?: any) => any = isSupported
+export const requestIdleCallback: (cb: any, options?: any) => any = isSupported
   ? window.requestIdleCallback
   : _requestIdleCallback
-const cancelIdleCallback: (id: any) => void = isSupported
+export const cancelIdleCallback: (id: any) => void = isSupported
   ? window.cancelIdleCallback
   : _cancelIdleCallback
-
-export default requestIdleCallback
-export { cancelIdleCallback }

@@ -1,10 +1,12 @@
 import { existsSync, lstatSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
+import * as t from "@babel/types";
 const DEFAULT_OPTIONS = {
   ensureFileExists: !0,
   esExtensionDefault: ".mjs",
   tryExtensions: [".js"],
-  esExtensions: [".mjs"]
+  esExtensions: [".mjs"],
+  convertProcessEnvToImportMetaEnv: !1
 };
 function FullySpecified(api, rawOptions) {
   api.assertVersion(7);
@@ -60,6 +62,18 @@ function FullySpecified(api, rawOptions) {
           }
         );
         fullySpecifiedModuleSpecifier && (firstArgOfImportCall.value = fullySpecifiedModuleSpecifier);
+      },
+      MemberExpression: (path) => {
+        if (!options.convertProcessEnvToImportMetaEnv) return;
+        const { node } = path;
+        if (node.object.type === "MemberExpression" && node.object.object.type === "Identifier" && node.object.object.name === "process" && node.object.property.type === "Identifier" && node.object.property.name === "env") {
+          if (node.property.type === "Identifier" && node.property.name === "NODE_ENV")
+            return;
+          node.object = t.memberExpression(
+            t.metaProperty(t.identifier("import"), t.identifier("meta")),
+            t.identifier("env")
+          );
+        }
       }
     }
   };

@@ -6,6 +6,5 @@
  *
  * @flow strict
  */
-declare function hyphenateStyleName(name: string): string;
-export default hyphenateStyleName;
+export declare function hyphenateStyleName(name: string): string;
 //# sourceMappingURL=hyphenateStyleName.d.ts.map

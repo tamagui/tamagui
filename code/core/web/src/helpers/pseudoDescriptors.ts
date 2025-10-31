@@ -69,3 +69,6 @@ export type PseudoDescriptor = {
 export type PseudoDescriptors = {
   [Key in keyof typeof pseudoDescriptors]: PseudoDescriptor
 }
+
+// media always above pseudos
+export const defaultMediaImportance = Object.keys(pseudoDescriptors).length

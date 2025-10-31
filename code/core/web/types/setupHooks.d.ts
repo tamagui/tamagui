@@ -1,6 +1,5 @@
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents';
-import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
-import type { GetStyleResult, StaticConfig, TamaguiComponentStateRef } from './types';
+import type { GetStyleResult, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef } from './types';
 export declare const hooks: InternalHooks;
 export declare function setupHooks(next: InternalHooks): void;
 type InternalHooks = {

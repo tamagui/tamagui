@@ -109,4 +109,5 @@ const open = (url, target) => {
   }
 }
 
-export default new Linking()
+const LinkingInstance = new Linking()
+export { LinkingInstance as Linking }

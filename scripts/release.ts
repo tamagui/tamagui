@@ -294,7 +294,10 @@ async function run() {
 
           await spawnify(publishCommand, {
             cwd: tmpDir,
-          }).catch((err) => console.error(err))
+          }).catch((err) => {
+            console.error(err)
+            process.exit(1)
+          })
         },
         {
           concurrency: 15,

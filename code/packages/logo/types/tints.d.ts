@@ -12,24 +12,6 @@ type Family = keyof typeof familiesValues;
 type Families = { [key in Family] : ThemeName[] };
 declare const families: Families;
 type TintFamily = keyof typeof families;
-// disabling - server time diff from client :/
-// const seasonalTheme = (() => {
-//   const month = new Date().getMonth()
-//   const day = new Date().getDate()
-//   if (month === 11 && day >= 14) {
-//     return 'xmas'
-//   }
-//   if (month === 9 && day >= 20) {
-//     return 'halloween'
-//   }
-//   if (month === 2 && day >= 30) {
-//     return 'easter'
-//   }
-// })()
-// setTintFamily('valentine')
-// if (seasonalTheme) {
-//   setTintFamily(seasonalTheme)
-// }
 export declare function getTints(): {
 	name: string;
 	tints: ThemeName[];

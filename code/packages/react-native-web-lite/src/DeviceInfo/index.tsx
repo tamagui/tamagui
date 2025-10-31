@@ -10,9 +10,9 @@
 import { canUseDOM } from '@tamagui/react-native-web-internals'
 
 import type { DisplayMetrics } from '../Dimensions/index'
-import Dimensions from '../Dimensions/index'
+import { Dimensions } from '../Dimensions/index'
 
-const DeviceInfo = {
+export const DeviceInfo = {
   Dimensions: {
     get windowPhysicalPixels(): DisplayMetrics {
       const { width, height, fontScale, scale } = Dimensions.get('window')
@@ -53,5 +53,3 @@ const DeviceInfo = {
     return canUseDOM ? navigator.userAgent : ''
   },
 }
-
-export default DeviceInfo

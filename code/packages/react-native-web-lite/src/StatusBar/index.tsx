@@ -9,7 +9,7 @@
 
 const emptyFunction = () => {}
 
-function StatusBar(): null {
+export function StatusBar(): null {
   return null
 }
 

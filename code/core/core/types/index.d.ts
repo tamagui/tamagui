@@ -1,3 +1,4 @@
+export * from '@tamagui/web';
 import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiProviderProps, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
 import { createTamagui as createTamaguiWeb } from '@tamagui/web';
 import type { RNTextProps, RNViewProps } from './reactNativeTypes';
@@ -10,7 +11,6 @@ type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>;
 export interface RNTamaguiTextNonStyleProps extends TextNonStyleProps, RNExclusiveTextProps {
 }
 type RNTamaguiText = TamaguiComponent<TamaDefer, TamaguiTextElement, RNTamaguiTextNonStyleProps, TextStylePropsBase, {}>;
-export * from '@tamagui/web';
 export * from './reactNativeTypes';
 export declare const TamaguiProvider: (props: TamaguiProviderProps) => import("react/jsx-runtime").JSX.Element;
 export declare const createTamagui: typeof createTamaguiWeb;

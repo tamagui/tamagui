@@ -382,4 +382,4 @@ function clearInteractionHandle(
   }
 }
 
-export default PanResponder
+export { PanResponder }

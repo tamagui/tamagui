@@ -1,9 +1,8 @@
 import React from 'react'
-
 import { ComponentContext } from '../contexts/ComponentContext'
-import type { FontLanguageProps } from './FontLanguage.types'
+import type { FontLanguageProps } from '../types'
 
-export const FontLanguage = ({ children, ...props }: FontLanguageProps) => {
+export function FontLanguage({ children, ...props }: FontLanguageProps) {
   const parentProps = React.useContext(ComponentContext)
   const language = React.useMemo(() => props, [JSON.stringify(props)])
   return (
@@ -12,5 +11,3 @@ export const FontLanguage = ({ children, ...props }: FontLanguageProps) => {
     </ComponentContext.Provider>
   )
 }
-
-FontLanguage['displayName'] = 'FontLanguage'

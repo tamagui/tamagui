@@ -7,6 +7,5 @@
  * @param {*} value CSS property value such as `10px`.
  * @return {string} Normalized style value with dimensions applied.
  */
-declare function dangerousStyleValue(name: any, value: any, isCustomProperty: any): string;
-export default dangerousStyleValue;
+export declare function dangerousStyleValue(name: any, value: any, isCustomProperty: any): string;
 //# sourceMappingURL=dangerousStyleValue.d.ts.map

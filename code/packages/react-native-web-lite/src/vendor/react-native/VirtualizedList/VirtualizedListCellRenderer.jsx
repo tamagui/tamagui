@@ -9,12 +9,12 @@
  */
 
 
-import View from '../../../View'
+import { View } from '../../../View'
 import { StyleSheet, invariant } from '@tamagui/react-native-web-internals'
 import { VirtualizedListCellContextProvider } from './VirtualizedListContext'
 import * as React from 'react'
 
-export default class CellRenderer extends React.Component {
+class CellRenderer extends React.Component {
   state = {
     separatorProps: {
       highlighted: false,
@@ -180,3 +180,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
   },
 })
+
+export default CellRenderer
+export { CellRenderer }

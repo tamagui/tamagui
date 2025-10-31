@@ -8,10 +8,8 @@
  * @flow
  */
 
-const Platform = {
+export const Platform = {
   OS: 'web',
   select: (obj: any): any => ('web' in obj ? obj.web : obj.default),
   isTesting: process.env.NODE_ENV === 'test',
 }
-
-export default Platform

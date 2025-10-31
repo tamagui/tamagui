@@ -1,5 +1,4 @@
-import type { Role } from './Role'
-import type { DebugProp, ThemeName, GroupNames } from '../types'
+import type { DebugProp, ThemeName, GroupNames, Role } from '../types'
 
 export type TamaguiComponentPropsBaseBase = {
   target?: string

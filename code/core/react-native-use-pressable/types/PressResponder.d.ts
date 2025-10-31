@@ -81,7 +81,7 @@
  * effect is the invocation of `onLongPress`. Only when the browser produces a
  * `click` event is `onPress` invoked.
  */
-export default class PressResponder {
+export declare class PressResponder {
     _touchActivatePosition: any;
     _pressDelayTimeout: any;
     _selectionTerminated: boolean;

@@ -18,7 +18,7 @@ __export(commonjs_exports, {
 });
 module.exports = __toCommonJS(commonjs_exports);
 var import_node_fs = require("node:fs"), import_node_path = require("node:path");
-function fullySpecifyCommonJS(api) {
+function fullySpecifyCommonJS(api, options) {
   return api.assertVersion(7), {
     name: "babel-plugin-fully-specified-cjs",
     visitor: {
@@ -30,7 +30,7 @@ function fullySpecifyCommonJS(api) {
             if (moduleSpecifier.startsWith(".") || moduleSpecifier.startsWith("/")) {
               const filePath = state.file.opts.filename;
               if (!filePath) return;
-              const fileDir = (0, import_node_path.dirname)(filePath), cjsExtension = ".cjs", jsExtension = ".js";
+              const fileDir = (0, import_node_path.dirname)(filePath), cjsExtension = options.esExtensionDefault || ".cjs", jsExtension = ".js";
               if (!(0, import_node_path.extname)(moduleSpecifier)) {
                 const resolvedPath = (0, import_node_path.resolve)(fileDir, moduleSpecifier);
                 let newModuleSpecifier = moduleSpecifier;

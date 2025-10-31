@@ -2,7 +2,6 @@ import { isServer, isWeb } from '@tamagui/constants'
 import { useRef, useSyncExternalStore } from 'react'
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
-import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   ComponentContextI,
   DebugProp,
@@ -15,6 +14,7 @@ import type {
   UseMediaState,
   WidthHeight,
 } from '../types'
+import { defaultMediaImportance } from '../helpers/pseudoDescriptors'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -62,9 +62,6 @@ export const getMediaKey = (key: string): IsMediaType => {
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
-
-// media always above pseudos
-const defaultMediaImportance = Object.keys(pseudoDescriptors).length
 
 let mediaKeysOrdered: string[]
 

@@ -5,6 +5,5 @@
  * @param {DOMElement} node
  * @param {object} styles
  */
-declare function setValueForStyles(node: any, styles: any): void;
-export default setValueForStyles;
+export declare function setValueForStyles(node: any, styles: any): void;
 //# sourceMappingURL=index.d.ts.map

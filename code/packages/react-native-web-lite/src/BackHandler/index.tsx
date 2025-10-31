@@ -10,7 +10,7 @@
 
 function emptyFunction() {}
 
-const BackHandler = {
+export const BackHandler = {
   exitApp: emptyFunction,
   addEventListener(): {
     remove: () => void
@@ -21,5 +21,3 @@ const BackHandler = {
   },
   removeEventListener: emptyFunction,
 }
-
-export default BackHandler

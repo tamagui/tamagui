@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import VirtualizedSectionList from '../VirtualizedSectionList'
+import { VirtualizedSectionList } from '../VirtualizedSectionList'
 import * as React from 'react'
 
-export default class SectionList extends React.PureComponent {
+class SectionList extends React.PureComponent {
   scrollToLocation(params) {
     if (this._wrapperListRef != null) {
       this._wrapperListRef.scrollToLocation(params)
@@ -95,3 +95,6 @@ export default class SectionList extends React.PureComponent {
     return null
   }
 }
+
+export { SectionList }
+export default SectionList;

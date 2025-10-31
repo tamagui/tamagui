@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/group",
-  "version": "1.135.0",
+  "version": "1.135.7",
   "sideEffects": [
     "*.css"
   ],

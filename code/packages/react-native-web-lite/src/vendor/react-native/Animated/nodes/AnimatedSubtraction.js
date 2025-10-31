@@ -10,9 +10,9 @@
 'use strict';
 
 
-import AnimatedInterpolation from './AnimatedInterpolation';
-import AnimatedValue from './AnimatedValue';
-import AnimatedWithChildren from './AnimatedWithChildren';
+import { AnimatedInterpolation } from './AnimatedInterpolation';
+import { AnimatedValue } from './AnimatedValue';
+import { AnimatedWithChildren } from './AnimatedWithChildren';
 
 class AnimatedSubtraction extends AnimatedWithChildren {
   _a;
@@ -59,4 +59,5 @@ class AnimatedSubtraction extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedSubtraction }
 export default AnimatedSubtraction;

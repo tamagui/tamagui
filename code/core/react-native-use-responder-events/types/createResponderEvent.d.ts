@@ -32,5 +32,5 @@ export type ResponderEvent = {
  * Converts a native DOM event to a ResponderEvent.
  * Mouse events are transformed into fake touch events.
  */
-export default function createResponderEvent(domEvent: any, responderTouchHistoryStore: ResponderTouchHistoryStore): ResponderEvent;
+export declare function createResponderEvent(domEvent: any, responderTouchHistoryStore: ResponderTouchHistoryStore): ResponderEvent;
 //# sourceMappingURL=createResponderEvent.d.ts.map

@@ -8,11 +8,11 @@
     "types",
     "dist",
     "**/__tests__",
-    "v2.js",
+    "v2.cjs",
     "v2.d.ts",
-    "v4.js",
+    "v4.cjs",
     "v4.d.ts",
-    "v5.js",
+    "v5.cjs",
     "v5.d.ts"
   ]
 }

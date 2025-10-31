@@ -289,3 +289,5 @@ function _isEntirelyVisible(
 }
 
 export default ViewabilityHelper
+
+export { ViewabilityHelper }

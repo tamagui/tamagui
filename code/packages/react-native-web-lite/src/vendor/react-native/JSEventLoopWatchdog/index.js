@@ -10,7 +10,7 @@
 
 'use strict';
 
-import infoLog from '../infoLog';
+import { infoLog } from '../infoLog';
 
 // Handler interface removed
 
@@ -81,4 +81,5 @@ let longestStall = 0;
 let lastInterval = 0;
 const handlers = [];
 
+export { JSEventLoopWatchdog }
 export default JSEventLoopWatchdog;

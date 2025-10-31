@@ -7,7 +7,7 @@
  * @flow
  */
 
-const LogBox = {
+export const LogBox = {
   ignoreLogs() {},
   ignoreAllLogs() {},
   uninstall() {},

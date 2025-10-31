@@ -7,7 +7,7 @@
  */
 
 import { invariant } from './invariant'
-import requestIdleCallback from './requestIdleCallback/index'
+import { requestIdleCallback } from './requestIdleCallback/index'
 
 // Simple EventEmitter implementation for internal use
 type EventMap = {

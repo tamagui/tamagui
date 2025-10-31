@@ -8,7 +8,7 @@
  * @format
  */
 
-import VirtualizedList from '../VirtualizedList'
+import { VirtualizedList } from '../VirtualizedList'
 
 import * as React from 'react'
 import { useContext, useMemo } from 'react'

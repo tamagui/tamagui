@@ -22,7 +22,7 @@ const accessibilityRoleToWebRole = {
   text: null,
 }
 
-const propsToAriaRole = ({
+export const propsToAriaRole = ({
   accessibilityRole,
 }: {
   accessibilityRole?: string
@@ -35,5 +35,3 @@ const propsToAriaRole = ({
     }
   }
 }
-
-export default propsToAriaRole

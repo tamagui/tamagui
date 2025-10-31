@@ -7,9 +7,9 @@
  * @format
  */
 
-import Easing from '../Easing'
+import { Easing } from '../Easing'
 
-import Animation from './Animation'
+import { Animation } from './Animation'
 
 import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
 
@@ -129,4 +129,5 @@ class TimingAnimation extends Animation {
   }
 }
 
+export { TimingAnimation }
 export default TimingAnimation

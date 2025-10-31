@@ -3,7 +3,7 @@ import type { UseHoverProps } from '@floating-ui/react';
 import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import { type PopperArrowProps, type PopperContentProps, type PopperProps } from '@tamagui/popper';
+import { type PopperArrowExtraProps, type PopperArrowProps, type PopperContentProps, type PopperProps } from '@tamagui/popper';
 import { type ScrollViewProps } from '@tamagui/scroll-view';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
@@ -117,17 +117,7 @@ export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "scope" | "size" | "offset"> & {
-    offset?: number;
-    size?: SizeTokens;
-} & {
-    scope?: string | undefined;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-    offset?: number;
-    size?: SizeTokens;
-} & {
-    scope?: string | undefined;
-}, import("@tamagui/core").StackStyleBase, {
+}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
@@ -180,17 +170,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }>, "scope" | "size" | "offset"> & {
-        offset?: number;
-        size?: SizeTokens;
-    } & {
-        scope?: string | undefined;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-        offset?: number;
-        size?: SizeTokens;
-    } & {
-        scope?: string | undefined;
-    }, import("@tamagui/core").StackStyleBase, {
+    }>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;

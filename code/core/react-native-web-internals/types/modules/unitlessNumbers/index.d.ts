@@ -57,5 +57,4 @@ export declare const unitlessNumbers: {
     scaleZ: boolean;
     shadowOpacity: boolean;
 };
-export default unitlessNumbers;
 //# sourceMappingURL=index.d.ts.map

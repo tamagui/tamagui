@@ -5,7 +5,7 @@
  */
 
 import type { ResponderEvent } from './createResponderEvent'
-import createResponderEvent from './createResponderEvent'
+import { createResponderEvent } from './createResponderEvent'
 import { ResponderTouchHistoryStore } from './ResponderTouchHistoryStore'
 import {
   isCancelish,

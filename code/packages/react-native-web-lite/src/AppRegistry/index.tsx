@@ -13,7 +13,7 @@ import type { ComponentType, ReactNode } from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 import { invariant } from '@tamagui/react-native-web-internals'
 
-import renderApplication, { getApplication } from './renderApplication'
+import { renderApplication, getApplication } from './renderApplication'
 
 type AppParams = Object
 
@@ -51,7 +51,7 @@ let wrapperComponentProvider: WrapperComponentProvider | null
 /**
  * `AppRegistry` is the JS entry point to running all React Native apps.
  */
-export default class AppRegistry {
+export class AppRegistry {
   static getAppKeys(): Array<string> {
     return Object.keys(runnables)
   }

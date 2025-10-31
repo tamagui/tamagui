@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
-
+import { MISSING_THEME_MESSAGE } from './constants/constants'
+import { loadDuplicatedConfig } from './loadDuplicatedConfig'
 import type {
   ConfigListener,
   GenericTamaguiSettings,
@@ -8,8 +9,6 @@ import type {
   Tokens,
   TokensMerged,
 } from './types'
-import { MISSING_THEME_MESSAGE } from './constants/constants'
-import { loadDuplicatedConfig } from './loadDuplicatedConfig'
 
 let conf: TamaguiInternalConfig | null
 

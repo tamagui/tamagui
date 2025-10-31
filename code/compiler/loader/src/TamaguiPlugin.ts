@@ -88,8 +88,6 @@ export class TamaguiPlugin {
     return Object.fromEntries(
       this.safeResolves([
         ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
-        ['@tamagui/core', '@tamagui/core'],
-        ['@tamagui/web', '@tamagui/web'],
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         // `react/jsx-runtime` and `react/jsx-dev-runtime` will break the build in nextjs 15 + app router

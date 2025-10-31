@@ -10,7 +10,7 @@
 'use strict'
 
 import { Platform, invariant } from '@tamagui/react-native-web-internals'
-import RCTDeviceEventEmitter from './RCTDeviceEventEmitter'
+import { RCTDeviceEventEmitter } from './RCTDeviceEventEmitter'
 
 /**
  * `NativeEventEmitter` is intended for use by Native Modules to emit events to
@@ -22,7 +22,7 @@ import RCTDeviceEventEmitter from './RCTDeviceEventEmitter'
  * This means event names must be globally unique, and it means that call sites
  * can theoretically listen to `RCTDeviceEventEmitter` (although discouraged).
  */
-export default class NativeEventEmitter {
+class NativeEventEmitter {
   _nativeModule
 
   constructor(nativeModule) {
@@ -80,3 +80,6 @@ export default class NativeEventEmitter {
     return RCTDeviceEventEmitter.listenerCount(eventType)
   }
 }
+
+export { NativeEventEmitter }
+export default NativeEventEmitter

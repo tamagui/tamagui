@@ -58,4 +58,5 @@ var PooledClass = {
   twoArgumentPooler: twoArgumentPooler,
 }
 
+export { PooledClass }
 export default PooledClass

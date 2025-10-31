@@ -8,7 +8,7 @@
  */
 
 import { getCSSStylesAtomic, type StyleObject } from '@tamagui/web'
-import AccessibilityUtil from '../AccessibilityUtil/index'
+import { AccessibilityUtil } from '../AccessibilityUtil/index'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -52,7 +52,7 @@ let pointerEventsStyles
 
 export const stylesFromProps = new WeakMap<any, StyleObject[]>()
 
-const createDOMProps = (elementType, props, options?) => {
+export const createDOMProps = (elementType, props, options?) => {
   if (!props) {
     props = emptyObject
   }
@@ -383,5 +383,3 @@ const createDOMProps = (elementType, props, options?) => {
 
   return domProps
 }
-
-export default createDOMProps

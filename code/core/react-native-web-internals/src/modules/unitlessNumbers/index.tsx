@@ -75,5 +75,3 @@ Object.keys(unitlessNumbers).forEach((prop) => {
     unitlessNumbers[prefixKey(prefix, prop)] = unitlessNumbers[prop]
   })
 })
-
-export default unitlessNumbers

@@ -1,7 +1,12 @@
 import { existsSync, lstatSync } from 'node:fs'
 import { dirname, extname, resolve } from 'node:path'
 
-export default function fullySpecifyCommonJS(api: any): babel.PluginObj {
+export default function fullySpecifyCommonJS(
+  api: any,
+  options: {
+    esExtensionDefault: string
+  }
+): babel.PluginObj {
   api.assertVersion(7)
 
   return {
@@ -24,7 +29,7 @@ export default function fullySpecifyCommonJS(api: any): babel.PluginObj {
               if (!filePath) return // Cannot determine file path
 
               const fileDir = dirname(filePath)
-              const cjsExtension = '.cjs'
+              const cjsExtension = options.esExtensionDefault || '.cjs'
               const jsExtension = '.js'
 
               // Check if moduleSpecifier already has an extension
@@ -62,6 +67,6 @@ export default function fullySpecifyCommonJS(api: any): babel.PluginObj {
   } satisfies babel.PluginObj
 }
 
-function isLocalDirectory(absolutePath) {
+function isLocalDirectory(absolutePath: string): boolean {
   return existsSync(absolutePath) && lstatSync(absolutePath).isDirectory()
 }

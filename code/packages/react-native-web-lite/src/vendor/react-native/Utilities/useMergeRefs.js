@@ -21,7 +21,7 @@ import {useCallback} from 'react';
  * the returned callback ref is supplied as a `ref` to a React element, this may
  * lead to problems with the given refs being invoked more times than desired.
  */
-export default function useMergeRefs(
+function useMergeRefs(
   ...refs
 ) {
   return useCallback(
@@ -39,3 +39,6 @@ export default function useMergeRefs(
     [...refs], // eslint-disable-line react-hooks/exhaustive-deps
   );
 }
+
+export { useMergeRefs }
+export default useMergeRefs;

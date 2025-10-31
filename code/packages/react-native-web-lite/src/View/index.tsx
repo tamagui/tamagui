@@ -135,6 +135,5 @@ const styles = {
   },
 }
 
-export { ViewProps }
-
+export { ViewProps, View }
 export default View

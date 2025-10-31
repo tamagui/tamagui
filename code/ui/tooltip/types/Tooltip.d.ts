@@ -67,12 +67,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps &
     }>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }>> & {
-        offset?: number;
-        size?: SizeTokens;
-    } & {
-        scope?: string | undefined;
-    } & React.RefAttributes<TamaguiElement>>;
+    }>> & import("@tamagui/popper").PopperArrowExtraProps & React.RefAttributes<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         elevation?: number | SizeTokens | undefined;

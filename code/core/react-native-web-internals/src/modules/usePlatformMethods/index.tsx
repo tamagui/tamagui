@@ -13,7 +13,7 @@ import {
   createMeasureLayout,
 } from '@tamagui/use-element-layout'
 import type { GenericStyleProp } from '../../types'
-import useStable from '../useStable/index'
+import { useStable } from '../useStable/index'
 
 /**
  * Adds non-standard methods to the hode element. This is temporarily until an
@@ -38,5 +38,3 @@ export function usePlatformMethods({
 
   return ref
 }
-
-export default usePlatformMethods

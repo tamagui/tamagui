@@ -6,5 +6,5 @@
  *
  * @flow strict-local
  */
-export default function useStable<T>(getInitialValue: () => T): T;
+export declare function useStable<T>(getInitialValue: () => T): T;
 //# sourceMappingURL=index.d.ts.map

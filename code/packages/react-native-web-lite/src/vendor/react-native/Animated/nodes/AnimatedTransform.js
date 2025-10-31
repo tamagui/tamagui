@@ -10,9 +10,9 @@
 
 'use strict';
 
-import AnimatedNode from './AnimatedNode';
-import AnimatedWithChildren from './AnimatedWithChildren';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
+import { AnimatedNode } from './AnimatedNode';
+import { AnimatedWithChildren } from './AnimatedWithChildren';
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper';
 
 class AnimatedTransform extends AnimatedWithChildren {
   _transforms;
@@ -118,4 +118,5 @@ class AnimatedTransform extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedTransform }
 export default AnimatedTransform;

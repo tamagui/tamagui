@@ -10,17 +10,17 @@
 
 'use strict'
 
-import AnimatedProps from './nodes/AnimatedProps'
+import { AnimatedProps } from './nodes/AnimatedProps'
 import { AnimatedEvent } from './AnimatedEvent'
-import useRefEffect from '../Utilities/useRefEffect'
-import NativeAnimatedHelper from './NativeAnimatedHelper'
+import { useRefEffect } from '../Utilities/useRefEffect'
+import { NativeAnimatedHelper } from './NativeAnimatedHelper'
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
 
 import { useLayoutEffect } from '@tamagui/react-native-web-internals'
 
 // ReducedProps type removed
 
-export default function useAnimatedProps(props) {
+function useAnimatedProps(props) {
   const [, scheduleUpdate] = useReducer((count) => count + 1, 0)
   const onUpdateRef = useRef(null)
 
@@ -168,3 +168,6 @@ function hasFabricHandle(instance) {
   // eslint-disable-next-line dot-notation
   return instance?.['_internalInstanceHandle']?.stateNode?.canonical != null
 }
+
+export { useAnimatedProps }
+export default useAnimatedProps

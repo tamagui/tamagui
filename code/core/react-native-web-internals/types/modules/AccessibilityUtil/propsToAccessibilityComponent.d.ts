@@ -6,6 +6,5 @@
  *
  * @flow
  */
-declare const propsToAccessibilityComponent: (props?: Object) => void | string;
-export default propsToAccessibilityComponent;
+export declare const propsToAccessibilityComponent: (props?: Object) => void | string;
 //# sourceMappingURL=propsToAccessibilityComponent.d.ts.map

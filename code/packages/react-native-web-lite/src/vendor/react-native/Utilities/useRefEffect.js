@@ -25,7 +25,7 @@ import {useCallback, useRef} from 'react';
  *
  * WARNING: The `effect` callback should be stable (e.g. using `useCallback`).
  */
-export default function useRefEffect(
+function useRefEffect(
   effect,
 ) {
   const cleanupRef = useRef(undefined);
@@ -42,3 +42,6 @@ export default function useRefEffect(
     [effect],
   );
 }
+
+export { useRefEffect }
+export default useRefEffect;

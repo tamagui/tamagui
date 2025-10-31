@@ -17,7 +17,7 @@ import { StyleSheet } from '@tamagui/react-native-web-internals'
 import { useHover, useMergeRefs } from '@tamagui/react-native-web-internals'
 
 import type { ViewProps } from '../View/index'
-import View from '../View/index'
+import { View } from '../View/index'
 
 type HoverEventsConfig = any
 
@@ -229,7 +229,8 @@ const styles = StyleSheet.create({
   },
 })
 
-const MemoedPressable = memo(forwardRef(Pressable as any))
-MemoedPressable.displayName = 'Pressable'
+const PressableComponent = memo(forwardRef(Pressable as any))
+PressableComponent.displayName = 'Pressable'
 
-export default MemoedPressable
+export { PressableComponent as Pressable }
+export default PressableComponent

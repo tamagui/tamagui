@@ -8,7 +8,7 @@
  * @flow
  */
 
-import propsToAriaRole from './propsToAriaRole'
+import { propsToAriaRole } from './propsToAriaRole'
 
 const roleComponents = {
   article: 'article',
@@ -32,7 +32,7 @@ const roleComponents = {
 
 const emptyObject = {}
 
-const propsToAccessibilityComponent = (props: Object = emptyObject): void | string => {
+export const propsToAccessibilityComponent = (props: Object = emptyObject): void | string => {
   // special-case for "label" role which doesn't map to an ARIA role
   if (props.accessibilityRole === 'label') {
     return 'label'
@@ -50,5 +50,3 @@ const propsToAccessibilityComponent = (props: Object = emptyObject): void | stri
     return roleComponents[role]
   }
 }
-
-export default propsToAccessibilityComponent

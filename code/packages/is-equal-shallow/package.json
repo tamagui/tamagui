@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/is-equal-shallow",
-  "version": "1.135.0",
+  "version": "1.135.7",
+  "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

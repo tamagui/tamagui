@@ -9,7 +9,7 @@
 
 'use strict'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper'
 import { invariant } from '@tamagui/react-native-web-internals'
 
 const NativeAnimatedAPI = NativeAnimatedHelper.API
@@ -186,4 +186,5 @@ class AnimatedNode {
   }
 }
 
+export { AnimatedNode }
 export default AnimatedNode

@@ -10,7 +10,8 @@
     "./types",
     "types",
     "dist",
-    "**/__tests__"
+    "**/__tests__",
+    "vite.bundle.config.ts"
   ],
   "references": [
     {

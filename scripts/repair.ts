@@ -126,21 +126,25 @@ async function format() {
 
       // write your script here:
 
-      if (pkgJson.exports) {
-        for (const key in pkgJson.exports) {
-          const exf = pkgJson.exports[key]
-          if (typeof exf === 'object') {
-            const ogi = exf['react-native-import']
-            const ogr = exf['react-native']
+      // Add "type": "module" to packages that support it (have "exports")
+      if (pkgJson.exports && pkgJson.type !== 'module') {
+        // Read the original file to preserve formatting and order
+        const originalContent = fileContents
 
-            if (ogi) {
-              delete exf['react-native-import']
-              exf['react-native'] = {
-                import: ogi,
-                require: ogr,
-              }
-            }
-          }
+        // Find where to insert "type": "module"
+        // We want it after "version" line
+        const lines = originalContent.split('\n')
+        const versionLineIndex = lines.findIndex(line => line.includes('"version":'))
+
+        if (versionLineIndex !== -1) {
+          // Insert the type line after the version line
+          const typeEntry = '  "type": "module",'
+          lines.splice(versionLineIndex + 1, 0, typeEntry)
+
+          const newContent = lines.join('\n')
+          await writeFile(jsonPath, newContent, { encoding: 'utf-8' })
+          console.info(`  ✓ Added "type": "module" to ${pkg.name}`)
+          return
         }
       }
 

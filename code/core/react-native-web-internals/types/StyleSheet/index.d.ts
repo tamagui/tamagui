@@ -36,8 +36,8 @@ type StyleProps = [string, {
 type Options = {
     writingDirection: 'ltr' | 'rtl';
 };
-declare function StyleSheet(styles: any, options?: Options): StyleProps;
-declare namespace StyleSheet {
+export declare function StyleSheet(styles: any, options?: Options): StyleProps;
+export declare namespace StyleSheet {
     var absoluteFill: any;
     var absoluteFillObject: {
         position: string;
@@ -55,7 +55,6 @@ declare namespace StyleSheet {
     };
     var hairlineWidth: number;
 }
-export default StyleSheet;
 export type IStyleSheet = {
     (styles: any, options?: Options): StyleProps;
     absoluteFill: Object;
@@ -66,4 +65,5 @@ export type IStyleSheet = {
     getSheet: typeof getSheet;
     hairlineWidth: number;
 };
+export {};
 //# sourceMappingURL=index.d.ts.map

@@ -18,13 +18,13 @@ import {
   usePressEvents,
 } from '@tamagui/react-native-web-internals'
 
-import View from './View'
+import { View } from './View'
 
 /**
  * A wrapper for making views respond properly to touches.
  * On press down, the opacity of the wrapped view is decreased, dimming it.
  */
-function TouchableOpacity(props, forwardedRef) {
+function TouchableOpacityImpl(props, forwardedRef) {
   const {
     activeOpacity,
     delayPressIn,
@@ -142,11 +142,9 @@ const styles = StyleSheet.create({
   },
 })
 
-const MemoedTouchableOpacity = React.memo(React.forwardRef(TouchableOpacity))
-MemoedTouchableOpacity.displayName = 'TouchableOpacity'
+export const TouchableOpacity = React.memo(React.forwardRef(TouchableOpacityImpl))
+TouchableOpacity.displayName = 'TouchableOpacity'
 
 // compat
 // @ts-ignore
-MemoedTouchableOpacity.Mixin = {}
-
-export default MemoedTouchableOpacity
+TouchableOpacity.Mixin = {}

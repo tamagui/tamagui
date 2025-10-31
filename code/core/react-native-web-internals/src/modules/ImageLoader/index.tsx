@@ -72,7 +72,7 @@ export class ImageUriCache {
 let id = 0
 const requests = {}
 
-const ImageLoader = {
+export const ImageLoader = {
   abort(requestId: number) {
     let image = requests[`${requestId}`]
     if (image) {
@@ -163,5 +163,3 @@ const ImageLoader = {
     return Promise.resolve(result)
   },
 }
-
-export default ImageLoader

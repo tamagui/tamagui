@@ -8,13 +8,13 @@
  * @format
  */
 
-import View from '../../../View';
-import deepDiffer from '../deepDiffer';
-import Platform from '../../../exports/Platform';
+import { View } from '../../../View';
+import { deepDiffer } from '../deepDiffer';
+import { Platform } from '../../../exports/Platform';
 import { invariant, StyleSheet } from '@tamagui/react-native-web-internals';
 import * as React from 'react';
 
-import VirtualizedList from '../VirtualizedList';
+import { VirtualizedList } from '../VirtualizedList';
 import { keyExtractor as defaultKeyExtractor } from '../VirtualizeUtils';
 
 import memoizeOne from 'memoize-one';
@@ -526,4 +526,5 @@ const styles = StyleSheet.create({
   row: {flexDirection: 'row'},
 });
 
+export { FlatList }
 export default FlatList;

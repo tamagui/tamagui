@@ -9,8 +9,8 @@
 
 'use strict'
 
-import Animation from './Animation'
-import SpringConfig from '../SpringConfig'
+import { Animation } from './Animation'
+import { SpringConfig } from '../SpringConfig'
 
 import { invariant } from '@tamagui/react-native-web-internals'
 
@@ -287,4 +287,5 @@ class SpringAnimation extends Animation {
   }
 }
 
+export { SpringAnimation }
 export default SpringAnimation

@@ -10,7 +10,7 @@
 
 let clipboardAvailable
 
-export default class Clipboard {
+export class Clipboard {
   static isAvailable(): boolean {
     if (clipboardAvailable === undefined) {
       clipboardAvailable =

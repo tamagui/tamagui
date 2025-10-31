@@ -8,12 +8,12 @@
  * @flow
  */
 
-import Dimensions from '../Dimensions/index'
+import { Dimensions } from '../Dimensions/index'
 
 /**
  * PixelRatio gives access to the device pixel density.
  */
-export default class PixelRatio {
+export class PixelRatio {
   /**
    * Returns the device pixel density.
    */

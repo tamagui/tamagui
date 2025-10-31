@@ -11,8 +11,8 @@
 
 'use strict'
 
-import AnimatedWithChildren from './AnimatedWithChildren'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { AnimatedWithChildren } from './AnimatedWithChildren'
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper'
 import { normalizeColor, invariant } from '@tamagui/react-native-web-internals'
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
@@ -327,3 +327,4 @@ class AnimatedInterpolation extends AnimatedWithChildren {
 }
 
 export default AnimatedInterpolation
+export { AnimatedInterpolation }

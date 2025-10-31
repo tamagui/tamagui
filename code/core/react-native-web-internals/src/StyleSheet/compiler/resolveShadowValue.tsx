@@ -8,12 +8,12 @@
  * @flow
  */
 
-import normalizeColor from './normalizeColor'
-import normalizeValueWithProperty from './normalizeValueWithProperty'
+import { normalizeColor } from './normalizeColor'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
 const defaultOffset = { height: 0, width: 0 }
 
-const resolveShadowValue = (style: Object): void | string => {
+export const resolveShadowValue = (style: Object): void | string => {
   const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
   const { height, width } = shadowOffset || defaultOffset
   const offsetX = normalizeValueWithProperty(width)
@@ -24,5 +24,3 @@ const resolveShadowValue = (style: Object): void | string => {
     return `${offsetX} ${offsetY} ${blurRadius} ${color}`
   }
 }
-
-export default resolveShadowValue

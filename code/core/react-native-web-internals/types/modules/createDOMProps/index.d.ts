@@ -8,6 +8,5 @@
  */
 import { type StyleObject } from '@tamagui/web';
 export declare const stylesFromProps: WeakMap<any, StyleObject[]>;
-declare const createDOMProps: (elementType: any, props: any, options?: any) => any;
-export default createDOMProps;
+export declare const createDOMProps: (elementType: any, props: any, options?: any) => any;
 //# sourceMappingURL=index.d.ts.map

@@ -75,7 +75,7 @@ function getSheet(): { id: string; textContent: string } {
 type StyleProps = [string, { [key: string]: any } | null]
 type Options = { writingDirection: 'ltr' | 'rtl' }
 
-export default function StyleSheet(styles: any, options?: Options): StyleProps {}
+export function StyleSheet(styles: any, options?: Options): StyleProps {}
 
 StyleSheet.absoluteFill = absoluteFill
 StyleSheet.absoluteFillObject = absoluteFillObject

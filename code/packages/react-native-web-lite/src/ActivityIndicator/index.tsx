@@ -12,7 +12,7 @@ import * as React from 'react'
 import { StyleSheet } from '@tamagui/react-native-web-internals'
 
 import type { ViewProps } from '../View/index'
-import View from '../View/index'
+import { View } from '../View/index'
 
 const createSvgCircle = (style) => (
   <circle cx="16" cy="16" fill="none" r="14" strokeWidth="4" style={style} />
@@ -112,4 +112,5 @@ const indicatorSizes = StyleSheet.create({
   },
 })
 
+export { ActivityIndicator }
 export default ActivityIndicator

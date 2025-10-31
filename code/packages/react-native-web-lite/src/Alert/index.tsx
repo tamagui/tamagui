@@ -7,8 +7,6 @@
  * @flow
  */
 
-class Alert {
+export class Alert {
   static alert() {}
 }
-
-export default Alert

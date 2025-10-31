@@ -17,7 +17,7 @@ interface QueueItem {
   popable: boolean
 }
 
-class TaskQueue {
+export class TaskQueue {
   private _queueStack: QueueItem[]
   private _onMoreTasks: () => void
 
@@ -110,5 +110,3 @@ class TaskQueue {
       })
   }
 }
-
-export default TaskQueue

@@ -7,10 +7,10 @@
  * @flow strict-local
  */
 
-import canUseDOM from '../../modules/canUseDOM'
+import { canUseDOM } from '../../modules/canUseDOM'
 
 // @ts-ignore : HTMLStyleElement is incorrectly typed - https://github.com/facebook/flow/issues/2696
-export default function createCSSStyleSheet(
+export function createCSSStyleSheet(
   id: string,
   rootNode?: Document | ShadowRoot,
   textContent?: string

@@ -7,7 +7,9 @@
  * @format
  */
 
-import Text from '../../../../Text'
-import createAnimatedComponent from '../createAnimatedComponent'
+import { Text } from '../../../../Text'
+import { createAnimatedComponent } from '../createAnimatedComponent'
 
-export default createAnimatedComponent(Text)
+const AnimatedText = createAnimatedComponent(Text);
+export { AnimatedText }
+export default AnimatedText

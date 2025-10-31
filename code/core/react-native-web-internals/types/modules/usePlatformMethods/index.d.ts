@@ -15,5 +15,4 @@ export declare function usePlatformMethods({ pointerEvents, style, }: {
     style?: GenericStyleProp<unknown>;
     pointerEvents?: any;
 }): (hostNode: any) => void;
-export default usePlatformMethods;
 //# sourceMappingURL=index.d.ts.map

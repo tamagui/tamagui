@@ -2,31 +2,12 @@ import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from './config'
-import type { TokenCategories } from './types'
+import type { PxValue, TokenCategories, Variable } from './types'
 
 /**
  * Should rename this to Token
  * Moving to objects for React Server Components support
  */
-
-export interface Variable<A = any> {
-  isVar: true
-  variable?: string
-  val: A
-  name: string
-  key: string
-  needsPx?: boolean // Flag to indicate this token should get px units
-}
-
-export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
-
-/**
- * Type for the px helper object that indicates a token value needs px units
- */
-export interface PxValue {
-  val: number
-  needsPx: true
-}
 
 function constructCSSVariableName(name: string) {
   return `var(--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${name})`

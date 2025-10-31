@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text-test",
-  "version": "1.135.0",
+  "version": "1.135.7",
   "main": "dist/cjs",
   "type": "module",
   "private": true,
@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@tamagui/text": "workspace:*",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.4"
   }
 }

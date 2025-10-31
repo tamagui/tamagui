@@ -10,8 +10,8 @@
 
 'use strict'
 
-import AnimatedValue from './nodes/AnimatedValue'
-import NativeAnimatedHelper from './NativeAnimatedHelper'
+import { AnimatedValue } from './nodes/AnimatedValue'
+import { NativeAnimatedHelper } from './NativeAnimatedHelper'
 
 import { invariant } from '@tamagui/react-native-web-internals'
 

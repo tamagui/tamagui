@@ -9,10 +9,10 @@
 
 'use strict'
 
-import AnimatedInterpolation from './AnimatedInterpolation'
-import AnimatedWithChildren from './AnimatedWithChildren'
+import { AnimatedInterpolation } from './AnimatedInterpolation'
+import { AnimatedWithChildren } from './AnimatedWithChildren'
 import { InteractionManager } from '@tamagui/react-native-web-internals'
-import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper'
 
 const NativeAnimatedAPI = NativeAnimatedHelper.API
 
@@ -288,4 +288,5 @@ class AnimatedValue extends AnimatedWithChildren {
   }
 }
 
+export { AnimatedValue }
 export default AnimatedValue

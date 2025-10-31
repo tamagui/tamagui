@@ -164,6 +164,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
         __html: string;
     } | undefined;
     themeShallow?: boolean | undefined;
+    themeInverse?: boolean | undefined;
     tag?: (keyof HTMLElementTagNameMap | (string & {})) | undefined;
     group?: (import("@tamagui/core").GroupNames | boolean) | undefined;
     untilMeasured?: "hide" | "show" | undefined;

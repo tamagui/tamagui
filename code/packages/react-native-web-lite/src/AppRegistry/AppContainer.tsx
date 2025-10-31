@@ -11,7 +11,7 @@
 import * as React from 'react'
 import { StyleSheet } from '@tamagui/react-native-web-internals'
 
-import View from '../View/index'
+import { View } from '../View/index'
 
 type Props = {
   WrapperComponent?: React.FunctionComponent<any> | null
@@ -19,7 +19,7 @@ type Props = {
   rootTag: any
 }
 
-const RootTagContext: React.Context<any> = React.createContext(null)
+export const RootTagContext: React.Context<any> = React.createContext(null)
 
 const AppContainer = React.forwardRef((props: Props, forwardedRef?: React.Ref<any>) => {
   const { children, WrapperComponent } = props
@@ -45,10 +45,10 @@ const AppContainer = React.forwardRef((props: Props, forwardedRef?: React.Ref<an
 
 AppContainer.displayName = 'AppContainer'
 
-export default AppContainer
-
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
   },
 })
+
+export { AppContainer }
