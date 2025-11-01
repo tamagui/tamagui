@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isTouchable, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItemFrame, useListItem } from '@tamagui/list-item'
 import { createStyledContext } from '@tamagui/core'
@@ -113,7 +113,19 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
     function handleSelect() {
       setSelectedIndex(index)
       onChange(value)
-      setOpen(false)
+
+      // On mobile/touch devices, when you clicked on a SelectItem to select it:
+      // 1. SelectItem's handleSelect would close the dropdown (setOpen(false))
+      // 2. The press event would bubble up to the SelectTrigger
+      // 3. Somehow the SelectTrigger would see the select is closed and toggle it back open
+      // 4. Result: The dropdown immediately reopened after selecting an item
+
+      // TODO: This is a hack to prevent the select from reopening when selecting the same item on mobile
+      // On desktop: always close
+      // On mobile: only close if selecting a different item
+      if (!isTouchable || !isSelected) {
+        setOpen(false)
+      }
     }
 
     const selectItemProps = React.useMemo(() => {
