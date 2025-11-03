@@ -3,13 +3,24 @@ import { bundleMDX } from 'mdx-bundler'
 import fs from 'node:fs'
 import path from 'node:path'
 import readingTime from 'reading-time'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeSlug from 'rehype-slug'
 import { getHeadings } from './getHeadings'
 import rehypeHeroTemplate from './rehypeHeroTemplate'
 import { rehypeHighlightCode } from './rehypeHighlightCode'
 import rehypeMetaAttribute from './rehypeMetaAttribute'
 import type { Frontmatter } from './types'
+
+// Dynamic imports for ESM-only packages
+let rehypeAutolinkHeadings: any
+let rehypeSlug: any
+
+async function loadEsmPlugins() {
+  if (!rehypeAutolinkHeadings) {
+    rehypeAutolinkHeadings = (await import('rehype-autolink-headings')).default
+  }
+  if (!rehypeSlug) {
+    rehypeSlug = (await import('rehype-slug')).default
+  }
+}
 
 export async function getMDXBySlug(
   basePath: string,
@@ -56,6 +67,8 @@ export async function getMDXBySlug(
 }
 
 export async function getMDX(source: string) {
+  await loadEsmPlugins()
+
   return await bundleMDX({
     source,
     mdxOptions(options) {

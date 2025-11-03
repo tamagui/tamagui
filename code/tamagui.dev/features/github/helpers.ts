@@ -541,3 +541,134 @@ export const checkIfUserIsCollaborator = async (
     return { isCollaborator: false }
   }
 }
+
+/**
+ * Add a user to a GitHub team
+ * @see https://docs.github.com/en/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
+ */
+export const addUserToTeam = async (
+  teamSlug: string,
+  userLogin: string,
+  orgName = 'tamagui',
+  role: 'member' | 'maintainer' = 'member'
+) => {
+  console.info(
+    `Claim: addUserToTeam adding ${userLogin} to ${orgName}/${teamSlug} with role ${role}`
+  )
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/orgs/${orgName}/teams/${teamSlug}/memberships/${userLogin}`,
+      {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+        body: JSON.stringify({ role }),
+      }
+    )
+
+    if (!res.ok) {
+      const error = await res.text()
+      console.error(`Claim: addUserToTeam failed: ${res.status} ${error}`)
+      throw new Error(`Failed to add user to team: ${res.status} ${error}`)
+    }
+
+    const data = await res.json()
+    console.info(`Claim: addUserToTeam succeeded (state: ${data.state})`)
+    return data
+  } catch (err) {
+    console.error(`Claim: addUserToTeam Error: ${err}`)
+    throw err
+  }
+}
+
+/**
+ * Remove a user from a GitHub team
+ * @see https://docs.github.com/en/rest/teams/members?apiVersion=2022-11-28#remove-team-membership-for-a-user
+ */
+export const removeUserFromTeam = async (
+  teamSlug: string,
+  userLogin: string,
+  orgName = 'tamagui'
+) => {
+  console.info(`Claim: removeUserFromTeam removing ${userLogin} from ${orgName}/${teamSlug}`)
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/orgs/${orgName}/teams/${teamSlug}/memberships/${userLogin}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      }
+    )
+
+    if (res.status === 204) {
+      console.info(`Claim: removeUserFromTeam succeeded`)
+    } else if (res.status === 404) {
+      console.info(`Claim: removeUserFromTeam user was not a member`)
+    } else {
+      const error = await res.text()
+      console.error(`Claim: removeUserFromTeam failed: ${res.status} ${error}`)
+      throw new Error(`Failed to remove user from team: ${res.status} ${error}`)
+    }
+  } catch (err) {
+    console.error(`Claim: removeUserFromTeam Error: ${err}`)
+    throw err
+  }
+}
+
+/**
+ * Check if a user is a member of a GitHub team
+ * @see https://docs.github.com/en/rest/teams/members?apiVersion=2022-11-28#get-team-membership-for-a-user
+ */
+export const checkIfUserIsTeamMember = async (
+  teamSlug: string,
+  userLogin: string,
+  orgName = 'tamagui'
+): Promise<{ isMember: boolean; state?: 'active' | 'pending'; role?: 'member' | 'maintainer' }> => {
+  console.info(`Checking if ${userLogin} is a member of ${orgName}/${teamSlug}`)
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/orgs/${orgName}/teams/${teamSlug}/memberships/${userLogin}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      }
+    )
+
+    if (res.status === 200) {
+      const data = await res.json()
+      console.info(`${userLogin} is a member of ${teamSlug} (state: ${data.state})`)
+      return {
+        isMember: true,
+        state: data.state,
+        role: data.role,
+      }
+    } else if (res.status === 404) {
+      console.info(`${userLogin} is not a member of ${teamSlug}`)
+      return { isMember: false }
+    } else {
+      const errorData = await res.json().catch(() => ({}))
+      console.error(
+        `Error checking team membership: ${res.status} ${res.statusText}`,
+        errorData
+      )
+      return { isMember: false }
+    }
+  } catch (err) {
+    console.error(`Error checking if user is team member: ${err}`)
+    return { isMember: false }
+  }
+}

@@ -3,6 +3,8 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
   inviteCollaboratorToRepo,
   checkIfUserIsCollaborator,
+  addUserToTeam,
+  checkIfUserIsTeamMember,
 } from '~/features/github/helpers'
 import type { Database, Json } from '~/features/supabase/types'
 import { ProductName } from '~/shared/types/subscription'
@@ -33,11 +35,11 @@ export const claimTakeoutForProPlan = async (args: ClaimProductArgs) => {
   }
 
   const metadata = {
-    claim_type: 'repo_access',
-    repository_name: 'takeout',
+    claim_type: 'team_access',
+    team_slug: 'early-access',
   }
 
-  const claimData = await claimRepositoryAccess({ ...args, metadata })
+  const claimData = await claimTeamAccess({ ...args, metadata })
 
   if (claimData.data) {
     await supabaseAdmin.from('claims').insert({
@@ -75,6 +77,71 @@ type ClaimFunction = (
    */
   data: { [key: string]: Json | undefined } | null
 }>
+
+const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
+  console.info(`Claim: checking private users`)
+
+  const teamSlug = metadata.team_slug
+  if (typeof teamSlug !== 'string')
+    throw new Error('No team_slug is present on metadata')
+
+  console.info(`Claim: adding user to team ${teamSlug}`)
+
+  const userPrivate = await getUserPrivateInfo(user.id)
+
+  console.info(`Claim: got github username`, userPrivate.github_user_name)
+
+  if (!userPrivate.github_user_name) {
+    throw new ClaimError(
+      "We weren't able to find your GitHub username. Please logout of your account, login and try again. If this kept occurring, contact support@tamagui.dev or get help on Discord."
+    )
+  }
+
+  try {
+    const memberCheck = await checkIfUserIsTeamMember(teamSlug, userPrivate.github_user_name)
+
+    if (memberCheck.isMember) {
+      console.info(`User is already a team member (state: ${memberCheck.state})`)
+      return {
+        data: {
+          user_github: {
+            id: userPrivate.id,
+            login: userPrivate.github_user_name,
+          },
+          team_slug: teamSlug,
+          role: memberCheck.role || 'member',
+        },
+        message: `You already have access! You can view the repositories at: https://github.com/orgs/tamagui/teams/${teamSlug}`,
+        url: `https://github.com/orgs/tamagui/teams/${teamSlug}`,
+      }
+    }
+
+    await addUserToTeam(teamSlug, userPrivate.github_user_name)
+
+    console.info(`Added to team successfully`)
+
+    return {
+      data: {
+        user_github: {
+          id: userPrivate.id,
+          login: userPrivate.github_user_name,
+        },
+        team_slug: teamSlug,
+        role: 'member',
+      },
+      message: `Successfully added to team! Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation. You can view available repositories at: https://github.com/orgs/tamagui/teams/${teamSlug}`,
+      url: `https://github.com/orgs/tamagui/teams/${teamSlug}`,
+    }
+  } catch (error) {
+    console.error(
+      `Failed to add ${userPrivate.github_user_name} to team ${teamSlug}, error: ${error}`,
+      error
+    )
+    throw new ClaimError(
+      'Adding to team failed. It could be that you are already invited. Check your email or GitHub notifications for the invite. Otherwise, contact support@tamagui.dev or get help on Discord.'
+    )
+  }
+}
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request }) => {
   console.info(`Claim: checking private users`)
