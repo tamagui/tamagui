@@ -448,101 +448,6 @@ const getOrgs = async (
 const GITHUB_ADMIN_TOKEN = process.env.GITHUB_ADMIN_TOKEN
 
 /**
- * @see https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#add-a-repository-collaborator
- * @see https://github.com/octokit/plugin-rest-endpoint-methods.js/blob/main/docs/repos/addCollaborator.md
- */
-export const inviteCollaboratorToRepo = async (
-  repoName = 'tamagui',
-  userLogin: string,
-  permission = 'pull'
-) => {
-  console.info(
-    `Claim: inviteCollaboratorToRepo permission ${permission} for ${repoName} user ${userLogin} using token starting with ${GITHUB_ADMIN_TOKEN?.slice(
-      0,
-      5
-    )}`
-  )
-
-  try {
-    const octokit = await getOctokit()
-    const res = await octokit.rest.repos.addCollaborator({
-      owner: 'tamagui',
-      repo: repoName,
-      username: userLogin,
-      permission,
-    })
-
-    console.info(`Claim: inviteCollaboratorToRepo response: ${JSON.stringify(res)}`)
-    console.info(`Claim: inviteCollaboratorToRepo succeeded`)
-  } catch (err) {
-    console.error(`Claim: inviteCollaboratorToRepo Error: ${err}`)
-    throw err
-  }
-}
-
-export const removeCollaboratorFromRepo = async (repoName: string, userLogin: string) => {
-  await fetch(
-    `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-        Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
-      },
-    }
-  )
-}
-
-/**
- * Check if a user is already a collaborator in the repository
- * @see https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#get-a-repository-collaborator
- */
-export const checkIfUserIsCollaborator = async (
-  repoName: string,
-  userLogin: string
-): Promise<{ isCollaborator: boolean; repoUrl?: string }> => {
-  console.info(`Checking if ${userLogin} is already a collaborator in ${repoName}`)
-
-  try {
-    const res = await fetch(
-      `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/vnd.github+json',
-          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
-          'X-GitHub-Api-Version': '2022-11-28',
-        },
-      }
-    )
-
-    if (res.status === 204) {
-      // User is a collaborator
-      console.info(`${userLogin} is already a collaborator in ${repoName}`)
-      return {
-        isCollaborator: true,
-        repoUrl: `https://github.com/tamagui/${repoName}`,
-      }
-    } else if (res.status === 404) {
-      // User is not a collaborator
-      console.info(`${userLogin} is not a collaborator in ${repoName}`)
-      return { isCollaborator: false }
-    } else {
-      // Other status codes (401, 403, etc.)
-      const errorData = await res.json().catch(() => ({}))
-      console.error(
-        `Error checking collaborator status: ${res.status} ${res.statusText}`,
-        errorData
-      )
-      return { isCollaborator: false }
-    }
-  } catch (err) {
-    console.error(`Error checking if user is collaborator: ${err}`)
-    return { isCollaborator: false }
-  }
-}
-
-/**
  * Add a user to a GitHub team
  * @see https://docs.github.com/en/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
  */
@@ -594,7 +499,9 @@ export const removeUserFromTeam = async (
   userLogin: string,
   orgName = 'tamagui'
 ) => {
-  console.info(`Claim: removeUserFromTeam removing ${userLogin} from ${orgName}/${teamSlug}`)
+  console.info(
+    `Claim: removeUserFromTeam removing ${userLogin} from ${orgName}/${teamSlug}`
+  )
 
   try {
     const res = await fetch(
@@ -632,7 +539,11 @@ export const checkIfUserIsTeamMember = async (
   teamSlug: string,
   userLogin: string,
   orgName = 'tamagui'
-): Promise<{ isMember: boolean; state?: 'active' | 'pending'; role?: 'member' | 'maintainer' }> => {
+): Promise<{
+  isMember: boolean
+  state?: 'active' | 'pending'
+  role?: 'member' | 'maintainer'
+}> => {
   console.info(`Checking if ${userLogin} is a member of ${orgName}/${teamSlug}`)
 
   try {

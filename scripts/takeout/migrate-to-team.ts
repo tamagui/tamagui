@@ -210,13 +210,7 @@ async function migrateSingleUser(username: string, dryRun = false) {
     return
   }
 
-  // Step 2: Remove from direct collaborator access
-  const removedFromRepo = await removeCollaboratorAccess('takeout', username, dryRun)
-  if (!removedFromRepo) {
-    console.log('⚠️  Warning: Failed to remove collaborator access, but continuing...')
-  }
-
-  // Step 3: Update claim record
+  // Step 2: Update claim record (skipping collaborator removal - users can have both)
   const claimUpdated = await updateClaimToTeamBased(userClaim.id, username, dryRun)
   if (!claimUpdated) {
     console.error('❌ Failed to update claim record')
@@ -271,10 +265,7 @@ async function migrateAllUsers(dryRun = false) {
         continue
       }
 
-      // Step 2: Remove from repo
-      await removeCollaboratorAccess('takeout', username, dryRun)
-
-      // Step 3: Update claim
+      // Step 2: Update claim (skipping collaborator removal - users can have both)
       const claimUpdated = await updateClaimToTeamBased(claim.id, username, dryRun)
       if (!claimUpdated) {
         console.error(`⚠️  Warning: ${username} added to team but claim not updated`)

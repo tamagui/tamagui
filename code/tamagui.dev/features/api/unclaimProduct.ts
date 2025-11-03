@@ -1,7 +1,7 @@
 import type { User } from '@supabase/supabase-js'
 import type Stripe from 'stripe'
 import { supabaseAdmin } from '../auth/supabaseAdmin'
-import { removeCollaboratorFromRepo, removeUserFromTeam } from '../github/helpers'
+import { removeUserFromTeam } from '../github/helpers'
 import type { Database, Json } from '../supabase/types'
 
 /**
@@ -51,7 +51,7 @@ type UnclaimFunction = (args: {
 }) => Promise<void>
 
 const unclaimRepoAccess: UnclaimFunction = async ({ data, user }) => {
-  const githubId = (data.user_github as any)?.id as number | undefined
+  const githubId = (data.user_github as any)?.id as number | string | undefined
   if (!githubId) {
     throw new Error(`user_github.id is not set on product metadata or is not correct`)
   }
@@ -59,19 +59,11 @@ const unclaimRepoAccess: UnclaimFunction = async ({ data, user }) => {
     res.json()
   )
 
-  // Check if this is team-based access (new system)
   const teamSlug = data.team_slug
-  if (typeof teamSlug === 'string') {
-    console.info(`Unclaiming team access for ${githubUser.login} from team ${teamSlug}`)
-    await removeUserFromTeam(teamSlug, githubUser.login)
-    return
+  if (typeof teamSlug !== 'string') {
+    throw new Error(`team_slug is not set on product metadata or is not correct`)
   }
 
-  // Otherwise, use legacy repository-based access
-  const repoName = data.repository_name || data.repo_name
-  if (typeof repoName !== 'string') {
-    throw new Error(`repository_name is not set on product metadata or is not correct`)
-  }
-  console.info(`Unclaiming repo access for ${githubUser.login} from repo ${repoName}`)
-  await removeCollaboratorFromRepo(repoName, githubUser.login)
+  console.info(`Unclaiming team access for ${githubUser.login} from team ${teamSlug}`)
+  await removeUserFromTeam(teamSlug, githubUser.login)
 }

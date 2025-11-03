@@ -36,7 +36,7 @@ const ORG_NAME = 'tamagui'
 
 // Rate limiting configuration
 const GITHUB_API_RATE_LIMIT = 5000 // 5000 requests per hour
-const DELAY_BETWEEN_REQUESTS_MS = 750 // ~1.3 seconds = ~2700 requests/hour (conservative)
+const DELAY_BETWEEN_REQUESTS_MS = 500 // 500ms = ~7200 requests/hour (safe buffer)
 const BATCH_SIZE = 50 // Process 50 users at a time
 const PROGRESS_FILE = join(process.cwd(), 'scripts/takeout/.migration-progress.json')
 
@@ -56,7 +56,7 @@ interface ClaimData {
   claim_type?: string
   repository_name?: string
   user_github?: {
-    id: number
+    id: number | string  // Can be number or UUID string
     login: string
   }
   permission?: string
@@ -294,11 +294,7 @@ async function migrateUser(claim: Claim, dryRun = false): Promise<MigrationResul
 
     await delay(DELAY_BETWEEN_REQUESTS_MS)
 
-    // Step 2: Remove from repo
-    await removeCollaboratorAccess('takeout', username, dryRun)
-    await delay(DELAY_BETWEEN_REQUESTS_MS)
-
-    // Step 3: Update claim
+    // Step 2: Update claim (skip removing from repo - users can have both)
     const claimUpdated = await updateClaimToTeamBased(claim.id, username, dryRun)
     if (!claimUpdated) {
       console.log(`  ⚠️  Warning: Added to team but claim not updated`)
@@ -391,22 +387,29 @@ async function migrateAll(dryRun = false, batchSize = BATCH_SIZE, resume = false
     console.log('')
   }
 
-  // Fetch all active claims
+  // Fetch all active claims (Supabase has 1000 row default limit, explicitly set it higher)
   console.log('Fetching active claims...')
   const { data: claims, error } = await supabase
     .from('claims')
     .select('*')
     .is('unclaimed_at', null)
     .order('created_at', { ascending: true })
+    .limit(10000) // Set high limit to get all claims
 
   if (error) {
     console.error('Error fetching claims:', error)
     process.exit(1)
   }
 
-  const takeoutClaims = (claims || []).filter((claim: Claim) => {
-    const data = claim.data as ClaimData
-    return data?.repository_name === 'takeout' && data?.user_github?.login
+  console.log(`Total claims fetched from DB: ${(claims || []).length}`)
+
+  const takeoutClaims = (claims || []).filter((claim: any) => {
+    const data = claim.data
+    if (!data) return false
+    // Check both repository_name and repo_name (legacy)
+    const isTakeout = data.repository_name === 'takeout' || data.repo_name === 'takeout'
+    const hasLogin = data.user_github && data.user_github.login
+    return isTakeout && hasLogin
   })
 
   console.log(`Found ${takeoutClaims.length} total takeout claims`)

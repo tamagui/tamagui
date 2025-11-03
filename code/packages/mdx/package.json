@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-native --bundle --bundle-modules",
+    "build": "tamagui-build --skip-native --bundle --bundle-modules --external rehype-autolink-headings --external rehype-slug --external hast-util-to-html --external hast-util-to-string",
     "watch": "yarn build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",

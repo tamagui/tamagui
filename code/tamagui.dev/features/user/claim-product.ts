@@ -1,11 +1,6 @@
 import type { User } from '@supabase/supabase-js'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
-import {
-  inviteCollaboratorToRepo,
-  checkIfUserIsCollaborator,
-  addUserToTeam,
-  checkIfUserIsTeamMember,
-} from '~/features/github/helpers'
+import { addUserToTeam, checkIfUserIsTeamMember } from '~/features/github/helpers'
 import type { Database, Json } from '~/features/supabase/types'
 import { ProductName } from '~/shared/types/subscription'
 import { getUserPrivateInfo } from './helpers'
@@ -82,8 +77,7 @@ const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
   console.info(`Claim: checking private users`)
 
   const teamSlug = metadata.team_slug
-  if (typeof teamSlug !== 'string')
-    throw new Error('No team_slug is present on metadata')
+  if (typeof teamSlug !== 'string') throw new Error('No team_slug is present on metadata')
 
   console.info(`Claim: adding user to team ${teamSlug}`)
 
@@ -98,7 +92,10 @@ const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
   }
 
   try {
-    const memberCheck = await checkIfUserIsTeamMember(teamSlug, userPrivate.github_user_name)
+    const memberCheck = await checkIfUserIsTeamMember(
+      teamSlug,
+      userPrivate.github_user_name
+    )
 
     if (memberCheck.isMember) {
       console.info(`User is already a team member (state: ${memberCheck.state})`)
@@ -111,7 +108,7 @@ const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
           team_slug: teamSlug,
           role: memberCheck.role || 'member',
         },
-        message: `You already have access! You can view the repositories at: https://github.com/orgs/tamagui/teams/${teamSlug}`,
+        message: `You already have access! You can view Takeout (stable) and Takeout 2 (beta) at: https://github.com/orgs/tamagui/teams/${teamSlug}`,
         url: `https://github.com/orgs/tamagui/teams/${teamSlug}`,
       }
     }
@@ -129,7 +126,7 @@ const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
         team_slug: teamSlug,
         role: 'member',
       },
-      message: `Successfully added to team! Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation. You can view available repositories at: https://github.com/orgs/tamagui/teams/${teamSlug}`,
+      message: `Successfully added to team! Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation. You'll have access to Takeout (stable) and Takeout 2 (beta): https://github.com/orgs/tamagui/teams/${teamSlug}`,
       url: `https://github.com/orgs/tamagui/teams/${teamSlug}`,
     }
   } catch (error) {
@@ -139,75 +136,6 @@ const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
     )
     throw new ClaimError(
       'Adding to team failed. It could be that you are already invited. Check your email or GitHub notifications for the invite. Otherwise, contact support@tamagui.dev or get help on Discord.'
-    )
-  }
-}
-
-const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request }) => {
-  console.info(`Claim: checking private users`)
-
-  const repoName = metadata.repository_name
-  if (typeof repoName !== 'string')
-    throw new Error('No repository_name is present on metadata')
-
-  console.info(`Claim: inviting collaborator`)
-
-  const permission = 'pull'
-
-  const userPrivate = await getUserPrivateInfo(user.id)
-
-  console.info(`Claim: got github username`, userPrivate.github_user_name)
-
-  if (!userPrivate.github_user_name) {
-    throw new ClaimError(
-      "We weren't able to find your GitHub username. Please logout of your account, login and try again. If this kept occurring, contact support@tamagui.dev or get help on Discord."
-    )
-  }
-
-  try {
-    const collaboratorCheck = await checkIfUserIsCollaborator(
-      repoName,
-      userPrivate.github_user_name
-    )
-
-    if (collaboratorCheck.isCollaborator) {
-      console.info(`User is already a collaborator`)
-      return {
-        data: {
-          user_github: {
-            id: userPrivate.id,
-            login: userPrivate.github_user_name,
-          },
-          repository_name: repoName,
-          permission,
-        },
-        message: `You are already a collaborator on the repository. You can access it directly at: ${collaboratorCheck.repoUrl}`,
-        ...(collaboratorCheck.repoUrl && { url: collaboratorCheck.repoUrl }),
-      }
-    }
-
-    await inviteCollaboratorToRepo(repoName, userPrivate.github_user_name, permission)
-
-    console.info(`Invited successfully`)
-
-    return {
-      data: {
-        user_github: {
-          id: userPrivate.id,
-          login: userPrivate.github_user_name,
-        },
-        repository_name: repoName,
-        permission,
-      },
-      message: `Successfully invited. Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation to the repository.`,
-    }
-  } catch (error) {
-    console.error(
-      `Failed to invite ${userPrivate.github_user_name} with ${permission} permission, error: ${error}`,
-      error
-    )
-    throw new ClaimError(
-      'Invitation failed. It could be that you are already invited. Check your email or GitHub notifications for the invite. Otherwise, contact support@tamagui.dev or get help on Discord.'
     )
   }
 }
