@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "1.135.7",
+  "version": "1.136.0",
   "type": "module",
   "sideEffects": [
     "*.css"
