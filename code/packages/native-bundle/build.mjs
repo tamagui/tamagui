@@ -1,4 +1,4 @@
-import { build } from 'esbuild'
+import { build, context } from 'esbuild'
 
 const isWatch = process.argv.includes('--watch')
 
@@ -13,15 +13,15 @@ const config = {
 
 async function runBuild() {
   if (isWatch) {
-    const ctx = await build({
+    const ctx = await context({
       ...config,
       logLevel: 'info',
     })
     await ctx.watch()
-    console.log('Watching for changes...')
+    console.info('Watching for changes...')
   } else {
     await build(config)
-    console.log('Build complete')
+    console.info('Build complete')
   }
 }
 

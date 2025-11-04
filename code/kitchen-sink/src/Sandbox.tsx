@@ -29,15 +29,16 @@ export const Sandbox = () => {
         hoverStyle={{
           scale: 1.2,
         }}
-        // $group-testy-press={{
-        //   bg: 'yellow',
-        // }}
+        $group-testy-press={{
+          bg: 'yellow',
+        }}
         $group-testy={{
           bg: 'pink',
         }}
         $group-testy-gtXs={{
           borderWidth: 2,
         }}
+        // TODO kitchen-sink infinite loop because of this:
         $group-testy-gtXs-press={{
           scale: 1.1,
           bg: 'white',

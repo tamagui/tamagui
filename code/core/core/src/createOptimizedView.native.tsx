@@ -16,7 +16,6 @@ export function createOptimizedView(
   baseViews: any
 ) {
   const TextAncestor = baseViews.TextAncestor
-  const ViewNativeComponent = baseViews.View
 
   const {
     accessibilityElementsHidden,
@@ -135,7 +134,7 @@ export function createOptimizedView(
 
   // isInText is significantly faster than just providing it each time
   const isInText = React.useContext(TextAncestor)
-  const finalElement = React.createElement(ViewNativeComponent, viewProps, children)
+  const finalElement = React.createElement('RCTView', viewProps, children)
 
   if (!isInText) {
     return finalElement
