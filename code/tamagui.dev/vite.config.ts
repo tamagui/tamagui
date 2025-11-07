@@ -81,7 +81,7 @@ export default {
 
   plugins: [
     tamaguiPlugin({
-      optimize: process.env.NODE_ENV === 'production',
+      optimize: true,
       components: ['tamagui'],
       logTimings: true,
       config: '@tamagui/tamagui-dev-config',

@@ -1,16 +1,12 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
-import type { TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static-worker'
+import * as Static from '@tamagui/static-worker'
+import { getPragmaOptions } from '@tamagui/static-worker'
 import path from 'node:path'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, type Environment } from 'vite'
-import {
-  Static,
-  disableStatic,
-  extractor,
-  loadTamaguiBuildConfig,
-  tamaguiOptions,
-} from './loadTamagui'
+import { disableStatic, loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
 
 import { createHash } from 'node:crypto'
 
@@ -82,8 +78,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       await loadTamaguiBuildConfig(optionsIn)
     },
 
-    buildEnd() {
-      extractor?.cleanupBeforeExit()
+    async buildEnd() {
+      await Static?.destroyPool()
     },
 
     config(userConf) {
@@ -184,7 +180,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         }
 
         const firstCommentIndex = code.indexOf('// ')
-        const { shouldDisable, shouldPrintDebug } = Static!.getPragmaOptions({
+        const { shouldDisable, shouldPrintDebug } = await getPragmaOptions({
           source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
           path: validId,
         })
@@ -212,7 +208,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         }
 
         const extracted = await Static!.extractToClassNames({
-          extractor: extractor!,
           source: code,
           sourcePath: validId,
           options: tamaguiOptions!,

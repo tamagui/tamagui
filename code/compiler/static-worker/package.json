@@ -1,0 +1,41 @@
+{
+  "name": "@tamagui/static-worker",
+  "version": "1.136.1",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "type": "module",
+  "module": "dist",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@tamagui/static": "workspace:*",
+    "@tamagui/types": "workspace:*",
+    "piscina": "^4.7.0"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  }
+}

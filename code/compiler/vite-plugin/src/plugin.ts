@@ -1,9 +1,10 @@
-import type { TamaguiOptions } from '@tamagui/static'
+import * as Static from '@tamagui/static-worker'
+import type { TamaguiOptions } from '@tamagui/types'
 import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 import { tamaguiExtractPlugin } from './extract'
-import { Static, loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
+import { loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
 
 const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
 
