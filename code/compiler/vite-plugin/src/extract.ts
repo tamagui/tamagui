@@ -78,7 +78,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       await loadTamaguiBuildConfig(optionsIn)
     },
 
-    async buildEnd() {
+    async closeBundle() {
+      // Only destroy the pool at the very end of the entire build
       await Static?.destroyPool()
     },
 

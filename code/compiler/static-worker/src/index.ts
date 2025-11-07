@@ -169,10 +169,11 @@ export async function watchTamaguiConfig(
   return {
     dispose: () => {
       originalDispose()
-      // Clear worker cache when config changes
-      clearWorkerCache().catch((err) => {
-        console.error('[static-worker] Error clearing cache:', err)
-      })
+      if (piscinaPool) {
+        clearWorkerCache().catch((err) => {
+          console.error('[static-worker] Error clearing cache:', err)
+        })
+      }
     },
   }
 }
