@@ -66,10 +66,7 @@ export default apiRoute(async (req) => {
   }
 
   if (!hasProduct) {
-    return Response.json(
-      { error: 'Product not found in subscription' },
-      { status: 404 }
-    )
+    return Response.json({ error: 'Product not found in subscription' }, { status: 404 })
   }
 
   // 5. Get user's GitHub username
@@ -90,7 +87,10 @@ export default apiRoute(async (req) => {
 
   try {
     // Check current membership status
-    const memberCheck = await checkIfUserIsTeamMember(teamSlug, userPrivate.github_user_name)
+    const memberCheck = await checkIfUserIsTeamMember(
+      teamSlug,
+      userPrivate.github_user_name
+    )
 
     console.info(
       `Resend invite: Current status for ${userPrivate.github_user_name} - isMember: ${memberCheck.isMember}, state: ${memberCheck.state}`
