@@ -115,9 +115,16 @@ export async function extractToClassNames(params: {
   const result = (await pool.run(task, { name: 'runTask' })) as any
 
   if (!result.success) {
-    throw new Error(
-      `Worker error: ${result.error}${result.stack ? `\n${result.stack}` : ''}`
-    )
+    const errorMessage = [
+      `[tamagui-extract] Error processing file: ${sourcePath || '(unknown)'}`,
+      ``,
+      result.error,
+      result.stack ? `\n${result.stack}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n')
+
+    throw new Error(errorMessage)
   }
 
   return result.data
@@ -142,9 +149,16 @@ export async function extractToNative(
   const result = (await pool.run(task, { name: 'runTask' })) as any
 
   if (!result.success) {
-    throw new Error(
-      `Worker error: ${result.error}${result.stack ? `\n${result.stack}` : ''}`
-    )
+    const errorMessage = [
+      `[tamagui-extract] Error processing file: ${sourceFileName || '(unknown)'}`,
+      ``,
+      result.error,
+      result.stack ? `\n${result.stack}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n')
+
+    throw new Error(errorMessage)
   }
 
   return result.data
@@ -211,8 +225,15 @@ export async function destroyPool(): Promise<void> {
     isClosing = true
     try {
       await piscinaPool.destroy()
-    } catch {
-      // Ignore all errors during pool destruction
+    } catch (err) {
+      // Only ignore worker termination errors during shutdown
+      // Re-throw any other errors as they may be legitimate issues
+      if (err && typeof err === 'object' && 'message' in err) {
+        const message = String(err.message)
+        if (!message.includes('Terminating worker thread')) {
+          throw err
+        }
+      }
     } finally {
       piscinaPool = null
       isClosing = false
