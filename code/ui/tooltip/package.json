@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.136.2",
+  "version": "1.136.3",
   "type": "module",
   "sideEffects": [
     "*.css"
