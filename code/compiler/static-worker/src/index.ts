@@ -170,9 +170,8 @@ export async function watchTamaguiConfig(
     dispose: () => {
       originalDispose()
       if (piscinaPool) {
-        clearWorkerCache().catch((err) => {
-          console.error('[static-worker] Error clearing cache:', err)
-        })
+        // Fire and forget - errors are handled internally
+        clearWorkerCache()
       }
     },
   }
@@ -198,8 +197,20 @@ export async function loadTamaguiBuildConfig(
 export async function clearWorkerCache(): Promise<void> {
   if (!piscinaPool) return
 
-  const task = { type: 'clearCache' }
-  await piscinaPool.run(task, { name: 'runTask' })
+  // Check if pool is already destroyed or being destroyed
+  try {
+    const task = { type: 'clearCache' }
+    await piscinaPool.run(task, { name: 'runTask' })
+  } catch (err) {
+    // Silently ignore errors if pool is being destroyed
+    // This can happen during cleanup when closeBundle runs
+    if (err && typeof err === 'object' && 'message' in err) {
+      const message = String(err.message)
+      if (!message.includes('Terminating worker thread')) {
+        throw err
+      }
+    }
+  }
 }
 
 /**
