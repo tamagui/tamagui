@@ -41,6 +41,7 @@ const getWorkerPath = () => {
 }
 
 let piscinaPool: Piscina | null = null
+let isClosing = false
 
 /**
  * Get or create the Piscina worker pool
@@ -195,22 +196,10 @@ export async function loadTamaguiBuildConfig(
  * Call this when config files change
  */
 export async function clearWorkerCache(): Promise<void> {
-  if (!piscinaPool) return
+  if (!piscinaPool || isClosing) return
 
-  // Check if pool is already destroyed or being destroyed
-  try {
-    const task = { type: 'clearCache' }
-    await piscinaPool.run(task, { name: 'runTask' })
-  } catch (err) {
-    // Silently ignore errors if pool is being destroyed
-    // This can happen during cleanup when closeBundle runs
-    if (err && typeof err === 'object' && 'message' in err) {
-      const message = String(err.message)
-      if (!message.includes('Terminating worker thread')) {
-        throw err
-      }
-    }
-  }
+  const task = { type: 'clearCache' }
+  await piscinaPool.run(task, { name: 'runTask' })
 }
 
 /**
@@ -219,8 +208,15 @@ export async function clearWorkerCache(): Promise<void> {
  */
 export async function destroyPool(): Promise<void> {
   if (piscinaPool) {
-    await piscinaPool.destroy()
-    piscinaPool = null
+    isClosing = true
+    try {
+      await piscinaPool.destroy()
+    } catch {
+      // Ignore all errors during pool destruction
+    } finally {
+      piscinaPool = null
+      isClosing = false
+    }
   }
 }
 
