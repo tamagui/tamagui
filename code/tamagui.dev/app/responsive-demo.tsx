@@ -50,7 +50,7 @@ export default function ResponsiveDemo() {
         mah="100vh"
         ov="hidden"
         p="$4"
-        $gtLarge={{ fd: 'row-reverse', p: '$6', maw: 1200, als: 'center' }}
+        $gtLarge={{ fd: 'row-reverse', p: '$6', maw: 1200, als: 'center', gap: '$4' }}
       >
         <YStack pos="relative" $gtSmall={{ display: 'none' }}>
           {coverPhoto}
