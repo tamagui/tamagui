@@ -55,7 +55,9 @@ let hasLoggedPID = false
  */
 export async function runTask(task: WorkerTask): Promise<WorkerResult> {
   if (!hasLoggedPID) {
-    console.info(`[tamagui] 🧵 Worker thread PID: ${process.pid} (parent: ${process.ppid})`)
+    console.info(
+      `[tamagui] 🧵 Worker thread PID: ${process.pid} (parent: ${process.ppid})`
+    )
     hasLoggedPID = true
   }
 
