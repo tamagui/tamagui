@@ -914,6 +914,7 @@ const PlanTab = ({
   const [showSupportAccess, setShowSupportAccess] = useState(false)
   const { data: products } = useProducts()
   const [isGrantingAccess, setIsGrantingAccess] = useState(false)
+  const [isResendingInvite, setIsResendingInvite] = useState(false)
 
   // Check if this is a one-time payment plan
   const isOneTimePlan =
@@ -958,6 +959,46 @@ const PlanTab = ({
     }
   }
 
+  const handleResendInvite = async () => {
+    if (!subscription || !products) return
+
+    const takeoutProduct = products.pro
+    if (!takeoutProduct) {
+      alert('Product information not found')
+      return
+    }
+
+    setIsResendingInvite(true)
+
+    try {
+      const res = await fetch(`/api/resend-github-invite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscription.id,
+          product_id: takeoutProduct.id,
+        }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        alert(data?.error || `Error: ${res.status} ${res.statusText}`)
+      } else {
+        if (data.message) {
+          alert(data.message)
+        }
+        if (data.url) {
+          // Open URL in new tab
+          window.open(data.url, '_blank', 'noopener,noreferrer')
+        }
+      }
+    } finally {
+      setIsResendingInvite(false)
+    }
+  }
+
   return (
     <YStack gap="$6">
       <YStack gap="$4">
@@ -979,6 +1020,14 @@ const PlanTab = ({
                 handleTakeoutAccess()
               }
             }}
+            secondAction={
+              subscription
+                ? {
+                    label: isResendingInvite ? 'Resending...' : 'Resend Invite',
+                    onPress: handleResendInvite,
+                  }
+                : null
+            }
           />
 
           <BentoCard subscription={subscription as Subscription} />
