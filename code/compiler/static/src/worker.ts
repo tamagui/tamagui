@@ -54,13 +54,6 @@ let hasLoggedPID = false
  * This is called by piscina for async usage
  */
 export async function runTask(task: WorkerTask): Promise<WorkerResult> {
-  if (!hasLoggedPID) {
-    console.info(
-      `[tamagui] 🧵 Worker thread PID: ${process.pid} (parent: ${process.ppid})`
-    )
-    hasLoggedPID = true
-  }
-
   try {
     if (task.type === 'extractToClassNames') {
       // Load web config if needed (with caching)

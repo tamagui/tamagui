@@ -1,12 +1,10 @@
-import type { TamaguiOptions } from '@tamagui/static'
-import Static from '@tamagui/static'
+import * as StaticWorker from '@tamagui/static-worker'
+import type { TamaguiOptions } from '@tamagui/types'
 import { existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
 import { requireResolve } from './requireResolve'
-
-const { watchTamaguiConfig } = Static
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
@@ -112,16 +110,26 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
-    Static.loadTamaguiSync(this.options)
+    // Load Tamagui config asynchronously in worker
+    void StaticWorker.loadTamagui({
+      components: ['tamagui'],
+      platform: 'web',
+      ...this.options,
+    })
 
     if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
-      void watchTamaguiConfig(this.options).then((watcher) => {
+      void StaticWorker.watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
           watcher?.dispose()
         })
       })
     }
+
+    // Clean up worker pool on exit
+    process.once('exit', () => {
+      void StaticWorker.destroyPool()
+    })
 
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {

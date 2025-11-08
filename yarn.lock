@@ -4660,6 +4660,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pkgr/core@npm:^0.1.0":
+  version: 0.1.2
+  resolution: "@pkgr/core@npm:0.1.2"
+  checksum: 10/5160ec9f2e3232da681824a42583ef80e637ae6143339bd1db176848efd244dd71d177ccb7fd729261d8dcaf88486ce701d39500d873ed5caf16e8c281e9e28a
+  languageName: node
+  linkType: hard
+
 "@playwright/test@npm:^1.49.1":
   version: 1.52.0
   resolution: "@playwright/test@npm:1.52.0"
@@ -6622,7 +6629,7 @@ __metadata:
     "@babel/traverse": "npm:^7.25.4"
     "@babel/types": "npm:^7.25.4"
     "@tamagui/build": "workspace:*"
-    "@tamagui/static": "workspace:*"
+    "@tamagui/static-sync": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -8383,6 +8390,18 @@ __metadata:
     react: "npm:*"
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/static-sync@workspace:*, @tamagui/static-sync@workspace:code/compiler/static-sync":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/static-sync@workspace:code/compiler/static-sync"
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+    "@tamagui/build": "workspace:*"
+    "@tamagui/static": "workspace:*"
+    "@tamagui/types": "workspace:*"
+    synckit: "npm:^0.9.2"
   languageName: unknown
   linkType: soft
 
@@ -26656,6 +26675,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"synckit@npm:^0.9.2":
+  version: 0.9.3
+  resolution: "synckit@npm:0.9.3"
+  dependencies:
+    "@pkgr/core": "npm:^0.1.0"
+    tslib: "npm:^2.6.2"
+  checksum: 10/e10c9f27c7357a15ede8e04e0250fed3a0cf7decd221b9c31978f3da302b7922079fb3067e56f0691aadede4f1a66b667f0f5a2788f0503d38411f88d8527557
+  languageName: node
+  linkType: hard
+
 "tabbable@npm:^6.0.0":
   version: 6.2.0
   resolution: "tabbable@npm:6.2.0"
@@ -26702,6 +26731,8 @@ __metadata:
     "@tamagui/cli-color": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/static": "workspace:*"
+    "@tamagui/static-worker": "workspace:*"
+    "@tamagui/types": "workspace:*"
     "@tamagui/web": "workspace:*"
     esbuild-loader: "npm:^4.2.2"
     esm-resolve: "npm:^1.0.8"
@@ -27345,7 +27376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.0":
+"tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7

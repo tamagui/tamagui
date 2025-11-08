@@ -4,7 +4,7 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
-  "main": "dist/index.js",
+  "main": "dist",
   "files": [
     "src",
     "types",
@@ -22,13 +22,13 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.cjs"
     },
     "./worker": {
       "types": "./types/worker.d.ts",
-      "require": "./dist/worker.js",
-      "import": "./dist/worker.mjs"
+      "require": "./dist/worker.cjs",
+      "import": "./dist/worker.cjs"
     }
   },
   "tests": {

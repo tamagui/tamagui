@@ -1,9 +1,9 @@
-import type { TamaguiOptions } from '@tamagui/static'
-import Static from '@tamagui/static'
+import * as StaticWorker from '@tamagui/static-worker'
+import type { TamaguiOptions } from '@tamagui/types'
 import type { LoaderContext } from 'webpack'
 import { requireResolve } from './requireResolve'
 
-const { createExtractor, extractToClassNames, getPragmaOptions } = Static
+const { getPragmaOptions } = StaticWorker
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -19,9 +19,6 @@ try {
     CSS_LOADER_PATH = requireResolve('./css.js')
   }
 }
-
-Error.stackTraceLimit = Number.POSITIVE_INFINITY
-const extractor = createExtractor()
 
 let index = 0
 
@@ -48,7 +45,7 @@ export const loader = async function loader(
       ...this.getOptions(),
     }
 
-    const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
+    const { shouldDisable, shouldPrintDebug } = await getPragmaOptions({
       source,
       path: sourcePath,
     })
@@ -67,8 +64,7 @@ export const loader = async function loader(
 
     const cssPath = `${sourcePath}.${index++}.tamagui.css`
 
-    const extracted = await extractToClassNames({
-      extractor,
+    const extracted = await StaticWorker.extractToClassNames({
       source,
       sourcePath,
       options,

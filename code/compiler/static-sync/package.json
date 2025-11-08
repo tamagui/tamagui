@@ -1,32 +1,29 @@
 {
-  "name": "@tamagui/static-worker",
+  "name": "@tamagui/static-sync",
   "version": "1.136.6",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "type": "module",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "type": "commonjs",
+  "main": "dist",
   "files": [
     "src",
     "types",
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
+    "build": "tamagui-build --skip-native --bundle --bundle-modules",
+    "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "lint:fix": "biome check --write src"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/cjs/index.cjs",
-      "import": "./dist/esm/index.mjs"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.cjs"
     }
   },
   "publishConfig": {
@@ -34,12 +31,12 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.25.2",
     "@tamagui/static": "workspace:*",
     "@tamagui/types": "workspace:*",
-    "piscina": "^4.7.0"
+    "synckit": "^0.9.2"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "vitest": "^4.0.4"
+    "@tamagui/build": "workspace:*"
   }
 }
