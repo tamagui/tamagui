@@ -1,6 +1,6 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
-import type { TamaguiOptions } from '@tamagui/static-worker'
+import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
 import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import path from 'node:path'
@@ -208,12 +208,19 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
           return cached
         }
 
-        const extracted = await Static!.extractToClassNames({
-          source: code,
-          sourcePath: validId,
-          options: tamaguiOptions!,
-          shouldPrintDebug,
-        })
+        let extracted: ExtractedResponse | null
+        try {
+          extracted = await Static!.extractToClassNames({
+            source: code,
+            sourcePath: validId,
+            options: tamaguiOptions!,
+            shouldPrintDebug,
+          })
+        } catch (err) {
+          // Log the error but don't fail the build - just skip optimization
+          console.error(err instanceof Error ? err.message : String(err))
+          return
+        }
 
         if (!extracted) {
           return

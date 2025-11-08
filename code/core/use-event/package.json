@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-event",
-  "version": "1.136.4",
+  "version": "1.136.5",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

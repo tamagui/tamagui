@@ -8426,6 +8426,7 @@ __metadata:
     "@tamagui/static": "workspace:*"
     "@tamagui/types": "workspace:*"
     piscina: "npm:^4.7.0"
+    vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
 
