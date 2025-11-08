@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "1.136.6",
+  "version": "1.136.7",
   "type": "module",
   "sideEffects": false,
   "description": "Utilities for icon packages",

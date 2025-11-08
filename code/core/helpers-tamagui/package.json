@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "1.136.6",
+  "version": "1.136.7",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
