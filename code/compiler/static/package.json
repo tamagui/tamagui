@@ -24,6 +24,11 @@
       "types": "./types/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.js"
+    },
+    "./worker": {
+      "types": "./types/worker.d.ts",
+      "require": "./dist/worker.js",
+      "import": "./dist/worker.mjs"
     }
   },
   "tests": {

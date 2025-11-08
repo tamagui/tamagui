@@ -29,15 +29,16 @@ export const getPragmaOptions = async (props: {
 
 // Resolve worker path - works for both CJS and ESM
 const getWorkerPath = () => {
-  // In ESM
+  // Piscina needs the actual file path, not the module resolution
+  // Use the CommonJS .js version which works for piscina
   if (typeof import.meta !== 'undefined' && import.meta.url) {
-    // This will need to resolve to the actual worker from static package
-    const staticPackagePath = fileURLToPath(import.meta.resolve('@tamagui/static'))
-    return resolve(dirname(staticPackagePath), 'worker.js')
+    const workerPath = fileURLToPath(import.meta.resolve('@tamagui/static/worker'))
+    // Replace .mjs with .js for CommonJS compatibility
+    return workerPath.replace(/\.mjs$/, '.js')
   }
 
-  // Fallback - assume static is installed
-  return resolve(process.cwd(), 'node_modules/@tamagui/static/dist/worker.js')
+  // Fallback for CJS
+  return require.resolve('@tamagui/static/worker').replace(/\.mjs$/, '.js')
 }
 
 let piscinaPool: Piscina | null = null
