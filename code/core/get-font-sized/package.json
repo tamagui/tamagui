@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-font-sized",
-  "version": "1.136.7",
+  "version": "1.136.8",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
