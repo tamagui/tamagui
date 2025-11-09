@@ -64,10 +64,19 @@ export const loader = async function loader(
 
     const cssPath = `${sourcePath}.${index++}.tamagui.css`
 
+    // Filter out non-serializable properties before passing to worker
+    const serializableOptions = { ...options }
+    for (const key in serializableOptions) {
+      const value = serializableOptions[key as keyof typeof serializableOptions]
+      if (typeof value === 'function') {
+        delete serializableOptions[key as keyof typeof serializableOptions]
+      }
+    }
+
     const extracted = await StaticWorker.extractToClassNames({
       source,
       sourcePath,
-      options,
+      options: serializableOptions,
       shouldPrintDebug,
     })
 

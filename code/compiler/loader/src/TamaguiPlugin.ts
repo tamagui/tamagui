@@ -110,15 +110,25 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
+    // Filter out non-serializable properties before passing to worker
+    // Functions like shouldExtract, getCSS, etc. are used on the main thread only
+    const serializableOptions = { ...this.options }
+    for (const key in serializableOptions) {
+      const value = serializableOptions[key as keyof typeof serializableOptions]
+      if (typeof value === 'function') {
+        delete serializableOptions[key as keyof typeof serializableOptions]
+      }
+    }
+
     // Load Tamagui config asynchronously in worker
     void StaticWorker.loadTamagui({
       components: ['tamagui'],
       platform: 'web',
-      ...this.options,
+      ...serializableOptions,
     })
 
     if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
-      void StaticWorker.watchTamaguiConfig(this.options).then((watcher) => {
+      void StaticWorker.watchTamaguiConfig(serializableOptions).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
           watcher?.dispose()
