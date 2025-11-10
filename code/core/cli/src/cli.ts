@@ -172,6 +172,30 @@ const COMMAND_MAP = {
       )
     },
   },
+
+  'generate-prompt': {
+    shorthands: ['gp'],
+    description: `Generate an LLM-friendly markdown file from your Tamagui config`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--output': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { generatePrompt } = require('./generate-prompt')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: true,
+      })
+      await generatePrompt({
+        ...options,
+        verbose: flags['--verbose'],
+        output: flags['--output'],
+      })
+    },
+  },
 }
 
 type CommandDefinitions = typeof COMMAND_MAP
