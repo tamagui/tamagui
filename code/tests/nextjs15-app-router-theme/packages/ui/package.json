@@ -1,6 +1,6 @@
 {
   "name": "@my/ui",
-  "version": "1.136.9",
+  "version": "1.137.0",
   "sideEffects": [
     "*.css"
   ],

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/floating",
-  "version": "1.136.9",
+  "version": "1.137.0",
   "type": "module",
   "sideEffects": true,
   "source": "src/index.ts",
