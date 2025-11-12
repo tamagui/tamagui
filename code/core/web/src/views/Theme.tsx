@@ -225,22 +225,7 @@ function getThemeClassNameAndColor(
       ? themeState.name
       : themeState.name.replace(schemePrefix, '')
 
-  // For component themes (e.g., "green_Button"), include both parent theme and component theme classes
-  // This enables CSS variable inheritance: parent provides palette tokens, component provides overrides
-  const themeNameParts = themeClassName.split('_')
-  let themeClasses = `t_${themeClassName}`
-
-  if (themeNameParts.length > 1) {
-    const lastPart = themeNameParts[themeNameParts.length - 1]
-    // Check if last part is a component name (starts with uppercase, e.g., "Button", "Checkbox")
-    if (lastPart && lastPart[0] === lastPart[0].toUpperCase()) {
-      // It's a component theme - add parent theme class for CSS variable inheritance
-      const parentTheme = themeNameParts.slice(0, -1).join('_')
-      themeClasses = `t_${parentTheme} t_${themeClassName}`
-    }
-  }
-
-  const className = `${isRoot ? '' : 't_sub_theme'} ${themeClasses}`
+  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
 
   return { color: themeColor, className }
 }
