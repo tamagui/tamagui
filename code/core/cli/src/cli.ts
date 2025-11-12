@@ -179,19 +179,17 @@ const COMMAND_MAP = {
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
-      '--verbose': Boolean,
       '--output': String,
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
       const { generatePrompt } = require('./generate-prompt')
       const options = await getOptions({
-        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        debug: flags['--debug'] ? true : false,
         loadTamaguiOptions: true,
       })
       await generatePrompt({
         ...options,
-        verbose: flags['--verbose'],
         output: flags['--output'],
       })
     },
