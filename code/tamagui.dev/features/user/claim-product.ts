@@ -108,8 +108,8 @@ const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
           team_slug: teamSlug,
           role: memberCheck.role || 'member',
         },
-        message: `You already have access! You can view Takeout (stable) and Takeout 2 (beta) at: https://github.com/orgs/tamagui/teams/${teamSlug}`,
-        url: `https://github.com/orgs/tamagui/teams/${teamSlug}`,
+        message: `You already have access! You can view Takeout v1 at https://github.com/tamagui/takeout and Takeout v2 at https://github.com/tamagui/takeout3`,
+        url: `https://github.com/tamagui/takeout`,
       }
     }
 
@@ -126,8 +126,8 @@ const claimTeamAccess: ClaimFunction = async ({ user, metadata, request }) => {
         team_slug: teamSlug,
         role: 'member',
       },
-      message: `Successfully added to team! Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation. You'll have access to Takeout (stable) and Takeout 2 (beta): https://github.com/orgs/tamagui/teams/${teamSlug}`,
-      url: `https://github.com/orgs/tamagui/teams/${teamSlug}`,
+      message: `Successfully added to team! Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation. You'll have access to Takeout v1 at https://github.com/tamagui/takeout and Takeout v2 at https://github.com/tamagui/takeout3`,
+      url: `https://github.com/tamagui/takeout`,
     }
   } catch (error) {
     console.error(
