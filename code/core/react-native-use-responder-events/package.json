@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-use-responder-events",
-  "version": "1.137.0",
+  "version": "1.137.1",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
