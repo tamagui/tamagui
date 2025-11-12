@@ -551,14 +551,10 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
-    if (props.themeShallow) {
-      stateRef.current.themeShallow = true
-    }
-
     const themeStateProps: UseThemeWithStateProps = {
       componentName,
       disable: disableTheme,
-      shallow: stateRef.current.themeShallow,
+      shallow: props.themeShallow,
       debug: debugProp,
     }
 
