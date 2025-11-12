@@ -372,77 +372,21 @@ function getNewThemeName(
 
   let found: string | null = null
 
-  // If name is provided, try it as a standalone theme first (both with and without scheme)
-  // This allows explicit theme overrides like:
-  // - <Theme name="blue"><Button theme="dark_green"> → finds "dark_green_Button"
-  // - <Theme name="blue"><Button theme="green"> → finds "light_green_Button"
-  // - <Theme name="blue"><Button theme="green_active"> → finds "light_green_active_Button"
-  if (name) {
-    // First try the exact name as-is (for themes with explicit scheme like "dark_green")
+  const max = parentParts.length
+
+  for (let i = 0; i <= max; i++) {
+    const base = (i === 0 ? parentParts : parentParts.slice(0, -i)).join('_')
+
     for (const subName of subNames) {
-      if (subName in themes) {
-        found = subName
+      const potential = base ? `${base}_${subName}` : subName
+
+      if (potential in themes) {
+        found = potential
         break
       }
     }
 
-    // If not found and name doesn't have a scheme, try adding parent's scheme
-    if (!found && !getScheme(name)) {
-      const parentScheme = getScheme(parentName)
-
-      if (parentScheme) {
-        // Get the parent theme name without component part (already done in parentParts)
-        const parentBase = parentParts.join('_')
-
-        // Try combining with full parent context first, then just scheme
-        // For parent "light_red" + name "alt1": try "light_red_alt1" before "light_alt1"
-        const withScheme = [
-          `${parentBase}_${name}`,
-          componentName ? `${parentBase}_${name}_${componentName}` : undefined,
-          `${parentScheme}_${name}`,
-          componentName ? `${parentScheme}_${name}_${componentName}` : undefined,
-        ].filter(Boolean) as string[]
-
-        for (const potential of withScheme) {
-          if (potential in themes) {
-            found = potential
-            break
-          }
-        }
-      }
-    }
-  }
-
-  // If not found, fall back to the original search algorithm combining with parent
-  if (!found) {
-    // If we're only adding componentName (no explicit name prop), don't backtrack through parent parts
-    // This preserves sub-themes like "light_red_alt1" when adding Button component
-    if (!name && componentName) {
-      // Just try adding component to full parent
-      const potential = `${parentParts.join('_')}_${componentName}`
-      if (potential in themes) {
-        found = potential
-      }
-      // If not found, don't add component theme - return null to keep parent theme
-    } else {
-      // Original backtracking search for when explicit name is provided
-      const max = parentParts.length
-
-      for (let i = 0; i <= max; i++) {
-        const base = (i === 0 ? parentParts : parentParts.slice(0, -i)).join('_')
-
-        for (const subName of subNames) {
-          const potential = base ? `${base}_${subName}` : subName
-
-          if (potential in themes) {
-            found = potential
-            break
-          }
-        }
-
-        if (found) break
-      }
-    }
+    if (found) break
   }
 
   if (inverse) {

@@ -225,21 +225,19 @@ function getThemeClassNameAndColor(
       ? themeState.name
       : themeState.name.replace(schemePrefix, '')
 
-  // Build full hierarchy of theme classes for CSS variable inheritance
-  // Examples:
-  // - "red_alt1" → "t_red t_red_alt1"
-  // - "green_active_Button" → "t_green t_green_active t_green_active_Button"
+  // For component themes (e.g., "green_Button"), include both parent theme and component theme classes
+  // This enables CSS variable inheritance: parent provides palette tokens, component provides overrides
   const themeNameParts = themeClassName.split('_')
   let themeClasses = `t_${themeClassName}`
 
   if (themeNameParts.length > 1) {
-    // Build full hierarchy for all multi-part themes (sub-themes, component themes, etc.)
-    // This enables CSS variable inheritance through all levels
-    const hierarchyClasses: string[] = []
-    for (let i = 1; i <= themeNameParts.length; i++) {
-      hierarchyClasses.push(`t_${themeNameParts.slice(0, i).join('_')}`)
+    const lastPart = themeNameParts[themeNameParts.length - 1]
+    // Check if last part is a component name (starts with uppercase, e.g., "Button", "Checkbox")
+    if (lastPart && lastPart[0] === lastPart[0].toUpperCase()) {
+      // It's a component theme - add parent theme class for CSS variable inheritance
+      const parentTheme = themeNameParts.slice(0, -1).join('_')
+      themeClasses = `t_${parentTheme} t_${themeClassName}`
     }
-    themeClasses = hierarchyClasses.join(' ')
   }
 
   const className = `${isRoot ? '' : 't_sub_theme'} ${themeClasses}`
