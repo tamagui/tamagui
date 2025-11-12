@@ -532,6 +532,7 @@ const disableAnimationProps = new Set<string>([
   'flexDirection',
   'flexGrow',
   'flexShrink',
+  'fontFamily',
   'justifyContent',
   'marginBottom',
   'marginLeft',
