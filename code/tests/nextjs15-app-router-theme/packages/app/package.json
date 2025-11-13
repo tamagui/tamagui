@@ -22,7 +22,7 @@
     "solito": "^4.3.0"
   },
   "devDependencies": {
-    "@types/react": "^19.1.8",
+    "@types/react": "~19.1.10",
     "@types/react-native": "^0.73.0"
   }
 }
