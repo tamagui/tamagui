@@ -376,3 +376,77 @@ exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
   </span>
 </div>
 `;
+
+exports[`webpack-tests > 21. complex real-world case - flexWrap with many conditionals and media queries 1`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <div
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _maw-10037 _ox-hidden _oy-hidden _cur-0hover-pointer _pr-_sm_t-space-0 _pl-_sm_t-space-0 _bg-background "
+    >
+      <div
+        class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _fw-wrap _jc-center "
+      >
+        <span
+          class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+        >
+          hello world
+        </span>
+      </div>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;
+
+exports[`webpack-tests > 21. complex real-world case - flexWrap with many conditionals and media queries 2`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <div
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _maw-10037 _ox-hidden _oy-hidden _cur-0hover-pointer _pr-_sm_t-space-0 _pl-_sm_t-space-0 _bg-background "
+    >
+      <div
+        class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _fw-wrap _jc-center "
+      >
+        <span
+          class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+        >
+          hello world
+        </span>
+      </div>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;
+
+exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <div
+      class="_pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fw-_sm_wrap _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _gap-t-space-2 _fd-row _fw-wrap "
+    >
+      <span
+        class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+      >
+        hello world
+      </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;

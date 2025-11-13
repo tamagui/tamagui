@@ -126,17 +126,12 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexWrap')
     const { container } = renderTrue()
 
-    // Check that the component renders
-    expect(container.firstChild).toBeTruthy()
+    const element = container.querySelector('div[class*="_fw-"]')
+    expect(element).toBeTruthy()
 
-    // Check for flexWrap class in the className
-    const className = container.firstChild?.firstChild?.['className'] || ''
+    const computedStyle = window.getComputedStyle(element!)
+    expect(computedStyle.flexWrap).toBe('wrap')
 
-    // The className should contain a flex-wrap related class
-    // Common patterns: _fw-wrap, _fxw-wrap, or similar
-    expect(className).toBeTruthy()
-
-    // Snapshot to verify full output
     expect(container).toMatchSnapshot()
   })
 
@@ -146,15 +141,17 @@ describe('webpack-tests', () => {
     const { container: containerTrue } = renderTrue()
     const { container: containerFalse } = renderFalse()
 
-    const classNameTrue = containerTrue.firstChild?.firstChild?.['className'] || ''
-    const classNameFalse = containerFalse.firstChild?.firstChild?.['className'] || ''
+    const elementTrue = containerTrue.querySelector('div[class*="_fw-"]')
+    const elementFalse = containerFalse.querySelector('div[class*="_fw-"]')
 
-    // Both should have classNames
-    expect(classNameTrue).toBeTruthy()
-    expect(classNameFalse).toBeTruthy()
+    expect(elementTrue).toBeTruthy()
+    expect(elementFalse).toBeTruthy()
 
-    // They should be different (wrap vs nowrap)
-    expect(classNameTrue).not.toBe(classNameFalse)
+    const computedStyleTrue = window.getComputedStyle(elementTrue!)
+    const computedStyleFalse = window.getComputedStyle(elementFalse!)
+
+    expect(computedStyleTrue.flexWrap).toBe('wrap')
+    expect(computedStyleFalse.flexWrap).toBe('nowrap')
 
     expect(containerTrue).toMatchSnapshot()
     expect(containerFalse).toMatchSnapshot()
@@ -164,14 +161,52 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexProperties')
     const { container } = renderTrue()
 
-    const className = container.firstChild?.firstChild?.['className'] || ''
+    const element = container.firstChild?.firstChild
+    expect(element).toBeTruthy()
 
-    // Should have various flex-related classes
-    expect(className).toBeTruthy()
-    expect(className.length).toBeGreaterThan(0)
+    const computedStyle = window.getComputedStyle(element!)
+    expect(computedStyle.flexWrap).toBe('wrap')
+    expect(computedStyle.flexDirection).toBe('column')
+    expect(computedStyle.flexGrow).toBe('1')
+    expect(computedStyle.flexShrink).toBe('0')
+    expect(computedStyle.alignItems).toBe('stretch')
 
-    // Check that flexWrap is included
-    // The exact class name depends on the extraction
+    expect(container).toMatchSnapshot()
+  })
+
+  test('21. complex real-world case - flexWrap with many conditionals and media queries', () => {
+    const { renderTrue, renderFalse } = getTest('TestComplexFlexWithConditionals')
+
+    const { container: containerTrue } = renderTrue()
+    const { container: containerFalse } = renderFalse()
+
+    // Find the XStack (nested child) that has flexWrap
+    const xstackTrue = containerTrue.querySelector('div > div')
+    const xstackFalse = containerFalse.querySelector('div > div')
+
+    expect(xstackTrue).toBeTruthy()
+    expect(xstackFalse).toBeTruthy()
+
+    const computedStyleTrue = window.getComputedStyle(xstackTrue!)
+    const computedStyleFalse = window.getComputedStyle(xstackFalse!)
+
+    expect(computedStyleTrue.flexWrap).toBe('wrap')
+    expect(computedStyleFalse.flexWrap).toBe('wrap')
+
+    expect(containerTrue).toMatchSnapshot()
+    expect(containerFalse).toMatchSnapshot()
+  })
+
+  test('22. flexWrap with media query conditionals', () => {
+    const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
+    const { container } = renderTrue()
+
+    const element = container.firstChild?.firstChild
+    expect(element).toBeTruthy()
+
+    const computedStyle = window.getComputedStyle(element!)
+    expect(computedStyle.flexWrap).toBe('wrap')
+
     expect(container).toMatchSnapshot()
   })
 })
