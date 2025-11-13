@@ -2600,28 +2600,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-plugins@npm:~10.0.2":
-  version: 10.0.3
-  resolution: "@expo/config-plugins@npm:10.0.3"
-  dependencies:
-    "@expo/config-types": "npm:^53.0.4"
-    "@expo/json-file": "npm:~9.1.4"
-    "@expo/plist": "npm:^0.3.4"
-    "@expo/sdk-runtime-versions": "npm:^1.0.0"
-    chalk: "npm:^4.1.2"
-    debug: "npm:^4.3.5"
-    getenv: "npm:^2.0.0"
-    glob: "npm:^10.4.2"
-    resolve-from: "npm:^5.0.0"
-    semver: "npm:^7.5.4"
-    slash: "npm:^3.0.0"
-    slugify: "npm:^1.6.6"
-    xcode: "npm:^3.0.1"
-    xml2js: "npm:0.6.0"
-  checksum: 10/0e288f6c7eef4376e516c420fc28514b640eaafbce2b83e4cdda08585240c82106e6ff2f95f2ffa0c2eda50a597a212603a6547bf4e42fc45fad415102c724c7
-  languageName: node
-  linkType: hard
-
 "@expo/config-plugins@npm:~54.0.2":
   version: 54.0.2
   resolution: "@expo/config-plugins@npm:54.0.2"
@@ -2651,38 +2629,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-types@npm:^53.0.4":
-  version: 53.0.4
-  resolution: "@expo/config-types@npm:53.0.4"
-  checksum: 10/536395517b132db489e3a046061f70065f4139bfff39116d129861c69b0d789e8089cca9f4a48b9ffc44991b9f12ae1cd03cc0707a9c4c0e3319c8a4c2b9fc8b
-  languageName: node
-  linkType: hard
-
 "@expo/config-types@npm:^54.0.8":
   version: 54.0.8
   resolution: "@expo/config-types@npm:54.0.8"
   checksum: 10/cb975763218101e4c4204705e5e470602038cba64fc973b812a3ed8064b4c3526b3d40739483ab37f4f5ff4f56767860d34a5dbfc0db5a9399918c41608ecc78
-  languageName: node
-  linkType: hard
-
-"@expo/config@npm:~11.0.9":
-  version: 11.0.10
-  resolution: "@expo/config@npm:11.0.10"
-  dependencies:
-    "@babel/code-frame": "npm:~7.10.4"
-    "@expo/config-plugins": "npm:~10.0.2"
-    "@expo/config-types": "npm:^53.0.4"
-    "@expo/json-file": "npm:^9.1.4"
-    deepmerge: "npm:^4.3.1"
-    getenv: "npm:^1.0.0"
-    glob: "npm:^10.4.2"
-    require-from-string: "npm:^2.0.2"
-    resolve-from: "npm:^5.0.0"
-    resolve-workspace-root: "npm:^2.0.0"
-    semver: "npm:^7.6.0"
-    slugify: "npm:^1.3.4"
-    sucrase: "npm:3.35.0"
-  checksum: 10/488c5c8e249d9f554b59a5ae72917613471653b3fee2e9623e7f91ea9fbb64675ecfe9270dcd5f8193fac14000f8e6b00386605296cc5626041ec49ccd30053b
   languageName: node
   linkType: hard
 
@@ -2732,19 +2682,6 @@ __metadata:
     react-native:
       optional: true
   checksum: 10/24dcf55fb326ff395d505566fb1d1f495b795f2dcb8a2a687cd9e21fd4b1ed3f74e41f0dc81eb7cf814d3ed2b56756a1c39d3379116025c7674441aaae0b612d
-  languageName: node
-  linkType: hard
-
-"@expo/env@npm:~1.0.5":
-  version: 1.0.5
-  resolution: "@expo/env@npm:1.0.5"
-  dependencies:
-    chalk: "npm:^4.0.0"
-    debug: "npm:^4.3.4"
-    dotenv: "npm:~16.4.5"
-    dotenv-expand: "npm:~11.0.6"
-    getenv: "npm:^1.0.0"
-  checksum: 10/4e75d0a519f10b8d0b886c4827b5314d4bee491b2c03df9d027349eb441bc84886e4a20b4b67b859e7ecba67e708c393203e43fae770f471fba1025cca73f540
   languageName: node
   linkType: hard
 
@@ -2810,7 +2747,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/json-file@npm:^9.1.4, @expo/json-file@npm:~9.1.4":
+"@expo/json-file@npm:^9.1.4":
   version: 9.1.4
   resolution: "@expo/json-file@npm:9.1.4"
   dependencies:
@@ -2959,17 +2896,6 @@ __metadata:
     base64-js: "npm:^1.2.3"
     xmlbuilder: "npm:^14.0.0"
   checksum: 10/7026e45744784539a0a3534dc393f4d7ccc04cc5a4c71a194f61aa9c5577599e27066c43e60c6611a4d34ebc30bec9380190be1685040bc72b037704fe2d2aec
-  languageName: node
-  linkType: hard
-
-"@expo/plist@npm:^0.3.4":
-  version: 0.3.4
-  resolution: "@expo/plist@npm:0.3.4"
-  dependencies:
-    "@xmldom/xmldom": "npm:^0.8.8"
-    base64-js: "npm:^1.2.3"
-    xmlbuilder: "npm:^15.1.1"
-  checksum: 10/63bb0b8b187452fcacc80f541e362ad3c867bd5489699d57db009718cd30288d1057286a42d682343659464ff77d610d6867865ccbce1f55a53f7911dbfbda03
   languageName: node
   linkType: hard
 
@@ -3815,7 +3741,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/next-theme": "workspace:*"
     "@tamagui/toast": "workspace:*"
-    expo-constants: "npm:~17.1.6"
+    expo-constants: "npm:~18.0.10"
     react: "npm:*"
     tamagui: "workspace:*"
   peerDependencies:
@@ -7361,7 +7287,7 @@ __metadata:
     react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:0.81.5"
     react-native-reanimated: "npm:~4.1.1"
-    react-native-svg: "npm:15.11.2"
+    react-native-svg: "npm:15.12.1"
     react-native-worklets: "npm:0.5.1"
     stripe: "npm:^9.1.0"
     subset-font: "npm:^2.1.0"
@@ -7648,7 +7574,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     react: "npm:*"
-    react-native-svg: "npm:15.11.2"
+    react-native-svg: "npm:15.12.1"
   peerDependencies:
     react: "*"
     react-native-svg: ">=12"
@@ -7855,7 +7781,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/stacks": "workspace:*"
-    expo-linear-gradient: "npm:~14.1.5"
+    expo-linear-gradient: "npm:~15.0.7"
     react: "npm:*"
     react-native: "npm:0.81.5"
   peerDependencies:
@@ -7911,7 +7837,7 @@ __metadata:
     lucide-static: "npm:^0.508.0"
     prop-types: "npm:^15.7.2"
     react: "npm:*"
-    react-native-svg: "npm:15.11.2"
+    react-native-svg: "npm:15.12.1"
     uppercamelcase: "npm:^3.0.0"
   peerDependencies:
     react: "*"
@@ -8344,7 +8270,7 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/toast": "workspace:*"
-    expo-constants: "npm:~17.1.6"
+    expo-constants: "npm:~18.0.10"
     expo-image: "npm:^1.5.1"
     react: "npm:*"
     solito: "npm:^4.3.0"
@@ -8561,7 +8487,7 @@ __metadata:
     esbuild-loader: "npm:^4.2.2"
     null-loader: "npm:^4.0.1"
     react: "npm:*"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     react-test-renderer: "npm:^19.0.0"
     style-loader: "npm:^3.3.3"
     typescript: "npm:~5.9.2"
@@ -8634,7 +8560,7 @@ __metadata:
     null-loader: "npm:^4.0.1"
     react: "npm:*"
     react-native: "npm:0.81.5"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     typescript: "npm:~5.9.2"
   peerDependencies:
     react: "*"
@@ -9150,7 +9076,7 @@ __metadata:
     esm-resolve: "npm:^1.0.8"
     fs-extra: "npm:^11.2.0"
     outdent: "npm:^0.8.0"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     vite: "npm:^7.1.12"
   peerDependencies:
     vite: "*"
@@ -11325,9 +11251,9 @@ __metadata:
     "@types/react": "npm:~19.1.10"
     "@types/react-native": "npm:^0.73.0"
     burnt: "npm:^0.12.2"
-    expo-constants: "npm:~17.1.6"
-    expo-linking: "npm:~7.1.4"
-    react-native-safe-area-context: "npm:5.4.0"
+    expo-constants: "npm:~18.0.10"
+    expo-linking: "npm:~8.0.8"
+    react-native-safe-area-context: "npm:~5.6.0"
     solito: "npm:^4.3.0"
   languageName: unknown
   linkType: soft
@@ -15727,19 +15653,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-constants@npm:~17.1.6":
-  version: 17.1.6
-  resolution: "expo-constants@npm:17.1.6"
-  dependencies:
-    "@expo/config": "npm:~11.0.9"
-    "@expo/env": "npm:~1.0.5"
-  peerDependencies:
-    expo: "*"
-    react-native: "*"
-  checksum: 10/13f52198286dee3bc1746a34b9b952d8d53687bf3c2e0d34f3c7f7d78ed4bac79bb6083b14e46b829251da96226bd8e8a30e02922ad93940a11fc81808d92551
-  languageName: node
-  linkType: hard
-
 "expo-constants@npm:~18.0.10, expo-constants@npm:~18.0.8, expo-constants@npm:~18.0.9":
   version: 18.0.10
   resolution: "expo-constants@npm:18.0.10"
@@ -15824,17 +15737,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:~14.1.5":
-  version: 14.1.5
-  resolution: "expo-linear-gradient@npm:14.1.5"
-  peerDependencies:
-    expo: "*"
-    react: "*"
-    react-native: "*"
-  checksum: 10/f58133151908b344950b4ca7c7096209b6001ae11d1701da989759637838d859d45150be180c93550b3a89f90ad9887ae595ba7122da8d58959b7bb89d599886
-  languageName: node
-  linkType: hard
-
 "expo-linear-gradient@npm:~15.0.7":
   version: 15.0.7
   resolution: "expo-linear-gradient@npm:15.0.7"
@@ -15843,19 +15745,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/a829d45e9d9a72c1a75238d142148fa25eb9f2d0b6ee9aa6b15b2dbb2d355b51b0c7749efd92bdf9c38b28cad00f6f1a919658d497d54ec1df69a471a9584d12
-  languageName: node
-  linkType: hard
-
-"expo-linking@npm:~7.1.4":
-  version: 7.1.5
-  resolution: "expo-linking@npm:7.1.5"
-  dependencies:
-    expo-constants: "npm:~17.1.6"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/6fb186b35e9fdbe0f316e17e35b5e238bc844d9ac6b88da12fbea9ba0d834b565d219d39b21fd0fd2f4038b28faa73fb75a33a446b7286b7204c94711b322016
   languageName: node
   linkType: hard
 
@@ -18297,7 +18186,7 @@ __metadata:
     "@vitejs/plugin-react-swc": "npm:^4.2.0"
     async-retry: "npm:1.3.1"
     react-dom: "npm:*"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     tamagui: "workspace:*"
     vite: "npm:^7.1.12"
     wait-port: "npm:^0.3.0"
@@ -22138,7 +22027,7 @@ __metadata:
     react: "npm:*"
     react-dom: "npm:*"
     react-native: "npm:0.81.5"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
     tamagui: "workspace:*"
   languageName: unknown
   linkType: soft
@@ -24448,16 +24337,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:5.4.0":
-  version: 5.4.0
-  resolution: "react-native-safe-area-context@npm:5.4.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/3b94e0a39398f23f4cbec2e49ebfd58c4e56f1d4157fda613c3bab66924a4e71ed6665a346dd71fd04ebd40e00f606f10d5a973b2616be4bfa0a422b361a425f
-  languageName: node
-  linkType: hard
-
 "react-native-safe-area-context@npm:~5.6.0":
   version: 5.6.2
   resolution: "react-native-safe-area-context@npm:5.6.2"
@@ -24482,20 +24361,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:15.11.2":
-  version: 15.11.2
-  resolution: "react-native-svg@npm:15.11.2"
-  dependencies:
-    css-select: "npm:^5.1.0"
-    css-tree: "npm:^1.1.3"
-    warn-once: "npm:0.1.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/bab86df8fdd4f500ad3f242558726693b0409b5e9b2a97cb3e9b5c1dfdcef01fe73fd36f01926ef20b19f99928b6ab1fb9e942bbeb1308aab27aa0d6c4877a5e
-  languageName: node
-  linkType: hard
-
 "react-native-svg@npm:15.12.1":
   version: 15.12.1
   resolution: "react-native-svg@npm:15.12.1"
@@ -24507,25 +24372,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/aa7b3a54cf2eb52aeb1322ba4a3f63176d4da0725ea4b9ec0051a59df0a511dc189fd101abf7993e94676c1cdea736e4abb207a0aea6f3083b5982c48e4648ac
-  languageName: node
-  linkType: hard
-
-"react-native-web@npm:^0.20.0":
-  version: 0.20.0
-  resolution: "react-native-web@npm:0.20.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.18.6"
-    "@react-native/normalize-colors": "npm:^0.74.1"
-    fbjs: "npm:^3.0.4"
-    inline-style-prefixer: "npm:^7.0.1"
-    memoize-one: "npm:^6.0.0"
-    nullthrows: "npm:^1.1.1"
-    postcss-value-parser: "npm:^4.2.0"
-    styleq: "npm:^0.1.3"
-  peerDependencies:
-    react: ^18.0.0 || ^19.0.0
-    react-dom: ^18.0.0 || ^19.0.0
-  checksum: 10/2a2e84ca647b1b1422941f5d8e0a4f513ad61a34c5e47fb6888fc8ca3aca5cc105bc0c6207a3db4727a8333dfd9c7b27eb8d2acdab3bd4ca1abc6fe32459da92
   languageName: node
   linkType: hard
 
@@ -27471,7 +27317,7 @@ __metadata:
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
     react-native: "npm:0.81.5"
-    react-native-web: "npm:^0.20.0"
+    react-native-web: "npm:^0.21.0"
   peerDependencies:
     react: "*"
     react-native: "*"

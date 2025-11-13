@@ -20,7 +20,7 @@
     "@my/config": "workspace:^",
     "@tamagui/next-theme": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "expo-constants": "~17.1.6",
+    "expo-constants": "~18.0.10",
     "tamagui": "workspace:*"
   },
   "devDependencies": {

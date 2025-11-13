@@ -44,7 +44,7 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": "*",
-    "react-native-web": "^0.20.0",
+    "react-native-web": "^0.21.0",
     "react-test-renderer": "^19.0.0",
     "style-loader": "^3.3.3",
     "typescript": "~5.9.2",

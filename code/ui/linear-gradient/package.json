@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "expo-linear-gradient": "~14.1.5",
+    "expo-linear-gradient": "~15.0.7",
     "react": "*",
     "react-native": "0.81.5"
   },

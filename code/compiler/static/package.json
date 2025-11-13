@@ -72,7 +72,7 @@
     "fs-extra": "^11.2.0",
     "invariant": "^2.2.4",
     "js-yaml": "^4.1.0",
-    "react-native-web": "^0.20.0"
+    "react-native-web": "^0.21.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
