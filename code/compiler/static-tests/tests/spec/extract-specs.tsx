@@ -341,3 +341,48 @@ export function Test16(props: TestProps) {
     />
   )
 }
+
+// flexWrap and other flex properties
+export function TestFlexWrap() {
+  return (
+    <XStack
+      flexWrap="wrap"
+      flexDirection="row"
+      gap="$2"
+    >
+      {child}
+    </XStack>
+  )
+}
+
+// flexWrap with conditional
+export function TestFlexWrapConditional(props: TestProps) {
+  return (
+    <XStack
+      flexWrap={props.conditional ? 'wrap' : 'nowrap'}
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="space-between"
+    >
+      {child}
+    </XStack>
+  )
+}
+
+// multiple flex properties together
+export function TestFlexProperties() {
+  return (
+    <YStack
+      flexDirection="column"
+      flexWrap="wrap"
+      flexGrow={1}
+      flexShrink={0}
+      flexBasis="auto"
+      alignItems="stretch"
+      justifyContent="flex-start"
+      alignContent="flex-start"
+    >
+      {child}
+    </YStack>
+  )
+}

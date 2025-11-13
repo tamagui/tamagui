@@ -288,3 +288,91 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
   </span>
 </div>
 `;
+
+exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <div
+      class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fw-wrap _fd-row _gap-t-space-2 "
+    >
+      <span
+        class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+      >
+        hello world
+      </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;
+
+exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <div
+      class="_dsp-flex _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _ai-center _jc-space-betwe3241 _fw-wrap "
+    >
+      <span
+        class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+      >
+        hello world
+      </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;
+
+exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <div
+      class="_dsp-flex _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _ai-center _jc-space-betwe3241 _fw-nowrap "
+    >
+      <span
+        class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+      >
+        hello world
+      </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;
+
+exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <div
+      class="_dsp-flex _bxs-border-box _pos-relative _mih-0px _miw-0px _fd-column _fw-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start "
+    >
+      <span
+        class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+      >
+        hello world
+      </span>
+    </div>
+    <div
+      style="display: contents;"
+    />
+  </span>
+</div>
+`;

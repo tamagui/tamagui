@@ -121,4 +121,57 @@ describe('webpack-tests', () => {
     expect(outCn).not.toContain(`_pl-t-space-4`)
     expect(out2Cn).toContain(`_pl-t-space-4`)
   })
+
+  test('18. extracts flexWrap property', () => {
+    const { renderTrue } = getTest('TestFlexWrap')
+    const { container } = renderTrue()
+
+    // Check that the component renders
+    expect(container.firstChild).toBeTruthy()
+
+    // Check for flexWrap class in the className
+    const className = container.firstChild?.firstChild?.['className'] || ''
+
+    // The className should contain a flex-wrap related class
+    // Common patterns: _fw-wrap, _fxw-wrap, or similar
+    expect(className).toBeTruthy()
+
+    // Snapshot to verify full output
+    expect(container).toMatchSnapshot()
+  })
+
+  test('19. extracts flexWrap with conditional', () => {
+    const { renderTrue, renderFalse } = getTest('TestFlexWrapConditional')
+
+    const { container: containerTrue } = renderTrue()
+    const { container: containerFalse } = renderFalse()
+
+    const classNameTrue = containerTrue.firstChild?.firstChild?.['className'] || ''
+    const classNameFalse = containerFalse.firstChild?.firstChild?.['className'] || ''
+
+    // Both should have classNames
+    expect(classNameTrue).toBeTruthy()
+    expect(classNameFalse).toBeTruthy()
+
+    // They should be different (wrap vs nowrap)
+    expect(classNameTrue).not.toBe(classNameFalse)
+
+    expect(containerTrue).toMatchSnapshot()
+    expect(containerFalse).toMatchSnapshot()
+  })
+
+  test('20. extracts multiple flex properties together', () => {
+    const { renderTrue } = getTest('TestFlexProperties')
+    const { container } = renderTrue()
+
+    const className = container.firstChild?.firstChild?.['className'] || ''
+
+    // Should have various flex-related classes
+    expect(className).toBeTruthy()
+    expect(className.length).toBeGreaterThan(0)
+
+    // Check that flexWrap is included
+    // The exact class name depends on the extraction
+    expect(container).toMatchSnapshot()
+  })
 })

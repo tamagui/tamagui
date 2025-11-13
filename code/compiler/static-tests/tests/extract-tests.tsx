@@ -66,4 +66,46 @@ describe('extract-tests', () => {
       styles2.some((x) => x[StyleObjectProperty] === 'borderRightStyle')
     ).toBeTruthy()
   })
+
+  test('handles flexWrap property', () => {
+    const style = {
+      flexWrap: 'wrap',
+    }
+    const styles = getCSSStylesAtomic(style)
+    const flexWrapStyle = styles.find((x) => x[StyleObjectProperty] === 'flexWrap')
+    expect(!!flexWrapStyle).toBeTruthy()
+    expect(flexWrapStyle![StyleObjectValue]).toBe('wrap')
+    expect(flexWrapStyle![StyleObjectRules][0]).toContain('flex-wrap')
+  })
+
+  test('handles various flex properties', () => {
+    const style = {
+      flexWrap: 'wrap',
+      flexDirection: 'row',
+      flexGrow: 1,
+      flexShrink: 0,
+      flexBasis: 'auto',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    }
+    const styles = getCSSStylesAtomic(style)
+
+    expect(styles.find((x) => x[StyleObjectProperty] === 'flexWrap')?.[StyleObjectValue]).toBe('wrap')
+    expect(styles.find((x) => x[StyleObjectProperty] === 'flexDirection')?.[StyleObjectValue]).toBe('row')
+    expect(styles.find((x) => x[StyleObjectProperty] === 'flexGrow')?.[StyleObjectValue]).toBe(1)
+    expect(styles.find((x) => x[StyleObjectProperty] === 'flexShrink')?.[StyleObjectValue]).toBe(0)
+    expect(styles.find((x) => x[StyleObjectProperty] === 'flexBasis')?.[StyleObjectValue]).toBe('auto')
+    expect(styles.find((x) => x[StyleObjectProperty] === 'alignItems')?.[StyleObjectValue]).toBe('center')
+    expect(styles.find((x) => x[StyleObjectProperty] === 'justifyContent')?.[StyleObjectValue]).toBe('space-between')
+  })
+
+  test('handles flexWrap variations', () => {
+    const wrapStyle = getCSSStylesAtomic({ flexWrap: 'wrap' })
+    const nowrapStyle = getCSSStylesAtomic({ flexWrap: 'nowrap' })
+    const wrapReverseStyle = getCSSStylesAtomic({ flexWrap: 'wrap-reverse' })
+
+    expect(wrapStyle[0][StyleObjectValue]).toBe('wrap')
+    expect(nowrapStyle[0][StyleObjectValue]).toBe('nowrap')
+    expect(wrapReverseStyle[0][StyleObjectValue]).toBe('wrap-reverse')
+  })
 })
