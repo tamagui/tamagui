@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/collection",
-  "version": "1.137.1",
+  "version": "1.137.2",
   "type": "module",
   "sideEffects": [
     "*.css"
