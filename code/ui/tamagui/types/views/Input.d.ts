@@ -96,8 +96,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined | undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined | undefined;
-    onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined | undefined;
-    onBlur?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined | undefined;
+    onFocus?: ((e: import("react-native").FocusEvent) => void) | undefined | undefined;
+    onBlur?: ((e: import("react-native").BlurEvent) => void) | undefined | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined | undefined;
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined | undefined;
     focusable?: boolean | undefined | undefined;
@@ -150,6 +150,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     'aria-labelledby'?: string | undefined | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined | undefined;
     'aria-live'?: ("polite" | "assertive" | "off") | undefined | undefined;
+    screenReaderFocusable?: boolean | undefined | undefined;
     accessibilityElementsHidden?: boolean | undefined | undefined;
     accessibilityViewIsModal?: boolean | undefined | undefined;
     onAccessibilityEscape?: (() => void) | undefined | undefined;
@@ -159,6 +160,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     accessibilityLanguage?: string | undefined | undefined;
     accessibilityShowsLargeContentViewer?: boolean | undefined | undefined;
     accessibilityLargeContentTitle?: string | undefined | undefined;
+    accessibilityRespondsToUserInteraction?: boolean | undefined | undefined;
     target?: string | undefined;
     htmlFor?: string | undefined;
     asChild?: boolean | "except-style" | "except-style-web" | "web" | undefined;
@@ -219,13 +221,13 @@ export declare function useInputProps(props: InputProps, ref: any): {
     inputMode?: import("react-native").InputModeOptions | undefined;
     maxLength?: number | undefined | undefined;
     multiline?: boolean | undefined | undefined;
-    onChange?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputChangeEventData>) => void) | undefined | undefined;
-    onContentSizeChange?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputContentSizeChangeEventData>) => void) | undefined | undefined;
-    onEndEditing?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputEndEditingEventData>) => void) | undefined | undefined;
-    onSelectionChange?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputSelectionChangeEventData>) => void) | undefined | undefined;
-    onSubmitEditing?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputSubmitEditingEventData>) => void) | undefined | undefined;
-    onScroll?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void) | undefined | undefined;
-    onKeyPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputKeyPressEventData>) => void) | undefined | undefined;
+    onChange?: ((e: import("react-native").TextInputChangeEvent) => void) | undefined | undefined;
+    onContentSizeChange?: ((e: import("react-native").TextInputContentSizeChangeEvent) => void) | undefined | undefined;
+    onEndEditing?: ((e: import("react-native").TextInputEndEditingEvent) => void) | undefined | undefined;
+    onSelectionChange?: ((e: import("react-native").TextInputSelectionChangeEvent) => void) | undefined | undefined;
+    onSubmitEditing?: ((e: import("react-native").TextInputSubmitEditingEvent) => void) | undefined | undefined;
+    onScroll?: ((e: import("react-native").TextInputScrollEvent) => void) | undefined | undefined;
+    onKeyPress?: ((e: import("react-native").TextInputKeyPressEvent) => void) | undefined | undefined;
     placeholder?: string | undefined | undefined;
     readOnly: boolean | undefined;
     returnKeyType?: import("react-native").ReturnKeyTypeOptions | undefined;
@@ -237,6 +239,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
         end?: number | undefined;
     } | undefined | undefined;
     inputAccessoryViewID?: string | undefined | undefined;
+    inputAccessoryViewButtonLabel?: string | undefined | undefined;
     disableKeyboardShortcuts?: boolean | undefined | undefined;
     clearButtonMode?: "never" | "while-editing" | "unless-editing" | "always" | undefined | undefined;
     clearTextOnFocus?: boolean | undefined | undefined;
