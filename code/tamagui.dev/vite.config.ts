@@ -81,13 +81,8 @@ export default {
 
   plugins: [
     tamaguiPlugin({
+      // see tamagui.build.ts
       optimize: true,
-      components: ['tamagui'],
-      logTimings: true,
-      config: '@tamagui/tamagui-dev-config',
-      outputCSS: './tamagui.css',
-      // bento lists some last issues
-      // useReactNativeWebLite: true,
     }),
 
     one({

@@ -73,9 +73,7 @@ export async function loadTamagui(
       return bundleInfo
     }
 
-    if (process.env.NODE_ENV === 'development') {
-      await regenerateConfig(props, bundleInfo)
-    }
+    await regenerateConfig(props, bundleInfo)
 
     resolvePromise(bundleInfo)
     return bundleInfo
