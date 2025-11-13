@@ -78,7 +78,7 @@
     "@tamagui/use-store": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
-    "@vxrn/color-scheme": "^1.1.538",
+    "@vxrn/color-scheme": "^1.2.16",
     "awesome-phonenumber": "^6.4.0",
     "expo": "^54.0.23",
     "expo-document-picker": "~14.0.7",
