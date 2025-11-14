@@ -10,7 +10,7 @@
     "react-dom": "^18.3.1",
     "react-refresh": "^0.14.0",
     "react-native-svg": "15.11.2",
-    "react-native-web": "~0.19.12"
+    "react-native-web": "^0.20.0"
   },
   "dependencies": {
     "@tamagui/cli": "workspace:*"
