@@ -24,10 +24,10 @@
     "@swc/core": "1.14.0"
   },
   "scripts": {
-    "bento:android": "yarn profile react-18 && yarn workspace @tamagui/bento android",
-    "bento:ios": "yarn profile react-18 && yarn workspace @tamagui/bento ios",
+    "bento:android": "yarn workspace @tamagui/bento android",
+    "bento:ios": "yarn workspace @tamagui/bento ios",
     "bento:web": "yarn workspace @tamagui/bento dev:web",
-    "bento": "yarn profile react-18 && yarn workspace @tamagui/bento start",
+    "bento": "yarn workspace @tamagui/bento start",
     "build:app": "./scripts/ci-build-app.sh",
     "build:force": "yarn clean:build && yarn build -- --force",
     "build:js": "yarn build -- --force --skip-types",
@@ -64,7 +64,7 @@
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
     "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink start:web",
-    "kitchen-sink": "yarn profile react-18 && yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",

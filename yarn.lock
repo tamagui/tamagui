@@ -2960,13 +2960,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/vector-icons@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "@expo/vector-icons@npm:13.0.0"
-  checksum: 10/88e8a77f14eea19c675a3b95c9805f1df76662ea62d2e0022f5a8f5e85293ce2e02e7286678243c56772f7e5d7abfd23b3475df05ce59378353178e1c2b23f6e
-  languageName: node
-  linkType: hard
-
 "@expo/vector-icons@npm:^15.0.3":
   version: 15.0.3
   resolution: "@expo/vector-icons@npm:15.0.3"
@@ -8264,14 +8257,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-ui@workspace:code/packages/sandbox-ui"
   dependencies:
-    "@expo/vector-icons": "npm:^13.0.0"
+    "@expo/vector-icons": "npm:^15.0.3"
     "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/toast": "workspace:*"
     expo-constants: "npm:~18.0.10"
-    expo-image: "npm:^1.5.1"
+    expo-image: "npm:~3.0.10"
     react: "npm:*"
     solito: "npm:^4.3.0"
     tamagui: "workspace:*"
@@ -15718,12 +15711,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-image@npm:^1.5.1":
-  version: 1.13.0
-  resolution: "expo-image@npm:1.13.0"
+"expo-image@npm:~3.0.10":
+  version: 3.0.10
+  resolution: "expo-image@npm:3.0.10"
   peerDependencies:
     expo: "*"
-  checksum: 10/108abb4a4f42c78e50a56d9699e941aadc4677063899332b51e0edda220dc100cb5ccb501b5ae27f952bc53f9914ce8316cf0f82f9506b1b15e9bf87b6644cbb
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10/1dfcbaef52da559de640ab168507060184b8945ee9ca4b6f26dca392e4161e1590402ddf407ef36d7f9951fbb76a0f6cba064e1ef3ffa9a1b2bd6f278402cd1a
   languageName: node
   linkType: hard
 
