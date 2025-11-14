@@ -177,7 +177,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       colorLog(
         Color.FgYellow,
         `
-  ➡ [tamagui] built config and components (${Date.now() - start}ms)`
+  ➡ [tamagui] built config, components, prompt (${Date.now() - start}ms)`
       )
 
       if (process.env.DEBUG?.startsWith('tamagui')) {

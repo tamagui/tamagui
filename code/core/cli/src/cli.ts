@@ -52,6 +52,14 @@ const COMMAND_MAP = {
         ...options.tamaguiOptions,
         platform: 'web',
       })
+
+      // Also generate prompt to .tamagui/prompt.md
+      const { generatePrompt } = require('./generate-prompt')
+      const { join } = require('node:path')
+      await generatePrompt({
+        ...options,
+        output: join(options.paths.dotDir, 'prompt.md'),
+      })
     },
   },
 

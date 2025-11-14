@@ -11,7 +11,6 @@ export async function generatePrompt(options: GeneratePromptOptions) {
   const { paths, output } = options
 
   // Regenerate the config first
-  console.info('Regenerating Tamagui configuration...')
   process.env.TAMAGUI_KEEP_THEMES = '1'
   await loadTamagui({
     ...options.tamaguiOptions,
@@ -22,7 +21,9 @@ export async function generatePrompt(options: GeneratePromptOptions) {
   const configPath = join(paths.dotDir, 'tamagui.config.json')
 
   if (!FS.existsSync(configPath)) {
-    throw new Error(`Config file not found at ${configPath}. Please run 'tamagui generate' first.`)
+    throw new Error(
+      `Config file not found at ${configPath}. Please run 'tamagui generate' first.`
+    )
   }
 
   const config = await FS.readJSON(configPath)
@@ -34,7 +35,7 @@ export async function generatePrompt(options: GeneratePromptOptions) {
   const outputPath = output || join(process.cwd(), 'tamagui-prompt.md')
   await FS.writeFile(outputPath, markdown, 'utf-8')
 
-  console.info(`✓ Generated prompt file at ${outputPath}`)
+  console.info(`\n  ✓ Generated prompt file at ${outputPath}\n`)
 }
 
 function generateMarkdown(config: any): string {
@@ -42,7 +43,9 @@ function generateMarkdown(config: any): string {
 
   // Header
   sections.push('# Tamagui Configuration\n\n')
-  sections.push('This document provides an overview of the Tamagui configuration for this project.\n\n')
+  sections.push(
+    'This document provides an overview of the Tamagui configuration for this project.\n\n'
+  )
 
   // Get shorthands for use throughout the document
   const shorthands = config.tamaguiConfig?.shorthands || {}
@@ -64,11 +67,15 @@ function generateMarkdown(config: any): string {
   const settings = config.tamaguiConfig?.settings || {}
   if (Object.keys(settings).length > 0) {
     sections.push('## Configuration Settings\n\n')
-    sections.push('**IMPORTANT:** These settings affect how you write Tamagui code in this project.\n\n')
+    sections.push(
+      '**IMPORTANT:** These settings affect how you write Tamagui code in this project.\n\n'
+    )
 
     if (settings.defaultFont) {
       sections.push(`### Default Font: \`${settings.defaultFont}\`\n\n`)
-      sections.push(`All text components will use the "${settings.defaultFont}" font family by default.\n\n`)
+      sections.push(
+        `All text components will use the "${settings.defaultFont}" font family by default.\n\n`
+      )
     }
 
     if (settings.onlyAllowShorthands !== undefined) {
@@ -78,14 +85,18 @@ function generateMarkdown(config: any): string {
         sections.push('Full property names are not allowed. For example:\n')
         sections.push('- ✅ `<Stack w="$10" />` (correct)\n')
         sections.push('- ❌ `<Stack width="$10" />` (will error)\n\n')
-        sections.push('See the Shorthand Properties section below for all available shorthands.\n\n')
+        sections.push(
+          'See the Shorthand Properties section below for all available shorthands.\n\n'
+        )
       } else {
         sections.push('You can use either shorthand or full property names.\n\n')
       }
     }
 
     if (settings.themeClassNameOnRoot !== undefined) {
-      sections.push(`### Theme Class Name on Root: \`${settings.themeClassNameOnRoot}\`\n\n`)
+      sections.push(
+        `### Theme Class Name on Root: \`${settings.themeClassNameOnRoot}\`\n\n`
+      )
       if (settings.themeClassNameOnRoot) {
         sections.push('Theme classes are applied to the root HTML element.\n\n')
       }
@@ -93,7 +104,9 @@ function generateMarkdown(config: any): string {
 
     if (settings.maxDarkLightNesting !== undefined) {
       sections.push(`### Max Dark/Light Nesting: \`${settings.maxDarkLightNesting}\`\n\n`)
-      sections.push(`Maximum nesting depth for light/dark theme switching: ${settings.maxDarkLightNesting} levels.\n\n`)
+      sections.push(
+        `Maximum nesting depth for light/dark theme switching: ${settings.maxDarkLightNesting} levels.\n\n`
+      )
     }
 
     // Check for platform-specific settings
@@ -147,21 +160,20 @@ function generateMarkdown(config: any): string {
 
     // Check if other components start with this name followed by an uppercase letter
     const children = allComponents.filter(
-      other => other !== name &&
-      other.startsWith(name) &&
-      other[name.length]?.match(/[A-Z]/)
+      (other) =>
+        other !== name && other.startsWith(name) && other[name.length]?.match(/[A-Z]/)
     )
 
     if (children.length > 0) {
       // This is a base component with children
       componentGroups.set(name, new Set(children))
       processed.add(name)
-      children.forEach(child => processed.add(child))
+      children.forEach((child) => processed.add(child))
     }
   }
 
   // Collect standalone components (not part of any group)
-  const standaloneComponents = allComponents.filter(name => !processed.has(name))
+  const standaloneComponents = allComponents.filter((name) => !processed.has(name))
 
   componentsSection.push('## Components\n\n')
   componentsSection.push('The following components are available:\n\n')
@@ -169,7 +181,7 @@ function generateMarkdown(config: any): string {
   // Combine and sort all base components (both standalone and those with children)
   const allBaseComponents = [
     ...standaloneComponents,
-    ...Array.from(componentGroups.keys())
+    ...Array.from(componentGroups.keys()),
   ].sort()
 
   // Output components
@@ -192,9 +204,13 @@ function generateMarkdown(config: any): string {
   sections.push('## Shorthand Properties\n\n')
   sections.push('These shorthand properties are available for styling:\n\n')
 
-  const shorthandEntries = Object.entries(shorthands).sort(([a], [b]) => a.localeCompare(b))
+  const shorthandEntries = Object.entries(shorthands).sort(([a], [b]) =>
+    a.localeCompare(b)
+  )
 
-  sections.push(shorthandEntries.map(([short, full]) => `- \`${short}\` → \`${full}\``).join('\n'))
+  sections.push(
+    shorthandEntries.map(([short, full]) => `- \`${short}\` → \`${full}\``).join('\n')
+  )
   sections.push('\n\n')
 
   // Themes
@@ -226,7 +242,12 @@ function generateMarkdown(config: any): string {
       hierarchy.level1.add(parts[0])
 
       // Level 2: color names (blue, red, green, etc.)
-      if (parts.length > 1 && parts[1] && !parts[1].startsWith('alt') && parts[1] !== 'active') {
+      if (
+        parts.length > 1 &&
+        parts[1] &&
+        !parts[1].startsWith('alt') &&
+        parts[1] !== 'active'
+      ) {
         // Check if it's not a component by looking if it starts with uppercase
         if (parts[1][0] === parts[1][0].toLowerCase()) {
           hierarchy.level2.add(parts[1])
@@ -242,7 +263,11 @@ function generateMarkdown(config: any): string {
 
       // Components: parts that start with uppercase
       for (const part of parts) {
-        if (part[0] && part[0] === part[0].toUpperCase() && part[0] !== part[0].toLowerCase()) {
+        if (
+          part[0] &&
+          part[0] === part[0].toUpperCase() &&
+          part[0] !== part[0].toLowerCase()
+        ) {
           hierarchy.components.add(part)
         }
       }
@@ -258,31 +283,53 @@ function generateMarkdown(config: any): string {
 
   if (hierarchy.level1.size > 0) {
     sections.push('**Level 1 (Base):**\n\n')
-    sections.push(Array.from(hierarchy.level1).sort().map(name => `- ${name}`).join('\n'))
+    sections.push(
+      Array.from(hierarchy.level1)
+        .sort()
+        .map((name) => `- ${name}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
   if (hierarchy.level2.size > 0) {
     sections.push('**Level 2 (Color Schemes):**\n\n')
-    sections.push(Array.from(hierarchy.level2).sort().map(name => `- ${name}`).join('\n'))
+    sections.push(
+      Array.from(hierarchy.level2)
+        .sort()
+        .map((name) => `- ${name}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
   if (hierarchy.level3.size > 0) {
     sections.push('**Level 3 (Variants):**\n\n')
-    sections.push(Array.from(hierarchy.level3).sort().map(name => `- ${name}`).join('\n'))
+    sections.push(
+      Array.from(hierarchy.level3)
+        .sort()
+        .map((name) => `- ${name}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
   if (hierarchy.components.size > 0) {
     sections.push('**Component Themes:**\n\n')
-    sections.push(Array.from(hierarchy.components).sort().map(name => `- ${name}`).join('\n'))
+    sections.push(
+      Array.from(hierarchy.components)
+        .sort()
+        .map((name) => `- ${name}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
   // Add usage documentation
   sections.push('### Theme Usage\n\n')
-  sections.push('Themes are combined hierarchically. For example, `light_blue_alt1_Button` combines:\n')
+  sections.push(
+    'Themes are combined hierarchically. For example, `light_blue_alt1_Button` combines:\n'
+  )
   sections.push('- Base: `light`\n')
   sections.push('- Color: `blue`\n')
   sections.push('- Variant: `alt1`\n')
@@ -290,11 +337,11 @@ function generateMarkdown(config: any): string {
 
   sections.push('**Basic usage:**\n\n')
   sections.push('```tsx\n')
-  sections.push('import { Button, Theme } from \'tamagui\'\n\n')
+  sections.push("import { Button, Theme } from 'tamagui'\n\n")
   sections.push('// Apply a theme to components\n')
   sections.push('export default () => (\n')
   sections.push('  <Theme name="dark">\n')
-  sections.push('    <Button>I\'m a dark button</Button>\n')
+  sections.push("    <Button>I'm a dark button</Button>\n")
   sections.push('  </Theme>\n')
   sections.push(')\n\n')
   sections.push('// Themes nest and combine automatically\n')
@@ -310,7 +357,9 @@ function generateMarkdown(config: any): string {
   sections.push('**Accessing theme values:**\n\n')
   sections.push('Components can access theme values using `$` token syntax:\n\n')
   sections.push('```tsx\n')
-  sections.push(`<Stack ${getPropName('backgroundColor')}="$background" ${getPropName('color')}="$color" />\n`)
+  sections.push(
+    `<Stack ${getPropName('backgroundColor')}="$background" ${getPropName('color')}="$color" />\n`
+  )
   sections.push('```\n\n')
 
   sections.push('**Special props:**\n\n')
@@ -319,7 +368,9 @@ function generateMarkdown(config: any): string {
 
   // Tokens
   sections.push('## Tokens\n\n')
-  sections.push('Tokens are design system values that can be referenced using the `$` prefix.\n\n')
+  sections.push(
+    'Tokens are design system values that can be referenced using the `$` prefix.\n\n'
+  )
 
   const tokens = config.tamaguiConfig?.tokens || {}
 
@@ -335,7 +386,11 @@ function generateMarkdown(config: any): string {
       }
       return a.localeCompare(b)
     })
-    sections.push(spaceTokens.map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`).join('\n'))
+    sections.push(
+      spaceTokens
+        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
@@ -350,7 +405,11 @@ function generateMarkdown(config: any): string {
       }
       return a.localeCompare(b)
     })
-    sections.push(sizeTokens.map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`).join('\n'))
+    sections.push(
+      sizeTokens
+        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
@@ -365,7 +424,11 @@ function generateMarkdown(config: any): string {
       }
       return a.localeCompare(b)
     })
-    sections.push(radiusTokens.map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`).join('\n'))
+    sections.push(
+      radiusTokens
+        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
@@ -380,15 +443,25 @@ function generateMarkdown(config: any): string {
       }
       return a.localeCompare(b)
     })
-    sections.push(zIndexTokens.map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`).join('\n'))
+    sections.push(
+      zIndexTokens
+        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
   // Color tokens
   if (tokens.color) {
     sections.push('### Color Tokens\n\n')
-    const colorTokens = Object.entries(tokens.color).sort(([a], [b]) => a.localeCompare(b))
-    sections.push(colorTokens.map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`).join('\n'))
+    const colorTokens = Object.entries(tokens.color).sort(([a], [b]) =>
+      a.localeCompare(b)
+    )
+    sections.push(
+      colorTokens
+        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
+        .join('\n')
+    )
     sections.push('\n\n')
   }
 
@@ -397,11 +470,17 @@ function generateMarkdown(config: any): string {
   sections.push('Tokens can be used in component props with the `$` prefix:\n\n')
   sections.push('```tsx\n')
   sections.push('// Space tokens - for margin, padding, gap\n')
-  sections.push(`<Stack ${getPropName('padding')}="$4" ${getPropName('gap')}="$2" ${getPropName('margin')}="$3" />\n\n`)
+  sections.push(
+    `<Stack ${getPropName('padding')}="$4" ${getPropName('gap')}="$2" ${getPropName('margin')}="$3" />\n\n`
+  )
   sections.push('// Size tokens - for width, height, dimensions\n')
-  sections.push(`<Stack ${getPropName('width')}="$10" ${getPropName('height')}="$6" />\n\n`)
+  sections.push(
+    `<Stack ${getPropName('width')}="$10" ${getPropName('height')}="$6" />\n\n`
+  )
   sections.push('// Color tokens - for colors and backgrounds\n')
-  sections.push(`<Stack ${getPropName('backgroundColor')}="$blue5" ${getPropName('color')}="$gray12" />\n\n`)
+  sections.push(
+    `<Stack ${getPropName('backgroundColor')}="$blue5" ${getPropName('color')}="$gray12" />\n\n`
+  )
   sections.push('// Radius tokens - for border-radius\n')
   sections.push(`<Stack ${getPropName('borderRadius')}="$4" />\n`)
   sections.push('```\n\n')
@@ -420,18 +499,22 @@ function generateMarkdown(config: any): string {
     sections.push('\n')
 
     sections.push('### Media Query Usage\n\n')
-    sections.push('Media queries can be used as style props or with the `useMedia` hook:\n\n')
+    sections.push(
+      'Media queries can be used as style props or with the `useMedia` hook:\n\n'
+    )
     sections.push('```tsx\n')
     sections.push('// As style props (prefix with $)\n')
 
     // Get first media query name as example
     const firstMediaName = mediaEntries[0]?.[0]
     if (firstMediaName) {
-      sections.push(`<Stack ${getPropName('width')}="100%" $${firstMediaName}={{ ${getPropName('width')}: "50%" }} />\n\n`)
+      sections.push(
+        `<Stack ${getPropName('width')}="100%" $${firstMediaName}={{ ${getPropName('width')}: "50%" }} />\n\n`
+      )
     }
 
     sections.push('// Using the useMedia hook\n')
-    sections.push('import { useMedia } from \'tamagui\'\n\n')
+    sections.push("import { useMedia } from 'tamagui'\n\n")
     sections.push('const media = useMedia()\n')
     if (firstMediaName) {
       sections.push(`if (media.${firstMediaName}) {\n`)
@@ -448,7 +531,7 @@ function generateMarkdown(config: any): string {
 
     const fonts = config.tamaguiConfig.fonts
     const fontNames = Object.keys(fonts).sort()
-    sections.push(fontNames.map(name => `- ${name}`).join('\n'))
+    sections.push(fontNames.map((name) => `- ${name}`).join('\n'))
     sections.push('\n\n')
   }
 
@@ -460,7 +543,7 @@ function generateMarkdown(config: any): string {
     const animations = config.tamaguiConfig.animations
     if (animations.animations) {
       const animationNames = Object.keys(animations.animations).sort()
-      sections.push(animationNames.map(name => `- ${name}`).join('\n'))
+      sections.push(animationNames.map((name) => `- ${name}`).join('\n'))
       sections.push('\n\n')
     }
   }
