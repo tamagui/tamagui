@@ -153,9 +153,9 @@ export function Test(props) {
 `;
 
 exports[`ternaries + font families works 1`] = `
-"const _cn3 = "_ff-f-family _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px ";
-const _cn2 = "font_body _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
-const _cn = "font_heading _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
+"const _cn3 = "_ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px ";
+const _cn2 = "font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
+const _cn = "font_heading _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
 import { Text } from '@tamagui/core';
 export function Test(props) {
   return <span className={!window ? _cn : window ? _cn2 : _cn3} />;
@@ -167,7 +167,7 @@ exports[`ternaries + font families works 2`] = `
 :root ._dsp-inline{display:inline;}
 :root ._bxs-border-box{box-sizing:border-box;}
 :root ._ww-break-word{word-wrap:break-word;}
-:root ._whiteSpace-pre-wrap{white-space:pre-wrap;}
+:root ._ws-pre-wrap{white-space:pre-wrap;}
 :root ._mt-0px{margin-top:0px;}
 :root ._mr-0px{margin-right:0px;}
 :root ._mb-0px{margin-bottom:0px;}

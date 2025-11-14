@@ -2,7 +2,7 @@
 
 exports[`extract-tests > converts a style object to class names 1`] = `":root ._bg-red{background-color:red;}"`;
 
-exports[`extract-tests > converts a style object to class names 2`] = `":root ._transform-rotateY10de41674{transform:rotateY(10deg);}"`;
+exports[`extract-tests > converts a style object to class names 2`] = `":root ._tr-rotateY10de41674{transform:rotateY(10deg);}"`;
 
 exports[`extract-tests > converts a style object to class names 3`] = `":root ._bxsh-0px0px10pxr896772428{box-shadow:0px 0px 10px rgba(255,0,0,1);}"`;
 
