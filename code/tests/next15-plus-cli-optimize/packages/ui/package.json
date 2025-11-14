@@ -8,6 +8,14 @@
   "types": "./src",
   "main": "src/index.tsx",
   "module:jsx": "src",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./components/CustomToast": "./src/CustomToast.tsx",
+    "./components/MyComponent": "./src/MyComponent.tsx",
+    "./components/NativeToast": "./src/NativeToast.tsx",
+    "./components/SwitchRouterButton": "./src/SwitchRouterButton.tsx",
+    "./components/SwitchThemeButton": "./src/SwitchThemeButton.tsx"
+  },
   "files": [
     "types",
     "dist"

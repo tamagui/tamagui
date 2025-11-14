@@ -4,6 +4,7 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/index.cjs",
+  "type": "commonjs",
   "bin": {
     "tama": "./dist/index.cjs",
     "tamagui": "./dist/index.cjs"

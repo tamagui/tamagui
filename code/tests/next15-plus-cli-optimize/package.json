@@ -5,6 +5,10 @@
     "./apps/*",
     "./packages/*"
   ],
+  "scripts": {
+    "test": "vitest",
+    "test:once": "vitest run"
+  },
   "resolutions": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -14,6 +18,10 @@
   },
   "dependencies": {
     "@tamagui/cli": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.1.0",
+    "vitest": "^4.0.4"
   },
   "version": "1.137.3"
 }

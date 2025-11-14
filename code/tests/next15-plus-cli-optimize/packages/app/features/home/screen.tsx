@@ -5,12 +5,12 @@ import {
   Paragraph,
   Separator,
   Sheet,
-  SwitchRouterButton,
-  SwitchThemeButton,
   useToastController,
   XStack,
   YStack,
 } from '@my/ui'
+import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
+import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { Platform } from 'react-native'

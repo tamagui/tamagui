@@ -1,4 +1,4 @@
-import { config } from '@my/config'
+import type { config } from '@my/config'
 
 export type Conf = typeof config
 

@@ -136,15 +136,16 @@ const COMMAND_MAP = {
     async run() {
       const { _, ...flags } = arg(this.flags)
       const [_command, dir] = _
-      const imported = await import('./build')
+      const { build } = require('./build.cjs')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      await imported['default'].build({
+      await build({
         ...options,
         dir,
         include: flags['--include'],
-        target: flags['--target'] || 'web',
+        // Default to building both web and native
+        target: (flags['--target'] as 'web' | 'native' | 'both' | undefined) || 'both',
         exclude: flags['--exclude'],
       })
     },

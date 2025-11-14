@@ -10,6 +10,7 @@
     "serve": "NODE_ENV=production next start --port 8151"
   },
   "dependencies": {
+    "@tamagui/cli": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "app": "workspace:^",
