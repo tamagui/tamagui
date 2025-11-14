@@ -337,7 +337,6 @@ function generateMarkdown(config: any): string {
 
   sections.push('**Basic usage:**\n\n')
   sections.push('```tsx\n')
-  sections.push("import { Button, Theme } from 'tamagui'\n\n")
   sections.push('// Apply a theme to components\n')
   sections.push('export default () => (\n')
   sections.push('  <Theme name="dark">\n')
@@ -514,7 +513,6 @@ function generateMarkdown(config: any): string {
     }
 
     sections.push('// Using the useMedia hook\n')
-    sections.push("import { useMedia } from 'tamagui'\n\n")
     sections.push('const media = useMedia()\n')
     if (firstMediaName) {
       sections.push(`if (media.${firstMediaName}) {\n`)
