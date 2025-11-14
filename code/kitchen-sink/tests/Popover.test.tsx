@@ -88,6 +88,9 @@ test('popover placement variations', async ({ page }) => {
     // Close by clicking outside (ESC key)
     await page.keyboard.press('Escape')
 
+    // Wait for exit animation to complete
+    await page.waitForTimeout(300)
+
     // Verify popover is closed
     await expect(content).not.toBeVisible()
   }
@@ -166,18 +169,21 @@ test('multiple popovers - opening one closes others', async ({ page }) => {
 
   // Open second popover (right) - should close the first one
   await rightTrigger.click()
+  await page.waitForTimeout(300) // Wait for previous popover to close
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).toBeVisible({ timeout: 5000 })
   await expect(topContent).not.toBeVisible()
 
   // Open third popover (top) - should close the second one
   await topTrigger.click()
+  await page.waitForTimeout(300) // Wait for previous popover to close
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).toBeVisible({ timeout: 5000 })
 
   // Close the top popover
   await page.keyboard.press('Escape')
+  await page.waitForTimeout(300) // Wait for exit animation
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).not.toBeVisible()
