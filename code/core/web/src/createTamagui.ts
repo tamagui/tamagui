@@ -207,47 +207,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   })()
 
-  // Built-in shorthands used internally for short classname generation
-  const builtinShorthands = {
-    fd: 'flexDirection',
-    fb: 'flexBasis',
-    bblr: 'borderBottomLeftRadius',
-    bbrr: 'borderBottomRightRadius',
-    fwr: 'flexWrap',
-    col: 'color',
-    ff: 'fontFamily',
-    fst: 'fontStyle',
-    tr: 'transform',
-    tt: 'textTransform',
-    td: 'textDecorationLine',
-    va: 'verticalAlign',
-    ws: 'whiteSpace',
-    wb: 'wordBreak',
-    ww: 'wordWrap',
-    brc: 'borderRightColor',
-    brw: 'borderRightWidth',
-    bs: 'borderStyle',
-    btc: 'borderTopColor',
-    btlr: 'borderTopLeftRadius',
-    btrr: 'borderTopRightRadius',
-    btw: 'borderTopWidth',
-    bw: 'borderWidth',
-    o: 'opacity',
-    cur: 'cursor',
-    pe: 'pointerEvents',
-    ov: 'overflow',
-    pos: 'position',
-    dsp: 'display',
-    fw: 'fontWeight',
-    fs: 'fontSize',
-    ls: 'letterSpacing',
-    lh: 'lineHeight',
-    bxs: 'boxSizing',
-    bxsh: 'boxShadow',
-    ox: 'overflowX',
-    oy: 'overflowY',
-  } as const
-
   // Keep track of user-provided shorthands separately
   const userShorthands = configIn.shorthands || {}
 
@@ -433,3 +392,44 @@ function getThemesDeduped(
 
   return dedupedThemes
 }
+
+// Built-in shorthands used internally for short classname generation
+const builtinShorthands = {
+  fd: 'flexDirection',
+  fb: 'flexBasis',
+  bblr: 'borderBottomLeftRadius',
+  bbrr: 'borderBottomRightRadius',
+  fwr: 'flexWrap',
+  col: 'color',
+  ff: 'fontFamily',
+  fst: 'fontStyle',
+  tr: 'transform',
+  tt: 'textTransform',
+  td: 'textDecorationLine',
+  va: 'verticalAlign',
+  ws: 'whiteSpace',
+  wb: 'wordBreak',
+  ww: 'wordWrap',
+  brc: 'borderRightColor',
+  brw: 'borderRightWidth',
+  bs: 'borderStyle',
+  btc: 'borderTopColor',
+  btlr: 'borderTopLeftRadius',
+  btrr: 'borderTopRightRadius',
+  btw: 'borderTopWidth',
+  bw: 'borderWidth',
+  o: 'opacity',
+  cur: 'cursor',
+  pe: 'pointerEvents',
+  ov: 'overflow',
+  pos: 'position',
+  dsp: 'display',
+  fw: 'fontWeight',
+  fs: 'fontSize',
+  ls: 'letterSpacing',
+  lh: 'lineHeight',
+  bxs: 'boxSizing',
+  bxsh: 'boxShadow',
+  ox: 'overflowX',
+  oy: 'overflowY',
+} as const

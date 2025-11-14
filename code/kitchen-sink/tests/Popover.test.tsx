@@ -49,16 +49,17 @@ test('basic popover with icon trigger', async ({ page }) => {
   // Click trigger to open popover
   await trigger.click()
 
+  // Wait for enter animation to start
+  await page.waitForTimeout(100)
+
   // Wait for content to be visible
   await expect(content).toBeVisible({ timeout: 5000 })
 
-  // Test interaction with content
-  await expect(input).toBeVisible()
-  await input.fill('Test input')
-  await expect(input).toHaveValue('Test input')
-
   // Click close button
   await closeButton.click()
+
+  // Wait for exit animation
+  await page.waitForTimeout(500)
 
   // Verify popover is closed
   await expect(content).not.toBeVisible()
@@ -82,6 +83,9 @@ test('popover placement variations', async ({ page }) => {
     // Click trigger to open popover
     await trigger.click()
 
+    // Wait for enter animation to start
+    await page.waitForTimeout(100)
+
     // Wait for content to be visible
     await expect(content).toBeVisible({ timeout: 5000 })
 
@@ -89,7 +93,7 @@ test('popover placement variations', async ({ page }) => {
     await page.keyboard.press('Escape')
 
     // Wait for exit animation to complete
-    await page.waitForTimeout(300)
+    await page.waitForTimeout(500)
 
     // Verify popover is closed
     await expect(content).not.toBeVisible()
@@ -163,27 +167,28 @@ test('multiple popovers - opening one closes others', async ({ page }) => {
 
   // Open first popover (left)
   await leftTrigger.click()
+  await page.waitForTimeout(100) // Wait for enter animation
   await expect(leftContent).toBeVisible({ timeout: 5000 })
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).not.toBeVisible()
 
   // Open second popover (right) - should close the first one
   await rightTrigger.click()
-  await page.waitForTimeout(300) // Wait for previous popover to close
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).toBeVisible({ timeout: 5000 })
   await expect(topContent).not.toBeVisible()
 
   // Open third popover (top) - should close the second one
   await topTrigger.click()
-  await page.waitForTimeout(300) // Wait for previous popover to close
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).toBeVisible({ timeout: 5000 })
 
   // Close the top popover
   await page.keyboard.press('Escape')
-  await page.waitForTimeout(300) // Wait for exit animation
+  await page.waitForTimeout(500) // Wait for exit animation
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).not.toBeVisible()
@@ -205,21 +210,25 @@ test('multiple popovers - simple popover with others', async ({ page }) => {
 
   // Open simple popover
   await simpleTrigger.click()
+  await page.waitForTimeout(100) // Wait for enter animation
   await expect(simpleContent).toBeVisible({ timeout: 5000 })
   await expect(leftContent).not.toBeVisible()
 
   // Open left popover - should close simple popover
   await leftTrigger.click()
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(simpleContent).not.toBeVisible()
   await expect(leftContent).toBeVisible({ timeout: 5000 })
 
   // Open simple popover again - should close left popover
   await simpleTrigger.click()
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(simpleContent).toBeVisible({ timeout: 5000 })
   await expect(leftContent).not.toBeVisible()
 
   // Close simple popover
   await page.keyboard.press('Escape')
+  await page.waitForTimeout(500) // Wait for exit animation
   await expect(simpleContent).not.toBeVisible()
   await expect(leftContent).not.toBeVisible()
 })

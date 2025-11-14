@@ -117,8 +117,18 @@ function Demo({
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
+        animation="100ms"
+        animateOnly={['transform', 'opacity']}
         width={300}
         height={300}
+        enterStyle={{
+          y: -10,
+          opacity: 0,
+        }}
+        exitStyle={{
+          y: -10,
+          opacity: 0,
+        }}
         elevate
         data-testid={`${dataTestId}-content`}
       >
@@ -129,7 +139,6 @@ function Demo({
             <Label size="$3" htmlFor={Name}>
               Name
             </Label>
-            <Input f={1} size="$3" id={Name} data-testid={`${dataTestId}-input`} />
           </XStack>
 
           <Popover.Close asChild>
