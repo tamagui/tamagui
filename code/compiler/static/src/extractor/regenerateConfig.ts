@@ -164,12 +164,23 @@ function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
   }
 
   // remove stuff we dont need to send
-  const { fontsParsed, getCSS, tokensParsed, themeConfig, ...cleanedConfig } =
-    next.tamaguiConfig
+  const {
+    fontsParsed,
+    getCSS,
+    tokensParsed,
+    themeConfig,
+    shorthands: _shorthands,
+    userShorthands,
+    ...cleanedConfig
+  } = next.tamaguiConfig
 
   return {
     components,
     nameToPaths,
-    tamaguiConfig: cleanedConfig,
+    tamaguiConfig: {
+      ...cleanedConfig,
+      // Output userShorthands as shorthands (excludes built-ins)
+      shorthands: userShorthands,
+    },
   }
 }

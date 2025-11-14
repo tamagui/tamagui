@@ -1206,6 +1206,7 @@ export type TamaguiInternalConfig<
     getNewCSS: GetCSS
     parsed: boolean
     inverseShorthands: Record<string, string>
+    userShorthands: C
     reactNative?: any
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
