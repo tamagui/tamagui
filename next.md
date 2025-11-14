@@ -1,3 +1,6 @@
+- v2 useTheme({ name: '' }) should remove since .get() doesnt match
+- release v5 config now
+
 - v2 - whitelist more web-only events like onKeyDown in types
   - react 19 only (can move some stuff to conditional use())
 

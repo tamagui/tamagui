@@ -6999,6 +6999,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/configs-test@workspace:code/tests/configs":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/configs-test@workspace:code/tests/configs"
+  dependencies:
+    "@tamagui/cli": "workspace:*"
+    "@tamagui/config": "workspace:*"
+    tamagui: "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/constants@workspace:*, @tamagui/constants@workspace:code/core/constants":
   version: 0.0.0-use.local
   resolution: "@tamagui/constants@workspace:code/core/constants"

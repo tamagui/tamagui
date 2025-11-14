@@ -125,19 +125,15 @@ const lastVersion: Record<string, string> = {}
 export function loadTamaguiBuildConfigSync(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ) {
-  const buildFilePath = tamaguiOptions?.buildFile ?? 'tamagui.build.ts'
+  const buildFilePath = tamaguiOptions?.buildFile ?? './tamagui.build.ts'
   if (fsExtra.existsSync(buildFilePath)) {
     const registered = registerRequire('web')
     try {
-      const out = require(buildFilePath).default
+      const out = require(
+        buildFilePath[0] === '.' ? join(process.cwd(), buildFilePath) : buildFilePath
+      ).default
       if (!out) {
         throw new Error(`No default export found in ${buildFilePath}: ${out}`)
-      }
-
-      if (tamaguiOptions?.config && out.config) {
-        throw new Error(
-          `You're configuring tamagui from both the plugin and tamagui.build.ts, please choose one or the other.`
-        )
       }
 
       tamaguiOptions = {
