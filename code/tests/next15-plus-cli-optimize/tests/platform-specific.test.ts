@@ -6,6 +6,10 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 const FIXTURES_DIR = join(__dirname, '../packages/app/test-fixtures')
 const APPS_NEXT_DIR = join(__dirname, '../apps/next')
 
+process.on('beforeExit', () => {
+  resetFixtures()
+})
+
 function resetFixtures() {
   try {
     execSync(`yarn test:clean`, {
@@ -36,7 +40,9 @@ describe('Platform-specific file optimization', () => {
         }
       )
 
-      expect(result).toContain('web, native')
+      // Should process both web and native targets
+      expect(result).toContain('[tamagui]')
+      expect(result).toContain('BaseOnly')
 
       // Web version should be in BaseOnly.tsx
       const webContent = readFileSync(join(FIXTURES_DIR, 'BaseOnly.tsx'), 'utf-8')

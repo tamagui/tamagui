@@ -137,7 +137,10 @@ export const build = async (
             extractor,
             source: originalSource,
             sourcePath,
-            options: buildOptions,
+            options: {
+              ...buildOptions,
+              platform: 'web',
+            },
             shouldPrintDebug: options.debug || false,
           })
 
@@ -180,7 +183,9 @@ export const build = async (
             nativeOutputPath = sourcePath.replace(/\.(tsx|jsx)$/, '.native.$1')
           }
 
-          await writeFile(nativeOutputPath, nativeOut.code, 'utf-8')
+          if (nativeOut.code) {
+            await writeFile(nativeOutputPath, nativeOut.code, 'utf-8')
+          }
         }
       })()
     )

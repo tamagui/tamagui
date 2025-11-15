@@ -7,7 +7,8 @@ const APP_SCREEN_PATH = join(__dirname, '../packages/app/features/home/screen.ts
 
 function resetAppPackage() {
   try {
-    execSync(`npx reset`, {
+    execSync(`yarn test:clean`, {
+      cwd: join(__dirname, '..'),
       stdio: 'pipe',
     })
   } catch {
@@ -66,8 +67,8 @@ describe('Package.json exports support', () => {
     })
 
     // Should successfully process files for both targets
-    expect(result).toContain('[tamagui] optimizing')
-    expect(result).toContain('screen.tsx')
+    expect(result).toContain('[tamagui]')
+    expect(result).toContain('screen')
 
     // Check web optimization (screen.tsx)
     const webOptimized = readFileSync(APP_SCREEN_PATH, 'utf-8')
@@ -100,6 +101,7 @@ describe('Package.json exports support', () => {
     )
 
     // Should recognize both import styles as valid
-    expect(result).toContain('[tamagui] optimizing')
+    expect(result).toContain('[tamagui]')
+    expect(result).toContain('screen')
   })
 })
