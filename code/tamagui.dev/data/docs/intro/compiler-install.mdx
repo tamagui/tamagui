@@ -4,14 +4,19 @@ description: Adding the compiler to your apps
 ---
 
 <IntroParagraph>
-  The Tamagui Compiler significantly improves performance of both web and native applications
-  through partial analysis and view flattening.
+  The Tamagui Compiler significantly improves performance of both web and native
+  applications through partial analysis and view flattening.
 </IntroParagraph>
 
-See the [Benchmarks](/docs/intro/benchmarks) or a more [in-depth background](/docs/intro/why-a-compiler). Note that Tamagui features work at compile-time and runtime, so installing the compiler is optional, and in fact we recommend only setting it up once you're ready for production.
+See the [Benchmarks](/docs/intro/benchmarks) or a more
+[in-depth background](/docs/intro/why-a-compiler). Note that Tamagui features
+work at compile-time and runtime, so installing the compiler is optional, and in
+fact we recommend only setting it up once you're ready for production.
 
-The compiler uses Babel to analyze JSX and `styled` functions, then attempts statically analyze them and optimize them down to 
-platform-native primitives. The end result is less abstraction - like a `div` on web, or plain React Native `View` on native:
+The compiler uses Babel to analyze JSX and `styled` functions, then attempts
+statically analyze them and optimize them down to platform-native primitives.
+The end result is less abstraction - like a `div` on web, or plain React Native
+`View` on native:
 
 <br />
 <br />
@@ -19,12 +24,13 @@ platform-native primitives. The end result is less abstraction - like a `div` on
 
 <Notice theme="blue">
   The compiler generates built versions of your components and config into a
-`.tamagui` directory. You'll want to add that directory to your `.gitignore`.
+  `.tamagui` directory. You'll want to add that directory to your `.gitignore`.
 </Notice>
 
 ## Install
 
-There are plugins for a variety of bundlers:
+There are plugins for a variety of bundlers, or you can use the `@tamagui/cli`
+to compile in-place:
 
 ### Webpack
 
@@ -61,7 +67,7 @@ module.exports = {
       'react-native$': require.resolve('react-native-web'),
       // optional, for lighter svg icons on web
       'react-native-svg': require.resolve('@tamagui/react-native-svg'),
-    }
+    },
   },
   module: {
     rules: [
@@ -69,7 +75,7 @@ module.exports = {
         test: /\.[jt]sx?$/,
         // you'll likely want to adjust this helper function,
         // but it serves as a decent start that you can copy/paste from
-        exclude: path => shouldExclude(path, __dirname, tamaguiOptions),
+        exclude: (path) => shouldExclude(path, __dirname, tamaguiOptions),
         use: [
           // optionally thread-loader for significantly faster compile!
           'thread-loader',
@@ -83,9 +89,9 @@ module.exports = {
             loader: 'tamagui-loader',
             options: tamaguiOptions,
           },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
 }
 ```
@@ -192,7 +198,7 @@ export default withPlugins([
         return true
       }
     },
-  })
+  }),
 ])
 ```
 
@@ -226,9 +232,9 @@ module.exports = {
         importsWhitelist: ['constants.js', 'colors.js'],
         logTimings: true,
         disableExtraction: process.env.NODE_ENV === 'development',
-      }
+      },
     ],
-  ]
+  ],
 }
 ```
 
@@ -243,7 +249,142 @@ values.
 ### Expo
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up
-Expo.
+Expo. It's as simple as adding the babel plugin.
+
+### CLI-Based In-Place Compilation
+
+For bundlers that don't have a Tamagui plugin yet (like Turbopack), or if you
+prefer a simple setup, you can use `@tamagui/cli` to pre-compile your components
+in-place before your build step.
+
+This approach is meant for **production builds only** and should run in your
+deployment pipeline, not during development. It rewrites files in place which
+will mess up your working directory, but makes it highly compatible with any
+bundler or tool. The downside is you don't get the helpful development
+compatibility parts of the plugins, plus dev-mode debugging and `data-`
+attributes.
+
+#### Setup
+
+1. Install:
+
+```bash
+yarn add -D @tamagui/cli
+```
+
+2. Create a `tamagui.build.ts` config file in your project root:
+
+```ts
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  importsWhitelist: ['constants.js', 'colors.js'],
+  outputCSS: './public/tamagui.css',
+} satisfies TamaguiBuildOptions
+```
+
+3. Add a build script to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "build": "tamagui build ./src && next build"
+  }
+}
+```
+
+#### Usage
+
+```bash
+# Build all components in a directory (web + native by default)
+npx tamagui build ./src
+
+# Build for web only
+npx tamagui build --target web ./src
+
+# Build for native only
+npx tamagui build --target native ./src
+
+# Build a specific file
+npx tamagui build ./src/components/MyComponent.tsx
+
+# Include/exclude patterns
+npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
+```
+
+#### Platform-Specific File Handling
+
+The CLI automatically handles platform-specific files (`.web.tsx`,
+`.native.tsx`, `.ios.tsx`, `.android.tsx`):
+
+- Files with `.web.tsx` or `.ios.tsx` extensions are optimized for web only
+- Files with `.native.tsx` or `.android.tsx` extensions are optimized for native
+  only
+- Base files (`.tsx`) without platform-specific versions are optimized for all
+  platforms
+- If both `.web.tsx` and `.native.tsx` exist, the base `.tsx` file is skipped
+
+#### Package.json Exports Support
+
+The CLI supports `package.json` exports for path-specific imports. For example:
+
+```json
+{
+  "exports": {
+    ".": "./src/index.tsx",
+    "./components/Button": "./src/Button.tsx"
+  }
+}
+```
+
+Both import styles work:
+
+```tsx
+import { Button } from '@my/ui'
+import { Button } from '@my/ui/components/Button'
+```
+
+#### Integration Examples
+
+This works with **any build tool** - just run `tamagui build` before your build
+command. Here are some examples:
+
+**Next.js with Turbopack** (Turbopack doesn't support plugins yet):
+
+```json
+{
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "tamagui build --target web ./src && next build"
+  }
+}
+```
+
+**Vite, Remix, or any other bundler:**
+
+```json
+{
+  "scripts": {
+    "build": "tamagui build --target web ./src && vite build"
+  }
+}
+```
+
+**React Native / Expo:**
+
+```json
+{
+  "scripts": {
+    "build:ios": "tamagui build --target native ./src && eas build --platform ios",
+    "build:android": "tamagui build --target native ./src && eas build --platform android"
+  }
+}
+```
+
+The Tamagui CLI optimizes your components in-place, then your bundler processes
+the already-optimized files.
 
 ## Props
 
@@ -390,9 +531,7 @@ boolean property `disableOptimization`:
 ```tsx
 import { View } from '@tamagui/core'
 
-export default () => (
-  <View disableOptimization />
-)
+export default () => <View disableOptimization />
 ```
 
 ### Web-only apps

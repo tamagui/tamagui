@@ -3712,9 +3712,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@my/config@workspace:^, @my/config@workspace:code/tests/nextjs15-app-router-theme/packages/config":
+"@my/config@workspace:^, @my/config@workspace:code/tests/next15-plus-cli-optimize/packages/config":
   version: 0.0.0-use.local
-  resolution: "@my/config@workspace:code/tests/nextjs15-app-router-theme/packages/config"
+  resolution: "@my/config@workspace:code/tests/next15-plus-cli-optimize/packages/config"
   dependencies:
     "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/build": "workspace:*"
@@ -3726,9 +3726,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@my/ui@workspace:^, @my/ui@workspace:code/tests/nextjs15-app-router-theme/packages/ui":
+"@my/ui@workspace:^, @my/ui@workspace:code/tests/next15-plus-cli-optimize/packages/ui":
   version: 0.0.0-use.local
-  resolution: "@my/ui@workspace:code/tests/nextjs15-app-router-theme/packages/ui"
+  resolution: "@my/ui@workspace:code/tests/next15-plus-cli-optimize/packages/ui"
   dependencies:
     "@my/config": "workspace:^"
     "@tamagui/build": "workspace:*"
@@ -11229,9 +11229,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app@workspace:^, app@workspace:code/tests/nextjs15-app-router-theme/packages/app":
+"app@workspace:^, app@workspace:code/tests/next15-plus-cli-optimize/packages/app":
   version: 0.0.0-use.local
-  resolution: "app@workspace:code/tests/nextjs15-app-router-theme/packages/app"
+  resolution: "app@workspace:code/tests/next15-plus-cli-optimize/packages/app"
   dependencies:
     "@my/ui": "workspace:^"
     "@react-navigation/native": "npm:^7.0.14"
@@ -22013,10 +22013,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-app@workspace:code/tests/nextjs15-app-router-theme/apps/next":
+"next-app@workspace:code/tests/next15-plus-cli-optimize/apps/next":
   version: 0.0.0-use.local
-  resolution: "next-app@workspace:code/tests/nextjs15-app-router-theme/apps/next"
+  resolution: "next-app@workspace:code/tests/next15-plus-cli-optimize/apps/next"
   dependencies:
+    "@tamagui/cli": "workspace:*"
     "@tamagui/config": "workspace:*"
     "@tamagui/next-plugin": "workspace:*"
     "@tamagui/next-theme": "workspace:*"
@@ -22028,6 +22029,16 @@ __metadata:
     react-native: "npm:0.81.5"
     react-native-web: "npm:^0.21.0"
     tamagui: "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"next15-plus-cli-optimize@workspace:code/tests/next15-plus-cli-optimize":
+  version: 0.0.0-use.local
+  resolution: "next15-plus-cli-optimize@workspace:code/tests/next15-plus-cli-optimize"
+  dependencies:
+    "@tamagui/cli": "workspace:*"
+    "@types/node": "npm:^22.1.0"
+    vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
 
@@ -26677,14 +26688,6 @@ __metadata:
   checksum: 10/1120cf716606ec6a8e25cc9b6ada79d7b91e6a599bba1a6664e6badc8b5f37987d7df7d9ad0344f717a042781fd8e1e999de08614a5afea451b68902421036b5
   languageName: node
   linkType: hard
-
-"starter-free@workspace:code/tests/nextjs15-app-router-theme":
-  version: 0.0.0-use.local
-  resolution: "starter-free@workspace:code/tests/nextjs15-app-router-theme"
-  dependencies:
-    "@tamagui/cli": "workspace:*"
-  languageName: unknown
-  linkType: soft
 
 "static-extend@npm:^0.1.1":
   version: 0.1.2

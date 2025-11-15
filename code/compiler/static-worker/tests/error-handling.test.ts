@@ -36,7 +36,7 @@ describe('static-worker error handling', () => {
         sourcePath,
         options: {
           components: ['tamagui'],
-          config: './test-config.ts',
+          config: './does-not-exist.ts',
         },
         shouldPrintDebug: false,
       })
