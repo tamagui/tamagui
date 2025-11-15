@@ -8,14 +8,6 @@
   "types": "./src",
   "main": "src/index.tsx",
   "module:jsx": "src",
-  "exports": {
-    ".": "./src/index.tsx",
-    "./components/CustomToast": "./src/CustomToast.tsx",
-    "./components/MyComponent": "./src/MyComponent.tsx",
-    "./components/NativeToast": "./src/NativeToast.tsx",
-    "./components/SwitchRouterButton": "./src/SwitchRouterButton.tsx",
-    "./components/SwitchThemeButton": "./src/SwitchThemeButton.tsx"
-  },
   "files": [
     "types",
     "dist"
@@ -28,7 +20,7 @@
     "@my/config": "workspace:^",
     "@tamagui/next-theme": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "expo-constants": "~17.1.6",
+    "expo-constants": "~18.0.10",
     "tamagui": "workspace:*"
   },
   "devDependencies": {

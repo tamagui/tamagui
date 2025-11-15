@@ -11,7 +11,8 @@ import { getState, isIndeterminate } from './utils'
 
 export type CheckedState = boolean | 'indeterminate'
 
-type CheckboxBaseProps = ViewProps & Pick<PressableProps, 'onPress'>
+type CheckboxBaseProps = Omit<ViewProps, 'onFocus' | 'onBlur'> &
+  Pick<PressableProps, 'onPress'>
 
 export type CheckboxExtraProps = {
   children?: React.ReactNode

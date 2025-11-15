@@ -2264,6 +2264,9 @@ export interface StackNonStyleProps
       | RNOnlyProps
       | keyof ExtendBaseStackProps
       | 'style'
+      // Event handlers that conflict between RN ViewProps and Web DivAttributes after RN 0.81.5
+      | 'onFocus'
+      | 'onBlur'
     >,
     ExtendBaseStackProps,
     TamaguiComponentPropsBase {
