@@ -6,8 +6,9 @@
     "./packages/*"
   ],
   "scripts": {
+    "test:clean": "git checkout ./packages/app || true && git clean -fd ./packages/app || true",
     "test": "vitest",
-    "test:once": "vitest run"
+    "test:once": "vitest run; yarn test:clean"
   },
   "resolutions": {
     "react": "^18.3.1",

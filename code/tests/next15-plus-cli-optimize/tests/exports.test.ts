@@ -6,17 +6,10 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 const APP_SCREEN_PATH = join(__dirname, '../packages/app/features/home/screen.tsx')
 
 function resetAppPackage() {
-  const repoRoot = join(__dirname, '../../../..')
-  const appPackageRelative = 'code/tests/next15-plus-cli-optimize/packages/app'
-
   try {
-    execSync(
-      `git checkout ${appPackageRelative} && git clean -fd ${appPackageRelative}`,
-      {
-        cwd: repoRoot,
-        stdio: 'pipe',
-      }
-    )
+    execSync(`npx reset`, {
+      stdio: 'pipe',
+    })
   } catch {
     // Ignore errors
   }
@@ -28,6 +21,11 @@ describe('Package.json exports support', () => {
   })
 
   afterEach(() => {
+    resetAppPackage()
+  })
+
+  afterAll(() => {
+    // Final cleanup after all tests
     resetAppPackage()
   })
 

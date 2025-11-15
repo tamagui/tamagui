@@ -1,23 +1,18 @@
 import { execSync } from 'node:child_process'
-import { readFileSync, existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 const FIXTURES_DIR = join(__dirname, '../packages/app/test-fixtures')
 const APPS_NEXT_DIR = join(__dirname, '../apps/next')
 
 function resetFixtures() {
-  // Use git checkout to reset all of packages/app to original state
-  const repoRoot = join(__dirname, '../../../..')
-  const appPackageRelative = 'code/tests/next15-plus-cli-optimize/packages/app'
-
   try {
-    execSync(`git checkout ${appPackageRelative} && git clean -fd ${appPackageRelative}`, {
-      cwd: repoRoot,
-      stdio: 'pipe',
+    execSync(`yarn test:clean`, {
+      stdio: 'inherit',
     })
   } catch (e) {
-    // Ignore errors
+    console.error('Cleanup failed:', e)
   }
 }
 
@@ -106,7 +101,10 @@ describe('Platform-specific file optimization', () => {
       expect(baseContent).toContain('Base File')
 
       // .native.tsx should get native optimization
-      const nativeContent = readFileSync(join(FIXTURES_DIR, 'WithNative.native.tsx'), 'utf-8')
+      const nativeContent = readFileSync(
+        join(FIXTURES_DIR, 'WithNative.native.tsx'),
+        'utf-8'
+      )
       expect(nativeContent).toContain('__ReactNativeView') // Native imports
       expect(nativeContent).toContain('Native Specific')
       expect(nativeContent).not.toContain('.css')
@@ -138,7 +136,10 @@ describe('Platform-specific file optimization', () => {
       expect(webContent).toContain('Web Specific')
 
       // .native.tsx should be optimized for native
-      const nativeContent = readFileSync(join(FIXTURES_DIR, 'WithBoth.native.tsx'), 'utf-8')
+      const nativeContent = readFileSync(
+        join(FIXTURES_DIR, 'WithBoth.native.tsx'),
+        'utf-8'
+      )
       expect(nativeContent).toContain('__ReactNativeView') // Native imports
       expect(nativeContent).toContain('Native Specific')
       expect(nativeContent).not.toContain('.css')
@@ -181,7 +182,10 @@ describe('Platform-specific file optimization', () => {
 
       expect(result).toContain('native')
 
-      const nativeContent = readFileSync(join(FIXTURES_DIR, 'NativeOnly.native.tsx'), 'utf-8')
+      const nativeContent = readFileSync(
+        join(FIXTURES_DIR, 'NativeOnly.native.tsx'),
+        'utf-8'
+      )
       expect(nativeContent).toContain('__ReactNativeView') // Native imports
       expect(nativeContent).toContain('Native Only File')
       expect(nativeContent).not.toContain('.css')
