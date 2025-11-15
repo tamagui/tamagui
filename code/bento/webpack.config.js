@@ -49,6 +49,17 @@ module.exports = {
   },
   module: {
     rules: [
+      // Process react-native-reanimated/worklets with Babel plugin from babel.config.js
+      {
+        test: /\.(js|ts)x?$/,
+        include: /node_modules\/(react-native-reanimated|react-native-worklets)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            configFile: true,
+          },
+        },
+      },
       {
         oneOf: [
           {
