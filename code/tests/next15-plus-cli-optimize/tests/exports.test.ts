@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process'
-import { readFileSync, existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { afterAll, afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 const APP_SCREEN_PATH = join(__dirname, '../packages/app/features/home/screen.tsx')
 

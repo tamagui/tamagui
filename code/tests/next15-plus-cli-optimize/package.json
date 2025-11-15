@@ -1,5 +1,5 @@
 {
-  "name": "starter-free",
+  "name": "next15-plus-cli-optimize",
   "private": true,
   "workspaces": [
     "./apps/*",
@@ -7,8 +7,7 @@
   ],
   "scripts": {
     "test:clean": "git checkout ./packages/app || true && git clean -fd ./packages/app || true",
-    "test": "vitest",
-    "test:once": "vitest run; yarn test:clean"
+    "test": "vitest --run"
   },
   "resolutions": {
     "react": "^18.3.1",
