@@ -30,17 +30,6 @@ describe('Package.json exports support', () => {
     resetAppPackage()
   })
 
-  it('should support root package imports', () => {
-    const screenContent = readFileSync(APP_SCREEN_PATH, 'utf-8')
-    expect(screenContent).toContain("from '@my/ui'")
-  })
-
-  it('should support path-specific imports via exports field', () => {
-    const screenContent = readFileSync(APP_SCREEN_PATH, 'utf-8')
-    expect(screenContent).toContain("from '@my/ui/components/SwitchRouterButton'")
-    expect(screenContent).toContain("from '@my/ui/components/SwitchThemeButton'")
-  })
-
   it('should handle exports field in @my/ui package.json', () => {
     const packageJsonPath = join(__dirname, '../packages/ui/package.json')
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
@@ -66,25 +55,51 @@ describe('Package.json exports support', () => {
       stdio: 'pipe',
     })
 
-    // Should successfully process files for both targets
-    expect(result).toContain('[tamagui]')
-    expect(result).toContain('screen')
+    // Verify logs show BOTH platforms for same file
+    expect(result).toMatch(/web.*screen/)
+    expect(result).toMatch(/native.*screen/)
 
     // Check web optimization (screen.tsx)
     const webOptimized = readFileSync(APP_SCREEN_PATH, 'utf-8')
-    expect(webOptimized.length).toBeGreaterThan(0)
-    expect(webOptimized).toContain('.css') // CSS import
-    expect(webOptimized).toContain('<div') // Flattened to div
+    const webLines = webOptimized.split('\n')
+
+    // CSS import must be FIRST line
+    expect(webLines[0]).toMatch(/^import "\.\/[_-]screen\.css"$/)
+
+    // Should have className variable and usage
+    expect(webOptimized).toMatch(/_cn\d*\s*=/)
+    expect(webOptimized).toContain('className={')
+
+    // Should be flattened to div
+    expect(webOptimized).toContain('<div')
+    expect(webOptimized).not.toContain('<YStack') // Original component removed
+
+    // Should preserve imports for components that weren't flattened
+    expect(webOptimized).toContain("from '@my/ui'")
+    expect(webOptimized).toContain("from '@my/ui/components/SwitchRouterButton'")
+    expect(webOptimized).toContain("from '@my/ui/components/SwitchThemeButton'")
+
+    // Check CSS file was created with actual content
+    const cssPath = join(__dirname, '../packages/app/features/home/_screen.css')
+    expect(existsSync(cssPath)).toBe(true)
+    const cssContent = readFileSync(cssPath, 'utf-8')
+    expect(cssContent.length).toBeGreaterThan(50)
+    expect(cssContent).toMatch(/\._[\w-]+\s*\{/) // Has CSS class rules
 
     // Check native optimization (screen.native.tsx)
     const nativePath = APP_SCREEN_PATH.replace('.tsx', '.native.tsx')
     expect(existsSync(nativePath)).toBe(true)
     const nativeOptimized = readFileSync(nativePath, 'utf-8')
-    expect(nativeOptimized).toContain('__ReactNativeView')
+    const nativeLines = nativeOptimized.split('\n')
 
-    // Check CSS file was created
-    const cssPath = join(__dirname, '../packages/app/features/home/_screen.css')
-    expect(existsSync(cssPath)).toBe(true)
+    // Should have React Native imports somewhere in file
+    expect(nativeOptimized).toContain('__ReactNativeView')
+    expect(nativeOptimized).toContain('__ReactNativeText')
+
+    // Should still use YStack (not flattened on native)
+    expect(nativeOptimized).toContain('<YStack')
+    expect(nativeOptimized).not.toContain('.css')
+    expect(nativeOptimized).not.toContain('className')
   })
 
   it('should recognize imports from path-specific exports during optimization', () => {
@@ -100,8 +115,23 @@ describe('Package.json exports support', () => {
       }
     )
 
-    // Should recognize both import styles as valid
-    expect(result).toContain('[tamagui]')
-    expect(result).toContain('screen')
+    // Should show optimization happened
+    expect(result).toMatch(/\d+\s+opt/) // Has optimization count
+
+    // Verify web output is actually optimized
+    const webOptimized = readFileSync(APP_SCREEN_PATH, 'utf-8')
+    expect(webOptimized).toContain('.css') // Was optimized for web
+    expect(webOptimized).toContain('<div') // Was flattened
+
+    // Verify path-specific imports still work after optimization
+    expect(webOptimized).toContain("from '@my/ui'") // Root import
+    expect(webOptimized).toContain("from '@my/ui/components/SwitchRouterButton'") // Path import
+    expect(webOptimized).toContain("from '@my/ui/components/SwitchThemeButton'") // Path import
+
+    // Verify native output exists and is optimized
+    const nativePath = APP_SCREEN_PATH.replace('.tsx', '.native.tsx')
+    expect(existsSync(nativePath)).toBe(true)
+    const nativeOptimized = readFileSync(nativePath, 'utf-8')
+    expect(nativeOptimized).toContain('__ReactNativeView')
   })
 })

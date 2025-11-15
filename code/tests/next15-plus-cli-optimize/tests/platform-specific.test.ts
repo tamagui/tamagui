@@ -46,18 +46,40 @@ describe('Platform-specific file optimization', () => {
 
       // Web version should be in BaseOnly.tsx
       const webContent = readFileSync(join(FIXTURES_DIR, 'BaseOnly.tsx'), 'utf-8')
-      expect(webContent).toContain('.css') // CSS import
-      expect(webContent).toContain('<div') // Flattened to div
+      const webLines = webContent.split('\n')
+
+      // CSS import must be FIRST line
+      expect(webLines[0]).toMatch(/^import "\.\/[_-]BaseOnly\.css"$/)
+
+      // Should have className usage
+      expect(webContent).toMatch(/_cn\s*=/)
+      expect(webContent).toContain('className={')
+
+      // Flattened to div
+      expect(webContent).toContain('<div')
+      expect(webContent).not.toContain('<YStack')
+
+      // CSS file should exist with content
+      const cssPath = join(FIXTURES_DIR, '_BaseOnly.css')
+      expect(existsSync(cssPath)).toBe(true)
+      const cssContent = readFileSync(cssPath, 'utf-8')
+      expect(cssContent.length).toBeGreaterThan(50)
+      expect(cssContent).toMatch(/\._[\w-]+\s*\{/)
 
       // Native version should be in BaseOnly.native.tsx
       const nativePath = join(FIXTURES_DIR, 'BaseOnly.native.tsx')
       expect(existsSync(nativePath)).toBe(true)
       const nativeContent = readFileSync(nativePath, 'utf-8')
-      expect(nativeContent).toContain('__ReactNativeView') // Native imports added
+      const nativeLines = nativeContent.split('\n')
+
+      // Native imports in file
+      expect(nativeContent).toContain('__ReactNativeView')
       expect(nativeContent).toContain('__ReactNativeText')
 
-      // CSS file should exist
-      expect(existsSync(join(FIXTURES_DIR, '_BaseOnly.css'))).toBe(true)
+      // Should still use YStack (not flattened)
+      expect(nativeContent).toContain('<YStack')
+      expect(nativeContent).not.toContain('.css')
+      expect(nativeContent).not.toContain('className')
     })
   })
 
@@ -80,9 +102,19 @@ describe('Platform-specific file optimization', () => {
 
       // .web.tsx should get web optimization
       const webContent = readFileSync(join(FIXTURES_DIR, 'WithWeb.web.tsx'), 'utf-8')
-      expect(webContent).toContain('.css') // CSS import
-      expect(webContent).toContain('<div') // Flattened to div
+      const webLines = webContent.split('\n')
+
+      // CSS import first
+      expect(webLines[0]).toMatch(/^import "\.\/[_-]WithWeb\.web\.css"$/)
+
+      // Flattened
+      expect(webContent).toContain('<div')
+      expect(webContent).not.toContain('<YStack')
       expect(webContent).toContain('Web Specific')
+
+      // CSS file exists
+      const cssPath = join(FIXTURES_DIR, '_WithWeb.web.css')
+      expect(existsSync(cssPath)).toBe(true)
 
       // Should NOT create .native.tsx from base (base IS the native version)
       expect(existsSync(join(FIXTURES_DIR, 'WithWeb.native.tsx'))).toBe(false)
@@ -102,9 +134,19 @@ describe('Platform-specific file optimization', () => {
 
       // Base file should only get web optimization
       const baseContent = readFileSync(join(FIXTURES_DIR, 'WithNative.tsx'), 'utf-8')
-      expect(baseContent).toContain('.css') // CSS import
-      expect(baseContent).toContain('<div') // Flattened to div
+      const baseLines = baseContent.split('\n')
+
+      // CSS import first
+      expect(baseLines[0]).toMatch(/^import "\.\/[_-]WithNative\.css"$/)
+
+      // Flattened
+      expect(baseContent).toContain('<div')
+      expect(baseContent).not.toContain('<YStack')
       expect(baseContent).toContain('Base File')
+
+      // CSS file exists
+      const cssPath = join(FIXTURES_DIR, '_WithNative.css')
+      expect(existsSync(cssPath)).toBe(true)
 
       // .native.tsx should get native optimization
       const nativeContent = readFileSync(
@@ -137,8 +179,14 @@ describe('Platform-specific file optimization', () => {
 
       // .web.tsx should be optimized for web
       const webContent = readFileSync(join(FIXTURES_DIR, 'WithBoth.web.tsx'), 'utf-8')
-      expect(webContent).toContain('.css')
+      const webLines = webContent.split('\n')
+
+      // CSS import first
+      expect(webLines[0]).toMatch(/^import "\.\/[_-]WithBoth\.web\.css"$/)
+
+      // Flattened
       expect(webContent).toContain('<div')
+      expect(webContent).not.toContain('<YStack')
       expect(webContent).toContain('Web Specific')
 
       // .native.tsx should be optimized for native
@@ -166,8 +214,14 @@ describe('Platform-specific file optimization', () => {
       expect(result).toContain('web')
 
       const webContent = readFileSync(join(FIXTURES_DIR, 'WebOnly.web.tsx'), 'utf-8')
-      expect(webContent).toContain('.css')
+      const webLines = webContent.split('\n')
+
+      // CSS import first
+      expect(webLines[0]).toMatch(/^import "\.\/[_-]WebOnly\.web\.css"$/)
+
+      // Flattened
       expect(webContent).toContain('<div')
+      expect(webContent).not.toContain('<YStack')
       expect(webContent).toContain('Web Only File')
 
       // Should not create a native version
