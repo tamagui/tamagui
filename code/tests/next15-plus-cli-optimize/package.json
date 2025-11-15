@@ -1,5 +1,5 @@
 {
-  "name": "starter-free",
+  "name": "next15-plus-cli-optimize",
   "private": true,
   "workspaces": [
     "./apps/*",
