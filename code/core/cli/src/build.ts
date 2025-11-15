@@ -1,4 +1,3 @@
-import { dirname, basename, resolve, join, extname } from 'node:path'
 import {
   createExtractor,
   extractToClassNames,
@@ -10,6 +9,7 @@ import type { CLIResolvedOptions, TamaguiOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
 import { readFile, writeFile } from 'fs-extra'
 import MicroMatch from 'micromatch'
+import { basename, dirname, extname, join, resolve } from 'node:path'
 
 export const build = async (
   options: CLIResolvedOptions & {
@@ -23,9 +23,10 @@ export const build = async (
   const promises: Promise<void>[] = []
 
   const buildOptions = loadTamaguiBuildConfigSync(options.tamaguiOptions)
-  const targets = options.target === 'both' || !options.target
-    ? ['web', 'native'] as const
-    : [options.target] as const
+  const targets =
+    options.target === 'both' || !options.target
+      ? (['web', 'native'] as const)
+      : ([options.target] as const)
 
   // Load tamagui for web first (needed for both targets)
   const webTamaguiOptions = {
@@ -82,18 +83,23 @@ export const build = async (
       // Base file without platform extension
       // Check if platform-specific versions exist in the collected files
       const basePath = sourcePath.replace(/\.(tsx|jsx)$/, '')
-      const hasNative = allFiles.some(f =>
-        f === `${basePath}.native.tsx` || f === `${basePath}.native.jsx` ||
-        f === `${basePath}.android.tsx` || f === `${basePath}.android.jsx`
+      const hasNative = allFiles.some(
+        (f) =>
+          f === `${basePath}.native.tsx` ||
+          f === `${basePath}.native.jsx` ||
+          f === `${basePath}.android.tsx` ||
+          f === `${basePath}.android.jsx`
       )
-      const hasWeb = allFiles.some(f =>
-        f === `${basePath}.web.tsx` || f === `${basePath}.web.jsx` ||
-        f === `${basePath}.ios.tsx` || f === `${basePath}.ios.jsx`
+      const hasWeb = allFiles.some(
+        (f) =>
+          f === `${basePath}.web.tsx` ||
+          f === `${basePath}.web.jsx` ||
+          f === `${basePath}.ios.tsx` ||
+          f === `${basePath}.ios.jsx`
       )
-
 
       // Only optimize for targets that don't have platform-specific files
-      filePlatforms = targets.filter(target => {
+      filePlatforms = targets.filter((target) => {
         if (target === 'native' && hasNative) return false
         if (target === 'web' && hasWeb) return false
         return true
@@ -106,19 +112,12 @@ export const build = async (
     }
 
     if (filePlatforms.length > 0) {
-      console.info(`[DEBUG] ${basename(sourcePath)} -> [${filePlatforms.join(', ')}]`)
       fileToTargets.set(sourcePath, filePlatforms)
-    } else {
-      console.info(`[DEBUG] ${basename(sourcePath)} -> SKIPPED`)
     }
   }
 
   // Process all files
-  console.info(`[DEBUG] Processing ${fileToTargets.size} files`)
   for (const [sourcePath, filePlatforms] of fileToTargets) {
-    const platformMatch = sourcePath.match(/\.(web|native|ios|android)\.(tsx|jsx)$/)
-    console.info(` [tamagui] optimizing ${sourcePath} (${filePlatforms.join(', ')})`)
-
     promises.push(
       (async () => {
         if (options.debug) {
@@ -162,14 +161,20 @@ export const build = async (
           } satisfies TamaguiOptions
 
           // Use the ORIGINAL source, not what was just written to disk
-          const nativeOut = extractToNative(sourcePath, originalSource, nativeTamaguiOptions)
+          const nativeOut = extractToNative(
+            sourcePath,
+            originalSource,
+            nativeTamaguiOptions
+          )
 
           // Determine output path:
           // - If this IS a .native.tsx file, overwrite it
           // - If building both targets from base file, create .native.tsx
           // - If single native target, overwrite source
           let nativeOutputPath = sourcePath
-          const isPlatformSpecific = /\.(web|native|ios|android)\.(tsx|jsx)$/.test(sourcePath)
+          const isPlatformSpecific = /\.(web|native|ios|android)\.(tsx|jsx)$/.test(
+            sourcePath
+          )
           if (!isPlatformSpecific && filePlatforms.length > 1) {
             // Base file building both targets - create separate .native.tsx
             nativeOutputPath = sourcePath.replace(/\.(tsx|jsx)$/, '.native.$1')

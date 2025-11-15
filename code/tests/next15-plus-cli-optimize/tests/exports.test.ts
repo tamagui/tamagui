@@ -10,11 +10,14 @@ function resetAppPackage() {
   const appPackageRelative = 'code/tests/next15-plus-cli-optimize/packages/app'
 
   try {
-    execSync(`git checkout ${appPackageRelative} && git clean -fd ${appPackageRelative}`, {
-      cwd: repoRoot,
-      stdio: 'pipe',
-    })
-  } catch (e) {
+    execSync(
+      `git checkout ${appPackageRelative} && git clean -fd ${appPackageRelative}`,
+      {
+        cwd: repoRoot,
+        stdio: 'pipe',
+      }
+    )
+  } catch {
     // Ignore errors
   }
 }
@@ -46,22 +49,23 @@ describe('Package.json exports support', () => {
     expect(packageJson.exports).toBeDefined()
     expect(packageJson.exports['.']).toBe('./src/index.tsx')
     expect(packageJson.exports['./components/CustomToast']).toBe('./src/CustomToast.tsx')
-    expect(packageJson.exports['./components/SwitchRouterButton']).toBe('./src/SwitchRouterButton.tsx')
-    expect(packageJson.exports['./components/SwitchThemeButton']).toBe('./src/SwitchThemeButton.tsx')
+    expect(packageJson.exports['./components/SwitchRouterButton']).toBe(
+      './src/SwitchRouterButton.tsx'
+    )
+    expect(packageJson.exports['./components/SwitchThemeButton']).toBe(
+      './src/SwitchThemeButton.tsx'
+    )
   })
 
   it('should build app package for both web and native targets', () => {
     const cwd = join(__dirname, '../apps/next')
 
     // Build the app package (defaults to both targets)
-    const result = execSync(
-      `npx tamagui build ../../packages/app`,
-      {
-        cwd,
-        encoding: 'utf-8',
-        stdio: 'pipe',
-      }
-    )
+    const result = execSync(`npx tamagui build ../../packages/app`, {
+      cwd,
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
 
     // Should successfully process files for both targets
     expect(result).toContain('[tamagui] optimizing')
