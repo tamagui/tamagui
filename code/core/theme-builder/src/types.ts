@@ -72,6 +72,10 @@ export type BuildThemeAnchor = {
     light: number
     dark: number
   }
+  alpha: {
+    light: number
+    dark: number
+  }
 }
 
 export type BuildTheme = BuildThemeBase & {
