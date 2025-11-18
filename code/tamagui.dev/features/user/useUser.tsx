@@ -5,7 +5,7 @@ import { Spinner, YStack } from 'tamagui'
 
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
-import { userSubscriptionStatus } from './subscription/eligibility'
+import { userSubscriptionStatus } from './subscription/userSubscriptionStatus'
 
 export let currentUser: UserContextType | null = null
 

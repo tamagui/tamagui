@@ -1,8 +1,3 @@
-export const Whitelist = {
-  Pro: 'pro',
-  Chat: 'chat',
-} as const
-
 export const ProductName = {
   TamaguiPro: 'Tamagui Pro',
   TamaguiChat: 'Tamagui Chat',
@@ -35,7 +30,6 @@ export const Pricing = {
 } as const
 
 // Type helpers to get the values
-export type WhitelistType = (typeof Whitelist)[keyof typeof Whitelist]
 export type ProductNameType = (typeof ProductName)[keyof typeof ProductName]
 export type ProductSlugType = (typeof ProductSlug)[keyof typeof ProductSlug]
 export type SubscriptionStatusType =
