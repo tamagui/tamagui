@@ -68,7 +68,6 @@
     "lint": "ultra -r --no-pretty lint",
     "llink": "lllink ~/one",
     "next-site": "yarn workspace @tamagui/next-site dev",
-    "postinstall": "./scripts/unlock-repo.sh",
     "profile": "node -r esbuild-register ./scripts/yarn-profile.ts",
     "release:canary": "bun release --canary --ci",
     "release": "bun ./scripts/release.ts",
