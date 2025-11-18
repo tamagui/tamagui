@@ -11,10 +11,19 @@ if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
 }
 
-// Check if ../bento exists (next to tamagui repo)
+// Bento is required - check if ../bento exists (next to tamagui repo)
 const localBentoPath = pathResolve(import.meta.dirname, '../../../bento')
 const hasBento = existsSync(localBentoPath)
-console.log(hasBento ? '✅ Using ../bento' : '⚠️  ../bento not found')
+
+if (!hasBento) {
+  throw new Error(
+    '❌ Bento repository not found at ../bento\n' +
+      'Please clone the bento repository as a sibling to tamagui:\n' +
+      'cd .. && git clone <bento-repo-url> bento'
+  )
+}
+
+console.info('✅ Using ../bento')
 
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)
@@ -66,11 +75,20 @@ export default {
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
       'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
-      // Use proxy that handles bento presence
-      '@tamagui/bento/component': hasBento
-        ? pathResolve(import.meta.dirname, '../../../bento/src/components')
-        : pathResolve(import.meta.dirname, './helpers/bento-stub-components'),
-      '@tamagui/bento/data': pathResolve(import.meta.dirname, './helpers/dist/bento-proxy-data'),
+      // Bento paths (always available)
+      '@tamagui/bento/raw': pathResolve(import.meta.dirname, '../../../bento/src/index'),
+      '@tamagui/bento/provider': pathResolve(
+        import.meta.dirname,
+        '../../../bento/src/components/provider/CurrentRouteProvider'
+      ),
+      '@tamagui/bento/component': pathResolve(
+        import.meta.dirname,
+        '../../../bento/src/components'
+      ),
+      '@tamagui/bento/data': pathResolve(
+        import.meta.dirname,
+        './helpers/dist/bento-proxy-data'
+      ),
       '@tamagui/bento': pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
     },
 
@@ -143,6 +161,8 @@ export default {
         'fetch-blob': true,
         'discord-api-types/v10': true,
         'magic-bytes.js': true,
+        '@ngneat/falso': true,
+        seedrandom: true,
         '@react-navigation/core': {
           version: '^7',
           'lib/module/useOnGetState.js': (contents) => {

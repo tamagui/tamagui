@@ -29,7 +29,11 @@ export function checkboxes({ isProUser, showAppropriateModal }: Props) {
       showAppropriateModal={showAppropriateModal}
     >
       <YStack paddingBottom="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
-        <Showcase unlock fileName={Checkboxes.CheckboxCards.fileName} title="CheckBox Cards">
+        <Showcase
+          unlock
+          fileName={Checkboxes.CheckboxCards.fileName}
+          title="CheckBox Cards"
+        >
           <Wrapper>
             <Checkboxes.CheckboxCards />
           </Wrapper>

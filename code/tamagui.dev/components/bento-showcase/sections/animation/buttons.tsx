@@ -20,7 +20,11 @@ export function buttons({ isProUser, showAppropriateModal }: Props) {
       showAppropriateModal={showAppropriateModal}
     >
       <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
-        <Showcase unlock fileName={Buttons.ButtonLoading.fileName} title="Loading Animation">
+        <Showcase
+          unlock
+          fileName={Buttons.ButtonLoading.fileName}
+          title="Loading Animation"
+        >
           <Wrapper>
             <Buttons.ButtonLoading />
           </Wrapper>

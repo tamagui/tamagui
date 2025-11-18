@@ -10,33 +10,27 @@ const BENTO_PATH = resolve(__dirname, '../../../../bento')
 const HELPERS_DIST_PATH = resolve(__dirname, '../helpers/dist')
 const hasBento = existsSync(BENTO_PATH)
 
-console.info(hasBento ? '✅ Found ../bento' : '⚠️  ../bento not found - using stubs')
+if (!hasBento) {
+  console.error('❌ ERROR: Bento repository not found at ../bento')
+  console.error('   Please clone the bento repository as a sibling to tamagui:')
+  console.error('   cd .. && git clone <bento-repo-url> bento')
+  process.exit(1)
+}
+
+console.info('✅ Found ../bento')
 
 // Ensure dist exists
 mkdirSync(HELPERS_DIST_PATH, { recursive: true })
 
-// Generate bento-proxy.ts
-if (hasBento) {
-  writeFileSync(
-    resolve(HELPERS_DIST_PATH, 'bento-proxy.ts'),
-    `export * from '../../../bento/src/index'
-export { useCurrentRouteParams } from '../../../bento/src/components/provider/CurrentRouteProvider'
+// Generate bento-proxy.ts using alias that works in both dev and build
+writeFileSync(
+  resolve(HELPERS_DIST_PATH, 'bento-proxy.ts'),
+  `export * from '@tamagui/bento/raw'
+export { useCurrentRouteParams } from '@tamagui/bento/provider'
 export * as Data from '../../components/bento-showcase/data'
 export * as Sections from '../../components/bento-showcase/sections'
 `
-  )
-} else {
-  writeFileSync(
-    resolve(HELPERS_DIST_PATH, 'bento-proxy.ts'),
-    `// Stubs when bento not available
-export const CurrentRouteProvider = ({ children }: any) => children
-export const Components = {}
-export const Data = { paths: [] }
-export const Sections = {}
-export const useCurrentRouteParams = () => ({})
-`
-  )
-}
+)
 
 writeFileSync(
   resolve(HELPERS_DIST_PATH, 'bento-proxy-data.ts'),

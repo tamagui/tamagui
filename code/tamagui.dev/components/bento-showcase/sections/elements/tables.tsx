@@ -17,7 +17,11 @@ export function tables({ isProUser, showAppropriateModal }: BentoShowcaseContext
       showAppropriateModal={showAppropriateModal}
     >
       <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
-        <Showcase unlock fileName={Tables.UsersTable.fileName} title="Users Table with Avatar">
+        <Showcase
+          unlock
+          fileName={Tables.UsersTable.fileName}
+          title="Users Table with Avatar"
+        >
           <Wrapper>
             <Tables.UsersTable />
           </Wrapper>
