@@ -1,0 +1,36 @@
+{
+  "name": "@tamagui/bento-or-not",
+  "version": "1.138.0",
+  "description": "Proxy package for @tamagui/bento - uses local ~/bento if available, stubs otherwise",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./data": {
+      "types": "./dist/types/data.d.ts",
+      "import": "./dist/esm/data.mjs",
+      "require": "./dist/cjs/data.js"
+    },
+    "./component/*": {
+      "types": "./dist/types/component/*.d.ts",
+      "import": "./dist/esm/component/*.mjs",
+      "require": "./dist/cjs/component/*.js"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  }
+}
