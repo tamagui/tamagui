@@ -1,4 +1,4 @@
-import { listingData } from '@tamagui/bento-or-not/data'
+import { listingData } from './bento-showcase/data'
 import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
 import { H3, ScrollView, Spacer, XStack, YStack } from 'tamagui'

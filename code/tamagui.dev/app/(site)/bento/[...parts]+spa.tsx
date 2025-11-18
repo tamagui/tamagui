@@ -1,5 +1,5 @@
-import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento-or-not'
-import { listingData } from '@tamagui/bento-or-not/data'
+import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
+import { listingData } from '~/components/bento-showcase/data'
 import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
 import { useToastController } from '@tamagui/toast'
 import type { Href } from 'one'

@@ -1,4 +1,4 @@
-import { LocationNotification } from '@tamagui/bento-or-not/component/user/preferences/LocationNotification'
+import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { AlertCircle, Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
