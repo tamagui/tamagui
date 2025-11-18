@@ -26,6 +26,13 @@ runs:
         TRANSCRYPT_PASSWORD: ${{ inputs.transcrypt_password }}
         SHOULD_UNLOCK_GIT_CRYPT: "1"
 
+    - name: Install Bento from GitHub Packages
+      shell: bash
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
+        cd code/tamagui.dev
+        yarn add @tamagui/bento@latest --registry=https://npm.pkg.github.com/
+
     - name: Build JS
       shell: bash
       run: yarn build:js

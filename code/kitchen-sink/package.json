@@ -41,7 +41,6 @@
     "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
-    "@tamagui/bento": "workspace:*",
     "@tamagui/cli": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",

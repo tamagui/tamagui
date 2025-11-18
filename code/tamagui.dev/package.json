@@ -42,7 +42,6 @@
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
     "@tamagui/assert": "workspace:*",
-    "@tamagui/bento": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/image-next": "workspace:*",

@@ -6,7 +6,6 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
-    "./code/bento",
     "./code/compiler/**/*",
     "./code/core/**/*",
     "./code/demos",
