@@ -23,10 +23,6 @@
     "@swc/core": "1.14.0"
   },
   "scripts": {
-    "bento:android": "yarn workspace @tamagui/bento android",
-    "bento:ios": "yarn workspace @tamagui/bento ios",
-    "bento:web": "yarn workspace @tamagui/bento dev:web",
-    "bento": "yarn workspace @tamagui/bento start",
     "build:app": "./scripts/ci-build-app.sh",
     "build:force": "yarn clean:build && yarn build -- --force",
     "build:js": "yarn build -- --force --skip-types",

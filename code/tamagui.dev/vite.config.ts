@@ -1,5 +1,3 @@
-import { existsSync } from 'node:fs'
-import { resolve as pathResolve, join } from 'node:path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
@@ -10,11 +8,6 @@ Error.stackTraceLimit = Number.POSITIVE_INFINITY
 if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
 }
-
-// Auto-detect local bento for development
-const localBentoPath = pathResolve(import.meta.dirname, '../../../bento')
-const hasBento = existsSync(localBentoPath)
-console.info(hasBento ? '🔗 Using local ~/bento' : 'ℹ️  Using bento stub (~/bento not found)')
 
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)
@@ -59,10 +52,8 @@ export default {
       // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
       'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
-      // Auto-resolve bento: local dev (~/bento) or graceful stub
-      '@tamagui/bento': hasBento
-        ? localBentoPath
-        : pathResolve(import.meta.dirname, './helpers/bento-stub.ts'),
+      // Use bento-or-not which handles detection automatically
+      '@tamagui/bento': '@tamagui/bento-or-not',
     },
 
     // todo automate, probably can just dedupe all package.json deps?

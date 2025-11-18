@@ -1,4 +1,4 @@
-import { Data } from '@tamagui/bento'
+import { Data } from '@tamagui/bento-or-not'
 import { ListItem, ScrollView, Separator, YGroup, YStack } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 

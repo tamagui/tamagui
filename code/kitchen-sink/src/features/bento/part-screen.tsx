@@ -1,5 +1,5 @@
 import { type ElementType, useLayoutEffect } from 'react'
-import { Components } from '@tamagui/bento'
+import { Components } from '@tamagui/bento-or-not'
 
 import { createParam } from 'solito'
 import { ScrollView, YStack } from 'tamagui'

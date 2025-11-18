@@ -6,8 +6,6 @@
       "~/*": ["./*"],
       "tamagui": ["../ui/tamagui"],
       "@tamagui/*": ["../core/*", "../ui/*", "../packages/*"],
-      "@tamagui/bento": ["../bento"],
-      "@tamagui/bento-example": ["../bento/example"],
       "@tamagui/demos": ["../demos"]
     },
     "outDir": "dist",
@@ -45,9 +43,6 @@
     "enable": true
   },
   "references": [
-    {
-      "path": "../bento"
-    },
     {
       "path": "../core/assert"
     },

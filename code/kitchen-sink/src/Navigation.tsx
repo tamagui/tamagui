@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Data, Components } from '@tamagui/bento'
+import { Data, Components } from '@tamagui/bento-or-not'
 import type { FC } from 'react'
 import { ScrollView, View } from 'tamagui'
 import { Sandbox } from './Sandbox'

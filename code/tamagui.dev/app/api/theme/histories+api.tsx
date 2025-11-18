@@ -1,30 +1,52 @@
-U2FsdGVkX18q845gF6Ju5dbDrr8Z2eDagnsce6uMyDYqF3Sqgz5IBPuxjJSqWFcK
-rUvmr0zIb8/gXnlAR8U+ukGcM1W6eY4+bMADgPsda1riwqktdGsyWEUQ31JNyQhk
-H/zKUt2au/+6oauX/jj4MaqLZ1NLbKFCliiOa6v8Z6SSMfJjy/qM1tAvGSlOzR09
-lIfa4lZENDs0iG/lBrBHtjw5oR+CUmXiGDm0kVrtoHWtpV0SyHiecFN0LfrmJjnk
-Md/hLsRzpiM9M/atpjp3XS1SVg6QbBaW3IhdH9OWE0txI09LXfi8t4A5QG1nUDSM
-qCjoAljWyGOrU7TX4z6TsyjCHqWJVMIIOavuZkCUfCu0Aj4j4dywRHxfRFjVOubP
-VQrreptAlfSjLcB9tkl7qg4+j1pIFACNL+q+eYZnrJ4I2qprbT/sGTSoj9jvlywh
-1mwIcDrQDX8wSNU7la2UBtVRns7MqbMYGJLm9eFRzMoXH/xYD+LgcQp3JUpCAmUF
-t5I6UAq8TdOTsRIpR7meTa9o15EPmQMoXjQGR5lrVkTHPCW/rnuPk1jmgJciEzYM
-spZv1rqQAf/uT3JefA/R0gyy1hSfmQqcTx94+cOgRWBZcl1gyyWRDDTizQPhpZY8
-3Nw5O78Vs6lHofBF+Q+/kLWhIXWivInnw35njHHhaLMnNGu25Xd+29EdrNCjta4C
-1JLhPKSDoZX+YRauxiFwhAM6YcKM843SAUVWUoQFAQsJpf7bayjDI/22SQcRY9PJ
-mf588Zmswi2UNXXbkPixuku4V6pgh/4tE3owrey/8MB+GLELVd9fwVOVLJ8Fzyg5
-M0sjBf5KeIPjCFWu58yHDsEdEYQ0qlYzPbdItHGpSYUhijon2Jlc8jgI7E0w4emu
-xx1xkbiAgudNFFuDqDfIkDgYl1vGel3N7cUWGzNBDbbJHYLvd3mNSQS1o1p2ZQI4
-af93fDX58qLI2unzoDv63dJ+KE31YyalQ6TDlXhCKHXxUBvjEA3nq1H5PIjYwgIY
-kTEupNCEgTxaZAXhy/jMykUjZUfFD7NOUpyAHyWJ0u//OWgGUVunPWtFz64x+SSl
-2svT3wuVwUwu9LxC54zkvnpOZPPt0jlTWln4Jx3hdvrnnbWo0LNSTtKSyBSm1rIK
-iVPqw/Rf8n5z8BbCYSEv+8pd/SnZcScdVHv2saydyf8CPzFQI5Q9g1B9m8gafxKz
-CPqW+jpgFS+/AUla3lP4JVC7DY79+Q+ngXQrVUsQOyHc4us594NamI9/BcMEjAQj
-QD1duYW6gyvETqkLAgMjTWnI2LDTFE3z7t3FBQmswNtcQC+QQY8KVuGrtswY/oMx
-chL/B48SqDJqCX1IokrV9sYddmgYcJU+g2RS7hoQfP9q6VH/UfWvds3C7BxMTt64
-zX7t5/WxS/aklYbQmRt9AuxJT7pOKJq2U15q5MgmpwvKxFYY5LP94cvkfbxcpmeD
-HcQznUBjGnZsNgEmytfHIYf6p8eDBL5jK/UxLmQvXGhXHpdrlae38psLKKcHSmiI
-uxUIIF42cSFXA7LThDE5KHEEJDKIBdtA2lKXANJqq39C3SD/4cmTlR210fdxTXaB
-Cs9uAgdYOTwiy2BnyZ3f/UaJXCLwaLayp1Tki6iO5TipR94TafiL2LFHWuXprmKu
-W6SgNA828rcluxs3ZOn9+zzIJLgsZ7YSGclFfiFsoX0JI6jOnPpVC0WuqH9GeRrX
-gGXR+KYFYYswtPx70cMzyOybhLjk9zVk1eLe/cRCYm+o4j8owisSyl/mAymGlKks
-nZmDYFbzSfddm93Fe5196F9gs6+f8pWtUq+VVMq8wnhw80K96z4vhlEKMbq5n9OM
-HjMx5X/Kd2/nLc2RTsGAIQ==
+import { apiRoute } from '~/features/api/apiRoute'
+import { ensureAuth } from '~/features/api/ensureAuth'
+
+export default apiRoute(async (req) => {
+  const { supabase, user } = await ensureAuth({ req })
+  const url = new URL(req.url)
+  const searchQuery = url.searchParams.get('q')
+  const userId = url.searchParams.get('uid')
+  const id = url.searchParams.get('id')
+
+  if (id) {
+    const { data, error } = await supabase
+      .from('theme_histories')
+      .select('theme_data, search_query')
+      .eq('id', id)
+
+    if (error) {
+      return Response.json({ error: error.message }, { status: 500 })
+    }
+
+    return Response.json(data)
+  }
+
+  // Get specific theme
+  if (searchQuery && userId) {
+    const { data, error } = await supabase
+      .from('theme_histories')
+      .select('theme_data, search_query')
+      .eq('user_id', userId)
+      .eq('search_query', searchQuery)
+      .single()
+
+    if (error) {
+      return Response.json({ error: error.message }, { status: 500 })
+    }
+
+    return Response.json(data)
+  }
+
+  const { data, error } = await supabase
+    .from('theme_histories')
+    .select('theme_data, search_query, created_at, id')
+    .eq('user_id', user.id)
+    .order('updated_at', { ascending: false })
+    .limit(30)
+
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 })
+  }
+
+  return Response.json({ histories: data })
+})

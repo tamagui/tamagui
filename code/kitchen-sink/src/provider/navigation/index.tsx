@@ -1,7 +1,7 @@
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { type ReactNode, useContext, useMemo } from 'react'
-import { Components, Data } from '@tamagui/bento'
+import { Components, Data } from '@tamagui/bento-or-not'
 
 import { ThemeContext } from '../../useKitchenSinkTheme'
 

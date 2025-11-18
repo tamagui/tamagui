@@ -1,5 +1,5 @@
 import React from 'react'
-import { Components } from '@tamagui/bento'
+import { Components } from '@tamagui/bento-or-not'
 import { FlatList } from 'react-native'
 
 import { createParam } from 'solito'

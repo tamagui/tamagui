@@ -5,13 +5,6 @@
     "./apps/*",
     "./packages/*"
   ],
-  "resolutions": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-refresh": "^0.14.0",
-    "react-native-svg": "15.15.0",
-    "react-native-web": "~0.21.0"
-  },
   "dependencies": {
     "@tamagui/cli": "workspace:*"
   },

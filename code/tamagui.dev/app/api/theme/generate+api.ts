@@ -1,278 +1,487 @@
-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
+import { anthropic } from '@ai-sdk/anthropic'
+import { deepseek } from '@ai-sdk/deepseek'
+import { google } from '@ai-sdk/google'
+import { groq } from '@ai-sdk/groq'
+import { openai } from '@ai-sdk/openai'
+import { xai } from '@ai-sdk/xai'
+import { openrouter } from '@openrouter/ai-sdk-provider'
+import slugify from '@sindresorhus/slugify'
+import { generateText } from 'ai'
+import { z } from 'zod'
+import { apiRoute } from '~/features/api/apiRoute'
+import { ensureAccess } from '~/features/api/ensureAccess'
+import { ensureAuth } from '~/features/api/ensureAuth'
+import { readBodyJSON } from '~/features/api/readBodyJSON'
+import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
+
+const models = {
+  'gemini-2.0-pro-exp': () => google('gemini-2.0-pro-exp'),
+  'gemini-2.0-flash': () => google('gemini-2.0-flash'),
+  'gemini-2.0-flash-exp': () => google('gemini-2.0-flash-exp'),
+  'gemini-2.0-flash-thinking-exp': () => google('gemini-2.0-flash-thinking-exp'),
+  'gemini-1.5-pro-latest': () => google('gemini-1.5-pro-latest'),
+  'grok-beta': () => xai('grok-beta'),
+  'grok-2-1212': () => xai('grok-2-1212'),
+  'deepseek-chat': () => deepseek('deepseek-chat'),
+  'deepseek-reasoner': () => deepseek('deepseek-reasoner'),
+  'claude-3-7-sonnet': () => anthropic('claude-3-7-sonnet-20250219'),
+  'claude-3-5-sonnet-latest': () => anthropic('claude-3-5-sonnet-latest'),
+  'claude-3-5-haiku-latest': () => anthropic('claude-3-5-haiku-latest'),
+  'gpt-4o-mini': () => openai('gpt-4o-mini'),
+  'gpt-4o': () => openai('gpt-4o'),
+  'gpt-4': () => openai('gpt-4'),
+  'gpt-4-turbo': () => openai('gpt-4-turbo'),
+  o1: () => openai('o1'),
+  'o3-mini': () => openai('o3-mini'),
+  'or-o3-mini': () => openrouter('openai/o3-mini') as any,
+  'or-o1-mini': () => openrouter('openai/o1-mini') as any,
+  'or-deepseek-r1-distill-llama-70b': () =>
+    openrouter('deepseek/deepseek-r1-distill-llama-70b') as any,
+  'groq-r1-llama-70b': () => groq('deepseek-r1-distill-llama-70b'),
+} as const
+
+type ModelName = keyof typeof models
+
+const DEFAULT_MODEL: ModelName = 'claude-3-7-sonnet'
+
+const lightDarkVal = z.object({
+  light: z.number(),
+  dark: z.number(),
+  syncLeft: z.optional(z.boolean()),
+  sync: z.optional(z.boolean()),
+})
+
+const palette = z.array(
+  z.object({
+    index: z.number(),
+    hue: lightDarkVal,
+    sat: lightDarkVal,
+    lum: lightDarkVal,
+  })
+)
+
+function convertToThemeSuiteItemData(
+  base: any[],
+  accent: any[],
+  prompt: string
+): ThemeSuiteItemData {
+  return {
+    name: prompt,
+    palettes: {
+      base: {
+        name: 'base',
+        anchors: base,
+      },
+      accent: {
+        name: 'accent',
+        anchors: accent,
+      },
+    },
+    schemes: {
+      light: true,
+      dark: true,
+    },
+    templateStrategy: 'base',
+  }
+}
+
+export default apiRoute(async (req) => {
+  const { supabase, user } = await ensureAuth({ req })
+
+  try {
+    const { hasTakeoutAccess, hasBentoAccess } = await ensureAccess({ req, supabase })
+
+    if (!(hasTakeoutAccess || hasBentoAccess)) {
+      throw Response.json(
+        {
+          error: `Must have Pro account`,
+        },
+        {
+          status: 400,
+        }
+      )
+    }
+  } catch (err) {
+    throw Response.json(
+      {
+        error: `Must have Pro account`,
+      },
+      {
+        status: 400,
+      }
+    )
+  }
+
+  const body = await readBodyJSON(req)
+  const prompt = body.prompt?.trim()
+  const lastId = body.lastId?.trim() || ''
+  const lastReply = body.lastReply?.trim() || ''
+  const lastPrompt = body.lastPrompt?.trim() || ''
+  const scheme = body.scheme?.trim() || 'unknown'
+  const model = body.model?.trim()
+  const action = body.action
+
+  // Handle delete action
+  if (action === 'delete' && lastId) {
+    const { data: themeToDelete } = await supabase
+      .from('theme_histories')
+      .select()
+      .eq('id', lastId)
+      .single()
+
+    if (!themeToDelete) {
+      throw Response.json({ error: 'Theme not found' }, { status: 404 })
+    }
+
+    if (themeToDelete.user_id !== user.id) {
+      throw Response.json(
+        { error: 'Not authorized to delete this theme' },
+        { status: 403 }
+      )
+    }
+
+    await supabase
+      .from('theme_histories')
+      .delete()
+      .eq('id', lastId)
+      .eq('user_id', user.id)
+
+    return Response.json({
+      success: true,
+      message: 'Theme deleted successfully',
+    })
+  }
+
+  if (!prompt) {
+    throw Response.json(
+      {
+        error: `No prompt!`,
+      },
+      {
+        status: 400,
+      }
+    )
+  }
+
+  if (prompt.length > 1000) {
+    throw Response.json(
+      {
+        error: `Prompt too long!`,
+      },
+      {
+        status: 400,
+      }
+    )
+  }
+
+  const modelName: ModelName = model in models ? model : DEFAULT_MODEL
+
+  console.info(`Generating (scheme: ${scheme}, model: ${modelName}): ${prompt}...`)
+
+  const fullPrompt = `
+Help generate themes that contain two light + dark color palettes. The new
+Tamagui palette system generates base and accent palettes in dark and light.
+Each palette has 12 items, from index 1 to 12, to save space you can leave
+out indices and we spread between.
+
+Each row gives hue/sat/lum pairs of light,dark, like this:
+
+index: light-hue,dark-hue light-sat,dark-sat light-lum,dark-lum
+
+Here's an example of a subtle theme a desaturated base, and blue accent:
+
+1: 0,0 .2,.2 .99,.02
+10: 0,0 .2,.2 .5,.5
+11: 0,0 .2,.2 .15,.925
+12: 0,0 .2,.2 .03,.98
+
+1: 250,250 .5,.5 .6,.35
+10: 250,250 .5,.5 .5,.6
+11: 250,250 .5,.5 .2,.9
+12: 250,250 .5,.5 .1,.95
+
+For example here's a more bright theme for neopolitan ice cream:
+
+1: 324,324 .35,.35 .92,.06
+10: 324,324 .7,.7 .5,.5
+11: 23,23 .6,.6 .22,.6
+12: 23,23 .85,.85 .03,.67
+
+1: 54,54 .12,.12 .99,.3
+10: 54,54 .12,.12 .6,.6
+11: 54,54 .12,.12 .3,.9
+12: 54,54 .12,.12 .2,.99
+
+Notes:
+
+- If the user asks for specifics as to colors, indices, then do that instead
+  of any specific instructions here.
+
+- Always be sure to have the 1-3 have good contrast against 10-12 - enough to
+  read text on bg - mostly using lum.
+  
+- For a more fun theme free to change hue from 1 to 10.
+
+- Foregrounds always need to stand out from backgrounds (and accent fg can
+  sometimes be set on base bg)
+  
+- In general set just a few anchors, usually 1, 10, 11, 12, maybe a few more,
+  and make sure the hue values most of the time match for 1-10 and for 11-12
+  
+- Don't be afraid to have a few different hues! If there's a secondary color
+  make the accent 1-10 use it.
+  
+- If the user ants it bolder or brighter, you actually want to generally make the 1
+  index lumonisity closer to the middle, so if dark theme 1 is 0.1, make it like 0.3.
+  In general if a theme calls for a more vibrant look (eg a sports team, or well known
+  symbolic colors), then make the 1 index close to the actual desired brand color.
+
+- For more wild themes, a hue that changes between base 1-10 can have an epic effect, like a sunset
+  
+- Generally 1 to 8 are backgrounds, 10 to 12 are foregrounds.
+    
+- In general for text to look good you need your 11 and 12 index to contrast well the 1 through 7.
+  
+- Dark themes usually start darker at 1 and go lighter, while the light does the opposite (1 index is light).
+
+- Accent 12 must look good on top of accent 4 - don't clash them too much.
+
+- Adding an anchor at index 5 even if it just slightly changes hue or accelerates
+saturation, makes for a more interesting theme, it's generally nice especially
+the more hues you need as you can do it on both accent and base. Another hue change at 11
+also often looks good if you need more colors.
+
+- A white bg in light mode / black bg in dark mode often looks good, but if the theme calls
+  for multiple colors, then you generally want base to use 1-2 of those colors.
+
+${
+  lastReply
+    ? `
+The user is refining their previous theme, here's their previous prompt:
+
+<last-prompt>${lastPrompt}</last-prompt>
+
+They are currently viewing in ${scheme} mode.
+
+And the theme they are refining, use this to iterate on the new one:
+
+<last-reply>
+${(lastReply ?? '').replace(/\s+/, ' ')}
+</last-reply>
+
+Notes on refining:
+
+- be more conservative with changes, if they specify "light" then don't change the dark theme.
+- our old system we had "0" index, if you see it starts with 0:, please remap all anchors + 1 index.
+`
+    : ``
+}
+
+Here's the new prompt:
+
+<prompt>${prompt.replace(/\s+/, ' ')}</prompt>
+
+${lastReply ? `Note that since they are refining, unless they explicitly refer to the "accent" theme, assume they are talking about the base theme.` : ``}
+
+When you respond, start with a <thinking /> first to plan, then end output just the exact structured data.
+Don't add headers, backticks, or any labels around the structured data.
+`
+
+  console.info(`prompt`, modelName, fullPrompt)
+
+  const { text } = await generateText({
+    model: models[modelName](),
+    maxTokens: 4_000,
+    onStepFinish(event) {
+      console.info(event.text)
+    },
+
+    prompt: fullPrompt,
+  })
+
+  try {
+    console.info(`Generated: ${text}`)
+
+    const { base, accent } = themeTextToJSON(text)
+
+    palette.parse(base)
+    palette.parse(accent)
+
+    const themeData = convertToThemeSuiteItemData(base, accent, prompt)
+
+    let nextId = lastId
+
+    // First check if a record already exists
+    if (lastId) {
+      const { data: existingData } = await supabase
+        .from('theme_histories')
+        .select()
+        .eq('id', lastId)
+        .eq('user_id', user.id)
+        .single()
+
+      if (existingData) {
+        // Update existing record
+        await supabase
+          .from('theme_histories')
+          .update({
+            theme_data: themeData,
+            updated_at: new Date().toISOString(),
+            is_cached: false,
+          })
+          .eq('id', lastId)
+
+        nextId = existingData.id
+      } else {
+        // If we have a lastId but couldn't find the theme, create a new one
+        const { data, error } = await supabase
+          .from('theme_histories')
+          .insert({
+            user_id: user.id,
+            search_query: prompt,
+            theme_data: themeData,
+            updated_at: new Date().toISOString(),
+            is_cached: false,
+          })
+          .select()
+
+        if (error) {
+          console.error(`Error saving theme history: ${error}`)
+        }
+
+        nextId = data?.[0]?.id || ''
+      }
+    } else {
+      const { data, error } = await supabase
+        .from('theme_histories')
+        .insert({
+          user_id: user.id,
+          search_query: prompt,
+          theme_data: themeData,
+          updated_at: new Date().toISOString(),
+          is_cached: false,
+        })
+        .select()
+
+      if (error) {
+        console.error(`Error saving theme history: ${error}`)
+      }
+
+      nextId = data?.[0]?.id || ''
+    }
+
+    return Response.json({
+      result: themeData,
+      reply: text,
+      searchQuery: prompt,
+      themeId: nextId,
+      slug: slugify(prompt),
+    })
+  } catch (err) {
+    console.error(`Error generating: ${err}`)
+    throw Response.json(
+      {
+        error: `Invalid JSON returned: ${err}`,
+      },
+      {
+        status: 400,
+      }
+    )
+  }
+})
+
+function themeTextToJSON(text: string) {
+  const [base, accent] = parsePalettes(text)
+  const baseAnchors = parseAnchors(base.trim())
+  const accentAnchors = parseAnchors(accent.trim())
+
+  return {
+    base: baseAnchors,
+    accent: accentAnchors,
+  }
+}
+
+function parsePalettes(textIn: string): string[] {
+  const endThinking = textIn.indexOf('</thinking>')
+  const text = endThinking > 0 ? textIn.slice(endThinking) : textIn
+
+  const lines = text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+
+  const firstZeroIndex = lines.findIndex((line) => line.startsWith('1: '))
+  if (firstZeroIndex === -1) return []
+
+  const relevantLines = lines.slice(firstZeroIndex)
+  const parts: string[][] = []
+  let currentPart: string[] = []
+
+  for (const line of relevantLines) {
+    if (line.startsWith('1: ')) {
+      if (currentPart.length > 0) {
+        parts.push(currentPart)
+        currentPart = []
+      }
+    }
+    if (/^\d+:/.test(line)) {
+      currentPart.push(line)
+    }
+  }
+
+  if (currentPart.length > 0) {
+    parts.push(currentPart)
+  }
+
+  return parts.map((part) => part.join('\n'))
+}
+
+function parseAnchors(text: string) {
+  const anchors = text.split('\n')
+
+  const anchorsOut = addSyncs(
+    anchors.map((a) => {
+      const [i, h, s, l] = a.split(/\s+/)
+      // move index down 1 to account for 0 index
+      const index = +i.replace(':', '').trim() - 1
+      return {
+        index,
+        hue: parseDarkLight(h),
+        sat: parseDarkLight(s),
+        lum: parseDarkLight(l),
+      }
+    })
+  )
+
+  return anchorsOut
+}
+
+function parseDarkLight(line: string) {
+  const [light, dark] = line.split(',').map((x) => Number.parseFloat(x))
+  return {
+    dark,
+    light,
+  }
+}
+
+function addSyncs(anchors: z.infer<typeof palette>) {
+  for (const [index, anchor] of anchors.entries()) {
+    const lastAnchor = anchors[index - 1]
+
+    if (anchor.hue.light === lastAnchor?.hue.dark) {
+      anchor.hue.syncLeft = true
+    }
+    if (anchor.sat.light === lastAnchor?.sat.dark) {
+      anchor.hue.syncLeft = true
+    }
+
+    if (anchor.hue.light === anchor.hue.dark) {
+      anchor.hue.sync = true
+    }
+    if (anchor.sat.light === anchor.sat.dark) {
+      anchor.sat.sync = true
+    }
+  }
+
+  return anchors
+}

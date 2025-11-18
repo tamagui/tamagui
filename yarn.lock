@@ -6647,6 +6647,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/bento-or-not@workspace:*, @tamagui/bento-or-not@workspace:code/packages/bento-or-not":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/bento-or-not@workspace:code/packages/bento-or-not"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/build@workspace:*, @tamagui/build@workspace:code/packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:code/packages/build"
@@ -7171,6 +7177,7 @@ __metadata:
     "@supabase/ssr": "npm:^0.5.2"
     "@supabase/supabase-js": "npm:^2.48.1"
     "@tamagui/assert": "workspace:*"
+    "@tamagui/bento-or-not": "workspace:*"
     "@tamagui/cli": "workspace:*"
     "@tamagui/demos": "workspace:*"
     "@tamagui/get-token": "workspace:*"
@@ -7615,6 +7622,7 @@ __metadata:
     "@tamagui/animations-motion": "workspace:*"
     "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/babel-plugin": "workspace:*"
+    "@tamagui/bento-or-not": "workspace:*"
     "@tamagui/cli": "workspace:*"
     "@tamagui/colors": "workspace:*"
     "@tamagui/config": "workspace:*"
