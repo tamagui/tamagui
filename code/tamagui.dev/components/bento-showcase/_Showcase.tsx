@@ -22,6 +22,7 @@ import {
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
+// @ts-expect-error - bento component wildcard import
 import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
 import { useCurrentRouteParams } from '@tamagui/bento'
 import { CodeWindow } from './CodeWindow'
@@ -74,6 +75,7 @@ const ShowcaseView = forwardRef<any, Props>(
 
     const { showAppropriateModal, isProUser } = useBentoShowcase('BentoShowcase')
 
+    // @ts-expect-error - URLSearchParams type mismatch with object
     const codePath = `/api/bento/code?${new URLSearchParams({
       section,
       part,
@@ -151,6 +153,7 @@ const ShowcaseView = forwardRef<any, Props>(
               <XGroup borderRadius="$10">
                 <Button
                   icon={Eye}
+                  // @ts-expect-error - active theme name
                   theme={view === 'preview' ? 'active' : 'alt1'}
                   size="$3"
                   onPress={() => setView('preview')}
@@ -161,6 +164,7 @@ const ShowcaseView = forwardRef<any, Props>(
                 </Button>
                 <Button
                   icon={approved ? Code : Lock}
+                  // @ts-expect-error - active theme name
                   theme={view === 'code' ? 'active' : 'alt1'}
                   size="$3"
                   onPress={() => setView('code')}
@@ -293,6 +297,7 @@ const MessagesFrame = (props: {
         ))}
       </XStack>
 
+      {/* @ts-expect-error - hideDragHandle type mismatch */}
       <ResizableBox hideDragHandle={props.hideDragHandle}>
         <YStack
           backgroundColor="$backgroundPress"
@@ -315,6 +320,7 @@ const PHONE_SCALE = 0.75
 const PhoneFrame = (props: any) => {
   return (
     <YStack
+      // @ts-expect-error - window group name
       group="window"
       focusable
       className="ms300 all ease-out"
@@ -467,6 +473,7 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
       >
         <XStack
           alignItems="center"
+          // @ts-expect-error - window group name
           group="window"
           ref={containerRef as any}
           width={width as any}
@@ -595,8 +602,8 @@ export const SizeController = XGroup.styleable((props, ref) => {
       justifyContent="center"
       alignItems="center"
       bg="$backgroundPress"
-      right={'0'}
-      bottom={'0'}
+      right={0}
+      bottom={0}
       gap="$1"
       overflow="hidden"
       br={1_000_000_000}

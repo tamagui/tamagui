@@ -38,7 +38,8 @@
     "types": ["node", "react", "vite/client"],
     "lib": ["dom", "esnext"]
   },
-  "exclude": ["**/test", "**/dist", "**/types", "**/__tests__", "**/bento-output"],
+  "include": ["**/*", "types/**/*"],
+  "exclude": ["**/test", "**/dist", "**/__tests__", "**/bento-output"],
   "typeAcquisition": {
     "enable": true
   },
