@@ -16,14 +16,19 @@ const localBentoPath = pathResolve(import.meta.dirname, '../../../bento')
 const hasBento = existsSync(localBentoPath)
 
 if (!hasBento) {
-  throw new Error(
+  const errMsg =
     '❌ Bento repository not found at ../bento\n' +
-      'Please clone the bento repository as a sibling to tamagui:\n' +
-      'cd .. && git clone <bento-repo-url> bento'
-  )
-}
+    'Please clone the bento repository as a sibling to tamagui:\n' +
+    'cd .. && git clone <bento-repo-url> bento'
 
-console.info('✅ Using ../bento')
+  if (!process.env.CI) {
+    console.warn(errMsg)
+  } else {
+    throw new Error(errMsg)
+  }
+} else {
+  console.info('✅ Using ../bento')
+}
 
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)
@@ -76,20 +81,25 @@ export default {
       '@docsearch/react': resolve('@docsearch/react'),
       'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
       // Bento paths (always available)
-      '@tamagui/bento/raw': pathResolve(import.meta.dirname, '../../../bento/src/index'),
-      '@tamagui/bento/provider': pathResolve(
-        import.meta.dirname,
-        '../../../bento/src/components/provider/CurrentRouteProvider'
-      ),
-      '@tamagui/bento/component': pathResolve(
-        import.meta.dirname,
-        '../../../bento/src/components'
-      ),
-      '@tamagui/bento/data': pathResolve(
-        import.meta.dirname,
-        './helpers/dist/bento-proxy-data'
-      ),
-      '@tamagui/bento': pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
+      ...(hasBento && {
+        '@tamagui/bento/raw': pathResolve(
+          import.meta.dirname,
+          '../../../bento/src/index'
+        ),
+        '@tamagui/bento/provider': pathResolve(
+          import.meta.dirname,
+          '../../../bento/src/components/provider/CurrentRouteProvider'
+        ),
+        '@tamagui/bento/component': pathResolve(
+          import.meta.dirname,
+          '../../../bento/src/components'
+        ),
+        '@tamagui/bento/data': pathResolve(
+          import.meta.dirname,
+          './helpers/dist/bento-proxy-data'
+        ),
+        '@tamagui/bento': pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
+      }),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
