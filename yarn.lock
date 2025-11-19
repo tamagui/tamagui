@@ -7339,6 +7339,7 @@ __metadata:
     "@babel/types": "npm:^7.25.4"
     "@tamagui/build": "workspace:*"
     "@tamagui/static": "workspace:*"
+    "@tamagui/static-sync": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -7765,6 +7766,7 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/image": "workspace:*"
+    "@tamagui/linear-gradient": "workspace:*"
     "@tamagui/list-item": "workspace:*"
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
@@ -9048,6 +9050,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -9065,7 +9068,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static-sync@workspace:code/compiler/static-sync":
+"@tamagui/static-sync@workspace:*, @tamagui/static-sync@workspace:code/compiler/static-sync":
   version: 0.0.0-use.local
   resolution: "@tamagui/static-sync@workspace:code/compiler/static-sync"
   dependencies:
@@ -9114,7 +9117,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static-worker@workspace:code/compiler/static-worker":
+"@tamagui/static-worker@workspace:*, @tamagui/static-worker@workspace:code/compiler/static-worker":
   version: 0.0.0-use.local
   resolution: "@tamagui/static-worker@workspace:code/compiler/static-worker"
   dependencies:
@@ -9687,6 +9690,8 @@ __metadata:
     "@tamagui/react-native-svg": "workspace:*"
     "@tamagui/react-native-web-lite": "workspace:*"
     "@tamagui/static": "workspace:*"
+    "@tamagui/static-worker": "workspace:*"
+    "@tamagui/types": "workspace:*"
     esm-resolve: "npm:^1.0.8"
     fs-extra: "npm:^11.2.0"
     outdent: "npm:^0.8.0"
@@ -29369,6 +29374,8 @@ __metadata:
     "@tamagui/cli-color": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/static": "workspace:*"
+    "@tamagui/static-worker": "workspace:*"
+    "@tamagui/types": "workspace:*"
     "@tamagui/web": "workspace:*"
     esbuild-loader: "npm:^4.2.2"
     esm-resolve: "npm:^1.0.8"
@@ -29451,6 +29458,7 @@ __metadata:
     "@tamagui/shapes": "workspace:*"
     "@tamagui/sheet": "workspace:*"
     "@tamagui/slider": "workspace:*"
+    "@tamagui/spacer": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/switch": "workspace:*"
     "@tamagui/tabs": "workspace:*"
