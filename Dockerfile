@@ -48,6 +48,7 @@ RUN git config --global user.email "you@example.com" && git init . && git add -A
 WORKDIR /root
 RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
       echo "Cloning bento repository..."; \
+      unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
       gh repo clone tamagui/bento && \
       gh auth logout && \
