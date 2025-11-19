@@ -73,7 +73,6 @@ export const userSubscriptionStatus = (
       chat: false,
       supportTier: 0,
       teamSeats: 0,
-      // This File is encrpyted so its safe to hardcode the coupon code here.
       couponCodes: { previouslySubscribed: 'TAMAGUI_PRO_RENEWAL' },
     }
 
@@ -90,7 +89,6 @@ export const userSubscriptionStatus = (
     chat: isChat,
     supportTier,
     teamSeats: calculateTeamSeats(userData.subscriptions),
-    // This File is encrpyted so its safe to hardcode the coupon code here.
     couponCodes: {
       previouslySubscribed: 'RENEWAL04',
     },
