@@ -114,7 +114,6 @@ jobs:
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         uses: ./.github/actions/install
         with:
-          transcrypt_password: ${{ secrets.transcrypt_password }}
           # To save time, only install dependencies for the test container app
           workspace-focus: ${{ env.test_app_package_name }}
 

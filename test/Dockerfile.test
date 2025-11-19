@@ -29,10 +29,6 @@ COPY .env /repo/.env
 
 WORKDIR /repo
 
-# Accept TRANSCRYPT_PASSWORD as a build argument
-ARG TRANSCRYPT_PASSWORD
-ENV TRANSCRYPT_PASSWORD=${TRANSCRYPT_PASSWORD}
-
 # Verify Yarn version
 RUN yarn --version
 

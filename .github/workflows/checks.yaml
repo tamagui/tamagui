@@ -18,8 +18,6 @@ jobs:
 
       - name: Install
         uses: ./.github/actions/install
-        with:
-          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Check
         run: yarn && yarn check
@@ -35,8 +33,6 @@ jobs:
 
       - name: Install
         uses: ./.github/actions/install
-        with:
-          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Install playwright
         run: npx playwright install
