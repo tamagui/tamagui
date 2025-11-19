@@ -3,7 +3,7 @@ import chalk from 'chalk'
 
 import { generatedPackageTypes } from './add'
 import { disposeAll, getOptions } from './utils'
-import { loadTamagui, checkDeps } from '@tamagui/compiler'
+import { loadTamagui, checkDeps } from '@tamagui/static'
 
 // exit handlers
 ;['exit', 'SIGINT'].forEach((_) => {

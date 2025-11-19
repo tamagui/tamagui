@@ -2325,7 +2325,7 @@ export function createExtractor(
         } catch (err: any) {
           node.attributes = ogAttributes
           console.error(
-            `@tamagui/compiler error, reverting optimization. In ${filePath} ${lineNumbers} on ${originalNodeName}: ${err.message}. For stack trace set environment TAMAGUI_DEBUG=1`
+            `@tamagui/static error, reverting optimization. In ${filePath} ${lineNumbers} on ${originalNodeName}: ${err.message}. For stack trace set environment TAMAGUI_DEBUG=1`
           )
           if (process.env.TAMAGUI_DEBUG === '1') {
             console.error(err.stack)

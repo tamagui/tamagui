@@ -785,7 +785,7 @@ const componentsIn = {
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
-                    <span style={{ color: 'var(--color12)' }}>@tamagui/compiler</span>
+                    <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
                   </CodeInline>
                 </Link>{' '}
                 is an optimizing compiler that{' '}

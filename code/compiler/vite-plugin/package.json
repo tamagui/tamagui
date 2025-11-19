@@ -36,11 +36,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/compiler": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/proxy-worm": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/react-native-web-lite": "workspace:*",
+    "@tamagui/static": "workspace:*",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
     "outdent": "^0.8.0",

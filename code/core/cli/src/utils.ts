@@ -1,8 +1,8 @@
-import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/compiler'
+import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
 import {
   loadTamaguiBuildConfigSync,
   loadTamagui as loadTamaguiStatic,
-} from '@tamagui/compiler'
+} from '@tamagui/static'
 import type { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'

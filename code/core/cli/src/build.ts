@@ -4,7 +4,7 @@ import {
   extractToNative,
   loadTamagui,
   loadTamaguiBuildConfigSync,
-} from '@tamagui/compiler'
+} from '@tamagui/static'
 import type { CLIResolvedOptions, TamaguiOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
 import { readFile, writeFile } from 'fs-extra'

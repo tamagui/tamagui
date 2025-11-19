@@ -43,7 +43,7 @@ const _cn = "  is_Stack _bg-lrpixp _fd-col _miw-0px _mih-0px _pos-relative _bxs-
 export default memo(() => {
   return (
     <Slide
-      title="@tamagui/compiler"
+      title="@tamagui/static"
       subTitle="Optimizing compiler"
       stepsStrategy="replace"
       theme="green"

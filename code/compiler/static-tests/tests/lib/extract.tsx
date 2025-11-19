@@ -1,6 +1,6 @@
 import * as babel from '@babel/core'
-import type { ExtractToClassNamesProps } from '@tamagui/compiler'
-import { createExtractor, extractToClassNames } from '@tamagui/compiler'
+import type { ExtractToClassNamesProps } from '@tamagui/static'
+import { createExtractor, extractToClassNames } from '@tamagui/static'
 
 export async function extractForNative(code: string) {
   const out = await babel.transformAsync(code, {
