@@ -54,6 +54,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/image": "workspace:*",
+    "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
