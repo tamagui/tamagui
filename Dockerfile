@@ -51,7 +51,7 @@ RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
       unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
       gh repo clone tamagui/bento && \
-      gh auth logout && \
+      gh auth logout --hostname github.com && \
       echo "✅ Bento repository cloned"; \
     else \
       echo "❌ ERROR: BENTO_GITHUB_TOKEN not provided - required for production build"; \
