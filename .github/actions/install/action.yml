@@ -1,9 +1,5 @@
 name: 'Install'
 description: 'Install and pre-build'
-inputs:
-  transcrypt_password:
-    description: 'Key to unlock repo'
-    required: true
 
 runs:
   using: composite
@@ -21,10 +17,6 @@ runs:
     - name: Install Dependencies
       shell: bash
       run: yarn install
-      env:
-        # postinstall uses this
-        TRANSCRYPT_PASSWORD: ${{ inputs.transcrypt_password }}
-        SHOULD_UNLOCK_GIT_CRYPT: "1"
 
     - name: Build JS
       shell: bash

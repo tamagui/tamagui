@@ -28,28 +28,49 @@ ARG STRIPE_SIGNING_SIGNATURE_SECRET
 ARG STUDIO_JWT_SECRET
 ARG SUPABASE_SERVICE_ROLE_KEY
 ARG TAKEOUT_RENEWAL_COUPON_ID
-ARG TRANSCRYPT_PASSWORD
 ARG URL
 ARG ONE_SERVER_URL
 ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
+ARG BENTO_GITHUB_TOKEN
 
 # unlock
-RUN apt-get update && apt-get install -y git bsdmainutils vim-common
+RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh
 
-WORKDIR /app
+WORKDIR /root/tamagui
 COPY . .
 
 # init git
 RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
 
-# unlock
-RUN ./scripts/unlock-repo.sh
+# Clone bento repository as sibling directory (required for production build)
+WORKDIR /root
+RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
+      echo "Cloning bento repository..."; \
+      unset GITHUB_TOKEN && \
+      echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
+      gh repo clone tamagui/bento && \
+      gh auth logout --hostname github.com && \
+      echo "✅ Bento repository cloned"; \
+    else \
+      echo "❌ ERROR: BENTO_GITHUB_TOKEN not provided - required for production build"; \
+      exit 1; \
+    fi
+
+WORKDIR /root/tamagui
+
+# Set REQUIRE_BENTO for the build process
+ENV REQUIRE_BENTO=true
 
 RUN corepack enable
 RUN corepack prepare yarn@4.5.0 --activate
+
+# First install without bento deps
 RUN yarn install --immutable
+
+# Merge bento dependencies into root package.json and reinstall
+RUN node scripts/with-bento.mjs
 RUN yarn build:js
 RUN yarn build:app
 

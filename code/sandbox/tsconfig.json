@@ -15,12 +15,6 @@
         "../ui/*",
         "../packages/*"
       ],
-      "@tamagui/bento": [
-        "../bento"
-      ],
-      "@tamagui/bento-example": [
-        "../bento/example"
-      ],
       "@tamagui/demos": [
         "../demos"
       ]

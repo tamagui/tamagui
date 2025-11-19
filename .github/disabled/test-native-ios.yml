@@ -47,8 +47,6 @@ jobs:
 
       - name: Install
         uses: ./.github/actions/install
-        with:
-          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Download Built Test Container App
         uses: actions/cache/restore@v4
@@ -132,8 +130,6 @@ jobs:
 
       # - name: Install
       #   uses: ./.github/actions/install
-      #   with:
-      #     transcrypt_password: ${{ secrets.transcrypt_password }}
 
       # - name: Download Built Test Container App
       #   uses: actions/cache/restore@v4

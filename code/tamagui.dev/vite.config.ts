@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+import { resolve as pathResolve } from 'node:path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
@@ -7,6 +9,25 @@ Error.stackTraceLimit = Number.POSITIVE_INFINITY
 // @ts-ignore
 if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
+}
+
+// Bento is required - check if ../bento exists (next to tamagui repo)
+const localBentoPath = pathResolve(import.meta.dirname, '../../../bento')
+const hasBento = existsSync(localBentoPath)
+
+if (!hasBento) {
+  const errMsg =
+    '❌ Bento repository not found at ../bento\n' +
+    'Please clone the bento repository as a sibling to tamagui:\n' +
+    'cd .. && git clone <bento-repo-url> bento'
+
+  if (!process.env.CI) {
+    console.warn(errMsg)
+  } else {
+    throw new Error(errMsg)
+  }
+} else {
+  console.info('✅ Using ../bento')
 }
 
 const resolve = (path: string) => {
@@ -45,14 +66,78 @@ const include = [
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
-  resolve: {
-    alias: {
-      'react-native-svg': '@tamagui/react-native-svg',
-      // 'react-native-web': resolve('@tamagui/react-native-web-lite'),
-      // bugfix docsearch/react, weird
-      '@docsearch/react': resolve('@docsearch/react'),
-      'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
+  server: {
+    fs: {
+      allow: ['..', '../../../bento'],
     },
+  },
+
+  resolve: {
+    preserveSymlinks: false,
+    alias: [
+      // Regex-based alias for bento components when not available
+      ...(!hasBento
+        ? [
+            {
+              find: /^@tamagui\/bento\/component\/.+$/,
+              replacement: pathResolve(
+                import.meta.dirname,
+                './helpers/dist/bento-component-stub.tsx'
+              ),
+            },
+          ]
+        : []),
+      // Standard string-based aliases
+      {
+        find: 'react-native-svg',
+        replacement: '@tamagui/react-native-svg',
+      },
+      // {
+      //   find: 'react-native-web',
+      //   replacement: resolve('@tamagui/react-native-web-lite'),
+      // },
+      // bugfix docsearch/react, weird
+      {
+        find: '@docsearch/react',
+        replacement: resolve('@docsearch/react'),
+      },
+      {
+        find: 'react-native/Libraries/Core/ReactNativeVersion',
+        replacement: resolve('@tamagui/proxy-worm'),
+      },
+      // Bento paths (conditional based on bento availability)
+      ...(hasBento
+        ? [
+            {
+              find: '@tamagui/bento/raw',
+              replacement: pathResolve(import.meta.dirname, '../../../bento/src/index'),
+            },
+            {
+              find: '@tamagui/bento/provider',
+              replacement: pathResolve(
+                import.meta.dirname,
+                '../../../bento/src/components/provider/CurrentRouteProvider'
+              ),
+            },
+            {
+              find: '@tamagui/bento/component',
+              replacement: pathResolve(
+                import.meta.dirname,
+                '../../../bento/src/components'
+              ),
+            },
+          ]
+        : []),
+      // Always provide these aliases - they point to proxy files that work with or without bento
+      {
+        find: '@tamagui/bento/data',
+        replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy-data'),
+      },
+      {
+        find: '@tamagui/bento',
+        replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
+      },
+    ],
 
     // todo automate, probably can just dedupe all package.json deps?
     dedupe: [
@@ -80,6 +165,43 @@ export default {
   },
 
   plugins: [
+    // Plugin to stub bento component imports when bento repo is not available
+    !hasBento && {
+      name: 'stub-bento-components',
+      enforce: 'pre', // Run before other plugins including alias resolution
+      resolveId(id: string) {
+        // Intercept imports from @tamagui/bento/component/*
+        if (id.startsWith('@tamagui/bento/component/')) {
+          // Return a virtual module ID
+          return '\0bento-component-stub:' + id
+        }
+      },
+      load(id: string) {
+        // Handle the virtual module
+        if (id.startsWith('\0bento-component-stub:')) {
+          // Return stub component code
+          return `
+import { YStack, Paragraph } from 'tamagui'
+
+export default function BentoComponentStub() {
+  if (process.env.NODE_ENV === 'production') {
+    return null
+  }
+  return (
+    <YStack p="$4" bc="$borderColor" br="$4">
+      <Paragraph size="$2" color="$color10">
+        Bento component not available
+      </Paragraph>
+    </YStack>
+  )
+}
+
+// Export as default and named for compatibility
+export const LocationNotification = BentoComponentStub
+`
+        }
+      },
+    },
     tamaguiPlugin({
       // see tamagui.build.ts
       optimize: true,
@@ -123,6 +245,8 @@ export default {
         'fetch-blob': true,
         'discord-api-types/v10': true,
         'magic-bytes.js': true,
+        '@ngneat/falso': true,
+        seedrandom: true,
         '@react-navigation/core': {
           version: '^7',
           'lib/module/useOnGetState.js': (contents) => {

@@ -1,4 +1,1 @@
-package.json merge=package-json
-code/bento/src/** filter=crypt diff=crypt merge=crypt
-code/tamagui.dev/app/api/theme/** filter=crypt diff=crypt merge=crypt
 package.json merge=packagejson

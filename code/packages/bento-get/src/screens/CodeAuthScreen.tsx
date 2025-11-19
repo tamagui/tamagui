@@ -1,15 +1,15 @@
 // @ts-ignore
 import { Alert } from '@inkjs/ui'
 import { Box, Text } from 'ink'
-import React, { useContext, useState } from 'react'
 import TextInput from 'ink-text-input'
+import { useContext, useState } from 'react'
 
+import { createClient } from '@supabase/supabase-js'
+import Spinner from 'ink-spinner'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { debugLog } from '../commands/index.js'
-import { AppContext } from '../data/AppContext.js'
-import { createClient } from '@supabase/supabase-js'
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '../constants.js'
-import Spinner from 'ink-spinner'
+import { AppContext } from '../data/AppContext.js'
 
 const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 

@@ -1,465 +1,814 @@
-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
+import { createServerClient } from '@supabase/ssr'
+import { ImageResponse } from '@vercel/og'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { getTheme } from '../../../features/studio/theme/getTheme'
+
+export async function GET(req: Request) {
+  const supabase = createServerClient(
+    import.meta.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+    import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
+    {
+      cookies: {
+        getAll() {
+          return []
+        },
+      },
+    }
+  )
+
+  try {
+    const url = new URL(req.url)
+    const id = url.searchParams.get('id')
+
+    if (!id) {
+      return new Response('No id provided', { status: 400 })
+    }
+
+    let theme = await getTheme(id, req)
+    if (!theme) {
+      return
+    }
+
+    if (theme.is_cached && theme.og_image_url) {
+      const { data, error } = await supabase.storage
+        .from('theme-og-images')
+        .download(theme.og_image_url)
+
+      if (!error && data) {
+        return new Response(data, {
+          headers: {
+            'Content-Type': 'image/png',
+            'Cache-Control': 'public, max-age=31536000, immutable',
+          },
+        })
+      }
+    }
+    const berkeleyFont = readFileSync(join(process.cwd(), 'public/fonts/berkeley.otf'))
+    const interBoldFont = readFileSync(join(process.cwd(), 'public/fonts/Inter-Bold.otf'))
+
+    const hslToColor = (h, s, l) => `hsl(${h}, ${s * 100}%, ${l * 100}%)`
+
+    const baseColors = theme.theme.palettes.base.anchors.map((c) =>
+      hslToColor(c.hue.light, c.sat.light, c.lum.light)
+    )
+    const accentColors = theme.theme.palettes.accent.anchors.map((c) =>
+      hslToColor(c.hue.light, c.sat.light, c.lum.light)
+    )
+
+    const baseColorsLight = theme.theme.palettes.base.anchors.map((c) =>
+      hslToColor(c.hue.light, c.sat.light, c.lum.light)
+    )
+    const accentColorsLight = theme.theme.palettes.accent.anchors.map((c) =>
+      hslToColor(c.hue.light, c.sat.light, c.lum.light)
+    )
+    const baseColorsDark = theme.theme.palettes.base.anchors.map((c) =>
+      hslToColor(c.hue.dark, c.sat.dark, c.lum.dark)
+    )
+    const accentColorsDark = theme.theme.palettes.accent.anchors.map((c) =>
+      hslToColor(c.hue.dark, c.sat.dark, c.lum.dark)
+    )
+
+    const image = new ImageResponse(
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundImage: `linear-gradient(-45deg, ${baseColors[0]} 50%, ${accentColors[0]} 50%)`,
+          color: 'hsl(220, 5%, 3%)',
+          padding: '48px',
+          fontFamily: 'system-ui',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '48px',
+            left: '48px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+          }}
+        >
+          <div style={{ width: '40px', height: '40px', opacity: 0.9, display: 'flex' }}>
+            <TamaguiLogo size={40} />
+          </div>
+          <div
+            style={{
+              fontSize: 28,
+              color: 'hsl(220, 5%, 3%)',
+              fontWeight: 500,
+            }}
+          >
+            Tamagui Theme
+          </div>
+        </div>
+
+        <div
+          style={{
+            position: 'absolute',
+            top: '100px',
+            left: '48px',
+            fontWeight: 'bold',
+            fontFamily: 'Berkeley Mono',
+            fontSize:
+              theme.search.length <= 5 ? 160 : theme.search.length <= 10 ? 140 : 120,
+          }}
+        >
+          {theme.search}
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '48px',
+            left: '48px',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {/* Light Base */}
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 24,
+                  marginBottom: '16px',
+                  opacity: 0.8,
+                }}
+              >
+                Base
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Light
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {baseColorsLight.map((color, i) => (
+                    <div
+                      key={`light-base-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Dark Base */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Dark
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {baseColorsDark.map((color, i) => (
+                    <div
+                      key={`dark-base-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 24,
+                  marginBottom: '16px',
+                  opacity: 0.8,
+                }}
+              >
+                Accent
+              </div>
+              {/* Light Accent */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Light
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {accentColorsLight.map((color, i) => (
+                    <div
+                      key={`light-accent-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Dark Accent */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Dark
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {accentColorsDark.map((color, i) => (
+                    <div
+                      key={`dark-accent-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>,
+      {
+        width: 1200,
+        height: 630,
+        fonts: [
+          {
+            name: 'Berkeley Mono',
+            data: berkeleyFont,
+            style: 'normal',
+            weight: 600,
+          },
+          {
+            name: 'Inter',
+            data: interBoldFont,
+            style: 'normal',
+            weight: 700,
+          },
+        ],
+      }
+    )
+
+    const image2 = new ImageResponse(
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundImage: `linear-gradient(-45deg, ${accentColorsDark[0]} 50%, ${accentColorsLight[0]} 50%)`,
+          color: 'hsl(220, 5%, 3%)',
+          padding: '48px',
+          fontFamily: 'system-ui',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '48px',
+            left: '48px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+          }}
+        >
+          <div style={{ width: '40px', height: '40px', opacity: 0.9, display: 'flex' }}>
+            <TamaguiLogo size={40} />
+          </div>
+          <div
+            style={{
+              fontSize: 28,
+              color: 'hsl(220, 5%, 3%)',
+              fontWeight: 500,
+            }}
+          >
+            Tamagui Theme
+          </div>
+        </div>
+
+        <div
+          style={{
+            position: 'absolute',
+            top: '100px',
+            left: '48px',
+            fontWeight: 'bold',
+            fontFamily: 'Berkeley Mono',
+            fontSize: theme.search.length <= 5 ? 160 : 140,
+          }}
+        >
+          {theme.search}
+        </div>
+
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '48px',
+            left: '48px',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 24,
+                  marginBottom: '16px',
+                  opacity: 0.8,
+                }}
+              >
+                Dark Mode
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Base
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {baseColorsDark.map((color, i) => (
+                    <div
+                      key={`light-base-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Accent
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {accentColorsDark.map((color, i) => (
+                    <div
+                      key={`dark-base-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 24,
+                  marginBottom: '16px',
+                  opacity: 0.8,
+                }}
+              >
+                Light Mode
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Base
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {baseColorsLight.map((color, i) => (
+                    <div
+                      key={`light-accent-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: 20,
+                    opacity: 0.8,
+                  }}
+                >
+                  Accent
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {accentColorsLight.map((color, i) => (
+                    <div
+                      key={`dark-accent-${i}`}
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>,
+      {
+        width: 1200,
+        height: 630,
+        fonts: [
+          {
+            name: 'Berkeley Mono',
+            data: berkeleyFont,
+            style: 'normal',
+            weight: 600,
+          },
+          {
+            name: 'Inter',
+            data: interBoldFont,
+            style: 'normal',
+            weight: 700,
+          },
+        ],
+      }
+    )
+
+    const buffer = await image.arrayBuffer()
+    const imageBuffer = Buffer.from(buffer)
+
+    queueMicrotask(async () => {
+      try {
+        if (theme.og_image_url) {
+          await supabase.storage.from('theme-og-images').remove([theme.og_image_url])
+        }
+
+        const fileName = `theme-${id}-${Date.now()}.png`
+        const { error: uploadError } = await supabase.storage
+          .from('theme-og-images')
+          .upload(fileName, imageBuffer, {
+            contentType: 'image/png',
+            cacheControl: '31536000',
+          })
+
+        if (uploadError) {
+          console.error('Storage error:', uploadError)
+          return
+        }
+
+        const { error: updateError } = await supabase
+          .from('theme_histories')
+          .update({
+            og_image_url: fileName,
+            is_cached: true,
+          })
+          .eq('id', id)
+
+        if (updateError) {
+          console.error('DB update error:', updateError)
+        } else {
+          console.info('DB update success:', fileName)
+        }
+      } catch (error) {
+        console.error('Background storage/update error:', error)
+      }
+    })
+
+    return new Response(imageBuffer, {
+      headers: {
+        'Content-Type': 'image/png',
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    })
+  } catch (error) {
+    console.error('OG image generation error:', error)
+    return new Response('Error generating image', { status: 500 })
+  }
+}
+
+const fallbackTheme = {
+  base: [
+    {
+      hue: {
+        dark: 220,
+        sync: true,
+        light: 220,
+      },
+      lum: {
+        dark: 0.02,
+        light: 0.99,
+      },
+      sat: {
+        dark: 0.05,
+        sync: true,
+        light: 0.05,
+      },
+      index: 0,
+    },
+    {
+      hue: {
+        dark: 220,
+        sync: true,
+        light: 220,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.15,
+        light: 0.85,
+      },
+      sat: {
+        dark: 0.05,
+        sync: true,
+        light: 0.05,
+      },
+      index: 4,
+    },
+    {
+      hue: {
+        dark: 220,
+        sync: true,
+        light: 220,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.5,
+        light: 0.5,
+      },
+      sat: {
+        dark: 0.05,
+        sync: true,
+        light: 0.05,
+      },
+      index: 9,
+    },
+    {
+      hue: {
+        dark: 220,
+        sync: true,
+        light: 220,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.85,
+        light: 0.15,
+      },
+      sat: {
+        dark: 0.05,
+        sync: true,
+        light: 0.05,
+      },
+      index: 10,
+    },
+    {
+      hue: {
+        dark: 220,
+        sync: true,
+        light: 220,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.98,
+        light: 0.03,
+      },
+      sat: {
+        dark: 0.05,
+        sync: true,
+        light: 0.05,
+      },
+      index: 11,
+    },
+  ],
+  model: 'claude-3-7-sonnet',
+  reply:
+    "<thinking>\nFor a Vercel-inspired theme, I'll create a clean, modern palette based on their brand. Vercel uses a minimalist black and white aesthetic with blue accents. I'll create a subtle theme with a clean base and blue accent palette that matches their brand identity.\n</thinking>\n\n0: 220,220 .05,.05 .99,.02\n4: 220,220 .05,.05 .85,.15\n9: 220,220 .05,.05 .5,.5\n10: 220,220 .05,.05 .15,.85\n11: 220,220 .05,.05 .03,.98\n\n0: 225,225 .7,.7 .65,.3\n4: 225,225 .7,.7 .55,.4\n9: 225,225 .7,.7 .45,.55\n10: 225,225 .7,.7 .25,.75\n11: 225,225 .7,.7 .1,.9",
+  accent: [
+    {
+      hue: {
+        dark: 225,
+        sync: true,
+        light: 225,
+      },
+      lum: {
+        dark: 0.3,
+        light: 0.65,
+      },
+      sat: {
+        dark: 0.7,
+        sync: true,
+        light: 0.7,
+      },
+      index: 0,
+    },
+    {
+      hue: {
+        dark: 225,
+        sync: true,
+        light: 225,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.4,
+        light: 0.55,
+      },
+      sat: {
+        dark: 0.7,
+        sync: true,
+        light: 0.7,
+      },
+      index: 4,
+    },
+    {
+      hue: {
+        dark: 225,
+        sync: true,
+        light: 225,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.55,
+        light: 0.45,
+      },
+      sat: {
+        dark: 0.7,
+        sync: true,
+        light: 0.7,
+      },
+      index: 9,
+    },
+    {
+      hue: {
+        dark: 225,
+        sync: true,
+        light: 225,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.75,
+        light: 0.25,
+      },
+      sat: {
+        dark: 0.7,
+        sync: true,
+        light: 0.7,
+      },
+      index: 10,
+    },
+    {
+      hue: {
+        dark: 225,
+        sync: true,
+        light: 225,
+        syncLeft: true,
+      },
+      lum: {
+        dark: 0.9,
+        light: 0.1,
+      },
+      sat: {
+        dark: 0.7,
+        sync: true,
+        light: 0.7,
+      },
+      index: 11,
+    },
+  ],
+  scheme: 'light',
+}
+
+type Theme = {
+  theme_data: typeof fallbackTheme
+  search_query: string
+  id: number
+  user_id: string
+  og_image_url: string | null
+  is_cached: boolean | null
+}
+
+const TamaguiLogo = ({ size = 64 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 32 32"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+  >
+    <g id="favicon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <rect id="Rectangle" fill="#000000" x="11" y="4" width="14" height="8"></rect>
+      <path
+        d="M2,22 L2,20 L4,20 L4,18 L6,18 L6,16 L8,16 L8,6 L10,6 L10,2 L14,2 L14,0 L24,0 L24,2 L26,2 L26,4 L28,4 L28,8 L32,8 L32,10 L30,10 L30,12 L32,12 L32,14 L30,14 L30,16 L28,16 L28,20 L30,20 L30,22 L32,22 L32,28 L30,28 L30,30 L26,30 L26,32 L8,32 L8,30 L4,30 L4,28 L2,28 L2,26 L0,26 L0,22 L2,22 Z M18,8 L16,8 L16,10 L18,10 L18,8 Z M24,6 L22,6 L22,8 L24,8 L24,6 Z"
+        id="Combined-Shape"
+        fill="#ECD20A"
+      ></path>
+    </g>
+  </svg>
+)
