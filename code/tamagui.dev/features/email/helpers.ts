@@ -94,6 +94,8 @@ export function sendProductRenewalEmail(
 
   <p>We really appreciate your support of our small business.</p>
 
+  <p><strong>Use the code TAMAGUI_PRO_RENEWAL to get 25% off your renewal.</strong></p>
+
   <h2>We're happy to announce that the Takeout 2 Beta is now available!</h2>
 
   <p>It represents a huge upgrade in every way and a glimpse at the future of frontend development. Learn more about it in the private Takeout channel in discord.</p>
