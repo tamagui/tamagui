@@ -41,7 +41,4 @@ export type UserSubscriptionStatus = {
   chat: boolean
   supportTier: number
   teamSeats: number
-  couponCodes: {
-    [key: string]: string
-  }
 }

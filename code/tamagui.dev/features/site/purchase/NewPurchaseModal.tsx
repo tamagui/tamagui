@@ -417,30 +417,7 @@ export function PurchaseModalContents() {
                         </XStack>
                       </Theme>
                     )}
-                    {hasSubscribedBefore && (
-                      <Theme name="yellow">
-                        <XStack
-                          mb="$2"
-                          backgroundColor="$color3"
-                          borderRadius="$4"
-                          borderWidth={0.5}
-                          borderColor="$color8"
-                          p="$2"
-                        >
-                          <Paragraph size="$3" color="$color11" textWrap="balance">
-                            You have subscribed before so you are eligible for a 25%
-                            discount.
-                            <br />
-                            Use code{' '}
-                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
-                              {subscriptionStatus.couponCodes.previouslySubscribed}
-                            </Text>{' '}
-                            at checkout for 25% off
-                          </Paragraph>
-                        </XStack>
-                      </Theme>
-                    )}
-
+                 
                     <Theme name="accent">
                       <PurchaseButton onPress={handleCheckout} disabled={isProcessing}>
                         {isProcessing ? 'Processing...' : 'Checkout'}
