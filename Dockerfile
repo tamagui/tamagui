@@ -65,7 +65,12 @@ ENV REQUIRE_BENTO=true
 
 RUN corepack enable
 RUN corepack prepare yarn@4.5.0 --activate
+
+# First install without bento deps
 RUN yarn install --immutable
+
+# Merge bento dependencies into root package.json and reinstall
+RUN node scripts/with-bento.mjs
 RUN yarn build:js
 RUN yarn build:app
 
