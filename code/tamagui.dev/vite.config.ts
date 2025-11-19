@@ -74,33 +74,70 @@ export default {
 
   resolve: {
     preserveSymlinks: false,
-    alias: {
-      'react-native-svg': '@tamagui/react-native-svg',
-      // 'react-native-web': resolve('@tamagui/react-native-web-lite'),
+    alias: [
+      // Regex-based alias for bento components when not available
+      ...(!hasBento
+        ? [
+            {
+              find: /^@tamagui\/bento\/component\/.+$/,
+              replacement: pathResolve(
+                import.meta.dirname,
+                './helpers/dist/bento-component-stub.tsx'
+              ),
+            },
+          ]
+        : []),
+      // Standard string-based aliases
+      {
+        find: 'react-native-svg',
+        replacement: '@tamagui/react-native-svg',
+      },
+      // {
+      //   find: 'react-native-web',
+      //   replacement: resolve('@tamagui/react-native-web-lite'),
+      // },
       // bugfix docsearch/react, weird
-      '@docsearch/react': resolve('@docsearch/react'),
-      'react-native/Libraries/Core/ReactNativeVersion': resolve('@tamagui/proxy-worm'),
-      // Bento paths (always available)
-      ...(hasBento && {
-        '@tamagui/bento/raw': pathResolve(
-          import.meta.dirname,
-          '../../../bento/src/index'
-        ),
-        '@tamagui/bento/provider': pathResolve(
-          import.meta.dirname,
-          '../../../bento/src/components/provider/CurrentRouteProvider'
-        ),
-        '@tamagui/bento/component': pathResolve(
-          import.meta.dirname,
-          '../../../bento/src/components'
-        ),
-        '@tamagui/bento/data': pathResolve(
-          import.meta.dirname,
-          './helpers/dist/bento-proxy-data'
-        ),
-        '@tamagui/bento': pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
-      }),
-    },
+      {
+        find: '@docsearch/react',
+        replacement: resolve('@docsearch/react'),
+      },
+      {
+        find: 'react-native/Libraries/Core/ReactNativeVersion',
+        replacement: resolve('@tamagui/proxy-worm'),
+      },
+      // Bento paths (conditional based on bento availability)
+      ...(hasBento
+        ? [
+            {
+              find: '@tamagui/bento/raw',
+              replacement: pathResolve(import.meta.dirname, '../../../bento/src/index'),
+            },
+            {
+              find: '@tamagui/bento/provider',
+              replacement: pathResolve(
+                import.meta.dirname,
+                '../../../bento/src/components/provider/CurrentRouteProvider'
+              ),
+            },
+            {
+              find: '@tamagui/bento/component',
+              replacement: pathResolve(
+                import.meta.dirname,
+                '../../../bento/src/components'
+              ),
+            },
+          ]
+        : []),
+      // Always provide these aliases - they point to proxy files that work with or without bento
+      {
+        find: '@tamagui/bento/data',
+        replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy-data'),
+      },
+      {
+        find: '@tamagui/bento',
+        replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
+      },
+    ],
 
     // todo automate, probably can just dedupe all package.json deps?
     dedupe: [
@@ -128,6 +165,43 @@ export default {
   },
 
   plugins: [
+    // Plugin to stub bento component imports when bento repo is not available
+    !hasBento && {
+      name: 'stub-bento-components',
+      enforce: 'pre', // Run before other plugins including alias resolution
+      resolveId(id: string) {
+        // Intercept imports from @tamagui/bento/component/*
+        if (id.startsWith('@tamagui/bento/component/')) {
+          // Return a virtual module ID
+          return '\0bento-component-stub:' + id
+        }
+      },
+      load(id: string) {
+        // Handle the virtual module
+        if (id.startsWith('\0bento-component-stub:')) {
+          // Return stub component code
+          return `
+import { YStack, Paragraph } from 'tamagui'
+
+export default function BentoComponentStub() {
+  if (process.env.NODE_ENV === 'production') {
+    return null
+  }
+  return (
+    <YStack p="$4" bc="$borderColor" br="$4">
+      <Paragraph size="$2" color="$color10">
+        Bento component not available
+      </Paragraph>
+    </YStack>
+  )
+}
+
+// Export as default and named for compatibility
+export const LocationNotification = BentoComponentStub
+`
+        }
+      },
+    },
     tamaguiPlugin({
       // see tamagui.build.ts
       optimize: true,

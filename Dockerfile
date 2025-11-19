@@ -38,22 +38,29 @@ ARG BENTO_GITHUB_TOKEN
 # unlock
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh
 
-WORKDIR /root
-# Clone bento repository as sibling directory (required for build)
-RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      echo "Cloning bento repository..."; \
-      echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
-      gh repo clone tamagui/bento && \
-      gh auth logout; \
-    else \
-      echo "WARNING: BENTO_GITHUB_TOKEN not provided, skipping bento clone"; \
-    fi
-
 WORKDIR /root/tamagui
 COPY . .
 
 # init git
 RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
+
+# Clone bento repository as sibling directory (required for production build)
+WORKDIR /root
+RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
+      echo "Cloning bento repository..."; \
+      echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
+      gh repo clone tamagui/bento && \
+      gh auth logout && \
+      echo "✅ Bento repository cloned"; \
+    else \
+      echo "❌ ERROR: BENTO_GITHUB_TOKEN not provided - required for production build"; \
+      exit 1; \
+    fi
+
+WORKDIR /root/tamagui
+
+# Set REQUIRE_BENTO for the build process
+ENV REQUIRE_BENTO=true
 
 RUN corepack enable
 RUN corepack prepare yarn@4.5.0 --activate
