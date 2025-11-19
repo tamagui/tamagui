@@ -1,6 +1,6 @@
 {
   "name": "tamagui-build-test-watch-package",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
@@ -17,6 +17,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "typescript": "^5.8.2"
+    "typescript": "~5.9.2"
   }
 }

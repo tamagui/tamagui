@@ -100,7 +100,7 @@ function Demo({
       {...props}
     >
       <Popover.Trigger asChild>
-        <Button icon={Icon} data-testid={`${dataTestId}-trigger`} />
+        <Button icon={Icon} id={`${dataTestId}-trigger`} />
       </Popover.Trigger>
 
       {shouldAdapt && (
@@ -117,10 +117,19 @@ function Demo({
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
+        animation="100ms"
         width={300}
         height={300}
+        enterStyle={{
+          y: -10,
+          opacity: 0,
+        }}
+        exitStyle={{
+          y: -10,
+          opacity: 0,
+        }}
         elevate
-        data-testid={`${dataTestId}-content`}
+        id={`${dataTestId}-content`}
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
@@ -129,13 +138,12 @@ function Demo({
             <Label size="$3" htmlFor={Name}>
               Name
             </Label>
-            <Input f={1} size="$3" id={Name} data-testid={`${dataTestId}-input`} />
           </XStack>
 
           <Popover.Close asChild>
             <Button
               size="$3"
-              data-testid={`${dataTestId}-close`}
+              id={`${dataTestId}-close`}
               onPress={() => {
                 /* Custom code goes here, does not interfere with popover closure */
               }}
@@ -151,15 +159,15 @@ function Demo({
 
 function SimplePopoverTest() {
   return (
-    <Popover data-testid="simple-popover">
+    <Popover>
       <Popover.Trigger asChild>
-        <Button data-testid="simple-popover-trigger">Simple Popover</Button>
+        <Button id="simple-popover-trigger">Simple Popover</Button>
       </Popover.Trigger>
-      <Popover.Content data-testid="simple-popover-content">
+      <Popover.Content id="simple-popover-content">
         <YStack gap="$2">
           <Paragraph>This is a simple popover</Paragraph>
           <Popover.Close asChild>
-            <Button size="$2" data-testid="simple-popover-close">
+            <Button size="$2" id="simple-popover-close">
               Close
             </Button>
           </Popover.Close>

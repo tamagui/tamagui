@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/ui",
-  "version": "1.135.7",
+  "version": "1.138.0",
+  "type": "module",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
   "sideEffects": [
@@ -11,10 +12,6 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "@tamagui/ui": {
-    "bundle.native": "./src/index.ts",
-    "bundle.native.test": "./src/index.ts"
-  },
   "files": [
     "src",
     "types",
@@ -29,9 +26,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "check": "yarn check-circular-deps",
-    "check-circular-deps": "npx madge --circular ./src/index.ts"
+    "lint:fix": "biome check --write src"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -62,8 +57,7 @@
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "require": "./dist/native.js",
-      "react-native": "./dist/native.native.js"
+      "require": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
@@ -81,71 +75,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/accordion": "workspace:*",
-    "@tamagui/adapt": "workspace:*",
-    "@tamagui/alert-dialog": "workspace:*",
-    "@tamagui/animate-presence": "workspace:*",
-    "@tamagui/avatar": "workspace:*",
-    "@tamagui/button": "workspace:*",
-    "@tamagui/card": "workspace:*",
-    "@tamagui/checkbox": "workspace:*",
-    "@tamagui/compose-refs": "workspace:*",
-    "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*",
-    "@tamagui/create-context": "workspace:*",
-    "@tamagui/dialog": "workspace:*",
-    "@tamagui/elements": "workspace:*",
-    "@tamagui/fake-react-native": "workspace:*",
-    "@tamagui/focusable": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
-    "@tamagui/form": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
-    "@tamagui/get-font-sized": "workspace:*",
-    "@tamagui/get-token": "workspace:*",
-    "@tamagui/group": "workspace:*",
-    "@tamagui/helpers-tamagui": "workspace:*",
-    "@tamagui/image": "workspace:*",
-    "@tamagui/label": "workspace:*",
-    "@tamagui/linear-gradient": "workspace:*",
-    "@tamagui/list-item": "workspace:*",
-    "@tamagui/polyfill-dev": "workspace:*",
-    "@tamagui/popover": "workspace:*",
-    "@tamagui/popper": "workspace:*",
-    "@tamagui/portal": "workspace:*",
-    "@tamagui/progress": "workspace:*",
-    "@tamagui/radio-group": "workspace:*",
-    "@tamagui/react-native-media-driver": "workspace:*",
-    "@tamagui/scroll-view": "workspace:*",
-    "@tamagui/select": "workspace:*",
-    "@tamagui/separator": "workspace:*",
-    "@tamagui/shapes": "workspace:*",
-    "@tamagui/sheet": "workspace:*",
-    "@tamagui/slider": "workspace:*",
-    "@tamagui/spacer": "workspace:*",
-    "@tamagui/stacks": "workspace:*",
-    "@tamagui/switch": "workspace:*",
-    "@tamagui/tabs": "workspace:*",
-    "@tamagui/text": "workspace:*",
-    "@tamagui/theme": "workspace:*",
-    "@tamagui/toggle-group": "workspace:*",
-    "@tamagui/tooltip": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-debounce": "workspace:*",
-    "@tamagui/use-force-update": "workspace:*",
-    "@tamagui/use-window-dimensions": "workspace:*",
-    "@tamagui/visually-hidden": "workspace:*",
-    "@tamagui/z-index-stack": "workspace:*"
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.79.2",
-    "react-native-web": "^0.20.0"
+    "react-native": "0.81.5",
+    "react-native-web": "^0.21.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "code/ui/tamagui-ui"
+    "directory": "code/ui/tamagui"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {

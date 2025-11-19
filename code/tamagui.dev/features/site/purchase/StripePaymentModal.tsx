@@ -27,6 +27,11 @@
  * Client-side payment confirmation is required for subscriptions due to
  * card ownership verification, but not for one-time payments which are
  * completed server-side.
+ *
+ * Error Handling:
+ * - If Pro plan succeeds but Support/Chat fails, the Pro plan is still activated
+ * - This prevents customers from losing access to products they successfully paid for
+ * - Failed add-ons can be purchased separately later from the account page
  */
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
@@ -287,22 +292,32 @@ const PaymentForm = ({
 
         const upgradeData = await upgradeResponse.json()
         if (!upgradeResponse.ok) {
-          // If upgrade fails and Pro is a subscription, cancel it
-          if (data?.id) {
-            await fetch('/api/handle-failed-payment-subscription', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                subscriptionId: data.id,
-              }),
-            })
-          }
+          // Pro plan was created successfully, but additional options failed
+          // Still give them access to Pro since they paid for it
+          const upgradeError = upgradeData.error || 'Failed to add Support/Chat'
+          const addonType = selectedPrices.chatSupport ? 'Chat Support' : 'Support Tier'
 
-          const error = new Error(JSON.stringify(upgradeData))
-          setError(error)
-          onError(error)
+          console.error('Upgrade failed but Pro succeeded:', upgradeError)
+
+          // Track this as a partial success
+          sendEvent('purchase_partial_success', {
+            pro_subscription: data?.id,
+            failed_addon: selectedPrices.chatSupport ? 'chat' : 'support',
+            error: upgradeError,
+          })
+
+          // Show a warning but still proceed with Pro subscription success
+          // Note: Not setting error state here because we want to proceed to success
+          console.warn(
+            `Pro plan activated successfully, but couldn't add ${addonType}: ${upgradeError}`
+          )
+
+          // Continue to success with just the Pro subscription
+          if (data?.id) {
+            onSuccess(data.id)
+          } else {
+            onSuccess('upgraded a tier or chat support')
+          }
           return
         }
 
@@ -322,21 +337,32 @@ const PaymentForm = ({
           })
 
           if (monthlyResult.error) {
-            // If monthly payment fails and Pro is a subscription, cancel it
-            if (data?.id) {
-              await fetch('/api/handle-failed-payment-subscription', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  subscriptionId: data.id,
-                }),
-              })
-            }
+            // Monthly payment confirmation failed, but Pro is already active
+            const addonType = selectedPrices.chatSupport ? 'Chat Support' : 'Support Tier'
 
-            setError(monthlyResult.error)
-            onError(monthlyResult.error)
+            console.error(
+              'Monthly payment confirmation failed but Pro succeeded:',
+              monthlyResult.error
+            )
+
+            // Track this as a partial success
+            sendEvent('purchase_partial_success', {
+              pro_subscription: data?.id,
+              failed_addon: selectedPrices.chatSupport ? 'chat' : 'support',
+              error: monthlyResult.error.message,
+            })
+
+            // Show a warning but still proceed with Pro subscription success
+            console.warn(
+              `Pro plan activated successfully, but payment confirmation failed for ${addonType}`
+            )
+
+            // Continue to success with just the Pro subscription
+            if (data?.id) {
+              onSuccess(data.id)
+            } else {
+              onSuccess('upgraded a tier or chat support')
+            }
             return
           }
         }

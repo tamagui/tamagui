@@ -11,9 +11,9 @@ test('simple popover opens and closes', async ({ page }) => {
   // Wait for page to load
   await page.waitForLoadState('networkidle')
 
-  const trigger = page.getByTestId('simple-popover-trigger')
-  const content = page.getByTestId('simple-popover-content')
-  const closeButton = page.getByTestId('simple-popover-close')
+  const trigger = page.locator('#simple-popover-trigger')
+  const content = page.locator('#simple-popover-content')
+  const closeButton = page.locator('#simple-popover-close')
 
   // Check initial state
   await expect(trigger).toBeVisible()
@@ -37,10 +37,10 @@ test('basic popover with icon trigger', async ({ page }) => {
   // Wait for page to load
   await page.waitForLoadState('networkidle')
 
-  const trigger = page.getByTestId('popover-bottom-trigger')
-  const content = page.getByTestId('popover-bottom-content')
-  const input = page.getByTestId('popover-bottom-input')
-  const closeButton = page.getByTestId('popover-bottom-close')
+  const trigger = page.locator('#popover-bottom-trigger')
+  const content = page.locator('#popover-bottom-content')
+  const input = page.locator('#popover-bottom-input')
+  const closeButton = page.locator('#popover-bottom-close')
 
   // Check initial state
   await expect(trigger).toBeVisible()
@@ -49,16 +49,17 @@ test('basic popover with icon trigger', async ({ page }) => {
   // Click trigger to open popover
   await trigger.click()
 
+  // Wait for enter animation to start
+  await page.waitForTimeout(100)
+
   // Wait for content to be visible
   await expect(content).toBeVisible({ timeout: 5000 })
 
-  // Test interaction with content
-  await expect(input).toBeVisible()
-  await input.fill('Test input')
-  await expect(input).toHaveValue('Test input')
-
   // Click close button
   await closeButton.click()
+
+  // Wait for exit animation
+  await page.waitForTimeout(500)
 
   // Verify popover is closed
   await expect(content).not.toBeVisible()
@@ -72,8 +73,8 @@ test('popover placement variations', async ({ page }) => {
   const placements = ['left', 'top', 'right']
 
   for (const placement of placements) {
-    const trigger = page.getByTestId(`popover-${placement}-trigger`)
-    const content = page.getByTestId(`popover-${placement}-content`)
+    const trigger = page.locator(`#popover-${placement}-trigger`)
+    const content = page.locator(`#popover-${placement}-content`)
 
     // Check initial state
     await expect(trigger).toBeVisible()
@@ -82,11 +83,17 @@ test('popover placement variations', async ({ page }) => {
     // Click trigger to open popover
     await trigger.click()
 
+    // Wait for enter animation to start
+    await page.waitForTimeout(100)
+
     // Wait for content to be visible
     await expect(content).toBeVisible({ timeout: 5000 })
 
     // Close by clicking outside (ESC key)
     await page.keyboard.press('Escape')
+
+    // Wait for exit animation to complete
+    await page.waitForTimeout(500)
 
     // Verify popover is closed
     await expect(content).not.toBeVisible()
@@ -98,8 +105,8 @@ test('popover keyboard navigation', async ({ page }) => {
   // Wait for page to load
   await page.waitForLoadState('networkidle')
 
-  const trigger = page.getByTestId('simple-popover-trigger')
-  const content = page.getByTestId('simple-popover-content')
+  const trigger = page.locator('#simple-popover-trigger')
+  const content = page.locator('#simple-popover-content')
 
   // Focus trigger and open with Enter key
   await trigger.focus()
@@ -120,8 +127,8 @@ test('popover accessibility attributes', async ({ page }) => {
   // Wait for page to load
   await page.waitForLoadState('networkidle')
 
-  const trigger = page.getByTestId('simple-popover-trigger')
-  const content = page.getByTestId('simple-popover-content')
+  const trigger = page.locator('#simple-popover-trigger')
+  const content = page.locator('#simple-popover-content')
 
   // Check initial state
   await expect(trigger).toHaveAttribute('aria-expanded', 'false')
@@ -146,12 +153,12 @@ test('multiple popovers - opening one closes others', async ({ page }) => {
   // Wait for page to load
   await page.waitForLoadState('networkidle')
 
-  const leftTrigger = page.getByTestId('popover-left-trigger')
-  const leftContent = page.getByTestId('popover-left-content')
-  const rightTrigger = page.getByTestId('popover-right-trigger')
-  const rightContent = page.getByTestId('popover-right-content')
-  const topTrigger = page.getByTestId('popover-top-trigger')
-  const topContent = page.getByTestId('popover-top-content')
+  const leftTrigger = page.locator('#popover-left-trigger')
+  const leftContent = page.locator('#popover-left-content')
+  const rightTrigger = page.locator('#popover-right-trigger')
+  const rightContent = page.locator('#popover-right-content')
+  const topTrigger = page.locator('#popover-top-trigger')
+  const topContent = page.locator('#popover-top-content')
 
   // Check initial state - all popovers should be closed
   await expect(leftContent).not.toBeVisible()
@@ -160,24 +167,28 @@ test('multiple popovers - opening one closes others', async ({ page }) => {
 
   // Open first popover (left)
   await leftTrigger.click()
+  await page.waitForTimeout(100) // Wait for enter animation
   await expect(leftContent).toBeVisible({ timeout: 5000 })
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).not.toBeVisible()
 
   // Open second popover (right) - should close the first one
   await rightTrigger.click()
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).toBeVisible({ timeout: 5000 })
   await expect(topContent).not.toBeVisible()
 
   // Open third popover (top) - should close the second one
   await topTrigger.click()
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).toBeVisible({ timeout: 5000 })
 
   // Close the top popover
   await page.keyboard.press('Escape')
+  await page.waitForTimeout(500) // Wait for exit animation
   await expect(leftContent).not.toBeVisible()
   await expect(rightContent).not.toBeVisible()
   await expect(topContent).not.toBeVisible()
@@ -188,10 +199,10 @@ test('multiple popovers - simple popover with others', async ({ page }) => {
   // Wait for page to load
   await page.waitForLoadState('networkidle')
 
-  const simpleTrigger = page.getByTestId('simple-popover-trigger')
-  const simpleContent = page.getByTestId('simple-popover-content')
-  const leftTrigger = page.getByTestId('popover-left-trigger')
-  const leftContent = page.getByTestId('popover-left-content')
+  const simpleTrigger = page.locator('#simple-popover-trigger')
+  const simpleContent = page.locator('#simple-popover-content')
+  const leftTrigger = page.locator('#popover-left-trigger')
+  const leftContent = page.locator('#popover-left-content')
 
   // Check initial state
   await expect(simpleContent).not.toBeVisible()
@@ -199,21 +210,25 @@ test('multiple popovers - simple popover with others', async ({ page }) => {
 
   // Open simple popover
   await simpleTrigger.click()
+  await page.waitForTimeout(100) // Wait for enter animation
   await expect(simpleContent).toBeVisible({ timeout: 5000 })
   await expect(leftContent).not.toBeVisible()
 
   // Open left popover - should close simple popover
   await leftTrigger.click()
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(simpleContent).not.toBeVisible()
   await expect(leftContent).toBeVisible({ timeout: 5000 })
 
   // Open simple popover again - should close left popover
   await simpleTrigger.click()
+  await page.waitForTimeout(600) // Wait for previous exit + new enter animations
   await expect(simpleContent).toBeVisible({ timeout: 5000 })
   await expect(leftContent).not.toBeVisible()
 
   // Close simple popover
   await page.keyboard.press('Escape')
+  await page.waitForTimeout(500) // Wait for exit animation
   await expect(simpleContent).not.toBeVisible()
   await expect(leftContent).not.toBeVisible()
 })

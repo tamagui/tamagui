@@ -3,6 +3,13 @@ export * from '@tamagui/web'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
+import {
+  createMeasure,
+  createMeasureInWindow,
+  createMeasureLayout,
+  enable,
+  useElementLayout,
+} from '@tamagui/use-element-layout'
 import type {
   StackNonStyleProps,
   StackStyleBase,
@@ -25,14 +32,6 @@ import {
   setupHooks,
   useIsomorphicLayoutEffect,
 } from '@tamagui/web'
-import React from 'react'
-import {
-  enable,
-  createMeasure,
-  createMeasureInWindow,
-  useElementLayout,
-  createMeasureLayout,
-} from '@tamagui/use-element-layout'
 import { addNativeValidStyles } from './addNativeValidStyles'
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
@@ -248,17 +247,9 @@ setupHooks({
         return
       }
 
-      if (elementType === baseViews.View) {
+      if (elementType === baseViews.View && baseViews.TextAncestor) {
         // optimize view
         return createOptimizedView(children, viewProps, baseViews)
-      }
-
-      if (process.env.TAMAGUI_OPTIMIZE_NATIVE_VIEWS) {
-        if (elementType === baseViews.Text) {
-          // further optimize by not even caling elementType.render
-          viewProps.children = children
-          return React.createElement('RCTText', viewProps)
-        }
       }
     },
   }),

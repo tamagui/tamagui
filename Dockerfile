@@ -1,4 +1,4 @@
-FROM node:22.4
+FROM node:24.3
 
 ARG CF_API_KEY
 ARG CF_EMAIL
@@ -48,7 +48,7 @@ RUN git config --global user.email "you@example.com" && git init . && git add -A
 RUN ./scripts/unlock-repo.sh
 
 RUN corepack enable
-RUN corepack prepare yarn@4.4.0 --activate
+RUN corepack prepare yarn@4.5.0 --activate
 RUN yarn install --immutable
 RUN yarn build:js
 RUN yarn build:app

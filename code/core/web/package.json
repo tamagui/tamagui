@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/cjs",
@@ -50,8 +50,8 @@
     "csstype": "^3.0.10",
     "react": "*",
     "react-dom": "*",
-    "react-native": "^0.79.2",
-    "typescript": "^5.8.2",
+    "react-native": "0.81.5",
+    "typescript": "~5.9.2",
     "vitest": "^4.0.4"
   },
   "exports": {

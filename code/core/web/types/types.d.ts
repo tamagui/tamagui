@@ -670,6 +670,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     getNewCSS: GetCSS;
     parsed: boolean;
     inverseShorthands: Record<string, string>;
+    userShorthands: C;
     reactNative?: any;
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, Variable>;
@@ -1326,7 +1327,7 @@ type A11yDeprecated = {
      */
     accessible?: ViewProps['accessible'];
 };
-export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;

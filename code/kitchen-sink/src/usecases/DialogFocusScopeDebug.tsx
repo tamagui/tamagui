@@ -7,22 +7,29 @@ export function DialogFocusScopeDebug() {
   React.useEffect(() => {
     // Log focus changes
     const handleFocus = (e: FocusEvent) => {
-      console.log('[DEBUG] Focus changed to:', e.target, (e.target as any)?.tagName, (e.target as any)?.id)
+      console.info(
+        '[DEBUG] Focus changed to:',
+        e.target,
+        (e.target as any)?.tagName,
+        (e.target as any)?.id
+      )
     }
-    
+
     document.addEventListener('focusin', handleFocus, true)
     return () => document.removeEventListener('focusin', handleFocus, true)
   }, [])
 
   return (
     <YStack padding="$4" gap="$4">
-      <Button onPress={() => {
-        console.log('[DEBUG] Opening dialog')
-        setOpen(true)
-      }}>
+      <Button
+        onPress={() => {
+          console.info('[DEBUG] Opening dialog')
+          setOpen(true)
+        }}
+      >
         Open Dialog (Check Console)
       </Button>
-      
+
       <Dialog open={open} onOpenChange={setOpen} modal>
         <Dialog.Portal>
           <Dialog.Overlay
@@ -52,22 +59,20 @@ export function DialogFocusScopeDebug() {
           >
             <YStack gap="$4">
               <Dialog.Title>Debug Dialog</Dialog.Title>
-              <Dialog.Description>
-                Check console for focus logs
-              </Dialog.Description>
-              
-              <Input 
-                id="test-input-1" 
-                placeholder="First input - should auto-focus" 
-                onFocus={() => console.log('[DEBUG] First input focused')}
+              <Dialog.Description>Check console for focus logs</Dialog.Description>
+
+              <Input
+                id="test-input-1"
+                placeholder="First input - should auto-focus"
+                onFocus={() => console.info('[DEBUG] First input focused')}
               />
-              
-              <Input 
-                id="test-input-2" 
+
+              <Input
+                id="test-input-2"
                 placeholder="Second input"
-                onFocus={() => console.log('[DEBUG] Second input focused')}
+                onFocus={() => console.info('[DEBUG] Second input focused')}
               />
-              
+
               <Dialog.Close asChild>
                 <Button>Close</Button>
               </Dialog.Close>

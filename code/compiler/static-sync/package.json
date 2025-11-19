@@ -1,0 +1,42 @@
+{
+  "name": "@tamagui/static-sync",
+  "version": "1.138.0",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "type": "commonjs",
+  "main": "dist",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build --skip-native --bundle --bundle-modules",
+    "watch": "yarn build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.25.2",
+    "@tamagui/static": "workspace:*",
+    "@tamagui/types": "workspace:*",
+    "synckit": "^0.9.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  }
+}

@@ -2,11 +2,10 @@ const path = require('path')
 const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { shouldExclude, TamaguiPlugin } = require('tamagui-loader')
+const { TamaguiPlugin } = require('tamagui-loader')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
-const target = 'web'
 const isProduction = NODE_ENV === 'production'
 
 const boolVals = {
@@ -50,6 +49,17 @@ module.exports = {
   },
   module: {
     rules: [
+      // Process react-native-reanimated/worklets with Babel plugin from babel.config.js
+      {
+        test: /\.(js|ts)x?$/,
+        include: /node_modules\/(react-native-reanimated|react-native-worklets)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            configFile: true,
+          },
+        },
+      },
       {
         oneOf: [
           {
@@ -89,12 +99,18 @@ module.exports = {
   },
   plugins: [
     new TamaguiPlugin({
-      config: './src/tamagui.config.ts',
-      components: ['@tamagui/ui', '@tamagui/sandbox-ui'],
+      config: './tamagui.config.ts',
+      components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
-      // enableDynamicEvaluation: true,
       disableExtraction,
-      // disable: true,
+      themeBuilder: {
+        input: '../core/themes/src/themes-new.ts',
+        output: path.join(
+          require.resolve('@tamagui/themes/src/themes-new.ts'),
+          '..',
+          'generated-new.ts'
+        ),
+      },
     }),
     // new BundleAnalyzerPlugin(),
     new MiniCSSExtractPlugin({

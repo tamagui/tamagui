@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-plugin",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",

@@ -1112,6 +1112,7 @@ export type TamaguiInternalConfig<
     getNewCSS: GetCSS
     parsed: boolean
     inverseShorthands: Record<string, string>
+    userShorthands: C
     reactNative?: any
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
@@ -2145,6 +2146,9 @@ export interface StackNonStyleProps
       | RNOnlyProps
       | keyof ExtendBaseStackProps
       | 'style'
+      // Event handlers that conflict between RN ViewProps and Web DivAttributes after RN 0.81.5
+      | 'onFocus'
+      | 'onBlur'
     >,
     ExtendBaseStackProps,
     TamaguiComponentPropsBase {

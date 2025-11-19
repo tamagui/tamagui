@@ -8,7 +8,7 @@ import React from 'react';
  * @flow strict-local
  * @format
  */
-export declare function createOptimizedView(children: any, viewProps: Record<string, any>, baseViews: any): React.DetailedReactHTMLElement<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> | React.CElement<{
+export declare function createOptimizedView(children: any, viewProps: Record<string, any>, baseViews: any): React.DOMElement<Record<string, any>, Element> | React.CElement<{
     value: boolean;
 }, React.Component<{
     value: boolean;

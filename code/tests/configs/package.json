@@ -1,0 +1,14 @@
+{
+  "name": "@tamagui/configs-test",
+  "version": "1.138.0",
+  "private": true,
+  "scripts": {
+    "generate": "tamagui generate",
+    "generate-prompt": "tamagui generate-prompt"
+  },
+  "dependencies": {
+    "@tamagui/cli": "workspace:*",
+    "@tamagui/config": "workspace:*",
+    "tamagui": "workspace:*"
+  }
+}

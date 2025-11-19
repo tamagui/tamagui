@@ -1,0 +1,12 @@
+{
+  "name": "next15-plus-cli-optimize",
+  "private": true,
+  "workspaces": [
+    "./apps/*",
+    "./packages/*"
+  ],
+  "dependencies": {
+    "@tamagui/cli": "workspace:*"
+  },
+  "version": "1.138.0"
+}

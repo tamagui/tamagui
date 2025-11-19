@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/constants",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "0.81.5"
   },
   "exports": {
     "./package.json": "./package.json",

@@ -448,64 +448,107 @@ const getOrgs = async (
 const GITHUB_ADMIN_TOKEN = process.env.GITHUB_ADMIN_TOKEN
 
 /**
- * @see https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#add-a-repository-collaborator
- * @see https://github.com/octokit/plugin-rest-endpoint-methods.js/blob/main/docs/repos/addCollaborator.md
+ * Add a user to a GitHub team
+ * @see https://docs.github.com/en/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
  */
-export const inviteCollaboratorToRepo = async (
-  repoName = 'tamagui',
+export const addUserToTeam = async (
+  teamSlug: string,
   userLogin: string,
-  permission = 'pull'
+  orgName = 'tamagui',
+  role: 'member' | 'maintainer' = 'member'
 ) => {
   console.info(
-    `Claim: inviteCollaboratorToRepo permission ${permission} for ${repoName} user ${userLogin} using token starting with ${GITHUB_ADMIN_TOKEN?.slice(
-      0,
-      5
-    )}`
+    `Claim: addUserToTeam adding ${userLogin} to ${orgName}/${teamSlug} with role ${role}`
   )
 
   try {
-    const octokit = await getOctokit()
-    const res = await octokit.rest.repos.addCollaborator({
-      owner: 'tamagui',
-      repo: repoName,
-      username: userLogin,
-      permission,
-    })
+    const res = await fetch(
+      `https://api.github.com/orgs/${orgName}/teams/${teamSlug}/memberships/${userLogin}`,
+      {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+        body: JSON.stringify({ role }),
+      }
+    )
 
-    console.info(`Claim: inviteCollaboratorToRepo response: ${JSON.stringify(res)}`)
-    console.info(`Claim: inviteCollaboratorToRepo succeeded`)
+    if (!res.ok) {
+      const error = await res.text()
+      console.error(`Claim: addUserToTeam failed: ${res.status} ${error}`)
+      throw new Error(`Failed to add user to team: ${res.status} ${error}`)
+    }
+
+    const data = await res.json()
+    console.info(`Claim: addUserToTeam succeeded (state: ${data.state})`)
+    return data
   } catch (err) {
-    console.error(`Claim: inviteCollaboratorToRepo Error: ${err}`)
+    console.error(`Claim: addUserToTeam Error: ${err}`)
     throw err
   }
 }
 
-export const removeCollaboratorFromRepo = async (repoName: string, userLogin: string) => {
-  await fetch(
-    `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-        Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
-      },
-    }
-  )
-}
-
 /**
- * Check if a user is already a collaborator in the repository
- * @see https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#get-a-repository-collaborator
+ * Remove a user from a GitHub team
+ * @see https://docs.github.com/en/rest/teams/members?apiVersion=2022-11-28#remove-team-membership-for-a-user
  */
-export const checkIfUserIsCollaborator = async (
-  repoName: string,
-  userLogin: string
-): Promise<{ isCollaborator: boolean; repoUrl?: string }> => {
-  console.info(`Checking if ${userLogin} is already a collaborator in ${repoName}`)
+export const removeUserFromTeam = async (
+  teamSlug: string,
+  userLogin: string,
+  orgName = 'tamagui'
+) => {
+  console.info(
+    `Claim: removeUserFromTeam removing ${userLogin} from ${orgName}/${teamSlug}`
+  )
 
   try {
     const res = await fetch(
-      `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
+      `https://api.github.com/orgs/${orgName}/teams/${teamSlug}/memberships/${userLogin}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      }
+    )
+
+    if (res.status === 204) {
+      console.info(`Claim: removeUserFromTeam succeeded`)
+    } else if (res.status === 404) {
+      console.info(`Claim: removeUserFromTeam user was not a member`)
+    } else {
+      const error = await res.text()
+      console.error(`Claim: removeUserFromTeam failed: ${res.status} ${error}`)
+      throw new Error(`Failed to remove user from team: ${res.status} ${error}`)
+    }
+  } catch (err) {
+    console.error(`Claim: removeUserFromTeam Error: ${err}`)
+    throw err
+  }
+}
+
+/**
+ * Check if a user is a member of a GitHub team
+ * @see https://docs.github.com/en/rest/teams/members?apiVersion=2022-11-28#get-team-membership-for-a-user
+ */
+export const checkIfUserIsTeamMember = async (
+  teamSlug: string,
+  userLogin: string,
+  orgName = 'tamagui'
+): Promise<{
+  isMember: boolean
+  state?: 'active' | 'pending'
+  role?: 'member' | 'maintainer'
+}> => {
+  console.info(`Checking if ${userLogin} is a member of ${orgName}/${teamSlug}`)
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/orgs/${orgName}/teams/${teamSlug}/memberships/${userLogin}`,
       {
         method: 'GET',
         headers: {
@@ -516,28 +559,27 @@ export const checkIfUserIsCollaborator = async (
       }
     )
 
-    if (res.status === 204) {
-      // User is a collaborator
-      console.info(`${userLogin} is already a collaborator in ${repoName}`)
+    if (res.status === 200) {
+      const data = await res.json()
+      console.info(`${userLogin} is a member of ${teamSlug} (state: ${data.state})`)
       return {
-        isCollaborator: true,
-        repoUrl: `https://github.com/tamagui/${repoName}`,
+        isMember: true,
+        state: data.state,
+        role: data.role,
       }
     } else if (res.status === 404) {
-      // User is not a collaborator
-      console.info(`${userLogin} is not a collaborator in ${repoName}`)
-      return { isCollaborator: false }
+      console.info(`${userLogin} is not a member of ${teamSlug}`)
+      return { isMember: false }
     } else {
-      // Other status codes (401, 403, etc.)
       const errorData = await res.json().catch(() => ({}))
       console.error(
-        `Error checking collaborator status: ${res.status} ${res.statusText}`,
+        `Error checking team membership: ${res.status} ${res.statusText}`,
         errorData
       )
-      return { isCollaborator: false }
+      return { isMember: false }
     }
   } catch (err) {
-    console.error(`Error checking if user is collaborator: ${err}`)
-    return { isCollaborator: false }
+    console.error(`Error checking if user is team member: ${err}`)
+    return { isMember: false }
   }
 }

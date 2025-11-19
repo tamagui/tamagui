@@ -217,7 +217,7 @@ export const defaultPalettes = (() => {
           `dark_${key}`,
           getColorPalette(
             colorTokens.dark[key],
-            colorTokens.light[darkColorNames[(index + 1) % darkColorNames.length]]
+            colorTokens.dark[darkColorNames[(index + 1) % darkColorNames.length]]
           ),
         ] as const
     )

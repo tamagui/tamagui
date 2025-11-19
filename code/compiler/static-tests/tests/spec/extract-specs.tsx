@@ -341,3 +341,97 @@ export function Test16(props: TestProps) {
     />
   )
 }
+
+// flexWrap and other flex properties
+export function TestFlexWrap() {
+  return (
+    <XStack
+      flexWrap="wrap"
+      flexDirection="row"
+      gap="$2"
+    >
+      {child}
+    </XStack>
+  )
+}
+
+// flexWrap with conditional
+export function TestFlexWrapConditional(props: TestProps) {
+  return (
+    <XStack
+      flexWrap={props.conditional ? 'wrap' : 'nowrap'}
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="space-between"
+    >
+      {child}
+    </XStack>
+  )
+}
+
+// multiple flex properties together
+export function TestFlexProperties() {
+  return (
+    <YStack
+      flexDirection="column"
+      flexWrap="wrap"
+      flexGrow={1}
+      flexShrink={0}
+      flexBasis="auto"
+      alignItems="stretch"
+      justifyContent="flex-start"
+      alignContent="flex-start"
+    >
+      {child}
+    </YStack>
+  )
+}
+
+// complex real-world case with many conditionals and media queries
+export function TestComplexFlexWithConditionals(props: TestProps) {
+  const { sm } = useMedia()
+  return (
+    <YStack
+      borderRadius={sm ? "$0" : "$8"}
+      flexDirection={sm ? "row" : "column"}
+      flexBasis={props.conditional ? "100%" : "auto"}
+      maxWidth="100%"
+      overflow="hidden"
+      padding="$sm"
+      $sm={{ paddingHorizontal: "$0" }}
+      width={sm ? "100%" : 260}
+      backgroundColor={props.altConditional ? "$backgroundHover" : "$background"}
+      hoverStyle={{
+        cursor: "pointer",
+        backgroundColor: "$backgroundHover",
+      }}
+    >
+      <XStack
+        flexDirection={sm ? "column" : "row"}
+        flexWrap="wrap"
+        gap={sm ? "$0" : "$xs"}
+        justifyContent={props.conditional ? "flex-start" : "center"}
+      >
+        {child}
+      </XStack>
+    </YStack>
+  )
+}
+
+// flexWrap with multiple media query conditionals
+export function TestFlexWrapWithMediaQuery() {
+  const media = useMedia()
+  return (
+    <XStack
+      flexWrap={media.sm ? "wrap" : "nowrap"}
+      flexDirection={media.sm ? "row" : "column"}
+      gap="$2"
+      $sm={{
+        flexWrap: "wrap",
+        padding: "$4",
+      }}
+    >
+      {child}
+    </XStack>
+  )
+}

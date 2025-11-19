@@ -52,6 +52,14 @@ const COMMAND_MAP = {
         ...options.tamaguiOptions,
         platform: 'web',
       })
+
+      // Also generate prompt to .tamagui/prompt.md
+      const { generatePrompt } = require('./generate-prompt')
+      const { join } = require('node:path')
+      await generatePrompt({
+        ...options,
+        output: join(options.paths.dotDir, 'prompt.md'),
+      })
     },
   },
 
@@ -128,15 +136,16 @@ const COMMAND_MAP = {
     async run() {
       const { _, ...flags } = arg(this.flags)
       const [_command, dir] = _
-      const imported = await import('./build')
+      const { build } = require('./build.cjs')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      await imported['default'].build({
+      await build({
         ...options,
         dir,
         include: flags['--include'],
-        target: flags['--target'] || 'web',
+        // Default to building both web and native
+        target: (flags['--target'] as 'web' | 'native' | 'both' | undefined) || 'both',
         exclude: flags['--exclude'],
       })
     },
@@ -170,6 +179,28 @@ const COMMAND_MAP = {
         flags['--template-repo'],
         flags['--ignored-patterns']?.split(' ')
       )
+    },
+  },
+
+  'generate-prompt': {
+    shorthands: ['gp'],
+    description: `Generate an LLM-friendly markdown file from your Tamagui config`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--output': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { generatePrompt } = require('./generate-prompt')
+      const options = await getOptions({
+        debug: flags['--debug'] ? true : false,
+        loadTamaguiOptions: true,
+      })
+      await generatePrompt({
+        ...options,
+        output: flags['--output'],
+      })
     },
   },
 }

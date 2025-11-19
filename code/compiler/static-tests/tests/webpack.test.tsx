@@ -125,4 +125,92 @@ describe('webpack-tests', () => {
     expect(outCn).not.toContain(`_pl-t-space-4`)
     expect(out2Cn).toContain(`_pl-t-space-4`)
   })
+
+  test('18. extracts flexWrap property', () => {
+    const { renderTrue } = getTest('TestFlexWrap')
+    const { container } = renderTrue()
+
+    const element = container.querySelector('div[class*="_fw-"]')
+    expect(element).toBeTruthy()
+
+    const computedStyle = window.getComputedStyle(element!)
+    expect(computedStyle.flexWrap).toBe('wrap')
+
+    expect(container).toMatchSnapshot()
+  })
+
+  test('19. extracts flexWrap with conditional', () => {
+    const { renderTrue, renderFalse } = getTest('TestFlexWrapConditional')
+
+    const { container: containerTrue } = renderTrue()
+    const { container: containerFalse } = renderFalse()
+
+    const elementTrue = containerTrue.querySelector('div[class*="_fw-"]')
+    const elementFalse = containerFalse.querySelector('div[class*="_fw-"]')
+
+    expect(elementTrue).toBeTruthy()
+    expect(elementFalse).toBeTruthy()
+
+    const computedStyleTrue = window.getComputedStyle(elementTrue!)
+    const computedStyleFalse = window.getComputedStyle(elementFalse!)
+
+    expect(computedStyleTrue.flexWrap).toBe('wrap')
+    expect(computedStyleFalse.flexWrap).toBe('nowrap')
+
+    expect(containerTrue).toMatchSnapshot()
+    expect(containerFalse).toMatchSnapshot()
+  })
+
+  test('20. extracts multiple flex properties together', () => {
+    const { renderTrue } = getTest('TestFlexProperties')
+    const { container } = renderTrue()
+
+    const element = container.firstChild?.firstChild
+    expect(element).toBeTruthy()
+
+    const computedStyle = window.getComputedStyle(element!)
+    expect(computedStyle.flexWrap).toBe('wrap')
+    expect(computedStyle.flexDirection).toBe('column')
+    expect(computedStyle.flexGrow).toBe('1')
+    expect(computedStyle.flexShrink).toBe('0')
+    expect(computedStyle.alignItems).toBe('stretch')
+
+    expect(container).toMatchSnapshot()
+  })
+
+  test('21. complex real-world case - flexWrap with many conditionals and media queries', () => {
+    const { renderTrue, renderFalse } = getTest('TestComplexFlexWithConditionals')
+
+    const { container: containerTrue } = renderTrue()
+    const { container: containerFalse } = renderFalse()
+
+    // Find the XStack (nested child) that has flexWrap
+    const xstackTrue = containerTrue.querySelector('div > div')
+    const xstackFalse = containerFalse.querySelector('div > div')
+
+    expect(xstackTrue).toBeTruthy()
+    expect(xstackFalse).toBeTruthy()
+
+    const computedStyleTrue = window.getComputedStyle(xstackTrue!)
+    const computedStyleFalse = window.getComputedStyle(xstackFalse!)
+
+    expect(computedStyleTrue.flexWrap).toBe('wrap')
+    expect(computedStyleFalse.flexWrap).toBe('wrap')
+
+    expect(containerTrue).toMatchSnapshot()
+    expect(containerFalse).toMatchSnapshot()
+  })
+
+  test('22. flexWrap with media query conditionals', () => {
+    const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
+    const { container } = renderTrue()
+
+    const element = container.firstChild?.firstChild
+    expect(element).toBeTruthy()
+
+    const computedStyle = window.getComputedStyle(element!)
+    expect(computedStyle.flexWrap).toBe('wrap')
+
+    expect(container).toMatchSnapshot()
+  })
 })

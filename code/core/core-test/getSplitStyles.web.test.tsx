@@ -226,10 +226,10 @@ describe('getSplitStyles', () => {
         [
           "transform",
           "perspective(1000px)",
-          "_transform-perspective1343953606",
+          "_tr-perspective1343953606",
           undefined,
           [
-            ":root ._transform-perspective1343953606{transform:perspective(1000px);}",
+            ":root ._tr-perspective1343953606{transform:perspective(1000px);}",
           ],
         ],
       ]

@@ -1,65 +1,51 @@
-import type { Logger, TamaguiOptions } from '@tamagui/compiler'
-
-const importStatic = async () => {
-  return (await import('@tamagui/compiler')).default
-}
-
-type StaticI = Awaited<ReturnType<typeof importStatic>>
+import * as StaticWorker from '@tamagui/static-worker'
+import type { TamaguiOptions } from '@tamagui/types'
 
 export let tamaguiOptions: TamaguiOptions | null = null
-export let Static: StaticI | null = null
-export let extractor: ReturnType<StaticI['createExtractor']> | null = null
 export let disableStatic = false
 
-export const getStatic = async () => {
-  if (Static) return Static
-  Static = await importStatic()
-  return Static!
-}
-
+// Keep a reference to the watcher dispose function
+let watcherDispose: (() => void) | null = null
 let isLoading: null | Promise<void> = null
 
-export async function loadTamaguiBuildConfig(
-  optionsIn?: Partial<TamaguiOptions>,
-  logger?: Logger
-) {
-  if (extractor) return
+export async function loadTamaguiBuildConfig(optionsIn?: Partial<TamaguiOptions>) {
+  if (tamaguiOptions) return
   if (isLoading) return await isLoading
 
-  let resolve
+  let resolve: () => void
   isLoading = new Promise((res) => {
-    resolve = res
+    resolve = res!
   })
 
   try {
-    // only do it once
-    if (!Static) {
-      await getStatic()
+    tamaguiOptions = await StaticWorker.loadTamaguiBuildConfig({
+      ...optionsIn,
+      platform: 'web',
+    })
 
-      tamaguiOptions = Static!.loadTamaguiBuildConfigSync({
-        ...optionsIn,
-        platform: 'web',
-      })
+    disableStatic = Boolean(tamaguiOptions.disable)
 
-      disableStatic = Boolean(tamaguiOptions.disable)
-      extractor = Static!.createExtractor({
-        logger,
-      })
-    }
-
-    if (optionsIn?.disableWatchTamaguiConfig) {
-      return
-    }
-
-    if (extractor) {
-      await extractor.loadTamagui({
-        components: ['@tamagui/ui'],
+    // Load full Tamagui config in worker (asynchronous)
+    if (!optionsIn?.disableWatchTamaguiConfig && !disableStatic) {
+      await StaticWorker.loadTamagui({
+        components: ['tamagui'],
         platform: 'web',
         ...tamaguiOptions,
-      } satisfies TamaguiOptions)
+      })
     }
   } finally {
-    resolve()
+    resolve!()
     isLoading = null
   }
+}
+
+/**
+ * Clean up resources on shutdown
+ */
+export async function cleanup() {
+  if (watcherDispose) {
+    watcherDispose()
+    watcherDispose = null
+  }
+  await StaticWorker.destroyPool()
 }

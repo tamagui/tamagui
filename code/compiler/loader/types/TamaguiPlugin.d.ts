@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { TamaguiOptions } from '@tamagui/compiler';
+=======
+import type { TamaguiOptions } from '@tamagui/types';
+>>>>>>> main
 import type { Compiler, RuleSetRule } from 'webpack';
 export type PluginOptions = TamaguiOptions & {
     isServer?: boolean;

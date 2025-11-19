@@ -13,6 +13,12 @@ const { es5Plugin } = require('./esbuild-es5')
 const ts = require('typescript')
 const path = require('node:path')
 const childProcess = require('node:child_process')
+const {
+  printTypescriptDiagnostics,
+  printEsbuildError,
+  printBuildError,
+  printTypescriptCompilationError,
+} = require('./pretty-print-errors')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -178,7 +184,7 @@ async function build({ skipTypes } = {}) {
     // Run afterBuild script if defined
     await runAfterBuild()
   } catch (error) {
-    console.error(` ❌ Error building in ${process.cwd()}:\n\n`, error.stack + '\n')
+    printBuildError(error, pkg.name, process.cwd())
     if (!shouldWatch) {
       process.exit(1)
     }
@@ -267,9 +273,7 @@ async function buildTsc(allFiles) {
 
     // exit on errors
     if (diagnostics.some((x) => x.code) && !shouldWatch) {
-      console.error(
-        `Error building: ${diagnostics.map((x) => JSON.stringify(x.messageText)).join('\n')}`
-      )
+      printTypescriptDiagnostics(diagnostics, ts)
       if (shouldWatch) {
         return
       }
@@ -282,11 +286,7 @@ async function buildTsc(allFiles) {
       throw new Error('TypeScript compilation failed')
     }
   } catch (err) {
-    if (err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED') {
-      console.error(`Network error during compilation for ${pkg.name}:`, err.message)
-    } else {
-      console.error(`Error during TypeScript compilation for ${pkg.name}:`, err)
-    }
+    printTypescriptCompilationError(err, pkg.name)
     if (!shouldWatch) {
       process.exit(1)
     }
@@ -653,7 +653,7 @@ async function esbuildWriteIfChanged(
   try {
     built = await esbuild.build(buildSettings)
   } catch (err) {
-    console.error(`Error building`, err)
+    printEsbuildError(err)
     if (!shouldWatch) {
       process.exit(1)
     }

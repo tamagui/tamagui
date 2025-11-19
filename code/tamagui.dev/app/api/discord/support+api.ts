@@ -105,7 +105,7 @@ export default apiRoute(async (req) => {
         (item) => item.price?.product?.name === ProductName.TamaguiSupport
       )
       if (tierItem) {
-        // Use subscription's quantity field to determine tier level (as per eligibility.ts)
+        // Use subscription's quantity field to determine tier level
         const tier = supportSub.quantity ?? 0
         supportTier = Math.max(supportTier, tier)
         calculatedDiscordSeats += tier * 4

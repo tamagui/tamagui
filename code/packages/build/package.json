@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
@@ -25,7 +25,7 @@
     "fs-extra": "^11.2.0",
     "lodash.debounce": "^4.0.8",
     "oxc-transform": "^0.95.0",
-    "typescript": "^5.8.2"
+    "typescript": "~5.9.2"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "devDependencies": {

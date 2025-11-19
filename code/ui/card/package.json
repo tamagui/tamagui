@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/card",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -46,7 +46,7 @@
     "@biomejs/biome": "^1.9.4",
     "@tamagui/build": "workspace:*",
     "react": "*",
-    "react-native": "^0.79.2"
+    "react-native": "0.81.5"
   },
   "publishConfig": {
     "access": "public"

@@ -1,0 +1,44 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/config-default"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/generate-themes"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/helpers-node"
+    },
+    {
+      "path": "../../core/react-native-web-internals"
+    },
+    {
+      "path": "../../core/shorthands"
+    },
+    {
+      "path": "../../core/types"
+    },
+    {
+      "path": "../../packages/cli-color"
+    },
+    {
+      "path": "../../packages/react-native-web-lite"
+    }
+  ],
+  "exclude": [
+    "test-output.tsx",
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

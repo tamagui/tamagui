@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/z-index-stack",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

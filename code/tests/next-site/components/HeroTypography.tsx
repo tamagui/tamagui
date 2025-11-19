@@ -16,7 +16,7 @@ const families = ['silkscreen', 'mono', 'heading']
 
 export const HeroTypography = memo(() => {
   const [family, setFamily] = useState(`silkscreen`)
-  const ref = useRef<any>(null)
+  const ref = useRef<any>(undefined)
   const isIntersecting = false
 
   useEffect(() => {

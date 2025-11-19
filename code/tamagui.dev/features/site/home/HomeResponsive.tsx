@@ -383,7 +383,7 @@ export const Safari = memo(
                 ai="center"
                 px="$2"
                 jc="center"
-                gap="$4"
+                gap="$2"
               >
                 <Lock color="var(--colorPress)" size={12} />
                 <Paragraph theme="alt1" size="$2">
@@ -444,7 +444,7 @@ export const Safari = memo(
                   <XStack>
                     <YStack f={1}>
                       <H3>Enchanting Garden</H3>
-                      <XStack ai="center" gap="$4">
+                      <XStack ai="center" gap="$2">
                         <MapPin size={12} color="var(--color)" />
                         <H5>Kailua, HI</H5>
                       </XStack>

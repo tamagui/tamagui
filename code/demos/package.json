@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.135.7",
+  "version": "1.138.0",
   "sideEffects": [
     "*.css"
   ],

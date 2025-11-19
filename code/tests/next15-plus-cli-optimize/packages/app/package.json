@@ -1,0 +1,28 @@
+{
+  "version": "1.138.0",
+  "name": "app",
+  "main": "index.ts",
+  "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
+  "dependencies": {
+    "@my/ui": "workspace:^",
+    "@react-navigation/native": "^7.0.14",
+    "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/colors": "workspace:*",
+    "@tamagui/font-inter": "workspace:*",
+    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/themes": "workspace:*",
+    "burnt": "^0.12.2",
+    "expo-constants": "~18.0.10",
+    "expo-linking": "~8.0.8",
+    "react-native-safe-area-context": "~5.6.0",
+    "solito": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.10",
+    "@types/react-native": "^0.73.0"
+  }
+}

@@ -1,5 +1,13 @@
+- make @tamagui/ui package work in some simple way
+  - probably making tamagui + tamagui/ui both work is fine
+
+- v2 useTheme({ name: '' }) should remove since .get() doesnt match
+- release v5 config now
+
 - v2 - whitelist more web-only events like onKeyDown in types
   - react 19 only (can move some stuff to conditional use())
+
+- react-native-web-lite fixes things like data- attributes not passing down etc
 
 via chat
 

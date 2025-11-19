@@ -222,7 +222,24 @@ function getThemeClassNameAndColor(
 
   const themeClassName = themeState.name.replace(schemePrefix, '')
 
-  const className = `${isRoot ? '' : 't_sub_theme'} t_${themeClassName}`
+  // Build full hierarchy of theme classes for CSS variable inheritance
+  // Examples:
+  // - "red_alt1" → "t_red t_red_alt1"
+  // - "green_active_Button" → "t_green t_green_active t_green_active_Button"
+  const themeNameParts = themeClassName.split('_')
+  let themeClasses = `t_${themeClassName}`
+
+  if (themeNameParts.length > 1) {
+    // Build full hierarchy for all multi-part themes (sub-themes, component themes, etc.)
+    // This enables CSS variable inheritance through all levels
+    const hierarchyClasses: string[] = []
+    for (let i = 1; i <= themeNameParts.length; i++) {
+      hierarchyClasses.push(`t_${themeNameParts.slice(0, i).join('_')}`)
+    }
+    themeClasses = hierarchyClasses.join(' ')
+  }
+
+  const className = `${isRoot ? '' : 't_sub_theme'} ${themeClasses}`
 
   return { color: themeColor, className }
 }

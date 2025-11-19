@@ -4,7 +4,7 @@
     "rootDir": ".",
     "paths": {
       "@tamagui/ui": [
-        "code/ui/tamagui-ui"
+        "code/ui/tamagui"
       ],
       "@tamagui/*": [
         "code/core/*",
