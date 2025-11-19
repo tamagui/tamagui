@@ -1,5 +1,5 @@
-import { Button, XStack } from '@tamagui/ui'
-import { AlertDialog, styled } from '@tamagui/ui'
+import { Button, XStack } from 'tamagui'
+import { AlertDialog, styled } from 'tamagui'
 
 export const MyOverlay = styled(AlertDialog.Overlay, {
   animation: 'quick',

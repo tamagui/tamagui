@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@tamagui/ui": [
+      "tamagui": [
         "code/ui/tamagui"
       ],
       "@tamagui/*": [

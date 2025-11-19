@@ -2,8 +2,8 @@ import { ChevronRight } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
-import type { ListItemProps } from '@tamagui/ui'
-import { H1, ListItem, Separator, styled, Text, YGroup, YStack } from '@tamagui/ui'
+import type { ListItemProps } from 'tamagui'
+import { H1, ListItem, Separator, styled, Text, YGroup, YStack } from 'tamagui'
 import { ColorSchemeListItem } from './ColorSchemeListItem'
 
 const ViewVariants = styled(Text, {

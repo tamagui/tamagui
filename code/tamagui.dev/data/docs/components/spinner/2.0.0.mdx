@@ -24,10 +24,13 @@ demoName: Spinner
   ]}
 />
 
-Note that due to the fact that Spinner is an extension of React Native [ActivityIndicator](https://reactnative.dev/docs/activityindicator), and that only accepts size `small` or `large`, we are currently limited to just these sizes.
+Note that due to the fact that Spinner is an extension of React Native
+[ActivityIndicator](https://reactnative.dev/docs/activityindicator), and that
+only accepts size `small` or `large`, we are currently limited to just these
+sizes.
 
 ```tsx
-import { Button, Spinner } from '@tamagui/ui'
+import { Button, Spinner } from 'tamagui'
 
 export default () => <Spinner size="large" color="$green10" />
 ```
@@ -36,7 +39,8 @@ export default () => <Spinner size="large" color="$green10" />
 
 ### Spinner
 
-Spinner extends [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
+Spinner extends [YStack](/docs/components/stacks), getting
+[Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -52,4 +56,4 @@ Spinner extends [YStack](/docs/components/stacks), getting [Tamagui standard pro
       description: `Give the spinner a color.`,
     },
   ]}
-/> 
+/>{' '}

@@ -161,13 +161,13 @@ function replaceInternals(fileContent) {
   // change useGroupMedia to useMedia
   fileContent = fileContent.replace(
     /import {.*useGroupMedia.*} from.*/g,
-    `import { useMedia } from '@tamagui/ui'`
+    `import { useMedia } from 'tamagui'`
   )
   fileContent = fileContent.replace(/useGroupMedia\(.*\)/g, `useMedia()`)
   // change useContainerDim to useWindowDimensions
   fileContent = fileContent.replace(
     /import {.*useContainerDim.*} from.*/g,
-    `import { useWindowDimensions } from '@tamagui/ui'`
+    `import { useWindowDimensions } from 'tamagui'`
   )
   fileContent = fileContent.replace(/useContainerDim\(.*\)/g, `useWindowDimensions()`)
   return fileContent

@@ -1,7 +1,7 @@
 'use client'
 
 import { Lock } from '@tamagui/lucide-icons'
-import { H2, Paragraph, YStack } from '@tamagui/ui'
+import { H2, Paragraph, YStack } from 'tamagui'
 
 // import { ButtonLink } from './Link'
 

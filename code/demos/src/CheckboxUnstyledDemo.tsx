@@ -1,7 +1,7 @@
 import { CheckboxStyledContext, createCheckbox } from '@tamagui/checkbox'
 import { Stack, styled } from '@tamagui/core'
 import { Check } from '@tamagui/lucide-icons'
-import { Label, XStack, YStack } from '@tamagui/ui'
+import { Label, XStack, YStack } from 'tamagui'
 
 const Frame = styled(Stack, {
   borderWidth: 1,

@@ -13,7 +13,7 @@ import {
   Unspaced,
   View,
   XStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { SelectDemoContents } from './SelectDemo'
 
 export function DialogDemo() {

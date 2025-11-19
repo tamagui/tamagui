@@ -10,7 +10,7 @@ module.exports = (api) => {
       [
         '@tamagui/babel-plugin',
         {
-          components: ['@tamagui/ui', '@tamagui/sandbox-ui'],
+          components: ['tamagui', '@tamagui/sandbox-ui'],
           config: './src/tamagui.config.ts',
           experimentalFlattenThemesOnNative: true,
         },

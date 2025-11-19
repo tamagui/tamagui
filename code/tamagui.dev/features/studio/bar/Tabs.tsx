@@ -1,6 +1,6 @@
 import { memo, useState } from 'react'
-import type { TabLayout, TabsTabProps, YStackProps } from '@tamagui/ui'
-import { AnimatePresence, Circle, Tabs, YStack } from '@tamagui/ui'
+import type { TabLayout, TabsTabProps, YStackProps } from 'tamagui'
+import { AnimatePresence, Circle, Tabs, YStack } from 'tamagui'
 
 export const BarTabs = memo(function HeaderTabs({
   currentTab,

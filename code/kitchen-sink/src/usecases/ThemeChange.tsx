@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Square, Theme, YStack, Text } from '@tamagui/ui'
+import { Button, Card, Square, Theme, YStack, Text } from 'tamagui'
 
 import { TEST_IDS } from '../constants/test-ids'
 

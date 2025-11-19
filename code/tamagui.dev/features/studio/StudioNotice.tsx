@@ -2,7 +2,7 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/lucide-icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
-import type { ScrollViewProps, XStackProps } from '@tamagui/ui'
+import type { ScrollViewProps, XStackProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -13,7 +13,7 @@ import {
   XStack,
   YStack,
   styled,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 type PanelProps = XStackProps & {
   title?: React.ReactNode

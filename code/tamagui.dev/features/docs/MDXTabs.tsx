@@ -1,7 +1,7 @@
 import { useStore, useStoreSelector } from '@tamagui/use-store'
 import { forwardRef } from 'react'
-import type { TabsProps, TabsTabProps } from '@tamagui/ui'
-import { Paragraph, Tabs, XStack, styled, withStaticProperties } from '@tamagui/ui'
+import type { TabsProps, TabsTabProps } from 'tamagui'
+import { Paragraph, Tabs, XStack, styled, withStaticProperties } from 'tamagui'
 import { type Href, useLocalSearchParams, useRouter } from 'one'
 
 class TabsStore {

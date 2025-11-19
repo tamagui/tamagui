@@ -1,4 +1,4 @@
-import { Button, XGroup, YStack } from '@tamagui/ui'
+import { Button, XGroup, YStack } from 'tamagui'
 
 export function GroupUseCases() {
   return (

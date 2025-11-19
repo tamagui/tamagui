@@ -17,7 +17,7 @@ import {
   XStack,
   YStack,
   Theme,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'

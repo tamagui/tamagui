@@ -10,7 +10,7 @@ import {
   XStack,
   YGroup,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { Select } from '../../../../../components/Select'
 import {

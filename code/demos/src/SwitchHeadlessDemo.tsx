@@ -4,7 +4,7 @@ import { useSwitch } from '@tamagui/switch-headless'
 
 import type { View } from 'react-native'
 import { Animated, Pressable } from 'react-native'
-import { Label, XStack, YStack } from '@tamagui/ui'
+import { Label, XStack, YStack } from 'tamagui'
 
 export function SwitchHeadlessDemo() {
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { addTheme } from '@tamagui/theme'
 
-import { Button, H3, Square, Theme, YStack } from '@tamagui/ui'
+import { Button, H3, Square, Theme, YStack } from 'tamagui'
 
 export function AddThemeDemo() {
   const [theme, setTheme] = React.useState<any>()

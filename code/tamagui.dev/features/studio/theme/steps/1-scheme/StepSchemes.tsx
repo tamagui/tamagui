@@ -1,5 +1,5 @@
 import { Check } from '@tamagui/lucide-icons'
-import { Checkbox, H4, Label, Paragraph, Spacer, XStack, YStack } from '@tamagui/ui'
+import { Checkbox, H4, Label, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { useRootStore } from '../../../state/useGlobalState'
 import { StudioNotice } from '~/features/studio/StudioNotice'

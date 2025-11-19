@@ -1,4 +1,4 @@
-import { H4, Paragraph, XStack, YStack } from '@tamagui/ui'
+import { H4, Paragraph, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { BarChart, LineChart } from './Charts'
 import { memo } from 'react'

@@ -22,8 +22,8 @@ import {
   View,
   XStack,
   ZStack,
-} from '@tamagui/ui'
-import { CardFrame, Text, YStack } from '@tamagui/ui'
+} from 'tamagui'
+import { CardFrame, Text, YStack } from 'tamagui'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 
 const Chip = styled(View, {

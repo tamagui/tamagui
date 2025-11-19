@@ -1,4 +1,4 @@
-import { Button, Dialog, H1, Paragraph, Sheet, YStack } from '@tamagui/ui'
+import { Button, Dialog, H1, Paragraph, Sheet, YStack } from 'tamagui'
 
 export default function Test() {
   return (

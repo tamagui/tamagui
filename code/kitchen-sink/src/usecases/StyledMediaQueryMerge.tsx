@@ -1,4 +1,4 @@
-import { XStack, YStack, styled, Text } from '@tamagui/ui'
+import { XStack, YStack, styled, Text } from 'tamagui'
 
 // Test styled component with media queries in definition
 const ContainerWithMedia = styled(XStack, {

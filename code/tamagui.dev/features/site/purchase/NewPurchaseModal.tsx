@@ -2,7 +2,7 @@ import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { startTransition, useEffect, useMemo, useState } from 'react'
-import type { TabsProps } from '@tamagui/ui'
+import type { TabsProps } from 'tamagui'
 import {
   Button,
   Dialog,
@@ -22,7 +22,7 @@ import {
   useMedia,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'

@@ -4,7 +4,7 @@ import { createAnimations as createAnimationsMotion } from '@tamagui/animations-
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
-import { createTamagui } from '@tamagui/ui'
+import { createTamagui } from 'tamagui'
 
 export const animationsCSS = createAnimationsCSS({
   '100ms': 'ease-in 100ms',
@@ -225,7 +225,7 @@ const tamaConf = createTamagui({
 
 export type Conf = typeof tamaConf
 
-declare module '@tamagui/ui' {
+declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {

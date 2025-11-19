@@ -11,7 +11,7 @@ import {
   Theme,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { sendEvent } from '../../analytics/sendEvent'
 import { useSubscriptionModal } from '../purchase/useSubscriptionModal'
 import { PromoCards } from './PromoCards'

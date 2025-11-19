@@ -10,7 +10,7 @@ import {
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { isWeb, useTheme } from '@tamagui/ui'
+import { isWeb, useTheme } from 'tamagui'
 
 const RadioGroupContext = React.createContext<RadioGroupContextValue>({})
 const RadioGroupItemContext = React.createContext<RadioGroupItemContextValue>({

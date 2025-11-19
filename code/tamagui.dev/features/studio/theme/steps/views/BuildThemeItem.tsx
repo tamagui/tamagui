@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Button, XStack, YStack, SizableText } from '@tamagui/ui'
+import { Button, XStack, YStack, SizableText } from 'tamagui'
 import { Trash2 } from '@tamagui/lucide-icons'
 import type { BuildTheme } from '../../types'
 

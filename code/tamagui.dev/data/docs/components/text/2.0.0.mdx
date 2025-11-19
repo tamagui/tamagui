@@ -39,12 +39,17 @@ export default () => (
 
 ## Text
 
-Text in Tamagui matches to Text in react-native-web, just with the added [Tamagui Props](/docs/intro/props).
+Text in Tamagui matches to Text in react-native-web, just with the added
+[Tamagui Props](/docs/intro/props).
 
-It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
+It explicitly doesn't inherit your theme color or other font properties, as it's
+meant to be plain and used for extension. Below, we'll show `SizableText` which
+extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is
+the useful view as it will use theme values, while you can extend Text if you'd
+like to derive your own design system.
 
 ```tsx
-import { Text, XStack, YStack } from '@tamagui/ui'
+import { Text, XStack, YStack } from 'tamagui'
 
 export default () => (
   <>
@@ -66,9 +71,14 @@ export default () => (
 
 ## SizableText
 
-Tamagui lets you define font sizing, spacing, line height, letter spacing and other properties with `createFont`, of which you can have many different configurations. We've found a nice pattern is to "align" all your keys across these sub-objects.
+Tamagui lets you define font sizing, spacing, line height, letter spacing and
+other properties with `createFont`, of which you can have many different
+configurations. We've found a nice pattern is to "align" all your keys across
+these sub-objects.
 
-SizableText adds a `size` property thats defined using a [spread variant](/docs/core/styled#spread-variants) which looks for a matching key on each of these properties (using `@tamagui/get-font-sized`):
+SizableText adds a `size` property thats defined using a
+[spread variant](/docs/core/styled#spread-variants) which looks for a matching
+key on each of these properties (using `@tamagui/get-font-sized`):
 
 - color
 - fontStyle
@@ -79,7 +89,8 @@ SizableText adds a `size` property thats defined using a [spread variant](/docs/
 - fontSize
 - lineHeight
 
-So, if you've defined `small`, `medium` and `large` keys on each createFont category, you can use it like so:
+So, if you've defined `small`, `medium` and `large` keys on each createFont
+category, you can use it like so:
 
 ```tsx
 <SizableText size="$small" />
@@ -103,8 +114,7 @@ export const Paragraph = styled(SizableText, {
 ```
 
 <Notice>
-  Note: Paragraph renders to a `p` tag on web, which can cause issues when you nest them
-  during SSR. If you don't mind rendering to a span, use `SizableText`, otherwise, be
-  careful when nesting items inside a Paragraph.
+  Note: Paragraph renders to a `p` tag on web, which can cause issues when you
+  nest them during SSR. If you don't mind rendering to a span, use
+  `SizableText`, otherwise, be careful when nesting items inside a Paragraph.
 </Notice>
- 

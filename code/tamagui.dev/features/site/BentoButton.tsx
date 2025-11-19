@@ -1,4 +1,4 @@
-import { Button, type ButtonProps, YStack } from '@tamagui/ui'
+import { Button, type ButtonProps, YStack } from 'tamagui'
 import { BentoIcon } from '../icons/BentoIcon'
 
 export const BentoButton = (props: ButtonProps) => {

@@ -1,4 +1,4 @@
-import { XStack } from '@tamagui/ui'
+import { XStack } from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 
 export function LinearGradientDemo() {

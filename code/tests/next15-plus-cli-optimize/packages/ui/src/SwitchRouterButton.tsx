@@ -1,4 +1,4 @@
-import { Anchor, Button } from '@tamagui/ui'
+import { Anchor, Button } from 'tamagui'
 
 export const SwitchRouterButton = ({ pagesMode = false }: { pagesMode?: boolean }) => {
   return (

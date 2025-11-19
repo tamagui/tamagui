@@ -13,11 +13,14 @@ demoName: Inputs
 
 ```
 
-Using Web APIs and relying on bare Tamagui with no `react-native-web` depedency on web compared to old Input component, support scaling all the styles up or down using the `size` property, and full `theme` support.
+Using Web APIs and relying on bare Tamagui with no `react-native-web` depedency
+on web compared to old Input component, support scaling all the styles up or
+down using the `size` property, and full `theme` support.
 
 ## Installation
 
-LinearGradient is already installed in `tamagui`, or you can install it independently:
+LinearGradient is already installed in `tamagui`, or you can install it
+independently:
 
 ```bash
 npm install @tamagui/input
@@ -28,7 +31,7 @@ npm install @tamagui/input
 A one-line input field:
 
 ```tsx
-import { Input } from '@tamagui/ui'
+import { Input } from 'tamagui'
 
 export const App = () => (
   // Accepts size and style properties directly
@@ -41,10 +44,10 @@ export const App = () => (
 For multi-line inputs:
 
 ```tsx
-import { TextArea } from '@tamagui/ui'
+import { TextArea } from 'tamagui'
 
 export const App = () => (
   // Accepts size and style properties directly
   <TextArea gap="$4" borderWidth={2} />
 )
-``` 
+```

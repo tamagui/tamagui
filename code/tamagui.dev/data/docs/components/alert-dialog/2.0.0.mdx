@@ -25,13 +25,15 @@ demoName: AlertDialog
 
 ## Installation
 
-Alert Dialog is already installed in `tamagui`, or you can install it independently:
+Alert Dialog is already installed in `tamagui`, or you can install it
+independently:
 
 ```bash
 npm install @tamagui/alert-dialog
 ```
 
-In order to use this component independently of `tamagui`, you'll first need to install the `@tamagui/portal` package: 
+In order to use this component independently of `tamagui`, you'll first need to
+install the `@tamagui/portal` package:
 
 ```bash
 npm install @tamagui/portal
@@ -57,7 +59,7 @@ export default App
 ## Anatomy
 
 ```tsx
-import { AlertDialog } from '@tamagui/ui' // or '@tamagui/alert-dialog'
+import { AlertDialog } from 'tamagui' // or '@tamagui/alert-dialog'
 
 export default () => (
   <AlertDialog>
@@ -79,7 +81,9 @@ export default () => (
 
 ### AlertDialog
 
-Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/components/dialog#api), except modal which is on by default. Adds:
+Contains every component for the AlertDialog. Shares all
+[Dialog Props](/docs/components/dialog#api), except modal which is on by
+default. Adds:
 
 <PropsTable
   data={[
@@ -98,7 +102,8 @@ Just [Tamagui Props](/docs/intro/props).
 
 ### AlertDialog.Portal
 
-Renders AlertDialog into appropriate container. Beyond [Tamagui Props](/docs/intro/props), adds:
+Renders AlertDialog into appropriate container. Beyond
+[Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
   data={[
@@ -113,7 +118,8 @@ Renders AlertDialog into appropriate container. Beyond [Tamagui Props](/docs/int
 
 ### AlertDialog.Content
 
-Main container for AlertDialog content, this is where you should apply animations.
+Main container for AlertDialog content, this is where you should apply
+animations.
 
 Beyond [Tamagui Props](/docs/intro/props), adds:
 
@@ -157,7 +163,8 @@ Defaults to Paragraph, see [Paragraph](/docs/components/text).
 
 ### AlertDialog.Cancel
 
-Closes the AlertDialog, accepts all YStack props. Recommended to use with your own component and `asChild`.
+Closes the AlertDialog, accepts all YStack props. Recommended to use with your
+own component and `asChild`.
 
 <PropsTable
   data={[
@@ -186,10 +193,12 @@ Closes the AlertDialog, accepts all YStack props. Recommended to use with your o
 
 ### Inside native modals
 
-If you're using native modals (maybe from react-navigation), you'll notice the Dialogs won't show up inside the modal. To get around this, you should wrap your screen inside `PortalProvider`, like so:
+If you're using native modals (maybe from react-navigation), you'll notice the
+Dialogs won't show up inside the modal. To get around this, you should wrap your
+screen inside `PortalProvider`, like so:
 
 ```tsx
-import { PortalProvider } from '@tamagui/ui'
+import { PortalProvider } from 'tamagui'
 
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
@@ -199,4 +208,4 @@ export function Page() {
     </PortalProvider>
   )
 }
-``` 
+```

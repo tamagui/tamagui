@@ -1,4 +1,4 @@
-import { Paragraph, Separator, XStack, YStack } from '@tamagui/ui'
+import { Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 const PaletteExample = ({
   showIndices,

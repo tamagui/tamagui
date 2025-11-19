@@ -1,18 +1,7 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
 import type { Href } from 'one'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H4,
-  Image,
-  Paragraph,
-  Spacer,
-  XStack,
-  YStack,
-} from '@tamagui/ui'
+import { Button, H1, H2, H3, H4, Image, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'

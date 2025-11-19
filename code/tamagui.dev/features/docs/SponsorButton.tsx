@@ -1,5 +1,5 @@
 import { Heart } from '@tamagui/lucide-icons'
-import { Button, TooltipSimple, YStack } from '@tamagui/ui'
+import { Button, TooltipSimple, YStack } from 'tamagui'
 
 import { Link } from '~/components/Link'
 

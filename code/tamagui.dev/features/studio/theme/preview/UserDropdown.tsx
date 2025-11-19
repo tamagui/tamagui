@@ -1,5 +1,5 @@
 import { Bell, Boxes, ChevronRight, Cog, Workflow } from '@tamagui/lucide-icons'
-import { Avatar, Button, H4, ListItem, Paragraph, XStack, YStack } from '@tamagui/ui'
+import { Avatar, Button, H4, ListItem, Paragraph, XStack, YStack } from 'tamagui'
 import { AccentTheme } from '~/features/studio/components/AccentTheme'
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { accentTokenName } from '../../accentThemeName'

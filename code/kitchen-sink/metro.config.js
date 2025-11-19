@@ -51,8 +51,7 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
 }
 
 module.exports = withTamagui(config, {
-  components: ['@tamagui/ui'],
+  components: ['tamagui'],
   config: './src/tamagui.config.ts',
   outputCSS: './tamagui-web.css',
 })
-

@@ -5,7 +5,7 @@ import { Dot } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import type React from 'react'
 import { Suspense, lazy, memo, useEffect, useState } from 'react'
-import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from '@tamagui/ui'
+import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from 'tamagui'
 import {
   H2,
   Paragraph,
@@ -21,7 +21,7 @@ import {
   styled,
   useMedia,
   useThemeName,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'

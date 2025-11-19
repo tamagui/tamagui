@@ -75,7 +75,6 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "@tamagui/ui": "workspace:*",
     "@tamagui/use-store": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
@@ -95,6 +94,7 @@
     "react-native-svg": "15.11.2",
     "react-native-web": "^0.20.0",
     "swr": "^2.2.5",
+    "tamagui": "workspace:*",
     "zod": "^3.25.67"
   },
   "devDependencies": {

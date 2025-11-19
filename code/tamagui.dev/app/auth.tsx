@@ -1,6 +1,6 @@
 import { useSupabase } from '~/features/auth/useSupabaseClient'
 import { useLayoutEffect } from 'react'
-import { YStack, Text, Spinner } from '@tamagui/ui'
+import { YStack, Text, Spinner } from 'tamagui'
 
 export default function Auth() {
   const { supabase } = useSupabase()

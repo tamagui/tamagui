@@ -28,7 +28,7 @@ export async function getOptions({
 
   const filledOptions = {
     platform: 'native',
-    components: ['@tamagui/ui'],
+    components: ['tamagui'],
     config,
     ...tamaguiOptions,
   } satisfies TamaguiOptions
@@ -80,7 +80,7 @@ export const loadTamagui = async (
   opts: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> => {
   const loaded = await loadTamaguiStatic({
-    components: ['@tamagui/ui'],
+    components: ['tamagui'],
     ...opts,
     config: opts.config ?? (await getDefaultTamaguiConfigPath()),
   })

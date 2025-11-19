@@ -1,5 +1,5 @@
 import React from 'react'
-import { XStack, YStack, ZStack } from '@tamagui/ui'
+import { XStack, YStack, ZStack } from 'tamagui'
 
 export function StacksDemo() {
   return (

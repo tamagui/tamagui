@@ -9,7 +9,7 @@ import {
   YStack,
   useForceUpdate,
   useIsomorphicLayoutEffect,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 export function ReplaceThemeDemo() {
   const [theme, setTheme] = React.useState<any>()

@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     tamaguiPlugin({
       optimize: true,
-      components: ['@tamagui/ui'],
+      components: ['tamagui'],
       config: 'src/tamagui.config.ts',
     }),
   ].filter(Boolean),

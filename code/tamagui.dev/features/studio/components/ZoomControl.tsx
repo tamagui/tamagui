@@ -1,6 +1,6 @@
 import { RefreshCw, ZoomIn, ZoomOut } from '@tamagui/lucide-icons'
 import type { Dispatch, SetStateAction } from 'react'
-import { Button, Group, SizableText, XStack } from '@tamagui/ui'
+import { Button, Group, SizableText, XStack } from 'tamagui'
 
 export const ZoomControls = ({
   value,

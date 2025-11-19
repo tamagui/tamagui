@@ -5,7 +5,7 @@ import {
   Theme,
   styled,
   withStaticProperties,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 const StyledTooltip = styled(TamaguiTooltip, {
   delay: 0,

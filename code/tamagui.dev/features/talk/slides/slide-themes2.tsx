@@ -1,7 +1,7 @@
 import { createCodeHighlighter } from '../utils'
 import { Slide } from '../Slide'
 import { memo } from 'react'
-import { H1, XStack } from '@tamagui/ui'
+import { H1, XStack } from 'tamagui'
 
 import { CodeInline } from '../../../components/Code'
 

@@ -1,7 +1,7 @@
 import { createAnimations } from '@tamagui/animations-css'
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { shorthands } from '@tamagui/shorthands/v2'
-import { createTamagui } from '@tamagui/ui'
+import { createTamagui } from 'tamagui'
 import { fonts } from './fonts'
 import * as themes from './themesOut'
 import { tokens } from './tokens'
@@ -74,7 +74,7 @@ export const config = createTamagui({
 
 export type Conf = typeof config
 
-declare module '@tamagui/ui' {
+declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {

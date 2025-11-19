@@ -18,7 +18,7 @@ import {
   useThemeName,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { Select } from '../../../components/Select'
 import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
 import { purchaseModal } from '../../site/purchase/NewPurchaseModal'

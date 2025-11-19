@@ -1,5 +1,5 @@
 import { Box, Brush, MessageCircle } from '@tamagui/lucide-icons'
-import { styled, YStack } from '@tamagui/ui'
+import { styled, YStack } from 'tamagui'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { TooltipLabelLarge } from './TooltipLabelLarge'

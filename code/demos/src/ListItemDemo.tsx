@@ -1,5 +1,5 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons'
-import { ListItem, Separator, XStack, YGroup } from '@tamagui/ui'
+import { ListItem, Separator, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
   return (

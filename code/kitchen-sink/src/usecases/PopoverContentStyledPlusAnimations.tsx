@@ -1,4 +1,4 @@
-import { Button, Popover, styled } from '@tamagui/ui'
+import { Button, Popover, styled } from 'tamagui'
 
 export function PopoverContentStyledPlusAnimations() {
   return (

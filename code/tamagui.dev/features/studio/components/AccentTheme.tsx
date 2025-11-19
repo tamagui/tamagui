@@ -1,5 +1,5 @@
-import type { ThemeProps } from '@tamagui/ui'
-import { Theme, useThemeName } from '@tamagui/ui'
+import type { ThemeProps } from 'tamagui'
+import { Theme, useThemeName } from 'tamagui'
 
 import { accentThemeName } from '../accentThemeName'
 import { useHasAccent } from '../hooks/useHasAccent'

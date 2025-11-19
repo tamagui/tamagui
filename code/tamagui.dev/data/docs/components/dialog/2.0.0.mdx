@@ -26,8 +26,8 @@ demoName: Dialog
 />
 
 <Notice>
-  Dialog does not work on native, instead you can Adapt it to a Sheet as shown in the demo
-  code above.
+  Dialog does not work on native, instead you can Adapt it to a Sheet as shown
+  in the demo code above.
 </Notice>
 
 ## Installation
@@ -38,7 +38,8 @@ Dialog is already installed in `tamagui`, or you can install it independently:
 npm install @tamagui/dialog
 ```
 
-In order to use this component independently of `tamagui`, you'll first need to install the `@tamagui/portal` package: 
+In order to use this component independently of `tamagui`, you'll first need to
+install the `@tamagui/portal` package:
 
 ```bash
 npm install @tamagui/portal
@@ -64,7 +65,7 @@ export default App
 ## Anatomy
 
 ```tsx
-import { Dialog } from '@tamagui/ui' // or '@tamagui/dialog'
+import { Dialog } from 'tamagui' // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>
@@ -86,7 +87,8 @@ export default () => (
 
 ### Dialog
 
-Contains every component for the dialog. Beyond [Tamagui Props](/docs/intro/props), adds:
+Contains every component for the dialog. Beyond
+[Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
   data={[
@@ -135,7 +137,8 @@ Just [Tamagui Props](/docs/intro/props).
 
 ### Dialog.Portal
 
-Renders Dialog into appropriate container. Beyond [Tamagui Props](/docs/intro/props), adds:
+Renders Dialog into appropriate container. Beyond
+[Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable
   data={[
@@ -206,7 +209,8 @@ Defaults to Paragraph, see [Paragraph](/docs/components/text).
 
 ### Dialog.Close
 
-Closes the Dialog, accepts the same props as YStack. Recommended to use with your own component and `asChild`.
+Closes the Dialog, accepts the same props as YStack. Recommended to use with
+your own component and `asChild`.
 
 <PropsTable
   data={[
@@ -222,14 +226,16 @@ Just [Tamagui Props](/docs/intro/props).
 
 ### Dialog.Sheet
 
-When used with `Adapt`, Dialog will render as a sheet when that breakpoint is active.
+When used with `Adapt`, Dialog will render as a sheet when that breakpoint is
+active.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents given to `Dialog.Content`
+Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents
+given to `Dialog.Content`
 
 ```tsx
-import { Dialog } from '@tamagui/ui' // or '@tamagui/dialog'
+import { Dialog } from 'tamagui' // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>
@@ -259,9 +265,9 @@ export default () => (
 ```
 
 <Notice>
-  Note that Dialog.Sheet currently doesn't preserve state of the contents when it
-  transitions between Sheet and Portal. In the future, we can do this on the web using
-  react-reparenting.
+  Note that Dialog.Sheet currently doesn't preserve state of the contents when
+  it transitions between Sheet and Portal. In the future, we can do this on the
+  web using react-reparenting.
 </Notice>
 
 ### PortalProvider
@@ -281,10 +287,12 @@ export default () => (
 
 ### Inside native modals
 
-If you're using native modals (maybe from react-navigation), you'll notice the Dialogs won't show up inside the modal. To get around this, you should wrap your screen inside `PortalProvider`, like so:
+If you're using native modals (maybe from react-navigation), you'll notice the
+Dialogs won't show up inside the modal. To get around this, you should wrap your
+screen inside `PortalProvider`, like so:
 
 ```tsx
-import { PortalProvider } from '@tamagui/ui'
+import { PortalProvider } from 'tamagui'
 
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
@@ -294,4 +302,4 @@ export function Page() {
     </PortalProvider>
   )
 }
-``` 
+```

@@ -1,4 +1,4 @@
-import { H3, Paragraph, XStack, YStack, styled } from '@tamagui/ui'
+import { H3, Paragraph, XStack, YStack, styled } from 'tamagui'
 import { AlertTriangle, Info, CheckCircle } from '@tamagui/lucide-icons'
 
 import { unwrapText } from '~/helpers/unwrapText'

@@ -52,7 +52,7 @@ export function tamaguiPlugin({
     }
 
     watcher = Static.watchTamaguiConfig({
-      components: ['@tamagui/ui'],
+      components: ['tamagui'],
       config: './src/tamagui.config.ts',
       ...tamaguiOptions,
     }).catch((err) => {

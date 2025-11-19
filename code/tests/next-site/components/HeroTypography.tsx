@@ -1,16 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { memo, useEffect, useRef, useState } from 'react'
-import type { Heading, TextProps } from '@tamagui/ui'
-import {
-  Button,
-  Card,
-  H1,
-  H2,
-  Paragraph,
-  XStack,
-  YStack,
-  useDidFinishSSR,
-} from '@tamagui/ui'
+import type { Heading, TextProps } from 'tamagui'
+import { Button, Card, H1, H2, Paragraph, XStack, YStack, useDidFinishSSR } from 'tamagui'
 
 const families = ['silkscreen', 'mono', 'heading']
 

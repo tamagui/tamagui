@@ -1,6 +1,6 @@
 import { MoreVertical } from '@tamagui/lucide-icons'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import type { YStackProps } from '@tamagui/ui'
+import type { YStackProps } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -11,7 +11,7 @@ import {
   Theme,
   YGroup,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { accentThemeName } from '../../accentThemeName'
 import { useHasAccent } from '../../hooks/useHasAccent'
 import { useThemeBuilderStore } from '../store/ThemeBuilderStore'

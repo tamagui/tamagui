@@ -1,4 +1,4 @@
-import { View } from '@tamagui/ui'
+import { View } from 'tamagui'
 
 export function StylePlatform() {
   return (

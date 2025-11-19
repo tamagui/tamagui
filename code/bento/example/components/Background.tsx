@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native'
-import { View, XStack, type ThemeName } from '@tamagui/ui'
+import { View, XStack, type ThemeName } from 'tamagui'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 
 const { width } = Dimensions.get('window')

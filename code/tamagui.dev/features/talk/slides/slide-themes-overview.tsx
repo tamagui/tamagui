@@ -2,7 +2,7 @@ import { createCodeHighlighter } from '../utils'
 import { Slide } from '../Slide'
 import React from 'react'
 import { memo } from 'react'
-import { YStack } from '@tamagui/ui'
+import { YStack } from 'tamagui'
 
 export default memo(() => {
   return (

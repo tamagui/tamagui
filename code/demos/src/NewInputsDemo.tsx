@@ -1,5 +1,5 @@
-import type { SizeTokens } from '@tamagui/ui'
-import { Button, Input, TextArea, XStack, YStack } from '@tamagui/ui'
+import type { SizeTokens } from 'tamagui'
+import { Button, Input, TextArea, XStack, YStack } from 'tamagui'
 
 export function NewInputsDemo() {
   return (

@@ -30,7 +30,7 @@ demoName: Select
 ### Anatomy
 
 ```tsx
-import { Select } from '@tamagui/ui' // or '@tamagui/select'
+import { Select } from 'tamagui' // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -54,8 +54,8 @@ export default () => (
 ```
 
 <Notice>
-  Note that Select only works on Native using the Adapt component to adapt it to a Sheet.
-  See below for docs.
+  Note that Select only works on Native using the Adapt component to adapt it to
+  a Sheet. See below for docs.
 </Notice>
 
 ### API
@@ -144,7 +144,8 @@ Extends [Paragraph](/docs/components/text), adding:
 
 #### &lt;Content /&gt;
 
-Main container for Select content, used to contain the up/down arrows, no API beyond children.
+Main container for Select content, used to contain the up/down arrows, no API
+beyond children.
 
 #### &lt;ScrollUpButton /&gt;
 
@@ -160,7 +161,8 @@ Extends [YStack](/docs/components/stacks).
 
 #### &lt;Viewport /&gt;
 
-Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
+Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains
+scrollable content items as children.
 
 <PropsTable
   data={[
@@ -174,7 +176,8 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrol
 
 #### &lt;Group /&gt;
 
-Extends [YStack](/docs/components/stacks). Use only when grouping together items, alongside a Label as the first child.
+Extends [YStack](/docs/components/stacks). Use only when grouping together
+items, alongside a Label as the first child.
 
 #### &lt;Label /&gt;
 
@@ -182,7 +185,9 @@ Extends [ListItem](/docs/components/list-item). Used to label Groups.
 
 #### &lt;Item /&gt;
 
-Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
+Extends [ListItem](/docs/components/list-item). Used to add selectable values ot
+the list. Must provide an index as React Native doesn't give any escape hatch
+for us to configure that automatically.
 
 <PropsTable
   data={[
@@ -199,25 +204,29 @@ Extends [ListItem](/docs/components/list-item). Used to add selectable values ot
       description: `Provide a value that will be passed on selection.`,
     },
 
-]}
-/>
+]} />
 
 #### &lt;ItemText /&gt;
 
-Extends [Paragraph](/docs/components/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
+Extends [Paragraph](/docs/components/text). Used inside Item to provide
+unselectable text that will show above once selected in the parent Select.
 
 #### &lt;Sheet /&gt;
 
-When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
+When used alongside `<Adapt />`, Select will render as a sheet when that
+breakpoint is active.
 
-This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
+This is the only way to render a Select on Native for now, as mobile apps tend
+to show Select very differently from web and Tamagui wants to present the right
+abstractions for each platform.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
+Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the
+contents given to `Select.Content`
 
 ```tsx
-import { Select } from '@tamagui/ui' // or '@tamagui/select'
+import { Select } from 'tamagui' // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -250,4 +259,3 @@ export default () => (
   </Select>
 )
 ```
- 

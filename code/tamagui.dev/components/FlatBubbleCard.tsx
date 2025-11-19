@@ -1,4 +1,4 @@
-import { YStack, styled } from '@tamagui/ui'
+import { YStack, styled } from 'tamagui'
 
 export const FlatBubbleCard = styled(YStack, {
   padding: '$6',

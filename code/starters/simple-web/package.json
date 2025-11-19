@@ -21,7 +21,7 @@
     "react": "*",
     "react-dom": "*",
     "react-native-web": "^0.20.0",
-    "@tamagui/ui": "^1.135.0"
+    "tamagui": "^1.135.0"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",

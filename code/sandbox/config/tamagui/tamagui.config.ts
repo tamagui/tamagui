@@ -1,5 +1,5 @@
 import { defaultConfig } from '@tamagui/config/v4'
-import { createTamagui } from '@tamagui/ui'
+import { createTamagui } from 'tamagui'
 import { animationsMotion } from './animationMotion'
 
 const customColors = {
@@ -27,7 +27,7 @@ export const config = createTamagui({
 
 export type Conf = typeof config
 
-declare module '@tamagui/ui' {
+declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {

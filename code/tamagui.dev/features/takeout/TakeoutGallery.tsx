@@ -2,7 +2,7 @@ import { Image, type ImageProps } from '@tamagui/image'
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
-import type { StackProps } from '@tamagui/ui'
+import type { StackProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -14,7 +14,7 @@ import {
   XStack,
   YStack,
   styled,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 const androidImages = [
   '/takeout/starter-screenshots/android-001.jpeg',

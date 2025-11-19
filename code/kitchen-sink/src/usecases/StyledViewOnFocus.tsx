@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, styled } from '@tamagui/ui'
+import { View, styled } from 'tamagui'
 
 const StyledView = styled(View, {
   borderColor: 'red',

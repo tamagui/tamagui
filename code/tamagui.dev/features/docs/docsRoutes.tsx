@@ -94,7 +94,7 @@ export const docsRoutes = [
 
   {
     section: 'ui',
-    // title: '@tamagui/ui',
+    // title: 'tamagui',
     pages: [
       { title: 'Install', route: '/ui/intro' },
       { title: 'Stacks', route: '/ui/stacks' },

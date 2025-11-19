@@ -1,5 +1,5 @@
 import { useWindowDimensions } from 'react-native'
-import { Button, H1, Dialog as TDialog, YStack } from '@tamagui/ui'
+import { Button, H1, Dialog as TDialog, YStack } from 'tamagui'
 
 /* Minimal test case for reproducing crashes */
 export function TestModal() {

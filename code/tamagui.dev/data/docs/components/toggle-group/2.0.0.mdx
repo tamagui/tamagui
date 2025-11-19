@@ -28,7 +28,8 @@ demoName: ToggleGroup
 
 ## Installation
 
-ToggleGroup is already installed in `tamagui`, or you can install it independently:
+ToggleGroup is already installed in `tamagui`, or you can install it
+independently:
 
 ```bash
 npm install @tamagui/toggle-group
@@ -37,7 +38,7 @@ npm install @tamagui/toggle-group
 ## Usage
 
 ```tsx
-import { ToggleGroup } from '@tamagui/ui'
+import { ToggleGroup } from 'tamagui'
 
 export default () => {
   return (
@@ -53,7 +54,9 @@ export default () => {
 
 ### ToggleGroup
 
-`ToggleGroup` extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
+`ToggleGroup` extends the [Group](/docs/components/group) component. You can
+disable passing border radius to children by passing `disablePassBorderRadius`.
+plus:
 
 <PropsTable
   data={[
@@ -75,7 +78,8 @@ export default () => {
     },
     {
       name: 'defaultValue',
-      description: 'The values of the items to show as pressed when initially rendered.',
+      description:
+        'The values of the items to show as pressed when initially rendered.',
       type: 'string',
       default: ``,
     },
@@ -124,7 +128,8 @@ export default () => {
 
 ### ToggleGroup.Item
 
-`ToggleGroup.Item` extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+`ToggleGroup.Item` extend Stack views inheriting all the
+[Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -154,19 +159,20 @@ export default () => {
   ]}
 />
 
-When it is active, it will receive an `active` prop set to true. This means you can customize the active styles like so:
+When it is active, it will receive an `active` prop set to true. This means you
+can customize the active styles like so:
 
 ```tsx
 import { ToggleGroup } from '@tamagui/toggle-group'
-import { styled } from '@tamagui/ui'
+import { styled } from 'tamagui'
 
 const MyToggleGroupItem = styled(ToggleGroup.Item, {
   variants: {
     active: {
       true: {
-        backgroundColor: 'red'
+        backgroundColor: 'red',
       },
     },
   },
 })
-``` 
+```

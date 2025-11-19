@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, XStack } from '@tamagui/ui'
+import { Avatar, XStack } from 'tamagui'
 
 export function AvatarDemo() {
   return (

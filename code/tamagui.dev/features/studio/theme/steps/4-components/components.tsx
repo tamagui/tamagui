@@ -7,7 +7,7 @@ import {
   XStack,
   YStack,
   SizableText,
-} from '@tamagui/ui'
+} from 'tamagui'
 import type { ReactNode } from 'react'
 
 export type PreviewComponent = {

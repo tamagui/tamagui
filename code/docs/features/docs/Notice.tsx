@@ -1,4 +1,4 @@
-import { Text, View, styled } from '@tamagui/ui'
+import { Text, View, styled } from 'tamagui'
 import { unwrapText } from './unwrapText'
 
 export const Notice = ({ children, theme = 'yellow', disableUnwrap, ...props }: any) => {

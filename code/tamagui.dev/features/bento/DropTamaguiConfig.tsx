@@ -10,7 +10,7 @@ import {
   Theme,
   TooltipSimple,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { Features } from '~/components/Features'
 import { Code, CodeInline } from '~/components/Code'
 import { useLocalStorageWatcher } from '~/hooks/useLocalStorageWatcher'

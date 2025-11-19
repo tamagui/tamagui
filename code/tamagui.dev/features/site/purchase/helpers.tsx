@@ -1,5 +1,5 @@
 import { Check, CheckCircle } from '@tamagui/lucide-icons'
-import type { CheckboxProps, RadioGroupItemProps } from '@tamagui/ui'
+import type { CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
   Button,
   Checkbox,
@@ -11,7 +11,7 @@ import {
   YStack,
   isClient,
   styled,
-} from '@tamagui/ui'
+} from 'tamagui'
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 

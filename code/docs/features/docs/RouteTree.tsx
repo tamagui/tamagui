@@ -1,5 +1,5 @@
 import { File, Folder, Plus, Minus } from '@tamagui/lucide-icons'
-import { Paragraph, ScrollView, XStack, YStack } from '@tamagui/ui'
+import { Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 
 type RouteNode = {
   name: string

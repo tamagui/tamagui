@@ -1,4 +1,4 @@
-import { EnsureFlexed, YStack } from '@tamagui/ui'
+import { EnsureFlexed, YStack } from 'tamagui'
 
 export const HR = () => (
   <YStack my="$10" mb="$8" mx="auto" maxWidth="50%">

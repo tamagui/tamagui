@@ -1,6 +1,6 @@
 import type { JSX } from 'react/jsx-runtime'
-import type { XStackProps } from '@tamagui/ui'
-import { XStack, YStack } from '@tamagui/ui'
+import type { XStackProps } from 'tamagui'
+import { XStack, YStack } from 'tamagui'
 import { LogoIcon } from './LogoIcon'
 import { LogoWords } from './LogoWords'
 

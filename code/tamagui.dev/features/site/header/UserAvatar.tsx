@@ -1,4 +1,4 @@
-import { Avatar } from '@tamagui/ui'
+import { Avatar } from 'tamagui'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 

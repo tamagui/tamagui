@@ -3,7 +3,7 @@ import { useIsIntersecting } from '~/hooks/useOnIntersecting'
 import { useTint } from '@tamagui/logo'
 import { Link } from '~/components/Link'
 import { memo, useEffect, useRef, useState } from 'react'
-import type { Heading, TextProps } from '@tamagui/ui'
+import type { Heading, TextProps } from 'tamagui'
 import {
   Button,
   Card,
@@ -17,7 +17,7 @@ import {
   XStack,
   YStack,
   useDidFinishSSR,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2 } from './HomeHeaders'

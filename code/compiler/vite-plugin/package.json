@@ -6,7 +6,7 @@
   "type": "module",
   "module": "./dist/esm/index.js",
   "license": "MIT",
-  "@tamagui/ui": {
+  "tamagui": {
     "build": {
       "skipEnvToMeta": true
     }

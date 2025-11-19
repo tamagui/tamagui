@@ -25,7 +25,7 @@ export const cloneStarter = async (
   resolvedProjectPath: string,
   projectName: string
 ) => {
-  targetGitDir = join(tamaguiDir, '@tamagui/ui', template.repo.url.split('/').at(-1)!)
+  targetGitDir = join(tamaguiDir, 'tamagui', template.repo.url.split('/').at(-1)!)
 
   console.info()
   await setupTamaguiDotDir(template)

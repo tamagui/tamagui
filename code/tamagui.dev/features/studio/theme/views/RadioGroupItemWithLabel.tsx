@@ -1,5 +1,5 @@
-import type { SizeTokens } from '@tamagui/ui'
-import { Label, RadioGroup, XStack } from '@tamagui/ui'
+import type { SizeTokens } from 'tamagui'
+import { Label, RadioGroup, XStack } from 'tamagui'
 
 export function RadioGroupItemWithLabel(props: {
   size: SizeTokens

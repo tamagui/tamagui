@@ -1,4 +1,4 @@
-import type { ThemeName } from '@tamagui/ui'
+import type { ThemeName } from 'tamagui'
 
 export const insets = {
   bottom: 24,

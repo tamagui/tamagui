@@ -10,7 +10,7 @@ import {
   Unspaced,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { useTakeoutStore } from './useTakeoutStore'
 

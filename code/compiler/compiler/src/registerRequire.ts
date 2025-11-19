@@ -53,11 +53,11 @@ export function registerRequire(
     // Only rewrite to /native for runtime, not during static extraction
     // This prevents issues with workspace packages in CI where /native doesn't exist in node_modules
     if (
-      (path === 'tamagui' || path === '@tamagui/ui') &&
+      (path === 'tamagui' || path === 'tamagui') &&
       platform === 'native' &&
       !process.env.IS_STATIC
     ) {
-      const nativePath = path === 'tamagui' ? 'tamagui/native' : '@tamagui/ui/native'
+      const nativePath = path === 'tamagui' ? 'tamagui/native' : 'tamagui/native'
       return og.apply(this, [nativePath])
     }
 
@@ -101,7 +101,7 @@ export function registerRequire(
 
     if (!whitelisted[path]) {
       if (proxyWormImports && !path.includes('.tamagui-dynamic-eval')) {
-        if (path === '@tamagui/ui') {
+        if (path === 'tamagui') {
           return og.apply(this, [path])
         }
         return proxyWorm

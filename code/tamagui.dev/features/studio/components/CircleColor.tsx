@@ -1,6 +1,6 @@
-import type { CircleProps } from '@tamagui/ui'
-import { Circle, useProps } from '@tamagui/ui'
-import { YStack } from '@tamagui/ui'
+import type { CircleProps } from 'tamagui'
+import { Circle, useProps } from 'tamagui'
+import { YStack } from 'tamagui'
 
 import { Checkerboard } from './Checkerboard'
 

@@ -1,5 +1,5 @@
 import { ExternalLink } from '@tamagui/lucide-icons'
-import { Anchor, H2, Paragraph, XStack, YStack } from '@tamagui/ui'
+import { Anchor, H2, Paragraph, XStack, YStack } from 'tamagui'
 import { ToastControl } from 'components/CurrentToast'
 
 export default function TabOneScreen() {

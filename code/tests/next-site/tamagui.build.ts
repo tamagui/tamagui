@@ -10,7 +10,7 @@ export default {
    * these two probably are all you need!
    **/
   config: './tamagui.config.ts',
-  components: ['@tamagui/ui'],
+  components: ['tamagui'],
 
   /**
    * these are mostly not necessary except for advanced cases:

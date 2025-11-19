@@ -9,7 +9,9 @@ demoName: Tooltip
 
 # Tooltip
 
-<Description>A tooltip on web, with only accessibility output on native</Description>
+<Description>
+  A tooltip on web, with only accessibility output on native
+</Description>
 
 <InstallBanner name="@tamagui/tooltip" />
 
@@ -29,13 +31,11 @@ demoName: Tooltip
   ]}
 />
 
-<Notice>
-  Note that Tooltip doesn't render on native platforms.
-</Notice>
+<Notice>Note that Tooltip doesn't render on native platforms.</Notice>
 
 ## Installation
 
-Tooltip is already installed in `@tamagui/ui`, or you can install it independently:
+Tooltip is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/tooltip
@@ -43,7 +43,8 @@ npm install @tamagui/tooltip
 
 ### PortalProvider
 
-When rendering into root of app instead of inline, you'll first need to install the `@tamagui/portal` package: 
+When rendering into root of app instead of inline, you'll first need to install
+the `@tamagui/portal` package:
 
 ```bash
 npm install @tamagui/portal
@@ -80,7 +81,7 @@ export default App
 ## Anatomy
 
 ```tsx
-import { Tooltip } from '@tamagui/ui' // or '@tamagui/tooltip'
+import { Tooltip } from 'tamagui' // or '@tamagui/tooltip'
 
 export default () => (
   <Tooltip>
@@ -182,21 +183,25 @@ Contains every component for the tooltip.
 />
 
 <Notice>
-  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider installation](/ui/tooltip/2.0.0#portalprovider) for more information.
+  If using `modal={true}` (which is `true` by default), refer to the
+  [PortalProvider installation](/ui/tooltip/2.0.0#portalprovider) for more
+  information.
 </Notice>
 
 ### Tooltip.Trigger
 
-Used to trigger opening of the popover when uncontrolled, see YStack in [Stacks](/docs/components/stacks).
+Used to trigger opening of the popover when uncontrolled, see YStack in
+[Stacks](/docs/components/stacks).
 
 ### Tooltip.Content
 
-Renders as SizableStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
+Renders as SizableStack (see [Stacks](/docs/components/stacks)) with an extra
+`size` prop that accepts any `SizeTokens`.
 
 ### Tooltip.Anchor
 
 Renders as YStack, see [Stacks](/docs/components/stacks).
 
-When you want the Trigger to be in another location from where the Tooltip attaches, use Anchor. When used, Anchor is where the Tooltip will attach, while Trigger will open it.
-
- 
+When you want the Trigger to be in another location from where the Tooltip
+attaches, use Anchor. When used, Anchor is where the Tooltip will attach, while
+Trigger will open it.

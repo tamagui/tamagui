@@ -38,10 +38,12 @@ npm install @tamagui/slider
 
 ## Usage
 
-Slider comes as multiple components that ship with default styles and are sizable. The `size` prop on `<Slider />` will automatically pass size down to all the sub-components.
+Slider comes as multiple components that ship with default styles and are
+sizable. The `size` prop on `<Slider />` will automatically pass size down to
+all the sub-components.
 
 ```tsx
-import { Slider } from '@tamagui/ui'
+import { Slider } from 'tamagui'
 
 export default () => (
   <Slider size="$4" width={200} defaultValue={[50]} max={100} step={1}>
@@ -53,10 +55,11 @@ export default () => (
 )
 ```
 
-You can also optionally style any component, either using inline style props or by wrapping with `styled`:
+You can also optionally style any component, either using inline style props or
+by wrapping with `styled`:
 
 ```tsx
-import { Slider, styled } from '@tamagui/ui'
+import { Slider, styled } from 'tamagui'
 
 const CustomSliderTrack = styled(Slider.Track, {
   backgroundColor: 'red',
@@ -158,15 +161,18 @@ Contains every component for the slider.
 
 ### Slider.Track
 
-`Slider.Track` Inherits `SizableStack`, extending all the default [props](/docs/intro/props).
+`Slider.Track` Inherits `SizableStack`, extending all the default
+[props](/docs/intro/props).
 
 ### Slider.TrackActive
 
-`Slider.Track` Inherits `Stack`, extending all the default [props](/docs/intro/props).
+`Slider.Track` Inherits `Stack`, extending all the default
+[props](/docs/intro/props).
 
 ### Slider.Thumb
 
-`Slider.Track` Inherits `SizableStack`, extending all the default [props](/docs/intro/props), adding:
+`Slider.Track` Inherits `SizableStack`, extending all the default
+[props](/docs/intro/props), adding:
 
 <PropsTable
   data={[
@@ -177,4 +183,4 @@ Contains every component for the slider.
       description: `Corresponds to the index of \`value\` or \`defaultValue\`. Use to correlate thumbs to each value in the array.`,
     },
   ]}
-/> 
+/>{' '}

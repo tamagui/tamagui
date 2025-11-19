@@ -2,7 +2,7 @@ import { extractForNative } from './tests/lib/extract'
 
 async function run() {
   const output = await extractForNative(`
-import { View, styled } from '@tamagui/ui'
+import { View, styled } from 'tamagui'
 
 export default (props) => (
   <>

@@ -1,7 +1,7 @@
 import { Slide } from '../Slide'
 import React from 'react'
 import { memo } from 'react'
-import { Paragraph, YStack } from '@tamagui/ui'
+import { Paragraph, YStack } from 'tamagui'
 
 export default memo(() => {
   return (

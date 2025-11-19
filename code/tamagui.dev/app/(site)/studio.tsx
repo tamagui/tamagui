@@ -2,7 +2,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useColorScheme } from '@vxrn/color-scheme'
 import { Link, useRouter } from 'one'
 import { memo, useEffect } from 'react'
-import type { HeadingProps } from '@tamagui/ui'
+import type { HeadingProps } from 'tamagui'
 import {
   Button,
   EnsureFlexed,
@@ -13,7 +13,7 @@ import {
   XStack,
   YStack,
   useComposedRefs,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerXL } from '~/components/Containers'
 import { Features } from '~/components/Features'

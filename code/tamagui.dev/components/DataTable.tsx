@@ -1,4 +1,4 @@
-import { H3, H4, ListItem, ScrollView, XStack, YStack } from '@tamagui/ui'
+import { H3, H4, ListItem, ScrollView, XStack, YStack } from 'tamagui'
 
 export function DataTable({
   title = '',

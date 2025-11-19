@@ -1,5 +1,5 @@
 import { Data } from '@tamagui/bento'
-import { H4, H5, Input, ListItem, styled, Text, View, YGroup, YStack } from '@tamagui/ui'
+import { H4, H5, Input, ListItem, styled, Text, View, YGroup, YStack } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 import { useState } from 'react'
 import { useMemo } from 'react'

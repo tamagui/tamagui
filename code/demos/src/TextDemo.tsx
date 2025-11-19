@@ -1,5 +1,5 @@
 import React from 'react'
-import { Paragraph, SizableText, Text, XStack, YStack } from '@tamagui/ui'
+import { Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
 
 export function TextDemo() {
   return (

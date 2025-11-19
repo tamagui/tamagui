@@ -1,4 +1,4 @@
-import { Separator, ZStack } from '@tamagui/ui'
+import { Separator, ZStack } from 'tamagui'
 
 export const Crosshairs = () => {
   return (

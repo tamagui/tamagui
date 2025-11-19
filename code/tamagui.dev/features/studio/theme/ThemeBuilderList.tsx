@@ -1,7 +1,7 @@
 import { MoreVertical, Pencil, Plus, Trash, X } from '@tamagui/lucide-icons'
 import { type Href, Slot, useRouter } from 'one'
 import { useState } from 'react'
-import type { DialogProps } from '@tamagui/ui'
+import type { DialogProps } from 'tamagui'
 import {
   Adapt,
   AlertDialog,
@@ -24,7 +24,7 @@ import {
   YGroup,
   YStack,
   Theme,
-} from '@tamagui/ui'
+} from 'tamagui'
 import {
   ModalTitle,
   ThemeBuilderModalFrame,

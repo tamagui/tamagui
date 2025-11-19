@@ -2,8 +2,8 @@ import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
 import { useSchemeSetting } from '@vxrn/color-scheme'
 import { memo, useEffect, useState } from 'react'
 import { Appearance } from 'react-native'
-import type { ButtonProps } from '@tamagui/ui'
-import { Button, isWeb, TooltipSimple } from '@tamagui/ui'
+import type { ButtonProps } from 'tamagui'
+import { Button, isWeb, TooltipSimple } from 'tamagui'
 
 export const ThemeToggle = memo((props: ButtonProps) => {
   const { onPress, Icon, setting } = useToggleTheme()

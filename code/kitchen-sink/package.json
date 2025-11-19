@@ -57,7 +57,6 @@
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@tamagui/ui": "workspace:*",
     "@tamagui/web": "workspace:*",
     "burnt": "^0.12.2",
     "expo": "53.0.7",
@@ -78,6 +77,7 @@
     "react-native-svg": "15.11.2",
     "react-native-web": "^0.20.0",
     "solito": "^4.3.0",
+    "tamagui": "workspace:*",
     "vitest": "^3.2.4",
     "webdriverio": "^9.5.4"
   },

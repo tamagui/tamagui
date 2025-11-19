@@ -73,7 +73,7 @@
     "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/theme": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@tamagui/ui": "workspace:*"
+    "tamagui": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

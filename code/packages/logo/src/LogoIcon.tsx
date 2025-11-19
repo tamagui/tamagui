@@ -1,4 +1,4 @@
-import { YStack } from '@tamagui/ui'
+import { YStack } from 'tamagui'
 import { TamaguiIconSvg } from './TamaguiLogoSvg'
 import type { JSX } from 'react/jsx-runtime'
 

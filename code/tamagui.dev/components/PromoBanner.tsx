@@ -1,4 +1,4 @@
-import { Paragraph, XStack } from '@tamagui/ui'
+import { Paragraph, XStack } from 'tamagui'
 
 const bannerEnabled = false
 

@@ -7,7 +7,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { Provider } from 'components/Provider'
-import { useTheme } from '@tamagui/ui'
+import { useTheme } from 'tamagui'
 
 export {
   // Catch any errors thrown by the Layout component.

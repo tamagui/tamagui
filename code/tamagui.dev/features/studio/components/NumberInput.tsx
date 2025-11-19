@@ -1,6 +1,6 @@
 import { Minus, Plus } from '@tamagui/lucide-icons'
-import type { InputProps } from '@tamagui/ui'
-import { Button, Input } from '@tamagui/ui'
+import type { InputProps } from 'tamagui'
+import { Button, Input } from 'tamagui'
 
 export type NumberInputProps = {
   value: number

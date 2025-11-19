@@ -34,7 +34,7 @@ npm install @tamagui/card
 ## Anatomy
 
 ```tsx
-import { Card } from '@tamagui/ui' // or '@tamagui/card'
+import { Card } from 'tamagui' // or '@tamagui/card'
 
 export default () => (
   <Card>
@@ -50,7 +50,8 @@ export default () => (
 
 ### Card
 
-Frame of the card, extends [ThemeableStack props](/docs/components/stacks#themeablestack), adding:
+Frame of the card, extends
+[ThemeableStack props](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
   data={[
@@ -101,7 +102,8 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
 ### Card.Background
 
-Extends [YStack](/docs/components/stacks), set to `fullscreen` and zIndex below Header/Footer.
+Extends [YStack](/docs/components/stacks), set to `fullscreen` and zIndex below
+Header/Footer.
 
 <PropsTable
   data={[
@@ -112,4 +114,4 @@ Extends [YStack](/docs/components/stacks), set to `fullscreen` and zIndex below 
       description: `Removes all default Tamagui styles.`,
     },
   ]}
-/> 
+/>{' '}

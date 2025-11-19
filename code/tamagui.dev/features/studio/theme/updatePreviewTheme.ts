@@ -1,7 +1,7 @@
 import { createStudioThemes } from '@tamagui/theme-builder'
 import type { BuildThemeSuiteProps } from '@tamagui/themes'
-import type { ThemeName } from '@tamagui/ui'
-import { debounce, mutateThemes } from '@tamagui/ui'
+import type { ThemeName } from 'tamagui'
+import { debounce, mutateThemes } from 'tamagui'
 
 const STUDIO_INTERNAL_THEME_NAME = 'studiodemointernal'
 

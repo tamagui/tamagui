@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useDidFinishSSR, type ThemeName } from '@tamagui/ui'
+import { useDidFinishSSR, type ThemeName } from 'tamagui'
 import { getTints, setNextTintFamily, useTints } from './tints'
 
 let current = 3

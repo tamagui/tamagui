@@ -1,6 +1,6 @@
 import { TamaguiLogo } from '@tamagui/logo'
 import { memo } from 'react'
-import { H4, Paragraph, Spacer, VisuallyHidden, XStack, YStack } from '@tamagui/ui'
+import { H4, Paragraph, Spacer, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { Link, ParagraphLink } from '~/components/Link'

@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 
 import * as Demos from '@tamagui/demos'
 import React from 'react'
-import { Separator, Theme, XStack, YStack } from '@tamagui/ui'
+import { Separator, Theme, XStack, YStack } from 'tamagui'
 import { Provider } from './provider'
 import { Sandbox } from './Sandbox'
 import * as TestCases from './usecases'

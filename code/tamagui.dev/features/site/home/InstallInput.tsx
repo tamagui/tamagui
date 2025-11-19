@@ -1,7 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import { Button, Paragraph, Spacer, TooltipSimple, XStack, YStack } from '@tamagui/ui'
+import { Button, Paragraph, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
 
 import { useClipboard } from '~/hooks/useClipboard'
 

@@ -1,7 +1,7 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { memo, useEffect, useState } from 'react'
-import type { ColorTokens, ThemeName } from '@tamagui/ui'
-import { YStack, isClient, useDidFinishSSR, useTheme } from '@tamagui/ui'
+import type { ColorTokens, ThemeName } from 'tamagui'
+import { YStack, isClient, useDidFinishSSR, useTheme } from 'tamagui'
 
 type Props = {
   colorKey?: ColorTokens

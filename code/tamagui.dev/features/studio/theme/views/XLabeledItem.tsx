@@ -1,4 +1,4 @@
-import { Label, XStack } from '@tamagui/ui'
+import { Label, XStack } from 'tamagui'
 
 export const XLabeledItem = ({ label, children }: { label: any; children: any }) => {
   return (

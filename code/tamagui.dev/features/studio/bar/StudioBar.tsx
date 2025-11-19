@@ -10,7 +10,7 @@ import {
   Switch,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { topBarHeight } from '~/features/studio/constants'
 import { useRootStore } from '../state/useGlobalState'

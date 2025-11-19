@@ -12,7 +12,7 @@ import {
   Spacer,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'

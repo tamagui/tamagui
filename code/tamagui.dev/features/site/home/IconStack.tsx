@@ -1,4 +1,4 @@
-import { YStack, styled } from '@tamagui/ui'
+import { YStack, styled } from 'tamagui'
 
 export const IconStack = styled(YStack, {
   br: 100,

@@ -1,4 +1,4 @@
-import { Button, styled, type GetProps } from '@tamagui/ui'
+import { Button, styled, type GetProps } from 'tamagui'
 
 type ButtonProps = GetProps<typeof Button>
 

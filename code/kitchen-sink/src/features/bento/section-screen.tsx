@@ -1,5 +1,5 @@
 import { Data } from '@tamagui/bento'
-import { ListItem, ScrollView, Separator, YGroup, YStack } from '@tamagui/ui'
+import { ListItem, ScrollView, Separator, YGroup, YStack } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 
 export function SectionScreen() {

@@ -1,6 +1,6 @@
 import { LogoIcon } from '@tamagui/logo'
 import { useEffect, useState } from 'react'
-import { Paragraph, Spacer, Spinner, XStack, YStack, composeRefs } from '@tamagui/ui'
+import { Paragraph, Spacer, Spinner, XStack, YStack, composeRefs } from 'tamagui'
 import { useHoverGlow } from '~/components/HoverGlow'
 
 export const StudioQueueCard = ({ teamId }: { teamId: number }) => {

@@ -1,4 +1,4 @@
-import { Image, Text, type ThemeName, XStack, YStack } from '@tamagui/ui'
+import { Image, Text, type ThemeName, XStack, YStack } from 'tamagui'
 import { insets } from '../constant'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { SafeAreaView } from 'react-native'
@@ -13,8 +13,6 @@ const SPACE = 4
 export function BottomView({ title }: BottomViewProps) {
   return (
     <>
-     
-
       {/* <LinearGradient
         colors={['background0', '$background', '$background']}
         pos="absolute"

@@ -1,15 +1,6 @@
 import React from 'react'
-import type { TabsContentProps } from '@tamagui/ui'
-import {
-  Button,
-  H5,
-  Separator,
-  SizableText,
-  Tabs,
-  XStack,
-  YStack,
-  isWeb,
-} from '@tamagui/ui'
+import type { TabsContentProps } from 'tamagui'
+import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {

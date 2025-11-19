@@ -1,4 +1,4 @@
-import { Button, Theme } from '@tamagui/ui'
+import { Button, Theme } from 'tamagui'
 
 export const ButtonInverse = () => (
   <Theme inverse>

@@ -1,5 +1,5 @@
 import { Store, useStore } from '@tamagui/use-store'
-import { ScrollView, XStack, YStack, styled } from '@tamagui/ui'
+import { ScrollView, XStack, YStack, styled } from 'tamagui'
 
 import { ToggleButton } from './ToggleButton'
 

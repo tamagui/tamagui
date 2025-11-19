@@ -1,5 +1,5 @@
 import { Link } from 'one'
-import { YStack, H1, Paragraph, H3, styled } from '@tamagui/ui'
+import { YStack, H1, Paragraph, H3, styled } from 'tamagui'
 
 export const ProLicense = () => {
   return (

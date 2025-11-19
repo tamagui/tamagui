@@ -58,7 +58,7 @@ import {
   View,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { z } from 'zod'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'

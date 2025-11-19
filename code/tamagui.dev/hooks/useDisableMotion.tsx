@@ -1,5 +1,5 @@
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
-import { isClient } from '@tamagui/ui'
+import { isClient } from 'tamagui'
 
 export const useDisableMotion = () => {
   return useClientValue(

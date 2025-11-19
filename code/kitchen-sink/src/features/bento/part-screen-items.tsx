@@ -3,7 +3,7 @@ import { Components } from '@tamagui/bento'
 import { FlatList } from 'react-native'
 
 import { createParam } from 'solito'
-import { Separator, YGroup } from '@tamagui/ui'
+import { Separator, YGroup } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 
 const { useParam } = createParam<{ id: string }>()

@@ -1,5 +1,5 @@
 import { Link } from 'one'
-import { H4, ListItem, Paragraph, ScrollView, XStack, YStack } from '@tamagui/ui'
+import { H4, ListItem, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 import { AllTests } from '~/components/allComponents'
 import { getUrlFromPath } from '~/utils/getFromPath'
 

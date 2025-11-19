@@ -9,7 +9,7 @@ export async function getDefaultTamaguiOptions({
 }): Promise<TamaguiOptions> {
   return {
     platform: 'native',
-    components: ['@tamagui/ui'],
+    components: ['tamagui'],
     config: await getDefaultTamaguiConfigPath({ cwd }),
   }
 }

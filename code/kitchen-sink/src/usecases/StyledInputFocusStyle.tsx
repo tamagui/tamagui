@@ -1,4 +1,4 @@
-import { Input, styled } from '@tamagui/ui'
+import { Input, styled } from 'tamagui'
 
 const StyledInput = styled(Input, {
   borderColor: 'red',

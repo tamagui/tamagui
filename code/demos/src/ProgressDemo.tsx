@@ -1,6 +1,6 @@
 import React from 'react'
-import type { SizeTokens } from '@tamagui/ui'
-import { Button, Paragraph, Progress, Slider, XStack, YStack } from '@tamagui/ui'
+import type { SizeTokens } from 'tamagui'
+import { Button, Paragraph, Progress, Slider, XStack, YStack } from 'tamagui'
 import { Play, RotateCcw } from '@tamagui/lucide-icons'
 
 export function ProgressDemo() {

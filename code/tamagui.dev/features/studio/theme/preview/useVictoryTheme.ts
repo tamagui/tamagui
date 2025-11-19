@@ -1,4 +1,4 @@
-import { getVariableValue, useTheme, useThemeName } from '@tamagui/ui'
+import { getVariableValue, useTheme, useThemeName } from 'tamagui'
 import type { VictoryThemeDefinition } from 'victory'
 import { useDemoProps } from '../hooks/useDemoProps'
 

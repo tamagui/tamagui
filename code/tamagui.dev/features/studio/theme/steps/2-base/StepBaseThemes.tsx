@@ -4,7 +4,7 @@ import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
-import type { XStackProps } from '@tamagui/ui'
+import type { XStackProps } from 'tamagui'
 import {
   Anchor,
   Button,
@@ -15,7 +15,7 @@ import {
   useThemeName,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { Select, SelectItem } from '../../../../../components/Select'

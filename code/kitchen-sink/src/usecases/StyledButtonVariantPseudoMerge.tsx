@@ -1,4 +1,4 @@
-import { Button, Theme, YStack, styled } from '@tamagui/ui'
+import { Button, Theme, YStack, styled } from 'tamagui'
 
 const StyledButton = styled(Button, {
   pressStyle: {

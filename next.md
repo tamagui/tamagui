@@ -1,4 +1,4 @@
-- make @tamagui/ui package work in some simple way
+- make tamagui package work in some simple way
   - probably making tamagui + tamagui/ui both work is fine
 
 - v2 useTheme({ name: '' }) should remove since .get() doesnt match
@@ -247,7 +247,7 @@ blog post:
   - @tamagui/cli => tamagui
     - `tamagui build` document/announce
     - `tamagui lint` fix check and document/announce
-  - tamagui => @tamagui/ui
+  - tamagui => tamagui
     - note many are headless
   - Cleanup Select/ListItem
     - v2-3 ListItem simplification esp for performance of Select

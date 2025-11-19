@@ -44,10 +44,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/ui": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "one": "1.1.515"
+    "one": "1.1.515",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -1,4 +1,4 @@
-import { H1, Label, Text, styled } from '@tamagui/ui'
+import { H1, Label, Text, styled } from 'tamagui'
 
 const X1 = styled(Label, {
   name: 'MyLabel',

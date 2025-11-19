@@ -1,4 +1,4 @@
-import type { TextProps, YStackProps } from '@tamagui/ui'
+import type { TextProps, YStackProps } from 'tamagui'
 
 export const optionValues = {
   inverseAccent: [false, true],

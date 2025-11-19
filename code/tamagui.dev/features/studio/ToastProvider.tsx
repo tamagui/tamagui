@@ -6,7 +6,7 @@ import {
   useToastController,
   useToastState,
 } from '@tamagui/toast'
-import { AnimatePresence, Theme, YStack } from '@tamagui/ui'
+import { AnimatePresence, Theme, YStack } from 'tamagui'
 
 export let toastController: ReturnType<typeof useToastController>
 

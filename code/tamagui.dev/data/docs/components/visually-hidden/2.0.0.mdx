@@ -7,7 +7,8 @@ component: VisuallyHidden
 
 <InstallBanner name="@tamagui/visually-hidden" />
 
-VisuallyHidden hides an item but ensures it remains visible to accessibility readers.
+VisuallyHidden hides an item but ensures it remains visible to accessibility
+readers.
 
 <Highlights
   features={[
@@ -21,7 +22,7 @@ VisuallyHidden hides an item but ensures it remains visible to accessibility rea
 Simply wrap the content you want hidden in VisuallyHidden:
 
 ```tsx
-import { Text, VisuallyHidden } from '@tamagui/ui'
+import { Text, VisuallyHidden } from 'tamagui'
 
 export default () => (
   <VisuallyHidden>
@@ -33,7 +34,7 @@ export default () => (
 When using with the `space` property, it will avoid double-spacing:
 
 ```tsx
-import { H1, Text, VisuallyHidden, YStack } from '@tamagui/ui'
+import { H1, Text, VisuallyHidden, YStack } from 'tamagui'
 
 export default () => (
   <YStack gap="$4">
@@ -44,4 +45,4 @@ export default () => (
     </VisuallyHidden>
   </YStack>
 )
-``` 
+```

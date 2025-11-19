@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { YStack, XStack, H4, Paragraph, Button } from '@tamagui/ui'
+import { YStack, XStack, H4, Paragraph, Button } from 'tamagui'
 import { useThemeBuilderStore } from '../../store/ThemeBuilderStore'
 import { ColorThemeIndicator } from '../../views/ColorThemeIndicator'
 

@@ -12,7 +12,7 @@ import {
 import type { Href } from 'one'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
-import type { ImageProps, XStackProps } from '@tamagui/ui'
+import type { ImageProps, XStackProps } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -35,7 +35,7 @@ import {
   XStack,
   YStack,
   styled,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
@@ -71,7 +71,7 @@ import { PropsTable } from '../docs/PropsTable'
 import { VersionSwitcher } from '../docs/VersionSwitcher'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
-import { TabsTabProps } from '@tamagui/ui'
+import { TabsTabProps } from 'tamagui'
 import { Tab } from '~/components/RovingTabs'
 
 if (!React.version.startsWith('19')) {
@@ -262,7 +262,7 @@ const componentsIn = {
     } = useBashCommand(`yarn add ${name}`, 'language-bash')
 
     const { transformedCommand: tamaguiCommand } = useBashCommand(
-      `npm install @tamagui/ui`,
+      `npm install tamagui`,
       'language-bash'
     )
     const { onCopy, hasCopied } = useClipboard(transformedCommand)

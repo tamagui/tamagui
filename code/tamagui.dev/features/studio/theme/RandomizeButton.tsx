@@ -1,5 +1,5 @@
 import { Dices } from '@tamagui/lucide-icons'
-import { Button, TooltipSimple } from '@tamagui/ui'
+import { Button, TooltipSimple } from 'tamagui'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
 
 export function RandomizeButton() {

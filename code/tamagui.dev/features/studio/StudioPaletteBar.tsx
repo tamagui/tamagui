@@ -1,5 +1,5 @@
 import { readableColor } from 'color2k'
-import { Paragraph, XStack, YStack } from '@tamagui/ui'
+import { Paragraph, XStack, YStack } from 'tamagui'
 
 import { Checkerboard } from './components/Checkerboard'
 

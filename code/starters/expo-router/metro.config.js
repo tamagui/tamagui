@@ -13,7 +13,7 @@ const config = getDefaultConfig(__dirname, {
 config.resolver.sourceExts.push('mjs')
 
 module.exports = withTamagui(config, {
-  components: ['@tamagui/ui'],
+  components: ['tamagui'],
   config: './tamagui.config.ts',
   outputCSS: './tamagui-web.css',
 })

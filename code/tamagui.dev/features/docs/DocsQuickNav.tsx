@@ -10,7 +10,7 @@ import {
   View,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { Link, type LinkProps } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'

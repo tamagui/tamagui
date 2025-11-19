@@ -1,4 +1,4 @@
-import { useThemeName } from '@tamagui/ui'
+import { useThemeName } from 'tamagui'
 
 import { themeBuilderStore } from '../store/ThemeBuilderStore'
 import type { BuildTheme } from '../types'

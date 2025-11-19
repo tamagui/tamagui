@@ -7,7 +7,7 @@ import {
   XStack,
   YStack,
   styled,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import type { Palette, Scale } from '../state/types'
 import { ColorPicker } from './ColorPicker'

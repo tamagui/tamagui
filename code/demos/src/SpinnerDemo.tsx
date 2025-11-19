@@ -1,4 +1,4 @@
-import { Spinner, YStack } from '@tamagui/ui'
+import { Spinner, YStack } from 'tamagui'
 
 export function SpinnerDemo() {
   return (

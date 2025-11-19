@@ -1,5 +1,5 @@
 import React from 'react'
-import { Paragraph, Separator, XStack, YStack } from '@tamagui/ui'
+import { Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 export function SeparatorDemo() {
   return (

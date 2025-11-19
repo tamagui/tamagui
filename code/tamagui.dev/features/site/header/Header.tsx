@@ -25,7 +25,7 @@ import {
   XGroup,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { Link } from '~/components/Link'
 import { bannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'

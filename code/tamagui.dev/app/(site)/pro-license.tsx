@@ -1,4 +1,4 @@
-import { YStack } from '@tamagui/ui'
+import { YStack } from 'tamagui'
 import { ProLicense } from '~/features/pro/ProLicense'
 
 export default () => (

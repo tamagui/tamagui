@@ -14,7 +14,7 @@ import {
   YStack,
   ZStack,
   Theme,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'

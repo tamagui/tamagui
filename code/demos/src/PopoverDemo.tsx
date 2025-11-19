@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import type { PopoverProps } from '@tamagui/ui'
+import type { PopoverProps } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -12,7 +12,7 @@ import {
   styled,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 export function PopoverDemo() {
   const [shouldAdapt, setShouldAdapt] = useState(true)

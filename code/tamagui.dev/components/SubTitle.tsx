@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { H3 } from '@tamagui/ui'
+import { H3 } from 'tamagui'
 
 export const nbspLastWord = (sentence: string) => {
   if (typeof sentence !== 'string') {

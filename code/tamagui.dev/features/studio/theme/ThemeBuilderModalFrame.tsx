@@ -1,6 +1,6 @@
 import { LogoWords } from '@tamagui/logo'
 import type React from 'react'
-import { H4, XStack, YStack, styled, useWindowDimensions } from '@tamagui/ui'
+import { H4, XStack, YStack, styled, useWindowDimensions } from 'tamagui'
 
 import {
   MODAL_MAX_HEIGHT,

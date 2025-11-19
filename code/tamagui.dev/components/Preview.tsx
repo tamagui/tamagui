@@ -1,5 +1,5 @@
-import type { YStackProps } from '@tamagui/ui'
-import { YStack } from '@tamagui/ui'
+import type { YStackProps } from 'tamagui'
+import { YStack } from 'tamagui'
 
 export const Preview = (props: YStackProps) => (
   <YStack

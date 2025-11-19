@@ -1,17 +1,8 @@
 import { X } from '@tamagui/lucide-icons'
 import { memo } from 'react'
 import { useWindowDimensions } from 'react-native'
-import type { DialogCloseProps } from '@tamagui/ui'
-import {
-  Button,
-  Dialog,
-  Fieldset,
-  Input,
-  Label,
-  Unspaced,
-  XStack,
-  YStack,
-} from '@tamagui/ui'
+import type { DialogCloseProps } from 'tamagui'
+import { Button, Dialog, Fieldset, Input, Label, Unspaced, XStack, YStack } from 'tamagui'
 import { rootStore } from '../state/RootStore'
 import type {
   ConfirmDeleteDialogProps,

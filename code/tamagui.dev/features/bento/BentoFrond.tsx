@@ -1,4 +1,4 @@
-import { YStack } from '@tamagui/ui'
+import { YStack } from 'tamagui'
 
 export const BentoFrond = () => (
   <YStack

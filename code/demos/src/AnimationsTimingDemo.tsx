@@ -1,5 +1,5 @@
 import { LogoIcon } from '@tamagui/logo'
-import { Square } from '@tamagui/ui'
+import { Square } from 'tamagui'
 
 export function AnimationsTimingDemo() {
   return (

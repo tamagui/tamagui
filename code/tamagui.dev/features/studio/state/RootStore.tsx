@@ -1,6 +1,6 @@
 import type { ThemeDefinition } from '@tamagui/theme-builder'
 import { createStore } from '@tamagui/use-store'
-import type { TamaguiInternalConfig, ThemeName } from '@tamagui/ui'
+import type { TamaguiInternalConfig, ThemeName } from 'tamagui'
 import { isLocal } from '~/features/studio/constants'
 // import { watchTamaguiDirectory } from '../helpers/watchTamaguiDirectory'
 import { toastController } from '../ToastProvider'

@@ -7,7 +7,7 @@ import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { TamaguiProvider } from '@tamagui/ui'
+import { TamaguiProvider } from 'tamagui'
 
 import Head from 'next/head'
 import config from '../tamagui.config'

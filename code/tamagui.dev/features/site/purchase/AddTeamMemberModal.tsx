@@ -20,7 +20,7 @@ import {
   useTheme,
   useThemeName,
   SizableText,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 
 const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY

@@ -21,7 +21,7 @@ import {
   Spinner,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 import type { DiscordChannelStatus } from '~/app/api/discord/channel+api'
 import { Container } from '~/components/Containers'
 import { ButtonLink, Link } from '~/components/Link'

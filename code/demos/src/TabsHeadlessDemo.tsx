@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { TabsContentProps } from '@tamagui/ui'
+import type { TabsContentProps } from 'tamagui'
 import {
   Button,
   SizableStack,
@@ -8,7 +8,7 @@ import {
   YStack,
   isWeb,
   styled,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { createTabs } from '@tamagui/tabs'
 import { getButtonSized } from '@tamagui/get-button-sized'
 

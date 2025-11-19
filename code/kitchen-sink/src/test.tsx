@@ -1,3 +1,3 @@
-import { View } from '@tamagui/ui'
+import { View } from 'tamagui'
 
 export default () => <View style={{ backgroundColor: 'red' }} />

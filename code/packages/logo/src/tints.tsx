@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ThemeName } from '@tamagui/ui'
+import type { ThemeName } from 'tamagui'
 
 type ChangeHandler = (next: TintFamily) => void
 

@@ -22,7 +22,7 @@ import {
   TextCursorInput,
   ToggleRight,
 } from '@tamagui/lucide-icons'
-import { H4, H5, Image, YStack } from '@tamagui/ui'
+import { H4, H5, Image, YStack } from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Link } from '~/components/Link'
 import ComponentPreview from './ComponentPreview'

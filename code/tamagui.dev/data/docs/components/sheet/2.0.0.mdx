@@ -31,15 +31,13 @@ demoName: Sheet
 ### Anatomy
 
 ```tsx
-import { Sheet } from '@tamagui/ui' // or '@tamagui/sheet'
+import { Sheet } from 'tamagui' // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
     <Sheet.Overlay />
     <Sheet.Handle />
-    <Sheet.Frame>
-      {/* ...inner contents */}
-    </Sheet.Frame>
+    <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
 )
 ```
@@ -52,7 +50,11 @@ Contains every component for the sheet.
 
 <PropsTable
   data={[
-    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: `Set to use as controlled component.`,
+    },
     {
       name: 'defaultOpen',
       type: 'boolean',
@@ -135,14 +137,17 @@ Contains the content. Extends [YStack](/docs/components/stacks).
 
 #### &lt;Handle /&gt;
 
-Shows a handle above the frame by default, on tap it will cycle between `snapPoints` but this can be overridden with `onPress`.
+Shows a handle above the frame by default, on tap it will cycle between
+`snapPoints` but this can be overridden with `onPress`.
 
 Extends [XStack](/docs/components/stacks).
 
 #### &lt;Scrollview /&gt;
 
-Allows scrolling within Sheet. Extends [Scrollview](/docs/components/scroll-view).
+Allows scrolling within Sheet. Extends
+[Scrollview](/docs/components/scroll-view).
 
 ### Notes
 
-For Android you need to manually re-propagate any context when using `modal`. This is because React Native doesn't support portals yet. 
+For Android you need to manually re-propagate any context when using `modal`.
+This is because React Native doesn't support portals yet.

@@ -6,7 +6,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
-import { type ThemeName, XStack, YStack } from '@tamagui/ui'
+import { type ThemeName, XStack, YStack } from 'tamagui'
 import { colors, insets } from '../constant'
 
 type ThemePicker = {

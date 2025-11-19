@@ -1,14 +1,6 @@
 import { Info } from '@tamagui/lucide-icons'
 import { useRef, useState } from 'react'
-import {
-  Button,
-  Heading,
-  Input,
-  Paragraph,
-  TooltipSimple,
-  XStack,
-  YStack,
-} from '@tamagui/ui'
+import { Button, Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 
 export type FieldsetWithLabelProps = {
   enableEditLabel?: boolean

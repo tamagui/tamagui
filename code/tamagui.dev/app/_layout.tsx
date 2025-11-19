@@ -3,7 +3,7 @@ import '~/app.css'
 import '~/tamagui.css'
 
 import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
-import { isWeb, setupPopper } from '@tamagui/ui'
+import { isWeb, setupPopper } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Providers } from '../components/Providers'
 

@@ -2,7 +2,7 @@ import { useGLTF } from '@react-three/drei'
 // import type { Object3DNode } from '@react-three/fiber'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Suspense, useRef } from 'react'
-import { useMedia } from '@tamagui/ui'
+import { useMedia } from 'tamagui'
 
 import { Stage } from './Stage'
 

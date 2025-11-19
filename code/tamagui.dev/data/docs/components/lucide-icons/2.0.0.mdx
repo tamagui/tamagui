@@ -21,27 +21,19 @@ yarn add react-native-svg @tamagui/lucide-icons
 Use them as regular React components
 
 ```tsx
-import { Button } from '@tamagui/ui'
+import { Button } from 'tamagui'
 import { Plus } from '@tamagui/lucide-icons'
 
 // Button will automatically pass size/theme to icon
-export default () => (
-  <Button icon={Plus}>
-    Hello world
-  </Button>
-)
+export default () => <Button icon={Plus}>Hello world</Button>
 
 // or you can control it
-export default () => (
-  <Button icon={<Plus size="$4" />}>
-    Hello world
-  </Button>
-)
+export default () => <Button icon={<Plus size="$4" />}>Hello world</Button>
 ```
 
 They accept your tokens/theme keys for color and size.
 
 ## Credit
 
-The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful [Feather Icons](https://feathericons.com/).
- 
+The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful
+[Feather Icons](https://feathericons.com/).

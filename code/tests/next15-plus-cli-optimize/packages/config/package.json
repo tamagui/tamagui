@@ -21,7 +21,7 @@
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "@tamagui/ui": "workspace:*"
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"

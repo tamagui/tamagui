@@ -1,4 +1,4 @@
-import { Spinner, YStack, H2, SizableText } from '@tamagui/ui'
+import { Spinner, YStack, H2, SizableText } from 'tamagui'
 
 export const SpinnerCustomColors = () => {
   return (

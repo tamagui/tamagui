@@ -1,4 +1,4 @@
-import { H3, Paragraph, XStack } from '@tamagui/ui'
+import { H3, Paragraph, XStack } from 'tamagui'
 
 import { Card } from './Card'
 

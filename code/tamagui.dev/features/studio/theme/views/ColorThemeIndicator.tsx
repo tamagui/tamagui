@@ -1,4 +1,4 @@
-import { Circle, YStack, useThemeName } from '@tamagui/ui'
+import { Circle, YStack, useThemeName } from 'tamagui'
 import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme-builder'
 import type { BuildPalette } from '../types'
 

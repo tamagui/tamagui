@@ -1,4 +1,4 @@
-import { AlertDialog, Button, XStack, YStack } from '@tamagui/ui'
+import { AlertDialog, Button, XStack, YStack } from 'tamagui'
 
 export function AlertDialogDemo() {
   return (

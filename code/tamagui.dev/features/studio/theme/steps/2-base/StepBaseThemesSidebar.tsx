@@ -1,6 +1,6 @@
 import { useStore } from '@tamagui/use-store'
 import { useState } from 'react'
-import type { ThemeName } from '@tamagui/ui'
+import type { ThemeName } from 'tamagui'
 import {
   Label,
   Separator,
@@ -10,7 +10,7 @@ import {
   Theme,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { StudioProcedureStore } from '../../callApi'
 import { useThemeBuilderStore } from '../../store/ThemeBuilderStore'

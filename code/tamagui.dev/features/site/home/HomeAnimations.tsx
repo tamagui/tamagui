@@ -12,7 +12,7 @@ import {
   YStack,
   useControllableState,
   useEvent,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'

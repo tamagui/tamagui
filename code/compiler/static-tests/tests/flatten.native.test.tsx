@@ -11,8 +11,8 @@ window['React'] = React
 describe('flatten-tests', () => {
   test(`flattened without extra attributes`, async () => {
     const output = await extractForNative(`
-      import { YStack } from '@tamagui/ui'
-      import { useMedia } from '@tamagui/ui'
+      import { YStack } from 'tamagui'
+      import { useMedia } from 'tamagui'
   
       export function Test(isLoading) {
         const media = useMedia()
@@ -32,8 +32,8 @@ describe('flatten-tests', () => {
 
   test('flattened media queries', async () => {
     const output = await extractForNative(`
-      import { YStack } from '@tamagui/ui'
-      import { useMedia } from '@tamagui/ui'
+      import { YStack } from 'tamagui'
+      import { useMedia } from 'tamagui'
   
       export function Test(isLoading) {
         const media = useMedia()
@@ -101,7 +101,7 @@ describe('flatten-tests', () => {
 
   test(`work with experimentalFlattenThemesOnNative`, async () => {
     const output = await extractForNative(`
-      import { YStack } from '@tamagui/ui'
+      import { YStack } from 'tamagui'
   
       export function Test(isLoading) {
         return (
@@ -120,7 +120,7 @@ describe('flatten-tests', () => {
 
   test(`work with experimentalFlattenThemesOnNative + ternary`, async () => {
     const output = await extractForNative(`
-      import { View } from '@tamagui/ui'
+      import { View } from 'tamagui'
   
       export function Test() {
         return (
@@ -135,7 +135,7 @@ describe('flatten-tests', () => {
   // TODO make this work:
   // test.skip(`keeps style object a single object case 2`, async () => {
   //   const output = await extractForNative(`
-  //     import { View } from '@tamagui/ui'
+  //     import { View } from 'tamagui'
 
   //     export function Test() {
   //       return (

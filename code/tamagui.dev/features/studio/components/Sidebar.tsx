@@ -1,7 +1,7 @@
 import type React from 'react'
 import { memo } from 'react'
-import type { YStackProps } from '@tamagui/ui'
-import { H4, H5, ScrollView, Spacer, XStack, YStack, styled } from '@tamagui/ui'
+import type { YStackProps } from 'tamagui'
+import { H4, H5, ScrollView, Spacer, XStack, YStack, styled } from 'tamagui'
 
 import { sidebarWidth } from '../constants'
 

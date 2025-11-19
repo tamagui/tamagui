@@ -1,7 +1,7 @@
 import type { LayoutValue } from '@tamagui/use-element-layout'
 import React, { useEffect, useState } from 'react'
-import type { XStackProps } from '@tamagui/ui'
-import { Circle, XStack } from '@tamagui/ui'
+import type { XStackProps } from 'tamagui'
+import { Circle, XStack } from 'tamagui'
 import { useTint } from './useTint'
 
 const rgb = ['#ED0F0F', '#6BCF1A', '#6252F8']

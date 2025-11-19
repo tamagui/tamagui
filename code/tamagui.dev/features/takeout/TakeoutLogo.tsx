@@ -1,6 +1,6 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
-import { H1, YStack } from '@tamagui/ui'
+import { H1, YStack } from 'tamagui'
 
 export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 1.1, ...props }) => (
   <H1

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Stack, styled } from '@tamagui/core'
 import { createSwitch } from '@tamagui/switch'
-import { Label, XStack, YStack } from '@tamagui/ui'
+import { Label, XStack, YStack } from 'tamagui'
 
 const Frame = styled(Stack, {
   width: 40,

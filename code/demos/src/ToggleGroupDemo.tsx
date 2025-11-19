@@ -1,6 +1,6 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
-import type { SizeTokens } from '@tamagui/ui'
-import { Label, styled, ToggleGroup, XStack, YStack } from '@tamagui/ui'
+import type { SizeTokens } from 'tamagui'
+import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
 
 const Item = styled(ToggleGroup.Item, {
   color: '$color10',

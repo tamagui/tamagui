@@ -1,4 +1,4 @@
-import { EnsureFlexed, YStack } from '@tamagui/ui'
+import { EnsureFlexed, YStack } from 'tamagui'
 
 import { ContainerLarge } from '~/components/Containers'
 import { SocialLinksRow } from './SocialLinksRow'

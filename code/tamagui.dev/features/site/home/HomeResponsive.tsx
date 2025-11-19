@@ -12,7 +12,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import type { YStackProps } from '@tamagui/ui'
+import type { YStackProps } from 'tamagui'
 import {
   Button,
   Circle,
@@ -30,7 +30,7 @@ import {
   useGet,
   useIsomorphicLayoutEffect,
   useMedia,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'

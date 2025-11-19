@@ -36,7 +36,6 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/sandbox-ui": "workspace:*",
     "@tamagui/test-design-system": "workspace:*",
-    "@tamagui/ui": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
@@ -52,6 +51,7 @@
     "react-native-web": "^0.20.0",
     "react-test-renderer": "^19.0.0",
     "style-loader": "^3.3.3",
+    "tamagui": "workspace:*",
     "typescript": "^5.8.2",
     "vitest": "^3.2.4",
     "webpack": "^5.88.2"

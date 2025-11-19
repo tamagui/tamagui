@@ -1,4 +1,4 @@
-import { Circle, Square, XStack } from '@tamagui/ui'
+import { Circle, Square, XStack } from 'tamagui'
 
 export function ShapesDemo() {
   return (

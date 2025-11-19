@@ -1,4 +1,4 @@
-import { Paragraph, XStack, YStack } from '@tamagui/ui'
+import { Paragraph, XStack, YStack } from 'tamagui'
 
 const getBarColor = (name: string) => {
   switch (name) {

@@ -1,5 +1,5 @@
 import { Activity, Airplay } from '@tamagui/lucide-icons'
-import { Theme, XGroup, XStack, YStack } from '@tamagui/ui'
+import { Theme, XGroup, XStack, YStack } from 'tamagui'
 import { Button } from '@tamagui/button'
 import { Button as ButtonV1 } from '@tamagui/button/v1'
 

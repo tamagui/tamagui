@@ -1,4 +1,4 @@
-import { H1, Theme, YStack } from '@tamagui/ui'
+import { H1, Theme, YStack } from 'tamagui'
 
 export const BentoLogo = ({
   children = 'Bento',

@@ -1,6 +1,6 @@
 import { Moon, Sun } from '@tamagui/lucide-icons'
-import type { ListItemProps } from '@tamagui/ui'
-import { Button, ListItem, Spacer, Switch } from '@tamagui/ui'
+import type { ListItemProps } from 'tamagui'
+import { Button, ListItem, Spacer, Switch } from 'tamagui'
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export const ColorSchemeListItem = (props: ListItemProps) => {

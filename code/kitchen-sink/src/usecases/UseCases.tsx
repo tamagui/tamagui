@@ -13,7 +13,7 @@ import {
   getMedia,
   styled,
   useThemeName,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import config from '../tamagui.config'
 

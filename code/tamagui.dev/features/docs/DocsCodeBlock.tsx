@@ -17,7 +17,7 @@ import {
   XStack,
   YStack,
   useEvent,
-} from '@tamagui/ui'
+} from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'

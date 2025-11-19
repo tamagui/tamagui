@@ -1,8 +1,8 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React from 'react'
 
-import type { FontSizeTokens, SelectProps } from '@tamagui/ui'
-import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from '@tamagui/ui'
+import type { FontSizeTokens, SelectProps } from 'tamagui'
+import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 
 export function SelectDemo() {

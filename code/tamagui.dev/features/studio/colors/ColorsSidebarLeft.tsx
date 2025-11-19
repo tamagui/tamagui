@@ -10,7 +10,7 @@ import {
   Tabs,
   XStack,
   YStack,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 import { SidebarLeft, SidebarPanel, SidebarPanelUnpad } from '../components/Sidebar'
 import { colorsStore } from '../state/ColorsStore'

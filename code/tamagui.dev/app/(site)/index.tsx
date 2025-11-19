@@ -1,7 +1,7 @@
 import { setTintIndex } from '@tamagui/logo'
 import { useLoader } from 'one'
 import { useEffect } from 'react'
-import { YStack } from '@tamagui/ui'
+import { YStack } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
 import { HomeCommunity } from '~/features/site/home/HomeCommunity'

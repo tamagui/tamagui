@@ -1,4 +1,4 @@
-import { Button, Dialog, Input, Label, XStack, YStack } from '@tamagui/ui'
+import { Button, Dialog, Input, Label, XStack, YStack } from 'tamagui'
 
 export function DialogFocusScopeCase() {
   return (
@@ -27,11 +27,12 @@ export function DialogFocusScopeCase() {
         />
       </Dialog>
 
-
       {/* Nested Dialogs */}
       <Dialog modal>
         <Dialog.Trigger asChild>
-          <Button data-testid="parent-dialog-trigger">Open Dialog with Nested Dialog</Button>
+          <Button data-testid="parent-dialog-trigger">
+            Open Dialog with Nested Dialog
+          </Button>
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay

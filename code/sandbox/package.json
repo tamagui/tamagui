@@ -28,7 +28,6 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@tamagui/ui": "workspace:*",
     "@vxrn/color-scheme": "^1.1.515",
     "expo": "53.0.7",
     "one": "1.1.515",
@@ -38,7 +37,8 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
     "react-native-svg": "15.11.2",
-    "react-native-web": "^0.20.0"
+    "react-native-web": "^0.20.0",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

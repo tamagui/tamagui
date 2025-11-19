@@ -11,7 +11,7 @@ import {
   getVariableValue,
   useForceUpdate,
   useIsomorphicLayoutEffect,
-} from '@tamagui/ui'
+} from 'tamagui'
 
 const colors = config.tokens.color
 const colorKeys = Object.keys(colors)

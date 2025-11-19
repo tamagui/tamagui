@@ -29,29 +29,35 @@ demoName: Button
 ### Usage
 
 ```tsx
-import { Button } from '@tamagui/ui'
+import { Button } from 'tamagui'
 
 export default () => <Button>Lorem ipsum</Button>
 ```
 
 ### Sizing
 
-Sizing buttons provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, font size and icons sizes all in one with the `size` prop.
+Sizing buttons provides a unique challenge especially for a compiler, because
+you need to adjust many different properties - not just on the outer frame, but
+on the text wrapped inside. Tamagui supports adjusting the padding, border
+radius, font size and icons sizes all in one with the `size` prop.
 
 ```tsx
-import { Button } from '@tamagui/ui'
+import { Button } from 'tamagui'
 
 export default () => <Button size="$6">Lorem ipsum</Button>
 ```
 
-Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
+Given your theme defines a size `6`, the button will adjust all of the
+properties appropriately. You can also pass a plain number to get an arbitrary
+size.
 
 ### Variants
 
-The Button component supports different visual styles through the `variant` prop. Currently, the primary available variant is `"outlined"`.
+The Button component supports different visual styles through the `variant`
+prop. Currently, the primary available variant is `"outlined"`.
 
 ```tsx
-import { Button, Stack } from '@tamagui/ui'
+import { Button, Stack } from 'tamagui'
 
 export default () => (
   <Stack direction="row" space>
@@ -61,18 +67,28 @@ export default () => (
 )
 ```
 
-When `variant="outlined"` is applied, the button typically has a transparent background with a visible border. The exact appearance (border color, hover/press states) is determined by your theme's definitions for an outlined button.
+When `variant="outlined"` is applied, the button typically has a transparent
+background with a visible border. The exact appearance (border color,
+hover/press states) is determined by your theme's definitions for an outlined
+button.
 
 ### Icon Theming
 
-You can pass icons as either elements or components. If passing components, Tamagui will automatically theme them (passing `size`). The icon size is determined by the Button's `size` prop by default.
+You can pass icons as either elements or components. If passing components,
+Tamagui will automatically theme them (passing `size`). The icon size is
+determined by the Button's `size` prop by default.
 
-You can also explicitly set the icon size using the `iconSize` prop, which accepts a `SizeTokens` value (e.g., `"$2"`). The `scaleIcon` prop can be used to further adjust the size relative to the determined or explicitly set icon size.
+You can also explicitly set the icon size using the `iconSize` prop, which
+accepts a `SizeTokens` value (e.g., `"$2"`). The `scaleIcon` prop can be used to
+further adjust the size relative to the determined or explicitly set icon size.
 
-When an icon is present, Tamagui automatically adds spacing between the icon and the button's text. This space is calculated as 40% of the icon's final computed size (after considering `size`, `iconSize`, and `scaleIcon`). This margin is applied to the right of an `icon` and to the left of an `iconAfter`.
+When an icon is present, Tamagui automatically adds spacing between the icon and
+the button's text. This space is calculated as 40% of the icon's final computed
+size (after considering `size`, `iconSize`, and `scaleIcon`). This margin is
+applied to the right of an `icon` and to the left of an `iconAfter`.
 
 ```tsx
-import { Button, Star } from '@tamagui/ui'
+import { Button, Star } from 'tamagui'
 
 export default () => (
   <>
@@ -86,14 +102,19 @@ export default () => (
 )
 ```
 
-You can [use the source of Button itself](https://github.com/tamagui/tamagui/blob/master/packages/button/src/Button.tsx) to see in more detail what variants you can override, and how we use this pattern internally to create our Button component.
+You can
+[use the source of Button itself](https://github.com/tamagui/tamagui/blob/master/packages/button/src/Button.tsx)
+to see in more detail what variants you can override, and how we use this
+pattern internally to create our Button component.
 
 ### Group Theming
 
-You can use `Button.Apply` to theme a group of Buttons using a shared context. This is useful for applying consistent sizing or variants to multiple buttons without passing props to each one individually.
+You can use `Button.Apply` to theme a group of Buttons using a shared context.
+This is useful for applying consistent sizing or variants to multiple buttons
+without passing props to each one individually.
 
 ```tsx
-import { Button, ButtonDemo, Stack } from '@tamagui/ui'
+import { Button, ButtonDemo, Stack } from 'tamagui'
 
 export default () => (
   <Stack space>
@@ -113,12 +134,14 @@ export default () => (
 
 ### Creating your own Button
 
-Tamagui now has all the features necessary to make creating a custom Button easy enough that you may want to roll your own button. Learn how to do it with our dedicated guide, [How to Build a Button](/docs/guides/how-to-build-a-button).
-
+Tamagui now has all the features necessary to make creating a custom Button easy
+enough that you may want to roll your own button. Learn how to do it with our
+dedicated guide, [How to Build a Button](/docs/guides/how-to-build-a-button).
 
 ### Button props
 
-Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+Buttons extend Stack views inheriting all the
+[Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -138,7 +161,8 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
       name: 'disabled',
       required: false,
       type: 'boolean',
-      description: 'If true, the button will be non-interactive and visually disabled. Sets `pointerEvents: "none"`.',
+      description:
+        'If true, the button will be non-interactive and visually disabled. Sets `pointerEvents: "none"`.',
     },
     {
       name: 'theme',
@@ -180,7 +204,8 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
       name: 'chromeless',
       required: false,
       type: 'boolean | "all"',
-      description: 'Removes default Tamagui visual styles (background, border) for a more minimal appearance, while keeping layout and interactions. If "all", removes hover/press/focus styles too.',
+      description:
+        'Removes default Tamagui visual styles (background, border) for a more minimal appearance, while keeping layout and interactions. If "all", removes hover/press/focus styles too.',
     },
     {
       name: 'unstyled',
@@ -191,8 +216,9 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
     // Note about text styling
     {
       name: '// Text Styling',
-      description: 'To style the text inside the Button (e.g., color, fontWeight), use `styled(Button, { ... })` or create a custom button component using `Button.Text`. Direct text props are not passed to the inner text element for performance and simplicity.',
+      description:
+        'To style the text inside the Button (e.g., color, fontWeight), use `styled(Button, { ... })` or create a custom button component using `Button.Text`. Direct text props are not passed to the inner text element for performance and simplicity.',
       type: '---',
-    }
+    },
   ]}
-/> 
+/>{' '}
