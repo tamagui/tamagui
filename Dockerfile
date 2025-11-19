@@ -33,11 +33,23 @@ ARG ONE_SERVER_URL
 ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
+ARG BENTO_GITHUB_TOKEN
 
 # unlock
-RUN apt-get update && apt-get install -y git bsdmainutils vim-common
+RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh
 
-WORKDIR /app
+WORKDIR /root
+# Clone bento repository as sibling directory (required for build)
+RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
+      echo "Cloning bento repository..."; \
+      echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
+      gh repo clone tamagui/bento && \
+      gh auth logout; \
+    else \
+      echo "WARNING: BENTO_GITHUB_TOKEN not provided, skipping bento clone"; \
+    fi
+
+WORKDIR /root/tamagui
 COPY . .
 
 # init git

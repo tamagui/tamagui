@@ -19,6 +19,8 @@ jobs:
 
       - name: Install
         uses: ./.github/actions/install
+        with:
+          gh_token: ${{ secrets.PAT }}
 
       - name: Install playwright
         run: npx playwright install
