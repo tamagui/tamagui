@@ -367,22 +367,21 @@ export const manageSubscriptionStatusChange = async (
     const includesTakeoutStarter = subscribedProducts.some(
       (product) => product.metadata.slug === ProductSlug.UniversalStarter
     )
-    if (includesTakeoutStarter) {
-      await sendProductPurchaseEmail(email, {
-        name: userName,
-        product_name: 'Takeout',
-      })
-      console.info(`Takeout purchase email request sent to Postmark for ${email}`)
-    }
     const includesBento = subscribedProducts.some(
       (product) => product.metadata.slug === 'bento'
     )
-    if (includesBento) {
+
+    // Send one consolidated purchase email
+    if (includesTakeoutStarter || includesBento) {
+      const productNames = []
+      if (includesTakeoutStarter) productNames.push('Takeout')
+      if (includesBento) productNames.push('Bento')
+
       await sendProductPurchaseEmail(email, {
         name: userName,
-        product_name: 'Bento',
+        product_name: productNames.join(' + '),
       })
-      console.info(`Bento purchase email request sent to Postmark for ${email}`)
+      console.info(`Purchase email sent to ${email} for: ${productNames.join(', ')}`)
     }
   }
 }

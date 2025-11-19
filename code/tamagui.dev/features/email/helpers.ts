@@ -17,11 +17,61 @@ export function sendProductPurchaseEmail(
     return
   }
 
-  return client.sendEmailWithTemplate({
+  const htmlBody = `
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Hello ${args.name}!</h1>
+
+  <p>Thank you for your purchase of ${args.product_name}!</p>
+
+  <h2>Important: Accept Your GitHub Team Invite</h2>
+
+  <p>To access the private repositories, you need to <strong>accept the team invite</strong> that should be in your inbox from GitHub.</p>
+
+  <p>If you don't see the invite email, you can re-send it by:</p>
+  <ol>
+    <li>Logging into your account at <a href="https://tamagui.dev">tamagui.dev</a></li>
+    <li>Going to your Account settings</li>
+    <li>Clicking the "Re-send GitHub Invite" button</li>
+  </ol>
+
+  <h2>What You Get Access To</h2>
+
+  <p>Once you accept the invite, you'll have access to:</p>
+  <ul>
+    <li><strong>Bento</strong> - Our premium component library: <a href="https://github.com/tamagui/bento">https://github.com/tamagui/bento</a></li>
+    <li><strong>Takeout v1</strong>: <a href="https://github.com/tamagui/takeout">https://github.com/tamagui/takeout</a></li>
+    <li><strong>Takeout v2 (Beta)</strong>: <a href="https://github.com/tamagui/takeout3">https://github.com/tamagui/takeout3</a></li>
+  </ul>
+
+  <p>If you have any questions or need help, feel free to reach out to us at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
+
+  <p>We hope this finds you well,
+    <br>The Tamagui Team</p>
+
+  <p><strong>P.S.</strong> If you haven't already, be sure to join our Discord community!</p>
+
+  <table class="body-sub">
+    <tr>
+      <td>
+        <p class="sub">If you're having trouble with the links above, copy and paste these URLs into your web browser:</p>
+        <p class="sub">Tamagui: https://tamagui.dev</p>
+        <p class="sub">Bento: https://github.com/tamagui/bento</p>
+        <p class="sub">Takeout v1: https://github.com/tamagui/takeout</p>
+        <p class="sub">Takeout v2: https://github.com/tamagui/takeout3</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim()
+
+  return client.sendEmail({
     From: 'support@tamagui.dev',
     To: email,
-    TemplateId: 32624033,
-    TemplateModel: args,
+    Subject: `Welcome to ${args.product_name}!`,
+    HtmlBody: htmlBody,
   })
 }
 
@@ -34,10 +84,44 @@ export function sendProductRenewalEmail(
     return
   }
 
-  return client.sendEmailWithTemplate({
+  const htmlBody = `
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Hello ${args.name}!</h1>
+
+  <p>In a week your subscription to ${args.product_name} will renew.</p>
+
+  <p>We really appreciate your support of our small business.</p>
+
+  <h2>We're happy to announce that the Takeout 2 Beta is now available!</h2>
+
+  <p>It represents a huge upgrade in every way and a glimpse at the future of frontend development. Learn more about it in the private Takeout channel in discord.</p>
+
+  <p>Feel free to reach out to us for help at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a> if you have any questions.</p>
+
+  <p>If you wish to cancel, you can do so by logging in, opening your account, and hitting cancel <a href="https://tamagui.dev">on the Tamagui site</a>.</p>
+
+  <p>We hope this finds you well,
+    <br>The Tamagui Team</p>
+
+  <!-- Sub copy -->
+  <table class="body-sub">
+    <tr>
+      <td>
+        <p class="sub">If you're having trouble with the button above, copy and paste the URL below into your web browser and hit "Pro" after logging in.</p>
+        <p class="sub">https://tamagui.dev</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim()
+
+  return client.sendEmail({
     From: 'support@tamagui.dev',
     To: email,
-    TemplateId: 36673357,
-    TemplateModel: args,
+    Subject: `Your ${args.product_name} subscription will renew soon`,
+    HtmlBody: htmlBody,
   })
 }
