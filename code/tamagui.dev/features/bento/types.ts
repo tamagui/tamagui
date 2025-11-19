@@ -1,3 +1,4 @@
+// @ts-expect-error - server-only file
 import type { getProductsForServerSideRendering } from '../site/purchase/server-helpers'
 
 export type ProComponentsProps = Awaited<

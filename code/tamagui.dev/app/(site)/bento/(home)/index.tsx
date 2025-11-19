@@ -1,3 +1,4 @@
+// @ts-expect-error - bento component wildcard import
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { AlertCircle, Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'

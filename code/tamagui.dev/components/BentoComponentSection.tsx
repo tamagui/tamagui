@@ -1,4 +1,4 @@
-import { listingData } from '@tamagui/bento/data'
+import { listingData } from './bento-showcase/data'
 import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
 import { H3, ScrollView, Spacer, XStack, YStack } from 'tamagui'
@@ -11,7 +11,7 @@ export class BentoStore {
 }
 
 export const ComponentSection = () => {
-  const inputRef = useRef<HTMLInputElement>()
+  const inputRef = useRef<HTMLInputElement>(null)
   const [filter, setFilter] = useState('')
   const store = useStore(BentoStore)
 

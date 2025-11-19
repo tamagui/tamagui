@@ -44,9 +44,6 @@ COPY . .
 # init git
 RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
 
-# unlock
-RUN ./scripts/unlock-repo.sh
-
 RUN corepack enable
 RUN corepack prepare yarn@4.5.0 --activate
 RUN yarn install --immutable

@@ -33,8 +33,6 @@ WORKDIR /repo
 ARG TRANSCRYPT_PASSWORD
 ENV TRANSCRYPT_PASSWORD=${TRANSCRYPT_PASSWORD}
 
-RUN SHOULD_UNLOCK_GIT_CRYPT=1 ./scripts/unlock-repo.sh
-
 # Verify Yarn version
 RUN yarn --version
 

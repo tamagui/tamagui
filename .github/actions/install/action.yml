@@ -18,11 +18,22 @@ runs:
       shell: bash
       run: npm i yarn -g
 
+    - name: Clone Bento repository
+      shell: bash
+      run: |
+        # Clone bento as sibling directory (required)
+        cd ..
+        echo "Cloning bento repository..."
+        gh repo clone tamagui/bento
+        cd tamagui
+      env:
+        GH_TOKEN: ${{ github.token }}
+
     - name: Install Dependencies
       shell: bash
       run: yarn install
       env:
-        # postinstall uses this
+        # postinstall uses this (also generates bento proxy)
         TRANSCRYPT_PASSWORD: ${{ inputs.transcrypt_password }}
         SHOULD_UNLOCK_GIT_CRYPT: "1"
 

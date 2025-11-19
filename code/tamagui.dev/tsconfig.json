@@ -6,8 +6,6 @@
       "~/*": ["./*"],
       "tamagui": ["../ui/tamagui"],
       "@tamagui/*": ["../core/*", "../ui/*", "../packages/*"],
-      "@tamagui/bento": ["../bento"],
-      "@tamagui/bento-example": ["../bento/example"],
       "@tamagui/demos": ["../demos"]
     },
     "outDir": "dist",
@@ -40,14 +38,12 @@
     "types": ["node", "react", "vite/client"],
     "lib": ["dom", "esnext"]
   },
-  "exclude": ["**/test", "**/dist", "**/types", "**/__tests__", "**/bento-output"],
+  "include": ["**/*", "types/**/*"],
+  "exclude": ["**/test", "**/dist", "**/__tests__", "**/bento-output"],
   "typeAcquisition": {
     "enable": true
   },
   "references": [
-    {
-      "path": "../bento"
-    },
     {
       "path": "../core/assert"
     },

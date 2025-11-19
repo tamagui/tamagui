@@ -34,13 +34,6 @@ const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
 
-if (process.env.NEEDS_UNLOCK) {
-  if (!FSE.readFileSync(`./src/test-encrypted-file`, 'utf-8').includes(`is_unlocked`)) {
-    console.warn(`Not unlocked, skipping`)
-    process.exit(0)
-  }
-}
-
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
@@ -201,7 +194,7 @@ async function runAfterBuild() {
 
     childProcess.execSync(afterBuild, {
       stdio: 'inherit',
-      cwd: process.cwd()
+      cwd: process.cwd(),
     })
 
     console.info('afterBuild completed in', Date.now() - start, 'ms')
@@ -408,10 +401,7 @@ async function buildJs(allFiles) {
           return { external: true }
         }
 
-        if (
-          !args.path.startsWith('.') &&
-          !args.path.startsWith('/')
-        ) {
+        if (!args.path.startsWith('.') && !args.path.startsWith('/')) {
           // Keep esbuild-wasm external (it needs access to WASM files)
           if (args.path === 'esbuild-wasm' || args.path.startsWith('esbuild-wasm/')) {
             return { external: true }
@@ -428,7 +418,6 @@ async function buildJs(allFiles) {
   }
 
   const external = shouldBundleFlag ? ['@swc/*', '*.node'] : undefined
-
 
   const start = Date.now()
 
@@ -615,7 +604,6 @@ async function esbuildWriteIfChanged(
             ]
           : []),
       ].filter(Boolean),
-
 
       format: isESM ? 'esm' : 'cjs',
 

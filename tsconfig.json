@@ -11,12 +11,6 @@
         "code/ui/*",
         "code/packages/*"
       ],
-      "@tamagui/bento": [
-        "code/bento"
-      ],
-      "@tamagui/bento-example": [
-        "code/bento/example"
-      ],
       "@tamagui/demos": [
         "code/demos"
       ]
@@ -69,9 +63,6 @@
     "enable": true
   },
   "references": [
-    {
-      "path": "code/bento"
-    },
     {
       "path": "code/compiler/babel-plugin"
     },

@@ -4007,12 +4007,12 @@ __metadata:
   linkType: hard
 
 "@ngneat/falso@npm:^7.3.0":
-  version: 7.3.0
-  resolution: "@ngneat/falso@npm:7.3.0"
+  version: 7.4.0
+  resolution: "@ngneat/falso@npm:7.4.0"
   dependencies:
     seedrandom: "npm:3.0.5"
     uuid: "npm:8.3.2"
-  checksum: 10/062f2d92015db809325a89f17fbb2da094e4359bd8167b735effdb4a35b6ed6a6e050fe6136054a8c1320c9b67f13b19fb2521fff8c93e11554ee1a8d418507b
+  checksum: 10/79d92859e3d210b2dab1d8cc11dca9ce42db3080ac1b79a2b0d9a0a544ef467617f7115c9757640fc62e0d559b3f2fa0e897fba79ce3f71cb8394edb58a6694f
   languageName: node
   linkType: hard
 
@@ -6675,58 +6675,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/bento@workspace:*, @tamagui/bento@workspace:code/bento":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/bento@workspace:code/bento"
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-    "@hookform/resolvers": "npm:^3.3.4"
-    "@ngneat/falso": "npm:^7.3.0"
-    "@playwright/test": "npm:^1.49.1"
-    "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
-    "@rehookify/datepicker": "npm:^6.6.8"
-    "@tamagui/babel-plugin": "workspace:*"
-    "@tamagui/build": "workspace:*"
-    "@tamagui/cli": "workspace:*"
-    "@tamagui/colors": "workspace:*"
-    "@tamagui/config": "workspace:*"
-    "@tamagui/font-inter": "workspace:*"
-    "@tamagui/lucide-icons": "workspace:*"
-    "@tamagui/shorthands": "workspace:*"
-    "@tamagui/themes": "workspace:*"
-    "@tamagui/use-store": "workspace:*"
-    "@tanstack/react-table": "npm:^8.11.2"
-    "@ts-react/form": "npm:^1.8.3"
-    "@vxrn/color-scheme": "npm:^1.2.16"
-    awesome-phonenumber: "npm:^6.4.0"
-    expo: "npm:^54.0.23"
-    expo-document-picker: "npm:~14.0.7"
-    expo-image-picker: "npm:~17.0.8"
-    expo-linear-gradient: "npm:~15.0.7"
-    foxact: "npm:^0.2.33"
-    html-webpack-plugin: "npm:^5.5.0"
-    metro-runtime: "npm:*"
-    mini-css-extract-plugin: "npm:^2.9.1"
-    pod-install: "npm:^0.3.2"
-    react-dropzone: "npm:^14.2.3"
-    react-hook-form: "npm:^7.51.0"
-    react-native: "npm:0.81.5"
-    react-native-gesture-handler: "npm:~2.28.0"
-    react-native-reanimated: "npm:~4.1.1"
-    react-native-safe-area-context: "npm:~5.6.0"
-    react-native-svg: "npm:15.12.1"
-    react-native-web: "npm:^0.21.0"
-    react-native-worklets: "npm:0.5.1"
-    swr: "npm:^2.2.5"
-    tamagui: "workspace:*"
-    tilg: "npm:0.1.1"
-    webpack: "npm:^5.88.2"
-    webpack-cli: "npm:^4.9.2"
-    webpack-dev-server: "npm:^4.8.1"
-    zod: "npm:^3.25.67"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/build@workspace:*, @tamagui/build@workspace:code/packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:code/packages/build"
@@ -7240,10 +7188,13 @@ __metadata:
     "@discordjs/core": "npm:^2.0.1"
     "@docsearch/react": "npm:^3.9.0"
     "@github/mini-throttle": "npm:^2.1.0"
+    "@hookform/resolvers": "npm:^3.3.4"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
+    "@ngneat/falso": "npm:^7.3.0"
     "@openrouter/ai-sdk-provider": "npm:^0.1.0"
     "@react-three/drei": "npm:^9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
+    "@rehookify/datepicker": "npm:^6.6.8"
     "@sentry/browser": "npm:^8.17.0"
     "@sindresorhus/slugify": "npm:^2.2.1"
     "@stripe/react-stripe-js": "npm:^3.1.1"
@@ -7251,7 +7202,6 @@ __metadata:
     "@supabase/ssr": "npm:^0.5.2"
     "@supabase/supabase-js": "npm:^2.48.1"
     "@tamagui/assert": "workspace:*"
-    "@tamagui/bento": "workspace:*"
     "@tamagui/cli": "workspace:*"
     "@tamagui/demos": "workspace:*"
     "@tamagui/get-token": "workspace:*"
@@ -7261,27 +7211,42 @@ __metadata:
     "@tamagui/mdx-2": "workspace:*"
     "@tamagui/tamagui-dev-config": "workspace:*"
     "@tamagui/use-store": "workspace:*"
+    "@tanstack/react-table": "npm:^8.11.2"
     "@testing-library/react-hooks": "npm:^8.0.1"
+    "@ts-react/form": "npm:^1.8.3"
     "@vercel/og": "npm:^0.6.5"
     "@vxrn/color-scheme": "npm:^1.2.16"
     acorn: "npm:^8.11.3"
     acorn-walk: "npm:^8.3.1"
     ai: "npm:^4.1.46"
     archiver: "npm:^7.0.1"
+    awesome-phonenumber: "npm:^6.4.0"
     color2k: "npm:^2.0.2"
     esbuild-register: "npm:^3.6.0"
+    expo-document-picker: "npm:~14.0.7"
+    expo-image-picker: "npm:~17.0.8"
+    expo-linear-gradient: "npm:~15.0.7"
+    foxact: "npm:^0.2.33"
+    hast-util-to-html: "npm:^9.0.0"
     hsluv: "npm:^0.1.0"
     jsonwebtoken: "npm:^9.0.2"
     masonic: "npm:^4.0.1"
     mdx-bundler: "npm:^10.0.2"
     one: "npm:1.2.16"
+    parse-numeric-range: "npm:^1.3.0"
     postmark: "npm:^3.0.18"
     puppeteer: "npm:^24.3.1"
+    react-dropzone: "npm:^14.2.3"
+    react-hook-form: "npm:^7.51.0"
     react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:0.81.5"
+    react-native-gesture-handler: "npm:~2.28.0"
     react-native-reanimated: "npm:~4.1.1"
+    react-native-safe-area-context: "npm:~5.6.0"
     react-native-svg: "npm:15.12.1"
     react-native-worklets: "npm:0.5.1"
+    refractor: "npm:^4.8.1"
+    rehype-parse: "npm:^9.0.0"
     stripe: "npm:^9.1.0"
     subset-font: "npm:^2.1.0"
     swr: "npm:^2.2.5"
@@ -7696,7 +7661,6 @@ __metadata:
     "@tamagui/animations-motion": "workspace:*"
     "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/babel-plugin": "workspace:*"
-    "@tamagui/bento": "workspace:*"
     "@tamagui/cli": "workspace:*"
     "@tamagui/colors": "workspace:*"
     "@tamagui/config": "workspace:*"
@@ -16495,8 +16459,8 @@ __metadata:
   linkType: hard
 
 "foxact@npm:^0.2.33":
-  version: 0.2.45
-  resolution: "foxact@npm:0.2.45"
+  version: 0.2.49
+  resolution: "foxact@npm:0.2.49"
   dependencies:
     client-only: "npm:^0.0.1"
     server-only: "npm:^0.0.1"
@@ -16505,7 +16469,7 @@ __metadata:
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 10/18192acd24a66384df8ff6bec35fe5935113f66d657f903bcc0c82f47d298d2c1c3c49be7c96a4b844adca1bc693f6b4a1184cb3cb9d7ae61f3831872836e26d
+  checksum: 10/c2a21677c9c1c5897194a5f6834b2488c2628a99f6757c1b57f85d3574c7437fa5a359f8c923848fd8591e0983c2d29560dc031f2bfc54e9edcff77ff970755e
   languageName: node
   linkType: hard
 
@@ -17289,6 +17253,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hast-util-from-html@npm:^2.0.0":
+  version: 2.0.3
+  resolution: "hast-util-from-html@npm:2.0.3"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    devlop: "npm:^1.1.0"
+    hast-util-from-parse5: "npm:^8.0.0"
+    parse5: "npm:^7.0.0"
+    vfile: "npm:^6.0.0"
+    vfile-message: "npm:^4.0.0"
+  checksum: 10/cdd8ceae114d7ff6d4a81d9d7314c53299acfaca3d959a5894e80eb013c0850af613e2688f1682945c2793e0d9e1acb105560295fd8f141ab7b75f4b2e49cb2c
+  languageName: node
+  linkType: hard
+
 "hast-util-from-parse5@npm:^7.0.0":
   version: 7.1.2
   resolution: "hast-util-from-parse5@npm:7.1.2"
@@ -17301,6 +17279,22 @@ __metadata:
     vfile-location: "npm:^4.0.0"
     web-namespaces: "npm:^2.0.0"
   checksum: 10/7a90a16430a1482ed1be5c2f8b182e8b12aee8834781245b101700b5a04cea8b569cf40ef08214e1eb333249432e861b17e6fe46d0447b5281827c8798e86f1a
+  languageName: node
+  linkType: hard
+
+"hast-util-from-parse5@npm:^8.0.0":
+  version: 8.0.3
+  resolution: "hast-util-from-parse5@npm:8.0.3"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    "@types/unist": "npm:^3.0.0"
+    devlop: "npm:^1.0.0"
+    hastscript: "npm:^9.0.0"
+    property-information: "npm:^7.0.0"
+    vfile: "npm:^6.0.0"
+    vfile-location: "npm:^5.0.0"
+    web-namespaces: "npm:^2.0.0"
+  checksum: 10/539c945c550cfef394a89dcff6e4de26768a748a7288ddce6f59554dd271b663b8398d58ace434264e965aaf3828fdbff86f9109d7fa639b3fe34dedcad4a5df
   languageName: node
   linkType: hard
 
@@ -17336,6 +17330,15 @@ __metadata:
   dependencies:
     "@types/hast": "npm:^2.0.0"
   checksum: 10/511d373465f60dd65e924f88bf0954085f4fb6e3a2b062a4b5ac43b93cbfd36a8dce6234b5d1e3e63499d936375687e83fc5da55628b22bd6b581b5ee167d1c4
+  languageName: node
+  linkType: hard
+
+"hast-util-parse-selector@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "hast-util-parse-selector@npm:4.0.0"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+  checksum: 10/76087670d3b0b50b23a6cb70bca53a6176d6608307ccdbb3ed18b650b82e7c3513bfc40348f1389dc0c5ae872b9a768851f4335f44654abd7deafd6974c52402
   languageName: node
   linkType: hard
 
@@ -17398,6 +17401,25 @@ __metadata:
     stringify-entities: "npm:^4.0.0"
     zwitch: "npm:^2.0.4"
   checksum: 10/cb37233a21dae417957b4c13aadb577d98fb81dd0050c6807bfc8afdb892880570a904cd1c6b18e4717c7169face2a60d58b34156ef80c82fa7dbeaebe4c2427
+  languageName: node
+  linkType: hard
+
+"hast-util-to-html@npm:^9.0.0":
+  version: 9.0.5
+  resolution: "hast-util-to-html@npm:9.0.5"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    "@types/unist": "npm:^3.0.0"
+    ccount: "npm:^2.0.0"
+    comma-separated-tokens: "npm:^2.0.0"
+    hast-util-whitespace: "npm:^3.0.0"
+    html-void-elements: "npm:^3.0.0"
+    mdast-util-to-hast: "npm:^13.0.0"
+    property-information: "npm:^7.0.0"
+    space-separated-tokens: "npm:^2.0.0"
+    stringify-entities: "npm:^4.0.0"
+    zwitch: "npm:^2.0.4"
+  checksum: 10/4278e5246f43adf7a30bf3b87db4a4e628b5362b8c149eb4360bf7e0f731f81fa31e4e844e8090d1dd5f739d0884678f8165b28f97c14139e4da4f945f9ff5f7
   languageName: node
   linkType: hard
 
@@ -17473,6 +17495,19 @@ __metadata:
     property-information: "npm:^6.0.0"
     space-separated-tokens: "npm:^2.0.0"
   checksum: 10/98740e0b69b4765a23d0174fb93eb1c1bdcae6a9f1c9e1b07de6aca2d578427a42e1d45ee98eda26463ac58ff73a8ce45af19c4eb8b5f6f768a9c8543964d28f
+  languageName: node
+  linkType: hard
+
+"hastscript@npm:^9.0.0":
+  version: 9.0.1
+  resolution: "hastscript@npm:9.0.1"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    comma-separated-tokens: "npm:^2.0.0"
+    hast-util-parse-selector: "npm:^4.0.0"
+    property-information: "npm:^7.0.0"
+    space-separated-tokens: "npm:^2.0.0"
+  checksum: 10/9aa8135faf0307807cca4075bef4e3403ae1ce959ad4b9e6720892ba957d58ff98b2f60b5eb3ac67d88ae897dc918997299cd4249d7ac602a0066dd46442c5d4
   languageName: node
   linkType: hard
 
@@ -17693,6 +17728,13 @@ __metadata:
   version: 2.0.1
   resolution: "html-void-elements@npm:2.0.1"
   checksum: 10/06d41f13b9d5d6e0f39861c4bec9a9196fa4906d56cd5cf6cf54ad2e52a85bf960cca2bf9600026bde16c8331db171bedba5e5a35e2e43630c8f1d497b2fb658
+  languageName: node
+  linkType: hard
+
+"html-void-elements@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "html-void-elements@npm:3.0.0"
+  checksum: 10/59be397525465a7489028afa064c55763d9cccd1d7d9f630cca47137317f0e897a9ca26cef7e745e7cff1abc44260cfa407742b243a54261dfacd42230e94fce
   languageName: node
   linkType: hard
 
@@ -20749,7 +20791,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-runtime@npm:*, metro-runtime@npm:0.82.2, metro-runtime@npm:^0.82.0":
+"metro-runtime@npm:0.82.2, metro-runtime@npm:^0.82.0":
   version: 0.82.2
   resolution: "metro-runtime@npm:0.82.2"
   dependencies:
@@ -24196,11 +24238,11 @@ __metadata:
   linkType: hard
 
 "react-hook-form@npm:^7.51.0":
-  version: 7.56.2
-  resolution: "react-hook-form@npm:7.56.2"
+  version: 7.66.1
+  resolution: "react-hook-form@npm:7.66.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10/4cf58b99d5f5636aa5c679f0a05cdd9b3436b81dc89d9e5e0c17f2f64ea2b5037d8206804dbe971ed0b9a1bd05c289e0366c07a112e80fe20c1599d8a0e86f30
+  checksum: 10/3b39276432de206ee37b3fb24c7d7b815fa1b641a179685392b9dc715edfa5ed3a5d57f7366429595f09c182bf25d7adc991c0c00101739d9efc977ecee22a53
   languageName: node
   linkType: hard
 
@@ -24832,7 +24874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"refractor@npm:^4.7.0":
+"refractor@npm:^4.7.0, refractor@npm:^4.8.1":
   version: 4.9.0
   resolution: "refractor@npm:4.9.0"
   dependencies:
@@ -24984,6 +25026,17 @@ __metadata:
     parse5: "npm:^6.0.0"
     unified: "npm:^10.0.0"
   checksum: 10/1de6471aa9ff83317a5e7462cedeaa4ce0b75d73507f79cfe0af57e47f56575da56401fd312779e2a25b4bfbcf924c9282b5fd7c8b84e838b3ee4b7ccae5e782
+  languageName: node
+  linkType: hard
+
+"rehype-parse@npm:^9.0.0":
+  version: 9.0.1
+  resolution: "rehype-parse@npm:9.0.1"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    hast-util-from-html: "npm:^2.0.0"
+    unified: "npm:^11.0.0"
+  checksum: 10/67855c6426d1cd39d64b4a38e934bb234e59f1d4df2f67008848b9bde01f9e068eed549d62a97f54d5c5eb8bfa56c7e2c4b7c3aad769fc4ded9218dc9078ef37
   languageName: node
   linkType: hard
 
@@ -28808,6 +28861,16 @@ __metadata:
     "@types/unist": "npm:^2.0.0"
     vfile: "npm:^5.0.0"
   checksum: 10/c894e8e5224170d1f85288f4a1d1ebcee0780823ea2b49d881648ab360ebf01b37ecb09b1c4439a75f9a51f31a9f9742cd045e987763e367c352a1ef7c50d446
+  languageName: node
+  linkType: hard
+
+"vfile-location@npm:^5.0.0":
+  version: 5.0.3
+  resolution: "vfile-location@npm:5.0.3"
+  dependencies:
+    "@types/unist": "npm:^3.0.0"
+    vfile: "npm:^6.0.0"
+  checksum: 10/f481d592fd507fe242da9a00d7400ded3c91587931f24e64c54f24752d7b30321721a1c99c0d949be1f6ed5fa7f8b169054fd07c744705b65dbdd10a9e4ebfe0
   languageName: node
   linkType: hard
 
