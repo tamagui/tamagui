@@ -30,8 +30,8 @@ declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<Omit<impo
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    size?: number | import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -64,8 +64,8 @@ type AvatarProps = GetProps<typeof AvatarFrame>;
  * ```
  */
 declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "transparent" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    size?: number | import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -79,8 +79,8 @@ declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    size?: number | import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -94,8 +94,8 @@ declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    size?: number | import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;

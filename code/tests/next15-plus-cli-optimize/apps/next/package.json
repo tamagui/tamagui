@@ -16,7 +16,7 @@
     "next": "^15.3.1",
     "react": "*",
     "react-dom": "*",
-    "react-native": "^0.79.2",
+    "react-native": "0.81.5",
     "tamagui": "workspace:*",
     "vercel": "latest"
   },

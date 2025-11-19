@@ -46,7 +46,7 @@
   "dependencies": {
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "one": "1.1.515",
+    "one": "1.1.538",
     "tamagui": "workspace:*"
   },
   "devDependencies": {

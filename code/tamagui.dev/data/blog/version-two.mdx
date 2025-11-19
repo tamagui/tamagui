@@ -1,67 +1,128 @@
 ---
 title: Tamagui 2
-publishedAt: '2024-12-29'
+publishedAt: '2025-12-29'
 description: Simpler, faster, and stable.
 by: nate
 poster: banner-two.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui makes cross-platform apps with fully shared code much easier and faster.
+  Tamagui v2 realizes the vision we set out to achieve in the beginning: a suite
+  of native and web style primitives and UI components that don't sacrifice
+  performance, accessibility, and control for any platform.
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui goes deeper than any other style library at achieving high performance across every platform by outputting to platform-native primitives and its optimizing compiler. It gives a huge amount of features that are all fully typed and 100% supported across every platform, letting you write inline styles that feel great and don't slow your app down.
+  Tamagui goes deeper than any other style library at achieving high performance
+  across every platform - at every level: runtime, compile-time, and careful
+  design to support advanced techinques like server-side rendering, and advanced
+  styling like container queries.
 </IntroParagraph>
 
-In the two years since 1.0, Tamagui has gone from a rough-around-the-edges ambitious project, to a robust, stable and widely adopted solution that is improved in every possible way.
+Thanks to it's unique ability to support all features at both runtime and
+compile-time, plus its optimizing compiler, Tamagui lets you ship world class
+experiences without being forced into writing every single piece of UI twice.
 
-We've added many, many things, some highlights include:
+Tamagui is used by companies large and small, with hundreds of millions of users
+a month. We took the slow approach with version 2 as we've spent the last two
+years closing issues, optimizing performance, refactoring internals, and adding
+tests.
 
-- Core styling features like container queries, container + media queries, and platform and theme selectors.
-- New compound components like Tabs, Accordion, and ToggleGroup.
-- We made all our compoennts have unstyled versions, so you can more easily style them how you like.
-- We released a free visual Theme builder that lets you build incredibly diverse looks.
-- We launched our Takeout starter kit, and Bento copy-paste components and patterns.
+Tamagui has grown in many ways since version 1:
 
-But we've also spent a lot of time just improving the fundamentals. We had a lot of feedback that Tamagui docs were lacking, and that it was hard to install and configure. So, we focused on those areas a lot, and landed nearly a thousand commits just improving that. If you haven't checked out Tamagui since closer to 1.0, you'll find a lot has gotten better:
+- Added hundreds of tests, stricter lints, dependency checks and a stricter
+  release process to improve stability.
+- Created `@tamagui/build`, the only way to publish npm packages that support
+  both CommonJS and ESModules, on both native and web, without any configuration
+  at all no matter what bundler you use.
+- Added many richer styling features like container queries, container and media
+  queries combined, and platform/theme selectors.
+- Added compound components like Tabs, Accordion, and ToggleGroup.
+- Added unstyled versions of every component.
+- Improved theme generation packages, and released a free visual Theme builder.
+- The Takeout starter kit, and Bento copy-paste components and patterns.
+- We worked hard to improve documentation, a process that's taken much work.
 
-- We improved and open sourced our package build script `@tamagui/build`, which makes it so all of Tamagui requires no special bundler set up at all. That's right - whether using Metro, Vite, or Webpack, you can just install any Tamagui package and use it without touching your bundler.
-- We upgraded `@tamagui/config` continuously, and with the new version 4, made it incredibly easy to BYO colors while still starting quickly with little fuss.
-- We landed over 500 commits improving documentation.
+Version 2 has only minor many breaking changes. It mostly removes deprecated
+APIs that were holding us back from some more ambitious projects we want to take
+on going forward, as well as adding a few new or refactored components.
 
-Version 2 doesn't have many breaking changes. Instead it removes a few deprecated things that were holding us back from some more ambitious projects we want to take on going forward.
+The breaking changes outside of deprecations are:
 
-The only breaking changes are:
-
-- Our default flex behavior now aligns with React Native.
-- Button and ListItem have new versions that are simplified and faster.
+- Default flex behavior now aligns with React Native (can opt-out).
+- Button and ListItem are re-written to be slightly simplified and much faster.
 - Removed deprecated `space` and `spaceDirection` props in favor of gap.
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
-- Removed the deprecated `StyledComponent.extractable`.
 - Moved all settings on `createTamagui` onto the `settings` object.
+
+### Improving
+
+Tamagui has been far from perfect. Our team at times over-prioritized release
+cadence, refactors, performance re-writes, and ambitious "meta" like redoing our
+build system (to support less configuration, or ESM, or new bundlers).
+
+We know from feedback that this left a sour taste to many, especially those who
+upgaded often and found issues as they did. Tamagui is massive - about 200
+packages, and supports an incredible amount of use cases - 4 runtimes, 3
+platforms, server and web, many screen sizes, and an ecosystem (React Native)
+that is moving fast.
+
+We pushed releasing version 2 back an entire year as we decided January of this
+year that we weren't going to release the next major until we felt we'd not only
+signficantly improved our stability, but also generally addressed all major
+outstanding issues (and a lot of minor ones).
+
+I'm proud of how this year has gone. Our efforts improving testing, a slowed
+release cadence, and honestly just the general maturity of our massive repo has
+helped us get to a place that feels good.
+
+That said, I want to personally apologize to our community. Tamagui started as a
+personal project that found pretty great success. It was a hard transition for
+me from personal project into OSS success.
+
+I've learned about what it means to run a large, highly depended-on project in
+the last years. I'm humbled by the ongoing support, and feel motivated to prove
+to the world that we've learned many valuable lessons in open source.
 
 ### What's next
 
-It's sort of incredible how many obvious improvements we have to make to Tamagui, considering how far we've come. This is good news in a way - the problems we're solving are far from solved. Here are the broad projects we're looking at now that we've reached version two:
+todo
 
 #### More major versions
 
-We're not going to wait two years to release 3.0. Instead, we'll be aiming for a major release at least twice a year. There are quite a few obvious wins we can already see that we will be deprecating shortly. We especially can reduce the core size and land major features more quickly if we do this, so we will be.
+We're not going to wait two years to release 3.0. Instead, we'll be aiming for a
+major release at least twice a year. There are quite a few obvious wins we can
+already see that we will be deprecating shortly. We especially can reduce the
+core size and land major features more quickly if we do this, so we will be.
 
 #### Aligment with the web
 
-Much like React Native itself, Tamagui will aggressively be moving it's styling syntax to align with the web. In the next major versions we will make breaking changes (with codemods to help migration) that will do as much.
+Much like React Native itself, Tamagui will aggressively be moving it's styling
+syntax to align with the web. In the next major versions we will make breaking
+changes (with codemods to help migration) that will do as much.
 
-React Native plans to move to React Strict DOM, which basically brings many props in line with web standards. Tamagui should work with React Strict DOM already, but we will also be ensuring Tamagui core itself also makes these same changes.
+React Native plans to move to React Strict DOM, which basically brings many
+props in line with web standards. Tamagui should work with React Strict DOM
+already, but we will also be ensuring Tamagui core itself also makes these same
+changes.
 
 #### A more flexible core
 
-Tamagui is pretty opionionated today with how it handles your design system. But it doesn't fit everyones use cases. We're working to make the core of Tamagui completely customizable, so that you can BYO setup, and still have it optimize.
+Tamagui is pretty opionionated today with how it handles your design system. But
+it doesn't fit everyones use cases. We're working to make the core of Tamagui
+completely customizable, so that you can BYO setup, and still have it optimize.
 
-Tamagui really is just an extremely well-developed styling engine that has many hard-fought features to make it performant and platform-native across web and native. No other style library really matches our breadth of features * optimization, and we'd like to make Tamagui able to support many other types of style syntaxes. That could be just your own custom view components, or even something like a Tailwind-like syntax.
+Tamagui really is just an extremely well-developed styling engine that has many
+hard-fought features to make it performant and platform-native across web and
+native. No other style library really matches our breadth of features \*
+optimization, and we'd like to make Tamagui able to support many other types of
+style syntaxes. That could be just your own custom view components, or even
+something like a Tailwind-like syntax.
 
 #### Native components
 
-The ultimate UI for most iOS and Android apps should use lots of native components. We've already done this with our `<Sheet native />` integration with `react-native-ios-modal`, which brings incredible-feeling iOS native sheets to your React Native apps. We're going to continue working towards making a full suite of native components.
-
+The ultimate UI for most iOS and Android apps should use lots of native
+components. We've already done this with our `<Sheet native />` integration with
+`react-native-ios-modal`, which brings incredible-feeling iOS native sheets to
+your React Native apps. We're going to continue working towards making a full
+suite of native components.

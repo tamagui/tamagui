@@ -19,7 +19,7 @@
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "react-native-web": "^0.20.0",
+    "react-native-web": "^0.21.0",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
@@ -28,7 +28,7 @@
     "@vitejs/plugin-react-swc": "^3.7.2",
     "async-retry": "1.3.1",
     "react-dom": "*",
-    "vite": "^7.0.2",
+    "vite": "^7.1.12",
     "wait-port": "^0.3.0",
     "zx": "^8.5.5"
   },
