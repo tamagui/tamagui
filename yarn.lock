@@ -7461,7 +7461,6 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/image": "workspace:*"
-    "@tamagui/image-next": "workspace:*"
     "@tamagui/linear-gradient": "workspace:*"
     "@tamagui/list-item": "workspace:*"
     "@tamagui/logo": "workspace:*"
@@ -7942,21 +7941,6 @@ __metadata:
     react: "npm:*"
   peerDependencies:
     react: "*"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/image-next@workspace:*, @tamagui/image-next@workspace:code/ui/image-next":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/image-next@workspace:code/ui/image-next"
-  dependencies:
-    "@tamagui/build": "workspace:*"
-    "@tamagui/constants": "workspace:*"
-    "@tamagui/web": "workspace:*"
-    react: "npm:*"
-    react-native: "npm:0.81.5"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -27309,7 +27293,6 @@ __metadata:
     "@tamagui/animations-motion": "workspace:*"
     "@tamagui/colors": "workspace:*"
     "@tamagui/demos": "workspace:*"
-    "@tamagui/image-next": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/react-native-media-driver": "workspace:*"
     "@tamagui/toast": "workspace:*"
