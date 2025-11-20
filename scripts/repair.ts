@@ -107,56 +107,56 @@ async function format() {
 
   console.info(` repair package.json..`)
 
-  await pMap(
-    packagePaths,
-    async (pkg) => {
-      const cwd = join(process.cwd(), pkg.location)
-      const jsonPath = join(cwd, 'package.json')
-      const fileContents = await readFile(jsonPath, {
-        encoding: 'utf-8',
-      })
-      if (!fileContents) {
-        return
-      }
-      const pkgJson = JSON.parse(fileContents)
+  // await pMap(
+  //   packagePaths,
+  //   async (pkg) => {
+  //     const cwd = join(process.cwd(), pkg.location)
+  //     const jsonPath = join(cwd, 'package.json')
+  //     const fileContents = await readFile(jsonPath, {
+  //       encoding: 'utf-8',
+  //     })
+  //     if (!fileContents) {
+  //       return
+  //     }
+  //     const pkgJson = JSON.parse(fileContents)
 
-      await fixPeerDeps(pkg, pkgJson)
-      // await fixExports(pkg, pkgJson)
-      // await fixExportsPathSpecific(pkg, pkgJson)
+  //     await fixPeerDeps(pkg, pkgJson)
+  //     // await fixExports(pkg, pkgJson)
+  //     // await fixExportsPathSpecific(pkg, pkgJson)
 
-      // write your script here:
+  //     // write your script here:
 
-      // Add "type": "module" to packages that support it (have "exports")
-      if (pkgJson.exports && pkgJson.type !== 'module') {
-        // Read the original file to preserve formatting and order
-        const originalContent = fileContents
+  //     // Add "type": "module" to packages that support it (have "exports")
+  //     if (pkgJson.exports && pkgJson.type !== 'module') {
+  //       // Read the original file to preserve formatting and order
+  //       const originalContent = fileContents
 
-        // Find where to insert "type": "module"
-        // We want it after "version" line
-        const lines = originalContent.split('\n')
-        const versionLineIndex = lines.findIndex(line => line.includes('"version":'))
+  //       // Find where to insert "type": "module"
+  //       // We want it after "version" line
+  //       const lines = originalContent.split('\n')
+  //       const versionLineIndex = lines.findIndex(line => line.includes('"version":'))
 
-        if (versionLineIndex !== -1) {
-          // Insert the type line after the version line
-          const typeEntry = '  "type": "module",'
-          lines.splice(versionLineIndex + 1, 0, typeEntry)
+  //       if (versionLineIndex !== -1) {
+  //         // Insert the type line after the version line
+  //         const typeEntry = '  "type": "module",'
+  //         lines.splice(versionLineIndex + 1, 0, typeEntry)
 
-          const newContent = lines.join('\n')
-          await writeFile(jsonPath, newContent, { encoding: 'utf-8' })
-          console.info(`  ✓ Added "type": "module" to ${pkg.name}`)
-          return
-        }
-      }
+  //         const newContent = lines.join('\n')
+  //         await writeFile(jsonPath, newContent, { encoding: 'utf-8' })
+  //         console.info(`  ✓ Added "type": "module" to ${pkg.name}`)
+  //         return
+  //       }
+  //     }
 
-      // await fixScripts(pkg, pkgJson)
-      await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-        encoding: 'utf-8',
-      })
-    },
-    {
-      concurrency: 10,
-    }
-  )
+  //     // await fixScripts(pkg, pkgJson)
+  //     await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
+  //       encoding: 'utf-8',
+  //     })
+  //   },
+  //   {
+  //     concurrency: 10,
+  //   }
+  // )
 
   // console.info(` repair contents exclude to exclude /types..`)
 
