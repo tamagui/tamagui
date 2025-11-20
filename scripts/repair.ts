@@ -216,24 +216,37 @@ async function format() {
     async ({ location, name }) => {
       if (name === 'tamagui-monorepo') return
       const biomeFile = toAbsolute(join(location, 'biome.json'))
+      const distanceToRoot = location.split('/').length
+      const rootBiome = toAbsolute(
+        join(
+          location,
+          ...new Array(distanceToRoot).fill(0).map(() => '..'),
+          'biome.json'
+        )
+      )
+
+      let fileStats
       try {
-        if (!(await lstat(biomeFile))) {
-          return
-        }
+        fileStats = await lstat(biomeFile)
       } catch (err) {
+        // File doesn't exist, skip it
+        return
+      }
+
+      // Try to read the file, handling broken symlinks
+      let fileContents: string
+      try {
+        fileContents = readFileSync(biomeFile, 'utf-8').trim()
+      } catch (err) {
+        // Broken symlink - recreate it
+        console.info(`🔧 Fixing broken symlink: ${biomeFile}`)
+        await unlink(biomeFile)
+        await copy(rootBiome, biomeFile)
         return
       }
 
       // only change if its same as reference
-      if (readFileSync(biomeFile, 'utf-8').trim() === biomeReference) {
-        const distanceToRoot = location.split('/').length
-        const rootBiome = toAbsolute(
-          join(
-            location,
-            ...new Array(distanceToRoot).fill(0).map(() => '..'),
-            'biome.json'
-          )
-        )
+      if (fileContents === biomeReference) {
         console.info(`Copy ${rootBiome} -> ${biomeFile}`)
         await unlink(biomeFile)
         await copy(rootBiome, biomeFile)
