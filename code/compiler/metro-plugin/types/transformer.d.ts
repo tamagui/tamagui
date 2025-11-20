@@ -1,5 +1,5 @@
 import type { JsTransformerConfig, JsTransformOptions, TransformResponse } from 'metro-transform-worker';
-import type { TamaguiOptions } from '@tamagui/compiler';
+import type { TamaguiOptions } from '@tamagui/static';
 interface TamaguiJsTransformerConfig extends JsTransformerConfig {
     transformerPath?: string;
     tamagui: TamaguiOptions;

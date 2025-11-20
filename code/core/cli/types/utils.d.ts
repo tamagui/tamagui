@@ -1,4 +1,4 @@
-import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/compiler';
+import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static';
 import type { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types';
 export declare function getOptions({ root, tsconfigPath, tamaguiOptions, host, debug, loadTamaguiOptions, }?: Partial<CLIUserOptions>): Promise<CLIResolvedOptions>;
 export declare function ensure(condition: boolean, message: string): void;

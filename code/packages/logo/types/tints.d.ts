@@ -1,4 +1,4 @@
-import type { ThemeName } from "@tamagui/ui";
+import type { ThemeName } from "tamagui";
 type ChangeHandler = (next: TintFamily) => void;
 declare const familiesValues: {
 	tamagui: ThemeName[];

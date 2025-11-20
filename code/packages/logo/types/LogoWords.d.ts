@@ -1,5 +1,5 @@
 import React from "react";
-import type { XStackProps } from "@tamagui/ui";
+import type { XStackProps } from "tamagui";
 export declare const LogoWords: React.MemoExoticComponent<({ downscale, animated,...props }: XStackProps & {
 	downscale?: number;
 	animated?: boolean;
