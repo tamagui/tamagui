@@ -79,7 +79,7 @@ const Contents = ({
               <YStack h="50%" gap="$3" ai="center" jc="center" px="$4" pl={60}>
                 <XStack ai="center" gap="$4">
                   <Separator />
-                  <SizableText size="$2" theme="alt1" selectable={false}>
+                  <SizableText size="$2" theme="alt1" userSelect="none">
                     {showAccent ? 'Accent' : 'Base'} Light Theme
                   </SizableText>
                   <Separator />
@@ -100,7 +100,7 @@ const Contents = ({
               <YStack h="50%" gap="$3" ai="center" jc="center" px="$4" pl={60}>
                 <XStack ai="center" gap="$4">
                   <Separator />
-                  <SizableText size="$2" theme="alt1" selectable={false}>
+                  <SizableText size="$2" theme="alt1" userSelect="none">
                     {showAccent ? 'Accent' : 'Base'} Dark Theme
                   </SizableText>
                   <Separator />
