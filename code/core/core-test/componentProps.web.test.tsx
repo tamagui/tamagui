@@ -26,10 +26,19 @@ describe('animation props', () => {
           class=""
           style="display: contents;"
         >
-          <div
-            class="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red _mt-200px _mr-200px _mb-200px _ml-200px _tr-translateX01303033"
-            id="test-native-id"
-          />
+          <span
+            class="t_light _dsp_contents"
+          >
+            <span
+              class=" t_light is_Theme"
+              style="color: var(--color); display: contents;"
+            >
+              <div
+                class="is_View _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-red _mt-200px _mr-200px _mb-200px _ml-200px _tr-translateX01303033"
+                nativeid="test-native-id"
+              />
+            </span>
+          </span>
         </span>
       </DocumentFragment>
     `)
