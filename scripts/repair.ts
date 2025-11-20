@@ -229,7 +229,9 @@ async function format() {
       try {
         fileStats = await lstat(biomeFile)
       } catch (err) {
-        // File doesn't exist, skip it
+        // File doesn't exist, create it
+        console.info(`➕ Adding missing biome.json: ${biomeFile}`)
+        await copy(rootBiome, biomeFile)
         return
       }
 
