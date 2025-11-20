@@ -1,6 +1,6 @@
 ---
 title: Accordion
-description: A vertically stacked set of interactive headings with content.
+description:  A vertically stacked set of interactive headings with content.
 name: accordion
 component: Accordion
 package: accordion
@@ -26,8 +26,7 @@ package: accordion
 
 ## Installation
 
-Accordion is already installed in `tamagui`, or you can install it
-independently:
+Accordion is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/accordion
@@ -38,7 +37,7 @@ npm install @tamagui/accordion
 Import all parts and piece them together.
 
 ```jsx
-import { Accordion } from 'tamagui'
+import { Accordion } from 'tamagui';
 
 export default () => (
   <Accordion>
@@ -75,8 +74,7 @@ Contains all the parts of an accordion.
       typeSimple: 'enum',
       description: (
         <span>
-          Determines whether one or multiple items can be opened at the same
-          time.
+          Determines whether one or multiple items can be opened at the same time.
         </span>
       ),
     },
@@ -98,9 +96,9 @@ Contains all the parts of an accordion.
       type: 'string',
       description: (
         <span>
-          The value of the item to expand when initially rendered and{' '}
-          <Code>type</Code> is <Code>"single"</Code>. Use when you do not need
-          to control the state of the items.
+          The value of the item to expand when initially rendered and <Code>type</Code> is{' '}
+          <Code>"single"</Code>. Use when you do not need to control the state of the
+          items.
         </span>
       ),
     },
@@ -136,9 +134,9 @@ Contains all the parts of an accordion.
       type: 'string[]',
       description: (
         <span>
-          The value of the item to expand when initially rendered when{' '}
-          <Code>type</Code> is <Code>"multiple"</Code>. Use when you do not need
-          to control the state of the items.
+          The value of the item to expand when initially rendered when <Code>type</Code>{' '}
+          is <Code>"multiple"</Code>. Use when you do not need to control the state of the
+          items.
         </span>
       ),
     },
@@ -161,8 +159,8 @@ Contains all the parts of an accordion.
       type: 'boolean',
       description: (
         <span>
-          When <Code>type</Code> is <Code>"single"</Code>, allows closing
-          content when clicking trigger for an open item.
+          When <Code>type</Code> is <Code>"single"</Code>, allows closing content when
+          clicking trigger for an open item.
         </span>
       ),
     },
@@ -173,8 +171,8 @@ Contains all the parts of an accordion.
       default: 'false',
       description: (
         <span>
-          When <Code>true</Code>, prevents the user from interacting with the
-          accordion and all its items.
+          When <Code>true</Code>, prevents the user from interacting with the accordion
+          and all its items.
         </span>
       ),
     },
@@ -211,8 +209,7 @@ Contains all the parts of a collapsible section.
       default: 'false',
       description: (
         <span>
-          When <Code>true</Code>, prevents the user from interacting with the
-          item.
+          When <Code>true</Code>, prevents the user from interacting with the item.
         </span>
       ),
     },
@@ -227,8 +224,7 @@ Contains all the parts of a collapsible section.
 
 ### Header
 
-Wraps an `Accordion.Trigger`. Use the `asChild` prop to update it to the
-appropriate heading level for your page.
+Wraps an `Accordion.Trigger`. Use the `asChild` prop to update it to the appropriate heading level for your page.
 
 <PropsTable
   data={[
@@ -245,8 +241,7 @@ appropriate heading level for your page.
 
 ### Trigger
 
-Toggles the collapsed state of its associated item. It should be nested inside
-of an `Accordion.Header`.
+Toggles the collapsed state of its associated item. It should be nested inside of an `Accordion.Header`.
 
 <PropsTable
   data={[
@@ -280,8 +275,8 @@ Contains the collapsible content for an item.
       type: 'boolean',
       description: (
         <span>
-          Used to force mounting when more control is needed. Useful when
-          controlling animation with React animation libraries.
+          Used to force mounting when more control is needed. Useful when controlling
+          animation with React animation libraries.
         </span>
       ),
     },
@@ -325,5 +320,4 @@ Set the `type` prop to `multiple` to enable opening multiple items at once.
 
 ## Accessibility
 
-Adheres to the
-[Accordion WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion).
+Adheres to the [Accordion WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion).

@@ -6,8 +6,6 @@ component: Spinner
 demoName: Spinner
 ---
 
-<InstallBanner name="@tamagui/spinner" />
-
 <HeroContainer>
   <SpinnerDemo />
 </HeroContainer>
@@ -24,10 +22,15 @@ demoName: Spinner
   ]}
 />
 
-Note that due to the fact that Spinner is an extension of React Native
-[ActivityIndicator](https://reactnative.dev/docs/activityindicator), and that
-only accepts size `small` or `large`, we are currently limited to just these
-sizes.
+## Installation
+
+Spinner is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/spinner
+```
+
+Note that due to the fact that Spinner is an extension of React Native [ActivityIndicator](https://reactnative.dev/docs/activityindicator), and that only accepts size `small` or `large`, we are currently limited to just these sizes.
 
 ```tsx
 import { Button, Spinner } from 'tamagui'
@@ -39,8 +42,7 @@ export default () => <Spinner size="large" color="$green10" />
 
 ### Spinner
 
-Spinner extends [YStack](/docs/components/stacks), getting
-[Tamagui standard props](/docs/intro/props), plus:
+Spinner extends [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -56,4 +58,4 @@ Spinner extends [YStack](/docs/components/stacks), getting
       description: `Give the spinner a color.`,
     },
   ]}
-/>{' '}
+/>

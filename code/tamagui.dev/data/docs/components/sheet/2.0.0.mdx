@@ -1,15 +1,11 @@
 ---
 title: Sheet
-description: A simple sheet component
+description: A bottom sheet that animates.
 name: sheet
 component: Sheet
 package: sheet
 demoName: Sheet
 ---
-
-# Sheet
-
-<Description>A bottom sheet that slides up.</Description>
 
 <HeroContainer showAnimationDriverControl>
   <SheetDemo />
@@ -27,6 +23,14 @@ demoName: Sheet
     `Accepts animations, themes, size props and more.`,
   ]}
 />
+
+## Installation
+
+Sheet is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/sheet
+```
 
 ### Anatomy
 
@@ -99,6 +103,11 @@ Contains every component for the sheet.
       description: `Customize the spring used, passed to react-native Animated.spring().`,
     },
     {
+      name: 'native',
+      type: 'boolean | "ios"[]',
+      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+    },
+    {
       name: 'disableDrag',
       type: 'boolean',
       description: `Disables all touch events to drag the sheet.`,
@@ -123,6 +132,19 @@ Contains every component for the sheet.
       name: 'portalProps',
       type: 'Object',
       description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+    },
+    {
+      name: 'moveOnKeyboardChange',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+    },
+    {
+      name: 'preferAdaptParentOpenState',
+      type: 'boolean',
+      default: 'false',
+      description: `By default Sheet will prefer the open prop over a parent component that is controlling it via Adapt. In general if you want to Adapt to a sheet, you'd leave the open prop undefined. If you'd like to have the parent override the prop you've set manually on Sheet, set this to true.`,
     },
   ]}
 />
@@ -151,3 +173,7 @@ Allows scrolling within Sheet. Extends
 
 For Android you need to manually re-propagate any context when using `modal`.
 This is because React Native doesn't support portals yet.
+
+### Native support
+
+We've deprecated the `native` prop in favor of using Adapt.

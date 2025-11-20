@@ -7,8 +7,6 @@ package: toast
 demoName: Toast
 ---
 
-<InstallBanner name="@tamagui/toast" />
-
 <HeroContainer showAnimationDriverControl>
   <ToastDemo />
 </HeroContainer>
@@ -22,14 +20,14 @@ demoName: Toast
     `Automatically closes`,
     `Pause closing on hover, focus, window blur and mobile touch`,
     `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui\'s animation drivers`,
+    `Easily animatable with Tamagui's animation drivers`,
     `Native toasts included for Android, iOS and web (notification API)`,
   ]}
 />
 
 ## Installation
 
-Note that `@tamagui/toast` is the only UI package not included by default in `tamagui`. The reason for this is that Metro would force you to install the native `burnt` dependency, and that would mean `tamagui` wouldn\'t work with Expo Go and would require a native install step no matter if you used Toast or not. This is due to a limitation in Metro.
+Note that `@tamagui/toast` is the only UI package not included by default in `tamagui`. The reason for this is that Metro would force you to install the native `burnt` dependency, and that would mean `tamagui` wouldn't work with Expo Go and would require a native install step no matter if you used Toast or not. This is due to a limitation in Metro.
 
 To install toast:
 
@@ -39,7 +37,7 @@ yarn add @tamagui/toast burnt
 
 Then, if targeting native, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
 
-We\'re open to a refactor that moves the burnt dependency into a sub-path like `@tamagui/toast/burnt` and forces setup through there, that likely fixes the Metro issue and allow us to include it by default.
+We're open to a refactor that moves the burnt dependency into a sub-path like `@tamagui/toast/burnt` and forces setup through there, that likely fixes the Metro issue and allow us to include it by default.
 
 ## Anatomy
 
@@ -102,26 +100,26 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
       name: 'native',
       required: false,
       type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile\'s native features are handled by \`burnt\`.`,
+      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
     },
     {
       name: `burntOptions`,
       required: false,
-      type: `Omit<BurntToastOptions, \'title\' | \'message\' | \'duration\'>`,
-      description: `Options for the burnt package if you\'re using native toasts on mobile`,
+      type: `Omit<BurntToastOptions, 'title' | 'message' | 'duration'>`,
+      description: `Options for the burnt package if you're using native toasts on mobile`,
     },
     {
       name: `notificationOptions`,
       required: false,
       type: `NotificationOptions`,
-      description: `Options for the notification API if you\'re using native toasts on web`,
+      description: `Options for the notification API if you're using native toasts on web`,
     },
   ]}
 />
 
 ### ToastViewport
 
-The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/2.0.0), adds:
+The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
 
 <PropsTable
   data={[
@@ -254,7 +252,7 @@ Contains the Title, Description, Action and Close component. Should be used insi
       name: 'viewportName',
       type: 'string',
       required: false,
-      description: `The viewport\'s name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
+      description: `The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
       default: 'default',
     },
     {
@@ -268,7 +266,7 @@ Contains the Title, Description, Action and Close component. Should be used insi
 
 ### Toast.Title
 
-Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/2.0.0#sizabletext), adding:
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
 
 <PropsTable
   data={[
@@ -283,7 +281,7 @@ Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/te
 
 ### Toast.Description
 
-Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/2.0.0#sizabletext), adding:
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
 
 <PropsTable
   data={[
@@ -298,11 +296,11 @@ Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/te
 
 ### Toast.Close
 
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/2.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### Toast.Action
 
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/2.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### useToastController
 
@@ -314,7 +312,7 @@ Used to control the display of toasts. Should be used inside [ToastProvider](#to
     {
       name: `show`,
       type: '(title: string, showOptions?: ShowToastOptions): void',
-      description: `Call it to show a new toast. If you\'re using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
+      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
     },
     {
       name: `hide`,
@@ -331,13 +329,13 @@ Used to control the display of toasts. Should be used inside [ToastProvider](#to
 
 ### useToastState
 
-Used to render out your toast contents. Should be used inside [ToastProvider](#toastprovider). Doesn\'t take in anything and returns `ToastData`.
+Used to render out your toast contents. Should be used inside [ToastProvider](#toastprovider). Doesn't take in anything and returns `ToastData`.
 
 ```tsx
 const CurrentToast = () => {
   const toast = useToastState()
 
-  // don\'t show any toast if no toast is present or it\'s handled natively
+  // don't show any toast if no toast is present or it's handled natively
   if (!toast || toast.isHandledNatively) {
     return null
   }
@@ -388,7 +386,7 @@ Or for bottom center:
 
 ### Mobile safe area
 
-To show toasts inside device\'s safe area, install `react-native-safe-area-context` if you haven\'t, wrap your app inside `<SafeAreaProvider>`, and then use the safe area insets to position the viewport inside the safe area.
+To show toasts inside device's safe area, install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and then use the safe area insets to position the viewport inside the safe area.
 
 ```tsx
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -416,7 +414,7 @@ const App = () => {
 }
 ```
 
-And then, use the viewport\'s name on the toasts.
+And then, use the viewport's name on the toasts.
 
 ```tsx
 const MyComponent = () => {
@@ -460,7 +458,7 @@ declare module '@tamagui/toast' {
 
 You can also use toasts without the hooks.
 
-<Notice>You can\'t use native toasts this way.</Notice>
+<Notice>You can't use native toasts this way.</Notice>
 
 #### Single Toast
 
@@ -496,7 +494,7 @@ export default () => {
         x={0}
       >
         <Toast.Title>Subscribed!</Toast.Title>
-        <Toast.Description>We\'ll be in touch.</Toast.Description>
+        <Toast.Description>We'll be in touch.</Toast.Description>
       </Toast>
     </YStack>
   )
@@ -507,7 +505,7 @@ export default () => {
 
 <Notice>
   To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`.
-  Otherwise there\'ll be issues when swipe-dismissing or animating toasts.
+  Otherwise there'll be issues when swipe-dismissing or animating toasts.
 </Notice>
 
 ```tsx
@@ -533,10 +531,10 @@ export default () => {
           x={0}
         >
           <Toast.Title>Subscribed!</Toast.Title>
-          <Toast.Description>We\'ll be in touch.</Toast.Description>
+          <Toast.Description>We'll be in touch.</Toast.Description>
         </Toast>
       ))}
     </YStack>
   )
 }
-``` 
+```

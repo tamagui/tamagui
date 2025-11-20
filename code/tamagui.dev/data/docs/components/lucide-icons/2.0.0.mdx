@@ -4,8 +4,6 @@ description: Cross-platform compatible SVG based icons
 demoName: LucideIcons
 ---
 
-<InstallBanner name="@tamagui/lucide-icons" />
-
 <HeroContainer noPad>
   <LucideIconsDemo />
 </HeroContainer>
@@ -25,15 +23,22 @@ import { Button } from 'tamagui'
 import { Plus } from '@tamagui/lucide-icons'
 
 // Button will automatically pass size/theme to icon
-export default () => <Button icon={Plus}>Hello world</Button>
+export default () => (
+  <Button icon={Plus}>
+    Hello world
+  </Button>
+)
 
 // or you can control it
-export default () => <Button icon={<Plus size="$4" />}>Hello world</Button>
+export default () => (
+  <Button icon={<Plus size="$4" />}>
+    Hello world
+  </Button>
+)
 ```
 
 They accept your tokens/theme keys for color and size.
 
 ## Credit
 
-The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful
-[Feather Icons](https://feathericons.com/).
+The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful [Feather Icons](https://feathericons.com/).

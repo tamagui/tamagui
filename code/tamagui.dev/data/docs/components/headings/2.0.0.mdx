@@ -7,8 +7,6 @@ package: text
 demoName: Headings
 ---
 
-<InstallBanner name="@tamagui/text" />
-
 <HeroContainer>
   <HeadingsDemo />
 </HeroContainer>
@@ -23,6 +21,14 @@ demoName: Headings
     'Define custom fonts with styles per-size.',
   ]}
 />
+
+## Installation
+
+Headings is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/text
+```
 
 ```tsx
 import { H1, H2, H3, H4, H5, H6, Heading } from 'tamagui'
@@ -40,12 +46,9 @@ export default () => (
 )
 ```
 
-The headings all extend from the base `Heading` component. Note, this is just
-our own theme for Inter headings, but you can change the styles for any font
-completely.
+The headings all extend from the base `Heading` component. Note, this is just our own theme for Inter headings, but you can change the styles for any font completely.
 
-Tamagui expects for your [font.size](/docs/core/configuration#font-tokens) to
-have the keys 1-10 so headings work with your font tokens automatically.
+Tamagui expects for your [font.size](/docs/core/configuration#font-tokens) to have the keys 1-10 so headings work with your font tokens automatically.
 
 ## How it works
 
@@ -62,14 +65,9 @@ export const Heading = styled(Paragraph, {
 })
 ```
 
-Note that Heading, and H1-H6 all default to the `heading` font family that must
-be defined in your tamagui.config.ts.
+Note that Heading, and H1-H6 all default to the `heading` font family that must be defined in your tamagui.config.ts.
 
-Because [Paragraph](/docs/components/text#paragraph) extends
-[SizableText](/docs/components/text#sizabletext), you get automatic styles based
-on your font theme. Let's see how `SizableText` defines the size variant,
-roughly, which gives a good idea of how Tamagui works, and how you could create
-or change your own headings at a lower level.
+Because [Paragraph](/docs/components/text#paragraph) extends [SizableText](/docs/components/text#sizabletext), you get automatic styles based on your font theme. Let's see how `SizableText` defines the size variant, roughly, which gives a good idea of how Tamagui works, and how you could create or change your own headings at a lower level.
 
 ```tsx
 import { Text } from 'tamagui' // or '@tamagui/core'
@@ -111,5 +109,4 @@ const SizableText = styled(Text, {
 
 ### Heading
 
-Headings extend [SizableText props](/docs/components/text#sizabletext)
-inheriting all the [Tamagui standard props](/docs/intro/props).
+Headings extend [SizableText props](/docs/components/text#sizabletext) inheriting all the [Tamagui standard props](/docs/intro/props).

@@ -7,8 +7,6 @@ package: stacks
 demoName: Stacks
 ---
 
-<InstallBanner name="@tamagui/stacks" />
-
 <HeroContainer>
   <StacksDemo />
 </HeroContainer>
@@ -25,14 +23,19 @@ demoName: Stacks
   ]}
 />
 
-Tamagui UI includes optional stack views - XStack, YStack and ZStack. They
-extend directly off the [View](/docs/core/stack-and-text) from `@tamagui/core`.
+Tamagui UI includes optional stack views - XStack, YStack and ZStack. They extend directly off the [View](/docs/core/stack-and-text) from `@tamagui/core`.
 
-Stack props accept
-[every prop from react-native-web](https://necolas.github.io/react-native-web/docs/view/)
-View, as well as all [the style properties Tamagui supports](/docs/intro/props).
+Stack props accept [every prop from react-native-web](https://necolas.github.io/react-native-web/docs/view/) View, as well as all [the style properties Tamagui supports](/docs/intro/props).
 
 In this example you'd show three `YStack` elements spaced out.
+
+## Installation
+
+Stacks is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/stacks
+```
 
 ```tsx
 import { XStack, YStack } from 'tamagui'
@@ -46,8 +49,7 @@ export default () => (
 )
 ```
 
-To see all the style properties supported, see the [Props](/docs/intro/props)
-documentation.
+To see all the style properties supported, see the [Props](/docs/intro/props) documentation.
 
 ### Fuller example
 
@@ -91,9 +93,7 @@ Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
       required: false,
       type: 'boolean',
       description: (
-        <span>
-          Sets position: absolute, top: 0, left: 0, right: 0, bottom: 0.
-        </span>
+        <span>Sets position: absolute, top: 0, left: 0, right: 0, bottom: 0.</span>
       ),
     },
     {
@@ -102,10 +102,9 @@ Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
       type: 'number | tokens.size',
       description: (
         <span>
-          Sets a natural looking shadow that expands out and away as the size
-          gets bigger.
+          Sets a natural looking shadow that expands out and away as the size gets bigger.
         </span>
       ),
     },
   ]}
-/>{' '}
+/>

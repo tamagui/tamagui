@@ -7,8 +7,6 @@ package: toggle-group
 demoName: ToggleGroup
 ---
 
-<InstallBanner name="@tamagui/toggle-group" />
-
 <HeroContainer>
   <ToggleGroupDemo />
 </HeroContainer>
@@ -28,8 +26,7 @@ demoName: ToggleGroup
 
 ## Installation
 
-ToggleGroup is already installed in `tamagui`, or you can install it
-independently:
+ToggleGroup is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/toggle-group
@@ -54,9 +51,7 @@ export default () => {
 
 ### ToggleGroup
 
-`ToggleGroup` extends the [Group](/docs/components/group) component. You can
-disable passing border radius to children by passing `disablePassBorderRadius`.
-plus:
+`ToggleGroup` extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
 
 <PropsTable
   data={[
@@ -78,8 +73,7 @@ plus:
     },
     {
       name: 'defaultValue',
-      description:
-        'The values of the items to show as pressed when initially rendered.',
+      description: 'The values of the items to show as pressed when initially rendered.',
       type: 'string',
       default: ``,
     },
@@ -109,7 +103,7 @@ plus:
     {
       name: 'disableDeactivation',
       type: 'boolean',
-      description: `Won\'t let the user turn the active item off. Only applied to single toggle group.`,
+      description: `Won't let the user turn the active item off. Only applied to single toggle group.`,
       default: 'false',
     },
     {
@@ -121,15 +115,14 @@ plus:
     {
       name: 'sizeAdjust',
       type: 'number',
-      description: `Adjust the component\'s size scaling by this number.`,
+      description: `Adjust the component's size scaling by this number.`,
     },
   ]}
 />
 
 ### ToggleGroup.Item
 
-`ToggleGroup.Item` extend Stack views inheriting all the
-[Tamagui standard props](/docs/intro/props), plus:
+`ToggleGroup.Item` extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -159,8 +152,7 @@ plus:
   ]}
 />
 
-When it is active, it will receive an `active` prop set to true. This means you
-can customize the active styles like so:
+When it is active, it will receive an `active` prop set to true. This means you can customize the active styles like so:
 
 ```tsx
 import { ToggleGroup } from '@tamagui/toggle-group'
@@ -170,7 +162,7 @@ const MyToggleGroupItem = styled(ToggleGroup.Item, {
   variants: {
     active: {
       true: {
-        backgroundColor: 'red',
+        backgroundColor: 'red'
       },
     },
   },

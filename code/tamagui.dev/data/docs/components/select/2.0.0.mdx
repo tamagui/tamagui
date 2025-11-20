@@ -1,15 +1,11 @@
 ---
 title: Select
-description: A simple select component
+description: Show a menu of items that users can select from.
 name: select
 component: Select
 package: select
 demoName: Select
 ---
-
-# Select
-
-<Description>Show a menu of items users can select from one of.</Description>
 
 <HeroContainer>
   <SelectDemo />
@@ -27,7 +23,15 @@ demoName: Select
   ]}
 />
 
-### Anatomy
+## Installation
+
+Select is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/select
+```
+
+## Anatomy
 
 ```tsx
 import { Select } from 'tamagui' // or '@tamagui/select'
@@ -37,18 +41,21 @@ export default () => (
     <Select.Trigger>
       <Select.Value placeholder="Search..." />
     </Select.Trigger>
-    <Select.Content>
-      <Select.ScrollUpButton />
-      <Select.Viewport>
-        <Select.Group>
-          <Select.Label />
-          <Select.Item>
-            <Select.ItemText />
-          </Select.Item>
-        </Select.Group>
-      </Select.Viewport>
-      <Select.ScrollDownButton />
-    </Select.Content>
+    {/* Optional: Control focus behavior */}
+    <Select.FocusScope loop trapped focusOnIdle={true}>
+      <Select.Content>
+        <Select.ScrollUpButton />
+        <Select.Viewport>
+          <Select.Group>
+            <Select.Label />
+            <Select.Item>
+              <Select.ItemText />
+            </Select.Item>
+          </Select.Group>
+        </Select.Viewport>
+        <Select.ScrollDownButton />
+      </Select.Content>
+    </Select.FocusScope>
   </Select>
 )
 ```
@@ -58,9 +65,9 @@ export default () => (
   a Sheet. See below for docs.
 </Notice>
 
-### API
+## API Reference
 
-#### &lt;Select /&gt;
+### Select
 
 Contains every component for the select:
 
@@ -121,14 +128,19 @@ Contains every component for the select:
       type: 'string',
       description: `For use in forms`,
     },
+    {
+      name: 'native',
+      type: 'NativeValue',
+      description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
+    },
   ]}
 />
 
-#### &lt;Trigger /&gt;
+### Select.Trigger
 
 Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
 
-#### &lt;Value /&gt;
+#### Select.Value
 
 Extends [Paragraph](/docs/components/text), adding:
 
@@ -142,27 +154,25 @@ Extends [Paragraph](/docs/components/text), adding:
   ]}
 />
 
-#### &lt;Content /&gt;
+#### SelectContent
 
-Main container for Select content, used to contain the up/down arrows, no API
-beyond children.
+Main container for Select content, used to contain the up/down arrows, no API beyond children.
 
-#### &lt;ScrollUpButton /&gt;
+#### Select.ScrollUpButton
 
 Inside Content first, displays when you can scroll up, stuck to the top.
 
 Extends [YStack](/docs/components/stacks).
 
-#### &lt;ScrollDownButton /&gt;
+### Select.ScrollDownButton
 
 Inside Content last, displays when you can scroll down, stuck to the bottom.
 
 Extends [YStack](/docs/components/stacks).
 
-#### &lt;Viewport /&gt;
+### Select.Viewport
 
-Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains
-scrollable content items as children.
+Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
 
 <PropsTable
   data={[
@@ -171,23 +181,30 @@ scrollable content items as children.
       type: 'boolean',
       description: `Removes ability to scroll and all style and functionality related to scrolling`,
     },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      description: `Removes all default styles`,
+    },
   ]}
 />
 
-#### &lt;Group /&gt;
+<Notice>
+  Make sure to not pass `height` prop as that is managed internally because of
+  UX reasons and having a fixed height will break that behaviour
+</Notice>
 
-Extends [YStack](/docs/components/stacks). Use only when grouping together
-items, alongside a Label as the first child.
+### Select.Group
 
-#### &lt;Label /&gt;
+Extends [YStack](/docs/components/stacks). Use only when grouping together items, alongside a Label as the first child.
+
+### Select.Label
 
 Extends [ListItem](/docs/components/list-item). Used to label Groups.
 
-#### &lt;Item /&gt;
+### Select.Item
 
-Extends [ListItem](/docs/components/list-item). Used to add selectable values ot
-the list. Must provide an index as React Native doesn't give any escape hatch
-for us to configure that automatically.
+Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
 
 <PropsTable
   data={[
@@ -204,26 +221,65 @@ for us to configure that automatically.
       description: `Provide a value that will be passed on selection.`,
     },
 
-]} />
+]}
+/>
 
-#### &lt;ItemText /&gt;
+### Select.ItemText
 
-Extends [Paragraph](/docs/components/text). Used inside Item to provide
-unselectable text that will show above once selected in the parent Select.
+Extends [Paragraph](/docs/components/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
 
-#### &lt;Sheet /&gt;
+### Select.FocusScope
 
-When used alongside `<Adapt />`, Select will render as a sheet when that
-breakpoint is active.
+Provides access to the underlying FocusScope component used by Select for focus management. Can be used to control focus behavior from a parent component.
 
-This is the only way to render a Select on Native for now, as mobile apps tend
-to show Select very differently from web and Tamagui wants to present the right
-abstractions for each platform.
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether focus management is enabled`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      default: 'false',
+      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on mount. Can be prevented`,
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+    },
+  ]}
+/>
+
+### Select.Sheet
+
+When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
+
+This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the
-contents given to `Select.Content`
+Must use `Select.Adapt.Contents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
 import { Select } from 'tamagui' // or '@tamagui/select'
@@ -238,7 +294,7 @@ export default () => (
       {/* or <Select.Sheet> */}
       <Sheet>
         <Sheet.Frame>
-          <SheetContents />
+          <Adapt.Contents />
         </Sheet.Frame>
         <Sheet.Overlay />
       </Sheet>

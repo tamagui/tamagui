@@ -1,36 +1,124 @@
 ---
 title: Switch
-description: A simple switch component
+description: A toggle between two states.
 name: switch
 component: Switch
 package: switch
 demoName: Switch
 ---
 
-# Switch
+<YStack className="is-sticky" />
 
-<Description>Use in forms to toggle between two states.</Description>
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No default styles, easy to customize">
+    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
 
 <HeroContainer showAnimationDriverControl>
-  <SwitchDemo />
+  <Tabs.Content
+    value="styled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <SwitchDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="unstyled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <SwitchUnstyledDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="headless"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <SwitchHeadlessDemo />
+  </Tabs.Content>
 </HeroContainer>
 
-```tsx hero template=Switch
+<Tabs.Content value="styled">
+  ```tsx hero template=Switch
 
-```
+````
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+```tsx hero template=SwitchUnstyled
+
+````
+
+</Tabs.Content>
+  <Tabs.Content value="headless">
+  ```tsx hero template=SwitchHeadless
+
+````
+</Tabs.Content>
+
+
 
 <Highlights
-  features={[
-    `Accessible, easy to compose and customize.`,
-    `Style and animate both frame and thumb.`,
-    `Sizable & works controlled or uncontrolled.`,
-  ]}
+features={[
+  `Accessible, easy to compose and customize.`,
+  `Style and animate both frame and thumb.`,
+  `Sizable & works controlled or uncontrolled.`,
+  `Native prop that renders native Switch on mobile`,
+]}
 />
 
-### Usage
+
+## Installation
+
+<Tabs.Content value="styled">
+
+Switch is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/switch
+````
+
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+
+Switch is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/switch
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless switch, you want to import it from the
+`@tamagui/switch-headless` package. This package has no dependency on
+`@tamagui/core`, but still works off the react-native APIs.
+This means can bring your own style library.
+
+```bash
+npm install @tamagui/switch-headless
+```
+
+</Tabs.Content>
+
+## Usage
+
+<Tabs.Content value="styled">
 
 ```tsx
-import { Switch } from 'tamagui'
+import { Switch } from 'tamagui' // or '@tamagui/switch'
 
 export default () => (
   <Switch size="$4">
@@ -39,9 +127,41 @@ export default () => (
 )
 ```
 
-### Switch props
+</Tabs.Content>
 
-Switchs extend Stack views inheriting all the
+<Tabs.Content value="unstyled">
+
+Using the `createSwitch` export, you can create an unstyled switch without using
+any of the default styles. This is similar to the `unstyled` prop, but it
+doesn't assume the props `size` or `unstyled` exist, and it won't automatically
+apply the `active` theme.
+
+You must pass `SwitchContext` as the `context` option to your Frame and Thumb
+styled components.
+
+If you define a `checked` variant, it will apply those styles.
+
+```tsx template=SwitchUnstyled
+
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+Using the `useSwitch` API, you can make your own Switch from scratch.
+
+```tsx template=SwitchHeadless
+
+```
+
+</Tabs.Content>
+
+## API Reference
+
+### Switch
+
+`Switch` extends Stack views inheriting all the
 [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
@@ -86,5 +206,35 @@ Switchs extend Stack views inheriting all the
       default: 'false',
       description: `When true, remove all default tamagui styling.`,
     },
+    {
+      name: 'native',
+      type: 'NativeValue<"mobile" | "ios" | "android">',
+      description: `Render to a native switch. (Not supported on web)`,
+    },
+    {
+      name: 'nativeProps',
+      type: 'SwitchProps (from `react-native`)',
+      description: `Props to pass to the native Switch;`,
+    },
   ]}
-/>{' '}
+/>
+
+### Switch.Thumb
+
+`Switch.Thumb` extends Stack views inheriting all the
+[Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
+
+</Tabs>
+
+{/* TODO: document createSwitch and useSwitch's API */}

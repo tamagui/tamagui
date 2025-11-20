@@ -1,15 +1,11 @@
 ---
 title: Slider
-description: A simple slider component
+description: Drag to set values, vertically or horizontally.
 name: slider
 component: Slider
 package: slider
 demoName: Slider
 ---
-
-# Slider
-
-<Description>Drag to set values, vertically or horizontally</Description>
 
 <HeroContainer>
   <SliderDemo />
@@ -38,9 +34,7 @@ npm install @tamagui/slider
 
 ## Usage
 
-Slider comes as multiple components that ship with default styles and are
-sizable. The `size` prop on `<Slider />` will automatically pass size down to
-all the sub-components.
+Slider comes as multiple components that ship with default styles and are sizable. The `size` prop on `<Slider />` will automatically pass size down to all the sub-components.
 
 ```tsx
 import { Slider } from 'tamagui'
@@ -55,8 +49,7 @@ export default () => (
 )
 ```
 
-You can also optionally style any component, either using inline style props or
-by wrapping with `styled`:
+You can also optionally style any component, either using inline style props or by wrapping with `styled`:
 
 ```tsx
 import { Slider, styled } from 'tamagui'
@@ -156,23 +149,38 @@ Contains every component for the slider.
       type: 'number',
       description: `Minimum steps between thumbs.`,
     },
+    {
+      name: 'onSlideStart',
+      required: false,
+      type: `(event: GestureReponderEvent, value: number, target: 'thumb' | 'track') => void`,
+      description: `Called on slide start.`,
+    },
+    {
+      name: 'onSlideMove',
+      required: false,
+      type: `(event: GestureReponderEvent, value: number) => void`,
+      description: `Called on slide move.`,
+    },
+    {
+      name: 'onSlideEnd',
+      required: false,
+      type: `(event: GestureReponderEvent, value: number) => void`,
+      description: `Called on slide end.`,
+    },
   ]}
 />
 
 ### Slider.Track
 
-`Slider.Track` Inherits `SizableStack`, extending all the default
-[props](/docs/intro/props).
+`Slider.Track` Inherits `SizableStack`, extending all the default [props](/docs/intro/props).
 
 ### Slider.TrackActive
 
-`Slider.Track` Inherits `Stack`, extending all the default
-[props](/docs/intro/props).
+`Slider.TrackActive` Inherits `Stack`, extending all the default [props](/docs/intro/props).
 
 ### Slider.Thumb
 
-`Slider.Track` Inherits `SizableStack`, extending all the default
-[props](/docs/intro/props), adding:
+`Slider.Thumb` Inherits `SizableStack`, extending all the default [props](/docs/intro/props), adding:
 
 <PropsTable
   data={[
@@ -183,4 +191,4 @@ Contains every component for the slider.
       description: `Corresponds to the index of \`value\` or \`defaultValue\`. Use to correlate thumbs to each value in the array.`,
     },
   ]}
-/>{' '}
+/>

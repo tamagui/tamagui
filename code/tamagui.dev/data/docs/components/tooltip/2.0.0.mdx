@@ -1,19 +1,11 @@
 ---
 title: Tooltip
-description: A simple tooltip component
+description: A tooltip on web, with only accessibility output on native.
 name: tooltip
 component: Tooltip
 package: tooltip
 demoName: Tooltip
 ---
-
-# Tooltip
-
-<Description>
-  A tooltip on web, with only accessibility output on native
-</Description>
-
-<InstallBanner name="@tamagui/tooltip" />
 
 <HeroContainer showAnimationDriverControl>
   <TooltipDemo />
@@ -31,7 +23,9 @@ demoName: Tooltip
   ]}
 />
 
-<Notice>Note that Tooltip doesn't render on native platforms.</Notice>
+<Notice>
+  Note that Tooltip doesn't render on native platforms.
+</Notice>
 
 ## Installation
 
@@ -43,8 +37,7 @@ npm install @tamagui/tooltip
 
 ### PortalProvider
 
-When rendering into root of app instead of inline, you'll first need to install
-the `@tamagui/portal` package:
+Only if you aren't not using `tamagui` (but rather `@tamagui/core`) you'll need to install the `@tamagui/portal` package: 
 
 ```bash
 npm install @tamagui/portal
@@ -183,25 +176,55 @@ Contains every component for the tooltip.
 />
 
 <Notice>
-  If using `modal={true}` (which is `true` by default), refer to the
-  [PortalProvider installation](/ui/tooltip/2.0.0#portalprovider) for more
-  information.
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider installation](/ui/tooltip/1.0.0#portalprovider) for more information.
 </Notice>
 
 ### Tooltip.Trigger
 
-Used to trigger opening of the popover when uncontrolled, see YStack in
-[Stacks](/docs/components/stacks).
+Used to trigger opening of the popover when uncontrolled, see YStack in [Stacks](/docs/components/stacks).
 
 ### Tooltip.Content
 
-Renders as SizableStack (see [Stacks](/docs/components/stacks)) with an extra
-`size` prop that accepts any `SizeTokens`.
+Renders as SizableStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
 
 ### Tooltip.Anchor
 
 Renders as YStack, see [Stacks](/docs/components/stacks).
 
-When you want the Trigger to be in another location from where the Tooltip
-attaches, use Anchor. When used, Anchor is where the Tooltip will attach, while
-Trigger will open it.
+When you want the Trigger to be in another location from where the Tooltip attaches, use Anchor. When used, Anchor is where the Tooltip will attach, while Trigger will open it.
+
+### TooltipGroup
+
+This allows you to logically group any tooltips rendered below this component. You can control their delay props, and components inside a TooltipGroup will be smart about opening quicker if you are moving between targets with tooltips, ensuring that subsequent tooltips show immediately rather than after a delay.
+
+See the [Floating UI docs](https://floating-ui.com/docs/floatingdelaygroup) for full details on how this works.
+
+<PropsTable
+  data={[
+    {
+      name: 'delay',
+      type: 'number | { open?: number; close?: number }',
+      default: 0,
+      required: false,
+      description: `The delay to use for the group.`,
+    },
+    {
+      name: 'timeoutMs',
+      type: 'number',
+      default: 0,
+      required: false,
+      description: `An optional timeout to use for the group, which represents when grouping logic will no longer be active after the close delay completes. Useful if you want grouping to last longer than the close delay, for example if there is no close delay at all.`,
+    },
+    {
+      name: 'preventAnimation',
+      type: 'boolean',
+      default: false,
+      required: false,
+      description: `Will disable the enter/exit animations while the group is active, but not for the initial enter animation of the first hovered tooltip.`,
+    },
+  ]}
+/>
+
+### closeOpenTooltips
+
+A small helper function of type `() => void` that will close any open tooltips.

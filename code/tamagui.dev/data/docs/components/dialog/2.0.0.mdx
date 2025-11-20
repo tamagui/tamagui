@@ -7,8 +7,6 @@ package: dialog
 demoName: Dialog
 ---
 
-<InstallBanner name="@tamagui/dialog" />
-
 <HeroContainer showAnimationDriverControl>
   <DialogDemo />
 </HeroContainer>
@@ -25,10 +23,8 @@ demoName: Dialog
   ]}
 />
 
-<Notice>
-  Dialog does not work on native, instead you can Adapt it to a Sheet as shown
-  in the demo code above.
-</Notice>
+Dialog is a great way to show content inside a new floating window above
+content. Be sure to open the code example above for a copy-paste implementation.
 
 ## Installation
 
@@ -38,8 +34,8 @@ Dialog is already installed in `tamagui`, or you can install it independently:
 npm install @tamagui/dialog
 ```
 
-In order to use this component independently of `tamagui`, you'll first need to
-install the `@tamagui/portal` package:
+If you aren't using `tamagui` and instead using the `@tamagui/dialog` package
+separately, you'll first need to install the `@tamagui/portal` package:
 
 ```bash
 npm install @tamagui/portal
@@ -79,8 +75,93 @@ export default () => (
         {/* ... */}
       </Dialog.Content>
     </Dialog.Portal>
+
+    {/* Optional: Control focus behavior */}
+    <Dialog.FocusScope loop trapped focusOnIdle={true}>
+      <Dialog.FocusScope.Scope>
+        {/* Focus scope will be applied to children */}
+      </Dialog.FocusScope.Scope>
+    </Dialog.FocusScope>
   </Dialog>
 )
+```
+
+## Scoping
+
+Dialog supports scoping which lets you mount one or more Dialog instances at the
+root of your app, while having a deeply nested child Trigger or Content attach
+to the proper parent Dialog instance.
+
+In performance sensitive areas you may want to take advantage of this, it allows
+you to only need to render the Dialog.Trigger inside the sensitive area as
+Dialogs aren't the cheapest component - they has a lot of functionality.
+
+Here's the basic anatomy of using `scope` and placing your Dialog higher up for
+performance:
+
+```tsx fileName=_layout.tsx
+import { Dialog } from 'tamagui'
+
+// in your root layout:
+export default ({ children }) => (
+  <Dialog scope="user-profile">
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <Dialog.Title />
+        <Dialog.Description />
+        <Dialog.Close />
+        {/* ... */}
+      </Dialog.Content>
+    </Dialog.Portal>
+
+    {/* the rest of of your app, note that it's inside of Dialog */}
+    {children}
+  </Dialog>
+)
+```
+
+```tsx fileName=UserProfile.tsx
+export default () => (
+  <Dialog.Trigger scope="user-profile">
+    <Button>Open Profile</Button>
+  </Dialog.Trigger>
+)
+```
+
+Note that the `Trigger` scope ties to the `Dialog` scope.
+
+## Dismissal Behavior
+
+By default, dialogs can be dismissed by:
+- Clicking outside the dialog content (on the overlay)
+- Pressing the Escape key
+- Clicking a Dialog.Close element
+
+### Modal vs Non-Modal Dialogs
+
+- **Modal dialogs** (`modal={true}`, which is the default):
+  - In v1, have `disableOutsidePointerEvents` set to `true` by default
+  - Still dismiss on outside click, but prevent interaction with elements behind the dialog
+  - Prevent right-click dismissal (right-clicks on the overlay are ignored)
+  
+- **Non-modal dialogs** (`modal={false}`):
+  - Allow interaction with elements behind the dialog
+  - Dismiss on any outside click
+  - Do not trap focus
+
+### Preventing Outside Dismissal
+
+To prevent a dialog from closing when clicking outside:
+
+```tsx
+<Dialog.Content
+  onPointerDownOutside={(event) => {
+    event.preventDefault()
+  }}
+>
+  {/* Dialog contents */}
+</Dialog.Content>
 ```
 
 ## API Reference
@@ -177,6 +258,12 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
       type: `boolean`,
       description: `Removes all default Tamagui styles.`,
     },
+    {
+      name: 'disableOutsidePointerEvents',
+      type: 'boolean',
+      required: false,
+      description: `When true, hover/focus/click interactions will be disabled on elements outside the Dialog. Users will need to click twice on outside elements to interact with them: once to close the Dialog, and again to trigger the element. Note: In v1, modal dialogs have this set to true by default.`,
+    },
   ]}
 />
 
@@ -223,6 +310,50 @@ your own component and `asChild`.
 />
 
 Just [Tamagui Props](/docs/intro/props).
+
+### Dialog.FocusScope
+
+Provides access to the underlying FocusScope component used by Dialog for focus
+management. Can be used to control focus behavior from a parent component.
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether focus management is enabled`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      default: 'false',
+      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on mount. Can be prevented`,
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+    },
+  ]}
+/>
 
 ### Dialog.Sheet
 

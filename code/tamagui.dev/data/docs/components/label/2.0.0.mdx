@@ -7,8 +7,6 @@ package: label
 demoName: Label
 ---
 
-<InstallBanner name="@tamagui/label" />
-
 <HeroContainer>
   <LabelDemo />
 </HeroContainer>
@@ -25,6 +23,14 @@ demoName: Label
   ]}
 />
 
+## Installation
+
+Label is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/label
+```
+
 ## Usage
 
 ```tsx
@@ -40,16 +46,13 @@ export default () => (
 
 ## Accessibility
 
-Use with Input or other form elements to automatically get correct labelling by
-id and aria-labelledby. You can also use the provided `useLabelContext` hook to
-build your own controls.
+Use with Input or other form elements to automatically get correct labelling by id and aria-labelledby. You can also use the provided `useLabelContext` hook to build your own controls.
 
 ## API Reference
 
 ### Label
 
-Labels extend Stack views inheriting all the
-[Tamagui standard props](/docs/intro/props), plus:
+Labels extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -66,4 +69,4 @@ Labels extend Stack views inheriting all the
       description: `Removes all default Tamagui styles.`,
     },
   ]}
-/>{' '}
+/>

@@ -5,10 +5,7 @@ name: html
 component: VisuallyHidden
 ---
 
-<InstallBanner name="@tamagui/visually-hidden" />
-
-VisuallyHidden hides an item but ensures it remains visible to accessibility
-readers.
+VisuallyHidden hides an item but ensures it remains visible to accessibility readers.
 
 <Highlights
   features={[
@@ -16,6 +13,14 @@ readers.
     'Works with "space" prop to not disturb spacing.',
   ]}
 />
+
+## Installation
+
+VisuallyHidden is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/visually-hidden
+```
 
 ## Usage
 
@@ -37,7 +42,7 @@ When using with the `space` property, it will avoid double-spacing:
 import { H1, Text, VisuallyHidden, YStack } from 'tamagui'
 
 export default () => (
-  <YStack gap="$4">
+  <YStack space>
     <H1>Title</H1>
 
     <VisuallyHidden>
