@@ -14,7 +14,7 @@
       "path": "../../packages/cli-color"
     },
     {
-      "path": "../compiler"
+      "path": "../static"
     }
   ],
   "exclude": [

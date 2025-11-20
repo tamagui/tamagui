@@ -11,7 +11,7 @@
       "path": "../loader"
     },
     {
-      "path": "../compiler"
+      "path": "../static"
     }
   ],
   "exclude": [

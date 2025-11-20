@@ -5,7 +5,7 @@
   },
   "references": [
     {
-      "path": "../compiler"
+      "path": "../static"
     }
   ],
   "exclude": [
