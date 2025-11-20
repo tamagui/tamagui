@@ -50,15 +50,8 @@ export function registerRequire(
   Module.prototype.require = tamaguiRequire
 
   function tamaguiRequire(this: any, path: string) {
-    // Only rewrite to /native for runtime, not during static extraction
-    // This prevents issues with workspace packages in CI where /native doesn't exist in node_modules
-    if (
-      (path === 'tamagui' || path === 'tamagui') &&
-      platform === 'native' &&
-      !process.env.IS_STATIC
-    ) {
-      const nativePath = path === 'tamagui' ? 'tamagui/native' : 'tamagui/native'
-      return og.apply(this, [nativePath])
+    if (path === 'tamagui' && platform === 'native') {
+      return og.apply(this, ['tamagui/native'])
     }
 
     if (path === '@tamagui/core') {
@@ -83,9 +76,9 @@ export function registerRequire(
       return og.apply(this, ['@tamagui/react-native-svg'])
     }
 
-    // if (path === 'react-native/package.json') {
-    //   return og.apply(this, ['react-native-web/package.json'])
-    // }
+    if (path === 'react-native/package.json') {
+      return og.apply(this, ['react-native-web/package.json'])
+    }
 
     if (
       path === '@tamagui/react-native-web-lite' ||
@@ -197,7 +190,7 @@ const knownIgnorableModules = {
   solito: true,
   'expo-linear-gradient': true,
   '@expo/vector-icons': true,
-  '@tamagui/linear-gradient': true,
+  'tamagui/linear-gradient': true,
   ...Object.fromEntries(extraIgnores?.map((k) => [k, true]) || []),
 }
 

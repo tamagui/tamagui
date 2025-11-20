@@ -835,6 +835,8 @@ export function createExtractor(
           const flatNodeName = getFlattenedNode?.({ isTextView, tag: tagName })
 
           const inlineProps = new Set([
+            // adding some always inline props
+            'dataSet',
             ...(restProps.inlineProps || []),
             ...(staticConfig.inlineProps || []),
           ])
@@ -1769,7 +1771,7 @@ export function createExtractor(
             const cur = attrs[key]
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
-              // see <Spacer flex={1} /> where flex looks like a valid style, but is a variant
+              // see <Spacer flex /> where flex looks like a valid style, but is a variant
               const expanded = normalizeStyleWithoutVariants(cur.value)
               // preserve order
               for (const key in expanded) {
@@ -2324,11 +2326,14 @@ export function createExtractor(
           }
         } catch (err: any) {
           node.attributes = ogAttributes
-          console.error(
-            `@tamagui/static error, reverting optimization. In ${filePath} ${lineNumbers} on ${originalNodeName}: ${err.message}. For stack trace set environment TAMAGUI_DEBUG=1`
-          )
-          if (process.env.TAMAGUI_DEBUG === '1') {
-            console.error(err.stack)
+
+          if (!(err instanceof BailOptimizationError)) {
+            console.error(
+              `@tamagui/static error, reverting optimization. In ${filePath} ${lineNumbers} on ${originalNodeName}: ${err.message}. For stack trace set environment TAMAGUI_DEBUG=1`
+            )
+            if (process.env.TAMAGUI_DEBUG === '1') {
+              console.error(err.stack)
+            }
           }
         } finally {
           if (debugPropValue) {

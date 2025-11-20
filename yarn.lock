@@ -9154,10 +9154,10 @@ __metadata:
     fs-extra: "npm:^11.2.0"
     invariant: "npm:^2.2.4"
     js-yaml: "npm:^4.1.0"
-    lodash: "npm:^4.17.21"
     null-loader: "npm:^4.0.1"
     react: "npm:*"
     react-native: "npm:0.81.5"
+    react-native-web: "npm:^0.21.0"
     typescript: "npm:~5.9.2"
   peerDependencies:
     react: "*"
