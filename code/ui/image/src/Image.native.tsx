@@ -1,7 +1,6 @@
 import { getTokenValue, styled } from '@tamagui/web'
-import { Image as RNImage } from 'react-native'
-
 import type { ImageResizeMode } from 'react-native'
+import { Image as RNImage } from 'react-native'
 import type { ImageProps, ImageType } from './types'
 
 const StyledImage = styled(RNImage, {

@@ -6,8 +6,8 @@ import type {
   SizeTokens,
   StackProps,
   ThemeValueFallback,
-} from '@tamagui/core'
-import { styled, usePropsAndStyle } from '@tamagui/core'
+} from '@tamagui/web'
+import { styled, usePropsAndStyle } from '@tamagui/web'
 import type { FC } from 'react'
 import { Image as RNImage } from 'react-native'
 

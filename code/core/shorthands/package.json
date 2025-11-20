@@ -1,21 +1,11 @@
 {
   "name": "@tamagui/shorthands",
   "version": "1.138.0",
+  "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "v2.js",
-    "v2.d.ts",
-    "v4.d.ts",
-    "v4.js",
-    "v5.d.ts",
-    "v5.js"
-  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -53,15 +43,6 @@
       "types": "./types/v4.d.ts",
       "import": "./dist/esm/v4.mjs",
       "require": "./dist/cjs/v4.cjs"
-    },
-    "./v5": {
-      "react-native": {
-        "import": "./dist/esm/v5.native.js",
-        "require": "./dist/cjs/v5.native.js"
-      },
-      "types": "./types/v5.d.ts",
-      "import": "./dist/esm/v5.mjs",
-      "require": "./dist/cjs/v5.cjs"
     }
   },
   "dependencies": {

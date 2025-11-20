@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/image",
+  "name": "@tamagui/image-next",
   "version": "1.138.0",
   "type": "module",
   "sideEffects": [
@@ -40,10 +40,6 @@
     "@tamagui/constants": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*",
@@ -51,5 +47,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
   }
 }

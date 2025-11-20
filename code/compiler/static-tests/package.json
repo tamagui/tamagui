@@ -30,11 +30,7 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
     "@babel/types": "^7.25.4",
-    "@tamagui/babel-plugin": "workspace:*",
-    "@tamagui/config": "workspace:*",
-    "@tamagui/core": "workspace:*",
     "@tamagui/sandbox-ui": "workspace:*",
-    "@tamagui/static": "workspace:*",
     "@tamagui/test-design-system": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "@types/babel__generator": "^7.6.4",
@@ -51,7 +47,6 @@
     "react-native-web": "^0.21.0",
     "react-test-renderer": "^19.0.0",
     "style-loader": "^3.3.3",
-    "tamagui": "workspace:*",
     "typescript": "~5.9.2",
     "vitest": "^4.0.4",
     "webpack": "^5.88.2"

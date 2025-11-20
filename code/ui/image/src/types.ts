@@ -1,9 +1,8 @@
 import type { ViewProps } from '@tamagui/web'
-import type { Image as RNImage } from 'react-native'
-
 import type {
   ImageResizeMode,
   ImageSourcePropType,
+  Image as RNImage,
   ImageProps as RNImageProps,
 } from 'react-native'
 

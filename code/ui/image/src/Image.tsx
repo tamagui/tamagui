@@ -1,5 +1,4 @@
 import { View, styled } from '@tamagui/web'
-
 import type { ImageProps, ImageType } from './types'
 
 const StyledImage = styled(View, {

@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/demos",
   "version": "1.138.0",
+  "type": "module",
   "sideEffects": [
     "*.css"
   ],
@@ -54,6 +55,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/image": "workspace:*",
+    "@tamagui/image-next": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
