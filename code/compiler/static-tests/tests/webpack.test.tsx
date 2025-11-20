@@ -1,6 +1,17 @@
+/**
+ * @vitest-environment jsdom
+ */
+
 import '@expo/match-media'
 import { render, screen } from '@testing-library/react'
+import React from 'react'
 import { describe, expect, test } from 'vitest'
+
+// Make React available globally for the webpack output
+;(global as any).React = React
+if (typeof window !== 'undefined') {
+  ;(window as any).React = React
+}
 
 /**
  * disabled for now but we really need to bring this back
@@ -165,7 +176,7 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexProperties')
     const { container } = renderTrue()
 
-    const element = container.firstChild?.firstChild
+    const element = container.querySelector('.is_View') as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
@@ -205,7 +216,7 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
     const { container } = renderTrue()
 
-    const element = container.firstChild?.firstChild
+    const element = container.querySelector('.is_View') as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)

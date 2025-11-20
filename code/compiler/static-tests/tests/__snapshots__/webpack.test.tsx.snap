@@ -508,6 +508,37 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
 </div>
 `;
 
+exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <span
+      class="t_dark _dsp_contents"
+    >
+      <span
+        class=" t_dark is_Theme"
+        style="color: var(--color); display: contents;"
+      >
+        <div
+          class="is_View _dsp-flex _bxs-border-box _mih-0px _miw-0px _fd-column _fw-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start "
+        >
+          <span
+            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+          >
+            hello world
+          </span>
+        </div>
+        <div
+          style="display: contents;"
+        />
+      </span>
+    </span>
+  </span>
+</div>
+`;
+
 exports[`webpack-tests > 21. complex real-world case - flexWrap with many conditionals and media queries 1`] = `
 <div>
   <span
@@ -568,6 +599,37 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
               hello world
             </span>
           </div>
+        </div>
+        <div
+          style="display: contents;"
+        />
+      </span>
+    </span>
+  </span>
+</div>
+`;
+
+exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
+<div>
+  <span
+    class=""
+    style="display: contents;"
+  >
+    <span
+      class="t_dark _dsp_contents"
+    >
+      <span
+        class=" t_dark is_Theme"
+        style="color: var(--color); display: contents;"
+      >
+        <div
+          class="is_View _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fw-_sm_wrap _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _gap-t-space-2 _fd-row _fw-wrap "
+        >
+          <span
+            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+          >
+            hello world
+          </span>
         </div>
         <div
           style="display: contents;"
