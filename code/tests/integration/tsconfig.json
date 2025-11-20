@@ -58,7 +58,7 @@
       "path": "../../packages/react-native-svg"
     },
     {
-      "path": "../../ui/tamagui-ui"
+      "path": "../../ui/tamagui"
     }
   ]
 }

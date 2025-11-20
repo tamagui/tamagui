@@ -8,7 +8,7 @@
       ],
       // tsconfig doesnt support merging so we have to duplicate:
       "tamagui": [
-        "../ui/tamagui-ui"
+        "../ui/tamagui"
       ],
       "@tamagui/*": [
         "../core/*",
