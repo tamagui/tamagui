@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/next-plugin",
   "version": "1.138.0",
+  "type": "module",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -12,8 +13,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -23,14 +24,10 @@
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
-      "react-native": {
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
+      "default": "./dist/cjs/index.cjs"
     }
   },
   "dependencies": {
