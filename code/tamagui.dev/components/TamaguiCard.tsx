@@ -24,6 +24,7 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
         color="$color"
         cursor="inherit"
         ls={0}
+        className="font-smooth-none"
       >
         {title}
       </H3>
