@@ -1,5 +1,5 @@
 import { shorthands } from '@tamagui/shorthands/v5'
-import { tokens, defaultThemes } from '@tamagui/themes/v5'
+import { themes, tokens } from '@tamagui/themes/v5'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { animations } from './v5-animations'
 import { fonts } from './v5-fonts'
@@ -7,13 +7,10 @@ import { media, mediaQueryDefaultActive } from './v5-media'
 
 export { shorthands } from '@tamagui/shorthands/v5'
 export { createThemes } from '@tamagui/theme-builder'
-export { tamaguiThemes, tokens } from '@tamagui/themes/v5'
+export { themes, tokens } from '@tamagui/themes/v5'
 export { animations } from './v5-animations'
 export { createSystemFont, fonts } from './v5-fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media'
-export { defaultThemes as themes } from '@tamagui/themes/v5'
-
-// Configuration:
 
 export const selectionStyles = (theme) =>
   theme.color5
@@ -40,7 +37,7 @@ export const defaultConfig = {
   animations,
   media,
   shorthands,
-  themes: defaultThemes,
+  themes,
   tokens,
   fonts,
   selectionStyles,
