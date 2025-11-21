@@ -1,6 +1,6 @@
-import type { ThemeParsed, ThemeProps, ThemeState, UseThemeWithStateProps } from '../types';
+import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types';
 import { type ThemeProxied } from './getThemeProxied';
-export declare const useTheme: (props?: ThemeProps) => ThemeProxied;
+export declare const useTheme: () => ThemeProxied;
 export type ThemeWithState = [ThemeParsed, ThemeState];
 /**
  * Adds a proxy around themeState that tracks update keys

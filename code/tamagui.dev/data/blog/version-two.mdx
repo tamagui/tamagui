@@ -58,8 +58,13 @@ couple slow ones.
 
 The breaking changes outside of deprecations are:
 
-- Default flex behavior now aligns with React Native (can opt-out).
-- Button and ListItem are re-written to be slightly simplified and much faster.
+- Default flex and position styles align with the latest React Native versions,
+  but you can change settings to keep the legacy behavior.
+- Button and ListItem lose direct text style props, to gain performance.
+- useTheme no longer takes props, must be changed using a component.
+
+Things depreciated in version one that are now gone:
+
 - Removed `space` and `spaceDirection` props in favor of gap.
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Moved all settings on `createTamagui` onto the `settings` object.
