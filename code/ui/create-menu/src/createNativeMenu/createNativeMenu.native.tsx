@@ -3,10 +3,9 @@
  */
 
 import { MenuView } from '@react-native-menu/menu'
-import { withStaticProperties } from '@tamagui/web'
+import { View, withStaticProperties } from '@tamagui/web'
 import type React from 'react'
 import { Children, type ReactElement, cloneElement } from 'react'
-import { View } from 'tamagui'
 import { NativePropProvider } from '../createBaseMenu'
 import type {
   ContextMenuAuxliliaryProps,
