@@ -1,4 +1,4 @@
-export declare const defaultTemplatesStrongest: Record<"light_surface1" | "light_surface3" | "light_surface2" | "light_inverse" | "light_base" | "light_alt1" | "light_alt2" | "dark_surface1" | "dark_surface3" | "dark_surface2" | "dark_inverse" | "dark_base" | "dark_alt1" | "dark_alt2", {
+export declare const defaultTemplatesStrongest: Record<"light_base" | "light_surface1" | "light_surface3" | "light_surface2" | "light_inverse" | "light_alt1" | "light_alt2" | "dark_base" | "dark_surface1" | "dark_surface3" | "dark_surface2" | "dark_inverse" | "dark_alt1" | "dark_alt2", {
     colorTransparent: number;
     color: number;
     colorHover: number;

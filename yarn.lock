@@ -9106,6 +9106,7 @@ __metadata:
     "@tamagui/create-theme": "workspace:*"
     "@tamagui/web": "workspace:*"
     color2k: "npm:^2.0.2"
+    vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
 

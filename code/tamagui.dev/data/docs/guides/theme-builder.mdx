@@ -9,15 +9,20 @@ demoName: ThemeBuilder
 </HeroContainer>
 
 <IntroParagraph>
-  Tamagui themes start simple, but can do some pretty powerful things. To make them easier to generate, we've built a few helpers. You can always just skip themes, or add a single basic theme if you prefer. This guide is for users wanting to generate a more complex suite of themes.
+  Tamagui themes start simple, but can do some pretty powerful things. To make
+  them easier to generate, we've built a few helpers. You can always just skip
+  themes, or add a single basic theme if you prefer. This guide is for users
+  wanting to generate a more complex suite of themes.
 </IntroParagraph>
 
-We have two ways to generate themes with `@tamagui/theme-builder`: 
+We have two ways to generate themes with `@tamagui/theme-builder`:
 
 - `createThemeBuilder` is a more low-level, chainable API.
-- `createThemes` makes generating a slightly opinonated suite of themes much simpler.
+- `createThemes` makes generating a slightly opinonated suite of themes much
+  simpler.
 
-We've also released [Theme](/theme), a free point-and-click way to create themes that generates copy-paste `createThemes` code for you.
+We've also released [Theme](/theme), a free point-and-click way to create themes
+that generates copy-paste `createThemes` code for you.
 
 ## createThemes
 
@@ -31,12 +36,13 @@ export const themes = createThemes({
     palette: {
       dark: ['#000', '#fff'],
       light: ['#fff', '#000'],
-    }
+    },
   },
 })
 ```
 
-Which will generate `light` and `dark` themes, spreading your palette colors between 1 and 12, and adding component themes.
+Which will generate `light` and `dark` themes, spreading your palette colors
+between 1 and 12, and adding component themes.
 
 But you can go much further, generating a production-grade theme suite like so:
 
@@ -86,11 +92,22 @@ export const themes = createThemes({
 })
 ```
 
+You can also use the `getTheme` callback to customize any theme at any level, an
+easy escape hatch if you don't want to use templates and palettes for
+everything. See the [getTheme](#customizing-themes-with-gettheme) section below
+for details.
+
 ## createThemeBuilder
 
-Under the hood, `createThemes` uses `createThemeBuilder`. It's a very powerful way to generate nested themes, using a chainable API and generating strong types for you. But, it's also quite involved! 99% of projects should start with either hand-made, simple themes, or `createThemes`.
+Under the hood, `createThemes` uses `createThemeBuilder`. It's a very powerful
+way to generate nested themes, using a chainable API and generating strong types
+for you. But, it's also quite involved! 99% of projects should start with either
+hand-made, simple themes, or `createThemes`.
 
-Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, and themes:
+Before we dive in, here's a minimal createThemeBuilder example to understand
+what we're building towards. It generates `light`, `dark`, `light_subtle`, and
+`dark_subtle` themes using all the concepts we'll cover in this guide: palettes,
+templates, and themes:
 
 ```tsx
 import { createThemeBuilder } from '@tamagui/theme-builder'
@@ -108,7 +125,7 @@ const themesBuilder = createThemeBuilder()
     subtle: {
       background: 1,
       color: -1,
-    }
+    },
   })
   .addThemes({
     light: {
@@ -129,7 +146,9 @@ const themesBuilder = createThemeBuilder()
 export const themes = themesBuilder.build()
 ```
 
-To optionally set up your compiler to automatically watch and build your themes at build-time (to save some bundle size), add the following to your compiler config (for example with Next.js):
+To optionally set up your compiler to automatically watch and build your themes
+at build-time (to save some bundle size), add the following to your compiler
+config (for example with Next.js):
 
 ```tsx
 withTamagui({
@@ -146,19 +165,23 @@ withTamagui({
 })
 ```
 
-You can also use the new `@tamagui/cli` package to enable `npx @tamagui/cli generate-themes ./src/themes-in.ts ./src/themes-out.ts`.
+You can also use the new `@tamagui/cli` package to enable
+`npx @tamagui/cli generate-themes ./src/themes-in.ts ./src/themes-out.ts`.
 
 ---
 
 ### The Concepts
 
-The way the new ThemeBuilder works is through two main concepts: a palette and a template. It's worth understanding each and how they relate to a design system before getting your hands dirty.
+The way the new ThemeBuilder works is through two main concepts: a palette and a
+template. It's worth understanding each and how they relate to a design system
+before getting your hands dirty.
 
 But first - what is a theme?
 
 #### Themes
 
-A theme is simple. It's a static typed object with properties that map from name => color. The simplest example of a theme is this:
+A theme is simple. It's a static typed object with properties that map from name
+=> color. The simplest example of a theme is this:
 
 ```tsx
 {
@@ -167,19 +190,27 @@ A theme is simple. It's a static typed object with properties that map from name
 }
 ```
 
-You can have as many values as you want in your themes, but what's important is that they share the same shape. Of course Tamagui themes [get more interesting with their support of sub-themes](/docs/intro/themes), but the important things to remember are that themes share the same shape, and that sub-themes can be subsets of parent themes.
+You can have as many values as you want in your themes, but what's important is
+that they share the same shape. Of course Tamagui themes
+[get more interesting with their support of sub-themes](/docs/intro/themes), but
+the important things to remember are that themes share the same shape, and that
+sub-themes can be subsets of parent themes.
 
-While we mostly deal with colors in this tutorial, themes can also take other strings or numbers as values. For now, this guide only focuses on color.
+While we mostly deal with colors in this tutorial, themes can also take other
+strings or numbers as values. For now, this guide only focuses on color.
 
 #### Palettes
 
-The first layer of building a theme starts with a palette. A palette is typically a gradient within a single color, going from background to foreground, though it could also include contrasting colors if you so desired.
+The first layer of building a theme starts with a palette. A palette is
+typically a gradient within a single color, going from background to foreground,
+though it could also include contrasting colors if you so desired.
 
 Here's an example of a blue palette:
 
 <Blog.ThemeBuilder.ExamplePalette showLabels />
 
-You can toggle dark mode in the top left of the site to see that in fact we have _two_ blue palette: `light_blue` and `dark_blue`.
+You can toggle dark mode in the top left of the site to see that in fact we have
+_two_ blue palette: `light_blue` and `dark_blue`.
 
 Here's that same palette in code (the `dark_blue` one):
 
@@ -200,7 +231,8 @@ const dark_blue = [
 ]
 ```
 
-Palettes are great for a design system because they constrain your color choices to a consistent scale. Designs look better when they have constraints.
+Palettes are great for a design system because they constrain your color choices
+to a consistent scale. Designs look better when they have constraints.
 
 We can refer to a single color in the pallete by 0-index:
 
@@ -208,13 +240,22 @@ We can refer to a single color in the pallete by 0-index:
 
 In this case 0 is the background, and 11 is the foreground.
 
-Within Tamagui you can define your palettes to have as many or few colors as you like. You also technically don't _have_ to go from background to foreground, but we recommend it if only for being consistent.
+Within Tamagui you can define your palettes to have as many or few colors as you
+like. You also technically don't _have_ to go from background to foreground, but
+we recommend it if only for being consistent.
 
-The offical `@tamagui/themes` theme suite that this websites uses adds one more layer to this equation - the 0-index color is actually a "background transparent", leaving the 1st index as the actual background, and correspondingly, the 12th index is the strongest foreground, while the 13th is "foreground transparent".
+The offical `@tamagui/themes` theme suite that this websites uses adds one more
+layer to this equation - the 0-index color is actually a "background
+transparent", leaving the 1st index as the actual background, and
+correspondingly, the 12th index is the strongest foreground, while the 13th is
+"foreground transparent".
 
 #### Templates
 
-The next level up from a palette is a template. Templates are also pretty simple, they are used to generate a theme from a palette. They map a _name to an index in your palette_. The names can be whatever you want, and the index just refers to an offset of your palette.
+The next level up from a palette is a template. Templates are also pretty
+simple, they are used to generate a theme from a palette. They map a _name to an
+index in your palette_. The names can be whatever you want, and the index just
+refers to an offset of your palette.
 
 In practice, it looks something like this:
 
@@ -225,7 +266,9 @@ In practice, it looks something like this:
 }
 ```
 
-The `tamagui` components have standardized on the following minimum theme, so if you are generating themes for use with the tamagui components, you'll want to have your templates fill in these colors:
+The `tamagui` components have standardized on the following minimum theme, so if
+you are generating themes for use with the tamagui components, you'll want to
+have your templates fill in these colors:
 
 ```tsx
 {
@@ -250,13 +293,17 @@ The `tamagui` components have standardized on the following minimum theme, so if
 }
 ```
 
-We could make a quick and hard-coded function that takes a template + palette and returns a theme, just to illustrate how they are used:
+We could make a quick and hard-coded function that takes a template + palette
+and returns a theme, just to illustrate how they are used:
 
 ```tsx
-const createTheme = (palette: string[], colorTemplate: {
-  background: number
-  color: number
-}) => ({
+const createTheme = (
+  palette: string[],
+  colorTemplate: {
+    background: number
+    color: number
+  },
+) => ({
   background: palette[colorTemplate.background],
   color: palette[colorTemplate.color],
 })
@@ -268,14 +315,18 @@ createTheme(dark_blue, { background: 0, color: 11 })
 // }
 ```
 
-So, why do this? Well, if we have more than one theme, we likely want to use the same template over and over. This generally makes sense when you match the lightness/saturation, but have a different hue. Even your base `light` and `dark` theme could share the same template.
+So, why do this? Well, if we have more than one theme, we likely want to use the
+same template over and over. This generally makes sense when you match the
+lightness/saturation, but have a different hue. Even your base `light` and
+`dark` theme could share the same template.
 
 The Tamagui site shares templates across all the color themes:
 
 <Blog.ThemeBuilder.ExamplePalette theme="blue" />
 <Blog.ThemeBuilder.ExamplePalette theme="red" />
 
-In this case, we'd call `createTheme` with the same template, just changing out the red or blue palette:
+In this case, we'd call `createTheme` with the same template, just changing out
+the red or blue palette:
 
 ```tsx
 const colorTemplate = {
@@ -287,13 +338,17 @@ const blue_theme = createTheme(bluePalette, colorTemplate)
 const red_theme = createTheme(redPalette, colorTemplate)
 ```
 
-This is nice. We can share a template but pass in different palettes, ensuring we can generate consistent themes but swap out for different palettes.
+This is nice. We can share a template but pass in different palettes, ensuring
+we can generate consistent themes but swap out for different palettes.
 
-Still, the real utility of templates becomes most clear when we get into sub-themes.
+Still, the real utility of templates becomes most clear when we get into
+sub-themes.
 
 #### Sub-themes
 
-Let's take a quick detour. Tamagui themes can nest as many times as you want. This lets you do some amazing things. We can set up a "subtle" sub-theme that turns anything inside it to have a lower contrast feel:
+Let's take a quick detour. Tamagui themes can nest as many times as you want.
+This lets you do some amazing things. We can set up a "subtle" sub-theme that
+turns anything inside it to have a lower contrast feel:
 
 ```tsx
 const dark = {
@@ -314,7 +369,8 @@ createTamagui({
 })
 ```
 
-Note the `_subtle`. An underscore defines a sub-theme, so `dark_subtle` is a sub-theme of `dark`. In your code you can now do this:
+Note the `_subtle`. An underscore defines a sub-theme, so `dark_subtle` is a
+sub-theme of `dark`. In your code you can now do this:
 
 ```tsx
 import { View, Theme, styled } from '@tamagui/core'
@@ -338,11 +394,19 @@ export default () => (
 )
 ```
 
-Sub-themes are amazing - they avoid a trap that you can fall into when designing screens where you decide you want a different look for an area, so you go off and change all the color values. But then later on you want to share that area somewhere else, or perhaps you just change your mind and want to revert the feel. In those two cases you'd either be stuck refactoring the whole area to accept two or more sets of ternaries on every color value, or you'd have to manually go through and change all the values by hand.
+Sub-themes are amazing - they avoid a trap that you can fall into when designing
+screens where you decide you want a different look for an area, so you go off
+and change all the color values. But then later on you want to share that area
+somewhere else, or perhaps you just change your mind and want to revert the
+feel. In those two cases you'd either be stuck refactoring the whole area to
+accept two or more sets of ternaries on every color value, or you'd have to
+manually go through and change all the values by hand.
 
-Instead with a sub-theme, you can throw `<Theme name="subtle">` around the entire area without having to change any of the code inside of it at all.
+Instead with a sub-theme, you can throw `<Theme name="subtle">` around the
+entire area without having to change any of the code inside of it at all.
 
-Where it gets interesting is in a final feature of sub-themes: component themes, which are really just sub-themes in disguise.
+Where it gets interesting is in a final feature of sub-themes: component themes,
+which are really just sub-themes in disguise.
 
 Taking our example above, we can add a `name` to our `styled` call:
 
@@ -357,7 +421,8 @@ const Square = styled(View, {
 })
 ```
 
-And just like that, if we define a `_Square` sub-theme, any usage of `<Square />` will pick it up:
+And just like that, if we define a `_Square` sub-theme, any usage of
+`<Square />` will pick it up:
 
 ```tsx
 // in your tamagui.config.ts:
@@ -390,13 +455,19 @@ export default () => (
 )
 ```
 
-This is how Tamagui "solves" themes. It gives you incredible power to re-skin the entire interface without having to touch any code. It's not mandatory - you can always just go in and change the color values inline as you please. But it does mean that we (and your team) can ship components and screens that can be completely re-skinned at any point in the tree.
+This is how Tamagui "solves" themes. It gives you incredible power to re-skin
+the entire interface without having to touch any code. It's not mandatory - you
+can always just go in and change the color values inline as you please. But it
+does mean that we (and your team) can ship components and screens that can be
+completely re-skinned at any point in the tree.
 
-Think of it as a super-power. If you don't use it, there's no downside. But if you do, you gain a pretty powerful new ability.
+Think of it as a super-power. If you don't use it, there's no downside. But if
+you do, you gain a pretty powerful new ability.
 
 ### createThemeBuilder
 
-Now that we have all the required context to understand palettes and templates, we can get familiar with the `createThemeBuilder` API.
+Now that we have all the required context to understand palettes and templates,
+we can get familiar with the `createThemeBuilder` API.
 
 Let's get back to our minimal example:
 
@@ -416,7 +487,7 @@ const themesBuilder = createThemeBuilder()
     subtle: {
       background: 1,
       color: -1,
-    }
+    },
   })
   .addThemes({
     light: {
@@ -437,7 +508,8 @@ const themesBuilder = createThemeBuilder()
 export const themes = themesBuilder.build()
 ```
 
-This is the full API, minus some optional extra props that each function takes. Calling `themesBuilder.build()` will generate the following:
+This is the full API, minus some optional extra props that each function takes.
+Calling `themesBuilder.build()` will generate the following:
 
 ```tsx
 {
@@ -458,4 +530,159 @@ This is the full API, minus some optional extra props that each function takes. 
     color: '#eee',
   },
 }
+```
+
+### Customizing Themes with getTheme
+
+Both `createThemeBuilder` and `createThemes` support a powerful `getTheme`
+callback that allows you to modify or enhance any generated theme. This gives
+you full control to customize themes at any level of the hierarchy.
+
+The `getTheme` callback receives detailed metadata about each theme and returns
+the final theme object:
+
+```tsx
+import { createThemeBuilder } from '@tamagui/theme-builder'
+
+const themesBuilder = createThemeBuilder({
+  getTheme: ({
+    theme,
+    name,
+    scheme,
+    level,
+    parentName,
+    parentNames,
+    palette,
+    template,
+  }) => {
+    // Customize the theme based on any criteria
+    return {
+      ...theme,
+      // Add custom properties
+      customBorder: scheme === 'dark' ? '#333' : '#ddd',
+      // Override generated values
+      background: level > 1 ? `${theme.background}cc` : theme.background,
+    }
+  },
+})
+```
+
+The `getTheme` callback receives these parameters:
+
+- `theme` - The generated theme object (before customization)
+- `name` - The full theme name (e.g., `'light_subtle_Card'`)
+- `scheme` - Either `'light'` or `'dark'` if the theme name starts with
+  light/dark, otherwise `undefined`
+- `level` - The nesting level (1 for base themes, 2 for first children, etc.)
+- `parentName` - The immediate parent theme name
+- `parentNames` - Array of all parent names in the hierarchy
+- `palette` - The palette array used for this theme
+- `template` - The template object used for this theme
+
+Here are some practical examples:
+
+**Add opacity to nested themes:**
+
+```tsx
+const themes = createThemeBuilder()
+  .addPalettes({
+    /* ... */
+  })
+  .addTemplates({
+    /* ... */
+  })
+  .addThemes({
+    /* ... */
+  })
+  .getTheme(({ theme, level }) => {
+    if (level > 1) {
+      return { ...theme, background: `${theme.background}f0` }
+    }
+    return theme
+  })
+  .build()
+```
+
+**Customize by scheme:**
+
+```tsx
+const themes = createThemes({
+  base: {
+    palette: {
+      light: ['#fff', '#000'],
+      dark: ['#000', '#fff'],
+    },
+  },
+  getTheme: ({ theme, scheme }) => ({
+    ...theme,
+    shadowColor: scheme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)',
+  }),
+})
+```
+
+**Apply different styles by nesting level:**
+
+```tsx
+const themes = createThemeBuilder()
+  .addPalettes({
+    /* ... */
+  })
+  .addTemplates({
+    /* ... */
+  })
+  .addThemes({
+    /* ... */
+  })
+  .getTheme(({ theme, level }) => ({
+    ...theme,
+    elevation: level === 1 ? 0 : level === 2 ? 2 : 4,
+    borderRadius: level > 1 ? 8 : 0,
+  }))
+  .build()
+```
+
+### nonInheritedValues
+
+Use `nonInheritedValues` to add theme properties that won't be passed down to
+child themes. This is useful for extra colors or values that should only exist
+on base themes:
+
+```tsx
+createThemeBuilder().addThemes({
+  light: {
+    template: 'base',
+    palette: 'light',
+    nonInheritedValues: {
+      // These won't be inherited by light_Button, light_Card, etc.
+      blue1: '#e0f2fe',
+      blue2: '#bae6fd',
+      shadowColor: 'rgba(0,0,0,0.1)',
+    },
+  },
+})
+```
+
+### TypeScript Support
+
+Types are automatically inferred. The `getTheme()` method infers both the input
+theme type and your return type:
+
+```tsx
+const themes = createThemeBuilder()
+  .addPalettes({
+    /* ... */
+  })
+  .addTemplates({
+    /* ... */
+  })
+  .addThemes({
+    /* ... */
+  })
+  .getTheme(({ theme }) => ({
+    ...theme,
+    elevation: 2, // theme.background, theme.color, etc. are typed!
+  }))
+  .build()
+
+// themes.light.elevation is typed as number
 ```

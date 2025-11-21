@@ -1,4 +1,14 @@
 import type { Template } from '@tamagui/create-theme';
+export type GetThemeFn<ThemeType extends Record<string, string | number>> = (props: {
+    name: string;
+    theme: Record<string, string>;
+    scheme?: 'light' | 'dark';
+    parentName: string;
+    parentNames: string[];
+    level: number;
+    palette?: string[];
+    template?: Template;
+}) => ThemeType;
 export type TemplateStrategy = 'base' | 'stronger' | 'strongest';
 export type ThemeSuiteItem = {
     id: string;

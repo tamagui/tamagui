@@ -1,6 +1,7 @@
 import type {
   MaskDefinitions,
   PaletteDefinitions,
+  Template,
   TemplateDefinitions,
   ThemeDefinitions,
   ThemeUsingMask,
@@ -13,6 +14,7 @@ import {
   objectFromEntries,
 } from '@tamagui/create-theme'
 import type { Narrow } from '@tamagui/web'
+import type { GetThemeFn } from './types'
 
 export type ThemeBuilderInternalState = {
   palettes?: PaletteDefinitions
@@ -53,9 +55,20 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
         : TD
       : TD
 
-type ThemeBuilderBuildResult<S extends ThemeBuilderInternalState> = {
-  [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
-}
+type ThemeBuilderBuildResult<
+  S extends ThemeBuilderInternalState,
+  FinalTheme extends Record<string, string | number> = Record<string, string>,
+> = Record<string, string> extends FinalTheme
+  ? FinalTheme extends Record<string, string>
+    ? {
+        [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
+      }
+    : {
+        [Key in keyof S['themes']]: FinalTheme
+      }
+  : {
+      [Key in keyof S['themes']]: FinalTheme
+    }
 
 type GetParentName<N extends string> =
   N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}`
@@ -68,9 +81,29 @@ type GetParentName<N extends string> =
           ? `${A}`
           : never
 
+// Flatten union types into a single object with optional properties
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
+
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+type FlattenUnion<T extends Record<string, string | number>> = Prettify<{
+  [K in keyof UnionToIntersection<T>]: UnionToIntersection<T>[K]
+}> extends infer R extends Record<string, string | number>
+  ? R
+  : never
+
 export class ThemeBuilder<
   State extends ThemeBuilderInternalState = ThemeBuilderInternalState,
+  FinalTheme extends Record<string, string | number> = Record<string, string>,
 > {
+  private _getThemeFn?: GetThemeFn<FinalTheme>
+
   constructor(public state: State) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {
@@ -82,7 +115,8 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         palettes: P
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -95,7 +129,8 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         templates: T
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -110,7 +145,8 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         masks: M
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -143,7 +179,8 @@ export class ThemeBuilder<
         //   [Key in keyof T]: TemplateToTheme<T[Key]>
         // } & State['themes']
         themes: T
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -236,11 +273,28 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         themes: ChildThemes
-      }
+      },
+      FinalTheme
     >
   }
 
-  build(): ThemeBuilderBuildResult<State> {
+  getTheme<NewTheme extends Record<string, string | number>>(
+    fn: (props: {
+      name: string
+      theme: GetGeneratedTheme<State['themes'][keyof State['themes']], State>
+      scheme?: 'light' | 'dark'
+      parentName: string
+      parentNames: string[]
+      level: number
+      palette?: string[]
+      template?: Template
+    }) => NewTheme
+  ) {
+    this._getThemeFn = fn as any
+    return this as any as ThemeBuilder<State, FlattenUnion<NewTheme>>
+  }
+
+  build(): ThemeBuilderBuildResult<State, FinalTheme> {
     if (!this.state.themes) {
       return {} as any
     }
@@ -331,7 +385,7 @@ export class ThemeBuilder<
           )
         }
 
-        out[themeName] = createThemeWithPalettes(
+        const theme = createThemeWithPalettes(
           this.state.palettes,
           paletteName,
           template,
@@ -339,6 +393,21 @@ export class ThemeBuilder<
           themeName,
           true
         )
+
+        out[themeName] = this._getThemeFn
+          ? this._getThemeFn({
+              theme,
+              name: themeName,
+              level: nameParts.length,
+              parentName,
+              scheme: /^(light|dark)$/.test(nameParts[0])
+                ? (nameParts[0] as 'light' | 'dark')
+                : undefined,
+              parentNames: nameParts.slice(0, -1),
+              palette,
+              template,
+            })
+          : theme
       }
     }
 

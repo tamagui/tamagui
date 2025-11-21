@@ -10,6 +10,7 @@
   ],
   "exclude": [
     "types",
+    "tests",
     "dist",
     "**/__tests__"
   ]
