@@ -1,5 +1,6 @@
 import type { MaskDefinitions, PaletteDefinitions, TemplateDefinitions, ThemeDefinitions } from '@tamagui/create-theme';
 import type { Narrow } from '@tamagui/web';
+import { GetThemeFn } from './types';
 export type ThemeBuilderInternalState = {
     palettes?: PaletteDefinitions;
     templates?: TemplateDefinitions;
@@ -22,9 +23,13 @@ type ThemeBuilderBuildResult<S extends ThemeBuilderInternalState> = {
     [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>;
 };
 type GetParentName<N extends string> = N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}` ? `${A}_${B}_${C}_${D}` : N extends `${infer A}_${infer B}_${infer C}_${string}` ? `${A}_${B}_${C}` : N extends `${infer A}_${infer B}_${string}` ? `${A}_${B}` : N extends `${infer A}_${string}` ? `${A}` : never;
+type ThemeBuilderOptions = {
+    getTheme?: GetThemeFn;
+};
 export declare class ThemeBuilder<State extends ThemeBuilderInternalState = ThemeBuilderInternalState> {
     state: State;
-    constructor(state: State);
+    options: ThemeBuilderOptions;
+    constructor(state: State, options: ThemeBuilderOptions);
     addPalettes<const P extends PaletteDefinitions>(palettes: P): ThemeBuilder<State & {
         palettes: P;
     }>;
@@ -53,6 +58,6 @@ export declare class ThemeBuilder<State extends ThemeBuilderInternalState = Them
     }>;
     build(): ThemeBuilderBuildResult<State>;
 }
-export declare function createThemeBuilder(): ThemeBuilder<{}>;
+export declare function createThemeBuilder(options?: ThemeBuilderOptions): ThemeBuilder<{}>;
 export {};
 //# sourceMappingURL=ThemeBuilder.d.ts.map

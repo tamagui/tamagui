@@ -13,6 +13,7 @@ import {
   objectFromEntries,
 } from '@tamagui/create-theme'
 import type { Narrow } from '@tamagui/web'
+import { GetThemeFn } from './types'
 
 export type ThemeBuilderInternalState = {
   palettes?: PaletteDefinitions
@@ -68,10 +69,17 @@ type GetParentName<N extends string> =
           ? `${A}`
           : never
 
+type ThemeBuilderOptions = {
+  getTheme?: GetThemeFn
+}
+
 export class ThemeBuilder<
   State extends ThemeBuilderInternalState = ThemeBuilderInternalState,
 > {
-  constructor(public state: State) {}
+  constructor(
+    public state: State,
+    public options: ThemeBuilderOptions
+  ) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {
     this.state.palettes = {
@@ -331,7 +339,7 @@ export class ThemeBuilder<
           )
         }
 
-        out[themeName] = createThemeWithPalettes(
+        const theme = createThemeWithPalettes(
           this.state.palettes,
           paletteName,
           template,
@@ -339,6 +347,19 @@ export class ThemeBuilder<
           themeName,
           true
         )
+
+        out[themeName] = this.options.getTheme
+          ? this.options.getTheme({
+              theme,
+              name: nameParts[nameParts.length - 1] || '',
+              level: nameParts.length,
+              fullName: themeName,
+              parentName,
+              parentNames: nameParts.slice(0, -1),
+              palette,
+              template,
+            })
+          : theme
       }
     }
 
@@ -380,8 +401,8 @@ export class ThemeBuilder<
   }
 }
 
-export function createThemeBuilder() {
-  return new ThemeBuilder({})
+export function createThemeBuilder(options: ThemeBuilderOptions = {}) {
+  return new ThemeBuilder({}, options)
 }
 
 // // test types

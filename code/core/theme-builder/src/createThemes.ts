@@ -3,7 +3,7 @@ import { defaultComponentThemes } from './defaultComponentThemes'
 import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
 import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
-import type { BuildPalettes, BuildTemplates } from './types'
+import type { BuildPalettes, BuildTemplates, GetThemeFn } from './types'
 
 /**
  * TODO
@@ -47,11 +47,7 @@ export type CreateThemesProps<
   grandChildrenThemes?: GrandChildrenThemes
   templates?: Templates
   componentThemes?: ComponentThemes
-  colorsToTheme?: (props: {
-    colors: string[]
-    name: string
-    scheme?: 'light' | 'dark'
-  }) => Record<string, string>
+  getTheme?: GetThemeFn
 }
 
 export function createThemes<
@@ -69,6 +65,7 @@ export function createThemes<
     grandChildrenThemes,
     templates = defaultTemplates,
     componentThemes,
+    getTheme,
   } = props
 
   const builder = createSimpleThemeBuilder({
@@ -171,11 +168,13 @@ export function createSimpleThemeBuilder<
   grandChildrenThemes?: GrandChildrenThemes
   componentThemes?: ComponentThemes
   extra?: Extra
+  getTheme?: GetThemeFn
 }): {
   themeBuilder: ThemeBuilder<any>
   themes: Record<ThemeNames, FullTheme>
 } {
   const {
+    getTheme,
     extra,
     childrenThemes = null as unknown as ChildrenThemes,
     grandChildrenThemes = null as unknown as GrandChildrenThemes,
@@ -188,7 +187,9 @@ export function createSimpleThemeBuilder<
   } = props
 
   // start theme-builder
-  let themeBuilder = createThemeBuilder()
+  let themeBuilder = createThemeBuilder({
+    getTheme,
+  })
     .addPalettes(palettes)
     .addTemplates(templates)
     .addThemes({

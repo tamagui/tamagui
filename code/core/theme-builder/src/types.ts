@@ -1,5 +1,16 @@
 import type { Template } from '@tamagui/create-theme'
 
+export type GetThemeFn = (props: {
+  theme: Record<string, string>
+  parentName: string
+  parentNames: string[]
+  fullName: string
+  name: string
+  level: number
+  palette?: string[]
+  template?: Template
+}) => Record<string, string>
+
 export type TemplateStrategy = 'base' | 'stronger' | 'strongest'
 
 export type ThemeSuiteItem = {
