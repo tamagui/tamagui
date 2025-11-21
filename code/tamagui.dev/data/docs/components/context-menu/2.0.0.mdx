@@ -1,0 +1,570 @@
+---
+title: Context Menu
+description: A Context Menu
+name: context menu
+component: ContextMenu
+package: context-menu
+---
+
+# Context Menu
+
+<Description>
+  A menu component that is triggered by a right-click on the web and a long
+  press on touch devices.
+</Description>
+
+<HeroContainer>
+  <ContextMenuDemo />
+</HeroContainer>
+
+```tsx hero template=ContextMenu
+
+```
+
+<Highlights
+  features={[
+    'Full keyboard navigation.',
+    'Supports items, icons, images, checkboxes, groups, and more.',
+    'Supports submenus.',
+    'Supports modal and non-modal modes.',
+    'Supports native menus on native platforms.',
+    'Customizable alignment, offsets, and positioning.',
+    'Support for native iOS and Android icons.',
+    'Supports previews on iOS.',
+  ]}
+/>
+
+## Installation
+
+ContextMenu is already installed in `tamagui`, or you can install it
+independently:
+
+```bash
+yarn add @tamagui/context-menu
+```
+
+If you want to use native menus, make sure to install these dependencies in your
+Expo project:
+
+```bash
+yarn add @react-native-menu/menu
+```
+
+```bash
+yarn add react-native-ios-context-menu
+```
+
+```bash
+yarn add react-native-ios-context-menu
+```
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```jsx
+import { Accordion } from 'tamagui'
+
+export default () => (
+  <ContextMenu>
+    <ContextMenu.Trigger asChild>
+      <YStack>
+        <Text>Right Click or longPress</Text>
+      </YStack>
+    </ContextMenu.Trigger>
+
+    <ContextMenu.Portal zIndex={100}>
+      <ContextMenu.Content>
+        <ContextMenu.Item>
+          <ContextMenu.ItemTitle>About Notes</ContextMenu.ItemTitle>
+        </ContextMenu.Item>
+        <ContextMenu.Item>
+          <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
+        </ContextMenu.Item>
+        <ContextMenu.Item>
+          <ContextMenu.ItemTitle>
+            <Text>Calender</Text>
+          </ContextMenu.ItemTitle>
+          <ContextMenu.ItemIcon>
+            <Calendar color="gray" size="$1" />
+          </ContextMenu.ItemIcon>
+        </ContextMenu.Item>
+        <ContextMenu.Separator />
+        <ContextMenu.Sub>
+          <ContextMenu.SubTrigger>
+            <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
+          </ContextMenu.SubTrigger>
+          <ContextMenu.Portal zIndex={200}>
+            <ContextMenu.SubContent>
+              <ContextMenu.Label fontSize={'$1'}>
+                Note settings
+              </ContextMenu.Label>
+              <ContextMenu.Item onSelect={onSelect} key="create-note">
+                <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
+              </ContextMenu.Item>
+              <ContextMenu.Item onSelect={onSelect} key="delete-all">
+                <ContextMenu.ItemTitle>Delete all notes</ContextMenu.ItemTitle>
+              </ContextMenu.Item>
+              <ContextMenu.Item onSelect={onSelect} key="sync-all">
+                <ContextMenu.ItemTitle>Sync notes</ContextMenu.ItemTitle>
+              </ContextMenu.Item>
+            </ContextMenu.SubContent>
+          </ContextMenu.Portal>
+        </ContextMenu.Sub>
+      </ContextMenu.Content>
+    </ContextMenu.Portal>
+  </ContextMenu>
+)
+```
+
+## API Reference
+
+### Context Menu
+
+Contains every component for the Context Menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'placement',
+      type: 'Placement',
+      required: false,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'onOpenWillChange',
+      type: '(open: boolean) => void',
+      required: false,
+      platform: 'ios',
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: `Renders into root of app instead of inline.`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps | boolean',
+      required: false,
+      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps | boolean',
+      required: false,
+      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Portal
+
+This is necessary for the Context Menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'zIndex',
+      required: false,
+      type: 'number',
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Trigger
+
+The ContextMenu will only be triggered when the user right-clicks or
+long-presses within the Trigger area.
+
+<PropsTable
+  data={[
+    {
+      name: 'action',
+      required: false,
+      type: 'press|longPress',
+      default: 'longPress',
+      platform: 'android/ios',
+      description:
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for ContextMenu.",
+    },
+  ]}
+/>
+
+### Content
+
+Contains the content of the Context Menu
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Item
+
+Context Menu Item
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'React.ReactNode',
+      required: true,
+    },
+
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: false
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false
+    },
+    {
+      name: 'onSelect',
+      type: 'function',
+      required: true
+    },
+    {
+      name: 'onFocus',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'onBlur',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'This value is necessary when the content of ItemTitle is not a string.',
+    },
+
+]} />
+
+### ItemTitle
+
+Renders the title of the menu item.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+<Notice>
+  You can directly pass a text node to the ItemTitle. However, if you use a nested
+  React node like `<Text>`, you need to pass `textValue` to the `<Item>` so that it
+  works with native menus.
+</Notice>
+
+### ItemIcon
+
+A component to render an icon. For non-native menus, you can pass an icon
+component. For native menus, you can pass platform-specific icons to the
+`android`/`ios` props.
+
+On iOS, it renders platform
+[SF Symbol](https://hotpot.ai/free-icons?s=sfSymbols) icons.
+
+<PropsTable
+  data={[
+    {
+      name: 'ios',
+      type: 'object',
+      required: false,
+    },
+    {
+      name: 'android',
+      type: 'object',
+      required: false,
+    },
+  ]}
+/>
+
+```jsx line=1
+<ContextMenu.ItemIcon
+  ios={{
+    name: '0.circle.fill', // required
+    pointSize: 5,
+    weight: 'semibold',
+    scale: 'medium',
+    // can also be a color string. Requires iOS 15+
+    hierarchicalColor: {
+      dark: 'blue',
+      light: 'green',
+    },
+    // alternative to hierarchical color. Requires iOS 15+
+    paletteColors: [
+      {
+        dark: 'blue',
+        light: 'green',
+      },
+    ],
+  }}
+>
+  <CircleIcon />
+</ContextMenu.ItemIcon>
+```
+
+### ItemImage
+
+A component to render an item image. For native menus, it only works on iOS. It
+takes the same properties as `@tamagui/image`.
+
+### ItemSubtitle
+
+A component to render a subtitle for the menu item. For native menus, it only
+works on iOS.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Group
+
+A component that groups multiple items.
+
+### CheckboxItem
+
+Usage is similar to Item, with added checkbox features.
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: false,
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onFocus',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'onBlur',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'This value is necessary when the content of ItemTitle is not a string.',
+    },
+    {
+      name: 'value',
+      type: 'on|off|mixed',
+      required: true,
+      platform: 'ios|android',
+    },
+    {
+      name: 'onValueChange',
+      type: 'function',
+      required: true,
+      platform: 'ios|android',
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      required: true,
+      description: 'This value is necessary for non-native menus.',
+    },
+    {
+      name: 'onCheckedChange',
+      type: 'function',
+      required: true,
+      description: 'This value is necessary for non-native menus.',
+    },
+  ]}
+/>
+
+### ItemIndicator
+
+Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
+This allows you to conditionally render a checkmark.
+
+```jsx line=1
+<ContextMenu.ItemIndicator>
+  <CheckmarkIcon /> {/* This does not work with the native prop. */}
+</ContextMenu.ItemIndicator>
+```
+
+### Lable
+
+Renders a non-focusable label.
+
+On native menus, only one label is supported per menu and submenu.
+
+### Arrow
+
+Renders an arrow component.
+
+On native menus, only one label is supported per menu and submenu.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'number|SizeToken',
+      required: true,
+    },
+  ]}
+/>
+
+### Separator
+
+Renders a content separator component. This only works with non-native menus.
+
+### Sub
+
+A component that holds sub-menu parts.
+
+### SubContent
+
+Renders the content of a `SubMenu`.
+
+### SubTrigger
+
+Same as `Trigger`, but for `SubMenu`.
+
+### Preview (iOS only)
+
+When the Context Menu is visible, this renders a custom component. It needs to
+be passed a function as a child and only works with the native iOS menu.
+
+<Notice>
+  Should be rendered as a child of `<Item.Content />
+  `.
+</Notice>
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'number',
+      platform: 'ios',
+    },
+    {
+      name: 'onPress',
+      type: 'function',
+      platform: 'ios',
+    },
+    {
+      name: 'isResizeAnimated',
+      type: 'boolean',
+      default: true,
+      platform: 'ios',
+    },
+    {
+      name: 'borderRadius',
+      type: 'number',
+      required: false,
+    },
+    {
+      name: 'backgroundColor',
+      type: 'object',
+    },
+    {
+      name: 'preferredCommitStyle',
+      type: 'pop|dismiss',
+    },
+  ]}
+/>
+
+```jsx line=1
+<ContextMenu.Preview
+  // optional props:
+  preferredCommitStyle="pop" // or "dismiss"
+  backgroundColor={{
+    // or a color string directly
+    dark: 'black',
+    light: 'white',
+  }}
+>
+  {() => <Preview />}
+</ContextMenu.Preview>
+```

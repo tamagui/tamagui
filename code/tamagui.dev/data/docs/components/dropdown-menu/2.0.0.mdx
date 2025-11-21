@@ -1,0 +1,511 @@
+---
+title: Dropdown Menu
+description: A Dropdown Menu
+name: dropdown menu
+component: DropdownMenu
+package: dropdown-menu
+---
+
+# Dropdown Menu
+
+<Description>
+  A menu component that is triggered by a right-click on the web and a long
+  press on touch devices.
+</Description>
+
+<HeroContainer>
+  <DropDownMenuDemo />
+</HeroContainer>
+
+```tsx hero template=DropdownMenu
+
+```
+
+<Highlights
+  features={[
+    'Full keyboard navigation.',
+    'Supports items, icons, images, checkboxes, groups, and more.',
+    'Supports submenus.',
+    'Supports modal and non-modal modes.',
+    'Supports native menus on native platforms.',
+    'Customizable alignment, offsets, and positioning.',
+    'Support for native iOS and Android icons.',
+    'Supports previews on iOS.',
+  ]}
+/>
+
+## Installation
+
+DropdownMenu is already installed in `tamagui`, or you can install it
+independently:
+
+```bash
+yarn add @tamagui/dropdown-menu
+```
+
+If you want to use native menus, make sure to install these dependencies in your
+Expo project:
+
+```bash
+yarn add @react-native-menu/menu
+```
+
+```bash
+yarn add react-native-ios-context-menu
+```
+
+```bash
+yarn add react-native-ios-context-menu
+```
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```jsx
+import { Accordion } from 'tamagui'
+
+export default () => (
+  <DropdownMenu>
+    <DropdownMenu.Trigger asChild>
+      <Button />
+    </DropdownMenu.Trigger>
+
+    <DropdownMenu.Portal zIndex={100}>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item>
+          <DropdownMenu.ItemTitle>About Notes</DropdownMenu.ItemTitle>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item>
+          <DropdownMenu.ItemTitle>Settings</DropdownMenu.ItemTitle>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item>
+          <DropdownMenu.ItemTitle>
+            <Text>Calender</Text>
+          </DropdownMenu.ItemTitle>
+          <DropdownMenu.ItemIcon>
+            <Calendar color="gray" size="$1" />
+          </DropdownMenu.ItemIcon>
+        </DropdownMenu.Item>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Sub>
+          <DropdownMenu.SubTrigger>
+            <DropdownMenu.ItemTitle>Actions</DropdownMenu.ItemTitle>
+          </DropdownMenu.SubTrigger>
+          <DropdownMenu.Portal zIndex={200}>
+            <DropdownMenu.SubContent>
+              <DropdownMenu.Label fontSize={'$1'}>
+                Note settings
+              </DropdownMenu.Label>
+              <DropdownMenu.Item onSelect={onSelect} key="create-note">
+                <DropdownMenu.ItemTitle>Create note</DropdownMenu.ItemTitle>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item onSelect={onSelect} key="delete-all">
+                <DropdownMenu.ItemTitle>
+                  Delete all notes
+                </DropdownMenu.ItemTitle>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item onSelect={onSelect} key="sync-all">
+                <DropdownMenu.ItemTitle>Sync notes</DropdownMenu.ItemTitle>
+              </DropdownMenu.Item>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Sub>
+      </DropdownMenu.Content>
+    </DropdownMenu.Portal>
+  </DropdownMenu>
+)
+```
+
+## API Reference
+
+### Dropdown Menu
+
+Contains every component for the Dropdown Menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'placement',
+      type: 'Placement',
+      required: false,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'onOpenWillChange',
+      type: '(open: boolean) => void',
+      required: false,
+      platform: 'ios',
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: `Renders into root of app instead of inline.`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps | boolean',
+      required: false,
+      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps | boolean',
+      required: false,
+      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Portal
+
+This is necessary for the Dropdown Menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'zIndex',
+      required: false,
+      type: 'number',
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Trigger
+
+The DropdownMenu will only be triggered when the user right-clicks or
+long-presses within the Trigger area.
+
+<PropsTable
+  data={[
+    {
+      name: 'action',
+      required: false,
+      type: 'press|longPress',
+      default: 'longPress',
+      platform: 'android/ios',
+      description:
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for DropdownMenu.",
+    },
+  ]}
+/>
+
+### Content
+
+Contains the content of the Dropdown Menu
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Item
+
+Dropdown Menu Item
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'React.ReactNode',
+      required: true,
+    },
+
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: false
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false
+    },
+    {
+      name: 'onSelect',
+      type: 'function',
+      required: true
+    },
+    {
+      name: 'onFocus',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'onBlur',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description: 'This value is necessary when the content of ItemTitle is not a string.'
+    },
+
+]} />
+
+### ItemTitle
+
+Renders the title of the menu item.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+<Notice>
+  You can directly pass a text node to the ItemTitle. However, if you use a nested
+  React node like `<Text>`, you need to pass `textValue` to the `<Item>` so that it
+  works with native menus.
+</Notice>
+
+### ItemIcon
+
+A component to render an icon. For non-native menus, you can pass an icon
+component. For native menus, you can pass platform-specific icons to the
+`android`/`ios` props.
+
+On iOS, it renders the native
+[SF Symbols](https://github.com/andrewtavis/sf-symbols-online) icons.
+
+<PropsTable
+  data={[
+    {
+      name: 'ios',
+      type: 'object',
+      required: false,
+    },
+    {
+      name: 'android',
+      type: 'object',
+      required: false,
+    },
+  ]}
+/>
+
+```jsx line=1
+<DropdownMenu.ItemIcon
+  ios={{
+    name: '0.circle.fill', // required
+    pointSize: 5,
+    weight: 'semibold',
+    scale: 'medium',
+    // can also be a color string. Requires iOS 15+
+    hierarchicalColor: {
+      dark: 'blue',
+      light: 'green',
+    },
+    // alternative to hierarchical color. Requires iOS 15+
+    paletteColors: [
+      {
+        dark: 'blue',
+        light: 'green',
+      },
+    ],
+  }}
+>
+  <CircleIcon />
+</DropdownMenu.ItemIcon>
+```
+
+### ItemImage
+
+A component to render an item image. For native menus, it only works on iOS. It
+takes the same properties as `@tamagui/image`.
+
+### ItemSubtitle
+
+A component to render a subtitle for the menu item. For native menus, it only
+works on iOS.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Group
+
+A component that groups multiple items.
+
+### CheckboxItem
+
+Usage is similar to Item, with added checkbox features.
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: false,
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onFocus',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'onBlur',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'This value is necessary when the content of ItemTitle is not a string.',
+    },
+    {
+      name: 'value',
+      type: 'on|off|mixed',
+      required: true,
+      platform: 'ios|android',
+    },
+    {
+      name: 'onValueChange',
+      type: 'function',
+      required: true,
+      platform: 'ios|android',
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      required: true,
+      description: 'This value is necessary for non-native menus.',
+    },
+    {
+      name: 'onCheckedChange',
+      type: 'function',
+      required: true,
+      description: 'This value is necessary for non-native menus.',
+    },
+  ]}
+/>
+
+### ItemIndicator
+
+Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
+This allows you to conditionally render a checkmark.
+
+```jsx line=1
+<DropdownMenu.ItemIndicator>
+  <CheckmarkIcon /> {/* This does not work with the native prop. */}
+</DropdownMenu.ItemIndicator>
+```
+
+### Lable
+
+Renders a non-focusable label.
+
+On native menus, only one label is supported per menu and submenu.
+
+### Arrow
+
+Renders an arrow component.
+
+On native menus, only one label is supported per menu and submenu.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'number|SizeToken',
+      required: true,
+    },
+  ]}
+/>
+
+### Separator
+
+Renders a content separator component. This only works with non-native menus.
+
+### Sub
+
+A component that holds sub-menu parts.
+
+### SubContent
+
+Renders the content of a `SubMenu`.
+
+### SubTrigger
+
+Same as `Trigger`, but for `SubMenu`.

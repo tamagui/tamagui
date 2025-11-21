@@ -1,69 +1,94 @@
-import { useMedia } from '@tamagui/core'
-import { withStaticProperties } from '@tamagui/helpers'
-import { useControllableState } from '@tamagui/use-controllable-state'
-import type React from 'react'
-import { useMemo } from 'react'
+import { styled, Text, View } from '@tamagui/core'
+import { Image } from '@tamagui/image'
 
-const MenuItem = (props) => {
-  return props.children
-}
+/* -------------------------------------------------------------------------------------------------
+ * MenuGroup
+ * -----------------------------------------------------------------------------------------------*/
 
-type MenuProps = {
-  children?: React.ReactNode
-  open?: boolean
-  defaultOpen?: boolean
-  trigger?: any
-  onOpenChange?: (next: boolean) => void
-}
+const GROUP_NAME = 'MenuGroup'
 
-export const Menu = withStaticProperties(
-  ({ children, open: openProp, defaultOpen, trigger, onOpenChange }: MenuProps) => {
-    const media = useMedia()
-    const [open, setOpen] = useControllableState({
-      prop: openProp,
-      defaultProp: defaultOpen,
-      onChange(next) {
-        onOpenChange?.(next)
+const MenuGroup = styled(View, {
+  name: GROUP_NAME,
+  variants: {
+    unstyled: {
+      false: {
+        role: 'group',
+        width: '100%',
       },
-    })
-
-    const triggerProps = useMemo(() => {
-      return {
-        onPress: () => {
-          setOpen((x) => !x)
-        },
-      }
-    }, [])
-
-    // if (media.sm) {
-    //   return (
-    //     <>
-    //       {cloneElement(trigger, triggerProps)}
-    //       <Drawer open={open} onDismiss={() => setOpen(false)}>
-    //         {children}
-    //       </Drawer>
-    //     </>
-    //   )
-    // }
-
-    return null
-    // return (
-    //   <Popover
-    //     trigger={(props) => cloneElement(trigger, { ...props, ...triggerProps })}
-    //     open={open}
-    //     onOpenChange={setOpen}
-    //   >
-    //     <Popover.Content>
-    //       <Popover.Arrow />
-    //       <YStack backgroundColor="$background" borderRadius="$2">
-    //         {children}
-    //       </YStack>
-    //     </Popover.Content>
-    //   </Popover>
-    // )
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
-  {
-    Item: MenuItem,
-    // Provider: DrawerProvider,
-  }
-)
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * MenuLabel
+ * -----------------------------------------------------------------------------------------------*/
+
+const LABEL_NAME = 'MenuLabel'
+
+const MenuLabel = styled(Text, {
+  name: LABEL_NAME,
+  cursor: 'default',
+})
+
+/* -------------------------------------------------------------------------------------------------
+  MenuSeparator
+ * -----------------------------------------------------------------------------------------------*/
+
+const SEPARATOR_NAME = 'MenuSeparator'
+
+const MenuSeparator = styled(View, {
+  name: SEPARATOR_NAME,
+  role: 'separator',
+  // @ts-ignore
+  'aria-orientation': 'horizontal',
+
+  variants: {
+    unstyled: {
+      false: {
+        borderColor: '$borderColor',
+        flexShrink: 0,
+        borderWidth: 0,
+        flex: 1,
+        height: 0,
+        maxHeight: 0,
+        borderBottomWidth: 1,
+        width: '100%',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
+})
+
+const MenuIcon = styled(View, { name: 'MenuIcon' })
+
+const MenuImage = styled(Image, { name: 'MenuImage' })
+
+const MenuIndicator = styled(View, { name: 'MenuIndicator' })
+
+const MenuItem = styled(View, {
+  name: 'MenuItem',
+  flexDirection: 'row',
+  maxWidth: '100%',
+})
+
+const Title = styled(Text, { name: 'MenuTitle', cursor: 'default' })
+
+const SubTitle = styled(Text, { name: 'MenuSubTitle', cursor: 'default' })
+
+export const MenuPredefinied = {
+  MenuIcon,
+  MenuImage,
+  MenuIndicator,
+  MenuItem,
+  Title,
+  SubTitle,
+  MenuGroup,
+  MenuSeparator,
+  MenuLabel,
+}
