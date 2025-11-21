@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev'
 
-import { MenuPredefined } from '@tamagui/menu'
+import { MenuPredefined } from '@tamagui/create-menu'
 
 import { createDropdownMenu } from './DropdownMenu'
 
