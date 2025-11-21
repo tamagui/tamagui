@@ -1,6 +1,7 @@
 ---
 title: Image
-description: Web compatible and super light image component with Tamagui style props.
+description:
+  Web compatible and super light image component with Tamagui style props.
 name: html
 component: Image
 package: image-next
@@ -17,11 +18,11 @@ demoName: WebNativeImageDemo
 
 <Highlights
   features={[
-    "Web compatible.",
-    "Supports SSR.",
-    "Works on native and web.",
-    "No react-native-web depedency",
-    "Super light",
+    'Web compatible.',
+    'Supports SSR.',
+    'Works on native and web.',
+    'No react-native-web depedency',
+    'Super light',
   ]}
 />
 
@@ -30,26 +31,22 @@ demoName: WebNativeImageDemo
 Image is already installed in `tamagui`, or you can install it independently:
 
 ```bash
-npm install @tamagui/image-next
+npm install @tamagui/image
 ```
 
 ## Usage
 
 ```tsx
-export default () => (
-  <Image
-    src='https://...'
-    width={300}
-    height={400}
-  />
-)
+export default () => <Image src="https://..." width={300} height={400} />
 ```
 
 ## API Reference
 
 ### Image
 
-[Tamagui props](/docs/intro/props) + [Web img props](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) + [React Native Image props](https://necolas.github.io/react-native-web/docs/image/).
+[Tamagui props](/docs/intro/props) +
+[Web img props](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) +
+[React Native Image props](https://necolas.github.io/react-native-web/docs/image/).
 
 <Notice>
   All web [img](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img)
@@ -64,39 +61,39 @@ export default () => (
 <PropsTable
   data={[
     {
-      name: "src",
+      name: 'src',
       required: true,
-      type: "string",
+      type: 'string',
       description: `The image URL.`,
     },
     {
-      name: "alt",
+      name: 'alt',
       required: false,
-      type: "string",
+      type: 'string',
       description: `mandatory and incredibly useful for accessibility`,
     },
     {
-      name: "objectFit",
+      name: 'objectFit',
       required: false,
-      type: "CSS.ObjectFit",
+      type: 'CSS.ObjectFit',
       description: `sets how the content of image is resized to fit its container. it's alternative to resizeMode prop`,
     },
     {
-      name: "unstyled",
+      name: 'unstyled',
       required: false,
-      type: "boolean",
+      type: 'boolean',
       description: `When true will remove all default styles`,
     },
     {
-      name: "onLoad",
+      name: 'onLoad',
       required: false,
-      type: "function",
+      type: 'function',
       description: `Callback when image is loaded`,
     },
     {
-      name: "onError",
+      name: 'onError',
       required: false,
-      type: "function",
+      type: 'function',
       description: `Callback when image fails to load`,
     },
   ]}
