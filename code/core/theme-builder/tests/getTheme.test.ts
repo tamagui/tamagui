@@ -3,15 +3,7 @@ import { createThemeBuilder, createThemes } from '../src'
 
 describe('theme-builder getTheme', () => {
   test('createThemeBuilder with getTheme callback modifies themes', () => {
-    const themeBuilder = createThemeBuilder({
-      getTheme: ({ theme, name }) => {
-        // Add a custom property based on theme name
-        return {
-          ...theme,
-          customProp: `modified-${name}`,
-        }
-      },
-    })
+    const themeBuilder = createThemeBuilder()
       .addPalettes({
         light: ['#fff', '#eee', '#ccc', '#999', '#222', '#111', '#000'],
         dark: ['#000', '#111', '#222', '#999', '#ccc', '#eee', '#fff'],
@@ -33,6 +25,10 @@ describe('theme-builder getTheme', () => {
           palette: 'dark',
         },
       })
+      .getTheme(({ theme, name }) => ({
+        ...theme,
+        customProp: `modified-${name}`,
+      }))
 
     const themes = themeBuilder.build()
 
@@ -45,12 +41,7 @@ describe('theme-builder getTheme', () => {
   test('getTheme receives correct metadata for parent themes', () => {
     const metadata: any[] = []
 
-    createThemeBuilder({
-      getTheme: (props) => {
-        metadata.push(props)
-        return props.theme
-      },
-    })
+    createThemeBuilder()
       .addPalettes({
         light: ['#fff', '#000'],
         dark: ['#000', '#fff'],
@@ -61,6 +52,10 @@ describe('theme-builder getTheme', () => {
       .addThemes({
         light: { template: 'base', palette: 'light' },
         dark: { template: 'base', palette: 'dark' },
+      })
+      .getTheme((props) => {
+        metadata.push(props)
+        return props.theme
       })
       .build()
 
@@ -82,12 +77,7 @@ describe('theme-builder getTheme', () => {
   test('getTheme receives correct metadata for child themes', () => {
     const metadata: any[] = []
 
-    createThemeBuilder({
-      getTheme: (props) => {
-        metadata.push(props)
-        return props.theme
-      },
-    })
+    createThemeBuilder()
       .addPalettes({
         light: ['#fff', '#eee', '#000'],
         dark: ['#000', '#111', '#fff'],
@@ -102,6 +92,10 @@ describe('theme-builder getTheme', () => {
       })
       .addChildThemes({
         subtle: { template: 'subtle' },
+      })
+      .getTheme((props) => {
+        metadata.push(props)
+        return props.theme
       })
       .build()
 
@@ -139,18 +133,7 @@ describe('theme-builder getTheme', () => {
   })
 
   test('getTheme can override theme colors', () => {
-    const themes = createThemeBuilder({
-      getTheme: ({ theme, scheme }) => {
-        // Override background for dark themes
-        if (scheme === 'dark') {
-          return {
-            ...theme,
-            background: '#0a0a0a', // custom dark background
-          }
-        }
-        return theme
-      },
-    })
+    const themes = createThemeBuilder()
       .addPalettes({
         light: ['#fff', '#000'],
         dark: ['#000', '#fff'],
@@ -162,6 +145,16 @@ describe('theme-builder getTheme', () => {
         light: { template: 'base', palette: 'light' },
         dark: { template: 'base', palette: 'dark' },
       })
+      .getTheme(({ theme, scheme }) => {
+        // Override background for dark themes
+        if (scheme === 'dark') {
+          return {
+            ...theme,
+            background: '#0a0a0a', // custom dark background
+          }
+        }
+        return theme
+      })
       .build()
 
     expect(themes.light.background).toBe('#fff')
@@ -171,16 +164,7 @@ describe('theme-builder getTheme', () => {
   test('getTheme with nested themes maintains hierarchy', () => {
     const metadata: any[] = []
 
-    createThemeBuilder({
-      getTheme: (props) => {
-        metadata.push({
-          name: props.name,
-          level: props.level,
-          parentNames: props.parentNames,
-        })
-        return props.theme
-      },
-    })
+    createThemeBuilder()
       .addPalettes({
         light: ['#fff', '#eee', '#ddd', '#000'],
         dark: ['#000', '#111', '#222', '#fff'],
@@ -200,6 +184,14 @@ describe('theme-builder getTheme', () => {
       .addChildThemes({
         subtle: { template: 'subtle' },
       })
+      .getTheme((props) => {
+        metadata.push({
+          name: props.name,
+          level: props.level,
+          parentNames: props.parentNames,
+        })
+        return props.theme
+      })
       .build()
 
     // Check deeply nested theme
@@ -209,27 +201,94 @@ describe('theme-builder getTheme', () => {
     expect(deepNested.parentNames).toEqual(['light', 'alt'])
   })
 
-  test('getTheme allows customizing themes at any level', () => {
-    const themes = createThemeBuilder({
-      getTheme: ({ theme, level }) => {
-        // Add opacity to backgrounds at level 2
-        if (level === 2) {
-          return {
-            ...theme,
-            background: `${theme.background}80`, // add alpha
-            levelIndicator: `level-${level}`,
-          }
-        }
-        // Add custom border for level 3
-        if (level === 3) {
-          return {
-            ...theme,
-            levelIndicator: `level-${level}`,
-          }
-        }
-        return theme
+  test('type inference works with getTheme callback', () => {
+    // Test that the return type is inferred from getTheme
+    const themes = createThemeBuilder()
+      .addPalettes({
+        light: ['#fff', '#000'],
+      })
+      .addTemplates({
+        base: { background: 0, color: 1 },
+      })
+      .addThemes({
+        light: { template: 'base', palette: 'light' },
+      })
+      .getTheme(({ theme }) => ({
+        ...theme,
+        customBorder: '#ff0000',
+        customOpacity: 0.5,
+      }))
+      .build()
+
+    // Runtime tests
+    expect(themes.light.background).toBeDefined()
+    expect(themes.light.color).toBeDefined()
+    expect(themes.light.customBorder).toBe('#ff0000')
+    expect(themes.light.customOpacity).toBe(0.5)
+  })
+
+  test('explicit FinalTheme type parameter works', () => {
+    type MyTheme = {
+      background: string
+      color: string
+      border: string
+      elevation: number
+    }
+
+    const themes = createThemeBuilder()
+      .addPalettes({
+        light: ['#fff', '#000'],
+      })
+      .addTemplates({
+        base: { background: 0, color: 1 },
+      })
+      .addThemes({
+        light: { template: 'base', palette: 'light' },
+      })
+      .getTheme(
+        ({ theme }): MyTheme => ({
+          background: theme.background || '#fff',
+          color: theme.color || '#000',
+          border: '#ccc',
+          elevation: 2,
+        })
+      )
+      .build()
+
+    // Type assertion to ensure it matches MyTheme
+    const _theme: MyTheme = themes.light
+    const _elevation: number = themes.light.elevation
+
+    expect(themes.light.background).toBe('#fff')
+    expect(themes.light.color).toBe('#000')
+    expect(themes.light.border).toBe('#ccc')
+    expect(themes.light.elevation).toBe(2)
+  })
+
+  test('createThemes infers type from getTheme', () => {
+    const themes = createThemes({
+      base: {
+        palette: {
+          light: ['#fff', '#000'],
+          dark: ['#000', '#fff'],
+        },
       },
+      getTheme: ({ theme, scheme }) => ({
+        ...theme,
+        shadowColor: scheme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)',
+        borderWidth: 1,
+      }),
     })
+
+    // Runtime tests
+    expect(themes.light.shadowColor).toBe('rgba(0,0,0,0.1)')
+    expect(themes.light.borderWidth).toBe(1)
+    expect(themes.dark.shadowColor).toBe('rgba(0,0,0,0.5)')
+    expect(themes.dark.borderWidth).toBe(1)
+  })
+
+  test('getTheme allows customizing themes at any level', () => {
+    const themes = createThemeBuilder()
       .addPalettes({
         light: ['#ffffff', '#f0f0f0', '#e0e0e0', '#000000'],
       })
@@ -247,10 +306,28 @@ describe('theme-builder getTheme', () => {
       .addChildThemes({
         card: { template: 'card' },
       })
+      .getTheme(({ theme, level }) => {
+        // Add opacity to backgrounds at level 2
+        if (level === 2) {
+          return {
+            ...theme,
+            background: `${theme.background}80`, // add alpha
+            levelIndicator: `level-${level}`,
+          }
+        }
+        // Add custom border for level 3
+        if (level === 3) {
+          return {
+            ...theme,
+            border: '#ff0000',
+            levelIndicator: `level-${level}`,
+          }
+        }
+        return theme
+      })
       .build()
 
     // Level 1: base theme - no modifications
-    expect(themes.light.levelIndicator).toBeUndefined()
     expect(themes.light.background).toBe('#ffffff')
 
     // Level 2: surface theme - gets opacity
@@ -259,5 +336,6 @@ describe('theme-builder getTheme', () => {
 
     // Level 3: card theme - gets border
     expect(themes.light_surface_card.levelIndicator).toBe('level-3')
+    expect(themes.light_surface_card.border).toBe('#ff0000')
   })
 })

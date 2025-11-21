@@ -1,6 +1,7 @@
 import type {
   MaskDefinitions,
   PaletteDefinitions,
+  Template,
   TemplateDefinitions,
   ThemeDefinitions,
   ThemeUsingMask,
@@ -56,10 +57,18 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
 
 type ThemeBuilderBuildResult<
   S extends ThemeBuilderInternalState,
-  FinalTheme extends Record<string, any> = Record<string, string>,
-> = {
-  [Key in keyof S['themes']]: FinalTheme
-}
+  FinalTheme extends Record<string, string | number> = Record<string, string>,
+> = Record<string, string> extends FinalTheme
+  ? FinalTheme extends Record<string, string>
+    ? {
+        [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
+      }
+    : {
+        [Key in keyof S['themes']]: FinalTheme
+      }
+  : {
+      [Key in keyof S['themes']]: FinalTheme
+    }
 
 type GetParentName<N extends string> =
   N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}`
@@ -72,20 +81,30 @@ type GetParentName<N extends string> =
           ? `${A}`
           : never
 
-type ThemeBuilderOptions<
-  FinalTheme extends Record<string, any> = Record<string, string>,
-> = {
-  getTheme?: GetThemeFn<FinalTheme>
-}
+// Flatten union types into a single object with optional properties
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
+
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+type FlattenUnion<T extends Record<string, string | number>> = Prettify<{
+  [K in keyof UnionToIntersection<T>]: UnionToIntersection<T>[K]
+}> extends infer R extends Record<string, string | number>
+  ? R
+  : never
 
 export class ThemeBuilder<
   State extends ThemeBuilderInternalState = ThemeBuilderInternalState,
-  FinalTheme extends Record<string, any> = Record<string, string>,
+  FinalTheme extends Record<string, string | number> = Record<string, string>,
 > {
-  constructor(
-    public state: State,
-    public options: ThemeBuilderOptions<FinalTheme>
-  ) {}
+  private _getThemeFn?: GetThemeFn<FinalTheme>
+
+  constructor(public state: State) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {
     this.state.palettes = {
@@ -259,6 +278,22 @@ export class ThemeBuilder<
     >
   }
 
+  getTheme<NewTheme extends Record<string, string | number>>(
+    fn: (props: {
+      name: string
+      theme: GetGeneratedTheme<State['themes'][keyof State['themes']], State>
+      scheme?: 'light' | 'dark'
+      parentName: string
+      parentNames: string[]
+      level: number
+      palette?: string[]
+      template?: Template
+    }) => NewTheme
+  ) {
+    this._getThemeFn = fn as any
+    return this as any as ThemeBuilder<State, FlattenUnion<NewTheme>>
+  }
+
   build(): ThemeBuilderBuildResult<State, FinalTheme> {
     if (!this.state.themes) {
       return {} as any
@@ -359,8 +394,8 @@ export class ThemeBuilder<
           true
         )
 
-        out[themeName] = this.options.getTheme
-          ? this.options.getTheme({
+        out[themeName] = this._getThemeFn
+          ? this._getThemeFn({
               theme,
               name: themeName,
               level: nameParts.length,
@@ -414,10 +449,8 @@ export class ThemeBuilder<
   }
 }
 
-export function createThemeBuilder<
-  FinalTheme extends Record<string, any> = Record<string, string>,
->(options: ThemeBuilderOptions<FinalTheme> = {}) {
-  return new ThemeBuilder<{}, FinalTheme>({}, options)
+export function createThemeBuilder() {
+  return new ThemeBuilder({})
 }
 
 // // test types

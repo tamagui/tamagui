@@ -92,9 +92,10 @@ export const themes = createThemes({
 })
 ```
 
-You can also use the `getTheme` callback to customize any theme at any level.
-See the [Customizing Themes with getTheme](#customizing-themes-with-gettheme)
-section below for details.
+You can also use the `getTheme` callback to customize any theme at any level, an
+easy escape hatch if you don't want to use templates and palettes for
+everything. See the [getTheme](#customizing-themes-with-gettheme) section below
+for details.
 
 ## createThemeBuilder
 
@@ -583,21 +584,26 @@ Here are some practical examples:
 **Add opacity to nested themes:**
 
 ```tsx
-const themes = createThemeBuilder({
-  getTheme: ({ theme, level }) => {
-    // Add transparency to backgrounds at deeper levels
+const themes = createThemeBuilder()
+  .addPalettes({
+    /* ... */
+  })
+  .addTemplates({
+    /* ... */
+  })
+  .addThemes({
+    /* ... */
+  })
+  .getTheme(({ theme, level }) => {
     if (level > 1) {
-      return {
-        ...theme,
-        background: `${theme.background}f0`, // add alpha channel
-      }
+      return { ...theme, background: `${theme.background}f0` }
     }
     return theme
-  },
-})
+  })
+  .build()
 ```
 
-**Customize by theme name:**
+**Customize by scheme:**
 
 ```tsx
 const themes = createThemes({
@@ -607,11 +613,9 @@ const themes = createThemes({
       dark: ['#000', '#fff'],
     },
   },
-  getTheme: ({ theme, name }) => ({
+  getTheme: ({ theme, scheme }) => ({
     ...theme,
-    // Add semantic tokens based on theme
-    success: name.includes('dark') ? '#4ade80' : '#16a34a',
-    error: name.includes('dark') ? '#f87171' : '#dc2626',
+    shadowColor: scheme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)',
   }),
 })
 ```
@@ -619,29 +623,66 @@ const themes = createThemes({
 **Apply different styles by nesting level:**
 
 ```tsx
-const themes = createThemeBuilder({
-  getTheme: ({ theme, level, scheme }) => {
-    const customizations: Record<string, string> = {}
+const themes = createThemeBuilder()
+  .addPalettes({
+    /* ... */
+  })
+  .addTemplates({
+    /* ... */
+  })
+  .addThemes({
+    /* ... */
+  })
+  .getTheme(({ theme, level }) => ({
+    ...theme,
+    elevation: level === 1 ? 0 : level === 2 ? 2 : 4,
+    borderRadius: level > 1 ? 8 : 0,
+  }))
+  .build()
+```
 
-    // Level 1: base themes
-    if (level === 1) {
-      customizations.elevation = '0px'
-    }
-    // Level 2: surface themes
-    else if (level === 2) {
-      customizations.elevation = '2px'
-      customizations.borderRadius = '8px'
-    }
-    // Level 3+: card/component themes
-    else {
-      customizations.elevation = '4px'
-      customizations.borderRadius = '12px'
-    }
+### nonInheritedValues
 
-    return { ...theme, ...customizations }
+Use `nonInheritedValues` to add theme properties that won't be passed down to
+child themes. This is useful for extra colors or values that should only exist
+on base themes:
+
+```tsx
+createThemeBuilder().addThemes({
+  light: {
+    template: 'base',
+    palette: 'light',
+    nonInheritedValues: {
+      // These won't be inherited by light_Button, light_Card, etc.
+      blue1: '#e0f2fe',
+      blue2: '#bae6fd',
+      shadowColor: 'rgba(0,0,0,0.1)',
+    },
   },
 })
 ```
 
-This feature makes it easy to apply consistent customizations across your entire
-theme suite without manually editing each theme.
+### TypeScript Support
+
+Types are automatically inferred. The `getTheme()` method infers both the input
+theme type and your return type:
+
+```tsx
+const themes = createThemeBuilder()
+  .addPalettes({
+    /* ... */
+  })
+  .addTemplates({
+    /* ... */
+  })
+  .addThemes({
+    /* ... */
+  })
+  .getTheme(({ theme }) => ({
+    ...theme,
+    elevation: 2, // theme.background, theme.color, etc. are typed!
+  }))
+  .build()
+
+// themes.light.elevation is typed as number
+```

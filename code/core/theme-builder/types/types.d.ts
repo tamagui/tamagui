@@ -1,5 +1,5 @@
 import type { Template } from '@tamagui/create-theme';
-export type GetThemeFn = (props: {
+export type GetThemeFn<ThemeType extends Record<string, string | number>> = (props: {
     name: string;
     theme: Record<string, string>;
     scheme?: 'light' | 'dark';
@@ -8,7 +8,7 @@ export type GetThemeFn = (props: {
     level: number;
     palette?: string[];
     template?: Template;
-}) => Record<string, string>;
+}) => ThemeType;
 export type TemplateStrategy = 'base' | 'stronger' | 'strongest';
 export type ThemeSuiteItem = {
     id: string;
