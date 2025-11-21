@@ -7627,6 +7627,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/menu": "workspace:*"
     "@tamagui/popover": "workspace:*"
     react: "npm:*"
   peerDependencies:
@@ -7891,6 +7892,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/menu": "workspace:*"
     "@tamagui/popover": "workspace:*"
     react: "npm:*"
   peerDependencies:

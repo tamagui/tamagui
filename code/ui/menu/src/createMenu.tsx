@@ -646,12 +646,13 @@ export function createMenu({
   })
 
   const Fragment = React.forwardRef((props: any, ref) => props.children)
+
   const MenuContentImpl = React.forwardRef<
     MenuContentImplElement,
     ScopedProps<StyleableMenuContentProps>
   >((props, forwardedRef) => {
     const {
-      scope,
+      scope = MENU_CONTEXT,
       loop = false,
       trapFocus,
       onOpenAutoFocus,
@@ -1010,7 +1011,7 @@ export function createMenu({
 
     return (
       <Collection.ItemSlot
-        __scopeCollection={scope || MENU_CONTEXT}
+        scope={scope || MENU_CONTEXT}
         disabled={disabled}
         textValue={textValue ?? textContent}
       >
@@ -1261,27 +1262,23 @@ export function createMenu({
    * MenuArrow
    * -----------------------------------------------------------------------------------------------*/
 
-  const ARROW_NAME = 'MenuArrow'
-
-  const MenuArrow = PopperPrimitive.PopperArrow.styleable<
-    TamaguiElement,
-    ScopedProps<MenuArrowProps>
-  >(function PopoverArrow(props, forwardedRef) {
-    const { scope, unstyled = process.env.TAMAGUI_HEADLESS === '1', ...rest } = props
-    return (
-      <PopperPrimitive.PopperArrow
-        scope={scope || MENU_CONTEXT}
-        componentName="PopperArrow"
-        {...(!unstyled && {
-          backgroundColor: '$background',
-        })}
-        {...rest}
-        ref={forwardedRef}
-      />
-    )
-  })
-
-  MenuArrow.displayName = ARROW_NAME
+  // TODO this was styleable but it cant flatten anyways so likely fine just need to check
+  const MenuArrow = React.forwardRef<TamaguiElement, MenuArrowProps>(
+    function MenuArrow(props, forwardedRef) {
+      const { scope, unstyled = process.env.TAMAGUI_HEADLESS === '1', ...rest } = props
+      return (
+        <PopperPrimitive.PopperArrow
+          scope={scope || MENU_CONTEXT}
+          componentName="PopperArrow"
+          {...(!unstyled && {
+            backgroundColor: '$background',
+          })}
+          {...rest}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
   /* -------------------------------------------------------------------------------------------------
    * MenuSub
@@ -1495,8 +1492,8 @@ export function createMenu({
     const ref = React.useRef<MenuSubContentElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     return (
-      <Collection.Provider __scopeCollection={props.scope || MENU_CONTEXT}>
-        <Collection.Slot __scopeCollection={props.scope || MENU_CONTEXT}>
+      <Collection.Provider scope={props.scope || MENU_CONTEXT}>
+        <Collection.Slot scope={props.scope || MENU_CONTEXT}>
           <MenuContentImpl
             id={subContext.contentId}
             aria-labelledby={subContext.triggerId}

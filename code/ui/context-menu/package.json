@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/menu": "workspace:*",
     "@tamagui/popover": "workspace:*"
   },
   "peerDependencies": {
