@@ -1,4 +1,4 @@
-import { Stack } from '@tamagui/core';
+import { Stack, type TamaguiElement } from '@tamagui/core';
 import { Menu, type MenuItemIconProps, type MenuItemImageProps, type MenuProps, type MenuSubProps, type createMenu } from '@tamagui/menu';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
@@ -61,7 +61,7 @@ export declare function createNonNativeContextMenu(param: Parameters<typeof crea
         (props: ScopedProps<ContextMenuProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, {}>;
+    Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, {}>;
     Portal: {
         (props: ScopedProps<ContextMenuPortalProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
@@ -89,7 +89,7 @@ export declare function createNonNativeContextMenu(param: Parameters<typeof crea
         scope?: string;
     }, keyof ContextMenuItemProps> & ContextMenuItemProps & {
         scope?: string;
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuItemProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuItemProps & {
         scope?: string;
     } & ContextMenuItemProps & {
         scope?: string;
@@ -124,7 +124,7 @@ export declare function createNonNativeContextMenu(param: Parameters<typeof crea
         chromeless?: boolean | "all" | undefined;
     }>, "scope" | keyof import("@tamagui/menu").MenuCheckboxItemProps> & import("@tamagui/menu").MenuCheckboxItemProps & {
         scope?: string;
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuCheckboxItemProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuCheckboxItemProps & {
         scope?: string;
     } & void, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -176,9 +176,9 @@ export declare function createNonNativeContextMenu(param: Parameters<typeof crea
         chromeless?: boolean | "all" | undefined;
     }>, "scope" | keyof import("@tamagui/menu").MenuRadioItemProps> & import("@tamagui/menu").MenuRadioItemProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/core").TamaguiElement>, "ref"> & {
+    } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuRadioItemProps & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuRadioItemProps & {
         scope?: string;
     } & Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -196,7 +196,7 @@ export declare function createNonNativeContextMenu(param: Parameters<typeof crea
         chromeless?: boolean | "all" | undefined;
     }>, "scope" | keyof import("@tamagui/menu").MenuRadioItemProps> & import("@tamagui/menu").MenuRadioItemProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/core").TamaguiElement>, "ref"> & {
+    } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -227,7 +227,7 @@ export declare function createNonNativeContextMenu(param: Parameters<typeof crea
     }, any, Omit<any, "ref"> & {
         scope?: string;
     }, {}, {}, {}>;
-    Arrow: any;
+    Arrow: React.ForwardRefExoticComponent<ContextMenuArrowProps & React.RefAttributes<TamaguiElement>>;
     Sub: React.FC<ScopedProps<ContextMenuSubProps>>;
     SubTrigger: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -237,14 +237,14 @@ export declare function createNonNativeContextMenu(param: Parameters<typeof crea
         fullscreen?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/menu").MenuSubTriggerProps> & import("@tamagui/menu").MenuSubTriggerProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/core").TamaguiElement>, "ref"> & {
+    } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/menu").MenuSubTriggerProps> & import("@tamagui/menu").MenuSubTriggerProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/core").TamaguiElement>, "ref"> & {
+    } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;

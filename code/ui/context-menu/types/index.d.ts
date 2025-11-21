@@ -291,7 +291,12 @@ export declare const ContextMenu: ({
         }): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Arrow: any;
+    Arrow: import("react").ForwardRefExoticComponent<import("./createNonNativeContextMenu").ContextMenuArrowProps & import("react").RefAttributes<import("tamagui").TamaguiElement>> | {
+        (props: import("./createNonNativeContextMenu").ContextMenuArrowProps & import("react").RefAttributes<import("tamagui").TamaguiElement> & {
+            native?: boolean;
+        }): import("react/jsx-runtime").JSX.Element;
+        displayName: string;
+    };
     Sub: import("react").FC<import("./createNonNativeContextMenu").ContextMenuSubProps & {
         scope?: string;
     }> | {
@@ -389,7 +394,9 @@ export declare const ContextMenu: ({
         (props: import("react-native").ImageProps & import("react").RefAttributes<import("react-native").Image> & import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
             source: import("react-native").ImageProps["source"];
             ios?: {
-                style?: ImageOptions;
+                style?: {
+                    tint?: string;
+                };
                 lazy?: boolean;
             };
         } & {
@@ -401,15 +408,7 @@ export declare const ContextMenu: ({
         (): null;
         displayName: string;
     } | {
-        (props: {
-            children: React.ReactNode | (() => React.ReactNode);
-            size?: NonNullable<React.ComponentProps<any>["previewConfig"]>["previewSize"];
-            onPress?: React.ComponentProps<any>["onPressMenuPreview"];
-        } & {
-            [x: string]: any;
-            [x: number]: any;
-            [x: symbol]: any;
-        } & {
+        (props: import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").ContextMenuPreviewProps & {
             native?: boolean;
         }): import("react/jsx-runtime").JSX.Element;
         displayName: string;

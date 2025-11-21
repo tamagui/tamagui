@@ -1,7 +1,7 @@
 import type { ImageProps } from 'react-native';
-import type { ContextMenuView, MenuAuxiliaryPreviewConfig, ContextMenuButton } from 'react-native-ios-context-menu';
-import type { ImageOptions } from 'react-native-ios-context-menu';
-import type { ComponentProps } from 'react';
+type ImageOptions = {
+    tint?: string;
+};
 import type { SFSymbol } from 'sf-symbols-typescript';
 export type MenuProps = {
     children: React.ReactNode;
@@ -13,12 +13,14 @@ export type MenuProps = {
      * @platform `ios`
      */
     onOpenWillChange?: (willOpen: boolean) => void;
-    __unsafeIosProps?: ComponentProps<typeof ContextMenuView> | ComponentProps<typeof ContextMenuButton>;
 };
 /**
- * See the docs on `react-native-ios-context-menu` for usage: https://github.com/dominicstop/react-native-ios-context-menu#ContextMenuView-Auxiliary-Preview---Example-01
+ * TODO needed?
  */
-export type ContextMenuAuxliliaryProps = Omit<MenuAuxiliaryPreviewConfig, 'marginAuxiliaryPreview'> & {
+export type ContextMenuAuxliliaryProps = {
+    height?: number;
+    width?: number;
+    anchorPosition?: 'top' | 'bottom' | 'automatic';
     children: React.ReactNode | ((options: {
         dismissMenu: () => void;
     }) => React.ReactNode);
@@ -124,11 +126,10 @@ export type MenuLabelProps = {
      */
     textValue?: string;
 };
-type Not<T extends object, O extends keyof NonNullable<T>> = Omit<T, O>;
 export type ContextMenuPreviewProps = {
     children: React.ReactNode | (() => React.ReactNode);
-    size?: NonNullable<React.ComponentProps<typeof ContextMenuView>['previewConfig']>['previewSize'];
-    onPress?: React.ComponentProps<typeof ContextMenuView>['onPressMenuPreview'];
-} & Not<NonNullable<React.ComponentProps<typeof ContextMenuView>['previewConfig']>, 'targetViewNode' | 'previewSize' | 'previewType'>;
+    size?: any;
+    onPress?: any;
+};
 export {};
 //# sourceMappingURL=createNativeMenuTypes.d.ts.map

@@ -292,7 +292,12 @@ export declare function createContextMenu(param: Parameters<typeof createMenu>[0
         }): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Arrow: any;
+    Arrow: React.ForwardRefExoticComponent<import("./createNonNativeContextMenu").ContextMenuArrowProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>> | {
+        (props: import("./createNonNativeContextMenu").ContextMenuArrowProps & React.RefAttributes<import("@tamagui/core").TamaguiElement> & {
+            native?: boolean;
+        }): import("react/jsx-runtime").JSX.Element;
+        displayName: string;
+    };
     Sub: React.FC<import("./createNonNativeContextMenu").ContextMenuSubProps & {
         scope?: string;
     }> | {
@@ -390,7 +395,9 @@ export declare function createContextMenu(param: Parameters<typeof createMenu>[0
         (props: import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
             source: import("react-native").ImageProps["source"];
             ios?: {
-                style?: ImageOptions;
+                style?: {
+                    tint?: string;
+                };
                 lazy?: boolean;
             };
         } & {
@@ -402,15 +409,7 @@ export declare function createContextMenu(param: Parameters<typeof createMenu>[0
         (): null;
         displayName: string;
     } | {
-        (props: {
-            children: React.ReactNode | (() => React.ReactNode);
-            size?: NonNullable<React.ComponentProps<any>["previewConfig"]>["previewSize"];
-            onPress?: React.ComponentProps<any>["onPressMenuPreview"];
-        } & {
-            [x: string]: any;
-            [x: number]: any;
-            [x: symbol]: any;
-        } & {
+        (props: import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").ContextMenuPreviewProps & {
             native?: boolean;
         }): import("react/jsx-runtime").JSX.Element;
         displayName: string;

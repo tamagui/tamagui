@@ -3,7 +3,6 @@ import { Dismissable as DismissableLayer } from '@tamagui/dismissable';
 import { FocusScope } from '@tamagui/focus-scope';
 import type { PopperContentProps } from '@tamagui/popper';
 import * as PopperPrimitive from '@tamagui/popper';
-import { type PortalProps } from '@tamagui/portal';
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus';
 import { type ThemeableStackProps } from '@tamagui/stacks';
 import { type Stack } from '@tamagui/web';
@@ -30,7 +29,6 @@ interface MenuPortalProps {
     /**
      * Specify a container element to portal the content into.
      */
-    host?: PortalProps['host'];
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
