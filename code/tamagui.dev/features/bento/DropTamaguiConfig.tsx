@@ -1,6 +1,5 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons'
 import React, { useEffect, useState } from 'react'
-// import { useLocalStorage } from 'foxact/use-local-storage'
 import {
   Button,
   Dialog,
@@ -73,16 +72,16 @@ export const DropTamaguiConfig = () => {
       <TooltipSimple label="Upload your Tamagui Config">
         <Theme name={config ? 'green' : 'accent'}>
           <Button
-            als="flex-end"
-            br="$10"
+            self="flex-end"
+            rounded="$10"
             onPress={() => setShow(true)}
             size="$3"
             chromeless
             $sm={{
-              dsp: 'none',
+              display: 'none',
             }}
             icon={Paintbrush}
-            color={config ? '$green10Light' : '$color12'}
+            color={config ? '$green10' : '$color12'}
           >
             {config ? 'Customization enabled' : 'Customize'}
           </Button>
@@ -116,35 +115,35 @@ export const DropTamaguiConfig = () => {
             ]}
             enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-            w="95%"
-            maw={600}
+            width="95%"
+            maxW={600}
             p="$8"
           >
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$4"
-                right="$4"
+                t="$4"
+                r="$4"
                 size="$2"
                 circular
-                zi={1000}
+                z={1000}
                 icon={X}
               />
             </Dialog.Close>
 
             <YStack
               fullscreen
-              pe="none"
-              o={dragging ? 1 : 0}
+              pointerEvents="none"
+              opacity={dragging ? 1 : 0}
               bg="$background06"
-              ai="center"
-              jc="center"
-              zi={1000}
+              items="center"
+              justify="center"
+              z={1000}
             >
               <H2>Drop it here!</H2>
             </YStack>
 
-            <ScrollView mah={`90vh`}>
+            <ScrollView maxH="90vh">
               <YStack gap="$4">
                 <Dialog.Title>Your Design System</Dialog.Title>
 
@@ -156,7 +155,7 @@ export const DropTamaguiConfig = () => {
                       copy-paste code to use your tokens.
                     </Paragraph>
                     <Button
-                      als="flex-end"
+                      self="flex-end"
                       icon={X}
                       theme="red"
                       onPress={() => config.setItem('')}
