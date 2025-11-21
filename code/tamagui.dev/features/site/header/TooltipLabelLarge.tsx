@@ -10,9 +10,9 @@ export const TooltipLabelLarge = ({
   href,
 }: { href?: string; icon: any; title: string; subtitle: string }) => {
   const content = (
-    <YStack cur={href ? 'pointer' : 'default'} f={1} p="$3.5" br="$4" gap="$1">
-      <XStack $gtXs={{ jc: 'center' }} ai="center" gap="$2">
-        <H2 ff="$mono" fow="600" size="$4" ls={1}>
+    <YStack cursor={href ? 'pointer' : 'default'} flex={1} p="$3.5" rounded="$4" gap="$1">
+      <XStack $gtXs={{ justify: 'center' }} items="center" gap="$2">
+        <H2 fontFamily="$mono" fontWeight="600" size="$4" letterSpacing={1}>
           {title}
         </H2>
         <YStack scale={0.7} y={0.5}>
@@ -21,13 +21,13 @@ export const TooltipLabelLarge = ({
       </XStack>
 
       <Paragraph
-        $gtXs={{ textAlign: 'center' }}
-        ff="$mono"
+        $gtXs={{ text: 'center' }}
+        fontFamily="$mono"
         theme="alt1"
-        f={1}
+        flex={1}
         size="$4"
-        lh="$3"
-        ls={-0.5}
+        lineHeight="$3"
+        letterSpacing={-0.5}
       >
         {subtitle}
       </Paragraph>

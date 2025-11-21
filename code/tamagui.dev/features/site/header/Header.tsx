@@ -66,14 +66,14 @@ export function Header(props: HeaderProps) {
     <>
       <XStack
         // @ts-ignore
-        pos="fixed"
+        position="fixed"
         t={0}
         l={0}
         r={0}
-        ai="center"
-        pe="none"
-        jc="center"
-        zi={50000}
+        items="center"
+        pointerEvents="none"
+        justify="center"
+        z={50000}
         className="all ease-out s1"
         $gtSm={{
           px: '$1',
