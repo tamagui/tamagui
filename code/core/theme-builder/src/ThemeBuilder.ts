@@ -351,10 +351,12 @@ export class ThemeBuilder<
         out[themeName] = this.options.getTheme
           ? this.options.getTheme({
               theme,
-              name: nameParts[nameParts.length - 1] || '',
+              name: themeName,
               level: nameParts.length,
-              fullName: themeName,
               parentName,
+              scheme: /^(light|dark)$/.test(nameParts[0])
+                ? (nameParts[0] as 'light' | 'dark')
+                : undefined,
               parentNames: nameParts.slice(0, -1),
               palette,
               template,

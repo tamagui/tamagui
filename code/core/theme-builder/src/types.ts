@@ -1,11 +1,11 @@
 import type { Template } from '@tamagui/create-theme'
 
 export type GetThemeFn = (props: {
+  name: string
   theme: Record<string, string>
+  scheme?: 'light' | 'dark'
   parentName: string
   parentNames: string[]
-  fullName: string
-  name: string
   level: number
   palette?: string[]
   template?: Template
