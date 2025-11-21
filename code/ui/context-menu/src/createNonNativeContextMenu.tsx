@@ -1,6 +1,7 @@
 import {
   type GestureReponderEvent,
   Stack,
+  type TamaguiElement,
   composeEventHandlers,
   createStyledContext,
   isAndroid,
@@ -641,7 +642,8 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ARROW_NAME = 'ContextMenuArrow'
 
-  const ContextMenuArrow = Menu.Arrow.styleable<ScopedProps<ContextMenuArrowProps>>(
+  // Menu.Arrow.styleable<ScopedProps<ContextMenuArrowProps>>
+  const ContextMenuArrow = React.forwardRef<TamaguiElement, ContextMenuArrowProps>(
     (props, forwardedRef) => {
       const { scope, ...arrowProps } = props
       return (

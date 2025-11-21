@@ -107,7 +107,8 @@ interface MenuPortalProps {
   /**
    * Specify a container element to portal the content into.
    */
-  host?: PortalProps['host']
+  // TODO removed
+  // host?: PortalProps['host']
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -517,7 +518,14 @@ export function createMenu({
     createStyledContext<PortalContextValue>(undefined, 'Portal')
 
   const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
-    const { scope, forceMount, zIndex, children, host } = props
+    const {
+      scope,
+      forceMount,
+      zIndex,
+      children,
+      // TODO removed
+      // host
+    } = props
     const menuContext = useMenuContext(scope)
     const rootContext = useMenuRootContext(scope)
     const popperContext = PopperPrimitive.usePopperContext(scope || MENU_CONTEXT)
