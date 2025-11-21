@@ -5,6 +5,10 @@ import { ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Button, Text, useEvent } from 'tamagui'
 
+/**
+ * Note: you'll want to use createDropDownMenu() to customize further.
+ */
+
 const DropDownItem = styled(DropdownMenu.Item, {
   paddingVertical: 4,
   hoverStyle: {

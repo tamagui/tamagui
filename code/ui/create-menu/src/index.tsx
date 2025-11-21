@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev'
 
 import { createMenu } from './createMenu'
-import { MenuPredefinied } from './Menu'
+import { MenuPredefined } from './Menu'
 
 export * from './Menu'
 export * from './createNativeMenu'
@@ -9,13 +9,13 @@ export * from './createMenu'
 export type { MenuItemImageProps } from './createNativeMenu/createNativeMenuTypes'
 
 export const { Menu } = createMenu({
-  Icon: MenuPredefinied.MenuIcon,
-  Image: MenuPredefinied.MenuImage,
-  Indicator: MenuPredefinied.MenuIndicator,
-  Item: MenuPredefinied.MenuItem,
-  Separator: MenuPredefinied.MenuSeparator,
-  SubTitle: MenuPredefinied.SubTitle,
-  Title: MenuPredefinied.Title,
-  MenuGroup: MenuPredefinied.MenuGroup,
-  Label: MenuPredefinied.MenuLabel,
+  Icon: MenuPredefined.MenuIcon,
+  Image: MenuPredefined.MenuImage,
+  Indicator: MenuPredefined.MenuIndicator,
+  Item: MenuPredefined.MenuItem,
+  Separator: MenuPredefined.MenuSeparator,
+  SubTitle: MenuPredefined.SubTitle,
+  Title: MenuPredefined.Title,
+  MenuGroup: MenuPredefined.MenuGroup,
+  Label: MenuPredefined.MenuLabel,
 })

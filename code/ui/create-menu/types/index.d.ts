@@ -24,110 +24,20 @@ export declare const Menu: {
     } & import("react").RefAttributes<HTMLElement | import("react-native").View>>;
     Group: import("tamagui").TamaguiComponent;
     Label: import("tamagui").TamaguiComponent;
-    Item: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }>, "scope" | keyof import("./createMenu").MenuItemProps> & import("./createMenu").MenuItemProps & {
+    Item: import("react").ForwardRefExoticComponent<import("./createMenu").MenuItemProps & {
         scope?: string;
-    }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("./createMenu").MenuItemProps & {
+    } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
+    CheckboxItem: import("react").ForwardRefExoticComponent<import("./createMenu").MenuCheckboxItemProps & {
         scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    CheckboxItem: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }>, "scope" | keyof import("./createMenu").MenuCheckboxItemProps> & import("./createMenu").MenuCheckboxItemProps & {
-        scope?: string;
-    }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("./createMenu").MenuCheckboxItemProps & {
-        scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     RadioGroup: import("tamagui").TamaguiComponent<Omit<any, "scope" | keyof import("./createMenu").MenuRadioGroupProps> & import("./createMenu").MenuRadioGroupProps & {
         scope?: string;
     }, any, import("./createMenu").MenuRadioGroupProps & {
         scope?: string;
     }, {}, {}, {}>;
-    RadioItem: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }>, "scope" | keyof import("./createMenu").MenuRadioItemProps> & import("./createMenu").MenuRadioItemProps & {
+    RadioItem: import("react").ForwardRefExoticComponent<import("./createMenu").MenuRadioItemProps & {
         scope?: string;
-    }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("./createMenu").MenuRadioItemProps & {
-        scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     ItemIndicator: import("tamagui").TamaguiComponent<Omit<any, "scope" | keyof import("./createMenu").MenuItemIndicatorProps> & import("./createMenu").MenuItemIndicatorProps & {
         scope?: string;
     }, any, import("./createMenu").MenuItemIndicatorProps & {
@@ -138,23 +48,15 @@ export declare const Menu: {
     Sub: import("react").FC<import("./createMenu").MenuSubProps & {
         scope?: string;
     }>;
-    SubTrigger: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, "scope" | keyof import("./createMenu").MenuSubTriggerProps> & import("./createMenu").MenuSubTriggerProps & {
+    SubTrigger: import("react").ForwardRefExoticComponent<import("./createMenu").MenuSubTriggerProps & {
         scope?: string;
-    }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("./createMenu").MenuSubTriggerProps & {
-        scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     SubContent: import("react").ForwardRefExoticComponent<import("./createMenu").MenuSubContentProps & {
         scope?: string;
     } & import("react").RefAttributes<HTMLElement | import("react-native").View>>;
     ItemTitle: import("tamagui").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     ItemSubtitle: import("tamagui").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     ItemImage: import("react").ForwardRefExoticComponent<import("react-native").ImageProps & import("react").RefAttributes<import("react-native").Image>>;
-    ItemIcon: import("tamagui").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
+    ItemIcon: import("tamagui").TamaguiComponent;
 };
 //# sourceMappingURL=index.d.ts.map

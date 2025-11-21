@@ -37,11 +37,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/web": "workspace:*",
-    "@tamagui/image": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/image": "workspace:*",
     "@tamagui/popover": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "optionalDependencies": {
     "@react-native-menu/menu": "^2.0.0"

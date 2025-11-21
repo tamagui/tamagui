@@ -466,19 +466,20 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ITEM_NAME = 'ContextMenuItem'
 
-  const ContextMenuItem = Menu.Item.styleable<ScopedProps<ContextMenuItemProps>>(
-    (props: ScopedProps<ContextMenuItemProps>, forwardedRef) => {
-      const { scope, ...itemProps } = props
-      return (
-        <Menu.Item
-          componentName={ITEM_NAME}
-          scope={scope || CONTEXTMENU_CONTEXT}
-          {...itemProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
+  const ContextMenuItem = React.forwardRef<
+    TamaguiElement,
+    ScopedProps<ContextMenuItemProps>
+  >((props: ScopedProps<ContextMenuItemProps>, forwardedRef) => {
+    const { scope, ...itemProps } = props
+    return (
+      <Menu.Item
+        componentName={ITEM_NAME}
+        scope={scope || CONTEXTMENU_CONTEXT}
+        {...itemProps}
+        ref={forwardedRef}
+      />
+    )
+  })
 
   ContextMenuItem.displayName = ITEM_NAME
 
@@ -528,19 +529,20 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const CHECKBOX_ITEM_NAME = 'ContextMenuCheckboxItem'
 
-  const ContextMenuCheckboxItem = Menu.CheckboxItem.styleable(
-    (props: ScopedProps<ContextMenuCheckboxItemProps>, forwardedRef) => {
-      const { scope, ...checkboxItemProps } = props
-      return (
-        <Menu.CheckboxItem
-          componentName={CHECKBOX_ITEM_NAME}
-          scope={scope || CONTEXTMENU_CONTEXT}
-          {...checkboxItemProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
+  const ContextMenuCheckboxItem = React.forwardRef<
+    TamaguiElement,
+    ScopedProps<ContextMenuCheckboxItemProps>
+  >((props, forwardedRef) => {
+    const { scope, ...checkboxItemProps } = props
+    return (
+      <Menu.CheckboxItem
+        componentName={CHECKBOX_ITEM_NAME}
+        scope={scope || CONTEXTMENU_CONTEXT}
+        {...checkboxItemProps}
+        ref={forwardedRef}
+      />
+    )
+  })
 
   ContextMenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
 
@@ -573,7 +575,8 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const RADIO_ITEM_NAME = 'ContextMenuRadioItem'
 
-  const ContextMenuRadioItem = Menu.RadioItem.styleable<
+  const ContextMenuRadioItem = React.forwardRef<
+    TamaguiElement,
     ScopedProps<ContextMenuRadioItemProps>
   >((props: ScopedProps<ContextMenuRadioItemProps>, forwardedRef) => {
     const { scope, ...radioItemProps } = props

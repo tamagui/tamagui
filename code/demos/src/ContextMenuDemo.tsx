@@ -6,6 +6,10 @@ import React from 'react'
 import { Image } from 'react-native'
 import { Text, YStack, useEvent } from 'tamagui'
 
+/**
+ * Note: you'll want to use createDropDownMenu() to customize further.
+ */
+
 export function ContextMenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(true)

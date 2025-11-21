@@ -1,5 +1,5 @@
 /**
- * Credit to geist-ui/react, it's initialy copied from there and updated.
+ * Credit to geist-ui/react, it's initially copied from there and updated.
  *
  * MIT License
 

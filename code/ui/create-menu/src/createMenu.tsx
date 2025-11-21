@@ -35,7 +35,7 @@ import * as React from 'react'
 import { useId } from 'react'
 import type { Image, ImageProps } from 'react-native'
 
-import { MenuPredefinied } from './Menu'
+import { MenuPredefined } from './Menu'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -369,15 +369,15 @@ export const { Provider: NativePropProvider, useStyledContext: useNativeProp } =
   createStyledContext({ native: false })
 
 export function createMenu({
-  Item: _Item = MenuPredefinied.MenuItem,
-  Title: _Title = MenuPredefinied.Title,
-  SubTitle: _SubTitle = MenuPredefinied.SubTitle,
-  Image: _Image = MenuPredefinied.MenuImage,
-  Icon: _Icon = MenuPredefinied.MenuIcon,
-  Indicator: _Indicator = MenuPredefinied.MenuIndicator,
-  Separator: _Separator = MenuPredefinied.MenuSeparator,
-  MenuGroup: _MenuGroup = MenuPredefinied.MenuGroup,
-  Label: _Label = MenuPredefinied.MenuLabel,
+  Item: _Item = MenuPredefined.MenuItem,
+  Title: _Title = MenuPredefined.Title,
+  SubTitle: _SubTitle = MenuPredefined.SubTitle,
+  Image: _Image = MenuPredefined.MenuImage,
+  Icon: _Icon = MenuPredefined.MenuIcon,
+  Indicator: _Indicator = MenuPredefined.MenuIndicator,
+  Separator: _Separator = MenuPredefined.MenuSeparator,
+  MenuGroup: _MenuGroup = MenuPredefined.MenuGroup,
+  Label: _Label = MenuPredefined.MenuLabel,
 }: {
   Item?: TamaguiComponent
   MenuGroup?: TamaguiComponent

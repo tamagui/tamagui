@@ -1,5 +1,5 @@
-import { styled, Text, View } from '@tamagui/web'
 import { Image } from '@tamagui/image'
+import { styled, Text, View } from '@tamagui/web'
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
@@ -81,7 +81,7 @@ const Title = styled(Text, { name: 'MenuTitle', cursor: 'default' })
 
 const SubTitle = styled(Text, { name: 'MenuSubTitle', cursor: 'default' })
 
-export const MenuPredefinied = {
+export const MenuPredefined = {
   MenuIcon,
   MenuImage,
   MenuIndicator,
