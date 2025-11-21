@@ -373,13 +373,13 @@ export const Safari = memo(
         </YStack>
 
         <XStack bg="$background" mx={-2}>
-          <Tab borderColor="var(--green7)" borderTopLeftRadius={0}>
+          <Tab bg="var(--green7)" borderTopLeftRadius={0}>
             Github
           </Tab>
-          <Tab borderColor="var(--pink7)" active>
+          <Tab bg="var(--pink7)" active>
             Tamagui - React Native & Web UI kits
           </Tab>
-          <Tab borderColor="var(--yellow7)" borderTopRightRadius={0}>
+          <Tab bg="var(--yellow7)" borderTopRightRadius={0}>
             @natebirdman
           </Tab>
         </XStack>
@@ -467,13 +467,13 @@ export const Safari = memo(
   }
 )
 
-const Tab = memo(({ active, children, borderColor, ...props }: any) => {
+const Tab = memo(({ active, children, bc, ...props }: any) => {
   return (
     <Theme name={active ? null : 'alt1'}>
       <XStack
-        borderTopWidth={1}
-        borderColor={active ? 'transparent' : '$borderColor'}
-        width="33.33%"
+        btw={1}
+        bc={active ? 'transparent' : '$borderColor'}
+        w="33.33%"
         borderLeftWidth={1}
         borderRightWidth={1}
         borderBottomWidth={1}
@@ -485,11 +485,11 @@ const Tab = memo(({ active, children, borderColor, ...props }: any) => {
         flex={1}
         py="$1"
         px="$2"
-        items="center"
-        justify="center"
+        ai="center"
+        jc="center"
         {...props}
       >
-        <Circle size={16} bg={borderColor}>
+        <Circle size={16} bg={bc}>
           <Image width={10} height={10} src={favicon} />
         </Circle>
         <Spacer size="$2" />

@@ -6,7 +6,7 @@ import { ContainerLarge } from '~/components/Containers'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText ff="$mono" size="$5" fow="800">
+      <SizableText fontFamily="$mono" size="$5" fontWeight="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
@@ -37,8 +37,8 @@ const Features = ({ items, ...props }: any) => {
 export const HomeExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <XStack px="$6" pt="$8" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
-        <YStack w="50%" $sm={{ w: '100%' }}>
+      <XStack px="$6" pt="$8" gap="$4" $sm={{ flexDirection: 'column', px: 0 }}>
+        <YStack width="50%" $sm={{ width: '100%' }}>
           <Features
             space="$4"
             items={[
@@ -54,7 +54,7 @@ export const HomeExampleProps = () => {
             ]}
           />
         </YStack>
-        <YStack w="50%" $sm={{ w: `100%` }}>
+        <YStack width="50%" $sm={{ width: '100%' }}>
           <Features
             space="$4"
             items={[

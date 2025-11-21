@@ -15,13 +15,13 @@ export function CodeDemoPreParsed({
 }) {
   return (
     <YStack
-      br="$4"
+      rounded="$4"
       className={`language-${language}`}
       bg="$backgroundHover"
-      bc="$borderColor"
-      ov="hidden"
-      bw={1}
-      f={1}
+      borderColor="$borderColor"
+      overflow="hidden"
+      borderWidth={1}
+      flex={1}
       {...props}
     >
       <ScrollView
@@ -39,8 +39,7 @@ export function CodeDemoPreParsed({
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          <Pre f={1}>
-            {/* @ts-ignore */}
+          <Pre flex={1}>
             <Code dangerouslySetInnerHTML={{ __html: source }} />
           </Pre>
         </ScrollView>

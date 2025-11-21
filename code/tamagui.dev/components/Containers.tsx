@@ -13,20 +13,20 @@ export const Container = styled(YStack, {
   mx: 'auto',
   px: '$4',
   width: '100%',
-  pos: 'relative',
+  position: 'relative',
 
   $gtSm: {
-    maxWidth: 760,
+    maxW: 760,
     pr: '$2',
   },
 
   $gtMd: {
-    maxWidth: 760,
+    maxW: 760,
     pr: '$2',
   },
 
   $gtLg: {
-    maxWidth: 840,
+    maxW: 840,
     pr: '$10',
   },
 
@@ -37,14 +37,14 @@ export const ContainerLarge = styled(YStack, {
   mx: 'auto',
   px: '$4',
   width: '100%',
-  pos: 'relative',
+  position: 'relative',
 
   $gtSm: {
-    maxWidth: 980,
+    maxW: 980,
   },
 
   $gtMd: {
-    maxWidth: 1140,
+    maxW: 1140,
   },
 
   variants,
@@ -53,19 +53,19 @@ export const ContainerLarge = styled(YStack, {
 export const ContainerXL = styled(YStack, {
   mx: 'auto',
   width: '100%',
-  pos: 'relative',
+  position: 'relative',
 
   $gtSm: {
     px: '$4',
-    maxWidth: 980,
+    maxW: 980,
   },
 
   $gtMd: {
-    maxWidth: 1240,
+    maxW: 1240,
   },
 
   $gtLg: {
-    maxWidth: 1440,
+    maxW: 1440,
   },
 
   variants,
@@ -74,22 +74,22 @@ export const ContainerXL = styled(YStack, {
 export const ContainerBento = styled(YStack, {
   mx: 'auto',
   width: '100%',
-  pos: 'relative',
+  position: 'relative',
 
   $gtSm: {
     px: '$4',
-    maxWidth: 980,
+    maxW: 980,
   },
 
   $gtMd: {
-    maxWidth: 1180,
+    maxW: 1180,
   },
 
   $gtXl: {
-    maxWidth: 1300,
+    maxW: 1300,
   },
 
   variants,
 
-  zi: 100,
+  z: 100,
 })

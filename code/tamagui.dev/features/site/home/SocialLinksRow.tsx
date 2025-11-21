@@ -10,9 +10,9 @@ export const SocialLinksRow = () => {
     <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
       <Card
         width="33.33%"
-        jc="center"
+        justify="center"
         $sm={{ width: 'auto' }}
-        space="$2"
+        gap="$2"
         tag="a"
         href="https://x.com/tamagui_js"
         target="_blank"
@@ -29,8 +29,8 @@ export const SocialLinksRow = () => {
       </Card>
       <Card
         width="33.33%"
-        jc="center"
-        space="$2"
+        justify="center"
+        gap="$2"
         $sm={{ width: 'auto' }}
         tag="a"
         href="https://discord.gg/4qh6tdcVDa"
@@ -49,9 +49,9 @@ export const SocialLinksRow = () => {
       </Card>
       <Card
         width="33.33%"
-        jc="center"
+        justify="center"
         $sm={{ width: 'auto' }}
-        space="$2"
+        gap="$2"
         tag="a"
         href="https://github.com/tamagui/tamagui"
         target="_blank"

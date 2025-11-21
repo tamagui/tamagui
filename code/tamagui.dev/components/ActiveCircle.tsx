@@ -2,13 +2,13 @@ import type { CircleProps } from 'tamagui'
 import { Circle, YStack } from 'tamagui'
 
 export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
-  const { isActive, backgroundColor, opacity, ...rest } = props
+  const { isActive, bg, opacity, ...rest } = props
 
   return (
     <YStack
-      ai="center"
-      jc="center"
-      br="$10"
+      items="center"
+      justify="center"
+      rounded="$10"
       borderColor="transparent"
       borderWidth={1}
       mx="$1"
@@ -23,15 +23,15 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
       {...rest}
     >
       <YStack
-        br="$10"
-        w={22}
-        h={22}
-        ai="center"
-        jc="center"
+        rounded="$10"
+        width={22}
+        height={22}
+        items="center"
+        justify="center"
         borderColor="transparent"
         cursor="pointer"
       >
-        <Circle size={16} opacity={opacity} backgroundColor={backgroundColor} />
+        <Circle size={16} opacity={opacity} bg={bg} />
       </YStack>
     </YStack>
   )

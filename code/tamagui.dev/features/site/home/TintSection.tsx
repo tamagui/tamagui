@@ -11,7 +11,7 @@ const numIntersectingAtSection = getTints().tints.map((_) => 0)
 
 export const tintSectionDimensions: Record<number, LayoutRectangle> = {}
 
-export const TintSection = ({ children, index, themed, zIndex, ...props }: Props) => {
+export const TintSection = ({ children, index, themed, z, ...props }: Props) => {
   const top = useRef<HTMLElement>(null)
   const bottom = useRef<HTMLElement>(null)
   const mid = useRef<HTMLElement>(null)
@@ -51,23 +51,23 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
   return (
     <YStack
       onLayout={(e) => (tintSectionDimensions[index] = e.nativeEvent.layout)}
-      zIndex={zIndex}
-      pos="relative"
+      z={z}
+      position="relative"
     >
       {useMemo(() => {
         return (
           <>
-            <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
-            <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
+            <XStack ref={top} position="absolute" t="10%" l={0} r={0} height={10} opacity={0} pointerEvents="none" />
+            <XStack ref={mid} position="absolute" t="50%" l={0} r={0} height={10} opacity={0} pointerEvents="none" />
             <XStack
               ref={bottom}
-              pos="absolute"
+              position="absolute"
               b="10%"
               l={0}
               r={0}
-              h={10}
-              o={0}
-              pe="none"
+              height={10}
+              opacity={0}
+              pointerEvents="none"
             />
           </>
         )
@@ -93,9 +93,9 @@ export const useTintSectionIndex = (cb: (index: number, str: number) => void) =>
 
 export const HomeSection = styled(YStack, {
   name: 'Section',
-  pos: 'relative',
+  position: 'relative',
   py: '$14',
-  zi: 2,
+  z: 2,
 
   variants: {
     below: {
@@ -139,13 +139,13 @@ export const SectionTinted = ({
       <YStack
         fullscreen
         className="all ease-in ms1000"
-        zi={-1}
-        o={0.4}
+        z={-1}
+        opacity={0.4}
         bg={gradient ? (`$${tint}2` as any) : null}
         {...(!bubble && {
-          btw: noBorderTop ? 0 : 1,
-          bbw: 1,
-          bc: `$${tint}3` as any,
+          borderTopWidth: noBorderTop ? 0 : 1,
+          borderBottomWidth: 1,
+          borderColor: `$${tint}3` as any,
         })}
       />
       {childrenMemo}
