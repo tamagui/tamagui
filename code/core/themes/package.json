@@ -13,6 +13,7 @@
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
     "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",
+    "generate:v5": "tamagui generate-themes ./src/v5-themes.ts ./src/generated-v5.ts",
     "test": "yarn generate",
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
