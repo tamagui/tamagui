@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev'
 
-import { MenuPredefinied } from '@tamagui/menu'
+import { MenuPredefinied } from '@tamagui/create-menu'
 
 import { createContextMenu } from './ContextMenu'
 

@@ -1,6 +1,5 @@
-import { withStaticProperties } from '@tamagui/core'
+import { withStaticProperties } from '@tamagui/web'
 import type { FC } from 'react'
-
 import type {
   ContextMenuPreviewProps,
   MenuArrowProps,

@@ -1,25 +1,25 @@
 import {
-  type GestureReponderEvent,
-  Stack,
-  type TamaguiElement,
-  composeEventHandlers,
-  createStyledContext,
-  isAndroid,
-  isWeb,
-  styled,
-  withStaticProperties,
-} from '@tamagui/core'
-import {
   Menu,
   type MenuItemIconProps,
   type MenuItemImageProps,
   type MenuProps,
   type MenuSubProps,
   type createMenu,
-} from '@tamagui/menu'
-import { YStack } from '@tamagui/stacks'
+} from '@tamagui/create-menu'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import {
+  type GestureReponderEvent,
+  type TamaguiElement,
+  View,
+  type ViewProps,
+  composeEventHandlers,
+  createStyledContext,
+  isAndroid,
+  isWeb,
+  styled,
+  withStaticProperties,
+} from '@tamagui/web'
 import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
@@ -44,8 +44,7 @@ interface ContextMenuProps extends MenuProps {
  * ContextMenuTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
-interface ContextMenuTriggerProps extends PrimitiveSpanProps {
+interface ContextMenuTriggerProps extends ViewProps {
   disabled?: boolean
 }
 
@@ -220,8 +219,8 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const TRIGGER_NAME = 'ContextMenuTrigger'
 
-  const ContextMenuTrigger = Stack.styleable(
-    (props: ScopedProps<ContextMenuTriggerProps>, forwardedRef) => {
+  const ContextMenuTrigger = View.styleable<ScopedProps<ContextMenuTriggerProps>>(
+    (props, forwardedRef) => {
       const { scope, style, disabled = false, ...triggerProps } = props
       const context = useContextMenuContext(scope)
       const pointRef = React.useRef<Point>({ x: 0, y: 0 })
@@ -272,7 +271,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
       return (
         <>
           <Menu.Anchor scope={scope || CONTEXTMENU_CONTEXT} virtualRef={virtualRef} />
-          <Stack
+          <View
             tag="span"
             componentName={TRIGGER_NAME}
             data-state={context.open ? 'open' : 'closed'}
@@ -694,7 +693,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const SUB_TRIGGER_NAME = 'ContextMenuSubTrigger'
 
-  const ContextMenuSubTrigger = YStack.styleable<ContextMenuSubTriggerProps>(
+  const ContextMenuSubTrigger = View.styleable<ContextMenuSubTriggerProps>(
     (props, forwardedRef) => {
       const { scope, ...triggerItemProps } = props
       return (

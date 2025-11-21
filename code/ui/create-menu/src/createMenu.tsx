@@ -1,14 +1,6 @@
 import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
-import type { TamaguiComponent, TextProps } from '@tamagui/core'
-import {
-  Text,
-  composeEventHandlers,
-  composeRefs,
-  createStyledContext,
-  useComposedRefs,
-} from '@tamagui/core'
 import {
   Dismissable as DismissableLayer,
   dispatchDiscreteCustomEvent,
@@ -17,19 +9,26 @@ import { useFocusGuards } from '@tamagui/focus-guard'
 import { FocusScope } from '@tamagui/focus-scope'
 import type { PopperContentProps } from '@tamagui/popper'
 import * as PopperPrimitive from '@tamagui/popper'
-import { Portal as PortalPrimitive, type PortalProps } from '@tamagui/portal'
+import { Portal as PortalPrimitive } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
-import {
-  type SizableStackProps,
-  ThemeableStack,
-  type ThemeableStackProps,
-  YStack,
-} from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { type Stack, isAndroid, isWeb, withStaticProperties } from '@tamagui/web'
+import type { TamaguiComponent, TextProps } from '@tamagui/web'
+import {
+  type Stack,
+  type ViewProps,
+  Text,
+  View,
+  composeEventHandlers,
+  composeRefs,
+  createStyledContext,
+  isAndroid,
+  isWeb,
+  useComposedRefs,
+  withStaticProperties,
+} from '@tamagui/web'
 import type { TamaguiElement } from '@tamagui/web/types'
 // import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
@@ -194,10 +193,7 @@ interface MenuContentImplProps
   onInteractOutside?: DismissableLayerProps['onInteractOutside']
 }
 
-type StyleableMenuContentProps = MenuContentImplProps &
-  SizableStackProps & {
-    unstyled?: boolean
-  }
+type StyleableMenuContentProps = MenuContentImplProps & ViewProps
 
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface MenuGroupProps extends PrimitiveDivProps {}
@@ -237,7 +233,7 @@ interface MenuItemSubTitleProps extends TextProps {}
 /* -------------------------------------------------------------------------------------------------
  * MenuItemIcon
  * -----------------------------------------------------------------------------------------------*/
-type MenuItemIconProps = ThemeableStackProps
+type MenuItemIconProps = ViewProps
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -549,15 +545,16 @@ export function createMenu({
         <PortalPrimitive host={host}>
           <>
             <PortalProvider scope={scope} forceMount={forceMount}>
-              <YStack zIndex={zIndex || 100} fullscreen>
+              <View zIndex={zIndex || 100} inset={0} position="absolute">
                 {!!menuContext.open && !isWeb && (
-                  <YStack
-                    fullscreen
+                  <View
+                    inset={0}
+                    position="absolute"
                     onPress={() => menuContext.onOpenChange(!menuContext.open)}
                   />
                 )}
                 {content}
-              </YStack>
+              </View>
             </PortalProvider>
           </>
         </PortalPrimitive>
@@ -901,7 +898,7 @@ export function createMenu({
   const ITEM_NAME = 'MenuItem'
   const ITEM_SELECT = 'menu.itemSelect'
 
-  const MenuItem = ThemeableStack.styleable<ScopedProps<MenuItemProps>>(
+  const MenuItem = React.forwardRef<TamaguiElement, ScopedProps<MenuItemProps>>(
     (props, forwardedRef) => {
       const { disabled = false, onSelect, children, ...itemProps } = props
       const ref = React.useRef<HTMLDivElement>(null)
@@ -1132,11 +1129,14 @@ export function createMenu({
   /* -------------------------------------------------------------------------------------------------
    * MenuItemIcon
    * -----------------------------------------------------------------------------------------------*/
+
+  // TODO review why styleable was here
   const ITEM_ICON = 'MenuItemIcon'
-  type MenuItemIconProps = ThemeableStackProps
-  const MenuItemIcon = _Icon.styleable((props: ThemeableStackProps, forwardedRef) => {
-    return <_Icon {...props} ref={forwardedRef} />
-  })
+  type MenuItemIconProps = ViewProps
+  const MenuItemIcon = _Icon
+  // .styleable((props: ThemeableStackProps, forwardedRef) => {
+  //   return <_Icon {...props} ref={forwardedRef} />
+  // })
 
   MenuItemIcon.displayName = ITEM_ICON
 
@@ -1148,29 +1148,29 @@ export function createMenu({
 
   const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
 
-  const MenuCheckboxItem = ThemeableStack.styleable<ScopedProps<MenuCheckboxItemProps>>(
-    (props, forwardedRef) => {
-      const { checked = false, onCheckedChange, ...checkboxItemProps } = props
-      return (
-        <ItemIndicatorProvider scope={props.scope} checked={checked}>
-          {/* @ts-ignore */}
-          <MenuItem
-            componentName={CHECKBOX_ITEM_NAME}
-            role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
-            aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
-            {...checkboxItemProps}
-            ref={forwardedRef}
-            data-state={getCheckedState(checked)}
-            onSelect={composeEventHandlers(
-              checkboxItemProps.onSelect,
-              () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked),
-              { checkDefaultPrevented: false }
-            )}
-          />
-        </ItemIndicatorProvider>
-      )
-    }
-  )
+  const MenuCheckboxItem = React.forwardRef<
+    TamaguiElement,
+    ScopedProps<MenuCheckboxItemProps>
+  >((props, forwardedRef) => {
+    const { checked = false, onCheckedChange, ...checkboxItemProps } = props
+    return (
+      <ItemIndicatorProvider scope={props.scope} checked={checked}>
+        <MenuItem
+          componentName={CHECKBOX_ITEM_NAME}
+          role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
+          aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
+          {...checkboxItemProps}
+          ref={forwardedRef}
+          data-state={getCheckedState(checked)}
+          onSelect={composeEventHandlers(
+            checkboxItemProps.onSelect,
+            () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked),
+            { checkDefaultPrevented: false }
+          )}
+        />
+      </ItemIndicatorProvider>
+    )
+  })
 
   MenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
   /* -------------------------------------------------------------------------------------------------
@@ -1205,14 +1205,13 @@ export function createMenu({
 
   const RADIO_ITEM_NAME = 'MenuRadioItem'
 
-  const MenuRadioItem = ThemeableStack.styleable<ScopedProps<MenuRadioItemProps>>(
+  const MenuRadioItem = React.forwardRef<TamaguiElement, ScopedProps<MenuRadioItemProps>>(
     (props, forwardedRef) => {
       const { value, ...radioItemProps } = props
       const context = useRadioGroupContext(props.scope)
       const checked = value === context.value
       return (
         <ItemIndicatorProvider scope={props.scope} checked={checked}>
-          {/* @ts-ignore */}
           <MenuItem
             componentName={RADIO_ITEM_NAME}
             {...radioItemProps}
@@ -1340,145 +1339,146 @@ export function createMenu({
 
   const SUB_TRIGGER_NAME = 'MenuSubTrigger'
 
-  const MenuSubTrigger = YStack.styleable<ScopedProps<MenuSubTriggerProps>>(
-    (props, forwardedRef) => {
-      const context = useMenuContext(props.scope)
-      const rootContext = useMenuRootContext(props.scope)
-      const subContext = useMenuSubContext(props.scope)
-      const contentContext = useMenuContentContext(props.scope)
-      const openTimerRef = React.useRef<number | null>(null)
-      const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
+  const MenuSubTrigger = React.forwardRef<
+    TamaguiElement,
+    ScopedProps<MenuSubTriggerProps>
+  >((props, forwardedRef) => {
+    const context = useMenuContext(props.scope)
+    const rootContext = useMenuRootContext(props.scope)
+    const subContext = useMenuSubContext(props.scope)
+    const contentContext = useMenuContentContext(props.scope)
+    const openTimerRef = React.useRef<number | null>(null)
+    const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
 
-      const clearOpenTimer = React.useCallback(() => {
-        if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
-        openTimerRef.current = null
-      }, [])
+    const clearOpenTimer = React.useCallback(() => {
+      if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
+      openTimerRef.current = null
+    }, [])
 
-      React.useEffect(() => clearOpenTimer, [clearOpenTimer])
+    React.useEffect(() => clearOpenTimer, [clearOpenTimer])
 
-      React.useEffect(() => {
-        const pointerGraceTimer = pointerGraceTimerRef.current
-        return () => {
-          window.clearTimeout(pointerGraceTimer)
-          onPointerGraceIntentChange(null)
-        }
-      }, [pointerGraceTimerRef, onPointerGraceIntentChange])
+    React.useEffect(() => {
+      const pointerGraceTimer = pointerGraceTimerRef.current
+      return () => {
+        window.clearTimeout(pointerGraceTimer)
+        onPointerGraceIntentChange(null)
+      }
+    }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
-      return (
-        <MenuAnchor
-          componentName={SUB_TRIGGER_NAME}
-          asChild
-          scope={props.scope || MENU_CONTEXT}
-        >
-          <MenuItemImpl
-            id={subContext.triggerId}
-            aria-haspopup="menu"
-            aria-expanded={context.open}
-            aria-controls={subContext.contentId}
-            data-state={getOpenState(context.open)}
-            outlineStyle="none"
-            {...props}
-            ref={composeRefs(forwardedRef, subContext.onTriggerChange)}
-            // This is redundant for mouse users but we cannot determine pointer type from
-            // click event and we cannot use pointerup event (see git history for reasons why)
-            onPress={(event) => {
-              props.onPress?.(event)
-              if (props.disabled || event.defaultPrevented) return
-              /**
-               * We manually focus because iOS Safari doesn't always focus on click (e.g. buttons)
-               * and we rely heavily on `onFocusOutside` for submenus to close when switching
-               * between separate submenus.
-               */
-              if (isWeb) {
-                // @ts-ignore
-                event.currentTarget.focus()
+    return (
+      <MenuAnchor
+        componentName={SUB_TRIGGER_NAME}
+        asChild
+        scope={props.scope || MENU_CONTEXT}
+      >
+        <MenuItemImpl
+          id={subContext.triggerId}
+          aria-haspopup="menu"
+          aria-expanded={context.open}
+          aria-controls={subContext.contentId}
+          data-state={getOpenState(context.open)}
+          outlineStyle="none"
+          {...props}
+          ref={composeRefs(forwardedRef, subContext.onTriggerChange)}
+          // This is redundant for mouse users but we cannot determine pointer type from
+          // click event and we cannot use pointerup event (see git history for reasons why)
+          onPress={(event) => {
+            props.onPress?.(event)
+            if (props.disabled || event.defaultPrevented) return
+            /**
+             * We manually focus because iOS Safari doesn't always focus on click (e.g. buttons)
+             * and we rely heavily on `onFocusOutside` for submenus to close when switching
+             * between separate submenus.
+             */
+            if (isWeb) {
+              // @ts-ignore
+              event.currentTarget.focus()
+            }
+            if (!context.open) context.onOpenChange(true)
+          }}
+          onPointerMove={composeEventHandlers(
+            props.onPointerMove,
+            // @ts-ignore
+            whenMouse((event: PointerEvent<Element>) => {
+              contentContext.onItemEnter(event)
+              if (event.defaultPrevented) return
+              if (!props.disabled && !context.open && !openTimerRef.current) {
+                contentContext.onPointerGraceIntentChange(null)
+                openTimerRef.current = window.setTimeout(() => {
+                  context.onOpenChange(true)
+                  clearOpenTimer()
+                }, 100)
               }
-              if (!context.open) context.onOpenChange(true)
-            }}
-            onPointerMove={composeEventHandlers(
-              props.onPointerMove,
-              // @ts-ignore
-              whenMouse((event: PointerEvent<Element>) => {
-                contentContext.onItemEnter(event)
-                if (event.defaultPrevented) return
-                if (!props.disabled && !context.open && !openTimerRef.current) {
-                  contentContext.onPointerGraceIntentChange(null)
-                  openTimerRef.current = window.setTimeout(() => {
-                    context.onOpenChange(true)
-                    clearOpenTimer()
-                  }, 100)
-                }
-              })
-            )}
-            onPointerLeave={composeEventHandlers(
-              props.onPointerLeave,
-              // @ts-ignore
-              whenMouse((event: PointerEvent<Element>) => {
-                clearOpenTimer()
+            })
+          )}
+          onPointerLeave={composeEventHandlers(
+            props.onPointerLeave,
+            // @ts-ignore
+            whenMouse((event: PointerEvent<Element>) => {
+              clearOpenTimer()
 
+              // @ts-ignore
+              const contentRect = context.content?.getBoundingClientRect()
+              if (contentRect) {
+                // TODO: make sure to update this when we change positioning logic
                 // @ts-ignore
-                const contentRect = context.content?.getBoundingClientRect()
-                if (contentRect) {
-                  // TODO: make sure to update this when we change positioning logic
+                const side = context.content?.dataset.side as Side
+                const rightSide = side === 'right'
+                const bleed = rightSide ? -5 : +5
+                const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
+                const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
+
+                contentContext.onPointerGraceIntentChange({
+                  area: [
+                    // Apply a bleed on clientX to ensure that our exit point is
+                    // consistently within polygon bounds
+                    { x: event.clientX + bleed, y: event.clientY },
+                    { x: contentNearEdge, y: contentRect.top },
+                    { x: contentFarEdge, y: contentRect.top },
+                    { x: contentFarEdge, y: contentRect.bottom },
+                    { x: contentNearEdge, y: contentRect.bottom },
+                  ],
+                  side,
+                })
+
+                window.clearTimeout(pointerGraceTimerRef.current)
+                pointerGraceTimerRef.current = window.setTimeout(
+                  () => contentContext.onPointerGraceIntentChange(null),
+                  300
+                )
+              } else {
+                contentContext.onTriggerLeave(event)
+                if (event.defaultPrevented) return
+
+                // There's 100ms where the user may leave an item before the submenu was opened.
+                contentContext.onPointerGraceIntentChange(null)
+              }
+            })
+          )}
+          {...(isWeb
+            ? {
+                onKeyDown: composeEventHandlers(
                   // @ts-ignore
-                  const side = context.content?.dataset.side as Side
-                  const rightSide = side === 'right'
-                  const bleed = rightSide ? -5 : +5
-                  const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
-                  const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
-
-                  contentContext.onPointerGraceIntentChange({
-                    area: [
-                      // Apply a bleed on clientX to ensure that our exit point is
-                      // consistently within polygon bounds
-                      { x: event.clientX + bleed, y: event.clientY },
-                      { x: contentNearEdge, y: contentRect.top },
-                      { x: contentFarEdge, y: contentRect.top },
-                      { x: contentFarEdge, y: contentRect.bottom },
-                      { x: contentNearEdge, y: contentRect.bottom },
-                    ],
-                    side,
-                  })
-
-                  window.clearTimeout(pointerGraceTimerRef.current)
-                  pointerGraceTimerRef.current = window.setTimeout(
-                    () => contentContext.onPointerGraceIntentChange(null),
-                    300
-                  )
-                } else {
-                  contentContext.onTriggerLeave(event)
-                  if (event.defaultPrevented) return
-
-                  // There's 100ms where the user may leave an item before the submenu was opened.
-                  contentContext.onPointerGraceIntentChange(null)
-                }
-              })
-            )}
-            {...(isWeb
-              ? {
-                  onKeyDown: composeEventHandlers(
-                    // @ts-ignore
-                    props.onKeyDown,
-                    (event: KeyboardEvent) => {
-                      const isTypingAhead = contentContext.searchRef.current !== ''
-                      if (props.disabled || (isTypingAhead && event.key === ' ')) return
-                      if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
-                        context.onOpenChange(true)
-                        // The trigger may hold focus if opened via pointer interaction
-                        // so we ensure content is given focus again when switching to keyboard.
-                        context.content?.focus()
-                        // prevent window from scrolling
-                        event.preventDefault()
-                      }
+                  props.onKeyDown,
+                  (event: KeyboardEvent) => {
+                    const isTypingAhead = contentContext.searchRef.current !== ''
+                    if (props.disabled || (isTypingAhead && event.key === ' ')) return
+                    if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
+                      context.onOpenChange(true)
+                      // The trigger may hold focus if opened via pointer interaction
+                      // so we ensure content is given focus again when switching to keyboard.
+                      context.content?.focus()
+                      // prevent window from scrolling
+                      event.preventDefault()
                     }
-                  ),
-                }
-              : null)}
-          />
-        </MenuAnchor>
-      )
-    }
-  )
+                  }
+                ),
+              }
+            : null)}
+        />
+      </MenuAnchor>
+    )
+  })
 
   MenuSubTrigger.displayName = SUB_TRIGGER_NAME
 

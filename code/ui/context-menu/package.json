@@ -36,8 +36,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "@tamagui/menu": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "@tamagui/create-menu": "workspace:*",
+    "@tamagui/use-callback-ref": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/popover": "workspace:*"
   },
   "peerDependencies": {

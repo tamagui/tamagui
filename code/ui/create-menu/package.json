@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/menu",
+  "name": "@tamagui/create-menu",
   "version": "1.138.0",
   "type": "module",
   "sideEffects": [
@@ -37,7 +37,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "@tamagui/image": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"

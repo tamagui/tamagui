@@ -1,4 +1,4 @@
-import { styled, Text, View } from '@tamagui/core'
+import { styled, Text, View } from '@tamagui/web'
 import { Image } from '@tamagui/image'
 
 /* -------------------------------------------------------------------------------------------------

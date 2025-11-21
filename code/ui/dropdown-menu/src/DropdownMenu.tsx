@@ -1,10 +1,10 @@
-import { withStaticProperties } from '@tamagui/core'
+import { withStaticProperties } from '@tamagui/web'
 import {
   type createMenu,
   createNativeMenu,
   useNativeProp,
   withNativeMenu,
-} from '@tamagui/menu'
+} from '@tamagui/create-menu'
 import React from 'react'
 
 import {

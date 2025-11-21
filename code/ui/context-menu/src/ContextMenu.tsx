@@ -1,10 +1,10 @@
-import { withStaticProperties } from '@tamagui/core'
-import { createNativeMenu, useNativeProp, withNativeMenu } from '@tamagui/menu'
 import type {
   NativeMenuItemIconProps,
   NativeMenuSubTriggerProps,
   createMenu,
-} from '@tamagui/menu'
+} from '@tamagui/create-menu'
+import { createNativeMenu, useNativeProp, withNativeMenu } from '@tamagui/create-menu'
+import { withStaticProperties } from '@tamagui/web'
 import React from 'react'
 
 import {
@@ -169,20 +169,20 @@ export function createContextMenu(param: Parameters<typeof createMenu>[0]) {
 }
 
 export type {
-  ContextMenuProps,
-  ContextMenuTriggerProps,
+  ContextMenuArrowProps,
+  ContextMenuCheckboxItemProps,
   ContextMenuContentProps,
   ContextMenuGroupProps,
-  ContextMenuItemProps,
-  ContextMenuCheckboxItemProps,
-  ContextMenuRadioGroupProps,
-  ContextMenuRadioItemProps,
-  ContextMenuItemIndicatorProps,
-  ContextMenuSeparatorProps,
-  ContextMenuArrowProps,
-  ContextMenuSubProps,
-  ContextMenuSubTriggerProps,
-  ContextMenuSubContentProps,
   ContextMenuItemIconProps,
   ContextMenuItemImageProps,
+  ContextMenuItemIndicatorProps,
+  ContextMenuItemProps,
+  ContextMenuProps,
+  ContextMenuRadioGroupProps,
+  ContextMenuRadioItemProps,
+  ContextMenuSeparatorProps,
+  ContextMenuSubContentProps,
+  ContextMenuSubProps,
+  ContextMenuSubTriggerProps,
+  ContextMenuTriggerProps,
 } from './createNonNativeContextMenu'

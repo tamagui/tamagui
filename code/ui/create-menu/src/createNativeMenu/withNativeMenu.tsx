@@ -1,8 +1,8 @@
-import { isWeb } from '@tamagui/core'
+import { isWeb } from '@tamagui/web'
 
 export function withNativeMenu<
   C extends React.ComponentType<any>,
-  N extends React.ComponentType<any>
+  N extends React.ComponentType<any>,
 >({
   Component,
   NativeComponent,
@@ -16,7 +16,10 @@ export function withNativeMenu<
   useNativePropScope: string
   isRoot: boolean
 }) {
-  if (isWeb) return Component
+  if (isWeb) {
+    return Component
+  }
+
   const Menu = (
     props: React.ComponentProps<C> & React.ComponentProps<N> & { native?: boolean }
   ) => {
@@ -26,6 +29,7 @@ export function withNativeMenu<
     } else {
       isNative = useNativeProp(useNativePropScope).native
     }
+
     if (isNative) {
       return <NativeComponent {...(props as React.ComponentProps<N>)} />
     }

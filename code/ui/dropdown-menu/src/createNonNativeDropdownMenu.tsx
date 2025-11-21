@@ -1,18 +1,20 @@
-import { Slot, isAndroid, withStaticProperties } from '@tamagui/core'
-import { type MenuProps, type MenuSubProps, createMenu } from '@tamagui/menu'
-import type { Menu as MenuTypes } from '@tamagui/menu'
-import { useId } from 'react'
-import * as React from 'react'
+import type { Menu as MenuTypes } from '@tamagui/create-menu'
+import { type MenuProps, type MenuSubProps, createMenu } from '@tamagui/create-menu'
+import { useControllableState } from '@tamagui/use-controllable-state'
 import {
-  Button,
+  Slot,
   type TamaguiElement,
-  YStack,
+  View,
+  type ViewProps,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
+  isAndroid,
   isWeb,
-  useControllableState,
-} from 'tamagui'
+  withStaticProperties,
+} from '@tamagui/web'
+import * as React from 'react'
+import { useId } from 'react'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -47,9 +49,7 @@ interface DropdownMenuProps extends MenuProps {
  * DropdownMenuTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-// type DropdownMenuTriggerElement = React.ElementRef<typeof Button>
-type PrimitiveButtonProps = React.ComponentPropsWithoutRef<typeof Button>
-interface DropdownMenuTriggerProps extends PrimitiveButtonProps {
+interface DropdownMenuTriggerProps extends ViewProps {
   onKeydown?(event: React.KeyboardEvent): void
 }
 
@@ -214,7 +214,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
 
   const DropdownMenuTriggerFrame = Menu.Anchor
 
-  const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProps>>(
+  const DropdownMenuTrigger = View.styleable<ScopedProps<DropdownMenuTriggerProps>>(
     (props, forwardedRef) => {
       const {
         scope,
@@ -225,7 +225,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
         ...triggerProps
       } = props
       const context = useDropdownMenuContext(scope)
-      const Comp = asChild ? Slot : Button
+      const Comp = asChild ? Slot : View
       return (
         <DropdownMenuTriggerFrame
           asChild
@@ -589,20 +589,20 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
 
   const SUB_TRIGGER_NAME = 'DropdownMenuSubTrigger'
 
-  const DropdownMenuSubTrigger = YStack.styleable<
-    ScopedProps<DropdownMenuSubTriggerProps>
-  >((props, forwardedRef) => {
-    // TODO: having asChild will create a problem, find a fix for that
-    const { scope, asChild, ...subTriggerProps } = props
-    return (
-      <Menu.SubTrigger
-        componentName={SUB_TRIGGER_NAME}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...subTriggerProps}
-        ref={forwardedRef}
-      />
-    )
-  })
+  const DropdownMenuSubTrigger = View.styleable<ScopedProps<DropdownMenuSubTriggerProps>>(
+    (props, forwardedRef) => {
+      // TODO: having asChild will create a problem, find a fix for that
+      const { scope, asChild, ...subTriggerProps } = props
+      return (
+        <Menu.SubTrigger
+          componentName={SUB_TRIGGER_NAME}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+          {...subTriggerProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
   DropdownMenuSubTrigger.displayName = SUB_TRIGGER_NAME
 
@@ -700,19 +700,19 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
 }
 
 export type {
-  DropdownMenuProps,
-  DropdownMenuTriggerProps,
-  DropdownMenuPortalProps,
+  DropdownMenuArrowProps,
+  DropdownMenuCheckboxItemProps,
   DropdownMenuContentProps,
   DropdownMenuGroupProps,
-  DropdownMenuLabelProps,
+  DropdownMenuItemIndicatorProps,
   DropdownMenuItemProps,
-  DropdownMenuCheckboxItemProps,
+  DropdownMenuLabelProps,
+  DropdownMenuPortalProps,
+  DropdownMenuProps,
   DropdownMenuRadioGroupProps,
   DropdownMenuRadioItemProps,
-  DropdownMenuItemIndicatorProps,
-  DropdownMenuArrowProps,
+  DropdownMenuSubContentProps,
   DropdownMenuSubProps,
   DropdownMenuSubTriggerProps,
-  DropdownMenuSubContentProps,
+  DropdownMenuTriggerProps,
 }

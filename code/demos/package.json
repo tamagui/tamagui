@@ -59,7 +59,6 @@
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
-    "@tamagui/menu": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/progress": "workspace:*",
     "@tamagui/radio-group": "workspace:*",

@@ -7637,7 +7637,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    "@tamagui/menu": "workspace:*"
+    "@tamagui/create-menu": "workspace:*"
     "@tamagui/popover": "workspace:*"
     react: "npm:*"
   peerDependencies:
@@ -7698,6 +7698,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/create-menu@workspace:*, @tamagui/create-menu@workspace:code/ui/create-menu":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/create-menu@workspace:code/ui/create-menu"
+  dependencies:
+    "@react-native-menu/menu": "npm:^2.0.0"
+    "@tamagui/build": "workspace:*"
+    "@tamagui/core": "workspace:*"
+    "@tamagui/helpers": "workspace:*"
+    "@tamagui/popover": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
+  dependenciesMeta:
+    "@react-native-menu/menu":
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/create-theme@workspace:*, @tamagui/create-theme@workspace:code/core/create-theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-theme@workspace:code/core/create-theme"
@@ -7733,7 +7752,6 @@ __metadata:
     "@tamagui/list-item": "workspace:*"
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
-    "@tamagui/menu": "workspace:*"
     "@tamagui/popover": "workspace:*"
     "@tamagui/progress": "workspace:*"
     "@tamagui/radio-group": "workspace:*"
@@ -7902,7 +7920,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    "@tamagui/menu": "workspace:*"
+    "@tamagui/create-menu": "workspace:*"
     "@tamagui/popover": "workspace:*"
     react: "npm:*"
   peerDependencies:
@@ -8473,25 +8491,6 @@ __metadata:
     tamagui: "workspace:*"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/menu@workspace:*, @tamagui/menu@workspace:code/ui/menu":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/menu@workspace:code/ui/menu"
-  dependencies:
-    "@react-native-menu/menu": "npm:^2.0.0"
-    "@tamagui/build": "workspace:*"
-    "@tamagui/core": "workspace:*"
-    "@tamagui/helpers": "workspace:*"
-    "@tamagui/popover": "workspace:*"
-    "@tamagui/use-controllable-state": "workspace:*"
-    react: "npm:*"
-  peerDependencies:
-    react: "*"
-  dependenciesMeta:
-    "@react-native-menu/menu":
-      optional: true
   languageName: unknown
   linkType: soft
 
