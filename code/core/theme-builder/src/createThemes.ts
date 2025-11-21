@@ -80,6 +80,7 @@ export function createThemes<
       : undefined) as GrandChildrenThemes extends undefined
       ? undefined
       : Record<keyof GrandChildrenThemes, any>,
+    getTheme,
   })
 
   lastBuilder = builder.themeBuilder

@@ -13,7 +13,7 @@ import {
   objectFromEntries,
 } from '@tamagui/create-theme'
 import type { Narrow } from '@tamagui/web'
-import { GetThemeFn } from './types'
+import type { GetThemeFn } from './types'
 
 export type ThemeBuilderInternalState = {
   palettes?: PaletteDefinitions

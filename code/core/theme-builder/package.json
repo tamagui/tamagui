@@ -17,7 +17,9 @@
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -38,7 +40,8 @@
     "color2k": "^2.0.2"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "vitest": "^4.0.4"
   },
   "publishConfig": {
     "access": "public"

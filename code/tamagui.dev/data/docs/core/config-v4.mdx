@@ -4,7 +4,9 @@ description: Easy config and themes with @tamagui/config/v4
 ---
 
 <IntroParagraph>
-  Config v4 simplifies configuration, generates much more useful themes, and adds a new helper function for generating your own theme suite called `createThemes`.
+  Config v4 simplifies configuration, generates much more useful themes, and
+  adds a new helper function for generating your own theme suite called
+  `createThemes`.
 </IntroParagraph>
 
 First you'll want to add it:
@@ -29,28 +31,41 @@ declare module 'tamagui' {
 }
 ```
 
-It gives you a robust suite of themes, a few shorthands that mostly align with Tailwind, and default settings that prevent bugs.
+It gives you a robust suite of themes, a few shorthands that mostly align with
+Tailwind, and default settings that prevent bugs.
 
-If you like it but want to make some changes, you can [copy and paste the source code](https://github.com/tamagui/tamagui/blob/5b0c075e92688ac85737fe97c98cd77322f034b0/code/core/config/src/v4.ts) into your app and customize to your taste.
-
+If you like it but want to make some changes, you can
+[copy and paste the source code](https://github.com/tamagui/tamagui/blob/5b0c075e92688ac85737fe97c98cd77322f034b0/code/core/config/src/v4.ts)
+into your app and customize to your taste.
 
 <Notice theme="green" title="Custom Themes">
-  If you want to learn to create your own custom theme suite rather than use the included defaults, check out the [Creating Custom Themes Guide](/docs/guides/theme-builder).
+  If you want to learn to create your own custom theme suite rather than use the
+  included defaults, check out the [Creating Custom Themes
+  Guide](/docs/guides/theme-builder).
 </Notice>
 
-We recommend adding `settings.styleCompat` to the default config, setting it to be "react-native". This will align the default flexBasis of `flex` to be `0`, not `auto`, matching the default in React Native. This setting will become the default in the upcoming Tamagui v2 release. We left it out of Config v4 because we wanted an easier transition for existing users, but if you are a new user, we recommend this setting.
+We recommend adding `settings.styleCompat` to the default config, setting it to
+be "react-native". This will align the default flexBasis of `flex` to be `0`,
+not `auto`, matching the default in React Native. This setting will become the
+default in the upcoming Tamagui v2 release. We left it out of Config v4 because
+we wanted an easier transition for existing users, but if you are a new user, we
+recommend this setting.
 
 ---
 
 ### Default Configuration
 
-You can take or leave as much of the default configuration as you please. Each part is exported separately, or all together as `defaultConfig`.
+You can take or leave as much of the default configuration as you please. Each
+part is exported separately, or all together as `defaultConfig`.
 
 #### Themes
 
-Config v4 has a new helper function `createThemes`, an opinionated way to generate a suite of themes. It also comes with default themes that include minimal grayscale light and dark themes, and an inverted "accent" theme.
+Config v4 has a new helper function `createThemes`, an opinionated way to
+generate a suite of themes. It also comes with default themes that include
+minimal grayscale light and dark themes, and an inverted "accent" theme.
 
-It's easiest to get a feel for both createThemes the default themes by reading the source for how `defaultThemes` are defined:
+It's easiest to get a feel for both createThemes the default themes by reading
+the source for how `defaultThemes` are defined:
 
 ```tsx fileName=themes.ts
 import * as Colors from '@tamagui/colors'
@@ -133,7 +148,7 @@ const extraColors = {
 
 const generatedThemes = createThemes({
   componentThemes: defaultComponentThemes,
-  
+
   base: {
     palette: {
       dark: darkPalette,
@@ -215,26 +230,67 @@ export const themes: TamaguiThemes =
 
 So what have we done?
 
-- `base` will always generate `light` and `dark` as your root themes. We plan to add support for generating just one base theme, but you can manually remove either light or dark if you please.
+- `base` will always generate `light` and `dark` as your root themes. We plan to
+  add support for generating just one base theme, but you can manually remove
+  either light or dark if you please.
 - Our `base` themes are grayscale, defined by their palettes.
-- The `accent` option is an opinionated way to have a "contrasting theme". When set, it generates a few things:
+- The `accent` option is an opinionated way to have a "contrasting theme". When
+  set, it generates a few things:
   - `light_accent` and `dark_accent` themes
   - `$accent1` through `$accent12` on the base themes
-- `childrenThemes` allows us to set up some sub-themes easily, this is especially useful for when you want to make an area look like an error, success, or warning state. That's why we default to setting `green`, `yellow`, and `red`. Of course, you can swap these out for whatever you like.
-- We also are setting `componentThemes` to `defaultComponentThemes`, which will generate for us default styling for the Tamagui UI components. If you prefer to not have default component themes, you can leave this out.
+- `childrenThemes` allows us to set up some sub-themes easily, this is
+  especially useful for when you want to make an area look like an error,
+  success, or warning state. That's why we default to setting `green`, `yellow`,
+  and `red`. Of course, you can swap these out for whatever you like.
+- We also are setting `componentThemes` to `defaultComponentThemes`, which will
+  generate for us default styling for the Tamagui UI components. If you prefer
+  to not have default component themes, you can leave this out.
+- You can use the `getTheme` callback to customize any generated theme. See the
+  [theme-builder guide](/docs/guides/theme-builder#customizing-themes-with-gettheme)
+  for details.
 
 #### Settings
 
 <PropsTable
   data={[
     { name: 'mediaQueryDefaultActive', description: 'See Media' },
-    { name: 'defaultFont', description: 'body', },
-    { name: 'fastSchemeChange', description: true, description: 'On iOS, leverages DynamicColorIOS for fast light/dark theme changes.' },
-    { name: 'shouldAddPrefersColorThemes', description: true, description: 'Generates CSS for prefers-color-scheme, so even with JS off you have proper light/dark styling.' },
-    { name: 'allowedStyleDescriptions', description: 'somewhat-strict-web', description: 'More strict than just a string, but still allows web-only style descriptions like vh, vw.' },
-    { name: 'themeClassNameOnRoot', description: true, description: 'Defaults to putting your root theme className onto the root html tag so you can use your CSS variables on your body tag.' },
-    { name: 'onlyAllowShorthands', description: true, description: 'For any shorthand defined, remove the types for the longhand.' },
-    { name: 'maxDarkLightNesting', description: 1, description: 'To save CSS and bundle size, only allow light and dark to nest once, instead prefer using black/white themes included below the root.' }
+    { name: 'defaultFont', description: 'body' },
+    {
+      name: 'fastSchemeChange',
+      description: true,
+      description:
+        'On iOS, leverages DynamicColorIOS for fast light/dark theme changes.',
+    },
+    {
+      name: 'shouldAddPrefersColorThemes',
+      description: true,
+      description:
+        'Generates CSS for prefers-color-scheme, so even with JS off you have proper light/dark styling.',
+    },
+    {
+      name: 'allowedStyleDescriptions',
+      description: 'somewhat-strict-web',
+      description:
+        'More strict than just a string, but still allows web-only style descriptions like vh, vw.',
+    },
+    {
+      name: 'themeClassNameOnRoot',
+      description: true,
+      description:
+        'Defaults to putting your root theme className onto the root html tag so you can use your CSS variables on your body tag.',
+    },
+    {
+      name: 'onlyAllowShorthands',
+      description: true,
+      description:
+        'For any shorthand defined, remove the types for the longhand.',
+    },
+    {
+      name: 'maxDarkLightNesting',
+      description: 1,
+      description:
+        'To save CSS and bundle size, only allow light and dark to nest once, instead prefer using black/white themes included below the root.',
+    },
   ]}
 />
 
@@ -254,48 +310,53 @@ The new media queries in v4 are also more simplified and aligned to Tailwind:
   ]}
 />
 
-On the server, only xs and 2xs default to `true` to align generally give you a [mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design) setup, but of course you can change that. This only really affects `useMedia()`, as Tamagui generates proper SSR-safe CSS for media queries on the server for any style properties.
+On the server, only xs and 2xs default to `true` to align generally give you a
+[mobile-first design](https://en.wikipedia.org/wiki/Responsive_web_design)
+setup, but of course you can change that. This only really affects `useMedia()`,
+as Tamagui generates proper SSR-safe CSS for media queries on the server for any
+style properties.
 
 #### Shorthands
 
-Config v4 has fewer shorthands, and aligns shorthands to Tailwind for familiarity:
+Config v4 has fewer shorthands, and aligns shorthands to Tailwind for
+familiarity:
 
 <PropsTable
   data={[
-    { name: 'text', description: 'textAlign', },
-    { name: 'b', description: 'bottom', },
-    { name: 'bg', description: 'backgroundColor', },
-    { name: 'content', description: 'alignContent', },
-    { name: 'flex', description: 'flexDirection', },
-    { name: 'grow', description: 'flexGrow', },
-    { name: 'items', description: 'alignItems', },
-    { name: 'justify', description: 'justifyContent', },
-    { name: 'l', description: 'left', },
-    { name: 'm', description: 'margin', },
-    { name: 'maxH', description: 'maxHeight', },
-    { name: 'maxW', description: 'maxWidth', },
-    { name: 'mb', description: 'marginBottom', },
-    { name: 'minH', description: 'minHeight', },
-    { name: 'minW', description: 'minWidth', },
-    { name: 'ml', description: 'marginLeft', },
-    { name: 'mr', description: 'marginRight', },
-    { name: 'mt', description: 'marginTop', },
-    { name: 'mx', description: 'marginHorizontal', },
-    { name: 'my', description: 'marginVertical', },
-    { name: 'p', description: 'padding', },
-    { name: 'pb', description: 'paddingBottom', },
-    { name: 'pl', description: 'paddingLeft', },
-    { name: 'pr', description: 'paddingRight', },
-    { name: 'pt', description: 'paddingTop', },
-    { name: 'px', description: 'paddingHorizontal', },
-    { name: 'py', description: 'paddingVertical', },
-    { name: 'r', description: 'right', },
-    { name: 'rounded', description: 'borderRadius', },
-    { name: 'select', description: 'userSelect', },
-    { name: 'self', description: 'alignSelf', },
-    { name: 'shrink', description: 'flexShrink', },
-    { name: 't', description: 'top', },
-    { name: 'z', description: 'zIndex', },
+    { name: 'text', description: 'textAlign' },
+    { name: 'b', description: 'bottom' },
+    { name: 'bg', description: 'backgroundColor' },
+    { name: 'content', description: 'alignContent' },
+    { name: 'flex', description: 'flexDirection' },
+    { name: 'grow', description: 'flexGrow' },
+    { name: 'items', description: 'alignItems' },
+    { name: 'justify', description: 'justifyContent' },
+    { name: 'l', description: 'left' },
+    { name: 'm', description: 'margin' },
+    { name: 'maxH', description: 'maxHeight' },
+    { name: 'maxW', description: 'maxWidth' },
+    { name: 'mb', description: 'marginBottom' },
+    { name: 'minH', description: 'minHeight' },
+    { name: 'minW', description: 'minWidth' },
+    { name: 'ml', description: 'marginLeft' },
+    { name: 'mr', description: 'marginRight' },
+    { name: 'mt', description: 'marginTop' },
+    { name: 'mx', description: 'marginHorizontal' },
+    { name: 'my', description: 'marginVertical' },
+    { name: 'p', description: 'padding' },
+    { name: 'pb', description: 'paddingBottom' },
+    { name: 'pl', description: 'paddingLeft' },
+    { name: 'pr', description: 'paddingRight' },
+    { name: 'pt', description: 'paddingTop' },
+    { name: 'px', description: 'paddingHorizontal' },
+    { name: 'py', description: 'paddingVertical' },
+    { name: 'r', description: 'right' },
+    { name: 'rounded', description: 'borderRadius' },
+    { name: 'select', description: 'userSelect' },
+    { name: 'self', description: 'alignSelf' },
+    { name: 'shrink', description: 'flexShrink' },
+    { name: 't', description: 'top' },
+    { name: 'z', description: 'zIndex' },
   ]}
 />
 
@@ -370,17 +431,25 @@ export const radius = {
 
 Note that `color` tokens aren't defined, instead we are just using themes.
 
-Also note that the "true" value on tokens is the "default" - Tamagui UI for now uses defaults to determine how to size various things out of the box. This isn't mandatory, and in version 2 of Tamagui we are working on a more clear solution.
+Also note that the "true" value on tokens is the "default" - Tamagui UI for now
+uses defaults to determine how to size various things out of the box. This isn't
+mandatory, and in version 2 of Tamagui we are working on a more clear solution.
 
 #### Fonts
 
-Only a `body` and `heading` font are exported, which both use "system" font families:
+Only a `body` and `heading` font are exported, which both use "system" font
+families:
 
-<PropsTable 
+<PropsTable
   data={[
-    { name: 'web', description: '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' },
+    {
+      name: 'web',
+      description:
+        '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    },
     { name: 'native', description: 'System' },
   ]}
 />
 
-You can create your own system font using the exported `createSystemFont` helper, or of course swap out your own fonts altogether.
+You can create your own system font using the exported `createSystemFont`
+helper, or of course swap out your own fonts altogether.
