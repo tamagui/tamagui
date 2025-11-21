@@ -72,29 +72,41 @@ Things depreciated in version one that are now gone:
 ### Goals
 
 Our main goal with version two is **stability**. Tamagui started as a side
-project with incredible scope, and has been ambitious in landing large internal
-improvements and features along the way.
+project with incredible scope and maintained an ambitious stance towards landing
+large features and internal improvements.
 
-To be honest - a lack of rigor in both adding native tests and in using canaries
-before actual releases meant we were not as stable as we should have been, and
-we apologize to anyone who wasted time due to regressions. We decided to push
-back the release of version two for over a year mostly because we wanted to
-prove to ourselves that we had a solid, reliable setup going forward.
+Speaking for myself now: I personally pushed releases too fast, and as a result
+burned too many of our users with regressions. We generally fast-followed with
+fixes, but that isn't a good thing.
 
-What's changed?
+I'd like to sincerely apologize for the lack of rigor in our releases. We had a
+version two nearly ready over a year ago and I felt we'd finally reached
+maturity in terms of API, internals, performance, and general repo tooling, but
+honestly, I just wanted to slow down, fix as many issues as possible, and find a
+better balance.
 
-- We've added over 500 tests, especially improving our native test suite.
-- We slowed down releases and added a variety of new checks to releases.
-- We spent time to fix hundreds of bugs via our issue backlog, with tests.
-- We made our canary release process simpler, and now use it much more often.
-- We mostly "caught up" with the major internals improvements we wanted to land.
+I love Tamagui, it's always been something I do for the love of the game and not
+profit. The company to date has made nearly half a million dollars and
+re-invested all of entirely to paying our team. We get amazing support, and I
+really appreciate our community.
+
+We've changed a lot over the last couple years to improve stability:
+
+- Added over 500 tests, especially improving our native test suite.
+- Slowed down releases and added a variety of new checks to releases.
+- Fixed nearly 1,000 issues, and increased test coverage dramatically.
+- Improved our canary release process, and now use it much more often.
+- Completed all the major re-writes we wanted to do, which let us finally focus
+  on the above.
 
 ### What's next
 
-Tamagui is quite mature in terms of features and foundation. We likely won't add
-many components, but may add a few powerful features especially in terms of
-adapting UI.
+Tamagui is quite mature in terms of features, foundation, and performance. We
+likely won't add much for a while, instead I'd like to continue focusing on
+refinement, and also move much more quickly towards a version three. That will
+probably involve a version 2.X sometime soon that deprecates a variety more
+things we want to, in order to clear the way.
 
-Mostly we'd like to continuing to fix bugs, continue aligning it with web
-standards, and generally making it more flexible and easy to use with better
-documentation and onboarding.
+Our broad goals for the future including better alignment to the web, simpler
+onboarding, and potentially more familiar style APIs for people who aren't
+Tamagui-pilled.
