@@ -45,7 +45,7 @@ export default function TakeoutPage() {
   const isProUser = subscriptionStatus?.pro
 
   return (
-    <YStack maw="100%">
+    <YStack maxW="100%">
       <ThemeNameEffect colorKey="$color5" />
       <LoadCherryBomb />
       <HeadInfo
@@ -65,7 +65,7 @@ export default function TakeoutPage() {
 
       <ThemeTintAlt>
         <YStack
-          pos="absolute"
+          position="absolute"
           l={0}
           r={0}
           t={-100}
@@ -74,7 +74,7 @@ export default function TakeoutPage() {
             background:
               'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
           }}
-          zi={-3}
+          z={-3}
         />
       </ThemeTintAlt>
 
@@ -83,8 +83,8 @@ export default function TakeoutPage() {
         fullscreen
         t={-60}
         b={0}
-        o={0.5}
-        zi={0}
+        opacity={0.5}
+        z={0}
         style={{
           imageRendering: 'pixelated',
         }}
@@ -92,7 +92,7 @@ export default function TakeoutPage() {
 
       <ThemeTintAlt offset={0}>
         <YStack
-          pos="absolute"
+          position="absolute"
           l={0}
           r={0}
           t={-100}
@@ -101,13 +101,13 @@ export default function TakeoutPage() {
           style={{
             background: 'linear-gradient(10deg, var(--color5), var(--color1))',
           }}
-          zi={-3}
+          z={-3}
         />
       </ThemeTintAlt>
 
       <ThemeTintAlt offset={3}>
         <YStack
-          pos="absolute"
+          position="absolute"
           l={0}
           r={0}
           t={-100}
@@ -116,33 +116,31 @@ export default function TakeoutPage() {
             background:
               'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
           }}
-          zi={-3}
+          z={-3}
         />
       </ThemeTintAlt>
 
       <YStack
-        pe="none"
-        pos="absolute"
+        pointerEvents="none"
+        position="absolute"
         t={-950}
         l="50%"
         x={-300}
         scale={1}
         rotate="120deg"
-        o={0.02}
+        opacity={0.02}
         $theme-light={{
-          o: 0.12,
+          opacity: 0.12,
         }}
-        zi={-1}
+        z={-1}
       >
         <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
       </YStack>
 
-      {/* <Glow /> */}
-
       {/* gradient on the end of the page */}
       <ThemeTint>
         <YStack
-          zi={-1}
+          z={-1}
           fullscreen
           style={{
             background: `linear-gradient(to bottom, transparent, transparent, var(--color2))`,
@@ -151,11 +149,10 @@ export default function TakeoutPage() {
       </ThemeTint>
 
       <ContainerLarge px={0}>
-        <YStack h={0} mah={0}>
+        <YStack height={0} maxH={0}>
           <YStack position="absolute" t={30} r="2%">
             <Theme name="accent">
               <PurchaseButton
-                // icon={ShoppingCart}
                 onPress={() => {
                   showAppropriateModal()
                 }}
@@ -166,10 +163,6 @@ export default function TakeoutPage() {
             </Theme>
           </YStack>
 
-          {/* <DiscountText>Text</DiscountText> */}
-
-          {/* <PromoVideo /> */}
-
           <TakeoutHero />
         </YStack>
 
@@ -178,10 +171,10 @@ export default function TakeoutPage() {
           $sm={{ mt: heroHeight - 100 }}
           $xs={{ mt: heroHeight - 150 }}
           gap="$10"
-          $md={{ fd: 'column' }}
+          $md={{ flexDirection: 'column' }}
         >
           <XStack
-            f={1}
+            flex={1}
             p="$5"
             $md={{
               flexDirection: 'column-reverse',
@@ -197,7 +190,7 @@ export default function TakeoutPage() {
               <StarterCard />
             </YStack>
 
-            <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
+            <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" flex={1} gap="$5">
               <ThemeTintAlt>
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                   Takeout is a production-ready base stack that includes everything you
@@ -222,7 +215,7 @@ export default function TakeoutPage() {
                 </Paragraph>
               </ThemeTintAlt>
 
-              <XStack fw="wrap" gap="$3" mx="$-10" ai="center" jc="center">
+              <XStack flexWrap="wrap" gap="$3" mx="$-10" items="center" justify="center">
                 <TakeoutCard
                   theme="orange"
                   title="Monorepo"
@@ -329,7 +322,7 @@ export default function TakeoutPage() {
 
               <Spacer />
 
-              <YStack marginTop={-430} marginBottom={-330} x={800} zi={-1}>
+              <YStack mt={-430} mb={-330} x={800} z={-1}>
                 <div
                   style={{
                     transform: 'rotateX(41deg) rotateZ(33deg)',
@@ -591,8 +584,8 @@ export default function TakeoutPage() {
 
               <Spacer />
 
-              <YStack br="$12" p="$7" gap="$3">
-                <YStack mih={530}>
+              <YStack rounded="$12" p="$7" gap="$3">
+                <YStack minH={530}>
                   <Lazy>
                     <TakeoutGallery />
                   </Lazy>
@@ -604,8 +597,6 @@ export default function TakeoutPage() {
               <Spacer size="$10" />
             </YStack>
           </XStack>
-
-          {/* <YStack mt={200} w={3} mih={500} h="100%" $sm={{ display: 'none' }} /> */}
         </XStack>
         <Footer />
       </ContainerLarge>
@@ -666,13 +657,13 @@ const heroHeight = 1050
 export type TakeoutPageProps = ProductsResponse
 
 const TakeoutCard2Frame = styled(YStack, {
-  minWidth: 282,
-  maxWidth: 282,
-  minHeight: 312,
-  maxHeight: 312,
+  minW: 282,
+  maxW: 282,
+  minH: 312,
+  maxH: 312,
   elevation: '$0.5',
   overflow: 'hidden',
-  borderRadius: '$4',
+  rounded: '$4',
 
   '$group-takeoutBody-gtXs': {
     scale: 0.915,
@@ -727,39 +718,15 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 
   return (
     <>
-      <TakeoutCard2Frame
-        {...props}
-        ref={
-          composeRefs(
-            // borderGlow.parentRef,
-            innerGlow.parentRef
-          ) as any
-        }
-      >
-        {/* <svg width="0" height="0">
-          <defs>
-            <clipPath id="myClip">
-              <path d="M285,0 C293.284271,-1.52179594e-15 300,6.71572875 300,15 L300,285 C300,293.284271 293.284271,300 285,300 L15,300 C6.71572875,300 1.01453063e-15,293.284271 0,285 L0,15 C-1.01453063e-15,6.71572875 6.71572875,1.52179594e-15 15,0 L285,0 Z M285,1 L15,1 C7.2680135,1 1,7.2680135 1,15 L1,15 L1,285 C1,292.731986 7.2680135,299 15,299 L15,299 L285,299 C292.731986,299 299,292.731986 299,285 L299,285 L299,15 C299,7.2680135 292.731986,1 285,1 L285,1 Z"></path>
-            </clipPath>
-          </defs>
-        </svg> */}
-
+      <TakeoutCard2Frame {...props} ref={composeRefs(innerGlow.parentRef) as any}>
         {isHydrated && <innerGlow.Component />}
-        {/* <YStack
-          fullscreen
-          style={{
-            clipPath: `url(#myClip)`,
-          }}
-        >
-          <borderGlow.Component />
-        </YStack> */}
 
-        <YStack f={1} space zi={100}>
+        <YStack flex={1} gap="$4" z={100}>
           <H2
             fontFamily="$mono"
             size="$8"
-            ls={3}
-            als="center"
+            letterSpacing={3}
+            self="center"
             my={-8}
             color="$color10"
             $theme-light={{
@@ -771,7 +738,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           {children}
 
           {!!icon && (
-            <YStack pos="absolute" b={0} r={0}>
+            <YStack position="absolute" b={0} r={0}>
               <Image className="pixelate" src={icon} alt="Icon" width={32} height={32} />
             </YStack>
           )}
@@ -807,11 +774,11 @@ const TakeoutHero = () => {
   return (
     <YStack
       y={heroHeight / 2 - 500}
-      ai="center"
-      jc="center"
+      items="center"
+      justify="center"
       className="ease-in ms300 all"
-      pe="none"
-      pos="relative"
+      pointerEvents="none"
+      position="relative"
       scale={1}
       $xxs={{
         scale: 0.35,
@@ -844,7 +811,14 @@ const TakeoutHero = () => {
 
       <TakeoutLogo />
 
-      <YStack position="absolute" pe="none" top={200} r={0} $md={{ r: -150 }} zIndex={-1}>
+      <YStack
+        position="absolute"
+        pointerEvents="none"
+        t={200}
+        r={0}
+        $md={{ r: -150 }}
+        z={-1}
+      >
         {enable3d && (
           <Suspense fallback={null}>
             <ErrorBoundary noMessage>
@@ -860,14 +834,14 @@ const TakeoutHero = () => {
 function FeaturesIconRow() {
   return (
     <XStack
-      zi={1000}
+      z={1000}
       my={21}
       gap={20}
-      f={1}
-      jc="space-between"
-      pe="auto"
+      flex={1}
+      justify="space-between"
+      pointerEvents="auto"
       $gtSm={{
-        maw: '80%',
+        maxW: '80%',
       }}
     >
       <FeatureIcon
@@ -920,11 +894,11 @@ const Point = ({
   size?: FontSizeTokens
 }) => {
   return (
-    <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
+    <XStack tag="li" items="flex-start" gap="$4" flex={1} overflow="hidden" {...props}>
       <YStack mr={-12} py="$1.5">
         <Dot size={16} color="$color10" />
       </YStack>
-      <YStack f={1}>
+      <YStack flex={1}>
         <Paragraph color="$color" wordWrap="break-word" size={size}>
           {children}
         </Paragraph>
@@ -936,7 +910,7 @@ const Point = ({
               }) as any
             }
             color="$color"
-            o={0.5}
+            opacity={0.5}
           >
             {subtitle}
           </Paragraph>
@@ -947,7 +921,7 @@ const Point = ({
 }
 
 const IconFrame = styled(Stack, {
-  borderRadius: 1000,
+  rounded: 1000,
   p: 9,
   bg: 'rgba(255, 255, 255, 0.035)',
 })
@@ -991,56 +965,42 @@ const StarterCard = memo(() => {
       {name !== 'tamagui' && (
         <SizableText
           size="$11"
-          h={200}
+          height={200}
           rotate="-8deg"
-          als="center"
-          zi={100}
-          pos="absolute"
+          self="center"
+          z={100}
+          position="absolute"
           t={-10}
-          pe="none"
+          pointerEvents="none"
         >
           {seasons[name]}
         </SizableText>
       )}
-
-      {/* <Theme name="accent"> */}
+      \
       <TakeoutCardFrame
         bg="$color1"
         className="blur-medium"
-        zi={100_000}
-        maw={310}
-        als="center"
+        z={100_000}
+        maxW={310}
+        self="center"
         shadowRadius={30}
         shadowOffset={{ height: 20, width: 0 }}
         shadowColor="$shadowColor"
         x={-50}
         y={50}
-        mah="calc(min(85vh, 800px))"
-        br="$8"
+        maxH="calc(min(85vh, 800px))"
+        rounded="$8"
         $md={{
           x: -20,
           y: 0,
-          mah: 'auto',
-          w: '100%',
-          maw: '100%',
+          maxH: 'auto',
+          width: '100%',
+          maxW: '100%',
           mt: 100,
         }}
       >
-        <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
-
-        {/* <ThemeTintAlt>
-            <LinearGradient
-              pos="absolute"
-              b={0}
-              l={0}
-              r={0}
-              h={200}
-              colors={['$background0', '$color5']}
-              zi={100}
-            />
-          </ThemeTintAlt> */}
-
-        <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
+        <YStack z={-1} fullscreen bg="$color5" opacity={0.5} />
+        <YStack position="absolute" b="$4" l="$4" r="$4" z={100}>
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
           <PurchaseButton
@@ -1055,7 +1015,7 @@ const StarterCard = memo(() => {
         <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
           <YStack gap="$2">
             <ThemeTintAlt>
-              <MunroP color="$color11" size="$7" ls={2}>
+              <MunroP color="$color11" size="$7" letterSpacing={2}>
                 The Stack
               </MunroP>
             </ThemeTintAlt>
@@ -1134,11 +1094,10 @@ const StarterCard = memo(() => {
               />
             </YStack>
 
-            <Spacer f={1} minHeight={120} />
+            <Spacer flex={1} minH={120} />
           </YStack>
         </ScrollView>
       </TakeoutCardFrame>
-      {/* </Theme> */}
     </div>
   )
 })
@@ -1159,12 +1118,17 @@ const Row = (props: { title: any; description: any; after: any }) => {
       $md={{
         cursor: 'pointer',
         hoverStyle: {
-          backgroundColor: 'var(--color4)',
+          bg: 'var(--color4)',
         },
       }}
     >
-      <YStack f={1} py="$3" space="$1">
-        <Paragraph fontFamily="$mono" tt="uppercase" ls={4} size="$4">
+      <YStack flex={1} py="$3" gap="$1">
+        <Paragraph
+          fontFamily="$mono"
+          textTransform="uppercase"
+          letterSpacing={4}
+          size="$4"
+        >
           {props.title}
         </Paragraph>
         <Paragraph
@@ -1184,9 +1148,9 @@ const Row = (props: { title: any; description: any; after: any }) => {
 }
 
 const TakeoutCardFrame = styled(YStack, {
-  bc: '$color3',
-  br: '$4',
-  ov: 'hidden',
+  borderColor: '$color3',
+  rounded: '$4',
+  overflow: 'hidden',
 })
 
 let keepCycling = true
@@ -1230,7 +1194,7 @@ const FeatureIcon = ({
             keepCycling = false
             Tint.setTintIndex(themeIndex)
           }}
-          backgroundColor={active ? '$color9' : '$color10'}
+          bg={active ? '$color9' : '$color10'}
         >
           <Image className="pixelate" src={icon} alt="Icon" height={14} width={14} />
         </IconFrame>
@@ -1250,8 +1214,8 @@ const PixelTooltip = ({
 }) => {
   return (
     <YStack
-      ai="center"
-      jc="center"
+      items="center"
+      justify="center"
       {...(active && {
         scale: 1.1,
       })}

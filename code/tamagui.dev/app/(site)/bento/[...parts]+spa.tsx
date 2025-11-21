@@ -59,13 +59,13 @@ export default function BentoPage() {
         </ContainerBento>
 
         <YStack py="$8" pb="$16">
-          <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
+          <YStack pointerEvents="none" fullscreen className="bg-grid" opacity={0.033} />
           <ContainerBento>
-            <XStack pos="relative" top={0}>
+            <XStack position="relative" t={0}>
               <View className="sticky">
-                <SideBar ai="flex-end">
+                <SideBar items="flex-end">
                   {listingData.sections.map(({ parts, sectionName }, index) => (
-                    <YStack key={`${sectionName}-${name}`} ai="flex-end" gap="$4">
+                    <YStack key={`${sectionName}-${name}`} items="flex-end" gap="$4">
                       <XStack
                         onPress={() => {
                           navigator?.clipboard?.writeText?.(
@@ -75,15 +75,15 @@ export default function BentoPage() {
                           toast.show('Link copied to clipboard')
                         }}
                         gap="$2"
-                        ai="center"
+                        items="center"
                       >
-                        <Text ff="$mono" color="$color12" textAlign="right" px="$2">
+                        <Text fontFamily="$mono" color="$color12" text="right" px="$2">
                           {sectionName[0].toUpperCase()}
                           {sectionName.slice(1)}
                         </Text>
                       </XStack>
 
-                      <YStack ai="flex-end" gap="$2">
+                      <YStack items="flex-end" gap="$2">
                         {parts.map((partItem, index) => {
                           const { route, name } = partItem
                           const active = route === `/${section}/${part}`
@@ -94,38 +94,37 @@ export default function BentoPage() {
                               href={`/bento${route}` as Href}
                             >
                               <View
-                                pos="relative"
+                                position="relative"
                                 py="$2"
-                                ai="center"
-                                jc="center"
+                                items="center"
+                                justify="center"
                                 gap="$2"
                                 flex={1}
                               >
                                 <Paragraph
-                                  ff="$mono"
-                                  // size="$4"
-                                  fow="500"
-                                  textAlign="right"
+                                  fontFamily="$mono"
+                                  fontWeight="500"
+                                  text="right"
                                   color={active ? '$accentColor' : '$color10'}
                                   px="$2"
                                 >
                                   {name}
                                 </Paragraph>
                                 <View
-                                  pos="absolute"
+                                  position="absolute"
                                   inset={0}
                                   opacity={active ? 1 : 0}
                                   hoverStyle={{
                                     borderRightColor: '$accentColor',
                                     opacity: 1,
                                   }}
-                                  jc="center"
-                                  ai="flex-end"
+                                  justify="center"
+                                  items="flex-end"
                                 >
                                   <View
                                     height="70%"
                                     width={2}
-                                    br="$10"
+                                    rounded="$10"
                                     bg={'$accentColor'}
                                     x={5}
                                   />
@@ -140,7 +139,7 @@ export default function BentoPage() {
                 </SideBar>
               </View>
 
-              <View f={1} maxWidth="100%" w="100%">
+              <View flex={1} maxW="100%" width="100%">
                 <Comp showAppropriateModal={showAppropriateModal} isProUser={isProUser} />
               </View>
             </XStack>
@@ -158,21 +157,20 @@ export const DetailHeader = (props: { children: string }) => {
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
-    <YStack top={0} gap="$4" px="$4" py="$4">
+    <YStack t={0} gap="$4" px="$4" py="$4">
       <YStack gap="$4">
-        <XStack ai="center" jc="space-between" $sm={{ fd: 'column' }}>
-          <H1 ff="$mono" size="$11" $sm={{ size: '$9', mb: '$4' }}>
+        <XStack items="center" justify="space-between" $sm={{ flexDirection: 'column' }}>
+          <H1 fontFamily="$mono" size="$11" $sm={{ size: '$9', mb: '$4' }}>
             {props.children}
           </H1>
 
-          {/* <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}> */}
           <YStack
-            ai="flex-end"
-            zi={100}
+            items="flex-end"
+            z={100}
             gap="$6"
             y={40}
             mt={-10}
-            $sm={{ y: 0, mt: 0, mb: 40, ai: 'center' }}
+            $sm={{ y: 0, mt: 0, mb: 40, items: 'center' }}
           >
             <XStack gap="$4">
               <DropTamaguiConfig />
@@ -180,7 +178,7 @@ export const DetailHeader = (props: { children: string }) => {
               <Button
                 icon={bentoStore.disableTint ? CircleDashed : Paintbrush}
                 size="$3"
-                br="$6"
+                rounded="$6"
                 onPress={() => {
                   startTransition(() => {
                     bentoStore.disableTint = !bentoStore.disableTint
@@ -193,9 +191,9 @@ export const DetailHeader = (props: { children: string }) => {
           </YStack>
         </XStack>
 
-        <XStack p={0.5} ai="center" gap="$2">
+        <XStack p={0.5} items="center" gap="$2">
           <Link href="/bento/">
-            <Anchor ff="$mono" tag="span" textTransform="capitalize">
+            <Anchor fontFamily="$mono" tag="span" textTransform="capitalize">
               Bento
             </Anchor>
           </Link>
@@ -205,7 +203,7 @@ export const DetailHeader = (props: { children: string }) => {
           </SizableText>
 
           <Link href={`/bento#${category}`}>
-            <Anchor ff="$mono" tag="span" textTransform="capitalize">
+            <Anchor fontFamily="$mono" tag="span" textTransform="capitalize">
               {category}
             </Anchor>
           </Link>
@@ -215,7 +213,7 @@ export const DetailHeader = (props: { children: string }) => {
           </SizableText>
 
           <Link href={`/bento/${category}/${subCategory}`}>
-            <Anchor ff="$mono" tag="span" textTransform="capitalize">
+            <Anchor fontFamily="$mono" tag="span" textTransform="capitalize">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>
@@ -227,8 +225,8 @@ export const DetailHeader = (props: { children: string }) => {
 
 const SideBar = styled(YStack, {
   position: 'sticky' as any,
-  top: '$12',
+  t: '$12',
   gap: '$8',
   px: '$8',
-  $lg: { dsp: 'none' },
+  $lg: { display: 'none' },
 })
