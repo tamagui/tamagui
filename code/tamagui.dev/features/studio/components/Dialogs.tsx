@@ -15,7 +15,7 @@ import { useGlobalState } from '../state/useGlobalState'
 const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
-      <Button size="$3" pos="absolute" t="$3" r="$3" circular icon={X} zi={1000} />
+      <Button size="$3" position="absolute" t="$3" r="$3" circular icon={X} z={1000} />
     </Dialog.Close>
   </Unspaced>
 )
@@ -68,7 +68,7 @@ export const Dialogs = memo(() => {
           scale={1}
           opacity={1}
           y={0}
-          maxWidth={dimensions.width * 75}
+          maxW={dimensions.width * 75}
           p="$5"
         >
           <DialogContents {...dialogProps} />
@@ -94,19 +94,19 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$4">
-        <YStack space="$2">
+      <YStack gap="$4">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Create Theme</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Create a new theme in scope {props.category}.
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="theme-name">
+        <Fieldset gap="$4" horizontal>
+          <Label size="$3" width={160} justify="flex-end" htmlFor="theme-name">
             Name
           </Label>
-          <Input size="$3" f={1} id="theme-name" />
+          <Input size="$3" flex={1} id="theme-name" />
         </Fieldset>
         <DialogClose>
           <Button aria-label="Close">Create</Button>
@@ -120,15 +120,15 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
-        <YStack space="$2">
+      <YStack gap="$6" p="$2">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Delete {props.thingName}?</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Are you sure you want to delete {props.thingName}?
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack justify="flex-end" gap="$4">
           <Dialog.Close asChild>
             <Button>Cancel</Button>
           </Dialog.Close>
@@ -147,15 +147,15 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
-        <YStack space="$2">
+      <YStack gap="$6" p="$2">
+        <YStack gap="$2">
           <Dialog.Title size="$7">{props.title}</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             {props.message}
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack justify="flex-end" gap="$4">
           <DialogClose>
             <Button themeInverse aria-label="Ok">
               Ok

@@ -17,17 +17,17 @@ export const Container = styled(YStack, {
   width: '100%',
 
   $gtSm: {
-    maxWidth: 700,
+    maxW: 700,
     pr: '$2',
   },
 
   $gtMd: {
-    maxWidth: 740,
+    maxW: 740,
     pr: '$2',
   },
 
   $gtLg: {
-    maxWidth: 800,
+    maxW: 800,
     pr: '$10',
   },
 
@@ -40,11 +40,11 @@ export const ContainerLarge = styled(YStack, {
   width: '100%',
 
   $gtSm: {
-    maxWidth: 980,
+    maxW: 980,
   },
 
   $gtMd: {
-    maxWidth: 1140,
+    maxW: 1140,
   },
 
   variants,
@@ -56,15 +56,15 @@ export const ContainerXL = styled(YStack, {
   width: '100%',
 
   $gtSm: {
-    maxWidth: 980,
+    maxW: 980,
   },
 
   $gtMd: {
-    maxWidth: 1240,
+    maxW: 1240,
   },
 
   $gtLg: {
-    maxWidth: 1440,
+    maxW: 1440,
   },
 
   variants,

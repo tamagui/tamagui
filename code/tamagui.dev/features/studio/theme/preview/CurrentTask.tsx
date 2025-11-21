@@ -45,7 +45,7 @@ export const CurrentTask = () => {
             <Paragraph size="$2" theme="alt1">
               6/8 tasks done
             </Paragraph>
-            <Progress miw={100} size="$5" value={60}>
+            <Progress minW={100} size="$5" value={60}>
               <Progress.Indicator bg={accentTokenName} animation="quick" />
             </Progress>
           </TaskSection>
@@ -54,7 +54,7 @@ export const CurrentTask = () => {
             <Paragraph size="$2" theme="alt1">
               1/8 tasks done
             </Paragraph>
-            <Progress miw={100} size="$5" value={25}>
+            <Progress minW={100} size="$5" value={25}>
               <Progress.Indicator bg={accentTokenName} animation="quick" />
             </Progress>
           </TaskSection>

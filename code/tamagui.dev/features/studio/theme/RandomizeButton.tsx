@@ -12,7 +12,7 @@ export function RandomizeButton() {
         }}
         icon={Dices}
         size="$2"
-        br="$8"
+        rounded="$8"
         circular
         scaleIcon={1.3}
       />

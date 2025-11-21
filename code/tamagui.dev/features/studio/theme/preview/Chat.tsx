@@ -111,19 +111,19 @@ export const ChatScreen = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      ov="hidden"
+      overflow="hidden"
     >
       <YStack
         m={-30}
         mt={-30}
         px={30}
         py="$5"
-        br="$4"
+        rounded="$4"
         mb="$2"
         borderBottomWidth="$0.25"
         borderBottomColor="$borderColor"
       >
-        <XStack jc="space-between">
+        <XStack justify="space-between">
           <YStack>
             <H4 {...demoProps.headingFontFamilyProps} size="$4">
               Group Chat
@@ -133,7 +133,7 @@ export const ChatScreen = () => {
             </Paragraph>
           </YStack>
           <Button
-            als="center"
+            self="center"
             chromeless
             size="$5"
             scaleIcon={1.4}
@@ -172,8 +172,8 @@ export const ChatScreen = () => {
             value={input}
             onChangeText={setInput}
             placeholder="Message"
-            f={1}
-            backgroundColor="transparent"
+            flex={1}
+            bg="transparent"
             {...demoProps.borderRadiusProps}
           />
           <AccentTheme>
@@ -213,7 +213,7 @@ const ChatMessage = memo(
         {...demoProps.borderRadiusProps}
         {...(isUser ? demoProps.chatFrameActiveProps : demoProps.chatFrameProps)}
       >
-        <Paragraph lh="$2" maxWidth={200} {...demoProps.chatTextProps}>
+        <Paragraph lineHeight="$2" maxW={200} {...demoProps.chatTextProps}>
           {message}
         </Paragraph>
       </YStack>
@@ -225,7 +225,7 @@ const ChatMessage = memo(
 
     return (
       <XStack
-        als={isUser ? 'flex-end' : 'flex-start'}
+        self={isUser ? 'flex-end' : 'flex-start'}
         flexDirection={isUser ? 'row-reverse' : 'row'}
         gap="$2"
       >
@@ -236,7 +236,7 @@ const ChatMessage = memo(
         ) : (
           <YStack width="$2" />
         )}
-        <XStack ai="flex-end" mb="$1">
+        <XStack items="flex-end" mb="$1">
           {contents}
         </XStack>
       </XStack>

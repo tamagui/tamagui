@@ -12,19 +12,19 @@ import {
 } from 'tamagui'
 
 const Item = ({ children, ...props }: ListItemProps) => (
-  <ListItem miw={190} size="$5" hoverTheme iconAfter={Plus} {...props}>
-    <Paragraph userSelect="none">{children}</Paragraph>
+  <ListItem minW={190} size="$5" hoverTheme iconAfter={Plus} {...props}>
+    <Paragraph select="none">{children}</Paragraph>
   </ListItem>
 )
 
 const Title = styled(H6, {
   size: '$1',
-  ta: 'left',
-  lh: 10,
+  text: 'left',
+  lineHeight: 10,
   pt: '$4',
   pb: '$2',
   px: '$3',
-  o: 0.5,
+  opacity: 0.5,
 })
 
 const Separator = styled(TamaguiSeparator, { width: '100%', py: '$1' })
@@ -45,8 +45,8 @@ export const AddDropdown = withStaticProperties(
           enterStyle={{ y: -7, opacity: 0 }}
           exitStyle={{ y: -7, opacity: 0 }}
           elevate
-          maw={400}
-          ai="flex-start"
+          maxW={400}
+          items="flex-start"
           animation={[
             'quickest',
             {
@@ -57,11 +57,7 @@ export const AddDropdown = withStaticProperties(
           ]}
         >
           <Popover.ScrollView>{children}</Popover.ScrollView>
-          <Popover.Arrow
-            backgroundColor="$background"
-            borderColor="$borderColor"
-            borderWidth="$0.5"
-          />
+          <Popover.Arrow bg="$background" borderColor="$borderColor" borderWidth="$0.5" />
         </Popover.Content>
       </Popover>
     )

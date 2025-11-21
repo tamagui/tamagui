@@ -127,29 +127,29 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
   }
 
   return (
-    <XStack ml={20} gap="$4" ai="center">
+    <XStack ml={20} gap="$4" items="center">
       <Popover hoverable>
         <Popover.Trigger>
           <Stack
             y={4}
             width={24}
             height={24}
-            ov="hidden"
-            br={100}
+            overflow="hidden"
+            rounded={100}
             rotateX="0.001deg"
-            bw={1}
-            bc="$color10"
+            borderWidth={1}
+            borderColor="$color10"
           >
             <YStack
-              userSelect="none"
+              select="none"
               pointerEvents="none"
-              pos="absolute"
+              position="absolute"
               fullscreen
-              ai="center"
-              jc="center"
+              items="center"
+              justify="center"
             >
               {!props.value && <Checkerboard rotate="45deg" />}
-              <YStack fullscreen backgroundColor={hex as any} />
+              <YStack fullscreen bg={hex as any} />
             </YStack>
           </Stack>
         </Popover.Trigger>
@@ -157,29 +157,29 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         <Popover.Content
           animation="quick"
           elevation="$8"
-          bw={1}
-          bc="$color10"
-          padding={0}
+          borderWidth={1}
+          borderColor="$color10"
+          p={0}
           enterStyle={{
             y: -10,
-            o: 0,
+            opacity: 0,
           }}
           exitStyle={{
             y: -10,
-            o: 0,
+            opacity: 0,
           }}
         >
-          <Popover.Arrow bw={1} bc="$color10" size="$4" />
+          <Popover.Arrow borderWidth={1} borderColor="$color10" size="$4" />
           {!props.disableLightness && (
             <>
               <Separator vertical />
               <Input
                 disabled={props.disabled}
                 placeholder="Hex"
-                bw={0}
+                borderWidth={0}
                 size="$3"
                 width={75}
-                als="center"
+                self="center"
                 selectTextOnFocus
                 value={hex}
                 fontFamily="$mono"
@@ -196,11 +196,11 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
       </Popover>
 
       <XStack
-        ai="center"
+        items="center"
         gap="$4"
-        h="$3"
+        height="$3"
         {...(props.disabled && {
-          o: 0.5,
+          opacity: 0.5,
           pe: 'none',
         })}
       >
@@ -211,7 +211,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           y="$-2"
           gap="$1"
         >
-          <SizableText size="$1" userSelect="none" theme="alt2">
+          <SizableText size="$1" select="none" theme="alt2">
             Hue
           </SizableText>
           <Slider
@@ -256,7 +256,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           y="$-2"
           gap="$1"
         >
-          <SizableText size="$1" userSelect="none" theme="alt2">
+          <SizableText size="$1" select="none" theme="alt2">
             Saturation
           </SizableText>
           <YStack>
@@ -298,10 +298,10 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
 
         {!props.disableLightness && (
           <YStack y="$-2" gap="$1">
-            <SizableText size="$1" userSelect="none" theme="alt2">
+            <SizableText size="$1" select="none" theme="alt2">
               Lightness
             </SizableText>
-            <YStack br="$2">
+            <YStack rounded="$2">
               <Slider
                 orientation="horizontal"
                 min={0}
@@ -312,7 +312,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               >
                 <Slider.Track
                   height={3}
-                  br="$10"
+                  rounded="$10"
                   width={120}
                   style={{
                     background: `linear-gradient(to right, #000, #fff)`,

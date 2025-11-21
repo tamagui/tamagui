@@ -6,14 +6,14 @@ export function StudioToggleThemeBuilderScheme() {
   const rootStore = useRootStore()
 
   return (
-    <XGroup bc="transparent" ai="center" jc="center">
+    <XGroup bg="transparent" items="center" justify="center">
       <Button
         theme={rootStore.scheme === 'light' ? 'accent' : null}
         onPress={() => {
           rootStore.theme = 'light'
         }}
         size="$3"
-        br="$10"
+        rounded="$10"
       >
         Light
       </Button>
@@ -23,7 +23,7 @@ export function StudioToggleThemeBuilderScheme() {
           rootStore.theme = 'dark'
         }}
         size="$3"
-        br="$10"
+        rounded="$10"
       >
         Dark
       </Button>

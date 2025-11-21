@@ -16,8 +16,8 @@ import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
-    <XStack zi={1000} mt={-10} data-tauri-drag-region className="all ease-in ms300">
-      <XStack fw="wrap" f={1} gap="$3">
+    <XStack z={1000} mt={-10} data-tauri-drag-region className="all ease-in ms300">
+      <XStack flexWrap="wrap" flex={1} gap="$3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 
@@ -44,7 +44,7 @@ export default StudioPreviewComponentsBar
 
 const ToggleGroupItem = styled(ToggleGroup.Item, {
   height: 28,
-  w: 30,
+  width: 30,
 
   focusStyle: {
     backgroundColor: '$color10',
@@ -60,7 +60,7 @@ export function BorderRadiusInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
@@ -79,7 +79,7 @@ export function BorderRadiusInput() {
             value={optionValues.borderRadius[0] as any}
             aria-label="No border radius"
           >
-            <Square size={11} bg="$color9" borderRadius={0} />
+            <Square size={11} bg="$color9" rounded={0} />
           </ToggleGroupItem>
         </TooltipSimple>
 
@@ -88,7 +88,7 @@ export function BorderRadiusInput() {
             value={optionValues.borderRadius[1] as any}
             aria-label="Small border radius"
           >
-            <Square size={11} bg="$color9" borderRadius={2} />
+            <Square size={11} bg="$color9" rounded={2} />
           </ToggleGroupItem>
         </TooltipSimple>
 
@@ -97,7 +97,7 @@ export function BorderRadiusInput() {
             value={optionValues.borderRadius[2] as any}
             aria-label="Medium border radius"
           >
-            <Square size={11} bg="$color9" borderRadius={3} />
+            <Square size={11} bg="$color9" rounded={3} />
           </ToggleGroupItem>
         </TooltipSimple>
 
@@ -106,7 +106,7 @@ export function BorderRadiusInput() {
             value={optionValues.borderRadius[3] as any}
             aria-label="Large border radius"
           >
-            <Square size={11} bg="$color9" borderRadius={4} />
+            <Square size={11} bg="$color9" rounded={4} />
           </ToggleGroupItem>
         </TooltipSimple>
 
@@ -115,7 +115,7 @@ export function BorderRadiusInput() {
             value={optionValues.borderRadius[4] as any}
             aria-label="Very large border radius"
           >
-            <Square size={11} bg="$color9" borderRadius={7} />
+            <Square size={11} bg="$color9" rounded={7} />
           </ToggleGroupItem>
         </TooltipSimple>
       </ToggleGroup>
@@ -127,7 +127,7 @@ export function BorderWidthInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
@@ -146,7 +146,12 @@ export function BorderWidthInput() {
             value={`${optionValues.borderWidth[0]}`}
             aria-label="No border width"
           >
-            <Square size={11} bc="$color9" bw={0.5} borderStyle="dotted" />
+            <Square
+              size={11}
+              borderColor="$color9"
+              borderWidth={0.5}
+              borderStyle="dotted"
+            />
           </ToggleGroupItem>
         </TooltipSimple>
 
@@ -155,7 +160,7 @@ export function BorderWidthInput() {
             value={`${optionValues.borderWidth[1]}`}
             aria-label="Slim border width"
           >
-            <Square size={11} bc="$color9" bw={1} />
+            <Square size={11} borderColor="$color9" borderWidth={1} />
           </ToggleGroupItem>
         </TooltipSimple>
 
@@ -164,7 +169,7 @@ export function BorderWidthInput() {
             value={`${optionValues.borderWidth[2]}`}
             aria-label="Small border width"
           >
-            <Square size={11} bc="$color9" bw={2} />
+            <Square size={11} borderColor="$color9" borderWidth={2} />
           </ToggleGroupItem>
         </TooltipSimple>
       </ToggleGroup>
@@ -176,13 +181,13 @@ export function FontFamilyInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
         size="$2"
-        value={store.demosOptions.headingFontFamily?.toString()}
+        value={store.demosOptions.headingFontFamily?.toString() ?? ''}
         onValueChange={(value) => {
           store.demosOptions = {
             ...store.demosOptions,
@@ -219,7 +224,7 @@ export function FillStyleInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
@@ -235,12 +240,18 @@ export function FillStyleInput() {
       >
         <TooltipSimple groupId="1" label="Filled">
           <ToggleGroupItem value="filled" aria-label="Filled">
-            <Square size={10} br="$4" bg="$color8" bw={1} bc="$color" />
+            <Square
+              size={10}
+              rounded="$4"
+              bg="$color8"
+              borderWidth={1}
+              borderColor="$color"
+            />
           </ToggleGroupItem>
         </TooltipSimple>
         <TooltipSimple groupId="2" label="Outlined">
           <ToggleGroupItem value="outlined" aria-label="Outlined">
-            <Square size={10} br="$4" bw={1} bc="$color" />
+            <Square size={10} rounded="$4" borderWidth={1} borderColor="$color" />
           </ToggleGroupItem>
         </TooltipSimple>
       </ToggleGroup>
@@ -252,13 +263,13 @@ export function ElevationInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
-        orientation={'horizontal'}
-        type={'single'}
+        orientation="horizontal"
+        type="single"
         size="$2"
-        value={store.demosOptions.elevation?.toString()}
+        value={store.demosOptions.elevation?.toString() ?? ''}
         onValueChange={(value) => {
           store.demosOptions = {
             ...store.demosOptions,
@@ -268,14 +279,19 @@ export function ElevationInput() {
       >
         <TooltipSimple label="No Shadow">
           <ToggleGroupItem value="$0" aria-label="No Shadow">
-            <Square size={10} bw={1} bc="$color" />
+            <Square size={10} borderWidth={1} borderColor="$color" />
           </ToggleGroupItem>
         </TooltipSimple>
         <TooltipSimple label="Subtle Shadow">
           <ToggleGroupItem value="$1" aria-label="Subtle Shadow">
             <Square size={10} y={-1} x={-1}>
-              <Square size={10} pos="absolute" bg="$color8" bottom={-2} right={-2} />
-              <Square size={10} pos="absolute" bw={1} bc="$color" />
+              <Square size={10} position="absolute" bg="$color8" b={-2} r={-2} />
+              <Square
+                size={10}
+                position="absolute"
+                borderWidth={1}
+                borderColor="$color"
+              />
             </Square>
           </ToggleGroupItem>
         </TooltipSimple>
@@ -283,8 +299,13 @@ export function ElevationInput() {
         <TooltipSimple label="Intense Shadow">
           <ToggleGroupItem value="$2" aria-label="Intense Shadow">
             <Square size={10} y={-2} x={-2}>
-              <Square size={12} pos="absolute" bg="$color8" bottom={-4} right={-4} />
-              <Square size={10} pos="absolute" bw={1} bc="$color" />
+              <Square size={12} position="absolute" bg="$color8" b={-4} r={-4} />
+              <Square
+                size={10}
+                position="absolute"
+                borderWidth={1}
+                borderColor="$color"
+              />
             </Square>
           </ToggleGroupItem>
         </TooltipSimple>
@@ -297,7 +318,7 @@ export function SpacingInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
@@ -313,24 +334,24 @@ export function SpacingInput() {
       >
         <TooltipSimple label="Small Padding">
           <ToggleGroupItem value="sm" aria-label="Small Padding">
-            <Square br="$1" size={10} borderWidth="$0.5" borderColor="$color">
-              <Square size={6} pos="absolute" bg="$color" />
+            <Square rounded="$1" size={10} borderWidth="$0.5" borderColor="$color">
+              <Square size={6} position="absolute" bg="$color" />
             </Square>
           </ToggleGroupItem>
         </TooltipSimple>
 
         <TooltipSimple label="Medium Padding">
           <ToggleGroupItem value="md" aria-label="Medium Padding">
-            <Square br="$1" size={10} borderWidth="$0.5" borderColor="$color">
-              <Square size={3} pos="absolute" bg="$color" />
+            <Square rounded="$1" size={10} borderWidth="$0.5" borderColor="$color">
+              <Square size={3} position="absolute" bg="$color" />
             </Square>
           </ToggleGroupItem>
         </TooltipSimple>
 
         <TooltipSimple label="Large Padding">
           <ToggleGroupItem value="lg" aria-label="Large Padding">
-            <Square br="$1" size={10} borderWidth="$0.5" borderColor="$color">
-              <Square size={1} pos="absolute" bg="$color" />
+            <Square rounded="$1" size={10} borderWidth="$0.5" borderColor="$color">
+              <Square size={1} position="absolute" bg="$color" />
             </Square>
           </ToggleGroupItem>
         </TooltipSimple>
@@ -343,7 +364,7 @@ export function TextAccentInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
@@ -359,7 +380,7 @@ export function TextAccentInput() {
       >
         <TooltipSimple label="Text Low Contrast">
           <ToggleGroupItem value="low" aria-label="Text Low Contrast" p="$0">
-            <XStack ai="flex-end" o={0.4}>
+            <XStack items="flex-end" opacity={0.4}>
               <Heading size={10} />
             </XStack>
           </ToggleGroupItem>
@@ -367,7 +388,7 @@ export function TextAccentInput() {
 
         <TooltipSimple label="Text High Contrast">
           <ToggleGroupItem value="high" aria-label="Text High Contrast" p="$0">
-            <XStack ai="flex-end">
+            <XStack items="flex-end">
               <Heading size={10} />
             </XStack>
           </ToggleGroupItem>
@@ -381,7 +402,7 @@ export function BackgroundAccentInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
@@ -397,16 +418,16 @@ export function BackgroundAccentInput() {
       >
         <TooltipSimple label="Soft Background Accent">
           <ToggleGroupItem value="high" aria-label="Soft Background Accent" p="$0">
-            <XStack ai="center" gap="$1">
-              <Square size={8} backgroundColor="$color" o={0.5} />
+            <XStack items="center" gap="$1">
+              <Square size={8} bg="$color" opacity={0.5} />
             </XStack>
           </ToggleGroupItem>
         </TooltipSimple>
 
         <TooltipSimple label="Normal Background Accent">
           <ToggleGroupItem value="low" aria-label="Normal Background Accent" p="$0">
-            <XStack ai="center" gap="$1">
-              <Square size={8} backgroundColor="$color" />
+            <XStack items="center" gap="$1">
+              <Square size={8} bg="$color" />
             </XStack>
           </ToggleGroupItem>
         </TooltipSimple>
@@ -419,7 +440,7 @@ export function InverseAccentInput() {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <Label
         size="$2"
         theme="alt1"

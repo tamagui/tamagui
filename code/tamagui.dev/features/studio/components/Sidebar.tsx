@@ -16,16 +16,16 @@ export const SidebarRight = memo(function SidebarRight(props: {
 }) {
   return (
     <YStack
-      blw={1}
+      borderLeftWidth={1}
       elevation="$1"
-      blc="$borderColor"
+      borderLeftColor="$borderColor"
       bg="$background"
-      pos="absolute"
+      position="absolute"
       t={0}
       r={0}
       b={0}
-      w={sidebarWidth}
-      zi={100}
+      width={sidebarWidth}
+      z={100}
     >
       <ScrollView>{props.children}</ScrollView>
     </YStack>
@@ -37,17 +37,17 @@ export const SidebarLeft = memo(function SidebarLeft(props: {
 }) {
   return (
     <YStack
-      brw={1}
-      brc="$borderColor"
+      borderLeftWidth={1}
+      borderRightColor="$borderColor"
       bg="$background"
-      pos="absolute"
+      position="absolute"
       elevation="$1"
       data-tauri-drag-region
       t={0}
       l={0}
       b={0}
-      w={sidebarWidth}
-      zi={1000}
+      width={sidebarWidth}
+      z={1000}
     >
       <ScrollView data-tauri-drag-region>
         <YStack data-tauri-drag-region>{props.children}</YStack>
@@ -66,10 +66,10 @@ export const SidebarPanel = ({
   children,
   title,
   controls,
-  space,
+  gap,
   scrollable,
   separator,
-  maxHeight,
+  maxH,
   ...props
 }: SidebarPanelProps) => {
   return (
@@ -77,29 +77,29 @@ export const SidebarPanel = ({
       pb="$3"
       px={scrollable ? 0 : '$3'}
       py="$2"
-      bbw={1}
-      bbc="$borderColor"
+      borderBottomWidth={1}
+      borderBottomColor="$borderColor"
       {...props}
     >
       {!!(title || controls) && (
-        <XStack px={scrollable ? '$3' : 0} ai="center" h="$3">
+        <XStack px={scrollable ? '$3' : 0} items="center" height="$3">
           {!!title && (
-            <H5 size="$2" userSelect="none" cursor="default">
+            <H5 size="$2" select="none" cursor="default">
               {title}
             </H5>
           )}
 
           <Spacer flex />
 
-          <XStack ai="center" space="$2">
+          <XStack items="center" gap="$2">
             {controls}
           </XStack>
         </XStack>
       )}
 
-      <YStack space={space} separator={separator}>
+      <YStack gap={gap} separator={separator}>
         {scrollable ? (
-          <ScrollView maxHeight={maxHeight} showsVerticalScrollIndicator={false}>
+          <ScrollView maxH={maxH} showsVerticalScrollIndicator={false}>
             {children}
           </ScrollView>
         ) : (

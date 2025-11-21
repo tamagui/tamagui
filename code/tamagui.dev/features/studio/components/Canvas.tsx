@@ -7,18 +7,18 @@ import { sidebarWidth } from '../constants'
 
 export const CanvasFrame = styled(YStack, {
   fullscreen: true,
-  backgroundColor: '$background',
-  ai: 'center',
-  jc: 'center',
-  ov: 'hidden',
+  bg: '$background',
+  items: 'center',
+  justify: 'center',
+  overflow: 'hidden',
 })
 
 export const CanvasInner = styled(YStack, {
-  maw: `calc(100vw - ${sidebarWidth * 2}px)`,
+  maxW: `calc(100vw - ${sidebarWidth * 2}px)`,
   mx: 'auto',
   pt: 0,
-  h: '100%',
-  w: '100%',
+  height: '100%',
+  width: '100%',
 })
 
 export const Canvas = ({ children, ...props }: YStackProps) => {
@@ -35,12 +35,12 @@ export const Canvas = ({ children, ...props }: YStackProps) => {
 export const CanvasArtboard = styled(YStack, {
   borderWidth: 1,
   borderColor: '$borderColor',
-  w: '100%',
-  h: '100%',
-  ov: 'hidden',
-  maw: 1000,
-  mah: 1000,
-  ai: 'center',
-  jc: 'center',
-  miw: 300,
+  width: '100%',
+  height: '100%',
+  overflow: 'hidden',
+  maxW: 1000,
+  maxH: 1000,
+  items: 'center',
+  justify: 'center',
+  minW: 300,
 })

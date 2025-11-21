@@ -5,25 +5,27 @@ export const ButtonSimple = ({
   fontSize,
   fontFamily = '$mono',
   children,
+  disabled,
   ...rest
 }: ButtonProps) => {
   return (
     <YStack
-      br="$4"
+      rounded="$4"
       px="$4"
       py="$2"
       bg="$color1"
-      bw={0.5}
-      bc="$color3"
+      borderWidth={0.5}
+      borderColor="$color3"
       hoverStyle={{
         bg: '$color2',
-        bc: '$color5',
+        borderColor: '$color5',
       }}
+      disabled
       {...rest}
     >
       <SizableText
-        cur="default"
-        textAlign="center"
+        cursor="default"
+        text="center"
         fontSize={14}
         fontFamily={fontFamily}
         color={color}

@@ -1,4 +1,4 @@
-import type { BuildPalette } from '../types'
+import type { BuildPalette } from '@tamagui/theme-builder'
 
 const defaultBasePaletteAnchors: BuildPalette['anchors'] = [
   {
