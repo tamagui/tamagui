@@ -393,7 +393,7 @@ export function createBaseMenu({
 }: CreateBaseMenuProps) {
   const MenuComp = (props: ScopedProps<MenuBaseProps>) => {
     const {
-      scope,
+      scope = MENU_CONTEXT,
       open = false,
       children,
       dir,
@@ -433,7 +433,7 @@ export function createBaseMenu({
     }
 
     return (
-      <PopperPrimitive.Popper scope={scope || MENU_CONTEXT} {...rest}>
+      <PopperPrimitive.Popper scope={scope} {...rest}>
         <MenuProvider
           scope={scope}
           open={open}
@@ -470,11 +470,17 @@ export function createBaseMenu({
       children: React.ReactNode
     }>
   ) => {
-    const { scope, menuContext, rootContext, popperContext, menuSubContext, children } =
-      props
+    const {
+      scope = MENU_CONTEXT,
+      menuContext,
+      rootContext,
+      popperContext,
+      menuSubContext,
+      children,
+    } = props
 
     return (
-      <PopperPrimitive.PopperProvider {...popperContext} scope={scope || MENU_CONTEXT}>
+      <PopperPrimitive.PopperProvider {...popperContext} scope={scope}>
         <NativePropProvider native={false} scope={scope}>
           <MenuProvider scope={scope} {...menuContext}>
             <MenuRootProvider scope={scope} {...rootContext}>
@@ -517,7 +523,7 @@ export function createBaseMenu({
 
   const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
     const {
-      scope,
+      scope = MENU_CONTEXT,
       forceMount,
       zIndex,
       children,
@@ -526,7 +532,7 @@ export function createBaseMenu({
     } = props
     const menuContext = useMenuContext(scope)
     const rootContext = useMenuRootContext(scope)
-    const popperContext = PopperPrimitive.usePopperContext(scope || MENU_CONTEXT)
+    const popperContext = PopperPrimitive.usePopperContext(scope)
     const menuSubContext = useMenuSubContext(scope)
     const content = isAndroid ? (
       <RepropagateMenuAndMenuRootProvider
@@ -577,13 +583,14 @@ export function createBaseMenu({
 
   const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
     (props, forwardedRef) => {
-      const portalContext = usePortalContext(props.scope)
+      const scope = props.scope || MENU_CONTEXT
+      const portalContext = usePortalContext(scope)
       const { forceMount = portalContext.forceMount, ...contentProps } = props
-      const rootContext = useMenuRootContext(props.scope)
+      const rootContext = useMenuRootContext(scope)
 
       return (
-        <Collection.Provider scope={props.scope || MENU_CONTEXT}>
-          <Collection.Slot scope={props.scope || MENU_CONTEXT}>
+        <Collection.Provider scope={scope}>
+          <Collection.Slot scope={scope}>
             {rootContext.modal ? (
               <MenuRootContentModal {...contentProps} ref={forwardedRef} />
             ) : (
@@ -601,7 +608,8 @@ export function createBaseMenu({
     MenuRootContentTypeElement,
     ScopedProps<MenuRootContentTypeProps>
   >((props, forwardedRef) => {
-    const context = useMenuContext(props.scope)
+    const scope = props.scope || MENU_CONTEXT
+    const context = useMenuContext(scope)
     const ref = React.useRef<MenuRootContentTypeElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
 
@@ -615,6 +623,7 @@ export function createBaseMenu({
     return (
       <MenuContentImpl
         {...props}
+        scope={scope}
         ref={composedRefs}
         // we make sure we're not trapping once it's been closed
         // (closed !== unmounted when animating out)
@@ -639,10 +648,12 @@ export function createBaseMenu({
     MenuRootContentTypeElement,
     ScopedProps<MenuRootContentTypeProps>
   >((props, forwardedRef) => {
-    const context = useMenuContext(props.scope)
+    const scope = props.scope || MENU_CONTEXT
+    const context = useMenuContext(scope)
     return (
       <MenuContentImpl
         {...props}
+        scope={scope}
         ref={forwardedRef}
         trapFocus={false}
         disableOutsidePointerEvents={false}
@@ -904,10 +915,16 @@ export function createBaseMenu({
 
   const MenuItem = React.forwardRef<TamaguiElement, ScopedProps<MenuItemProps>>(
     (props, forwardedRef) => {
-      const { disabled = false, onSelect, children, ...itemProps } = props
+      const {
+        disabled = false,
+        onSelect,
+        children,
+        scope = MENU_CONTEXT,
+        ...itemProps
+      } = props
       const ref = React.useRef<HTMLDivElement>(null)
-      const rootContext = useMenuRootContext(props.scope)
-      const contentContext = useMenuContentContext(props.scope)
+      const rootContext = useMenuRootContext(scope)
+      const contentContext = useMenuContentContext(scope)
       const composedRefs = useComposedRefs(forwardedRef, ref)
       const isPointerDownRef = React.useRef(false)
 
@@ -995,7 +1012,7 @@ export function createBaseMenu({
     ScopedProps<MenuItemImplProps>
   >((props, forwardedRef) => {
     const {
-      scope,
+      scope = MENU_CONTEXT,
       disabled = false,
       textValue,
       unstyled = process.env.TAMAGUI_HEADLESS === '1',
@@ -1020,13 +1037,13 @@ export function createBaseMenu({
 
     return (
       <Collection.ItemSlot
-        scope={scope || MENU_CONTEXT}
+        scope={scope}
         disabled={disabled}
         textValue={textValue ?? textContent}
       >
         <RovingFocusGroup.Item
           asChild
-          __scopeRovingFocusGroup={scope || MENU_CONTEXT}
+          __scopeRovingFocusGroup={scope}
           focusable={!disabled}
           {...(!unstyled && {
             flexDirection: 'row',
@@ -1156,14 +1173,20 @@ export function createBaseMenu({
     TamaguiElement,
     ScopedProps<MenuCheckboxItemProps>
   >((props, forwardedRef) => {
-    const { checked = false, onCheckedChange, ...checkboxItemProps } = props
+    const {
+      checked = false,
+      onCheckedChange,
+      scope = MENU_CONTEXT,
+      ...checkboxItemProps
+    } = props
     return (
-      <ItemIndicatorProvider scope={props.scope} checked={checked}>
+      <ItemIndicatorProvider scope={scope} checked={checked}>
         <MenuItem
           componentName={CHECKBOX_ITEM_NAME}
           role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
           aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
           {...checkboxItemProps}
+          scope={scope}
           ref={forwardedRef}
           data-state={getCheckedState(checked)}
           onSelect={composeEventHandlers(
@@ -1188,7 +1211,7 @@ export function createBaseMenu({
 
   const MenuRadioGroup = _MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
     (props, forwardedRef) => {
-      const { value, onValueChange, scope, ...groupProps } = props
+      const { value, onValueChange, scope = MENU_CONTEXT, ...groupProps } = props
       const handleValueChange = useCallbackRef(onValueChange)
       return (
         <RadioGroupProvider scope={scope} value={value} onValueChange={handleValueChange}>
@@ -1211,14 +1234,15 @@ export function createBaseMenu({
 
   const MenuRadioItem = React.forwardRef<TamaguiElement, ScopedProps<MenuRadioItemProps>>(
     (props, forwardedRef) => {
-      const { value, ...radioItemProps } = props
-      const context = useRadioGroupContext(props.scope)
+      const { value, scope = MENU_CONTEXT, ...radioItemProps } = props
+      const context = useRadioGroupContext(scope)
       const checked = value === context.value
       return (
-        <ItemIndicatorProvider scope={props.scope} checked={checked}>
+        <ItemIndicatorProvider scope={scope} checked={checked}>
           <MenuItem
             componentName={RADIO_ITEM_NAME}
             {...radioItemProps}
+            scope={scope}
             aria-checked={checked}
             ref={forwardedRef}
             role={(isWeb ? 'menuitemradio' : 'menuitem') as 'menuitem'}
@@ -1247,7 +1271,7 @@ export function createBaseMenu({
 
   const MenuItemIndicator = _Indicator.styleable<ScopedProps<MenuItemIndicatorProps>>(
     (props, forwardedRef) => {
-      const { scope, forceMount, ...itemIndicatorProps } = props
+      const { scope = MENU_CONTEXT, forceMount, ...itemIndicatorProps } = props
       const indicatorContext = useItemIndicatorContext(scope)
       return (
         <Presence>
@@ -1276,10 +1300,14 @@ export function createBaseMenu({
   // TODO this was styleable but it cant flatten anyways so likely fine just need to check
   const MenuArrow = React.forwardRef<TamaguiElement, MenuArrowProps>(
     function MenuArrow(props, forwardedRef) {
-      const { scope, unstyled = process.env.TAMAGUI_HEADLESS === '1', ...rest } = props
+      const {
+        scope = MENU_CONTEXT,
+        unstyled = process.env.TAMAGUI_HEADLESS === '1',
+        ...rest
+      } = props
       return (
         <PopperPrimitive.PopperArrow
-          scope={scope || MENU_CONTEXT}
+          scope={scope}
           componentName="PopperArrow"
           {...(!unstyled && {
             backgroundColor: '$background',
@@ -1301,7 +1329,7 @@ export function createBaseMenu({
     createStyledContext<MenuSubContextValue>()
 
   const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (props) => {
-    const { scope, children, open = false, onOpenChange, ...rest } = props
+    const { scope = MENU_CONTEXT, children, open = false, onOpenChange, ...rest } = props
     const parentMenuContext = useMenuContext(scope)
     const [trigger, setTrigger] = React.useState<MenuSubTriggerElement | null>(null)
     const [content, setContent] = React.useState<MenuContentElement | null>(null)
@@ -1313,8 +1341,10 @@ export function createBaseMenu({
       return () => handleOpenChange(false)
     }, [parentMenuContext.open, handleOpenChange])
 
+    console.log('rendering base menu', scope)
+
     return (
-      <PopperPrimitive.Popper {...rest} scope={scope || MENU_CONTEXT}>
+      <PopperPrimitive.Popper {...rest} scope={scope}>
         <MenuProvider
           scope={scope}
           open={open}
@@ -1347,10 +1377,11 @@ export function createBaseMenu({
     TamaguiElement,
     ScopedProps<MenuSubTriggerProps>
   >((props, forwardedRef) => {
-    const context = useMenuContext(props.scope)
-    const rootContext = useMenuRootContext(props.scope)
-    const subContext = useMenuSubContext(props.scope)
-    const contentContext = useMenuContentContext(props.scope)
+    const scope = props.scope || MENU_CONTEXT
+    const context = useMenuContext(scope)
+    const rootContext = useMenuRootContext(scope)
+    const subContext = useMenuSubContext(scope)
+    const contentContext = useMenuContentContext(scope)
     const openTimerRef = React.useRef<number | null>(null)
     const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
 
@@ -1370,11 +1401,7 @@ export function createBaseMenu({
     }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
     return (
-      <MenuAnchor
-        componentName={SUB_TRIGGER_NAME}
-        asChild
-        scope={props.scope || MENU_CONTEXT}
-      >
+      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild scope={scope}>
         <MenuItemImpl
           id={subContext.triggerId}
           aria-haspopup="menu"
@@ -1496,16 +1523,17 @@ export function createBaseMenu({
     MenuSubContentElement,
     ScopedProps<MenuSubContentProps>
   >((props, forwardedRef) => {
-    const portalContext = usePortalContext(props.scope)
+    const scope = props.scope || MENU_CONTEXT
+    const portalContext = usePortalContext(scope)
     const { forceMount = portalContext.forceMount, ...subContentProps } = props
-    const context = useMenuContext(props.scope)
-    const rootContext = useMenuRootContext(props.scope)
-    const subContext = useMenuSubContext(props.scope)
+    const context = useMenuContext(scope)
+    const rootContext = useMenuRootContext(scope)
+    const subContext = useMenuSubContext(scope)
     const ref = React.useRef<MenuSubContentElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     return (
-      <Collection.Provider scope={props.scope || MENU_CONTEXT}>
-        <Collection.Slot scope={props.scope || MENU_CONTEXT}>
+      <Collection.Provider scope={scope}>
+        <Collection.Slot scope={scope}>
           <MenuContentImpl
             id={subContext.contentId}
             aria-labelledby={subContext.triggerId}

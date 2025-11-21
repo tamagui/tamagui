@@ -319,6 +319,7 @@ export function Popper(props: PopperProps) {
   // memoize since we round x/y, floating-ui doesn't by default which can cause tons of updates
   // if the floating element is inside something animating with a spring
   const popperContext = React.useMemo(() => {
+    console.log('setting', floating, scope)
     return {
       size,
       arrowRef: setArrow,
@@ -361,7 +362,7 @@ export type PopperAnchorProps = YStackProps
 
 export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
   function PopperAnchor(props, forwardedRef) {
-    const { virtualRef, scope, ...anchorProps } = props
+    const { virtualRef, scope, ...rest } = props
     const context = usePopperContextSlow(scope)
     const { getReferenceProps, refs, update } = context
     const ref = React.useRef<PopperAnchorRef>(null)
@@ -372,9 +373,12 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
       }
     }, [virtualRef])
 
-    const stackProps = anchorProps
+    const refProps =
+      getReferenceProps?.({
+        ...rest,
+        ref,
+      }) || null
 
-    const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
     const shouldHandleInHover = isWeb && scope
     const composedRefs = useComposedRefs(
       forwardedRef,
@@ -385,7 +389,7 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
 
     return (
       <TamaguiView
-        {...stackProps}
+        {...rest}
         {...refProps}
         ref={composedRefs}
         {...(shouldHandleInHover && {
@@ -395,6 +399,12 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
           onMouseEnter: (e) => {
             if (ref.current instanceof HTMLElement) {
               refs.setReference(ref.current)
+
+              if (!refProps) {
+                console.info('wwut', context, refProps, props)
+                return
+              }
+
               refProps.onPointerEnter?.(e)
               update()
             }
