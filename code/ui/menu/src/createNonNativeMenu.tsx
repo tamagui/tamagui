@@ -1,16 +1,16 @@
 import type BaseMenuTypes from '@tamagui/create-menu'
-import type { CreateBaseMenuProps } from '@tamagui/create-menu'
+import { createBaseMenu, type CreateBaseMenuProps } from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
-  Slot,
-  type TamaguiElement,
-  View,
-  type ViewProps,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
   isAndroid,
   isWeb,
+  Slot,
+  type TamaguiElement,
+  View,
+  type ViewProps,
   withStaticProperties,
 } from '@tamagui/web'
 import * as React from 'react'
@@ -45,6 +45,8 @@ interface MenuProps extends BaseMenuTypes.MenuProps {
   modal?: boolean
 }
 
+type BaseMenu = ReturnType<typeof createBaseMenu>['Menu']
+
 /* -------------------------------------------------------------------------------------------------
  * MenuTrigger
  * -----------------------------------------------------------------------------------------------*/
@@ -57,72 +59,58 @@ interface MenuTriggerProps extends ViewProps {
  * MenuPortal
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuPortalProps = React.ComponentPropsWithoutRef<typeof BaseMenuTypes.Portal>
-interface MenuPortalProps extends MenuPortalProps {}
+type MenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
 
 /* -------------------------------------------------------------------------------------------------
  * MenuContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuContentElement = React.ElementRef<typeof MenuTypes.Content>
-type MenuContentProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Content>
-interface MenuContentProps extends Omit<MenuContentProps, 'onEntryFocus'> {}
+type MenuContentElement = React.ElementRef<BaseMenu['Content']>
+interface MenuContentProps
+  extends Omit<React.ComponentPropsWithoutRef<BaseMenu['Content']>, 'onEntryFocus'> {}
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Group>
-type MenuGroupProps = MenuGroupProps & {}
+type MenuGroupProps = React.ComponentPropsWithoutRef<BaseMenu['Group']>
 
 /* -------------------------------------------------------------------------------------------------
  * MenuLabel
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuLabelProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Label>
-type MenuLabelProps = MenuLabelProps & {}
+type MenuLabelProps = React.ComponentPropsWithoutRef<BaseMenu['Label']>
 
 /* -------------------------------------------------------------------------------------------------
  * MenuItem
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Item>
-interface MenuItemProps extends MenuItemProps {}
+type MenuItemProps = React.ComponentPropsWithoutRef<BaseMenu['Item']>
 
-type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.CheckboxItem>
+type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<BaseMenu['CheckboxItem']>
 
-interface MenuCheckboxItemProps extends MenuCheckboxItemProps {}
-
-type MenuRadioGroupElement = React.ElementRef<typeof MenuTypes.RadioGroup>
-type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof MenuTypes.RadioGroup>
-interface MenuRadioGroupProps extends MenuRadioGroupProps {}
-
-type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.RadioItem>
-interface MenuRadioItemProps extends MenuRadioItemProps {}
-
-type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<
-  typeof MenuTypes.ItemIndicator
->
-interface MenuItemIndicatorProps extends MenuItemIndicatorProps {}
+type MenuRadioGroupElement = React.ElementRef<BaseMenu['RadioGroup']>
+type MenuRadioGroupProps = React.ComponentPropsWithoutRef<BaseMenu['RadioGroup']>
+type MenuRadioItemProps = React.ComponentPropsWithoutRef<BaseMenu['RadioItem']>
+type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<BaseMenu['ItemIndicator']>
 
 /* -------------------------------------------------------------------------------------------------
  * MenuSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Separator>
+type MenuSeparatorProps = React.ComponentPropsWithoutRef<BaseMenu['Separator']>
 
 /* -------------------------------------------------------------------------------------------------
  * MenuArrow
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuArrowProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Arrow>
-type MenuArrowProps = MenuArrowProps & {}
+type MenuArrowProps = React.ComponentPropsWithoutRef<BaseMenu['Arrow']>
 
 /* -------------------------------------------------------------------------------------------------
  * MenuSub
  * -----------------------------------------------------------------------------------------------*/
 
-interface MenuSubProps extends MenuSubProps {
+type MenuSubProps = BaseMenuTypes.MenuSubProps & {
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
@@ -133,16 +121,14 @@ interface MenuSubProps extends MenuSubProps {
  * MenuSubTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuTypes.SubTrigger>
-interface MenuSubTriggerProps extends MenuSubTriggerProps {}
+type MenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>
 
 /* -------------------------------------------------------------------------------------------------
  * MenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubContentElement = React.ElementRef<typeof MenuTypes.Content>
-type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof MenuTypes.SubContent>
-interface MenuSubContentProps extends MenuSubContentProps {}
+type MenuSubContentElement = React.ElementRef<BaseMenu['Content']>
+type MenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -381,7 +367,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const MenuItemFrame = Menu.Item
 
-  const MenuItem = MenuItemFrame.styleable<ScopedProps<MenuItemProps>>(
+  const MenuItem = React.forwardRef<TamaguiElement, ScopedProps<MenuItemProps>>(
     (props, forwardedRef) => {
       const { scope, ...itemProps } = props
       return (
@@ -436,7 +422,8 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const MenuCheckboxItemFrame = Menu.CheckboxItem
 
-  const MenuCheckboxItem = MenuCheckboxItemFrame.styleable<
+  const MenuCheckboxItem = React.forwardRef<
+    TamaguiElement,
     ScopedProps<MenuCheckboxItemProps>
   >((props, forwardedRef) => {
     const { scope, ...checkboxItemProps } = props
@@ -482,7 +469,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const MenuRadioItemFrame = Menu.RadioItem
 
-  const MenuRadioItem = MenuRadioItemFrame.styleable<ScopedProps<MenuRadioItemProps>>(
+  const MenuRadioItem = React.forwardRef<TamaguiElement, ScopedProps<MenuRadioItemProps>>(
     (props, forwardedRef) => {
       const { scope, ...radioItemProps } = props
       return (
