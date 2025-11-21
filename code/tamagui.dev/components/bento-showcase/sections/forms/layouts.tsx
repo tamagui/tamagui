@@ -22,8 +22,8 @@ export function layouts({ isProUser, showAppropriateModal }: Props) {
       <YStack
         pb="$10"
         gap="$12"
-        padding="$2"
-        $gtLg={{ padding: '$0' }}
+        p="$2"
+        $gtLg={{ p: '$0' }}
         $group-window-sm={{ marginHorizontal: '$2' }}
       >
         <Showcase unlock fileName={Layouts.SignInScreen.fileName} title="Sign-in Form">
@@ -35,7 +35,7 @@ export function layouts({ isProUser, showAppropriateModal }: Props) {
           fileName={Layouts.SignInRightImage.fileName}
           title="Sign-in Right Image"
         >
-          <Wrapper marginVertical={-24} p={0}>
+          <Wrapper my={-24} p={0}>
             <Layouts.SignInRightImage />
           </Wrapper>
         </Showcase>

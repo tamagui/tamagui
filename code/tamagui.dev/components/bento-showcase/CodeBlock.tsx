@@ -186,8 +186,8 @@ const Code = styled(Paragraph, {
   lineHeight: 18,
   cursor: 'inherit',
   whiteSpace: 'pre',
-  padding: '$1',
-  borderRadius: '$4',
+  p: '$1',
+  rounded: '$4',
 
   variants: {
     colored: {
@@ -202,7 +202,7 @@ const Code = styled(Paragraph, {
 const Pre = styled(YStack, {
   overflow: 'visible',
   tag: 'pre',
-  padding: '$4',
-  borderRadius: '$4',
-  backgroundColor: '$background',
+  p: '$4',
+  rounded: '$4',
+  bg: '$background',
 })

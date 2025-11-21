@@ -93,7 +93,7 @@ export const ProLicense = () => {
 const Ul = styled(YStack, {
   name: 'ul',
   tag: 'ul',
-  paddingLeft: 20,
+  pl: 20,
 })
 
 const Li = styled(Paragraph, {

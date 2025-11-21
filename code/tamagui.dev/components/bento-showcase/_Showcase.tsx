@@ -116,14 +116,14 @@ const ShowcaseView = forwardRef<any, Props>(
           ref={ref}
           {...rest}
         >
-          <XStack ai="center" jc="space-between">
-            <XStack alignItems="center" f={1} gap="$3">
+          <XStack items="center" justify="space-between">
+            <XStack items="center" flex={1} gap="$3">
               {!approved && <Lock size={16} opacity={0.3} />}
               <H2
                 size="$7"
                 fontWeight="600"
-                backgroundColor="$background"
-                ff="$mono"
+                bg="$background"
+                fontFamily="$mono"
                 t="$0"
                 l="$2"
               >
@@ -131,7 +131,7 @@ const ShowcaseView = forwardRef<any, Props>(
               </H2>
             </XStack>
 
-            <XStack als="flex-end" justifyContent="space-between" gap="$3">
+            <XStack self="flex-end" justify="space-between" gap="$3">
               <Button
                 //@ts-ignore
                 title="copy link"
@@ -150,7 +150,7 @@ const ShowcaseView = forwardRef<any, Props>(
                   <Link />
                 </Button.Icon>
               </Button>
-              <XGroup borderRadius="$10">
+              <XGroup rounded="$10">
                 <Button
                   icon={Eye}
                   // @ts-expect-error - active theme name
@@ -182,53 +182,45 @@ const ShowcaseView = forwardRef<any, Props>(
               <>
                 <View
                   width="100%"
-                  backgroundColor="$background"
+                  bg="$background"
                   borderWidth={0.5}
                   borderColor="$color3"
-                  justifyContent="center"
-                  alignItems="center"
-                  minHeight={minHeight}
+                  justify="center"
+                  items="center"
+                  minH={minHeight}
                   overflow="hidden"
                 >
                   <YStack
-                    justifyContent="center"
+                    justify="center"
                     height="100%"
                     width="100%"
-                    maxWidth={isInput ? 300 : '100%'}
+                    maxW={isInput ? 300 : '100%'}
                   >
                     {children}
                   </YStack>
                 </View>
-                <XStack
-                  gap="$2"
-                  position="absolute"
-                  m="$4"
-                  bottom={0}
-                  right={0}
-                  ai="flex-end"
-                >
+                <XStack gap="$2" position="absolute" m="$4" b={0} r={0} items="flex-end">
                   <SizeController />
-                  {/* <ThemeButton /> */}
                 </XStack>
               </>
             ) : isLoading ? (
-              <View w="100%" justifyContent="center" alignItems="center">
+              <View width="100%" justify="center" items="center">
                 <Spinner color="$color" size="large" />
               </View>
             ) : iDontHaveAccess ? (
-              <YStack gap="$4" alignItems="center">
+              <YStack gap="$4" items="center">
                 <Image src="/avatar_pro.png" width={56} height={56} />
 
-                <Text fontSize="$6" ff="$mono" fontWeight="bold">
+                <Text fontSize="$6" fontFamily="$mono" fontWeight="bold">
                   Tamagui Pro
                 </Text>
 
                 <Text
-                  textAlign="center"
+                  text="center"
                   color="$green10"
                   $group-window-sm={{ fontSize: '$2' }}
                   gap="$4"
-                  ff="$mono"
+                  fontFamily="$mono"
                 >
                   Purchase the Bento package to access the code.
                 </Text>
@@ -239,11 +231,7 @@ const ShowcaseView = forwardRef<any, Props>(
             ) : data ? (
               <CodeWindow code={data} />
             ) : (
-              <Text
-                textAlign="center"
-                color="$green10"
-                $group-window-sm={{ fontSize: '$2' }}
-              >
+              <Text text="center" color="$green10" $group-window-sm={{ fontSize: '$2' }}>
                 Purchase the Bento package to access the code.
               </Text>
             )}
@@ -263,11 +251,11 @@ const MessagesFrame = (props: {
   const { minHeight, children } = props
   return (
     <YStack
-      w="100%"
+      width="100%"
       position="relative"
-      mih={minHeight}
+      minH={minHeight}
       bg="$background"
-      borderRadius="$4"
+      rounded="$4"
       overflow="hidden"
       borderWidth={1}
       borderColor={'$borderColor'}
@@ -289,9 +277,9 @@ const MessagesFrame = (props: {
         {['$red10', '$yellow10', '$green10'].map((color, index) => (
           <View
             bg={color as any}
-            h={10}
-            w={10}
-            borderRadius={1_000_000_000}
+            height={10}
+            width={10}
+            rounded={1_000_000_000}
             key={index}
           />
         ))}
@@ -300,13 +288,13 @@ const MessagesFrame = (props: {
       {/* @ts-expect-error - hideDragHandle type mismatch */}
       <ResizableBox hideDragHandle={props.hideDragHandle}>
         <YStack
-          backgroundColor="$backgroundPress"
+          bg="$backgroundPress"
           borderColor="$borderColor"
           width="100%"
           height="100%"
           overflow="hidden"
-          justifyContent="center"
-          alignItems="center"
+          justify="center"
+          items="center"
         >
           {children}
         </YStack>
@@ -355,9 +343,9 @@ const PhoneFrame = (props: any) => {
         <PhoneSVG />
       </YStack>
       <YStack
-        paddingBottom={20}
-        paddingTop={50}
-        paddingHorizontal="$6"
+        pb={20}
+        pt={50}
+        px="$6"
         overflow="hidden"
         width="133.3335%"
         height={800}
@@ -365,7 +353,7 @@ const PhoneFrame = (props: any) => {
         transformOrigin="left top"
       >
         <PhoneScaleProvider scale={0.53}>
-          <YStack width="100%" height="100%" borderRadius="$8" overflow="hidden">
+          <YStack width="100%" height="100%" rounded="$8" overflow="hidden">
             {props.children}
           </YStack>
         </PhoneScaleProvider>
@@ -387,35 +375,18 @@ export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
     <ScrollView
       ref={ref}
       contentContainerStyle={{
-        paddingVertical: sm ? 0 : 24,
-        justifyContent: 'center',
-        alignItems: 'center',
+        py: sm ? 0 : 24,
+        justify: 'center',
+        items: 'center',
         width: '100%',
         height: '100%',
       }}
-      paddingHorizontal={sm ? 5 : 24}
+      px={sm ? 5 : 24}
       width="100%"
       {...props}
     />
   )
 })
-
-// export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
-//   return (
-//     <ScrollView
-//       ref={ref}
-//       contentContainerStyle={{
-//         paddingVertical: 24,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         width: '100%',
-//       }}
-//       paddingHorizontal={16}
-//       width="100%"
-//       {...props}
-//     />
-//   )
-// })
 
 type ResizableBoxExtraProps = {
   hideDragHandle?: boolean
@@ -463,16 +434,9 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
     })
 
     return (
-      <XStack
-        flex={1}
-        ref={ref}
-        alignItems="stretch"
-        userSelect="none"
-        gap="$2"
-        {...rest}
-      >
+      <XStack flex={1} ref={ref} items="stretch" select="none" gap="$2" {...rest}>
         <XStack
-          alignItems="center"
+          items="center"
           // @ts-expect-error - window group name
           group="window"
           ref={containerRef as any}
@@ -481,36 +445,35 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
           {children}
           <YStack
             display={hideDragHandle ? 'none' : 'flex'}
-            marginRight={-16}
+            mr={-16}
             width={20}
             cursor="col-resize"
             onMouseDown={handleDragStart}
             height="100%"
-            alignItems="center"
-            justifyContent="center"
+            items="center"
+            justify="center"
             group
           >
             <Stack
-              maxHeight="50%"
-              // height="$16"
+              maxH="50%"
               width={8}
-              backgroundColor="$background04"
+              bg="$background04"
               hoverStyle={{
-                backgroundColor: '$background06',
+                bg: '$background06',
               }}
               pressStyle={{
-                backgroundColor: '$background06',
+                bg: '$background06',
               }}
-              alignSelf="center"
-              borderRadius={1000_000}
+              self="center"
+              rounded={1000_000}
             />
             <View
               $group-hover={{ height: '$4' }}
               width={8}
-              left={-2}
+              l={-2}
               height="$3"
-              backgroundColor="$background04"
-              borderRadius="$5"
+              bg="$background04"
+              rounded="$5"
             />
           </YStack>
         </XStack>
@@ -523,19 +486,19 @@ export function Hint({ children }: { children: React.ReactNode }) {
   return (
     <ThemeableStack
       position="absolute"
-      bottom={12}
-      left={12}
+      b={12}
+      l={12}
       bordered
       backgrounded
       theme="orange"
-      padding="$2"
-      paddingHorizontal="$3"
+      p="$2"
+      px="$3"
       gap="$3"
-      zIndex={100000}
+      z={100000}
       radiused
       flexDirection="row"
-      justifyContent="center"
-      alignItems="center"
+      justify="center"
+      items="center"
     >
       <Info color="$color" size={18} />
       <SizableText size="$4">{children}</SizableText>
@@ -599,14 +562,14 @@ export const SizeController = XGroup.styleable((props, ref) => {
   return (
     <XGroup
       ref={ref}
-      justifyContent="center"
-      alignItems="center"
+      justify="center"
+      items="center"
       bg="$backgroundPress"
-      right={0}
-      bottom={0}
+      r={0}
+      b={0}
       gap="$1"
       overflow="hidden"
-      br={1_000_000_000}
+      rounded={1_000_000_000}
       {...props}
     >
       <XGroup.Item>

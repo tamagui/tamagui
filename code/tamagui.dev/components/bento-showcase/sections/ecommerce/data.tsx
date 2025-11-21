@@ -38,11 +38,6 @@ export const listingData = [
         numberOfComponents: 1,
         route: '/ecommerce/productpage',
       },
-      // {
-      //   name: 'Product List',
-      //   numberOfComponents: 5,
-      //   route: '/ecommerce/product_list',
-      // },
     ],
   },
 ] as const

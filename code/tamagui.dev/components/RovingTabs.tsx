@@ -51,8 +51,8 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
     >
       <Code
         p="$4"
-        backgroundColor="transparent"
-        f={1}
+        bg="transparent"
+        flex={1}
         className={className}
         size={size ?? '$4'}
         lineHeight={size ?? '$4'}
@@ -73,20 +73,20 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
           activationMode="manual"
           orientation="horizontal"
           size="$4"
-          br="$4"
+          rounded="$4"
           value={selectedPackageManager}
           onPress={(e) => e.stopPropagation()}
           onValueChange={setPackageManager}
           group
           mt={1}
         >
-          <YStack w="100%">
-            <YStack p="$1.5" m="$2" mb={0} br="$5">
+          <YStack width="100%">
+            <YStack p="$1.5" m="$2" mb={0} rounded="$5">
               <AnimatePresence initial={false}>
                 {intentAt && (
                   <TabIndicator
-                    w={intentAt.width}
-                    h={intentAt.height}
+                    width={intentAt.width}
+                    height={intentAt.height}
                     x={intentAt.x}
                     y={intentAt.y}
                   />
@@ -97,8 +97,8 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 {activeAt && (
                   <TabIndicator
                     theme="alt1"
-                    w={activeAt.width}
-                    h={activeAt.height}
+                    width={activeAt.width}
+                    height={activeAt.height}
                     x={activeAt.x}
                     y={activeAt.y}
                   />
@@ -145,7 +145,7 @@ export function Tab({
   active?: boolean
   pkgManager: string
   logo?: string
-  onInteraction: TabsTabProps['onInteraction']
+  onInteraction?: TabsTabProps['onInteraction']
 }) {
   const imageName = logo ?? pkgManager
   return (
@@ -156,10 +156,10 @@ export function Tab({
       py="$1.5"
       gap="$1.5"
       value={pkgManager}
-      onInteraction={onInteraction}
+      {...(onInteraction && { onInteraction })}
       cursor="pointer"
     >
-      <XStack gap="$1.5" ai="center" jc="center">
+      <XStack gap="$1.5" items="center" justify="center">
         <Image
           width={16}
           height={16}
@@ -170,8 +170,8 @@ export function Tab({
         <SizableText
           y={-0.5}
           size="$2"
-          col={active ? '$color11' : '$color9'}
-          o={active ? 1 : 0.5}
+          color={active ? '$color11' : '$color9'}
+          opacity={active ? 1 : 0.5}
         >
           {pkgManager}
         </SizableText>
@@ -183,16 +183,16 @@ export function Tab({
 function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
   return (
     <YStack
-      pos="absolute"
+      position="absolute"
       bg="$color5"
-      o={0.7}
-      br="$4"
+      opacity={0.7}
+      rounded="$4"
       animation="quickest"
       enterStyle={{
-        o: 0,
+        opacity: 0,
       }}
       exitStyle={{
-        o: 0,
+        opacity: 0,
       }}
       {...(active && {
         bg: '$color8',
@@ -202,27 +202,3 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
     />
   )
 }
-
-const AnimatedYStack = styled(YStack, {
-  f: 1,
-  x: 0,
-  o: 1,
-
-  animation: '100ms',
-  variants: {
-    // 1 = right, 0 = nowhere, -1 = left
-    direction: {
-      ':number': (direction) => ({
-        enterStyle: {
-          x: direction > 0 ? -10 : -10,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: direction < 0 ? -10 : -10,
-          opacity: 0,
-        },
-      }),
-    },
-  } as const,
-})

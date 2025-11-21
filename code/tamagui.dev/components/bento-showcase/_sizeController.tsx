@@ -14,15 +14,7 @@ export const SizeController = YGroup.styleable<{
   }
   return (
     <Theme inverse>
-      <YGroup
-        ref={ref}
-        justifyContent="center"
-        alignItems="center"
-        right={0}
-        bottom={0}
-        gap="$1"
-        {...props}
-      >
+      <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="$1" {...props}>
         <YGroup.Item>
           <Button
             size="$3"

@@ -17,19 +17,19 @@ export function DataTable({
       <YStack
         borderWidth={1}
         borderColor="$borderColor"
-        f={1}
+        flex={1}
         aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
         aria-labelledby={ariaLabelledBy}
         my="$4"
-        br="$4"
-        ov="hidden"
+        rounded="$4"
+        overflow="hidden"
         mx="$-4"
         $sm={{
           mx: 0,
         }}
       >
         {!!title && (
-          <XStack ai="center" py="$2" px="$4" backgroundColor="$borderColor">
+          <XStack items="center" py="$2" px="$4" bg="$borderColor">
             <H3 size="$3">{title}</H3>
           </XStack>
         )}
@@ -37,8 +37,8 @@ export function DataTable({
         {rows.map((items, i) => (
           <ListItem key={i} p={0}>
             <XStack
-              ai="center"
-              pos="relative"
+              items="center"
+              position="relative"
               py="$3"
               px="$4"
               $sm={{ flexDirection: 'column' }}
@@ -46,14 +46,14 @@ export function DataTable({
               {items.map((item) => (
                 <H4
                   color="$color"
-                  fow="700"
+                  fontWeight="700"
                   key={item}
-                  maw={100}
+                  maxW={100}
                   fontFamily="$mono"
                   textTransform="none"
-                  ai="center"
-                  jc="center"
-                  textAlign="center"
+                  items="center"
+                  justify="center"
+                  text="center"
                   size="$4"
                   width={200}
                 >

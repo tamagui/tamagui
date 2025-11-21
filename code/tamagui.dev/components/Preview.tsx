@@ -4,17 +4,17 @@ import { YStack } from 'tamagui'
 export const Preview = (props: YStackProps) => (
   <YStack
     data-preview
-    margin={0}
+    m={0}
     overflow="visible"
     borderWidth={1}
     borderColor="$borderColor"
     borderTopLeftRadius="$3"
     borderTopRightRadius="$3"
     mb="$-6"
-    padding="$3"
+    p="$3"
     pb="$6"
     position="relative"
-    ai="flex-start"
+    items="flex-start"
     {...props}
   />
 )

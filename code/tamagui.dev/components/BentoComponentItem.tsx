@@ -45,25 +45,22 @@ export function ComponentItem({
     <Link href={href as any} asChild>
       <YStack
         tag="a"
-        w={210}
-        // key={10}
-        // br="$9"
+        width={210}
         cursor="pointer"
-        pos="relative"
+        position="relative"
         bg="rgba(150,150,150,0.025)"
         mt="$3"
-        // br="$6"
         $gtMd={{
           bg: 'rgba(255,255,255,0)',
-          w: 'calc(25% - 20px)',
-          br: '$4',
+          width: 'calc(25% - 20px)',
+          rounded: '$4',
         }}
       >
         {/* Preview */}
         <YStack
-          h={192}
-          br="$8"
-          ov="hidden"
+          height={192}
+          rounded="$8"
+          overflow="hidden"
           className="relative"
           shadowColor="$shadow2"
           shadowRadius={30}
@@ -76,13 +73,7 @@ export function ComponentItem({
             scale: 0.99,
           }}
         >
-          <YStack
-            fullscreen
-            pointerEvents="none"
-            justifyContent="center"
-            alignItems="center"
-            p="$6"
-          >
+          <YStack fullscreen pointerEvents="none" justify="center" items="center" p="$6">
             <Preview />
           </YStack>
           <LinearGradient
@@ -90,20 +81,20 @@ export function ComponentItem({
             start={[0, 0.5]}
             end={[0.5, 0]}
             colors={['transparent', '$background04']}
-            zIndex={-1}
+            z={1}
           />
         </YStack>
 
-        <YStack f={1} p="$4">
-          <H4 ff="$mono" size="$5" color="$color12">
+        <YStack flex={1} p="$4">
+          <H4 fontFamily="$mono" size="$5" color="$color12">
             {name}
           </H4>
 
-          <H5 opacity={0} fontFamily="$mono" theme="alt1" size="$1" ls={1}>
+          <H5 opacity={0} fontFamily="$mono" theme="alt1" size="$1" letterSpacing={1}>
             {numberOfComponents} components
           </H5>
 
-          <YStack pos="absolute" t="$4" r="$4" rotate="20deg" p="$2" o={0.4}>
+          <YStack position="absolute" t="$4" r="$4" rotate="20deg" p="$2" opacity={0.4}>
             <Icon size={20} color="$color12" />
           </YStack>
         </YStack>

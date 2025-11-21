@@ -110,32 +110,32 @@ const CarouselContainer = styled(YStack, {
   position: 'relative',
   gap: '$4',
   py: '$4',
-  alignItems: 'center',
+  items: 'center',
 })
 
 const SponsorCardStyled = styled(YStack, {
   width: 220,
   height: 220,
-  borderRadius: '$6',
+  rounded: '$6',
   overflow: 'visible',
   position: 'relative',
-  flexShrink: 0,
+  shrink: 0,
   cursor: 'pointer',
 })
 
 const SponsorContent = styled(YStack, {
   width: '100%',
   height: '100%',
-  padding: '$3',
-  justifyContent: 'space-between',
+  p: '$3',
+  justify: 'space-between',
 })
 
 const LogoContainer = styled(YStack, {
-  ai: 'center',
-  jc: 'center',
-  f: 1,
-  borderRadius: '$4',
-  padding: '$2',
+  items: 'center',
+  justify: 'center',
+  flex: 1,
+  rounded: '$4',
+  p: '$2',
   position: 'relative',
   width: '100%',
   height: '100%',
@@ -154,14 +154,14 @@ export function SponsorCarousel() {
       <CarouselContainer>
         {/* Title section */}
         <YStack mb="$4">
-          <H2 size="$10" ta="center" color="$color">
+          <H2 size="$10" text="center" color="$color">
             Our Sponsors
           </H2>
-          <Paragraph ta="center" theme="alt1" size="$5" mt="$2">
+          <Paragraph text="center" theme="alt1" size="$5" mt="$2">
             Sponsors who made Tamagui possible
           </Paragraph>
         </YStack>
-        <XStack flexWrap="wrap" jc="center" gap="$6" px="$6" maw={1200}>
+        <XStack flexWrap="wrap" justify="center" gap="$6" px="$6" maxW={1200}>
           {sponsors.map((sponsor) => (
             <SponsorCard key={sponsor.id} {...sponsor} />
           ))}
@@ -195,12 +195,12 @@ function SponsorCard({ link, image, gradient, name }: (typeof sponsors)[0]) {
               <YStack
                 cursor="pointer"
                 p="$2"
-                br="$4"
+                rounded="$4"
                 hoverStyle={{ bg: 'rgba(0,0,0,0.1)' }}
                 pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
                 gap="$4"
               >
-                <H5 cursor="inherit" als="center" ai="center">
+                <H5 cursor="inherit" self="center" items="center">
                   {name}
                 </H5>
               </YStack>

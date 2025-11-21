@@ -12,11 +12,11 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
             {soon ? (
               <YStack
                 bg="$backgroundHover"
-                w={25}
-                h={25}
-                ai="center"
-                jc="center"
-                br={100}
+                width={25}
+                height={25}
+                items="center"
+                justify="center"
+                rounded={100}
                 mr="$2.5"
               >
                 <Pencil size={12} color="var(--colorHover)" />
@@ -25,7 +25,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
               <CheckCircle />
             )}
           </YStack>
-          <YStack f={1}>
+          <YStack flex={1}>
             <Paragraph size={size ?? (large ? '$5' : '$4')} color="$gray11">
               {feature}
             </Paragraph>
