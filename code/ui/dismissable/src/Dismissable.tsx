@@ -150,7 +150,6 @@ const Dismissable = React.forwardRef<
   return (
     <Comp
       {...layerProps}
-      children={children}
       // @ts-ignore
       ref={composedRefs}
       display="contents"
@@ -173,7 +172,9 @@ const Dismissable = React.forwardRef<
         props.onPointerDownCapture,
         pointerDownOutside.onPointerDownCapture
       )}
-    />
+    >
+      {children}
+    </Comp>
   )
 })
 

@@ -564,7 +564,8 @@ textarea {
   -webkit-font-smoothing: antialiased !important;
 }
 
-.font-smooth-none, .font_silkscreen {
+.font-smooth-none,
+.font_silkscreen {
   -webkit-font-smoothing: none !important;
 }
 

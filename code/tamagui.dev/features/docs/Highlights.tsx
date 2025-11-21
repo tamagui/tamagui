@@ -2,13 +2,19 @@ import { ExternalLink } from '@tamagui/lucide-icons'
 import React from 'react'
 import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 import { VersionSwitcher } from './VersionSwitcher'
+import { SourceVersionSwitcher } from './SourceVersionSwitcher'
 
 import { Features } from '~/components/Features'
 import { Link } from '~/components/Link'
 import { FrontmatterContext } from './FrontmatterContext'
+import { useLocalSearchParams } from 'one'
 
 export function Highlights({ features, disableLinks, disableTitle, large }: any) {
   const frontmatter = React.useContext(FrontmatterContext)
+  const params = useLocalSearchParams()
+  const sourceVersion = typeof params.sourceVersion === 'string'
+    ? params.sourceVersion
+    : frontmatter.versions?.[0]
 
   return (
     <YStack
@@ -49,21 +55,26 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
           <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
-            <Link
-              href={`https://github.com/tamagui/tamagui/tree/main/code/ui/${
-                frontmatter.package
-                  ? `${frontmatter.package}/src/${frontmatter.component}.tsx`
-                  : `tamagui/src/views/${frontmatter.component}.tsx`
-              }`}
-              target="_blank"
-            >
-              <XStack ai="center" gap="$1">
-                <SizableText size="$3">View source</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
-                </YStack>
-              </XStack>
-            </Link>
+            <YStack gap="$2">
+              <Link
+                href={`https://github.com/tamagui/tamagui/tree/${sourceVersion ? `v${sourceVersion}` : 'main'}/code/ui/${
+                  frontmatter.package
+                    ? `${frontmatter.package}/src/${frontmatter.component}.tsx`
+                    : `tamagui/src/views/${frontmatter.component}.tsx`
+                }`}
+                target="_blank"
+              >
+                <XStack ai="center" gap="$1">
+                  <SizableText size="$3">View source</SizableText>
+                  <YStack opacity={0.5} ml="$0.5">
+                    <ExternalLink size={12} color="var(--colorHover)" />
+                  </YStack>
+                </XStack>
+              </Link>
+              {frontmatter.versions && frontmatter.versions.length > 1 && (
+                <SourceVersionSwitcher versions={frontmatter.versions} />
+              )}
+            </YStack>
             <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
               <XStack ai="center" gap="$1">
                 <SizableText size="$3">View on npm</SizableText>

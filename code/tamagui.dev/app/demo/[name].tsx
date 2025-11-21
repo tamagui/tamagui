@@ -20,7 +20,8 @@ export default function DemoPage() {
   }
 
   // Capitalize first letter and add "Demo" suffix
-  const componentName = `${demoName.charAt(0).toUpperCase()}${demoName.slice(1)}Demo` as keyof typeof Demos
+  const componentName =
+    `${demoName.charAt(0).toUpperCase()}${demoName.slice(1)}Demo` as keyof typeof Demos
   const DemoComponent = Demos[componentName]
 
   if (!DemoComponent) {
