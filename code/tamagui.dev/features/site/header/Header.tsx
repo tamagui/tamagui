@@ -599,11 +599,10 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         <YStack
           w="100%"
           animation="200ms"
-          mih={`calc(min(${heights[active]}px, 80vh))`}
+          height={heights[active]}
+          maxHeight="90vh"
           ov="hidden"
-          maxHeight="100%"
           br="$6"
-          flex={1}
         >
           <AnimatePresence custom={{ going }} initial={false}>
             <HeaderMenuContents key={active} id={active} />

@@ -409,6 +409,8 @@ And then run:
 npx @tamagui/cli generate
 ```
 
+See the [CLI Guide](/docs/guides/cli#generate) for more information on the `generate` command and other CLI tools.
+
 ## Tokens
 
 Tokens are inspired by the [Theme UI spec](https://theme-ui.com/theme-spec/).
@@ -605,11 +607,14 @@ For more full docs on media queries, see the
 
 ### Animations
 
-Choose one of `@tamagui/animations-css` for CSS transition based animations,
-`@tamagui/animations-react-native` for React Native Animated based animations,
-or `@tamagui/animations-moti` for [Moti](https://moti.fyi) animations. You can
-swap them out per-platform as well, so long as you match the keys of the
-animations you pass in for each driver.
+Tamagui supports four animation drivers that can be swapped out per-platform:
+
+- [`@tamagui/animations-css`](/docs/core/animations-css) - CSS transition based animations (lightest)
+- [`@tamagui/animations-react-native`](/docs/core/animations-react-native) - React Native Animated
+- [`@tamagui/animations-moti`](/docs/core/animations-reanimated) - Moti/Reanimated for advanced animations
+- [`@tamagui/animations-motion`](/docs/core/animations-motion) - Motion with WAAPI for web
+
+See the [Animations documentation](/docs/core/animations) for a full comparison and guide on choosing the right driver.
 
 Add `animations` to `createTamagui`:
 
@@ -618,21 +623,19 @@ import { createAnimations } from '@tamagui/animations-react-native'
 
 // pass this exported `animations` to your `createTamagui` call:
 export const animations = createAnimations({
-    bouncy: {
-      damping: 9,
-      mass: 0.9,
-      stiffness: 150,
-    },
-    lazy: {
-      damping: 18,
-      stiffness: 50,
-    },
-  }),
+  bouncy: {
+    damping: 9,
+    mass: 0.9,
+    stiffness: 150,
+  },
+  lazy: {
+    damping: 18,
+    stiffness: 50,
+  },
 })
 ```
 
-If using `@tamagui/animations-moti`, be sure to add `moti` as a dependency as
-well.
+You can use different drivers per-platform - see the [Platform-Specific Configuration](/docs/core/animations#platform-specific-configuration) section.
 
 ### Shorthands
 
@@ -677,7 +680,7 @@ You can pass a `settings` object to `createTamagui`:
     {
       name: `disableSSR`,
       type: `boolean`,
-      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps.`,
+      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps. See the [Server Rendering](/docs/core/server-rendering) docs for more details on SSR, the ClientOnly component, and related hooks.`,
     },
     {
       name: `defaultFont`,

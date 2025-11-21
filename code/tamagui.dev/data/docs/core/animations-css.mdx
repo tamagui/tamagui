@@ -1,0 +1,108 @@
+---
+title: CSS Driver
+description: Lightweight CSS transition-based animations
+---
+
+The `@tamagui/animations-css` package works with the tamagui compiler and
+runtime to give you simple ways to share typed animations across all your
+components.
+
+## Installation
+
+```bash
+yarn add @tamagui/animations-css
+```
+
+## Configuration
+
+Add it to your [Tamagui config](/docs/core/configuration):
+
+```tsx
+import { createAnimations } from '@tamagui/animations-css'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: 'ease-in 150ms',
+    medium: 'ease-in 300ms',
+    slow: 'ease-in 450ms',
+  }),
+  // ...
+})
+```
+
+## How it Works
+
+At runtime, the plugin does very little except to set the `transition` property
+in CSS. At compile-time, the compiler does the same, ensuring you get all the
+benefits of prop removal and view flattening even when using animations.
+
+## Animation Configuration
+
+CSS animations use CSS transition syntax:
+
+```tsx
+createAnimations({
+  quick: 'ease-out 100ms',
+  bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55) 300ms',
+  slow: 'ease-in-out 500ms',
+})
+```
+
+The format is: `<easing-function> <duration>`
+
+### Supported Easing Functions
+
+- `ease` - Default easing (equivalent to `cubic-bezier(0.25, 0.1, 0.25, 1)`)
+- `linear` - No easing, constant speed
+- `ease-in` - Slow start
+- `ease-out` - Slow end
+- `ease-in-out` - Slow start and end
+- `cubic-bezier(x1, y1, x2, y2)` - Custom cubic bezier curve
+
+## When to Use
+
+**Advantages:**
+- **Smallest bundle size** - Minimal JavaScript overhead
+- **Best compatibility** - Works everywhere CSS works
+- **Compiler optimizations** - Benefits from static extraction
+- **Simple** - Easiest to understand and configure
+
+**Limitations:**
+- No spring physics (only easing curves)
+- Limited to CSS animatable properties
+- Less control over animation lifecycle
+
+## Example
+
+```tsx
+import { createAnimations } from '@tamagui/animations-css'
+import { YStack, createTamagui } from 'tamagui'
+
+const animations = createAnimations({
+  quick: 'ease-out 150ms',
+  bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55) 400ms',
+})
+
+export default createTamagui({
+  animations,
+  // ... rest of config
+})
+
+// Usage in components
+export const MyComponent = () => (
+  <YStack
+    animation="quick"
+    hoverStyle={{
+      scale: 1.1,
+    }}
+  />
+)
+```
+
+## See Also
+
+- [Animations Introduction](/docs/core/animations)
+- [React Native Driver](/docs/core/animations-react-native)
+- [Motion Driver](/docs/core/animations-motion)
+- [Reanimated Driver](/docs/core/animations-reanimated)

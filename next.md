@@ -1,3 +1,16 @@
+animations improvements:
+
+> Independent Transforms
+  Motion allows you to animate transform properties independently:
+
+  <YStack
+    animation={{
+      x: 'quick',      // Animate x with quick spring
+      y: 'bouncy',     // Animate y with bouncy spring
+      scale: '100ms',  // Animate scale with 100ms tween
+    }}
+  />
+
 - make tamagui package work in some simple way
   - probably making tamagui + tamagui/ui both work is fine
 

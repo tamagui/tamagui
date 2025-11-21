@@ -5,7 +5,6 @@
   "types": "./types/index.d.ts",
   "main": "dist/index.cjs",
   "bin": {
-    "tama": "./dist/index.cjs",
     "tamagui": "./dist/index.cjs"
   },
   "publishConfig": {

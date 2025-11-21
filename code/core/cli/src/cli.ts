@@ -64,7 +64,7 @@ const COMMAND_MAP = {
   },
 
   'generate-themes': {
-    shorthands: ['gt'],
+    shorthands: [],
     description: `Use to pre-build your themes`,
     flags: {
       '--help': Boolean,
@@ -102,7 +102,7 @@ const COMMAND_MAP = {
   },
 
   add: {
-    shorthands: ['a'],
+    shorthands: [],
     description: `Use to add fonts and icons to your monorepo. Supported types: ${generatedPackageTypes.join(
       ', '
     )}`,
@@ -123,7 +123,7 @@ const COMMAND_MAP = {
   },
 
   build: {
-    shorthands: ['b'],
+    shorthands: [],
     description: `Use to pre-build a Tamagui component directory`,
     flags: {
       '--help': Boolean,
@@ -151,39 +151,8 @@ const COMMAND_MAP = {
     },
   },
 
-  // update: {
-  //   shorthands: [],
-  //   description: `Update all tamagui packages within a monorepo`,
-  //   flags: {},
-  //   async run() {
-  //     const { update } = await import('./update')
-  //     await update()
-  //   },
-  // },
-
-  'update-template': {
-    shorthands: ['ut'],
-    description: `Used to update your git repo with the source template. (e.g. Takeout)`,
-    flags: {
-      '--help': Boolean,
-      '--template-repo': String,
-      '--ignored-patterns': String,
-    },
-    async run() {
-      const { _, ...flags } = arg(this.flags)
-      const { updateTemplate } = require('./update-template')
-      if (!flags['--template-repo']) {
-        throw new Error('--template-repo is required')
-      }
-      await updateTemplate(
-        flags['--template-repo'],
-        flags['--ignored-patterns']?.split(' ')
-      )
-    },
-  },
-
   'generate-prompt': {
-    shorthands: ['gp'],
+    shorthands: [],
     description: `Generate an LLM-friendly markdown file from your Tamagui config`,
     flags: {
       '--help': Boolean,

@@ -7,6 +7,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
+      { title: 'CLI', route: '/docs/guides/cli' },
       // { title: 'Thinking in Tamagui', route: '/docs/intro/thinking-in-tamagui' },
       // { title: 'Comparison', route: '/docs/intro/comparison' },
       {
@@ -29,10 +30,10 @@ export const docsRoutes = [
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Themes', route: '/docs/intro/themes' },
-      { title: 'Animations', route: '/docs/core/animations' },
       { title: 'Theme', route: '/docs/core/theme' },
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'useTheme', route: '/docs/core/use-theme' },
+      { title: 'Server Rendering', route: '/docs/core/server-rendering' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
       { title: 'Extras', route: '/docs/core/exports' },
     ],
@@ -48,6 +49,31 @@ export const docsRoutes = [
   },
 
   {
+    title: 'Animations',
+    section: 'core',
+    pages: [
+      { title: 'Introduction', route: '/docs/core/animations' },
+      { title: 'CSS', route: '/docs/core/animations-css' },
+      { title: 'React Native', route: '/docs/core/animations-react-native' },
+      { title: 'Reanimated', route: '/docs/core/animations-reanimated' },
+      { title: 'Motion', route: '/docs/core/animations-motion' },
+    ],
+  },
+
+  {
+    title: 'Bundlers',
+    section: 'core',
+    pages: [
+      { title: 'Next.js', route: '/docs/guides/next-js' },
+      { title: 'Expo', route: '/docs/guides/expo' },
+      { title: 'Vite', route: '/docs/guides/vite' },
+      { title: 'One', route: '/docs/guides/one' },
+      { title: 'Webpack', route: '/docs/guides/webpack' },
+      { title: 'Metro', route: '/docs/guides/metro' },
+    ],
+  },
+
+  {
     title: 'Guides',
     section: 'core',
     pages: [
@@ -57,12 +83,6 @@ export const docsRoutes = [
         route: '/docs/guides/how-to-build-a-button',
       },
       { title: 'Developing', route: '/docs/guides/developing' },
-      { title: 'Next.js', route: '/docs/guides/next-js' },
-      { title: 'Expo', route: '/docs/guides/expo' },
-      { title: 'Vite', route: '/docs/guides/vite' },
-      { title: 'One', route: '/docs/guides/one' },
-      { title: 'Webpack', route: '/docs/guides/webpack' },
-      { title: 'Metro', route: '/docs/guides/metro' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
     ],
   },

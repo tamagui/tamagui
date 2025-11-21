@@ -1,0 +1,156 @@
+---
+title: React Native Driver
+description: Spring-based animations using React Native Animated
+---
+
+[React Native's Animated library](https://reactnative.dev/docs/animated) is the
+animation library that comes built into React Native and React Native Web.
+
+## Installation
+
+```bash
+yarn add @tamagui/animations-react-native
+```
+
+## Configuration
+
+Add it to your [Tamagui config](/docs/core/configuration):
+
+```tsx
+import { createAnimations } from '@tamagui/animations-react-native'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: {
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+    medium: {
+      damping: 10,
+      mass: 0.9,
+      stiffness: 100,
+    },
+    slow: {
+      damping: 20,
+      stiffness: 60,
+    },
+  }),
+  // ...
+})
+```
+
+## Animation Configuration
+
+React Native animations use spring physics with these parameters:
+
+### Spring Parameters
+
+- **`damping`** - Defines how quickly the spring settles. Higher = less bouncy
+- **`mass`** - Mass of the object attached to the spring. Higher = more inertia
+- **`stiffness`** - Spring stiffness coefficient. Higher = faster animation
+
+```tsx
+createAnimations({
+  bouncy: {
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+  quick: {
+    damping: 20,
+    mass: 1.2,
+    stiffness: 250,
+  },
+})
+```
+
+## When to Use
+
+**Advantages:**
+- **Cross-platform** - Works on web and React Native
+- **Built-in** - No additional animation library needed
+- **Spring physics** - Natural, physics-based motion
+- **Mature** - Battle-tested in React Native ecosystem
+
+**Limitations:**
+- Larger bundle than CSS driver
+- Less advanced than Reanimated
+- Web-only apps might prefer lighter alternatives
+
+## Platform-Specific Configuration
+
+You can use different drivers on web vs native using platform-specific file extensions:
+
+```tsx
+// animations.ts (web)
+import { createAnimations } from '@tamagui/animations-css'
+
+export const animations = createAnimations({
+  quick: 'ease-out 150ms',
+})
+```
+
+```tsx
+// animations.native.ts (native)
+import { createAnimations } from '@tamagui/animations-react-native'
+
+export const animations = createAnimations({
+  quick: {
+    damping: 20,
+    stiffness: 250,
+  },
+})
+```
+
+Then import without the extension:
+
+```tsx
+import { animations } from './animations'
+```
+
+Your bundler will automatically pick the right file based on the platform.
+
+## Example
+
+```tsx
+import { createAnimations } from '@tamagui/animations-react-native'
+import { YStack, createTamagui } from 'tamagui'
+
+const animations = createAnimations({
+  bouncy: {
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+  quick: {
+    damping: 20,
+    mass: 1.2,
+    stiffness: 250,
+  },
+})
+
+export default createTamagui({
+  animations,
+  // ... rest of config
+})
+
+// Usage in components
+export const MyComponent = () => (
+  <YStack
+    animation="bouncy"
+    enterStyle={{
+      opacity: 0,
+      scale: 0.9,
+    }}
+  />
+)
+```
+
+## See Also
+
+- [Animations Introduction](/docs/core/animations)
+- [CSS Driver](/docs/core/animations-css)
+- [Motion Driver](/docs/core/animations-motion)
+- [Reanimated Driver](/docs/core/animations-reanimated)
