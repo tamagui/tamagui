@@ -42,6 +42,9 @@
     "@tamagui/popover": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },
+  "optionalDependencies": {
+    "@react-native-menu/menu": "^2.0.0"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "*"

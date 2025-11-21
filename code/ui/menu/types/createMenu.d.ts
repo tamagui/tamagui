@@ -295,7 +295,7 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             scope?: string;
         }, {}, {}, {}>;
         Separator: TamaguiComponent;
-        Arrow: any;
+        Arrow: React.ForwardRefExoticComponent<MenuArrowProps & React.RefAttributes<TamaguiElement>>;
         Sub: React.FC<ScopedProps<MenuSubProps>>;
         SubTrigger: TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;

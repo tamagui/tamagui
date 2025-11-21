@@ -134,7 +134,7 @@ export declare const Menu: {
         scope?: string;
     }, {}, {}, {}>;
     Separator: import("tamagui").TamaguiComponent;
-    Arrow: any;
+    Arrow: import("react").ForwardRefExoticComponent<import("./createMenu").MenuArrowProps & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Sub: import("react").FC<import("./createMenu").MenuSubProps & {
         scope?: string;
     }>;

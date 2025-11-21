@@ -5452,6 +5452,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-menu/menu@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@react-native-menu/menu@npm:2.0.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/547830a473b408cb5218298eb0e8892968ce9e2e7ff35eaef3a5e60985a19a0bd2d782bd010baed50d5f1b3beadca5ac24991a7df0b164e3d90865cd1792a2aa
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.79.4":
   version: 0.79.4
   resolution: "@react-native/assets-registry@npm:0.79.4"
@@ -8470,6 +8480,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:code/ui/menu"
   dependencies:
+    "@react-native-menu/menu": "npm:^2.0.0"
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/helpers": "workspace:*"
@@ -8478,6 +8489,9 @@ __metadata:
     react: "npm:*"
   peerDependencies:
     react: "*"
+  dependenciesMeta:
+    "@react-native-menu/menu":
+      optional: true
   languageName: unknown
   linkType: soft
 
