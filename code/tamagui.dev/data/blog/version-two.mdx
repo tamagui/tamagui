@@ -1,13 +1,13 @@
 ---
 title: Tamagui 2
 publishedAt: '2025-12-29'
-description: A more mature, simpler package.
+description: More stable, easier to use, better documented.
 by: nate
 poster: banner-two.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui lets you build apps that share UI code across React web and native
+  Tamagui lets you build apps that share UI across React web and React Native
   without sacrificing quality, simplicity, or performance.
 </IntroParagraph>
 
@@ -19,32 +19,38 @@ poster: banner-two.jpg
 
 - It brings many style features from CSS to native, yet all style primitives
   work native and web, runtime and compile-time, server-side and client-side.
-- It supports perfect server-side rendering with no flickering, even when used
-  with spring based animation drivers, or with media queries, or light and dark
-  mode.
-- It's optimizing compiler does complete partial analysis to output near
-  perfectly optimized code for every platform.
+- Enjoy server-side rendering without flickering, even when using spring-based
+  animation drivers, or with media queries, or themes.
+- The optimizing compiler handles logic via complete partial analysis to output
+  flat trees with platform-specific optimization.
 
-Tamagui lets you ship world class experiences without being forced to write all
-your UI two or more times. We're proud to be used by companies like
+The result is that Tamagui lets you ship world class experiences without being
+forced to write all your UI two or more times, and without downgrading your
+developer experience. We're proud to be used by companies like
 [Uniswap](https://uniswap.org), where we enabled a dramatic reduction in code
 duplication, while increasing shipping velocity and maintaining top-tier UX and
 performance.
 
-Tamagui has grown in many ways since version one:
+### Improvements during v1
 
-- We added hundreds of tests, stricter lints, dependency checks and a stricter
+Tamagui improved continously during major version one:
+
+- Added hundreds of tests, stricter lints, dependency checks and a stricter
   release process to improve stability.
-- We created `@tamagui/build`, the only way to publish npm packages that support
-  both CommonJS and ESModules, on both native and web, without any configuration
-  at all no matter what bundler you use.
-- We added many styling features like container queries, container and media
+- Created
+  [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
+  the only way to publish npm packages that support CommonJS and ESModules and
+  native and web without requiring any configuration at all when importing -
+  whether it's Metro, Node, Vite, or otherwise.
+- Added many styling features like container queries, container and media
   queries combined, and platform/theme selectors.
 - New compound components like Tabs, Accordion, and ToggleGroup.
 - Unstyled versions of every component.
 - Improved theme generation packages, and released a free visual Theme builder.
 - The Takeout starter kit, and Bento copy-paste components and patterns.
 - A lot of low level work on performance, documentation, our CLI, and more.
+
+### New in v2
 
 Version two is mostly a cleanup release - it has few breaking changes. It mostly
 removes deprecated APIs, while adding a couple new components and refactoring a
