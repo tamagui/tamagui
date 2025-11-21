@@ -26,7 +26,7 @@ function TabsComponent(props: TabsProps) {
   }
 
   const value =
-    typeof params[id] === 'string' ? (params[id] as string) : props.defaultValue
+    typeof params[id] === 'string' ? (params[id] as string) : (props.defaultValue ?? '')
 
   return (
     <Tabs
@@ -53,7 +53,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       ref={ref as any}
       elevation="$0.5"
       px="$5"
-      pe="auto"
+      pointerEvents="auto"
       {...props}
       focusStyle={{
         outlineColor: '$outlineColor',
@@ -76,22 +76,22 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 })
 
 const TabsListFrame = styled(XStack, {
-  pe: 'none',
-  maxWidth: '50%',
-  marginTop: -30,
-  justifyContent: 'flex-end',
-  alignSelf: 'flex-end',
-  top: 70,
-  marginRight: 0,
-  marginBottom: 0,
-  zIndex: 10000,
+  pointerEvents: 'none',
+  maxW: '50%',
+  mt: -30,
+  justify: 'flex-end',
+  self: 'flex-end',
+  t: 70,
+  mr: 0,
+  mb: 0,
+  z: 10000,
   position: 'sticky' as any,
-  right: 0,
+  r: 0,
 
   $sm: {
-    minWidth: '100%',
-    alignSelf: 'stretch',
-    marginTop: 0,
+    minW: '100%',
+    self: 'stretch',
+    mt: 0,
   },
 })
 

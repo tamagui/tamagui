@@ -110,9 +110,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             gap="$2"
             position="absolute"
             display="inline-flex"
-            alignItems="center"
-            justifyContent="flex-end"
-            top={-82}
+            items="center"
+            justify="flex-end"
+            t={-82}
             r="$6"
             $gtMd={{
               r: '$7',
@@ -122,13 +122,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               aria-label="Show or hide code"
               icon={Code2}
               size="$3"
-              zi={10}
+              z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
-              <Button size="$3" onPress={toggleDocsTinted} zi={10} icon={Paintbrush} />
+              <Button size="$3" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
             </TooltipSimple>
           </XStack>
         )}
@@ -144,16 +144,16 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           >
             {isCutoff && (
               <LinearGradient
-                pos="absolute"
+                position="absolute"
                 b={0}
                 l={0}
                 r={0}
                 height={200}
                 colors={['$background0', '$background']}
-                zi={1000}
+                z={1000}
               >
-                <Spacer f={1} />
-                <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} als="center">
+                <Spacer flex={1} />
+                <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} self="center">
                   Show more
                 </Button>
                 <Spacer size="$4" />
@@ -167,27 +167,26 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               className={className}
               p={0}
               mb={0}
-              // @ts-ignore
               id={id}
-              jc="center"
+              justify="center"
               bg="$color3"
             >
               {showFileName && (
                 <XStack
-                  ai="center"
+                  items="center"
                   gap="$2"
                   pl="$4"
-                  h="$5"
+                  height="$5"
                   py="$4"
                   borderBottomWidth="$0.5"
                   borderBottomColor="$color3"
                 >
                   {isTerminalCommand ? (
-                    <TerminalSquare size="$1" col="$color11" />
+                    <TerminalSquare size="$1" color="$color11" />
                   ) : (
-                    <FileCode2 size="$1" col="$color11" />
+                    <FileCode2 size="$1" color="$color11" />
                   )}
-                  <Paragraph col="$color11">
+                  <Paragraph color="$color11">
                     {isTerminalCommand ? 'Terminal' : fileName}
                   </Paragraph>
                 </XStack>
@@ -209,7 +208,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isLong && !isCutoff && (
                 <>
                   <Spacer />
-                  <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} als="center">
+                  <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} self="center">
                     Show less
                   </Button>
                 </>
@@ -222,8 +221,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  top={showFileName ? '$3' : '$3'}
-                  right="$3"
+                  t={showFileName ? '$3' : '$3'}
+                  r="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
                   onPress={() => {

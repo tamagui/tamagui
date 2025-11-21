@@ -44,19 +44,18 @@ export function HeroContainer({
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
-      bc="$borderColor"
-      bw={0.5}
+      borderColor="$borderColor"
+      borderWidth={0.5}
       mt="$4"
       mb="$4"
       position="relative"
       display="flex"
-      alignItems={alignItems || 'center'}
-      justifyContent="center"
+      items={alignItems || 'center'}
+      justify="center"
       pt={60}
       pb={80}
-      pos="relative"
-      minHeight={300}
-      borderRadius="$4"
+      minH={300}
+      rounded="$4"
       {...(noPad && {
         py: 0,
       })}
@@ -68,11 +67,11 @@ export function HeroContainer({
       <AnimationDriverTogglerContextProvider>
         {demoMultiple ? (
           <XStack
-            mah="100%"
-            maw="100%"
-            miw="100%"
+            maxH="100%"
+            maxW="100%"
+            minW="100%"
             position="unset"
-            justifyContent="flex-start"
+            justify="flex-start"
           >
             {demo}
           </XStack>
@@ -84,9 +83,9 @@ export function HeroContainer({
           <XStack
             position="absolute"
             display="inline-flex"
-            alignItems="center"
-            justifyContent="space-between"
-            top={16}
+            items="center"
+            justify="space-between"
+            t={16}
             l="$3"
             $xxs={{ display: 'none' }}
             $gtMd={{
@@ -108,15 +107,15 @@ export function HeroContainer({
 }
 
 const Card = styled(YStack, {
-  ai: 'center',
-  jc: 'center',
+  items: 'center',
+  justify: 'center',
   elevation: '$1',
   y: 0,
-  ov: 'hidden',
-  minWidth: 180,
+  overflow: 'hidden',
+  minW: 180,
   bg: '$background',
-  minHeight: 220,
-  br: '$4',
+  minH: 220,
+  rounded: '$4',
 })
 
 const niceNames = {
@@ -132,7 +131,7 @@ const AnimationControl = () => {
       placement="top"
       label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
     >
-      <XStack gap="$2" ai="center">
+      <XStack gap="$2" items="center">
         <Timer size={14} opacity={0.6} />
         <Switch
           size="$1"

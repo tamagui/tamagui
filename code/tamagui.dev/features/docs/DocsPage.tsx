@@ -26,14 +26,14 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         <ThemeNameEffect colorKey="$color1" />
 
         <YStack tag="article">
-          <Container pos="relative">{children}</Container>
+          <Container position="relative">{children}</Container>
 
           <Container>
             {(previous || next) && (
               <XStack
                 aria-label="Pagination navigation"
                 my="$9"
-                jc="space-between"
+                justify="space-between"
                 gap="$4"
               >
                 {previous && (
@@ -47,25 +47,25 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       flex={1}
                       width="50%"
                       p="$5"
-                      borderRadius="$2"
+                      rounded="$2"
                       borderWidth={1}
                       borderColor="$borderColor"
                       pressStyle={{
-                        backgroundColor: '$backgroundPress',
+                        bg: '$backgroundPress',
                       }}
                       aria-label={`Previous page: ${previous.title}`}
-                      ai="center"
+                      items="center"
                       gap="$4"
                       animation="100ms"
                     >
                       <View
-                        o={0}
+                        opacity={0}
                         l="$-4"
-                        $group-card-hover={{ o: 1, l: '$0' }}
-                        $group-card-press={{ o: 0, l: '$-4' }}
+                        $group-card-hover={{ opacity: 1, l: '$0' }}
+                        $group-card-press={{ opacity: 0, l: '$-4' }}
                         animation="quickest"
                       >
-                        <ChevronLeft col="$color11" />
+                        <ChevronLeft color="$color11" />
                       </View>
 
                       <YStack
@@ -74,10 +74,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ l: '$-8' }}
                         animation="quicker"
                       >
-                        <Paragraph userSelect="none" theme="alt1" size="$5">
+                        <Paragraph select="none" theme="alt1" size="$5">
                           Previous
                         </Paragraph>
-                        <Paragraph userSelect="none" size="$3" color="$gray10">
+                        <Paragraph select="none" size="$3" color="$gray10">
                           {previous.title}
                         </Paragraph>
                       </YStack>
@@ -95,15 +95,15 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       flex={1}
                       width="50%"
                       p="$5"
-                      borderRadius="$2"
+                      rounded="$2"
                       borderWidth={1}
                       borderColor="$borderColor"
                       pressStyle={{
-                        backgroundColor: '$backgroundPress',
+                        bg: '$backgroundPress',
                       }}
                       aria-label={`Previous page: ${next.title}`}
-                      ai="center"
-                      jc="flex-end"
+                      items="center"
+                      justify="flex-end"
                       gap="$4"
                       animation="100ms"
                     >
@@ -113,22 +113,22 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ r: '$-8' }}
                         animation="quicker"
                       >
-                        <Paragraph userSelect="none" theme="alt1" size="$5">
+                        <Paragraph select="none" theme="alt1" size="$5">
                           Next
                         </Paragraph>
-                        <Paragraph userSelect="none" size="$3" color="$gray10">
+                        <Paragraph select="none" size="$3" color="$gray10">
                           {next.title}
                         </Paragraph>
                       </YStack>
 
                       <View
-                        o={0}
+                        opacity={0}
                         r="$-4"
-                        $group-card-hover={{ o: 1, r: '$0' }}
-                        $group-card-press={{ o: 0, r: '$-4' }}
+                        $group-card-hover={{ opacity: 1, r: '$0' }}
+                        $group-card-press={{ opacity: 0, r: '$-4' }}
                         animation="quickest"
                       >
-                        <ChevronRight col="$color11" />
+                        <ChevronRight color="$color11" />
                       </View>
                     </XStack>
                   </Link>
@@ -144,7 +144,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               title="Edit this page on GitHub."
               rel="noopener noreferrer"
               target="_blank"
-              o={0.4}
+              opacity={0.4}
             >
               Edit this page on GitHub.
             </Link>
@@ -165,9 +165,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         $gtLg={{
           l: -50,
         }}
-        maw={1250}
-        zi={100}
-        pos="relative"
+        maxW={1250}
+        z={100}
+        position="relative"
       >
         <EnsureFlexed />
         <YStack
@@ -175,22 +175,21 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           $md={{
             display: 'none',
           }}
-          // className="custom-scroll"
           $gtSm={{
             position: 'fixed' as any,
-            top: 0,
-            bottom: 0,
+            t: 0,
+            b: 0,
             width: 245,
           }}
         >
           <LinearGradient
-            pos="absolute"
+            position="absolute"
             t={0}
             l={0}
             r={0}
-            h={100}
-            w={300}
-            zi={100}
+            height={100}
+            width={300}
+            z={100}
             colors={['$background', '$background', '$background0']}
           />
           <ScrollView>
@@ -214,7 +213,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       </YStack>
 
       <YStack
-        maxWidth="100%"
+        maxW="100%"
         flex={1}
         py="$8"
         $gtLg={{

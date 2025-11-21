@@ -293,8 +293,8 @@ const HeaderMenuButton = () => {
           my={10}
           noTextWrap
           bg="transparent"
-          br="$10"
-          bw={2}
+          rounded="$10"
+          borderWidth={2}
           px="$2"
           onPress={(e) => {
             if (isTouchable) {
@@ -317,8 +317,7 @@ const HeaderMenuButton = () => {
           }}
           aria-label="Open the main menu"
           hoverStyle={{
-            // @ts-ignore
-            bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
+            borderColor: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)' as any,
           }}
         >
           <Circle size={34} items="center" justify="center">
@@ -979,11 +978,11 @@ const HeadAnchor = styled(Paragraph, {
   variants: {
     grid: {
       true: {
-        fow: '200',
-        ls: 1,
+        fontWeight: '200',
+        letterSpacing: 1,
         textTransform: 'unset',
-        w: '100%',
-        f: 1,
+        width: '100%',
+        flex: 1,
         p: '$2',
         px: '$4',
 
