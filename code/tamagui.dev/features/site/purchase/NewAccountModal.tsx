@@ -151,13 +151,8 @@ export const AccountView = () => {
 
   const [currentTab, setCurrentTab] = useState<TabName>('plan')
 
-  if (isLoading || !data) {
-    return null
-  }
-
-  const { subscriptions } = data
-
-  // Get active subscriptions
+  // Calculate values needed for hooks, but use safe defaults when data isn't ready
+  const subscriptions = data?.subscriptions
   const filteredSubscriptions = subscriptions?.filter(
     (sub) =>
       (sub.status === SubscriptionStatus.Active ||
@@ -229,6 +224,11 @@ export const AccountView = () => {
       )
     )
     .sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime())
+
+  // Early return AFTER all hooks have been called
+  if (isLoading || !data) {
+    return null
+  }
 
   // Use the first support subscription for Discord operations (oldest first)
   // But will calculate total seats from ALL user support subscriptions
