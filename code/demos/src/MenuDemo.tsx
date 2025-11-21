@@ -6,10 +6,10 @@ import React from 'react'
 import { Button, Text, useEvent } from 'tamagui'
 
 /**
- * Note: you'll want to use createDropDownMenu() to customize further.
+ * Note: you'll want to use createMenu() to customize further.
  */
 
-const DropDownItem = styled(Menu.Item, {
+const Item = styled(Menu.Item, {
   paddingVertical: 4,
   hoverStyle: {
     backgroundColor: '$color2',
@@ -19,11 +19,11 @@ const DropDownItem = styled(Menu.Item, {
   },
 })
 
-const DropDownItemTitle = styled(Menu.ItemTitle, {
+const ItemTitle = styled(Menu.ItemTitle, {
   color: '$color11',
 })
 
-export function DropDownMenuDemo() {
+export function MenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(false)
 
@@ -59,26 +59,26 @@ export function DropDownMenuDemo() {
             },
           ]}
         >
-          <DropDownItem onSelect={onSelect} key="about-notes">
-            <DropDownItemTitle>About Notes</DropDownItemTitle>
-          </DropDownItem>
+          <Item onSelect={onSelect} key="about-notes">
+            <ItemTitle>About Notes</ItemTitle>
+          </Item>
 
           <Menu.Separator />
 
           <Menu.Group>
-            <DropDownItem onSelect={onSelect} key="settings">
-              <DropDownItemTitle>Settings</DropDownItemTitle>
-            </DropDownItem>
-            <DropDownItem
+            <Item onSelect={onSelect} key="settings">
+              <ItemTitle>Settings</ItemTitle>
+            </Item>
+            <Item
               onSelect={onSelect}
               jc="space-between"
               // when title is nested inside a React element then you need to use `textValue`
               textValue="Calender"
               key="accounts"
             >
-              <DropDownItemTitle>
+              <ItemTitle>
                 <Text>Calender</Text>
-              </DropDownItemTitle>
+              </ItemTitle>
               <Menu.ItemIcon
                 androidIconName="ic_menu_today"
                 ios={{
@@ -89,18 +89,18 @@ export function DropDownMenuDemo() {
               >
                 <Calendar color="gray" size={14} />
               </Menu.ItemIcon>
-            </DropDownItem>
+            </Item>
           </Menu.Group>
 
           <Menu.Separator />
 
           <Menu.Group>
-            <DropDownItem onSelect={onSelect} key="close-notes" disabled>
-              <DropDownItemTitle color="gray">locked notes</DropDownItemTitle>
-            </DropDownItem>
-            <DropDownItem onSelect={onSelect} destructive key="delete-all">
-              <DropDownItemTitle>Delete all</DropDownItemTitle>
-            </DropDownItem>
+            <Item onSelect={onSelect} key="close-notes" disabled>
+              <ItemTitle color="gray">locked notes</ItemTitle>
+            </Item>
+            <Item onSelect={onSelect} destructive key="delete-all">
+              <ItemTitle>Delete all</ItemTitle>
+            </Item>
           </Menu.Group>
 
           <Menu.Separator />
@@ -108,7 +108,7 @@ export function DropDownMenuDemo() {
           <Menu.Sub placement="right-start">
             <Menu.SubTrigger jc="space-between" key="actions-trigger">
               <>
-                <DropDownItemTitle>Actions</DropDownItemTitle>
+                <ItemTitle>Actions</ItemTitle>
                 {!native || isWeb ? <ChevronRight size="$1" /> : null}
               </>
             </Menu.SubTrigger>
@@ -128,15 +128,15 @@ export function DropDownMenuDemo() {
                 paddingHorizontal={0}
               >
                 <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
-                <DropDownItem onSelect={onSelect} key="create-note">
-                  <DropDownItemTitle>Create note</DropDownItemTitle>
-                </DropDownItem>
-                <DropDownItem onSelect={onSelect} key="delete-all">
-                  <DropDownItemTitle>Delete all notes</DropDownItemTitle>
-                </DropDownItem>
-                <DropDownItem onSelect={onSelect} key="sync-all">
-                  <DropDownItemTitle>Sync notes</DropDownItemTitle>
-                </DropDownItem>
+                <Item onSelect={onSelect} key="create-note">
+                  <ItemTitle>Create note</ItemTitle>
+                </Item>
+                <Item onSelect={onSelect} key="delete-all">
+                  <ItemTitle>Delete all notes</ItemTitle>
+                </Item>
+                <Item onSelect={onSelect} key="sync-all">
+                  <ItemTitle>Sync notes</ItemTitle>
+                </Item>
               </Menu.SubContent>
             </Menu.Portal>
           </Menu.Sub>
@@ -162,7 +162,7 @@ export function DropDownMenuDemo() {
             <Menu.ItemIndicator className="MenuItemIndicator">
               <Check size="$1" />
             </Menu.ItemIndicator>
-            <DropDownItemTitle>Mark as read</DropDownItemTitle>
+            <ItemTitle>Mark as read</ItemTitle>
             {/* android native menu treat checkbox as simple MenuItem */}
             {isAndroid && native && bookmarksChecked && (
               <Menu.ItemIcon androidIconName="checkbox_on_background" />
@@ -187,7 +187,7 @@ export function DropDownMenuDemo() {
             <Menu.ItemIndicator>
               <Check size="$1" />
             </Menu.ItemIndicator>
-            <DropDownItemTitle>Enable Native</DropDownItemTitle>
+            <ItemTitle>Enable Native</ItemTitle>
             {/* android native menu treat checkbox as simple MenuItem */}
             {isAndroid && native && (
               <Menu.ItemIcon androidIconName="checkbox_on_background" />

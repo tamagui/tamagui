@@ -7,7 +7,7 @@ import { Image } from 'react-native'
 import { Text, YStack, useEvent } from 'tamagui'
 
 /**
- * Note: you'll want to use createDropDownMenu() to customize further.
+ * Note: you'll want to use createMenu() to customize further.
  */
 
 export function ContextMenuDemo() {

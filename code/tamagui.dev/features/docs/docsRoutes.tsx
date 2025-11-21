@@ -125,7 +125,7 @@ export const docsRoutes = [
     section: 'ui',
     label: 'Menus',
     pages: [
-      { title: 'DropDownMenu', route: '/ui/dropdown-menu' },
+      { title: 'Menu', route: '/ui/dropdown-menu' },
       { title: 'ContextMenu', route: '/ui/context-menu' },
     ],
   },
