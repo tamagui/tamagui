@@ -12,7 +12,7 @@ import * as React from 'react';
 import type { Image, ImageProps } from 'react-native';
 type Direction = 'ltr' | 'rtl';
 type ScopedProps<P> = P & {
-    __scopeMenu?: string;
+    scope?: string;
 };
 interface MenuProps extends PopperPrimitive.PopperProps {
     children?: React.ReactNode;
@@ -181,7 +181,7 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             displayName: string;
         };
         Content: React.ForwardRefExoticComponent<MenuContentProps & {
-            __scopeMenu?: string;
+            scope?: string;
         } & React.RefAttributes<HTMLElement | import("react-native").View>>;
         Group: TamaguiComponent;
         Label: TamaguiComponent;
@@ -199,10 +199,10 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             elevate?: boolean | undefined;
             bordered?: number | boolean | undefined;
             chromeless?: boolean | "all" | undefined;
-        }>, "__scopeMenu" | keyof MenuItemProps> & MenuItemProps & {
-            __scopeMenu?: string;
+        }>, "scope" | keyof MenuItemProps> & MenuItemProps & {
+            scope?: string;
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuItemProps & {
-            __scopeMenu?: string;
+            scope?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             transparent?: boolean | undefined;
@@ -232,10 +232,10 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             elevate?: boolean | undefined;
             bordered?: number | boolean | undefined;
             chromeless?: boolean | "all" | undefined;
-        }>, "__scopeMenu" | keyof MenuCheckboxItemProps> & MenuCheckboxItemProps & {
-            __scopeMenu?: string;
+        }>, "scope" | keyof MenuCheckboxItemProps> & MenuCheckboxItemProps & {
+            scope?: string;
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuCheckboxItemProps & {
-            __scopeMenu?: string;
+            scope?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             transparent?: boolean | undefined;
@@ -251,10 +251,10 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             bordered?: number | boolean | undefined;
             chromeless?: boolean | "all" | undefined;
         }, import("@tamagui/core").StaticConfigPublic>;
-        RadioGroup: TamaguiComponent<Omit<any, "__scopeMenu" | keyof MenuRadioGroupProps> & MenuRadioGroupProps & {
-            __scopeMenu?: string;
+        RadioGroup: TamaguiComponent<Omit<any, "scope" | keyof MenuRadioGroupProps> & MenuRadioGroupProps & {
+            scope?: string;
         }, any, MenuRadioGroupProps & {
-            __scopeMenu?: string;
+            scope?: string;
         }, {}, {}, {}>;
         RadioItem: TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -270,10 +270,10 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             elevate?: boolean | undefined;
             bordered?: number | boolean | undefined;
             chromeless?: boolean | "all" | undefined;
-        }>, "__scopeMenu" | keyof MenuRadioItemProps> & MenuRadioItemProps & {
-            __scopeMenu?: string;
+        }>, "scope" | keyof MenuRadioItemProps> & MenuRadioItemProps & {
+            scope?: string;
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuRadioItemProps & {
-            __scopeMenu?: string;
+            scope?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             transparent?: boolean | undefined;
@@ -289,10 +289,10 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             bordered?: number | boolean | undefined;
             chromeless?: boolean | "all" | undefined;
         }, import("@tamagui/core").StaticConfigPublic>;
-        ItemIndicator: TamaguiComponent<Omit<any, "__scopeMenu" | keyof MenuItemIndicatorProps> & MenuItemIndicatorProps & {
-            __scopeMenu?: string;
+        ItemIndicator: TamaguiComponent<Omit<any, "scope" | keyof MenuItemIndicatorProps> & MenuItemIndicatorProps & {
+            scope?: string;
         }, any, MenuItemIndicatorProps & {
-            __scopeMenu?: string;
+            scope?: string;
         }, {}, {}, {}>;
         Separator: TamaguiComponent;
         Arrow: any;
@@ -300,16 +300,16 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
         SubTrigger: TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
-        }>, "__scopeMenu" | keyof MenuSubTriggerProps> & MenuSubTriggerProps & {
-            __scopeMenu?: string;
+        }>, "scope" | keyof MenuSubTriggerProps> & MenuSubTriggerProps & {
+            scope?: string;
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubTriggerProps & {
-            __scopeMenu?: string;
+            scope?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>;
         SubContent: React.ForwardRefExoticComponent<MenuSubContentProps & {
-            __scopeMenu?: string;
+            scope?: string;
         } & React.RefAttributes<HTMLElement | import("react-native").View>>;
         ItemTitle: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
         ItemSubtitle: TamaguiComponent<any, any, {} & void, {}, {}, {}>;

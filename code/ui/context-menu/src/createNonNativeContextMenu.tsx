@@ -30,7 +30,7 @@ type ContextMenuContextValue = {
   modal: boolean
 }
 
-type ScopedProps<P> = P & { __scopeContextMenu?: string }
+type ScopedProps<P> = P & { scope?: string }
 
 interface ContextMenuProps extends MenuProps {
   children?: React.ReactNode
@@ -178,14 +178,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
     createStyledContext<ContextMenuContextValue>()
 
   const ContextMenuComp = (props: ScopedProps<ContextMenuProps>) => {
-    const {
-      __scopeContextMenu,
-      children,
-      onOpenChange,
-      dir,
-      modal = true,
-      ...rest
-    } = props
+    const { scope, children, onOpenChange, dir, modal = true, ...rest } = props
     const [open, setOpen] = React.useState(false)
     const handleOpenChangeProp = useCallbackRef(onOpenChange)
 
@@ -199,13 +192,13 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
     return (
       <ContextMenuProvider
-        scope={__scopeContextMenu}
+        scope={scope}
         open={open}
         onOpenChange={handleOpenChange}
         modal={modal}
       >
         <Menu
-          __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+          scope={scope || CONTEXTMENU_CONTEXT}
           dir={dir}
           open={open}
           onOpenChange={handleOpenChange}
@@ -228,8 +221,8 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ContextMenuTrigger = Stack.styleable(
     (props: ScopedProps<ContextMenuTriggerProps>, forwardedRef) => {
-      const { __scopeContextMenu, style, disabled = false, ...triggerProps } = props
-      const context = useContextMenuContext(__scopeContextMenu)
+      const { scope, style, disabled = false, ...triggerProps } = props
+      const context = useContextMenuContext(scope)
       const pointRef = React.useRef<Point>({ x: 0, y: 0 })
       const virtualRef = React.useMemo(
         () => ({
@@ -277,10 +270,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
       return (
         <>
-          <Menu.Anchor
-            __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-            virtualRef={virtualRef}
-          />
+          <Menu.Anchor scope={scope || CONTEXTMENU_CONTEXT} virtualRef={virtualRef} />
           <Stack
             tag="span"
             componentName={TRIGGER_NAME}
@@ -364,14 +354,14 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ContextMenuPortal = (props: ScopedProps<ContextMenuPortalProps>) => {
     const {
-      __scopeContextMenu,
+      scope,
       // TODO: fix this children type error
       // @ts-ignore
       children,
       ...portalProps
     } = props
 
-    const context = isAndroid ? useContextMenuContext(__scopeContextMenu) : null
+    const context = isAndroid ? useContextMenuContext(scope) : null
 
     const content = isAndroid ? (
       <ContextMenuProvider {...context}>{children}</ContextMenuProvider>
@@ -379,10 +369,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
       children
     )
     return (
-      <Menu.Portal
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
-        {...portalProps}
-      >
+      <Menu.Portal scope={scope || CONTEXTMENU_CONTEXT} {...portalProps}>
         {children}
       </Menu.Portal>
     )
@@ -400,13 +387,13 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
     ContextMenuContentElement,
     ScopedProps<ContextMenuContentProps>
   >((props, forwardedRef) => {
-    const { __scopeContextMenu, ...contentProps } = props
-    const context = useContextMenuContext(__scopeContextMenu)
+    const { scope, ...contentProps } = props
+    const context = useContextMenuContext(scope)
     const hasInteractedOutsideRef = React.useRef(false)
 
     return (
       <Menu.Content
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        scope={scope || CONTEXTMENU_CONTEXT}
         {...contentProps}
         ref={forwardedRef}
         onCloseAutoFocus={(event) => {
@@ -456,7 +443,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ContextMenuGroup = Menu.Group.styleable(
     (props: ScopedProps<ContextMenuGroupProps>, forwardedRef) => {
-      const { __scopeContextMenu, ...groupProps } = props
+      const { scope, ...groupProps } = props
       return <Menu.Group componentName={GROUP_NAME} {...groupProps} ref={forwardedRef} />
     }
   )
@@ -481,11 +468,11 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ContextMenuItem = Menu.Item.styleable<ScopedProps<ContextMenuItemProps>>(
     (props: ScopedProps<ContextMenuItemProps>, forwardedRef) => {
-      const { __scopeContextMenu, ...itemProps } = props
+      const { scope, ...itemProps } = props
       return (
         <Menu.Item
           componentName={ITEM_NAME}
-          __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+          scope={scope || CONTEXTMENU_CONTEXT}
           {...itemProps}
           ref={forwardedRef}
         />
@@ -543,11 +530,11 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ContextMenuCheckboxItem = Menu.CheckboxItem.styleable(
     (props: ScopedProps<ContextMenuCheckboxItemProps>, forwardedRef) => {
-      const { __scopeContextMenu, ...checkboxItemProps } = props
+      const { scope, ...checkboxItemProps } = props
       return (
         <Menu.CheckboxItem
           componentName={CHECKBOX_ITEM_NAME}
-          __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+          scope={scope || CONTEXTMENU_CONTEXT}
           {...checkboxItemProps}
           ref={forwardedRef}
         />
@@ -567,10 +554,10 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
     ContextMenuRadioGroupElement,
     ScopedProps<ContextMenuRadioGroupProps>
   >((props, forwardedRef) => {
-    const { __scopeContextMenu, ...radioGroupProps } = props
+    const { scope, ...radioGroupProps } = props
     return (
       <Menu.RadioGroup
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        scope={scope || CONTEXTMENU_CONTEXT}
         data-bro
         {...radioGroupProps}
         ref={forwardedRef}
@@ -589,11 +576,11 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
   const ContextMenuRadioItem = Menu.RadioItem.styleable<
     ScopedProps<ContextMenuRadioItemProps>
   >((props: ScopedProps<ContextMenuRadioItemProps>, forwardedRef) => {
-    const { __scopeContextMenu, ...radioItemProps } = props
+    const { scope, ...radioItemProps } = props
     return (
       <Menu.RadioItem
         componentName={RADIO_ITEM_NAME}
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        scope={scope || CONTEXTMENU_CONTEXT}
         {...radioItemProps}
         ref={forwardedRef}
       />
@@ -615,11 +602,11 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
   const ContextMenuItemIndicator = MenuItemIndicatorFrame.styleable<
     ScopedProps<ContextMenuItemIndicatorProps>
   >((props: ScopedProps<ContextMenuItemIndicatorProps>, forwardedRef) => {
-    const { __scopeContextMenu, ...itemIndicatorProps } = props
+    const { scope, ...itemIndicatorProps } = props
     return (
       <MenuItemIndicatorFrame
         {...itemIndicatorProps}
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        scope={scope || CONTEXTMENU_CONTEXT}
         ref={forwardedRef}
       />
     )
@@ -636,7 +623,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
   const ContextMenuSeparator = Menu.Separator.styleable<
     ScopedProps<ContextMenuSeparatorProps>
   >((props: ScopedProps<ContextMenuSeparatorProps>, forwardedRef) => {
-    const { __scopeContextMenu, ...separatorProps } = props
+    const { scope, ...separatorProps } = props
     return (
       <Menu.Separator
         componentName={SEPARATOR_NAME}
@@ -656,10 +643,10 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ContextMenuArrow = Menu.Arrow.styleable<ScopedProps<ContextMenuArrowProps>>(
     (props, forwardedRef) => {
-      const { __scopeContextMenu, ...arrowProps } = props
+      const { scope, ...arrowProps } = props
       return (
         <Menu.Arrow
-          __scopePopper={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+          scope={scope || CONTEXTMENU_CONTEXT}
           {...arrowProps}
           ref={forwardedRef}
         />
@@ -678,14 +665,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
   const ContextMenuSub: React.FC<ScopedProps<ContextMenuSubProps>> = (
     props: ScopedProps<ContextMenuSubProps>
   ) => {
-    const {
-      __scopeContextMenu,
-      children,
-      onOpenChange,
-      open: openProp,
-      defaultOpen,
-      ...rest
-    } = props
+    const { scope, children, onOpenChange, open: openProp, defaultOpen, ...rest } = props
     const [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen!,
@@ -694,7 +674,7 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
     return (
       <Menu.Sub
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        scope={scope || CONTEXTMENU_CONTEXT}
         open={open}
         onOpenChange={setOpen}
         {...rest}
@@ -714,11 +694,11 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 
   const ContextMenuSubTrigger = YStack.styleable<ContextMenuSubTriggerProps>(
     (props, forwardedRef) => {
-      const { __scopeContextMenu, ...triggerItemProps } = props
+      const { scope, ...triggerItemProps } = props
       return (
         <Menu.SubTrigger
           componentName={SUB_CONTENT_NAME}
-          __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+          scope={scope || CONTEXTMENU_CONTEXT}
           {...triggerItemProps}
           ref={forwardedRef}
         />
@@ -738,11 +718,11 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
     ContextMenuSubContentElement,
     ScopedProps<React.PropsWithChildren<ContextMenuSubContentProps>>
   >((props, forwardedRef) => {
-    const { __scopeContextMenu, ...subContentProps } = props
+    const { scope, ...subContentProps } = props
 
     return (
       <Menu.SubContent
-        __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
+        scope={scope || CONTEXTMENU_CONTEXT}
         {...subContentProps}
         ref={forwardedRef}
         // TODO: handle native as well
@@ -829,21 +809,21 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
 }
 
 export type {
-  ContextMenuProps,
-  ContextMenuTriggerProps,
-  ContextMenuPortalProps,
+  ContextMenuArrowProps,
+  ContextMenuCheckboxItemProps,
   ContextMenuContentProps,
   ContextMenuGroupProps,
+  ContextMenuItemIconProps,
+  ContextMenuItemImageProps,
+  ContextMenuItemIndicatorProps,
   ContextMenuItemProps,
-  ContextMenuCheckboxItemProps,
+  ContextMenuPortalProps,
+  ContextMenuProps,
   ContextMenuRadioGroupProps,
   ContextMenuRadioItemProps,
-  ContextMenuItemIndicatorProps,
   ContextMenuSeparatorProps,
-  ContextMenuArrowProps,
+  ContextMenuSubContentProps,
   ContextMenuSubProps,
   ContextMenuSubTriggerProps,
-  ContextMenuSubContentProps,
-  ContextMenuItemImageProps,
-  ContextMenuItemIconProps,
+  ContextMenuTriggerProps,
 }

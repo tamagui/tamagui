@@ -22,7 +22,7 @@ export const DROPDOWN_MENU_CONTEXT = 'DropdownMenuContext'
  * DropdownMenu
  * -----------------------------------------------------------------------------------------------*/
 
-type ScopedProps<P> = P & { __scopeDropdownMenu?: string }
+type ScopedProps<P> = P & { scope?: string }
 
 type DropdownMenuContextValue = {
   triggerId: string
@@ -159,7 +159,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
 
   const DropdownMenuComp = (props: ScopedProps<DropdownMenuProps>) => {
     const {
-      __scopeDropdownMenu,
+      scope,
       children,
       dir,
       open: openProp,
@@ -177,9 +177,10 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
 
     return (
       <DropdownMenuProvider
-        scope={__scopeDropdownMenu}
+        scope={scope}
         triggerId={useId()}
-        triggerRef={triggerRef}
+        // TODO
+        triggerRef={triggerRef as any}
         contentId={useId()}
         open={open}
         onOpenChange={setOpen}
@@ -190,7 +191,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
         modal={modal}
       >
         <Menu
-          __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
           open={open}
           onOpenChange={setOpen}
           dir={dir}
@@ -216,20 +217,20 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
   const DropdownMenuTrigger = YStack.styleable<ScopedProps<DropdownMenuTriggerProps>>(
     (props, forwardedRef) => {
       const {
-        __scopeDropdownMenu,
+        scope,
         asChild,
         children,
         disabled = false,
         onKeydown,
         ...triggerProps
       } = props
-      const context = useDropdownMenuContext(__scopeDropdownMenu)
+      const context = useDropdownMenuContext(scope)
       const Comp = asChild ? Slot : Button
       return (
         <DropdownMenuTriggerFrame
           asChild
           componentName={TRIGGER_NAME}
-          __scopePopper={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
         >
           <Comp
             tag="button"
@@ -293,9 +294,9 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
   const PORTAL_NAME = 'DropdownMenuPortal'
 
   const DropdownMenuPortal = (props: ScopedProps<DropdownMenuPortalProps>) => {
-    const { __scopeDropdownMenu, children, ...portalProps } = props
+    const { scope, children, ...portalProps } = props
 
-    const context = isAndroid ? useDropdownMenuContext(__scopeDropdownMenu) : null
+    const context = isAndroid ? useDropdownMenuContext(scope) : null
 
     const content = isAndroid ? (
       <DropdownMenuProvider {...context}>{children}</DropdownMenuProvider>
@@ -303,10 +304,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
       children
     )
     return (
-      <Menu.Portal
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
-        {...portalProps}
-      >
+      <Menu.Portal scope={scope || DROPDOWN_MENU_CONTEXT} {...portalProps}>
         {content}
       </Menu.Portal>
     )
@@ -324,15 +322,15 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     DropdownMenuContentElement,
     ScopedProps<DropdownMenuContentProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...contentProps } = props
-    const context = useDropdownMenuContext(__scopeDropdownMenu)
+    const { scope, ...contentProps } = props
+    const context = useDropdownMenuContext(scope)
     const hasInteractedOutsideRef = React.useRef(false)
 
     return (
       <Menu.Content
         id={context.contentId}
         aria-labelledby={context.triggerId}
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...contentProps}
         ref={forwardedRef}
         onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
@@ -386,11 +384,11 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
   const DropdownMenuItem = DropdownMenuItemFrame.styleable<
     ScopedProps<DropdownMenuItemProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...itemProps } = props
+    const { scope, ...itemProps } = props
     return (
       <DropdownMenuItemFrame
         componentName={ITEM_NAME}
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...itemProps}
         ref={forwardedRef}
       />
@@ -441,11 +439,11 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
   const DropdownMenuCheckboxItem = DropdownMenuCheckboxItemFrame.styleable<
     ScopedProps<DropdownMenuCheckboxItemProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...checkboxItemProps } = props
+    const { scope, ...checkboxItemProps } = props
     return (
       <DropdownMenuCheckboxItemFrame
         componentName={CHECKBOX_ITEM_NAME}
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...checkboxItemProps}
         ref={forwardedRef}
       />
@@ -464,10 +462,10 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     DropdownMenuRadioGroupElement,
     ScopedProps<DropdownMenuRadioGroupProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...radioGroupProps } = props
+    const { scope, ...radioGroupProps } = props
     return (
       <Menu.RadioGroup
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...radioGroupProps}
         ref={forwardedRef}
       />
@@ -487,12 +485,12 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
   const DropdownMenuRadioItem = DropdownMenuRadioItemFrame.styleable<
     ScopedProps<DropdownMenuRadioItemProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...radioItemProps } = props
+    const { scope, ...radioItemProps } = props
     return (
       // @ts-ignore explanation: deeply nested types typescript limitation
       <DropdownMenuRadioItemFrame
         componentName={RADIO_ITEM_NAME}
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...radioItemProps}
         ref={forwardedRef}
       />
@@ -512,11 +510,11 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
   const DropdownMenuItemIndicator = DropdownMenuItemIndicatorFrame.styleable<
     ScopedProps<DropdownMenuItemIndicatorProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...itemIndicatorProps } = props
+    const { scope, ...itemIndicatorProps } = props
     return (
       <DropdownMenuItemIndicatorFrame
         componentName={INDICATOR_NAME}
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...itemIndicatorProps}
         ref={forwardedRef}
       />
@@ -545,11 +543,11 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     TamaguiElement,
     ScopedProps<DropdownMenuArrowProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...arrowProps } = props
+    const { scope, ...arrowProps } = props
     return (
       <Menu.Arrow
         componentName={ARROW_NAME}
-        __scopePopper={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...arrowProps}
         ref={forwardedRef}
       />
@@ -564,14 +562,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
 
   const DROPDOWN_MENU_SUB_NAME = 'DropdownMenuSub'
   const DropdownMenuSub = (props: ScopedProps<DropdownMenuSubProps>) => {
-    const {
-      __scopeDropdownMenu,
-      children,
-      open: openProp,
-      onOpenChange,
-      defaultOpen,
-      ...rest
-    } = props
+    const { scope, children, open: openProp, onOpenChange, defaultOpen, ...rest } = props
     const [open = false, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen!,
@@ -580,7 +571,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
 
     return (
       <Menu.Sub
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         open={open}
         onOpenChange={setOpen}
         {...rest}
@@ -602,11 +593,11 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     ScopedProps<DropdownMenuSubTriggerProps>
   >((props, forwardedRef) => {
     // TODO: having asChild will create a problem, find a fix for that
-    const { __scopeDropdownMenu, asChild, ...subTriggerProps } = props
+    const { scope, asChild, ...subTriggerProps } = props
     return (
       <Menu.SubTrigger
         componentName={SUB_TRIGGER_NAME}
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...subTriggerProps}
         ref={forwardedRef}
       />
@@ -625,11 +616,11 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     DropdownMenuSubContentElement,
     ScopedProps<DropdownMenuSubContentProps>
   >((props, forwardedRef) => {
-    const { __scopeDropdownMenu, ...subContentProps } = props
+    const { scope, ...subContentProps } = props
 
     return (
       <Menu.SubContent
-        __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
         {...subContentProps}
         ref={forwardedRef}
         style={
