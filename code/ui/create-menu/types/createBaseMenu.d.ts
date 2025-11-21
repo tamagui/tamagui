@@ -154,7 +154,7 @@ export declare const NativePropProvider: React.Provider<{
 }>, useNativeProp: (scope?: string) => {
     native: boolean;
 };
-export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubTitle, Image: _Image, Icon: _Icon, Indicator: _Indicator, Separator: _Separator, MenuGroup: _MenuGroup, Label: _Label, }: {
+export type CreateBaseMenuProps = {
     Item?: TamaguiComponent;
     MenuGroup?: TamaguiComponent;
     Title?: TamaguiComponent;
@@ -164,7 +164,8 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
     Indicator?: TamaguiComponent;
     Separator?: TamaguiComponent;
     Label?: TamaguiComponent;
-}): {
+};
+export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _SubTitle, Image: _Image, Icon: _Icon, Indicator: _Indicator, Separator: _Separator, MenuGroup: _MenuGroup, Label: _Label, }: CreateBaseMenuProps): {
     Menu: {
         (props: ScopedProps<MenuBaseProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
@@ -217,4 +218,4 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
     };
 };
 export type { MenuAnchorProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubTitleProps, MenuItemTitleProps, MenuLabelProps, MenuPortalProps, MenuBaseProps as MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSeparatorProps, MenuSubTriggerProps, };
-//# sourceMappingURL=createMenu.d.ts.map
+//# sourceMappingURL=createBaseMenu.d.ts.map

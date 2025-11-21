@@ -7,7 +7,7 @@ import { withStaticProperties } from '@tamagui/web'
 import type React from 'react'
 import { Children, type ReactElement, cloneElement } from 'react'
 import { View } from 'tamagui'
-import { NativePropProvider } from '../createMenu'
+import { NativePropProvider } from '../createBaseMenu'
 import type {
   ContextMenuAuxliliaryProps,
   ContextMenuContentProps,
@@ -40,7 +40,7 @@ import {
 
 const COMPONENTS_TO_IGNORE = ['Portal', 'Radio']
 
-const createAndroidMenu = (MenuType: 'ContextMenu' | 'DropdownMenu') => {
+const createAndroidMenu = (MenuType: 'ContextMenu' | 'Menu') => {
   const Trigger = create(({ children, asChild, ...rest }: MenuTriggerProps) => {
     if (asChild) {
       return cloneElement(children, {
@@ -432,8 +432,8 @@ If you want to use a custom component as your <Content />, you can use the creat
     return (
       <NativePropProvider
         native
-        // to avoid circular dependency we havn't imported these static strings from DropdownMenu and ContextMenu
-        scope={MenuType === 'DropdownMenu' ? 'DropdownMenuContext' : 'ContextMenuContext'}
+        // to avoid circular dependency we havn't imported these static strings from Menu and ContextMenu
+        scope={MenuType === 'Menu' ? 'MenuContext' : 'ContextMenuContext'}
       >
         <MenuView
           title={menuTitle}

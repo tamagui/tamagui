@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/dropdown-menu",
+  "name": "@tamagui/menu",
   "version": "1.138.0",
   "sideEffects": [
     "*.css"

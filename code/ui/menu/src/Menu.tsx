@@ -1,20 +1,16 @@
-import { withStaticProperties } from '@tamagui/web'
 import {
-  type createMenu,
+  type CreateBaseMenuProps,
   createNativeMenu,
   useNativeProp,
   withNativeMenu,
 } from '@tamagui/create-menu'
+import { withStaticProperties } from '@tamagui/web'
 import React from 'react'
+import { DROPDOWN_MENU_CONTEXT, createNonNativeMenu } from './createNonNativeMenu'
 
-import {
-  DROPDOWN_MENU_CONTEXT,
-  createNonNativeDropdownMenu,
-} from './createNonNativeDropdownMenu'
-
-export function createDropdownMenu(params: Parameters<typeof createMenu>[0]) {
-  const { Menu: NativeMenuRoot } = createNativeMenu('DropdownMenu')
-  const NonNativeDropdownMenu = createNonNativeDropdownMenu(params)
+export function createMenu(params: CreateBaseMenuProps) {
+  const { Menu: NativeMenuRoot } = createNativeMenu('Menu')
+  const NonNativeMenu = createNonNativeMenu(params)
 
   const COMMON_PARAMS = {
     isRoot: false,
@@ -22,113 +18,113 @@ export function createDropdownMenu(params: Parameters<typeof createMenu>[0]) {
     useNativePropScope: DROPDOWN_MENU_CONTEXT,
   }
 
-  const DropdownMenuComp = withNativeMenu({
+  const MenuComp = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Root,
+    Component: NonNativeMenu.Root,
     NativeComponent: NativeMenuRoot,
     isRoot: true,
   })
 
   const Trigger = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Trigger,
+    Component: NonNativeMenu.Trigger,
     NativeComponent: NativeMenuRoot.Trigger,
   })
   const Portal = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Portal,
+    Component: NonNativeMenu.Portal,
     NativeComponent: React.Fragment,
   })
   const Content = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Content,
+    Component: NonNativeMenu.Content,
     NativeComponent: NativeMenuRoot.Content,
   })
   const Group = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Group,
+    Component: NonNativeMenu.Group,
     NativeComponent: NativeMenuRoot.Group,
   })
   const Label = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Label,
+    Component: NonNativeMenu.Label,
     NativeComponent: NativeMenuRoot.Label,
   })
   const Item = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Item,
+    Component: NonNativeMenu.Item,
     NativeComponent: NativeMenuRoot.Item,
   })
   const ItemTitle = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.ItemTitle,
+    Component: NonNativeMenu.ItemTitle,
     NativeComponent: NativeMenuRoot.ItemTitle,
   })
   const ItemSubtitle = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.ItemSubtitle,
+    Component: NonNativeMenu.ItemSubtitle,
     NativeComponent: NativeMenuRoot.ItemSubtitle,
   })
 
   const ItemIcon = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.ItemIcon,
+    Component: NonNativeMenu.ItemIcon,
     NativeComponent: NativeMenuRoot.ItemIcon,
   })
 
   const ItemImage = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.ItemImage,
+    Component: NonNativeMenu.ItemImage,
     NativeComponent: NativeMenuRoot.ItemImage,
   })
 
   const CheckboxItem = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.CheckboxItem,
+    Component: NonNativeMenu.CheckboxItem,
     NativeComponent: NativeMenuRoot.CheckboxItem,
   })
   const RadioGroup = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.RadioGroup,
+    Component: NonNativeMenu.RadioGroup,
     NativeComponent: ({ children }) => children,
   })
   const RadioItem = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.RadioItem,
+    Component: NonNativeMenu.RadioItem,
     NativeComponent: ({ children }) => children,
   })
   const ItemIndicator = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.ItemIndicator,
+    Component: NonNativeMenu.ItemIndicator,
     NativeComponent: NativeMenuRoot.ItemIndicator,
   })
   const Separator = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Separator,
+    Component: NonNativeMenu.Separator,
     NativeComponent: NativeMenuRoot.Separator,
   })
   const Arrow = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Arrow,
+    Component: NonNativeMenu.Arrow,
     NativeComponent: NativeMenuRoot.Arrow,
   })
   const Sub = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.Sub,
+    Component: NonNativeMenu.Sub,
     NativeComponent: NativeMenuRoot.Sub,
   })
   const SubTrigger = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.SubTrigger,
+    Component: NonNativeMenu.SubTrigger,
     NativeComponent: NativeMenuRoot.SubTrigger,
   })
   const SubContent = withNativeMenu({
     ...COMMON_PARAMS,
-    Component: NonNativeDropdownMenu.SubContent,
+    Component: NonNativeMenu.SubContent,
     NativeComponent: NativeMenuRoot.SubContent,
   })
 
-  const DropdownMenu = withStaticProperties(DropdownMenuComp, {
+  const Menu = withStaticProperties(MenuComp, {
     Trigger,
     Portal,
     Content,
@@ -149,5 +145,5 @@ export function createDropdownMenu(params: Parameters<typeof createMenu>[0]) {
     ItemIcon,
     ItemImage,
   } as const)
-  return DropdownMenu
+  return Menu
 }

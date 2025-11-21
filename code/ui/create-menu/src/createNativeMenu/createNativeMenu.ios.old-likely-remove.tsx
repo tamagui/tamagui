@@ -47,7 +47,7 @@
 
 // const COMPONENTS_TO_IGNORE = ['Portal', 'Radio']
 
-// const createIosMenu = (MenuType: 'ContextMenu' | 'DropdownMenu') => {
+// const createIosMenu = (MenuType: 'ContextMenu' | 'Menu') => {
 //   const Trigger = create(({ children, asChild, ...rest }: MenuTriggerProps) => {
 //     if (asChild) {
 //       return cloneElement(children, {
@@ -477,7 +477,7 @@
 
 //     const triggerItem = trigger.targetChildren?.[0]
 
-//     let shouldOpenOnSingleTap = MenuType === 'DropdownMenu'
+//     let shouldOpenOnSingleTap = MenuType === 'Menu'
 
 //     if (triggerItem?.props.action) {
 //       shouldOpenOnSingleTap = triggerItem.props.action === 'press'
@@ -496,8 +496,8 @@
 //     return (
 //       <NativePropProvider
 //         native
-//         // to avoid circular dependency we havn't imported these static strings from DropdownMenu and ContextMenu
-//         scope={MenuType === 'DropdownMenu' ? 'DropdownMenuContext' : 'ContextMenuContext'}
+//         // to avoid circular dependency we havn't imported these static strings from Menu and ContextMenu
+//         scope={MenuType === 'Menu' ? 'MenuContext' : 'ContextMenuContext'}
 //       >
 //         <Component
 //           ref={menuRef as any}

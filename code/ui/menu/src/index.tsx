@@ -2,9 +2,9 @@ import '@tamagui/polyfill-dev'
 
 import { MenuPredefined } from '@tamagui/create-menu'
 
-import { createDropdownMenu } from './DropdownMenu'
+import { createMenu } from './Menu'
 
-export const DropdownMenu = createDropdownMenu({
+export const Menu = createMenu({
   Icon: MenuPredefined.MenuIcon,
   Image: MenuPredefined.MenuImage,
   Indicator: MenuPredefined.MenuIndicator,

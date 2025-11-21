@@ -132,7 +132,7 @@ export function ContextMenuDemo() {
               </ContextMenu.SubContent>
             </ContextMenu.Portal>
           </ContextMenu.Sub>
-          <ContextMenu.Separator className="DropdownMenuSeparator" />
+          <ContextMenu.Separator className="MenuSeparator" />
           <ContextMenu.CheckboxItem
             key="show-hidden"
             checked={bookmarksChecked}
@@ -149,7 +149,7 @@ export function ContextMenuDemo() {
               })}
             gap={'$2'}
           >
-            <ContextMenu.ItemIndicator className="DropdownMenuItemIndicator">
+            <ContextMenu.ItemIndicator className="MenuItemIndicator">
               <Check size="$1" />
             </ContextMenu.ItemIndicator>
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>

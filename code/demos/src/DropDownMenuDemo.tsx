@@ -1,5 +1,5 @@
 import { isAndroid, isWeb, styled } from '@tamagui/core'
-import { DropdownMenu } from '@tamagui/dropdown-menu'
+import { Menu } from '@tamagui/menu'
 import { Backpack, Calendar, Check } from '@tamagui/lucide-icons'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
@@ -9,7 +9,7 @@ import { Button, Text, useEvent } from 'tamagui'
  * Note: you'll want to use createDropDownMenu() to customize further.
  */
 
-const DropDownItem = styled(DropdownMenu.Item, {
+const DropDownItem = styled(Menu.Item, {
   paddingVertical: 4,
   hoverStyle: {
     backgroundColor: '$color2',
@@ -19,7 +19,7 @@ const DropDownItem = styled(DropdownMenu.Item, {
   },
 })
 
-const DropDownItemTitle = styled(DropdownMenu.ItemTitle, {
+const DropDownItemTitle = styled(Menu.ItemTitle, {
   color: '$color11',
 })
 
@@ -30,7 +30,7 @@ export function DropDownMenuDemo() {
   const onSelect = useEvent(() => {})
 
   return (
-    <DropdownMenu
+    <Menu
       offset={{
         crossAxis: 25,
       }}
@@ -38,12 +38,12 @@ export function DropDownMenuDemo() {
       native={native}
       placement="bottom-start"
     >
-      <DropdownMenu.Trigger asChild>
+      <Menu.Trigger asChild>
         <Button borderRadius="$10" icon={Backpack} scaleIcon={1.2} />
-      </DropdownMenu.Trigger>
+      </Menu.Trigger>
 
-      <DropdownMenu.Portal zIndex={100}>
-        <DropdownMenu.Content
+      <Menu.Portal zIndex={100}>
+        <Menu.Content
           paddingHorizontal={0}
           borderWidth={1}
           ai="flex-start"
@@ -63,9 +63,9 @@ export function DropDownMenuDemo() {
             <DropDownItemTitle>About Notes</DropDownItemTitle>
           </DropDownItem>
 
-          <DropdownMenu.Separator />
+          <Menu.Separator />
 
-          <DropdownMenu.Group>
+          <Menu.Group>
             <DropDownItem onSelect={onSelect} key="settings">
               <DropDownItemTitle>Settings</DropDownItemTitle>
             </DropDownItem>
@@ -79,7 +79,7 @@ export function DropDownMenuDemo() {
               <DropDownItemTitle>
                 <Text>Calender</Text>
               </DropDownItemTitle>
-              <DropdownMenu.ItemIcon
+              <Menu.ItemIcon
                 androidIconName="ic_menu_today"
                 ios={{
                   name: 'u.square',
@@ -88,33 +88,33 @@ export function DropDownMenuDemo() {
                 }}
               >
                 <Calendar color="gray" size={14} />
-              </DropdownMenu.ItemIcon>
+              </Menu.ItemIcon>
             </DropDownItem>
-          </DropdownMenu.Group>
+          </Menu.Group>
 
-          <DropdownMenu.Separator />
+          <Menu.Separator />
 
-          <DropdownMenu.Group>
+          <Menu.Group>
             <DropDownItem onSelect={onSelect} key="close-notes" disabled>
               <DropDownItemTitle color="gray">locked notes</DropDownItemTitle>
             </DropDownItem>
             <DropDownItem onSelect={onSelect} destructive key="delete-all">
               <DropDownItemTitle>Delete all</DropDownItemTitle>
             </DropDownItem>
-          </DropdownMenu.Group>
+          </Menu.Group>
 
-          <DropdownMenu.Separator />
+          <Menu.Separator />
 
-          <DropdownMenu.Sub placement="right-start">
-            <DropdownMenu.SubTrigger jc="space-between" key="actions-trigger">
+          <Menu.Sub placement="right-start">
+            <Menu.SubTrigger jc="space-between" key="actions-trigger">
               <>
                 <DropDownItemTitle>Actions</DropDownItemTitle>
                 {!native || isWeb ? <ChevronRight size="$1" /> : null}
               </>
-            </DropdownMenu.SubTrigger>
+            </Menu.SubTrigger>
 
-            <DropdownMenu.Portal zIndex={200}>
-              <DropdownMenu.SubContent
+            <Menu.Portal zIndex={200}>
+              <Menu.SubContent
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
                 animation={[
@@ -127,7 +127,7 @@ export function DropDownMenuDemo() {
                 ]}
                 paddingHorizontal={0}
               >
-                <DropdownMenu.Label fontSize={'$1'}>Note settings</DropdownMenu.Label>
+                <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
                 <DropDownItem onSelect={onSelect} key="create-note">
                   <DropDownItemTitle>Create note</DropDownItemTitle>
                 </DropDownItem>
@@ -137,13 +137,13 @@ export function DropDownMenuDemo() {
                 <DropDownItem onSelect={onSelect} key="sync-all">
                   <DropDownItemTitle>Sync notes</DropDownItemTitle>
                 </DropDownItem>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Sub>
+              </Menu.SubContent>
+            </Menu.Portal>
+          </Menu.Sub>
 
-          <DropdownMenu.Separator className="DropdownMenuSeparator" />
+          <Menu.Separator className="MenuSeparator" />
 
-          <DropdownMenu.CheckboxItem
+          <Menu.CheckboxItem
             key="show-hidden"
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
@@ -159,17 +159,17 @@ export function DropDownMenuDemo() {
               })}
             gap={'$2'}
           >
-            <DropdownMenu.ItemIndicator className="DropdownMenuItemIndicator">
+            <Menu.ItemIndicator className="MenuItemIndicator">
               <Check size="$1" />
-            </DropdownMenu.ItemIndicator>
+            </Menu.ItemIndicator>
             <DropDownItemTitle>Mark as read</DropDownItemTitle>
             {/* android native menu treat checkbox as simple MenuItem */}
             {isAndroid && native && bookmarksChecked && (
-              <DropdownMenu.ItemIcon androidIconName="checkbox_on_background" />
+              <Menu.ItemIcon androidIconName="checkbox_on_background" />
             )}
-          </DropdownMenu.CheckboxItem>
+          </Menu.CheckboxItem>
 
-          <DropdownMenu.CheckboxItem
+          <Menu.CheckboxItem
             key="show-other-notes"
             checked={native}
             onCheckedChange={setNative}
@@ -184,19 +184,19 @@ export function DropDownMenuDemo() {
               })}
             gap={'$2'}
           >
-            <DropdownMenu.ItemIndicator>
+            <Menu.ItemIndicator>
               <Check size="$1" />
-            </DropdownMenu.ItemIndicator>
+            </Menu.ItemIndicator>
             <DropDownItemTitle>Enable Native</DropDownItemTitle>
             {/* android native menu treat checkbox as simple MenuItem */}
             {isAndroid && native && (
-              <DropdownMenu.ItemIcon androidIconName="checkbox_on_background" />
+              <Menu.ItemIcon androidIconName="checkbox_on_background" />
             )}
-          </DropdownMenu.CheckboxItem>
+          </Menu.CheckboxItem>
 
-          <DropdownMenu.Arrow size={'$2'} />
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu>
+          <Menu.Arrow size={'$2'} />
+        </Menu.Content>
+      </Menu.Portal>
+    </Menu>
   )
 }

@@ -2,7 +2,7 @@
 title: Dropdown Menu
 description: A Dropdown Menu
 name: dropdown menu
-component: DropdownMenu
+component: Menu
 package: dropdown-menu
 ---
 
@@ -17,7 +17,7 @@ package: dropdown-menu
   <DropDownMenuDemo />
 </HeroContainer>
 
-```tsx hero template=DropdownMenu
+```tsx hero template=Menu
 
 ```
 
@@ -36,11 +36,10 @@ package: dropdown-menu
 
 ## Installation
 
-DropdownMenu is already installed in `tamagui`, or you can install it
-independently:
+Menu is already installed in `tamagui`, or you can install it independently:
 
 ```bash
-yarn add @tamagui/dropdown-menu
+yarn add @tamagui/menu
 ```
 
 If you want to use native menus, make sure to install these dependencies in your
@@ -66,54 +65,50 @@ Import all parts and piece them together.
 import { Accordion } from 'tamagui'
 
 export default () => (
-  <DropdownMenu>
-    <DropdownMenu.Trigger asChild>
+  <Menu>
+    <Menu.Trigger asChild>
       <Button />
-    </DropdownMenu.Trigger>
+    </Menu.Trigger>
 
-    <DropdownMenu.Portal zIndex={100}>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item>
-          <DropdownMenu.ItemTitle>About Notes</DropdownMenu.ItemTitle>
-        </DropdownMenu.Item>
-        <DropdownMenu.Item>
-          <DropdownMenu.ItemTitle>Settings</DropdownMenu.ItemTitle>
-        </DropdownMenu.Item>
-        <DropdownMenu.Item>
-          <DropdownMenu.ItemTitle>
+    <Menu.Portal zIndex={100}>
+      <Menu.Content>
+        <Menu.Item>
+          <Menu.ItemTitle>About Notes</Menu.ItemTitle>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.ItemTitle>Settings</Menu.ItemTitle>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.ItemTitle>
             <Text>Calender</Text>
-          </DropdownMenu.ItemTitle>
-          <DropdownMenu.ItemIcon>
+          </Menu.ItemTitle>
+          <Menu.ItemIcon>
             <Calendar color="gray" size="$1" />
-          </DropdownMenu.ItemIcon>
-        </DropdownMenu.Item>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Sub>
-          <DropdownMenu.SubTrigger>
-            <DropdownMenu.ItemTitle>Actions</DropdownMenu.ItemTitle>
-          </DropdownMenu.SubTrigger>
-          <DropdownMenu.Portal zIndex={200}>
-            <DropdownMenu.SubContent>
-              <DropdownMenu.Label fontSize={'$1'}>
-                Note settings
-              </DropdownMenu.Label>
-              <DropdownMenu.Item onSelect={onSelect} key="create-note">
-                <DropdownMenu.ItemTitle>Create note</DropdownMenu.ItemTitle>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item onSelect={onSelect} key="delete-all">
-                <DropdownMenu.ItemTitle>
-                  Delete all notes
-                </DropdownMenu.ItemTitle>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item onSelect={onSelect} key="sync-all">
-                <DropdownMenu.ItemTitle>Sync notes</DropdownMenu.ItemTitle>
-              </DropdownMenu.Item>
-            </DropdownMenu.SubContent>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Sub>
-      </DropdownMenu.Content>
-    </DropdownMenu.Portal>
-  </DropdownMenu>
+          </Menu.ItemIcon>
+        </Menu.Item>
+        <Menu.Separator />
+        <Menu.Sub>
+          <Menu.SubTrigger>
+            <Menu.ItemTitle>Actions</Menu.ItemTitle>
+          </Menu.SubTrigger>
+          <Menu.Portal zIndex={200}>
+            <Menu.SubContent>
+              <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
+              <Menu.Item onSelect={onSelect} key="create-note">
+                <Menu.ItemTitle>Create note</Menu.ItemTitle>
+              </Menu.Item>
+              <Menu.Item onSelect={onSelect} key="delete-all">
+                <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
+              </Menu.Item>
+              <Menu.Item onSelect={onSelect} key="sync-all">
+                <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
+              </Menu.Item>
+            </Menu.SubContent>
+          </Menu.Portal>
+        </Menu.Sub>
+      </Menu.Content>
+    </Menu.Portal>
+  </Menu>
 )
 ```
 
@@ -213,8 +208,8 @@ This is necessary for the Dropdown Menu.
 
 ### Trigger
 
-The DropdownMenu will only be triggered when the user right-clicks or
-long-presses within the Trigger area.
+The Menu will only be triggered when the user right-clicks or long-presses
+within the Trigger area.
 
 <PropsTable
   data={[
@@ -225,7 +220,7 @@ long-presses within the Trigger area.
       default: 'longPress',
       platform: 'android/ios',
       description:
-        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for DropdownMenu.",
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for Menu.",
     },
   ]}
 />
@@ -341,7 +336,7 @@ On iOS, it renders the native
 />
 
 ```jsx line=1
-<DropdownMenu.ItemIcon
+<Menu.ItemIcon
   ios={{
     name: '0.circle.fill', // required
     pointSize: 5,
@@ -362,7 +357,7 @@ On iOS, it renders the native
   }}
 >
   <CircleIcon />
-</DropdownMenu.ItemIcon>
+</Menu.ItemIcon>
 ```
 
 ### ItemImage
@@ -467,9 +462,9 @@ Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
 This allows you to conditionally render a checkmark.
 
 ```jsx line=1
-<DropdownMenu.ItemIndicator>
+<Menu.ItemIndicator>
   <CheckmarkIcon /> {/* This does not work with the native prop. */}
-</DropdownMenu.ItemIndicator>
+</Menu.ItemIndicator>
 ```
 
 ### Lable

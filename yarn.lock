@@ -7086,7 +7086,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@workspace:*, @tamagui/build@workspace:^, @tamagui/build@workspace:code/packages/build":
+"@tamagui/build@workspace:*, @tamagui/build@workspace:code/packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:code/packages/build"
   dependencies:
@@ -7330,7 +7330,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/compose-refs@workspace:*, @tamagui/compose-refs@workspace:^, @tamagui/compose-refs@workspace:code/core/compose-refs":
+"@tamagui/compose-refs@workspace:*, @tamagui/compose-refs@workspace:code/core/compose-refs":
   version: 0.0.0-use.local
   resolution: "@tamagui/compose-refs@workspace:code/core/compose-refs"
   dependencies:
@@ -7691,20 +7691,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/dropdown-menu@workspace:code/ui/dropdown-menu":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/dropdown-menu@workspace:code/ui/dropdown-menu"
-  dependencies:
-    "@tamagui/build": "workspace:*"
-    "@tamagui/create-menu": "workspace:*"
-    "@tamagui/use-controllable-state": "workspace:*"
-    "@tamagui/web": "workspace:*"
-    react: "npm:*"
-  peerDependencies:
-    react: "*"
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/elements@workspace:*, @tamagui/elements@workspace:code/ui/elements":
   version: 0.0.0-use.local
   resolution: "@tamagui/elements@workspace:code/ui/elements"
@@ -7742,9 +7728,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-guard@workspace:code/ui/focus-guard"
   dependencies:
-    "@tamagui/build": "workspace:^"
-    "@tamagui/compose-refs": "workspace:^"
-    "@tamagui/use-event": "workspace:^"
+    "@tamagui/build": "workspace:*"
+    "@tamagui/compose-refs": "workspace:*"
+    "@tamagui/use-event": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -8268,6 +8254,20 @@ __metadata:
     tamagui: "workspace:*"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/menu@workspace:code/ui/menu":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/menu@workspace:code/ui/menu"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    "@tamagui/create-menu": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/web": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -9335,7 +9335,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-event@workspace:*, @tamagui/use-event@workspace:^, @tamagui/use-event@workspace:code/core/use-event":
+"@tamagui/use-event@workspace:*, @tamagui/use-event@workspace:code/core/use-event":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-event@workspace:code/core/use-event"
   dependencies:

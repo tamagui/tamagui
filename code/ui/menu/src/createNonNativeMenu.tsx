@@ -1,5 +1,5 @@
-import type { Menu as MenuTypes } from '@tamagui/create-menu'
-import { type MenuProps, type MenuSubProps, createMenu } from '@tamagui/create-menu'
+import type BaseMenuTypes from '@tamagui/create-menu'
+import type { CreateBaseMenuProps } from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
   Slot,
@@ -18,15 +18,15 @@ import { useId } from 'react'
 
 type Direction = 'ltr' | 'rtl'
 
-export const DROPDOWN_MENU_CONTEXT = 'DropdownMenuContext'
+export const DROPDOWN_MENU_CONTEXT = 'MenuContext'
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenu
+ * Menu
  * -----------------------------------------------------------------------------------------------*/
 
 type ScopedProps<P> = P & { scope?: string }
 
-type DropdownMenuContextValue = {
+type MenuContextValue = {
   triggerId: string
   triggerRef: React.RefObject<HTMLButtonElement>
   contentId: string
@@ -36,7 +36,7 @@ type DropdownMenuContextValue = {
   modal: boolean
 }
 
-interface DropdownMenuProps extends MenuProps {
+interface MenuProps extends BaseMenuTypes.MenuProps {
   children?: React.ReactNode
   dir?: Direction
   open?: boolean
@@ -46,83 +46,83 @@ interface DropdownMenuProps extends MenuProps {
 }
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuTrigger
+ * MenuTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-interface DropdownMenuTriggerProps extends ViewProps {
+interface MenuTriggerProps extends ViewProps {
   onKeydown?(event: React.KeyboardEvent): void
 }
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuPortal
+ * MenuPortal
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuPortalProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Portal>
-interface DropdownMenuPortalProps extends MenuPortalProps {}
+type MenuPortalProps = React.ComponentPropsWithoutRef<typeof BaseMenuTypes.Portal>
+interface MenuPortalProps extends MenuPortalProps {}
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuContent
+ * MenuContent
  * -----------------------------------------------------------------------------------------------*/
 
-type DropdownMenuContentElement = React.ElementRef<typeof MenuTypes.Content>
+type MenuContentElement = React.ElementRef<typeof MenuTypes.Content>
 type MenuContentProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Content>
-interface DropdownMenuContentProps extends Omit<MenuContentProps, 'onEntryFocus'> {}
+interface MenuContentProps extends Omit<MenuContentProps, 'onEntryFocus'> {}
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuGroup
+ * MenuGroup
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuGroupProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Group>
-type DropdownMenuGroupProps = MenuGroupProps & {}
+type MenuGroupProps = MenuGroupProps & {}
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuLabel
+ * MenuLabel
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuLabelProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Label>
-type DropdownMenuLabelProps = MenuLabelProps & {}
+type MenuLabelProps = MenuLabelProps & {}
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuItem
+ * MenuItem
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Item>
-interface DropdownMenuItemProps extends MenuItemProps {}
+interface MenuItemProps extends MenuItemProps {}
 
 type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.CheckboxItem>
 
-interface DropdownMenuCheckboxItemProps extends MenuCheckboxItemProps {}
+interface MenuCheckboxItemProps extends MenuCheckboxItemProps {}
 
-type DropdownMenuRadioGroupElement = React.ElementRef<typeof MenuTypes.RadioGroup>
+type MenuRadioGroupElement = React.ElementRef<typeof MenuTypes.RadioGroup>
 type MenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof MenuTypes.RadioGroup>
-interface DropdownMenuRadioGroupProps extends MenuRadioGroupProps {}
+interface MenuRadioGroupProps extends MenuRadioGroupProps {}
 
 type MenuRadioItemProps = React.ComponentPropsWithoutRef<typeof MenuTypes.RadioItem>
-interface DropdownMenuRadioItemProps extends MenuRadioItemProps {}
+interface MenuRadioItemProps extends MenuRadioItemProps {}
 
 type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<
   typeof MenuTypes.ItemIndicator
 >
-interface DropdownMenuItemIndicatorProps extends MenuItemIndicatorProps {}
+interface MenuItemIndicatorProps extends MenuItemIndicatorProps {}
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuSeparator
+ * MenuSeparator
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Separator>
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuArrow
+ * MenuArrow
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuArrowProps = React.ComponentPropsWithoutRef<typeof MenuTypes.Arrow>
-type DropdownMenuArrowProps = MenuArrowProps & {}
+type MenuArrowProps = MenuArrowProps & {}
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuSub
+ * MenuSub
  * -----------------------------------------------------------------------------------------------*/
 
-interface DropdownMenuSubProps extends MenuSubProps {
+interface MenuSubProps extends MenuSubProps {
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
@@ -130,34 +130,35 @@ interface DropdownMenuSubProps extends MenuSubProps {
 }
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuSubTrigger
+ * MenuSubTrigger
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof MenuTypes.SubTrigger>
-interface DropdownMenuSubTriggerProps extends MenuSubTriggerProps {}
+interface MenuSubTriggerProps extends MenuSubTriggerProps {}
 
 /* -------------------------------------------------------------------------------------------------
- * DropdownMenuSubContent
+ * MenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type DropdownMenuSubContentElement = React.ElementRef<typeof MenuTypes.Content>
+type MenuSubContentElement = React.ElementRef<typeof MenuTypes.Content>
 type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof MenuTypes.SubContent>
-interface DropdownMenuSubContentProps extends MenuSubContentProps {}
+interface MenuSubContentProps extends MenuSubContentProps {}
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu>[0]) {
-  const { Menu } = createMenu(params)
+export function createNonNativeMenu(params: CreateBaseMenuProps) {
+  const { Menu } = createBaseMenu(params)
+
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenu
+   * Menu
    * -----------------------------------------------------------------------------------------------*/
 
-  const DROPDOWN_MENU_NAME = 'DropdownMenu'
+  const DROPDOWN_MENU_NAME = 'Menu'
 
-  const { Provider: DropdownMenuProvider, useStyledContext: useDropdownMenuContext } =
-    createStyledContext<DropdownMenuContextValue>()
+  const { Provider: MenuProvider, useStyledContext: useMenuContext } =
+    createStyledContext<MenuContextValue>()
 
-  const DropdownMenuComp = (props: ScopedProps<DropdownMenuProps>) => {
+  const MenuComp = (props: ScopedProps<MenuProps>) => {
     const {
       scope,
       children,
@@ -176,7 +177,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     })
 
     return (
-      <DropdownMenuProvider
+      <MenuProvider
         scope={scope}
         triggerId={useId()}
         // TODO
@@ -200,21 +201,21 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
         >
           {children}
         </Menu>
-      </DropdownMenuProvider>
+      </MenuProvider>
     )
   }
 
-  DropdownMenuComp.displayName = DROPDOWN_MENU_NAME
+  MenuComp.displayName = DROPDOWN_MENU_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuTrigger
+   * MenuTrigger
    * -----------------------------------------------------------------------------------------------*/
 
-  const TRIGGER_NAME = 'DropdownMenuTrigger'
+  const TRIGGER_NAME = 'MenuTrigger'
 
-  const DropdownMenuTriggerFrame = Menu.Anchor
+  const MenuTriggerFrame = Menu.Anchor
 
-  const DropdownMenuTrigger = View.styleable<ScopedProps<DropdownMenuTriggerProps>>(
+  const MenuTrigger = View.styleable<ScopedProps<MenuTriggerProps>>(
     (props, forwardedRef) => {
       const {
         scope,
@@ -224,10 +225,10 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
         onKeydown,
         ...triggerProps
       } = props
-      const context = useDropdownMenuContext(scope)
+      const context = useMenuContext(scope)
       const Comp = asChild ? Slot : View
       return (
-        <DropdownMenuTriggerFrame
+        <MenuTriggerFrame
           asChild
           componentName={TRIGGER_NAME}
           scope={scope || DROPDOWN_MENU_CONTEXT}
@@ -280,26 +281,26 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
           >
             {children}
           </Comp>
-        </DropdownMenuTriggerFrame>
+        </MenuTriggerFrame>
       )
     }
   )
 
-  DropdownMenuTrigger.displayName = TRIGGER_NAME
+  MenuTrigger.displayName = TRIGGER_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuPortal
+   * MenuPortal
    * -----------------------------------------------------------------------------------------------*/
 
-  const PORTAL_NAME = 'DropdownMenuPortal'
+  const PORTAL_NAME = 'MenuPortal'
 
-  const DropdownMenuPortal = (props: ScopedProps<DropdownMenuPortalProps>) => {
+  const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
     const { scope, children, ...portalProps } = props
 
-    const context = isAndroid ? useDropdownMenuContext(scope) : null
+    const context = isAndroid ? useMenuContext(scope) : null
 
     const content = isAndroid ? (
-      <DropdownMenuProvider {...context}>{children}</DropdownMenuProvider>
+      <MenuProvider {...context}>{children}</MenuProvider>
     ) : (
       children
     )
@@ -310,138 +311,137 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     )
   }
 
-  DropdownMenuPortal.displayName = PORTAL_NAME
+  MenuPortal.displayName = PORTAL_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuContent
+   * MenuContent
    * -----------------------------------------------------------------------------------------------*/
 
-  const CONTENT_NAME = 'DropdownMenuContent'
+  const CONTENT_NAME = 'MenuContent'
 
-  const DropdownMenuContent = React.forwardRef<
-    DropdownMenuContentElement,
-    ScopedProps<DropdownMenuContentProps>
-  >((props, forwardedRef) => {
-    const { scope, ...contentProps } = props
-    const context = useDropdownMenuContext(scope)
-    const hasInteractedOutsideRef = React.useRef(false)
+  const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
+    (props, forwardedRef) => {
+      const { scope, ...contentProps } = props
+      const context = useMenuContext(scope)
+      const hasInteractedOutsideRef = React.useRef(false)
 
-    return (
-      <Menu.Content
-        id={context.contentId}
-        aria-labelledby={context.triggerId}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...contentProps}
-        ref={forwardedRef}
-        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-          if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
-          hasInteractedOutsideRef.current = false
-          // Always prevent auto focus because we either focus manually or want user agent focus
-          event.preventDefault()
-        })}
-        onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-          const originalEvent = event.detail.originalEvent as PointerEvent
-          const ctrlLeftClick =
-            originalEvent.button === 0 && originalEvent.ctrlKey === true
-          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-          if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
-        })}
-        {...(props.style as Object)}
-      />
-    )
-  })
+      return (
+        <Menu.Content
+          id={context.contentId}
+          aria-labelledby={context.triggerId}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+          {...contentProps}
+          ref={forwardedRef}
+          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+            if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
+            hasInteractedOutsideRef.current = false
+            // Always prevent auto focus because we either focus manually or want user agent focus
+            event.preventDefault()
+          })}
+          onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
+            const originalEvent = event.detail.originalEvent as PointerEvent
+            const ctrlLeftClick =
+              originalEvent.button === 0 && originalEvent.ctrlKey === true
+            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+            if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
+          })}
+          {...(props.style as Object)}
+        />
+      )
+    }
+  )
 
-  DropdownMenuContent.displayName = CONTENT_NAME
+  MenuContent.displayName = CONTENT_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuGroup
+   * MenuGroup
    * -----------------------------------------------------------------------------------------------*/
 
-  const GROUP_NAME = 'DropdownMenuGroup'
+  const GROUP_NAME = 'MenuGroup'
 
-  const DropdownMenuGroup = Menu.Group
+  const MenuGroup = Menu.Group
 
-  DropdownMenuGroup.displayName = GROUP_NAME
+  MenuGroup.displayName = GROUP_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuLabel
+   * MenuLabel
    * -----------------------------------------------------------------------------------------------*/
 
-  const LABEL_NAME = 'DropdownMenuLabel'
+  const LABEL_NAME = 'MenuLabel'
 
-  const DropdownMenuLabel = Menu.Label
+  const MenuLabel = Menu.Label
 
-  DropdownMenuLabel.displayName = LABEL_NAME
+  MenuLabel.displayName = LABEL_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuItem
+   * MenuItem
    * -----------------------------------------------------------------------------------------------*/
 
-  const ITEM_NAME = 'DropdownMenuItem'
+  const ITEM_NAME = 'MenuItem'
 
-  const DropdownMenuItemFrame = Menu.Item
+  const MenuItemFrame = Menu.Item
 
-  const DropdownMenuItem = DropdownMenuItemFrame.styleable<
-    ScopedProps<DropdownMenuItemProps>
-  >((props, forwardedRef) => {
-    const { scope, ...itemProps } = props
-    return (
-      <DropdownMenuItemFrame
-        componentName={ITEM_NAME}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...itemProps}
-        ref={forwardedRef}
-      />
-    )
-  })
+  const MenuItem = MenuItemFrame.styleable<ScopedProps<MenuItemProps>>(
+    (props, forwardedRef) => {
+      const { scope, ...itemProps } = props
+      return (
+        <MenuItemFrame
+          componentName={ITEM_NAME}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+          {...itemProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
-  DropdownMenuItem.displayName = ITEM_NAME
+  MenuItem.displayName = ITEM_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuItemTitle
+   * MenuItemTitle
    * -----------------------------------------------------------------------------------------------*/
 
-  const ITEM_TITLE_NAME = 'DropdownMenuItemTitle'
-  const DropdownMenuItemTitle = Menu.ItemTitle
-  DropdownMenuItemTitle.displayName = ITEM_TITLE_NAME
+  const ITEM_TITLE_NAME = 'MenuItemTitle'
+  const MenuItemTitle = Menu.ItemTitle
+  MenuItemTitle.displayName = ITEM_TITLE_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuItemSubTitle
+   * MenuItemSubTitle
    * -----------------------------------------------------------------------------------------------*/
 
-  const ITEM_SUB_TITLE_NAME = 'DropdownMenuItemSubTitle'
-  const DropdownMenuItemSubTitle = Menu.ItemSubtitle
-  DropdownMenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
+  const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
+  const MenuItemSubTitle = Menu.ItemSubtitle
+  MenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuItemImage
+   * MenuItemImage
    * -----------------------------------------------------------------------------------------------*/
 
-  const ITEM_IMAGE_NAME = 'DropdownMenuItemImage'
-  const DropdownMenuItemImage = Menu.ItemImage
-  DropdownMenuItemImage.displayName = ITEM_IMAGE_NAME
+  const ITEM_IMAGE_NAME = 'MenuItemImage'
+  const MenuItemImage = Menu.ItemImage
+  MenuItemImage.displayName = ITEM_IMAGE_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuItemIcon
+   * MenuItemIcon
    * -----------------------------------------------------------------------------------------------*/
 
-  const ITEM_ICON_NAME = 'DropdownMenuItemIcon'
-  const DropdownMenuItemIcon = Menu.ItemIcon
-  DropdownMenuItemIcon.displayName = ITEM_ICON_NAME
+  const ITEM_ICON_NAME = 'MenuItemIcon'
+  const MenuItemIcon = Menu.ItemIcon
+  MenuItemIcon.displayName = ITEM_ICON_NAME
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuCheckboxItem
+   * MenuCheckboxItem
    * -----------------------------------------------------------------------------------------------*/
 
-  const CHECKBOX_ITEM_NAME = 'DropdownMenuCheckboxItem'
+  const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
 
-  const DropdownMenuCheckboxItemFrame = Menu.CheckboxItem
+  const MenuCheckboxItemFrame = Menu.CheckboxItem
 
-  const DropdownMenuCheckboxItem = DropdownMenuCheckboxItemFrame.styleable<
-    ScopedProps<DropdownMenuCheckboxItemProps>
+  const MenuCheckboxItem = MenuCheckboxItemFrame.styleable<
+    ScopedProps<MenuCheckboxItemProps>
   >((props, forwardedRef) => {
     const { scope, ...checkboxItemProps } = props
     return (
-      <DropdownMenuCheckboxItemFrame
+      <MenuCheckboxItemFrame
         componentName={CHECKBOX_ITEM_NAME}
         scope={scope || DROPDOWN_MENU_CONTEXT}
         {...checkboxItemProps}
@@ -450,17 +450,17 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     )
   })
 
-  DropdownMenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
+  MenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuRadioGroup
+   * MenuRadioGroup
    * -----------------------------------------------------------------------------------------------*/
 
-  const RADIO_GROUP_NAME = 'DropdownMenuRadioGroup'
+  const RADIO_GROUP_NAME = 'MenuRadioGroup'
 
-  const DropdownMenuRadioGroup = React.forwardRef<
-    DropdownMenuRadioGroupElement,
-    ScopedProps<DropdownMenuRadioGroupProps>
+  const MenuRadioGroup = React.forwardRef<
+    MenuRadioGroupElement,
+    ScopedProps<MenuRadioGroupProps>
   >((props, forwardedRef) => {
     const { scope, ...radioGroupProps } = props
     return (
@@ -472,47 +472,47 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     )
   })
 
-  DropdownMenuRadioGroup.displayName = RADIO_GROUP_NAME
+  MenuRadioGroup.displayName = RADIO_GROUP_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuRadioItem
+   * MenuRadioItem
    * -----------------------------------------------------------------------------------------------*/
 
-  const RADIO_ITEM_NAME = 'DropdownMenuRadioItem'
+  const RADIO_ITEM_NAME = 'MenuRadioItem'
 
-  const DropdownMenuRadioItemFrame = Menu.RadioItem
+  const MenuRadioItemFrame = Menu.RadioItem
 
-  const DropdownMenuRadioItem = DropdownMenuRadioItemFrame.styleable<
-    ScopedProps<DropdownMenuRadioItemProps>
-  >((props, forwardedRef) => {
-    const { scope, ...radioItemProps } = props
-    return (
-      // @ts-ignore explanation: deeply nested types typescript limitation
-      <DropdownMenuRadioItemFrame
-        componentName={RADIO_ITEM_NAME}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...radioItemProps}
-        ref={forwardedRef}
-      />
-    )
-  })
+  const MenuRadioItem = MenuRadioItemFrame.styleable<ScopedProps<MenuRadioItemProps>>(
+    (props, forwardedRef) => {
+      const { scope, ...radioItemProps } = props
+      return (
+        // @ts-ignore explanation: deeply nested types typescript limitation
+        <MenuRadioItemFrame
+          componentName={RADIO_ITEM_NAME}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+          {...radioItemProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
-  DropdownMenuRadioItem.displayName = RADIO_ITEM_NAME
+  MenuRadioItem.displayName = RADIO_ITEM_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuItemIndicator
+   * MenuItemIndicator
    * -----------------------------------------------------------------------------------------------*/
 
-  const INDICATOR_NAME = 'DropdownMenuItemIndicator'
+  const INDICATOR_NAME = 'MenuItemIndicator'
 
-  const DropdownMenuItemIndicatorFrame = Menu.ItemIndicator
+  const MenuItemIndicatorFrame = Menu.ItemIndicator
 
-  const DropdownMenuItemIndicator = DropdownMenuItemIndicatorFrame.styleable<
-    ScopedProps<DropdownMenuItemIndicatorProps>
+  const MenuItemIndicator = MenuItemIndicatorFrame.styleable<
+    ScopedProps<MenuItemIndicatorProps>
   >((props, forwardedRef) => {
     const { scope, ...itemIndicatorProps } = props
     return (
-      <DropdownMenuItemIndicatorFrame
+      <MenuItemIndicatorFrame
         componentName={INDICATOR_NAME}
         scope={scope || DROPDOWN_MENU_CONTEXT}
         {...itemIndicatorProps}
@@ -521,47 +521,46 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     )
   })
 
-  DropdownMenuItemIndicator.displayName = INDICATOR_NAME
+  MenuItemIndicator.displayName = INDICATOR_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuSeparator
+   * MenuSeparator
    * -----------------------------------------------------------------------------------------------*/
 
-  const SEPARATOR_NAME = 'DropdownMenuSeparator'
+  const SEPARATOR_NAME = 'MenuSeparator'
 
-  const DropdownMenuSeparator = Menu.Separator
+  const MenuSeparator = Menu.Separator
 
-  DropdownMenuSeparator.displayName = SEPARATOR_NAME
+  MenuSeparator.displayName = SEPARATOR_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuArrow
+   * MenuArrow
    * -----------------------------------------------------------------------------------------------*/
 
-  const ARROW_NAME = 'DropdownMenuArrow'
+  const ARROW_NAME = 'MenuArrow'
 
-  const DropdownMenuArrow = React.forwardRef<
-    TamaguiElement,
-    ScopedProps<DropdownMenuArrowProps>
-  >((props, forwardedRef) => {
-    const { scope, ...arrowProps } = props
-    return (
-      <Menu.Arrow
-        componentName={ARROW_NAME}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...arrowProps}
-        ref={forwardedRef}
-      />
-    )
-  })
+  const MenuArrow = React.forwardRef<TamaguiElement, ScopedProps<MenuArrowProps>>(
+    (props, forwardedRef) => {
+      const { scope, ...arrowProps } = props
+      return (
+        <Menu.Arrow
+          componentName={ARROW_NAME}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+          {...arrowProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
-  DropdownMenuArrow.displayName = ARROW_NAME
+  MenuArrow.displayName = ARROW_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuSub
+   * MenuSub
    * -----------------------------------------------------------------------------------------------*/
 
-  const DROPDOWN_MENU_SUB_NAME = 'DropdownMenuSub'
-  const DropdownMenuSub = (props: ScopedProps<DropdownMenuSubProps>) => {
+  const DROPDOWN_MENU_SUB_NAME = 'MenuSub'
+  const MenuSub = (props: ScopedProps<MenuSubProps>) => {
     const { scope, children, open: openProp, onOpenChange, defaultOpen, ...rest } = props
     const [open = false, setOpen] = useControllableState({
       prop: openProp,
@@ -581,15 +580,15 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     )
   }
 
-  DropdownMenuSub.displayName = DROPDOWN_MENU_SUB_NAME
+  MenuSub.displayName = DROPDOWN_MENU_SUB_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuSubTrigger
+   * MenuSubTrigger
    * -----------------------------------------------------------------------------------------------*/
 
-  const SUB_TRIGGER_NAME = 'DropdownMenuSubTrigger'
+  const SUB_TRIGGER_NAME = 'MenuSubTrigger'
 
-  const DropdownMenuSubTrigger = View.styleable<ScopedProps<DropdownMenuSubTriggerProps>>(
+  const MenuSubTrigger = View.styleable<ScopedProps<MenuSubTriggerProps>>(
     (props, forwardedRef) => {
       // TODO: having asChild will create a problem, find a fix for that
       const { scope, asChild, ...subTriggerProps } = props
@@ -604,17 +603,17 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     }
   )
 
-  DropdownMenuSubTrigger.displayName = SUB_TRIGGER_NAME
+  MenuSubTrigger.displayName = SUB_TRIGGER_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * DropdownMenuSubContent
+   * MenuSubContent
    * -----------------------------------------------------------------------------------------------*/
 
-  const SUB_CONTENT_NAME = 'DropdownMenuSubContent'
+  const SUB_CONTENT_NAME = 'MenuSubContent'
 
-  const DropdownMenuSubContent = React.forwardRef<
-    DropdownMenuSubContentElement,
-    ScopedProps<DropdownMenuSubContentProps>
+  const MenuSubContent = React.forwardRef<
+    MenuSubContentElement,
+    ScopedProps<MenuSubContentProps>
   >((props, forwardedRef) => {
     const { scope, ...subContentProps } = props
 
@@ -648,32 +647,32 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     )
   })
 
-  DropdownMenuSubContent.displayName = SUB_CONTENT_NAME
+  MenuSubContent.displayName = SUB_CONTENT_NAME
 
   /* -----------------------------------------------------------------------------------------------*/
 
-  const Root = DropdownMenuComp
-  const Trigger = DropdownMenuTrigger
-  const Portal = DropdownMenuPortal
-  const Content = DropdownMenuContent
-  const Group = DropdownMenuGroup
-  const Label = DropdownMenuLabel
-  const Item = DropdownMenuItem
-  const CheckboxItem = DropdownMenuCheckboxItem
-  const RadioGroup = DropdownMenuRadioGroup
-  const RadioItem = DropdownMenuRadioItem
-  const ItemIndicator = DropdownMenuItemIndicator
-  const Separator = DropdownMenuSeparator
-  const Arrow = DropdownMenuArrow
-  const Sub = DropdownMenuSub
-  const SubTrigger = DropdownMenuSubTrigger
-  const SubContent = DropdownMenuSubContent
-  const ItemTitle = DropdownMenuItemTitle
-  const ItemSubtitle = DropdownMenuItemSubTitle
-  const ItemImage = DropdownMenuItemImage
-  const ItemIcon = DropdownMenuItemIcon
+  const Root = MenuComp
+  const Trigger = MenuTrigger
+  const Portal = MenuPortal
+  const Content = MenuContent
+  const Group = MenuGroup
+  const Label = MenuLabel
+  const Item = MenuItem
+  const CheckboxItem = MenuCheckboxItem
+  const RadioGroup = MenuRadioGroup
+  const RadioItem = MenuRadioItem
+  const ItemIndicator = MenuItemIndicator
+  const Separator = MenuSeparator
+  const Arrow = MenuArrow
+  const Sub = MenuSub
+  const SubTrigger = MenuSubTrigger
+  const SubContent = MenuSubContent
+  const ItemTitle = MenuItemTitle
+  const ItemSubtitle = MenuItemSubTitle
+  const ItemImage = MenuItemImage
+  const ItemIcon = MenuItemIcon
 
-  const DropdownMenu = withStaticProperties(DropdownMenuComp, {
+  return withStaticProperties(MenuComp, {
     Root,
     Trigger,
     Portal,
@@ -695,24 +694,22 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
     ItemImage,
     ItemIcon,
   })
-
-  return DropdownMenu
 }
 
 export type {
-  DropdownMenuArrowProps,
-  DropdownMenuCheckboxItemProps,
-  DropdownMenuContentProps,
-  DropdownMenuGroupProps,
-  DropdownMenuItemIndicatorProps,
-  DropdownMenuItemProps,
-  DropdownMenuLabelProps,
-  DropdownMenuPortalProps,
-  DropdownMenuProps,
-  DropdownMenuRadioGroupProps,
-  DropdownMenuRadioItemProps,
-  DropdownMenuSubContentProps,
-  DropdownMenuSubProps,
-  DropdownMenuSubTriggerProps,
-  DropdownMenuTriggerProps,
+  MenuArrowProps,
+  MenuCheckboxItemProps,
+  MenuContentProps,
+  MenuGroupProps,
+  MenuItemIndicatorProps,
+  MenuItemProps,
+  MenuLabelProps,
+  MenuPortalProps,
+  MenuProps,
+  MenuRadioGroupProps,
+  MenuRadioItemProps,
+  MenuSubContentProps,
+  MenuSubProps,
+  MenuSubTriggerProps,
+  MenuTriggerProps,
 }

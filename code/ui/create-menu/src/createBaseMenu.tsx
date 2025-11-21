@@ -35,7 +35,7 @@ import * as React from 'react'
 import { useId } from 'react'
 import type { Image, ImageProps } from 'react-native'
 
-import { MenuPredefined } from './Menu'
+import { MenuPredefined } from './MenuPredefined'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -76,7 +76,7 @@ type MenuRootContextValue = {
   modal: boolean
 }
 
-interface MenuProps extends PopperPrimitive.PopperProps {
+interface MenuBaseProps extends PopperPrimitive.PopperProps {
   children?: React.ReactNode
   open?: boolean
   onOpenChange?(open: boolean): void
@@ -368,17 +368,7 @@ const MENU_CONTEXT = 'MenuContext'
 export const { Provider: NativePropProvider, useStyledContext: useNativeProp } =
   createStyledContext({ native: false })
 
-export function createMenu({
-  Item: _Item = MenuPredefined.MenuItem,
-  Title: _Title = MenuPredefined.Title,
-  SubTitle: _SubTitle = MenuPredefined.SubTitle,
-  Image: _Image = MenuPredefined.MenuImage,
-  Icon: _Icon = MenuPredefined.MenuIcon,
-  Indicator: _Indicator = MenuPredefined.MenuIndicator,
-  Separator: _Separator = MenuPredefined.MenuSeparator,
-  MenuGroup: _MenuGroup = MenuPredefined.MenuGroup,
-  Label: _Label = MenuPredefined.MenuLabel,
-}: {
+export type CreateBaseMenuProps = {
   Item?: TamaguiComponent
   MenuGroup?: TamaguiComponent
   Title?: TamaguiComponent
@@ -388,8 +378,20 @@ export function createMenu({
   Indicator?: TamaguiComponent
   Separator?: TamaguiComponent
   Label?: TamaguiComponent
-}) {
-  const MenuComp = (props: ScopedProps<MenuProps>) => {
+}
+
+export function createBaseMenu({
+  Item: _Item = MenuPredefined.MenuItem,
+  Title: _Title = MenuPredefined.Title,
+  SubTitle: _SubTitle = MenuPredefined.SubTitle,
+  Image: _Image = MenuPredefined.MenuImage,
+  Icon: _Icon = MenuPredefined.MenuIcon,
+  Indicator: _Indicator = MenuPredefined.MenuIndicator,
+  Separator: _Separator = MenuPredefined.MenuSeparator,
+  MenuGroup: _MenuGroup = MenuPredefined.MenuGroup,
+  Label: _Label = MenuPredefined.MenuLabel,
+}: CreateBaseMenuProps) {
+  const MenuComp = (props: ScopedProps<MenuBaseProps>) => {
     const {
       scope,
       open = false,
@@ -1717,7 +1719,7 @@ export type {
   MenuItemTitleProps,
   MenuLabelProps,
   MenuPortalProps,
-  MenuProps,
+  MenuBaseProps as MenuProps,
   MenuRadioGroupProps,
   MenuRadioItemProps,
   MenuSeparatorProps,
