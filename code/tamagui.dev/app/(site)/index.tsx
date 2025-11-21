@@ -112,7 +112,7 @@ export default function TamaguiHomePage() {
         />
       </TintSection>
       <TintSection index={8} my="$-4" p={0} z={100}>
-        <SectionTinted zi={1000} bubble gradient>
+        <SectionTinted z={1000} bubble gradient>
           <HomeTypography />
         </SectionTinted>
       </TintSection>

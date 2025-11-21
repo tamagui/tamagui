@@ -155,7 +155,13 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card borderWidth={1} borderColor="$borderColor" rounded="$6" elevation="$6" shadowRadius={60}>
+    <Card
+      borderWidth={1}
+      borderColor="$borderColor"
+      rounded="$6"
+      elevation="$6"
+      shadowRadius={60}
+    >
       <YStack
         justify="center"
         p="$6"

@@ -8,8 +8,8 @@ export const Code = styled(Paragraph, {
   lineHeight: 18,
   cursor: 'inherit',
   whiteSpace: 'pre',
-  padding: '$1',
-  borderRadius: '$4',
+  p: '$1',
+  rounded: '$4',
 
   variants: {
     colored: {
@@ -28,7 +28,7 @@ export const CodeInline = styled(Paragraph, {
   color: '$color12',
   backgroundColor: '$color3',
   cursor: 'inherit',
-  br: '$3',
+  rounded: '$3',
   // @ts-ignore
   fontSize: '90%',
   // @ts-ignore

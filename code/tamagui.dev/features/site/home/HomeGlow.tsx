@@ -109,7 +109,6 @@ export const HomeGlow = memo(() => {
           width={650}
           position="absolute"
           t={0}
-          
           l={`calc(50vw - 500px)`}
           x={x}
           y={isOnHeroBelow ? 350 : yRand + 250}

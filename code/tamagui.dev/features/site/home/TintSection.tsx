@@ -57,8 +57,26 @@ export const TintSection = ({ children, index, themed, z, ...props }: Props) => 
       {useMemo(() => {
         return (
           <>
-            <XStack ref={top} position="absolute" t="10%" l={0} r={0} height={10} opacity={0} pointerEvents="none" />
-            <XStack ref={mid} position="absolute" t="50%" l={0} r={0} height={10} opacity={0} pointerEvents="none" />
+            <XStack
+              ref={top}
+              position="absolute"
+              t="10%"
+              l={0}
+              r={0}
+              height={10}
+              opacity={0}
+              pointerEvents="none"
+            />
+            <XStack
+              ref={mid}
+              position="absolute"
+              t="50%"
+              l={0}
+              r={0}
+              height={10}
+              opacity={0}
+              pointerEvents="none"
+            />
             <XStack
               ref={bottom}
               position="absolute"
@@ -100,7 +118,7 @@ export const HomeSection = styled(YStack, {
   variants: {
     below: {
       true: {
-        zi: 1,
+        z: 1,
       },
     },
   } as const,
@@ -121,17 +139,17 @@ export const SectionTinted = ({
 
   return (
     <YStack
-      zi={2}
+      z={2}
       contain="paint"
-      pos="relative"
+      position="relative"
       py="$14"
       elevation="$2"
       {...(bubble && {
-        maw: 1400,
-        br: '$6',
-        bw: 1,
-        bc: `$${tint}4`,
-        als: 'center',
+        maxW: 1400,
+        rounded: '$6',
+        borderWidth: 1,
+        borderColor: `$${tint}4`,
+        self: 'center',
         width: '100%',
       })}
       {...props}
