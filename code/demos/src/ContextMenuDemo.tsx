@@ -1,7 +1,6 @@
 import { ContextMenu } from '@tamagui/context-menu'
 import { isAndroid, isWeb } from '@tamagui/core'
-import { Calendar, Check } from '@tamagui/lucide-icons'
-import { ChevronRight } from '@tamagui/lucide-icons'
+import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
 import { Image } from 'react-native'
 import { Text, YStack, useEvent } from 'tamagui'
@@ -79,8 +78,8 @@ export function ContextMenuDemo() {
                 androidIconName="ic_menu_today"
                 ios={{
                   name: 'u.square',
-                  hierarchicalColor: '#000',
-                  pointSize: 20,
+                  // hierarchicalColor: '#000',
+                  // pointSize: 20,
                 }}
               >
                 <Calendar color="gray" size="$1" />
