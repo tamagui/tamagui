@@ -148,6 +148,7 @@ export function getThemedChildren(
     }
   }
 
+  // this has to be after a few of the above items so it properly sets context (even if shallow set)
   if (forceClassName === false) {
     return children
   }

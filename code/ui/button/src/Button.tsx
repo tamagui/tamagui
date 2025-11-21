@@ -195,15 +195,10 @@ export const ButtonContext = createStyledContext<{
 })
 
 const ButtonComponent = Frame.styleable<{
-  variant?: 'outlined'
-  size?: SizeTokens
   icon?: any
   iconAfter?: any
   scaleIcon?: number
   iconSize?: SizeTokens
-  chromeless?: boolean
-  circular?: boolean
-  bordered?: boolean | number
   onLayout?: RNExtraProps['onLayout']
 }>((propsIn: any, ref) => {
   const isNested = useContext(ButtonNestingContext)

@@ -42,9 +42,7 @@ export const config = {
     maxDarkLightNesting: 2,
     styleCompat: 'legacy',
     defaultPosition: 'relative',
-    // These settings are now configured in createTamagui settings
-    // themeClassNameOnRoot: true, // moved to createTamagui({ settings: { themeClassNameOnRoot } })
-    // disableRootThemeClass: true, // moved to createTamagui({ settings: { disableRootThemeClass } })
+    addThemeClassName: 'html',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
