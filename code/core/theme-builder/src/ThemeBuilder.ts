@@ -54,8 +54,11 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
         : TD
       : TD
 
-type ThemeBuilderBuildResult<S extends ThemeBuilderInternalState> = {
-  [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
+type ThemeBuilderBuildResult<
+  S extends ThemeBuilderInternalState,
+  FinalTheme extends Record<string, any> = Record<string, string>,
+> = {
+  [Key in keyof S['themes']]: FinalTheme
 }
 
 type GetParentName<N extends string> =
@@ -69,16 +72,19 @@ type GetParentName<N extends string> =
           ? `${A}`
           : never
 
-type ThemeBuilderOptions = {
-  getTheme?: GetThemeFn
+type ThemeBuilderOptions<
+  FinalTheme extends Record<string, any> = Record<string, string>,
+> = {
+  getTheme?: GetThemeFn<FinalTheme>
 }
 
 export class ThemeBuilder<
   State extends ThemeBuilderInternalState = ThemeBuilderInternalState,
+  FinalTheme extends Record<string, any> = Record<string, string>,
 > {
   constructor(
     public state: State,
-    public options: ThemeBuilderOptions
+    public options: ThemeBuilderOptions<FinalTheme>
   ) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {
@@ -90,7 +96,8 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         palettes: P
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -103,7 +110,8 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         templates: T
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -118,7 +126,8 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         masks: M
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -151,7 +160,8 @@ export class ThemeBuilder<
         //   [Key in keyof T]: TemplateToTheme<T[Key]>
         // } & State['themes']
         themes: T
-      }
+      },
+      FinalTheme
     >
   }
 
@@ -244,11 +254,12 @@ export class ThemeBuilder<
     return this as any as ThemeBuilder<
       State & {
         themes: ChildThemes
-      }
+      },
+      FinalTheme
     >
   }
 
-  build(): ThemeBuilderBuildResult<State> {
+  build(): ThemeBuilderBuildResult<State, FinalTheme> {
     if (!this.state.themes) {
       return {} as any
     }
@@ -403,8 +414,10 @@ export class ThemeBuilder<
   }
 }
 
-export function createThemeBuilder(options: ThemeBuilderOptions = {}) {
-  return new ThemeBuilder({}, options)
+export function createThemeBuilder<
+  FinalTheme extends Record<string, any> = Record<string, string>,
+>(options: ThemeBuilderOptions<FinalTheme> = {}) {
+  return new ThemeBuilder<{}, FinalTheme>({}, options)
 }
 
 // // test types

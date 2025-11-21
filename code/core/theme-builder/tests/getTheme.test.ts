@@ -234,7 +234,7 @@ describe('theme-builder getTheme', () => {
         light: ['#ffffff', '#f0f0f0', '#e0e0e0', '#000000'],
       })
       .addTemplates({
-        base: { background: 0, color: 3, levelIndicator: -1 },
+        base: { background: 0, color: 3 },
         surface: { background: 1, color: 3 },
         card: { background: 2, color: 3 },
       })

@@ -144,14 +144,17 @@ export function createSimpleThemeBuilder<
       >,
   HasAccent extends boolean = false,
   ComponentThemes extends SimpleThemesDefinition | false = false,
-  FullTheme = {
-    [ThemeKey in
-      | keyof Templates['light_base']
-      | keyof Extra['dark']
-      | (HasAccent extends true
-          ? `accent${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`
-          : never)]: string
-  },
+  GetThemeFnType extends GetThemeFn<any> | undefined = undefined,
+  FullTheme = GetThemeFnType extends GetThemeFn<infer R>
+    ? R
+    : {
+        [ThemeKey in
+          | keyof Templates['light_base']
+          | keyof Extra['dark']
+          | (HasAccent extends true
+              ? `accent${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`
+              : never)]: string
+      },
   ThemeNames extends string =
     | 'light'
     | 'dark'
@@ -169,9 +172,9 @@ export function createSimpleThemeBuilder<
   grandChildrenThemes?: GrandChildrenThemes
   componentThemes?: ComponentThemes
   extra?: Extra
-  getTheme?: GetThemeFn
+  getTheme?: GetThemeFnType
 }): {
-  themeBuilder: ThemeBuilder<any>
+  themeBuilder: ThemeBuilder<any, FullTheme>
   themes: Record<ThemeNames, FullTheme>
 } {
   const {
@@ -188,8 +191,8 @@ export function createSimpleThemeBuilder<
   } = props
 
   // start theme-builder
-  let themeBuilder = createThemeBuilder({
-    getTheme,
+  let themeBuilder = createThemeBuilder<FullTheme>({
+    getTheme: getTheme as any,
   })
     .addPalettes(palettes)
     .addTemplates(templates)
