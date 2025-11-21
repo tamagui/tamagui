@@ -1,10 +1,9 @@
+import type BaseMenuTypes from '@tamagui/create-menu'
 import {
-  Menu,
+  createBaseMenu,
+  type CreateBaseMenuProps,
   type MenuItemIconProps,
   type MenuItemImageProps,
-  type MenuProps,
-  type MenuSubProps,
-  type createMenu,
 } from '@tamagui/create-menu'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -33,7 +32,9 @@ type ContextMenuContextValue = {
 
 type ScopedProps<P> = P & { scope?: string }
 
-interface ContextMenuProps extends MenuProps {
+type BaseMenu = ReturnType<typeof createBaseMenu>['Menu']
+
+interface ContextMenuProps extends BaseMenuTypes.MenuProps {
   children?: React.ReactNode
   onOpenChange?(open: boolean): void
   dir?: Direction
@@ -52,15 +53,15 @@ interface ContextMenuTriggerProps extends ViewProps {
  * ContextMenuPortal
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuPortalProps = React.ComponentPropsWithoutRef<typeof Menu.Portal>
+type MenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
 interface ContextMenuPortalProps extends MenuPortalProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuContent
  * -----------------------------------------------------------------------------------------------*/
 
-type ContextMenuContentElement = React.ElementRef<typeof Menu.Content>
-type MenuContentProps = React.ComponentPropsWithoutRef<typeof Menu.Content>
+type ContextMenuContentElement = React.ElementRef<BaseMenu['Content']>
+type MenuContentProps = React.ComponentPropsWithoutRef<BaseMenu['Content']>
 interface ContextMenuContentProps
   extends Omit<MenuContentProps, 'onEntryFocus' | 'side' | 'sideOffset' | 'align'> {}
 
@@ -68,14 +69,14 @@ interface ContextMenuContentProps
  * ContextMenuGroup
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuGroupProps = React.ComponentPropsWithoutRef<typeof Menu.Group>
+type MenuGroupProps = React.ComponentPropsWithoutRef<BaseMenu['Group']>
 type ContextMenuGroupProps = MenuGroupProps & {}
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuItem
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuItemProps = React.ComponentPropsWithoutRef<typeof Menu.Item>
+type MenuItemProps = React.ComponentPropsWithoutRef<BaseMenu['Item']>
 interface ContextMenuItemProps extends MenuItemProps {}
 
 /* -------------------------------------------------------------------------------------------------
@@ -94,48 +95,48 @@ type ContextMenuItemIconProps = MenuItemIconProps
  * ContextMenuCheckboxItem
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<typeof Menu.CheckboxItem>
+type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<BaseMenu['CheckboxItem']>
 interface ContextMenuCheckboxItemProps extends MenuCheckboxItemProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuRadioGroup
  * -----------------------------------------------------------------------------------------------*/
 
-type ContextMenuRadioGroupElement = React.ElementRef<typeof Menu.RadioGroup>
-type ContextMenuRadioGroupProps = React.ComponentPropsWithoutRef<typeof Menu.RadioGroup>
+type ContextMenuRadioGroupElement = React.ElementRef<BaseMenu['RadioGroup']>
+type ContextMenuRadioGroupProps = React.ComponentPropsWithoutRef<BaseMenu['RadioGroup']>
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuRadioItem
  * -----------------------------------------------------------------------------------------------*/
 
-type ContextMenuRadioItemProps = React.ComponentPropsWithoutRef<typeof Menu.RadioItem>
+type ContextMenuRadioItemProps = React.ComponentPropsWithoutRef<BaseMenu['RadioItem']>
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuItemIndicator
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<typeof Menu.ItemIndicator>
+type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<BaseMenu['ItemIndicator']>
 interface ContextMenuItemIndicatorProps extends MenuItemIndicatorProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSeparatorProps = React.ComponentPropsWithoutRef<typeof Menu.Separator>
+type MenuSeparatorProps = React.ComponentPropsWithoutRef<BaseMenu['Separator']>
 type ContextMenuSeparatorProps = MenuSeparatorProps & {}
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuArrow
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuArrowProps = React.ComponentPropsWithoutRef<typeof Menu.Arrow>
+type MenuArrowProps = React.ComponentPropsWithoutRef<BaseMenu['Arrow']>
 interface ContextMenuArrowProps extends MenuArrowProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuSub
  * -----------------------------------------------------------------------------------------------*/
 
-interface ContextMenuSubProps extends MenuSubProps {
+interface ContextMenuSubProps extends BaseMenuTypes.MenuSubProps {
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
@@ -146,15 +147,15 @@ interface ContextMenuSubProps extends MenuSubProps {
  * ContextMenuSubTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubTriggerProps = React.ComponentPropsWithoutRef<typeof Menu.SubTrigger>
+type MenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>
 type ContextMenuSubTriggerProps = ScopedProps<MenuSubTriggerProps>
 
 /* -------------------------------------------------------------------------------------------------
  * ContextMenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type ContextMenuSubContentElement = React.ElementRef<typeof Menu.Content>
-type MenuSubContentProps = React.ComponentPropsWithoutRef<typeof Menu.SubContent>
+type ContextMenuSubContentElement = React.ElementRef<BaseMenu['Content']>
+type MenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>
 interface ContextMenuSubContentProps extends MenuSubContentProps {}
 
 /* -----------------------------------------------------------------------------------------------*/
@@ -167,7 +168,9 @@ function whenTouchOrPen<E>(
 
 export const CONTEXTMENU_CONTEXT = 'ContextMenuContext'
 
-export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[0]) {
+export function createNonNativeContextMenu(param: CreateBaseMenuProps) {
+  const { Menu } = createBaseMenu(param)
+
   /* -------------------------------------------------------------------------------------------------
    * ContextMenu
    * -----------------------------------------------------------------------------------------------*/
