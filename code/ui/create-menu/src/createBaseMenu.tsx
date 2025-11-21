@@ -543,8 +543,8 @@ export function createBaseMenu({
     )
     return (
       <Animate type="presence" present={forceMount || menuContext.open}>
-        {/* @ts-expect-error TODO */}
-        <PortalPrimitive host={host}>
+        {/* TODO does this not need host anymore? */}
+        <PortalPrimitive>
           <>
             <PortalProvider scope={scope} forceMount={forceMount}>
               <View zIndex={zIndex || 100} inset={0} position="absolute">
@@ -652,8 +652,6 @@ export function createBaseMenu({
     )
   })
 
-  const Fragment = React.forwardRef((props: any, ref) => props.children)
-
   const MenuContentImpl = React.forwardRef<
     MenuContentImplElement,
     ScopedProps<StyleableMenuContentProps>
@@ -752,6 +750,7 @@ export function createBaseMenu({
         aria-orientation="vertical"
         data-state={getOpenState(context.open)}
         data-tamagui-menu-content=""
+        // TODO
         // @ts-ignore
         dir={rootContext.dir}
         scope={scope || MENU_CONTEXT}
@@ -761,6 +760,7 @@ export function createBaseMenu({
         {...(isWeb
           ? {
               onKeyDown: composeEventHandlers(
+                // TODO
                 //@ts-ignore
                 contentProps.onKeyDown,
                 (event: KeyboardEvent) => {
@@ -786,6 +786,7 @@ export function createBaseMenu({
                   focusFirst(candidateNodes as HTMLElement[])
                 }
               ),
+              // TODO
               // @ts-ignore
               onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
                 // clear search buffer when leaving the menu
@@ -795,6 +796,7 @@ export function createBaseMenu({
                   searchRef.current = ''
                 }
               }),
+              // TODO
               onPointerMove: composeEventHandlers(
                 // @ts-ignore
                 props.onPointerMove,

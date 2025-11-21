@@ -27,7 +27,11 @@ export function MenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(false)
 
-  const onSelect = useEvent(() => {})
+  const onSelect = (item) => {
+    console.info(`selected`, item)
+  }
+
+  console.warn('hello')
 
   return (
     <Menu

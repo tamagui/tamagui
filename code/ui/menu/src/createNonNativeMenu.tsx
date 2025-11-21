@@ -616,16 +616,14 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
                 // re-namespace exposed content custom properties
                 // TODO: find a better way to do this, or maybe not do it at all
                 ...({
-                  '--tamagui-dropdown-menu-content-transform-origin':
+                  '--tamagui-menu-content-transform-origin':
                     'var(--tamagui-popper-transform-origin)',
-                  '--tamagui-dropdown-menu-content-available-width':
+                  '--tamagui-menu-content-available-width':
                     'var(--tamagui-popper-available-width)',
-                  '--tamagui-dropdown-menu-content-available-height':
+                  '--tamagui-menu-content-available-height':
                     'var(--tamagui-popper-available-height)',
-                  '--tamagui-dropdown-menu-trigger-width':
-                    'var(--tamagui-popper-anchor-width)',
-                  '--tamagui-dropdown-menu-trigger-height':
-                    'var(--tamagui-popper-anchor-height)',
+                  '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+                  '--tamagui-menu-trigger-height': 'var(--tamagui-popper-anchor-height)',
                 } as React.CSSProperties),
               }
             : null

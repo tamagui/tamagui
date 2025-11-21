@@ -1,17 +1,10 @@
 ---
-title: Dropdown Menu
-description: A Dropdown Menu
+title: Menu
+description: A selectable list in a popover with nesting sub-menus.
 name: dropdown menu
 component: Menu
-package: dropdown-menu
+package: menu
 ---
-
-# Dropdown Menu
-
-<Description>
-  A menu component that is triggered by a right-click on the web and a long
-  press on touch devices.
-</Description>
 
 <HeroContainer>
   <MenuDemo />
@@ -24,13 +17,9 @@ package: dropdown-menu
 <Highlights
   features={[
     'Full keyboard navigation.',
-    'Supports items, icons, images, checkboxes, groups, and more.',
-    'Supports submenus.',
-    'Supports modal and non-modal modes.',
-    'Supports native menus on native platforms.',
-    'Customizable alignment, offsets, and positioning.',
-    'Support for native iOS and Android icons.',
-    'Supports previews on iOS.',
+    'Submenus, items, icons, images, checkboxes, groups, and more.',
+    'Modal and non-modal modes.',
+    'Native menus on native platforms.',
   ]}
 />
 
@@ -114,9 +103,9 @@ export default () => (
 
 ## API Reference
 
-### Dropdown Menu
+### Menu
 
-Contains every component for the Dropdown Menu.
+Contains every component for the Menu.
 
 <PropsTable
   data={[
@@ -189,7 +178,7 @@ Contains every component for the Dropdown Menu.
 
 ### Portal
 
-This is necessary for the Dropdown Menu.
+This is necessary for the Menu.
 
 <PropsTable
   data={[
@@ -227,7 +216,7 @@ within the Trigger area.
 
 ### Content
 
-Contains the content of the Dropdown Menu
+Contains the content of the Menu
 
 <PropsTable
   data={[
@@ -241,7 +230,7 @@ Contains the content of the Dropdown Menu
 
 ### Item
 
-Dropdown Menu Item
+Menu Item
 
 <PropsTable
   data={[
