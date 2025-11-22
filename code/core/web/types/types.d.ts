@@ -143,7 +143,6 @@ export interface WebOnlyPressEvents {
     onWheel?: DivAttributes['onWheel'];
     onKeyDown?: DivAttributes['onKeyDown'];
     onKeyUp?: DivAttributes['onKeyUp'];
-    onKeyPress?: DivAttributes['onKeyPress'];
     onChange?: DivAttributes['onChange'];
     onInput?: DivAttributes['onInput'];
     onBeforeInput?: DivAttributes['onBeforeInput'];
@@ -162,8 +161,6 @@ export interface WebOnlyPressEvents {
     onPointerMove?: DivAttributes['onPointerMove'];
     onPointerUp?: DivAttributes['onPointerUp'];
     onPointerCancel?: DivAttributes['onPointerCancel'];
-    onPointerEnter?: DivAttributes['onPointerEnter'];
-    onPointerLeave?: DivAttributes['onPointerLeave'];
 }
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 type FontFamilies = FontTokens extends `$${infer Token}` ? Token : never;

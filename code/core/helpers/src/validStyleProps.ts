@@ -220,7 +220,7 @@ export const stylePropsView = {
   filter: true,
 
   // web-only for convenience - tree-shaken on native
-  ...(process.env.TAMAGUI_TARGET === 'web' && webOnlyStylePropsView),
+  ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : {}),
 }
 
 const stylePropsFont = {
@@ -246,7 +246,7 @@ export const stylePropsTextOnly = {
   verticalAlign: true,
 
   // web-only text props - tree-shaken on native
-  ...(process.env.TAMAGUI_TARGET === 'web' && webOnlyStylePropsText),
+  ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsText : {}),
 }
 
 export const stylePropsText = {

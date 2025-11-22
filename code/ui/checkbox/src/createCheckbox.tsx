@@ -196,6 +196,7 @@ export function createCheckbox<
               // potential variant
               checked={checked}
               disabled={checkboxProps.disabled}
+              // regressed in v2 types
               {...(checkboxProps as CheckboxProps)}
               // react 76 style prop mis-match, but should be fine
               style={checkboxProps.style}

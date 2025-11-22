@@ -375,18 +375,15 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       {...toastProps}
                       ref={composedRefs}
                       {...(isWeb && {
-                        onKeyDown: composeEventHandlers(
-                          (props as any).onKeyDown,
-                          (event: KeyboardEvent) => {
-                            if (event.key !== 'Escape') return
-                            onEscapeKeyDown?.(event)
-                            onEscapeKeyDown?.(event)
-                            if (!event.defaultPrevented) {
-                              context.isFocusedToastEscapeKeyDownRef.current = true
-                              handleClose()
-                            }
+                        onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                          if (event.key !== 'Escape') return
+                          onEscapeKeyDown?.(event)
+                          onEscapeKeyDown?.(event)
+                          if (!event.defaultPrevented) {
+                            context.isFocusedToastEscapeKeyDownRef.current = true
+                            handleClose()
                           }
-                        ),
+                        }),
                       })}
                     />
                   </Collection.ItemSlot>
