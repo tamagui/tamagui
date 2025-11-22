@@ -24,28 +24,6 @@ animations improvements:
 
 - react-native-web-lite fixes things like data- attributes not passing down etc
 
-via chat
-
-```
-Time jsx-element-flattened: 2ms
-  style: mt = "$3"
-  style: mx = -6
-  style: x = 3
-  style: flexWrap = "wrap"
-  style: columnGap = "calc(20% - 38px)"
-Recoverable error extracting attribute Cannot destructure property 'shadowOffset' of 'style' as it is undefined. TypeError: Cannot destructure property 'shadowOffset' of 'style' as it is undefined.
-    at styleToCSS (/Users/n8/chat/node_modules/@tamagui/web/dist/cjs/helpers/getCSSStylesAtomic.cjs:78:5)
-    at getCSSStylesAtomic (/Users/n8/chat/node_modules/@tamagui/web/dist/cjs/helpers/getCSSStylesAtomic.cjs:37:3)
-    at Object.createDOMProps (/Users/n8/chat/node_modules/@tamagui/react-native-web-internals/dist/cjs/modules/createDOMProps/index.cjs:143:60)
-    at evaluateAttribute (/Users/n8/chat/node_modules/@tamagui/static/dist/extractor/createExtractor.js:510:76)
-    at /Users/n8/chat/node_modules/@tamagui/static/dist/extractor/createExtractor.js:757:30
-    at Array.flatMap (<anonymous>)
-    at JSXElement (/Users/n8/chat/node_modules/@tamagui/static/dist/extractor/createExtractor.js:754:76)
-    at NodePath._call (/Users/n8/chat/node_modules/@babel/traverse/lib/path/context.js:49:20)
-    at NodePath.call (/Users/n8/chat/node_modules/@babel/traverse/lib/path/context.js:39:18)
-    at NodePath.visit (/Users/n8/chat/node_modules/@babel/traverse/lib/path/context.js:88:31)
-```
-
 - docs on reprop context on ios new arch
 
 - popover bring back dismissable - document dismissable etc
