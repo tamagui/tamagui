@@ -195,14 +195,13 @@ interface MenuContentImplProps
 
 type StyleableMenuContentProps = MenuContentImplProps & ViewProps
 
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
-interface MenuGroupProps extends PrimitiveDivProps {}
+interface MenuGroupProps extends ViewProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * MenuLabel
  * -----------------------------------------------------------------------------------------------*/
 
-interface MenuLabelProps extends PrimitiveDivProps {}
+interface MenuLabelProps extends ViewProps {}
 
 type MenuItemElement = MenuItemImplElement
 interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
@@ -210,8 +209,9 @@ interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
   unstyled?: boolean
 }
 
-type MenuItemImplElement = React.ElementRef<typeof Stack>
-interface MenuItemImplProps extends PrimitiveDivProps {
+type MenuItemImplElement = TamaguiElement
+
+interface MenuItemImplProps extends ViewProps {
   disabled?: boolean
   textValue?: string
   unstyled?: boolean
@@ -289,7 +289,7 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
  * -----------------------------------------------------------------------------------------------*/
 
 // type MenuSeparatorElement = React.ElementRef<typeof Stack>
-interface MenuSeparatorProps extends PrimitiveDivProps {}
+interface MenuSeparatorProps extends ViewProps {}
 
 /* -------------------------------------------------------------------------------------------------
  * MenuArrow
@@ -770,33 +770,28 @@ export function createBaseMenu({
         className={contentProps.animation ? undefined : contentProps.className}
         {...(isWeb
           ? {
-              onKeyDown: composeEventHandlers(
-                // TODO
-                //@ts-ignore
-                contentProps.onKeyDown,
-                (event: KeyboardEvent) => {
-                  // submenu key events bubble through portals. We only care about keys in this menu.
-                  const target = event.target as HTMLElement
-                  const isKeyDownInside =
-                    target.closest('[data-tamagui-menu-content]') === event.currentTarget
-                  const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
-                  const isCharacterKey = event.key.length === 1
-                  if (isKeyDownInside) {
-                    // menus should not be navigated using tab key so we prevent it
-                    if (event.key === 'Tab') event.preventDefault()
-                    if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
-                  }
-                  // focus first/last item based on key pressed
-                  const content = contentRef.current
-                  if (event.target !== content) return
-                  if (!FIRST_LAST_KEYS.includes(event.key)) return
-                  event.preventDefault()
-                  const items = getItems().filter((item) => !item.disabled)
-                  const candidateNodes = items.map((item) => item.ref.current!)
-                  if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
-                  focusFirst(candidateNodes as HTMLElement[])
+              onKeyDown: composeEventHandlers(contentProps.onKeyDown, (event) => {
+                // submenu key events bubble through portals. We only care about keys in this menu.
+                const target = event.target as HTMLElement
+                const isKeyDownInside =
+                  target.closest('[data-tamagui-menu-content]') === event.currentTarget
+                const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
+                const isCharacterKey = event.key.length === 1
+                if (isKeyDownInside) {
+                  // menus should not be navigated using tab key so we prevent it
+                  if (event.key === 'Tab') event.preventDefault()
+                  if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
                 }
-              ),
+                // focus first/last item based on key pressed
+                const content = contentRef.current
+                if (event.target !== content) return
+                if (!FIRST_LAST_KEYS.includes(event.key)) return
+                event.preventDefault()
+                const items = getItems().filter((item) => !item.disabled)
+                const candidateNodes = items.map((item) => item.ref.current!)
+                if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
+                focusFirst(candidateNodes as HTMLElement[])
+              }),
               // TODO
               // @ts-ignore
               onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
@@ -808,25 +803,21 @@ export function createBaseMenu({
                 }
               }),
               // TODO
-              onPointerMove: composeEventHandlers(
-                // @ts-ignore
-                props.onPointerMove,
-                // @ts-ignore
-                whenMouse((event: MouseEvent) => {
-                  const target = event.target as HTMLElement
-                  const pointerXHasChanged = lastPointerXRef.current !== event.clientX
+              onPointerMove: composeEventHandlers(props.onPointerMove, (event) => {
+                if (event.pointerType !== 'mouse') return
+                const target = event.target as HTMLElement
+                const pointerXHasChanged = lastPointerXRef.current !== event.clientX
 
-                  // We don't use `event.movementX` for this check because Safari will
-                  // always return `0` on a pointer event.
-                  // @ts-ignore
-                  if (event.currentTarget?.contains(target) && pointerXHasChanged) {
-                    const newDir =
-                      event.clientX > lastPointerXRef.current ? 'right' : 'left'
-                    pointerDirRef.current = newDir
-                    lastPointerXRef.current = event.clientX
-                  }
-                })
-              ),
+                // We don't use `event.movementX` for this check because Safari will
+                // always return `0` on a pointer event.
+                // @ts-ignore
+                if (event.currentTarget?.contains(target) && pointerXHasChanged) {
+                  const newDir =
+                    event.clientX > lastPointerXRef.current ? 'right' : 'left'
+                  pointerDirRef.current = newDir
+                  lastPointerXRef.current = event.clientX
+                }
+              }),
             }
           : {})}
       />
@@ -979,25 +970,21 @@ export function createBaseMenu({
           })}
           {...(isWeb
             ? {
-                onKeyDown: composeEventHandlers(
-                  // @ts-ignore
-                  props.onKeyDown,
-                  (event: KeyboardEvent) => {
-                    const isTypingAhead = contentContext.searchRef.current !== ''
-                    if (disabled || (isTypingAhead && event.key === ' ')) return
-                    if (SELECTION_KEYS.includes(event.key)) {
-                      // @ts-ignore
-                      event.currentTarget?.click()
-                      /**
-                       * We prevent default browser behaviour for selection keys as they should trigger
-                       * a selection only:
-                       * - prevents space from scrolling the page.
-                       * - if keydown causes focus to move, prevents keydown from firing on the new target.
-                       */
-                      event.preventDefault()
-                    }
+                onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                  const isTypingAhead = contentContext.searchRef.current !== ''
+                  if (disabled || (isTypingAhead && event.key === ' ')) return
+                  if (SELECTION_KEYS.includes(event.key)) {
+                    // @ts-ignore
+                    event.currentTarget?.click()
+                    /**
+                     * We prevent default browser behaviour for selection keys as they should trigger
+                     * a selection only:
+                     * - prevents space from scrolling the page.
+                     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+                     */
+                    event.preventDefault()
                   }
-                ),
+                }),
               }
             : {})}
         >
@@ -1078,30 +1065,25 @@ export function createBaseMenu({
              * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
              * wiggles. This is to match native menu implementation.
              */
-            onPointerMove={composeEventHandlers(
-              props.onPointerMove,
-              // @ts-ignore
-              whenMouse((event) => {
-                if (disabled) {
+            onPointerMove={composeEventHandlers(props.onPointerMove, (event) => {
+              if (event.pointerType !== 'mouse') return
+
+              if (disabled) {
+                // @ts-ignore
+                contentContext.onItemLeave(event)
+              } else {
+                // @ts-ignore
+                contentContext.onItemEnter(event)
+                if (!event.defaultPrevented) {
+                  const item = event.currentTarget
                   // @ts-ignore
-                  contentContext.onItemLeave(event)
-                } else {
-                  // @ts-ignore
-                  contentContext.onItemEnter(event)
-                  if (!event.defaultPrevented) {
-                    const item = event.currentTarget
-                    // @ts-ignore
-                    item.focus()
-                  }
+                  item.focus()
                 }
-              })
-            )}
-            onPointerLeave={composeEventHandlers(
-              // @ts-ignore
-              props.onPointerLeave,
-              // @ts-ignore
-              whenMouse((event) => contentContext.onItemLeave(event))
-            )}
+              }
+            })}
+            onPointerLeave={composeEventHandlers(props.onPointerLeave, (event) => {
+              contentContext.onItemLeave(event as any)
+            })}
             onFocus={composeEventHandlers(props.onFocus, () => setIsFocused(true))}
             onBlur={composeEventHandlers(props.onBlur, () => setIsFocused(false))}
           />
@@ -1341,8 +1323,6 @@ export function createBaseMenu({
       return () => handleOpenChange(false)
     }, [parentMenuContext.open, handleOpenChange])
 
-    console.log('rendering base menu', scope)
-
     return (
       <PopperPrimitive.Popper {...rest} scope={scope}>
         <MenuProvider
@@ -1442,68 +1422,62 @@ export function createBaseMenu({
               }
             })
           )}
-          onPointerLeave={composeEventHandlers(
-            props.onPointerLeave,
+          onPointerLeave={composeEventHandlers(props.onPointerLeave, (eventIn) => {
+            const event = eventIn as any as React.PointerEvent
+
+            clearOpenTimer()
+
             // @ts-ignore
-            whenMouse((event: PointerEvent<Element>) => {
-              clearOpenTimer()
-
+            const contentRect = context.content?.getBoundingClientRect()
+            if (contentRect) {
+              // TODO: make sure to update this when we change positioning logic
               // @ts-ignore
-              const contentRect = context.content?.getBoundingClientRect()
-              if (contentRect) {
-                // TODO: make sure to update this when we change positioning logic
-                // @ts-ignore
-                const side = context.content?.dataset.side as Side
-                const rightSide = side === 'right'
-                const bleed = rightSide ? -5 : +5
-                const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
-                const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
+              const side = context.content?.dataset.side as Side
+              const rightSide = side === 'right'
+              const bleed = rightSide ? -5 : +5
+              const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
+              const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
 
-                contentContext.onPointerGraceIntentChange({
-                  area: [
-                    // Apply a bleed on clientX to ensure that our exit point is
-                    // consistently within polygon bounds
-                    { x: event.clientX + bleed, y: event.clientY },
-                    { x: contentNearEdge, y: contentRect.top },
-                    { x: contentFarEdge, y: contentRect.top },
-                    { x: contentFarEdge, y: contentRect.bottom },
-                    { x: contentNearEdge, y: contentRect.bottom },
-                  ],
-                  side,
-                })
+              contentContext.onPointerGraceIntentChange({
+                area: [
+                  // Apply a bleed on clientX to ensure that our exit point is
+                  // consistently within polygon bounds
+                  { x: event.clientX + bleed, y: event.clientY },
+                  { x: contentNearEdge, y: contentRect.top },
+                  { x: contentFarEdge, y: contentRect.top },
+                  { x: contentFarEdge, y: contentRect.bottom },
+                  { x: contentNearEdge, y: contentRect.bottom },
+                ],
+                side,
+              })
 
-                window.clearTimeout(pointerGraceTimerRef.current)
-                pointerGraceTimerRef.current = window.setTimeout(
-                  () => contentContext.onPointerGraceIntentChange(null),
-                  300
-                )
-              } else {
-                contentContext.onTriggerLeave(event)
-                if (event.defaultPrevented) return
+              window.clearTimeout(pointerGraceTimerRef.current)
+              pointerGraceTimerRef.current = window.setTimeout(
+                () => contentContext.onPointerGraceIntentChange(null),
+                300
+              )
+            } else {
+              contentContext.onTriggerLeave(event)
+              if (event.defaultPrevented) return
 
-                // There's 100ms where the user may leave an item before the submenu was opened.
-                contentContext.onPointerGraceIntentChange(null)
-              }
-            })
-          )}
+              // There's 100ms where the user may leave an item before the submenu was opened.
+              contentContext.onPointerGraceIntentChange(null)
+            }
+          })}
           {...(isWeb
             ? {
-                onKeyDown: composeEventHandlers(
-                  // @ts-ignore
-                  props.onKeyDown,
-                  (event: KeyboardEvent) => {
-                    const isTypingAhead = contentContext.searchRef.current !== ''
-                    if (props.disabled || (isTypingAhead && event.key === ' ')) return
-                    if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
-                      context.onOpenChange(true)
-                      // The trigger may hold focus if opened via pointer interaction
-                      // so we ensure content is given focus again when switching to keyboard.
-                      context.content?.focus()
-                      // prevent window from scrolling
-                      event.preventDefault()
-                    }
+                onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                  const isTypingAhead = contentContext.searchRef.current !== ''
+                  if (props.disabled || (isTypingAhead && event.key === ' ')) return
+                  if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
+                    context.onOpenChange(true)
+                    // The trigger may hold focus if opened via pointer interaction
+                    // so we ensure content is given focus again when switching to keyboard.
+                    context.content?.focus()
+                    // prevent window from scrolling
+                    event.preventDefault()
                   }
-                ),
+                }),
               }
             : null)}
         />
@@ -1563,28 +1537,21 @@ export function createBaseMenu({
             })}
             {...(isWeb
               ? {
-                  // @ts-ignore
-                  onKeyDown: composeEventHandlers(
+                  onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                    // Submenu key events bubble through portals. We only care about keys in this menu.
                     // @ts-ignore
-                    props.onKeyDown,
-                    (event: KeyboardEvent) => {
-                      // Submenu key events bubble through portals. We only care about keys in this menu.
-                      // @ts-ignore
-                      const isKeyDownInside = event.currentTarget.contains(
-                        event.target as HTMLElement
-                      )
-                      const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(
-                        event.key
-                      )
-                      if (isKeyDownInside && isCloseKey) {
-                        context.onOpenChange(false)
-                        // We focus manually because we prevented it in `onCloseAutoFocus`
-                        subContext.trigger?.focus()
-                        // prevent window from scrolling
-                        event.preventDefault()
-                      }
+                    const isKeyDownInside = event.currentTarget.contains(
+                      event.target as HTMLElement
+                    )
+                    const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(event.key)
+                    if (isKeyDownInside && isCloseKey) {
+                      context.onOpenChange(false)
+                      // We focus manually because we prevented it in `onCloseAutoFocus`
+                      subContext.trigger?.focus()
+                      // prevent window from scrolling
+                      event.preventDefault()
                     }
-                  ),
+                  }),
                 }
               : null)}
           />
@@ -1730,11 +1697,7 @@ function isPointerInGraceArea(event: React.PointerEvent, area?: Polygon) {
   return isPointInPolygon(cursorPos, area)
 }
 
-function whenMouse<E>(
-  handler: React.PointerEventHandler<E>
-): React.PointerEventHandler<E> {
-  return (event) => (event.pointerType === 'mouse' ? handler(event) : undefined)
-}
+type PointerHandler = (e: { pointerType?: string }) => void
 
 export type {
   MenuAnchorProps,

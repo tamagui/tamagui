@@ -1,11 +1,16 @@
-import React from 'react'
+import type { GetProps } from '@tamagui/core'
+import { isWeb, withStaticProperties } from '@tamagui/core'
 import type {
   RadioGroupContextValue,
   RadioGroupItemContextValue,
 } from '@tamagui/radio-headless'
-import type { GetProps } from '@tamagui/core'
-import { isWeb, withStaticProperties } from '@tamagui/core'
-
+import {
+  useRadioGroup,
+  useRadioGroupItem,
+  useRadioGroupItemIndicator,
+} from '@tamagui/radio-headless'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
+import React from 'react'
 import {
   RadioGroupFrame,
   RadioGroupIndicatorFrame,
@@ -22,13 +27,6 @@ type RadioIndicatorProps = GetProps<typeof RadioGroupIndicatorFrame> & {
   forceMount?: boolean
   unstyled?: boolean
 }
-
-import {
-  useRadioGroup,
-  useRadioGroupItem,
-  useRadioGroupItemIndicator,
-} from '@tamagui/radio-headless'
-import { RovingFocusGroup } from '@tamagui/roving-focus'
 
 const RadioGroupContext = React.createContext<RadioGroupContextValue>({})
 const RadioGroupItemContext = React.createContext<RadioGroupItemContextValue>({
@@ -128,16 +126,7 @@ export function createRadioGroup<
   })
 
   const RadioGroupItemImp = Item.styleable<RadioGroupItemProps>((props, ref) => {
-    const {
-      value,
-      labelledBy,
-      onPress,
-      //@ts-expect-error
-      onKeyDown,
-      disabled,
-      id,
-      ...rest
-    } = props
+    const { value, labelledBy, onPress, onKeyDown, disabled, id, ...rest } = props
 
     const {
       providerValue,

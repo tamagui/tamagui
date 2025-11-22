@@ -1,3 +1,7 @@
+- react 19 migration:
+  - keep forwardRef for now at least
+  - useEvent => useEffectEvent
+
 - checkbox disableActiveTheme not workign
 - ssr fix i think select not showing value until after load?
 

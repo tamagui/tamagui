@@ -2190,8 +2190,6 @@ export interface StackNonStyleProps
       | 'onBlur'
       | 'onPointerCancel'
       | 'onPointerDown'
-      | 'onPointerEnter'
-      | 'onPointerLeave'
       | 'onPointerMove'
       | 'onPointerUp'
     >,

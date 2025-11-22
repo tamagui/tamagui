@@ -84,16 +84,15 @@ interface MenuContentImplProps extends MenuContentImplPrivateProps, Omit<PopperC
     onFocusOutside?: DismissableLayerProps['onFocusOutside'];
     onInteractOutside?: DismissableLayerProps['onInteractOutside'];
 }
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>;
-interface MenuGroupProps extends PrimitiveDivProps {
+interface MenuGroupProps extends ViewProps {
 }
-interface MenuLabelProps extends PrimitiveDivProps {
+interface MenuLabelProps extends ViewProps {
 }
 interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
     onSelect?: (event: Event) => void;
     unstyled?: boolean;
 }
-interface MenuItemImplProps extends PrimitiveDivProps {
+interface MenuItemImplProps extends ViewProps {
     disabled?: boolean;
     textValue?: string;
     unstyled?: boolean;
@@ -123,7 +122,7 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
      */
     forceMount?: true;
 }
-interface MenuSeparatorProps extends PrimitiveDivProps {
+interface MenuSeparatorProps extends ViewProps {
 }
 type PopperArrowProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperArrow>;
 interface MenuArrowProps extends PopperArrowProps {
