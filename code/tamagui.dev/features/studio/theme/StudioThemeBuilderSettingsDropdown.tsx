@@ -37,7 +37,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        maw={400}
+        maxW={400}
         animation={[
           'quickest',
           {
@@ -48,8 +48,8 @@ export const StudioThemeBuilderSettingsDropdown = () => {
         ]}
       >
         <Popover.ScrollView>
-          <YGroup alignSelf="center" width={320} size="$4">
-            <H6 size="$1" lh={10} pt="$3" pb="$2" px="$3">
+          <YGroup self="center" width={320} size="$4">
+            <H6 size="$1" lineHeight={10} pt="$3" pb="$2" px="$3">
               Quick Settings
             </H6>
 
@@ -57,7 +57,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
               return <MenuItem key={weakKey(item)} item={item} />
             })}
 
-            <H6 size="$1" lh={10} pt="$3" pb="$2" px="$3">
+            <H6 size="$1" lineHeight={10} pt="$3" pb="$2" px="$3">
               Menu
             </H6>
 
@@ -66,13 +66,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
             })}
           </YGroup>
         </Popover.ScrollView>
-        <Popover.Arrow
-          borderWidth={1}
-          style={{ zIndex: 1 }}
-          borderColor="$borderColor"
-          // bottom={-17}
-          // style={{ bottom: '-17px' }}
-        />
+        <Popover.Arrow borderWidth={1} style={{ zIndex: 1 }} borderColor="$borderColor" />
       </Popover.Content>
     </Popover>
   )
@@ -83,7 +77,7 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
     <YGroup.Item>
       <ListItem
         icon={item.icon}
-        jc="flex-start"
+        justify="flex-start"
         size="$4"
         title={item.title}
         hoverTheme
@@ -93,7 +87,7 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
         })}
       >
         {Boolean(item.label || item.description) && (
-          <Label f={1} p="$3" gap="$4" htmlFor={weakKey(item)}>
+          <Label flex={1} p="$3" gap="$4" htmlFor={weakKey(item)}>
             {item.type === 'toggle' && (
               <Checkbox
                 checked={!!store[item.toggleProperty]}
@@ -107,7 +101,7 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
                 </Checkbox.Indicator>
               </Checkbox>
             )}
-            <YStack f={1}>
+            <YStack flex={1}>
               <Paragraph>{item.label}</Paragraph>
               {!!item.description && (
                 <Paragraph theme="alt1" size="$2">

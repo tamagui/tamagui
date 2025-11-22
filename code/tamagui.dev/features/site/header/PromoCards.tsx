@@ -5,10 +5,10 @@ import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { TooltipLabelLarge } from './TooltipLabelLarge'
 
 const Card = styled(YStack, {
-  maxHeight: 120,
-  maxWidth: 'calc(min(100%, 257px))',
+  maxH: 120,
+  maxW: 'calc(min(100%, 257px))',
   flex: 1,
-  br: '$4',
+  rounded: '$4',
   borderWidth: 0.5,
   borderColor: '$color4',
 })

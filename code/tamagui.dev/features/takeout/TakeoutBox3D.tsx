@@ -36,7 +36,7 @@ export default (props) => (
 
 function TakeoutBox3D(props) {
   // const ref = useRef<Object3DNode<any, any>>()
-  const ref = useRef<any>()
+  const ref = useRef<any>(null)
   const media = useMedia()
 
   const { nodes, materials } = useGLTF(modelUrl) as any

@@ -34,7 +34,7 @@ export default function Community() {
       <ContainerLarge gap="$4">
         <Spacer />
 
-        <H1 als="center">Community</H1>
+        <H1 self="center">Community</H1>
 
         <Spacer />
 
@@ -43,18 +43,23 @@ export default function Community() {
         <Spacer />
 
         <XStack $sm={{ flexDirection: 'column' }}>
-          <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" bw={0}>
+          <FlatBubbleCard
+            width="50%"
+            $sm={{ width: 'auto' }}
+            items="center"
+            borderWidth={0}
+          >
             <Link href="/blog">
               <Button
                 bg="transparent"
-                bc="$borderColor"
-                bw={1}
+                borderColor="$borderColor"
+                borderWidth={1}
                 mt="$-3"
                 size="$6"
                 iconAfter={ChevronRight}
-                br="$10"
+                rounded="$10"
               >
-                <H2 cur="pointer" size="$9" ta="center">
+                <H2 cursor="pointer" size="$9" text="center">
                   The Blog
                 </H2>
               </Button>
@@ -102,31 +107,31 @@ export default function Community() {
 
           <Spacer size="$4" />
 
-          <FlatBubbleCard ai="center" feature bw={0}>
-            <H2 size="$9" ta="center">
+          <FlatBubbleCard items="center" feature borderWidth={0}>
+            <H2 size="$9" text="center">
               Figma Design Kit
             </H2>
             <Spacer size="$6" />
-            <YStack ai="center" gap="$4">
+            <YStack items="center" gap="$4">
               <Link href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
                   target="_blank"
                   rel="noopener noreferrer"
-                  br="$5"
+                  rounded="$5"
                   overflow="hidden"
-                  bw={0.5}
-                  bc="$borderColor"
+                  borderWidth={0.5}
+                  borderColor="$borderColor"
                 >
                   <Image
                     animation="quick"
-                    cur="pointer"
-                    shac="$shadowColor"
-                    shar="$4"
+                    cursor="pointer"
+                    shadowColor="$shadowColor"
+                    shadowRadius="$4"
                     hoverStyle={{
                       scale: 1.2,
                       borderColor: '$color',
                     }}
-                    o={0.5}
+                    opacity={0.5}
                     source={{
                       uri: '/figma.png',
                       width: 1466 * 0.25,
@@ -141,8 +146,8 @@ export default function Community() {
 
         <Spacer />
 
-        <FlatBubbleCard bw={0.5} gap="$4">
-          <H3 id="starter-repos" ta="center">
+        <FlatBubbleCard borderWidth={0.5} gap="$4">
+          <H3 id="starter-repos" text="center">
             Starter repos & Guides
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -227,15 +232,15 @@ const StarterRepoCard = ({
 }) => {
   return (
     <Card
-      f={1}
-      fb={0}
-      maw={300}
-      space="$2"
+      flex={1}
+      flexBasis={0}
+      maxW={300}
+      gap="$2"
       tag="a"
       href={url as string}
       target="_blank"
       p="$5"
-      jc="space-between"
+      justify="space-between"
       hoverStyle={{
         scale: 1.02,
         opacity: 0.9,
@@ -246,7 +251,7 @@ const StarterRepoCard = ({
     >
       <YStack gap="$2">
         <GithubIcon />
-        <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+        <H4 cursor="pointer" fontFamily="$silkscreen" letterSpacing={0}>
           {name}
         </H4>
       </YStack>

@@ -1,7 +1,6 @@
 import { YStack } from 'tamagui'
 
 import * as Checkboxes from '@tamagui/bento/component/forms/checkboxes'
-// import { getCode } from '@tamagui/bento/component/forms/checkboxes'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
@@ -28,7 +27,7 @@ export function checkboxes({ isProUser, showAppropriateModal }: Props) {
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack paddingBottom="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
         <Showcase
           unlock
           fileName={Checkboxes.CheckboxCards.fileName}
@@ -39,12 +38,12 @@ export function checkboxes({ isProUser, showAppropriateModal }: Props) {
           </Wrapper>
         </Showcase>
         <Showcase fileName={Checkboxes.CheckboxList.fileName} title="Checkbox List">
-          <Wrapper paddingHorizontal={2}>
+          <Wrapper px={2}>
             <Checkboxes.CheckboxList />
           </Wrapper>
         </Showcase>
         <Showcase fileName={Checkboxes.GroupedCheckbox.fileName} title="Grouped Checkbox">
-          <Wrapper paddingHorizontal={2}>
+          <Wrapper px={2}>
             <Checkboxes.GroupedCheckbox />
           </Wrapper>
         </Showcase>

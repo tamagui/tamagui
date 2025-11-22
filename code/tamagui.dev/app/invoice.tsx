@@ -6,24 +6,24 @@ export default function InvoicePage() {
   return (
     <>
       <YStack p={40}>
-        <XStack jc="space-between" ai="center">
+        <XStack justify="space-between" items="center">
           <H2>Invoice</H2>
           <H2 theme="alt2">Tamagui LLC</H2>
         </XStack>
         <YStack mt={20}>
-          <Text fow="bold">Invoice number: FE9BF9FB-DRAFT</Text>
+          <Text fontWeight="bold">Invoice number: FE9BF9FB-DRAFT</Text>
           <Text>Date due: July 21, 2024</Text>
         </YStack>
-        <XStack jc="space-between" mt={20}>
-          <YStack w="48%">
-            <Text fow="bold">Tamagui LLC</Text>
+        <XStack justify="space-between" mt={20}>
+          <YStack width="48%">
+            <Text fontWeight="bold">Tamagui LLC</Text>
             <Text>348 Awakea Rd</Text>
             <Text>Kailua, Hawaii 96734</Text>
             <Text>United States</Text>
             <Text>support@tamagui.dev</Text>
           </YStack>
-          <YStack w="48%">
-            <Text fow="bold">Bill to</Text>
+          <YStack width="48%">
+            <Text fontWeight="bold">Bill to</Text>
             <Text>Est Normalis OÜ</Text>
             <Text>FI-</Text>
             <Text>Finland</Text>
@@ -31,27 +31,52 @@ export default function InvoicePage() {
             <Text>EE VAT EE102370900</Text>
           </YStack>
         </XStack>
-        <Text mt={20} fos={22} fow="bold">
+        <Text mt={20} fontSize={22} fontWeight="bold">
           €186.86 EUR due July 21, 2024
         </Text>
         <YStack mt={20}>
-          <XStack bbc="#ccc" bbw={1}>
-            <Text w={200} f={1} p={8} fow="bold" bbc="#ccc" bbw={1}>
+          <XStack borderBottomColor="#ccc" borderBottomWidth={1}>
+            <Text
+              width={200}
+              flex={1}
+              p={8}
+              fontWeight="bold"
+              borderBottomColor="#ccc"
+              borderBottomWidth={1}
+            >
               Description
             </Text>
-            <Text flex={1} p={8} fow="bold" bbc="#ccc" bbw={1}>
+            <Text
+              flex={1}
+              p={8}
+              fontWeight="bold"
+              borderBottomColor="#ccc"
+              borderBottomWidth={1}
+            >
               Qty
             </Text>
-            <Text flex={1} p={8} fow="bold" bbc="#ccc" bbw={1}>
+            <Text
+              flex={1}
+              p={8}
+              fontWeight="bold"
+              borderBottomColor="#ccc"
+              borderBottomWidth={1}
+            >
               Unit price
             </Text>
-            <Text flex={1} p={8} fow="bold" bbc="#ccc" bbw={1}>
+            <Text
+              flex={1}
+              p={8}
+              fontWeight="bold"
+              borderBottomColor="#ccc"
+              borderBottomWidth={1}
+            >
               Amount
             </Text>
           </XStack>
 
-          <XStack bbc="#ccc" bbw={1}>
-            <Text w={200} f={1} p={8}>
+          <XStack borderBottomColor="#ccc" borderBottomWidth={1}>
+            <Text width={200} flex={1} p={8}>
               Bento
             </Text>
             <Text flex={1} p={8}>
@@ -67,9 +92,9 @@ export default function InvoicePage() {
 
           <Spacer size="$8" />
 
-          <XStack bbc="#ccc" bbw={1}>
+          <XStack borderBottomColor="#ccc" borderBottomWidth={1}>
             <Text flex={3} p={8}></Text>
-            <Text f={1} p={8}>
+            <Text flex={1} p={8}>
               Total
             </Text>
             <Text flex={1} p={8}></Text>
@@ -77,9 +102,9 @@ export default function InvoicePage() {
               €186.86
             </Text>
           </XStack>
-          <XStack bbc="#ccc" bbw={1}>
+          <XStack borderBottomColor="#ccc" borderBottomWidth={1}>
             <Text flex={3} p={8}></Text>
-            <Text f={1} p={8}>
+            <Text flex={1} p={8}>
               Paid
             </Text>
             <Text flex={1} p={8}></Text>
@@ -89,11 +114,11 @@ export default function InvoicePage() {
           </XStack>
           <XStack>
             <Text flex={3} p={8}></Text>
-            <Text f={1} p={8} fow="bold">
+            <Text flex={1} p={8} fontWeight="bold">
               Amount due
             </Text>
             <Text flex={1} p={8}></Text>
-            <Text flex={1} p={8} fow="bold">
+            <Text flex={1} p={8} fontWeight="bold">
               €0.00 EUR
             </Text>
           </XStack>

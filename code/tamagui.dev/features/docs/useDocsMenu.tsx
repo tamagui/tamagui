@@ -10,13 +10,6 @@ export const useDocsMenu = () => {
   let currentPath = pathname
   let documentVersion = ''
 
-  // if (Array.isArray(router.query.slug)) {
-  //   currentPath = currentPath.replace('[...slug]', router.query.slug[0])
-  //   documentVersion = router.query.slug[1]
-  // } else {
-  //   currentPath = currentPath.replace('[slug]', router.query.slug as string)
-  // }
-
   const documentVersionPath = documentVersion ? `/${documentVersion}` : ''
   const currentPageIndex = allNotPending.findIndex((page) => page.route === currentPath)
   const previous = allNotPending[currentPageIndex - 1]

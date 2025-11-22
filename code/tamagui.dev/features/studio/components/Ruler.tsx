@@ -17,10 +17,10 @@ export const Ruler = ({
   const applied = Math.floor(size / 10)
   const Stack = orientation === 'horizontal' ? XStack : YStack
   return (
-    <Stack ai={rotate ? 'flex-end' : undefined} space={9}>
+    <Stack items={rotate ? 'flex-end' : undefined} gap={9}>
       <Unspaced>
         <YStack
-          pos="absolute"
+          position="absolute"
           width={orientation === 'horizontal' ? max : undefined}
           height={orientation === 'vertical' ? max : undefined}
           borderColor="$color6"
@@ -28,7 +28,7 @@ export const Ruler = ({
           borderLeftWidth={orientation === 'vertical' ? 1 : undefined}
         />
         <YStack
-          pos="absolute"
+          position="absolute"
           width={orientation === 'horizontal' ? size : undefined}
           height={orientation === 'vertical' ? size : undefined}
         />
@@ -65,7 +65,7 @@ export const RulerLine = ({
   const size = prominent ? 12 : 5
   return (
     <YStack
-      backgroundColor={
+      bg={
         disableColorDiff
           ? '$color6'
           : active

@@ -1,5 +1,4 @@
 export * from './preferences'
-// export * from './profile'
 
 export const paths: {
   params: {
@@ -24,11 +23,6 @@ export const listingData = [
         numberOfComponents: 3,
         route: '/user/preferences',
       },
-      // {
-      //   name: 'Profile',
-      //   numberOfComponents: 1,
-      //   route: '/user/profile',
-      // },
     ],
   },
 ] as const

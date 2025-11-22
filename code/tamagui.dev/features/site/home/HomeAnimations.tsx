@@ -53,9 +53,9 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
   return (
     <YStack>
-      <ContainerLarge position="relative" space="$8">
-        <YStack zi={1} space="$3">
-          <HomeH2 pos="relative">
+      <ContainerLarge position="relative" gap="$8">
+        <YStack z={1} gap="$3">
+          <HomeH2 position="relative">
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
           <HomeH3>
@@ -66,13 +66,13 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
         <XStack>
           <YStack
-            f={2}
-            miw="55%"
-            als="center"
+            flex={2}
+            minW="55%"
+            self="center"
             mr="$-2"
-            zi={100}
+            z={100}
             elevation="$4"
-            br="$4"
+            rounded="$4"
             theme={tint as any}
           >
             <ExampleAnimations />
@@ -83,26 +83,26 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             rotateY="-5deg"
             x={-10}
             $sm={{ display: 'none' }}
-            pos="relative"
-            br="$8"
+            position="relative"
+            rounded="$8"
             elevation="$5"
-            ov="hidden"
+            overflow="hidden"
           >
             <YStack
-              pe={disableScrollPane ? 'auto' : 'none'}
-              o={disableScrollPane ? 1 : 0}
+              pointerEvents={disableScrollPane ? 'auto' : 'none'}
+              opacity={disableScrollPane ? 1 : 0}
               fullscreen
-              ai="center"
-              jc="center"
+              items="center"
+              justify="center"
             >
-              <YStack fullscreen top="60%" o={0.5} />
+              <YStack fullscreen t="60%" opacity={0.5} />
               <Button
-                accessibilityLabel="View more"
+                aria-label="View more"
                 y={200}
                 iconAfter={ArrowDown}
                 size="$4"
                 themeInverse
-                zi={10}
+                z={10}
                 onPress={() => setDisableScrollPane(false)}
               >
                 View more
@@ -110,21 +110,21 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             </YStack>
 
             <CodeDemoPreParsed
-              pe={disableScrollPane ? 'none' : 'auto'}
-              maxHeight={500}
+              pointerEvents={disableScrollPane ? 'none' : 'auto'}
+              maxH={500}
               height={500}
-              maxWidth={530}
-              minWidth={530}
-              borderRadius="$8"
+              maxW={530}
+              minW={530}
+              rounded="$8"
               language="tsx"
               source={animationCode}
             />
           </YStack>
         </XStack>
 
-        <XStack als="center" gap="$3">
+        <XStack self="center" gap="$3">
           <Link href="/docs/core/animations">
-            <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen">
+            <Button aria-label="Animation docs" fontFamily="$silkscreen">
               Docs &raquo;
             </Button>
           </Link>
@@ -174,26 +174,26 @@ export const ExampleAnimations = memo(() => {
 
   return (
     <XStack
-      bw={1}
-      bc="$borderColor"
+      borderWidth={1}
+      borderColor="$borderColor"
       elevation="$1"
-      w="100%"
-      br="$4"
-      ov="hidden"
-      h={305}
-      als="center"
+      width="100%"
+      rounded="$4"
+      overflow="hidden"
+      height={305}
+      self="center"
       x={0}
       flexDirection="row-reverse"
     >
       <YStack
         ref={container}
-        pos="relative"
-        ai="center"
-        jc="center"
+        position="relative"
+        items="center"
+        justify="center"
         width="60%"
         $sm={{ width: '100%' }}
       >
-        <YStack fullscreen zi={-1} bg="$background" o={0.5} />
+        <YStack fullscreen z={-1} bg="$background" opacity={0.5} />
         {isIntersecting ? (
           <AnimationsDemo position={positionI} animation={animation.animation} />
         ) : null}
@@ -201,8 +201,8 @@ export const ExampleAnimations = memo(() => {
 
       <Separator vertical />
 
-      <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack f={1} theme="alt2" bg="$color1">
+      <YStack position="relative" $sm={{ display: 'none' }} width="40%">
+        <YStack flex={1} theme="alt2" bg="$color1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
@@ -226,7 +226,7 @@ export const ExampleAnimations = memo(() => {
 
         <Separator />
 
-        <XStack bg="$background" p="$4" ai="center" jc="center">
+        <XStack bg="$background" p="$4" items="center" justify="center">
           {/* @ts-ignore */}
           {settings.map(([key, value], i) => {
             if (key === 'type') {
@@ -270,8 +270,8 @@ export function AnimationsDemoBase(props) {
         size={104}
         borderColor="$borderColor"
         borderWidth={1}
-        borderRadius="$9"
-        backgroundColor="$color9"
+        rounded="$9"
+        bg="$color9"
         hoverStyle={{
           scale: 1.5,
         }}
@@ -285,8 +285,8 @@ export function AnimationsDemoBase(props) {
 
       <Button
         position="absolute"
-        bottom={20}
-        left={20}
+        b={20}
+        l={20}
         icon={Play}
         theme={props.tint}
         size="$5"

@@ -8,17 +8,17 @@ export const HomeH1 = styled(H1, {
 
   $gtSm: {
     size: '$10',
-    maxWidth: '90%',
+    maxW: '90%',
   },
 })
 
 export const HomeH2 = styled(H2, {
   className: 'word-break-keep-all',
   name: 'HomeH2',
-  ta: 'center',
-  als: 'center',
+  text: 'center',
+  self: 'center',
   size: '$10',
-  maw: 720,
+  maxW: 720,
   mt: '$-2',
   $sm: {
     size: '$10',
@@ -32,18 +32,18 @@ export const HomeH3 = styled(H3, {
   className: 'word-break-keep-all',
   fontFamily: '$mono',
   name: 'HomeH3',
-  ta: 'center',
+  text: 'center',
   theme: 'alt1',
-  als: 'center',
+  self: 'center',
   px: 20,
   size: '$8',
-  o: 0.9,
-  ls: -0.5,
-  maw: 720,
+  opacity: 0.9,
+  letterSpacing: -0.5,
+  maxW: 720,
 
   $sm: {
     size: '$6',
-    fow: '400',
+    fontWeight: '400',
     color: '$color',
     textTransform: 'none',
   },

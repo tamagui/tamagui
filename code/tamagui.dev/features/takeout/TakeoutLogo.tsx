@@ -4,15 +4,15 @@ import { H1, YStack } from 'tamagui'
 
 export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 1.1, ...props }) => (
   <H1
-    userSelect="none"
+    select="none"
     color="transparent"
     fontFamily="$silkscreen"
     fontSize={fontSize}
     lineHeight={lineHeight}
     letterSpacing={-10}
     whiteSpace="nowrap"
-    minWidth={970}
-    ta="center"
+    minW={970}
+    text="center"
     {...props}
   >
     Take
@@ -33,7 +33,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
       })}
     >
       <YStack
-        pos="absolute"
+        position="absolute"
         style={{
           clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
         }}
@@ -47,7 +47,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
 
       <YStack
         mt={0}
-        zi={0}
+        z={0}
         className="mix-blend"
         style={{
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
@@ -64,9 +64,9 @@ export const TakeoutLogo = (props: { scale?: number }) => {
               <TAKEOUT
                 color="$color9"
                 className="clip-slice slice-alt"
-                pos="absolute"
-                o={1}
-                zi={1002}
+                position="absolute"
+                opacity={1}
+                z={1002}
               />
             </ThemeTintAlt>
             x

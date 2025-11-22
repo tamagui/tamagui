@@ -19,15 +19,12 @@ import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'
 import type { Curve } from '../state/types'
 import { useGlobalState } from '../state/useGlobalState'
-// import { CurveEditor } from './CurveEditor'
 import { getColor, colorToHex, getAccentScore, getRange } from './helpers'
 
 const ColorCanvasFrame = ({ children }) => {
   const palette = useObserve(() => colorsStore.palette)
   return (
-    <Canvas backgroundColor={(palette.backgroundColor as any) || 'transparent'}>
-      {children}
-    </Canvas>
+    <Canvas bg={(palette.backgroundColor as any) || 'transparent'}>{children}</Canvas>
   )
 }
 
@@ -64,9 +61,9 @@ export const ColorCanvas = memo(function ColorCanvas() {
 
   return (
     <ColorCanvasFrame>
-      <XStack p="$2" space pos="relative">
+      <XStack p="$2" gap="$4" position="relative">
         <Unspaced>
-          <YStack fullscreen zi={0} bg="$background" o={0.5} />
+          <YStack fullscreen z={0} bg="$background" opacity={0.5} />
         </Unspaced>
 
         <XGroup>
@@ -108,8 +105,8 @@ export const ColorCanvas = memo(function ColorCanvas() {
         </XGroup>
       </XStack>
 
-      <ZStack f={1} m="$5">
-        <XStack maw="100%" h="100%" px="$2">
+      <ZStack flex={1} m="$5">
+        <XStack maxW="100%" height="100%" px="$2">
           {scale.colors.map((_, i) => {
             const color = getColor(palette.curves, scale, i)
             const hex = colorToHex(color)
@@ -122,15 +119,15 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 key={`${color}${i}`}
                 focusable
                 onFocus={() => state.colors.setColorIndex(String(i))}
-                f={1}
-                w={barWidth as any}
-                maw={barWidth as any}
-                miw={barWidth as any}
-                zi={isActive ? 1 : 0}
+                flex={1}
+                width={barWidth as any}
+                maxW={barWidth as any}
+                minW={barWidth as any}
+                z={isActive ? 1 : 0}
                 my="$4"
                 scale={isActive ? 1.02 : 1}
-                ov="hidden"
-                backgroundColor={hex as any}
+                overflow="hidden"
+                bg={hex as any}
                 borderTopLeftRadius={i === 0 ? '$4' : 0}
                 borderBottomLeftRadius={i === 0 ? '$4' : 0}
                 borderTopRightRadius={i === scale.colors.length - 1 ? '$4' : 0}
@@ -144,9 +141,16 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 onPress={() => state.colors.setColorIndex(String(i))}
               >
                 <Spacer flex />
-                <YStack ml="auto" ai="flex-end" pos="relative" br="$4" ov="hidden" p="$2">
+                <YStack
+                  ml="auto"
+                  items="flex-end"
+                  position="relative"
+                  rounded="$4"
+                  overflow="hidden"
+                  p="$2"
+                >
                   <YStack
-                    zi={-1}
+                    z={-1}
                     fullscreen
                     bg={
                       isActive
@@ -155,7 +159,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                           : 'rgba(255,255,255,0.85)'
                         : undefined
                     }
-                    o={0.2}
+                    opacity={0.2}
                   />
                   <Paragraph lineHeight={0} color={labelColor as any}>
                     {accentScore !== 'Fail' ? (
@@ -168,9 +172,9 @@ export const ColorCanvas = memo(function ColorCanvas() {
                   </Paragraph>
                   <Paragraph
                     size="$3"
-                    ta="right"
+                    text="right"
                     color={labelColor as any}
-                    als="flex-end"
+                    self="flex-end"
                   >
                     {accentScore !== 'Fail' ? <>{accentScore}</> : <>Fail</>}
                   </Paragraph>
@@ -179,61 +183,6 @@ export const ColorCanvas = memo(function ColorCanvas() {
             )
           })}
         </XStack>
-        {(Object.entries(scale.curves) as [Curve['type'], string | undefined][])
-          .filter(([type]) => visibleCurves[type])
-          .map(([type, curveId]) => {
-            if (!curveId) return null
-
-            return null
-            // return (
-            //   <CurveEditor
-            //     labelColor={readableLabelColor}
-            //     key={curveId}
-            //     values={palette.curves[curveId].values}
-            //     {...getRange(type)}
-            //     disabled
-            //     label={`${type[0].toUpperCase()}`}
-            //   />
-            // )
-          })}
-        {(['hue', 'saturation', 'lightness'] as const)
-          .filter((type) => visibleCurves[type])
-          .map((type) => {
-            return null
-            // return (
-            //   <CurveEditor
-            //     labelColor={readableLabelColor}
-            //     key={`${type}-${scale.name}-${scale.colors.length}-${Object.keys(
-            //       scale.curves
-            //     ).join(',')}`}
-            //     values={scale.colors.map(
-            //       (color, index) => getColor(palette.curves, scale, index)[type]
-            //     )}
-            //     {...getRange(type)}
-            //     label={`${type[0].toUpperCase()}`}
-            //     onFocus={(index) => state.colors.setColorIndex(String(index))}
-            //     onChange={(values, shiftKey, index) => {
-            //       if (shiftKey && scale.curves[type]) {
-            //         state.colors.changeCurveValues({
-            //           curveId: scale.curves[type] ?? '',
-            //           values: values.map(
-            //             (value, index) => value - scale.colors[index][type]
-            //           ),
-            //         })
-            //       } else {
-            //         state.colors.changeScaleColors(
-            //           scale.colors.map((color, index) => ({
-            //             ...color,
-            //             [type]:
-            //               values[index] -
-            //               (palette.curves[scale.curves[type] ?? '']?.values[index] ?? 0),
-            //           }))
-            //         )
-            //       }
-            //     }}
-            //   />
-            // )
-          })}
       </ZStack>
 
       <XStack height={48}>
@@ -248,11 +197,9 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 return (
                   <YStack
                     key={currentScale.name}
-                    // as={Link}
                     aria-label={`Go to ${currentScale.name} scale`}
-                    // to={`${routePrefix}/local/${paletteId}/scale/${currentScale.id}`}
-                    f={1}
-                    backgroundColor={
+                    flex={1}
+                    bg={
                       colorToHex(
                         getColor(palette.curves, currentScale, Number.parseInt(index))
                       ) as any

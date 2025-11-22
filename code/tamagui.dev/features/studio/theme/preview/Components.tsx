@@ -1,20 +1,8 @@
 import { CheckboxWithLabel, SelectDemoContents, SwitchWithLabel } from '@tamagui/demos'
-import { Filter } from '@tamagui/lucide-icons'
-import {
-  Button,
-  Group,
-  H4,
-  Input,
-  RadioGroup,
-  Separator,
-  Spacer,
-  XGroup,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H4, RadioGroup, Separator, Spacer, XStack, YStack } from 'tamagui'
+import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { RadioGroupItemWithLabel } from '../views/RadioGroupItemWithLabel'
-import { AccentTheme } from '../../components/AccentTheme'
 
 export const Components = () => {
   const demoProps = useDemoProps()
@@ -31,7 +19,7 @@ export const Components = () => {
 
       <Separator />
 
-      <XStack w="100%" {...demoProps.gapPropsLg} fw="wrap">
+      <XStack width="100%" {...demoProps.gapPropsLg} flexWrap="wrap">
         <XStack {...demoProps.gapPropsLg}>
           <AccentTheme>
             <Button size="$3" {...demoProps.borderRadiusProps}>
@@ -45,27 +33,13 @@ export const Components = () => {
 
         <Spacer flex />
 
-        <XStack {...demoProps.gapPropsLg} f={1} flexWrap="wrap">
+        <XStack {...demoProps.gapPropsLg} flex={1} flexWrap="wrap">
           <SelectDemoContents size="$3" />
         </XStack>
       </XStack>
 
       <XStack gap="$4" flexWrap="wrap">
-        {/* <Card
-            f={1}
-            elevate
-            size="$3"
-            bordered
-            minWidth={200}
-            {...demoProps.borderRadiusProps}
-          >
-            <Card.Header padded>
-              <H4 {...demoProps.headingFontFamilyProps}>Card Title</H4>
-              <Paragraph theme="alt2">Now available</Paragraph>
-            </Card.Header>
-          </Card> */}
-
-        <YStack f={1} gap="$2">
+        <YStack flex={1} gap="$2">
           <CheckboxWithLabel defaultChecked size="$4" />
 
           <RadioGroup defaultValue="1" name="form">

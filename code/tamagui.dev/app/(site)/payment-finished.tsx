@@ -24,9 +24,9 @@ export default function PaymentFinishedPage() {
 
       <ContainerLarge>
         <YStack gap="$2">
-          <H1 ff="$mono">Payment complete! 🎉</H1>
+          <H1 fontFamily="$mono">Payment complete! 🎉</H1>
 
-          <H4 ff="$mono">We appreciate your support</H4>
+          <H4 fontFamily="$mono">We appreciate your support</H4>
 
           <Paragraph>
             Your account and all assets are always available to access and manage via the

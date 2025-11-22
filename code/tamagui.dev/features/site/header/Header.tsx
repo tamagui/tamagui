@@ -46,7 +46,6 @@ import { useLoginLink } from '../../auth/useLoginLink'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useBentoStore } from '../../bento/BentoStore'
 import { useBentoTheme } from '../../bento/useBentoTheme'
-import { useImperativeHandle } from 'react'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -67,32 +66,32 @@ export function Header(props: HeaderProps) {
     <>
       <XStack
         // @ts-ignore
-        pos="fixed"
+        position="fixed"
         t={0}
         l={0}
         r={0}
-        ai="center"
-        pe="none"
-        jc="center"
-        zi={50000}
+        items="center"
+        pointerEvents="none"
+        justify="center"
+        z={50000}
         className="all ease-out s1"
         $gtSm={{
           px: '$1',
         }}
       >
-        <XStack pe="auto" width="100%" maw={1200} pos="relative">
+        <XStack pointerEvents="auto" width="100%" maxW={1200} position="relative">
           <XStack
             className={`ease-out all ms300`}
             py="$1.5"
             y={bannerHeight}
-            ov="hidden"
+            overflow="hidden"
             contain="paint"
             width="100%"
-            bc="transparent"
-            br="$10"
+            bg="transparent"
+            rounded="$10"
             $sm={{
-              br: 0,
-              bw: 0,
+              rounded: 0,
+              borderWidth: 0,
               y: -1 + (isScrolled ? 0 : bannerHeight),
               py: '$2',
             }}
@@ -108,7 +107,7 @@ export function Header(props: HeaderProps) {
             })}
           >
             <YStack
-              pos="absolute"
+              position="absolute"
               inset={0}
               className={'ease-out all ms100'}
               style={{
@@ -119,7 +118,7 @@ export function Header(props: HeaderProps) {
               }}
             />
             <YStack
-              o={isScrolled ? 0.6 : 0}
+              opacity={isScrolled ? 0.6 : 0}
               className={`ease-out all ms300`}
               fullscreen
               bg="$color2"
@@ -127,7 +126,7 @@ export function Header(props: HeaderProps) {
                 bg: '$color7',
               }}
             />
-            <YStack mx="auto" px="$4" w="100%">
+            <YStack mx="auto" px="$4" width="100%">
               <ThemeTint>
                 <HeaderContents floating {...props} />
               </ThemeTint>
@@ -136,8 +135,8 @@ export function Header(props: HeaderProps) {
           {/* do shadow separate so we can contain paint because its causing perf issues */}
           <XStack
             className={`ease-in-out all ms200`}
-            zi={-1}
-            br="$10"
+            z={-1}
+            rounded="$10"
             fullscreen
             {...(isScrolled && {
               $gtSm: {
@@ -149,7 +148,7 @@ export function Header(props: HeaderProps) {
           />
         </XStack>
       </XStack>
-      <YStack height={54} w="100%" />
+      <YStack height={54} width="100%" />
     </>
   )
 }
@@ -163,36 +162,41 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
   return (
     <XStack
-      ai="center"
+      items="center"
       position="relative"
       tag="header"
-      pos="relative"
       py={props.minimal ? '$4' : props.floating ? 0 : '$2'}
-      zi={50000}
+      z={50000}
     >
-      <XStack ai="center" gap="$4">
+      <XStack items="center" gap="$4">
         <TooltipGroup delay={tooltipDelay}>
-          <XGroup mah={32} bc="transparent" ai="center" size="$4">
+          <XGroup maxH={32} bg="transparent" items="center" size="$4">
             <XGroup.Item>
               <ThemeToggle borderWidth={0} chromeless />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="$2" br="$10" elevation="$0.5" />
+        <SearchButton size="$2" rounded="$10" elevation="$0.5" />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">
-            <XStack ai="center" gap="$2" p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+            <XStack
+              items="center"
+              gap="$2"
+              p="$2"
+              opacity={0.9}
+              hoverStyle={{ opacity: 1 }}
+            >
               <GithubIcon width={22} />
               <>
                 <SizableText
                   $xl={{ display: 'none' }}
                   size="$3"
                   color="$color12"
-                  o={0.5}
+                  opacity={0.5}
                   $group-hover={{
-                    o: 0.8,
+                    opacity: 0.8,
                   }}
                 >
                   GitHub
@@ -213,25 +217,25 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           opacity: 0,
           pointerEvents: 'none',
         }}
-        zIndex={-1}
-        jc="center"
+        z={-1}
+        justify="center"
         fullscreen
         pointerEvents="none"
-        ai="center"
+        items="center"
       >
         <Link href="/" aria-label="Homepage">
           <XStack
             cursor={isHome ? 'default' : 'pointer'}
             pointerEvents="auto"
-            als="center"
+            self="center"
             gap="$3"
             ml="$-5"
-            ai="center"
+            items="center"
           >
             <SeasonTogglePopover>
               <YStack
-                cur="pointer"
-                o={1}
+                cursor="pointer"
+                opacity={1}
                 {...(isHome && {
                   onPress(e) {
                     e.preventDefault()
@@ -248,8 +252,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         </Link>
       </XStack>
 
-      <XStack h={40} jc="flex-end" pointerEvents="auto" tag="nav">
-        <XStack ai="center" gap="$2">
+      <XStack height={40} justify="flex-end" pointerEvents="auto" tag="nav">
+        <XStack items="center" gap="$2">
           <HeaderLinksPopover>
             <HeaderLink id="core" href="/docs/intro/introduction">
               Core
@@ -289,8 +293,8 @@ const HeaderMenuButton = () => {
           my={10}
           noTextWrap
           bg="transparent"
-          br="$10"
-          bw={2}
+          rounded="$10"
+          borderWidth={2}
           px="$2"
           onPress={(e) => {
             if (isTouchable) {
@@ -313,11 +317,10 @@ const HeaderMenuButton = () => {
           }}
           aria-label="Open the main menu"
           hoverStyle={{
-            // @ts-ignore
-            bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
+            borderColor: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)' as any,
           }}
         >
-          <Circle size={34} ai="center" jc="center">
+          <Circle size={34} items="center" justify="center">
             {haveUser ? <UserAvatar /> : <Menu size={16} />}
           </Circle>
         </Button>
@@ -410,7 +413,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
-          <Sheet.Overlay zIndex={100} bg="$shadow4" />
+          <Sheet.Overlay z={100} bg="$shadow4" />
         </Sheet>
       </Adapt>
     </Popover>
@@ -447,21 +450,12 @@ const SlidingPopoverContext = React.createContext({
 export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
-    const [layout, setLayout_] = React.useState<LayoutRectangle | undefined>()
-    const setLayout = useCreateShallowSetState(setLayout_)
+    const [layout, setLayout_] = React.useState<LayoutRectangle>()
+    const setLayout = useCreateShallowSetState(setLayout_ as any)
     const triggerRef = React.useRef<HTMLElement>(null)
     const combinedRef = useComposedRefs(ref)
     const [hovered, setHovered] = React.useState(false)
     const getLayout = useGet(layout)
-
-    // useImperativeHandle(ref, () => {
-    //   return {
-    //     close: () => {
-    //       context.close()
-    //       setHovered(false)
-    //     },
-    //   }
-    // }, [context])
 
     React.useEffect(() => {
       if (!hovered) return
@@ -469,7 +463,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
       const handleMove = debounce(() => {
         const layout = triggerRef.current?.getBoundingClientRect()
         if (layout) {
-          setLayout(layout)
+          setLayout(layout as any)
         }
       }, 32)
       window.addEventListener('resize', handleMove)
@@ -575,14 +569,14 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       animation="medium"
       bg="$color3"
       backdropFilter="blur(40px)"
-      maxHeight="90vh"
-      maxWidth={360}
-      minWidth={360}
+      maxH="90vh"
+      maxW={360}
+      minW={360}
       elevation="$2"
       borderWidth={3}
       borderColor="$color2"
-      padding={0}
-      br="$6"
+      p={0}
+      rounded="$6"
       opacity={1}
       y={0}
       enterStyle={{
@@ -598,12 +592,12 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 
       {pointerFine ? (
         <YStack
-          w="100%"
+          width="100%"
           transition="all ease-in 200ms"
-          mih={`calc(min(${heights[active]}px, 80vh))`}
-          ov="hidden"
-          maxHeight="100%"
-          br="$6"
+          minH={`calc(min(${heights[active]}px, 80vh))`}
+          overflow="hidden"
+          maxH="100%"
+          rounded="$6"
           flex={1}
         >
           <AnimatePresence custom={{ going }} initial={false}>
@@ -645,7 +639,7 @@ const ActivePageDocsMenuContents = () => {
 
   return (
     <>
-      <Separator bc="$color02" o={0.25} my="$4" />
+      <Separator bg="$color02" opacity={0.25} my="$4" />
       <DocsMenuContents inMenu section={section} />
     </>
   )
@@ -683,14 +677,13 @@ const HeaderMenuContents = (props: { id: ID }) => {
             <>
               <PromoCardTheme />
               <Paragraph
-                bg="$color3"
                 pointerEvents="none"
-                bw={0.5}
-                bc="$color6"
-                br="$5"
-                ff="$mono"
+                borderWidth={0.5}
+                bg="$color6"
+                rounded="$5"
+                fontFamily="$mono"
                 size="$4"
-                o={0.5}
+                opacity={0.5}
                 p="$4"
               >
                 Once you create themes, visit the Bento page and open this menu to preview
@@ -706,7 +699,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
               <XStack>
                 <HeadAnchor
                   grid
-                  alignItems="center"
+                  items="center"
                   onPress={() => {
                     bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
                   }}
@@ -749,7 +742,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                   grid
                   onPress={() => updateGenerate(history.theme_data)}
                 >
-                  <XStack ai="center" jc="space-between">
+                  <XStack items="center" justify="space-between">
                     <SizableText size="$3" color="$color11" ellipse>
                       {history.search_query}
                     </SizableText>
@@ -758,7 +751,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
               ))}
 
               {themeHistories.length === 0 && (
-                <YStack p="$4" ai="center">
+                <YStack p="$4" items="center">
                   <SizableText size="$2" theme="alt2">
                     {data?.user ? 'No theme history yet' : 'Login to save themes'}
                   </SizableText>
@@ -776,7 +769,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
   // For mobile, render content directly without Frame wrapper
   if (isMobile) {
     return (
-      <YStack w="100%" p="$3">
+      <YStack width="100%" p="$3">
         {contents}
       </YStack>
     )
@@ -794,7 +787,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
         }}
         contentContainerStyle={{ width: '100%' }}
       >
-        <YStack w="100%" p="$3">
+        <YStack width="100%" p="$3">
           {contents}
         </YStack>
       </Popover.ScrollView>
@@ -816,14 +809,14 @@ const HeaderMenuMoreContents = () => {
 
   return (
     <YStack gap="$2" aria-label="Home menu contents">
-      <YStack gap="$2" $gtSm={{ dsp: 'none' }}>
+      <YStack gap="$2" $gtSm={{ display: 'none' }}>
         <Link asChild href="/">
           <HeadAnchor grid>Home</HeadAnchor>
         </Link>
-        <Separator bc="$color02" o={0.25} my="$2" />
+        <Separator bg="$color02" opacity={0.25} my="$2" />
       </YStack>
 
-      <XStack fw="wrap" f={1} gap="$2" w="100%">
+      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
             Core
@@ -849,12 +842,12 @@ const HeaderMenuMoreContents = () => {
         </Link>
       </XStack>
 
-      <Separator bc="$color02" o={0.25} my="$2" />
+      <Separator bg="$color02" opacity={0.25} my="$2" />
 
       {!userSwr.data?.userDetails && (
         <HeadAnchor grid onPress={handleLogin}>
           Login
-          <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
+          <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
             <LogIn color="$color10" size={14} />
           </YStack>
         </HeadAnchor>
@@ -868,24 +861,24 @@ const HeaderMenuMoreContents = () => {
             accountModal.show = true
           }}
         >
-          <XStack ai="center" jc="center">
+          <XStack items="center" justify="center">
             Account
             <YStack flex={10} />
-            <YStack dsp={'inline-block' as any} y={-2} my={-3} als="flex-end">
+            <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
               <UserAvatar size={22} />
             </YStack>
           </XStack>
         </HeadAnchor>
       )}
 
-      <Separator bc="$color02" o={0.25} my="$2" />
+      <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      <XStack fw="wrap" f={1} gap="$2" w="100%">
+      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
         <Link asChild href="/takeout">
           <HeadAnchor grid half tag="a">
-            <XStack ai="center">
+            <XStack items="center">
               <span>Takeout </span>
-              <YStack dsp={'inline-block' as any} x={6} my={-20} o={0.8}>
+              <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
                 <TakeoutIcon scale={0.65} />
               </YStack>
             </XStack>
@@ -897,9 +890,16 @@ const HeaderMenuMoreContents = () => {
 
         <Link asChild href="/bento">
           <HeadAnchor grid half tag="a">
-            <XStack ai="center">
+            <XStack items="center">
               <span>Bento </span>
-              <YStack ml={3} dsp={'inline-block' as any} x={6} y={-1} my={-10} o={0.8}>
+              <YStack
+                ml={3}
+                display={'inline-block' as any}
+                x={6}
+                y={-1}
+                my={-10}
+                opacity={0.8}
+              >
                 <BentoIcon scale={0.65} />
               </YStack>
             </XStack>
@@ -909,7 +909,7 @@ const HeaderMenuMoreContents = () => {
           </HeadAnchor>
         </Link>
       </XStack>
-      <Separator bc="$color02" o={0.25} my="$2" />
+      <Separator bg="$color02" opacity={0.25} my="$2" />
 
       <Link asChild href="/community">
         <HeadAnchor grid tag="a">
@@ -917,12 +917,12 @@ const HeaderMenuMoreContents = () => {
         </HeadAnchor>
       </Link>
 
-      <Separator bc="$color02" o={0.25} my="$2" />
+      <Separator borderColor="$color02" opacity={0.25} my="$2" />
 
       <Link asChild href="https://github.com/tamagui/tamagui">
         <HeadAnchor target="_blank" grid>
           Github{' '}
-          <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
+          <YStack display={'inline-block' as any} y={10} my={-20} opacity={0.8}>
             <GithubIcon width={14} />
           </YStack>
         </HeadAnchor>
@@ -934,7 +934,7 @@ const HeaderMenuMoreContents = () => {
       >
         <HeadAnchor target="_blank" grid>
           Figma{' '}
-          <YStack dsp={'inline-block' as any} y={2} my={-20} o={0.8}>
+          <YStack display={'inline-block' as any} y={2} my={-20} opacity={0.8}>
             <Figma size={14} />
           </YStack>
         </HeadAnchor>
@@ -947,8 +947,8 @@ const HeaderMenuMoreContents = () => {
       <Link asChild href="https://github.com/sponsors/natew">
         <HeadAnchor grid target="_blank">
           Sponsor
-          <YStack dsp={'inline-block' as any} y={0} my={-20} ml={12} o={0.8}>
-            <ExternalLink size={10} o={0.5} />
+          <YStack display={'inline-block' as any} y={0} my={-20} ml={12} opacity={0.8}>
+            <ExternalLink size={10} opacity={0.5} />
           </YStack>
         </HeadAnchor>
       </Link>
@@ -968,7 +968,7 @@ const HeadAnchor = styled(Paragraph, {
 
   hoverStyle: {
     color: '$color',
-    br: '$3',
+    rounded: '$3',
   },
 
   pressStyle: {
@@ -978,11 +978,11 @@ const HeadAnchor = styled(Paragraph, {
   variants: {
     grid: {
       true: {
-        fow: '200',
-        ls: 1,
+        fontWeight: '200',
+        letterSpacing: 1,
         textTransform: 'unset',
-        w: '100%',
-        f: 1,
+        width: '100%',
+        flex: 1,
         p: '$2',
         px: '$4',
 
@@ -1006,14 +1006,14 @@ const Frame = styled(YStack, {
   className: 'header-popover-frame',
   animation: 'medium',
   flex: 1,
-  br: '$5',
-  ov: 'hidden',
+  rounded: '$5',
+  overflow: 'hidden',
   position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 1,
+  t: 0,
+  l: 0,
+  r: 0,
+  b: 0,
+  z: 1,
   x: 0,
   opacity: 1,
 

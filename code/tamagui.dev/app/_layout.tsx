@@ -7,20 +7,6 @@ import { isWeb, setupPopper } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Providers } from '../components/Providers'
 
-// for navigation container props
-//           theme: {
-//             dark: true,
-//             colors: {
-//               primary: 'rgb(0, 122, 255)',
-//               background: 'transparent',
-//               card: 'rgb(255, 255, 255)',
-//               text: 'rgb(28, 28, 30)',
-//               border: 'rgb(216, 216, 216)',
-//               notification: 'rgb(255, 59, 48)',
-//             },
-//           },
-//         } as any
-
 setupPopper({
   // prevents a reflow on mount
   disableRTL: true,
@@ -58,7 +44,6 @@ export default function Layout() {
           as="font"
           crossOrigin="anonymous"
           type="font/woff2"
-          // @ts-ignore
           precedence="default"
         />
 
@@ -69,14 +54,13 @@ export default function Layout() {
           as="font"
           crossOrigin="anonymous"
           type="font/woff2"
-          // @ts-ignore
           precedence="default"
         />
 
         <link
           crossOrigin="anonymous"
           href="/fonts/inter-400.css"
-          rel="stylesheet" // @ts-ignore
+          rel="stylesheet"
           precedence="default"
         />
         <link
@@ -85,14 +69,13 @@ export default function Layout() {
           href="/fonts/Inter-Regular.woff2"
           as="font"
           type="font/woff2"
-          // @ts-ignore
           precedence="default"
         />
 
         <link
           crossOrigin="anonymous"
           href="/fonts/silkscreen.css"
-          rel="stylesheet" // @ts-ignore
+          rel="stylesheet"
           precedence="default"
         />
         <link
@@ -101,7 +84,6 @@ export default function Layout() {
           href="/fonts/slkscr.woff2"
           as="font"
           type="font/woff2"
-          // @ts-ignore
           precedence="default"
         />
         {!pathname.startsWith('/theme/') && (
@@ -121,9 +103,7 @@ export default function Layout() {
         )}
       </head>
 
-      <body
-      // className={isIndex ? 'transition' : ''}
-      >
+      <body>
         <LoadProgressBar />
 
         <Providers>

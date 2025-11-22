@@ -37,16 +37,16 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
       <XStack
         ref={ref}
         className="docs-nav-item"
-        ai="center"
-        jc="flex-end"
+        items="center"
+        justify="flex-end"
         px="$4"
         py="$1.5"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
-          backgroundColor: '$background04',
+          bg: '$background04',
         }}
         pointerEvents={pending ? 'none' : ('inherit' as any)}
-        pos="relative"
+        position="relative"
         onMouseEnter={() => {
           getStore(DocsItemsStore).index = index
         }}
@@ -63,31 +63,31 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         {!inMenu && (
           <YStack
             className="sidebar-indicator"
-            o={active ? 1 : 0}
-            pos="absolute"
+            opacity={active ? 1 : 0}
+            position="absolute"
             t={0}
             b={0}
             r={0}
-            br="$2"
-            w={3}
+            rounded="$2"
+            width={3}
             bg={active ? '$color' : '$backgroundHover'}
           />
         )}
         <SizableText
-          ff="$mono"
+          fontFamily="$mono"
           size="$4"
-          ls={-0.5}
-          lh="$3"
+          letterSpacing={-0.5}
+          lineHeight="$3"
           cursor="pointer"
-          userSelect="none"
+          select="none"
           opacity={active ? 1 : 0.65}
-          ta={inMenu ? 'left' : 'right'}
-          w="100%"
+          text={inMenu ? 'left' : 'right'}
+          width="100%"
           hoverStyle={{
-            o: 0.85,
+            opacity: 0.85,
           }}
           {...(active && {
-            fow: '700',
+            fontWeight: '700',
             opacity: 1,
           })}
         >
@@ -116,7 +116,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
               px="$2"
               py="$1"
               bg="$background"
-              borderRadius="$3"
+              rounded="$3"
             >
               WIP
             </SizableText>

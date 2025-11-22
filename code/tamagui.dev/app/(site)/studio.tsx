@@ -42,7 +42,7 @@ export default function StudioSplashPage() {
 
       <YStack>
         <LinearGradient
-          pos="absolute"
+          position="absolute"
           fullscreen
           colors={['$background', '$color2', '$color2', '$color2', '$background']}
         />
@@ -51,16 +51,16 @@ export default function StudioSplashPage() {
           <YStack>
             <StudioScreen1 />
 
-            <Container pe="none" ai="center">
+            <Container pointerEvents="none" items="center">
               <YStack
-                ai="center"
-                jc="center"
+                items="center"
+                justify="center"
                 gap="$5"
-                als="center"
+                self="center"
                 py="$8"
-                f={1}
-                w="100%"
-                $sm={{ mt: -100, fd: 'column' }}
+                flex={1}
+                width="100%"
+                $sm={{ mt: -100, flexDirection: 'column' }}
               >
                 <ThemeTintAlt>
                   <Link target="_blank" href="https://github.com/sponsors/natew">
@@ -70,9 +70,9 @@ export default function StudioSplashPage() {
                       bg="$color10"
                       color="$color1"
                       size="$6"
-                      borderRadius="$10"
+                      rounded="$10"
                       elevation="$2"
-                      pe="auto"
+                      pointerEvents="auto"
                       hoverStyle={{
                         bg: '$color10',
                         outlineColor: '$color5',
@@ -91,20 +91,20 @@ export default function StudioSplashPage() {
                 </ThemeTintAlt>
 
                 <Link href="/login">
-                  <Button pe="auto" variant="outlined" size="$3" borderRadius="$10">
+                  <Button pointerEvents="auto" variant="outlined" size="$3" rounded="$10">
                     Login
                   </Button>
                 </Link>
               </YStack>
 
-              <XStack maw={790} space="$8" separator={<Separator vertical />}>
+              <XStack maxW={790} gap="$8" separator={<Separator vertical />}>
                 <H2
                   theme="alt1"
                   className="text-glow"
-                  als="center"
-                  ff="$silkscreen"
+                  self="center"
+                  fontFamily="$silkscreen"
                   size="$8"
-                  fow="900"
+                  fontWeight="900"
                   $sm={{ size: '$5' }}
                 >
                   Your design system!
@@ -115,12 +115,12 @@ export default function StudioSplashPage() {
             <Spacer size="$12" />
 
             <XStack
-              ov="hidden"
-              maw={1000}
-              als="center"
-              $sm={{ fd: 'column', maw: '100%' }}
+              overflow="hidden"
+              maxW={1000}
+              self="center"
+              $sm={{ flexDirection: 'column', maxW: '100%' }}
             >
-              <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
+              <YStack px="$6" maxW="50%" $sm={{ maxW: '100%', p: '$2' }}>
                 <EnsureFlexed />
                 <Features
                   size="$5"
@@ -132,7 +132,7 @@ export default function StudioSplashPage() {
                 />
               </YStack>
 
-              <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
+              <YStack px="$6" maxW="50%" $sm={{ maxW: '100%', p: '$2' }}>
                 <EnsureFlexed />
                 <Features
                   soon
@@ -195,12 +195,7 @@ const StudioScreen1 = memo(() => {
   }
 
   const letters = lettersConf.map(
-    ({
-      underlayStyle,
-      glow,
-      letter,
-      props: { scale, rotate, zIndex, ...headingProps },
-    }) => {
+    ({ underlayStyle, glow, letter, props: { scale, rotate, z, ...headingProps } }) => {
       const colorVar = `var(--${headingProps.theme}8)`
 
       const Glow = useHoverGlow({
@@ -243,7 +238,7 @@ const StudioScreen1 = memo(() => {
       })
 
       const Component = (
-        <YStack key={letter} pos="relative" scale={scale} zIndex={zIndex}>
+        <YStack key={letter} position="relative" scale={scale || 1} z={z || 0}>
           <Glow.Component>
             <YStack
               animation={[
@@ -254,40 +249,40 @@ const StudioScreen1 = memo(() => {
                   },
                 },
               ]}
-              enterStyle={{ o: 0, y: -20 }}
-              pos="relative"
-              w={320}
-              h={320}
+              enterStyle={{ opacity: 0, y: -20 }}
+              position="relative"
+              width={320}
+              height={320}
             >
               <H1
-                pos="absolute"
+                position="absolute"
                 t={0}
                 l={0}
                 color="$color9"
                 className="mix-blend text-3d"
                 cursor="default"
-                fos={320}
-                lh={300}
-                fow="900"
-                rotate={rotate}
-                zIndex={5}
+                fontSize={320}
+                lineHeight={300}
+                fontWeight="900"
+                rotate={rotate || '0deg'}
+                z={5}
                 {...headingProps}
               >
                 {letter}
               </H1>
 
               <H1
-                pos="absolute"
+                position="absolute"
                 t={1}
                 l={1}
-                o={0.75}
+                opacity={0.75}
                 className="clip-text grain"
                 cursor="default"
-                fos={320}
-                lh={300}
-                fow="900"
-                rotate={rotate}
-                zIndex={6}
+                fontSize={320}
+                lineHeight={300}
+                fontWeight="900"
+                rotate={rotate || '0deg'}
+                z={6}
                 {...headingProps}
               >
                 {letter}
@@ -312,36 +307,42 @@ const StudioScreen1 = memo(() => {
 
   return (
     <ThemeTint>
-      <YStack y={-54} pe="none" o={0.0175} fullscreen className="bg-grid" />
+      <YStack
+        y={-54}
+        pointerEvents="none"
+        opacity={0.0175}
+        fullscreen
+        className="bg-grid"
+      />
 
       <YStack
-        als="center"
-        pos="relative"
+        self="center"
+        position="relative"
         {...lettersContainerBounds}
-        minWidth={lettersContainerBounds.width}
-        minHeight={lettersContainerBounds.height}
+        minW={lettersContainerBounds.width}
+        minH={lettersContainerBounds.height}
         mb={-400}
         x={15}
         y={-20}
       >
         <YStack
-          ai="center"
+          items="center"
           $gtSm={{ scale: 0.7 }}
           $gtMd={{ scale: 0.9 }}
           $gtLg={{ scale: 1 }}
           $sm={{ scale: 0.55 }}
           $xs={{ scale: 0.4 }}
-          pos="relative"
+          position="relative"
           ref={parentRef as any}
           {...lettersContainerBounds}
-          minWidth={lettersContainerBounds.width}
-          minHeight={lettersContainerBounds.height}
+          minW={lettersContainerBounds.width}
+          minH={lettersContainerBounds.height}
         >
           <YStack>
             {glow.Component()}
             {shadow.Component()}
-            <YStack ai="center" pos="relative" w="100%">
-              <YStack w="100%" h={lettersContainerBounds.height}>
+            <YStack items="center" position="relative" width="100%">
+              <YStack width="100%" height={lettersContainerBounds.height}>
                 {letters.map(({ Component }) => {
                   return Component
                 })}
@@ -384,9 +385,6 @@ const lettersConf: LetterConf[] = [
     },
     underlayStyle: {
       opacity: 0,
-      // marginBottom: -10,
-      // backgroundColor: 'var(--background)',
-      // transform: `scale(1) translateY(30%) translateX(-20%)`,
     },
   },
 
@@ -394,7 +392,7 @@ const lettersConf: LetterConf[] = [
     letter: 't',
     props: {
       rotate: '10deg',
-      zIndex: 20,
+      z: 20,
       fontSize: 320 * fontSizeMultiply,
       theme: 'yellow',
     },

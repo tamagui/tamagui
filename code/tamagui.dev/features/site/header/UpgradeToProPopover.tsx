@@ -46,24 +46,24 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
     >
       <Popover.Anchor asChild="except-style">
         <XStack
-          br="$10"
+          rounded="$10"
           px="$3"
-          cur="pointer"
+          cursor="pointer"
           height={36}
-          ai="center"
-          bw={1}
-          bc="$black5"
+          items="center"
+          borderWidth={1}
+          borderColor="$black5"
           bg="$black1"
-          shac="$shadow1"
+          shadowColor="$shadow1"
           shadowRadius={3}
           shadowOffset={{ height: 4, width: 0 }}
           hoverStyle={{
-            bc: '$black7',
+            borderColor: '$black7',
             bg: '$black6',
           }}
           pressStyle={{
             bg: '$black2',
-            bc: '$black2',
+            borderColor: '$black2',
           }}
           onPress={() => {
             sendEvent(`Pro: Modal Open`)
@@ -71,7 +71,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
             setOpen(false)
           }}
         >
-          <H2 ff="$mono" f={1} fow="600" size="$4" color="$black12">
+          <H2 fontFamily="$mono" flex={1} fontWeight="600" size="$4" color="$black12">
             Pro
           </H2>
         </XStack>
@@ -95,7 +95,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
-          <Sheet.Overlay zIndex={100} bg="$shadow4" />
+          <Sheet.Overlay z={100} bg="$shadow4" />
         </Sheet>
       </Adapt>
 
@@ -107,10 +107,10 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
         shadowRadius={50}
         shadowColor="$shadow4"
         shadowOffset={{ height: 30, width: 0 }}
-        padding={0}
-        br="$6"
+        p={0}
+        rounded="$6"
         borderWidth={0}
-        zIndex={10000}
+        z={10000}
         enterStyle={{
           y: 3,
           opacity: 0,
@@ -122,11 +122,17 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
       >
         <Popover.Arrow bg="$background08" size="$4" />
 
-        <YStack mah="90vh" p="$3" width={280} ov="hidden" br="$6">
+        <YStack maxH="90vh" p="$3" width={280} overflow="hidden" rounded="$6">
           <Popover.ScrollView>
             <YStack gap="$2">
               {!isProUser && (
-                <H5 py="$2" pe="none" ff="$mono" size="$5" ta="center">
+                <H5
+                  py="$2"
+                  pointerEvents="none"
+                  fontFamily="$mono"
+                  size="$5"
+                  text="center"
+                >
                   Tamagui Pro
                 </H5>
               )}
@@ -135,13 +141,12 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
                 <Paragraph
                   bg="$color3"
                   p="$4"
-                  br="$4"
-                  // theme="red"
-                  lh="$2"
+                  rounded="$4"
+                  lineHeight="$2"
                   color="$color11"
-                  bw={0.5}
-                  bc="$color3"
-                  cur="pointer"
+                  borderWidth={0.5}
+                  borderColor="$color3"
+                  cursor="pointer"
                   animation="lazy"
                   hoverStyle={{
                     y: -2,
@@ -165,7 +170,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
               {!isProUser && (
                 <Theme name="accent">
                   <Button
-                    br="$10"
+                    rounded="$10"
                     my="$3"
                     fontFamily="$mono"
                     onPress={() => {

@@ -8,15 +8,15 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 export function SelectDemo() {
   return (
     <YStack gap="$4">
-      <XStack w={'100%'} ai="center" gap="$4">
-        <Label htmlFor="select-demo-1" flex={1} miw={80}>
+      <XStack width="100%" items="center" gap="$4">
+        <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoContents id="select-demo-1" />
       </XStack>
 
-      <XStack w={'100%'} ai="center" gap="$4">
-        <Label htmlFor="select-demo-2" flex={1} miw={80}>
+      <XStack width="100%" items="center" gap="$4">
+        <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
         <SelectDemoContents id="select-demo-2" native />
@@ -44,7 +44,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
-            backgroundColor="$shadowColor"
+            bg="$shadowColor"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -54,13 +54,13 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
 
       <Select.Content zIndex={200000}>
         <Select.ScrollUpButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
           <LinearGradient
@@ -68,7 +68,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
             end={[0, 1]}
             fullscreen
             colors={['$background', 'transparent']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </Select.ScrollUpButton>
 
@@ -78,7 +78,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
           // animateOnly={['transform', 'opacity']}
           // enterStyle={{ o: 0, y: -10 }}
           // exitStyle={{ o: 0, y: 10 }}
-          minWidth={200}
+          minW={200}
         >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
@@ -106,11 +106,11 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
           {props.native && (
             <YStack
               position="absolute"
-              right={0}
-              top={0}
-              bottom={0}
-              alignItems="center"
-              justifyContent="center"
+              r={0}
+              t={0}
+              b={0}
+              items="center"
+              justify="center"
               width={'$4'}
               pointerEvents="none"
             >
@@ -122,13 +122,13 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
           <LinearGradient
@@ -136,7 +136,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
             end={[0, 1]}
             fullscreen
             colors={['transparent', '$background']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>

@@ -13,9 +13,9 @@ export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
   return (
     <TamaguiSelect.Item
       index={index + 1}
-      bc="transparent"
+      borderColor="transparent"
       hoverStyle={{
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        bg: 'rgba(0,0,0,0.1)',
       }}
       {...props}
     >
@@ -59,17 +59,17 @@ const SelectComponent = (
     name,
     autoComplete,
     size,
-  }
+  } as SelectProps
   return (
     <TamaguiSelect {...selectProps}>
       <TamaguiSelect.Trigger
         iconAfter={ChevronDown}
         {...selectTriggerProps}
         {...(variant === 'pill' && {
-          bw: 1,
-          bc: '$borderColor',
-          br: '$10',
-          w: 'auto',
+          borderWidth: 1,
+          borderColor: '$borderColor',
+          rounded: '$10',
+          width: 'auto',
           color: '$color9',
         })}
       >
@@ -83,13 +83,13 @@ const SelectComponent = (
 
       <TamaguiSelect.Content zIndex={1_000_000}>
         <TamaguiSelect.ScrollUpButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
           <LinearGradient
@@ -97,7 +97,7 @@ const SelectComponent = (
             end={[0, 1]}
             fullscreen
             colors={['$background', '$background0']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </TamaguiSelect.ScrollUpButton>
 
@@ -115,20 +115,20 @@ const SelectComponent = (
           }}
           bg="transparent"
           className="blur-medium"
-          bw={1}
+          borderWidth={1}
         >
-          <XStack fullscreen zi={0} bg="$background" o={0.7} />
+          <XStack fullscreen z={0} bg="$background" opacity={0.7} />
           {children}
         </TamaguiSelect.Viewport>
 
         <TamaguiSelect.ScrollDownButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
           <LinearGradient
@@ -136,7 +136,7 @@ const SelectComponent = (
             end={[0, 1]}
             fullscreen
             colors={['$background0', '$background']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </TamaguiSelect.ScrollDownButton>
       </TamaguiSelect.Content>

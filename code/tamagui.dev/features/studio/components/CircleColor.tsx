@@ -5,17 +5,16 @@ import { YStack } from 'tamagui'
 import { Checkerboard } from './Checkerboard'
 
 export const CircleColor = (propsIn: CircleProps) => {
-  const { backgroundColor, ...props } = useProps(propsIn)
+  const { bg, ...props } = useProps(propsIn)
   return (
-    <Circle bw={1} bc="$borderColor" ov="hidden" {...props}>
+    <Circle borderWidth={1} borderColor="$borderColor" overflow="hidden" {...props}>
       <Checkerboard />
-      <YStack fullscreen bg={backgroundColor} />
+      <YStack fullscreen bg={bg} />
       <YStack
-        zi={100}
+        z={100}
         fullscreen
-        br={100}
+        rounded={100}
         style={{
-          // @ts-ignore
           boxShadow: `inset 0 0 8px rgba(0,0,0,0.05)`,
         }}
       />

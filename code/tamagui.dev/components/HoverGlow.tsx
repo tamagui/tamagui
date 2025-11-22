@@ -184,17 +184,6 @@ height: ${parentBounds.height}`
     >
       {props.debug ? crosshair : null}
       {divProps?.children}
-      {/* {strategy === 'plain-underlay' && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: -1,
-            background,
-            ...underlayStyle,
-          }}
-        />
-      )} */}
     </div>
   )
 
@@ -540,12 +529,12 @@ const useGetBounds = ({
   defaultBounds,
   useResizeObserverRect,
 }: {
-  node?: HTMLElement | null
+  node?: HTMLElement | undefined
   onDidUpdate?: (props: Bounds) => void
-  defaultBounds?: Bounds
-  useResizeObserverRect?: boolean
+  defaultBounds?: Bounds | undefined
+  useResizeObserverRect?: boolean | undefined
 }) => {
-  const state = useRef<DOMRect>()
+  const state = useRef<DOMRect>(null)
 
   useIsomorphicLayoutEffect(() => {
     if (!node) {

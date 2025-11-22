@@ -20,21 +20,20 @@ import { usePathname, useRouter } from 'one'
 
 export const StudioBar = memo(function Header() {
   const themeBuilderStore = useThemeBuilderStore()
-  const showMinimal = !themeBuilderStore.isCentered
 
   return (
     <XStack
-      h={topBarHeight}
-      zi={100_000}
-      jc="space-between"
+      height={topBarHeight}
+      z={100_000}
+      justify="space-between"
       data-tauri-drag-region
-      pos={'fixed' as any}
-      als="center"
+      position={'fixed' as any}
+      self="center"
       elevation="$2"
-      ai="center"
+      items="center"
       px="$5"
-      br="$10"
-      ov="hidden"
+      rounded="$10"
+      overflow="hidden"
       gap="$3"
       {...(themeBuilderStore.isCentered
         ? {
@@ -47,74 +46,25 @@ export const StudioBar = memo(function Header() {
             right: '$2',
             top: '$2',
           })}
-      maxWidth={192}
+      maxW={192}
       className="all ease-in-out ms300"
     >
-      <YStack br="$10" fullscreen className="blur-medium" />
-      <YStack br="$10" fullscreen bg="$background" bw={1} bc="$borderColor" />
-
-      {/* <XStack ai="center"> */}
-      {/* <YStack> */}
-      {/* <NextLink href={studioRootDir}> */}
+      <YStack rounded="$10" fullscreen className="blur-medium" />
+      <YStack
+        rounded="$10"
+        fullscreen
+        bg="$background"
+        borderWidth={1}
+        borderColor="$borderColor"
+      />
       <XStack mr="$2">
         <LogoIcon downscale={2.5} />
       </XStack>
-      {/* </NextLink> */}
-      {/* </YStack> */}
-
-      {/* {state.projectName ? (
-          <SizableText>Project: {state.projectName}</SizableText>
-        ) : null} */}
-      {/* <DesignSystemSelector /> */}
-      {/* </XStack> */}
 
       <PortalHost name="studio-header" />
-      {/* <XStack
-        ai="center"
-        className="all ease-in-out ms300"
-        // w={showMinimal ? 0 : 'auto'}
-        o={showMinimal ? 0 : 1}
-        ov="hidden"
-      >
-        <StudioTabs />
-
-        <AccountButton />
-      </XStack> */}
-      {/* <ThemeSwitch /> */}
     </XStack>
   )
 })
-
-const AccountButton = () => {
-  // todo
-  return null
-  // const { data } = useUser()
-  // const user = data?.session?.user
-
-  // return (
-  //   <XStack ai="center" jc="center" space="$2">
-  //     <Anchor href={`${siteRootDir}/account`}>
-  //       <TooltipSimple label="Account">
-  //         {data?.userDetails ? (
-  //           <Avatar size="$2" circular>
-  //             <Avatar.Image
-  //               source={{
-  //                 uri:
-  //                   data.userDetails?.avatar_url ??
-  //                   getDefaultAvatarImage(
-  //                     data.userDetails?.full_name ?? user?.email ?? 'User'
-  //                   ),
-  //               }}
-  //             />
-  //           </Avatar>
-  //         ) : (
-  //           <Button fontWeight="900" icon={User} size="$2" />
-  //         )}
-  //       </TooltipSimple>
-  //     </Anchor>
-  //   </XStack>
-  // )
-}
 
 export const ThemeSwitch = memo(() => {
   const rootStore = useRootStore()
@@ -127,7 +77,7 @@ export const ThemeSwitch = memo(() => {
   return (
     <Popover open={tipOpen} stayInFrame={{ padding: 10 }} size="$3">
       <Popover.Trigger>
-        <XStack mx="$2" ai="center">
+        <XStack mx="$2" items="center">
           <Switch
             checked={isLight}
             size="$2"
@@ -138,21 +88,17 @@ export const ThemeSwitch = memo(() => {
                 themeBuilderStore.themeSwitchOpen = false
               }
             }}
-
-            // rotate="-45deg"
           >
-            <XStack fullscreen zi={100} x={2} y={0.5}>
+            <XStack fullscreen z={100} x={2} y={0.5}>
               {isLight && (
                 <Button
                   tag="span"
                   color="$color"
                   disabled
                   chromeless
-                  // rotate="45deg"
-
                   size="$1"
                   scaleIcon={1}
-                  o={0.44}
+                  opacity={0.44}
                   x={-1.5}
                   y={-1.5}
                   icon={Moon}
@@ -160,18 +106,16 @@ export const ThemeSwitch = memo(() => {
               )}
             </XStack>
 
-            <XStack pos="absolute" t={0} r={0} zi={100} x={1} y={0}>
+            <XStack position="absolute" t={0} r={0} z={100} x={1} y={0}>
               {!isLight && (
                 <Button
                   tag="span"
                   color="$color"
                   disabled
                   chromeless
-                  // rotate="45deg"
-
                   size="$1"
                   scaleIcon={1}
-                  o={0.25}
+                  opacity={0.25}
                   x={-1.5}
                   y={-1.5}
                   icon={Sun}
@@ -180,10 +124,7 @@ export const ThemeSwitch = memo(() => {
             </XStack>
 
             <Switch.Thumb animation="quickest">
-              <YStack
-                ai="center"
-                // rotate="45deg"
-              >
+              <YStack items="center">
                 {isLight && (
                   <Button
                     tag="span"
@@ -192,7 +133,7 @@ export const ThemeSwitch = memo(() => {
                     chromeless
                     size="$1"
                     scaleIcon={1.2}
-                    o={0.8}
+                    opacity={0.8}
                     y={-0.75}
                     icon={Sun}
                   />
@@ -205,7 +146,7 @@ export const ThemeSwitch = memo(() => {
                     chromeless
                     size="$1"
                     scaleIcon={1.2}
-                    o={0.5}
+                    opacity={0.5}
                     y={-0.75}
                     icon={Moon}
                   />
@@ -224,7 +165,6 @@ export const ThemeSwitch = memo(() => {
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        // maw={400}
         animation={[
           'quickest',
           {
@@ -240,7 +180,7 @@ export const ThemeSwitch = memo(() => {
         <Button
           size="$1"
           circular
-          pos="absolute"
+          position="absolute"
           t="$-2"
           r="$-2"
           icon={X}
@@ -264,7 +204,7 @@ const StudioTabs = memo(function StudioTabs() {
       tabs={[
         {
           component: (
-            <SizableText size="$2" fow="500">
+            <SizableText size="$2" fontWeight="500">
               Theme Studio
             </SizableText>
           ),
@@ -273,104 +213,24 @@ const StudioTabs = memo(function StudioTabs() {
         },
         {
           component: (
-            <SizableText size="$2" fow="500">
+            <SizableText size="$2" fontWeight="500">
               Config
             </SizableText>
           ),
           value: 'config',
           hasChanges: false,
         },
-        // {
-        //   component: <SizableText size="$2" fow="500">Tokens</SizableText>,
-        //   value: 'tokens',
-        //   hasChanges: false,
-        // },
-        // {
-        //   component: <SizableText size="$2" fow="500">Colors</SizableText>,
-        //   value: 'colors',
-        //   hasChanges: useObserve(() => colorsStore.hasChanges),
-        // },
+
         {
           component: (
-            <SizableText size="$2" fow="500">
+            <SizableText size="$2" fontWeight="500">
               Themes
             </SizableText>
           ),
           value: 'themes',
           hasChanges: false,
         },
-        // {
-        //   component: <SizableText size="$2" fow="500">Animations</SizableText>,
-        //   value: 'animations',
-        //   hasChanges: useObserve(() => animationsStore.hasChanges),
-        // },
       ]}
     />
   )
 })
-
-// function DesignSystemSelector() {
-//   return (
-//     <XStack space="$2">
-//       <Select size="$2" defaultValue="blueberry">
-//         <Select.Trigger w={150} iconAfter={ChevronDown}>
-//           <Select.Value placeholder="Something" />
-//         </Select.Trigger>
-
-//         <Select.Content>
-//           <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
-
-//           <Select.Viewport minWidth={200}>
-//             <Select.Group>
-//               <Select.Label>Fruits</Select.Label>
-//               <Select.Item value="apple" index={0}>
-//                 <Select.ItemText>Apple</Select.ItemText>
-//               </Select.Item>
-//               <Select.Item value="banana" index={1}>
-//                 <Select.ItemText>Banana</Select.ItemText>
-//               </Select.Item>
-//               <Select.Item value="blueberry" index={2}>
-//                 <Select.ItemText>Blueberry</Select.ItemText>
-//               </Select.Item>
-//               <Select.Item value="berry" index={3}>
-//                 <Select.ItemText>Berry</Select.ItemText>
-//               </Select.Item>
-//               <Select.Item value="strawberry" index={4}>
-//                 <Select.ItemText>Strawberry</Select.ItemText>
-//               </Select.Item>
-//               <Select.Item value="kiwi" index={5}>
-//                 <Select.ItemText>Kiwi</Select.ItemText>
-//               </Select.Item>
-//               <Select.Item value="grape" index={6}>
-//                 <Select.ItemText>Grape</Select.ItemText>
-//               </Select.Item>
-//               <Select.Item value="orange" index={7}>
-//                 <Select.ItemText>Orange</Select.ItemText>
-//               </Select.Item>
-//             </Select.Group>
-//           </Select.Viewport>
-
-//           <Select.ScrollDownButton>👇</Select.ScrollDownButton>
-//         </Select.Content>
-//       </Select>
-
-//       <TooltipSimple label="New workspace">
-//         <Dialog.Trigger asChild>
-//           <Button
-//             size="$2"
-//             icon={Plus}
-//             onPress={() => {
-//               rootStore.showDialog('create-workspace', {})
-//             }}
-//           />
-//         </Dialog.Trigger>
-//       </TooltipSimple>
-//     </XStack>
-//   )
-// // }
-
-const getDefaultAvatarImage = (name: string) => {
-  const params = new URLSearchParams()
-  params.append('name', name)
-  return `https://ui-avatars.com/api/?${params.toString()}`
-}

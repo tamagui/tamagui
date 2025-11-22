@@ -154,8 +154,8 @@ const PaymentForm = ({
         <Theme name="accent">
           <Button
             fontFamily="$mono"
-            br="$10"
-            als="flex-end"
+            rounded="$10"
+            self="flex-end"
             disabled={isProcessing || !stripe || !elements}
           >
             {isProcessing ? 'Processing...' : 'Add Seats'}
@@ -175,7 +175,7 @@ export const AddTeamMemberModalComponent = () => {
   const store = useAddTeamMemberModal()
   const [isProcessing, setIsProcessing] = useState(false)
   const [additionalSeats, setAdditionalSeats] = useState(1)
-  const { data: userData, isLoading, refresh } = useUser()
+  const { isLoading, refresh } = useUser()
   const theme = useTheme()
   const themeName = useThemeName()
   const [showCoupon, setShowCoupon] = useState(false)
@@ -268,12 +268,12 @@ export const AddTeamMemberModalComponent = () => {
           elevate
           key="content"
           animation="quick"
-          w="90%"
-          maw={600}
+          width="90%"
+          maxW={600}
           p="$6"
         >
           {isLoading ? (
-            <YStack f={1} ai="center" jc="center">
+            <YStack flex={1} items="center" justify="center">
               <Spinner size="large" />
             </YStack>
           ) : (
@@ -293,12 +293,12 @@ export const AddTeamMemberModalComponent = () => {
                   keyboardType="numeric"
                   width={200}
                 />
-                <YStack ai="flex-end">
+                <YStack items="flex-end">
                   {finalCoupon && (
                     <Paragraph
-                      ff="$mono"
+                      fontFamily="$mono"
                       size="$3"
-                      o={0.5}
+                      opacity={0.5}
                       textDecorationLine="line-through"
                     >
                       Cost: ${baseAmount}/year per seat
@@ -311,7 +311,7 @@ export const AddTeamMemberModalComponent = () => {
               <YStack gap="$2">
                 <SizableText
                   theme="alt1"
-                  o={0.3}
+                  opacity={0.3}
                   cursor="pointer"
                   hoverStyle={{ opacity: 0.8 }}
                   onPress={() => setShowCoupon((x) => !x)}
@@ -319,9 +319,9 @@ export const AddTeamMemberModalComponent = () => {
                   {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
                 </SizableText>
                 {showCoupon && (
-                  <XStack gap="$2" ai="center">
+                  <XStack gap="$2" items="center">
                     <Input
-                      f={1}
+                      flex={1}
                       size="$3"
                       borderWidth={1}
                       placeholder="Enter code"
@@ -372,7 +372,7 @@ export const AddTeamMemberModalComponent = () => {
             </YStack>
           )}
           <Dialog.Close asChild>
-            <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
+            <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>

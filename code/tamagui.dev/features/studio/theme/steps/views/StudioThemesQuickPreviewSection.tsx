@@ -33,16 +33,16 @@ export const StudioThemesQuickPreviewSection = memo(
     return (
       <ScrollView
         bg={subtleBg ? '$color2' : '$color1'}
-        f={1}
-        br="$6"
-        bw={1}
-        bc="$borderColor"
+        flex={1}
+        rounded="$6"
+        borderWidth={1}
+        borderColor="$borderColor"
         contentContainerStyle={{ flex: 1 }}
-        maxHeight={350}
-        maxWidth={400}
-        als="center"
+        maxH={350}
+        maxW={400}
+        self="center"
       >
-        <YStack gap="$3" height="100%" f={1} pt="$4" px="$4" jc="space-between">
+        <YStack gap="$3" height="100%" flex={1} pt="$4" px="$4" justify="space-between">
           <YStack gap="$2">
             <H3>Preview</H3>
             <Paragraph color="$color11">
@@ -50,16 +50,11 @@ export const StudioThemesQuickPreviewSection = memo(
               palette.
             </Paragraph>
           </YStack>
-          <XStack width={200} alignItems="center" gap="$4">
-            <Label
-              paddingRight="$0"
-              minWidth={90}
-              justifyContent="flex-end"
-              htmlFor="switch"
-            >
+          <XStack width={200} items="center" gap="$4">
+            <Label pr="$0" minW={90} justify="flex-end" htmlFor="switch">
               Label
             </Label>
-            <Separator minHeight={20} vertical />
+            <Separator minH={20} vertical />
             <>
               <Switch
                 id="switch"
@@ -83,8 +78,8 @@ export const StudioThemesQuickPreviewSection = memo(
           </XStack>
 
           <YStack pb="$4" gap="$4">
-            <XStack my="$-2" jc="center">
-              <XStack width={300} alignItems="center" space="$4">
+            <XStack my="$-2" justify="center">
+              <XStack width={300} items="center" gap="$4">
                 <Checkbox
                   id={checkId}
                   onCheckedChange={(val) => {
@@ -99,12 +94,12 @@ export const StudioThemesQuickPreviewSection = memo(
                 <Label htmlFor={checkId}>Use subtle background</Label>
               </XStack>
             </XStack>
-            <Separator bc="$color2" />
+            <Separator borderColor="$color2" />
             <XStack gap="$4">
-              <Button f={1}>Cancel</Button>
+              <Button flex={1}>Cancel</Button>
 
               <AccentTheme>
-                <Button f={1} onPress={onPressButton}>
+                <Button flex={1} onPress={onPressButton}>
                   Accept
                 </Button>
               </AccentTheme>

@@ -15,7 +15,7 @@ function getLazyComponent<Import extends Function>(importFunc: Import): Import {
 
 export function lazyDemo(importFunc: () => Promise<any>) {
   return () => {
-    const Component = use(getLazyComponent(importFunc))
+    const Component = use(getLazyComponent(importFunc) as any)
 
     return (
       <Suspense fallback={<Spinner />}>

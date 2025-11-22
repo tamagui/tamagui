@@ -47,7 +47,7 @@ export default function TamaguiHomePage() {
       <YStack
         fullscreen
         className="grain"
-        o={0.2}
+        opacity={0.2}
         style={{
           maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
         }}
@@ -57,10 +57,10 @@ export default function TamaguiHomePage() {
         <Hero />
       </TintSection>
       <HomeHeroBelow />
-      <TintSection index={2} contain="paint layout" zi={1000}>
+      <TintSection index={2} contain="paint layout" z={1000}>
         <YStack
-          pe="none"
-          zi={0}
+          pointerEvents="none"
+          z={0}
           fullscreen
           className="bg-dot-grid"
           style={{
@@ -69,10 +69,10 @@ export default function TamaguiHomePage() {
         />
         <HomeExamples examples={compilationExamples} />
       </TintSection>
-      <TintSection my={-50} index={3} contain="paint layout" pos="relative" zi={100}>
+      <TintSection my={-50} index={3} contain="paint layout" position="relative" z={100}>
         <YStack
-          pe="none"
-          zi={0}
+          pointerEvents="none"
+          z={0}
           fullscreen
           className="bg-dot-grid"
           style={{
@@ -81,15 +81,15 @@ export default function TamaguiHomePage() {
         />
         <HomeThemes />
       </TintSection>
-      <TintSection index={4} mb={-120} zIndex={10000}>
+      <TintSection index={4} mb={-120} z={10000}>
         <HomeResponsive />
       </TintSection>
-      <TintSection index={5} p={0} zIndex={0}>
+      <TintSection index={5} p={0} z={0}>
         <SectionTinted gradient bubble>
           <HomePerformance />
         </SectionTinted>
       </TintSection>
-      <TintSection index={6} zi={100}>
+      <TintSection index={6} z={100}>
         <YStack
           fullscreen
           className="bg-grid"
@@ -99,11 +99,11 @@ export default function TamaguiHomePage() {
         />
         <HomeAnimations animationCode={animationCode} />
       </TintSection>
-      <TintSection index={7} zi={1}>
+      <TintSection index={7} z={1}>
         <HomeFeaturesGrid />
         <YStack
-          pe="none"
-          zi={2}
+          pointerEvents="none"
+          z={2}
           fullscreen
           className="bg-dot-grid"
           style={{
@@ -111,15 +111,15 @@ export default function TamaguiHomePage() {
           }}
         />
       </TintSection>
-      <TintSection index={8} my="$-4" p={0} zIndex={100}>
-        <SectionTinted zi={1000} bubble gradient>
+      <TintSection index={8} my="$-4" p={0} z={100}>
+        <SectionTinted z={1000} bubble gradient>
           <HomeTypography />
         </SectionTinted>
       </TintSection>
-      <HomeSection zi={10}>
+      <HomeSection z={10}>
         <YStack
-          pe="none"
-          zi={0}
+          pointerEvents="none"
+          z={0}
           fullscreen
           className="bg-dot-grid"
           style={{
@@ -128,7 +128,7 @@ export default function TamaguiHomePage() {
         />
         <HomeExampleProps />
       </HomeSection>
-      <HomeSection zi={0}>
+      <HomeSection z={0}>
         <HomeCommunity />
       </HomeSection>
     </>

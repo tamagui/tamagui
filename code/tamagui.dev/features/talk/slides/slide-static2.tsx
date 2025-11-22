@@ -23,14 +23,14 @@ export default memo(() => {
                   {
                     type: 'bullet-point',
                     props: {
-                      paddingBottom: 100,
+                      pb: 100,
                     },
                     content: [
                       {
                         type: 'code-inline',
                         props: {
                           fontSize: 50,
-                          paddingVertical: 20,
+                          py: 20,
                           display: 'inline-flex',
                         },
                         content: `Extracting CSS`,
@@ -41,14 +41,14 @@ export default memo(() => {
                   {
                     type: 'bullet-point',
                     props: {
-                      paddingBottom: 100,
+                      pb: 100,
                     },
                     content: [
                       {
                         type: 'code-inline',
                         props: {
                           fontSize: 50,
-                          paddingVertical: 20,
+                          py: 20,
                           display: 'inline-flex',
                         },
                         content: `Partial evaluation`,
@@ -64,14 +64,14 @@ export default memo(() => {
                   {
                     type: 'bullet-point',
                     props: {
-                      paddingBottom: 100,
+                      pb: 100,
                     },
                     content: [
                       {
                         type: 'code-inline',
                         props: {
                           fontSize: 50,
-                          paddingVertical: 20,
+                          py: 20,
                           display: 'inline-flex',
                         },
                         content: `Tree-flattening`,
@@ -81,14 +81,14 @@ export default memo(() => {
                   {
                     type: 'bullet-point',
                     props: {
-                      paddingBottom: 100,
+                      pb: 100,
                     },
                     content: [
                       {
                         type: 'code-inline',
                         props: {
                           fontSize: 50,
-                          paddingVertical: 20,
+                          py: 20,
                           display: 'inline-flex',
                         },
                         content: `Hook removal`,

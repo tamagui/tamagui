@@ -25,37 +25,31 @@ export const MediaPlayer = memo(
     const tint = !alt ? null : (`alt${alt}` as ThemeName)
 
     return (
-      <YStack
-        display="flex"
-        alignItems="stretch"
-        contain="strict"
-        minWidth={330}
-        minHeight={222}
-      >
+      <YStack display="flex" items="stretch" contain="strict" minW={330} minH={222}>
         <Theme name={tint}>
           <YStack
             overflow="visible"
             borderWidth={1}
             borderColor="$borderColor"
-            backgroundColor="$color1"
-            br="$7"
+            bg="$color1"
+            rounded="$7"
             pointerEvents={pointerEvents}
             p={0}
-            ai="stretch"
+            items="stretch"
             mb={40}
             {...cardProps}
           >
-            <XStack ai="center" p="$4" space="$5">
-              <Square pos="relative" ov="hidden" br="$6" size="$8">
+            <XStack items="center" p="$4" gap="$5">
+              <Square position="relative" overflow="hidden" rounded="$6" size="$8">
                 <Image src={image} width={90} height={90} />
               </Square>
 
-              <YStack als="center" y={-3} miw={165} jc="center">
+              <YStack items="center" y={-3} minW={165} justify="center">
                 <Paragraph fontWeight="700">Billie Jean</Paragraph>
                 <Paragraph color="$color11" size="$3">
                   Michael Jackson
                 </Paragraph>
-                <Paragraph color="$color11" o={0.65} size="$3">
+                <Paragraph color="$color11" opacity={0.65} size="$3">
                   Thriller
                 </Paragraph>
               </YStack>
@@ -64,16 +58,16 @@ export const MediaPlayer = memo(
             <Separator mb={-1} />
 
             <XStack
-              zi={1000}
-              w="100%"
+              z={1000}
+              width="100%"
               px="$6"
               py="$4"
               bg="$backgroundHover"
-              bbrr={17}
-              bblr={17}
-              ai="center"
-              space="$5"
-              jc="center"
+              borderBottomRightRadius={17}
+              borderBottomLeftRadius={17}
+              items="center"
+              gap="$5"
+              justify="center"
               pointerEvents={pointerEvents}
             >
               <Rewind size={20} />
@@ -88,7 +82,7 @@ export const MediaPlayer = memo(
                 size="$8"
                 circular
                 elevation="$2"
-                accessibilityLabel="Pause"
+                aria-label="Pause"
                 pointerEvents={pointerEventsControls}
               />
               <FastForward size={20} />

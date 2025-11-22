@@ -93,7 +93,7 @@ export const HomeGlow = memo(() => {
           exitStyle={{
             opacity: 0,
           }}
-          o={isOnHeroBelow ? 0.5 : 0.8}
+          opacity={isOnHeroBelow ? 0.5 : 0.8}
           mixBlendMode={
             i === 0
               ? 'hard-light'
@@ -104,13 +104,12 @@ export const HomeGlow = memo(() => {
                   : 'hue'
           }
           overflow="hidden"
-          h="100vh"
-          mah={650}
-          w={650}
-          pos="absolute"
+          height="100vh"
+          maxH={650}
+          width={650}
+          position="absolute"
           t={0}
-          l={0}
-          left={`calc(50vw - 500px)`}
+          l={`calc(50vw - 500px)`}
           x={x}
           y={isOnHeroBelow ? 350 : yRand + 250}
           scale={scale * (isAlt ? 0.5 : 1) * scales[tintIndex][i]}
@@ -130,23 +129,21 @@ export const HomeGlow = memo(() => {
 
   return (
     <YStack
-      pos="absolute"
+      position="absolute"
       t={0}
       l={0}
-      pe="none"
+      pointerEvents="none"
       className="all ease-in-out s1"
       key={0}
-      zi={0}
+      z={0}
       x={0}
       y={scrollTop}
-      o={0.3}
+      opacity={0.3}
       {...(isOnHeroBelow && {
-        // animation: 'superLazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
-        o: 0.24,
+        opacity: 0.24,
       })}
-      // display={isResizing ? 'none' : 'flex'}
     >
       <AnimatePresence>{glows}</AnimatePresence>
     </YStack>

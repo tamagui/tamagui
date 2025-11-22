@@ -2,16 +2,16 @@ import { YStack } from 'tamagui'
 
 export const BentoFrond = () => (
   <YStack
-    left="50%"
-    zi={2}
-    pe="none"
+    l="50%"
+    z={2}
+    pointerEvents="none"
     t={0}
-    pos="absolute"
+    position="absolute"
     scale={2.2}
     y={-440}
     x={250}
     $theme-light={{
-      o: 0.8,
+      opacity: 0.8,
     }}
   >
     <YStack
@@ -29,8 +29,8 @@ export const BentoFrond = () => (
         x={140}
         width={640}
         height={640}
-        ov="hidden"
-        ai="center"
+        overflow="hidden"
+        items="center"
       >
         <svg
           width={1280}

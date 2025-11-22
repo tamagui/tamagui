@@ -1,6 +1,9 @@
 import { Circle, YStack, useThemeName } from 'tamagui'
-import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/theme-builder'
-import type { BuildPalette } from '../types'
+import {
+  type BuildPalette,
+  PALETTE_BACKGROUND_OFFSET,
+  getThemeSuitePalettes,
+} from '@tamagui/theme-builder'
 
 export const ColorThemeIndicator = ({
   primary,
@@ -26,9 +29,9 @@ export const ColorThemeIndicator = ({
       <Circle width={size} height={size} bg={palettes[0] as any} />
       {!!palettes[1] && (
         <Circle
-          pos="absolute"
-          bottom={-1}
-          right={-1}
+          position="absolute"
+          b={-1}
+          r={-1}
           width={8}
           height={8}
           bg={palettes[1] as any}

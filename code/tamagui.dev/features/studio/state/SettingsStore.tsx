@@ -104,7 +104,7 @@ export class SettingsStore {
       mediaQueryDefaultActive: Object.fromEntries(mediaQueryDefaultActiveMap) as any,
       shouldAddPrefersColorThemes: rootStore.config.shouldAddPrefersColorThemes,
       themeClassNameOnRoot: rootStore.config.themeClassNameOnRoot,
-    }
+    } as any
   }
 
   updateValue(name: string, value: any, parent?: string) {

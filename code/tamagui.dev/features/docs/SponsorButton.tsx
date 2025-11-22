@@ -14,16 +14,16 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
           color="var(--red10)"
         />
       }
-      als="center"
+      self="center"
       elevation="$3"
       borderWidth={props.tiny ? 0 : 1}
       borderColor="$borderColor"
       size={props.tiny ? '$3' : '$4'}
       fontFamily="$silkscreen"
-      br="$10"
+      rounded="$10"
       circular={props.tiny ? true : false}
       chromeless={props.tiny ? true : false}
-      accessibilityLabel="Support OSS development of Tamagui"
+      aria-label="Support OSS development of Tamagui"
     >
       {props.tiny ? '' : 'Sponsor'}
     </Button>

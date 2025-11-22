@@ -30,15 +30,22 @@ export function Color({
 
   return (
     <SidebarPanel title={`${scale.name}.${index}`}>
-      <YStack space="$3">
-        <YStack bw={1} bc="$borderColor" w="100%" h={48} bg={hex as any} br="$2" />
-        <XStack ov="hidden" f={1} space="$2">
-          <XStack ai="center" space="$2">
+      <YStack gap="$3">
+        <YStack
+          borderWidth={1}
+          borderColor="$borderColor"
+          width="100%"
+          height={48}
+          bg={hex as any}
+          rounded="$2"
+        />
+        <XStack overflow="hidden" flex={1} gap="$2">
+          <XStack items="center" gap="$2">
             <Label size="$2" htmlFor="color-hue">
               {scale.curves.hue ? 'H offset' : 'H'}
             </Label>
             <Input
-              maw={55}
+              maxW={55}
               size="$2"
               id="color-hue"
               // type="number" // min={0} // max={360}
@@ -53,12 +60,12 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack ai="center" space="$2">
+          <XStack items="center" gap="$2">
             <Label size="$2" htmlFor="color-saturation">
               {scale.curves.saturation ? 'S offset' : 'S'}
             </Label>
             <Input
-              maw={55}
+              maxW={55}
               size="$2"
               id="color-saturation"
               // type="number" // min={0} // max={360}
@@ -73,12 +80,12 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack ai="center" space="$2">
+          <XStack items="center" gap="$2">
             <Label size="$2" htmlFor="color-lightness">
               {scale.curves.lightness ? 'L offset' : 'L'}
             </Label>
             <Input
-              maw={55}
+              maxW={55}
               size="$2"
               id="color-lightness"
               // type="number" // min={0} // max={360}

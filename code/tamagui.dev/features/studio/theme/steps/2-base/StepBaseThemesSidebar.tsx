@@ -25,7 +25,7 @@ export function StepBaseThemesSidebar() {
   themeBuilder.themeSuiteVersion
 
   return (
-    <YStack f={1}>
+    <YStack flex={1}>
       {/* fixes some bug in updating first time */}
       <Contents key={themeBuilder.themeSuiteVersion} themeNameBase={themeNameBase} />
     </YStack>
@@ -45,17 +45,17 @@ const Contents = ({
 
   return (
     <>
-      <XStack pos="absolute" t="$4" l={30} zi={1000} gap="$4" scale={0.75}>
+      <XStack position="absolute" t="$4" l={30} z={1000} gap="$4" scale={0.75}>
         {procedureStore.loading.createStudioThemes ? <Spinner size="small" /> : null}
       </XStack>
 
-      <XStack pos="absolute" t="$4" r="$4" zi={1000}>
+      <XStack position="absolute" t="$4" r="$4" z={1000}>
         <XStack
-          o={accentSetting === 'off' ? 0.5 : 1}
+          opacity={accentSetting === 'off' ? 0.5 : 1}
           gap="$2"
           ml="auto"
-          ai="center"
-          h="$2"
+          items="center"
+          height="$2"
         >
           <Label size="$3" color="$color">
             Accent
@@ -72,19 +72,26 @@ const Contents = ({
       </XStack>
 
       {/* offset a bit to cover the overlap edge */}
-      <YStack ai="center" f={1} x={-20} w="calc(100% + 20px)">
+      <YStack items="center" flex={1} x={-20} width="calc(100% + 20px)">
         {schemes.light && (
           <Theme name="light">
             <Theme name={themeName}>
-              <YStack h="50%" gap="$3" ai="center" jc="center" px="$4" pl={60}>
-                <XStack ai="center" gap="$4">
+              <YStack
+                height="50%"
+                gap="$3"
+                items="center"
+                justify="center"
+                px="$4"
+                pl={60}
+              >
+                <XStack items="center" gap="$4">
                   <Separator />
                   <SizableText size="$2" theme="alt1" selectable={false}>
                     {showAccent ? 'Accent' : 'Base'} Light Theme
                   </SizableText>
                   <Separator />
                 </XStack>
-                <YStack br="$9" bg="$background" p="$4" mx="$-2">
+                <YStack rounded="$9" bg="$background" p="$4" mx="$-2">
                   <StudioThemesQuickPreviewSection
                     scheme="light"
                     hasAccent={accentSetting !== 'off'}
@@ -97,15 +104,22 @@ const Contents = ({
         {schemes.dark && (
           <Theme name="dark">
             <Theme name={themeName}>
-              <YStack h="50%" gap="$3" ai="center" jc="center" px="$4" pl={60}>
-                <XStack ai="center" gap="$4">
+              <YStack
+                height="50%"
+                gap="$3"
+                items="center"
+                justify="center"
+                px="$4"
+                pl={60}
+              >
+                <XStack items="center" gap="$4">
                   <Separator />
                   <SizableText size="$2" theme="alt1" selectable={false}>
                     {showAccent ? 'Accent' : 'Base'} Dark Theme
                   </SizableText>
                   <Separator />
                 </XStack>
-                <YStack br="$9" bg="$background" p="$4" mx="$-2">
+                <YStack rounded="$9" bg="$background" p="$4" mx="$-2">
                   <StudioThemesQuickPreviewSection
                     scheme="dark"
                     hasAccent={accentSetting !== 'off'}

@@ -9,9 +9,9 @@ export const Header = () => {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack mt={-20} maw="100%" gap="$6" f={1} jc="space-between" ai="center">
-      <YStack f={1} maw={700} gap="$5">
-        <H1 mb="-2%" {...demoProps.headingFontFamilyProps} size="$12" lh="$11">
+    <XStack mt={-20} maxW="100%" gap="$6" flex={1} justify="space-between" items="center">
+      <YStack flex={1} maxW={700} gap="$5">
+        <H1 mb="-2%" {...demoProps.headingFontFamilyProps} size="$12" lineHeight="$11">
           {store.themeSuite?.name || 'Design System'}
         </H1>
       </YStack>
@@ -21,14 +21,14 @@ export const Header = () => {
           size="$9"
           mx="$2"
           bg="$backgroundFocus"
-          bc="$color5"
+          borderColor="$color5"
           {...demoProps.borderRadiusOuterProps}
           $lg={{
             width: '100%',
-            maxWidth: '100%',
+            maxW: '100%',
           }}
           $group-content-sm={{
-            dsp: 'none',
+            display: 'none',
             bg: 'red',
           }}
         >

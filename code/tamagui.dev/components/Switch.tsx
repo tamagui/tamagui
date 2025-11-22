@@ -1,4 +1,4 @@
-import { memo, useId } from 'react'
+import { memo } from 'react'
 import { type SwitchProps, Switch as TamaguiSwitch, Theme } from 'tamagui'
 
 export const Switch = memo((props: SwitchProps) => {
