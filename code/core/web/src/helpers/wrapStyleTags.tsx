@@ -18,6 +18,8 @@ export function getStyleTags(styles: StyleObject[]) {
                 href={`t_${identifier}`}
                 // @ts-ignore
                 precedence="default"
+                // we remove after first render in favor of inserting to a global stylesheet (faster)
+                suppressHydrationWarning
               >
                 {styleObject[StyleObjectRules].join('\n')}
               </style>

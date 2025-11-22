@@ -2,6 +2,7 @@ import { isServer, isWeb } from '@tamagui/constants'
 import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
+import { getSetting } from '../config'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -28,12 +29,19 @@ export const useComponentState = (
 ) => {
   const isHydrated = useDidFinishSSR()
   const needsHydration = !useIsClientOnly()
-
-  const [startedUnhydrated] = useState(needsHydration && !isHydrated)
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
   const { isHOC } = staticConfig
 
-  const stateRef = useRef<TamaguiComponentStateRef>({})
+  const stateRef = useRef<TamaguiComponentStateRef>(
+    // performance: avoid creating object every render
+    undefined as unknown as TamaguiComponentStateRef
+  )
+
+  if (!stateRef.current) {
+    stateRef.current = {
+      startedUnhydrated: needsHydration && !isHydrated,
+    }
+  }
 
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
@@ -207,7 +215,7 @@ export const useComponentState = (
   }
 
   return {
-    startedUnhydrated,
+    startedUnhydrated: curStateRef.startedUnhydrated,
     curStateRef,
     disabled,
     groupName,

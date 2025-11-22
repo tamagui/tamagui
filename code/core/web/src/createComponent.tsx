@@ -1397,17 +1397,6 @@ export function createComponent<
       }
     }
 
-    // ensure we override new context with style resolved values - why?
-    // if (staticConfig.context) {
-    //   const contextProps = staticConfig.context.props
-    //   for (const key in contextProps) {
-    //     if ((viewProps.style && key in viewProps.style) || key in viewProps) {
-    //       overriddenContextProps ||= {}
-    //       overriddenContextProps[key] = viewProps.style?.[key] ?? viewProps[key]
-    //     }
-    //   }
-    // }
-
     if (overriddenContextProps) {
       const Provider = staticConfig.context!.Provider!
 
@@ -1431,18 +1420,14 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`context-override`
 
-    // add in <style> tags inline
-    if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated) {
-      // breaking rules of hooks but startedUnhydrated NEVER changes
-      const styleTags = useMemo(() => {
-        if (isPassthrough) return
-        return getStyleTags(Object.values(splitStyles.rulesToInsert))
-      }, [])
-      // this is only to appease react hydration really
+    // SSR style support - for non compiled styles we render them inline until client takes over
+    // on client we then switch over to our global sheet insert, because rendering inline is expensive
+    if (process.env.TAMAGUI_TARGET === 'web' && startedUnhydrated && splitStyles) {
       content = (
         <>
           {content}
-          {styleTags}
+          {/* we surpress hydration warnings */}
+          {!isHydrated ? getStyleTags(Object.values(splitStyles.rulesToInsert)) : null}
         </>
       )
     }

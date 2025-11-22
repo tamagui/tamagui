@@ -471,6 +471,8 @@ export type ComponentContextI = {
 }
 
 export type TamaguiComponentStateRef = {
+  startedUnhydrated: boolean
+
   host?: TamaguiElement
   composedRef?: (x: TamaguiElement) => void
   willHydrate?: boolean

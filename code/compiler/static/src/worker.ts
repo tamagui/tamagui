@@ -108,7 +108,6 @@ export async function runTask(task: WorkerTask): Promise<WorkerResult> {
     if (task.type === 'clearCache') {
       // Clear config caches when files change
       configCache.clear()
-      console.info(`[tamagui] 🔄 Worker cache cleared (config changed)`)
       return { success: true, data: null }
     }
 
