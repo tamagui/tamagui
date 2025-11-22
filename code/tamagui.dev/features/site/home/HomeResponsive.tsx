@@ -1,5 +1,5 @@
 import { throttle } from '@github/mini-throttle'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/tamagui-dev-config'
@@ -31,7 +31,7 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
 import favicon from '~/public/favicon.svg'
@@ -194,7 +194,7 @@ export const HomeResponsive = memo(() => {
           pos="absolute"
           zi={1}
           f={1}
-          space="$1"
+          gap="$1"
           // mostly keeping this to make sure we get a good ACID test of useMedia().sm
           {...(media.sm && {
             scale,
@@ -293,7 +293,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
       <XStack y={-60} ai="flex-start">
         <YStack w={1} h={70} bg="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
-          accessibilityLabel={`Responsive size ${name}`}
+          aria-label={`Responsive size ${name}`}
           borderWidth={1}
           size="$3"
           circular
@@ -302,12 +302,11 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
           left={0}
           y={-20}
           x={-17}
-          fontSize={12}
           onPress={() => {
             onPress(name)
           }}
         >
-          {name}
+          <Button.Text fontSize={12}>{name}</Button.Text>
         </Button>
       </XStack>
     </YStack>
@@ -517,7 +516,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
           <Image width={10} height={10} src={favicon} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
+        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipsis>
           {children}
         </Paragraph>
       </XStack>

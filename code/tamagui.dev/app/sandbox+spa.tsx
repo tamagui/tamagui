@@ -15,7 +15,7 @@ import {
   View,
   YStack,
 } from 'tamagui'
-// import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
+import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
 
 export default function Sandbox() {
   return (

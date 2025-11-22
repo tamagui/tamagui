@@ -3,7 +3,7 @@ import React from 'react'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 
 export function SelectDemo() {
   return (
@@ -81,7 +81,9 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
           minWidth={200}
         >
           <Select.Group>
-            <Select.Label>Fruits</Select.Label>
+            <Select.Label>
+              <Select.Label.Text color="$red10">Fruits</Select.Label.Text>
+            </Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>

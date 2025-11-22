@@ -174,7 +174,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           }
           if (webpackConfig.resolve.plugins[0]) {
             delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
-            delete webpackConfig.resolve.plugins[0].paths['tamagui']
+            // delete webpackConfig.resolve.plugins[0].paths['tamagui']
           }
         }
 
@@ -223,7 +223,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             if (
               fullPath.startsWith('moti') ||
               fullPath.startsWith('solito') ||
-              fullPath === 'tamagui' ||
+              // fullPath === 'tamagui' ||
               fullPath.startsWith('@tamagui') ||
               fullPath === 'react-native-safe-area-context' ||
               fullPath === 'expo-linear-gradient' ||

@@ -57,7 +57,8 @@ export const HomeExamples = memo(
           <ThemeTint>
             <XGroup
               scrollable
-              bordered
+              borderWidth={1}
+              borderColor="$borderColor"
               bg="$color2"
               maxWidth="100%"
               als="center"
@@ -70,15 +71,14 @@ export const HomeExamples = memo(
                 return (
                   <XGroup.Item key={i}>
                     <Button
-                      accessibilityLabel="See example"
+                      aria-label="See example"
                       onPress={() => setActiveIndex(i)}
                       theme={i === activeIndex ? 'surface2' : null}
                       chromeless={i !== activeIndex}
                       borderRadius={0}
                       size="$3"
-                      fontFamily="$silkscreen"
                     >
-                      {example.name}
+                      <Button.Text fontFamily="$silkscreen">{example.name}</Button.Text>
                     </Button>
                   </XGroup.Item>
                 )
@@ -193,17 +193,17 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                 {title}
               </Heading>
             </Theme>
-            <XGroup size="$2" bordered>
+            <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button
-                    accessibilityLabel="See example"
+                    aria-label="See example"
                     onPress={() => setActiveIndex(i)}
                     theme={i === activeIndex ? (tint as any) : 'alt1'}
                     size="$2"
                     borderRadius="$0"
                   >
-                    {example.name}
+                    <Button.Text>{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}

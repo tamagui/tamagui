@@ -343,9 +343,6 @@
       "path": "code/ui/avatar"
     },
     {
-      "path": "code/ui/button-next"
-    },
-    {
       "path": "code/ui/button"
     },
     {
@@ -383,9 +380,6 @@
     },
     {
       "path": "code/ui/group"
-    },
-    {
-      "path": "code/ui/image-next"
     },
     {
       "path": "code/ui/image"

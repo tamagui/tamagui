@@ -195,9 +195,8 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
-  defaultFont: undefined,
   settings: {
-    defaultFont: undefined,
+    defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
@@ -214,7 +213,8 @@ const tamaConf = createTamagui({
       : search.includes('animationDriver=motion')
         ? animationsMotion
         : animationsMoti, // default moti
-  themeClassNameOnRoot: false,
+  // This setting is now configured in createTamagui settings
+  // themeClassNameOnRoot: false, // moved to createTamagui({ settings: { themeClassNameOnRoot } })
 
   defaultProps: {
     Square: {

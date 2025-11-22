@@ -77,7 +77,7 @@ export function Panel({
         )}
       >
         <Theme
-          name={accent ? accentThemeName : undefined}
+          name={accent ? accentThemeName : null}
           // TODO shouldn't need this
           key={`${accent}`}
           inverse={inverse}
@@ -99,10 +99,10 @@ export function Panel({
           <Popover size="$5" allowFlip placement="bottom">
             <Popover.Trigger asChild>
               <Button
+                theme="accent"
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                themeInverse
                 elevation="$2"
                 size="$2"
                 circular

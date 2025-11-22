@@ -51,7 +51,7 @@ export function LucideIconsDemo() {
   )
 
   return (
-    <YStack minWidth="100%" padding="$4" paddingBottom="$0" space>
+    <YStack minWidth="100%" padding="$4" paddingBottom="$0" gap="$4">
       <Input value={searchRaw} onChangeText={setSearch} placeholder="Search..." />
 
       <YStack height={420}>

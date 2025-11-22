@@ -380,7 +380,6 @@ export type ThemeState = {
   id: string
   name: string
   theme: ThemeParsed
-  inverses: number
   parentName?: string
   isInverse?: boolean
   isNew?: boolean
@@ -410,8 +409,6 @@ export interface PxValue {
 export type ColorScheme = 'light' | 'dark'
 
 export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
-
-export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>
 
@@ -664,8 +661,6 @@ export interface TamaguiConfig
   extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
     TamaguiCustomConfig {}
 
-type OnlyAllowShorthandsSetting = boolean | undefined
-
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
@@ -852,18 +847,6 @@ type GetAltThemeNames<S> =
   | (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S)
   | S
 
-export type SpacerUniqueProps = {
-  size?: SpaceValue | number
-  flex?: boolean | number
-  direction?: SpaceDirection
-}
-
-export interface SpacerStyleProps
-  extends Omit<StackStyleBase, keyof SpacerUniqueProps>,
-    SpacerUniqueProps {}
-
-export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>
-
 type AllowedValueSettingBase =
   | boolean
   | 'strict'
@@ -895,7 +878,7 @@ export interface GenericTamaguiSettings {
    * When true, flexBasis will be set to 0 when flex is positive. This will be
    * the default in v2 of Tamagui alongside an alternative mode for web compat.
    */
-  styleCompat?: 'react-native'
+  styleCompat?: 'react-native' | 'legacy'
 
   // TODO
   /**
@@ -953,18 +936,6 @@ export interface GenericTamaguiSettings {
   autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting
 
   /**
-   * Will change the behavior of media styles. By default they have a fixed
-   * specificity: they always override any $theme- or $platform- styles. With
-   * this enabled, media styles will have the same precedence as the theme and
-   * platform styles, meaning that the order of the props determines if they
-   * override.
-   *
-   * @default false
-   * @deprecated going away in v2
-   */
-  mediaPropOrder?: boolean
-
-  /**
    * On iOS, this enables a mode where Tamagui returns color values using
    * `DynamicColorIOS` This is a React Native built in feature, you can read the
    * docs here: https://reactnative.dev/docs/dynamiccolorios
@@ -1000,12 +971,6 @@ export interface GenericTamaguiSettings {
     | 'unset'
 
   /**
-   * Only allow shorthands when enabled. Recommended to be true to avoid having
-   * two ways to style the same property.
-   */
-  onlyAllowShorthands?: OnlyAllowShorthandsSetting
-
-  /**
    * Define a default font, for better types and default font on Text
    */
   defaultFont?: string
@@ -1036,12 +1001,6 @@ export interface GenericTamaguiSettings {
   disableSSR?: boolean
 
   /**
-   * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
-   * For custom use cases like integration with next-theme.
-   */
-  disableRootThemeClass?: boolean
-
-  /**
    * For the first render, determines which media queries are true, this only
    * affects things on native or on web if you disableSSR, as otherwise Tamagui
    * relies on CSS to avoid the need for re-rendering on first render.
@@ -1070,11 +1029,20 @@ export interface GenericTamaguiSettings {
   shouldAddPrefersColorThemes?: boolean
 
   /**
-   * If you want to style your <body> tag to use themes, you must place the
-   * theme className onto the body element. This will do so. Otherwise, Tamagui
-   * will place the className onto the element rendered by the TamaguiProvider
+   * If you want to style your <body> tag to use theme CSS variables on web, you
+   * must place the theme className onto the body element or above. This will do so.
+   * If disabled, Tamagui will place the className onto the element rendered by
+   * the TamaguiProvider
+   *
+   * @default html
    */
-  themeClassNameOnRoot?: boolean
+  addThemeClassName?: 'body' | 'html' | false
+
+  /**
+   * Sets the default position value for all Tamagui components.
+   * @default 'static'
+   */
+  defaultPosition?: 'static' | 'relative'
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -1102,12 +1070,6 @@ export type CreateTamaguiProps = {
   settings?: Partial<GenericTamaguiSettings>
 
   /**
-   * Define a default font, for better types and default font on Text
-   */
-  /** @deprecated moved into settings sub-object */
-  defaultFont?: string
-
-  /**
    * Web-only: define text-selection CSS
    */
   selectionStyles?: (theme: Record<string, string>) => null | {
@@ -1115,67 +1077,11 @@ export type CreateTamaguiProps = {
     color?: any
   }
 
-  /**
-   * *Advanced use case* For all CSS extracted views, this has no effect.
-   *
-   * For SSR compatibility on the web, Tamagui will render once with the settings
-   * from `mediaQueryDefaultActive` set for all media queries. Then, it will render
-   * again after the initial render using the proper media query values. This is so that
-   * hydration will match perfectly with the server.
-   *
-   * Setting disableSSR will avoid this second render by setting the media query state
-   * to the actual browser dimensions on initial load. This is only useful for client-only
-   * apps.
-   *
-   */
-  /** @deprecated moved into settings sub-object */
-  disableSSR?: boolean
-
-  /**
-   * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
-   * For custom use cases like integration with next-theme.
-   */
-  /** @deprecated moved into settings sub-object */
-  disableRootThemeClass?: boolean
-
   defaultProps?: Record<string, any> & {
     Stack?: StackProps
     Text?: TextProps
-    Spacer?: SpacerProps
+    View?: StackProps
   }
-
-  // for the first render, determines which media queries are true
-  // useful for SSR
-  /** @deprecated moved into settings sub-object */
-  mediaQueryDefaultActive?: Record<string, boolean>
-
-  // what's between each CSS style rule, set to "\n" to be easier to read
-  // defaults: "\n" when NODE_ENV=development, "" otherwise
-  /** @deprecated moved into settings sub-object */
-  cssStyleSeparator?: string
-
-  // (Advanced)
-  // on the web, tamagui treats `dark` and `light` themes as special and
-  // generates extra CSS to avoid having to re-render the entire page.
-  // this CSS relies on specificity hacks that multiply by your sub-themes.
-  // this sets the maxiumum number of nested dark/light themes you can do
-  // defaults to 3 for a balance, but can be higher if you nest them deeply.
-  /** @deprecated moved into settings sub-object */
-  maxDarkLightNesting?: number
-
-  // adds @media(prefers-color-scheme) media queries for dark/light
-  /** @deprecated moved into settings sub-object */
-  shouldAddPrefersColorThemes?: boolean
-
-  // only if you put the theme classname on the html element we have to generate diff
-  /** @deprecated moved into settings sub-object */
-  themeClassNameOnRoot?: boolean
-
-  /**
-   * Only allow shorthands when enabled
-   */
-  /** @deprecated moved into settings sub-object */
-  onlyAllowShorthands?: OnlyAllowShorthandsSetting
 }
 
 export type GetCSS = (opts?: {
@@ -1192,9 +1098,9 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings,
+  G extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, I>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -1210,7 +1116,7 @@ export type TamaguiInternalConfig<
     reactNative?: any
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
-    settings: Omit<GenericTamaguiSettings, keyof I> & I
+    settings: Omit<GenericTamaguiSettings, keyof G> & G
     defaultFontToken: `${string}`
   }
 
@@ -1432,6 +1338,8 @@ export type ThemeValueFallbackSpace =
       UnionableString | UnionableNumber,
       WebStyleValueUniversal | WebOnlySizeValue
     >
+
+export type SpaceValue = number | SpaceTokens | ThemeValueFallback
 
 export type ThemeValueFallbackSize = GetThemeValueFallbackFor<
   AllowedValueSettingSize,
@@ -1677,8 +1585,6 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands']
-
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
@@ -1718,12 +1624,9 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 //
 // add both theme and shorthands
 //
-export type WithThemeAndShorthands<
-  A extends Object,
-  Variants = {},
-> = OnlyAllowShorthands extends true
-  ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
+export type WithThemeAndShorthands<A extends Object, Variants = {}> = WithThemeValues<A> &
+  Variants &
+  WithShorthands<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...
@@ -1746,8 +1649,6 @@ export type WithThemeShorthandsPseudosMedia<
 /**
  * Base style-only props (no media, pseudo):
  */
-
-export type SpaceValue = boolean | number | SpaceTokens | ThemeValueFallback
 
 type Px = `${string | number}px`
 type PxOrPct = Px | `${string | number}%`
@@ -1783,19 +1684,7 @@ interface ExtraStyleProps {
   /**
    * Web-only style property. Will be omitted on native.
    */
-  transition?: Properties['transition']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  textWrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty' | 'stable'
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
   contain?: Properties['contain']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  touchAction?: Properties['touchAction']
   /**
    * Web-only style property. Will be omitted on native.
    */
@@ -1816,7 +1705,6 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   outlineWidth?: SpaceValue
-
   /**
    * Web-only style property. Will be omitted on native.
    */
@@ -1824,9 +1712,45 @@ interface ExtraStyleProps {
   /**
    * Web-only style property. Will be omitted on native.
    */
-  scrollbarWidth?: Properties['scrollbarWidth']
+  backdropFilter?: Properties['backdropFilter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  background?: Properties['background']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundImage?: Properties['backgroundImage']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundOrigin?: Properties['backgroundOrigin']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundPosition?: Properties['backgroundPosition']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundRepeat?: Properties['backgroundRepeat']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundSize?: Properties['backgroundSize']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  boxSizing?: Properties['boxSizing']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowX?: Properties['boxSizing']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowY?: Properties['boxSizing']
 
-  // pointerEvents?: ViewProps['pointerEvents']
+  pointerEvents?: ViewProps['pointerEvents']
 
   /**
    * The point at which transforms originate from.
@@ -1852,26 +1776,6 @@ interface ExtraStyleProps {
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backgroundImage?: Properties['backgroundImage']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  backgroundOrigin?: Properties['backgroundOrigin']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  backgroundPosition?: Properties['backgroundPosition']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  backgroundRepeat?: Properties['backgroundRepeat']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  backgroundSize?: Properties['backgroundSize']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
   backgroundClip?: Properties['backgroundClip']
   /**
    * Web-only style property. Will be omitted on native.
@@ -1881,10 +1785,6 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   backgroundAttachment?: Properties['backgroundAttachment']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  background?: Properties['background']
   /**
    * Web-only style property. Will be omitted on native.
    */
@@ -2033,10 +1933,6 @@ interface ExtraStyleProps {
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backdropFilter?: Properties['backdropFilter']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
   containerType?: Properties['containerType']
   /**
    * Web-only style property. Will be omitted on native.
@@ -2108,6 +2004,7 @@ interface ExtraStyleProps {
   paddingInline?: SpaceTokens | number
   paddingInlineStart?: SpaceTokens | number
   paddingInlineEnd?: SpaceTokens | number
+  inset?: SpaceTokens | number
   insetBlock?: SpaceTokens | number
   insetBlockStart?: SpaceTokens | number
   insetBlockEnd?: SpaceTokens | number
@@ -2120,19 +2017,6 @@ export interface ExtendBaseStackProps {}
 export interface ExtendBaseTextProps {}
 
 interface ExtraBaseProps {
-  /**
-   * @deprecated Use `gap`
-   */
-  space?: SpaceValue | boolean
-  /**
-   * @deprecated Use `gap`
-   */
-  spaceDirection?: SpaceDirection
-  /**
-   * @deprecated can implement your own hook or component
-   */
-  separator?: ReactNode
-
   /**
    * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
    * Pass a string animation here and it uses an animation driver to execute it.
@@ -2176,13 +2060,11 @@ export interface StackStyleBase
 export interface TextStylePropsBase
   extends Omit<RNTextStyle, keyof ExtendedBaseProps>,
     ExtendedBaseProps {
-  ellipse?: boolean
+  ellipsis?: boolean
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
-  /** @deprecated use verticalAlign instead */
-  textAlignVertical?: RNTextStyle['textAlignVertical']
 }
 
 //
@@ -2292,14 +2174,11 @@ export interface TextNonStyleProps
       | RNOnlyProps
       | keyof ExtendBaseTextProps
       | 'style'
-      | 'pointerEvents'
     >,
     ExtendBaseTextProps,
     TamaguiComponentPropsBase {
   // we allow either RN or web style props, of course only web css props only works on web
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
-  /** @deprecated use userSelect instead */
-  selectable?: boolean
 }
 
 export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
@@ -2308,7 +2187,7 @@ export type TextProps = TextNonStyleProps & TextStyle
 
 export interface ThemeableProps {
   theme?: ThemeName | null
-  themeInverse?: boolean
+  // themeInverse?: boolean
   themeReset?: boolean
   componentName?: string
   debug?: DebugProp
@@ -2376,7 +2255,7 @@ export type TamaguiComponent<
     Variants,
     ParentStaticProperties
   > &
-  Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
+  Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties]
   }
 
@@ -2454,8 +2333,6 @@ export type StaticComponentObject<
 > = {
   staticConfig: StaticConfig
 
-  /** @deprecated use `styleable` instead (same functionality, better name) */
-  extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
   /*
    * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
    */
@@ -2476,7 +2353,7 @@ export type TamaguiComponentExpectingVariants<
   Variants extends Object = {},
 > = TamaguiComponent<Props, any, any, any, Variants>
 
-export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
+export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   config?: TamaguiInternalConfig
   disableInjectCSS?: boolean
   children?: ReactNode

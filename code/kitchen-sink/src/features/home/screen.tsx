@@ -42,7 +42,7 @@ export function HomeScreen() {
 
   return (
     <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
@@ -53,7 +53,7 @@ export function HomeScreen() {
           </YGroup.Item>
         </YGroup>
 
-        <YStack gap="$4" maw={600}>
+        <YStack gap="$4" maxWidth={600}>
           {demos.map(({ pages }, i) => {
             return (
               <YGroup key={i} size="$4" separator={<Separator />}>
@@ -64,7 +64,7 @@ export function HomeScreen() {
 
                   return (
                     <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
+                      <LinkListItem bg="$color1" href={route} size="$4">
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>

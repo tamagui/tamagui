@@ -80,7 +80,7 @@ export function TabsHeadlessDemo() {
 
       <XStack
         alignItems="center"
-        space
+        gap="$4"
         position="absolute"
         bottom="$3"
         left="$4"

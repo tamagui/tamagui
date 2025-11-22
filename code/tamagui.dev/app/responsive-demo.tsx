@@ -12,7 +12,7 @@ export default function ResponsiveDemo() {
       <YStack f={1}>
         <Spacer $gtSmall={{ display: 'none' }} flex />
         <H3>Enchanting Garden</H3>
-        <XStack ai="center" space>
+        <XStack ai="center" gap="$4">
           <MapPin size={12} color="var(--color)" />
           <H5>Kailua, HI</H5>
         </XStack>

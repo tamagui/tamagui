@@ -42,7 +42,7 @@ export const InstallInput = memo(() => {
           label={hasCopied ? 'Copied' : 'Copy to clipboard'}
         >
           <Button
-            accessibilityLabel={installScript}
+            aria-label={installScript}
             size="$3"
             borderRadius="$8"
             mr="$-6"

@@ -11,6 +11,8 @@
     "v2.cjs",
     "v2.d.ts",
     "v4.cjs",
-    "v4.d.ts"
+    "v4.d.ts",
+    "v5.cjs",
+    "v5.d.ts"
   ]
 }

@@ -1,6 +1,6 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
-import { useCreateShallowSetState, isTouchable, useGet, useMedia } from '@tamagui/web'
+import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import { useWindowDimensions, type LayoutRectangle } from 'react-native'
@@ -447,8 +447,7 @@ const SlidingPopoverContext = React.createContext({
 export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
-    const [layout, setLayout_] = React.useState<LayoutRectangle | undefined>()
-    const setLayout = useCreateShallowSetState(setLayout_)
+    const [layout, setLayout] = React.useState<LayoutRectangle | undefined>()
     const triggerRef = React.useRef<HTMLElement>(null)
     const combinedRef = useComposedRefs(ref)
     const [hovered, setHovered] = React.useState(false)
@@ -599,12 +598,11 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       {pointerFine ? (
         <YStack
           w="100%"
-          transition="all ease-in 200ms"
-          mih={`calc(min(${heights[active]}px, 80vh))`}
+          animation="200ms"
+          height={heights[active]}
+          maxHeight="90vh"
           ov="hidden"
-          maxHeight="100%"
           br="$6"
-          flex={1}
         >
           <AnimatePresence custom={{ going }} initial={false}>
             <HeaderMenuContents key={active} id={active} />
@@ -711,7 +709,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
                   }}
                 >
-                  <SizableText size="$3" color="$color11" ellipse>
+                  <SizableText size="$3" color="$color11" ellipsis>
                     Enabled
                   </SizableText>
 
@@ -723,7 +721,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     bentoStore.disableTint = !bentoStore.disableTint
                   }}
                 >
-                  <SizableText size="$3" color="$color11" ellipse>
+                  <SizableText size="$3" color="$color11" ellipsis>
                     Tint
                   </SizableText>
 
@@ -750,7 +748,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                   onPress={() => updateGenerate(history.theme_data)}
                 >
                   <XStack ai="center" jc="space-between">
-                    <SizableText size="$3" color="$color11" ellipse>
+                    <SizableText size="$3" color="$color11" ellipsis>
                       {history.search_query}
                     </SizableText>
                   </XStack>

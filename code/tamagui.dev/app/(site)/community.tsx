@@ -1,19 +1,7 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
 import type { Href } from 'one'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  Image,
-  Paragraph,
-  Spacer,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H1, H2, H3, H4, Image, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'
@@ -61,7 +49,7 @@ export default function Community() {
             </Link>
             <Spacer />
             {/* TODO */}
-            {/* <YStack w="100%" space>
+            {/* <YStack w="100%" gap="$4">
               {[].map((frontmatter) => (
                 <Link key={frontmatter.title} href={frontmatter.slug}>
                   <Card bc="transparent" p="$4" f={1}>
@@ -75,7 +63,7 @@ export default function Community() {
                         {frontmatter.title}
                       </H3>
 
-                      <XStack ai="center" space="$2">
+                      <XStack ai="center" gap="$2">
                         <Paragraph
                           cursor="inherit"
                           tag="time"
@@ -230,7 +218,7 @@ const StarterRepoCard = ({
       f={1}
       fb={0}
       maw={300}
-      space="$2"
+      gap="$2"
       tag="a"
       href={url as string}
       target="_blank"

@@ -57,7 +57,7 @@ export const ProPoliciesModal = () => {
           maw={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+            <YStack $gtSm={{ maxHeight: '90vh' }} gap="$4">
               <Paragraph>
                 <Link href="/pro-policy">Permalink to policies</Link>.
               </Paragraph>

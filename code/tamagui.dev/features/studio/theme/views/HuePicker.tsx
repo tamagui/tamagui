@@ -45,7 +45,7 @@ export const HuePicker = memo(
                   background: hueLinearGradient,
                 }}
               ></Slider.Track>
-              <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+              <Slider.Thumb bg="$color1" size="$1" index={0} br="$10" elevate />
             </Slider>
           </YStack>
         </XStack>

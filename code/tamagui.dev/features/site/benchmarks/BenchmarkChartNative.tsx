@@ -6,7 +6,6 @@ export const BenchmarkChartNative = () => (
     data={[
       { name: 'Tamagui', value: 108 },
       { name: 'React Native', value: 106 },
-      { name: 'NativeBase', value: 247 },
     ]}
   />
 )

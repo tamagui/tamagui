@@ -241,10 +241,8 @@ const HeroContents = memo(function HeroContents() {
                 aria-label="Get started (docs)"
                 group="item"
                 containerType="normal"
-                fontFamily="$silkscreen"
                 componentName=""
                 size="$5"
-                fontSize="$2"
                 borderRadius={1000}
                 bordered
                 bw={2}
@@ -255,7 +253,9 @@ const HeroContents = memo(function HeroContents() {
                   elevation: '$0',
                 }}
               >
-                Start
+                <Button.Text fontFamily="$silkscreen" fontSize="$2">
+                  Start
+                </Button.Text>
                 {/* <YStack $group-item-press={{ scaleX: -1 }}>
                   <LogoIcon downscale={3} />
                 </YStack> */}

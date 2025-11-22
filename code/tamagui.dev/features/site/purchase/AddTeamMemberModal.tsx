@@ -152,13 +152,10 @@ const PaymentForm = ({
       <YStack gap="$4">
         <PaymentElement />
         <Theme name="accent">
-          <Button
-            fontFamily="$mono"
-            br="$10"
-            als="flex-end"
-            disabled={isProcessing || !stripe || !elements}
-          >
-            {isProcessing ? 'Processing...' : 'Add Seats'}
+          <Button br="$10" als="flex-end" disabled={isProcessing || !stripe || !elements}>
+            <Button.Text fontFamily="$mono">
+              {isProcessing ? 'Processing...' : 'Add Seats'}
+            </Button.Text>
           </Button>
         </Theme>
         {error && (
@@ -329,7 +326,7 @@ export const AddTeamMemberModalComponent = () => {
                       onChangeText={setCouponCode}
                     />
                     <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
-                      Apply
+                      <Button.Text>Apply</Button.Text>
                     </Button>
                   </XStack>
                 )}

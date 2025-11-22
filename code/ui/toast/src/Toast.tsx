@@ -2,7 +2,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core'
 import { styled, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -111,7 +111,7 @@ ToastAction.propTypes = {
 
 const CLOSE_NAME = 'ToastClose'
 
-const ToastCloseFrame = styled(ThemeableStack, {
+const ToastCloseFrame = styled(YStack, {
   name: CLOSE_NAME,
   tag: 'button',
 })
@@ -127,7 +127,7 @@ const ToastClose = React.forwardRef<TamaguiElement, ToastCloseProps>(
     return (
       <ToastAnnounceExclude asChild>
         <ToastCloseFrame
-          accessibilityLabel="Dialog Close"
+          aria-label="Dialog Close"
           {...closeProps}
           ref={forwardedRef}
           onPress={composeEventHandlers(props.onPress as any, interactiveContext.onClose)}

@@ -47,7 +47,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
       <Separator />
 
       <SidebarPanel title={`Accent of ${scale.name}.${index}`}>
-        <YStack tag="ul" space="$1">
+        <YStack tag="ul" gap="$1">
           {[
             {
               name: 'bg',
@@ -83,7 +83,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
 
             return (
               <XStack key={`${name}${i}`} ov="hidden" ai="center">
-                <XStack ai="center" f={1000} space="$2">
+                <XStack ai="center" f={1000} gap="$2">
                   <Square
                     aria-hidden
                     size="$2.5"
@@ -96,16 +96,16 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
                       Aa
                     </Paragraph>
                   </Square>
-                  <Paragraph size="$2" ellipse>
+                  <Paragraph size="$2" ellipsis>
                     on {name}
                   </Paragraph>
                 </XStack>
-                <Spacer flex />
-                <XStack ov="hidden" f={1} space="$2" ai="center">
+                <Spacer flex={1} />
+                <XStack ov="hidden" f={1} gap="$2" ai="center">
                   <Paragraph size="$2" mr="$2">
                     {accent.toFixed(2)}
                   </Paragraph>
-                  <Paragraph size="$2" ellipse fow="800">
+                  <Paragraph size="$2" ellipsis fow="800">
                     {getAccentScore(getContrast(hex, focusedHex || ''))}{' '}
                   </Paragraph>
                   {getAccentScore(getContrast(hex, focusedHex || '')) === 'Fail' ? (
@@ -125,8 +125,8 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
   return (
     <SidebarRight>
       <SidebarPanel title={`Palette`}>
-        <YStack space="$2">
-          <YStack space="$1">
+        <YStack gap="$2">
+          <YStack gap="$1">
             <Label size="$2" htmlFor="scale-name">
               Name
             </Label>
@@ -158,12 +158,12 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
       <Separator />
 
       {/* <SidebarPanel title="Linked curves">
-        <YStack space="$3">
-          <YStack space="$1">
+        <YStack gap="$3">
+          <YStack gap="$1">
             <Label size="$2" htmlFor="hue-curve">
               Hue curve
             </Label>
-            <XStack space="$2">
+            <XStack gap="$2">
               <Select
                 f={1}
                 size="$2"
@@ -196,11 +196,11 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
               />
             </XStack>
           </YStack>
-          <YStack space="$1">
+          <YStack gap="$1">
             <Label size="$2" htmlFor="saturation-curve">
               Saturation curve
             </Label>
-            <XStack space="$2">
+            <XStack gap="$2">
               <Select
                 f={1}
                 size="$2"
@@ -233,11 +233,11 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
               />
             </XStack>
           </YStack>
-          <YStack space="$1">
+          <YStack gap="$1">
             <Label size="$2" htmlFor="lightness-curve">
               Lightness curve
             </Label>
-            <XStack space="$2">
+            <XStack gap="$2">
               <Select
                 f={1}
                 size="$2"
