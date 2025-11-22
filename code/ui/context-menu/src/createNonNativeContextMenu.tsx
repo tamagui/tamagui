@@ -286,17 +286,14 @@ export function createNonNativeContextMenu(param: CreateBaseMenuProps) {
             // if trigger is disabled, enable the native Context Menu
             {...(isWeb && {
               onContextMenu: disabled
-                ? (props as React.HTMLProps<'div'>).onContextMenu
-                : composeEventHandlers(
-                    (props as React.HTMLProps<'div'>).onContextMenu,
-                    (event: any) => {
-                      // clearing the long press here because some platforms already support
-                      // long press to trigger a `contextmenu` event
-                      clearLongPress()
-                      handleOpen(event)
-                      event.preventDefault()
-                    }
-                  ),
+                ? props.onContextMenu
+                : composeEventHandlers(props.onContextMenu, (event: any) => {
+                    // clearing the long press here because some platforms already support
+                    // long press to trigger a `contextmenu` event
+                    clearLongPress()
+                    handleOpen(event)
+                    event.preventDefault()
+                  }),
             })}
             {...(isWeb && {
               onPointerDown: disabled
