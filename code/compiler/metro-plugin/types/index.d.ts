@@ -1,6 +1,10 @@
 import { type TamaguiOptions } from '@tamagui/static';
-import type { IntermediateConfigT } from 'metro-config';
-export declare function withTamagui(metroConfig: Partial<IntermediateConfigT>, optionsIn?: TamaguiOptions & {
+import type { ConfigT } from 'metro-config';
+type MetroConfig = {
+    -readonly [K in keyof ConfigT]: ConfigT[K];
+};
+export declare function withTamagui(metroConfig: Partial<MetroConfig>, optionsIn?: TamaguiOptions & {
     enableCSSInterop?: boolean;
-}): IntermediateConfigT;
+}): MetroConfig;
+export {};
 //# sourceMappingURL=index.d.ts.map
