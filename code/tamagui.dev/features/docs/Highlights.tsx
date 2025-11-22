@@ -54,26 +54,25 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
           <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
-            <YStack gap="$2">
-              <Link
-                href={`https://github.com/tamagui/tamagui/tree/${sourceVersion ? `v${sourceVersion}` : 'main'}/code/ui/${
-                  frontmatter.package
-                    ? `${frontmatter.package}/src/${frontmatter.component}.tsx`
-                    : `tamagui/src/views/${frontmatter.component}.tsx`
-                }`}
-                target="_blank"
-              >
-                <XStack ai="center" gap="$1">
-                  <SizableText size="$3">View source</SizableText>
-                  <YStack opacity={0.5} ml="$0.5">
-                    <ExternalLink size={12} color="var(--colorHover)" />
-                  </YStack>
-                </XStack>
-              </Link>
-              {frontmatter.versions && frontmatter.versions.length > 1 && (
-                <SourceVersionSwitcher versions={frontmatter.versions} />
-              )}
-            </YStack>
+            {frontmatter.versions && frontmatter.versions.length > 1 && (
+              <SourceVersionSwitcher versions={frontmatter.versions} />
+            )}
+
+            <Link
+              href={`https://github.com/tamagui/tamagui/tree/${sourceVersion ? `v${sourceVersion}` : 'main'}/code/ui/${
+                frontmatter.package
+                  ? `${frontmatter.package}/src/${frontmatter.component}.tsx`
+                  : `tamagui/src/views/${frontmatter.component}.tsx`
+              }`}
+              target="_blank"
+            >
+              <XStack ai="center" gap="$1">
+                <SizableText size="$3">View source</SizableText>
+                <YStack opacity={0.5} ml="$0.5">
+                  <ExternalLink size={12} color="var(--colorHover)" />
+                </YStack>
+              </XStack>
+            </Link>
             <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
               <XStack ai="center" gap="$1">
                 <SizableText size="$3">View on npm</SizableText>
