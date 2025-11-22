@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/adapt",
-  "version": "1.138.1",
+  "version": "1.138.2",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
