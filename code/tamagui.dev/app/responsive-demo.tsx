@@ -1,4 +1,3 @@
-
 // @ts-nocheck responsive props
 import img1 from '@tamagui/demos/photo/photo1'
 import img2 from '@tamagui/demos/photo/photo2'
@@ -28,7 +27,14 @@ export default function ResponsiveDemo() {
 
   const coverPhoto = (
     <Theme name="dark">
-      <XStack flex={1} items="center" justify="center" position="relative" rounded="$6" overflow="hidden">
+      <XStack
+        flex={1}
+        items="center"
+        justify="center"
+        position="relative"
+        rounded="$6"
+        overflow="hidden"
+      >
         <YStack>
           <Image width={800} height={200} src={img1} />
           <Overlay $gtSmall={{ display: 'none' }} />
@@ -51,7 +57,13 @@ export default function ResponsiveDemo() {
         maxH="100vh"
         overflow="hidden"
         p="$4"
-        $gtLarge={{ flexDirection: 'row-reverse', p: '$6', maxW: 1200, self: 'center', gap: '$4' }}
+        $gtLarge={{
+          flexDirection: 'row-reverse',
+          p: '$6',
+          maxW: 1200,
+          self: 'center',
+          gap: '$4',
+        }}
       >
         <YStack position="relative" $gtSmall={{ display: 'none' }}>
           {coverPhoto}
@@ -63,7 +75,12 @@ export default function ResponsiveDemo() {
           $small={{ display: 'none' }}
           $gtLarge={{ flexDirection: 'column', maxW: 450 }}
         >
-          <YStack overflow="hidden" flex={2} maxW={400} $gtMedium={{ maxW: '100%', flex: 0 }}>
+          <YStack
+            overflow="hidden"
+            flex={2}
+            maxW={400}
+            $gtMedium={{ maxW: '100%', flex: 0 }}
+          >
             {coverPhoto}
           </YStack>
           <XStack flex={1} overflow="hidden" maxW="50%" $gtLarge={{ maxW: '100%' }}>

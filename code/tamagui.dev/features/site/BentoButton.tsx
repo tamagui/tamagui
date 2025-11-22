@@ -20,7 +20,13 @@ export const BentoButton = (props: ButtonProps) => {
       <YStack display="inline-flex" mx={4}>
         <BentoIcon scale={0.75} />
       </YStack>
-      <Text fontFamily="$mono" y={-0.5} fontSize="$4" color="$color10" $sm={{ display: 'none' }}>
+      <Text
+        fontFamily="$mono"
+        y={-0.5}
+        fontSize="$4"
+        color="$color10"
+        $sm={{ display: 'none' }}
+      >
         more ui
       </Text>
     </Button>

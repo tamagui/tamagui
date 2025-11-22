@@ -20,7 +20,13 @@ export const TakeoutButton = (props: ButtonProps) => {
       <YStack y={-1} display="inline-flex">
         <TakeoutIcon scale={0.75} />
       </YStack>
-      <Text y={-0.5} fontFamily="$mono" fontSize="$4" color="$color10" $sm={{ display: 'none' }}>
+      <Text
+        y={-0.5}
+        fontFamily="$mono"
+        fontSize="$4"
+        color="$color10"
+        $sm={{ display: 'none' }}
+      >
         starter
       </Text>
     </Button>

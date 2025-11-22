@@ -117,8 +117,6 @@ const HeroContents = memo(function HeroContents() {
                 </XGroup.Item>
               </Link>
             </Theme>
-
-         
           </XGroup>
         </>
 

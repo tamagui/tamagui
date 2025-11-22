@@ -246,7 +246,15 @@ export const HomeResponsive = memo(() => {
           items="center"
           justify="center"
         >
-          <XStack position="absolute" t={0} l={0} r={0} borderBottomWidth={1} bg="$color" opacity={0.1} />
+          <XStack
+            position="absolute"
+            t={0}
+            l={0}
+            r={0}
+            borderBottomWidth={1}
+            bg="$color"
+            opacity={0.1}
+          />
           <YStack position="relative" flex={1} height="100%" width="100%">
             <YStack fullscreen className="mask-gradient-down" z={-1}>
               <YStack fullscreen b="auto" height={439} className="bg-grid" />
@@ -333,7 +341,13 @@ export const Safari = memo(
 
     return (
       <SafariFrame>
-        <YStack bg="$background" px="$4" justify="center" borderBottomWidth={0} height={50}>
+        <YStack
+          bg="$background"
+          px="$4"
+          justify="center"
+          borderBottomWidth={0}
+          height={50}
+        >
           <XStack position="relative" items="center" gap="$4">
             <XStack gap="$2">
               <Circle bg="$red10" size={10} />
@@ -412,9 +426,19 @@ export const Safari = memo(
             )}
 
             <YStack z={0} fullscreen p="$4">
-              <XStack items="center" justify="center" position="relative" rounded="$6" overflow="hidden">
+              <XStack
+                items="center"
+                justify="center"
+                position="relative"
+                rounded="$6"
+                overflow="hidden"
+              >
                 <YStack width={800} height={200}>
-                  <LinearGradient opacity={0.1} fullscreen colors={['$yellow10', '$green10']} />
+                  <LinearGradient
+                    opacity={0.1}
+                    fullscreen
+                    colors={['$yellow10', '$green10']}
+                  />
                 </YStack>
                 <YStack p="$4" position="absolute" fullscreen flex={1}>
                   <YStack flex={1} />

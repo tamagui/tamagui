@@ -25,13 +25,7 @@ export const MediaPlayer = memo(
     const tint = !alt ? null : (`alt${alt}` as ThemeName)
 
     return (
-      <YStack
-        display="flex"
-        items="stretch"
-        contain="strict"
-        minW={330}
-        minH={222}
-      >
+      <YStack display="flex" items="stretch" contain="strict" minW={330} minH={222}>
         <Theme name={tint}>
           <YStack
             overflow="visible"
