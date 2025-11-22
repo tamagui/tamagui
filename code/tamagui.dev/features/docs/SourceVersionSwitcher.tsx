@@ -1,28 +1,22 @@
-import React from 'react'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import type { FontSizeTokens, SelectProps } from 'tamagui'
-import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { type Href, usePathname, useRouter } from 'one'
-import { useLocalSearchParams } from 'one'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { router, useParams } from 'one'
+import React from 'react'
+import { Adapt, Select, Sheet, YStack } from 'tamagui'
 
 export function SourceVersionSwitcher({ versions }: { versions: string[] }) {
-  const router = useRouter()
-  const params = useLocalSearchParams()
-  const pathname = usePathname()
+  const params = useParams<{ sourceVersion?: string }>()
 
   // Default to latest version (first in array) if no param set
   const [val, setVal] = React.useState(() => {
-    const sourceVersion = typeof params.sourceVersion === 'string'
-      ? params.sourceVersion
-      : undefined
+    const sourceVersion =
+      typeof params.sourceVersion === 'string' ? params.sourceVersion : undefined
     return sourceVersion || versions[0]
   })
 
   React.useEffect(() => {
-    const sourceVersion = typeof params.sourceVersion === 'string'
-      ? params.sourceVersion
-      : undefined
+    const sourceVersion =
+      typeof params.sourceVersion === 'string' ? params.sourceVersion : undefined
     if (sourceVersion && sourceVersion !== val) {
       setVal(sourceVersion)
     }
@@ -30,17 +24,8 @@ export function SourceVersionSwitcher({ versions }: { versions: string[] }) {
 
   const switchVersion = (version: string) => {
     setVal(version)
-    const url = new URL(location.href)
-
-    // If selecting the latest version, remove the param
-    if (version === versions[0]) {
-      url.searchParams.delete('sourceVersion')
-    } else {
-      url.searchParams.set('sourceVersion', version)
-    }
-
-    router.replace(url as Href, {
-      scroll: false,
+    router.setParams({
+      sourceVersion: version,
     })
   }
 

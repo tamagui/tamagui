@@ -1,20 +1,19 @@
 import { ExternalLink } from '@tamagui/lucide-icons'
+import { useParams } from 'one'
 import React from 'react'
 import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
-import { VersionSwitcher } from './VersionSwitcher'
-import { SourceVersionSwitcher } from './SourceVersionSwitcher'
-
 import { Features } from '~/components/Features'
 import { Link } from '~/components/Link'
 import { FrontmatterContext } from './FrontmatterContext'
-import { useLocalSearchParams } from 'one'
+import { SourceVersionSwitcher } from './SourceVersionSwitcher'
 
 export function Highlights({ features, disableLinks, disableTitle, large }: any) {
   const frontmatter = React.useContext(FrontmatterContext)
-  const params = useLocalSearchParams()
-  const sourceVersion = typeof params.sourceVersion === 'string'
-    ? params.sourceVersion
-    : frontmatter.versions?.[0]
+  const params = useParams<{ sourceVersion?: string }>()
+  const sourceVersion =
+    typeof params.sourceVersion === 'string'
+      ? params.sourceVersion
+      : frontmatter.versions?.[0]
 
   return (
     <YStack
