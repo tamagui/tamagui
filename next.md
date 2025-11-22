@@ -1,3 +1,5 @@
+- ssr fix i think select not showing value until after load?
+
 animations improvements:
 
 > Independent Transforms

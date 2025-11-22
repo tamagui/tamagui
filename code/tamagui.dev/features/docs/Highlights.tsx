@@ -1,5 +1,4 @@
 import { ExternalLink } from '@tamagui/lucide-icons'
-import { useParams } from 'one'
 import React from 'react'
 import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 import { Features } from '~/components/Features'
@@ -9,11 +8,8 @@ import { SourceVersionSwitcher } from './SourceVersionSwitcher'
 
 export function Highlights({ features, disableLinks, disableTitle, large }: any) {
   const frontmatter = React.useContext(FrontmatterContext)
-  const params = useParams<{ sourceVersion?: string }>()
-  const sourceVersion =
-    typeof params.sourceVersion === 'string'
-      ? params.sourceVersion
-      : frontmatter.versions?.[0]
+  // Use the version from frontmatter (loaded from path)
+  const sourceVersion = frontmatter.version || frontmatter.versions?.[0]
 
   return (
     <YStack
@@ -55,7 +51,10 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           </VisuallyHidden>
           <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
             {frontmatter.versions && frontmatter.versions.length > 1 && (
-              <SourceVersionSwitcher versions={frontmatter.versions} />
+              <SourceVersionSwitcher
+                versions={frontmatter.versions}
+                componentName={frontmatter.name || frontmatter.component || ''}
+              />
             )}
 
             <Link

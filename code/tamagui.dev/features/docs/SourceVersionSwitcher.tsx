@@ -1,32 +1,35 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { router, useParams } from 'one'
+import { type Href, router, useParams, usePathname } from 'one'
 import React from 'react'
 import { Adapt, Select, Sheet, YStack } from 'tamagui'
 
-export function SourceVersionSwitcher({ versions }: { versions: string[] }) {
-  const params = useParams<{ sourceVersion?: string }>()
+export function SourceVersionSwitcher({
+  versions,
+  componentName,
+}: {
+  versions: string[]
+  componentName: string
+}) {
+  const pathname = usePathname()
+  const params = useParams<{ subpath?: string | string[] }>()
 
-  // Default to latest version (first in array) if no param set
-  const [val, setVal] = React.useState(() => {
-    const sourceVersion =
-      typeof params.sourceVersion === 'string' ? params.sourceVersion : undefined
-    return sourceVersion || versions[0]
-  })
+  // Get current version from pathname
+  const currentVersion = React.useMemo(() => {
+    if (!params.subpath) return versions[0]
 
-  React.useEffect(() => {
-    const sourceVersion =
-      typeof params.sourceVersion === 'string' ? params.sourceVersion : undefined
-    if (sourceVersion && sourceVersion !== val) {
-      setVal(sourceVersion)
-    }
-  }, [params.sourceVersion, val])
+    // params.subpath is an array like ["button", "1.28.0"] or ["button"]
+    const subpathArray = Array.isArray(params.subpath) ? params.subpath : [params.subpath]
+
+    // If there's a second element, it's the version
+    return subpathArray.length > 1 ? subpathArray[1] : versions[0]
+  }, [params.subpath, versions])
 
   const switchVersion = (version: string) => {
-    setVal(version)
-    router.setParams({
-      sourceVersion: version,
-    })
+    // Navigate to /ui/{componentName}/{version}
+    const newPath =
+      version === versions[0] ? `/ui/${componentName}` : `/ui/${componentName}/${version}`
+    router.push(newPath as Href)
   }
 
   // Don't render if only one version
@@ -35,7 +38,7 @@ export function SourceVersionSwitcher({ versions }: { versions: string[] }) {
   }
 
   return (
-    <Select value={val} onValueChange={switchVersion} disablePreventBodyScroll>
+    <Select value={currentVersion} onValueChange={switchVersion} disablePreventBodyScroll>
       <Select.Trigger size="$2" iconAfter={ChevronDown} borderRadius={8}>
         <Select.Value placeholder={versions[0]} />
       </Select.Trigger>
