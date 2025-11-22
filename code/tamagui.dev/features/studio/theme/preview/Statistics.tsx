@@ -12,6 +12,7 @@ export const StatisticsBarScreen = memo(() => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
+      borderColor="$color3"
     >
       <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4" p="$0">
         <XStack justify="space-between">

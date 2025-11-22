@@ -113,8 +113,8 @@ export default function TakeoutGallery() {
       <ImageGallery />
 
       <XStack
-        ai="center"
-        jc="center"
+        items="center"
+        justify="center"
         gap="$6"
         px="$4"
         $md={{
@@ -123,9 +123,9 @@ export default function TakeoutGallery() {
       >
         <TakeoutImage
           index={takeoutIosImageIdx}
-          pos="absolute"
-          w="100%"
-          h="100%"
+          position="absolute"
+          width="100%"
+          height="100%"
           src={takeoutImages[takeoutIosImageIdx].src}
           alt={takeoutImages[takeoutIosImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
@@ -134,7 +134,7 @@ export default function TakeoutGallery() {
             position: 'relative',
             height: 300,
 
-            borderRadius: '$12',
+            rounded: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -147,15 +147,15 @@ export default function TakeoutGallery() {
           src={takeoutImages[takeoutWebImageIdx].src}
           alt={takeoutImages[takeoutWebImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
-          pos="absolute"
-          w="100%"
-          h="100%"
+          position="absolute"
+          width="100%"
+          height="100%"
           wrapperProps={{
             flex: 2,
             position: 'relative',
             height: 300,
 
-            borderRadius: '$12',
+            rounded: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -168,15 +168,15 @@ export default function TakeoutGallery() {
           src={takeoutImages[takeoutAndroidImageIdx].src}
           alt={takeoutImages[takeoutAndroidImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
-          pos="absolute"
-          w="100%"
-          h="100%"
+          position="absolute"
+          width="100%"
+          height="100%"
           wrapperProps={{
             flex: 1,
             position: 'relative',
             height: 300,
 
-            borderRadius: '$12',
+            rounded: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -187,9 +187,9 @@ export default function TakeoutGallery() {
 
       <Spacer size="$8" />
 
-      <XStack fw="wrap" gap="$4" mx="$1" ai="center" jc="center">
+      <XStack flexWrap="wrap" gap="$4" mx="$1" items="center" justify="center">
         {takeoutImages.slice(1, 12).map((image, index) => (
-          <YStack key={index} pos="relative">
+          <YStack key={index} position="relative">
             <TakeoutImage
               alt={image.alt}
               src={image.src}
@@ -198,12 +198,12 @@ export default function TakeoutGallery() {
               height={100}
               index={index}
               wrapperProps={{
-                br: '$10',
+                rounded: '$10',
               }}
             />
           </YStack>
         ))}
-        <YStack pos="relative" overflow="hidden">
+        <YStack position="relative" overflow="hidden">
           <YStack
             onPress={() => {
               store.galleryOpen = true
@@ -211,12 +211,12 @@ export default function TakeoutGallery() {
             width={100}
             height={100}
             bg="$color12"
-            br="$6"
-            ov="hidden"
+            rounded="$6"
+            overflow="hidden"
             elevation="$2"
             cursor="pointer"
-            ai="center"
-            jc="center"
+            items="center"
+            justify="center"
           >
             <H6 fontFamily="$mono" color="black">
               +{takeoutImages.length - 11}
@@ -266,7 +266,7 @@ const ImageGallery = () => {
         >
           <ImagesCarousel />
           <Unspaced>
-            <YStack pos="absolute" right="$6" bottom="$8" zi="$4">
+            <YStack position="absolute" r="$6" b="$8" z={4}>
               <Paragraph
                 textShadowColor="black"
                 textShadowOffset={{ height: 1, width: 1 }}
@@ -277,7 +277,7 @@ const ImageGallery = () => {
               </Paragraph>
             </YStack>
 
-            <YStack pos="absolute" left="$6" bottom="$8" zi="$4">
+            <YStack position="absolute" l="$6" b="$8" z={4}>
               <Paragraph
                 textShadowColor="black"
                 textShadowOffset={{ height: 1, width: 1 }}
@@ -289,14 +289,7 @@ const ImageGallery = () => {
             </YStack>
 
             <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$6"
-                right="$6"
-                size="$3"
-                circular
-                icon={X}
-              />
+              <Button position="absolute" t="$6" r="$6" size="$3" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>
@@ -331,11 +324,11 @@ const ImagesCarousel = () => {
   return (
     <XStack
       overflow="hidden"
-      backgroundColor="rgba(0,0,0,0.9)"
+      bg="rgba(0,0,0,0.9)"
       position="relative"
       height="100vh"
       width="100vw"
-      alignItems="center"
+      items="center"
     >
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable
@@ -345,7 +338,7 @@ const ImagesCarousel = () => {
           opacity={1}
           width="100vw"
           height="100vh"
-          pos="absolute"
+          position="absolute"
         >
           <Image
             key={store.galleryImageIdx}
@@ -361,21 +354,21 @@ const ImagesCarousel = () => {
       </AnimatePresence>
 
       <Button
-        accessibilityLabel="Carousel left"
+        aria-label="Carousel left"
         icon={ArrowLeft}
         size="$5"
         position="absolute"
-        left="$4"
+        l="$4"
         circular
         elevate
         onPress={() => store.paginateGallery(-1)}
       />
       <Button
-        accessibilityLabel="Carousel right"
+        aria-label="Carousel right"
         icon={ArrowRight}
         size="$5"
         position="absolute"
-        right="$4"
+        r="$4"
         circular
         elevate
         onPress={() => store.paginateGallery(1)}
@@ -407,10 +400,10 @@ const TakeoutImage = ({
         store.galleryOpen = true
         store.galleryImageIdx = props.index
       }}
-      br="$5"
-      bw={1}
-      bc="$color5"
-      ov="hidden"
+      rounded="$5"
+      borderWidth={1}
+      borderColor="$color5"
+      overflow="hidden"
       elevation="$3"
       cursor="pointer"
       animation="100ms"

@@ -393,7 +393,7 @@ const SyncButtons = memo(
               }}
               {...(!prevAnchor
                 ? {
-                    o: 0.1,
+                    opacity: 0.1,
                     disabled: true,
                   }
                 : null)}
@@ -451,7 +451,7 @@ const SyncButtons = memo(
               }}
               {...(!nextAnchor
                 ? {
-                    o: 0.1,
+                    opacity: 0.1,
                     disabled: true,
                   }
                 : null)}

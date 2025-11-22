@@ -610,7 +610,7 @@ const CodeInline = styled(Paragraph, {
   color: '$color12',
   backgroundColor: 'color-mix(in srgb, var(--color8) 50%, transparent 50%)' as any,
   cursor: 'inherit',
-  br: '$3',
+  rounded: '$3',
   // @ts-ignore
   fontSize: '85%',
   p: '$1.5',
@@ -674,7 +674,7 @@ const TakeoutCard2Frame = styled(YStack, {
     size: {
       '...size': (val) => ({
         p: val as any,
-        br: val as any,
+        rounded: val as any,
       }),
     },
   } as const,
@@ -697,7 +697,6 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     size: 300,
     strategy: 'blur',
     blurPct: 60,
-    // inverse: true,
     color: isDark ? 'var(--color1)' : 'var(--color4)',
     opacity: isDark ? 0.18 : 0.35,
     background: 'transparent',
@@ -705,16 +704,6 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
       transition: `all ease-out 300ms`,
     },
   })
-
-  // const borderGlow = useHoverGlow({
-  //   resist: 0,
-  //   size: 200,
-  //   strategy: 'blur',
-  //   blurPct: 100,
-  //   color: 'var(--color11)',
-  //   opacity: 1,
-  //   background: 'transparent',
-  // })
 
   return (
     <>

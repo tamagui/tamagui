@@ -66,10 +66,10 @@ const SelectComponent = (
         iconAfter={ChevronDown}
         {...selectTriggerProps}
         {...(variant === 'pill' && {
-          bw: 1,
-          bc: '$borderColor',
-          br: '$10',
-          w: 'auto',
+          borderWidth: 1,
+          borderColor: '$borderColor',
+          rounded: '$10',
+          width: 'auto',
           color: '$color9',
         })}
       >

@@ -4,7 +4,6 @@ import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
-import type { XStackProps } from 'tamagui'
 import {
   Anchor,
   Button,
@@ -309,7 +308,6 @@ const PaletteView = memo((props: Props) => {
   return (
     <YStack contain="paint" p="$4" mx="$-4" mb="$0" flex={1} gap="$4">
       <YStack group="content" containerType="normal" gap="$4">
-        {/* <Theme name="white"> */}
         <ColorPickerContents
           disabled={!anchor}
           value={lightPalette[hoveredItem?.value ?? 0]}
@@ -331,8 +329,6 @@ const PaletteView = memo((props: Props) => {
 
         <PaletteIndices />
       </YStack>
-
-      {/* </Theme> */}
 
       <XLabeledItem label="">
         <YStack gap="$4">
@@ -384,7 +380,6 @@ const PaletteView = memo((props: Props) => {
         </YStack>
       </XLabeledItem>
 
-      {/* <Theme name="black"> */}
       <PaletteIndices />
 
       <YStack group="content" containerType="normal" gap="$4">
@@ -408,7 +403,6 @@ const PaletteView = memo((props: Props) => {
           shouldDim={lightDarkSynced && !isDark}
         />
       </YStack>
-      {/* </Theme> */}
     </YStack>
   )
 })
@@ -453,7 +447,7 @@ const SyncButtons = memo(
               }}
               {...(!prevAnchor
                 ? {
-                    o: 0.1,
+                    opacity: 0.1,
                     disabled: true,
                   }
                 : null)}
@@ -511,7 +505,7 @@ const SyncButtons = memo(
               }}
               {...(!nextAnchor
                 ? {
-                    o: 0.1,
+                    opacity: 0.1,
                     disabled: true,
                   }
                 : null)}
@@ -641,33 +635,31 @@ const PaletteColor = memo(
 
     const radiusStyle = {
       ...(index === 0 && {
-        bblr: borderRadius - 1.333,
-        btlr: borderRadius - 1.333,
+        borderBottomLeftRadius: borderRadius - 1.333,
+        borderTopLeftRadius: borderRadius - 1.333,
       }),
       ...(index === colors.length - 1 && {
-        btrr: borderRadius - 1.333,
-        bbrr: borderRadius - 1.333,
+        borderTopRightRadius: borderRadius - 1.333,
+        borderBottomRightRadius: borderRadius - 1.333,
       }),
     }
 
     return (
       <XStack
-        h={isActive ? 42 : 26}
-        // size === 'small' ? 32 : 42}
-        w={`${(1 / colors.length) * 100}%`}
-        ov="hidden"
+        height={isActive ? 42 : 26}
+        width={`${(1 / colors.length) * 100}%`}
+        overflow="hidden"
         borderWidth={2}
-        // @ts-expect-error
-        borderColor={color}
+        borderColor={color as any}
         onMouseEnter={() => {
           mouseEnter(index, palette.name)
         }}
         hoverStyle={{
           scale: 1.05,
         }}
-        pos="relative"
+        position="relative"
         {...(hoveredColor === index && {
-          zi: 10000,
+          z: 10000,
           outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
@@ -676,7 +668,7 @@ const PaletteColor = memo(
           shadowOpacity: 1,
         })}
         {...((isAnchor || selectedColor === index) && {
-          zi: 10000,
+          z: 10000,
           outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 2,
@@ -689,7 +681,7 @@ const PaletteColor = memo(
             shadowColor: '$blue10',
             shadowRadius: 10,
             shadowOpacity: 1,
-            zi: 100000,
+            z: 100000,
           })}
         {...radiusStyle}
         {...doublePressProps}

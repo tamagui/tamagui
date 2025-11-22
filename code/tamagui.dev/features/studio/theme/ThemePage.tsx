@@ -157,7 +157,7 @@ const ThemeBuilderModal = memo(() => {
         bg="$background06"
         backdropFilter="blur(60px)"
         {...(hide && {
-          bc: '$color0',
+          borderColor: '$color0',
           bg: '$background0',
         })}
       >

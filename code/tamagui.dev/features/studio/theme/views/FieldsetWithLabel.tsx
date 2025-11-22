@@ -76,7 +76,7 @@ export const FieldsetWithLabel = ({
             tag="label"
             size="$5"
             color="$color11"
-            ta="center"
+            text="center"
             {...(tooltip && {
               pr: '$6',
             })}

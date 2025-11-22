@@ -196,7 +196,7 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
       }}
       {...(active && {
         bg: '$color8',
-        o: 0.6,
+        opacity: 0.6,
       })}
       {...props}
     />

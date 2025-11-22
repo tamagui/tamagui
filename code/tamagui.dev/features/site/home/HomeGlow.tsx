@@ -138,11 +138,11 @@ export const HomeGlow = memo(() => {
       z={0}
       x={0}
       y={scrollTop}
-      o={0.3}
+      opacity={0.3}
       {...(isOnHeroBelow && {
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
-        o: 0.24,
+        opacity: 0.24,
       })}
     >
       <AnimatePresence>{glows}</AnimatePresence>
