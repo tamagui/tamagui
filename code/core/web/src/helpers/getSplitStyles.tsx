@@ -286,12 +286,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // otherwise things just keep nesting - careful don't leave these around
-      // they cause big performance dips in Chrome, only use them when debug prop set
-      // console.groupEnd()
-    }
-
     // normalize shorthands up front
     if (!disableExpandShorthands) {
       if (keyInit in shorthands) {

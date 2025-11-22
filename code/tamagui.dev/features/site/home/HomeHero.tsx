@@ -44,19 +44,19 @@ const HeroSubTitle = memo(() => {
   return (
     <Subtitle>
       <Link asChild href="/docs/intro/introduction">
-        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="red" onMouseEnter={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="green" onHoverIn={() => setHovered(3)} active={hovered === 3}>
+        <Tag theme="green" onMouseEnter={() => setHovered(3)} active={hovered === 3}>
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/ui/stacks">
-        <Tag theme="blue" onHoverIn={() => setHovered(4)} active={hovered === 4}>
+        <Tag theme="blue" onMouseEnter={() => setHovered(4)} active={hovered === 4}>
           UI&nbsp;kit
         </Tag>
       </Link>{' '}

@@ -64,8 +64,8 @@ export function Panel({
       // transformOrigin="left top"
       group="card"
       containerType="normal"
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       {...props}
     >
       <PanelContext.Provider

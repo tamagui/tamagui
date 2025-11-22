@@ -114,6 +114,6 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
         onKeyDown: disabled ? undefined : handleKeyDown,
       }),
       onPress: disabled ? undefined : handlePress,
-    } satisfies CheckboxBaseProps,
+    } as CheckboxBaseProps,
   }
 }

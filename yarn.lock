@@ -7245,7 +7245,6 @@ __metadata:
     typescript: "npm:~5.9.2"
     url: "npm:^0.11.0"
   bin:
-    tama: ./dist/index.cjs
     tamagui: ./dist/index.cjs
   languageName: unknown
   linkType: soft

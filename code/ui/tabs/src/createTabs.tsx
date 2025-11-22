@@ -146,12 +146,12 @@ export function createTabs<
                   setLayout(event.nativeEvent.layout)
                 }
               }}
-              onHoverIn={composeEventHandlers(props.onHoverIn, () => {
+              onMouseEnter={composeEventHandlers(props.onMouseEnter, () => {
                 if (layout) {
                   onInteraction?.('hover', layout)
                 }
               })}
-              onHoverOut={composeEventHandlers(props.onHoverOut, () => {
+              onMouseLeave={composeEventHandlers(props.onMouseLeave, () => {
                 onInteraction?.('hover', null)
               })}
               role="tab"

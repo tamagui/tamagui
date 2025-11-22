@@ -1,4 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
+import { webOnlyStylePropsText, webOnlyStylePropsView } from './webOnlyStyleProps'
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
@@ -218,69 +219,8 @@ export const stylePropsView = {
   boxShadow: true,
   filter: true,
 
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    // web-only for convenience
-    transition: true,
-    textWrap: true,
-    backdropFilter: true,
-    WebkitBackdropFilter: true,
-    background: true,
-    backgroundAttachment: true,
-    backgroundBlendMode: true,
-    backgroundClip: true,
-    backgroundColor: true,
-    backgroundImage: true,
-    backgroundOrigin: true,
-    backgroundPosition: true,
-    backgroundRepeat: true,
-    backgroundSize: true,
-    borderBottomStyle: true,
-    borderImage: true,
-    borderLeftStyle: true,
-    borderRightStyle: true,
-    borderTopStyle: true,
-    boxSizing: true,
-    caretColor: true,
-    clipPath: true,
-    contain: true,
-    containerType: true,
-    content: true,
-    cursor: true,
-    float: true,
-    mask: true,
-    maskBorder: true,
-    maskBorderMode: true,
-    maskBorderOutset: true,
-    maskBorderRepeat: true,
-    maskBorderSlice: true,
-    maskBorderSource: true,
-    maskBorderWidth: true,
-    maskClip: true,
-    maskComposite: true,
-    maskImage: true,
-    maskMode: true,
-    maskOrigin: true,
-    maskPosition: true,
-    maskRepeat: true,
-    maskSize: true,
-    maskType: true,
-    mixBlendMode: true,
-    objectFit: true,
-    objectPosition: true,
-    outlineOffset: true,
-    outlineStyle: true,
-    outlineWidth: true,
-    overflowBlock: true,
-    overflowInline: true,
-    overflowX: true,
-    overflowY: true,
-    pointerEvents: true,
-    scrollbarWidth: true,
-    textEmphasis: true,
-    touchAction: true,
-    transformStyle: true,
-    userSelect: true,
-  }),
+  // web-only for convenience - tree-shaken on native
+  ...(process.env.TAMAGUI_TARGET === 'web' && webOnlyStylePropsView),
 }
 
 const stylePropsFont = {
@@ -305,16 +245,8 @@ export const stylePropsTextOnly = {
   userSelect: true,
   verticalAlign: true,
 
-  // allow some web only ones
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    whiteSpace: true,
-    wordWrap: true,
-    textOverflow: true,
-    textDecorationDistance: true,
-    cursor: true,
-    WebkitLineClamp: true,
-    WebkitBoxOrient: true,
-  }),
+  // web-only text props - tree-shaken on native
+  ...(process.env.TAMAGUI_TARGET === 'web' && webOnlyStylePropsText),
 }
 
 export const stylePropsText = {

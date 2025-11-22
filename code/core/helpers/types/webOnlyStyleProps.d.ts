@@ -1,50 +1,4 @@
-/**
- * Web-only props and event handlers that should be skipped on native
- */
-export declare const webPropsToSkip: {
-    onClick: number;
-    onDoubleClick: number;
-    onContextMenu: number;
-    onMouseEnter: number;
-    onMouseLeave: number;
-    onMouseMove: number;
-    onMouseOver: number;
-    onMouseOut: number;
-    onMouseDown: number;
-    onMouseUp: number;
-    onWheel: number;
-    onKeyDown: number;
-    onKeyUp: number;
-    onKeyPress: number;
-    onPointerDown: number;
-    onPointerMove: number;
-    onPointerUp: number;
-    onPointerCancel: number;
-    onPointerEnter: number;
-    onPointerLeave: number;
-    onDrag: number;
-    onDragStart: number;
-    onDragEnd: number;
-    onDragEnter: number;
-    onDragLeave: number;
-    onDragOver: number;
-    onDrop: number;
-    onChange: number;
-    onInput: number;
-    onBeforeInput: number;
-    onScroll: number;
-    onCopy: number;
-    onCut: number;
-    onPaste: number;
-    htmlFor: number;
-    dangerouslySetInnerHTML: number;
-    whiteSpace: boolean;
-    wordWrap: boolean;
-    textOverflow: boolean;
-    textDecorationDistance: boolean;
-    cursor: boolean;
-    WebkitLineClamp: boolean;
-    WebkitBoxOrient: boolean;
+export declare const webOnlyStylePropsView: {
     transition: boolean;
     textWrap: boolean;
     backdropFilter: boolean;
@@ -70,6 +24,7 @@ export declare const webPropsToSkip: {
     contain: boolean;
     containerType: boolean;
     content: boolean;
+    cursor: boolean;
     float: boolean;
     mask: boolean;
     maskBorder: boolean;
@@ -106,4 +61,13 @@ export declare const webPropsToSkip: {
     transformStyle: boolean;
     userSelect: boolean;
 };
-//# sourceMappingURL=webPropsToSkip.native.d.ts.map
+export declare const webOnlyStylePropsText: {
+    whiteSpace: boolean;
+    wordWrap: boolean;
+    textOverflow: boolean;
+    textDecorationDistance: boolean;
+    cursor: boolean;
+    WebkitLineClamp: boolean;
+    WebkitBoxOrient: boolean;
+};
+//# sourceMappingURL=webOnlyStyleProps.d.ts.map

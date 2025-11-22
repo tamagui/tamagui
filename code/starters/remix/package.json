@@ -23,8 +23,8 @@
     "@tamagui/core": "^1.138.1",
     "@tamagui/vite-plugin": "^1.138.1",
     "isbot": "^4.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "tamagui": "^1.138.1"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@remix-run/dev": "^2.12.1",
     "@tamagui/cli": "^1.138.1",
     "@types/react": "~19.1.10",
-    "@types/react-dom": "~19.1.7",
+    "@types/react-dom": "~19.1.10",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "autoprefixer": "^10.4.19",

@@ -258,3 +258,45 @@ Finally, there are a few non-style props Tamagui adds:
     },
 
 ]} />
+
+## Event Handlers
+
+Tamagui supports all React Native events on all platforms. On web, we also support all standard DOM event handlers:
+
+### Cross-Platform Events
+- `onPress`, `onLongPress`, `onPressIn`, `onPressOut` - Touch/press events that work on both native and web
+
+### Web-Only Events
+The following events are available on web and automatically ignored on native:
+
+**Mouse Events**
+- `onClick`, `onDoubleClick`, `onContextMenu`
+- `onMouseEnter`, `onMouseLeave`, `onMouseMove`, `onMouseOver`, `onMouseOut`
+- `onMouseDown`, `onMouseUp`
+- `onWheel`
+
+**Keyboard Events**
+- `onKeyDown`, `onKeyUp`, `onKeyPress`
+
+**Pointer Events** - Modern events that work across mouse, touch, and pen:
+- `onPointerDown`, `onPointerUp`, `onPointerMove`
+- `onPointerEnter`, `onPointerLeave`, `onPointerCancel`
+
+**Drag and Drop**
+- `onDrag`, `onDragStart`, `onDragEnd`
+- `onDragEnter`, `onDragLeave`, `onDragOver`
+- `onDrop`
+
+**Input Events**
+- `onChange`, `onInput`, `onBeforeInput`
+
+**Scroll Events**
+- `onScroll`
+
+**Clipboard Events**
+- `onCopy`, `onCut`, `onPaste`
+
+**Focus Events**
+- `onFocus`, `onBlur`
+
+All event handlers receive the standard React synthetic event as their argument.

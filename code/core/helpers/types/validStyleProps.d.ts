@@ -155,6 +155,7 @@ export declare const stylePropsView: {
     outlineOffset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineWidth?: boolean | undefined;
+    outlineColor?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -236,7 +237,6 @@ export declare const stylePropsView: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
@@ -442,6 +442,7 @@ export declare const stylePropsText: {
     outlineOffset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineWidth?: boolean | undefined;
+    outlineColor?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -520,7 +521,6 @@ export declare const stylePropsText: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -696,6 +696,7 @@ export declare const stylePropsAll: {
     outlineOffset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineWidth?: boolean | undefined;
+    outlineColor?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -774,7 +775,6 @@ export declare const stylePropsAll: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -936,6 +936,7 @@ export declare const validStyles: {
     outlineOffset?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineWidth?: boolean | undefined;
+    outlineColor?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -1017,7 +1018,6 @@ export declare const validStyles: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;

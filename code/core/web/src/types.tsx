@@ -343,14 +343,54 @@ export interface WebOnlyPressEvents {
   onLongPress?: PressableProps['onLongPress']
   onPressIn?: PressableProps['onPress']
   onPressOut?: PressableProps['onPress']
-  onHoverIn?: DivAttributes['onMouseEnter']
-  onHoverOut?: DivAttributes['onMouseLeave']
   onMouseEnter?: DivAttributes['onMouseEnter']
   onMouseLeave?: DivAttributes['onMouseLeave']
   onMouseDown?: DivAttributes['onMouseDown']
   onMouseUp?: DivAttributes['onMouseUp']
+  onMouseMove?: DivAttributes['onMouseMove']
+  onMouseOver?: DivAttributes['onMouseOver']
+  onMouseOut?: DivAttributes['onMouseOut']
   onFocus?: DivAttributes['onFocus']
   onBlur?: DivAttributes['onBlur']
+  onClick?: DivAttributes['onClick']
+  onDoubleClick?: DivAttributes['onDoubleClick']
+  onContextMenu?: DivAttributes['onContextMenu']
+  onWheel?: DivAttributes['onWheel']
+
+  // Keyboard events
+  onKeyDown?: DivAttributes['onKeyDown']
+  onKeyUp?: DivAttributes['onKeyUp']
+  onKeyPress?: DivAttributes['onKeyPress']
+
+  // Input/Change events
+  onChange?: DivAttributes['onChange']
+  onInput?: DivAttributes['onInput']
+  onBeforeInput?: DivAttributes['onBeforeInput']
+
+  // Scroll
+  onScroll?: DivAttributes['onScroll']
+
+  // Clipboard
+  onCopy?: DivAttributes['onCopy']
+  onCut?: DivAttributes['onCut']
+  onPaste?: DivAttributes['onPaste']
+
+  // Drag and drop
+  onDrag?: DivAttributes['onDrag']
+  onDragStart?: DivAttributes['onDragStart']
+  onDragEnd?: DivAttributes['onDragEnd']
+  onDragEnter?: DivAttributes['onDragEnter']
+  onDragLeave?: DivAttributes['onDragLeave']
+  onDragOver?: DivAttributes['onDragOver']
+  onDrop?: DivAttributes['onDrop']
+
+  // Pointer events
+  onPointerDown?: DivAttributes['onPointerDown']
+  onPointerMove?: DivAttributes['onPointerMove']
+  onPointerUp?: DivAttributes['onPointerUp']
+  onPointerCancel?: DivAttributes['onPointerCancel']
+  onPointerEnter?: DivAttributes['onPointerEnter']
+  onPointerLeave?: DivAttributes['onPointerLeave']
 }
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -2148,9 +2188,15 @@ export interface StackNonStyleProps
       | RNOnlyProps
       | keyof ExtendBaseStackProps
       | 'style'
-      // Event handlers that conflict between RN ViewProps and Web DivAttributes after RN 0.81.5
+      // Event handlers that conflict between RN ViewProps and Web DivAttributes
       | 'onFocus'
       | 'onBlur'
+      | 'onPointerCancel'
+      | 'onPointerDown'
+      | 'onPointerEnter'
+      | 'onPointerLeave'
+      | 'onPointerMove'
+      | 'onPointerUp'
     >,
     ExtendBaseStackProps,
     TamaguiComponentPropsBase {

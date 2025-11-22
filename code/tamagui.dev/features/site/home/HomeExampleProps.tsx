@@ -43,7 +43,7 @@ export const HomeExampleProps = () => {
             gap="$4"
             items={[
               <FeatureItem key="" label="Press & hover events">
-                onHoverIn, onHoverOut, onPressIn, and onPressOut.
+                onMouseEnter, onMouseLeave, onPressIn, and onPressOut.
               </FeatureItem>,
               <FeatureItem key="" label="Pseudo styles">
                 Style hover, press, and focus, in combination with media queries.

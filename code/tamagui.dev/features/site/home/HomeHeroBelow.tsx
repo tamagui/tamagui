@@ -38,7 +38,7 @@ export const HeroBelowContent = memo(() => {
           px: '$6',
         }}
       >
-        <Section theme="pink" onHoverIn={() => setHovered(0)}>
+        <Section theme="pink" onMouseEnter={() => setHovered(0)}>
           <XStack alignItems="center" gap="$4">
             <IconStack>
               <Code size={12} color="var(--color9)" />
@@ -51,7 +51,7 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section theme="gray" onHoverIn={() => setHovered(1)}>
+        <Section theme="gray" onMouseEnter={() => setHovered(1)}>
           <XStack alignItems="center" gap="$4">
             <IconStack>
               <Cpu size={16} color="var(--color9)" />
@@ -64,7 +64,7 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section theme="red" onHoverIn={() => setHovered(2)}>
+        <Section theme="red" onMouseEnter={() => setHovered(2)}>
           <XStack alignItems="center" gap="$4">
             <IconStack>
               <Layers size={16} color="var(--color9)" />

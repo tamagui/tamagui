@@ -128,14 +128,42 @@ export interface WebOnlyPressEvents {
     onLongPress?: PressableProps['onLongPress'];
     onPressIn?: PressableProps['onPress'];
     onPressOut?: PressableProps['onPress'];
-    onHoverIn?: DivAttributes['onMouseEnter'];
-    onHoverOut?: DivAttributes['onMouseLeave'];
     onMouseEnter?: DivAttributes['onMouseEnter'];
     onMouseLeave?: DivAttributes['onMouseLeave'];
     onMouseDown?: DivAttributes['onMouseDown'];
     onMouseUp?: DivAttributes['onMouseUp'];
+    onMouseMove?: DivAttributes['onMouseMove'];
+    onMouseOver?: DivAttributes['onMouseOver'];
+    onMouseOut?: DivAttributes['onMouseOut'];
     onFocus?: DivAttributes['onFocus'];
     onBlur?: DivAttributes['onBlur'];
+    onClick?: DivAttributes['onClick'];
+    onDoubleClick?: DivAttributes['onDoubleClick'];
+    onContextMenu?: DivAttributes['onContextMenu'];
+    onWheel?: DivAttributes['onWheel'];
+    onKeyDown?: DivAttributes['onKeyDown'];
+    onKeyUp?: DivAttributes['onKeyUp'];
+    onKeyPress?: DivAttributes['onKeyPress'];
+    onChange?: DivAttributes['onChange'];
+    onInput?: DivAttributes['onInput'];
+    onBeforeInput?: DivAttributes['onBeforeInput'];
+    onScroll?: DivAttributes['onScroll'];
+    onCopy?: DivAttributes['onCopy'];
+    onCut?: DivAttributes['onCut'];
+    onPaste?: DivAttributes['onPaste'];
+    onDrag?: DivAttributes['onDrag'];
+    onDragStart?: DivAttributes['onDragStart'];
+    onDragEnd?: DivAttributes['onDragEnd'];
+    onDragEnter?: DivAttributes['onDragEnter'];
+    onDragLeave?: DivAttributes['onDragLeave'];
+    onDragOver?: DivAttributes['onDragOver'];
+    onDrop?: DivAttributes['onDrop'];
+    onPointerDown?: DivAttributes['onPointerDown'];
+    onPointerMove?: DivAttributes['onPointerMove'];
+    onPointerUp?: DivAttributes['onPointerUp'];
+    onPointerCancel?: DivAttributes['onPointerCancel'];
+    onPointerEnter?: DivAttributes['onPointerEnter'];
+    onPointerLeave?: DivAttributes['onPointerLeave'];
 }
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 type FontFamilies = FontTokens extends `$${infer Token}` ? Token : never;
@@ -218,6 +246,7 @@ export type ComponentContextI = {
     mediaEmit?: (state: UseMediaState) => void;
 };
 export type TamaguiComponentStateRef = {
+    startedUnhydrated: boolean;
     host?: TamaguiElement;
     composedRef?: (x: TamaguiElement) => void;
     willHydrate?: boolean;
@@ -1327,7 +1356,7 @@ type A11yDeprecated = {
      */
     accessible?: ViewProps['accessible'];
 };
-export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerEnter' | 'onPointerLeave' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;

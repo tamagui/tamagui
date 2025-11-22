@@ -1,3 +1,4 @@
+- checkbox disableActiveTheme not workign
 - ssr fix i think select not showing value until after load?
 
 animations improvements:
@@ -15,12 +16,6 @@ animations improvements:
 
 - make tamagui package work in some simple way
   - probably making tamagui + tamagui/ui both work is fine
-
-- v2 useTheme({ name: '' }) should remove since .get() doesnt match
-- release v5 config now
-
-- v2 - whitelist more web-only events like onKeyDown in types
-  - react 19 only (can move some stuff to conditional use())
 
 - react-native-web-lite fixes things like data- attributes not passing down etc
 
@@ -92,8 +87,6 @@ v2 big win / lowish effort:
     - instead `animationDriver` prop on any component
   - accept multiple animationDrivers at root for proper types
 
-- document <ClientOnly />
-
 # force railway deploy
 
 - in onejs/chat bug with transforms merging media queries: 
@@ -110,8 +103,6 @@ v2 big win / lowish effort:
 - tamagui.dev the right side quick nav on docs isnt updating on page nav
   - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
 
-- we need to actually in validStyleProps probably have the web-only ones be on a new object like "webOnly" and then actually filtered out on native so they dont clutter things.
-
 - fix react 19 + nextjs 15
   - https://github.com/gcoakleyjr/React19-Tamagui
   - react-native-web-lite or patch rnw because it doesn't work, we should:
@@ -120,8 +111,6 @@ v2 big win / lowish effort:
       - https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
   - eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
   - announcement
-
-- option to default to position "static"
 
 - i think a big current bug is onlyAllowShorthands can be set on settings or on base, but if its set on base it breaks types entirely.
 
@@ -189,8 +178,6 @@ blog post:
 
 - todo:
   - remove $true tokens and concept
-  - default position relative => position static with ENV to revert
-  - onMouseMove, onDoubleClick and other web props
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
