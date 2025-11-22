@@ -50,7 +50,7 @@ export default function BlogSlug() {
     <>
       <HeadInfo
         {...data.frontmatter}
-        title={data.frontmatter.title}
+        title={`${data.frontmatter.title} — Tamagui`}
         description={data.frontmatter.description ?? ''}
         openGraph={{
           images: [
