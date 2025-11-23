@@ -28,14 +28,19 @@ const generateColorPalette = ({
 
   let palette: string[] = []
 
-  const add = (h: number, s: number, l: number) => {
-    palette.push(hsla(h, s, l, 1))
+  const add = (h: number, s: number, l: number, a?: number) => {
+    palette.push(hsla(h, s, l, a ?? 1))
   }
 
   const numAnchors = Object.keys(anchors).length
 
   for (const [anchorIndex, anchor] of anchors.entries()) {
-    const [h, s, l] = [anchor.hue[scheme], anchor.sat[scheme], anchor.lum[scheme]]
+    const [h, s, l, a] = [
+      anchor.hue[scheme],
+      anchor.sat[scheme],
+      anchor.lum[scheme],
+      anchor.alpha[scheme],
+    ]
 
     if (anchorIndex !== 0) {
       const lastAnchor = anchors[anchorIndex - 1]
@@ -56,7 +61,7 @@ const generateColorPalette = ({
       }
     }
 
-    add(h, s, l)
+    add(h, s, l, a)
 
     const isLastAnchor = anchorIndex === numAnchors - 1
     if (isLastAnchor && palette.length < paletteSize) {
