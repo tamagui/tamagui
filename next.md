@@ -158,7 +158,7 @@ blog post:
 
 - during v2:
   - headless versions of every component
-  - native versions of every components
+  - native versions of every component
   - border, background, boxShadow props with web style , separation
   - var(--) style tokens
 

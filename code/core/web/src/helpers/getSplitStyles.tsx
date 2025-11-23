@@ -17,12 +17,6 @@ import {
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
-import {
-  extractValueFromDynamic,
-  getDynamicVal,
-  getOppositeScheme,
-} from './getDynamicVal'
-
 import { getConfig, getFont, getSetting } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
@@ -56,6 +50,11 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
+import {
+  extractValueFromDynamic,
+  getDynamicVal,
+  getOppositeScheme,
+} from './getDynamicVal'
 import { getGroupPropParts } from './getGroupPropParts'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isActivePlatform } from './isActivePlatform'
