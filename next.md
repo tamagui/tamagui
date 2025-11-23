@@ -1,3 +1,110 @@
+pre v2:
+
+  - useTheme().x.val may have bug on light/dark switch
+  - https://github.com/tamagui/tamagui/issues/3322
+  - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
+  - react native 78 dialogs not working
+    - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
+  - tamagui.dev the right side quick nav on docs isnt updating on page nav
+    - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
+  - fix react 19 + nextjs 15
+    - https://github.com/gcoakleyjr/React19-Tamagui
+  - ensure onlyAllowShorthands changes types properly
+  - tooltip: expects zIndex but shorthand overrides and doesn't work
+  
+As an example, we have a Button that has a variant, default.
+its pressStyle is
+pressStyle: {
+  backgroundColor: '$accent3Hovered',
+},
+1:48
+however, doing this
+<Button
+  variant="default"
+  {...props}
+  pressStyle={{
+    backgroundColor: 'red',
+  }}
+>
+does not give the Button a red background when pressed
+
+- beef up tests:
+  - native integration
+  - $group $platform $theme styling
+
+uniswap:
+
+- enter/exit in media not overriding
+
+- Checkbox disabled prop not disabling on native
+
+- if Popover can not be portaled that would be useful for some use cases
+
+- RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
+  - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
+
+- bug: if you name a file `polyfill-native.ts` tamagui-build doesnt output the .native files properly
+
+- When using <Adapt.Contents />  inside an Adapt when="maxMd"  it seems to hide the children before fully closed
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
+
+- When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
+  
+- AnimatePresence leaving things in DOM
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
+
+---
+
+blog post:
+
+  - headless versions of most components
+
+---
+
+- Dialog.Portal and <Dialog modal /> redundant
+
+- boxShadow, border, background, boxShadow props with web style
+    - deprecate shadow props separated?
+
+- import `tamagui/styled` / `@tamagui/button/styled`
+  - adds styles, sizing, unstyled prop
+    - removing default size based styling, look at this in tooltip!:
+```
+const padding = !props.unstyled
+        ? (props.padding ??
+          props.size ??
+          popperSize ??
+          getSize('$true', {
+            shift: -2,
+          }))
+        : undefined
+```
+
+
+- seems css driver needs love and a bit of testing
+  - heard reports animatepresence breaking
+  - in onejs/chat bug with transforms merging media queries: 
+    - see // TODO bug x should overwrite not be cumulative
+  - css animation driver enter animations not working it seems, i used to have
+    a fix for this where setState({ unmounted: true }) inside createComponent had a setTimeout() wrapped around it, but then removed it when i tested and found it didnt need it anymore, but seems it does need it again? or some other better fix ideally.
+
+- two fixes for animation drivers
+  - remove <Configuration animationDriver (breaks compiler)
+    - instead `animationDriver` prop on any component
+  - accept multiple animationDrivers at root for proper types
+
+- Text weirdness fixes (explore)
+    - remove suppressHighlighting / margin 0 default from Text
+    - fix display: inline issue
+    - see what react-strict-dom is doing
+    - move it to <div><span> where div is flex, span is text only props
+        <div {...nonTextStyleProps}>
+          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
+
+          </span>
+        </div>
+
 - react 19 migration:
   - keep forwardRef for now at least
   - useEvent => useEffectEvent
@@ -21,11 +128,13 @@ animations improvements:
 - make tamagui package work in some simple way
   - probably making tamagui + tamagui/ui both work is fine
 
-- react-native-web-lite fixes things like data- attributes not passing down etc
+- react-native-web-lite 
+  - tree shakeable, smaller, fixes things like data- attributes not passing
+  - shares core style logic with tamagui for smaller bundles used together
+  - outstanding bug? https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
 
 - docs on reprop context on ios new arch
 
-- popover bring back dismissable - document dismissable etc
 - in SheetImplCustom bad logic for pulling up when scroll view inside
   - if scrollview isn't able to scroll we shouldn't disable that behavior:
     `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
@@ -34,34 +143,26 @@ animations improvements:
 
 - Dialog.Overlay shouldn't need to define key for animation
 - apply visibility hidden to fully hidden popover for perf gains
+
+- refresh site hero:
+  - 100% features work the same cross-platform
+  - optionally compile-time optimized, but 100% runtime feature-set
+  - 0-dependency: no / faster than react-native-web
+  - fully typesafe styling
+  - by far best SSR
+  - headless component kit
+  - super-powerful: themes, animations
+
+- sync AnimatePresence with latest changes from framer-motion
+
+---
+
 - css driver can noRerender
-- reanimated too but requires testing native + worklets
-
-v2:
-
-- move away from default theme and just had the examples be copy-paste with defaults i think, we have unstyled now but that would simplify this
-was thinking v3 but maybe its worht just doing it. maybe just add a import 'tamagui/apply-default-styles' or something with some api to set the defaults
-if people want v1 compat
-
-- remove webpack plugin
+  - reanimated too but requires testing native + worklets
 
 - removeScrollEnabled => disableRemoveScroll
 
-- move to types react/react-dom 19
-
-- removing default size based styling, look at this in tooltip!:
-```
-const padding = !props.unstyled
-        ? (props.padding ??
-          props.size ??
-          popperSize ??
-          getSize('$true', {
-            shift: -2,
-          }))
-        : undefined
-```
-
----
+- popover bring back dismissable - document dismissable etc
 
 - escape on tamagui sheet doesn't close in general keyboard accessibility
   - check radix sheet and compare and improve
@@ -71,98 +172,20 @@ const padding = !props.unstyled
   - note that we create all the style rules before we actually check if should insert
   - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
 
-- perf: could avoid parent re-renders on group changes even if dynamic
-  - if they dont themselves have animation, would need to group.emit() in the actual press events not based on an effect based on state
+- eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
+- announcement
 
-for v2, new site hero that captures:
-
-- 100% features work the same cross-platform
-- optionally compile-time optimized, but 100% runtime feature-set
-- 0-dependency: no / faster than react-native-web
-- fully typesafe styling
-- by far best SSR
-- headless component kit
-- super-powerful: themes, animations
-
-v2 big win / lowish effort:
-
-- two fixes for animation drivers
-  - remove <Configuration animationDriver (breaks compiler)
-    - instead `animationDriver` prop on any component
-  - accept multiple animationDrivers at root for proper types
-
-# force railway deploy
-
-- in onejs/chat bug with transforms merging media queries: 
-  - see // TODO bug x should overwrite not be cumulative
-
-- css animation driver enter animations not working it seems, i used to have
-  a fix for this where setState({ unmounted: true }) inside createComponent had a setTimeout() wrapped around it, but then removed it when i tested and found it didnt need it anymore, but seems it does need it again? or some other better fix ideally.
-
-- small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
-
-- react native 78 dialogs not working
-  - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
-
-- tamagui.dev the right side quick nav on docs isnt updating on page nav
-  - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
-
-- fix react 19 + nextjs 15
-  - https://github.com/gcoakleyjr/React19-Tamagui
-  - react-native-web-lite or patch rnw because it doesn't work, we should:
-    - somehow fix rnw issue with rn19
-    - fix issue with rnw-lite
-      - https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
-  - eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
-  - announcement
-
-- i think a big current bug is onlyAllowShorthands can be set on settings or on base, but if its set on base it breaks types entirely.
-
-- tooltip: expects zIndex but shorthand overrides and doesn't work
-
-- make group props require the prop key to be stable like animations
+- group props require the prop key to be stable like animations
   - saves 2 hooks in every component
   - in dev mode add a extra component around every component
     - make it so it automatically handles animation/group changes without breaking
     - but make it error in the console
 
-- useTheme().x.val may have bug on light/dark switch
-
-bug:
-
-- https://github.com/tamagui/tamagui/issues/3322
-
-As an example, we have a Button that has a variant, default.
-its pressStyle is
-pressStyle: {
-  backgroundColor: '$accent3Hovered',
-},
-1:48
-however, doing this
-<Button
-  variant="default"
-  {...props}
-  pressStyle={{
-    backgroundColor: 'red',
-  }}
->
-does not give the Button a red background when pressed
-
 - issue with letter spacing after upgrading
   - https://discord.com/channels/909986013848412191/974145843919716412/1356379335132446740
   - https://share.cleanshot.com/4rKTYFkl
 
-v2
-note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
-blog post:
-
-- during v2:
-  - headless versions of every component
-  - native versions of every component
-  - border, background, boxShadow props with web style , separation
-  - var(--) style tokens
-
-- talk about v3:
+v3:
   - aim for fast follow
   - if not in 2, animation => transition
   - default box-sizing to border-box
@@ -174,11 +197,10 @@ blog post:
     - themes => variables, control any property
     - remove tokens in favor of variables
   
-  - RSD style - no View + Text (just Element and we can extend it later)
+  - RSD - no View + Text (just Element and we can extend it later)
     - compiler can optimize
     - mimic text inhertance on native (or remove it on web)
     - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
-
 
 - todo:
   - remove $true tokens and concept
@@ -217,16 +239,6 @@ blog post:
   - need to copy/paste all the component docs to 2.0.0.mdx
   - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
   - see how much of accessibilityDirectMap we can remove for web
-  - Text weirdness fixes (explore)
-    - remove suppressHighlighting / margin 0 default from Text
-    - fix display: inline issue
-    - see what react-strict-dom is doing
-    - move it to <div><span> where div is flex, span is text only props
-        <div {...nonTextStyleProps}>
-          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
-
-          </span>
-        </div>
   - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
   - @tamagui/cli => tamagui
     - `tamagui build` document/announce
@@ -240,18 +252,7 @@ blog post:
 
 potential
 
-  - border="1px solid $color" border="$4 solid $color"
-  - deprecate shadow props separated in favor of boxShadow, implement boxShadow
-  - sync AnimatePresence with latest changes from framer-motion
   - group => container
-
-stretch
-
-  - @tamagui/core => @tamagui/style
-    - styled()
-    - @tamagui/style just style({}) export, takes TextProps
-- // TODO: turn on
-  - // TODO on inverse theme changes
 
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
@@ -274,26 +275,19 @@ createCore<CustomTypes>({
 })
 ```
 
-  - `background` prop + linear-gradient + background-image (see *Skeleton)
   - can we remove the need for separate Text/View?
       - seems like we could scan just the direct descendents?
       https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+
   - light-dark()
     - this is an official css thing so would be easy-ish to implement
+
   - run over components and review for removing some assumptions about `size`
   - disableInjectCSS should maybe just be automated better or defaulted on
   - flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
   - no react-native deps across the ui kit on web
   - html.div, styled('div'), styled(html.div)
-  - zero runtime mode
-    - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
   - `<Theme values={{}} />` dynamic override
-
-- beef up tests:
-  - native
-  - native/web performance
-  - nextjs (can add to code/next-site), esp light/dark/animations
-  - $group $platform $theme styling
 
 - reanimated animate presence is making me set `opacity: 1` type default values
 
@@ -302,14 +296,6 @@ createCore<CustomTypes>({
 - popover trigger should send an event to close tooltips automatically on open
   - closeTooltips() helper
   - tooltip prop `closeOnGlobalPress`
-
-- we should add a docs page on testing tamagui:
-
-jest-preset.js should add (for testing native):
-
-testEnvironmentOptions: {
-  customExportConditions: ['react-native'],
-}
 
 - looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
 
@@ -328,28 +314,6 @@ testEnvironmentOptions: {
 - can skip a ton of CSS by disabling prefers color theme setting
   - so long as they use next-theme, or vxrn/color-scheme
 
-uniswap:
-
-- enter/exit in media not overriding
-
-- Checkbox disabled prop not disabling on native
-
-- if Popover can not be portaled that would be useful for some use cases
-
-- RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
-  - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
-
-- bug: if you name a file `polyfill-native.ts` tamagui-biuld doesnt output the .native files properly
-
-- When using <Adapt.Contents />  inside an Adapt when="maxMd"  it seems to hide the children before fully closed
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
-
-- When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
-  
-- AnimatePresence leaving things in DOM
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
-
 ---
 
 - SSR safe styled context, something like:
@@ -366,8 +330,6 @@ const Context = createStyledContext({
   - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
 
 ---
-
-- Dialog.Portal and <Dialog modal /> redundant
 
 - as long as you use the nextjs or other new color scheme helpers they always add t_dark/t_light on first render so as long as youre ok with dark mode not working for js-off users, you could turn default the tamagui/config v4 to shouldAddPrefersColorThemes: false
 
@@ -438,8 +400,6 @@ const Context = createStyledContext({
 - Select `ListItemFrame` area is messy/slow due to inline styles and complex components
 - propMode
 
-- make styled() only not accept most non-style props
-
 - Scale / ScaleSelect
   should be a Menu with mini visualizations of the lum/sat scales for each
 
@@ -499,32 +459,13 @@ const MyComponent = (props: { accentedStyle?: StackStyle }) => {
 
 ---
 
-Smaller features:
-
-- no-rerender psuedo styles on native when using reanimated driver (fernando PR)
-- imperative methods for many things - sheet, popover, etc, close etc
-- ssr safe themeInverse would be pretty nice
-- styled(ExternalComponent) should always allow Partial props
-  - but if you do provide the props ideally it should 'know' they are pre-filled and therefore not required anymore
-  - also it should make sure to make those props required if they aren't set in styled()
-- avoid css extract on server mode next.js?
-
----
-
 # Backlog
+
+- imperative methods for things - sheet, popover, etc, close etc
 
 - Popover.Close inside Sheet
 
 - merge font-size and get-font-sized packages
-
-- cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
-
-- <Sheet native />
-  - https://github.com/dominicstop/react-native-ios-modal
-  - we'd want expo module + snap points
-
-- <ActionSheet />
-- plus `native` prop https://reactnative.dev/docs/actionsheetios
 
 - add test that builds site for prod + checks for header text / no errors
 
