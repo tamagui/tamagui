@@ -4,6 +4,7 @@ import { createAnimations as createAnimationsMotion } from '@tamagui/animations-
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
+import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
 
 export const animationsCSS = createAnimationsCSS({
@@ -175,9 +176,19 @@ config.themes = {
   light_MyLabel: {
     color: 'red',
   },
+
+  // Test theme for Issue #3620: color tokens should be fallbacks, not overrides
+  // This theme overrides customRed to be green, to verify theme values take precedence
+  // @ts-ignore
+  light_ColorTokenTest: {
+    background: '#ffffff',
+    customRed: '#00ff00', // Override the color token (which is #ff0000) with green
+  },
 }
 
 const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
+
+const useV4Themes = search.includes('v4theme=true')
 
 const tokens = {
   ...config.tokens,
@@ -195,6 +206,8 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
+  // Use v4 themes when ?v4theme=true is in the URL
+  ...(useV4Themes && { themes: tamaguiThemes }),
   defaultFont: undefined,
   settings: {
     defaultFont: undefined,
