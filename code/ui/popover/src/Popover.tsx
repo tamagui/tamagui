@@ -200,7 +200,7 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
       <PopperAnchor
         {...(virtualRef && { virtualRef })}
         scope={scope}
-        asChild={rest.asChild}
+        asChild
       >
         {trigger}
       </PopperAnchor>
