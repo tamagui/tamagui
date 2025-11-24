@@ -236,6 +236,21 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       res[subKey] = val
     } else {
       if (variants && subKey in variants) {
+        // Track context variant resolutions (issue #3669)
+        // When a variant maps to another variant that's also a context key,
+        // we need to track it so it can be propagated via context to children
+        // Check both current context and parent's context (in case child doesn't explicitly set context)
+        if (staticConfig) {
+          const contextProps =
+            staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
+          if (contextProps && subKey in contextProps) {
+            if (!styleState.resolvedContextVariants) {
+              styleState.resolvedContextVariants = {}
+            }
+            styleState.resolvedContextVariants[subKey] = val
+          }
+        }
+
         // avoids infinite loop if variant is matching a style prop
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {

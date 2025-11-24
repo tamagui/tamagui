@@ -2502,6 +2502,8 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  // Track variant resolutions that map to context keys (for issue #3669)
+  resolvedContextVariants?: Record<string, any>
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -3001,6 +3003,8 @@ export type GetStyleResult = {
   dynamicThemeAccess?: boolean
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
+  // Variant resolutions that map to context keys (for issue #3669)
+  resolvedContextVariants?: Record<string, any>
 }
 
 export type ClassNamesObject = Record<string, string>

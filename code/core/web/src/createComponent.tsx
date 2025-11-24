@@ -639,6 +639,26 @@ export function createComponent<
 
     // splitStyles === null === passThrough
 
+    // Merge variant-resolved context values (issue #3669)
+    // When a variant maps to another variant that's also a context key,
+    // we need to add it to overriddenContextProps so it propagates to children
+    // Use either the component's own context or its parent's context (for styled() inheritance)
+    let contextForOverride = staticConfig.context
+    if (splitStyles?.resolvedContextVariants) {
+      const contextForVariants =
+        staticConfig.context || staticConfig.parentStaticConfig?.context
+      if (contextForVariants) {
+        for (const key in splitStyles.resolvedContextVariants) {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = splitStyles.resolvedContextVariants[key]
+        }
+        // Use parent's context if this component doesn't have its own
+        if (!staticConfig.context) {
+          contextForOverride = contextForVariants
+        }
+      }
+    }
+
     const groupContext = groupName ? allGroupContexts?.[groupName] || null : null
 
     // one tiny mutation 🙏 get width/height optimistically from raw values if possible
@@ -1397,8 +1417,8 @@ export function createComponent<
       }
     }
 
-    if (overriddenContextProps) {
-      const Provider = staticConfig.context!.Provider!
+    if (overriddenContextProps && contextForOverride) {
+      const Provider = contextForOverride.Provider!
 
       // make sure we re-order styled context keys based on how we pass them here:
       for (const key in styledContextValue) {
