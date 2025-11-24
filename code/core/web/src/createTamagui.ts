@@ -2,7 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
-import { createEmptyAnimationDriver } from './helpers/createEmptyAnimationDriver'
+import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { getAllRules, scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
@@ -273,7 +273,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     fonts: {},
     onlyAllowShorthands: false,
     fontLanguages: [],
-    animations: createEmptyAnimationDriver() as any,
+    animations: defaultAnimationDriver,
     media: {},
     ...configIn,
     unset,

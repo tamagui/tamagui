@@ -6,8 +6,9 @@ const noAnimationDriver = (method: string): any => {
   )
 }
 
-export const createEmptyAnimationDriver = (): AnimationDriver => ({
+const createEmptyAnimationDriver = (): AnimationDriver => ({
   isReactNative: false,
+  supportsCSS: true,
   isStub: true,
   animations: {},
   useAnimations: () => noAnimationDriver('animations'),
@@ -17,3 +18,5 @@ export const createEmptyAnimationDriver = (): AnimationDriver => ({
   useAnimatedNumberStyle: () => noAnimationDriver('useAnimatedNumberStyle'),
   useAnimatedNumberReaction: () => noAnimationDriver('useAnimatedNumberReaction'),
 })
+
+export const defaultAnimationDriver = createEmptyAnimationDriver()

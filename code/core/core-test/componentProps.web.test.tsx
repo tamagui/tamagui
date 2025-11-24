@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest'
 
 import { getDefaultTamaguiConfig } from '../config-default'
 
-const config = createTamagui(getDefaultTamaguiConfig('native'))
+const config = createTamagui(getDefaultTamaguiConfig('web'))
 
 describe('animation props', () => {
   test(`renders with animation props`, () => {

@@ -42,7 +42,6 @@ function DialogInstance({ level = 1 }: { level?: number }) {
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay
-            backgroundColor="$shadow6"
             animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -53,10 +52,9 @@ function DialogInstance({ level = 1 }: { level?: number }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          backgroundColor="$shadow6"
           animateOnly={['transform', 'opacity']}
           animation={[
-            'quicker',
+            'quick',
             {
               opacity: {
                 overshootClamping: true,
@@ -76,7 +74,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
           key="content"
           animateOnly={['transform', 'opacity']}
           animation={[
-            'quicker',
+            'quick',
             {
               opacity: {
                 overshootClamping: true,
@@ -90,7 +88,8 @@ function DialogInstance({ level = 1 }: { level?: number }) {
         >
           <Dialog.Title>Dialog Level {level}</Dialog.Title>
           <Dialog.Description>
-            This is dialog level {level}. {level < 3 ? 'You can open another dialog inside.' : ''}
+            This is dialog level {level}.{' '}
+            {level < 3 ? 'You can open another dialog inside.' : ''}
           </Dialog.Description>
 
           <Paragraph data-testid={`${testId}-dialog-paragraph`}>
@@ -102,7 +101,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
             {level < 3 && <DialogInstance level={level + 1} />}
 
             <Dialog.Close displayWhenAdapted asChild>
-              <Button theme="accent" aria-label="Close" data-testid={`${testId}-dialog-close`}>
+              <Button aria-label="Close" data-testid={`${testId}-dialog-close`}>
                 Close
               </Button>
             </Dialog.Close>

@@ -28,7 +28,11 @@ export const useComponentState = (
 ) => {
   const isHydrated = useDidFinishSSR()
   const needsHydration = !useIsClientOnly()
-  const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
+
+  const useAnimations = animationDriver?.isStub
+    ? undefined
+    : (animationDriver?.useAnimations as UseAnimationHook | undefined)
+
   const { isHOC } = staticConfig
 
   const stateRef = useRef<TamaguiComponentStateRef>(
