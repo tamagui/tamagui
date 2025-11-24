@@ -368,12 +368,8 @@ function getThemesDeduped(
 
     // ensure each theme object unique for dedupe
     // is ThemeParsed because we call ensureThemeVariable
-    const theme = { ...rawTheme } as any as ThemeParsed
-
-    // automatically merge color tokens into themes
-    if (colorTokens) {
-      Object.assign(theme, colorTokens)
-    }
+    // color tokens are spread first as fallbacks, theme values take precedence
+    const theme = { ...colorTokens, ...rawTheme } as any as ThemeParsed
 
     // parse into variables
     for (const key in theme) {
