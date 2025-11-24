@@ -56,6 +56,18 @@ function getPool(): Piscina {
       maxThreads: 1,
       idleTimeout: 60000, // 60s - keep alive for config watching
     })
+
+    // Handle error events to prevent uncaught exceptions during pool destruction
+    // Piscina emits 'error' events when workers are terminated and there are no pending tasks
+    // Without this handler, Node.js throws the error as an uncaught exception
+    piscinaPool.on('error', (err) => {
+      // suppress termination errors during shutdown
+      if (isClosing) {
+        return
+      }
+      // Log other errors for debugging
+      console.error('[tamagui] Worker pool error:', err)
+    })
   }
   return piscinaPool
 }
