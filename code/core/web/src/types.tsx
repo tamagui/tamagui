@@ -2944,6 +2944,8 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   supportsCSS?: boolean
   needsWebStyles?: boolean
   avoidReRenders?: boolean
+  /** When true, this is a stub driver with no real animation support */
+  isStub?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   ResetPresence: (props: {

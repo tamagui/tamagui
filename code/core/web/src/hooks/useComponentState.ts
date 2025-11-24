@@ -2,7 +2,6 @@ import { isServer, isWeb } from '@tamagui/constants'
 import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
-import { getSetting } from '../config'
 import {
   defaultComponentState,
   defaultComponentStateMounted,

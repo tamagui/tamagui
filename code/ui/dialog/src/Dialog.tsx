@@ -149,6 +149,8 @@ export const DialogPortalFrame = styled(YStack, {
           // ensure always in frame and right height
           maxHeight: '100vh',
           position: 'fixed' as any,
+          // ensure dialog inherits stacking context from portal wrapper
+          zIndex: 1,
         },
       },
     },

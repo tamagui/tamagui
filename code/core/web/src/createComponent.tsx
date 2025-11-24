@@ -379,7 +379,7 @@ export function createComponent<
 
     const componentState = useComponentState(
       props,
-      animationDriver,
+      animationDriver?.isStub ? null : animationDriver,
       staticConfig,
       config!
     )
