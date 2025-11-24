@@ -107,7 +107,11 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
   )
 }
 
-function getColors(colors: Record<string, Variable>, dark = false) {
+function getColors(colors: Record<string, Variable> | undefined, dark = false) {
+  if (!colors) {
+    console.warn(`⚠️ no colors?`, colors)
+    return []
+  }
   return colorGroups.map((group) => {
     return Object.keys(colors)
       .filter(

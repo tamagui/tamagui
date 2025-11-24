@@ -166,6 +166,7 @@ export declare const stylePropsView: {
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
     userSelect?: boolean | undefined;
+    willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     WebkitLineClamp: boolean;
@@ -454,6 +455,7 @@ export declare const stylePropsText: {
     textEmphasis?: boolean | undefined;
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
+    willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     animationIterationCount: boolean;
@@ -709,6 +711,7 @@ export declare const stylePropsAll: {
     textEmphasis?: boolean | undefined;
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
+    willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     animationIterationCount: boolean;
@@ -950,6 +953,7 @@ export declare const validStyles: {
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
     userSelect?: boolean | undefined;
+    willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     WebkitLineClamp: boolean;
