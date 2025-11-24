@@ -63,7 +63,7 @@ const P2 = styled(Text2, {
         fontSize: 40,
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     parentVariant: true,
@@ -87,7 +87,7 @@ const ButtonFrame = styled(View, {
         backgroundColor: 'red',
       },
     },
-  },
+  } as const,
 })
 
 const ButtonFrame2 = styled(ButtonFrame, {
@@ -99,7 +99,7 @@ const ButtonFrame2 = styled(ButtonFrame, {
         test: true, // maps test2 → test
       },
     },
-  },
+  } as const,
 })
 
 const ButtonText = styled(Text, {
@@ -113,5 +113,5 @@ const ButtonText = styled(Text, {
         color: 'white',
       },
     },
-  },
+  } as const,
 })

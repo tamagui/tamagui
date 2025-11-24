@@ -63,6 +63,7 @@ export function GroupPressInVariant() {
 
       {/* Test 2: $group-press in variant with named group */}
       <YStack
+        // @ts-expect-error - testing named group feature
         group="testgroup"
         id="test-named-group"
         backgroundColor="$gray5"

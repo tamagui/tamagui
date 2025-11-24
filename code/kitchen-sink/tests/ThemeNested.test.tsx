@@ -15,8 +15,8 @@ import { TEST_IDS } from '../src/constants/test-ids'
  */
 
 test.beforeEach(async ({ page }) => {
-  // Use v4 themes to test the nested theme regression (issue #3673)
-  await setupPage(page, { name: 'ThemeNested', type: 'useCase', v4theme: true })
+  // Test the nested theme regression (issue #3673)
+  await setupPage(page, { name: 'ThemeNested', type: 'useCase' })
 })
 
 test('Nested blue theme with surface3 matches direct light_blue_surface3', async ({
