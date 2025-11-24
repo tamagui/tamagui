@@ -62,7 +62,12 @@ export function GroupPressInVariant() {
       </YStack>
 
       {/* Test 2: $group-press in variant with named group */}
-      <YStack group="testgroup" id="test-named-group" backgroundColor="$gray5" padding="$4">
+      <YStack
+        group="testgroup"
+        id="test-named-group"
+        backgroundColor="$gray5"
+        padding="$4"
+      >
         <GroupPressTextNamed id="test-variant-named" variant="primary">
           Named group variant - should turn red on press
         </GroupPressTextNamed>

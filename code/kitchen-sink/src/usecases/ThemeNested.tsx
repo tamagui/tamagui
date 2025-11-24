@@ -24,23 +24,17 @@ export function ThemeNested() {
       <YStack gap="$2">
         <Text fontWeight="bold">Case 1: Direct light_blue_surface3</Text>
         <Theme name="light_blue_surface3">
-          <Square
-            id={TEST_IDS.nestedThemeDirect}
-            bg="$background"
-            size={100}
-          />
+          <Square id={TEST_IDS.nestedThemeDirect} bg="$background" size={100} />
         </Theme>
       </YStack>
 
       <YStack gap="$2">
-        <Text fontWeight="bold">Case 2: Nested blue → surface3 (should match Case 1)</Text>
+        <Text fontWeight="bold">
+          Case 2: Nested blue → surface3 (should match Case 1)
+        </Text>
         <Theme name="blue">
           <Theme name="surface3">
-            <Square
-              id={TEST_IDS.nestedThemeNested}
-              bg="$background"
-              size={100}
-            />
+            <Square id={TEST_IDS.nestedThemeNested} bg="$background" size={100} />
           </Theme>
         </Theme>
       </YStack>
@@ -51,11 +45,7 @@ export function ThemeNested() {
         <Theme name="light">
           <Theme name="blue">
             <Theme name="surface3">
-              <Square
-                id={TEST_IDS.nestedThemeWithParent}
-                bg="$background"
-                size={100}
-              />
+              <Square id={TEST_IDS.nestedThemeWithParent} bg="$background" size={100} />
             </Theme>
           </Theme>
         </Theme>
@@ -65,11 +55,7 @@ export function ThemeNested() {
       <YStack gap="$2">
         <Text fontWeight="bold">Case 4: Direct light_red_surface3</Text>
         <Theme name="light_red_surface3">
-          <Square
-            id={TEST_IDS.nestedThemeRedDirect}
-            bg="$background"
-            size={100}
-          />
+          <Square id={TEST_IDS.nestedThemeRedDirect} bg="$background" size={100} />
         </Theme>
       </YStack>
 
@@ -77,11 +63,7 @@ export function ThemeNested() {
         <Text fontWeight="bold">Case 5: Nested red → surface3 (should match Case 4)</Text>
         <Theme name="red">
           <Theme name="surface3">
-            <Square
-              id={TEST_IDS.nestedThemeRedNested}
-              bg="$background"
-              size={100}
-            />
+            <Square id={TEST_IDS.nestedThemeRedNested} bg="$background" size={100} />
           </Theme>
         </Theme>
       </YStack>
@@ -90,11 +72,7 @@ export function ThemeNested() {
       <YStack gap="$2">
         <Text fontWeight="bold">Case 6: Direct light_surface3 (no color - baseline)</Text>
         <Theme name="light_surface3">
-          <Square
-            id={TEST_IDS.nestedThemeNoColor}
-            bg="$background"
-            size={100}
-          />
+          <Square id={TEST_IDS.nestedThemeNoColor} bg="$background" size={100} />
         </Theme>
       </YStack>
     </YStack>
