@@ -19,7 +19,9 @@ export default defineConfig({
   },
 
   fullyParallel: true,
-  retries: 2,
+  retries: 1,
+  // Stop on first failure to show the error immediately
+  maxFailures: 1,
 
   timeout: 50_000,
 })
