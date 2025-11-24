@@ -281,6 +281,7 @@ export const stylePropsView = {
     touchAction: true,
     transformStyle: true,
     userSelect: true,
+    willChange: true,
   }),
   ...(isAndroid ? { elevationAndroid: true } : {}),
 }
