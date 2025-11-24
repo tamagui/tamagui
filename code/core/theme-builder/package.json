@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-builder",
-  "version": "1.138.2",
+  "version": "1.138.3",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
