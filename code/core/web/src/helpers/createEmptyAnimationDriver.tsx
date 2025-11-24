@@ -1,7 +1,7 @@
 import type { AnimationDriver } from '../types'
 
-const noAnimationDriver = (method: string): never => {
-  throw new Error(
+const noAnimationDriver = (method: string): any => {
+  console.warn(
     `No animation driver configured. To use ${method}, you must pass \`animations\` to createTamagui. See: https://tamagui.dev/docs/core/animations`
   )
 }
