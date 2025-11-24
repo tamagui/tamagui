@@ -194,8 +194,6 @@ export const useComponentState = (
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc
     if (isWeb && isHydrated) {
-      // the reason we disable class even for css animation driver is i guess due to the logic around looking at transform
-      // in the driver to determine the transition - but that could be improved to not need it and just use classnames
       const isAnimatedAndHydrated = isAnimated && isHydrated
 
       const isClassNameDisabled =
@@ -203,7 +201,12 @@ export const useComponentState = (
 
       const isDisabledManually = disableClassName && !state.unmounted
 
-      if (isAnimatedAndHydrated || isDisabledManually || isClassNameDisabled) {
+      if (
+        // Only disable className for animation drivers that need inline styles
+        (isAnimatedAndHydrated && !animationDriver?.classNameAnimation) ||
+        isDisabledManually ||
+        isClassNameDisabled
+      ) {
         noClass = true
 
         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {

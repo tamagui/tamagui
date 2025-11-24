@@ -6,16 +6,15 @@ import {
   Paragraph,
   Sheet,
   Unspaced,
-  View,
   XStack,
   YStack,
 } from 'tamagui'
 
 export function DialogNestedCase() {
   return (
-    <View gap="$4" justifyContent="center" alignItems="center" padding="$4">
+    <YStack gap="$4" justifyContent="center" alignItems="center" padding="$4">
       <DialogInstance />
-    </View>
+    </YStack>
   )
 }
 
@@ -52,27 +51,16 @@ function DialogInstance({ level = 1 }: { level?: number }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animateOnly={['transform', 'opacity']}
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          animation="quick"
+          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
           bordered
-          paddingVertical="$4"
-          paddingHorizontal="$6"
           elevate
-          borderRadius="$6"
           key="content"
-          animateOnly={['transform', 'opacity']}
           animation={[
             'quick',
             {
@@ -81,37 +69,39 @@ function DialogInstance({ level = 1 }: { level?: number }) {
               },
             },
           ]}
-          enterStyle={{ x: 0, y: 20, opacity: 0 }}
+          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          width={450}
+          padding="$6"
           gap="$4"
-          data-testid={`${testId}-dialog-content`}
         >
-          <Dialog.Title>Dialog Level {level}</Dialog.Title>
-          <Dialog.Description>
-            This is dialog level {level}.{' '}
-            {level < 3 ? 'You can open another dialog inside.' : ''}
-          </Dialog.Description>
+          <YStack data-testid={`${testId}-dialog-content`} gap="$4">
+            <Dialog.Title>Dialog Level {level}</Dialog.Title>
+            <Dialog.Description>
+              This is dialog level {level}. {level < 3 ? 'You can open another dialog inside.' : ''}
+            </Dialog.Description>
 
-          <Paragraph data-testid={`${testId}-dialog-paragraph`}>
-            Content for level {level}
-          </Paragraph>
+            <Paragraph data-testid={`${testId}-dialog-paragraph`}>
+              Content for level {level}
+            </Paragraph>
 
-          <XStack alignSelf="flex-end" gap="$4">
-            {/* Nested dialog - only show if level is less than 3 */}
-            {level < 3 && <DialogInstance level={level + 1} />}
+            <XStack alignSelf="flex-end" gap="$4">
+              {/* Nested dialog - only show if level is less than 3 */}
+              {level < 3 && <DialogInstance level={level + 1} />}
 
-            <Dialog.Close displayWhenAdapted asChild>
-              <Button aria-label="Close" data-testid={`${testId}-dialog-close`}>
-                Close
-              </Button>
-            </Dialog.Close>
-          </XStack>
+              <Dialog.Close displayWhenAdapted asChild>
+                <Button theme="blue" aria-label="Close" data-testid={`${testId}-dialog-close`}>
+                  Close
+                </Button>
+              </Dialog.Close>
+            </XStack>
 
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button position="absolute" right="$3" size="$2" circular icon={X} />
-            </Dialog.Close>
-          </Unspaced>
+            <Unspaced>
+              <Dialog.Close asChild>
+                <Button position="absolute" right="$3" top="$3" size="$2" circular icon={X} />
+              </Dialog.Close>
+            </Unspaced>
+          </YStack>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>

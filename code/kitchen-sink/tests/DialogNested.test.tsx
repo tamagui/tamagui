@@ -16,15 +16,18 @@ test.describe('Dialog Nested Stacking', () => {
     const parentDialog = page.getByTestId('parent-dialog-content')
     await expect(parentDialog).toBeVisible({ timeout: 5000 })
 
+    // Wait for animation to complete
+    await page.waitForTimeout(300)
+
     // Open nested dialog
-    const nestedTrigger = parentDialog.getByTestId('nested-dialog-trigger')
+    const nestedTrigger = page.getByTestId('nested-dialog-trigger')
     await nestedTrigger.click()
 
     const nestedDialog = page.getByTestId('nested-dialog-content')
     await expect(nestedDialog).toBeVisible({ timeout: 5000 })
 
-    // Wait for animations to complete
-    await page.waitForTimeout(500)
+    // Wait for animation to complete
+    await page.waitForTimeout(300)
 
     // Get the z-index values of both dialog portal containers
     const zIndexInfo = await page.evaluate(() => {
@@ -32,7 +35,7 @@ test.describe('Dialog Nested Stacking', () => {
       const portals = document.querySelectorAll('body > span[style*="z-index"]')
       const zIndices: number[] = []
 
-      portals.forEach(portal => {
+      portals.forEach((portal) => {
         const style = window.getComputedStyle(portal)
         const zIndex = parseInt(style.zIndex, 10)
         if (!isNaN(zIndex)) {
@@ -40,11 +43,9 @@ test.describe('Dialog Nested Stacking', () => {
         }
       })
 
-      // Return sorted z-indices (should be at least 2 for parent and nested)
+      // Return sorted z-indices
       return zIndices.sort((a, b) => a - b)
     })
-
-    console.log('Z-indices:', zIndexInfo)
 
     // Should have at least 2 different z-index values
     expect(zIndexInfo.length).toBeGreaterThanOrEqual(2)
@@ -55,17 +56,19 @@ test.describe('Dialog Nested Stacking', () => {
 
     expect(nestedZIndex).toBeGreaterThan(parentZIndex)
 
-    // Additionally verify that the nested dialog is visually on top by checking
-    // what element is at the center of the nested dialog
+    // Verify the nested dialog is visually on top by checking element at center
     const nestedBounds = await nestedDialog.boundingBox()
     if (nestedBounds) {
       const centerX = nestedBounds.x + nestedBounds.width / 2
       const centerY = nestedBounds.y + nestedBounds.height / 2
 
-      const elementAtPoint = await page.evaluate(({ x, y }) => {
-        const el = document.elementFromPoint(x, y)
-        return el?.closest('[data-testid="nested-dialog-content"]') !== null
-      }, { x: centerX, y: centerY })
+      const elementAtPoint = await page.evaluate(
+        ({ x, y }) => {
+          const el = document.elementFromPoint(x, y)
+          return el?.closest('[data-testid="nested-dialog-content"]') !== null
+        },
+        { x: centerX, y: centerY }
+      )
 
       expect(elementAtPoint).toBe(true)
     }
@@ -81,22 +84,28 @@ test.describe('Dialog Nested Stacking', () => {
     const level1Dialog = page.getByTestId('parent-dialog-content')
     await expect(level1Dialog).toBeVisible({ timeout: 5000 })
 
+    // Wait for animation
+    await page.waitForTimeout(300)
+
     // Open level 2 dialog
-    const level2Trigger = level1Dialog.getByTestId('nested-dialog-trigger')
+    const level2Trigger = page.getByTestId('nested-dialog-trigger')
     await level2Trigger.click()
 
     const level2Dialog = page.getByTestId('nested-dialog-content')
     await expect(level2Dialog).toBeVisible({ timeout: 5000 })
 
+    // Wait for animation
+    await page.waitForTimeout(300)
+
     // Open level 3 dialog
-    const level3Trigger = level2Dialog.getByTestId('level-3-dialog-trigger')
+    const level3Trigger = page.getByTestId('level-3-dialog-trigger')
     await level3Trigger.click()
 
     const level3Dialog = page.getByTestId('level-3-dialog-content')
     await expect(level3Dialog).toBeVisible({ timeout: 5000 })
 
-    // Wait for animations
-    await page.waitForTimeout(500)
+    // Wait for animation
+    await page.waitForTimeout(300)
 
     // Verify level 3 is on top visually
     const level3Bounds = await level3Dialog.boundingBox()
@@ -104,10 +113,13 @@ test.describe('Dialog Nested Stacking', () => {
       const centerX = level3Bounds.x + level3Bounds.width / 2
       const centerY = level3Bounds.y + level3Bounds.height / 2
 
-      const elementAtPoint = await page.evaluate(({ x, y }) => {
-        const el = document.elementFromPoint(x, y)
-        return el?.closest('[data-testid="level-3-dialog-content"]') !== null
-      }, { x: centerX, y: centerY })
+      const elementAtPoint = await page.evaluate(
+        ({ x, y }) => {
+          const el = document.elementFromPoint(x, y)
+          return el?.closest('[data-testid="level-3-dialog-content"]') !== null
+        },
+        { x: centerX, y: centerY }
+      )
 
       expect(elementAtPoint).toBe(true)
     }
