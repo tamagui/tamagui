@@ -1,17 +1,9 @@
 import type { ImageProps } from 'react-native'
-// import type {
-//   ContextMenuView,
-//   MenuAuxiliaryPreviewConfig,
-//   ContextMenuButton,
-// } from 'react-native-ios-context-menu'
-// import type { ImageOptions } from 'react-native-ios-context-menu'
+import type { SFSymbol } from 'sf-symbols-typescript'
 
-// TODO
 type ImageOptions = {
   tint?: string
 }
-
-import type { SFSymbol } from 'sf-symbols-typescript'
 
 export type MenuProps = {
   children: React.ReactNode
@@ -19,20 +11,17 @@ export type MenuProps = {
   onOpenChange?: (isOpen: boolean) => void
   /**
    * Callback function indicating that the menu intends to open or close. Passes a `willOpen` boolean argument indicating whether it is opening or closing.
-   * Unlike `onOpenChange`, thi
+   * Unlike `onOpenChange`, this is called before the animation begins.
    * @platform `ios`
    */
   onOpenWillChange?: (willOpen: boolean) => void
-
-  // __unsafeIosProps?:
-  //   | ComponentProps<typeof ContextMenuView>
-  //   | ComponentProps<typeof ContextMenuButton>
 }
 
 /**
- * TODO needed?
+ * Props for the auxiliary view that can be shown alongside a context menu on iOS
+ * @platform ios
  */
-export type ContextMenuAuxliliaryProps = {
+export type ContextMenuAuxiliaryProps = {
   height?: number
   width?: number
   anchorPosition?: 'top' | 'bottom' | 'automatic'
@@ -68,6 +57,10 @@ export type MenuItemProps = {
    * If you want to pass a React text node to `<ItemTitle />`, then you need to use this prop. This gets used on iOS and Android.
    */
   textValue?: string
+  /**
+   * Callback when the item is selected
+   */
+  onSelect?: (event?: Event) => void
 } & {
   disabled?: boolean
   hidden?: boolean
@@ -77,6 +70,10 @@ export type MenuItemProps = {
 
 export interface MenuItemCommonProps {
   /**
+   * React elements to render as fallback icon (typically for web)
+   */
+  children?: React.ReactNode
+  /**
    * The name of an iOS-only SF Symbol. For a full list, see https://developer.apple.com/sf-symbols/.
    * @deprecated Please use the `name` inside of the `ios` prop instead.
    * @platform ios
@@ -85,18 +82,26 @@ export interface MenuItemCommonProps {
   /**
    * Icon configuration to be used on iOS. You can pass a SF Symbol icon using the `name` prop.
    * Additionally, you can configure the SF Symbol's features like weight, scale, color etc. by passing
-   * the corresponding props. Note that some of those features require iOS 15+. For the full list of options,
-   * refer to the ImageSystemSymbolConfiguration type in react-native-ios-context-menu
+   * the corresponding props. Note that some of those features require iOS 15+.
    *
    * @platform ios
    */
   ios?: {
     name: SFSymbol
+    weight?:
+      | 'ultraLight'
+      | 'thin'
+      | 'light'
+      | 'regular'
+      | 'medium'
+      | 'semibold'
+      | 'bold'
+      | 'heavy'
+      | 'black'
+    scale?: 'small' | 'medium' | 'large'
+    hierarchicalColor?: string
+    paletteColors?: string[]
   }
-  // TODO: fix ImageSystemSymbolConfiguration type issue
-  // ios?: ImageSystemSymbolConfiguration & {
-  //   name: SFSymbol
-  // }
   /**
    * The name of an android-only resource drawable. For a full list, see https://developer.android.com/reference/android/R.drawable.html.
    *
@@ -141,7 +146,27 @@ export type MenuItemSubtitleProps = {
 }
 export type MenuSeparatorProps = {}
 export type MenuCheckboxItemProps = Omit<MenuItemProps, 'onSelect'> & {
-  value: 'mixed' | 'on' | 'off' | boolean
+  /**
+   * The controlled checked state of the checkbox item.
+   * Use this with `onCheckedChange` for the web-style API.
+   */
+  checked?: boolean
+  /**
+   * Callback when the checked state changes.
+   * Use this with `checked` for the web-style API.
+   */
+  onCheckedChange?: (checked: boolean) => void
+  /**
+   * The controlled value state for native platforms.
+   * Use this with `onValueChange` for the native-style API.
+   * @platform ios, android
+   */
+  value?: 'mixed' | 'on' | 'off' | boolean
+  /**
+   * Callback when the value changes on native platforms.
+   * Use this with `value` for the native-style API.
+   * @platform ios, android
+   */
   onValueChange?: (
     state: 'mixed' | 'on' | 'off',
     prevState: 'mixed' | 'on' | 'off'
@@ -161,20 +186,29 @@ export type MenuLabelProps = {
   textValue?: string
 }
 
-type Not<T extends object, O extends keyof NonNullable<T>> = Omit<T, O>
-
 export type ContextMenuPreviewProps = {
   children: React.ReactNode | (() => React.ReactNode)
-  // TODO moving off react-native-ios-context-menu
-  size?: any
-  onPress?: any
-  // TODO
-  // size?: NonNullable<
-  //   React.ComponentProps<typeof ContextMenuView>['previewConfig']
-  // >['previewSize']
-  // onPress?: React.ComponentProps<typeof ContextMenuView>['onPressMenuPreview']
+  /**
+   * Size of the preview
+   * @platform ios
+   */
+  size?: {
+    width?: number
+    height?: number
+  }
+  /**
+   * Called when the preview is pressed
+   * @platform ios
+   */
+  onPress?: () => void
+  /**
+   * Background color of the preview
+   * @platform ios
+   */
+  backgroundColor?: string
+  /**
+   * Border radius of the preview
+   * @platform ios
+   */
+  borderRadius?: number
 }
-//  & Not<
-//   NonNullable<React.ComponentProps<typeof ContextMenuView>['previewConfig']>,
-//   'targetViewNode' | 'previewSize' | 'previewType'
-// >

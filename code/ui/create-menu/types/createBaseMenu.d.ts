@@ -26,9 +26,6 @@ interface MenuAnchorProps extends PopperAnchorProps {
 interface MenuPortalProps {
     children?: React.ReactNode;
     /**
-     * Specify a container element to portal the content into.
-     */
-    /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */

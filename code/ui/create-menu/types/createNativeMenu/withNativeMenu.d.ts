@@ -1,10 +1,7 @@
-export declare function withNativeMenu<C extends React.ComponentType<any>, N extends React.ComponentType<any>>({ Component, NativeComponent, useNativeProp, useNativePropScope, isRoot, }: {
+export declare function withNativeMenu<C extends React.ComponentType<any>, N extends React.ComponentType<any>>({ Component, NativeComponent, scope, isRoot, }: {
     Component: C;
     NativeComponent: N;
-    useNativeProp: (scope: string) => {
-        native: boolean;
-    };
-    useNativePropScope: string;
+    scope: string;
     isRoot: boolean;
 }): C | {
     (props: React.ComponentProps<C> & React.ComponentProps<N> & {

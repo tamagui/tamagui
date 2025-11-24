@@ -30,7 +30,6 @@ import {
   withStaticProperties,
 } from '@tamagui/web'
 import type { TamaguiElement } from '@tamagui/web/types'
-// import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
 import { useId } from 'react'
 import type { Image, ImageProps } from 'react-native'
@@ -103,11 +102,6 @@ type PortalContextValue = { forceMount?: true }
 
 interface MenuPortalProps {
   children?: React.ReactNode
-  /**
-   * Specify a container element to portal the content into.
-   */
-  // TODO removed
-  // host?: PortalProps['host']
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -527,8 +521,6 @@ export function createBaseMenu({
       forceMount,
       zIndex,
       children,
-      // TODO removed
-      // host
     } = props
     const menuContext = useMenuContext(scope)
     const rootContext = useMenuRootContext(scope)
@@ -549,7 +541,6 @@ export function createBaseMenu({
     )
     return (
       <Animate type="presence" present={forceMount || menuContext.open}>
-        {/* TODO does this not need host anymore? */}
         <PortalPrimitive>
           <>
             <PortalProvider scope={scope} forceMount={forceMount}>

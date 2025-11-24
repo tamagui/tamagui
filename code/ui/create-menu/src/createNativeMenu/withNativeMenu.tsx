@@ -1,4 +1,5 @@
 import { isWeb } from '@tamagui/web'
+import { useNativeProp as useNativePropHook } from '../createBaseMenu'
 
 export function withNativeMenu<
   C extends React.ComponentType<any>,
@@ -6,14 +7,12 @@ export function withNativeMenu<
 >({
   Component,
   NativeComponent,
-  useNativeProp,
-  useNativePropScope,
+  scope,
   isRoot = false,
 }: {
   Component: C
   NativeComponent: N
-  useNativeProp: (scope: string) => { native: boolean }
-  useNativePropScope: string
+  scope: string
   isRoot: boolean
 }) {
   if (isWeb) {
@@ -23,12 +22,15 @@ export function withNativeMenu<
   const Menu = (
     props: React.ComponentProps<C> & React.ComponentProps<N> & { native?: boolean }
   ) => {
-    let isNative = true
-    if (isRoot) {
-      isNative = props.native
-    } else {
-      isNative = useNativeProp(useNativePropScope).native
-    }
+    // Always call hook unconditionally (Rules of Hooks)
+    const contextNative = useNativePropHook(scope).native
+
+    // Determine if we should use native rendering
+    const isNative = isRoot
+      ? props.native !== undefined
+        ? props.native
+        : true // Root uses prop with default true
+      : contextNative // Children use context from root
 
     if (isNative) {
       return <NativeComponent {...(props as React.ComponentProps<N>)} />
@@ -37,7 +39,9 @@ export function withNativeMenu<
     return <Component {...(props as React.ComponentProps<C>)} />
   }
 
-  Menu.displayName = `${Component.displayName}Wrapper`
+  // displayName is required for Portal flattening (checks displayName.includes('Portal'))
+  Menu.displayName =
+    NativeComponent.displayName || Component.displayName || 'MenuComponent'
 
   return Menu
 }
