@@ -1292,6 +1292,11 @@ export const getSplitStyles: StyleSplitter = (
 
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
+    // set accessible when tabIndex is 0 (issue #3350)
+    if (viewProps.tabIndex === 0) {
+      viewProps.accessible ??= true
+    }
+
     const style = styleState.style
     if (style?.fontFamily) {
       const faceInfo = getFont(style.fontFamily as string)?.face
