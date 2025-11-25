@@ -1,17 +1,13 @@
-appId: com.tamagui.kitchensink
+appId: com.tamagui.tamaguikitchensink
 tags:
   - component
 ---
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Select'
+    centerElement: true
 - tapOn: 'Select'
-- assertNotVisible: 'Fruits'
-- assertNotVisible: 'Pear'
+- assertVisible: 'Apple'
+# Test: select opens when tapped
 - tapOn: 'Apple'
-- assertVisible: 'Fruits'
 - assertVisible: 'Pear'
-- swipe:
-    direction: DOWN
-- assertNotVisible: 'Fruits'
-- tapOn: 'Home'

@@ -34,7 +34,7 @@ export const Notice = ({
     <NoticeFrame theme={theme} {...props}>
       <XStack gap="$3">
         <IconComponent size="$1" mt={5} color="$color11" />
-        <YStack f={1}>
+        <YStack flex={1}>
           {title && (
             <H3 size="$5" mb={-10} mt={5}>
               {title}
@@ -56,8 +56,8 @@ export const NoticeFrame = styled(YStack, {
   p: '$4',
   py: '$3',
   bg: '$background',
-  br: '$4',
-  gap: '$3',
+  rounded: '$4',
+  space: '$3',
   my: '$4',
-  pos: 'relative',
+  position: 'relative',
 })

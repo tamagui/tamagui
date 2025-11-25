@@ -1435,6 +1435,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
+    overriddenContextProps?: Record<string, any>;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any) => void) => void;
@@ -1672,6 +1673,10 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     supportsCSS?: boolean;
     needsWebStyles?: boolean;
     avoidReRenders?: boolean;
+    /** When true, this is a stub driver with no real animation support */
+    isStub?: boolean;
+    /** When true, the driver uses CSS classes for animations (doesn't need inline styles) */
+    classNameAnimation?: boolean;
     useAnimations: UseAnimationHook;
     usePresence: () => UsePresenceResult;
     ResetPresence: (props: {
@@ -1722,6 +1727,7 @@ export type GetStyleResult = {
     dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;
+    overriddenContextProps?: Record<string, any>;
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends Object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends Object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;

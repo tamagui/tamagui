@@ -27,7 +27,7 @@ export const AllTasks = () => {
 
       <YStack flex={1} {...demoProps.gapPropsMd}>
         <Task>
-          <Paragraph size="$5" lh="$3">
+          <Paragraph size="$5" lineHeight="$3">
             Migrate to the new version
           </Paragraph>
           <Paragraph theme="alt1" size="$2" numberOfLines={1}>
@@ -35,7 +35,7 @@ export const AllTasks = () => {
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" lh="$3" textDecorationLine="line-through">
+          <Paragraph size="$5" lineHeight="$3" textDecorationLine="line-through">
             Make a tabs component
           </Paragraph>
           <Paragraph
@@ -48,7 +48,7 @@ export const AllTasks = () => {
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" lh="$3" textDecorationLine="line-through">
+          <Paragraph size="$5" lineHeight="$3" textDecorationLine="line-through">
             Implement the design system
           </Paragraph>
           <Paragraph
@@ -88,7 +88,7 @@ const Task = ({
       icon={
         <AccentTheme>
           <YStack
-            als="flex-start"
+            self="flex-start"
             mt="$1"
             {...(checked && {
               bg: '$borderColor',
@@ -96,8 +96,8 @@ const Task = ({
             borderColor="$borderColor"
             width="$1"
             height="$1"
-            jc="center"
-            ai="center"
+            justify="center"
+            items="center"
             {...demoProps.borderRadiusProps}
           >
             {checked && <Check size={10} color="$color" />}
@@ -106,7 +106,7 @@ const Task = ({
       }
       {...props}
     >
-      <YStack gap="$1" opacity={checked ? 0.3 : 1} ai="flex-start" f={1}>
+      <YStack gap="$1" opacity={checked ? 0.3 : 1} items="flex-start" flex={1}>
         {children}
       </YStack>
     </ListItem>

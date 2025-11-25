@@ -7,10 +7,10 @@ export function HomeFeaturesGrid() {
   return (
     <>
       <ContainerLarge gap="$8">
-        <YStack maw={950} als="center">
+        <YStack maxW={950} self="center">
           <Grid gap={25} itemMinWidth={280}>
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$mono" ta="center">
+              <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Fully typed
               </H4>
               <Paragraph theme="alt1">
@@ -21,7 +21,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$mono" ta="center">
+              <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Server-first
               </H4>
               <Paragraph theme="alt1">
@@ -31,7 +31,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$mono" ta="center">
+              <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Fast
               </H4>
               <Paragraph theme="alt1">
@@ -41,7 +41,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$mono" ta="center">
+              <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Introspection
               </H4>
               <Paragraph theme="alt1">
@@ -52,7 +52,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$mono" ta="center">
+              <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Compatibility
               </H4>
               <Paragraph theme="alt1">
@@ -62,7 +62,7 @@ export function HomeFeaturesGrid() {
             </YStack>
 
             <YStack gap="$4" p="$4">
-              <H4 ls={0} fontFamily="$mono" ta="center">
+              <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Full Featured
               </H4>
               <Paragraph theme="alt1">

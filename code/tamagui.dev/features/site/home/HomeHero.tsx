@@ -44,19 +44,19 @@ const HeroSubTitle = memo(() => {
   return (
     <Subtitle>
       <Link asChild href="/docs/intro/introduction">
-        <Tag theme="red" onMouseEnter={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="green" onMouseEnter={() => setHovered(3)} active={hovered === 3}>
+        <Tag theme="green" onHoverIn={() => setHovered(3)} active={hovered === 3}>
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/ui/stacks">
-        <Tag theme="blue" onMouseEnter={() => setHovered(4)} active={hovered === 4}>
+        <Tag theme="blue" onHoverIn={() => setHovered(4)} active={hovered === 4}>
           UI&nbsp;kit
         </Tag>
       </Link>{' '}
@@ -69,12 +69,12 @@ const HeroContents = memo(function HeroContents() {
   const { name, tint, tintAlt } = useTint()
 
   return (
-    <ContainerLarge pos="relative">
+    <ContainerLarge position="relative">
       <YStack
         fullscreen
-        left={-500}
-        right={-500}
-        bottom={-100}
+        l={-500}
+        r={-500}
+        b={-100}
         style={{
           maskImage: `linear-gradient(#000 50%, transparent)`,
         }}
@@ -82,28 +82,28 @@ const HeroContents = memo(function HeroContents() {
         <YStack
           className="bg-grid"
           fullscreen
-          pe="none"
-          o={0.125}
+          pointerEvents="none"
+          opacity={0.125}
           style={{
             maskImage: `radial-gradient(ellipse at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 50%)`,
           }}
         />
       </YStack>
       <YStack
-        f={1}
-        ov="hidden"
+        flex={1}
+        overflow="hidden"
         gap="$3"
         position="relative"
         pt="$16"
         mb="$4"
         $sm={{
-          maxWidth: '100%',
+          maxW: '100%',
           mx: 'auto',
           pb: '$4',
         }}
       >
         <>
-          <XGroup elevation="$0.5" pos="absolute" als="center" y={-80} br="$8">
+          <XGroup elevation="$0.5" position="absolute" self="center" y={-80} rounded="$8">
             <Link href="/takeout">
               <XGroup.Item>
                 <TakeoutButton />
@@ -117,20 +117,17 @@ const HeroContents = memo(function HeroContents() {
                 </XGroup.Item>
               </Link>
             </Theme>
-
-            {/* <FigmaButton circular /> */}
-            {/* <GithubButton /> */}
           </XGroup>
         </>
 
-        <YStack ai="center" gap="$4">
+        <YStack items="center" gap="$4">
           <H1
-            ta="center"
+            text="center"
             size="$11"
-            lh={61}
-            maw={500}
-            mah={400}
-            pos="relative"
+            lineHeight={61}
+            maxW={500}
+            maxH={400}
+            position="relative"
             $gtSm={{
               scale: 1.5,
               m: '5%',
@@ -168,12 +165,12 @@ const HeroContents = memo(function HeroContents() {
             <YStack
               mx="$-6"
               mt={-350 - 9}
-              zi={-1}
+              z={-1}
               mb={-350 - 9}
-              mah={700}
-              maw={700}
+              maxH={700}
+              maxW={700}
               $sm={{ x: '-10%', scale: 0.7 }}
-              o={0.5}
+              opacity={0.5}
             >
               <svg
                 height="700"
@@ -195,19 +192,19 @@ const HeroContents = memo(function HeroContents() {
 
           <YStack
             px={0}
-            maw={420}
+            maxW={420}
             // prevent layout shift
-            h={70}
+            height={70}
             $gtSm={{
-              maw: 500,
+              maxW: 500,
             }}
             $gtMd={{
-              h: 90,
+              height: 90,
               px: 90,
-              maw: 700,
+              maxW: 700,
             }}
             $gtLg={{
-              maw: 900,
+              maxW: 900,
             }}
           >
             <HeroSubTitle />
@@ -219,10 +216,10 @@ const HeroContents = memo(function HeroContents() {
         <Spacer size="$1" />
 
         <XStack
-          ai="center"
-          jc="center"
+          items="center"
+          justify="center"
           gap="$2"
-          $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
+          $xxs={{ items: 'center', flexWrap: 'wrap', gap: 0 }}
         >
           <Link target="_blank" href="https://x.com/tamagui_js">
             <TooltipSimple placement="top" delay={0} restMs={25} label="X">
@@ -241,11 +238,13 @@ const HeroContents = memo(function HeroContents() {
                 aria-label="Get started (docs)"
                 group="item"
                 containerType="normal"
+                fontFamily="$silkscreen"
                 componentName=""
                 size="$5"
-                borderRadius={1000}
+                fontSize="$2"
+                rounded={1000}
                 bordered
-                bw={2}
+                borderWidth={2}
                 mx="$2"
                 tabIndex="0"
                 elevation="$1"
@@ -253,12 +252,7 @@ const HeroContents = memo(function HeroContents() {
                   elevation: '$0',
                 }}
               >
-                <Button.Text fontFamily="$silkscreen" fontSize="$2">
-                  Start
-                </Button.Text>
-                {/* <YStack $group-item-press={{ scaleX: -1 }}>
-                  <LogoIcon downscale={3} />
-                </YStack> */}
+                Start
               </Button>
             </Link>
           </Theme>
@@ -284,14 +278,14 @@ const HeroContents = memo(function HeroContents() {
         {name !== 'tamagui' && (
           <SizableText
             size="$10"
-            h={200}
+            height={200}
             my={-213 / 2}
             rotate="-8deg"
-            als="center"
+            self="center"
             y={-100}
             x={-115}
-            zi={100}
-            pe="none"
+            z={100}
+            pointerEvents="none"
           >
             {seasons[name]}
           </SizableText>
@@ -307,23 +301,23 @@ const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
-  ta: 'center',
-  ls: -1,
+  text: 'center',
+  letterSpacing: -1,
 
   $gtSm: {
     size: '$7',
-    ls: -1,
+    letterSpacing: -1,
   },
 
   $gtMd: {
     size: '$7',
-    ls: -1,
+    letterSpacing: -1,
   },
 
   $gtLg: {
     fontSize: 25,
-    lh: 48,
-    ls: -1,
+    lineHeight: 48,
+    letterSpacing: -1,
   },
 })
 
@@ -332,7 +326,7 @@ const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
   fontFamily: '$silkscreen',
   fontSize: 'inherit' as any,
-  borderRadius: '$2',
+  rounded: '$2',
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
@@ -361,7 +355,7 @@ const Tag = styled(Text, {
 
 const HeroText = styled(Text, {
   position: 'absolute',
-  ta: 'center',
+  text: 'center',
 
   $sm: {
     t: 0,
@@ -390,7 +384,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
         <HeroText
           className="clip-text rainbow grain"
           l={-2}
-          o={0.5}
+          opacity={0.5}
           dangerouslySetInnerHTML={{
             __html: text,
           }}
@@ -399,10 +393,10 @@ const TextWithEffects = ({ text }: { text: string }) => {
         <ThemeTintAlt offset={2}>
           <HeroText
             className="mask-gradient-down"
-            pe="none"
-            o={0.5}
+            pointerEvents="none"
+            opacity={0.5}
             x={-1}
-            col="$color9"
+            color="$color9"
             dangerouslySetInnerHTML={{
               __html: text,
             }}
@@ -414,8 +408,8 @@ const TextWithEffects = ({ text }: { text: string }) => {
             l={-1}
             className="mask-gradient-up"
             mixBlendMode="hard-light"
-            pe="none"
-            col="$color9"
+            pointerEvents="none"
+            color="$color9"
             dangerouslySetInnerHTML={{
               __html: text,
             }}
@@ -426,9 +420,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
           <HeroText
             l={0}
             className="mask-gradient-right"
-            pe="none"
-            col="$color9"
-            o={0.26}
+            pointerEvents="none"
+            color="$color9"
+            opacity={0.26}
             dangerouslySetInnerHTML={{
               __html: text,
             }}
@@ -438,10 +432,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
         <ThemeTintAlt offset={-3}>
           <HeroText
             l={0}
-            // filter="blur(3px)"
             className="mask-gradient-right"
-            pe="none"
-            col="$color8"
+            pointerEvents="none"
+            color="$color8"
             dangerouslySetInnerHTML={{
               __html: text,
             }}

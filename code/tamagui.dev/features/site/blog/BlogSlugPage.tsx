@@ -31,13 +31,13 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const pathname = usePathname()
   const isDraft = pathname.startsWith('/draft')
   return (
-    <YStack mt="$-10" pt="$12" mb="$4" pos="relative">
+    <YStack mt="$-10" pt="$12" mb="$4" position="relative">
       <ThemeTint>
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
       </ThemeTint>
 
       <Container>
-        <YStack mt="$2" ai="flex-start">
+        <YStack mt="$2" items="flex-start">
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
               <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
@@ -51,13 +51,18 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           {frontmatter.title}
         </H1>
 
-        <H2 o={0.5} theme="alt1" size="$7" fontWeight="500" fontFamily="$body" mb="$1">
+        <H2
+          opacity={0.5}
+          theme="alt1"
+          size="$7"
+          fontWeight="500"
+          fontFamily="$body"
+          mb="$1"
+        >
           {frontmatter.description}
         </H2>
 
-        <XStack ai="center" my="$3">
-          {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
-
+        <XStack items="center" my="$3">
           <Link
             href={`https://x.com/${authors?.[frontmatter.by || '']?.twitter}`}
             rel="noopener noreferrer"
@@ -70,7 +75,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
 
           <Separator vertical mx="$2" />
 
-          <Paragraph o={0.4} tag="time" size="$3" theme="alt1" whiteSpace="nowrap">
+          <Paragraph opacity={0.4} tag="time" size="$3" theme="alt1" whiteSpace="nowrap">
             {Intl.DateTimeFormat('en-US', {
               month: 'short',
               year: 'numeric',
@@ -80,8 +85,8 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
 
           <Separator vertical mx="$2" />
 
-          <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
-            <Paragraph o={0.4} size="$3" theme="alt1">
+          <YStack items="center" display="none" $gtSm={{ display: 'flex' }}>
+            <Paragraph opacity={0.4} size="$3" theme="alt1">
               {frontmatter.readingTime?.text}
             </Paragraph>
 
@@ -127,7 +132,7 @@ export function BlogSlugPage(props: BlogPost) {
 
         <Separator my="$8" mx="auto" />
 
-        <YStack mb="$8" ai="center">
+        <YStack mb="$8" items="center">
           <Paragraph>
             Share this post on{' '}
             <Link
@@ -145,7 +150,7 @@ export function BlogSlugPage(props: BlogPost) {
         {relatedPosts && (
           <YStack>
             <Separator my="$8" mx="auto" />
-            <H3 mb="$3" ta="center" textTransform="uppercase">
+            <H3 mb="$3" text="center" textTransform="uppercase">
               Related
             </H3>
 

@@ -34,8 +34,8 @@ export default function DocCorePage() {
   return (
     <>
       <HeadInfo
-        title={`${frontmatter.title}`}
-        description={frontmatter.description}
+        title={frontmatter.title}
+        description={frontmatter.description ?? ''}
         openGraph={{
           images: [
             {

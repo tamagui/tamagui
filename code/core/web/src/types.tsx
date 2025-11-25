@@ -2420,6 +2420,8 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  // Track style values that override context props (for issues #3670, #3676)
+  overriddenContextProps?: Record<string, any>
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -2860,6 +2862,10 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   supportsCSS?: boolean
   needsWebStyles?: boolean
   avoidReRenders?: boolean
+  /** When true, this is a stub driver with no real animation support */
+  isStub?: boolean
+  /** When true, the driver uses CSS classes for animations (doesn't need inline styles) */
+  classNameAnimation?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   ResetPresence: (props: {
@@ -2919,6 +2925,8 @@ export type GetStyleResult = {
   dynamicThemeAccess?: boolean
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
+  // Style values that override context props (for issues #3670, #3676)
+  overriddenContextProps?: Record<string, any>
 }
 
 export type ClassNamesObject = Record<string, string>

@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 export async function loader(props: LoaderProps) {
   const { getCompilationExamples, getMDXBySlug } = await import('@tamagui/mdx-2')
   const { slug } = props.params
-  const { frontmatter, code } = await getMDXBySlug('data/blog', slug)
+  const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string)
   const relatedPosts = frontmatter.relatedIds
     ? await Promise.all(
         frontmatter.relatedIds.map(async (id) => {
@@ -51,7 +51,7 @@ export default function BlogSlug() {
       <HeadInfo
         {...data.frontmatter}
         title={`${data.frontmatter.title} — Tamagui`}
-        description={data.frontmatter.description}
+        description={data.frontmatter.description ?? ''}
         openGraph={{
           images: [
             {

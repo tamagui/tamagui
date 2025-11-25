@@ -15,19 +15,19 @@ export function StudioPaletteBar({
   colors: string[]
 }) {
   return (
-    <YStack mx="$2" userSelect="none">
+    <YStack mx="$2" select="none">
       {showIndices && (
-        <XStack ov="hidden">
+        <XStack overflow="hidden">
           {new Array(colors.length).fill(0).map((_, i) => (
             <Paragraph
-              o={0.7}
+              opacity={0.7}
               size="$1"
-              fos={11}
-              lh={18}
-              ls={-1}
-              f={1}
-              fb={0}
-              ta="center"
+              fontSize={11}
+              lineHeight={18}
+              letterSpacing={-1}
+              flex={1}
+              flexBasis={0}
+              text="center"
               key={i}
             >
               {i}
@@ -35,22 +35,27 @@ export function StudioPaletteBar({
           ))}
         </XStack>
       )}
-      <XStack ov="hidden" br="$4" bw={0.5} bc="$color3">
+      <XStack overflow="hidden" rounded="$4" borderWidth={0.5} borderColor="$color3">
         {colors.map((color, i) => (
           <XStack
             key={color + i}
-            h={18}
-            f={1}
+            height={18}
+            flex={1}
             {...(i > 0 && {
-              blw: 0.5,
-              blc: '$background',
+              borderLeftWidth: 0.5,
+              borderLeftColor: '$background',
             })}
           >
             <Checkerboard opacity={0.5} />
             <XStack fullscreen bg={color as any} />
             {showLabelIndices && (
-              <YStack fullscreen jc="center" ai="center" pe="none">
-                <Paragraph size="$1" fos={11} ls={-1} color={readableColor(color) as any}>
+              <YStack fullscreen justify="center" items="center" pointerEvents="none">
+                <Paragraph
+                  size="$1"
+                  fontSize={11}
+                  letterSpacing={-1}
+                  color={readableColor(color) as any}
+                >
                   {i}
                 </Paragraph>
               </YStack>
@@ -59,17 +64,17 @@ export function StudioPaletteBar({
         ))}
       </XStack>
       {showNegativeIndices && (
-        <XStack ov="hidden">
+        <XStack overflow="hidden">
           {new Array(colors.length).fill(0).map((_, i) => (
             <Paragraph
-              o={0.7}
+              opacity={0.7}
               size="$1"
-              fos={11}
-              lh={18}
-              ls={-1}
-              f={1}
-              fb={0}
-              ta="center"
+              fontSize={11}
+              lineHeight={18}
+              letterSpacing={-1}
+              flex={1}
+              flexBasis={0}
+              text="center"
               key={i}
             >
               -{colors.length - 1 - i}

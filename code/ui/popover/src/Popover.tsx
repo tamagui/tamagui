@@ -197,11 +197,7 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
     return context.hasCustomAnchor ? (
       trigger
     ) : (
-      <PopperAnchor
-        {...(virtualRef && { virtualRef })}
-        scope={scope}
-        asChild={rest.asChild}
-      >
+      <PopperAnchor {...(virtualRef && { virtualRef })} scope={scope} asChild>
         {trigger}
       </PopperAnchor>
     )

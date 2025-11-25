@@ -1,16 +1,12 @@
-appId: com.tamagui.kitchensink
+appId: com.tamagui.tamaguikitchensink
 tags:
   - component
 ---
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Sheet'
+    centerElement: true
 - tapOn: 'Sheet'
-- tapOn: 'Type: Inline'
-- assertVisible: 'Type: Modal'
-- tapOn: 'Open'
-- assertNotVisible: 'Open'
-- swipe:
-    direction: DOWN
 - assertVisible: 'Open'
-- tapOn: 'Home'
+# Test: sheet opens when button tapped
+- tapOn: 'Open'

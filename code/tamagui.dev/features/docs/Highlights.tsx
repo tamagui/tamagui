@@ -25,16 +25,16 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       })}
     >
       <YStack
-        f={1}
-        mih={142}
+        flex={1}
+        minH={142}
         $gtSm={{
           flex: 1,
-          maw: disableLinks ? '100%' : 400,
+          maxW: disableLinks ? '100%' : 400,
           mr: '$5',
         }}
       >
         {!disableTitle && (
-          <H2 fontFamily="$body" size="$6" mb="$1" fow="800">
+          <H2 fontFamily="$body" size="$6" mb="$1" fontWeight="800">
             Features
           </H2>
         )}
@@ -45,7 +45,12 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       </YStack>
 
       {!disableLinks && (
-        <YStack gap="$3" tag="nav" aria-labelledby="site-component-info-header" miw={140}>
+        <YStack
+          gap="$3"
+          tag="nav"
+          aria-labelledby="site-component-info-header"
+          minW={140}
+        >
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
@@ -65,7 +70,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               }`}
               target="_blank"
             >
-              <XStack ai="center" gap="$1">
+              <XStack items="center" gap="$1">
                 <SizableText size="$3">View source</SizableText>
                 <YStack opacity={0.5} ml="$0.5">
                   <ExternalLink size={12} color="var(--colorHover)" />
@@ -73,7 +78,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               </XStack>
             </Link>
             <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
-              <XStack ai="center" gap="$1">
+              <XStack items="center" gap="$1">
                 <SizableText size="$3">View on npm</SizableText>
                 <YStack opacity={0.5} ml="$0.5">
                   <ExternalLink size={12} color="var(--colorHover)" />
@@ -84,7 +89,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               href="https://github.com/tamagui/tamagui/issues/new/choose"
               target="_blank"
             >
-              <XStack ai="center" gap="$1">
+              <XStack items="center" gap="$1">
                 <SizableText size="$3">Report an issue</SizableText>
                 <YStack opacity={0.5} ml="$0.5">
                   <ExternalLink size={12} color="var(--colorHover)" />

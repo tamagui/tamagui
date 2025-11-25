@@ -63,11 +63,9 @@ const components = [
     </Panel>
   </>,
   <>
-    {/* <Theme name="surface2"> */}
     <Panel key="" fileToCopyName="Chat">
       <ChatScreen />
     </Panel>
-    {/* </Theme> */}
   </>,
   <>
     <Panel key="" fileToCopyName="UserDropdown">
@@ -75,11 +73,9 @@ const components = [
     </Panel>
   </>,
   <>
-    {/* <Theme name="surface2"> */}
     <Panel key="" fileToCopyName="Pricing">
       <PricingCards />
     </Panel>
-    {/* </Theme> */}
   </>,
   <>
     <Panel key="" fileToCopyName="Login">
@@ -87,11 +83,9 @@ const components = [
     </Panel>
   </>,
   <>
-    {/* <Theme name="surface2"> */}
     <Panel key="" fileToCopyName="AllTasks">
       <AllTasks />
     </Panel>
-    {/* </Theme> */}
   </>,
   <>
     <Panel key="" fileToCopyName="Statistics">
@@ -125,7 +119,7 @@ const PalettePreviewPanels = memo(() => {
   if (!palettes) return null
 
   return (
-    <XStack fw="wrap" gap="$2">
+    <XStack flexWrap="wrap" gap="$2">
       {Object.entries(palettes).map(([name, palette]) => {
         if (
           (isThemeDark && !name.startsWith('dark')) ||
@@ -135,8 +129,8 @@ const PalettePreviewPanels = memo(() => {
         }
 
         return (
-          <Panel key={name} disableSettings m={0} h="auto" f={1}>
-            <YStack borderWidth={0} gap="$0" p="$0" ov="hidden">
+          <Panel key={name} disableSettings m={0} height="auto" flex={1}>
+            <YStack borderWidth={0} gap="$0" p="$0" overflow="hidden">
               <StudioPaletteBar showLabelIndices colors={palette} />
             </YStack>
           </Panel>
@@ -170,7 +164,7 @@ const ComponentSkeleton = ({ index }) => {
 
   return (
     <YStack width="calc(33.33% - 16px)" mb="$4">
-      <Skeleton height={height} width="100%" br={16} />
+      <Skeleton height={height} width="100%" rounded={16} />
     </YStack>
   )
 }

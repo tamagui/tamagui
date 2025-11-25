@@ -61,6 +61,7 @@ export const webOnlyStylePropsView = {
   touchAction: true,
   transformStyle: true,
   userSelect: true,
+  willChange: true,
 }
 
 export const webOnlyStylePropsText = {

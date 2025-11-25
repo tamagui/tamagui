@@ -1,5 +1,3 @@
-import { getOctokit } from '~/features/github/octokit'
-
 export type GithubSponsorshipStatus =
   | {
       hasSponsorAccess: false

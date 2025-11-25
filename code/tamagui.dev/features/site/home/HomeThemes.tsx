@@ -152,7 +152,7 @@ export const HomeThemes = memo(function HomeThemes() {
   }, [isIntersecting])
 
   return (
-    <YStack pos="relative">
+    <YStack position="relative">
       {useMemo(() => {
         return (
           <ContainerLarge position="relative" gap="$3">
@@ -165,23 +165,16 @@ export const HomeThemes = memo(function HomeThemes() {
         )
       }, [])}
 
-      <YStack my="$8" ai="center" jc="center">
+      <YStack my="$8" items="center" justify="center">
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" gap="$2">
-            <XGroup
-              disablePassBorderRadius
-              borderWidth={1}
-              borderColor="$borderColor"
-              p="$2"
-              br="$10"
-              als="center"
-            >
+            <XGroup disablePassBorderRadius bordered p="$2" rounded="$10" self="center">
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = resolvedTheme === name
                 return (
                   <XGroup.Item key={name + i}>
                     <ActiveCircle
-                      backgroundColor={name === 'dark' ? '#000' : '#fff'}
+                      bg={name === 'dark' ? '#000' : '#fff'}
                       onPress={() => setUserTheme(name)}
                       isActive={isActive}
                     />
@@ -190,14 +183,7 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup
-              disablePassBorderRadius
-              borderWidth={1}
-              borderColor="$borderColor"
-              p="$2"
-              br="$10"
-              als="center"
-            >
+            <XGroup disablePassBorderRadius bordered p="$2" rounded="$10" self="center">
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
@@ -206,46 +192,25 @@ export const HomeThemes = memo(function HomeThemes() {
                       <ActiveCircle
                         onPress={() => updateActiveI([i, curShadeI])}
                         isActive={isActive}
-                        backgroundColor="$color8"
+                        bg="$color8"
                       />
                     </Theme>
                   </XGroup.Item>
                 )
               })}
             </XGroup>
-
-            {/* <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
-              <XGroup.Item>
-                <Theme name={colorName}>
-                  <XStack>
-                    {themes[1].map((name, i) => {
-                      const isActive = curShadeI === i
-                      return (
-                        <ActiveCircle
-                          onPress={() => updateActiveI([curColorI, i])}
-                          key={`${String(name)}${i}`}
-                          isActive={isActive}
-                          opacity={1.2 - (4 - i) / 4}
-                          backgroundColor="$colorHover"
-                        />
-                      )
-                    })}
-                  </XStack>
-                </Theme>
-              </XGroup.Item>
-            </XGroup> */}
           </XStack>
         </XStack>
 
         <YStack
           my="$3"
-          ov="hidden"
-          w="100%"
-          pos="relative"
+          overflow="hidden"
+          width="100%"
+          position="relative"
           pointerEvents={scrollLock === 'animate' ? 'none' : 'auto'}
-          maxWidth={1400}
+          maxW={1400}
         >
-          <YStack fullscreen pe="none" zIndex={1000000000} />
+          <YStack fullscreen pointerEvents="none" z={1000000000} />
           <XStack
             className="scroll-horizontal no-scrollbar"
             ref={scrollView}
@@ -267,11 +232,11 @@ export const HomeThemes = memo(function HomeThemes() {
             }}
           >
             <XStack
-              ai="center"
+              items="center"
               py="$6"
-              jc="center"
+              justify="center"
               gap="$5"
-              pos="relative"
+              position="relative"
               px={`calc(50vw + 30px)`}
               x={-45 - 30}
             >
@@ -309,10 +274,10 @@ export const HomeThemes = memo(function HomeThemes() {
 
           <YStack
             className="media-player-main-demo"
-            pe="none"
+            pointerEvents="none"
             fullscreen
-            ai="center"
-            jc="center"
+            items="center"
+            justify="center"
             $xs={{ scale: 0.8 }}
           >
             <Theme name={colorName}>

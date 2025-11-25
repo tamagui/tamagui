@@ -8,7 +8,9 @@ export function HomePage() {
     <ScrollView horizontal minH="100%">
       <XStack>
         <YStack maxW={250}>
-          <H4>One-off</H4>
+          <H4 bg="red" disableOptimization>
+            One-off
+          </H4>
 
           <Link href="/sandbox">
             <Paragraph>Sandbox</Paragraph>

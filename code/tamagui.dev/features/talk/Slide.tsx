@@ -136,7 +136,7 @@ export const SlideContext = createContext({
 
 export function Slide(props: SlideProps) {
   return (
-    <Theme name={props.theme}>
+    <Theme name={props.theme ?? null}>
       <SlideInner {...props} />
     </Theme>
   )
@@ -189,36 +189,36 @@ const SlideInner = (props: SlideProps) => {
 
   return (
     <>
-      <YStack fullscreen zi={-1}>
+      <YStack fullscreen z={-1}>
         {showAllSteps ? null : glows.elements}
       </YStack>
-      <YStack ref={glows.ref as any} gap="$7" w="90%" h="100%" p="$12">
+      <YStack ref={glows.ref as any} gap="$7" width="90%" height="100%" p="$12">
         <YStack gap="$4">
           {Boolean(props.title) && (
             <H1
               fontSize={75}
-              lh={120}
+              lineHeight={120}
               textShadowColor="$shadowColor"
               textShadowRadius={10}
               textShadowOffset={{ height: 10, width: 0 }}
-              als="center"
+              self="center"
             >
               {props.title}
             </H1>
           )}
 
           {Boolean(props.subTitle) && (
-            <H2 size="$10" theme="alt2" als="center">
+            <H2 size="$10" theme="alt2" self="center">
               {props.subTitle}
             </H2>
           )}
         </YStack>
 
-        <YStack f={1} gap="$10" maxHeight="100%" flexWrap="wrap" w="100%">
+        <YStack flex={1} gap="$10" maxH="100%" flexWrap="wrap" width="100%">
           {stepsContent}
         </YStack>
 
-        <YStack pos="absolute" o={0} zi={-1}>
+        <YStack position="absolute" opacity={0} z={-1}>
           {nextStepPreload}
         </YStack>
       </YStack>
@@ -300,8 +300,8 @@ function getTextContent(
             case 'image':
               return (
                 <YStack
-                  f={1}
-                  ai="center"
+                  flex={1}
+                  items="center"
                   className="fade-image-in"
                   {...(item.variant === 'circled' && {
                     bg: '$background',
@@ -309,22 +309,22 @@ function getTextContent(
                     minHeight: 600,
                     maxWidth: 600,
                     maxHeight: 600,
-                    ai: 'center',
-                    jc: 'center',
+                    items: 'center',
+                    justify: 'center',
                     borderRadius: 10000,
-                    als: 'center',
+                    self: 'center',
                     mx: 'auto',
                     elevation: '$6',
-                    ov: 'hidden',
-                    bw: 5,
-                    bc: '$borderColor',
+                    overflow: 'hidden',
+                    borderWidth: 5,
+                    borderColor: '$borderColor',
                   })}
                   {...(item.variant === 'centered' && {
-                    als: 'center',
-                    ai: 'center',
-                    jc: 'center',
-                    h: '100%',
-                    maw: '90%',
+                    self: 'center',
+                    items: 'center',
+                    justify: 'center',
+                    height: '100%',
+                    maxW: '90%',
                     minWidth: '90%',
                   })}
                   {...(item.fullscreen && {
@@ -352,14 +352,14 @@ function getTextContent(
             case 'vertical':
               return (
                 <YStack
-                  h="100%"
+                  height="100%"
                   {...(item.variant === 'center-vertically' && {
-                    ai: 'center',
-                    jc: 'center',
+                    items: 'center',
+                    justify: 'center',
                   })}
                 >
                   {!!item.title && (
-                    <H4 size="$10" als="center" mb="$4" color="$color9">
+                    <H4 size="$10" self="center" mb="$4" color="$color9">
                       {item.title}
                     </H4>
                   )}
@@ -369,9 +369,9 @@ function getTextContent(
 
             case 'horizontal':
               return (
-                <XStack ai="center" jc="center" h="100%">
+                <XStack items="center" justify="center" height="100%">
                   {!!item.title && (
-                    <H4 size="$10" als="center" mb="$4" color="$color9">
+                    <H4 size="$10" self="center" mb="$4" color="$color9">
                       {item.title}
                     </H4>
                   )}
@@ -382,20 +382,32 @@ function getTextContent(
             case 'split-horizontal':
               return (
                 <XStack
-                  maw="100%"
-                  ov="hidden"
-                  h="100%"
-                  ai="center"
-                  f={1}
+                  maxW="100%"
+                  overflow="hidden"
+                  height="100%"
+                  items="center"
+                  flex={1}
                   gap="$6"
                   {...(item.variant === 'centered' && {
                     my: 120,
                   })}
                 >
-                  <YStack jc="center" als="stretch" maw="50%" f={1} ov="hidden">
+                  <YStack
+                    justify="center"
+                    self="stretch"
+                    maxW="50%"
+                    flex={1}
+                    overflow="hidden"
+                  >
                     {getTextContent([item.content[0]], options)}
                   </YStack>
-                  <YStack jc="center" als="stretch" maw="50%" f={1} ov="hidden">
+                  <YStack
+                    justify="center"
+                    self="stretch"
+                    maxW="50%"
+                    flex={1}
+                    overflow="hidden"
+                  >
                     {getTextContent([item.content[1]], options)}
                   </YStack>
                 </XStack>
@@ -415,11 +427,11 @@ function getTextContent(
                   })}
                   animation={superBouncyOpacityClamped}
                   enterStyle={{
-                    o: 0,
+                    opacity: 0,
                     y: -10,
                   }}
                   y={0}
-                  o={1}
+                  opacity={1}
                   {...item.props}
                 >
                   {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
@@ -431,12 +443,10 @@ function getTextContent(
               return (
                 <Code
                   bg="$color8"
-                  // @ts-ignore
                   color="$color11"
                   px="$3"
                   py="$2"
                   mr="$4"
-                  // @ts-ignore
                   fontSize={32}
                   {...(size && {
                     size,
@@ -467,7 +477,7 @@ function getTextContent(
 
               if (item.title) {
                 return (
-                  <YStack ai="center" gap="$4">
+                  <YStack items="center" gap="$4">
                     <H4 size="$9">{item.title}</H4>
                     {content}
                   </YStack>
@@ -493,26 +503,19 @@ function getTextContent(
               return (
                 <YStack
                   className="fade-image-in"
-                  mah="100%"
-                  f={1}
-                  ai="center"
-                  jc="center"
+                  maxH="100%"
+                  flex={1}
+                  items="center"
+                  justify="center"
                   px="$8"
-                  als="center"
-                  maw={1200}
-                  // animation={lessBouncyOpacityClamped}
-                  // enterStyle={{
-                  //   o: 0,
-                  //   scale: 0.9,
-                  // }}
-                  // scale={1}
-                  // o={1}
+                  self="center"
+                  maxW={1200}
                 >
                   <Paragraph
                     color="$color11"
-                    als="center"
+                    self="center"
                     className="callout"
-                    ta="center"
+                    text="center"
                     p="$10"
                     scale={1.3}
                     size={size}
@@ -551,8 +554,8 @@ function getTextContent(
               }
 
               return (
-                <YStack f={1} ai="center" jc="center" px="$6">
-                  <Paragraph als="center" ta="center" size={size}>
+                <YStack flex={1} items="center" justify="center" px="$6">
+                  <Paragraph self="center" text="center" size={size}>
                     {item.content}&nbsp;
                   </Paragraph>
                 </YStack>
@@ -564,7 +567,12 @@ function getTextContent(
 
             case 'text':
               return (
-                <Paragraph fos={36} fow="400" lh="$10" {...item.props}>
+                <Paragraph
+                  fontSize={36}
+                  fontWeight="400"
+                  lineHeight="$10"
+                  {...item.props}
+                >
                   {item.content}&nbsp;
                 </Paragraph>
               )
@@ -572,10 +580,10 @@ function getTextContent(
             case 'text-bold':
               return (
                 <Paragraph
-                  fow="800"
+                  fontWeight="800"
                   fontSize={44}
                   {...(size && { size })}
-                  lh="$10"
+                  lineHeight="$10"
                   {...item.props}
                 >
                   {item.content}&nbsp;
@@ -585,15 +593,15 @@ function getTextContent(
             case 'text-overlay':
               return (
                 <Paragraph
-                  pos="absolute"
+                  position="absolute"
                   t="0%"
                   r="0%"
                   shadowColor="$shadowColor"
                   shadowRadius="$5"
-                  zi={100000}
-                  fow="800"
+                  z={100000}
+                  fontWeight="800"
                   size={size ?? '$9'}
-                  backgroundColor={
+                  bg={
                     item.variant === 'good'
                       ? '$green8'
                       : item.variant === 'bad'
@@ -601,8 +609,8 @@ function getTextContent(
                         : '$background'
                   }
                   p="$2"
-                  br="$6"
-                  lh="$10"
+                  rounded="$6"
+                  lineHeight="$10"
                   rotate="10deg"
                   {...item.props}
                 >

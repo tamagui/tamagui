@@ -85,7 +85,13 @@ export default memo(() => {
               {
                 type: 'content',
                 content: (
-                  <XStack py="$10" display="flex" w="100%" ai="center" jc="center">
+                  <XStack
+                    py="$10"
+                    display="flex"
+                    width="100%"
+                    items="center"
+                    justify="center"
+                  >
                     <H1>Generics for styling!</H1>
                   </XStack>
                 ),

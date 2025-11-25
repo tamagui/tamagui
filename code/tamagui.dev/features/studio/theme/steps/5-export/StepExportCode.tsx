@@ -161,7 +161,7 @@ export const StepExportCodeSidebar = () => {
       <YStack gap="$8" pt="$1" pb="$6" px="$3">
         <FieldsetWithLabel label="Options">
           <YStack gap="$1" p="$4">
-            <Fieldset flexDirection="row" ai="center" gap="$3">
+            <Fieldset flexDirection="row" items="center" gap="$3">
               <YStack>
                 <Switch
                   id="include-component-themes-switch"
@@ -183,13 +183,18 @@ export const StepExportCodeSidebar = () => {
 
         {platform.steps.map((step, idx) => (
           <YStack key={idx} gap="$3">
-            <XStack gap="$3" ai="center" ml="$3">
-              <Circle bg="$background" size={20} jc="center" ai="center">
-                <SizableText ta="center" fontFamily="$heading" size="$1" x={1}>
+            <XStack gap="$3" items="center" ml="$3">
+              <Circle bg="$background" size={20} justify="center" items="center">
+                <SizableText text="center" fontFamily="$heading" size="$1" x={1}>
                   {idx + 1}
                 </SizableText>
               </Circle>
-              <SizableText fontFamily="$heading" size="$3" color="$color11" ls={1}>
+              <SizableText
+                fontFamily="$heading"
+                size="$3"
+                color="$color11"
+                letterSpacing={1}
+              >
                 {step.name}
               </SizableText>
             </XStack>
@@ -216,9 +221,9 @@ export const StepExportCodeSidebar = () => {
                       >
                         <Tabs.List
                           bg="$color4"
-                          als="flex-start"
-                          btrr="$3"
-                          btlr="$3"
+                          self="flex-start"
+                          borderTopRightRadius="$3"
+                          borderTopLeftRadius="$3"
                           mx="$3"
                         >
                           {subStep.files.map((file, i) => (
@@ -259,15 +264,15 @@ export const StepExportCodeSidebar = () => {
 
 const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
   return (
-    <YStack f={1}>
+    <YStack flex={1}>
       <ScrollView
-        f={1}
+        flex={1}
         horizontal
-        maxHeight={maxHeight}
+        maxH={maxHeight}
         bg="$background"
         py="$3"
         px="$4"
-        br="$4"
+        rounded="$4"
       >
         <Text
           fontFamily="$mono"
@@ -279,17 +284,17 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
       </ScrollView>
       {maxHeight && (
         <LinearGradient
-          pos="absolute"
-          left={0}
-          right={0}
-          bottom={0}
+          position="absolute"
+          l={0}
+          r={0}
+          b={0}
           height={maxHeight}
           colors={['$background', 'transparent']}
           start={[0, 1]}
           end={[0, 0]}
         />
       )}
-      <XStack pos="absolute" right="$2.5" top={10} gap="$2" flexDirection="row-reverse">
+      <XStack position="absolute" r="$2.5" t={10} gap="$2" flexDirection="row-reverse">
         <Button
           onPress={() => {
             copyText(content)
@@ -302,7 +307,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
         {downloadable && (
           <Theme name="green">
             <Button
-              als="center"
+              self="center"
               size="$2"
               icon={Download}
               onPress={() => {

@@ -18,7 +18,7 @@ export function preferences({ isProUser, showAppropriateModal }: Props) {
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
         <Showcase
           unlock={true}
           fileName={Preferences.Meeting.fileName}

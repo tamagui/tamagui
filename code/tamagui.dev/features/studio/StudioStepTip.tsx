@@ -62,7 +62,7 @@ export function StudioStepTip() {
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
-          maw={500}
+          maxW={500}
           theme="surface2"
           animation={[
             'quickest',
@@ -80,7 +80,7 @@ export function StudioStepTip() {
           <Button
             size="$2"
             circular
-            pos="absolute"
+            position="absolute"
             t="$-3"
             r="$-3"
             icon={X}

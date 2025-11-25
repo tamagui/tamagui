@@ -12,7 +12,7 @@ export const HeadAnchor = styled(Paragraph, {
 
   hoverStyle: {
     color: '$color',
-    br: '$3',
+    rounded: '$3',
   },
 
   pressStyle: {

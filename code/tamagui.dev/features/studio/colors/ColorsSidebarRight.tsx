@@ -13,12 +13,6 @@ import {
   YStack,
 } from 'tamagui'
 
-// import {
-//   changeScaleCurve,
-//   changeScaleName,
-//   createCurveFromScale,
-//   deleteScale,
-// } from '../actions'
 import { SidebarPanel, SidebarRight } from '../components/Sidebar'
 import { colorsStore } from '../state/ColorsStore'
 import { rootStore } from '../state/RootStore'
@@ -47,7 +41,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
       <Separator />
 
       <SidebarPanel title={`Accent of ${scale.name}.${index}`}>
-        <YStack tag="ul" gap="$1">
+        <YStack tag="ul" space="$1">
           {[
             {
               name: 'bg',
@@ -82,30 +76,30 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
             const { name, hex, accent } = result
 
             return (
-              <XStack key={`${name}${i}`} ov="hidden" ai="center">
-                <XStack ai="center" f={1000} gap="$2">
+              <XStack key={`${name}${i}`} overflow="hidden" items="center">
+                <XStack items="center" flex={1000} gap="$2">
                   <Square
                     aria-hidden
                     size="$2.5"
-                    br="$2"
-                    bw={1}
-                    bc="$borderColor"
-                    backgroundColor={hex as any}
+                    rounded="$2"
+                    borderWidth={1}
+                    borderColor="$borderColor"
+                    bg={hex as any}
                   >
                     <Paragraph size="$2" color={focusedHex as any}>
                       Aa
                     </Paragraph>
                   </Square>
-                  <Paragraph size="$2" ellipsis>
+                  <Paragraph size="$2" ellipse>
                     on {name}
                   </Paragraph>
                 </XStack>
-                <Spacer flex={1} />
-                <XStack ov="hidden" f={1} gap="$2" ai="center">
+                <Spacer flex />
+                <XStack overflow="hidden" flex={1} gap="$2" items="center">
                   <Paragraph size="$2" mr="$2">
                     {accent.toFixed(2)}
                   </Paragraph>
-                  <Paragraph size="$2" ellipsis fow="800">
+                  <Paragraph size="$2" ellipse fontWeight="800">
                     {getAccentScore(getContrast(hex, focusedHex || ''))}{' '}
                   </Paragraph>
                   {getAccentScore(getContrast(hex, focusedHex || '')) === 'Fail' ? (
@@ -125,8 +119,8 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
   return (
     <SidebarRight>
       <SidebarPanel title={`Palette`}>
-        <YStack gap="$2">
-          <YStack gap="$1">
+        <YStack space="$2">
+          <YStack space="$1">
             <Label size="$2" htmlFor="scale-name">
               Name
             </Label>
@@ -147,7 +141,6 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
               if (confirmed) {
                 state.colors.deleteScale()
               }
-              // navigate(`${routePrefix}/local/${paletteId}`);
             }}
           >
             Delete palette
@@ -156,122 +149,6 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
       </SidebarPanel>
 
       <Separator />
-
-      {/* <SidebarPanel title="Linked curves">
-        <YStack gap="$3">
-          <YStack gap="$1">
-            <Label size="$2" htmlFor="hue-curve">
-              Hue curve
-            </Label>
-            <XStack gap="$2">
-              <Select
-                f={1}
-                size="$2"
-                key={`${scale.name}-hue-curve`}
-                id="hue-curve"
-                value={scale.curves.hue}
-                onValueChange={(value) =>
-                  changeScaleCurve({
-                    curveType: 'hue',
-                    curveId: value,
-                  })
-                }
-              >
-                <Select.Item index={0} value="">
-                  None
-                </Select.Item>
-                {Object.values(palette.curves)
-                  .filter((curve) => curve.type === 'hue')
-                  .map((curve, i) => (
-                    <Select.Item key={curve.id} index={i + 1} value={curve.id}>
-                      {curve.name}
-                    </Select.Item>
-                  ))}
-              </Select>
-              <Button
-                size="$2"
-                aria-label="Create hue curve"
-                icon={Plus}
-                onPress={() => createCurveFromScale('hue')}
-              />
-            </XStack>
-          </YStack>
-          <YStack gap="$1">
-            <Label size="$2" htmlFor="saturation-curve">
-              Saturation curve
-            </Label>
-            <XStack gap="$2">
-              <Select
-                f={1}
-                size="$2"
-                key={`${scale.name}-saturation-curve`}
-                id="hue-curve"
-                value={scale.curves.saturation}
-                onValueChange={(value) =>
-                  changeScaleCurve({
-                    curveType: 'saturation',
-                    curveId: value,
-                  })
-                }
-              >
-                <Select.Item index={0} value="">
-                  None
-                </Select.Item>
-                {Object.values(palette.curves)
-                  .filter((curve) => curve.type === 'saturation')
-                  .map((curve, i) => (
-                    <Select.Item key={curve.id} index={i + 1} value={curve.id}>
-                      {curve.name}
-                    </Select.Item>
-                  ))}
-              </Select>
-              <Button
-                size="$2"
-                aria-label="Create saturation curve"
-                icon={Plus}
-                onPress={() => createCurveFromScale('saturation')}
-              />
-            </XStack>
-          </YStack>
-          <YStack gap="$1">
-            <Label size="$2" htmlFor="lightness-curve">
-              Lightness curve
-            </Label>
-            <XStack gap="$2">
-              <Select
-                f={1}
-                size="$2"
-                key={`${scale.name}-lightness-curve`}
-                id="hue-curve"
-                value={scale.curves.lightness}
-                onValueChange={(value) =>
-                  changeScaleCurve({
-                    curveType: 'lightness',
-                    curveId: value,
-                  })
-                }
-              >
-                <Select.Item index={0} value="">
-                  None
-                </Select.Item>
-                {Object.values(palette.curves)
-                  .filter((curve) => curve.type === 'lightness')
-                  .map((curve, i) => (
-                    <Select.Item key={curve.id} index={i + 1} value={curve.id}>
-                      {curve.name}
-                    </Select.Item>
-                  ))}
-              </Select>
-              <Button
-                size="$2"
-                aria-label="Create lightness curve"
-                icon={Plus}
-                onPress={() => createCurveFromScale('lightness')}
-              />
-            </XStack>
-          </YStack>
-        </YStack>
-      </SidebarPanel> */}
 
       {selectedColorContents}
     </SidebarRight>

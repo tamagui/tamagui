@@ -41,21 +41,21 @@ const Panel = ({
     >
       {!!title && (
         <>
-          <XStack ai="center" jc="space-between" mb="$3">
-            <Paragraph size="$6" fow="600">
+          <XStack items="center" justify="space-between" mb="$3">
+            <Paragraph size="$6" fontWeight="600">
               {title}
             </Paragraph>
-            <XStack ai="center" gap="$4">
+            <XStack items="center" gap="$4">
               {afterTitle}
               {icon}
             </XStack>
           </XStack>
-          <Separator bc="$color5" />
+          <Separator borderColor="$color5" />
         </>
       )}
 
-      <XStack f={1}>
-        <YStack f={1} gap="$2">
+      <XStack flex={1}>
+        <YStack flex={1} gap="$2">
           {typeof children === 'string' ? (
             <NoticeParagraph>{children}</NoticeParagraph>
           ) : (
@@ -84,7 +84,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       icon={<Lightbulb size="$1" color="$color7" />}
       afterTitle={
         !steps ? null : (
-          <XStack gap="$2" ai="center">
+          <XStack gap="$2" items="center">
             <Paragraph mr="$2" size="$2" theme="alt2">
               {index + 1}/{total}
             </Paragraph>
@@ -113,7 +113,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       {children ? (
         children
       ) : steps ? (
-        <YStack f={1} ov="hidden" mx="$-4" my="$-2">
+        <YStack flex={1} overflow="hidden" mx="$-4" my="$-2">
           <ScrollViewWithFade showsVerticalScrollIndicator={false}>
             <AnimatePresence
               initial={false}
@@ -124,7 +124,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
                 key={page}
                 animation="quicker"
                 gap="$3"
-                pos="absolute"
+                position="absolute"
                 p="$4"
               >
                 {steps[index]}
@@ -206,27 +206,27 @@ const ScrollViewWithFade = ({
   }
 
   return (
-    <Stack f={1} pos="relative">
+    <Stack flex={1} position="relative">
       {(status === 'fade-top' || status === 'fade-both') && (
         <LinearGradient
-          pe="none"
-          zi={1000}
+          pointerEvents="none"
+          z={1000}
           position="absolute"
           l={0}
           r={0}
-          h="20%"
+          height="20%"
           colors={['$background', '$background0']}
         />
       )}
 
       {(status === 'fade-bottom' || status === 'fade-both') && (
         <LinearGradient
-          pe="none"
-          zi={1000}
+          pointerEvents="none"
+          z={1000}
           position="absolute"
           l={0}
           r={0}
-          h="20%"
+          height="20%"
           b={0}
           colors={['$background0', '$background']}
         />
@@ -252,7 +252,7 @@ const ScrollViewWithFade = ({
         }}
       >
         <YStack
-          f={1}
+          flex={1}
           onLayout={(e) => {
             if (!state.current.contentSize) {
               state.current.contentSize = {
@@ -333,7 +333,7 @@ const NoticeFrame = styled(YStack, {
   p: '$4',
   py: '$3',
   bg: '$background',
-  br: '$4',
+  rounded: '$4',
   gap: '$3',
-  pos: 'relative',
+  position: 'relative',
 })

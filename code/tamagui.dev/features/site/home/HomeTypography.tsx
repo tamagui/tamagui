@@ -47,10 +47,10 @@ export const HomeTypography = memo(() => {
 
   return (
     <>
-      <YStack fullscreen className="" o={0.1} />
+      <YStack fullscreen className="" opacity={0.1} />
       {/* -5 my to fir grid nicely */}
       <ContainerLarge my={-5} position="relative" gap="$8">
-        <YStack ref={ref} ai="center" gap="$3">
+        <YStack ref={ref} items="center" gap="$3">
           <HomeH2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
@@ -58,9 +58,9 @@ export const HomeTypography = memo(() => {
         </YStack>
 
         <XStack
-          ai="center"
-          jc="center"
-          pos="relative"
+          items="center"
+          justify="center"
+          position="relative"
           gap="$8"
           flexDirection="row-reverse"
           $sm={{
@@ -70,16 +70,16 @@ export const HomeTypography = memo(() => {
           <OverlayCard />
 
           <YStack
-            h={300}
-            w="40%"
+            height={300}
+            width="40%"
             gap="$0.5"
-            jc="center"
+            justify="center"
             scale={1.1}
             x={-20}
             y={5}
-            $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
+            $sm={{ y: 0, minW: '110%', items: 'center', x: 0, scale: 0.9 }}
           >
-            <YStack ai="flex-end" contain="paint layout" h={270}>
+            <YStack items="flex-end" contain="paint layout" height={270}>
               <AnimatePresence exitBeforeEnter>
                 <AnimatedHeading
                   disableAnimation={!isIntersecting}
@@ -155,20 +155,37 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack jc="center" p="$6" gap="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
-        <Paragraph ta="left" size="$8" fow="400" ls={-1}>
+    <Card
+      borderWidth={1}
+      borderColor="$borderColor"
+      rounded="$6"
+      elevation="$6"
+      shadowRadius={60}
+    >
+      <YStack
+        justify="center"
+        p="$6"
+        gap="$5"
+        maxW="calc(min(90vw, 400px))"
+        $sm={{ p: '$5' }}
+      >
+        <Paragraph text="left" size="$8" fontWeight="400" letterSpacing={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph ta="left" size="$6" theme="alt2" fow="400">
+        <Paragraph text="left" size="$6" theme="alt2" fontWeight="400">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>
 
         <Link asChild href="/docs/core/configuration">
-          <Button aria-label="Fonts docs" als="flex-end" theme={tint as any}>
-            <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
+          <Button
+            aria-label="Fonts docs"
+            fontFamily="$silkscreen"
+            self="flex-end"
+            theme={tint as any}
+          >
+            Fonts &raquo;
           </Button>
         </Link>
       </YStack>
@@ -195,9 +212,9 @@ const AnimatedHeading = memo(
       <Delay passThrough={disableAnimation} by={index * 180 + 20}>
         <Component
           animation={disableAnimation ? null : 'lazy'}
-          enterStyle={{ o: 0, y: -10 }}
-          exitStyle={{ o: 0, y: 10 }}
-          o={1}
+          enterStyle={{ opacity: 0, y: -10 }}
+          exitStyle={{ opacity: 0, y: 10 }}
+          opacity={1}
           y={0}
           pr="$1"
           my="$1"
@@ -209,7 +226,7 @@ const AnimatedHeading = memo(
           textShadowColor="$shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
-          ellipsis
+          ellipse
           {...rest}
         >
           {children}

@@ -152,6 +152,13 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute = ({ component: Component }: ProtectedRouteProps) => {
   const { fileName } = useParams()
-  const { isLoggedIn } = React.useContext(AppContext)
-  return isLoggedIn ? <Component /> : <Navigate to={`/auth/${fileName}`} replace />
+  const { isLoggedIn, installState } = React.useContext(AppContext)
+
+  // Allow access if component is OSS (free) or user is logged in
+  const isOSS = installState.installingComponent?.isOSS
+  if (isOSS || isLoggedIn) {
+    return <Component />
+  }
+
+  return <Navigate to={`/auth/${fileName}`} replace />
 }

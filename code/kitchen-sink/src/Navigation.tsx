@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Sandbox } from './Sandbox'
 import { DemoScreen } from './features/demos/demo-screen'
@@ -18,9 +19,23 @@ const Stack = createNativeStackNavigator<{
   sandbox: undefined
 }>()
 
+const linking = {
+  prefixes: [],
+  config: {
+    screens: {
+      home: '',
+      sandbox: 'sandbox',
+      demo: 'demo/:id',
+      tests: 'tests',
+      test: 'test/:id',
+    },
+  },
+}
+
 export function Navigation() {
   return (
-    <Stack.Navigator initialRouteName="home">
+    <NavigationContainer linking={linking}>
+      <Stack.Navigator initialRouteName="home">
       <Stack.Screen name="home" component={HomeScreen} />
       <Stack.Screen
         name="sandbox"
@@ -63,5 +78,6 @@ export function Navigation() {
         }}
       />
     </Stack.Navigator>
+    </NavigationContainer>
   )
 }

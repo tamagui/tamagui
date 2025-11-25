@@ -107,7 +107,7 @@ export function Demo({
             <Label size="$3" htmlFor={Name}>
               Name
             </Label>
-            <Input f={1} size="$3" id={Name} />
+            <Input flex={1} size="$3" id={Name} />
           </XStack>
 
           <Popover.Close asChild>

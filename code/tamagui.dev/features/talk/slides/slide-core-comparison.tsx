@@ -28,7 +28,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 70,
+                          mb: 70,
                           display: 'inline-flex',
                         },
                         content: `Inline styles`,
@@ -43,7 +43,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 70,
+                          mb: 70,
                           display: 'inline-flex',
                         },
                         content: `Shorthands`,
@@ -58,7 +58,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 70,
+                          mb: 70,
                           display: 'inline-flex',
                         },
                         content: `Minimal CSS`,
@@ -73,7 +73,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 70,
+                          mb: 70,
                           display: 'inline-flex',
                         },
                         content: `Native + Web`,
@@ -99,7 +99,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$9',
-                          marginBottom: 20,
+                          mb: 20,
                           display: 'inline-flex',
                         },
                         content: <>Has extra bundle size ❌</>,
@@ -115,7 +115,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$9',
-                          marginBottom: 20,
+                          mb: 20,
                           display: 'inline-flex',
                         },
                         content: `... but compiler makes up`,
@@ -131,7 +131,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$9',
-                          marginBottom: 20,
+                          mb: 20,
                           display: 'inline-flex',
                         },
                         content: `Everything is typed w/o plugin`,
@@ -147,7 +147,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$9',
-                          marginBottom: 20,
+                          mb: 20,
                           display: 'inline-flex',
                         },
                         content: `Truly dynamic styles`,
@@ -163,7 +163,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$9',
-                          marginBottom: 20,
+                          mb: 20,
                           display: 'inline-flex',
                         },
                         content: `Properly merge props`,
@@ -179,7 +179,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$9',
-                          marginBottom: 20,
+                          mb: 20,
                           display: 'inline-flex',
                         },
                         content: `De/re-structure styles`,
@@ -195,7 +195,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$9',
-                          marginBottom: 20,
+                          mb: 20,
                           display: 'inline-flex',
                         },
                         content: `Powerful themes`,

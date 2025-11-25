@@ -149,6 +149,8 @@ export const DialogPortalFrame = styled(YStack, {
           // ensure always in frame and right height
           maxHeight: '100vh',
           position: 'fixed' as any,
+          // ensure dialog inherits stacking context from portal wrapper
+          zIndex: 1,
         },
       },
     },
@@ -214,12 +216,11 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
       useIsomorphicLayoutEffect(() => {
         const node = dialogRef.current
         if (!(node instanceof HTMLDialogElement)) return
+        // optional chaining for JSDOM compatibility (doesn't implement show/close)
         if (isVisible) {
-          // not showModal because then we need to handle Select and Popover inside dialog
-          // we can do that later in v2
-          node.show()
+          node.show?.()
         } else {
-          node.close()
+          node.close?.()
         }
       }, [isVisible])
     }

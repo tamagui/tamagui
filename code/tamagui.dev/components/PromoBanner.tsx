@@ -10,7 +10,7 @@ export const PromoBanner = () => {
   }
 
   return (
-    <XStack bg="$color1" w="100%" py="$1.5" ai="center" jc="center">
+    <XStack bg="$color1" width="100%" py="$1.5" items="center" justify="center">
       <Paragraph size="$3">Black Friday: Takeout and Bento each $50 off.</Paragraph>
     </XStack>
   )

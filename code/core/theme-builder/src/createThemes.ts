@@ -78,6 +78,7 @@ export function createThemes<
 
   const builder = createSimpleThemeBuilder({
     extra: props.base.extra,
+    accentExtra: accent?.extra,
     componentThemes,
     palettes: createPalettes(getThemesPalettes(props as any)),
     templates: templates as typeof defaultTemplates,
@@ -177,6 +178,7 @@ export function createSimpleThemeBuilder<
   grandChildrenThemes?: GrandChildrenThemes
   componentThemes?: ComponentThemes
   extra?: Extra
+  accentExtra?: Extra
   getTheme?: GetThemeFn<any>
 }): {
   themeBuilder: ThemeBuilder<any>
@@ -185,6 +187,7 @@ export function createSimpleThemeBuilder<
   const {
     getTheme,
     extra,
+    accentExtra,
     childrenThemes = null as unknown as ChildrenThemes,
     grandChildrenThemes = null as unknown as GrandChildrenThemes,
     templates = defaultTemplates as unknown as Templates,
@@ -253,11 +256,13 @@ export function createSimpleThemeBuilder<
           parent: 'light',
           template: 'base',
           palette: 'light_accent',
+          nonInheritedValues: accentExtra?.light,
         },
         {
           parent: 'dark',
           template: 'base',
           palette: 'dark_accent',
+          nonInheritedValues: accentExtra?.dark,
         },
       ],
     }) as any
@@ -307,13 +312,15 @@ function getAnchors(palette: SchemePalette) {
 
   const anchors = palette.light.map((lcolor, index) => {
     const dcolor = palette.dark[index]
-    const [lhue, lsat, llum] = parseToHsla(lcolor)
-    const [dhue, dsat, dlum] = parseToHsla(dcolor)
+    const [lhue, lsat, llum, lalpha] = parseToHsla(lcolor)
+    const [dhue, dsat, dlum, dalpha] = parseToHsla(dcolor)
+
     return {
       index: spreadIndex(maxIndex, numItems, index),
       hue: { light: lhue, dark: dhue },
       sat: { light: lsat, dark: dsat },
       lum: { light: llum, dark: dlum },
+      alpha: { light: lalpha, dark: dalpha },
     } as const
   })
 

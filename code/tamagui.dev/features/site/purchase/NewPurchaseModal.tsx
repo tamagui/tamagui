@@ -199,12 +199,12 @@ export function PurchaseModalContents() {
       return (
         <YStack>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
-            <BigP ta="center">
+            <BigP text="center">
               We've put together tools that make starting and building a universal app as
               good as it gets.
             </BigP>
 
-            <XStack mx="$-4" fw="wrap" gap="$3" ai="center" justifyContent="center">
+            <XStack mx="$-4" flexWrap="wrap" gap="$3" items="center" justify="center">
               <PromoCards />
             </XStack>
 
@@ -219,7 +219,7 @@ export function PurchaseModalContents() {
 
           <Separator my="$10" />
 
-          <H3 ff="$mono">Team</H3>
+          <H3 fontFamily="$mono">Team</H3>
 
           <TeamSeatsInput
             value={teamSeats}
@@ -257,7 +257,7 @@ export function PurchaseModalContents() {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal animation="medium">
-            <Sheet.Frame bg="$color1" padding={0} gap="$4">
+            <Sheet.Frame bg="$color1" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
@@ -283,7 +283,7 @@ export function PurchaseModalContents() {
 
           <Dialog.Content
             bordered
-            ov="hidden"
+            overflow="hidden"
             elevate
             key="content"
             bg="$color1"
@@ -295,14 +295,13 @@ export function PurchaseModalContents() {
                 },
               },
             ]}
-            // animateOnly={['transform']}
             enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-            w="90%"
-            maw={900}
+            width="90%"
+            maxW={900}
             p={0}
           >
-            <YStack h="100%">
+            <YStack height="100%">
               <Tabs
                 orientation="horizontal"
                 flexDirection="column"
@@ -312,17 +311,17 @@ export function PurchaseModalContents() {
                 onValueChange={changeTab}
               >
                 <Tabs.List disablePassBorderRadius>
-                  <YStack width={'33.3333%'} f={1}>
+                  <YStack width={'33.3333%'} flex={1}>
                     <Tab isActive={currentTab === 'purchase'} value="purchase">
                       Pro
                     </Tab>
                   </YStack>
-                  <YStack width={'33.3333%'} f={1}>
+                  <YStack width={'33.3333%'} flex={1}>
                     <Tab isActive={currentTab === 'support'} value="support">
                       Support
                     </Tab>
                   </YStack>
-                  <YStack width={'33.3333%'} f={1}>
+                  <YStack width={'33.3333%'} flex={1}>
                     <Tab isActive={currentTab === 'faq'} value="faq" end>
                       FAQ
                     </Tab>
@@ -335,7 +334,7 @@ export function PurchaseModalContents() {
                       value={currentTab}
                       forceMount
                       flex={1}
-                      minHeight={400}
+                      minH={400}
                       $gtMd={{
                         height: 'calc(min(100vh - 280px, 620px))',
                       }}
@@ -347,9 +346,7 @@ export function PurchaseModalContents() {
                         }}
                         p="$4"
                         gap="$4"
-                        h="100%"
-                        // scrollbarWidth='none'
-                        // overflowX="scroll"
+                        height="100%"
                         {...(gtMd && {
                           style: {
                             overflowY: 'scroll',
@@ -368,24 +365,24 @@ export function PurchaseModalContents() {
               {/* Bottom */}
               <YStack p="$4" $gtXs={{ p: '$6' }} gap="$2" bg="$color1">
                 <YStack
-                  jc="center"
-                  ai="center"
+                  justify="center"
+                  items="center"
                   gap="$4"
                   $gtXs={{
-                    jc: 'space-between',
-                    ai: 'flex-start',
+                    justify: 'space-between',
+                    items: 'flex-start',
                     flexDirection: 'row',
                     gap: '$6',
                   }}
                 >
-                  <YStack gap="$1" f={1} width="100%" $gtXs={{ width: '40%' }}>
+                  <YStack gap="$1" flex={1} width="100%" $gtXs={{ width: '40%' }}>
                     <XStack>
                       <H3 size="$11">
                         $
                         {Intl.NumberFormat('en-US').format(
                           monthlyTotal + Math.ceil(yearlyTotal / 12)
                         )}
-                        <Paragraph als="flex-end" y={-5} o={0.5} x={4}>
+                        <Paragraph self="flex-end" y={-5} opacity={0.5} x={4}>
                           /month
                         </Paragraph>
                       </H3>
@@ -401,8 +398,8 @@ export function PurchaseModalContents() {
                       <Theme name="yellow">
                         <XStack
                           mb="$2"
-                          backgroundColor="$color3"
-                          borderRadius="$4"
+                          bg="$color3"
+                          rounded="$4"
                           borderWidth={0.5}
                           borderColor="$color8"
                           p="$2"
@@ -425,8 +422,8 @@ export function PurchaseModalContents() {
                       <Theme name="yellow">
                         <XStack
                           mb="$2"
-                          backgroundColor="$color3"
-                          borderRadius="$4"
+                          bg="$color3"
+                          rounded="$4"
                           borderWidth={0.5}
                           borderColor="$color8"
                           p="$2"
@@ -454,8 +451,8 @@ export function PurchaseModalContents() {
                         {isProcessing ? 'Processing...' : 'Checkout'}
                       </PurchaseButton>
                     </Theme>
-                    <XStack jc="space-between" gap="$4" ai="center" mb="$2">
-                      <XStack ai="center" gap="$2">
+                    <XStack justify="space-between" gap="$4" items="center" mb="$2">
+                      <XStack items="center" gap="$2">
                         <SizableText
                           theme="alt1"
                           cursor="pointer"
@@ -496,14 +493,7 @@ export function PurchaseModalContents() {
             </YStack>
             <Unspaced>
               <Dialog.Close asChild>
-                <Button
-                  position="absolute"
-                  top="$2"
-                  right="$2"
-                  size="$2"
-                  circular
-                  icon={X}
-                />
+                <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>
@@ -598,7 +588,7 @@ export const FaqTabContent = () => {
         coupon, enter it and click apply. If it's valid, the price will update.
       </P>
 
-      <Spacer h="$10" />
+      <Spacer height="$10" />
     </YStack>
   )
 }
@@ -646,12 +636,12 @@ const SupportTabContent = ({
 
       <YStack gap="$6">
         <YStack gap="$3">
-          <XStack alignItems="center">
-            <Label f={1} htmlFor="chat-support">
+          <XStack items="center">
+            <Label flex={1} htmlFor="chat-support">
               <P>Chat Support ($200/month)</P>
             </Label>
 
-            <XStack maw={100}>
+            <XStack maxW={100}>
               <Switch
                 checked={chatSupport}
                 onCheckedChange={handleChatSupportChange}
@@ -661,19 +651,19 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P maw={500} size="$5" lineHeight="$6" o={chatSupport ? 1 : 0.5}>
+          <P maxW={500} size="$5" lineHeight="$6" opacity={chatSupport ? 1 : 0.5}>
             A private Discord room just for your team with 2 invites, with responses
             prioritized over our community chat.
           </P>
         </YStack>
 
         <YStack gap="$3">
-          <XStack ov="hidden" alignItems="center">
-            <Label f={1} htmlFor="support-tier">
+          <XStack overflow="hidden" items="center">
+            <Label flex={1} htmlFor="support-tier">
               <P>Extra Support Level</P>
             </Label>
 
-            <XStack f={1} maw={200}>
+            <XStack flex={1} maxW={200}>
               <Select
                 id="support-tier"
                 size="$4"
@@ -696,7 +686,7 @@ const SupportTabContent = ({
             </XStack>
           </XStack>
 
-          <P size="$5" lineHeight="$6" maw={500} o={supportTier !== '0' ? 1 : 0.5}>
+          <P size="$5" lineHeight="$6" maxW={500} opacity={supportTier !== '0' ? 1 : 0.5}>
             Each tier adds 4 hours of development a month, faster response times, and 4
             additional private chat invites.
           </P>
@@ -739,16 +729,16 @@ function Tab({
     <Tabs.Tab
       group="takeoutBody"
       unstyled
-      ai="center"
-      jc="center"
-      ov="hidden"
+      items="center"
+      justify="center"
+      overflow="hidden"
       py="$1"
       bg="$color1"
       height={60}
       value=""
       disableActiveTheme
-      bbw={1}
-      bbc="transparent"
+      borderBottomWidth={1}
+      borderBottomColor="transparent"
       {...(!isActive && {
         bg: '$color2',
       })}
@@ -756,25 +746,25 @@ function Tab({
     >
       <YStack
         fullscreen
-        pe="none"
-        zi={-1}
+        pointerEvents="none"
+        z={-1}
         {...(isActive && {
           bg: '$color1',
         })}
         {...(!isActive && {
           bg: '$color1',
-          o: 0.25,
+          opacity: 0.25,
           '$group-takeoutBody-hover': {
-            o: 0.33,
+            opacity: 0.33,
           },
         })}
       />
       <Paragraph
-        ff="$mono"
+        fontFamily="$mono"
         size="$6"
         $gtMd={{ size: '$7' }}
         color={isActive ? '$color12' : '$color10'}
-        fow={isActive ? 'bold' : 'normal'}
+        fontWeight={isActive ? 'bold' : 'normal'}
       >
         {children}
       </Paragraph>
@@ -793,8 +783,8 @@ const TeamSeatsInput = ({
 }) => {
   return (
     <YStack gap="$3">
-      <XStack alignItems="center">
-        <Label f={1} htmlFor="team-seats">
+      <XStack items="center">
+        <Label flex={1} htmlFor="team-seats">
           <Text>Additional Team Seats</Text>
         </Label>
         <Input

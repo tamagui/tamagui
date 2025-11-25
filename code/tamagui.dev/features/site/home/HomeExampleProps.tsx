@@ -6,7 +6,7 @@ import { ContainerLarge } from '~/components/Containers'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText ff="$mono" size="$5" fow="800">
+      <SizableText fontFamily="$mono" size="$5" fontWeight="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
@@ -38,12 +38,12 @@ export const HomeExampleProps = () => {
   return (
     <ContainerLarge position="relative">
       <XStack px="$6" pt="$8" gap="$4" $sm={{ flexDirection: 'column', px: 0 }}>
-        <YStack w="50%" $sm={{ w: '100%' }}>
+        <YStack width="50%" $sm={{ width: '100%' }}>
           <Features
-            gap="$4"
+            space="$4"
             items={[
               <FeatureItem key="" label="Press & hover events">
-                onMouseEnter, onMouseLeave, onPressIn, and onPressOut.
+                onHoverIn, onHoverOut, onPressIn, and onPressOut.
               </FeatureItem>,
               <FeatureItem key="" label="Pseudo styles">
                 Style hover, press, and focus, in combination with media queries.
@@ -54,9 +54,9 @@ export const HomeExampleProps = () => {
             ]}
           />
         </YStack>
-        <YStack w="50%" $sm={{ w: `100%` }}>
+        <YStack width="50%" $sm={{ width: '100%' }}>
           <Features
-            gap="$4"
+            space="$4"
             items={[
               <FeatureItem key="" label="Themes">
                 Change theme on any component.

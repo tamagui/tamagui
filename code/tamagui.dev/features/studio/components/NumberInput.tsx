@@ -44,9 +44,9 @@ export function NumberInput({
         onPress={() => {
           handleUpdate(value - 1)
         }}
-        bbrr="$0"
-        btrr="$0"
-        brw={0}
+        borderBottomRightRadius="$0"
+        borderTopRightRadius="$0"
+        borderWidth={0}
       />
       <Input
         width={50}
@@ -54,7 +54,7 @@ export function NumberInput({
         value={value.toString()}
         onChangeText={handleUpdate}
         {...props}
-        br="$0"
+        rounded="$0"
       />
       <Button
         disabled={!canIncrease}
@@ -64,10 +64,10 @@ export function NumberInput({
         onPress={() => {
           handleUpdate(value + 1)
         }}
-        br="$4"
-        blw={0}
-        btlr="$0"
-        bblr="$0"
+        rounded="$4"
+        borderLeftWidth={0}
+        borderTopLeftRadius="$0"
+        borderBottomLeftRadius="$0"
       />
     </>
   )

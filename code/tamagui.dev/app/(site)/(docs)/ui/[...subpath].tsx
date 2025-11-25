@@ -59,15 +59,6 @@ export function DocComponentsPage() {
   const { frontmatter, code } = useLoader(loader)
   const Component = React.useMemo(() => getMDXComponent(code), [code])
 
-  // useEffect(() => {
-  //   const url = new URL(location.href)
-  //   url.pathname = `${pathname}/${frontmatter.version}`
-  //   if (Array.isArray(params.subpath)) {
-  //     url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
-  //   }
-  //   router.replace(url)
-  // }, [])
-
   return (
     <>
       <HeadInfo
@@ -90,12 +81,6 @@ export function DocComponentsPage() {
           ],
         }}
       />
-      {/* {frontmatter.version !== frontmatter.versions?.[0] && (
-        <OldVersionNote
-          name={frontmatter.title}
-          href={`/primitives/docs/components/${frontmatter.subpath.replace(frontmatter.version, '')}`}
-        />
-      )} */}
 
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
 

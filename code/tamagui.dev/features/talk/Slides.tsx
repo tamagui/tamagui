@@ -4,7 +4,7 @@ import { useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, XStack, YStack, styled, useEvent } from 'tamagui'
 
-import { ShowAllStepsContext, SlideContext } from './Slide'
+import { SlideContext } from './Slide'
 
 export const slideDimensions = {
   width: 1920,
@@ -14,7 +14,6 @@ export const slideDimensions = {
 type Slides = any[]
 
 export function Slides(props: { slides: Slides }) {
-  const disablePreview = window.location.search.includes(`preview-off`)
   const [[page, direction], setPage] = useState([0, 0])
 
   const total = props.slides.length
@@ -24,12 +23,7 @@ export function Slides(props: { slides: Slides }) {
     setPage([page + newDirection, newDirection])
   }
 
-  const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
-  const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
-
   const SlideComponent = props.slides[index]
-  const PreviewCurrentSlideComponent = props.slides[index]
-  const PreviewNextSlideComponent = props.slides[index + 1]
 
   const goToNextStep = useRef<(inc: number) => boolean>(null)
   const slideContext = useMemo(
@@ -42,24 +36,6 @@ export function Slides(props: { slides: Slides }) {
   )
 
   const previewSlideGoToNextStep = useRef<(inc: number) => boolean>(null)
-  const previewSlideContext = useMemo(
-    () => ({
-      registerSlide: (nextStep: (inc: number) => boolean) => {
-        previewSlideGoToNextStep.current = nextStep
-        previewSlideGoToNextStep.current(1)
-      },
-    }),
-    []
-  )
-
-  const nextSlideContext = useMemo(
-    () => ({
-      registerSlide: (nextStep: (inc, fix) => boolean) => {
-        nextStep(0, 1)
-      },
-    }),
-    []
-  )
 
   const nextStep = useEvent(() => {
     const inc = 1
@@ -86,9 +62,9 @@ export function Slides(props: { slides: Slides }) {
         overflow="hidden"
         position="relative"
         {...slideDimensions}
-        bw={1}
-        bc="$borderColor"
-        alignItems="center"
+        borderWidth={1}
+        borderColor="$borderColor"
+        items="center"
       >
         <AnimatePresence custom={{ going: direction }} initial={false}>
           <YStackEnterable
@@ -97,8 +73,8 @@ export function Slides(props: { slides: Slides }) {
             fullscreen
             x={0}
             opacity={1}
-            ai="center"
-            jc="center"
+            items="center"
+            justify="center"
           >
             <SlideContext.Provider value={slideContext}>
               <SlideComponent />
@@ -111,9 +87,9 @@ export function Slides(props: { slides: Slides }) {
           icon={ArrowLeft}
           size="$3"
           position="absolute"
-          left="$4"
+          l="$4"
           circular
-          elevation="$2"
+          elevate
           onPress={prevStep}
         />
         <Button
@@ -121,52 +97,27 @@ export function Slides(props: { slides: Slides }) {
           icon={ArrowRight}
           size="$3"
           position="absolute"
-          right="$4"
+          r="$4"
           circular
-          elevation="$2"
+          elevate
           onPress={nextStep}
         />
 
-        <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
+        <Paragraph
+          position="absolute"
+          b="$4"
+          size="$2"
+          theme="alt2"
+          l={0}
+          r={0}
+          text="center"
+        >
           {index} / {total}
         </Paragraph>
       </XStack>
-
-      {/* {!disablePreview && (
-        <ShowAllStepsContext.Provider value={true}>
-          <SlidePreview b={250}>
-            {PreviewCurrentSlideComponent && (
-              <SlideContext.Provider value={previewSlideContext}>
-                <PreviewCurrentSlideComponent />
-              </SlideContext.Provider>
-            )}
-          </SlidePreview>
-
-          <SlidePreview b={-250}>
-            {PreviewNextSlideComponent && (
-              <SlideContext.Provider value={nextSlideContext}>
-                <PreviewNextSlideComponent />
-              </SlideContext.Provider>
-            )}
-          </SlidePreview>
-        </ShowAllStepsContext.Provider>
-      )} */}
     </>
   )
 }
-
-const SlidePreview = (props) => (
-  <YStack
-    ov="hidden"
-    pos="absolute"
-    r="-75%"
-    scale={0.4}
-    zi={1000}
-    bg="$color3"
-    {...slideDimensions}
-    {...props}
-  />
-)
 
 const wrap = (min: number, max: number, v: number) => {
   const rangeSize = max - min

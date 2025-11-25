@@ -37,6 +37,7 @@ const Frame = styled(View, {
   containerType: 'normal',
   role: 'button',
   tag: 'button',
+  focusable: true,
 
   variants: {
     unstyled: {

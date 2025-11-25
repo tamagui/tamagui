@@ -15,7 +15,7 @@ import { useGlobalState } from '../state/useGlobalState'
 const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
-      <Button size="$3" pos="absolute" t="$3" r="$3" circular icon={X} zi={1000} />
+      <Button size="$3" position="absolute" t="$3" r="$3" circular icon={X} z={1000} />
     </Dialog.Close>
   </Unspaced>
 )
@@ -51,8 +51,7 @@ export const Dialogs = memo(() => {
           onPointerDownOutside={() => {
             rootStore.hideDialog()
           }}
-          borderWidth={1}
-          borderColor="$borderColor"
+          bordered
           elevate
           key="content"
           animation={[
@@ -69,7 +68,7 @@ export const Dialogs = memo(() => {
           scale={1}
           opacity={1}
           y={0}
-          maxWidth={dimensions.width * 75}
+          maxW={dimensions.width * 75}
           p="$5"
         >
           <DialogContents {...dialogProps} />
@@ -104,10 +103,10 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
         </YStack>
 
         <Fieldset gap="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="theme-name">
+          <Label size="$3" width={160} justify="flex-end" htmlFor="theme-name">
             Name
           </Label>
-          <Input size="$3" f={1} id="theme-name" />
+          <Input size="$3" flex={1} id="theme-name" />
         </Fieldset>
         <DialogClose>
           <Button aria-label="Close">Create</Button>
@@ -129,7 +128,7 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" gap="$4">
+        <XStack justify="flex-end" gap="$4">
           <Dialog.Close asChild>
             <Button>Cancel</Button>
           </Dialog.Close>
@@ -156,9 +155,9 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" gap="$4">
+        <XStack justify="flex-end" gap="$4">
           <DialogClose>
-            <Button aria-label="Ok" theme="accent">
+            <Button themeInverse aria-label="Ok">
               Ok
             </Button>
           </DialogClose>

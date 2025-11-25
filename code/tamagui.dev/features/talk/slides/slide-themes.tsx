@@ -173,7 +173,7 @@ const snippetUsageInverseSub = highlightCode(
 )
 
 const MyWidget = ({ text, stack }: any = {}) => (
-  <Square size={250} bg={stack || '$background'} ai="center" jc="center">
+  <Square size={250} bg={stack || '$background'} items="center" justify="center">
     <Paragraph size="$8" color={text || '$color'}>
       Hello world
     </Paragraph>
@@ -181,11 +181,11 @@ const MyWidget = ({ text, stack }: any = {}) => (
 )
 
 const Container = styled(Stack, {
-  miw: 400,
-  mih: 400,
-  ai: 'center',
-  jc: 'center',
-  gap: '$4',
+  minW: 400,
+  minH: 400,
+  items: 'center',
+  justify: 'center',
+  space: true,
 })
 
 export default memo(() => {

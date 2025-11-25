@@ -12,7 +12,7 @@ export const Overview1 = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
       p="$0"
-      ov="hidden"
+      overflow="hidden"
     >
       <YStack flex={1}>
         <OverviewCard
@@ -36,7 +36,7 @@ export const Overview2 = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
       p="$0"
-      ov="hidden"
+      overflow="hidden"
     >
       <YStack flex={1}>
         <OverviewCard
@@ -80,7 +80,7 @@ export const OverviewCard = ({
         p: 10,
       })}
     >
-      <Card.Header f={1} jc="space-between" {...demoProps.gapPropsLg}>
+      <Card.Header flex={1} justify="space-between" {...demoProps.gapPropsLg}>
         <Paragraph
           {...demoProps.headingFontFamilyProps}
           fontWeight="400"
