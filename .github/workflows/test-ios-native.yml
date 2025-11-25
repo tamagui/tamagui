@@ -76,7 +76,8 @@ jobs:
 
       - name: Run Maestro Tests
         run: |
-          maestro test ./flows --exclude-tags=util
+          # Run tests serially to avoid race conditions with app launches
+          maestro test ./flows --exclude-tags=util --shards=1 --no-ansi
 
       - name: Upload Maestro Artifacts on Failure
         if: failure()
