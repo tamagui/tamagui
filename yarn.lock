@@ -8105,6 +8105,7 @@ __metadata:
     "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@react-native-async-storage/async-storage": "npm:2.2.0"
+    "@react-native-menu/menu": "npm:^2.0.0"
     "@react-navigation/native": "npm:^7.0.14"
     "@react-navigation/native-stack": "npm:^7.2.0"
     "@shopify/restyle": "npm:^2.4.4"
@@ -8145,6 +8146,8 @@ __metadata:
     react-dom: "npm:*"
     react-native: "npm:0.81.5"
     react-native-gesture-handler: "npm:~2.28.0"
+    react-native-ios-context-menu: "npm:^3.2.1"
+    react-native-ios-utilities: "npm:^5.2.0"
     react-native-reanimated: "npm:~4.1.1"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
@@ -8159,6 +8162,7 @@ __metadata:
     webpack: "npm:^5.88.2"
     webpack-cli: "npm:^4.9.2"
     webpack-dev-server: "npm:^4.8.1"
+    zeego: "npm:^3.0.6"
   languageName: unknown
   linkType: soft
 

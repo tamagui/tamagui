@@ -1,7 +1,4 @@
-import {
-  webOnlyStylePropsText,
-  webOnlyStylePropsView,
-} from '@tamagui/helpers'
+import { webOnlyStylePropsText, webOnlyStylePropsView } from '@tamagui/helpers'
 
 /**
  * Web-only props and event handlers that should be skipped on native
