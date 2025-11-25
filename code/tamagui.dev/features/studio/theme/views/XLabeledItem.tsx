@@ -2,12 +2,19 @@ import { Label, XStack } from 'tamagui'
 
 export const XLabeledItem = ({ label, children }: { label: any; children: any }) => {
   return (
-    <XStack m="$-3" p="$3" f={1} ov="hidden" ai="center" gap="$3">
-      <Label pe="none" maw={50} miw={40} jc="flex-end" size="$1" col="$color10">
+    <XStack m="$-3" p="$3" flex={1} overflow="hidden" items="center" gap="$3">
+      <Label
+        pointerEvents="none"
+        maxW={50}
+        minW={40}
+        justify="flex-end"
+        size="$1"
+        color="$color10"
+      >
         {label}
       </Label>
 
-      <XStack ai="center" gap="$2" f={1}>
+      <XStack items="center" gap="$2" flex={1}>
         {children}
       </XStack>
     </XStack>

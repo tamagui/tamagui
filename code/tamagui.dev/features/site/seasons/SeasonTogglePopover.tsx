@@ -20,7 +20,7 @@ export const SeasonTogglePopover = (props: { children: any }) => {
           {props.children}
 
           {name !== 'tamagui' && (
-            <SizableText size="$8" pos="absolute" b={-10} r={-10} rotate="-10deg">
+            <SizableText size="$8" position="absolute" b={-10} r={-10} rotate="-10deg">
               {seasons[name]}
             </SizableText>
           )}
@@ -28,13 +28,13 @@ export const SeasonTogglePopover = (props: { children: any }) => {
       </Popover.Trigger>
 
       <Popover.Content
-        enterStyle={{ y: -6, o: 0 }}
-        exitStyle={{ y: -6, o: 0 }}
+        enterStyle={{ y: -6, opacity: 0 }}
+        exitStyle={{ y: -6, opacity: 0 }}
         elevation="$4"
         p="$0"
         t="$2"
-        ov="hidden"
-        br="$8"
+        overflow="hidden"
+        rounded="$8"
         animation={[
           'medium',
           {

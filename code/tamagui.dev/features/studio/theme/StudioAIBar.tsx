@@ -200,17 +200,17 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
   return (
     <XStack
-      zi={1000}
+      z={1000}
       data-tauri-drag-region
       className="all ease-in ms300"
       $lg={{ mr: '$6' }}
     >
-      <YStack f={1} width="100%" gap="$4">
-        <XStack fw="wrap" ai="center" f={1} gap="$3">
-          <XStack miw={300} f={1}>
+      <YStack flex={1} width="100%" gap="$4">
+        <XStack flexWrap="wrap" items="center" flex={1} gap="$3">
+          <XStack minW={300} flex={1}>
             <Input
               ref={inputRef as any}
-              f={1}
+              flex={1}
               placeholder={active ? `Refine this theme` : `Generate a theme`}
               size="$6"
               shadowColor="$shadow3"
@@ -218,7 +218,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               shadowOffset={{ height: 2, width: 0 }}
               pr={240}
               shadowRadius={10}
-              br="$8"
+              rounded="$8"
               onSubmit={() => {
                 fetchUpdate(active ? 'reply' : 'new')
               }}
@@ -230,10 +230,10 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             />
 
             <Select
-              w={200}
-              pos="absolute"
+              width={200}
+              position="absolute"
               t={10}
-              br={100}
+              rounded={100}
               r="$4"
               size="$4"
               value={model}
@@ -249,13 +249,13 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             </Select>
           </XStack>
 
-          <XStack gap="$3" ai="center" jc="space-between">
+          <XStack gap="$3" items="center" justify="space-between">
             <Theme name="accent">
               <Button
-                br="$10"
+                rounded="$10"
                 disabled={isGenerating === 'new'}
-                o={isGenerating === 'new' ? 0.2 : 1}
-                pe={isGenerating === 'new' ? 'none' : 'auto'}
+                opacity={isGenerating === 'new' ? 0.2 : 1}
+                pointerEvents={isGenerating === 'new' ? 'none' : 'auto'}
                 icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
                 onPress={() => {
                   if (hasAccess) {
@@ -279,7 +279,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         <ScrollView
           mx="$-6"
           px="$6"
-          f={1}
+          flex={1}
           horizontal
           showsHorizontalScrollIndicator={false}
         >
@@ -320,8 +320,8 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             })}
 
             {!hasAccess && (
-              <XStack f={1} ov="hidden" ai="center" px="$4">
-                <Paragraph ff="$mono" size="$3">
+              <XStack flex={1} overflow="hidden" items="center" px="$4">
+                <Paragraph fontFamily="$mono" size="$3">
                   Welcome to the Theme Builder! Pro members can build, save and refine
                   themes using the generate input above.
                 </Paragraph>
@@ -349,15 +349,10 @@ const HistoryButton = ({
 }) => {
   return (
     <XStack group="item" containerType="normal" position="relative">
-      <Button
-        onPress={onPress}
-        size="$3"
-        borderRadius="$8"
-        theme={active ? 'accent' : null}
-      >
+      <Button onPress={onPress} size="$3" rounded="$8" theme={active ? 'accent' : null}>
         <Button.Icon>{icon}</Button.Icon>
 
-        <Button.Text numberOfLines={1} maxWidth={200} fontFamily="$mono">
+        <Button.Text numberOfLines={1} maxW={200} fontFamily="$mono">
           {children}
         </Button.Text>
       </Button>
@@ -369,8 +364,8 @@ const HistoryButton = ({
           $group-item-hover={{
             opacity: 1,
           }}
-          top={-5}
-          right={-5}
+          t={-5}
+          r={-5}
           onPress={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -393,7 +388,7 @@ const ThemeToggle = () => {
   }, [scheme === 'light'])
 
   return (
-    <XStack gap="$3" ai="center">
+    <XStack gap="$3" items="center">
       <Configuration animationDriver={animationsCSS}>
         <Switch
           checked={checked}
@@ -415,22 +410,22 @@ const ThemeToggle = () => {
             <YStack
               animation="bouncy"
               fullscreen
-              ai="center"
-              jc="center"
-              o={1}
+              items="center"
+              justify="center"
+              opacity={1}
               y={0}
-              $theme-light={{ o: 0, y: 3 }}
+              $theme-light={{ opacity: 0, y: 3 }}
             >
               <Moon size={14} />
             </YStack>
             <YStack
               animation="bouncy"
               fullscreen
-              ai="center"
-              jc="center"
-              o={1}
+              items="center"
+              justify="center"
+              opacity={1}
               y={0}
-              $theme-dark={{ o: 0, y: 3 }}
+              $theme-dark={{ opacity: 0, y: 3 }}
             >
               <Sun size={14} />
             </YStack>

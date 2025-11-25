@@ -46,17 +46,17 @@ export default function DocsLayout() {
   return (
     <ThemeNameEffect theme={themeName} colorKey="$color1">
       <LinearGradient
-        pos="absolute"
+        position="absolute"
         t={0}
         r={0}
         l={0}
         height="100%"
-        maxHeight={1000}
-        zi={0}
+        maxH={1000}
+        z={0}
         colors={['$color1', '$accent12']}
       />
 
-      <YStack zi={-1} fullscreen bg="$accent12" />
+      <YStack z={-1} fullscreen bg="$accent12" />
 
       <YStack y={-54} pt={54}>
         <YStack
@@ -67,11 +67,11 @@ export default function DocsLayout() {
           }}
           $gtLg={{
             l: -60,
-            maw: 1250,
+            maxW: 1250,
           }}
-          maw={1200}
-          zi={100}
-          pos="relative"
+          maxW={1200}
+          z={100}
+          position="relative"
         >
           <EnsureFlexed />
           <YStack
@@ -79,22 +79,21 @@ export default function DocsLayout() {
             $md={{
               display: 'none',
             }}
-            // className="custom-scroll"
             $gtSm={{
               position: 'fixed' as any,
-              top: 0,
-              bottom: 0,
+              t: 0,
+              b: 0,
               width: 245,
             }}
           >
             <LinearGradient
-              pos="absolute"
+              position="absolute"
               t={0}
               l={0}
               r={0}
-              h={100}
-              w={300}
-              zi={100}
+              height={100}
+              width={300}
+              z={100}
               colors={['$background', '$background', '$background0']}
             />
             <ScrollView>
@@ -116,7 +115,7 @@ export default function DocsLayout() {
         </YStack>
 
         <YStack
-          maxWidth="100%"
+          maxW="100%"
           flex={1}
           py="$8"
           $gtLg={{
@@ -130,7 +129,7 @@ export default function DocsLayout() {
         >
           <>
             <YStack tag="article">
-              <Container pos="relative">
+              <Container position="relative">
                 <Slot />
               </Container>
 
@@ -139,7 +138,7 @@ export default function DocsLayout() {
                   <XStack
                     aria-label="Pagination navigation"
                     my="$9"
-                    jc="space-between"
+                    justify="space-between"
                     gap="$4"
                   >
                     {previous && (
@@ -153,21 +152,21 @@ export default function DocsLayout() {
                           flex={1}
                           width="50%"
                           p="$5"
-                          borderRadius="$2"
+                          rounded="$2"
                           borderWidth={1}
                           borderColor="$borderColor"
                           aria-label={`Previous page: ${previous.title}`}
-                          ai="center"
+                          items="center"
                           gap="$4"
                           animation="100ms"
                         >
                           <View
-                            o={0}
+                            opacity={0}
                             l="$-2"
-                            $group-card-hover={{ o: 1, l: '$0' }}
+                            $group-card-hover={{ opacity: 1, l: '$0' }}
                             animation="quickest"
                           >
-                            <ChevronLeft col="$color11" />
+                            <ChevronLeft color="$color11" />
                           </View>
 
                           <YStack
@@ -175,10 +174,10 @@ export default function DocsLayout() {
                             $group-card-hover={{ l: '$0' }}
                             animation="quicker"
                           >
-                            <Paragraph userSelect="none" theme="alt1" size="$5">
+                            <Paragraph select="none" theme="alt1" size="$5">
                               Previous
                             </Paragraph>
-                            <Paragraph userSelect="none" size="$3" color="$gray10">
+                            <Paragraph select="none" size="$3" color="$gray10">
                               {previous.title}
                             </Paragraph>
                           </YStack>
@@ -196,12 +195,12 @@ export default function DocsLayout() {
                           flex={1}
                           width="50%"
                           p="$5"
-                          borderRadius="$2"
+                          rounded="$2"
                           borderWidth={1}
                           borderColor="$borderColor"
                           aria-label={`Previous page: ${next.title}`}
-                          ai="center"
-                          jc="flex-end"
+                          items="center"
+                          justify="flex-end"
                           gap="$4"
                           animation="100ms"
                         >
@@ -210,21 +209,21 @@ export default function DocsLayout() {
                             $group-card-hover={{ r: '$0' }}
                             animation="quicker"
                           >
-                            <Paragraph userSelect="none" theme="alt1" size="$5">
+                            <Paragraph select="none" theme="alt1" size="$5">
                               Next
                             </Paragraph>
-                            <Paragraph userSelect="none" size="$3" color="$gray10">
+                            <Paragraph select="none" size="$3" color="$gray10">
                               {next.title}
                             </Paragraph>
                           </YStack>
 
                           <View
-                            o={0}
+                            opacity={0}
                             r="$-2"
-                            $group-card-hover={{ o: 1, r: '$0' }}
+                            $group-card-hover={{ opacity: 1, r: '$0' }}
                             animation="quickest"
                           >
-                            <ChevronRight col="$color11" />
+                            <ChevronRight color="$color11" />
                           </View>
                         </XStack>
                       </Link>

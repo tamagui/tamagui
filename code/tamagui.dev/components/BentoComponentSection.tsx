@@ -35,7 +35,7 @@ export const ComponentSection = () => {
   return (
     <YStack
       bg="$color2"
-      pos="relative"
+      position="relative"
       contain="paint"
       className="transform ease-in-out ms200"
       // @ts-ignore
@@ -52,40 +52,23 @@ export const ComponentSection = () => {
         shadowColor: '$shadowColor',
         shadowRadius: 20,
       })}
-      zi={10000}
+      z={10000}
     >
       <YStack>
-        {/* <ContainerLarge>
-          <Input
-            unstyled
-            ref={inputRef as any}
-            w="100%"
-            size="$5"
-            px="$3"
-            my="$3"
-            fow="200"
-            value={filter}
-            onChangeText={setFilter}
-            placeholder="Filter..."
-            placeholderTextColor="rgba(150,150,150,0.5)"
-            zi={100}
-          />
-        </ContainerLarge> */}
-
         <YStack gap="$4">
           {filteredSections.map(({ sectionName, parts }, index) => {
             return (
-              <YStack py="$4" id={sectionName} key={sectionName} jc={'space-between'}>
-                <YStack pos="relative">
+              <YStack py="$4" id={sectionName} key={sectionName} justify="space-between">
+                <YStack position="relative">
                   <ContainerLarge>
-                    <YStack py="$4" px="$3" pos="relative">
+                    <YStack py="$4" px="$3" position="relative">
                       <H3
-                        ff="$mono"
+                        fontFamily="$mono"
                         size="$3"
-                        ls={3}
-                        tt="uppercase"
+                        letterSpacing={3}
+                        textTransform="uppercase"
                         color="$color10"
-                        f={2}
+                        flex={2}
                       >
                         {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
                       </H3>
@@ -97,17 +80,17 @@ export const ComponentSection = () => {
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{
-                    minWidth: '100%',
+                    minW: '100%',
                   }}
                 >
                   <ContainerLarge>
                     <XStack
                       gap="$4"
-                      f={4}
-                      fs={1}
+                      flex={4}
+                      shrink={1}
                       $gtMd={{
-                        maw: '100%',
-                        fw: store.heroVisible ? 'wrap' : 'nowrap',
+                        maxW: '100%',
+                        flexWrap: store.heroVisible ? 'wrap' : 'nowrap',
                         rowGap: 20,
                       }}
                     >
@@ -121,8 +104,7 @@ export const ComponentSection = () => {
                         )
                       })}
 
-                      {/* @ts-ignore */}
-                      <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />
+                      <Spacer width="calc(50vw - 300px)" $gtMd={{ display: 'none' }} />
                     </XStack>
                   </ContainerLarge>
                 </ScrollView>

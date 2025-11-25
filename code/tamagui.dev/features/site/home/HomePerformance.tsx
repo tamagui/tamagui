@@ -22,9 +22,9 @@ export function HomePerformance() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack ai="center" zi={1} gap="$4">
-        <YStack ai="center" gap="$2">
-          <HomeH2 size="$10" maw={500} ref={ref}>
+      <YStack items="center" z={1} gap="$4">
+        <YStack items="center" gap="$2">
+          <HomeH2 size="$10" maxW={500} ref={ref}>
             Automatically fast
           </HomeH2>
           <HomeH3>
@@ -34,17 +34,17 @@ export function HomePerformance() {
         </YStack>
 
         <YStack
-          pos="relative"
+          position="relative"
           px="$2"
           $sm={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
-          h={131}
-          br="$8"
+          height={131}
+          rounded="$8"
           width="100%"
-          ai="stretch"
-          jc="center"
+          items="stretch"
+          justify="center"
         >
           <Paragraph
-            pos="absolute"
+            position="absolute"
             b={-20}
             r={20}
             mt={-20}

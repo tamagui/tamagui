@@ -105,13 +105,13 @@ export const BarTabs = memo(function HeaderTabs({
         loop={false}
         aria-label="Manage your account"
         gap="$2"
-        backgroundColor="transparent"
+        bg="transparent"
       >
         {tabs.map(({ component, value, hasChanges }) => (
           <Tabs.Tab
             key={value}
             unstyled
-            bc="transparent"
+            borderColor="transparent"
             px="$3"
             value={value}
             onInteraction={handleOnInteraction}
@@ -125,10 +125,10 @@ export const BarTabs = memo(function HeaderTabs({
                   scale={1}
                   enterStyle={{ opacity: 0, scale: 0.4 }}
                   exitStyle={{ opacity: 0, scale: 0.4 }}
-                  pos="absolute"
-                  right={2}
-                  top={2}
-                  backgroundColor={'$green8'}
+                  position="absolute"
+                  r={2}
+                  t={2}
+                  bg="$green8"
                   size={8}
                 />
               )}
@@ -147,9 +147,9 @@ const TabsRovingIndicator = ({
 }: { isActive?: boolean } & YStackProps) => {
   return (
     <YStack
-      borderRadius="$2"
+      rounded="$2"
       position="absolute"
-      backgroundColor="$color6"
+      bg="$color6"
       animation="quick"
       enterStyle={{
         opacity: 0,

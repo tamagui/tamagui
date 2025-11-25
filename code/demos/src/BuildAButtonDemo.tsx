@@ -16,8 +16,8 @@ const outlined = {
 
 export function BuildAButtonDemo() {
   return (
-    <YStack fullscreen ov="hidden">
-      <XStack mah={200} y={-100} x={-40} rotate="-10deg">
+    <YStack fullscreen overflow="hidden">
+      <XStack maxH={200} y={-100} x={-40} rotate="-10deg">
         <ButtonCol y={35} size="$2" {...outlined} subTheme="alt1" borderWidth={1} />
         <ButtonCol y={30} />
         <ButtonCol y={-50} {...outlined} />

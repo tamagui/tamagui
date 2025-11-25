@@ -45,7 +45,7 @@ function SignIn() {
 
   if (!supabase) {
     return (
-      <YStack ai="center" flex={1} jc="center">
+      <YStack items="center" flex={1} justify="center">
         <Spinner size="small" />
       </YStack>
     )
@@ -105,8 +105,8 @@ function SignIn() {
 
   if (!user)
     return (
-      <YStack mih="100vh" miw="100vw" ai="center" jc="center" p="$2">
-        <YStack miw={300} maw={320} jc="space-between" p="$2" gap="$4">
+      <YStack minH="100vh" minW="100vw" items="center" justify="center" p="$2">
+        <YStack minW={300} maxW={320} justify="space-between" p="$2" gap="$4">
           <YStack mb="$4">
             <LogoIcon />
           </YStack>
@@ -130,7 +130,7 @@ function SignIn() {
 
           {!emailAuthDisabledFlag && (
             <>
-              <XStack mx="$4" jc="center" gap="$4" ai="center">
+              <XStack mx="$4" justify="center" gap="$4" items="center">
                 <Separator />
                 <Paragraph size="$2">Or</Paragraph>
                 <Separator />
@@ -200,16 +200,16 @@ function SignIn() {
 
                 {emailAuthDisabledFlag && (
                   <YStack
-                    pos="absolute"
-                    left={-5}
-                    right={-5}
-                    top={-5}
-                    bottom={-5}
-                    ai="center"
-                    jc="center"
-                    br="$4"
+                    position="absolute"
+                    l={-5}
+                    r={-5}
+                    t={-5}
+                    b={-5}
+                    items="center"
+                    justify="center"
+                    rounded="$4"
                   >
-                    <Paragraph ta="center" mt="$2" col="$color9">
+                    <Paragraph text="center" mt="$2" color="$color9">
                       Email auth is disabled at the moment.
                     </Paragraph>
                   </YStack>
@@ -247,12 +247,12 @@ function SignIn() {
 
   return (
     <YStack
-      zIndex={10000000}
-      backgroundColor="$background"
-      justifyContent="center"
-      pos="absolute"
+      z={10000000}
+      bg="$background"
+      justify="center"
+      position="absolute"
       fullscreen
-      alignItems="center"
+      items="center"
     >
       <Spinner size="small" />
     </YStack>

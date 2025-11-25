@@ -34,7 +34,8 @@ function TabsComponent(props: TabsProps) {
     )
   }
 
-  const value = typeof query[id] === 'string' ? (query[id] as string) : props.defaultValue
+  const value =
+    typeof query[id] === 'string' ? (query[id] as string) : (props.defaultValue ?? '')
 
   return (
     <Tabs
@@ -60,8 +61,8 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       ref={ref as any}
       elevation="$0.5"
       px="$5"
-      pe="auto"
-      br="$5"
+      pointerEvents="auto"
+      rounded="$5"
       {...props}
       focusStyle={{
         outlineColor: '$outlineColor',
@@ -84,26 +85,26 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 })
 
 const TabsListFrame = styled(XStack, {
-  pe: 'none',
-  maxWidth: '100%',
+  pointerEvents: 'none',
+  maxW: '100%',
   height: '$4',
-  alignSelf: 'stretch',
-  marginRight: 0,
-  marginBottom: 0,
+  self: 'stretch',
+  mr: 0,
+  mb: 0,
   pb: '$2',
-  zIndex: 10000,
+  z: 10000,
   position: 'sticky' as any,
 
   px: '$2',
-  ai: 'center',
-  bc: '$color4',
-  bbw: '$1',
-  br: '$2',
+  items: 'center',
+  borderColor: '$color4',
+  borderBottomWidth: '$1',
+  rounded: '$2',
 
   $sm: {
-    minWidth: '100%',
-    alignSelf: 'stretch',
-    marginTop: 0,
+    minW: '100%',
+    self: 'stretch',
+    mt: 0,
   },
 })
 

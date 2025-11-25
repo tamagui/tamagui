@@ -6,7 +6,6 @@ import type { HeadingProps } from 'tamagui'
 import {
   H1,
   H2,
-  Separator,
   SizableText,
   Spacer,
   Theme,
@@ -59,7 +58,7 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
 
   const letters = lettersConf.map(
     (
-      { underlayStyle, glow, letter, props: { scale, rotate, zIndex, ...headingProps } },
+      { underlayStyle, glow, letter, props: { scale, rotate, z, ...headingProps } },
       index
     ) => {
       const colorVar = `var(--${headingProps.theme}8)`
@@ -104,38 +103,38 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
       })
 
       const Component = (
-        <YStack key={index} pos="relative" scale={scale} zIndex={zIndex}>
+        <YStack key={index} position="relative" scale={scale || 1} z={z}>
           <Glow.Component>
-            <YStack pos="relative" w={320} h={320}>
+            <YStack position="relative" width={320} height={320}>
               <H1
-                pos="absolute"
+                position="absolute"
                 t={0}
                 l={0}
                 color="$color9"
                 className="mix-blend text-3d"
                 cursor="default"
-                fos={320}
-                lh={300}
-                fow="900"
-                rotate={rotate}
-                zIndex={5}
+                fontSize={320}
+                lineHeight={300}
+                fontWeight="900"
+                rotate={rotate || '0deg'}
+                z={5}
                 {...headingProps}
               >
                 {letter}
               </H1>
 
               <H1
-                pos="absolute"
+                position="absolute"
                 t={1}
                 l={1}
-                o={0.75}
+                opacity={0.75}
                 className="clip-text grain"
                 cursor="default"
-                fos={320}
-                lh={300}
-                fow="900"
-                rotate={rotate}
-                zIndex={6}
+                fontSize={320}
+                lineHeight={300}
+                fontWeight="900"
+                rotate={rotate || '0deg'}
+                z={6}
                 {...headingProps}
               >
                 {letter}
@@ -167,26 +166,26 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
             content: (
               <Theme name="blue">
                 <YStack
-                  als="center"
-                  pos="relative"
+                  self="center"
+                  position="relative"
                   {...lettersContainerBounds}
-                  minWidth={lettersContainerBounds.width}
-                  minHeight={lettersContainerBounds.height}
+                  minW={lettersContainerBounds.width}
+                  minH={lettersContainerBounds.height}
                 >
                   <YStack
-                    ai="center"
-                    pos="relative"
+                    items="center"
+                    position="relative"
                     ref={parentRef as any}
                     {...lettersContainerBounds}
-                    minWidth={lettersContainerBounds.width}
-                    minHeight={lettersContainerBounds.height}
+                    minW={lettersContainerBounds.width}
+                    minH={lettersContainerBounds.height}
                     mt="$10"
                   >
                     <YStack>
                       {glow.Component()}
                       {glint.Component()}
-                      <YStack ai="center" pos="relative" w="100%">
-                        <YStack w="100%" h={lettersContainerBounds.height}>
+                      <YStack items="center" position="relative" width="100%">
+                        <YStack width="100%" height={lettersContainerBounds.height}>
                           {letters.map(({ Component }) => {
                             return Component
                           })}
@@ -197,19 +196,19 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
                 </YStack>
 
                 {subTitle !== ' ' && (
-                  <Container mt={-200} ai="center">
+                  <Container mt={-200} items="center">
                     <>
                       <Spacer size="$8" />
-                      <XStack maw={790} gap="$8">
-                        <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
+                      <XStack maxW={790} gap="$8">
+                        <H2 self="center" size="$9" fontWeight="900" $sm={{ size: '$5' }}>
                           {subTitle || 'Better apps with less code'}
                         </H2>
                       </XStack>
 
                       <Spacer />
 
-                      <XStack gap="$4" ai="center">
-                        <SizableText o={0.5} size="$3">
+                      <XStack gap="$4" items="center">
+                        <SizableText opacity={0.5} size="$3">
                           By Nate Wienert
                         </SizableText>
                       </XStack>
@@ -283,7 +282,7 @@ const lettersConf: LetterConf[] = [
     letter: 'm',
     props: {
       rotate: '5deg',
-      zIndex: 20,
+      z: 20,
       fontSize: 320,
       theme: 'green',
     },
@@ -323,9 +322,6 @@ const lettersConf: LetterConf[] = [
     },
     underlayStyle: {
       opacity: 0,
-      // transform: `translateY(50%) translateX(-10%) rotate(20deg)`,
-      // borderRadius: 80,
-      // opacity: 0.25,
     },
   },
 

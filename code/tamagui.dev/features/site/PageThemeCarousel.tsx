@@ -8,28 +8,35 @@ export const PageThemeCarousel = () => {
   return (
     <ThemeTint>
       <XStack
-        pos="absolute"
+        position="absolute"
         t={0}
         l="$0"
         r="$0"
-        mah={400}
+        maxH={400}
         b={0}
-        pe="none"
-        jc="center"
-        ai="center"
-        zi={100_000}
+        pointerEvents="none"
+        justify="center"
+        items="center"
+        z={100_000}
       >
-        <XStack ai="center" jc="space-between" als="center" f={1} h="100%" maw={1250}>
+        <XStack
+          items="center"
+          justify="space-between"
+          self="center"
+          flex={1}
+          height="100%"
+          maxW={1250}
+        >
           <View
             p="$3"
             animation="lazy"
-            pe="auto"
-            o={0.2}
+            pointerEvents="auto"
+            opacity={0.2}
             hoverStyle={{
-              o: 1,
+              opacity: 1,
             }}
             pressStyle={{
-              o: 0.5,
+              opacity: 0.5,
             }}
             onPress={() => {
               tint.setTintIndex(
@@ -48,13 +55,13 @@ export const PageThemeCarousel = () => {
           <View
             p="$3"
             animation="lazy"
-            pe="auto"
-            o={0.2}
+            pointerEvents="auto"
+            opacity={0.2}
             hoverStyle={{
-              o: 1,
+              opacity: 1,
             }}
             pressStyle={{
-              o: 0.5,
+              opacity: 0.5,
             }}
             onPress={() => {
               tint.setTintIndex((tint.tintIndex + 1) % tint.tints.length)

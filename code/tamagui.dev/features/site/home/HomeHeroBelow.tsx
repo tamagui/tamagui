@@ -12,7 +12,7 @@ import { IconStack } from './IconStack'
 export const HomeHeroBelow = memo(() => {
   return (
     <>
-      <YStack pos="relative" zi={1000} py="$4" pt="$6" pb="$10">
+      <YStack position="relative" z={1000} py="$4" pt="$6" pb="$10">
         <HeroBelowContent />
       </YStack>
     </>
@@ -27,7 +27,7 @@ export const HeroBelowContent = memo(() => {
       <XStack
         flex={1}
         overflow="hidden"
-        maxWidth="100%"
+        maxW="100%"
         gap="$8"
         flexWrap="nowrap"
         px="$2"
@@ -45,7 +45,7 @@ export const HeroBelowContent = memo(() => {
             </IconStack>
             <TitleLink href="/docs/core/configuration">Core</TitleLink>
           </XStack>
-          <Paragraph o={0.7} size="$5">
+          <Paragraph opacity={0.7} size="$5">
             A style library for React and/or React Native with a large typed superset of
             the React Native style API, with no outside dependencies in about 24Kb.
           </Paragraph>
@@ -58,7 +58,7 @@ export const HeroBelowContent = memo(() => {
             </IconStack>
             <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           </XStack>
-          <Paragraph o={0.7} size="$5">
+          <Paragraph opacity={0.7} size="$5">
             An optimizer that makes Core faster via partial analysis, CSS extraction, tree
             flattening, and dead code elimination. Next, Webpack, Vite, Babel, Metro.
           </Paragraph>
@@ -71,7 +71,7 @@ export const HeroBelowContent = memo(() => {
             </IconStack>
             <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           </XStack>
-          <Paragraph o={0.7} size="$5">
+          <Paragraph opacity={0.7} size="$5">
             All the components you'd want, cross platform and adaptable to each other.
             Compound Component APIs, styled or unstyled, easy to size, theme, and more.
           </Paragraph>
@@ -109,8 +109,8 @@ const TitleLink = ({ href, children, ...props }: any) => {
 const Section = (props: YStackProps) => (
   <YStack
     width="33%"
-    $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }}
-    flexShrink={1}
+    $sm={{ width: 'auto', maxW: 500, mx: 'auto' }}
+    shrink={1}
     {...props}
   />
 )

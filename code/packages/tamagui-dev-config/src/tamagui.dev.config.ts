@@ -1,9 +1,7 @@
-import { tokens } from '@tamagui/config/v3'
+import { defaultConfig } from '@tamagui/config/v4'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { shorthands } from '@tamagui/shorthands/v2'
 import { animations } from './animations'
-// import { animationsMotion as animations } from './animations.motion'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 import { themeDev } from './theme.dev'
@@ -20,23 +18,16 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-// for some reason just re-defining these fixes a bug where negative space tokens were dropped
-const fixTypescript55Bug = {
-  space: tokens.space,
-  size: tokens.size,
-  radius: tokens.radius,
-  zIndex: tokens.zIndex,
-  color: tokens.color,
-}
-
+// Use v4 config as base and override with our customizations
 export const config = {
+  ...defaultConfig,
   fonts,
   animations,
   themes: themeDev,
   media,
-  shorthands,
-  tokens: fixTypescript55Bug,
+  // v4 has shorthands built-in, no need to import
   settings: {
+    ...defaultConfig.settings,
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
     maxDarkLightNesting: 2,
@@ -50,6 +41,8 @@ export const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
+    // Allow full style props (not just shorthands) for demos
+    onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps
 

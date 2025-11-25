@@ -24,10 +24,10 @@ const linking = {
   config: {
     screens: {
       home: '',
+      sandbox: 'sandbox',
       demo: 'demo/:id',
       tests: 'tests',
       test: 'test/:id',
-      sandbox: 'sandbox',
     },
   },
 }

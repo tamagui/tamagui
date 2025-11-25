@@ -40,27 +40,27 @@ export function BenchmarkChart({
         const width = `${Math.round((result.value / maxValue) * 100)}%`
         return (
           <XStack gap="$3" key={i}>
-            <YStack w={large ? 120 : 70}>
+            <YStack width={large ? 120 : 70}>
               <Paragraph
                 key={result.name}
                 size="$2"
                 whiteSpace="nowrap"
-                ta="right"
+                text="right"
                 my={-3}
                 fontWeight={result.name === 'Tamagui' ? '700' : '400'}
               >
                 {result.name}
               </Paragraph>
             </YStack>
-            <XStack mr={65} flex={1} ai="center">
+            <XStack mr={65} flex={1} items="center">
               <YStack
                 bg={getBarColor(result.name)}
-                o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
+                opacity={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
                 width={width as any}
                 height={20}
-                br="$2"
+                rounded="$2"
                 position="relative"
-                jc="center"
+                justify="center"
                 scaleX={1}
                 {...(animateEnter && {
                   animation: 'lazy',
@@ -74,7 +74,7 @@ export function BenchmarkChart({
                   size="$1"
                   whiteSpace="nowrap"
                   position="absolute"
-                  right="$-2"
+                  r="$-2"
                   x="100%"
                 >
                   {result.value}ms

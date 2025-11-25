@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "1.138.1",
+  "version": "1.138.5",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "ios:prod": "yarn ios --configuration Release",
     "eject": "EXPO_NO_TELEMETRY=true expo eject",
     "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
-    "test:native": "maestro test ./flows --exclude-tags=util",
+    "test:native": "command -v maestro >/dev/null 2>&1 || { printf '\\n⚠️  Maestro not found. Install: curl -Ls https://get.maestro.mobile.dev | bash\\n   Add to PATH: export PATH=\"$HOME/.maestro/bin:$PATH\"\\n\\n'; exit 1; } && maestro test ./flows --exclude-tags=util",
     "test:web": "yarn test:web:driver-rn && yarn test:web:driver-css && yarn test:web:driver-moti",
     "test:web:driver-css": "echo 'testing css\\n' && NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver-rn": "echo 'testing rn\\n' && NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=native node -r esbuild-register ../../node_modules/.bin/playwright test",
@@ -29,7 +29,7 @@
     "test:web:debug": "yarn test:web --debug",
     "test-ios": "vitest --config ./vitest.config.ios.mts --run",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "test": "yarn test:web"
+    "test": "yarn test:web && if [ -z \"$CI\" ]; then yarn test:native; fi"
   },
   "dependencies": {
     "@dominicstop/ts-event-emitter": "1.1.0",

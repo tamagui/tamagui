@@ -57,11 +57,9 @@ export function Panel({
 
   return (
     <YStack
-      w="100%"
-      mah={600}
-      f={1}
-      // scale={0.95}
-      // transformOrigin="left top"
+      width="100%"
+      maxH={600}
+      flex={1}
       group="card"
       containerType="normal"
       onMouseEnter={() => setHovered(true)}
@@ -87,14 +85,13 @@ export function Panel({
       </PanelContext.Provider>
 
       {!disableSettings && (
-        // <Theme reset>
         <YStack
-          pos="absolute"
+          position="absolute"
           opacity={hovered ? 1 : 0}
           animation="100ms"
-          right={'$-2'}
-          top={'$-2'}
-          zIndex={100}
+          r="$-2"
+          t="$-2"
+          z={100}
         >
           <Popover size="$5" allowFlip placement="bottom">
             <Popover.Trigger asChild>
@@ -112,7 +109,7 @@ export function Panel({
 
             <Adapt when="maxMd" platform="touch">
               <Popover.Sheet modal dismissOnSnapToBottom>
-                <Popover.Sheet.Frame padding="$4">
+                <Popover.Sheet.Frame p="$4">
                   <Adapt.Contents />
                 </Popover.Sheet.Frame>
                 <Popover.Sheet.Overlay
@@ -145,30 +142,12 @@ export function Panel({
               <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
               <YGroup>
-                {/* {!!fileToCopyName && (
-                  <ListItem
-                    hoverTheme
-                    gap="$3"
-                    onPress={() => {
-                      copyTheme()
-                    }}
-                  >
-                    <Paragraph size="$3" mr="$2" ta="left" userSelect="none">
-                      Copy Code
-                    </Paragraph>
-
-                    <YStack mx="$2">
-                      <Copy size={16} />
-                    </YStack>
-                  </ListItem>
-                )} */}
-
                 <ListItem
                   bg="transparent"
                   gap="$3"
                   onPress={() => setInverse((val) => !val)}
                 >
-                  <Paragraph size="$3" mr="$2" ta="left" userSelect="none">
+                  <Paragraph size="$3" mr="$2" text="left" select="none">
                     Inverse
                   </Paragraph>
 
@@ -199,13 +178,13 @@ export function Panel({
                     gap="$3"
                     onPress={() => setAccent((val) => !val)}
                   >
-                    <Paragraph size="$3" mr="$2" ta="left" userSelect="none">
+                    <Paragraph size="$3" mr="$2" text="left" select="none">
                       Accent
                     </Paragraph>
 
                     <Switch
                       size="$1"
-                      checked={accent}
+                      checked={!!accent}
                       onPress={(e) => e.stopPropagation()}
                       onCheckedChange={(val) => {
                         setAccent(val)
@@ -228,7 +207,6 @@ export function Panel({
             </Popover.Content>
           </Popover>
         </YStack>
-        // </Theme>
       )}
     </YStack>
   )

@@ -43,7 +43,7 @@ export default function DocIntroPage() {
     <>
       <HeadInfo
         title={`${frontmatter.title} — Tamagui`}
-        description={frontmatter.description}
+        description={frontmatter.description ?? ''}
         openGraph={{
           images: [
             {

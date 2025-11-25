@@ -95,6 +95,27 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
+// Normalize group keys like $group-press to $group-true-press when the group name
+// doesn't exist in context (defaults to the unnamed 'true' group)
+function normalizeGroupKey(
+  key: string,
+  groupContext: AllGroupContexts | null | undefined
+): string {
+  const parts = key.split('-')
+  const plen = parts.length
+  if (
+    // check if its actually a simple group selector to avoid breaking selectors
+    plen === 2 ||
+    (plen === 3 && pseudoPriorities[parts[parts.length - 1]])
+  ) {
+    const name = parts[1]
+    if (groupContext && !groupContext[name]) {
+      return key.replace('$group-', '$group-true-')
+    }
+  }
+  return key
+}
+
 // if you need and easier way to test performance, you can do something like this
 // add this early return somewhere in this file and you can see roughly where it slows down:
 
@@ -477,18 +498,7 @@ export const getSplitStyles: StyleSplitter = (
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     if (isMediaOrPseudo && isMedia === 'group') {
-      const parts = keyInit.split('-')
-      const plen = parts.length
-      if (
-        // check if its actually a simple group selector to avoid breaking selectors
-        plen === 2 ||
-        (plen === 3 && pseudoPriorities[parts[parts.length - 1]])
-      ) {
-        const name = parts[1]
-        if (groupContext && !groupContext?.[name]) {
-          keyInit = keyInit.replace('$group-', `$group-true-`)
-        }
-      }
+      keyInit = normalizeGroupKey(keyInit, groupContext)
     }
 
     const isStyleProp = isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand)
@@ -624,6 +634,11 @@ export const getSplitStyles: StyleSplitter = (
       isMedia = isPseudo ? false : getMediaKey(key)
       isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
+
+      // handle group key transformation for variant-expanded keys (issue #3613)
+      if (isMedia === 'group') {
+        key = normalizeGroupKey(key, groupContext)
+      }
 
       if (
         inlineProps?.has(key) ||
@@ -1183,6 +1198,11 @@ export const getSplitStyles: StyleSplitter = (
 
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
+    // set accessible when tabIndex is 0 (issue #3350)
+    if (viewProps.tabIndex === 0) {
+      viewProps.accessible ??= true
+    }
+
     const style = styleState.style
     if (style?.fontFamily) {
       const faceInfo = getFont(style.fontFamily as string)?.face
@@ -1219,6 +1239,7 @@ export const getSplitStyles: StyleSplitter = (
     dynamicThemeAccess,
     pseudoGroups,
     mediaGroups,
+    overriddenContextProps: styleState.overriddenContextProps,
   }
 
   const asChildExceptStyleLike =
@@ -1338,6 +1359,16 @@ function mergeStyle(
   const existingImportance = usedKeys[key] || 0
   if (existingImportance > importance) {
     return
+  }
+
+  // Track context overrides for pseudo/media styles (issues #3670, #3676)
+  // When a style sets a key that's in context props, update overriddenContextProps
+  // so it propagates to children. This handles pressStyle, hoverStyle, media queries, etc.
+  const contextProps =
+    staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
+  if (contextProps && key in contextProps) {
+    styleState.overriddenContextProps ||= {}
+    styleState.overriddenContextProps[key] = val
   }
 
   if (key in stylePropsTransform) {

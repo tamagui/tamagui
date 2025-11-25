@@ -14,24 +14,24 @@ export const InstallInput = memo(() => {
       <XStack
         borderWidth={0.5}
         borderColor="$color6"
-        ov="hidden"
+        overflow="hidden"
         px="$7"
         pl="$6"
         height={48}
-        ai="center"
-        als="center"
+        items="center"
+        self="center"
         elevation="$3"
-        br="$10"
+        rounded="$10"
         position="relative"
         bg="$color3"
       >
-        <YStack zi={-1} fullscreen bg="$background02" className="blur-8" />
+        <YStack z={-1} fullscreen bg="$background02" className="blur-8" />
         <Paragraph
-          ta="center"
+          text="center"
           size="$4"
           fontWeight="500"
           fontFamily="$mono"
-          ls={1}
+          letterSpacing={1}
           $sm={{ size: '$3' }}
         >
           {installScript}
@@ -44,7 +44,7 @@ export const InstallInput = memo(() => {
           <Button
             aria-label={installScript}
             size="$3"
-            borderRadius="$8"
+            rounded="$8"
             mr="$-6"
             x={-1}
             icon={hasCopied ? Check : Copy}

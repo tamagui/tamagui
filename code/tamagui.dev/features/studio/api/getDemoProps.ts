@@ -132,12 +132,12 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     // these ones are just common props - nothing to do with the demo options
     panelProps: {
       shadowColor: 'rgba(0,0,0,0.2)',
-      bw: 0.5,
-      bc: '$color3',
+      borderWidth: 0.5,
+      borderColor: '$color3',
       gap: '$3',
       py: '$4',
-      w: '100%',
-      h: '100%',
+      width: '100%',
+      height: '100%',
     } as const,
 
     panelDescriptionProps: {

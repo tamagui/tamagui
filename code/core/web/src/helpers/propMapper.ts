@@ -232,6 +232,19 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       continue
     }
 
+    // Track context overrides for any key that's in context props (issues #3670, #3676)
+    // This must run for ALL keys that match context props, not just variants
+    if (staticConfig) {
+      const contextProps =
+        staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
+      if (contextProps && subKey in contextProps) {
+        if (!styleState.overriddenContextProps) {
+          styleState.overriddenContextProps = {}
+        }
+        styleState.overriddenContextProps[subKey] = val
+      }
+    }
+
     if (styleProps.noExpand) {
       res[subKey] = val
     } else {

@@ -73,7 +73,7 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
 
   if (!user)
     return (
-      <YStack ai="center" flex={1} jc="center">
+      <YStack items="center" flex={1} justify="center">
         <Spinner size="large" />
       </YStack>
     )

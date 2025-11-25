@@ -372,7 +372,7 @@ export function createComponent<
 
     const componentState = useComponentState(
       props,
-      animationDriver,
+      animationDriver?.isStub ? null : animationDriver,
       staticConfig,
       config!
     )
@@ -628,6 +628,26 @@ export function createComponent<
     const isPassthrough = !splitStyles
 
     // splitStyles === null === passThrough
+
+    // Merge style-resolved context overrides (issues #3670, #3676)
+    // When styles set values that are also context keys (from variants, pseudos, media, etc),
+    // we need to add them to overriddenContextProps so they propagate to children
+    // Use either the component's own context or its parent's context (for styled() inheritance)
+    let contextForOverride = staticConfig.context
+    if (splitStyles?.overriddenContextProps) {
+      const contextForProps =
+        staticConfig.context || staticConfig.parentStaticConfig?.context
+      if (contextForProps) {
+        for (const key in splitStyles.overriddenContextProps) {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = splitStyles.overriddenContextProps[key]
+        }
+        // Use parent's context if this component doesn't have its own
+        if (!staticConfig.context) {
+          contextForOverride = contextForProps
+        }
+      }
+    }
 
     const groupContext = groupName ? allGroupContexts?.[groupName] || null : null
 
@@ -1375,8 +1395,8 @@ export function createComponent<
       }
     }
 
-    if (overriddenContextProps) {
-      const Provider = staticConfig.context!.Provider!
+    if (overriddenContextProps && contextForOverride) {
+      const Provider = contextForOverride.Provider!
 
       // make sure we re-order styled context keys based on how we pass them here:
       for (const key in styledContextValue) {

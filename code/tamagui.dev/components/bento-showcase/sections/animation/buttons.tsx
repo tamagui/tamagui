@@ -1,7 +1,6 @@
 import { YStack } from 'tamagui'
 
 import * as Buttons from '@tamagui/bento/component/animation/buttons'
-// import { getCode } from '@tamagui/bento/component/elements/avatars'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
@@ -19,7 +18,7 @@ export function buttons({ isProUser, showAppropriateModal }: Props) {
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
         <Showcase
           unlock
           fileName={Buttons.ButtonLoading.fileName}

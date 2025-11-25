@@ -55,27 +55,27 @@ export function ThemePage() {
     <>
       <Dialogs />
 
-      <YStack flexShrink={0} mb="$10">
+      <YStack shrink={0} mb="$10">
         <Suspense fallback={null}>
           <ThemeBuilderModal />
         </Suspense>
 
         <XStack
-          w="100%"
-          h="max-content"
+          width="100%"
+          height="max-content"
           pr={540}
           pt={10}
           $lg={{ pr: 0 }}
-          jc="flex-end"
-          ov="hidden"
+          justify="flex-end"
+          overflow="hidden"
         >
           <YStack
             p="$4"
-            f={1}
-            maw="calc(min(100vw, 1300px))"
+            flex={1}
+            maxW="calc(min(100vw, 1300px))"
             group="content"
             $md={{
-              maw: `calc(min(100vw, 900px))`,
+              maxW: `calc(min(100vw, 900px))`,
               p: '$4',
             }}
           >
@@ -108,7 +108,7 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
     <>
       <Theme name={baseStepThemeName}>
         <ThemeNameEffectNoTheme />
-        <YStack f={1}>{props.children}</YStack>
+        <YStack flex={1}>{props.children}</YStack>
       </Theme>
     </>
   )
@@ -132,15 +132,14 @@ const ThemeBuilderModal = memo(() => {
 
   return (
     <YStack
-      // animation="medium"
-      pos={'fixed' as any}
+      position={'fixed' as any}
       t={70}
       r={0}
       b={0}
-      w={530}
-      mah="90vh"
-      maw="95vw"
-      zi={100_000}
+      width={530}
+      maxH="90vh"
+      maxW="95vw"
+      z={100_000}
       x={hide ? 500 : 0}
       animation="medium"
     >
@@ -151,20 +150,20 @@ const ThemeBuilderModal = memo(() => {
         ref={ref}
         x={0}
         elevation="$5"
-        btlr="$6"
-        bblr="$6"
-        bw={0.5}
-        bc="$color6"
+        borderTopLeftRadius="$6"
+        borderBottomLeftRadius="$6"
+        borderWidth={0.5}
+        borderColor="$color6"
         bg="$background06"
         backdropFilter="blur(60px)"
         {...(hide && {
-          bc: '$color0',
+          borderColor: '$color0',
           bg: '$background0',
         })}
       >
         <XStack
-          pos="absolute"
-          zi={100000}
+          position="absolute"
+          z={100000}
           t="$2"
           l="$2"
           $gtLg={{
@@ -183,12 +182,12 @@ const ThemeBuilderModal = memo(() => {
           animation={['medium', { opacity: { overshootClamping: true } }]}
           opacity={hide ? 0 : 1}
           gap="$4"
-          separator={<Separator bw={1} />}
-          f={1}
+          separator={<Separator borderWidth={1} />}
+          flex={1}
         >
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
-              f={1}
+              flex={1}
               animation="75ms"
               animateOnly={['transform', 'opacity']}
               key={weakKey(StepComponent)}
@@ -196,7 +195,7 @@ const ThemeBuilderModal = memo(() => {
               {useMemo(() => {
                 return (
                   <ScrollView flex={1} contentContainerStyle={{ flex: 1 }}>
-                    <YStack f={1}>
+                    <YStack flex={1}>
                       {/* @ts-ignore */}
                       <StepComponent />
                     </YStack>
@@ -233,7 +232,7 @@ const StudioThemeBuilderTray = memo(() => {
 
 const StudioThemeBuilderBottomBar = memo(() => {
   return (
-    <XStack p="$4" py="$3" ai="center" zi={100} bg="$background02">
+    <XStack p="$4" py="$3" items="center" z={100} bg="$background02">
       <CurrentStepActionBar />
       <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />

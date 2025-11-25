@@ -47,7 +47,7 @@ export function LoadFont(props: {
 
 export const LoadCherryBomb = ({ prefetch }: { prefetch?: boolean }) => (
   <LoadFont
-    prefetch={prefetch}
+    prefetch={prefetch || false}
     woff2File="/fonts/cherry-bomb.woff2"
     cssFile="/fonts/cherry-bomb.css"
   />

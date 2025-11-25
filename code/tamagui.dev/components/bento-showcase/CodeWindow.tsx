@@ -1,11 +1,9 @@
 import { AlertCircle, Copy, File } from '@tamagui/lucide-icons'
-import { useLocalStorage } from 'foxact/use-local-storage'
 import { lazy, useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Paragraph,
   ScrollView,
-  Separator,
   SizableText,
   Spinner,
   Tabs,
@@ -77,14 +75,13 @@ export function CodeWindow({ code, isLoading }: Props) {
     return (
       <XStack
         height={700}
-        w="100%"
-        backgroundColor="$background"
+        width="100%"
+        bg="$background"
         borderWidth={0.5}
         borderColor="$borderColor"
-        justifyContent="center"
-        alignItems="center"
-        width="100%"
-        mih={150}
+        justify="center"
+        items="center"
+        minH={150}
         overflow="hidden"
       >
         <Spinner size="large" />
@@ -93,7 +90,7 @@ export function CodeWindow({ code, isLoading }: Props) {
 
   if (tabs.length === 1) {
     return (
-      <YStack w="100%">
+      <YStack width="100%">
         <Content CodeBlock={CodeBlock} tab={tabs[0]} />
         <CopyCodeButton onCopy={onCopy} hasCopied={hasCopied} oneTabLayout />
       </YStack>
@@ -106,12 +103,11 @@ export function CodeWindow({ code, isLoading }: Props) {
       onValueChange={setActiveTabIndex}
       orientation="horizontal"
       flexDirection="column"
-      backgroundColor="$background"
+      bg="$background"
       borderColor="$color3"
       width="100%"
       overflow="hidden"
-      padding={0}
-      w="100%"
+      p={0}
     >
       <Tabs.List
         unstyled
@@ -154,7 +150,7 @@ export function CodeWindow({ code, isLoading }: Props) {
         })}
       </Tabs.List>
       {tabs.map((tab, i) => (
-        <Tabs.Content w="100%" key={tab.name} value={String(i)}>
+        <Tabs.Content width="100%" key={tab.name} value={String(i)}>
           <Content CodeBlock={CodeBlock} tab={tab} />
         </Tabs.Content>
       ))}
@@ -166,11 +162,11 @@ export function CodeWindow({ code, isLoading }: Props) {
 function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
   return (
     <Button
-      borderRadius="$4"
+      rounded="$4"
       themeInverse
       position="absolute"
-      top={oneTabLayout ? 16 : 48}
-      right={0}
+      t={oneTabLayout ? 16 : 48}
+      r={0}
       m="$4"
       size="$3"
       onPress={onCopy}
@@ -183,46 +179,28 @@ function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
   )
 }
 
-const safeJSONStringify = (value: unknown) => {
-  try {
-    return JSON.stringify(value)
-  } catch (error) {
-    console.warn('Failed to stringify value for localStorage:', error)
-    return ''
-  }
-}
-
-const safeJSONParse = (value: string) => {
-  try {
-    return JSON.parse(value)
-  } catch (error) {
-    console.warn('Failed to parse JSON from localStorage:', error)
-    return ''
-  }
-}
-
 function CustomizationEnabledBanner() {
   const userTamaguiConfig = useUserTamaguiConfig()
 
   if (!userTamaguiConfig) return null
   return (
-    <YStack marginTop="$3" marginLeft="$3">
+    <YStack mt="$3" ml="$3">
       <Theme name="green">
-        <XStack minWidth={'87%'} maxWidth={'87%'} br="$4">
-          <YStack o={0.62} bg="$color10" fullscreen br="$4" />
-          <XStack py={14} px="$3" f={1}>
-            <AlertCircle t="$3" l="$3" zi={100} color="$color7" size={22} />
+        <XStack minW="87%" maxW="87%" rounded="$4">
+          <YStack opacity={0.62} bg="$color10" fullscreen rounded="$4" />
+          <XStack py={14} px="$3" flex={1}>
+            <AlertCircle t="$3" l="$3" z={100} color="$color7" size={22} />
             <Paragraph
               ml="$2.5"
               size="$3"
               fontWeight="200"
-              lh="$2"
+              lineHeight="$2"
               color="$color1"
-              marginRight="auto"
+              mr="auto"
             >
               Customization enabled
             </Paragraph>
-            <Paragraph color="$color4" size="$3" lh="$2">
+            <Paragraph color="$color4" size="$3" lineHeight="$2">
               These components are customized to your tokens through the customize option.
             </Paragraph>
           </XStack>
@@ -240,19 +218,19 @@ function Content({
     <YStack
       width="100%"
       overflow="hidden"
-      padding={0}
-      backgroundColor="$background"
+      p={0}
+      bg="$background"
       tag="pre"
-      mih={500}
+      minH={500}
       data-line-numbers={true}
     >
       <CustomizationEnabledBanner />
       <ScrollView
         showsVerticalScrollIndicator={true}
         width="100%"
-        maxHeight={700}
+        maxH={700}
         contentContainerStyle={{
-          padding: 12,
+          p: 12,
         }}
       >
         {CodeBlock ? (

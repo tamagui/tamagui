@@ -42,11 +42,11 @@ export const HomeExamples = memo(
 
     return (
       <ContainerLarge position="relative">
-        <YStack zi={1} gap="$6" mb="$4">
+        <YStack z={1} gap="$6" mb="$4">
           {!onlyDemo && (
-            <YStack ai="center" gap="$3">
+            <YStack items="center" gap="$3">
               <HomeH2>A powerful style system</HomeH2>
-              <HomeH3 ai="center" jc="center">
+              <HomeH3 items="center" justify="center">
                 A multi-faceted optimizing compiler enables
                 <br />
                 <strong>{subtitles[activeIndex]}</strong>.
@@ -60,9 +60,9 @@ export const HomeExamples = memo(
               borderWidth={1}
               borderColor="$borderColor"
               bg="$color2"
-              maxWidth="100%"
-              als="center"
-              ov="hidden"
+              maxW="100%"
+              self="center"
+              overflow="hidden"
               {...(onlyDemo && {
                 mt: '$-6',
               })}
@@ -75,7 +75,7 @@ export const HomeExamples = memo(
                       onPress={() => setActiveIndex(i)}
                       theme={i === activeIndex ? 'surface2' : null}
                       chromeless={i !== activeIndex}
-                      borderRadius={0}
+                      rounded={0}
                       size="$3"
                     >
                       <Button.Text fontFamily="$silkscreen">{example.name}</Button.Text>
@@ -88,28 +88,28 @@ export const HomeExamples = memo(
 
           <XStack
             theme="surface1"
-            pos="relative"
-            jc="space-between"
-            $sm={{ fd: 'column' }}
+            position="relative"
+            justify="space-between"
+            $sm={{ flexDirection: 'column' }}
             {...(onlyDemo && {
-              fd: 'column',
+              flexDirection: 'column',
             })}
           >
             <YStack
               key={`input${activeIndex}`}
-              f={1}
-              maxWidth="50%"
-              {...(onlyDemo && { maxWidth: '100%' })}
-              $sm={{ maxWidth: '100%' }}
+              flex={1}
+              maxW="50%"
+              {...(onlyDemo && { maxW: '100%' })}
+              $sm={{ maxW: '100%' }}
               px="$2"
               gap="$4"
             >
               <Paragraph
-                maw={480}
-                als="center"
+                maxW={480}
+                self="center"
                 size="$5"
-                minHeight={50}
-                ta="center"
+                minH={50}
+                text="center"
                 px="$6"
               >
                 <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
@@ -120,35 +120,35 @@ export const HomeExamples = memo(
             <YStack
               $sm={{ display: 'none' }}
               {...(onlyDemo && { display: 'none' })}
-              pos="absolute"
-              left={0}
-              right={0}
-              ai="center"
-              jc="center"
-              top="55%"
+              position="absolute"
+              l={0}
+              r={0}
+              items="center"
+              justify="center"
+              t="55%"
               theme="alt2"
-              zIndex={1000}
-              pe="none"
+              z={1000}
+              pointerEvents="none"
             >
-              <IconStack als="center" p="$2.5" mb={0} elevation="$2">
+              <IconStack items="center" p="$2.5" mb={0} elevation="$2">
                 <FastForward color="var(--colorHover)" size="$1" />
               </IconStack>
             </YStack>
             <YStack
               key={`output${activeIndex}`}
-              f={1}
-              maxWidth="50%"
-              {...(onlyDemo && { maxWidth: '100%', mt: '$6' })}
-              $sm={{ maxWidth: '100%', mt: '$6' }}
+              flex={1}
+              maxW="50%"
+              {...(onlyDemo && { maxW: '100%', mt: '$6' })}
+              $sm={{ maxW: '100%', mt: '$6' }}
               px="$2"
               gap="$4"
             >
               <Paragraph
-                maw={480}
-                als="center"
+                maxW={480}
+                self="center"
                 size="$5"
-                minHeight={50}
-                ta="center"
+                minH={50}
+                text="center"
                 px="$6"
               >
                 <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
@@ -171,15 +171,15 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
     <YStack overflow="hidden" flex={1}>
       <>
         <ScrollView
-          als="center"
-          ai="center"
-          zi={10}
+          self="center"
+          items="center"
+          z={10}
           horizontal
           showsHorizontalScrollIndicator={false}
           mb="$-2.5"
-          maw="100%"
+          maxW="100%"
         >
-          <XStack px="$4" fs={0} gap="$4">
+          <XStack px="$4" shrink={0} gap="$4">
             <Theme name="accent">
               <Heading
                 bg="$color1"
@@ -187,7 +187,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                 py="$1"
                 size="$5"
                 px="$4"
-                br="$4"
+                rounded="$4"
                 elevation={3}
               >
                 {title}
@@ -201,7 +201,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     onPress={() => setActiveIndex(i)}
                     theme={i === activeIndex ? (tint as any) : 'alt1'}
                     size="$2"
-                    borderRadius="$0"
+                    rounded={0}
                   >
                     <Button.Text>{example.name}</Button.Text>
                   </Button>
@@ -211,12 +211,12 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           </XStack>
         </ScrollView>
       </>
-      <XStack maxWidth="100%" f={1}>
-        <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+      <XStack maxW="100%" flex={1}>
+        <YStack flex={1} maxW="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemoPreParsed
             height={325}
-            maxHeight={325}
-            f={1}
+            maxH={325}
+            flex={1}
             language={example.language}
             source={example.code}
           />

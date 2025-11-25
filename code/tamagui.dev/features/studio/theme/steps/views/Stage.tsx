@@ -10,14 +10,8 @@ export function Stage({ steps, current }: { current: number; steps: any[] }) {
         const isLeft = current > index
         const isRight = current < index
         return (
-          <Section
-            // animation="medium"
-            // animateOnly={['opacity', 'transform']}
-            isLeft={isLeft}
-            isRight={isRight}
-            key={index}
-          >
-            <ScrollView contentContainerStyle={{ minHeight: '100%' }} f={1}>
+          <Section isLeft={isLeft} isRight={isRight} key={index}>
+            <ScrollView contentContainerStyle={{ minH: '100%' }} flex={1}>
               {step}
             </ScrollView>
           </Section>
@@ -29,7 +23,7 @@ export function Stage({ steps, current }: { current: number; steps: any[] }) {
 
 export function StageButtonBar({ steps }: { steps: UseSteps }) {
   return (
-    <XStack zi={100} bbw={1} bc="$color5">
+    <XStack z={100} borderBottomWidth={1} borderColor="$color5">
       <ToggleButton active={steps.index === 0} onPress={() => steps.setPage(0)}>
         Palettes
       </ToggleButton>
@@ -43,7 +37,7 @@ export function StageButtonBar({ steps }: { steps: UseSteps }) {
 const Section = styled(YStack, {
   fullscreen: true,
 
-  top: 33,
+  t: 33,
   px: '$2',
 
   variants: {

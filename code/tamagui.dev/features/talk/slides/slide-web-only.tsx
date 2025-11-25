@@ -15,9 +15,9 @@ export default memo(() => {
               {
                 type: 'text',
                 props: {
-                  minHeight: 100,
+                  minH: 100,
                   fontSize: 60,
-                  marginVertical: 50,
+                  my: 50,
                   display: 'inline-flex',
                 },
                 content: (
@@ -30,7 +30,7 @@ export default memo(() => {
               {
                 type: 'bullet-point',
                 props: {
-                  marginVertical: 50,
+                  my: 50,
                 },
                 content: [
                   {
@@ -47,7 +47,7 @@ export default memo(() => {
               {
                 type: 'bullet-point',
                 props: {
-                  marginVertical: 50,
+                  my: 50,
                 },
                 content: [
                   {
@@ -64,7 +64,7 @@ export default memo(() => {
               {
                 type: 'bullet-point',
                 props: {
-                  marginVertical: 50,
+                  my: 50,
                 },
                 content: [
                   {

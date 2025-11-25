@@ -76,7 +76,7 @@ export const NewAccountModal = () => {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom animation="medium">
-            <Sheet.Frame bg="$background" padding={0} gap="$4">
+            <Sheet.Frame bg="$background" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
@@ -118,25 +118,18 @@ export const NewAccountModal = () => {
             enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.95 }}
             exitStyle={{ x: 0, y: 5, opacity: 0, scale: 0.95 }}
             width="90%"
-            maw={800}
+            maxW={800}
             p={0}
-            br="$4"
-            ov="hidden"
+            rounded="$4"
+            overflow="hidden"
             height="85%"
-            maxHeight="calc(min(85vh, 800px))"
-            minHeight={500}
+            maxH="calc(min(85vh, 800px))"
+            minH={500}
           >
             <AccountView />
 
             <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$3"
-                right="$3"
-                size="$3"
-                circular
-                icon={X}
-              />
+              <Button position="absolute" t="$3" r="$3" size="$3" circular icon={X} />
             </Dialog.Close>
           </Dialog.Content>
         </Dialog.Portal>
@@ -287,7 +280,7 @@ export const AccountView = () => {
   }
 
   return (
-    <YStack f={1}>
+    <YStack flex={1}>
       <Tabs
         flex={1}
         value={currentTab}
@@ -297,38 +290,38 @@ export const AccountView = () => {
         size="$6"
       >
         <Tabs.List disablePassBorderRadius>
-          <YStack width={'33.3333%'} f={1}>
+          <YStack width={'33.3333%'} flex={1}>
             <Tab isActive={currentTab === 'plan'} value="plan">
               Plan
             </Tab>
           </YStack>
           {!isTeamMember ? (
-            <YStack width={'33.3333%'} f={1}>
+            <YStack width={'33.3333%'} flex={1}>
               <Tab isActive={currentTab === 'upgrade'} value="upgrade">
                 Upgrade
               </Tab>
             </YStack>
           ) : null}
-          <YStack width={'33.3333%'} f={1}>
+          <YStack width={'33.3333%'} flex={1}>
             <Tab isActive={currentTab === 'manage'} value="manage">
               Manage
             </Tab>
           </YStack>
           {isTeamAdmin && (
-            <YStack width={'33.3333%'} f={1}>
+            <YStack width={'33.3333%'} flex={1}>
               <Tab isActive={currentTab === 'team'} value="team">
                 Team
               </Tab>
             </YStack>
           )}
-          <YStack width={'33.3333%'} f={1}>
+          <YStack width={'33.3333%'} flex={1}>
             <Tab isActive={currentTab === 'faq'} value="faq">
               FAQ
             </Tab>
           </YStack>
         </Tabs.List>
 
-        <YStack overflow="hidden" f={1}>
+        <YStack overflow="hidden" flex={1}>
           <ScrollView>
             <YStack p="$6">{renderTabs()}</YStack>
           </ScrollView>
@@ -380,9 +373,9 @@ const AccountHeader = () => {
         />
       </Avatar>
 
-      <YStack gap="$3" ai="flex-start" jc="center" f={1}>
-        <XStack jc="space-between" gap="$4" ai="center">
-          <YStack f={1}>
+      <YStack gap="$3" items="flex-start" justify="center" flex={1}>
+        <XStack justify="space-between" gap="$4" items="center">
+          <YStack flex={1}>
             <H3
               mt={-5}
               style={{
@@ -400,7 +393,7 @@ const AccountHeader = () => {
         onPress={handleLogout}
         icon={<LogOut />}
         size="$2"
-        alignSelf="flex-end"
+        self="flex-end"
         aria-label="Logout"
       >
         <Button.Text>Logout</Button.Text>
@@ -421,15 +414,15 @@ const Tab = ({
   return (
     <Tabs.Tab
       unstyled
-      ai="center"
-      jc="center"
-      ov="hidden"
+      items="center"
+      justify="center"
+      overflow="hidden"
       py="$1"
       bg="$color1"
       height={60}
       disableActiveTheme
-      bbw={1}
-      bbc="transparent"
+      borderBottomWidth={1}
+      borderBottomColor="transparent"
       {...(!isActive && {
         bg: '$color2',
       })}
@@ -438,24 +431,24 @@ const Tab = ({
     >
       <YStack
         fullscreen
-        pe="none"
-        zi={-1}
+        pointerEvents="none"
+        z={-1}
         {...(isActive && {
           bg: '$color3',
         })}
         {...(!isActive && {
           bg: '$color1',
-          o: 0.25,
+          opacity: 0.25,
           '$group-takeoutBody-hover': {
-            o: 0.33,
+            opacity: 0.33,
           },
         })}
       />
       <Paragraph
-        ff="$mono"
+        fontFamily="$mono"
         size="$7"
         color={isActive ? '$color12' : '$color10'}
-        fow={isActive ? 'bold' : 'normal'}
+        fontWeight={isActive ? 'bold' : 'normal'}
       >
         {children}
       </Paragraph>
@@ -483,7 +476,7 @@ const ServiceCard = ({
     <YStack
       borderWidth={1}
       borderColor="$color3"
-      borderRadius="$6"
+      rounded="$6"
       p="$4"
       gap="$2"
       width={300}
@@ -496,8 +489,8 @@ const ServiceCard = ({
 
       <XStack gap="$3">
         <Button
-          br="$10"
-          als="flex-end"
+          rounded="$10"
+          self="flex-end"
           mt="$4"
           size="$3"
           theme="accent"
@@ -508,8 +501,8 @@ const ServiceCard = ({
 
         {!!secondAction && (
           <Button
-            br="$10"
-            als="flex-end"
+            rounded="$10"
+            self="flex-end"
             mt="$4"
             size="$3"
             theme="accent"
@@ -549,8 +542,8 @@ const DiscordAccessDialog = ({
           elevate
           key="content"
           animation="quick"
-          w="90%"
-          maw={600}
+          width="90%"
+          maxW={600}
           p="$6"
         >
           <DiscordPanel
@@ -559,7 +552,7 @@ const DiscordAccessDialog = ({
             isTeamMember={isTeamMember}
           />
           <Dialog.Close asChild>
-            <Button position="absolute" top="$2" right="$2" size="$2" circular icon={X} />
+            <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
@@ -671,13 +664,13 @@ const DiscordPanel = ({
 
   const SearchForm = () => (
     <>
-      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
+      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" items="flex-end">
         <Fieldset>
           <Label size="$3" theme="alt1" htmlFor="discord-username">
             Username / Nickname
           </Label>
           <Input
-            miw={200}
+            minW={200}
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
@@ -737,7 +730,7 @@ const DiscordPanel = ({
     const title = apiType === 'channel' ? 'Discord Access' : 'Private Support Access'
 
     return (
-      <XStack jc="space-between" gap="$2" ai="center">
+      <XStack justify="space-between" gap="$2" items="center">
         <H4>
           {title}{' '}
           {showSeats &&
@@ -763,7 +756,7 @@ const DiscordPanel = ({
   const renderDiscordAccessContent = () => {
     if (isLoading) {
       return (
-        <XStack ai="center" jc="center" p="$4">
+        <XStack items="center" justify="center" p="$4">
           <Spinner size="small" />
         </XStack>
       )
@@ -782,8 +775,8 @@ const DiscordPanel = ({
       const supportAccess = hasSupportAccess()
       if (!supportAccess.hasAccess) {
         return (
-          <YStack gap="$4" p="$4" backgroundColor="$color2" br="$4">
-            <Paragraph theme="alt2" ta="center">
+          <YStack gap="$4" p="$4" bg="$color2" rounded="$4">
+            <Paragraph theme="alt2" text="center">
               You need a Chat Support or Support tier subscription to access private
               support channels.
             </Paragraph>
@@ -880,7 +873,7 @@ const DiscordMember = ({
     : null
 
   return (
-    <XStack gap="$2" ai="center" flexWrap="wrap">
+    <XStack gap="$2" items="center" flexWrap="wrap">
       <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
         <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
@@ -1005,7 +998,7 @@ const PlanTab = ({
   return (
     <YStack gap="$6">
       <YStack gap="$4">
-        <XStack fw="wrap" gap="$3">
+        <XStack flexWrap="wrap" gap="$3">
           <ServiceCard
             title="Takeout"
             description="Access to repository and updates."
@@ -1090,7 +1083,7 @@ const PlanTab = ({
               }}
             />
           ) : (
-            <View flex={1} w={300} />
+            <View flex={1} width={300} />
           )}
         </XStack>
       </YStack>
@@ -1098,7 +1091,7 @@ const PlanTab = ({
       {subscription?.status === 'active' && (
         <YStack gap="$4">
           <H3>Support Services</H3>
-          <XStack fw="wrap" gap="$4">
+          <XStack flexWrap="wrap" gap="$4">
             <ServiceCard
               title="Discord Support"
               description="Access to private Discord support channels"
@@ -1228,8 +1221,8 @@ const UpgradeTab = () => {
 
       <Button
         theme="accent"
-        br="$10"
-        als="flex-end"
+        rounded="$10"
+        self="flex-end"
         onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
@@ -1238,7 +1231,7 @@ const UpgradeTab = () => {
 
       <Separator />
 
-      <Paragraph ff="$mono" size="$5" lineHeight="$6" o={0.8}>
+      <Paragraph fontFamily="$mono" size="$5" lineHeight="$6" opacity={0.8}>
         Each tier adds 4 hours of development a month, faster response times, and 4
         additional private chat invites.
       </Paragraph>
@@ -1278,14 +1271,14 @@ const SupportTabContent = ({
             key={tier.value}
             borderWidth={1}
             theme={supportTier === tier.value ? 'accent' : null}
-            borderRadius="$4"
+            rounded="$4"
             borderColor="$color4"
             p="$4"
             bg="$color1"
             cursor="pointer"
             onPress={() => setSupportTier(tier.value)}
           >
-            <XStack jc="space-between" ai="center">
+            <XStack justify="space-between" items="center">
               <YStack gap="$1">
                 <H3 fontFamily="$mono" size="$6">
                   {tier.label}
@@ -1321,7 +1314,7 @@ const ManageTab = ({
 
   if (isTeamLoading) {
     return (
-      <YStack f={1} ai="center" jc="center" p="$6">
+      <YStack flex={1} items="center" justify="center" p="$6">
         <Spinner size="large" />
       </YStack>
     )
@@ -1399,29 +1392,29 @@ const ManageTab = ({
             p="$4"
             borderWidth={1}
             borderColor="$color3"
-            borderRadius="$4"
+            rounded="$4"
             mb="$4"
           >
             <YStack
               p="$4"
               borderWidth={1}
               borderColor="$color3"
-              borderRadius="$4"
+              rounded="$4"
               width="100%"
               style={{
                 overflowX: 'auto',
               }}
             >
-              <YStack minWidth={500} width="100%">
+              <YStack minW={500} width="100%">
                 {/* Table Header */}
-                <XStack ai="center" mb="$2" width="100%">
+                <XStack items="center" mb="$2" width="100%">
                   <Paragraph fontWeight="bold" width="60%">
                     Product
                   </Paragraph>
-                  <Paragraph fontWeight="bold" width="20%" textAlign="center">
+                  <Paragraph fontWeight="bold" width="20%" text="center">
                     Qty
                   </Paragraph>
-                  <Paragraph fontWeight="bold" width="20%" textAlign="right">
+                  <Paragraph fontWeight="bold" width="20%" text="right">
                     Total
                   </Paragraph>
                 </XStack>
@@ -1435,7 +1428,7 @@ const ManageTab = ({
                       : (subscription.quantity ?? 1)
                   const total = (price?.unit_amount || 0) * qty
                   return (
-                    <XStack key={item.id || idx} ai="center" mb="$2" width="100%">
+                    <XStack key={item.id || idx} items="center" mb="$2" width="100%">
                       <YStack width="60%">
                         <Paragraph fontWeight="bold">{product?.name}</Paragraph>
                         {product?.description && (
@@ -1450,10 +1443,10 @@ const ManageTab = ({
                             : ''}
                         </Paragraph>
                       </YStack>
-                      <Paragraph width="20%" textAlign="center">
+                      <Paragraph width="20%" text="center">
                         {qty}
                       </Paragraph>
-                      <Paragraph width="20%" textAlign="right">
+                      <Paragraph width="20%" text="right">
                         {formatCurrency(total)}
                         {price?.type !== Pricing.OneTime && price?.interval
                           ? `/${price.interval}`
@@ -1465,12 +1458,12 @@ const ManageTab = ({
               </YStack>
             </YStack>
             {/* Billing Period, Status, Cancel Button */}
-            <XStack jc="space-between">
+            <XStack justify="space-between">
               <Paragraph flex={1}>Status</Paragraph>
               <Paragraph
                 textTransform="capitalize"
                 flex={1}
-                textAlign="right"
+                text="right"
                 color={
                   subscription.status === SubscriptionStatus.Active
                     ? '$green9'
@@ -1482,9 +1475,9 @@ const ManageTab = ({
                   : subscription.status}
               </Paragraph>
             </XStack>
-            <XStack jc="space-between">
+            <XStack justify="space-between">
               <Paragraph flex={1}>Billing Period</Paragraph>
-              <YStack ai="flex-end">
+              <YStack self="flex-end">
                 <Paragraph>
                   {new Date(subscription.current_period_start).toLocaleDateString()} -{' '}
                   {new Date(subscription.current_period_end).toLocaleDateString()}
@@ -1492,7 +1485,7 @@ const ManageTab = ({
               </YStack>
             </XStack>
             {subscription.cancel_at_period_end && (
-              <YStack backgroundColor="$yellow2" p="$3" borderRadius="$4">
+              <YStack bg="$yellow2" p="$3" rounded="$4">
                 <Paragraph theme="yellow">
                   Your subscription will end on{' '}
                   {new Date(subscription.current_period_end).toLocaleDateString()}
@@ -1574,7 +1567,7 @@ const TeamTab = ({
 
   if (isTeamLoading) {
     return (
-      <YStack f={1} ai="center" jc="center">
+      <YStack flex={1} items="center" justify="center">
         <Spinner size="large" />
       </YStack>
     )
@@ -1604,7 +1597,7 @@ const TeamTab = ({
     <YStack gap="$6">
       <YStack gap="$4">
         <H3>Team Management</H3>
-        <XStack ai="center" jc="space-between">
+        <XStack items="center" justify="space-between">
           <Paragraph theme="alt1">
             {teamData.subscription.used_seats || 0} of {teamData.subscription.total_seats}{' '}
             seats used
@@ -1616,8 +1609,8 @@ const TeamTab = ({
         <YStack gap="$4">
           <H4>Invite Team Member</H4>
           <Form gap="$2">
-            <XStack gap="$2" ai="flex-end">
-              <Fieldset f={1}>
+            <XStack gap="$2" items="flex-end">
+              <Fieldset flex={1}>
                 <Label htmlFor="github-username">Name / Email / Id</Label>
                 <Input
                   id="github-username"
@@ -1631,7 +1624,7 @@ const TeamTab = ({
 
           <YStack gap="$2">
             {isSearching ? (
-              <XStack p="$2" ai="center" jc="center">
+              <XStack p="$2" items="center" justify="center">
                 <Spinner size="small" />
               </XStack>
             ) : searchResults.length > 0 ? (
@@ -1687,12 +1680,12 @@ const GitHubUserRow = ({
     <XStack
       borderWidth={1}
       borderColor="$color3"
-      borderRadius="$4"
+      rounded="$4"
       p="$3"
-      ai="center"
-      jc="space-between"
+      items="center"
+      justify="space-between"
     >
-      <XStack ai="center" gap="$3">
+      <XStack items="center" gap="$3">
         <Avatar circular size="$3">
           <Avatar.Image source={{ uri: user.avatar_url ?? '' }} />
         </Avatar>
@@ -1735,12 +1728,12 @@ const TeamMemberRow = ({
     <XStack
       borderWidth={1}
       borderColor="$color3"
-      borderRadius="$4"
+      rounded="$4"
       p="$3"
-      ai="center"
-      jc="space-between"
+      items="center"
+      justify="space-between"
     >
-      <XStack ai="center" gap="$3">
+      <XStack items="center" gap="$3">
         <Avatar circular size="$3">
           <Avatar.Image
             source={{
@@ -1758,7 +1751,7 @@ const TeamMemberRow = ({
         </YStack>
       </XStack>
 
-      <XStack ai="center" gap="$2">
+      <XStack items="center" gap="$2">
         <Paragraph size="$2" theme="alt2">
           {member.role}
         </Paragraph>

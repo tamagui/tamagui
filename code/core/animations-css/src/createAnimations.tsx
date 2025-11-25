@@ -34,6 +34,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     usePresence,
     ResetPresence,
     supportsCSS: true,
+    classNameAnimation: true,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
       const [val, setVal] = React.useState(initial)

@@ -29,14 +29,14 @@ export const FieldsetWithLabel = ({
   return (
     <YStack
       tag="fieldset"
-      br="$4"
-      bc={isActive ? '$color9' : '$color6'}
-      bw={0}
+      rounded="$4"
+      borderColor={isActive ? '$color9' : '$color6'}
+      borderWidth={0}
       px="$3"
       onPress={onPress}
     >
       <YStack
-        zi={100}
+        z={100}
         px="$3"
         {...(enableEditLabel && {
           cur: 'pointer',
@@ -72,11 +72,11 @@ export const FieldsetWithLabel = ({
           />
         ) : (
           <Heading
-            userSelect="none"
+            select="none"
             tag="label"
             size="$5"
             color="$color11"
-            ta="center"
+            text="center"
             {...(tooltip && {
               pr: '$6',
             })}
@@ -88,25 +88,22 @@ export const FieldsetWithLabel = ({
               <TooltipSimple
                 size="$3"
                 label={
-                  <YStack p="$2" maxWidth={200}>
-                    <Paragraph size="$2" lh="$1">
+                  <YStack p="$2" maxW={200}>
+                    <Paragraph size="$2" lineHeight="$1">
                       {tooltip}
                     </Paragraph>
                   </YStack>
                 }
               >
                 <Button
-                  color="$color9"
                   size="$1"
                   scaleIcon={1.2}
                   ml="$2"
                   circular
-                  br={100}
-                  hoverTheme={false}
-                  pressTheme={false}
+                  rounded={100}
                   chromeless
-                  icon={Info}
-                  pos="absolute"
+                  icon={<Info color="$color9"/>}
+                  position="absolute"
                   t={0}
                   r={8}
                 />
@@ -117,7 +114,15 @@ export const FieldsetWithLabel = ({
       </YStack>
 
       {!!afterLabel && (
-        <XStack pos="absolute" t={12} r="$4" zi={100} bg="$color2" br="$4" px="$2">
+        <XStack
+          position="absolute"
+          t={12}
+          r="$4"
+          z={100}
+          bg="$color2"
+          rounded="$4"
+          px="$2"
+        >
           {afterLabel}
         </XStack>
       )}

@@ -1,7 +1,6 @@
 import { YStack } from 'tamagui'
 
 import * as Slide from '@tamagui/bento/component/animation/slide'
-// import { getCode } from '@tamagui/bento/component/elements/avatars'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
@@ -17,7 +16,7 @@ export function slide({ isProUser, showAppropriateModal }: BentoShowcaseContext)
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
         <Showcase unlock fileName={Slide.SlideInDemo.fileName} title="Slide In">
           <Wrapper>
             <Slide.SlideInDemo />

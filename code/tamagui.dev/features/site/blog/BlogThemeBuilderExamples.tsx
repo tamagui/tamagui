@@ -5,38 +5,38 @@ const PaletteExample = ({
   showNegativeIndices,
   theme,
 }: {
-  showIndices?: boolean
-  showNegativeIndices?: boolean
-  theme?: string
+  showIndices?: boolean | undefined
+  showNegativeIndices?: boolean | undefined
+  theme?: string | undefined
 }) => (
   <YStack gap="$2">
     {theme && (
-      <XStack ai="center" theme={theme as any} gap="$4">
+      <XStack items="center" theme={theme as any} gap="$4">
         <Separator />
-        <Paragraph ta="center" size="$2" color="$color10">
+        <Paragraph text="center" size="$2" color="$color10">
           {theme[0].toUpperCase() + theme.slice(1)}
         </Paragraph>
         <Separator />
       </XStack>
     )}
     {showNegativeIndices && (
-      <XStack br="$5" ov="hidden">
+      <XStack rounded="$5" overflow="hidden">
         {new Array(12).fill(0).map((_, i) => (
-          <Paragraph f={1} ta="center" key={i}>
+          <Paragraph flex={1} text="center" key={i}>
             -{11 - i}
           </Paragraph>
         ))}
       </XStack>
     )}
-    <XStack br="$5" ov="hidden" bw={1} bc="$borderColor">
+    <XStack rounded="$5" overflow="hidden" borderWidth={1} borderColor="$borderColor">
       {new Array(12).fill(0).map((_, i) => (
-        <XStack key={i} h={40} f={1} bg={`$${theme || 'blue'}${i}` as any} />
+        <XStack key={i} height={40} flex={1} bg={`$${theme || 'blue'}${i}` as any} />
       ))}
     </XStack>
     {showIndices && (
-      <XStack br="$5" ov="hidden">
+      <XStack rounded="$5" overflow="hidden">
         {new Array(12).fill(0).map((_, i) => (
-          <Paragraph f={1} ta="center" key={i}>
+          <Paragraph flex={1} text="center" key={i}>
             {i}
           </Paragraph>
         ))}
@@ -59,7 +59,7 @@ export const ExamplePalette = ({
   return (
     <YStack my="$4" gap="$2">
       {showLabels && (
-        <XStack jc="space-between">
+        <XStack justify="space-between">
           <Paragraph size="$2" theme="alt2">
             Background
           </Paragraph>
@@ -80,7 +80,7 @@ export const ExamplePalette = ({
 export const ExampleTemplate = () => {
   return (
     <YStack my="$4" gap="$2">
-      <XStack jc="space-between">
+      <XStack justify="space-between">
         <Paragraph size="$2" theme="alt2">
           Background
         </Paragraph>

@@ -24,7 +24,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Responsive styles`,
@@ -39,7 +39,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Pseudo styles`,
@@ -54,7 +54,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Tokens`,
@@ -69,7 +69,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Themes`,
@@ -84,7 +84,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Nesting`,
@@ -105,7 +105,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Typed variants`,
@@ -120,7 +120,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `className, tag, etc`,
@@ -135,7 +135,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Animation drivers`,
@@ -150,7 +150,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Shorthands`,
@@ -165,7 +165,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           fontSize: 50,
-                          marginTop: 60,
+                          mt: 60,
                           display: 'inline-flex',
                         },
                         content: `Unified RN API's`,

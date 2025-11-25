@@ -1,0 +1,111 @@
+name: Test iOS Native (Maestro)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  test_container_app_path: code/kitchen-sink
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-ios-kitchensink-app.yml
+    with:
+      configuration: Debug
+    secrets: inherit
+
+  test:
+    name: Run Maestro Tests
+    needs: build
+    runs-on: macos-14
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ${{ env.test_container_app_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+
+      - name: Restore Built App from Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.build.outputs.built-app-cache-key }}
+          path: ${{ needs.build.outputs.built-app-path }}
+          fail-on-cache-miss: true
+
+      - name: Install Maestro
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Boot iOS Simulator
+        working-directory: ${{ github.workspace }}
+        run: |
+          # List available simulators and boot iPhone 15
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 15") | .udid' | head -1)
+          if [ -z "$DEVICE_ID" ]; then
+            echo "iPhone 15 not found, using first available iPhone"
+            DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name | contains("iPhone")) | .udid' | head -1)
+          fi
+          echo "Booting simulator: $DEVICE_ID"
+          xcrun simctl boot "$DEVICE_ID" || true
+          # Wait for simulator to be ready
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+
+      - name: Install App on Simulator
+        working-directory: ${{ github.workspace }}
+        run: |
+          xcrun simctl install booted "${{ needs.build.outputs.built-app-path }}"
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Start Metro Bundler
+        run: |
+          EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+          # Wait for Metro to be ready
+          echo "Waiting for Metro to start..."
+          for i in {1..30}; do
+            if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
+              echo "Metro is responding!"
+              break
+            fi
+            echo "Waiting for Metro... ($i/30)"
+            sleep 2
+          done
+
+      - name: Pre-warm Bundle
+        run: |
+          # Pre-warm the JS bundle to avoid timeout on first app launch
+          echo "Pre-warming bundle..."
+          MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
+          BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
+          echo "Fetching bundle from: $BUNDLE_URL"
+          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
+          echo "Bundle pre-warm complete"
+
+      - name: Warm up App
+        run: |
+          # Run OpenApp first to warm up the app and ensure bundle loads
+          maestro test ./flows/OpenApp.yaml --no-ansi || true
+
+      - name: Run Maestro Tests
+        run: |
+          # Run tests serially to avoid race conditions with app launches
+          maestro test ./flows --exclude-tags=util --shards=1 --no-ansi
+
+      - name: Upload Maestro Artifacts on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-artifacts
+          path: |
+            ~/.maestro/tests/**/*

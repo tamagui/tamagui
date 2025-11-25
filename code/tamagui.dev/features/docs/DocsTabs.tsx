@@ -2,14 +2,14 @@ import { useStore, useStoreSelector } from '@tamagui/use-store'
 import { forwardRef } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, Tabs, XStack, styled, withStaticProperties } from 'tamagui'
-import { type Href, router, useGlobalSearchParams } from 'one'
+import { type Href, router, useParams } from 'one'
 
 class TabsStore {
   active = 'styled'
 }
 
 function TabsComponent(props: TabsProps) {
-  const params = useGlobalSearchParams()
+  const params = useParams()
   const store = useStore(TabsStore)
 
   const id = props.id || 'value'
@@ -20,14 +20,10 @@ function TabsComponent(props: TabsProps) {
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
     router.replace(url as Href)
-    // undefined, {
-    //   scroll: false,
-    //   shallow: true,
-    // })
   }
 
   const value =
-    typeof params[id] === 'string' ? (params[id] as string) : props.defaultValue
+    typeof params[id] === 'string' ? (params[id] as string) : (props.defaultValue ?? '')
 
   return (
     <Tabs
@@ -54,7 +50,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       ref={ref as any}
       elevation="$0.5"
       px="$5"
-      pe="auto"
+      pointerEvents="auto"
       {...props}
       focusStyle={{
         outlineColor: '$outlineColor',
@@ -62,12 +58,12 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
         outlineStyle: 'solid',
       }}
       {...(isActive && {
-        backgroundColor: '$color7',
+        bg: '$color7',
         hoverStyle: {
-          backgroundColor: '$color7',
+          bg: '$color7',
         },
         focusStyle: {
-          backgroundColor: '$color7',
+          bg: '$color7',
         },
       })}
     >
@@ -77,22 +73,22 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 })
 
 const TabsListFrame = styled(XStack, {
-  pe: 'none',
-  maxWidth: '50%',
-  marginTop: -30,
-  justifyContent: 'flex-end',
-  alignSelf: 'flex-end',
-  top: 70,
-  marginRight: 0,
-  marginBottom: 0,
-  zIndex: 10000,
+  pointerEvents: 'none',
+  maxW: '50%',
+  mt: -30,
+  justify: 'flex-end',
+  self: 'flex-end',
+  t: 70,
+  mr: 0,
+  mb: 0,
+  z: 10000,
   position: 'sticky' as any,
-  right: 0,
+  r: 0,
 
   $sm: {
-    minWidth: '100%',
-    alignSelf: 'stretch',
-    marginTop: 0,
+    minW: '100%',
+    self: 'stretch',
+    mt: 0,
   },
 })
 

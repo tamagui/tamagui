@@ -27,8 +27,7 @@ const QuickNavLink = ({ href, level, showSeparator, ...rest }: QuickNavLinkProps
 
   return (
     <YStack>
-      <XStack ai="center" pl={indentLevel * 16} gap="$2">
-        {/* {isSubItem && <Circle size={4} bg="$color8" flexShrink={0} />} */}
+      <XStack items="center" pl={indentLevel * 16} gap="$2">
         <a
           onClick={(e) => e.stopPropagation()}
           href={href as any}
@@ -48,7 +47,7 @@ const QuickNavLink = ({ href, level, showSeparator, ...rest }: QuickNavLinkProps
       </XStack>
 
       {showSeparator && isSubItem && (
-        <View h={1} bg="$borderColor" o={0.6} mx="$2" my="$2" />
+        <View height={1} bg="$borderColor" opacity={0.6} mx="$2" my="$2" />
       )}
     </YStack>
   )
@@ -77,32 +76,32 @@ export function DocsQuickNav() {
       $gtLg={{
         display: 'flex',
         width: 280,
-        flexShrink: 0,
-        zIndex: 1,
+        shrink: 0,
+        z: 1,
         position: 'fixed' as any,
-        left: '50%',
-        top: 140,
-        marginLeft: 450,
+        l: '50%',
+        t: 140,
+        ml: 450,
       }}
     >
       <YStack gap="$5">
-        <XStack ai="center" gap="$5">
+        <XStack items="center" gap="$5">
           <Link
             href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
             target="_blank"
           >
-            <SizableText size="$3" ff="$mono">
+            <SizableText size="$3" fontFamily="$mono">
               .md
             </SizableText>
           </Link>
 
-          <Separator minHeight={20} vertical />
+          <Separator minH={20} vertical />
 
           <Link
             target="_blank"
             href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
           >
-            <SizableText size="$3" ff="$mono">
+            <SizableText size="$3" fontFamily="$mono">
               llms.txt
             </SizableText>
           </Link>
@@ -118,11 +117,17 @@ export function DocsQuickNav() {
           display={headings.length === 0 ? 'none' : 'flex'}
           gap="$2"
         >
-          <H4 ff="$mono" size="$5" mb="$2" theme="alt1" id="site-quick-nav-heading">
+          <H4
+            fontFamily="$mono"
+            size="$5"
+            mb="$2"
+            theme="alt1"
+            id="site-quick-nav-heading"
+          >
             Contents
           </H4>
 
-          <ScrollView maxHeight="calc(100vh - var(--space-25))">
+          <ScrollView maxH="calc(100vh - var(--space-25))">
             <YStack py="$2" gap="$1">
               {headings.map(({ id, nodeName, innerText }, index) => {
                 const level = getLevel(nodeName)

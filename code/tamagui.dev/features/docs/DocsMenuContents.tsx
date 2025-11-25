@@ -1,12 +1,9 @@
-import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
 import { H4, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 import { DocsNavHeading } from './DocsNavHeading'
-import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
+import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
-
-// const fuz = new uFuzzy({})
 
 const sections = {
   core: docsRoutes
@@ -29,7 +26,7 @@ const sections = {
 const allItems = [
   {
     children: (
-      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+      <H4 size="$4" opacity={0.5} display="inline-flex" px="$3" mt="$4" pb="$3">
         Style
       </H4>
     ),
@@ -39,7 +36,7 @@ const allItems = [
 
   {
     children: (
-      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+      <H4 size="$4" opacity={0.5} display="inline-flex" px="$3" mt="$4" pb="$3">
         Compiler
       </H4>
     ),
@@ -49,7 +46,7 @@ const allItems = [
 
   {
     children: (
-      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+      <H4 size="$4" opacity={0.5} display="inline-flex" px="$3" mt="$4" pb="$3">
         UI
       </H4>
     ),
@@ -57,118 +54,17 @@ const allItems = [
   ...sections.ui,
 ]
 
-// const sectionStrings = {
-//   docs: sections.docs.map((s) =>
-//     `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
-//   ),
-//   ui: sections.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
-// }
-
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
 }: { inMenu?: boolean; section?: keyof typeof sections }) {
-  // const store = useStore(DocsItemsStore)
   const { currentPath, section: docsSection } = useDocsMenu()
   const section = propsSection ?? docsSection
   const items = section ? sections[section] : allItems
 
-  // const [items, setItems] = React.useState(activeItems)
-  // const isFiltered = items !== activeItems
-
-  // React.useEffect(() => {
-  //   setItems(activeItems)
-  // }, [section])
-
   return (
     <>
-      {/* <Input
-        size="$4"
-        w="100%"
-        bw={0}
-        bbw={0.5}
-        textContentType="none"
-        autoCapitalize="none"
-        autoCorrect={false}
-        br="$0"
-        // @ts-ignore
-        name="Search"
-        dsp="none"
-        $pointerFine={{
-          dsp: 'flex',
-        }}
-        borderColor="$color4"
-        backgroundColor="transparent"
-        focusStyle={{
-          outlineWidth: 0,
-          borderColor: '$color6',
-        }}
-        hoverStyle={{
-          borderColor: '$color6',
-        }}
-        autoComplete="off"
-        placeholder="Search..."
-        // @ts-ignore
-        placeholderTextColor="transparent"
-        onKeyPress={(e) => {
-          const event = e.nativeEvent
-          if (event.key === 'Escape') {
-            // closePopover()
-          }
-          if (event.key === 'ArrowUp') {
-            e.preventDefault()
-            store.index = Math.max(0, store.index - 1)
-          }
-          if (event.key === 'ArrowDown') {
-            e.preventDefault()
-            store.index = (store.index + 1) % (items.length - 1)
-          }
-          if (event.key === ' ' || event.key === 'Enter') {
-            e.preventDefault()
-            const found = items[store.index]
-            if (found) {
-              setItems(activeItems)
-              setTimeout(() => {
-                router.push(found.page?.route)
-              })
-            }
-          }
-        }}
-        onChangeText={(next) => {
-          if (!next) {
-            setItems(activeItems)
-            return
-          }
-          const [indexes] = fuz.search(sectionStrings[section], next)
-          if (!indexes?.length) {
-            setItems(activeItems)
-            return
-          }
-          const found = indexes?.map((i) => activeItems[i]) || []
-          setItems(found)
-          store.index = 0
-        }}
-      /> */}
-
-      {/* 
-      {!inMenu && section === 'docs' && (
-        <Link href="/docs/intro/1.0.01" index={-1}>
-          <XStack p="$4">
-            <SizableText>Tamagui UI</SizableText>
-          </XStack>
-        </Link>
-      )} */}
-
-      <div
-        style={{ width: '100%' }}
-        aria-label="Docs Menu"
-        onMouseEnter={() => {
-          getStore(DocsItemsStore).hovered = true
-        }}
-        onMouseLeave={() => {
-          getStore(DocsItemsStore).hovered = false
-        }}
-      >
+      <div style={{ width: '100%' }} aria-label="Docs Menu">
         {React.useMemo(() => {
           return (
             <>
@@ -189,7 +85,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                     pending={page['pending']}
                     key={`${page.route}${index}`}
                     icon={page.icon}
-                    index={index}
                   >
                     {page.title}
                   </DocsRouteNavItem>
@@ -214,16 +109,21 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                       ) : null}
                       {section.title && (
                         <XStack
-                          fd={inMenu ? 'row-reverse' : 'row'}
+                          flexDirection={inMenu ? 'row-reverse' : 'row'}
                           py="$2"
                           px="$4"
-                          ai="center"
+                          items="center"
                           gap="$3"
                           mt="$4"
                         >
-                          <Separator bc="$color02" o={0.25} my="$2" />
+                          <Separator borderColor="$color02" opacity={0.25} my="$2" />
                           <Theme name="gray">
-                            <Paragraph ff="$mono" size="$4" fow="600" color="$color10">
+                            <Paragraph
+                              fontFamily="$mono"
+                              size="$4"
+                              fontWeight="600"
+                              color="$color10"
+                            >
                               {section.title}
                             </Paragraph>
                           </Theme>
@@ -238,7 +138,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                   return (
                     <React.Fragment key={`${page.route}${index}`}>
                       {contents}
-                      {/* {!isFiltered && <Spacer />} */}
                     </React.Fragment>
                   )
                 }

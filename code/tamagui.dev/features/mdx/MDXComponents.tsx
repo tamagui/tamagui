@@ -98,8 +98,8 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
 const TableFrame = styled(YStack, {
   borderWidth: 1,
   borderColor: '$borderColor',
-  br: '$4',
-  ov: 'hidden',
+  rounded: '$4',
+  overflow: 'hidden',
   my: '$4',
 })
 
@@ -107,11 +107,11 @@ const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        <TableCell size="$4" bg="$color1" fow="500" color="$color9">
+        <TableCell size="$4" bg="$color1" fontWeight="500" color="$color9">
           {heading}
         </TableCell>
       )}
-      <XStack minWidth="100%" ai="stretch">
+      <XStack minW="100%" items="stretch">
         {children}
       </XStack>
     </TableFrame>
@@ -151,15 +151,15 @@ const code = (props) => {
 }
 
 const TableCell = styled(Paragraph, {
-  bbw: 1,
-  bbc: '$borderColor',
-  fd: 'row',
-  ai: 'center',
-  pos: 'relative',
-  f: 1,
-  jc: 'center',
-  ta: 'center',
-  h: '$4',
+  borderBottomWidth: 1,
+  borderBottomColor: '$borderColor',
+  flexDirection: 'row',
+  items: 'center',
+  position: 'relative',
+  flex: 1,
+  justify: 'center',
+  text: 'center',
+  height: '$4',
   p: '$2',
   px: '$3',
   size: '$5',
@@ -180,11 +180,11 @@ const TableCell = styled(Paragraph, {
 })
 
 const TableCol = styled(YStack, {
-  brw: 1,
-  brc: '$borderColor',
-  f: 1,
+  borderRightWidth: 1,
+  borderRightColor: '$borderColor',
+  flex: 1,
   mr: -1,
-  fd: 'column',
+  flexDirection: 'column',
 })
 
 const TableHighlight = styled(YStack, {
@@ -272,7 +272,7 @@ const componentsIn = {
     const CopyIcon2 = tamaguiCmdClip.hasCopied ? Check : Copy
 
     return (
-      <XStack fw="wrap" ai="center" gap="$4">
+      <XStack flexWrap="wrap" items="center" gap="$4">
         {name && (
           <ThemeTint>
             <TooltipSimple
@@ -284,15 +284,15 @@ const componentsIn = {
               label={hasCopied ? 'Copied' : 'Copy to clipboard'}
             >
               <XStack
-                ai="center"
+                items="center"
                 gap="$2"
                 my="$1"
                 py="$1"
                 px="$2"
-                als="flex-start"
+                self="flex-start"
                 bg="$color3"
-                br="$3"
-                cur="pointer"
+                rounded="$3"
+                cursor="pointer"
                 onPress={onCopy}
               >
                 <SizableText color="$color11">{transformedCommand}</SizableText>
@@ -313,8 +313,8 @@ const componentsIn = {
         {(isInstallCommand || isExecCommand || isCreateCommand) && (
           <>
             <TooltipSimple label="« Individually or all-in-one »">
-              <XStack ai="center">
-                <SizableText pe="none" size="$3">
+              <XStack items="center">
+                <SizableText pointerEvents="none" size="$3">
                   or
                 </SizableText>
                 <Asterisk size={12} y={-8} />
@@ -331,15 +331,15 @@ const componentsIn = {
                 label={tamaguiCmdClip.hasCopied ? 'Copied' : 'Copy to clipboard'}
               >
                 <XStack
-                  ai="center"
+                  items="center"
                   gap="$2"
                   my="$1"
                   py="$1"
                   px="$2"
-                  als="flex-start"
+                  self="flex-start"
                   bg="$color3"
-                  br="$3"
-                  cur="pointer"
+                  rounded="$3"
+                  cursor="pointer"
                   onPress={tamaguiCmdClip.onCopy}
                 >
                   <SizableText color="$color11">{tamaguiCommand}</SizableText>
@@ -363,14 +363,14 @@ const componentsIn = {
             const isActive = selectedPackageManager === c
             return (
               <SizableText
-                cur="pointer"
+                cursor="pointer"
                 onPress={() => {
                   setPackageManager(c)
                 }}
                 color="$color12"
-                o={isActive ? 0.8 : 0.5}
+                opacity={isActive ? 0.8 : 0.5}
                 hoverStyle={{
-                  o: 0.8,
+                  opacity: 0.8,
                 }}
                 key={c}
               >
@@ -391,10 +391,10 @@ const componentsIn = {
         mb="$3"
         px="$6"
         py="$2"
-        br="$6"
-        bw={1}
-        o={0.8}
-        bc="$borderColor"
+        rounded="$6"
+        borderWidth={1}
+        opacity={0.8}
+        borderColor="$borderColor"
         {...props}
       />
     )
@@ -405,10 +405,10 @@ const componentsIn = {
   Beta: () => (
     <Button
       aria-label="Beta blog post"
-      pe="none"
+      pointerEvents="none"
       size="$2"
       theme="pink"
-      pos="absolute"
+      position="absolute"
       t={-15}
       r={-25}
       rotate="5deg"
@@ -432,20 +432,7 @@ const componentsIn = {
     )
   },
 
-  Note: (props) => (
-    <YStack
-      tag="aside"
-      mt="$5"
-      mb="$5"
-      borderRadius="$3"
-      // & & p
-      // fontSize: '$3',
-      // color: '$slate11',
-      // lineHeight: '23px',
-      // margin: 0,
-      {...props}
-    />
-  ),
+  Note: (props) => <YStack tag="aside" mt="$5" mb="$5" borderRadius="$3" {...props} />,
 
   Notice,
 
@@ -455,7 +442,7 @@ const componentsIn = {
 
   h2: ({ children, ...props }) => (
     <H2
-      pos="relative"
+      position="relative"
       width={`fit-content` as any}
       pt="$6"
       mb="$3"
@@ -469,8 +456,8 @@ const componentsIn = {
   h3: ({ children, id, ...props }) => (
     <LinkHeading pt="$6" mb="$2" id={id}>
       <H3
-        maxWidth="100%"
-        pos="relative"
+        maxW="100%"
+        position="relative"
         width={`fit-content` as any}
         id={id}
         opacity={0.7}
@@ -487,7 +474,7 @@ const componentsIn = {
 
   h4: (props) => (
     <H4
-      pos="relative"
+      position="relative"
       width={`fit-content` as any}
       mt="$5"
       mb="$2"
@@ -511,7 +498,6 @@ const componentsIn = {
   a: ({ href = '', children, ...props }) => {
     return (
       <Link className="link" href={href as Href} asChild>
-        {/* @ts-ignore */}
         <Paragraph
           tag="a"
           // @ts-ignore
@@ -575,7 +561,7 @@ const componentsIn = {
   img: ({ ...props }) => (
     <YStack tag="span" my="$6">
       {/* TODO make this a proper <Image /> component */}
-      <YStack tag="img" {...props} maxWidth="100%" />
+      <YStack tag="img" {...props} maxW="100%" />
     </YStack>
   ),
 
@@ -594,17 +580,17 @@ const componentsIn = {
       <OffsetBox
         size={size}
         tag="figure"
-        f={1}
+        flex={1}
         mx={0}
         mb="$3"
-        ai="center"
-        jc="center"
-        ov="hidden"
+        items="center"
+        justify="center"
+        overflow="hidden"
         {...(overlap && {
           mt: '$-6',
         })}
       >
-        <Image maxWidth="100%" {...props} />
+        <Image maxW="100%" {...props} />
         {!!children && (
           <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
             {children}
@@ -661,15 +647,15 @@ const componentsIn = {
         ml="$3"
         borderLeftWidth={1}
         borderColor="$borderColor"
-        jc="center"
+        justify="center"
         {...props}
       >
         <Paragraph
           fontFamily="$silkscreen"
           whiteSpace="revert"
           size="$8"
-          lh="$9"
-          fow="300"
+          lineHeight="$9"
+          fontWeight="300"
           color="$color"
           opacity={0.65}
         >
@@ -693,7 +679,7 @@ const componentsIn = {
 
   GroupDisabledDemo: () => {
     return (
-      <XGroup als="center" disabled>
+      <XGroup items="center" disabled>
         <XGroup.Item>
           <Button>First</Button>
         </XGroup.Item>
@@ -716,11 +702,11 @@ const componentsIn = {
   SponsorNotice: () => {
     return (
       <NoticeFrame theme="red">
-        <YStack maw="100%" gap="$4">
+        <YStack maxW="100%" gap="$4">
           <H4 color="$color10" fontFamily="$silkscreen">
             👋 Hey! Listen!
           </H4>
-          <YStack ov="hidden" f={1} o={0.85} gap="$4">
+          <YStack overflow="hidden" flex={1} opacity={0.85} gap="$4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
               <a href="https://x.com/natebirdman" target="_blank" rel="noreferrer">
@@ -825,7 +811,7 @@ const componentsIn = {
     const clipBoard = useClipboard(`npm create tamagui@latest`)
 
     return (
-      <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
+      <XStack gap="$4" flex={1} flexWrap="wrap" pt="$3" my="$5">
         <>
           <ThemeTint>
             <Link asChild href="/docs/intro/installation">
@@ -833,7 +819,7 @@ const componentsIn = {
                 tag="a"
                 animation="quickest"
                 animateOnly={['transform']}
-                f={1}
+                flex={1}
                 y={0}
                 hoverStyle={{ y: -2, bg: '$backgroundHover' }}
                 pressStyle={{ y: 2, bg: '$color2' }}
@@ -848,12 +834,12 @@ const componentsIn = {
                 </Card.Header>
 
                 <Card.Footer>
-                  <ChevronRight pos="absolute" b="$4" r="$4" color="$color11" />
+                  <ChevronRight position="absolute" b="$4" r="$4" color="$color11" />
                 </Card.Footer>
               </Card>
             </Link>
 
-            <Card f={1}>
+            <Card flex={1}>
               <Card.Header gap="$2">
                 <H4 size="$4" color="$color9">
                   Quick start
@@ -864,15 +850,15 @@ const componentsIn = {
               </Card.Header>
 
               <Card.Footer p="$6" pt={0}>
-                <XStack position="relative" ai="center" gap="$4" f={1}>
-                  <Code f={1} bg="$color4" p="$3" br="$4" size="$5">
+                <XStack position="relative" items="center" gap="$4" flex={1}>
+                  <Code flex={1} bg="$color4" p="$3" rounded="$4" size="$5">
                     npm create tamagui@latest
                   </Code>
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
                     size="$2"
-                    right="$3"
+                    r="$3"
                     display="inline-flex"
                     icon={clipBoard.hasCopied ? CheckCircle : Copy}
                     onPress={() => {
@@ -902,19 +888,19 @@ const componentsIn = {
       <YStack
         tag="aside"
         gap="$2"
-        br="$4"
+        rounded="$4"
         p="$5"
         mx="$-2"
         mt="$2"
-        pos="relative"
+        position="relative"
         {...(cutoff && {
           my: '$4',
           px: '$5',
-          bw: 1,
+          borderWidth: 1,
           pb: '$10',
           bg: '$color1',
-          bc: '$borderColor',
-          maxHeight: 300,
+          borderColor: '$borderColor',
+          maxH: 300,
           overflow: 'hidden',
         })}
         {...props}
@@ -929,16 +915,16 @@ const componentsIn = {
 
         {shouldCutoff && cutoff && (
           <LinearGradient
-            pos="absolute"
+            position="absolute"
             b={0}
             l={0}
             r={0}
             height={200}
             colors={['$background0', '$background']}
-            zi={1000}
+            z={1000}
           >
-            <Spacer f={1} />
-            <Button onPress={() => setCutoff(!cutoff)} als="center">
+            <Spacer flex={1} />
+            <Button onPress={() => setCutoff(!cutoff)} self="center">
               Show more
             </Button>
             <Spacer size="$4" />
@@ -1004,7 +990,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
     id={id}
     data-id={id}
     display="inline-flex"
-    ai="center"
+    items="center"
     gap="$4"
     {...props}
   >

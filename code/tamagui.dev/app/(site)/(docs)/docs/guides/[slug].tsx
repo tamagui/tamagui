@@ -35,8 +35,8 @@ export default function DocGuidesPage() {
   return (
     <>
       <HeadInfo
-        title={`${frontmatter.title}`}
-        description={frontmatter.description}
+        title={frontmatter.title}
+        description={frontmatter.description || ''}
         openGraph={{
           images: [
             {

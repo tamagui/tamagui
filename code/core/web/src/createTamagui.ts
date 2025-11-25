@@ -2,6 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import { configListeners, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
+import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import { getAllRules, scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
@@ -287,7 +288,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const config: TamaguiInternalConfig = {
     fonts: {},
     fontLanguages: [],
-    animations: {} as any,
+    animations: defaultAnimationDriver,
     media: {},
     ...configIn,
     defaultProps,
@@ -374,12 +375,8 @@ function getThemesDeduped(
 
     // ensure each theme object unique for dedupe
     // is ThemeParsed because we call ensureThemeVariable
-    const theme = { ...rawTheme } as any as ThemeParsed
-
-    // automatically merge color tokens into themes
-    if (colorTokens) {
-      Object.assign(theme, colorTokens)
-    }
+    // color tokens are spread first as fallbacks, theme values take precedence
+    const theme = { ...colorTokens, ...rawTheme } as any as ThemeParsed
 
     // parse into variables
     for (const key in theme) {

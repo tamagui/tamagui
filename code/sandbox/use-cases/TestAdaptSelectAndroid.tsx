@@ -39,13 +39,13 @@ export default function TestSelectAdapt(props: SelectProps) {
 
       <Select.Content zIndex={200000}>
         <Select.ScrollUpButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
         </Select.ScrollUpButton>
@@ -56,7 +56,7 @@ export default function TestSelectAdapt(props: SelectProps) {
           // animateOnly={['transform', 'opacity']}
           // enterStyle={{ o: 0, y: -10 }}
           // exitStyle={{ o: 0, y: 10 }}
-          minWidth={200}
+          minW={200}
         >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
@@ -85,12 +85,12 @@ export default function TestSelectAdapt(props: SelectProps) {
           {props.native && (
             <YStack
               position="absolute"
-              right={0}
-              top={0}
-              bottom={0}
-              alignItems="center"
-              justifyContent="center"
-              width={'$4'}
+              r={0}
+              t={0}
+              b={0}
+              items="center"
+              justify="center"
+              width="$4"
               pointerEvents="none"
             >
               <ChevronDown
@@ -101,13 +101,13 @@ export default function TestSelectAdapt(props: SelectProps) {
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
         </Select.ScrollDownButton>

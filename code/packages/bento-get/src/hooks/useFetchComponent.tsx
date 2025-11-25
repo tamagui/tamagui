@@ -12,12 +12,14 @@ export const useFetchComponent = () => {
   const fetcher = async (url: string) => {
     debugLog('fetcher', url)
     debugLog({ accessToken })
-    const res = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken || ''}`,
-      },
-    })
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    }
+    // Only send Authorization header if we have a token
+    if (accessToken) {
+      headers['Authorization'] = `Bearer ${accessToken}`
+    }
+    const res = await fetch(url, { headers })
 
     if (!res.ok) {
       const error = new Error('An error occurred while fetching the data.') as Error & {

@@ -9,7 +9,18 @@ export const GET: Endpoint = async (req) => {
   const query = getQuery(req)
   const fileName = Array.isArray(query.fileName) ? query.fileName[0] : query.fileName
 
-  // Extract the token from the Authorization header
+  // Check if it's an OSS component first - no auth required for OSS
+  if (OSS_COMPONENTS.includes(fileName)) {
+    return Response.json(
+      await getBentoComponentCategory({
+        categoryPath: Array.isArray(query.section) ? query.section[0] : query.section,
+        categorySectionPath: Array.isArray(query.part) ? query.part[0] : query.part,
+        fileName: fileName,
+      })
+    )
+  }
+
+  // For non-OSS components, require authentication
   const authHeader = req.headers.get('authorization')
   const token = authHeader?.split(' ')[1]
 
@@ -21,17 +32,6 @@ export const GET: Endpoint = async (req) => {
   const { data: user, error } = await supabaseAdmin.auth.getUser(token)
   if (error || !user) {
     return Response.json({ error: 'invalid_token' }, { status: 401 })
-  }
-
-  // Check if it's an OSS component
-  if (OSS_COMPONENTS.includes(fileName)) {
-    return Response.json(
-      await getBentoComponentCategory({
-        categoryPath: Array.isArray(query.section) ? query.section[0] : query.section,
-        categorySectionPath: Array.isArray(query.part) ? query.part[0] : query.part,
-        fileName: fileName,
-      })
-    )
   }
 
   // Check Bento access

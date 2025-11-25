@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.138.1",
+  "version": "1.138.5",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/index.cjs",
@@ -35,7 +35,6 @@
     "express": "^4.18.2",
     "fs-extra": "^11.2.0",
     "get-port": "^7.0.0",
-    "kill-port": "^2.0.1",
     "marked": "^14.1.2",
     "marked-terminal": "^5.2.0",
     "micromatch": "^4.0.7",

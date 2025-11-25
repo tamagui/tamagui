@@ -6,7 +6,7 @@ import {
   useToastController,
   useToastState,
 } from '@tamagui/toast'
-import { AnimatePresence, Theme, YStack } from 'tamagui'
+import { Theme, YStack } from 'tamagui'
 
 export let toastController: ReturnType<typeof useToastController>
 
@@ -43,7 +43,7 @@ const ToastHandler = () => {
         enterStyle={{ opacity: 0, y: 50 }}
         exitStyle={{ opacity: 0, y: 50 }}
         y={-20}
-        bottom={0}
+        b={0}
         opacity={1}
         gap={0}
         elevation="$4"

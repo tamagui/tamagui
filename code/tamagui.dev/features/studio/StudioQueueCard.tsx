@@ -96,16 +96,16 @@ const QueueCardFrame = ({
         glow3.parentRef as any
       )}
       p="$4"
-      br="$4"
-      bw={4}
-      bc="$color2"
-      w={480}
-      h={280}
-      als="center"
-      ov="hidden"
+      rounded="$4"
+      borderWidth={4}
+      borderColor="$color2"
+      width={480}
+      height={280}
+      self="center"
+      overflow="hidden"
       elevation="$4"
     >
-      <YStack fullscreen br={7} bw={1} bc="$borderColor" />
+      <YStack fullscreen rounded={7} borderWidth={1} borderColor="$borderColor" />
 
       <YStack className="rotate-slow-right">{glow.Component()}</YStack>
       <YStack className="rotate-slow-left">{glow2.Component()}</YStack>
@@ -116,16 +116,16 @@ const QueueCardFrame = ({
       ].map((deg) => (
         <YStack
           key={deg}
-          pos="absolute"
+          position="absolute"
           rotate={`${deg}deg`}
           t="$5"
           l="$5"
           r="$5"
           b="$5"
-          br="$3"
-          bc="$color8"
-          o={0.2}
-          bw={1}
+          rounded="$3"
+          borderColor="$color8"
+          opacity={0.2}
+          borderWidth={1}
           scale={1.3}
         />
       ))}
@@ -141,15 +141,23 @@ const QueueCardFrame = ({
 
       <Spacer flex={1} />
 
-      <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
+      <Paragraph
+        position="absolute"
+        size="$12"
+        b="$6"
+        l="$15"
+        scale={4}
+        opacity={0.015}
+        fontWeight="900"
+      >
         {place}
       </Paragraph>
 
-      <XStack pb="$1" ai="flex-end">
-        <Paragraph als="flex-start" mr="$1" size="$6" o={0.35} ml="$-1">
+      <XStack pb="$1" items="flex-end">
+        <Paragraph self="flex-start" mr="$1" size="$6" opacity={0.35} ml="$-1">
           #
         </Paragraph>
-        <Paragraph my="$-3" size="$12" fow="900">
+        <Paragraph my="$-3" size="$12" fontWeight="900">
           {place}
         </Paragraph>
         <Paragraph ml="$3" theme="alt2">

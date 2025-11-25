@@ -10,9 +10,9 @@ import {
 const Wrapper = styled(XStack, {
   p: '$4',
   py: '$8',
-  w: '100%',
-  jc: 'center',
-  ai: 'center',
+  width: '100%',
+  justify: 'center',
+  items: 'center',
 })
 
 export function pickers({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
@@ -40,8 +40,6 @@ export function pickers({ isProUser, showAppropriateModal }: BentoShowcaseContex
 export function pickersGetComponentCodes() {
   return {
     codes: {
-      // ImagePicker: getCode('ImagePicker'),
-      // UploadFile: getCode('UploadFile'),
       ImagePicker: '',
       UploadFile: '',
     },

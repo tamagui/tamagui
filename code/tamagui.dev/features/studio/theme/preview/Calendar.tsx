@@ -43,9 +43,9 @@ export const Calendar = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack flex={1} ai="center">
+      <YStack flex={1} items="center">
         <YStack>
-          <XStack jc="space-between" ai="center" f={1} width="100%" px="$4">
+          <XStack justify="space-between" items="center" flex={1} width="100%" px="$4">
             <Button
               size="$2"
               icon={ChevronLeft}
@@ -105,11 +105,11 @@ const LabelCell = ({ children }: { children: React.ReactNode }) => {
         width: '$2',
         height: '$2',
       }}
-      userSelect="none"
-      jc="center"
-      ai="center"
+      select="none"
+      justify="center"
+      items="center"
     >
-      <SizableText $md={{ size: '$2' }} size="$4" ta="center">
+      <SizableText $md={{ size: '$2' }} size="$4" text="center">
         {children}
       </SizableText>
     </YStack>
@@ -127,16 +127,16 @@ const DayCell = ({ day, isDisabled }: { day: number; isDisabled?: boolean }) => 
         height: '$2',
       }}
       cursor={isDisabled ? 'default' : 'pointer'}
-      userSelect="none"
-      hoverStyle={isDisabled ? {} : { backgroundColor: '$backgroundHover' }}
+      select="none"
+      hoverStyle={isDisabled ? {} : { bg: '$backgroundHover' }}
       disabled={!!isDisabled}
       opacity={isDisabled ? 0.5 : 1}
-      jc="center"
-      ai="center"
+      justify="center"
+      items="center"
       {...demoProps.borderRadiusProps}
       borderWidth={0}
     >
-      <SizableText size="$2" ta="center">
+      <SizableText size="$2" text="center">
         {day}
       </SizableText>
     </YStack>

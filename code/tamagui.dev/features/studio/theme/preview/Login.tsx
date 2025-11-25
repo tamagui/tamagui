@@ -36,12 +36,16 @@ export const LoginScreen = () => {
           borderBottomColor="$borderColor"
           pb="$4"
           gap="$3"
-          bbw="$0"
         >
-          <H4 {...demoProps.headingFontFamilyProps} ta="center">
+          <H4 {...demoProps.headingFontFamilyProps} text="center">
             Welcome Back!
           </H4>
-          <Paragraph ta="center" {...demoProps.panelDescriptionProps} o={0.5} size="$2">
+          <Paragraph
+            text="center"
+            {...demoProps.panelDescriptionProps}
+            opacity={0.5}
+            size="$2"
+          >
             Connect your git provider
           </Paragraph>
         </YStack>
@@ -50,8 +54,8 @@ export const LoginScreen = () => {
           <XStack {...demoProps.gapPropsMd}>
             <>
               <ButtonSimple
-                f={1}
-                fb={0}
+                flex={1}
+                flexBasis={0}
                 size="$3"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
@@ -60,8 +64,8 @@ export const LoginScreen = () => {
                 GitLab
               </ButtonSimple>
               <ButtonSimple
-                f={1}
-                fb={0}
+                flex={1}
+                flexBasis={0}
                 size="$3"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
@@ -72,13 +76,13 @@ export const LoginScreen = () => {
             </>
           </XStack>
 
-          <XStack my="$2" w="100%">
-            <XStack pos="absolute" l={0} r={0} ai="center" gap="$4">
-              <Separator f={1} />
-              <SizableText fontFamily="$heading" ta="center" theme="alt2" size="$1">
+          <XStack my="$2" width="100%">
+            <XStack position="absolute" l={0} r={0} items="center" gap="$4">
+              <Separator flex={1} />
+              <SizableText fontFamily="$heading" text="center" theme="alt2" size="$1">
                 or continue with
               </SizableText>
-              <Separator f={1} />
+              <Separator flex={1} />
             </XStack>
           </XStack>
 
@@ -90,7 +94,7 @@ export const LoginScreen = () => {
               <Input
                 placeholder="Username"
                 {...demoProps.borderRadiusProps}
-                backgroundColor="transparent"
+                bg="transparent"
               />
             </Fieldset>
 
@@ -101,7 +105,7 @@ export const LoginScreen = () => {
               <Input
                 placeholder="Password"
                 secureTextEntry
-                backgroundColor="transparent"
+                bg="transparent"
                 {...demoProps.borderRadiusProps}
               />
             </Fieldset>
