@@ -71,8 +71,31 @@ jobs:
       - name: Start Metro Bundler
         run: |
           EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
-          # Wait for Metro to be ready and bundle to warm up
-          sleep 60
+          # Wait for Metro to be ready
+          echo "Waiting for Metro to start..."
+          for i in {1..30}; do
+            if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
+              echo "Metro is responding!"
+              break
+            fi
+            echo "Waiting for Metro... ($i/30)"
+            sleep 2
+          done
+
+      - name: Pre-warm Bundle
+        run: |
+          # Pre-warm the JS bundle to avoid timeout on first app launch
+          echo "Pre-warming bundle..."
+          MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
+          BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
+          echo "Fetching bundle from: $BUNDLE_URL"
+          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
+          echo "Bundle pre-warm complete"
+
+      - name: Warm up App
+        run: |
+          # Run OpenApp first to warm up the app and ensure bundle loads
+          maestro test ./flows/OpenApp.yaml --no-ansi || true
 
       - name: Run Maestro Tests
         run: |
