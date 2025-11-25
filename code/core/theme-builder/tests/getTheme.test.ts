@@ -287,6 +287,45 @@ describe('theme-builder getTheme', () => {
     expect(themes.dark.borderWidth).toBe(1)
   })
 
+  // Issue #3546: accent theme extra values should override base theme values
+  test('createThemes accent extra values override base extra values', () => {
+    const lightPalette = ['#fff', '#eee', '#ddd', '#ccc', '#bbb', '#aaa', '#999', '#888', '#262626', '#444', '#333', '#000']
+    const accentPalette = ['#ff0000', '#ff1a1a', '#ff3333', '#ff4d4d', '#ff6666', '#ff8080', '#ff9999', '#ffb3b3', '#ffcccc', '#ffe6e6', '#fff0f0', '#ffffff']
+
+    const themes = createThemes({
+      base: {
+        palette: lightPalette,
+        extra: {
+          light: {
+            placeholder: '#262626', // base placeholder
+          },
+          dark: {
+            placeholder: '#ccc',
+          },
+        },
+      },
+      accent: {
+        palette: accentPalette,
+        extra: {
+          light: {
+            placeholder: '#ff0000', // accent placeholder should override
+          },
+          dark: {
+            placeholder: '#ff9999',
+          },
+        },
+      },
+    })
+
+    // Base themes should have base extra values
+    expect(themes.light.placeholder).toBe('#262626')
+    expect(themes.dark.placeholder).toBe('#ccc')
+
+    // Accent themes should have accent extra values, NOT base extra values
+    expect(themes.light_accent.placeholder).toBe('#ff0000')
+    expect(themes.dark_accent.placeholder).toBe('#ff9999')
+  })
+
   test('getTheme allows customizing themes at any level', () => {
     const themes = createThemeBuilder()
       .addPalettes({
