@@ -355,7 +355,7 @@ function DynamicContentSheet() {
               data-testid="dynamic-content-small"
               size="$3"
               onPress={() => setContentSize('small')}
-              theme={contentSize === 'small' ? 'active' : undefined}
+              theme={contentSize === 'small' ? 'blue' : undefined}
             >
               Small
             </Button>
@@ -363,7 +363,7 @@ function DynamicContentSheet() {
               data-testid="dynamic-content-medium"
               size="$3"
               onPress={() => setContentSize('medium')}
-              theme={contentSize === 'medium' ? 'active' : undefined}
+              theme={contentSize === 'medium' ? 'blue' : undefined}
             >
               Medium
             </Button>
@@ -371,7 +371,7 @@ function DynamicContentSheet() {
               data-testid="dynamic-content-large"
               size="$3"
               onPress={() => setContentSize('large')}
-              theme={contentSize === 'large' ? 'active' : undefined}
+              theme={contentSize === 'large' ? 'blue' : undefined}
             >
               Large
             </Button>

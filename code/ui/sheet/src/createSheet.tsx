@@ -170,7 +170,13 @@ export function createSheet<
             <Frame
               ref={composedContentRef}
               flex={hasFit && open ? 0 : 1}
-              height={shouldUseFixedHeight ? stableFrameSize.current : (hasFit ? undefined : frameSize)}
+              height={
+                shouldUseFixedHeight
+                  ? stableFrameSize.current
+                  : hasFit
+                    ? undefined
+                    : frameSize
+              }
               pointerEvents={open ? 'auto' : 'none'}
               {...props}
             >
