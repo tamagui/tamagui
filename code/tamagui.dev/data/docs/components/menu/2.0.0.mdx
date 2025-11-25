@@ -43,7 +43,11 @@ yarn add react-native-ios-context-menu
 ```
 
 ```bash
-yarn add react-native-ios-context-menu
+yarn add react-native-ios-utilities
+```
+
+```bash
+yarn add zeego
 ```
 
 ## Anatomy
@@ -51,7 +55,7 @@ yarn add react-native-ios-context-menu
 Import all parts and piece them together.
 
 ```jsx
-import { Accordion } from 'tamagui'
+import { Menu } from 'tamagui'
 
 export default () => (
   <Menu>
@@ -67,9 +71,10 @@ export default () => (
         <Menu.Item>
           <Menu.ItemTitle>Settings</Menu.ItemTitle>
         </Menu.Item>
-        <Menu.Item>
+        {/* when title is nested inside a React element then you need to use `textValue` */}
+        <Menu.Item textValue="Calendar">
           <Menu.ItemTitle>
-            <Text>Calender</Text>
+            <Text>Calendar</Text>
           </Menu.ItemTitle>
           <Menu.ItemIcon>
             <Calendar color="gray" size="$1" />

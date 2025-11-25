@@ -29,7 +29,35 @@ import type {
   MenuTriggerProps,
 } from './createNativeMenuTypes'
 
-export const createNativeMenu = (MenuType: 'ContextMenu' | 'Menu') => {
+export type NativeMenuComponents = {
+  Menu: FC<MenuProps> & {
+    Trigger: FC<MenuTriggerProps>
+    Content: FC<MenuContentProps>
+    Item: FC<MenuItemProps>
+    ItemTitle: FC<MenuItemTitleProps>
+    ItemSubtitle: FC<MenuItemSubtitleProps>
+    SubTrigger: FC<MenuSubTriggerProps>
+    Group: FC<MenuGroupProps>
+    ItemIcon: FC<MenuItemIconProps>
+    Separator: FC<MenuSeparatorProps>
+    CheckboxItem: FC<MenuCheckboxItemProps>
+    ItemIndicator: FC<MenuItemIndicatorProps>
+    ItemImage: FC<MenuItemImageProps>
+    Label: FC<MenuLabelProps>
+    Arrow: FC<MenuArrowProps>
+    Sub: FC<MenuSubProps>
+    SubContent: FC<MenuSubContentProps>
+    Preview: FC<ContextMenuPreviewProps>
+    Portal: FC<{ children: React.ReactNode }>
+    RadioGroup: FC<{ children: React.ReactNode }>
+    RadioItem: FC<{ children: React.ReactNode }>
+    Auxiliary: FC<any>
+  }
+}
+
+export const createNativeMenu = (
+  MenuType: 'ContextMenu' | 'Menu'
+): NativeMenuComponents => {
   // On web, return empty stubs - withNativeMenu will use the web components passed to it
   if (isWeb) {
     const Menu = {} as FC<MenuProps>
@@ -50,6 +78,10 @@ export const createNativeMenu = (MenuType: 'ContextMenu' | 'Menu') => {
     const Arrow = {} as FC<MenuArrowProps>
     const Sub = {} as FC<MenuSubProps>
     const SubContent = {} as FC<MenuSubContentProps>
+    const Portal = {} as FC<{ children: React.ReactNode }>
+    const RadioGroup = {} as FC<{ children: React.ReactNode }>
+    const RadioItem = {} as FC<{ children: React.ReactNode }>
+    const Auxiliary = {} as FC<any>
 
     return {
       Menu: withStaticProperties(Menu, {
@@ -70,65 +102,174 @@ export const createNativeMenu = (MenuType: 'ContextMenu' | 'Menu') => {
         Sub,
         SubContent,
         Preview,
+        Portal,
+        RadioGroup,
+        RadioItem,
+        Auxiliary,
       }),
     }
   }
 
+  // ===========================================
   // Native implementation using Zeego
+  // ===========================================
+
   const ZeegoDropdownMenu = require('zeego/dropdown-menu')
   const ZeegoContextMenu = require('zeego/context-menu')
-  const { NativePropProvider } = require('../createBaseMenu')
 
-  // Select the appropriate Zeego menu based on type
-  const ZeegoMenu = MenuType === 'ContextMenu' ? ZeegoContextMenu : ZeegoDropdownMenu
+  const isContextMenu = MenuType === 'ContextMenu'
+  const ZeegoMenu = isContextMenu ? ZeegoContextMenu : ZeegoDropdownMenu
 
-  // Portal is a no-op on native
-  const Portal: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return <>{children}</>
+  // Map displayName patterns to Zeego components
+  const COMPONENT_MAP: Record<string, any> = {
+    SubContent: ZeegoMenu.SubContent,
+    Content: ZeegoMenu.Content,
+    Sub: ZeegoMenu.Sub,
+    Group: ZeegoMenu.Group,
+    SubTrigger: ZeegoMenu.SubTrigger,
+    CheckboxItem: ZeegoMenu.CheckboxItem,
   }
+
+  // Components that need children transformation (containers)
+  const CONTAINER_TYPES = ['SubContent', 'Content', 'Sub', 'Group']
+
+  /**
+   * Get component type from displayName (handles styled wrappers)
+   */
+  const getComponentType = (displayName: string): string | null => {
+    // Check in specific order (SubContent before Content, SubTrigger before Trigger)
+    for (const type of [
+      'SubContent',
+      'SubTrigger',
+      'Content',
+      'Sub',
+      'Group',
+      'CheckboxItem',
+    ]) {
+      if (displayName === type || displayName.includes(`(${type})`)) {
+        return type
+      }
+    }
+    return null
+  }
+
+  /**
+   * Check if component looks like a menu Item (has onSelect/textValue but isn't a special component)
+   */
+  const isItemLike = (props: Record<string, any>, displayName: string): boolean => {
+    // If it matches a known component type, it's not a generic Item
+    if (getComponentType(displayName)) {
+      return false
+    }
+    return 'onSelect' in props || 'textValue' in props
+  }
+
+  /**
+   * Check if displayName matches Portal
+   */
+  const isPortal = (displayName: string): boolean => {
+    return displayName === 'Portal' || displayName.includes('Portal')
+  }
+
+  /**
+   * Transform children tree for Zeego compatibility:
+   * - Flatten Portal wrappers
+   * - Recurse into containers (Content, Sub, Group, SubContent)
+   * - Convert styled Items to Zeego Items
+   */
+  const transformForZeego = (children: React.ReactNode): React.ReactNode => {
+    const result: React.ReactNode[] = []
+
+    React.Children.forEach(children, (child) => {
+      if (!React.isValidElement(child)) {
+        result.push(child)
+        return
+      }
+
+      const displayName = (child.type as any)?.displayName || ''
+      const props = child.props as Record<string, any>
+
+      // Flatten Portal
+      if (isPortal(displayName)) {
+        const portalChildren = transformForZeego(props.children)
+        React.Children.forEach(portalChildren, (c) => result.push(c))
+        return
+      }
+
+      // Handle known component types (containers, SubTrigger, CheckboxItem)
+      const componentType = getComponentType(displayName)
+      if (componentType) {
+        const { children: childChildren, ...restProps } = props
+        const isContainer = CONTAINER_TYPES.includes(componentType)
+        result.push(
+          React.createElement(
+            COMPONENT_MAP[componentType],
+            { ...restProps, key: child.key },
+            isContainer ? transformForZeego(childChildren) : childChildren
+          )
+        )
+        return
+      }
+
+      // Convert Item-like components to Zeego Items
+      if (isItemLike(props, displayName)) {
+        const { children: itemChildren, ...itemProps } = props
+        result.push(
+          React.createElement(
+            ZeegoMenu.Item,
+            { ...itemProps, key: child.key },
+            itemChildren
+          )
+        )
+        return
+      }
+
+      // Pass through everything else
+      result.push(child)
+    })
+
+    return result
+  }
+
+  // ===========================================
+  // Component definitions (typed wrappers around Zeego)
+  // ===========================================
+
+  // Direct Zeego pass-throughs with proper types
+  const Trigger: FC<MenuTriggerProps> = ZeegoMenu.Trigger
+  const Content: FC<MenuContentProps> = ZeegoMenu.Content
+  const Item: FC<MenuItemProps> = ZeegoMenu.Item
+  const ItemTitle: FC<MenuItemTitleProps> = ZeegoMenu.ItemTitle
+  const ItemSubtitle: FC<MenuItemSubtitleProps> = ZeegoMenu.ItemSubtitle
+  const ItemIcon: FC<MenuItemIconProps> = ZeegoMenu.ItemIcon
+  const ItemImage: FC<MenuItemImageProps> = ZeegoMenu.ItemImage
+  const ItemIndicator: FC<MenuItemIndicatorProps> = ZeegoMenu.ItemIndicator
+  const Group: FC<MenuGroupProps> = ZeegoMenu.Group
+  const Label: FC<MenuLabelProps> = ZeegoMenu.Label
+  const Separator: FC<MenuSeparatorProps> = ZeegoMenu.Separator
+  const Sub: FC<MenuSubProps> = ZeegoMenu.Sub
+  const SubTrigger: FC<MenuSubTriggerProps> = ZeegoMenu.SubTrigger
+  const SubContent: FC<MenuSubContentProps> = ZeegoMenu.SubContent
+
+  // Custom components
+  const Portal: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
   Portal.displayName = 'Portal'
 
-  // Use Zeego's Sub directly - it handles native submenus properly
-  const Sub = ZeegoMenu.Sub
-  const SubTrigger = ZeegoMenu.SubTrigger
-  const SubContent = ZeegoMenu.SubContent
-
-  // Add displayNames so withNativeMenu can identify them
-  Sub.displayName = 'Sub'
-  SubTrigger.displayName = 'SubTrigger'
-  SubContent.displayName = 'SubContent'
-
-  // RadioGroup and RadioItem are web-only, return null for native
-  const RadioGroup: React.FC<{
-    children: React.ReactNode
-    value?: string
-    onValueChange?: (value: string) => void
-  }> = ({ children }) => {
-    return <>{children}</>
-  }
-  RadioGroup.displayName = `${MenuType}RadioGroup`
-
-  const RadioItem: React.FC<{ children: React.ReactNode; value: string }> = ({
-    children,
-  }) => {
-    return <>{children}</>
-  }
-  RadioItem.displayName = `${MenuType}RadioItem`
-
-  // Arrow is web-only
-  const Arrow: React.FC = () => null
+  const Arrow: FC<MenuArrowProps> = () => null
   Arrow.displayName = 'Arrow'
 
-  // CheckboxItem wrapper to handle both checked/onCheckedChange and value/onValueChange
-  const CheckboxItem: React.FC<any> = (props) => {
+  const RadioGroup: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
+  RadioGroup.displayName = `${MenuType}RadioGroup`
+
+  const RadioItem: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
+  RadioItem.displayName = `${MenuType}RadioItem`
+
+  // CheckboxItem wrapper to normalize checked/value props
+  const CheckboxItem: FC<MenuCheckboxItemProps> = (props) => {
     const { checked, onCheckedChange, value, onValueChange, ...rest } = props
-
-    // If only checked/onCheckedChange are provided, convert them for native
-    const finalValue = value !== undefined ? value : checked ? 'on' : 'off'
+    const finalValue = value ?? (checked ? 'on' : 'off')
     const finalOnValueChange =
-      onValueChange ||
-      (onCheckedChange ? (v: string) => onCheckedChange(v === 'on') : undefined)
-
+      onValueChange ?? (onCheckedChange && ((v: string) => onCheckedChange(v === 'on')))
     return (
       <ZeegoMenu.CheckboxItem
         value={finalValue}
@@ -139,84 +280,55 @@ export const createNativeMenu = (MenuType: 'ContextMenu' | 'Menu') => {
   }
   CheckboxItem.displayName = 'CheckboxItem'
 
-  // Context menu specific components - no-op for DropdownMenu
-  const Preview: React.FC<any> =
-    MenuType === 'ContextMenu' ? ZeegoContextMenu.Preview : () => null
+  // Context menu specific
+  const Preview: FC<ContextMenuPreviewProps> = isContextMenu
+    ? ZeegoContextMenu.Preview
+    : () => null
   Preview.displayName = `${MenuType}Preview`
 
-  const Auxiliary: React.FC<any> =
-    MenuType === 'ContextMenu' ? ZeegoContextMenu.Auxiliary : () => null
+  const Auxiliary: FC<ContextMenuPreviewProps> = isContextMenu
+    ? ZeegoContextMenu.Auxiliary
+    : () => null
   Auxiliary.displayName = `${MenuType}Auxiliary`
 
-  // Main menu component that wraps everything
-  const Menu: React.FC<MenuProps> = (props) => {
-    const { children, onOpenChange, onOpenWillChange } = props
-
-    // onOpenWillChange is only available on ContextMenu
-    const rootProps: any = {
-      onOpenChange,
-    }
-
-    if (MenuType === 'ContextMenu' && onOpenWillChange) {
+  // Main Menu component
+  const Menu: FC<MenuProps> = ({ children, onOpenChange, onOpenWillChange }) => {
+    const rootProps: Record<string, unknown> = { onOpenChange }
+    if (isContextMenu && onOpenWillChange) {
       rootProps.onOpenWillChange = onOpenWillChange
     }
 
-    // Flatten children to handle Portal wrapping Content
-    const flattenedChildren = React.Children.map(children, (child: any) => {
-      const displayName = child?.type?.displayName || ''
-      const isPortal =
-        displayName === 'Portal' ||
-        displayName === `${MenuType}Portal` ||
-        displayName.includes('Portal')
-
-      if (isPortal) {
-        return child.props.children
-      }
-      return child
-    })
-
-    return (
-      <NativePropProvider
-        native
-        scope={MenuType === 'Menu' ? 'MenuContext' : 'ContextMenuContext'}
-      >
-        <ZeegoMenu.Root {...rootProps}>{flattenedChildren}</ZeegoMenu.Root>
-      </NativePropProvider>
-    )
+    return <ZeegoMenu.Root {...rootProps}>{transformForZeego(children)}</ZeegoMenu.Root>
   }
   Menu.displayName = MenuType
 
-  // Export the Menu with Zeego components directly attached
-  const MenuComponent = withStaticProperties(Menu, {
-    // Use Zeego components directly for core functionality
-    Trigger: ZeegoMenu.Trigger,
-    Content: ZeegoMenu.Content,
-    Item: ZeegoMenu.Item,
-    ItemTitle: ZeegoMenu.ItemTitle,
-    ItemSubtitle: ZeegoMenu.ItemSubtitle,
-    ItemIcon: ZeegoMenu.ItemIcon,
-    ItemImage: ZeegoMenu.ItemImage,
-    CheckboxItem, // Use our wrapper that handles prop conversion
-    ItemIndicator: ZeegoMenu.ItemIndicator,
-    Group: ZeegoMenu.Group,
-    Label: ZeegoMenu.Label,
-    Separator: ZeegoMenu.Separator,
-    Sub, // Use Zeego's Sub directly
-    SubTrigger,
-    SubContent,
+  // ===========================================
+  // Export
+  // ===========================================
 
-    // Portal is a no-op on native, but keep for compatibility
-    Portal,
-
-    // Web-only components that return null on native
-    RadioGroup,
-    RadioItem,
-    Arrow,
-
-    // Context menu specific components
-    Preview,
-    Auxiliary,
-  })
-
-  return { Menu: MenuComponent }
+  return {
+    Menu: withStaticProperties(Menu, {
+      Trigger,
+      Content,
+      Item,
+      ItemTitle,
+      ItemSubtitle,
+      ItemIcon,
+      ItemImage,
+      ItemIndicator,
+      Group,
+      Label,
+      Separator,
+      Sub,
+      SubTrigger,
+      SubContent,
+      CheckboxItem,
+      Portal,
+      RadioGroup,
+      RadioItem,
+      Arrow,
+      Preview,
+      Auxiliary,
+    }),
+  }
 }

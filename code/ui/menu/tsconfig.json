@@ -3,6 +3,17 @@
   "compilerOptions": {
     "composite": true
   },
-  "references": [],
-  "exclude": ["types", "dist", "**/__tests__"]
+  "references": [
+    {
+      "path": "../../core/web"
+    },
+    {
+      "path": "../create-menu"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
 }

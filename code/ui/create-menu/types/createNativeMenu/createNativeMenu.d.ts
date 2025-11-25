@@ -6,8 +6,8 @@
  */
 import type { FC } from 'react';
 import React from 'react';
-import type { ContextMenuPreviewProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
-export declare const createNativeMenu: (MenuType: "ContextMenu" | "Menu") => {
+import type { ContextMenuPreviewProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
+export type NativeMenuComponents = {
     Menu: FC<MenuProps> & {
         Trigger: FC<MenuTriggerProps>;
         Content: FC<MenuContentProps>;
@@ -16,7 +16,7 @@ export declare const createNativeMenu: (MenuType: "ContextMenu" | "Menu") => {
         ItemSubtitle: FC<MenuItemSubtitleProps>;
         SubTrigger: FC<MenuSubTriggerProps>;
         Group: FC<MenuGroupProps>;
-        ItemIcon: FC<import("./createNativeMenuTypes").MenuItemCommonProps>;
+        ItemIcon: FC<MenuItemIconProps>;
         Separator: FC<MenuSeparatorProps>;
         CheckboxItem: FC<MenuCheckboxItemProps>;
         ItemIndicator: FC<MenuItemIndicatorProps>;
@@ -26,39 +26,17 @@ export declare const createNativeMenu: (MenuType: "ContextMenu" | "Menu") => {
         Sub: FC<MenuSubProps>;
         SubContent: FC<MenuSubContentProps>;
         Preview: FC<ContextMenuPreviewProps>;
-    };
-} | {
-    Menu: FC<MenuProps> & {
-        Trigger: any;
-        Content: any;
-        Item: any;
-        ItemTitle: any;
-        ItemSubtitle: any;
-        ItemIcon: any;
-        ItemImage: any;
-        CheckboxItem: FC<any>;
-        ItemIndicator: any;
-        Group: any;
-        Label: any;
-        Separator: any;
-        Sub: any;
-        SubTrigger: any;
-        SubContent: any;
         Portal: FC<{
             children: React.ReactNode;
         }>;
         RadioGroup: FC<{
             children: React.ReactNode;
-            value?: string;
-            onValueChange?: (value: string) => void;
         }>;
         RadioItem: FC<{
             children: React.ReactNode;
-            value: string;
         }>;
-        Arrow: FC<{}>;
-        Preview: FC<any>;
         Auxiliary: FC<any>;
     };
 };
+export declare const createNativeMenu: (MenuType: "ContextMenu" | "Menu") => NativeMenuComponents;
 //# sourceMappingURL=createNativeMenu.d.ts.map

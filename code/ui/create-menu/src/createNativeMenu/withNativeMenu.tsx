@@ -1,5 +1,12 @@
 import { isWeb } from '@tamagui/web'
-import { useNativeProp as useNativePropHook } from '../createBaseMenu'
+
+type CombinedProps<C, N> = C extends React.ComponentType<infer CP>
+  ? N extends React.ComponentType<infer NP>
+    ? CP & NP
+    : CP
+  : N extends React.ComponentType<infer NP>
+    ? NP
+    : {}
 
 export function withNativeMenu<
   C extends React.ComponentType<any>,
@@ -7,41 +14,25 @@ export function withNativeMenu<
 >({
   Component,
   NativeComponent,
-  scope,
-  isRoot = false,
 }: {
   Component: C
   NativeComponent: N
-  scope: string
-  isRoot: boolean
-}) {
+  scope?: string
+  isRoot?: boolean
+}): React.FC<CombinedProps<C, N>> {
+  type Props = CombinedProps<C, N>
+
   if (isWeb) {
-    return Component
+    return Component as React.FC<Props>
   }
 
-  const Menu = (
-    props: React.ComponentProps<C> & React.ComponentProps<N> & { native?: boolean }
-  ) => {
-    // Always call hook unconditionally (Rules of Hooks)
-    const contextNative = useNativePropHook(scope).native
-
-    // Determine if we should use native rendering
-    const isNative = isRoot
-      ? props.native !== undefined
-        ? props.native
-        : true // Root uses prop with default true
-      : contextNative // Children use context from root
-
-    if (isNative) {
-      return <NativeComponent {...(props as React.ComponentProps<N>)} />
-    }
-
-    return <Component {...(props as React.ComponentProps<C>)} />
+  // On native platform, always use native component
+  const Menu: React.FC<Props> = (props) => {
+    return <NativeComponent {...(props as React.ComponentProps<N>)} />
   }
 
   // displayName is required for Portal flattening (checks displayName.includes('Portal'))
-  Menu.displayName =
-    NativeComponent.displayName || Component.displayName || 'MenuComponent'
+  Menu.displayName = NativeComponent.displayName || Component.displayName
 
   return Menu
 }

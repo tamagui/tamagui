@@ -140,16 +140,6 @@ export interface MenuSubContentProps extends Omit<MenuContentImplProps, keyof Me
      */
     forceMount?: true;
 }
-export declare const NativePropProvider: React.Provider<{
-    native: boolean;
-}> & React.ProviderExoticComponent<Partial<{
-    native: boolean;
-}> & {
-    children?: React.ReactNode;
-    scope?: string;
-}>, useNativeProp: (scope?: string) => {
-    native: boolean;
-};
 export type CreateBaseMenuProps = {
     Item?: TamaguiComponent;
     MenuGroup?: TamaguiComponent;
