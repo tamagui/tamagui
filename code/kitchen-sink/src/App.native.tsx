@@ -45,7 +45,8 @@ export default function App() {
         <ThemeContext.Provider value={themeContext}>
           <Provider defaultTheme={theme as any}>
             <Navigation />
-            <SafeToastViewport />
+            {/* TODO: it's overlapping the entire screen, need to fix this */}
+            {/* <SafeToastViewport /> */}
           </Provider>
         </ThemeContext.Provider>
       </SafeAreaProvider>

@@ -1,26 +1,43 @@
 import { ContextMenu } from '@tamagui/context-menu'
-import { isAndroid, isWeb } from '@tamagui/core'
-import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
+import { Calendar, Check } from '@tamagui/lucide-icons'
 import React from 'react'
-import { Image } from 'react-native'
-import { Text, YStack, useEvent } from 'tamagui'
+import { styled, Text, YStack } from 'tamagui'
 
 /**
  * Note: you'll want to use createMenu() to customize further.
  */
 
+const Item = styled(ContextMenu.Item, {
+  paddingVertical: 4,
+  hoverStyle: {
+    backgroundColor: '$color2',
+  },
+  pressStyle: {
+    backgroundColor: '$color3',
+  },
+})
+
+const ItemTitle = styled(ContextMenu.ItemTitle, {
+  color: '$color11',
+})
+
+Item.displayName = 'Item'
+ItemTitle.displayName = 'ItemTitle'
+
 export function ContextMenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(true)
 
-  const onSelect = useEvent(() => {})
+  const onSelect = () => {
+    console.info('onSelect')
+  }
 
   return (
-    <ContextMenu allowFlip native={native} placement="bottom-start">
+    <ContextMenu allowFlip native={native} placement="right-start">
       <ContextMenu.Trigger asChild>
-        <YStack jc="center" ai="center" bw={1} bc="$borderColor" width={250} height={200}>
-          <Text textAlign="center">Right Click or longPress</Text>
-        </YStack>
+        <Text textAlign="center" selectable={false}>
+          Right Click or longPress
+        </Text>
       </ContextMenu.Trigger>
 
       <ContextMenu.Portal zIndex={100}>
@@ -44,14 +61,14 @@ export function ContextMenuDemo() {
           <ContextMenu.Preview>
             {() => {
               return (
-                <YStack bc="$green1" jc="center" ai="center" p={20}>
+                <YStack
+                  alignItems="center"
+                  justifyContent="center"
+                  height={100}
+                  width={250}
+                  style={{ backgroundColor: 'pink' }}
+                >
                   <Text>Your Preview here</Text>
-                  <Image
-                    width={240}
-                    height={100}
-                    resizeMode="contain"
-                    source={{ uri: 'https://tamagui.dev/social.png' }}
-                  />
                 </YStack>
               )
             }}
@@ -77,9 +94,7 @@ export function ContextMenuDemo() {
               <ContextMenu.ItemIcon
                 androidIconName="ic_menu_today"
                 ios={{
-                  name: 'u.square',
-                  // hierarchicalColor: '#000',
-                  // pointSize: 20,
+                  name: 'calendar',
                 }}
               >
                 <Calendar color="gray" size="$1" />
@@ -88,26 +103,34 @@ export function ContextMenuDemo() {
           </ContextMenu.Group>
           <ContextMenu.Separator />
           <ContextMenu.Group>
-            <ContextMenu.Item onSelect={onSelect} key="close-notes" disabled>
-              <ContextMenu.ItemTitle color="gray">locked notes</ContextMenu.ItemTitle>
+            <ContextMenu.Item
+              onSelect={onSelect}
+              key="close-notes"
+              disabled
+              textValue="locked notes"
+            >
+              <ContextMenu.ItemTitle>
+                <Text color="gray">locked notes</Text>
+              </ContextMenu.ItemTitle>
             </ContextMenu.Item>
-            <ContextMenu.Item onSelect={onSelect} destructive key="delete-all">
+            <ContextMenu.Item destructive onSelect={onSelect} key="delete-all">
               <ContextMenu.ItemTitle>Delete all</ContextMenu.ItemTitle>
             </ContextMenu.Item>
           </ContextMenu.Group>
           <ContextMenu.Separator />
+          {/* Submenu */}
           <ContextMenu.Sub placement="right-start">
-            <ContextMenu.SubTrigger jc="space-between" key="actions-trigger">
-              <>
-                <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
-                {!native || isWeb ? <ChevronRight size="$1" /> : null}
-              </>
+            <ContextMenu.SubTrigger
+              key="actions-trigger"
+              jc="space-between"
+              textValue="Actions"
+            >
+              <ContextMenu.ItemTitle>Actions →</ContextMenu.ItemTitle>
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal zIndex={200}>
               <ContextMenu.SubContent
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
-                elevate
                 animation={[
                   'quick',
                   {
@@ -118,16 +141,15 @@ export function ContextMenuDemo() {
                 ]}
                 paddingHorizontal={0}
               >
-                <ContextMenu.Label fontSize={'$1'}>Note settings</ContextMenu.Label>
-                <ContextMenu.Item onSelect={onSelect} key="create-note">
-                  <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
-                </ContextMenu.Item>
-                <ContextMenu.Item onSelect={onSelect} key="delete-all">
-                  <ContextMenu.ItemTitle>Delete all notes</ContextMenu.ItemTitle>
-                </ContextMenu.Item>
-                <ContextMenu.Item onSelect={onSelect} key="sync-all">
-                  <ContextMenu.ItemTitle>Sync notes</ContextMenu.ItemTitle>
-                </ContextMenu.Item>
+                <Item onSelect={onSelect} key="create-note" textValue="Create note">
+                  <ItemTitle>Create note</ItemTitle>
+                </Item>
+                <Item onSelect={onSelect} key="delete-all" textValue="Delete all notes">
+                  <ItemTitle>Delete all notes</ItemTitle>
+                </Item>
+                <Item onSelect={onSelect} key="sync-all" textValue="Sync notes">
+                  <ItemTitle>Sync notes</ItemTitle>
+                </Item>
               </ContextMenu.SubContent>
             </ContextMenu.Portal>
           </ContextMenu.Sub>
@@ -136,50 +158,23 @@ export function ContextMenuDemo() {
             key="show-hidden"
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
-            // value and onValueChange is necessary for native dropdowns
-            value={bookmarksChecked ? 'on' : 'off'}
-            onValueChange={(v) => setBookmarksChecked(v == 'on')}
-            // android native menu treat checkbox as simple MenuItem
-            {...(isAndroid &&
-              native && {
-                onSelect: () => {
-                  isAndroid && setBookmarksChecked(!bookmarksChecked)
-                },
-              })}
             gap={'$2'}
           >
-            <ContextMenu.ItemIndicator className="MenuItemIndicator">
+            <ContextMenu.ItemIndicator>
               <Check size="$1" />
             </ContextMenu.ItemIndicator>
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
-            {/* android native menu treat checkbox as simple MenuItem */}
-            {isAndroid && native && bookmarksChecked && (
-              <ContextMenu.ItemIcon androidIconName="checkbox_on_background" />
-            )}
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
             key="show-other-notes"
             checked={native}
             onCheckedChange={setNative}
-            value={native ? 'on' : 'off'}
-            onValueChange={(v) => setNative(v == 'on')}
-            // android native menu treat checkbox as simple MenuItem
-            {...(isAndroid &&
-              native && {
-                onSelect: () => {
-                  setNative(!native)
-                },
-              })}
             gap={'$2'}
           >
             <ContextMenu.ItemIndicator>
               <Check size="$1" />
             </ContextMenu.ItemIndicator>
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
-            {/* android native menu treat checkbox as simple MenuItem */}
-            {isAndroid && native && (
-              <ContextMenu.ItemIcon androidIconName="checkbox_on_background" />
-            )}
           </ContextMenu.CheckboxItem>
 
           <ContextMenu.Arrow size={'$2'} />

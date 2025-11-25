@@ -1,61 +1,61 @@
 import type BaseMenuTypes from '@tamagui/create-menu';
 import { createBaseMenu, type CreateBaseMenuProps } from '@tamagui/create-menu';
 import { type TamaguiElement, type ViewProps } from '@tamagui/web';
-import React from 'react';
+import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
-export declare const CONTEXTMENU_CONTEXT = "ContextMenuContext";
+export declare const DROPDOWN_MENU_CONTEXT = "MenuContext";
 type ScopedProps<P> = P & {
     scope?: string;
 };
-type BaseMenu = ReturnType<typeof createBaseMenu>['Menu'];
-interface ContextMenuProps extends BaseMenuTypes.MenuProps {
+interface MenuProps extends BaseMenuTypes.MenuProps {
     children?: React.ReactNode;
-    onOpenChange?(open: boolean): void;
     dir?: Direction;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?(open: boolean): void;
     modal?: boolean;
 }
-interface ContextMenuTriggerProps extends ViewProps {
-    disabled?: boolean;
+type BaseMenu = ReturnType<typeof createBaseMenu>['Menu'];
+interface MenuTriggerProps extends ViewProps {
+    onKeydown?(event: React.KeyboardEvent): void;
 }
-type ContextMenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>;
-interface ContextMenuContentProps extends Omit<React.ComponentPropsWithoutRef<BaseMenu['Content']>, 'onEntryFocus' | 'side' | 'sideOffset' | 'align'> {
+type MenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>;
+interface MenuContentProps extends Omit<React.ComponentPropsWithoutRef<BaseMenu['Content']>, 'onEntryFocus'> {
 }
-type ContextMenuGroupProps = React.ComponentPropsWithoutRef<BaseMenu['Group']>;
-type ContextMenuItemProps = React.ComponentPropsWithoutRef<BaseMenu['Item']>;
-type ContextMenuItemImageProps = React.ComponentPropsWithoutRef<BaseMenu['ItemImage']>;
-type ContextMenuItemIconProps = React.ComponentPropsWithoutRef<BaseMenu['ItemIcon']>;
-type ContextMenuCheckboxItemProps = React.ComponentPropsWithoutRef<BaseMenu['CheckboxItem']>;
-type ContextMenuRadioGroupProps = React.ComponentPropsWithoutRef<BaseMenu['RadioGroup']>;
-type ContextMenuRadioItemProps = React.ComponentPropsWithoutRef<BaseMenu['RadioItem']>;
-type ContextMenuItemIndicatorProps = React.ComponentPropsWithoutRef<BaseMenu['ItemIndicator']>;
-type ContextMenuSeparatorProps = React.ComponentPropsWithoutRef<BaseMenu['Separator']>;
-type ContextMenuArrowProps = React.ComponentPropsWithoutRef<BaseMenu['Arrow']>;
-interface ContextMenuSubProps extends BaseMenuTypes.MenuSubProps {
+type MenuGroupProps = React.ComponentPropsWithoutRef<BaseMenu['Group']>;
+type MenuLabelProps = React.ComponentPropsWithoutRef<BaseMenu['Label']>;
+type MenuItemProps = React.ComponentPropsWithoutRef<BaseMenu['Item']>;
+type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<BaseMenu['CheckboxItem']>;
+type MenuRadioGroupProps = React.ComponentPropsWithoutRef<BaseMenu['RadioGroup']>;
+type MenuRadioItemProps = React.ComponentPropsWithoutRef<BaseMenu['RadioItem']>;
+type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<BaseMenu['ItemIndicator']>;
+type MenuArrowProps = React.ComponentPropsWithoutRef<BaseMenu['Arrow']>;
+type MenuSubProps = BaseMenuTypes.MenuSubProps & {
     children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?(open: boolean): void;
-}
-type ContextMenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>;
-type ContextMenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>;
-export declare function createNonNativeContextMenu(params: CreateBaseMenuProps): {
-    (props: ScopedProps<ContextMenuProps>): import("react/jsx-runtime").JSX.Element;
+};
+type MenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>;
+type MenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>;
+export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
+    (props: ScopedProps<MenuProps>): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 } & {
     Root: {
-        (props: ScopedProps<ContextMenuProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Trigger: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").StackProps, "scope" | keyof ContextMenuTriggerProps> & ContextMenuTriggerProps & {
+    Trigger: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").StackProps, "scope" | keyof MenuTriggerProps> & MenuTriggerProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & ContextMenuTriggerProps & {
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuTriggerProps & {
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
     Portal: {
-        (props: ScopedProps<ContextMenuPortalProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Content: React.ForwardRefExoticComponent<ContextMenuContentProps & {
+    Content: React.ForwardRefExoticComponent<MenuContentProps & {
         scope?: string;
     } & React.RefAttributes<HTMLElement | import("react-native").View>>;
     Group: import("@tamagui/web").TamaguiComponent;
@@ -96,7 +96,7 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
         scope?: string;
     } & React.RefAttributes<TamaguiElement>>;
     Sub: {
-        (props: ScopedProps<ContextMenuSubProps>): import("react/jsx-runtime").JSX.Element;
+        (props: ScopedProps<MenuSubProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
     SubTrigger: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").StackProps, "scope" | "key" | keyof BaseMenuTypes.MenuSubTriggerProps> & Omit<BaseMenuTypes.MenuSubTriggerProps & {
@@ -115,9 +115,8 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
     } & React.RefAttributes<HTMLElement | import("react-native").View>>;
     ItemTitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     ItemSubtitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
-    ItemIcon: import("@tamagui/web").TamaguiComponent;
     ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
-    Preview: () => null;
+    ItemIcon: import("@tamagui/web").TamaguiComponent;
 };
-export type { ContextMenuArrowProps, ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupProps, ContextMenuItemIconProps, ContextMenuItemImageProps, ContextMenuItemIndicatorProps, ContextMenuItemProps, ContextMenuPortalProps, ContextMenuProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuSeparatorProps, ContextMenuSubContentProps, ContextMenuSubProps, ContextMenuSubTriggerProps, ContextMenuTriggerProps, };
-//# sourceMappingURL=createNonNativeContextMenu.d.ts.map
+export type { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIndicatorProps, MenuItemProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps, };
+//# sourceMappingURL=createNonNativeMenu.d.ts.map
