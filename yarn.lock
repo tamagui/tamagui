@@ -6798,7 +6798,6 @@ __metadata:
     express: "npm:^4.18.2"
     fs-extra: "npm:^11.2.0"
     get-port: "npm:^7.0.0"
-    kill-port: "npm:^2.0.1"
     marked: "npm:^14.1.2"
     marked-terminal: "npm:^5.2.0"
     micromatch: "npm:^4.0.7"
@@ -16746,13 +16745,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-them-args@npm:1.3.2":
-  version: 1.3.2
-  resolution: "get-them-args@npm:1.3.2"
-  checksum: 10/5544dcec7faf0bc91656eb517a80d235f5bb42579bb50a119d0eafd9c6b6f3cc4a2c1291695caec941d6bdabee7962221206d0e31f6147374edbc0d95bf368ed
-  languageName: node
-  linkType: hard
-
 "get-tsconfig@npm:^4.7.0":
   version: 4.10.0
   resolution: "get-tsconfig@npm:4.10.0"
@@ -19298,18 +19290,6 @@ __metadata:
   dependencies:
     json-buffer: "npm:3.0.1"
   checksum: 10/167eb6ef64cc84b6fa0780ee50c9de456b422a1e18802209234f7c2cf7eae648c7741f32e50d7e24ccb22b24c13154070b01563d642755b156c357431a191e75
-  languageName: node
-  linkType: hard
-
-"kill-port@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "kill-port@npm:2.0.1"
-  dependencies:
-    get-them-args: "npm:1.3.2"
-    shell-exec: "npm:1.0.2"
-  bin:
-    kill-port: cli.js
-  checksum: 10/5478f5e62303a9bf5380fc90945498d7247a174b511ac432b20db617050de7bfcb906d4bcbc10dbdb104bf2fa902b3cb599caef3f73143eccbaffb704bad017e
   languageName: node
   linkType: hard
 
@@ -26060,13 +26040,6 @@ __metadata:
   version: 3.0.0
   resolution: "shebang-regex@npm:3.0.0"
   checksum: 10/1a2bcae50de99034fcd92ad4212d8e01eedf52c7ec7830eedcf886622804fe36884278f2be8be0ea5fde3fd1c23911643a4e0f726c8685b61871c8908af01222
-  languageName: node
-  linkType: hard
-
-"shell-exec@npm:1.0.2":
-  version: 1.0.2
-  resolution: "shell-exec@npm:1.0.2"
-  checksum: 10/3ce3b4edfcf10eb72f3a3b111b98deaf52677f6d4302bfdef074850c207a27e05efe40b629fdbe8f7cca6fd263a3dce49844a1fbbcce09319ffc313e4d90e602
   languageName: node
   linkType: hard
 
