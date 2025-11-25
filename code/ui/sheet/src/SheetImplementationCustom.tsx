@@ -118,18 +118,29 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       // if not using weird portal limitation we dont need to hide parent sheet
       USE_NATIVE_PORTAL
 
-    const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
-    const onInnerSheet = React.useCallback((hasChild: boolean) => {
-      setIsShowingInnerSheet(hasChild)
-    }, [])
+const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
+  const onInnerSheet = React.useCallback((hasChild: boolean) => {
+    setIsShowingInnerSheet(hasChild)
+  }, [])
 
-    const positions = React.useMemo(
-      () =>
-        snapPoints.map((point) =>
-          getYPositions(snapPointsMode, point, screenSize, frameSize)
-        ),
-      [screenSize, frameSize, snapPoints, snapPointsMode]
-    )
+  // FIX: Store stable frameSize to prevent recalculation during exit animation
+  const stableFrameSize = React.useRef(frameSize)
+
+  React.useEffect(() => {
+    // Only update stable size when sheet is open
+    if (open && frameSize) {
+      stableFrameSize.current = frameSize
+    }
+  }, [open, frameSize])
+
+  const positions = React.useMemo(
+    () =>
+      snapPoints.map((point) =>
+        // FIX: Use stable frameSize when closing to prevent position jumps
+        getYPositions(snapPointsMode, point, screenSize, open ? frameSize : stableFrameSize.current)
+      ),
+    [screenSize, frameSize, snapPoints, snapPointsMode, open]
+  )
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
@@ -401,7 +412,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
-    const handleAnimationViewLayout = React.useCallback((e: LayoutChangeEvent) => {
+const handleAnimationViewLayout = React.useCallback(
+    (e: LayoutChangeEvent) => {
+      // FIX: Don't update frameSize during exit animation to prevent position jumps
+      if (!open && stableFrameSize.current !== 0) {
+        return
+      }
+
       // avoid bugs where it grows forever for whatever reason
       const next = Math.min(
         e.nativeEvent?.layout.height,
@@ -409,7 +426,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       )
       if (!next) return
       setFrameSize(next)
-    }, [])
+    },
+    [open]
+  )
 
     const handleMaxContentViewLayout = React.useCallback((e: LayoutChangeEvent) => {
       // avoid bugs where it grows forever for whatever reason
