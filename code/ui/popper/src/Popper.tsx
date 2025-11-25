@@ -319,7 +319,6 @@ export function Popper(props: PopperProps) {
   // memoize since we round x/y, floating-ui doesn't by default which can cause tons of updates
   // if the floating element is inside something animating with a spring
   const popperContext = React.useMemo(() => {
-    console.log('setting', floating, scope)
     return {
       size,
       arrowRef: setArrow,
