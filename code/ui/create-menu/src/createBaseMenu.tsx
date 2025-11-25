@@ -30,7 +30,6 @@ import {
   withStaticProperties,
 } from '@tamagui/web'
 import type { TamaguiElement } from '@tamagui/web/types'
-// import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
 import { useId } from 'react'
 import type { Image, ImageProps } from 'react-native'

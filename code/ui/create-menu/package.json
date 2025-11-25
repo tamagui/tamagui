@@ -37,24 +37,42 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/animate": "workspace:*",
+    "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/collection": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/dismissable": "workspace:*",
+    "@tamagui/focus-guard": "workspace:*",
+    "@tamagui/focus-scope": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/popover": "workspace:*",
+    "@tamagui/popper": "workspace:*",
+    "@tamagui/portal": "workspace:*",
+    "@tamagui/remove-scroll": "workspace:*",
+    "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/use-direction": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "tamagui": "workspace:*"
   },
   "optionalDependencies": {
-    "@react-native-menu/menu": "^2.0.0"
+    "@react-native-menu/menu": "^2.0.0",
+    "react-native-ios-context-menu": "*",
+    "sf-symbols-typescript": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": "*",
+    "react-native": "0.81.5"
   },
   "publishConfig": {
     "access": "public"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "0.81.5"
   }
 }

@@ -145,6 +145,7 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
     ...Object.keys(packageJson.devDependencies || {}),
+    ...Object.keys(packageJson.optionalDependencies || {}),
   ])
 
   // Find missing dependencies

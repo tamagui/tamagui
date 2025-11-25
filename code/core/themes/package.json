@@ -86,7 +86,8 @@
     "@tamagui/create-theme": "workspace:*",
     "@tamagui/theme-builder": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "color2k": "^2.0.2"
+    "color2k": "^2.0.2",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
@@ -96,5 +97,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "peerDependencies": {}
 }
