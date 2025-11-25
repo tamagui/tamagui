@@ -51,13 +51,23 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     ) as number
 
     React.useEffect(() => {
-      setStatus('idle')
+      // If src is falsy, immediately set error status so fallback renders
+      if (!src) {
+        setStatus('error')
+      } else {
+        setStatus('idle')
+      }
     }, [JSON.stringify(src)])
 
     React.useEffect(() => {
       onLoadingStatusChange(status)
       context.onImageLoadingStatusChange(status)
     }, [status])
+
+    // Don't render Image if src is falsy to avoid Android warning
+    if (!src) {
+      return null
+    }
 
     return (
       <YStack fullscreen zIndex={1}>
