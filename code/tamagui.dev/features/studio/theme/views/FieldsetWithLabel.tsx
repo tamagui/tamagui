@@ -102,7 +102,7 @@ export const FieldsetWithLabel = ({
                   circular
                   rounded={100}
                   chromeless
-                  icon={<Info color="$color9"/>}
+                  icon={<Info color="$color9" />}
                   position="absolute"
                   t={0}
                   r={8}

@@ -152,7 +152,11 @@ const PaymentForm = ({
       <YStack gap="$4">
         <PaymentElement />
         <Theme name="accent">
-          <Button rounded="$10" self="flex-end" disabled={isProcessing || !stripe || !elements}>
+          <Button
+            rounded="$10"
+            self="flex-end"
+            disabled={isProcessing || !stripe || !elements}
+          >
             <Button.Text fontFamily="$mono">
               {isProcessing ? 'Processing...' : 'Add Seats'}
             </Button.Text>

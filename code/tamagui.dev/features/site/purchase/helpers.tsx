@@ -156,7 +156,7 @@ export function BentoTable({
           <Paragraph size="$6" fontWeight="bold">
             Lifetime access
           </Paragraph>
-          <Paragraph  flex={1} ellipsis size="$3" theme="alt1">
+          <Paragraph flex={1} ellipsis size="$3" theme="alt1">
             You own and can use the code forever.
           </Paragraph>
         </YStack>

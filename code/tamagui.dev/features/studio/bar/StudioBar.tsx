@@ -93,7 +93,6 @@ export const ThemeSwitch = memo(() => {
               {isLight && (
                 <Button
                   tag="span"
-                
                   disabled
                   chromeless
                   size="$1"
@@ -101,7 +100,7 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.44}
                   x={-1.5}
                   y={-1.5}
-                  icon={<Moon color='$color' />}
+                  icon={<Moon color="$color" />}
                 />
               )}
             </XStack>
@@ -110,7 +109,6 @@ export const ThemeSwitch = memo(() => {
               {!isLight && (
                 <Button
                   tag="span"
-            
                   disabled
                   chromeless
                   size="$1"
@@ -118,7 +116,7 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.25}
                   x={-1.5}
                   y={-1.5}
-                  icon={<Sun color='$color' />}
+                  icon={<Sun color="$color" />}
                 />
               )}
             </XStack>
@@ -134,7 +132,7 @@ export const ThemeSwitch = memo(() => {
                     scaleIcon={1.2}
                     opacity={0.8}
                     y={-0.75}
-                    icon={<Sun color='$background' />}
+                    icon={<Sun color="$background" />}
                   />
                 )}
                 {!isLight && (
@@ -146,7 +144,7 @@ export const ThemeSwitch = memo(() => {
                     scaleIcon={1.2}
                     opacity={0.5}
                     y={-0.75}
-                    icon={<Moon color='$background' />}
+                    icon={<Moon color="$background" />}
                   />
                 )}
               </YStack>
