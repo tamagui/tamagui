@@ -71,8 +71,8 @@ jobs:
       - name: Start Metro Bundler
         run: |
           EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
-          # Wait for Metro to be ready
-          sleep 30
+          # Wait for Metro to be ready and bundle to warm up
+          sleep 60
 
       - name: Run Maestro Tests
         run: |
