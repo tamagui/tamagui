@@ -1,4 +1,12 @@
-import { Button, GetProps, SizableText, ThemeableStack, createStyledContext, styled, useProps } from 'tamagui'
+import {
+  Button,
+  GetProps,
+  SizableText,
+  ThemeableStack,
+  createStyledContext,
+  styled,
+  useProps,
+} from 'tamagui'
 
 // Reproduce GitHub issue #3676 - Context Values Not Accessible in Children Styles
 // Parent component style properties like `color` cannot be accessed by child components
@@ -156,6 +164,7 @@ const PressStyleButtonFrame = styled(ThemeableStack, {
   color: 'green',
 
   pressStyle: {
+    // @ts-ignore TODO
     color: 'red',
   },
 })
