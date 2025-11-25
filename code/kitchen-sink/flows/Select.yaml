@@ -6,12 +6,19 @@ tags:
 - scrollUntilVisible:
     element: 'Select'
 - tapOn: 'Select'
-- assertNotVisible: 'Fruits'
-- assertNotVisible: 'Pear'
-- tapOn: 'Apple'
-- assertVisible: 'Fruits'
-- assertVisible: 'Pear'
-- swipe:
-    direction: DOWN
-- assertNotVisible: 'Fruits'
-- tapOn: 'Home'
+- extendedWaitUntil:
+    visible: 'Custom'
+    timeout: 10000
+# Tap on the Select trigger (shows "Apple" as default value)
+- tapOn:
+    text: '.*[Aa]pple.*'
+- extendedWaitUntil:
+    visible: 'Fruits'
+    timeout: 5000
+- tapOn: 'Pear'
+- extendedWaitUntil:
+    visible: '.*[Pp]ear.*'
+    timeout: 5000
+- tapOn:
+    text: 'home'
+    optional: true

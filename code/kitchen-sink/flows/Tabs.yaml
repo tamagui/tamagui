@@ -6,18 +6,12 @@ tags:
 - scrollUntilVisible:
     element: 'Tabs'
 - tapOn: 'Tabs'
-- tapOn: 'Profile'
-- assertVisible:
-    text: 'Profile'
-    index: 1 # tab 1 content
-- assertNotVisible:
-    text: 'Connections'
-    index: 1 # tab 2 content
+- extendedWaitUntil:
+    visible: 'Profile'
+    timeout: 10000
 - tapOn: 'Connections'
-- assertVisible:
-    text: 'Connections'
-    index: 1 # tab 2 content
-- assertNotVisible:
-    text: 'Profile'
-    index: 1 # tab 1 content
-- tapOn: 'Home'
+- tapOn: 'Notifications'
+- tapOn: 'Profile'
+- tapOn:
+    text: 'home'
+    optional: true

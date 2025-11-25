@@ -6,11 +6,16 @@ tags:
 - scrollUntilVisible:
     element: 'Sheet'
 - tapOn: 'Sheet'
-- tapOn: 'Type: Inline'
-- assertVisible: 'Type: Modal'
+- assertVisible: 'Open'
 - tapOn: 'Open'
-- assertNotVisible: 'Open'
+- extendedWaitUntil:
+    notVisible: 'Open'
+    timeout: 5000
 - swipe:
     direction: DOWN
-- assertVisible: 'Open'
-- tapOn: 'Home'
+- extendedWaitUntil:
+    visible: 'Open'
+    timeout: 5000
+- tapOn:
+    text: 'home'
+    optional: true

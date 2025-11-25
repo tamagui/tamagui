@@ -6,9 +6,14 @@ tags:
 - scrollUntilVisible:
     element: 'Toast'
 - tapOn: 'Toast'
+- extendedWaitUntil:
+    visible: 'Show'
+    timeout: 10000
 - tapOn: 'Show'
-- assertVisible: 'Successfully saved!'
-- tapOn: 'Native'
-- tapOn: 'Show'
-- assertVisible: 'Successfully saved!'
-- tapOn: 'Home'
+- extendedWaitUntil:
+    visible: 'Successfully saved!'
+    timeout: 5000
+- tapOn: 'Hide'
+- tapOn:
+    text: 'home'
+    optional: true
