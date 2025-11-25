@@ -58,6 +58,7 @@ export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesB
     grandChildrenThemes?: GrandChildrenThemes;
     componentThemes?: ComponentThemes;
     extra?: Extra;
+    accentExtra?: Extra;
     getTheme?: GetThemeFn<any>;
 }): {
     themeBuilder: ThemeBuilder<any>;
