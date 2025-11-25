@@ -1334,7 +1334,7 @@ export const getSplitStyles: StyleSplitter = (
     dynamicThemeAccess,
     pseudoGroups,
     mediaGroups,
-    resolvedContextVariants: styleState.resolvedContextVariants,
+    overriddenContextProps: styleState.overriddenContextProps,
   }
 
   const asChildExceptStyleLike =
@@ -1454,6 +1454,16 @@ function mergeStyle(
   const existingImportance = usedKeys[key] || 0
   if (existingImportance > importance) {
     return
+  }
+
+  // Track context overrides for pseudo/media styles (issues #3670, #3676)
+  // When a style sets a key that's in context props, update overriddenContextProps
+  // so it propagates to children. This handles pressStyle, hoverStyle, media queries, etc.
+  const contextProps =
+    staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
+  if (contextProps && key in contextProps) {
+    styleState.overriddenContextProps ||= {}
+    styleState.overriddenContextProps[key] = val
   }
 
   if (key in stylePropsTransform) {

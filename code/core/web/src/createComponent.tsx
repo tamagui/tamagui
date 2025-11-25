@@ -639,22 +639,22 @@ export function createComponent<
 
     // splitStyles === null === passThrough
 
-    // Merge variant-resolved context values (issue #3669)
-    // When a variant maps to another variant that's also a context key,
-    // we need to add it to overriddenContextProps so it propagates to children
+    // Merge style-resolved context overrides (issues #3670, #3676)
+    // When styles set values that are also context keys (from variants, pseudos, media, etc),
+    // we need to add them to overriddenContextProps so they propagate to children
     // Use either the component's own context or its parent's context (for styled() inheritance)
     let contextForOverride = staticConfig.context
-    if (splitStyles?.resolvedContextVariants) {
-      const contextForVariants =
+    if (splitStyles?.overriddenContextProps) {
+      const contextForProps =
         staticConfig.context || staticConfig.parentStaticConfig?.context
-      if (contextForVariants) {
-        for (const key in splitStyles.resolvedContextVariants) {
+      if (contextForProps) {
+        for (const key in splitStyles.overriddenContextProps) {
           overriddenContextProps ||= {}
-          overriddenContextProps[key] = splitStyles.resolvedContextVariants[key]
+          overriddenContextProps[key] = splitStyles.overriddenContextProps[key]
         }
         // Use parent's context if this component doesn't have its own
         if (!staticConfig.context) {
-          contextForOverride = contextForVariants
+          contextForOverride = contextForProps
         }
       }
     }

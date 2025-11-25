@@ -2502,8 +2502,8 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
-  // Track variant resolutions that map to context keys (for issue #3669)
-  resolvedContextVariants?: Record<string, any>
+  // Track style values that override context props (for issues #3670, #3676)
+  overriddenContextProps?: Record<string, any>
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -3007,8 +3007,8 @@ export type GetStyleResult = {
   dynamicThemeAccess?: boolean
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
-  // Variant resolutions that map to context keys (for issue #3669)
-  resolvedContextVariants?: Record<string, any>
+  // Style values that override context props (for issues #3670, #3676)
+  overriddenContextProps?: Record<string, any>
 }
 
 export type ClassNamesObject = Record<string, string>

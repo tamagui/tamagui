@@ -232,25 +232,23 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       continue
     }
 
+    // Track context overrides for any key that's in context props (issues #3670, #3676)
+    // This must run for ALL keys that match context props, not just variants
+    if (staticConfig) {
+      const contextProps =
+        staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
+      if (contextProps && subKey in contextProps) {
+        if (!styleState.overriddenContextProps) {
+          styleState.overriddenContextProps = {}
+        }
+        styleState.overriddenContextProps[subKey] = val
+      }
+    }
+
     if (styleProps.noExpand) {
       res[subKey] = val
     } else {
       if (variants && subKey in variants) {
-        // Track context variant resolutions (issue #3669)
-        // When a variant maps to another variant that's also a context key,
-        // we need to track it so it can be propagated via context to children
-        // Check both current context and parent's context (in case child doesn't explicitly set context)
-        if (staticConfig) {
-          const contextProps =
-            staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
-          if (contextProps && subKey in contextProps) {
-            if (!styleState.resolvedContextVariants) {
-              styleState.resolvedContextVariants = {}
-            }
-            styleState.resolvedContextVariants[subKey] = val
-          }
-        }
-
         // avoids infinite loop if variant is matching a style prop
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {
