@@ -1,15 +1,9 @@
-import { getStore, useStoreSelector } from '@tamagui/use-store'
 import type { Href } from 'one'
 import { createElement, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
 import type { NavItemProps } from './DocsPage'
-
-export class DocsItemsStore {
-  hovered = false
-  index = 0
-}
 
 export const DocsRouteNavItem = function DocsRouteNavItem({
   children,
@@ -18,14 +12,11 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   icon,
   pending,
   inMenu,
-  index,
   external,
 }: NavItemProps & {
   icon?: any
   inMenu?: boolean
-  index: number
 }) {
-  const isActive = useStoreSelector(DocsItemsStore, (x) => x.hovered && x.index === index)
   const isExternal = external || href.startsWith('http')
   const ref = useRef<any>(undefined)
 
@@ -47,15 +38,12 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         }}
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         position="relative"
-        onMouseEnter={() => {
-          getStore(DocsItemsStore).index = index
-        }}
         $sm={{
           py: '$1.5',
         }}
-        {...(isActive && {
+        hoverStyle={{
           bg: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
-        })}
+        }}
         {...(inMenu && {
           jc: 'flex-start',
         })}

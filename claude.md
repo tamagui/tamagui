@@ -67,3 +67,8 @@ When writing tests for focus behavior or component interactions:
 - If tests fail due to timing, add appropriate `waitForTimeout` calls
 - For focus tests, ensure elements are visible before testing focus state
 - When testing popover/dialog components, wait for animations to complete
+
+## Commit Message Conventions
+
+- Use `site:` prefix (not `fix(site):`) for tamagui.dev changes since they don't go in the changelog
+- Keep commit messages to a single line

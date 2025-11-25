@@ -1,8 +1,7 @@
-import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
 import { H4, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 import { DocsNavHeading } from './DocsNavHeading'
-import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
+import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
 
@@ -65,16 +64,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
   return (
     <>
-      <div
-        style={{ width: '100%' }}
-        aria-label="Docs Menu"
-        onMouseEnter={() => {
-          getStore(DocsItemsStore).hovered = true
-        }}
-        onMouseLeave={() => {
-          getStore(DocsItemsStore).hovered = false
-        }}
-      >
+      <div style={{ width: '100%' }} aria-label="Docs Menu">
         {React.useMemo(() => {
           return (
             <>
@@ -95,7 +85,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                     pending={page['pending']}
                     key={`${page.route}${index}`}
                     icon={page.icon}
-                    index={index}
                   >
                     {page.title}
                   </DocsRouteNavItem>
