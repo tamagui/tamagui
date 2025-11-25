@@ -60,6 +60,7 @@ export declare const webOnlyStylePropsView: {
     touchAction: boolean;
     transformStyle: boolean;
     userSelect: boolean;
+    willChange: boolean;
 };
 export declare const webOnlyStylePropsText: {
     whiteSpace: boolean;

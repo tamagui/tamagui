@@ -105,5 +105,6 @@ export declare const webPropsToSkip: {
     touchAction: boolean;
     transformStyle: boolean;
     userSelect: boolean;
+    willChange: boolean;
 };
 //# sourceMappingURL=webPropsToSkip.native.d.ts.map
