@@ -1871,7 +1871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dominicstop/ts-event-emitter@npm:1.1.0":
+"@dominicstop/ts-event-emitter@npm:1.1.0, @dominicstop/ts-event-emitter@npm:^1.1.0":
   version: 1.1.0
   resolution: "@dominicstop/ts-event-emitter@npm:1.1.0"
   checksum: 10/279822fc6736b90b73904c30ab1afb70e3ea4e95afe065433a7d41c2c21b890c9e54bf6d4062c1d79da57b42ffd4432a095d36fdaeb12f5111aa214dfe4aae2c
@@ -7353,7 +7353,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/context-menu@workspace:code/ui/context-menu":
+"@tamagui/context-menu@workspace:*, @tamagui/context-menu@workspace:code/ui/context-menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/context-menu@workspace:code/ui/context-menu"
   dependencies:
@@ -7427,17 +7427,39 @@ __metadata:
   resolution: "@tamagui/create-menu@workspace:code/ui/create-menu"
   dependencies:
     "@react-native-menu/menu": "npm:^2.0.0"
+    "@tamagui/animate": "workspace:*"
+    "@tamagui/animate-presence": "workspace:*"
     "@tamagui/build": "workspace:*"
+    "@tamagui/collection": "workspace:*"
+    "@tamagui/core": "workspace:*"
+    "@tamagui/dismissable": "workspace:*"
+    "@tamagui/focus-guard": "workspace:*"
+    "@tamagui/focus-scope": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/image": "workspace:*"
     "@tamagui/popover": "workspace:*"
+    "@tamagui/popper": "workspace:*"
+    "@tamagui/portal": "workspace:*"
+    "@tamagui/remove-scroll": "workspace:*"
+    "@tamagui/roving-focus": "workspace:*"
+    "@tamagui/use-callback-ref": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:0.81.5"
+    react-native-ios-context-menu: "npm:*"
+    sf-symbols-typescript: "npm:*"
+    tamagui: "workspace:*"
   peerDependencies:
     react: "*"
+    react-native: 0.81.5
   dependenciesMeta:
     "@react-native-menu/menu":
+      optional: true
+    react-native-ios-context-menu:
+      optional: true
+    sf-symbols-typescript:
       optional: true
   languageName: unknown
   linkType: soft
@@ -7470,6 +7492,7 @@ __metadata:
     "@tamagui/checkbox": "workspace:*"
     "@tamagui/checkbox-headless": "workspace:*"
     "@tamagui/config": "workspace:*"
+    "@tamagui/context-menu": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/image": "workspace:*"
@@ -7477,6 +7500,7 @@ __metadata:
     "@tamagui/list-item": "workspace:*"
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
+    "@tamagui/menu": "workspace:*"
     "@tamagui/popover": "workspace:*"
     "@tamagui/progress": "workspace:*"
     "@tamagui/radio-group": "workspace:*"
@@ -7672,7 +7696,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/focus-guard@workspace:code/ui/focus-guard":
+"@tamagui/focus-guard@workspace:*, @tamagui/focus-guard@workspace:code/ui/focus-guard":
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-guard@workspace:code/ui/focus-guard"
   dependencies:
@@ -8205,7 +8229,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/menu@workspace:code/ui/menu":
+"@tamagui/menu@workspace:*, @tamagui/menu@workspace:code/ui/menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:code/ui/menu"
   dependencies:
@@ -9083,6 +9107,7 @@ __metadata:
     "@tamagui/theme-builder": "workspace:*"
     "@tamagui/web": "workspace:*"
     color2k: "npm:^2.0.2"
+    tamagui: "workspace:*"
     vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
@@ -25944,6 +25969,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-ios-context-menu@npm:*":
+  version: 3.2.1
+  resolution: "react-native-ios-context-menu@npm:3.2.1"
+  dependencies:
+    "@dominicstop/ts-event-emitter": "npm:^1.1.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-ios-utilities: "*"
+  checksum: 10/9b2fb64fd2c30b13b78f0c2e14cdba7031c5b1759c72da4b5c7f6e6be0afdaecf496d6e0a5a17efb847239c836e63304e3af315fee3569677a255520ab96bab1
+  languageName: node
+  linkType: hard
+
 "react-native-is-edge-to-edge@npm:^1.2.1":
   version: 1.2.1
   resolution: "react-native-is-edge-to-edge@npm:1.2.1"
@@ -27724,17 +27762,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sf-symbols-typescript@npm:*, sf-symbols-typescript@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "sf-symbols-typescript@npm:2.1.0"
+  checksum: 10/1fe80afa6a8275bf0665a5ed30fc82b25abd706162235cf77d9422c9cf707aee9bac0e7f3a3effd2177963751e8da9b76e43f1be814660b3a9c18de11274be39
+  languageName: node
+  linkType: hard
+
 "sf-symbols-typescript@npm:^1.0.0":
   version: 1.0.0
   resolution: "sf-symbols-typescript@npm:1.0.0"
   checksum: 10/008ddfcadceb33ec29fb182104516234cc3f771254619696918481744bc28be51070f226859e4dfc2faf5f094dd8ca13e0364b2bb3d22e8cf044ce37f749df0b
-  languageName: node
-  linkType: hard
-
-"sf-symbols-typescript@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "sf-symbols-typescript@npm:2.1.0"
-  checksum: 10/1fe80afa6a8275bf0665a5ed30fc82b25abd706162235cf77d9422c9cf707aee9bac0e7f3a3effd2177963751e8da9b76e43f1be814660b3a9c18de11274be39
   languageName: node
   linkType: hard
 

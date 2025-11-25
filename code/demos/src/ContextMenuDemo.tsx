@@ -18,7 +18,14 @@ export function ContextMenuDemo() {
   return (
     <ContextMenu allowFlip native={native} placement="bottom-start">
       <ContextMenu.Trigger asChild>
-        <YStack jc="center" ai="center" bw={1} bc="$borderColor" width={250} height={200}>
+        <YStack
+          justifyContent="center"
+          alignItems="center"
+          borderWidth={1}
+          borderColor="$borderColor"
+          width={250}
+          height={200}
+        >
           <Text textAlign="center">Right Click or longPress</Text>
         </YStack>
       </ContextMenu.Trigger>
@@ -27,7 +34,7 @@ export function ContextMenuDemo() {
         <ContextMenu.Content
           paddingHorizontal={0}
           borderWidth={1}
-          ai="flex-start"
+          alignItems="flex-start"
           borderColor="$borderColor"
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
@@ -44,7 +51,12 @@ export function ContextMenuDemo() {
           <ContextMenu.Preview>
             {() => {
               return (
-                <YStack bc="$green1" jc="center" ai="center" p={20}>
+                <YStack
+                  backgroundColor="$green1"
+                  justifyContent="center"
+                  alignItems="center"
+                  padding={20}
+                >
                   <Text>Your Preview here</Text>
                   <Image
                     width={240}
@@ -66,7 +78,7 @@ export function ContextMenuDemo() {
             </ContextMenu.Item>
             <ContextMenu.Item
               onSelect={onSelect}
-              jc="space-between"
+              justifyContent="space-between"
               // when title is nested inside a React element then you need to use `textValue`
               textValue="Calender"
               key="accounts"
@@ -97,7 +109,7 @@ export function ContextMenuDemo() {
           </ContextMenu.Group>
           <ContextMenu.Separator />
           <ContextMenu.Sub placement="right-start">
-            <ContextMenu.SubTrigger jc="space-between" key="actions-trigger">
+            <ContextMenu.SubTrigger justifyContent="space-between" key="actions-trigger">
               <>
                 <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
                 {!native || isWeb ? <ChevronRight size="$1" /> : null}
