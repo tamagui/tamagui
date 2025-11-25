@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/fake-react-native",
-  "version": "1.138.3",
+  "version": "1.138.4",
   "main": "index.js",
   "module": "index.mjs",
   "exports": {
