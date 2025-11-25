@@ -8,6 +8,12 @@ type Options = {
     fallbackColor?: string;
     resolveValues?: ResolveVariableAs;
 };
-export declare function themed(Component: React.FC<IconProps>, optsIn?: Options): (propsIn: IconProps) => import("react/jsx-runtime").JSX.Element;
+export declare function themed(Component: React.FC<IconProps>, optsIn?: Options): {
+    (propsIn: IconProps): import("react/jsx-runtime").JSX.Element;
+    staticConfig: {
+        isHOC: boolean;
+        acceptsClassName: boolean;
+    };
+};
 export {};
 //# sourceMappingURL=themed.d.ts.map

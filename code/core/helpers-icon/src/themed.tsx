@@ -67,5 +67,11 @@ export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
     return <Component {...finalProps} />
   }
 
+  // add staticConfig so styled() works properly with themed icons
+  wrapped['staticConfig'] = {
+    isHOC: true,
+    acceptsClassName: true,
+  }
+
   return wrapped
 }
