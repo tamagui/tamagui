@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Sandbox } from './Sandbox'
 import { DemoScreen } from './features/demos/demo-screen'
@@ -20,7 +21,8 @@ const Stack = createNativeStackNavigator<{
 
 export function Navigation() {
   return (
-    <Stack.Navigator initialRouteName="home">
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="home">
       <Stack.Screen name="home" component={HomeScreen} />
       <Stack.Screen
         name="sandbox"
@@ -63,5 +65,6 @@ export function Navigation() {
         }}
       />
     </Stack.Navigator>
+    </NavigationContainer>
   )
 }
