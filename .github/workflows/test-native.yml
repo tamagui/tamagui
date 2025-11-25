@@ -1,0 +1,178 @@
+name: Native Tests (Appium)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  test_container_app_path: code/kitchen-sink
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # iOS Tests
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  build-ios:
+    name: Build iOS App
+    uses: ./.github/workflows/build-ios-kitchensink-app.yml
+    with:
+      configuration: Debug
+    secrets: inherit
+
+  test-ios:
+    name: iOS Native Tests
+    needs: build-ios
+    runs-on: macos-14
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ${{ env.test_container_app_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+
+      - name: Restore Built App from Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.build-ios.outputs.built-app-cache-key }}
+          path: ${{ needs.build-ios.outputs.built-app-path }}
+          fail-on-cache-miss: true
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Cache Appium
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-appium-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-appium-
+
+      - name: Install and Start Appium
+        run: |
+          npm install -g appium
+          appium driver install xcuitest
+          appium > /tmp/appium.log 2>&1 &
+          sleep 5
+          echo "Appium started"
+
+      - name: Boot iOS Simulator
+        id: boot-simulator
+        working-directory: ${{ github.workspace }}
+        run: |
+          # Find an available iPhone simulator
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
+            .devices | to_entries[]
+            | select(.key | contains("iOS"))
+            | .value[]
+            | select(.name | contains("iPhone 15") or contains("iPhone 16"))
+            | .udid' | head -1)
+
+          if [ -z "$DEVICE_ID" ]; then
+            echo "No suitable iPhone simulator found"
+            exit 1
+          fi
+
+          echo "Booting simulator: $DEVICE_ID"
+          xcrun simctl boot "$DEVICE_ID" || true
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+
+          echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
+
+      - name: Start Metro Bundler
+        run: |
+          EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+          echo "Waiting for Metro to start..."
+          for i in {1..60}; do
+            if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
+              echo "Metro is ready!"
+              break
+            fi
+            echo "Waiting for Metro... ($i/60)"
+            sleep 2
+          done
+
+      - name: Pre-warm Bundle
+        run: |
+          echo "Pre-warming bundle..."
+          MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
+          BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
+          echo "Fetching bundle from: $BUNDLE_URL"
+          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
+          echo "Bundle pre-warm complete"
+
+      - name: Run iOS Tests
+        env:
+          SIMULATOR_UDID: ${{ steps.boot-simulator.outputs.simulator_udid }}
+          IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios.outputs.built-app-path }}
+          NATIVE_TEST_PLATFORM: ios
+        run: |
+          yarn test-ios
+
+      - name: Upload Appium Logs on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appium-logs-ios
+          path: /tmp/appium.log
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Android Tests (future - commented out for now)
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  # build-android:
+  #   name: Build Android App
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/actions/install
+  #     - name: Build Android
+  #       working-directory: code/kitchen-sink
+  #       run: |
+  #         npx expo prebuild --platform android
+  #         cd android && ./gradlew assembleDebug
+  #     - uses: actions/cache/save@v4
+  #       with:
+  #         path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+  #         key: android-app-${{ github.sha }}
+
+  # test-android:
+  #   name: Android Native Tests
+  #   needs: build-android
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 45
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/actions/install
+  #     - name: Enable KVM
+  #       run: |
+  #         echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+  #         sudo udevadm control --reload-rules
+  #         sudo udevadm trigger --name-match=kvm
+  #     - name: Setup Android SDK
+  #       uses: android-actions/setup-android@v3
+  #     - name: Start Android Emulator
+  #       uses: reactivecircus/android-emulator-runner@v2
+  #       with:
+  #         api-level: 33
+  #         target: google_apis
+  #         arch: x86_64
+  #         profile: Nexus 6
+  #         script: |
+  #           npm install -g appium
+  #           appium driver install uiautomator2
+  #           appium > /tmp/appium.log 2>&1 &
+  #           sleep 5
+  #           cd code/kitchen-sink
+  #           EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+  #           sleep 30
+  #           NATIVE_TEST_PLATFORM=android yarn test-android
