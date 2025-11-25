@@ -126,53 +126,146 @@ jobs:
           path: /tmp/appium.log
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # Android Tests (future - commented out for now)
+  # Android Tests
   # ─────────────────────────────────────────────────────────────────────────────
 
-  # build-android:
-  #   name: Build Android App
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: ./.github/actions/install
-  #     - name: Build Android
-  #       working-directory: code/kitchen-sink
-  #       run: |
-  #         npx expo prebuild --platform android
-  #         cd android && ./gradlew assembleDebug
-  #     - uses: actions/cache/save@v4
-  #       with:
-  #         path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
-  #         key: android-app-${{ github.sha }}
+  build-android:
+    name: Build Android App
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      apk-cache-key: android-apk-${{ github.sha }}
+      apk-path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  # test-android:
-  #   name: Android Native Tests
-  #   needs: build-android
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 45
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: ./.github/actions/install
-  #     - name: Enable KVM
-  #       run: |
-  #         echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-  #         sudo udevadm control --reload-rules
-  #         sudo udevadm trigger --name-match=kvm
-  #     - name: Setup Android SDK
-  #       uses: android-actions/setup-android@v3
-  #     - name: Start Android Emulator
-  #       uses: reactivecircus/android-emulator-runner@v2
-  #       with:
-  #         api-level: 33
-  #         target: google_apis
-  #         arch: x86_64
-  #         profile: Nexus 6
-  #         script: |
-  #           npm install -g appium
-  #           appium driver install uiautomator2
-  #           appium > /tmp/appium.log 2>&1 &
-  #           sleep 5
-  #           cd code/kitchen-sink
-  #           EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
-  #           sleep 30
-  #           NATIVE_TEST_PLATFORM=android yarn test-android
+      - name: Check if APK is already cached
+        id: apk-cache-check
+        uses: actions/cache/restore@v4
+        with:
+          path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+          key: android-apk-${{ github.sha }}
+          lookup-only: true
+
+      - name: Install Dependencies
+        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Setup Java
+        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        uses: android-actions/setup-android@v3
+
+      - name: Build Android App
+        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        working-directory: code/kitchen-sink
+        run: |
+          npx expo prebuild --platform android --clean
+          cd android && ./gradlew assembleDebug
+
+      - name: Cache APK
+        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+          key: android-apk-${{ github.sha }}
+
+  test-android:
+    name: Android Native Tests
+    needs: build-android
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore APK from Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.build-android.outputs.apk-cache-key }}
+          path: ${{ needs.build-android.outputs.apk-path }}
+          fail-on-cache-miss: true
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Enable KVM
+        working-directory: ${{ github.workspace }}
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Appium
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-appium-android-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-appium-android-
+
+      - name: Install and Start Appium
+        working-directory: ${{ github.workspace }}
+        run: |
+          npm install -g appium
+          appium driver install uiautomator2
+          appium > /tmp/appium.log 2>&1 &
+          sleep 5
+          echo "Appium started"
+
+      - name: Start Android Emulator and Run Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            cd code/kitchen-sink
+            EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+            echo "Waiting for Metro to start..."
+            for i in {1..60}; do
+              if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
+                echo "Metro is ready!"
+                break
+              fi
+              echo "Waiting for Metro... ($i/60)"
+              sleep 2
+            done
+            # Pre-warm bundle
+            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android")
+            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
+            echo "Pre-warming bundle from: $BUNDLE_URL"
+            curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
+            # Run tests
+            ANDROID_TEST_APK_PATH=${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }} \
+            NATIVE_TEST_PLATFORM=android \
+            yarn test-android
+
+      - name: Upload Appium Logs on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appium-logs-android
+          path: /tmp/appium.log
