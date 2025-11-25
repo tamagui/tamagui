@@ -1,0 +1,85 @@
+name: Test iOS Native (Maestro)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  test_container_app_path: code/kitchen-sink
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-ios-kitchensink-app.yml
+    with:
+      configuration: Debug
+    secrets: inherit
+
+  test:
+    name: Run Maestro Tests
+    needs: build
+    runs-on: macos-14
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ${{ env.test_container_app_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+
+      - name: Restore Built App from Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.build.outputs.built-app-cache-key }}
+          path: ${{ needs.build.outputs.built-app-path }}
+          fail-on-cache-miss: true
+
+      - name: Install Maestro
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Boot iOS Simulator
+        run: |
+          # List available simulators and boot iPhone 15
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 15") | .udid' | head -1)
+          if [ -z "$DEVICE_ID" ]; then
+            echo "iPhone 15 not found, using first available iPhone"
+            DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name | contains("iPhone")) | .udid' | head -1)
+          fi
+          echo "Booting simulator: $DEVICE_ID"
+          xcrun simctl boot "$DEVICE_ID" || true
+          # Wait for simulator to be ready
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+
+      - name: Install App on Simulator
+        run: |
+          xcrun simctl install booted "${{ needs.build.outputs.built-app-path }}"
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Start Metro Bundler
+        run: |
+          EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+          # Wait for Metro to be ready
+          sleep 30
+
+      - name: Run Maestro Tests
+        run: |
+          maestro test ./flows --exclude-tags=util
+
+      - name: Upload Maestro Artifacts on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-artifacts
+          path: |
+            ~/.maestro/tests/**/*

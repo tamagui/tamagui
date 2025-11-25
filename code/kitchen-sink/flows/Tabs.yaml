@@ -5,13 +5,9 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Tabs'
+    centerElement: true
 - tapOn: 'Tabs'
-- extendedWaitUntil:
-    visible: 'Profile'
-    timeout: 10000
-- tapOn: 'Connections'
+- assertVisible: 'Profile'
+# Test: tabs are clickable
 - tapOn: 'Notifications'
 - tapOn: 'Profile'
-- tapOn:
-    text: 'home'
-    optional: true

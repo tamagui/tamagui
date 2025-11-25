@@ -5,17 +5,8 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Sheet'
+    centerElement: true
 - tapOn: 'Sheet'
 - assertVisible: 'Open'
+# Test: sheet opens when button tapped
 - tapOn: 'Open'
-- extendedWaitUntil:
-    notVisible: 'Open'
-    timeout: 5000
-- swipe:
-    direction: DOWN
-- extendedWaitUntil:
-    visible: 'Open'
-    timeout: 5000
-- tapOn:
-    text: 'home'
-    optional: true

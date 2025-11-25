@@ -19,9 +19,22 @@ const Stack = createNativeStackNavigator<{
   sandbox: undefined
 }>()
 
+const linking = {
+  prefixes: [],
+  config: {
+    screens: {
+      home: '',
+      sandbox: 'sandbox',
+      demo: 'demo/:id',
+      tests: 'tests',
+      test: 'test/:id',
+    },
+  },
+}
+
 export function Navigation() {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator initialRouteName="home">
       <Stack.Screen name="home" component={HomeScreen} />
       <Stack.Screen

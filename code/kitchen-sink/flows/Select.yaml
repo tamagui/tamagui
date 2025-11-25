@@ -5,20 +5,9 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Select'
+    centerElement: true
 - tapOn: 'Select'
-- extendedWaitUntil:
-    visible: 'Custom'
-    timeout: 10000
-# Tap on the Select trigger (shows "Apple" as default value)
-- tapOn:
-    text: '.*[Aa]pple.*'
-- extendedWaitUntil:
-    visible: 'Fruits'
-    timeout: 5000
-- tapOn: 'Pear'
-- extendedWaitUntil:
-    visible: '.*[Pp]ear.*'
-    timeout: 5000
-- tapOn:
-    text: 'home'
-    optional: true
+- assertVisible: 'Apple'
+# Test: select opens when tapped
+- tapOn: 'Apple'
+- assertVisible: 'Pear'

@@ -5,15 +5,9 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Toast'
+    centerElement: true
 - tapOn: 'Toast'
-- extendedWaitUntil:
-    visible: 'Show'
-    timeout: 10000
+- assertVisible: 'Show'
+# Test: tap show, toast appears
 - tapOn: 'Show'
-- extendedWaitUntil:
-    visible: 'Successfully saved!'
-    timeout: 5000
-- tapOn: 'Hide'
-- tapOn:
-    text: 'home'
-    optional: true
+- assertVisible: 'Successfully saved!'

@@ -1,20 +1,14 @@
 appId: com.tamagui.tamaguikitchensink
 tags:
   - component
-
 ---
 - runFlow: OpenApp.yaml
-- scrollUntilVisible:
-    element: 'AlertDialog'
 - tapOn: 'AlertDialog'
-- extendedWaitUntil:
-    visible: 'Show Alert'
-    timeout: 10000
+- assertVisible: 'Show Alert'
+# Test: tap button, dialog appears
 - tapOn: 'Show Alert'
-- extendedWaitUntil:
-    visible: 'Cancel'
-    timeout: 5000
+- assertVisible: 'Cancel'
+- assertVisible: 'Accept'
+# Test: dialog closes on cancel
 - tapOn: 'Cancel'
-- tapOn:
-    text: 'home'
-    optional: true
+- assertVisible: 'Show Alert'
