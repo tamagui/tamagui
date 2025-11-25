@@ -14,7 +14,7 @@ import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
-import { forwardRef, memo, useMemo } from 'react'
+import { forwardRef, memo, useMemo, useEffect, useRef } from 'react'
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
@@ -153,13 +153,24 @@ export function createSheet<
         const composedContentRef = useComposedRefs(forwardedRef, contentRef)
         const offscreenSize = useSheetOffscreenSize(context)
 
+        // FIX: Store the frameSize when open for use during close animation
+        const stableFrameSize = useRef(frameSize)
+        useEffect(() => {
+          if (open && frameSize) {
+            stableFrameSize.current = frameSize
+          }
+        }, [open, frameSize])
+
         const sheetContents = useMemo(() => {
+          // FIX: Use fixed height during close animation to prevent content-driven resizing
+          const shouldUseFixedHeight = hasFit && !open && stableFrameSize.current
+
           return (
             // @ts-expect-error
             <Frame
               ref={composedContentRef}
-              flex={hasFit ? 0 : 1}
-              height={hasFit ? undefined : frameSize}
+              flex={hasFit && open ? 0 : 1}
+              height={shouldUseFixedHeight ? stableFrameSize.current : (hasFit ? undefined : frameSize)}
               pointerEvents={open ? 'auto' : 'none'}
               {...props}
             >
