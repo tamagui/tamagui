@@ -201,7 +201,6 @@ test.describe('Adapted Dialog Sheet', () => {
 
     const trigger = page.getByTestId('adapted-dialog-trigger')
     const sheetFrame = page.getByTestId('adapted-sheet-frame')
-    const sheetOverlay = page.getByTestId('adapted-sheet-overlay')
     const dialogContent = page.getByTestId('adapted-dialog-content')
 
     await expect(trigger).toBeVisible()
@@ -217,14 +216,9 @@ test.describe('Adapted Dialog Sheet', () => {
     // At least one should be visible (either adapted sheet or dialog)
     expect(isSheetVisible || isDialogVisible).toBe(true)
 
-    // Close via overlay click (Dialog.Close is hidden in sheet mode)
-    if (isSheetVisible) {
-      await sheetOverlay.click()
-    } else {
-      // On dialog, use the close button
-      const closeButton = page.getByTestId('adapted-dialog-close')
-      await closeButton.click()
-    }
+    // Close via close button (works in both sheet and dialog mode via Adapt.Contents)
+    const closeButton = page.getByTestId('adapted-dialog-close')
+    await closeButton.click()
     await page.waitForTimeout(500)
 
     // Should be closed - sheet frame should not be in viewport
