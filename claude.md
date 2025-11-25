@@ -71,4 +71,5 @@ When writing tests for focus behavior or component interactions:
 ## Commit Message Conventions
 
 - Use `site:` prefix (not `fix(site):`) for tamagui.dev changes since they don't go in the changelog
+- Use `ci:` prefix (not `fix(ci):`) for CI/workflow changes since they don't go in the changelog
 - Keep commit messages to a single line
