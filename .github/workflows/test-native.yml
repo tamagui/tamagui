@@ -231,7 +231,8 @@ jobs:
         env:
           ANDROID_TEST_APK_PATH: ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
         with:
-          api-level: 33
+          # API 30 boots faster and is more reliable than 33 in CI
+          api-level: 30
           target: google_apis
           # macos-13 is Intel-based, so use x86_64
           arch: x86_64
@@ -239,9 +240,12 @@ jobs:
           ram-size: 4096M
           heap-size: 1024M
           force-avd-creation: false
-          emulator-boot-timeout: 300
+          # Increased timeout for CI environment - emulator can be slow
+          emulator-boot-timeout: 600
           disable-animations: true
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          # Use host GPU for hardware acceleration on macOS Intel
+          # See: https://github.com/actions/runner-images/issues/7671
+          emulator-options: -no-snapshot -no-window -gpu host -noaudio -no-boot-anim -camera-back none -camera-front none
           script: bash ${{ github.workspace }}/code/kitchen-sink/scripts/run-android-tests.sh
 
       - name: Upload Appium Logs on Failure
