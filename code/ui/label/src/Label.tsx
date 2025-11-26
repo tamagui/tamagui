@@ -45,12 +45,10 @@ export const LabelFrame = styled(SizableText, {
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
-        const buttonHeight = buttonStyle?.height
         const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
-        return {
-          ...fontStyle,
-          lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
-        }
+        // Only set lineHeight if buttonStyle has a valid height, and let the font sized handle it otherwise
+        // This prevents crashes on Android when lineHeight is an invalid value
+        return fontStyle
       },
     },
   } as const,
