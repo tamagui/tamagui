@@ -29,8 +29,8 @@ export function TokensDemo() {
   const [section, setSection] = React.useState<Section>('size')
 
   return (
-    <YStack space>
-      <XGroup alignItems="center" alignSelf="center">
+    <YStack gap="$4">
+      <XGroup items="center" self="center">
         {sections.map(({ name, key }) => {
           return (
             <XGroup.Item key={key}>
@@ -67,13 +67,13 @@ function SizeSection({ section }: { section: Section }) {
     .sort((a, b) => (Number.parseFloat(a) > Number.parseFloat(b) ? -1 : 1))
 
   return (
-    <YStack flex={1} space>
+    <YStack flex={1} gap="$4">
       <H2>Sizes</H2>
-      <YStack width="100%" space="$2" separator={<Separator />}>
+      <YStack width="100%" gap="$2" separator={<Separator />}>
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map(
           (token) => {
             return (
-              <XStack width="100%" alignItems="center" key={token}>
+              <XStack width="100%" items="center" key={token}>
                 <YStack width="25%">
                   <H3 size="$6">${token}</H3>
                 </YStack>

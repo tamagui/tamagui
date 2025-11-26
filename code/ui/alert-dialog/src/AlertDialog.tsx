@@ -39,7 +39,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { Alert } from 'react-native'
 
-const getAlertDialogScope = (scope?: string) =>  scope
+const getAlertDialogScope = (scope?: string) => scope
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialog
@@ -167,7 +167,6 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
       >
         <AlertDialogContextProvider scope={scope} cancelRef={cancelRef}>
           <DialogContent
-            // @ts-ignore
             role="alertdialog"
             scope={dialogScope}
             {...contentProps}
@@ -177,7 +176,6 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
               (event) => {
                 event.preventDefault()
                 if (isWeb) {
-                  // @ts-ignore
                   cancelRef.current?.focus({ preventScroll: true })
                 }
               }

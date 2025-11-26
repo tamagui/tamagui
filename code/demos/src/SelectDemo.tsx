@@ -72,14 +72,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport
-          // to do animations:
-          // animation="quick"
-          // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
-          minW={200}
-        >
+        <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
