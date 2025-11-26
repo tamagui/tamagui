@@ -39,7 +39,7 @@ const generateColorPalette = ({
       anchor.hue[scheme],
       anchor.sat[scheme],
       anchor.lum[scheme],
-      anchor.alpha[scheme],
+      anchor.alpha?.[scheme] ?? 1,
     ]
 
     if (anchorIndex !== 0) {

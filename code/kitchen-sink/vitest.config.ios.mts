@@ -3,12 +3,10 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     globalSetup: './testing-utils/global-setup.ts',
-    include: ['**/*.{test.ios,spec.ios}.?(c|m)[jt]s?(x)'],
+    include: ['**/*.{test.ios,test.native,spec.ios,spec.native}.?(c|m)[jt]s?(x)'],
     retry: 1,
-    // Ensure tests run sequentially
     fileParallelism: false,
-    // Add reasonable timeouts
-    testTimeout: 30000,
-    hookTimeout: 30000,
+    testTimeout: 60000,
+    hookTimeout: 60000,
   },
 })

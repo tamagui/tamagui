@@ -24,18 +24,6 @@ export const DefaultTabsTabFrame = styled(ThemeableStack, {
       },
     },
 
-    active: {
-      true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-
-        focusStyle: {
-          backgroundColor: '$background',
-        },
-      },
-    },
-
     unstyled: {
       false: {
         borderWidth: 0,
