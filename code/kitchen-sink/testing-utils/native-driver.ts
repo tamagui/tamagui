@@ -230,14 +230,20 @@ export async function goBack(driver: NativeDriver): Promise<void> {
       // ignore
     }
 
-    // Swipe from left edge to go back
+    // Swipe from left edge to go back using W3C WebDriver action API
     const { width, height } = await driver.getWindowSize()
-    await driver.touchAction([
-      { action: 'press', x: 10, y: height / 2 },
-      { action: 'wait', ms: 100 },
-      { action: 'moveTo', x: width / 2, y: height / 2 },
-      { action: 'release' },
-    ])
+    const startX = 10
+    const startY = Math.round(height / 2)
+    const endX = Math.round(width / 2)
+
+    await driver
+      .action('pointer', { parameters: { pointerType: 'touch' } })
+      .move({ x: startX, y: startY })
+      .down()
+      .pause(100)
+      .move({ x: endX, y: startY, duration: 200 })
+      .up()
+      .perform()
   }
 }
 
@@ -251,7 +257,7 @@ export async function pause(ms: number): Promise<void> {
 /**
  * Scroll down on the screen.
  */
-export async function scrollDown(driver: NativeDriver, distance = 300): Promise<void> {
+export async function scrollDown(driver: NativeDriver, distance = 500): Promise<void> {
   const { width, height } = await driver.getWindowSize()
 
   if (isIOS()) {
@@ -260,17 +266,20 @@ export async function scrollDown(driver: NativeDriver, distance = 300): Promise<
       direction: 'down',
     })
   } else {
-    // Android: use swipe gesture
-    const startX = width / 2
-    const startY = height * 0.7
-    const endY = startY - distance
+    // Android: use the new action API (W3C WebDriver standard)
+    // Use a larger scroll distance for more effective scrolling
+    const startX = Math.round(width / 2)
+    const startY = Math.round(height * 0.75)
+    const endY = Math.round(height * 0.25)
 
-    await driver.touchAction([
-      { action: 'press', x: startX, y: startY },
-      { action: 'wait', ms: 100 },
-      { action: 'moveTo', x: startX, y: endY },
-      { action: 'release' },
-    ])
+    await driver
+      .action('pointer', { parameters: { pointerType: 'touch' } })
+      .move({ x: startX, y: startY })
+      .down()
+      .pause(100)
+      .move({ x: startX, y: endY, duration: 300 })
+      .up()
+      .perform()
   }
 }
 
@@ -286,17 +295,19 @@ export async function scrollUp(driver: NativeDriver, distance = 300): Promise<vo
       direction: 'up',
     })
   } else {
-    // Android: use swipe gesture
-    const startX = width / 2
-    const startY = height * 0.3
-    const endY = startY + distance
+    // Android: use the new action API (W3C WebDriver standard)
+    const startX = Math.round(width / 2)
+    const startY = Math.round(height * 0.3)
+    const endY = Math.round(startY + distance)
 
-    await driver.touchAction([
-      { action: 'press', x: startX, y: startY },
-      { action: 'wait', ms: 100 },
-      { action: 'moveTo', x: startX, y: endY },
-      { action: 'release' },
-    ])
+    await driver
+      .action('pointer', { parameters: { pointerType: 'touch' } })
+      .move({ x: startX, y: startY })
+      .down()
+      .pause(100)
+      .move({ x: startX, y: endY, duration: 200 })
+      .up()
+      .perform()
   }
 }
 
