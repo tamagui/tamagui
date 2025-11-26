@@ -409,6 +409,7 @@ function getNewThemeName(
           `${parentBase}_${name}`,
           componentName ? `${parentScheme}_${name}_${componentName}` : undefined,
           `${parentScheme}_${name}`,
+          ...subNames,
         ].filter(Boolean) as string[]
 
         for (const potential of withScheme) {
