@@ -203,6 +203,9 @@ export function createSheet<
               componentName="SheetCover"
               // biome-ignore lint/correctness/noChildrenProp: <explanation>
               children={null}
+              // Don't inherit testID - this is a visual helper element
+              testID={undefined}
+              id={undefined}
               position="absolute"
               bottom="-100%"
               zIndex={-1}

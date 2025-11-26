@@ -227,8 +227,7 @@ const tamaConf = createTamagui({
       : search.includes('animationDriver=motion')
         ? animationsMotion
         : animationsMoti, // default moti
-  // This setting is now configured in createTamagui settings
-  // themeClassNameOnRoot: false, // moved to createTamagui({ settings: { themeClassNameOnRoot } })
+  themeClassNameOnRoot: false,
 
   defaultProps: {
     Square: {

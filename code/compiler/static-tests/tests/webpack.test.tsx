@@ -176,6 +176,7 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexProperties')
     const { container } = renderTrue()
 
+    // Select the div with is_View class which is the actual component
     const element = container.querySelector('.is_View') as HTMLElement
     expect(element).toBeTruthy()
 
@@ -216,6 +217,7 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
     const { container } = renderTrue()
 
+    // Select the div with is_View class which is the actual component
     const element = container.querySelector('.is_View') as HTMLElement
     expect(element).toBeTruthy()
 

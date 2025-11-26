@@ -7648,6 +7648,7 @@ __metadata:
     "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
+    react-native: "npm:0.81.5"
     react-native-ios-context-menu: "npm:^3.2.1"
     react-native-ios-utilities: "npm:^5.2.0"
     sf-symbols-typescript: "npm:^2.0.0"

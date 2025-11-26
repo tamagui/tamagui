@@ -7,7 +7,6 @@ export declare const webOnlyStylePropsView: {
     backgroundAttachment: boolean;
     backgroundBlendMode: boolean;
     backgroundClip: boolean;
-    backgroundColor: boolean;
     backgroundImage: boolean;
     backgroundOrigin: boolean;
     backgroundPosition: boolean;

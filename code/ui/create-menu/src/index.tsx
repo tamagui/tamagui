@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev'
 
 export * from './createBaseMenu'
-export * from './createNativeMenu'
+export * from './createNativeMenu/index'
 export type {
   MenuItemImageProps,
   MenuItemIconProps,

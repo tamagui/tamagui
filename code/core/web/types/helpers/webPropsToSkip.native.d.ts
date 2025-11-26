@@ -53,7 +53,6 @@ export declare const webPropsToSkip: {
     backgroundAttachment: boolean;
     backgroundBlendMode: boolean;
     backgroundClip: boolean;
-    backgroundColor: boolean;
     backgroundImage: boolean;
     backgroundOrigin: boolean;
     backgroundPosition: boolean;
