@@ -87,15 +87,29 @@ export async function closeNativeDriver(): Promise<void> {
 }
 
 /**
+ * Get the selector for finding an element by testID.
+ * On iOS, testID maps to accessibilityIdentifier (use ~ selector).
+ * On Android, testID maps to resource-id (use id selector with UiSelector).
+ */
+export function getTestIdSelector(testId: string): string {
+  if (isAndroid()) {
+    // On Android, testID becomes resource-id, not content-desc
+    // Use UiSelector to find by resource-id (partial match since RN may not prefix package)
+    return `android=new UiSelector().resourceIdMatches(".*${testId}.*")`
+  }
+  // On iOS, testID maps to accessibilityIdentifier which ~ selector finds
+  return `~${testId}`
+}
+
+/**
  * Helper to find elements by accessibility ID (testID on React Native).
- * On iOS, uses accessibility id. On Android, uses content-desc.
+ * On iOS, uses accessibility id. On Android, uses resource-id.
  */
 export async function findByTestId(
   driver: NativeDriver,
   testId: string
 ): Promise<ReturnType<NativeDriver['$']>> {
-  // ~ prefix works for both iOS and Android accessibility ID
-  return driver.$(`~${testId}`)
+  return driver.$(getTestIdSelector(testId))
 }
 
 /**
@@ -150,7 +164,7 @@ export async function waitForTestId(
   testId: string,
   timeout = 10000
 ): Promise<ReturnType<NativeDriver['$']>> {
-  return waitForElement(driver, `~${testId}`, timeout)
+  return waitForElement(driver, getTestIdSelector(testId), timeout)
 }
 
 /**
@@ -170,7 +184,7 @@ export async function tapTestId(
  */
 export async function hasTestId(driver: NativeDriver, testId: string): Promise<boolean> {
   try {
-    const element = await driver.$(`~${testId}`)
+    const element = await driver.$(getTestIdSelector(testId))
     return await element.isDisplayed()
   } catch {
     return false
@@ -257,7 +271,7 @@ export async function pause(ms: number): Promise<void> {
 /**
  * Scroll down on the screen.
  */
-export async function scrollDown(driver: NativeDriver, distance = 500): Promise<void> {
+export async function scrollDown(driver: NativeDriver): Promise<void> {
   const { width, height } = await driver.getWindowSize()
 
   if (isIOS()) {
@@ -286,7 +300,7 @@ export async function scrollDown(driver: NativeDriver, distance = 500): Promise<
 /**
  * Scroll up on the screen.
  */
-export async function scrollUp(driver: NativeDriver, distance = 300): Promise<void> {
+export async function scrollUp(driver: NativeDriver): Promise<void> {
   const { width, height } = await driver.getWindowSize()
 
   if (isIOS()) {
@@ -298,7 +312,7 @@ export async function scrollUp(driver: NativeDriver, distance = 300): Promise<vo
     // Android: use the new action API (W3C WebDriver standard)
     const startX = Math.round(width / 2)
     const startY = Math.round(height * 0.3)
-    const endY = Math.round(startY + distance)
+    const endY = Math.round(height * 0.6)
 
     await driver
       .action('pointer', { parameters: { pointerType: 'touch' } })
@@ -347,9 +361,10 @@ export async function scrollToTestId(
   testId: string,
   maxScrolls = 10
 ): Promise<ReturnType<NativeDriver['$']>> {
+  const selector = getTestIdSelector(testId)
   for (let i = 0; i < maxScrolls; i++) {
     try {
-      const element = await driver.$(`~${testId}`)
+      const element = await driver.$(selector)
       if (await element.isDisplayed()) {
         return element
       }
@@ -362,7 +377,7 @@ export async function scrollToTestId(
   }
 
   // One last try after all scrolls
-  const element = await driver.$(`~${testId}`)
+  const element = await driver.$(selector)
   await element.waitForDisplayed({ timeout: 2000 })
   return element
 }

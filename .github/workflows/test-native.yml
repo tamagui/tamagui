@@ -1,12 +1,21 @@
 name: Native Tests (Appium)
 
-# Disabled on main until tests are stable - work in progress on 'appium' branch
 on:
   push:
-    branches: [appium]
+    branches:
+      - main
+      - appium
+      - native-*
   pull_request:
-    branches: [appium]
+    branches:
+      - main
+      - appium
   workflow_dispatch:
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   test_container_app_path: code/kitchen-sink
@@ -89,35 +98,13 @@ jobs:
 
           echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
 
-      - name: Start Metro Bundler
-        run: |
-          EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
-          echo "Waiting for Metro to start..."
-          for i in {1..60}; do
-            if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
-              echo "Metro is ready!"
-              break
-            fi
-            echo "Waiting for Metro... ($i/60)"
-            sleep 2
-          done
-
-      - name: Pre-warm Bundle
-        run: |
-          echo "Pre-warming bundle..."
-          MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
-          BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
-          echo "Fetching bundle from: $BUNDLE_URL"
-          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
-          echo "Bundle pre-warm complete"
-
       - name: Run iOS Tests
         env:
           SIMULATOR_UDID: ${{ steps.boot-simulator.outputs.simulator_udid }}
           IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios.outputs.built-app-path }}
           NATIVE_TEST_PLATFORM: ios
         run: |
-          yarn test-ios
+          bash ${{ github.workspace }}/code/kitchen-sink/scripts/run-ios-tests.sh
 
       - name: Upload Appium Logs on Failure
         if: failure()
