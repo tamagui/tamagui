@@ -182,8 +182,13 @@ jobs:
   test-android:
     name: Android Native Tests
     needs: build-android
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        attempt: [1, 2]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -200,21 +205,11 @@ jobs:
         with:
           workspace-focus: '@tamagui/kitchen-sink'
 
-      - name: Enable KVM
-        working-directory: ${{ github.workspace }}
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
 
       - name: Cache Appium
         uses: actions/cache@v4
@@ -267,5 +262,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: appium-logs-android
+          name: appium-logs-android-attempt-${{ matrix.attempt }}
           path: /tmp/appium.log
