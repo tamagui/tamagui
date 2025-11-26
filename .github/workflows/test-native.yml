@@ -252,17 +252,21 @@ jobs:
             adb devices -l
             echo "=== Starting Metro bundler ==="
             cd code/kitchen-sink
-            EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+            # Use npx and run in background
+            EXPO_NO_TELEMETRY=true npx expo start --dev-client --offline &
             METRO_PID=$!
             echo "Metro started with PID: $METRO_PID"
             echo "Waiting for Metro to start..."
-            for i in {1..60}; do
+            # Use while loop instead of bash for loop (POSIX compatible)
+            i=1
+            while [ $i -le 60 ]; do
               if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
                 echo "Metro is ready!"
                 break
               fi
               echo "Waiting for Metro... ($i/60)"
               sleep 2
+              i=$((i + 1))
             done
             # Pre-warm bundle
             echo "=== Pre-warming bundle ==="
@@ -277,7 +281,7 @@ jobs:
             echo "=== Running Appium tests ==="
             ANDROID_TEST_APK_PATH=${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }} \
             NATIVE_TEST_PLATFORM=android \
-            yarn test-android
+            npx vitest run --config vitest.config.android.mts
 
       - name: Upload Appium Logs on Failure
         if: failure()
