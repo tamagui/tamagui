@@ -8,6 +8,23 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 KITCHEN_SINK_DIR="$(dirname "$SCRIPT_DIR")"
 
+# Cleanup function to kill background processes
+cleanup() {
+  echo "=== Cleaning up background processes ==="
+  if [ -n "$METRO_PID" ]; then
+    echo "Killing Metro (PID: $METRO_PID)"
+    kill "$METRO_PID" 2>/dev/null || true
+    wait "$METRO_PID" 2>/dev/null || true
+  fi
+  # Kill any remaining node processes related to expo/metro
+  pkill -f "expo start" 2>/dev/null || true
+  pkill -f "@expo/metro-runtime" 2>/dev/null || true
+  echo "Cleanup complete"
+}
+
+# Set trap to cleanup on exit (success or failure)
+trap cleanup EXIT
+
 echo "=== Emulator booted, checking ADB devices ==="
 adb devices -l
 
