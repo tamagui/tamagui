@@ -185,11 +185,6 @@ jobs:
     needs: build-android
     runs-on: macos-14
     timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        attempt: [1, 2]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -234,10 +229,12 @@ jobs:
         env:
           ANDROID_TEST_APK_PATH: ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
         with:
-          api-level: 31
+          api-level: 33
           target: google_apis
           arch: arm64-v8a
           profile: pixel_6
+          ram-size: 4096M
+          heap-size: 1024M
           force-avd-creation: false
           emulator-boot-timeout: 300
           disable-animations: true
@@ -248,5 +245,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: appium-logs-android-attempt-${{ matrix.attempt }}
+          name: appium-logs-android
           path: /tmp/appium.log
