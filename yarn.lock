@@ -7555,7 +7555,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/context-menu@workspace:code/ui/context-menu":
+"@tamagui/context-menu@workspace:*, @tamagui/context-menu@workspace:code/ui/context-menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/context-menu@workspace:code/ui/context-menu"
   dependencies:
@@ -7629,18 +7629,32 @@ __metadata:
   resolution: "@tamagui/create-menu@workspace:code/ui/create-menu"
   dependencies:
     "@react-native-menu/menu": "npm:^2.0.0"
+    "@tamagui/animate": "workspace:*"
+    "@tamagui/animate-presence": "workspace:*"
     "@tamagui/build": "workspace:*"
+    "@tamagui/collection": "workspace:*"
+    "@tamagui/dismissable": "workspace:*"
+    "@tamagui/focus-guard": "workspace:*"
+    "@tamagui/focus-scope": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/image": "workspace:*"
     "@tamagui/popover": "workspace:*"
+    "@tamagui/popper": "workspace:*"
+    "@tamagui/portal": "workspace:*"
+    "@tamagui/remove-scroll": "workspace:*"
+    "@tamagui/roving-focus": "workspace:*"
+    "@tamagui/use-callback-ref": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
     react-native-ios-context-menu: "npm:^3.2.1"
     react-native-ios-utilities: "npm:^5.2.0"
+    sf-symbols-typescript: "npm:^2.0.0"
     zeego: "npm:^3.0.6"
   peerDependencies:
     react: "*"
+    react-native: "*"
   dependenciesMeta:
     "@react-native-menu/menu":
       optional: true
@@ -7681,6 +7695,7 @@ __metadata:
     "@tamagui/checkbox": "workspace:*"
     "@tamagui/checkbox-headless": "workspace:*"
     "@tamagui/config": "workspace:*"
+    "@tamagui/context-menu": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/image": "workspace:*"
@@ -7688,6 +7703,7 @@ __metadata:
     "@tamagui/list-item": "workspace:*"
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
+    "@tamagui/menu": "workspace:*"
     "@tamagui/popover": "workspace:*"
     "@tamagui/progress": "workspace:*"
     "@tamagui/radio-group": "workspace:*"
@@ -7883,7 +7899,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/focus-guard@workspace:code/ui/focus-guard":
+"@tamagui/focus-guard@workspace:*, @tamagui/focus-guard@workspace:code/ui/focus-guard":
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-guard@workspace:code/ui/focus-guard"
   dependencies:
@@ -8420,7 +8436,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/menu@workspace:code/ui/menu":
+"@tamagui/menu@workspace:*, @tamagui/menu@workspace:code/ui/menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:code/ui/menu"
   dependencies:

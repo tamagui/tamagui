@@ -1,4 +1,4 @@
-import type { ColorTokens } from 'tamagui'
+import type { ColorTokens } from '@tamagui/web'
 
 export function opacify(color: string, opacity = 0.1) {
   // handle hsl/hsla
