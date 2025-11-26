@@ -183,7 +183,7 @@ jobs:
   test-android:
     name: Android Native Tests
     needs: build-android
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
       fail-fast: false
@@ -193,6 +193,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Enable KVM for hardware acceleration on Ubuntu runners
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Restore APK from Cache
         uses: actions/cache/restore@v4
@@ -225,23 +232,29 @@ jobs:
         run: |
           npm install -g appium
           appium driver install uiautomator2
-          appium > /tmp/appium.log 2>&1 &
+          appium --log-level debug > /tmp/appium.log 2>&1 &
           sleep 5
-          echo "Appium started"
+          echo "Appium started with debug logging"
 
       - name: Start Android Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: 28
           target: google_apis
           arch: x86_64
-          profile: pixel_4
+          profile: Nexus 6
           force-avd-creation: false
-          emulator-boot-timeout: 600
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-boot-timeout: 300
+          disable-animations: true
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           script: |
+            echo "=== Emulator booted, checking ADB devices ==="
+            adb devices -l
+            echo "=== Starting Metro bundler ==="
             cd code/kitchen-sink
             EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+            METRO_PID=$!
+            echo "Metro started with PID: $METRO_PID"
             echo "Waiting for Metro to start..."
             for i in {1..60}; do
               if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
@@ -252,11 +265,16 @@ jobs:
               sleep 2
             done
             # Pre-warm bundle
+            echo "=== Pre-warming bundle ==="
             MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android")
             BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
             echo "Pre-warming bundle from: $BUNDLE_URL"
             curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
+            # Verify APK exists
+            echo "=== Checking APK ==="
+            ls -la ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
             # Run tests
+            echo "=== Running Appium tests ==="
             ANDROID_TEST_APK_PATH=${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }} \
             NATIVE_TEST_PLATFORM=android \
             yarn test-android
