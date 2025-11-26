@@ -8,13 +8,10 @@ import { useIsIntersecting } from './useOnIntersecting'
 export function AnimationsEnterDemo(props: any) {
   const ref = React.useRef<HTMLElement>(null)
   const [key, setKey] = React.useState(0)
+  const hasIntersected = useIsIntersecting(ref, { once: true })
 
-  if (isWeb) {
-    const hasIntersected = useIsIntersecting(ref, { once: true })
-
-    if (!hasIntersected) {
-      return <YStack ref={ref} />
-    }
+  if (isWeb && !hasIntersected) {
+    return <YStack ref={ref} />
   }
 
   return (
@@ -32,13 +29,13 @@ export function AnimationsEnterDemo(props: any) {
         opacity={1}
         scale={1}
         y={0}
-        backgroundColor="$pink10"
-        borderRadius="$9"
+        bg="$pink10"
+        rounded="$9"
       >
         {props.children ?? <LogoIcon downscale={0.75} />}
       </Square>
 
-      <Button size="$3" marginTop="$4" onPress={() => setKey(Math.random())}>
+      <Button size="$3" mt="$4" onPress={() => setKey(Math.random())}>
         Re-mount
       </Button>
     </>

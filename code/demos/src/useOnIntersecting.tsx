@@ -1,4 +1,4 @@
-import type { MutableRefObject } from 'react'
+import type { RefObject } from 'react'
 import { useEffect, useState } from 'react'
 import { isWeb, useEvent } from 'tamagui'
 
@@ -9,7 +9,7 @@ type IntersectCallback = (
   didResize?: boolean
 ) => DisposeFn | void | null
 
-type HTMLRef = MutableRefObject<HTMLElement | null>
+type HTMLRef = RefObject<HTMLElement | null>
 
 export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
   refs: Ref,
@@ -17,23 +17,22 @@ export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
 ): Ref extends any[] ? boolean[] : boolean {
   const [values, setValues] = useState<boolean[]>([])
 
-  if (isWeb) {
-    useOnIntersecting(
-      refs,
-      (entries) => {
-        const intersecting = entries.some((x) => x?.isIntersecting)
-        if (once && !intersecting) return
-        setValues((prev) => {
-          const next = entries.map((e) => e?.isIntersecting ?? false)
-          if (prev.length === next.length && prev.every((e, i) => e === next[i])) {
-            return prev
-          }
-          return next
-        })
-      },
-      opts
-    )
-  }
+  useOnIntersecting(
+    refs,
+    (entries) => {
+      if (!isWeb) return
+      const intersecting = entries.some((x) => x?.isIntersecting)
+      if (once && !intersecting) return
+      setValues((prev) => {
+        const next = entries.map((e) => e?.isIntersecting ?? false)
+        if (prev.length === next.length && prev.every((e, i) => e === next[i])) {
+          return prev
+        }
+        return next
+      })
+    },
+    opts
+  )
 
   return (Array.isArray(refs) ? values : values[0]) as any
 }
