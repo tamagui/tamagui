@@ -183,7 +183,7 @@ jobs:
   test-android:
     name: Android Native Tests
     needs: build-android
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     timeout-minutes: 45
     strategy:
       fail-fast: false
@@ -193,13 +193,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      # Enable KVM for hardware acceleration on Ubuntu runners
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
 
       - name: Restore APK from Cache
         uses: actions/cache/restore@v4
@@ -241,10 +234,10 @@ jobs:
         env:
           ANDROID_TEST_APK_PATH: ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
         with:
-          api-level: 28
+          api-level: 31
           target: google_apis
-          arch: x86_64
-          profile: Nexus 6
+          arch: arm64-v8a
+          profile: pixel_6
           force-avd-creation: false
           emulator-boot-timeout: 300
           disable-animations: true
