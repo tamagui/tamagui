@@ -104,7 +104,7 @@ jobs:
           IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios.outputs.built-app-path }}
           NATIVE_TEST_PLATFORM: ios
         run: |
-          bash ${{ github.workspace }}/code/kitchen-sink/scripts/run-ios-tests.sh
+          bash ${{ github.workspace }}/code/kitchen-sink/native-testing/run-tests.sh ios
 
       - name: Upload Appium Logs on Failure
         if: failure()
@@ -234,7 +234,7 @@ jobs:
           emulator-boot-timeout: 600
           disable-animations: true
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
-          script: bash ${{ github.workspace }}/code/kitchen-sink/scripts/run-android-tests.sh
+          script: bash ${{ github.workspace }}/code/kitchen-sink/native-testing/run-tests.sh android
 
       - name: Upload Appium Logs on Failure
         if: failure()

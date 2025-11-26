@@ -14,7 +14,7 @@ import {
   findByText,
   findByTextContaining,
   scrollToText,
-} from '../testing-utils/native-driver'
+} from '../native-testing'
 
 // Longer timeout for CI where session creation can take 5+ mins
 const testOptions = { timeout: 180_000, retry: 2 }
@@ -51,9 +51,9 @@ afterAll(async () => {
 test('Navigate to SelectRemount test case', testOptions, async () => {
   await navigateToSelectRemount()
 
-  // Verify we're on the right screen by checking for the remount button
+  // Verify we're on the right screen by checking for the remount button (longer timeout for CI)
   const driver = await getNativeDriver()
-  const remountButton = await waitForTestId(driver, 'remount-button', 10_000)
+  const remountButton = await waitForTestId(driver, 'remount-button', 30_000)
   expect(await remountButton.isDisplayed()).toBe(true)
 })
 
@@ -84,9 +84,12 @@ test('Select opens after unmount/remount cycle', testOptions, async () => {
   await navigateToSelectRemount()
   const driver = await getNativeDriver()
 
-  // Tap remount button to unmount and remount the Select
-  await tapTestId(driver, 'remount-button', 10_000)
-  await pause(1000)
+  // Wait a bit for any previous Select animations to complete
+  await pause(500)
+
+  // Tap remount button to unmount and remount the Select (use longer timeout for CI)
+  await tapTestId(driver, 'remount-button', 30_000)
+  await pause(1500)
 
   // Try to open the Select again - THIS IS THE KEY TEST for #1859
   const selectTrigger = await waitForTestId(driver, 'select-remount-test-trigger', 15_000)
@@ -112,9 +115,12 @@ test('Multiple Selects work after remount', testOptions, async () => {
   await navigateToSelectRemount()
   const driver = await getNativeDriver()
 
-  // Tap remount to reset state
-  await tapTestId(driver, 'remount-button', 10_000)
-  await pause(1000)
+  // Wait a bit for any previous Select animations to complete
+  await pause(500)
+
+  // Tap remount to reset state (use longer timeout for CI)
+  await tapTestId(driver, 'remount-button', 30_000)
+  await pause(1500)
 
   // Test first Select
   const firstTrigger = await waitForTestId(driver, 'select-remount-test-trigger', 15_000)

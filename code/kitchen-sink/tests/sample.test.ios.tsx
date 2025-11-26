@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { remote } from 'webdriverio'
-import { getWebDriverConfig } from '../testing-utils/getWebDriverConfig'
+import { getWebDriverConfig } from '../native-testing'
 const sharedTestOptions = { timeout: 10 * 60 * 1000, retry: 3 }
 
 test('basic iOS test', sharedTestOptions, async () => {

@@ -7,7 +7,7 @@ import {
   tapTestId,
   findByText,
   pause,
-} from '../testing-utils/native-driver'
+} from '../native-testing'
 
 const sharedTestOptions = { timeout: 10 * 60 * 1000, retry: 3 }
 

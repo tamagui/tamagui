@@ -15,7 +15,7 @@ import {
   isIOS,
   isAndroid,
   pause,
-} from '../testing-utils/native-driver'
+} from '../native-testing'
 
 const sharedTestOptions = { timeout: 60_000, retry: 2 }
 
