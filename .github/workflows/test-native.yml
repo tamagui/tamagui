@@ -183,13 +183,19 @@ jobs:
   test-android:
     name: Android Native Tests
     needs: build-android
-    # IMPORTANT: macos-14 has nested virtualization issues with Android emulators
-    # See: https://github.com/actions/runner-images/discussions/9785
-    runs-on: macos-13
+    # Use ubuntu-latest with KVM for reliable Android emulator
+    # See: https://github.com/ReactiveCircus/android-emulator-runner
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Restore APK from Cache
         uses: actions/cache/restore@v4
@@ -231,21 +237,16 @@ jobs:
         env:
           ANDROID_TEST_APK_PATH: ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
         with:
-          # API 30 boots faster and is more reliable than 33 in CI
           api-level: 30
           target: google_apis
-          # macos-13 is Intel-based, so use x86_64
           arch: x86_64
           profile: pixel_6
           ram-size: 4096M
           heap-size: 1024M
           force-avd-creation: false
-          # Increased timeout for CI environment - emulator can be slow
           emulator-boot-timeout: 600
           disable-animations: true
-          # Use host GPU for hardware acceleration on macOS Intel
-          # See: https://github.com/actions/runner-images/issues/7671
-          emulator-options: -no-snapshot -no-window -gpu host -noaudio -no-boot-anim -camera-back none -camera-front none
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           script: bash ${{ github.workspace }}/code/kitchen-sink/scripts/run-android-tests.sh
 
       - name: Upload Appium Logs on Failure
