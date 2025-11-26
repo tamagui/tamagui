@@ -2349,13 +2349,24 @@ export type Styleable<
   ParentStaticProperties
 >
 
+// Preserves function-typed props from the original component that would otherwise be
+// overwritten by style props with the same name (e.g., a `color` callback prop)
+type PreserveFunctionProps<NonStyleProps, StylePropsBase> = {
+  [K in keyof NonStyleProps as K extends keyof StylePropsBase
+    ? NonStyleProps[K] extends (...args: any[]) => any
+      ? K
+      : never
+    : never]: NonStyleProps[K]
+}
+
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends Object
     ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
-    : {})
+    : {}) &
+  PreserveFunctionProps<NonStyleProps, StylePropsBase>
 
 export type TamaguiComponent<
   Props = any,
