@@ -59,14 +59,8 @@ function getSimulatorUdidCached() {
 
 async function pokeDevServer() {
   if (process.env.SKIP_POKE_DEV_SERVER) {
-    console.info(
-      '[pokeDevServer] Skipping dev server poke due to SKIP_POKE_DEV_SERVER env var'
-    )
     return
   }
-  console.info(
-    '[pokeDevServer] Poking the dev server to trigger a build - this can prevent timeouts during the test since the initial build may take some time.'
-  )
   const startTime = performance.now()
   const response = await fetch('http://127.0.0.1:8081/', {
     method: 'GET',
@@ -78,13 +72,13 @@ async function pokeDevServer() {
   const bundleUrl = json.launchAsset.url
   await fetch(bundleUrl, {
     method: 'GET',
-  }).catch((err) => {
-    console.warn('[pokeDevServer] Bundle fetch failed or timed out:', err.message)
+  }).catch(() => {
+    // Bundle fetch can timeout, that's ok
   })
   const endTime = performance.now()
-  console.info(
-    `[pokeDevServer] Got response in ${endTime - startTime} ms, we're good to go!`
-  )
+  if (process.env.DEBUG) {
+    console.info(`[pokeDevServer] Warmed bundle in ${Math.round(endTime - startTime)}ms`)
+  }
 }
 
 let pokeDevServerResult: ReturnType<typeof pokeDevServer> | undefined
@@ -179,9 +173,10 @@ export async function getWebDriverConfig(): Promise<WebdriverIOConfig> {
   const wdOpts = {
     hostname: process.env.APPIUM_HOST || 'localhost',
     port: process.env.APPIUM_PORT ? Number.parseInt(process.env.APPIUM_PORT, 10) : 4723,
-    connectionRetryTimeout: 5 * 60 * 1000,
+    // XCUITest driver can take 5+ minutes to build WebDriverAgent on first run in CI
+    connectionRetryTimeout: 10 * 60 * 1000,
     connectionRetryCount: 3,
-    logLevel: 'warn' as const,
+    logLevel: (process.env.DEBUG ? 'warn' : 'error') as const,
     capabilities,
   } satisfies WebdriverIOConfig
 

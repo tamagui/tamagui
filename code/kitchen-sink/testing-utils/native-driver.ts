@@ -321,22 +321,18 @@ export async function scrollToText(
   maxScrolls = 10
 ): Promise<ReturnType<NativeDriver['$']>> {
   for (let i = 0; i < maxScrolls; i++) {
-    // Quick check if element exists (no waiting)
     const element = await findByText(driver, text)
     const exists = await element.isExisting()
 
     if (exists) {
-      console.info(`scrollToText: "${text}" found after ${i} scrolls`)
       return element
     }
 
-    // Scroll and continue
     await scrollDown(driver)
-    await pause(200) // Brief pause for scroll to settle
+    await pause(200)
   }
 
   // One last try after all scrolls
-  console.info(`scrollToText: Final check for "${text}"`)
   const element = await findByText(driver, text)
   await element.waitForExist({ timeout: 3000 })
   return element
