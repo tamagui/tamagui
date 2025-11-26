@@ -169,6 +169,7 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
           <DialogContent
             // @ts-ignore
             role="alertdialog"
+            aria-modal={true}
             scope={dialogScope}
             {...contentProps}
             ref={composedRefs}
