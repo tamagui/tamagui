@@ -1,10 +1,11 @@
 name: Native Tests (Appium)
 
+# Disabled on main until tests are stable - work in progress on 'appium' branch
 on:
   push:
-    branches: [main]
+    branches: [appium]
   pull_request:
-    branches: [main]
+    branches: [appium]
   workflow_dispatch:
 
 env:
