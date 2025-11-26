@@ -238,6 +238,8 @@ jobs:
 
       - name: Start Android Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          ANDROID_TEST_APK_PATH: ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
         with:
           api-level: 28
           target: google_apis
@@ -247,41 +249,7 @@ jobs:
           emulator-boot-timeout: 300
           disable-animations: true
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
-          script: |
-            echo "=== Emulator booted, checking ADB devices ==="
-            adb devices -l
-            echo "=== Starting Metro bundler ==="
-            cd code/kitchen-sink
-            # Use npx and run in background
-            EXPO_NO_TELEMETRY=true npx expo start --dev-client --offline &
-            METRO_PID=$!
-            echo "Metro started with PID: $METRO_PID"
-            echo "Waiting for Metro to start..."
-            # Use while loop instead of bash for loop (POSIX compatible)
-            i=1
-            while [ $i -le 60 ]; do
-              if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
-                echo "Metro is ready!"
-                break
-              fi
-              echo "Waiting for Metro... ($i/60)"
-              sleep 2
-              i=$((i + 1))
-            done
-            # Pre-warm bundle
-            echo "=== Pre-warming bundle ==="
-            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android")
-            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
-            echo "Pre-warming bundle from: $BUNDLE_URL"
-            curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
-            # Verify APK exists
-            echo "=== Checking APK ==="
-            ls -la ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
-            # Run tests
-            echo "=== Running Appium tests ==="
-            ANDROID_TEST_APK_PATH=${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }} \
-            NATIVE_TEST_PLATFORM=android \
-            npx vitest run --config vitest.config.android.mts
+          script: bash ${{ github.workspace }}/code/kitchen-sink/scripts/run-android-tests.sh
 
       - name: Upload Appium Logs on Failure
         if: failure()
