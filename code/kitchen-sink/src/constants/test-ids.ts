@@ -19,4 +19,8 @@ export const TEST_IDS = {
   // Color Token Fallback test IDs (Issue #3620)
   colorTokenFallbackThemeValue: 'color-token-fallback-theme-value',
   colorTokenFallbackTokenValue: 'color-token-fallback-token-value',
+  // Component Theme Prop test IDs (Issue #2817)
+  componentThemeDefault: 'component-theme-default',
+  componentThemeProp: 'component-theme-prop',
+  componentThemeWrapper: 'component-theme-wrapper',
 } as const

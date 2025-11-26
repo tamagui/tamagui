@@ -161,8 +161,8 @@ export const animationsNative = createAnimationsNative({
   },
 })
 
-// this is used by the button test...
-config.themes = {
+// Custom themes for tests - defined as const for proper type inference
+const customThemes = {
   ...config.themes,
 
   // @ts-ignore
@@ -175,6 +175,11 @@ config.themes = {
   // @ts-ignore
   light_MyLabel: {
     color: 'red',
+  },
+
+  // Issue #2817: Component-specific theme for MyLabel in green theme
+  light_green: {
+    color: 'green',
   },
 
   // Test theme for Issue #3620: color tokens should be fallbacks, not overrides
@@ -206,8 +211,8 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
-  // Use v4 themes when ?v4theme=true is in the URL
-  ...(useV4Themes && { themes: tamaguiThemes }),
+  // Use custom themes (or v4 themes when ?v4theme=true is in the URL)
+  themes: useV4Themes ? tamaguiThemes : customThemes,
   defaultFont: undefined,
   settings: {
     defaultFont: undefined,
