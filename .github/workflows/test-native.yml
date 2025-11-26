@@ -183,7 +183,9 @@ jobs:
   test-android:
     name: Android Native Tests
     needs: build-android
-    runs-on: macos-14
+    # IMPORTANT: macos-14 has nested virtualization issues with Android emulators
+    # See: https://github.com/actions/runner-images/discussions/9785
+    runs-on: macos-13
     timeout-minutes: 45
     steps:
       - name: Checkout
@@ -231,7 +233,8 @@ jobs:
         with:
           api-level: 33
           target: google_apis
-          arch: arm64-v8a
+          # macos-13 is Intel-based, so use x86_64
+          arch: x86_64
           profile: pixel_6
           ram-size: 4096M
           heap-size: 1024M

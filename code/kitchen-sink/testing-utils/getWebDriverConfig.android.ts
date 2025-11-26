@@ -144,10 +144,18 @@ export async function getAndroidWebDriverConfig(): Promise<WebdriverIOConfig> {
       automationName: 'UiAutomator2',
       ...(isRunningEmulator
         ? { udid: emulatorName }
-        : { avd: emulatorName, avdLaunchTimeout: 120000 }),
+        : { avd: emulatorName, avdLaunchTimeout: 180000 }),
       app: await prepareTestAppCached(),
       appWaitActivity: '*',
       autoGrantPermissions: true,
+      // Increased timeouts for CI environments (based on Appium GitHub issues)
+      // See: https://github.com/appium/appium/issues/14453
+      adbExecTimeout: 120000, // 2 min for ADB commands
+      uiautomator2ServerLaunchTimeout: 120000, // 2 min for UiAutomator2 server
+      uiautomator2ServerInstallTimeout: 120000, // 2 min for server install
+      androidInstallTimeout: 180000, // 3 min for APK install
+      appWaitDuration: 60000, // 1 min wait for app activity
+      newCommandTimeout: 300, // 5 min between commands before timeout
     },
   }
 
