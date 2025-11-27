@@ -57,18 +57,22 @@ export async function setupAndroidDevice(): Promise<void> {
 }
 
 /**
- * Ensure the android/ folder exists for Metro to properly configure bundles.
- * In CI, the build job only caches APKs, so the test job needs to regenerate
- * the android folder structure for Metro to work correctly.
+ * Ensure the android/ folder has full prebuild structure for Metro.
+ * In CI, the build job only caches APKs (android/app/build/outputs/apk/...),
+ * which creates the android/ folder but without the full prebuild structure.
  *
- * This is necessary because Metro needs the native project files to properly
- * configure the JS bundle with native module information (global.expo.modules).
+ * Metro needs the native project files (build.gradle, app/src/main/...) to
+ * properly configure the JS bundle with native module information (global.expo.modules).
+ *
+ * We check for android/build.gradle as the indicator of a complete prebuild,
+ * not just the existence of the android/ folder.
  */
 export async function ensureAndroidFolder(): Promise<void> {
-  const androidPath = join(process.cwd(), 'android')
+  const buildGradlePath = join(process.cwd(), 'android', 'build.gradle')
 
-  if (!existsSync(androidPath)) {
+  if (!existsSync(buildGradlePath)) {
     console.info('\n--- Generating android/ folder (for Metro) ---')
+    console.info('Note: android/build.gradle not found, running expo prebuild')
     try {
       await $`npx expo prebuild --platform android --clean`
       console.info('Android folder generated!')
@@ -77,6 +81,6 @@ export async function ensureAndroidFolder(): Promise<void> {
       throw new Error(`Failed to generate android folder: ${err.message}`)
     }
   } else {
-    console.info('Android folder already exists')
+    console.info('Android folder already exists (build.gradle found)')
   }
 }
