@@ -2,10 +2,52 @@
  * Android-specific utilities for Detox test runners
  */
 
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { existsSync, mkdirSync, renameSync, rmSync } from 'node:fs'
+import { join, dirname } from 'node:path'
 import { $ } from 'bun'
 import { METRO_PORT, DETOX_SERVER_PORT } from './constants'
+
+/** Standard APK paths relative to android folder */
+const APK_PATHS = [
+  'app/build/outputs/apk/debug/app-debug.apk',
+  'app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
+]
+
+/**
+ * Move APKs to a temporary location outside android/ to preserve them during prebuild.
+ * Returns a function to restore them after prebuild completes.
+ */
+function preserveApks(androidPath: string): () => void {
+  const tempDir = join(process.cwd(), '.apk-backup')
+  const movedApks: Array<{ from: string; to: string }> = []
+
+  // Move any existing APKs to temp location
+  for (const relativePath of APK_PATHS) {
+    const apkPath = join(androidPath, relativePath)
+    if (existsSync(apkPath)) {
+      const tempPath = join(tempDir, relativePath)
+      mkdirSync(dirname(tempPath), { recursive: true })
+      console.info(`  Preserving: ${relativePath}`)
+      renameSync(apkPath, tempPath)
+      movedApks.push({ from: apkPath, to: tempPath })
+    }
+  }
+
+  // Return restore function
+  return () => {
+    for (const { from, to } of movedApks) {
+      if (existsSync(to)) {
+        mkdirSync(dirname(from), { recursive: true })
+        console.info(`  Restoring: ${from.replace(androidPath + '/', '')}`)
+        renameSync(to, from)
+      }
+    }
+    // Clean up temp dir
+    if (existsSync(tempDir)) {
+      rmSync(tempDir, { recursive: true })
+    }
+  }
+}
 
 /**
  * Wait for Android device/emulator to be ready.
@@ -66,20 +108,31 @@ export async function setupAndroidDevice(): Promise<void> {
  *
  * We check for android/build.gradle as the indicator of a complete prebuild,
  * not just the existence of the android/ folder.
+ *
+ * IMPORTANT: Expo prebuild will detect a "malformed" project if only APKs exist
+ * and automatically clear the android/ folder. We preserve APKs by moving them
+ * to a temp location before prebuild, then restoring them after.
  */
 export async function ensureAndroidFolder(): Promise<void> {
-  const buildGradlePath = join(process.cwd(), 'android', 'build.gradle')
+  const androidPath = join(process.cwd(), 'android')
+  const buildGradlePath = join(androidPath, 'build.gradle')
 
   if (!existsSync(buildGradlePath)) {
     console.info('\n--- Generating android/ folder (for Metro) ---')
     console.info('Note: android/build.gradle not found, running expo prebuild')
+
+    // Preserve any cached APKs before prebuild clears the folder
+    const restoreApks = preserveApks(androidPath)
+
     try {
-      // Don't use --clean to preserve any cached build artifacts (APKs)
       await $`npx expo prebuild --platform android`
       console.info('Android folder generated!')
     } catch (error) {
       const err = error as Error
       throw new Error(`Failed to generate android folder: ${err.message}`)
+    } finally {
+      // Always restore APKs, even if prebuild fails
+      restoreApks()
     }
   } else {
     console.info('Android folder already exists (build.gradle found)')
