@@ -230,6 +230,27 @@ jobs:
         run: |
           npx expo prebuild --platform android --clean
 
+      - name: Create Gradle Init Script for Detox
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        working-directory: code/kitchen-sink
+        run: |
+          cat > android/init.gradle << 'EOF'
+          // Gradle init script to fix JNI library conflicts for Detox tests
+          allprojects {
+              afterEvaluate {
+                  if (it.hasProperty('android')) {
+                      android {
+                          packagingOptions {
+                              jniLibs {
+                                  pickFirsts += ['**/libfbjni.so']
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          EOF
+
       - name: Calculate Fingerprint
         if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
         id: calculate-fingerprint
