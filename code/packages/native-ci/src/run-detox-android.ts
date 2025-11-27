@@ -14,7 +14,7 @@
 
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { setupAndroidDevice } from './android'
+import { waitForDevice, setupAdbReverse } from './android'
 
 const options = parseDetoxArgs('android')
 
@@ -26,8 +26,11 @@ console.info(`Headless: ${options.headless}`)
 // Change to project root
 process.chdir(options.projectRoot)
 
-// Setup Android device (wait for boot + port forwarding)
-await setupAndroidDevice()
+// Wait for Android device to be ready
+await waitForDevice()
+
+// Setup ADB reverse for Metro (Detox handles its own port via reversePorts config, but we need Metro early)
+await setupAdbReverse()
 
 // Run tests with Metro
 const exitCode = await withMetro('android', async () => {
