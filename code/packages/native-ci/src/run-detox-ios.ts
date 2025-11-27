@@ -1,15 +1,8 @@
 #!/usr/bin/env bun
 /**
- * Run Android Detox tests with Metro bundler
+ * Run iOS Detox tests with Metro bundler
  *
- * Usage: bun run-detox-android.ts [options]
- *
- * Options:
- *   --config <name>       Detox configuration name (default: android.emu.ci.debug)
- *   --project-root <path> Project root directory (default: cwd)
- *   --headless            Run in headless mode
- *   --record-logs <mode>  Record logs: none, failing, all (default: all)
- *   --retries <n>         Number of retries for flaky tests (default: 2)
+ * Usage: bun run-detox-ios.ts [options]
  */
 
 import { parseArgs } from 'node:util'
@@ -17,9 +10,8 @@ import { $ } from 'bun'
 
 const { values: options } = parseArgs({
   options: {
-    config: { type: 'string', default: 'android.emu.ci.debug' },
+    config: { type: 'string', default: 'ios.sim.debug' },
     'project-root': { type: 'string', default: process.cwd() },
-    headless: { type: 'boolean', default: false },
     'record-logs': { type: 'string', default: 'all' },
     retries: { type: 'string', default: '0' },
   },
@@ -27,7 +19,6 @@ const { values: options } = parseArgs({
 
 const config = options.config!
 const projectRoot = options['project-root']!
-const headless = options.headless!
 const recordLogs = options['record-logs']!
 const retries = options.retries!
 
@@ -37,7 +28,7 @@ async function waitForMetro(maxAttempts = 60, intervalMs = 2000): Promise<boolea
   for (let i = 1; i <= maxAttempts; i++) {
     try {
       const response = await fetch('http://127.0.0.1:8081/', {
-        headers: { 'Expo-Platform': 'android' },
+        headers: { 'Expo-Platform': 'ios' },
       })
       if (response.ok) {
         console.info('Metro is responding!')
@@ -58,7 +49,7 @@ async function prewarmBundle(): Promise<void> {
 
   try {
     const response = await fetch('http://127.0.0.1:8081/', {
-      headers: { 'Expo-Platform': 'android' },
+      headers: { 'Expo-Platform': 'ios' },
     })
 
     if (response.ok) {
@@ -76,22 +67,12 @@ async function prewarmBundle(): Promise<void> {
   }
 }
 
-console.info('=== Android Detox Test Runner ===')
+console.info('=== iOS Detox Test Runner ===')
 console.info(`Config: ${config}`)
 console.info(`Project root: ${projectRoot}`)
 
 // Change to project root
 process.chdir(projectRoot)
-
-// Wait for device to be fully ready
-console.info('\n--- Waiting for device ---')
-await $`adb wait-for-device`
-await $`adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'`
-console.info('Device is ready!')
-
-// Reverse port for Metro connection
-console.info('\n--- Setting up ADB reverse ---')
-await $`adb reverse tcp:8081 tcp:8081`
 
 // Start Metro bundler in background
 console.info('\n--- Starting Metro bundler ---')
@@ -124,10 +105,6 @@ try {
     '--retries',
     retries,
   ]
-
-  if (headless) {
-    detoxArgs.push('--headless')
-  }
 
   // Run Detox tests
   console.info('\n--- Running Detox tests ---')

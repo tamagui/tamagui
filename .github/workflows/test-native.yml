@@ -382,7 +382,7 @@ jobs:
           pre-emulator-launch-script: |
             adb start-server
           script: |
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root $PWD
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
