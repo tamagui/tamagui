@@ -382,21 +382,15 @@ jobs:
             adb wait-for-device
             adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
 
-            # Setup cleanup trap
-            cleanup() {
-              pkill -f metro 2>/dev/null || true
-              lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true
-            }
-            trap cleanup EXIT
-
             # Reverse port for Metro connection
             adb reverse tcp:8081 tcp:8081
 
             # Start Metro bundler in background
             echo "Starting Metro bundler..."
             EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+            METRO_PID=$!
 
-            # Wait for Metro to be ready (use C-style for loop for sh compatibility)
+            # Wait for Metro to be ready
             echo "Waiting for Metro to start..."
             i=0
             while [ $i -lt 60 ]; do
@@ -421,6 +415,12 @@ jobs:
             # Run Detox tests
             echo "Running Detox tests..."
             npx detox test --configuration android.emu.ci.debug --headless
+            TEST_EXIT_CODE=$?
+
+            # Cleanup Metro
+            echo "Cleaning up Metro..."
+            kill $METRO_PID 2>/dev/null || true
+            exit $TEST_EXIT_CODE
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
