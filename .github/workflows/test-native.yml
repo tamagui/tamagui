@@ -375,16 +375,10 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           script: |
+            # Use bash explicitly since android-emulator-runner uses /usr/bin/sh (dash)
+            exec bash << 'BASH_SCRIPT'
             set -e
-
-            # Cleanup function to kill Metro on exit
-            cleanup_metro() {
-              echo "Cleaning up Metro..."
-              pkill -f "metro" 2>/dev/null || true
-              # Use -r flag to avoid running kill with no args
-              lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true
-            }
-            trap cleanup_metro EXIT
+            trap 'pkill -f metro 2>/dev/null || true; lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true' EXIT
 
             # Reverse port for Metro connection
             adb reverse tcp:8081 tcp:8081
@@ -392,13 +386,10 @@ jobs:
             # Start Metro bundler in background
             echo "Starting Metro bundler..."
             EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
-            METRO_PID=$!
 
             # Wait for Metro to be ready
             echo "Waiting for Metro to start..."
-            i=0
-            while [ "$i" -lt 60 ]; do
-              i=$((i + 1))
+            for i in {1..60}; do
               if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
                 echo "Metro is responding!"
                 break
@@ -409,8 +400,8 @@ jobs:
 
             # Pre-warm the bundle
             echo "Pre-warming bundle..."
-            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android") || MANIFEST="{}"
-            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url // empty') || BUNDLE_URL=""
+            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" || echo "{}")
+            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url // empty')
             if [ -n "$BUNDLE_URL" ]; then
               echo "Fetching bundle from: $BUNDLE_URL"
               curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
@@ -419,6 +410,7 @@ jobs:
             # Run Detox tests
             echo "Running Detox tests..."
             npx detox test --configuration android.emu.ci.debug --headless
+            BASH_SCRIPT
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
