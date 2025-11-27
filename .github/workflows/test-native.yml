@@ -382,6 +382,19 @@ jobs:
           pre-emulator-launch-script: |
             adb start-server
           script: |
+            # Debug: Show emulator status
+            adb devices
+            adb shell getprop ro.build.version.sdk
+
+            # Pre-install APKs to speed up test startup
+            echo "Installing APKs..."
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb install -r android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+
+            # Verify installation
+            adb shell pm list packages | grep tamagui || echo "Warning: App package not found"
+
+            # Run tests
             bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing
 
       - name: Upload Detox Artifacts on Failure
