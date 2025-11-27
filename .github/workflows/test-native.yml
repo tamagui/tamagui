@@ -356,6 +356,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Generate Android Project (for Metro)
+        run: |
+          # Expo prebuild generates the android/ folder structure that Metro needs
+          # to properly configure the JS bundle with native module information.
+          # The APKs are already built, but Metro needs the project files.
+          npx expo prebuild --platform android --clean
+
       - name: Install Detox CLI
         run: npm install -g detox-cli
 
