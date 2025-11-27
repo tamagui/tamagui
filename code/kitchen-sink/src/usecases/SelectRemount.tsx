@@ -20,7 +20,12 @@ function SelectComponent({ id }: { id: string }) {
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll>
-      <Select.Trigger testID={`${id}-trigger`} maxWidth={220} iconAfter={ChevronDown}>
+      <Select.Trigger
+        testID={`${id}-trigger`}
+        accessibilityLabel={`${id}-trigger`}
+        maxWidth={220}
+        iconAfter={ChevronDown}
+      >
         <Select.Value placeholder="Select a fruit" />
       </Select.Trigger>
 
@@ -50,6 +55,7 @@ function SelectComponent({ id }: { id: string }) {
                 key={item.name}
                 value={item.name.toLowerCase()}
                 testID={`${id}-option-${item.name.toLowerCase()}`}
+                accessibilityLabel={`${id}-option-${item.name.toLowerCase()}`}
               >
                 <Select.ItemText>{item.name}</Select.ItemText>
                 <Select.ItemIndicator marginLeft="auto">
@@ -73,6 +79,7 @@ export function SelectRemount() {
       <XStack gap="$2">
         <Button
           testID="toggle-mount-button"
+          accessibilityLabel="toggle-mount-button"
           onPress={() => setMounted((m) => !m)}
           theme={mounted ? 'green' : 'red'}
         >
@@ -81,6 +88,7 @@ export function SelectRemount() {
 
         <Button
           testID="remount-button"
+          accessibilityLabel="remount-button"
           onPress={() => {
             setMounted(false)
             setTimeout(() => {

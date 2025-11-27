@@ -83,15 +83,23 @@ export async function closeNativeDriver(): Promise<void> {
 
 /**
  * Get the selector for finding an element by testID.
- * The ~ (accessibility id) selector works cross-platform:
- * - iOS: testID maps to accessibilityIdentifier
- * - Android: testID maps to content-desc (accessibility description)
+ * On iOS, testID maps to accessibilityIdentifier (use ~ selector).
+ * On Android, React Native testID maps to view tag, which isn't directly queryable.
+ * For Android, we need to use content-desc via accessibilityLabel or resource-id via nativeID.
  *
- * Appium's accessibility id selector (~) handles both platforms.
+ * Since Tamagui may not consistently expose testID as content-desc on Android,
+ * we use different strategies:
+ * - iOS: ~ selector (accessibility id)
+ * - Android: content-desc via UiSelector.description()
  */
 export function getTestIdSelector(testId: string): string {
-  // The ~ selector works for accessibility id on both iOS and Android
-  // On Android, it matches content-desc which is where testID goes
+  if (isAndroid()) {
+    // On Android, try content-desc which is where accessibilityLabel goes
+    // React Native testID on Android goes to the view tag, not content-desc
+    // But accessibilityLabel goes to content-desc
+    return `android=new UiSelector().descriptionContains("${testId}")`
+  }
+  // On iOS, testID maps to accessibilityIdentifier which ~ selector finds
   return `~${testId}`
 }
 
