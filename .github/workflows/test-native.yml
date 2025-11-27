@@ -139,11 +139,11 @@ jobs:
         run: |
           # Kill Metro bundler
           if [ -n "$METRO_PID" ]; then
-            kill $METRO_PID 2>/dev/null || true
+            kill "$METRO_PID" 2>/dev/null || true
           fi
           # Also kill any stray Metro processes
-          pkill -f "metro" || true
-          lsof -ti:8081 | xargs kill 2>/dev/null || true
+          pkill -f "metro" 2>/dev/null || true
+          lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
@@ -375,13 +375,16 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           script: |
+            set -e
+
             # Cleanup function to kill Metro on exit
-            cleanup() {
+            cleanup_metro() {
               echo "Cleaning up Metro..."
-              pkill -f "metro" || true
-              lsof -ti:8081 | xargs kill 2>/dev/null || true
+              pkill -f "metro" 2>/dev/null || true
+              # Use -r flag to avoid running kill with no args
+              lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true
             }
-            trap cleanup EXIT
+            trap cleanup_metro EXIT
 
             # Reverse port for Metro connection
             adb reverse tcp:8081 tcp:8081
@@ -394,7 +397,7 @@ jobs:
             # Wait for Metro to be ready
             echo "Waiting for Metro to start..."
             i=0
-            while [ $i -lt 60 ]; do
+            while [ "$i" -lt 60 ]; do
               i=$((i + 1))
               if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
                 echo "Metro is responding!"
@@ -406,8 +409,8 @@ jobs:
 
             # Pre-warm the bundle
             echo "Pre-warming bundle..."
-            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" || echo "{}")
-            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url // empty')
+            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android") || MANIFEST="{}"
+            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url // empty') || BUNDLE_URL=""
             if [ -n "$BUNDLE_URL" ]; then
               echo "Fetching bundle from: $BUNDLE_URL"
               curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
