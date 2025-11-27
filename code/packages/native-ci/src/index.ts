@@ -70,4 +70,7 @@ export {
 } from './detox'
 
 // Android utilities
-export { waitForDevice, setupAdbReverse, setupAndroidDevice } from './android'
+export { waitForDevice, setupAdbReverse, setupAndroidDevice, ensureAndroidFolder } from './android'
+
+// iOS utilities
+export { ensureIOSFolder } from './ios'

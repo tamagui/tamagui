@@ -14,7 +14,7 @@
 
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { waitForDevice, setupAdbReverse } from './android'
+import { waitForDevice, setupAdbReverse, ensureAndroidFolder } from './android'
 
 const options = parseDetoxArgs('android')
 
@@ -25,6 +25,9 @@ console.info(`Headless: ${options.headless}`)
 
 // Change to project root
 process.chdir(options.projectRoot)
+
+// Ensure android folder exists (CI only caches APKs, not the full project)
+await ensureAndroidFolder()
 
 // Wait for Android device to be ready
 await waitForDevice()

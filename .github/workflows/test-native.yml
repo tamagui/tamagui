@@ -99,51 +99,17 @@ jobs:
         run: |
           xcrun simctl install booted "${{ needs.build-ios.outputs.built-app-path }}"
 
-      - name: Start Metro Bundler
-        run: |
-          # Start Metro in background and save PID for cleanup
-          EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
-          METRO_PID=$!
-          echo "METRO_PID=$METRO_PID" >> $GITHUB_ENV
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
-          # Wait for Metro to be ready
-          echo "Waiting for Metro to start..."
-          for i in {1..60}; do
-            if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
-              echo "Metro is responding!"
-              break
-            fi
-            echo "Waiting for Metro... ($i/60)"
-            sleep 2
-          done
-
-      - name: Pre-warm Bundle
-        run: |
-          # Pre-warm the JS bundle to avoid timeout on first app launch
-          echo "Pre-warming bundle..."
-          MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
-          BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
-          echo "Fetching bundle from: $BUNDLE_URL"
-          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
-          echo "Bundle pre-warm complete"
-
-      - name: Run Detox Tests
+      - name: Run iOS Detox Tests
         env:
           # Point Detox to the cached app (CI uses different path than local dev)
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
         run: |
-          npx detox test --configuration ios.sim.debug --headless
-
-      - name: Cleanup Metro
-        if: always()
-        run: |
-          # Kill Metro bundler
-          if [ -n "$METRO_PID" ]; then
-            kill "$METRO_PID" 2>/dev/null || true
-          fi
-          # Also kill any stray Metro processes
-          pkill -f "metro" 2>/dev/null || true
-          lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
@@ -355,13 +321,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-
-      - name: Generate Android Project (for Metro)
-        run: |
-          # Expo prebuild generates the android/ folder structure that Metro needs
-          # to properly configure the JS bundle with native module information.
-          # The APKs are already built, but Metro needs the project files.
-          npx expo prebuild --platform android --clean
 
       - name: Install Detox CLI
         run: npm install -g detox-cli

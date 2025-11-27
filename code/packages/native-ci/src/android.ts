@@ -2,6 +2,8 @@
  * Android-specific utilities for Detox test runners
  */
 
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { $ } from 'bun'
 import { METRO_PORT, DETOX_SERVER_PORT } from './constants'
 
@@ -52,4 +54,29 @@ export async function setupAdbReverse(): Promise<void> {
 export async function setupAndroidDevice(): Promise<void> {
   await waitForDevice()
   await setupAdbReverse()
+}
+
+/**
+ * Ensure the android/ folder exists for Metro to properly configure bundles.
+ * In CI, the build job only caches APKs, so the test job needs to regenerate
+ * the android folder structure for Metro to work correctly.
+ *
+ * This is necessary because Metro needs the native project files to properly
+ * configure the JS bundle with native module information (global.expo.modules).
+ */
+export async function ensureAndroidFolder(): Promise<void> {
+  const androidPath = join(process.cwd(), 'android')
+
+  if (!existsSync(androidPath)) {
+    console.info('\n--- Generating android/ folder (for Metro) ---')
+    try {
+      await $`npx expo prebuild --platform android --clean`
+      console.info('Android folder generated!')
+    } catch (error) {
+      const err = error as Error
+      throw new Error(`Failed to generate android folder: ${err.message}`)
+    }
+  } else {
+    console.info('Android folder already exists')
+  }
 }
