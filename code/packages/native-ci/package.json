@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "@types/bun": "^1.1.0",
     "@types/node": "^20.0.0"
   },
   "repository": {

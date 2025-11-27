@@ -359,6 +359,11 @@ jobs:
       - name: Install Detox CLI
         run: npm install -g detox-cli
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Start Android Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -375,52 +380,9 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           pre-emulator-launch-script: |
-            # Start ADB server before emulator launch
             adb start-server
           script: |
-            # Wait for device to be fully ready
-            adb wait-for-device
-            adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
-
-            # Reverse port for Metro connection
-            adb reverse tcp:8081 tcp:8081
-
-            # Start Metro bundler in background
-            echo "Starting Metro bundler..."
-            EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
-            METRO_PID=$!
-
-            # Wait for Metro to be ready
-            echo "Waiting for Metro to start..."
-            i=0
-            while [ $i -lt 60 ]; do
-              i=$((i + 1))
-              if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
-                echo "Metro is responding!"
-                break
-              fi
-              echo "Waiting for Metro... ($i/60)"
-              sleep 2
-            done
-
-            # Pre-warm the bundle
-            echo "Pre-warming bundle..."
-            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" || echo "{}")
-            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url // empty')
-            if [ -n "$BUNDLE_URL" ]; then
-              echo "Fetching bundle from: $BUNDLE_URL"
-              curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
-            fi
-
-            # Run Detox tests
-            echo "Running Detox tests..."
-            npx detox test --configuration android.emu.ci.debug --headless
-            TEST_EXIT_CODE=$?
-
-            # Cleanup Metro
-            echo "Cleaning up Metro..."
-            kill $METRO_PID 2>/dev/null || true
-            exit $TEST_EXIT_CODE
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root $PWD
 
       - name: Upload Detox Artifacts on Failure
         if: failure()

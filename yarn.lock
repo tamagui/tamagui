@@ -8231,6 +8231,7 @@ __metadata:
   dependencies:
     "@expo/fingerprint": "npm:^0.11.3"
     "@tamagui/build": "workspace:*"
+    "@types/bun": "npm:^1.1.0"
     "@types/node": "npm:^20.0.0"
   bin:
     native-ci: ./dist/cli.mjs
@@ -9682,6 +9683,15 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10/e827570e097bd7d625a673c9c208af2d1a22fa3885c0a1646533cf24394c839c3e5f60ac1bc60c0ddcc69c0615078c9fb2c01b42596c7c582d895d974f2409ee
+  languageName: node
+  linkType: hard
+
+"@types/bun@npm:^1.1.0":
+  version: 1.3.3
+  resolution: "@types/bun@npm:1.3.3"
+  dependencies:
+    bun-types: "npm:1.3.3"
+  checksum: 10/28ba6e05edc18de8b0f5331876929856bb71212afae80c7d0901de378ea02133db0773a35e4e5610d2fd03e6199c117551c2822ea0ac31a668433f25e4205dd7
   languageName: node
   linkType: hard
 
@@ -12592,6 +12602,15 @@ __metadata:
   version: 1.0.3
   resolution: "builtins@npm:1.0.3"
   checksum: 10/8f756616bd3d92611bcb5bcc3008308e7cdaadbc4603a5ce6fe709193198bc115351d138524d79e5269339ef7ba5ba73185da541c7b4bc076b00dd0124f938f6
+  languageName: node
+  linkType: hard
+
+"bun-types@npm:1.3.3":
+  version: 1.3.3
+  resolution: "bun-types@npm:1.3.3"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/d96a6edf5b7aac33cb44f731aa56ffa52e3444dead91789908b1101bc691164d32a6331d20481baeb16226cb713b961e670d56a9e538d05fd8b2216295370ee9
   languageName: node
   linkType: hard
 
