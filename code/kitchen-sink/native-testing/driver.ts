@@ -83,16 +83,15 @@ export async function closeNativeDriver(): Promise<void> {
 
 /**
  * Get the selector for finding an element by testID.
- * On iOS, testID maps to accessibilityIdentifier (use ~ selector).
- * On Android, testID maps to content-desc (accessibility description).
+ * The ~ (accessibility id) selector works cross-platform:
+ * - iOS: testID maps to accessibilityIdentifier
+ * - Android: testID maps to content-desc (accessibility description)
+ *
+ * Appium's accessibility id selector (~) handles both platforms.
  */
 export function getTestIdSelector(testId: string): string {
-  if (isAndroid()) {
-    // On Android, React Native's testID becomes content-desc (accessibility description)
-    // Use UiSelector to find by description
-    return `android=new UiSelector().description("${testId}")`
-  }
-  // On iOS, testID maps to accessibilityIdentifier which ~ selector finds
+  // The ~ selector works for accessibility id on both iOS and Android
+  // On Android, it matches content-desc which is where testID goes
   return `~${testId}`
 }
 
