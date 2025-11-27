@@ -209,6 +209,7 @@ const tamaConf = createTamagui({
   // Use v4 themes when ?v4theme=true is in the URL
   ...(useV4Themes && { themes: tamaguiThemes }),
   defaultFont: undefined,
+  shorthands: configV4.shorthands,
   settings: {
     defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',

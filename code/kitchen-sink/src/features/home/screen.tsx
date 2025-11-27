@@ -3,20 +3,20 @@ import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { H1, ListItem, Separator, YGroup, YStack } from 'tamagui'
+import { H1, ListItem, YGroup, YStack } from 'tamagui'
 
 export function HomeScreen() {
   return (
     <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
 
-        <YStack gap="$4" maxWidth={600} bg="pink">
+        <YStack gap="$4" maxW={600}>
           {demos.map(({ pages }, i) => {
             return (
-              <YGroup key={i} size="$4" separator={<Separator />}>
+              <YGroup key={i} size="$4">
                 {pages.map((page) => {
                   const route = page?.route
 
@@ -59,8 +59,7 @@ const LinkListItem = ({
       try {
         onPress()
       } catch (error) {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log('error: ', error)
+        console.info('error: ', error)
       }
     }
   }

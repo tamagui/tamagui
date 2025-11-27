@@ -56,13 +56,13 @@ export function DemoScreen() {
       outlineStyle="solid"
       outlineColor="red"
       outlineWidth="$2"
-      f={1}
-      jc="center"
-      ai="center"
+      flex={1}
+      justify="center"
+      items="center"
       bg="$background"
       gap="$4"
     >
-      <YStack miw={200} maw={340} ai="center" p="$10" br="$6">
+      <YStack minW={200} maxW={600} items="center" p="$10" rounded="$6">
         <DemoComponent />
       </YStack>
     </YStack>
