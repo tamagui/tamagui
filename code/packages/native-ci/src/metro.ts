@@ -136,10 +136,7 @@ export function setupSignalHandlers(metro: MetroProcess): void {
  * This is a convenience wrapper that handles starting Metro, waiting for it,
  * pre-warming the bundle, and cleanup.
  */
-export async function withMetro<T>(
-  platform: Platform,
-  fn: () => Promise<T>
-): Promise<T> {
+export async function withMetro<T>(platform: Platform, fn: () => Promise<T>): Promise<T> {
   const metro = startMetro()
   setupSignalHandlers(metro)
 

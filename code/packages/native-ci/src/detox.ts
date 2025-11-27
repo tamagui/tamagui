@@ -38,8 +38,8 @@ export function parseDetoxArgs(platform: Platform) {
   })
 
   // Validate and convert retries to number
-  const retriesNum = parseInt(values.retries!, 10)
-  if (isNaN(retriesNum) || retriesNum < 0) {
+  const retriesNum = Number.parseInt(values.retries!, 10)
+  if (Number.isNaN(retriesNum) || retriesNum < 0) {
     console.error('Error: retries must be a non-negative integer')
     process.exit(1)
   }
