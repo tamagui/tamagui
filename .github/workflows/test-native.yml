@@ -393,7 +393,9 @@ jobs:
 
             # Wait for Metro to be ready
             echo "Waiting for Metro to start..."
-            for i in {1..60}; do
+            i=0
+            while [ $i -lt 60 ]; do
+              i=$((i + 1))
               if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
                 echo "Metro is responding!"
                 break
