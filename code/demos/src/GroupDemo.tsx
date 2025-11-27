@@ -3,7 +3,7 @@ import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tama
 
 export function GroupDemo() {
   return (
-    <YStack padding="$3" gap="$2" alignItems="center">
+    <YStack p="$3" gap="$2" items="center">
       <Group orientation="horizontal">
         <Group.Item>
           <Button>First</Button>

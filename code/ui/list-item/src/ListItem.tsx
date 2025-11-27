@@ -47,9 +47,7 @@ const ListItemFrame = styled(View, {
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'nowrap',
-        width: '100%',
         borderColor: '$borderColor',
-        maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',
         backgroundColor: '$background',
@@ -145,6 +143,14 @@ const ListItemSubtitle = styled(ListItemText, {
 const ListItemTitle = styled(ListItemText, {
   name: 'ListItemTitle',
   context,
+  variants: {
+    unstyled: {
+      false: {},
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 const ListItemIcon = (props: {
@@ -218,7 +224,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
           <YStack flex={1}>
             {title ? (
               typeof title === 'string' ? (
-                <ListItemTitle size={size as any}>{title}</ListItemTitle>
+                <ListItemTitle unstyled={unstyled} size={size as any}>{title}</ListItemTitle>
               ) : (
                 title
               )

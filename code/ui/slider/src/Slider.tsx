@@ -245,6 +245,43 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
 
     if (isClient) {
       useOnDebouncedWindowResize(measure)
+
+      // intersection change
+      React.useEffect(() => {
+        const node = sliderRef.current as any as HTMLDivElement
+        if (!node) return
+
+        let measureTm
+        const debouncedMeasure = () => {
+          clearTimeout(measureTm)
+          measureTm = setTimeout(() => {
+            measure()
+          }, 200)
+        }
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            debouncedMeasure()
+            if (entries?.[0].isIntersecting) {
+              activeSliderMeasureListeners.add(debouncedMeasure)
+            } else {
+              activeSliderMeasureListeners.delete(debouncedMeasure)
+            }
+          },
+          {
+            root: null, // Use the viewport as the container.
+            rootMargin: '0px',
+            threshold: [0, 0.5, 1.0],
+          }
+        )
+
+        io.observe(node)
+
+        return () => {
+          activeSliderMeasureListeners.delete(debouncedMeasure)
+          io.disconnect()
+        }
+      }, [])
     }
 
     return (
@@ -395,8 +432,6 @@ SliderTrackActive.displayName = RANGE_NAME
 /* -------------------------------------------------------------------------------------------------
  * SliderThumb
  * -----------------------------------------------------------------------------------------------*/
-
-const THUMB_NAME = 'SliderThumb'
 
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below

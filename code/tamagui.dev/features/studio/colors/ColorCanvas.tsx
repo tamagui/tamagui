@@ -8,19 +8,18 @@ import {
   Button,
   Paragraph,
   Spacer,
+  Theme,
   Unspaced,
   XGroup,
   XStack,
   YStack,
   ZStack,
-  Theme,
 } from 'tamagui'
 
 import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'
-import type { Curve } from '../state/types'
 import { useGlobalState } from '../state/useGlobalState'
-import { getColor, colorToHex, getAccentScore, getRange } from './helpers'
+import { colorToHex, getAccentScore, getColor } from './helpers'
 
 const ColorCanvasFrame = ({ children }) => {
   const palette = useObserve(() => colorsStore.palette)
@@ -143,7 +142,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 p="$2"
                 onPress={() => state.colors.setColorIndex(String(i))}
               >
-                <Spacer flex />
+                <Spacer flex={1} />
                 <YStack
                   ml="auto"
                   items="flex-end"

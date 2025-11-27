@@ -31,7 +31,14 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
       {props?.trigger || (
-        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+        <Select.Trigger
+          maxWidth={220}
+          iconAfter={ChevronDown}
+          borderRadius="$4"
+          backgroundColor="$background"
+          hoverStyle={{ backgroundColor: '$backgroundHover' }}
+          pressStyle={{ backgroundColor: '$backgroundPress' }}
+        >
           <Select.Value placeholder="Something" />
         </Select.Trigger>
       )}
@@ -73,17 +80,14 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
         </Select.ScrollUpButton>
 
         <Select.Viewport
-          // to do animations:
-          // animation="quick"
-          // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
           minW={200}
+          backgroundColor="$background"
+          borderRadius="$4"
+          borderWidth={1}
+          borderColor="$borderColor"
         >
           <Select.Group>
-            <Select.Label>
-              <Select.Label.Text color="$red10">Fruits</Select.Label.Text>
-            </Select.Label>
+            <Select.Label fontWeight="bold">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
@@ -113,7 +117,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
               b={0}
               items="center"
               justify="center"
-              width={'$4'}
+              width="$4"
               pointerEvents="none"
             >
               <ChevronDown

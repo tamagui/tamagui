@@ -44,8 +44,6 @@ function ToggleGroupComponent(props: {
       <Label paddingRight="$0" justifyContent="flex-end" size={props.size} htmlFor={id}>
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
-
-      {/* @ts-ignore */}
       <ToggleGroup
         orientation={props.orientation}
         id={id}

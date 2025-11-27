@@ -22,8 +22,8 @@ export function ProgressDemo() {
         <Paragraph height={30} opacity={0.5}>
           Size: {size}
         </Paragraph>
-        <Progress key={key} size={sizeProp} value={progress}>
-          <Progress.Indicator animation="bouncy" />
+        <Progress key={key} size={sizeProp} value={progress} bg="$color5">
+          <Progress.Indicator animation="bouncy" bg="$background" />
         </Progress>
       </YStack>
 
