@@ -89,9 +89,10 @@ await $`adb wait-for-device`
 await $`adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'`
 console.info('Device is ready!')
 
-// Reverse port for Metro connection
+// Reverse ports for Metro and Detox connection
 console.info('\n--- Setting up ADB reverse ---')
 await $`adb reverse tcp:8081 tcp:8081`
+await $`adb reverse tcp:8099 tcp:8099`
 
 // Start Metro bundler in background
 console.info('\n--- Starting Metro bundler ---')

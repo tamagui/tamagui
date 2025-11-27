@@ -39,7 +39,7 @@ module.exports = {
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       testBinaryPath: 'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
       build: 'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle',
-      reversePorts: [8081]
+      reversePorts: [8081, 8099]
     },
     'android.release': {
       type: 'android.apk',
