@@ -1,4 +1,4 @@
-name: Native Tests (Appium)
+name: Native Tests (Detox)
 
 on:
   push:
@@ -22,99 +22,139 @@ env:
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
-  # iOS Tests (temporarily disabled to focus on Android)
+  # iOS Build & Test
   # ─────────────────────────────────────────────────────────────────────────────
 
-  # build-ios:
-  #   name: Build iOS App
-  #   uses: ./.github/workflows/build-ios-kitchensink-app.yml
-  #   with:
-  #     configuration: Debug
-  #   secrets: inherit
+  build-ios:
+    name: Build iOS App
+    uses: ./.github/workflows/build-ios-kitchensink-app.yml
+    with:
+      configuration: Debug
+    secrets: inherit
 
-  # test-ios:
-  #   name: iOS Native Tests
-  #   needs: build-ios
-  #   runs-on: macos-14
-  #   timeout-minutes: 45
-  #   defaults:
-  #     run:
-  #       working-directory: ${{ env.test_container_app_path }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  test-ios:
+    name: iOS Detox Tests
+    needs: build-ios
+    runs-on: macos-14
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ${{ env.test_container_app_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Set Xcode version
-  #       run: sudo xcode-select -s /Applications/Xcode_16.2.app
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
-  #     - name: Restore Built App from Cache
-  #       uses: actions/cache/restore@v4
-  #       with:
-  #         key: ${{ needs.build-ios.outputs.built-app-cache-key }}
-  #         path: ${{ needs.build-ios.outputs.built-app-path }}
-  #         fail-on-cache-miss: true
+      - name: Restore Built App from Cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.build-ios.outputs.built-app-cache-key }}
+          path: ${{ needs.build-ios.outputs.built-app-path }}
+          fail-on-cache-miss: true
 
-  #     - name: Install Dependencies
-  #       uses: ./.github/actions/install
-  #       with:
-  #         workspace-focus: '@tamagui/kitchen-sink'
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
 
-  #     - name: Cache Appium
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: ~/.npm
-  #         key: ${{ runner.os }}-appium-${{ hashFiles('**/package-lock.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-appium-
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
 
-  #     - name: Install and Start Appium
-  #       run: |
-  #         npm install -g appium
-  #         appium driver install xcuitest
-  #         appium > /tmp/appium.log 2>&1 &
-  #         sleep 5
-  #         echo "Appium started"
+      - name: Install applesimutils
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
 
-  #     - name: Boot iOS Simulator
-  #       id: boot-simulator
-  #       working-directory: ${{ github.workspace }}
-  #       run: |
-  #         # Find an available iPhone simulator
-  #         DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
-  #           .devices | to_entries[]
-  #           | select(.key | contains("iOS"))
-  #           | .value[]
-  #           | select(.name | contains("iPhone 15") or contains("iPhone 16"))
-  #           | .udid' | head -1)
+      - name: Boot iOS Simulator
+        id: boot-simulator
+        working-directory: ${{ github.workspace }}
+        run: |
+          # Find iPhone 15 simulator
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
+            .devices | to_entries[]
+            | select(.key | contains("iOS"))
+            | .value[]
+            | select(.name == "iPhone 15")
+            | .udid' | head -1)
 
-  #         if [ -z "$DEVICE_ID" ]; then
-  #           echo "No suitable iPhone simulator found"
-  #           exit 1
-  #         fi
+          if [ -z "$DEVICE_ID" ]; then
+            echo "iPhone 15 not found, using first available iPhone"
+            DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
+              .devices | to_entries[]
+              | select(.key | contains("iOS"))
+              | .value[]
+              | select(.name | contains("iPhone"))
+              | .udid' | head -1)
+          fi
 
-  #         echo "Booting simulator: $DEVICE_ID"
-  #         xcrun simctl boot "$DEVICE_ID" || true
-  #         xcrun simctl bootstatus "$DEVICE_ID" -b
+          echo "Booting simulator: $DEVICE_ID"
+          xcrun simctl boot "$DEVICE_ID" || true
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+          echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
 
-  #         echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
+      - name: Install App on Simulator
+        working-directory: ${{ github.workspace }}
+        run: |
+          xcrun simctl install booted "${{ needs.build-ios.outputs.built-app-path }}"
 
-  #     - name: Run iOS Tests
-  #       env:
-  #         SIMULATOR_UDID: ${{ steps.boot-simulator.outputs.simulator_udid }}
-  #         IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios.outputs.built-app-path }}
-  #         NATIVE_TEST_PLATFORM: ios
-  #       run: |
-  #         bash ${{ github.workspace }}/code/kitchen-sink/native-testing/run-tests.sh ios
+      - name: Start Metro Bundler
+        run: |
+          # Start Metro in background and save PID for cleanup
+          EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+          METRO_PID=$!
+          echo "METRO_PID=$METRO_PID" >> $GITHUB_ENV
 
-  #     - name: Upload Appium Logs on Failure
-  #       if: failure()
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: appium-logs-ios
-  #         path: /tmp/appium.log
+          # Wait for Metro to be ready
+          echo "Waiting for Metro to start..."
+          for i in {1..60}; do
+            if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
+              echo "Metro is responding!"
+              break
+            fi
+            echo "Waiting for Metro... ($i/60)"
+            sleep 2
+          done
+
+      - name: Pre-warm Bundle
+        run: |
+          # Pre-warm the JS bundle to avoid timeout on first app launch
+          echo "Pre-warming bundle..."
+          MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
+          BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
+          echo "Fetching bundle from: $BUNDLE_URL"
+          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
+          echo "Bundle pre-warm complete"
+
+      - name: Run Detox Tests
+        env:
+          # Point Detox to the cached app (CI uses different path than local dev)
+          DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
+        run: |
+          npx detox test --configuration ios.sim.debug --headless
+
+      - name: Cleanup Metro
+        if: always()
+        run: |
+          # Kill Metro bundler
+          if [ -n "$METRO_PID" ]; then
+            kill $METRO_PID 2>/dev/null || true
+          fi
+          # Also kill any stray Metro processes
+          pkill -f "metro" || true
+          lsof -ti:8081 | xargs kill 2>/dev/null || true
+
+      - name: Upload Detox Artifacts on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-artifacts-ios
+          path: ${{ env.test_container_app_path }}/e2e/artifacts/
+          retention-days: 7
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # Android Tests
+  # Android Build & Test
   # ─────────────────────────────────────────────────────────────────────────────
 
   build-android:
@@ -123,57 +163,148 @@ jobs:
     runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 30
     outputs:
-      apk-cache-key: android-apk-${{ github.sha }}
+      apk-cache-key: ${{ steps.final-cache-key.outputs.cache_key }}
       apk-path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+      test-apk-path: code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+      fingerprint: ${{ steps.calculate-fingerprint.outputs.fingerprint || steps.get-fingerprint-from-cache.outputs.fingerprint }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Calculate Pre-Fingerprint Hash
+        id: calculate-pre-fingerprint
+        env:
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('yarn.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}
+        run: |
+          echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
+          echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT
+
+      - name: Read Cached Fingerprint
+        id: get-fingerprint-from-cache
+        env:
+          KV_STORE_REDIS_REST_URL: ${{ secrets.KV_STORE_REDIS_REST_URL }}
+          KV_STORE_REDIS_REST_TOKEN: ${{ secrets.KV_STORE_REDIS_REST_TOKEN }}
+        run: |
+          FINGERPRINT_FROM_CACHE=$(curl -s "$KV_STORE_REDIS_REST_URL/get/android-tamaguikitchensink-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN" | jq -r '.result')
+
+          if [ "$FINGERPRINT_FROM_CACHE" != "null" ]; then
+            curl -s -X POST "$KV_STORE_REDIS_REST_URL/EXPIRE/android-tamaguikitchensink-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}/2592000" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN"
+            echo "Fingerprint from cache: $FINGERPRINT_FROM_CACHE"
+            echo "fingerprint=$FINGERPRINT_FROM_CACHE" >> $GITHUB_OUTPUT
+          else
+            echo 'No cached fingerprint found.'
+            echo "fingerprint=null" >> $GITHUB_OUTPUT
+          fi
+
       - name: Check if APK is already cached
         id: apk-cache-check
+        if: ${{ steps.get-fingerprint-from-cache.outputs.fingerprint != 'null' }}
         uses: actions/cache/restore@v4
         with:
-          path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
-          key: android-apk-${{ github.sha }}
+          path: |
+            code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+            code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          key: android-apk-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
           lookup-only: true
 
       - name: Install Dependencies
-        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
         uses: ./.github/actions/install
         with:
           workspace-focus: '@tamagui/kitchen-sink'
 
       - name: Setup Java
-        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Setup Android SDK
-        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
         uses: android-actions/setup-android@v3
 
-      - name: Build Android App
-        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+      - name: Prebuild Android
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
           npx expo prebuild --platform android --clean
-          cd android && ./gradlew assembleDebug
 
-      - name: Cache APK
-        if: steps.apk-cache-check.outputs.cache-hit != 'true'
+      - name: Calculate Fingerprint
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        id: calculate-fingerprint
+        working-directory: code/kitchen-sink
+        run: |
+          FINGERPRINT=$(npx @expo/fingerprint fingerprint:generate --platform android | jq -r '.hash')
+          if [ -z "$FINGERPRINT" ]; then
+            echo '[ERROR] Failed to calculate fingerprint.'
+            exit 1
+          fi
+          echo "Fingerprint: $FINGERPRINT"
+          echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
+
+      - name: Write Fingerprint to Cache
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        env:
+          KV_STORE_REDIS_REST_URL: ${{ secrets.KV_STORE_REDIS_REST_URL }}
+          KV_STORE_REDIS_REST_TOKEN: ${{ secrets.KV_STORE_REDIS_REST_TOKEN }}
+        run: |
+          curl -s -X POST "$KV_STORE_REDIS_REST_URL/SETEX/android-tamaguikitchensink-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}/2592000/${{ steps.calculate-fingerprint.outputs.fingerprint }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN"
+
+      - name: Check If Build Already Exists (with new fingerprint)
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        id: apk-cache-check-new
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+            code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          key: android-apk-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          lookup-only: true
+
+      - name: Cache Gradle
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit && !steps.apk-cache-check-new.outputs.cache-hit }}
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Android App (Debug + Test APKs)
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit && !steps.apk-cache-check-new.outputs.cache-hit }}
+        working-directory: code/kitchen-sink
+        run: |
+          cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle
+
+      - name: Cache APKs
+        if: ${{ !steps.apk-cache-check.outputs.cache-hit && !steps.apk-cache-check-new.outputs.cache-hit }}
         uses: actions/cache/save@v4
         with:
-          path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
-          key: android-apk-${{ github.sha }}
+          path: |
+            code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
+            code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          key: android-apk-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+
+      - name: Set Final Cache Key
+        id: final-cache-key
+        run: |
+          if [ "${{ steps.apk-cache-check.outputs.cache-hit }}" = "true" ]; then
+            echo "cache_key=android-apk-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+          else
+            echo "cache_key=android-apk-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+          fi
 
   test-android:
-    name: Android Native Tests
+    name: Android Detox Tests
     needs: build-android
-    # Use WarpBuild 8x runner with KVM for faster Android emulator
     runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ${{ env.test_container_app_path }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -184,11 +315,13 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Restore APK from Cache
+      - name: Restore APKs from Cache
         uses: actions/cache/restore@v4
         with:
           key: ${{ needs.build-android.outputs.apk-cache-key }}
-          path: ${{ needs.build-android.outputs.apk-path }}
+          path: |
+            ${{ needs.build-android.outputs.apk-path }}
+            ${{ needs.build-android.outputs.test-apk-path }}
           fail-on-cache-miss: true
 
       - name: Install Dependencies
@@ -202,43 +335,69 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Cache Appium
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-appium-android-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-appium-android-
-
-      - name: Install and Start Appium
-        working-directory: ${{ github.workspace }}
-        run: |
-          npm install -g appium
-          appium driver install uiautomator2
-          appium --log-level debug > /tmp/appium.log 2>&1 &
-          sleep 5
-          echo "Appium started with debug logging"
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
 
       - name: Start Android Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
-        env:
-          ANDROID_TEST_APK_PATH: ${{ github.workspace }}/${{ needs.build-android.outputs.apk-path }}
         with:
           api-level: 30
           target: google_apis
           arch: x86_64
           profile: pixel_6
+          avd-name: test
           ram-size: 4096M
           heap-size: 1024M
           force-avd-creation: false
           emulator-boot-timeout: 600
           disable-animations: true
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
-          script: bash ${{ github.workspace }}/code/kitchen-sink/native-testing/run-tests.sh android
+          working-directory: code/kitchen-sink
+          script: |
+            # Cleanup function to kill Metro on exit
+            cleanup() {
+              echo "Cleaning up Metro..."
+              pkill -f "metro" || true
+              lsof -ti:8081 | xargs kill 2>/dev/null || true
+            }
+            trap cleanup EXIT
 
-      - name: Upload Appium Logs on Failure
+            # Reverse port for Metro connection
+            adb reverse tcp:8081 tcp:8081
+
+            # Start Metro bundler in background
+            echo "Starting Metro bundler..."
+            EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+            METRO_PID=$!
+
+            # Wait for Metro to be ready
+            echo "Waiting for Metro to start..."
+            for i in {1..60}; do
+              if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
+                echo "Metro is responding!"
+                break
+              fi
+              echo "Waiting for Metro... ($i/60)"
+              sleep 2
+            done
+
+            # Pre-warm the bundle
+            echo "Pre-warming bundle..."
+            MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" || echo "{}")
+            BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url // empty')
+            if [ -n "$BUNDLE_URL" ]; then
+              echo "Fetching bundle from: $BUNDLE_URL"
+              curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed"
+            fi
+
+            # Run Detox tests
+            echo "Running Detox tests..."
+            npx detox test --configuration android.emu.ci.debug --headless
+
+      - name: Upload Detox Artifacts on Failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: appium-logs-android
-          path: /tmp/appium.log
+          name: detox-artifacts-android
+          path: ${{ env.test_container_app_path }}/e2e/artifacts/
+          retention-days: 7

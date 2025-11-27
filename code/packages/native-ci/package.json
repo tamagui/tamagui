@@ -1,0 +1,48 @@
+{
+  "name": "@tamagui/native-ci",
+  "version": "1.138.5",
+  "description": "Native CI/CD helpers for React Native apps with Expo - fingerprinting, caching, and build optimization",
+  "license": "MIT",
+  "type": "module",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "module": "dist",
+  "bin": "./dist/cli.mjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "action.yml"
+  ],
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "yarn build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "dependencies": {
+    "@expo/fingerprint": "^0.11.3"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "@types/node": "^20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/packages/native-ci"
+  }
+}
