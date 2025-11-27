@@ -99,42 +99,39 @@ export async function setupAndroidDevice(): Promise<void> {
 }
 
 /**
- * Ensure the android/ folder has full prebuild structure for Metro.
- * In CI, the build job only caches APKs (android/app/build/outputs/apk/...),
- * which creates the android/ folder but without the full prebuild structure.
+ * Regenerate the android/ folder for Metro while preserving cached APKs.
  *
- * Metro needs the native project files (build.gradle, app/src/main/...) to
- * properly configure the JS bundle with native module information (global.expo.modules).
+ * Unlike iOS where we only cache the .app binary, Android caches the full android/ folder.
+ * However, Metro needs a fresh prebuild that matches the current node_modules.
  *
- * We check for android/build.gradle as the indicator of a complete prebuild,
- * not just the existence of the android/ folder.
+ * If we skip prebuild when build.gradle exists (from cache), the native project config
+ * might be stale and not match what the current node_modules expect. This causes
+ * runtime errors when the app tries to load native modules.
  *
- * IMPORTANT: Expo prebuild will detect a "malformed" project if only APKs exist
- * and automatically clear the android/ folder. We preserve APKs by moving them
- * to a temp location before prebuild, then restoring them after.
+ * The solution is to ALWAYS regenerate the android folder (like iOS does) while
+ * preserving the cached APKs. This ensures:
+ * 1. Metro has fresh native project config matching current node_modules
+ * 2. We still benefit from cached APKs (no need to rebuild)
+ *
+ * IMPORTANT: Expo prebuild will clear the android/ folder. We preserve APKs by
+ * moving them to a temp location before prebuild, then restoring them after.
  */
 export async function ensureAndroidFolder(): Promise<void> {
   const androidPath = join(process.cwd(), 'android')
-  const buildGradlePath = join(androidPath, 'build.gradle')
 
-  if (!existsSync(buildGradlePath)) {
-    console.info('\n--- Generating android/ folder (for Metro) ---')
-    console.info('Note: android/build.gradle not found, running expo prebuild')
+  console.info('\n--- Regenerating android/ folder (for Metro) ---')
 
-    // Preserve any cached APKs before prebuild clears the folder
-    const restoreApks = preserveApks(androidPath)
+  // Preserve any cached APKs before prebuild clears the folder
+  const restoreApks = preserveApks(androidPath)
 
-    try {
-      await $`npx expo prebuild --platform android`
-      console.info('Android folder generated!')
-    } catch (error) {
-      const err = error as Error
-      throw new Error(`Failed to generate android folder: ${err.message}`)
-    } finally {
-      // Always restore APKs, even if prebuild fails
-      restoreApks()
-    }
-  } else {
-    console.info('Android folder already exists (build.gradle found)')
+  try {
+    await $`npx expo prebuild --platform android --clean`
+    console.info('Android folder generated!')
+  } catch (error) {
+    const err = error as Error
+    throw new Error(`Failed to generate android folder: ${err.message}`)
+  } finally {
+    // Always restore APKs, even if prebuild fails
+    restoreApks()
   }
 }
