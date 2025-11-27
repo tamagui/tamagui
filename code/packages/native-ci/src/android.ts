@@ -2,52 +2,10 @@
  * Android-specific utilities for Detox test runners
  */
 
-import { existsSync, mkdirSync, renameSync, rmSync } from 'node:fs'
-import { join, dirname } from 'node:path'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { $ } from 'bun'
 import { METRO_PORT, DETOX_SERVER_PORT } from './constants'
-
-/** Standard APK paths relative to android folder */
-const APK_PATHS = [
-  'app/build/outputs/apk/debug/app-debug.apk',
-  'app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
-]
-
-/**
- * Move APKs to a temporary location outside android/ to preserve them during prebuild.
- * Returns a function to restore them after prebuild completes.
- */
-function preserveApks(androidPath: string): () => void {
-  const tempDir = join(process.cwd(), '.apk-backup')
-  const movedApks: Array<{ from: string; to: string }> = []
-
-  // Move any existing APKs to temp location
-  for (const relativePath of APK_PATHS) {
-    const apkPath = join(androidPath, relativePath)
-    if (existsSync(apkPath)) {
-      const tempPath = join(tempDir, relativePath)
-      mkdirSync(dirname(tempPath), { recursive: true })
-      console.info(`  Preserving: ${relativePath}`)
-      renameSync(apkPath, tempPath)
-      movedApks.push({ from: apkPath, to: tempPath })
-    }
-  }
-
-  // Return restore function
-  return () => {
-    for (const { from, to } of movedApks) {
-      if (existsSync(to)) {
-        mkdirSync(dirname(from), { recursive: true })
-        console.info(`  Restoring: ${from.replace(androidPath + '/', '')}`)
-        renameSync(to, from)
-      }
-    }
-    // Clean up temp dir
-    if (existsSync(tempDir)) {
-      rmSync(tempDir, { recursive: true })
-    }
-  }
-}
 
 /**
  * Wait for Android device/emulator to be ready.
@@ -99,39 +57,34 @@ export async function setupAndroidDevice(): Promise<void> {
 }
 
 /**
- * Regenerate the android/ folder for Metro while preserving cached APKs.
+ * Ensure the android/ folder has full prebuild structure for Metro.
+ * In CI, the build job caches the entire android/ folder (including APKs and test files).
+ * The test job restores this cache and should NOT regenerate it.
  *
- * Unlike iOS where we only cache the .app binary, Android caches the full android/ folder.
- * However, Metro needs a fresh prebuild that matches the current node_modules.
+ * Why we DON'T always regenerate (unlike a previous approach):
+ * - The cached android/ folder includes DetoxTest.java and other manually-added test files
+ * - Running `expo prebuild --clean` would DELETE these critical test infrastructure files
+ * - The cached folder's fingerprint already ensures it's in sync with node_modules
  *
- * If we skip prebuild when build.gradle exists (from cache), the native project config
- * might be stale and not match what the current node_modules expect. This causes
- * runtime errors when the app tries to load native modules.
- *
- * The solution is to ALWAYS regenerate the android folder (like iOS does) while
- * preserving the cached APKs. This ensures:
- * 1. Metro has fresh native project config matching current node_modules
- * 2. We still benefit from cached APKs (no need to rebuild)
- *
- * IMPORTANT: Expo prebuild will clear the android/ folder. We preserve APKs by
- * moving them to a temp location before prebuild, then restoring them after.
+ * We check for android/build.gradle as the indicator of a complete prebuild.
+ * Only regenerate if the folder is missing or incomplete.
  */
 export async function ensureAndroidFolder(): Promise<void> {
-  const androidPath = join(process.cwd(), 'android')
+  const buildGradlePath = join(process.cwd(), 'android', 'build.gradle')
 
-  console.info('\n--- Regenerating android/ folder (for Metro) ---')
+  if (existsSync(buildGradlePath)) {
+    console.info('Android folder already exists (build.gradle found)')
+    return
+  }
 
-  // Preserve any cached APKs before prebuild clears the folder
-  const restoreApks = preserveApks(androidPath)
+  console.info('\n--- Generating android/ folder (for Metro) ---')
+  console.info('Note: android/build.gradle not found, running expo prebuild')
 
   try {
-    await $`npx expo prebuild --platform android --clean`
+    await $`npx expo prebuild --platform android`
     console.info('Android folder generated!')
   } catch (error) {
     const err = error as Error
     throw new Error(`Failed to generate android folder: ${err.message}`)
-  } finally {
-    // Always restore APKs, even if prebuild fails
-    restoreApks()
   }
 }
