@@ -84,13 +84,13 @@ export async function closeNativeDriver(): Promise<void> {
 /**
  * Get the selector for finding an element by testID.
  * On iOS, testID maps to accessibilityIdentifier (use ~ selector).
- * On Android, testID maps to resource-id (use id selector with UiSelector).
+ * On Android, testID maps to content-desc (accessibility description).
  */
 export function getTestIdSelector(testId: string): string {
   if (isAndroid()) {
-    // On Android, testID becomes resource-id, not content-desc
-    // Use UiSelector to find by resource-id (partial match since RN may not prefix package)
-    return `android=new UiSelector().resourceIdMatches(".*${testId}.*")`
+    // On Android, React Native's testID becomes content-desc (accessibility description)
+    // Use UiSelector to find by description
+    return `android=new UiSelector().description("${testId}")`
   }
   // On iOS, testID maps to accessibilityIdentifier which ~ selector finds
   return `~${testId}`
@@ -98,7 +98,7 @@ export function getTestIdSelector(testId: string): string {
 
 /**
  * Helper to find elements by accessibility ID (testID on React Native).
- * On iOS, uses accessibility id. On Android, uses resource-id.
+ * On iOS, uses accessibility id. On Android, uses content-desc.
  */
 export async function findByTestId(
   driver: NativeDriver,
