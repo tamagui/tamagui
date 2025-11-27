@@ -16,15 +16,10 @@ import {
   findByText,
   findByTextContaining,
   scrollToText,
-  isAndroid,
 } from '../native-testing'
 
 // Longer timeout for CI where session creation can take 5+ mins
 const testOptions = { timeout: 180_000, retry: 2 }
-
-// Skip on Android - the emulator is too slow/unreliable for complex navigation tests
-// TODO: Debug Android navigation issues separately
-const skipOnAndroid = isAndroid()
 
 let navigatedToTestCase = false
 
@@ -55,7 +50,7 @@ afterAll(async () => {
   await closeNativeDriver()
 })
 
-test.skipIf(skipOnAndroid)('Navigate to SelectRemount test case', testOptions, async () => {
+test('Navigate to SelectRemount test case', testOptions, async () => {
   await navigateToSelectRemount()
 
   // Verify we're on the right screen by checking for the remount button (longer timeout for CI)
@@ -65,7 +60,7 @@ test.skipIf(skipOnAndroid)('Navigate to SelectRemount test case', testOptions, a
   expect(await remountButton.isDisplayed()).toBe(true)
 })
 
-test.skipIf(skipOnAndroid)('Select opens on first mount', testOptions, async () => {
+test('Select opens on first mount', testOptions, async () => {
   await navigateToSelectRemount()
   const driver = await getNativeDriver()
 
@@ -88,7 +83,7 @@ test.skipIf(skipOnAndroid)('Select opens on first mount', testOptions, async () 
   await pause(1000)
 })
 
-test.skipIf(skipOnAndroid)('Select opens after unmount/remount cycle', testOptions, async () => {
+test('Select opens after unmount/remount cycle', testOptions, async () => {
   await navigateToSelectRemount()
   const driver = await getNativeDriver()
 
@@ -120,7 +115,7 @@ test.skipIf(skipOnAndroid)('Select opens after unmount/remount cycle', testOptio
   await pause(1000)
 })
 
-test.skipIf(skipOnAndroid)('Multiple Selects work after remount', testOptions, async () => {
+test('Multiple Selects work after remount', testOptions, async () => {
   await navigateToSelectRemount()
   const driver = await getNativeDriver()
 

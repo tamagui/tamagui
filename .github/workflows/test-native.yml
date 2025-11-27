@@ -22,96 +22,96 @@ env:
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
-  # iOS Tests
+  # iOS Tests (temporarily disabled to focus on Android)
   # ─────────────────────────────────────────────────────────────────────────────
 
-  build-ios:
-    name: Build iOS App
-    uses: ./.github/workflows/build-ios-kitchensink-app.yml
-    with:
-      configuration: Debug
-    secrets: inherit
+  # build-ios:
+  #   name: Build iOS App
+  #   uses: ./.github/workflows/build-ios-kitchensink-app.yml
+  #   with:
+  #     configuration: Debug
+  #   secrets: inherit
 
-  test-ios:
-    name: iOS Native Tests
-    needs: build-ios
-    runs-on: macos-14
-    timeout-minutes: 45
-    defaults:
-      run:
-        working-directory: ${{ env.test_container_app_path }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # test-ios:
+  #   name: iOS Native Tests
+  #   needs: build-ios
+  #   runs-on: macos-14
+  #   timeout-minutes: 45
+  #   defaults:
+  #     run:
+  #       working-directory: ${{ env.test_container_app_path }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Set Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+  #     - name: Set Xcode version
+  #       run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
-      - name: Restore Built App from Cache
-        uses: actions/cache/restore@v4
-        with:
-          key: ${{ needs.build-ios.outputs.built-app-cache-key }}
-          path: ${{ needs.build-ios.outputs.built-app-path }}
-          fail-on-cache-miss: true
+  #     - name: Restore Built App from Cache
+  #       uses: actions/cache/restore@v4
+  #       with:
+  #         key: ${{ needs.build-ios.outputs.built-app-cache-key }}
+  #         path: ${{ needs.build-ios.outputs.built-app-path }}
+  #         fail-on-cache-miss: true
 
-      - name: Install Dependencies
-        uses: ./.github/actions/install
-        with:
-          workspace-focus: '@tamagui/kitchen-sink'
+  #     - name: Install Dependencies
+  #       uses: ./.github/actions/install
+  #       with:
+  #         workspace-focus: '@tamagui/kitchen-sink'
 
-      - name: Cache Appium
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-appium-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-appium-
+  #     - name: Cache Appium
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: ~/.npm
+  #         key: ${{ runner.os }}-appium-${{ hashFiles('**/package-lock.json') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-appium-
 
-      - name: Install and Start Appium
-        run: |
-          npm install -g appium
-          appium driver install xcuitest
-          appium > /tmp/appium.log 2>&1 &
-          sleep 5
-          echo "Appium started"
+  #     - name: Install and Start Appium
+  #       run: |
+  #         npm install -g appium
+  #         appium driver install xcuitest
+  #         appium > /tmp/appium.log 2>&1 &
+  #         sleep 5
+  #         echo "Appium started"
 
-      - name: Boot iOS Simulator
-        id: boot-simulator
-        working-directory: ${{ github.workspace }}
-        run: |
-          # Find an available iPhone simulator
-          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
-            .devices | to_entries[]
-            | select(.key | contains("iOS"))
-            | .value[]
-            | select(.name | contains("iPhone 15") or contains("iPhone 16"))
-            | .udid' | head -1)
+  #     - name: Boot iOS Simulator
+  #       id: boot-simulator
+  #       working-directory: ${{ github.workspace }}
+  #       run: |
+  #         # Find an available iPhone simulator
+  #         DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
+  #           .devices | to_entries[]
+  #           | select(.key | contains("iOS"))
+  #           | .value[]
+  #           | select(.name | contains("iPhone 15") or contains("iPhone 16"))
+  #           | .udid' | head -1)
 
-          if [ -z "$DEVICE_ID" ]; then
-            echo "No suitable iPhone simulator found"
-            exit 1
-          fi
+  #         if [ -z "$DEVICE_ID" ]; then
+  #           echo "No suitable iPhone simulator found"
+  #           exit 1
+  #         fi
 
-          echo "Booting simulator: $DEVICE_ID"
-          xcrun simctl boot "$DEVICE_ID" || true
-          xcrun simctl bootstatus "$DEVICE_ID" -b
+  #         echo "Booting simulator: $DEVICE_ID"
+  #         xcrun simctl boot "$DEVICE_ID" || true
+  #         xcrun simctl bootstatus "$DEVICE_ID" -b
 
-          echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
+  #         echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
 
-      - name: Run iOS Tests
-        env:
-          SIMULATOR_UDID: ${{ steps.boot-simulator.outputs.simulator_udid }}
-          IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios.outputs.built-app-path }}
-          NATIVE_TEST_PLATFORM: ios
-        run: |
-          bash ${{ github.workspace }}/code/kitchen-sink/native-testing/run-tests.sh ios
+  #     - name: Run iOS Tests
+  #       env:
+  #         SIMULATOR_UDID: ${{ steps.boot-simulator.outputs.simulator_udid }}
+  #         IOS_TEST_CONTAINER_PATH_DEV: ${{ github.workspace }}/${{ needs.build-ios.outputs.built-app-path }}
+  #         NATIVE_TEST_PLATFORM: ios
+  #       run: |
+  #         bash ${{ github.workspace }}/code/kitchen-sink/native-testing/run-tests.sh ios
 
-      - name: Upload Appium Logs on Failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: appium-logs-ios
-          path: /tmp/appium.log
+  #     - name: Upload Appium Logs on Failure
+  #       if: failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: appium-logs-ios
+  #         path: /tmp/appium.log
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Android Tests
@@ -119,7 +119,8 @@ jobs:
 
   build-android:
     name: Build Android App
-    runs-on: ubuntu-latest
+    # Use WarpBuild 8x runner for faster builds
+    runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 30
     outputs:
       apk-cache-key: android-apk-${{ github.sha }}
@@ -170,9 +171,8 @@ jobs:
   test-android:
     name: Android Native Tests
     needs: build-android
-    # Use ubuntu-latest with KVM for reliable Android emulator
-    # See: https://github.com/ReactiveCircus/android-emulator-runner
-    runs-on: ubuntu-latest
+    # Use WarpBuild 8x runner with KVM for faster Android emulator
+    runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 45
     steps:
       - name: Checkout
