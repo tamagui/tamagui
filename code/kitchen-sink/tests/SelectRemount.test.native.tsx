@@ -8,7 +8,9 @@ import {
   getNativeDriver,
   closeNativeDriver,
   waitForTestId,
+  waitForTestIdOrText,
   tapTestId,
+  tapTestIdOrText,
   hasTestId,
   pause,
   findByText,
@@ -52,8 +54,9 @@ test('Navigate to SelectRemount test case', testOptions, async () => {
   await navigateToSelectRemount()
 
   // Verify we're on the right screen by checking for the remount button (longer timeout for CI)
+  // Use text fallback on Android since Tamagui may not expose testID correctly
   const driver = await getNativeDriver()
-  const remountButton = await waitForTestId(driver, 'remount-button', 30_000)
+  const remountButton = await waitForTestIdOrText(driver, 'remount-button', 'Remount', 30_000)
   expect(await remountButton.isDisplayed()).toBe(true)
 })
 
@@ -87,8 +90,9 @@ test('Select opens after unmount/remount cycle', testOptions, async () => {
   // Wait a bit for any previous Select animations to complete
   await pause(500)
 
-  // Tap remount button to unmount and remount the Select (use longer timeout for CI)
-  await tapTestId(driver, 'remount-button', 30_000)
+  // Tap remount button to unmount and remount the Select
+  // Use text fallback on Android since Tamagui may not expose testID correctly
+  await tapTestIdOrText(driver, 'remount-button', 'Remount', 30_000)
   await pause(1500)
 
   // Try to open the Select again - THIS IS THE KEY TEST for #1859
@@ -118,8 +122,9 @@ test('Multiple Selects work after remount', testOptions, async () => {
   // Wait a bit for any previous Select animations to complete
   await pause(500)
 
-  // Tap remount to reset state (use longer timeout for CI)
-  await tapTestId(driver, 'remount-button', 30_000)
+  // Tap remount to reset state
+  // Use text fallback on Android since Tamagui may not expose testID correctly
+  await tapTestIdOrText(driver, 'remount-button', 'Remount', 30_000)
   await pause(1500)
 
   // Test first Select

@@ -84,23 +84,49 @@ export async function closeNativeDriver(): Promise<void> {
 /**
  * Get the selector for finding an element by testID.
  * On iOS, testID maps to accessibilityIdentifier (use ~ selector).
- * On Android, React Native testID maps to view tag, which isn't directly queryable.
- * For Android, we need to use content-desc via accessibilityLabel or resource-id via nativeID.
- *
- * Since Tamagui may not consistently expose testID as content-desc on Android,
- * we use different strategies:
- * - iOS: ~ selector (accessibility id)
- * - Android: content-desc via UiSelector.description()
+ * On Android, testID handling varies - we use accessibility id selector which
+ * matches content-desc on Android.
  */
 export function getTestIdSelector(testId: string): string {
-  if (isAndroid()) {
-    // On Android, try content-desc which is where accessibilityLabel goes
-    // React Native testID on Android goes to the view tag, not content-desc
-    // But accessibilityLabel goes to content-desc
-    return `android=new UiSelector().descriptionContains("${testId}")`
-  }
-  // On iOS, testID maps to accessibilityIdentifier which ~ selector finds
+  // The ~ selector (accessibility id) works cross-platform
+  // iOS: matches accessibilityIdentifier
+  // Android: matches content-desc (contentDescription)
   return `~${testId}`
+}
+
+/**
+ * Find an element by testID with fallback to text search on Android.
+ * This is more robust because Tamagui components may not consistently
+ * expose testID/accessibilityLabel as content-desc on Android.
+ *
+ * @param fallbackText - The visible text to search for if testID fails (Android only)
+ */
+export async function findByTestIdOrText(
+  driver: NativeDriver,
+  testId: string,
+  fallbackText?: string
+): Promise<ReturnType<NativeDriver['$']>> {
+  if (isIOS()) {
+    return driver.$(getTestIdSelector(testId))
+  }
+
+  // On Android, try testID first, then fallback to text
+  const testIdSelector = getTestIdSelector(testId)
+  try {
+    const element = await driver.$(testIdSelector)
+    if (await element.isExisting()) {
+      return element
+    }
+  } catch {
+    // testID not found, try text fallback
+  }
+
+  if (fallbackText) {
+    return findByText(driver, fallbackText)
+  }
+
+  // Return the testID selector element (will fail if not found)
+  return driver.$(testIdSelector)
 }
 
 /**
@@ -170,6 +196,33 @@ export async function waitForTestId(
 }
 
 /**
+ * Wait for an element by testID with fallback to text on Android.
+ * More robust for Tamagui components that may not expose testID correctly on Android.
+ */
+export async function waitForTestIdOrText(
+  driver: NativeDriver,
+  testId: string,
+  fallbackText: string,
+  timeout = 10000
+): Promise<ReturnType<NativeDriver['$']>> {
+  if (isIOS()) {
+    return waitForTestId(driver, testId, timeout)
+  }
+
+  // On Android, try testID first with short timeout, then fallback to text
+  try {
+    const element = await driver.$(getTestIdSelector(testId))
+    await element.waitForDisplayed({ timeout: Math.min(timeout, 5000) })
+    return element
+  } catch {
+    // testID not found, try text fallback
+    const textElement = await findByText(driver, fallbackText)
+    await textElement.waitForDisplayed({ timeout })
+    return textElement
+  }
+}
+
+/**
  * Tap on an element by testID.
  */
 export async function tapTestId(
@@ -178,6 +231,19 @@ export async function tapTestId(
   timeout = 10000
 ): Promise<void> {
   const element = await waitForTestId(driver, testId, timeout)
+  await element.click()
+}
+
+/**
+ * Tap on an element by testID with fallback to text on Android.
+ */
+export async function tapTestIdOrText(
+  driver: NativeDriver,
+  testId: string,
+  fallbackText: string,
+  timeout = 10000
+): Promise<void> {
+  const element = await waitForTestIdOrText(driver, testId, fallbackText, timeout)
   await element.click()
 }
 

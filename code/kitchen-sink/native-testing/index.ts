@@ -47,8 +47,11 @@ export {
   // Waiting and interactions
   waitForElement,
   waitForTestId,
+  waitForTestIdOrText,
   tapTestId,
+  tapTestIdOrText,
   hasTestId,
+  findByTestIdOrText,
   // Navigation and scrolling
   goBack,
   scrollDown,
