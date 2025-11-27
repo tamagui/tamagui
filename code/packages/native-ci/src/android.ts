@@ -74,7 +74,8 @@ export async function ensureAndroidFolder(): Promise<void> {
     console.info('\n--- Generating android/ folder (for Metro) ---')
     console.info('Note: android/build.gradle not found, running expo prebuild')
     try {
-      await $`npx expo prebuild --platform android --clean`
+      // Don't use --clean to preserve any cached build artifacts (APKs)
+      await $`npx expo prebuild --platform android`
       console.info('Android folder generated!')
     } catch (error) {
       const err = error as Error
