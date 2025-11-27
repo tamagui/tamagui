@@ -370,15 +370,24 @@ jobs:
           ram-size: 4096M
           heap-size: 1024M
           force-avd-creation: false
-          emulator-boot-timeout: 600
+          emulator-boot-timeout: 900
           disable-animations: true
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
+          pre-emulator-launch-script: |
+            # Start ADB server before emulator launch
+            adb start-server
           script: |
-            # Use bash explicitly since android-emulator-runner uses /usr/bin/sh (dash)
-            exec bash << 'BASH_SCRIPT'
-            set -e
-            trap 'pkill -f metro 2>/dev/null || true; lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true' EXIT
+            # Wait for device to be fully ready
+            adb wait-for-device
+            adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
+
+            # Setup cleanup trap
+            cleanup() {
+              pkill -f metro 2>/dev/null || true
+              lsof -ti:8081 2>/dev/null | xargs -r kill 2>/dev/null || true
+            }
+            trap cleanup EXIT
 
             # Reverse port for Metro connection
             adb reverse tcp:8081 tcp:8081
@@ -387,9 +396,11 @@ jobs:
             echo "Starting Metro bundler..."
             EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
 
-            # Wait for Metro to be ready
+            # Wait for Metro to be ready (use C-style for loop for sh compatibility)
             echo "Waiting for Metro to start..."
-            for i in {1..60}; do
+            i=0
+            while [ $i -lt 60 ]; do
+              i=$((i + 1))
               if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: android" > /dev/null 2>&1; then
                 echo "Metro is responding!"
                 break
@@ -410,7 +421,6 @@ jobs:
             # Run Detox tests
             echo "Running Detox tests..."
             npx detox test --configuration android.emu.ci.debug --headless
-            BASH_SCRIPT
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
