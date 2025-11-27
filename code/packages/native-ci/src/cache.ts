@@ -1,8 +1,9 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
+import { DEFAULT_KV_TTL_SECONDS, type Platform } from './constants'
 
 export interface CacheOptions {
-  platform: 'ios' | 'android'
+  platform: Platform
   fingerprint: string
   prefix?: string
 }
@@ -21,16 +22,6 @@ export function createCacheKey(options: CacheOptions): string {
 }
 
 /**
- * Check if a cached build exists in GitHub Actions cache.
- * Returns true if the cache hit.
- */
-export async function checkCache(cacheKey: string): Promise<boolean> {
-  // This is a placeholder - actual cache checking is done via GitHub Actions
-  // This function is useful for local testing with a file-based cache
-  return false
-}
-
-/**
  * Save fingerprint mapping to Redis KV store.
  * Used to map pre-fingerprint hash to actual fingerprint for faster lookups.
  */
@@ -38,17 +29,24 @@ export async function saveFingerprintToKV(
   kv: RedisKVOptions,
   key: string,
   fingerprint: string,
-  ttlSeconds = 2592000 // 30 days
+  ttlSeconds = DEFAULT_KV_TTL_SECONDS
 ): Promise<void> {
-  const response = await fetch(`${kv.url}/SETEX/${key}/${ttlSeconds}/${fingerprint}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${kv.token}`,
-    },
-  })
+  try {
+    const response = await fetch(`${kv.url}/SETEX/${key}/${ttlSeconds}/${fingerprint}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${kv.token}`,
+      },
+    })
 
-  if (!response.ok) {
-    throw new Error(`Failed to save fingerprint to KV: ${response.statusText}`)
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+    }
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(`Network error connecting to KV store: ${(error as Error).message}`)
+    }
+    throw new Error(`Failed to save fingerprint to KV: ${(error as Error).message}`)
   }
 }
 
@@ -59,18 +57,25 @@ export async function getFingerprintFromKV(
   kv: RedisKVOptions,
   key: string
 ): Promise<string | null> {
-  const response = await fetch(`${kv.url}/get/${key}`, {
-    headers: {
-      Authorization: `Bearer ${kv.token}`,
-    },
-  })
+  try {
+    const response = await fetch(`${kv.url}/get/${key}`, {
+      headers: {
+        Authorization: `Bearer ${kv.token}`,
+      },
+    })
 
-  if (!response.ok) {
-    throw new Error(`Failed to get fingerprint from KV: ${response.statusText}`)
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+    }
+
+    const data = (await response.json()) as { result: string | null }
+    return data.result === 'null' ? null : data.result
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(`Network error connecting to KV store: ${(error as Error).message}`)
+    }
+    throw new Error(`Failed to get fingerprint from KV: ${(error as Error).message}`)
   }
-
-  const data = (await response.json()) as { result: string | null }
-  return data.result === 'null' ? null : data.result
 }
 
 /**
@@ -79,14 +84,19 @@ export async function getFingerprintFromKV(
 export async function extendKVTTL(
   kv: RedisKVOptions,
   key: string,
-  ttlSeconds = 2592000
+  ttlSeconds = DEFAULT_KV_TTL_SECONDS
 ): Promise<void> {
-  await fetch(`${kv.url}/EXPIRE/${key}/${ttlSeconds}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${kv.token}`,
-    },
-  })
+  try {
+    await fetch(`${kv.url}/EXPIRE/${key}/${ttlSeconds}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${kv.token}`,
+      },
+    })
+  } catch (error) {
+    // Non-fatal - log but don't throw
+    console.warn(`Failed to extend KV TTL: ${(error as Error).message}`)
+  }
 }
 
 // Local file-based cache for testing

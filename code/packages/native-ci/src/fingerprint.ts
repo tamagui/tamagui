@@ -1,9 +1,11 @@
 import { execSync, type ExecSyncOptions } from 'node:child_process'
-import { existsSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import type { Platform } from './constants'
 
 export interface FingerprintOptions {
-  platform: 'ios' | 'android'
+  platform: Platform
   projectRoot?: string
   debug?: boolean
 }
@@ -62,9 +64,6 @@ export function generatePreFingerprintHash(
   files: string[],
   projectRoot: string = process.cwd()
 ): string {
-  const { createHash } = require('node:crypto')
-  const { readFileSync } = require('node:fs')
-
   const hash = createHash('sha256')
 
   for (const file of files) {

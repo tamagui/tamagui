@@ -1,5 +1,6 @@
+import type { Platform } from './constants';
 export interface FingerprintOptions {
-    platform: 'ios' | 'android';
+    platform: Platform;
     projectRoot?: string;
     debug?: boolean;
 }

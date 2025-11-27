@@ -1,5 +1,6 @@
+import { type Platform } from './constants';
 export interface CacheOptions {
-    platform: 'ios' | 'android';
+    platform: Platform;
     fingerprint: string;
     prefix?: string;
 }
@@ -11,11 +12,6 @@ export interface RedisKVOptions {
  * Create a cache key for the native build.
  */
 export declare function createCacheKey(options: CacheOptions): string;
-/**
- * Check if a cached build exists in GitHub Actions cache.
- * Returns true if the cache hit.
- */
-export declare function checkCache(cacheKey: string): Promise<boolean>;
 /**
  * Save fingerprint mapping to Redis KV store.
  * Used to map pre-fingerprint hash to actual fingerprint for faster lookups.

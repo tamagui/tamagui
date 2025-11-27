@@ -9,6 +9,12 @@ Native CI/CD helpers for React Native apps with Expo. Provides fingerprint-based
 - **KV store integration**: Optional Redis/Upstash KV for persistent fingerprint cache
 - **Detox test runners**: Clean TypeScript scripts for running Detox E2E tests
 - **Reusable GitHub Actions**: Drop-in composite actions for iOS and Android
+- **Signal handling**: Proper cleanup on CI cancellation (SIGINT/SIGTERM)
+
+## Requirements
+
+- **Bun**: The Detox runner scripts require [Bun](https://bun.sh) runtime
+- **Node.js**: >= 18 for the CLI and library functions
 
 ## Installation
 
@@ -49,6 +55,33 @@ npx @tamagui/native-ci kv-set <key> <value>
 
 - `KV_STORE_REDIS_REST_URL` - Redis REST API URL for fingerprint caching
 - `KV_STORE_REDIS_REST_TOKEN` - Redis REST API token
+
+## Detox Test Runners
+
+Run Detox tests with Metro bundler and proper cleanup:
+
+```bash
+# iOS
+bun run node_modules/@tamagui/native-ci/src/run-detox-ios.ts \
+  --project-root ./my-app \
+  --config ios.sim.debug
+
+# Android
+bun run node_modules/@tamagui/native-ci/src/run-detox-android.ts \
+  --project-root ./my-app \
+  --config android.emu.ci.debug \
+  --headless
+```
+
+### Runner Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--config` | Detox configuration name | `ios.sim.debug` / `android.emu.ci.debug` |
+| `--project-root` | Project root directory | Current directory |
+| `--record-logs` | Log recording: none, failing, all | `all` |
+| `--retries` | Number of test retries | `0` |
+| `--headless` | Run in headless mode (Android only) | `false` |
 
 ## GitHub Actions
 
@@ -107,7 +140,7 @@ npx @tamagui/native-ci kv-set <key> <value>
 | `working-directory` | Working directory for tests | `.` |
 | `config` | Detox configuration name | `ios.sim.debug` |
 | `record-logs` | Log recording: none, failing, all | `all` |
-| `retries` | Number of test retries | `2` |
+| `retries` | Number of test retries | `0` |
 | `simulator` | iOS simulator device type | `iPhone 15` |
 | `app-path` | Path to built app (optional) | - |
 
@@ -129,9 +162,65 @@ npx @tamagui/native-ci kv-set <key> <value>
 | `working-directory` | Working directory for tests | `.` |
 | `config` | Detox configuration name | `android.emu.ci.debug` |
 | `record-logs` | Log recording: none, failing, all | `all` |
-| `retries` | Number of test retries | `2` |
+| `retries` | Number of test retries | `0` |
 | `api-level` | Android API level | `30` |
 | `emulator-options` | Emulator options | See defaults |
+
+## Programmatic API
+
+```typescript
+import {
+  // Fingerprinting
+  generateFingerprint,
+  generatePreFingerprintHash,
+
+  // Caching
+  createCacheKey,
+  saveFingerprintToKV,
+  getFingerprintFromKV,
+
+  // Build runner
+  runWithCache,
+
+  // Metro utilities
+  withMetro,
+  waitForMetro,
+
+  // Detox utilities
+  runDetoxTests,
+  parseDetoxArgs,
+
+  // Android utilities
+  setupAndroidDevice,
+
+  // Constants
+  METRO_PORT,
+  DETOX_SERVER_PORT,
+} from '@tamagui/native-ci'
+
+// Generate fingerprint
+const { hash } = await generateFingerprint({
+  platform: 'ios',
+  projectRoot: './my-app',
+})
+
+// Run build with caching
+const result = await runWithCache({
+  platform: 'ios',
+  buildCommand: 'xcodebuild ...',
+  outputPaths: ['./ios/build'],
+})
+
+// Run tests with Metro
+const exitCode = await withMetro('ios', async () => {
+  return runDetoxTests({
+    config: 'ios.sim.debug',
+    projectRoot: './my-app',
+    recordLogs: 'failing',
+    retries: 0,
+  })
+})
+```
 
 ## Example Workflow
 
@@ -209,6 +298,22 @@ This 2-level approach means:
 - Cache hits are instant (no fingerprint generation needed)
 - Rebuilds only happen when native dependencies actually change
 - Works across CI runs with KV persistence
+
+## Architecture
+
+```
+src/
+├── constants.ts      # Shared constants and types
+├── fingerprint.ts    # Fingerprint generation
+├── cache.ts          # KV store and local cache
+├── runner.ts         # Build runner with caching
+├── metro.ts          # Metro bundler utilities
+├── detox.ts          # Detox test utilities
+├── android.ts        # Android-specific utilities
+├── cli.ts            # CLI entry point
+├── run-detox-ios.ts  # iOS test runner script
+└── run-detox-android.ts # Android test runner script
+```
 
 ## License
 

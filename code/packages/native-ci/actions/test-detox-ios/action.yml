@@ -16,7 +16,7 @@ inputs:
     description: 'Record logs mode: none, failing, all'
     default: 'all'
   retries:
-    description: 'Number of test retries'
+    description: 'Number of test retries (0 = fail fast)'
     default: '0'
   simulator:
     description: 'iOS simulator device type'

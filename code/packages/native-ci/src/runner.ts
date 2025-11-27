@@ -1,9 +1,11 @@
 import { execSync, type ExecSyncOptions } from 'node:child_process'
+import { appendFileSync } from 'node:fs'
 import { createCacheKey, loadCache, saveCache } from './cache'
 import { generateFingerprint } from './fingerprint'
+import type { Platform } from './constants'
 
 export interface RunWithCacheOptions {
-  platform: 'ios' | 'android'
+  platform: Platform
   buildCommand: string
   outputPaths: string[]
   projectRoot?: string
@@ -31,7 +33,6 @@ export async function runWithCache(
     buildCommand,
     outputPaths,
     projectRoot = process.cwd(),
-    preHashFiles = ['yarn.lock', 'package-lock.json', 'app.json'],
     cachePrefix = 'native-build',
     debug = false,
   } = options
@@ -95,15 +96,15 @@ export async function runWithCache(
 
 /**
  * GitHub Actions helper - outputs values for workflow.
+ * Uses the modern GITHUB_OUTPUT file method.
  */
 export function setGitHubOutput(name: string, value: string): void {
   const outputFile = process.env.GITHUB_OUTPUT
   if (outputFile) {
-    const { appendFileSync } = require('node:fs')
     appendFileSync(outputFile, `${name}=${value}\n`)
   } else {
-    // Fallback for local testing
-    console.info(`::set-output name=${name}::${value}`)
+    // Fallback for local testing - just log it
+    console.info(`[GitHub Output] ${name}=${value}`)
   }
 }
 

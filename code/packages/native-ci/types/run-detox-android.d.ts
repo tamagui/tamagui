@@ -9,7 +9,7 @@
  *   --project-root <path> Project root directory (default: cwd)
  *   --headless            Run in headless mode
  *   --record-logs <mode>  Record logs: none, failing, all (default: all)
- *   --retries <n>         Number of retries for flaky tests (default: 2)
+ *   --retries <n>         Number of retries for flaky tests (default: 0)
  */
 export {};
 //# sourceMappingURL=run-detox-android.d.ts.map

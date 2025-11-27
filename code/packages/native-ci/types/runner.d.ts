@@ -1,5 +1,6 @@
+import type { Platform } from './constants';
 export interface RunWithCacheOptions {
-    platform: 'ios' | 'android';
+    platform: Platform;
     buildCommand: string;
     outputPaths: string[];
     projectRoot?: string;
@@ -20,6 +21,7 @@ export interface RunWithCacheResult {
 export declare function runWithCache(options: RunWithCacheOptions): Promise<RunWithCacheResult>;
 /**
  * GitHub Actions helper - outputs values for workflow.
+ * Uses the modern GITHUB_OUTPUT file method.
  */
 export declare function setGitHubOutput(name: string, value: string): void;
 /**
