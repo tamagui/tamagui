@@ -34,7 +34,6 @@ const ListItemFrame = styled(View, {
   context,
   name: NAME,
   tag: 'li',
-  group: NAME as any,
   role: 'listitem',
 
   ...themeableVariants.pressTheme.true,
@@ -224,7 +223,9 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
           <YStack flex={1}>
             {title ? (
               typeof title === 'string' ? (
-                <ListItemTitle unstyled={unstyled} size={size as any}>{title}</ListItemTitle>
+                <ListItemTitle unstyled={unstyled} size={size as any}>
+                  {title}
+                </ListItemTitle>
               ) : (
                 title
               )
