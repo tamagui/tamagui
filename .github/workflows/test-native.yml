@@ -129,9 +129,8 @@ jobs:
     runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 30
     outputs:
-      apk-cache-key: ${{ steps.final-cache-key.outputs.cache_key }}
-      apk-path: code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
-      test-apk-path: code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+      android-cache-key: ${{ steps.final-cache-key.outputs.cache_key }}
+      android-path: code/kitchen-sink/android
       fingerprint: ${{ steps.calculate-fingerprint.outputs.fingerprint || steps.get-fingerprint-from-cache.outputs.fingerprint }}
     steps:
       - name: Checkout
@@ -162,42 +161,40 @@ jobs:
             echo "fingerprint=null" >> $GITHUB_OUTPUT
           fi
 
-      - name: Check if APK is already cached
-        id: apk-cache-check
+      - name: Check if Android folder is already cached
+        id: android-cache-check
         if: ${{ steps.get-fingerprint-from-cache.outputs.fingerprint != 'null' }}
         uses: actions/cache/restore@v4
         with:
-          path: |
-            code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
-            code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          key: android-apk-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
+          path: code/kitchen-sink/android
+          key: android-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
           lookup-only: true
 
       - name: Install Dependencies
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         uses: ./.github/actions/install
         with:
           workspace-focus: '@tamagui/kitchen-sink'
 
       - name: Setup Java
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Setup Android SDK
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         uses: android-actions/setup-android@v3
 
       - name: Prebuild Android
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
           npx expo prebuild --platform android --clean
 
       - name: Create Gradle Init Script for Detox
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
           cat > android/init.gradle << 'EOF'
@@ -218,7 +215,7 @@ jobs:
           EOF
 
       - name: Calculate Fingerprint
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         id: calculate-fingerprint
         working-directory: code/kitchen-sink
         run: |
@@ -231,7 +228,7 @@ jobs:
           echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
 
       - name: Write Fingerprint to Cache
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         env:
           KV_STORE_REDIS_REST_URL: ${{ secrets.KV_STORE_REDIS_REST_URL }}
           KV_STORE_REDIS_REST_TOKEN: ${{ secrets.KV_STORE_REDIS_REST_TOKEN }}
@@ -239,18 +236,16 @@ jobs:
           curl -s -X POST "$KV_STORE_REDIS_REST_URL/SETEX/android-tamaguikitchensink-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}/2592000/${{ steps.calculate-fingerprint.outputs.fingerprint }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN"
 
       - name: Check If Build Already Exists (with new fingerprint)
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit }}
-        id: apk-cache-check-new
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        id: android-cache-check-new
         uses: actions/cache/restore@v4
         with:
-          path: |
-            code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
-            code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          key: android-apk-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          path: code/kitchen-sink/android
+          key: android-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
           lookup-only: true
 
       - name: Cache Gradle
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit && !steps.apk-cache-check-new.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
         uses: actions/cache@v4
         with:
           path: |
@@ -261,27 +256,25 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build Android App (Debug + Test APKs)
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit && !steps.apk-cache-check-new.outputs.cache-hit }}
+        if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
           cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle
 
-      - name: Cache APKs
-        if: ${{ !steps.apk-cache-check.outputs.cache-hit && !steps.apk-cache-check-new.outputs.cache-hit }}
+      - name: Cache Android Folder
+        if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
         uses: actions/cache/save@v4
         with:
-          path: |
-            code/kitchen-sink/android/app/build/outputs/apk/debug/app-debug.apk
-            code/kitchen-sink/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          key: android-apk-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          path: code/kitchen-sink/android
+          key: android-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
 
       - name: Set Final Cache Key
         id: final-cache-key
         run: |
-          if [ "${{ steps.apk-cache-check.outputs.cache-hit }}" = "true" ]; then
-            echo "cache_key=android-apk-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+          if [ "${{ steps.android-cache-check.outputs.cache-hit }}" = "true" ]; then
+            echo "cache_key=android-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
           else
-            echo "cache_key=android-apk-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+            echo "cache_key=android-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
           fi
 
   test-android:
@@ -302,13 +295,11 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Restore APKs from Cache
+      - name: Restore Android Folder from Cache
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.build-android.outputs.apk-cache-key }}
-          path: |
-            ${{ needs.build-android.outputs.apk-path }}
-            ${{ needs.build-android.outputs.test-apk-path }}
+          key: ${{ needs.build-android.outputs.android-cache-key }}
+          path: ${{ needs.build-android.outputs.android-path }}
           fail-on-cache-miss: true
 
       - name: Install Dependencies
