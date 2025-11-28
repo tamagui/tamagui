@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font",
-  "version": "1.138.5",
+  "version": "1.138.6",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
