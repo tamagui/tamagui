@@ -19,6 +19,8 @@ concurrency:
 
 env:
   test_container_app_path: code/kitchen-sink
+  # Increment this to force a fresh Android build (invalidates Redis KV cache)
+  android_cache_version: v2
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
@@ -139,7 +141,8 @@ jobs:
       - name: Calculate Pre-Fingerprint Hash
         id: calculate-pre-fingerprint
         env:
-          PRE_FINGERPRINT_HASH: ${{ hashFiles('yarn.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}
+          # Include cache version to allow manual cache busting
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('yarn.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
         run: |
           echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
           echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT
