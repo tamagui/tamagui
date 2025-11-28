@@ -107,14 +107,15 @@ export interface LocalCacheOptions {
 
 /**
  * Save cache data locally (for testing).
+ * If filePath is a simple filename, it's saved directly in the current directory.
  */
 export function saveCache(
-  key: string,
+  filePath: string,
   data: Record<string, unknown>,
   options: LocalCacheOptions = {}
 ): void {
-  const { cacheDir = '.cache' } = options
-  const cachePath = join(process.cwd(), cacheDir, `${key}.json`)
+  const { cacheDir } = options
+  const cachePath = cacheDir ? join(process.cwd(), cacheDir, filePath) : join(process.cwd(), filePath)
 
   mkdirSync(dirname(cachePath), { recursive: true })
   writeFileSync(cachePath, JSON.stringify(data, null, 2))
@@ -122,13 +123,14 @@ export function saveCache(
 
 /**
  * Load cache data locally (for testing).
+ * If filePath is a simple filename, it's loaded from the current directory.
  */
 export function loadCache<T extends Record<string, unknown>>(
-  key: string,
+  filePath: string,
   options: LocalCacheOptions = {}
 ): T | null {
-  const { cacheDir = '.cache' } = options
-  const cachePath = join(process.cwd(), cacheDir, `${key}.json`)
+  const { cacheDir } = options
+  const cachePath = cacheDir ? join(process.cwd(), cacheDir, filePath) : join(process.cwd(), filePath)
 
   if (!existsSync(cachePath)) {
     return null

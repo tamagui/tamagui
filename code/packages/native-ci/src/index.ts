@@ -74,3 +74,13 @@ export { waitForDevice, setupAdbReverse, setupAndroidDevice, ensureAndroidFolder
 
 // iOS utilities
 export { ensureIOSFolder } from './ios'
+
+// Dependency management
+export {
+  checkDeps,
+  ensureIosDeps,
+  ensureAndroidDeps,
+  ensureMaestro,
+  printDepsStatus,
+  type DepsCheckResult,
+} from './deps'
