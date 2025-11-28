@@ -99,12 +99,18 @@ const demos = [
   },
 
   {
+    label: 'Menus',
+    pages: [
+      { title: 'Menu', route: '/demo/menu' },
+      { title: 'ContextMenu', route: '/demo/context-menu' },
+    ],
+  },
+
+  {
     label: 'Panels',
     pages: [
       { title: 'AlertDialog', route: '/demo/alert-dialog' },
       { title: 'Dialog', route: '/demo/dialog' },
-      { title: 'Menu', route: '/demo/menu' },
-      { title: 'ContextMenu', route: '/demo/context-menu' },
       { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },
       { title: 'Toast', route: '/demo/toast' },
