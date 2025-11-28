@@ -244,8 +244,9 @@ try {
         process.chdir(options.projectRoot)
 
         const { $ } = await import('bun')
-        const flowArg = flow ? `.maestro/flows/${flow}` : '.maestro/'
-        const result = await $`maestro test ${flowArg}`.nothrow()
+        // Flows are at ./flows/ in kitchen-sink, not .maestro/flows/
+        const flowArg = flow ? `./flows/${flow}` : './flows'
+        const result = await $`maestro test ${flowArg} --exclude-tags=util --no-ansi`.nothrow()
         process.exit(result.exitCode)
       } else if (platform === 'all') {
         console.info('=== Running All Native Tests ===\n')

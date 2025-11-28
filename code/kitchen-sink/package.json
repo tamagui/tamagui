@@ -23,7 +23,7 @@
     "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
     "test:native:ios": "bun run ../packages/native-ci/src/cli.ts test ios --project-root .",
     "test:native:android": "bun run ../packages/native-ci/src/cli.ts test android --project-root .",
-    "test:native:maestro": "bun run ../packages/native-ci/src/cli.ts test maestro --project-root .",
+    "test:native:maestro": "maestro test ./flows --exclude-tags=util --no-ansi",
     "test:web": "yarn test:web:driver-rn && yarn test:web:driver-css && yarn test:web:driver-moti",
     "test:web:driver-css": "echo 'testing css\\n' && NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver-rn": "echo 'testing rn\\n' && NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=native node -r esbuild-register ../../node_modules/.bin/playwright test",
@@ -32,8 +32,9 @@
     "detox:build:ios": "detox build -c ios.sim.debug",
     "detox:build:android": "detox build -c android.emu.debug",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "test:native": "bun run ../packages/native-ci/src/cli.ts test ios --project-root .",
-    "test": "yarn test:web && bun run ../packages/native-ci/src/cli.ts test ios --project-root ."
+    "test:native": "yarn test:native:ios && yarn test:native:android && yarn test:native:maestro",
+    "test:all": "yarn test:web && yarn test:native",
+    "test": "yarn test:web"
   },
   "dependencies": {
     "@dominicstop/ts-event-emitter": "1.1.0",
