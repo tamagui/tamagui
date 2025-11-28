@@ -170,7 +170,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: code/kitchen-sink/android
-          key: android-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
+          key: android-detox-${{ env.android_cache_version }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
           lookup-only: true
 
       - name: Install Dependencies
@@ -244,7 +244,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: code/kitchen-sink/android
-          key: android-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          key: android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
           lookup-only: true
 
       - name: Cache Gradle
@@ -269,15 +269,15 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: code/kitchen-sink/android
-          key: android-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          key: android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
 
       - name: Set Final Cache Key
         id: final-cache-key
         run: |
           if [ "${{ steps.android-cache-check.outputs.cache-hit }}" = "true" ]; then
-            echo "cache_key=android-detox-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
           else
-            echo "cache_key=android-detox-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
           fi
 
   test-android:
