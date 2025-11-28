@@ -30,6 +30,16 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./legacy-portal": {
+      "react-native": {
+        "types": "./types/legacy-portal.d.ts",
+        "import": "./dist/esm/legacy-portal.js",
+        "require": "./dist/cjs/legacy-portal.js"
+      },
+      "types": "./types/legacy-portal.d.ts",
+      "import": "./dist/esm/legacy-portal.mjs",
+      "require": "./dist/cjs/legacy-portal.cjs"
     }
   },
   "dependencies": {

@@ -2,41 +2,15 @@ import { View } from '@tamagui/core'
 import { useStackedZIndex } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { RootTagContext } from 'react-native'
-import { IS_FABRIC, USE_NATIVE_PORTAL } from './constants'
 import { GorhomPortalItem } from './GorhomPortalItem'
 import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
-
-const createPortal = (() => {
-  if (IS_FABRIC) {
-    try {
-      const ReactFabricShimModule = require('react-native/Libraries/Renderer/shims/ReactFabric')
-
-      return (
-        ReactFabricShimModule?.default?.createPortal ?? ReactFabricShimModule.createPortal
-      )
-    } catch (err) {
-      console.info(`Note: error importing portal, defaulting to non-native portals`, err)
-      return null
-    }
-  }
-  try {
-    const ReactNativeShimModule =
-      require('react-native/Libraries/Renderer/shims/ReactNative')
-
-    return (
-      ReactNativeShimModule?.default?.createPortal ?? ReactNativeShimModule.createPortal
-    )
-  } catch (err) {
-    console.info(`Note: error importing portal, defaulting to non-native portals`, err)
-    return null
-  }
-})()
+import { getCreatePortal } from './setupPortal'
 
 export const Portal = (propsIn: PortalProps) => {
   const rootTag = React.useContext(RootTagContext)
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
-
+  const createPortal = getCreatePortal()
   const { children, passThrough } = propsIn
 
   const contents = (
@@ -52,7 +26,7 @@ export const Portal = (propsIn: PortalProps) => {
     </View>
   )
 
-  if (!createPortal || !USE_NATIVE_PORTAL || !rootTag) {
+  if (!createPortal || !rootTag) {
     return (
       <GorhomPortalItem passThrough={passThrough} hostName="root">
         {contents}
