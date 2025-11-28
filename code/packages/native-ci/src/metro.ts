@@ -101,7 +101,9 @@ export async function prewarmBundle(platform: Platform): Promise<void> {
 export function startMetro(): MetroProcess {
   console.info('\n--- Starting Metro bundler ---')
 
-  const proc = Bun.spawn(['yarn', 'expo', 'start', '--dev-client', '--offline'], {
+  // Use --clear to reset the Metro cache - ensures fresh transforms
+  // This is important for CI where cache from previous runs might cause issues
+  const proc = Bun.spawn(['yarn', 'expo', 'start', '--dev-client', '--offline', '--clear'], {
     env: { ...process.env, EXPO_NO_TELEMETRY: 'true' },
     stdout: 'inherit',
     stderr: 'inherit',
