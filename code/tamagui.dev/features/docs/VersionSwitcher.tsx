@@ -13,7 +13,7 @@ export function VersionSwitcher({
 }) {
   return (
     <YStack gap="$4">
-      <XStack w={'100%'} ai="center" gap="$4">
+      <XStack width="100%" items="center" gap="$4">
         <VersionSwitcherItem versions={versions} />
       </XStack>
     </YStack>

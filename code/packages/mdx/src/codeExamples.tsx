@@ -79,7 +79,7 @@ export const compilationCode = [
 import { Heading } from './Heading'
 
 const App = (props) => (
-  <View px={10} w={550} $gtSm={{ px: 30 }}>
+  <View px={10} width={550} $gtSm={{ px: 30 }}>
     <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum.</Heading>
   </View>
 )

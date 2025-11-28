@@ -20,7 +20,7 @@ import { animationsMotion } from '../../packages/tamagui-dev-config/src/animatio
 export default function Sandbox() {
   return (
     <Configuration animationDriver={animationsMotion}>
-      <YStack p="$10" ai="center" jc="center">
+      <YStack p="$10" items="center" justify="center">
         <SandboxContent />
         {/* <LogoWords animated /> */}
       </YStack>
@@ -32,25 +32,12 @@ function SandboxContent() {
   const config = useConfiguration()
   console.warn('render', config)
 
-  // useEffect(() => {
-  //   console.info('freeze main thread interval')
-  //   const x = setInterval(() => {
-  //     const startTime = Date.now()
-  //     while (Date.now() < startTime + 20) {
-  //       // Do nothing, just wait
-  //     }
-  //   }, 100)
-  //   return () => {
-  //     clearInterval(x)
-  //   }
-  // }, [])
-
   return (
     <View>
       <YStack
         animation="lazy"
-        w={500}
-        h={500}
+        width={500}
+        height={500}
         bg="red"
         hoverStyle={{
           y: 100,

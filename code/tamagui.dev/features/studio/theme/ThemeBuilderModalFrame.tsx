@@ -1,4 +1,3 @@
-import { LogoWords } from '@tamagui/logo'
 import type React from 'react'
 import { H4, XStack, YStack, styled, useWindowDimensions } from 'tamagui'
 
@@ -72,9 +71,9 @@ export const ThemeBuilderModalFrame = ({
         // animateOnly={['transition']}
         data-tauri-drag-region
         // disableClassName
-        pos="absolute"
-        w={MODAL_WIDTH + SIDEBAR_WIDTH}
-        zi={1000000}
+        position="absolute"
+        width={MODAL_WIDTH + SIDEBAR_WIDTH}
+        z={1000000}
         t={isCentered ? 0 : HEADER_BAR_HEIGHT}
         r={0}
         x={SIDEBAR_WIDTH}
@@ -89,15 +88,15 @@ export const ThemeBuilderModalFrame = ({
       >
         <YStack
           bg="$color2"
-          br="$8"
-          btrr={isCentered ? '$8' : 0}
-          bbrr={isCentered ? '$8' : 0}
-          bblr={isCentered ? '$8' : 0}
-          ov="hidden"
-          w={MODAL_WIDTH}
-          h={isCentered ? modalHeight : `calc(100vh - ${HEADER_BAR_HEIGHT}px)`}
-          bc="$borderColor"
-          bw={1}
+          rounded="$8"
+          borderTopRightRadius={isCentered ? '$8' : 0}
+          borderBottomRightRadius={isCentered ? '$8' : 0}
+          borderBottomLeftRadius={isCentered ? '$8' : 0}
+          overflow="hidden"
+          width={MODAL_WIDTH}
+          height={isCentered ? modalHeight : `calc(100vh - ${HEADER_BAR_HEIGHT}px)`}
+          borderColor="$borderColor"
+          borderWidth={1}
           $theme-dark={{
             elevation: '$8',
           }}
@@ -108,23 +107,23 @@ export const ThemeBuilderModalFrame = ({
           {children}
         </YStack>
         <YStack
-          pos="absolute"
+          position="absolute"
           r={0}
           t={0}
           b={0}
-          zi={-1}
+          z={-1}
           animation="quick"
-          w={SIDEBAR_WIDTH + 100}
-          btrr="$8"
-          bbrr="$8"
+          width={SIDEBAR_WIDTH + 100}
+          borderTopRightRadius="$8"
+          borderBottomRightRadius="$8"
           pl={80}
-          ov="hidden"
-          f={1}
+          overflow="hidden"
+          flex={1}
           bg="$color2"
           elevation="$8"
-          bc="$borderColor"
-          bw={1}
-          o={hasSidebar ? 1 : 0}
+          borderColor="$borderColor"
+          borderWidth={1}
+          opacity={hasSidebar ? 1 : 0}
           x={hasSidebar ? 0 : -SIDEBAR_WIDTH}
           $theme-light={{
             elevation: '$8',
@@ -142,7 +141,7 @@ export const ThemeBuilderModalFrame = ({
 export const ModalTitle = styled(H4, {
   fontFamily: '$mono',
   size: '$6',
-  ls: 2,
+  letterSpacing: 2,
   animation: 'quick',
   ellipsis: true,
 })

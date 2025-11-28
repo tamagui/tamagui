@@ -26,7 +26,11 @@ export function TestModal() {
             t={-40}
           />
 
-          <TDialog.Sheet.Overlay h={windowHeight} w={windowWidth} bg="$background" />
+          <TDialog.Sheet.Overlay
+            height={windowHeight}
+            width={windowWidth}
+            bg="$background"
+          />
 
           {/* Uncommenting this causes a rare crash on native iOS Safari */}
           <TDialog.Sheet.Frame theme="red">

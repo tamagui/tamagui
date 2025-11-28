@@ -12,7 +12,14 @@ export function ListItemDemo() {
 
 function ListItemDemo1() {
   return (
-    <YGroup self="center" borderWidth={1} borderColor="$borderColor" borderRadius="$4" width={240} size="$4">
+    <YGroup
+      self="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      borderRadius="$4"
+      width={240}
+      size="$4"
+    >
       <YGroup.Item>
         <ListItem
           icon={Star}
@@ -36,7 +43,15 @@ function ListItemDemo1() {
 
 function ListItemDemo2() {
   return (
-    <YGroup self="center" borderWidth={1} borderColor="$borderColor" borderRadius="$4" width={240} size="$5" separator={<Separator />}>
+    <YGroup
+      self="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      borderRadius="$4"
+      width={240}
+      size="$5"
+      separator={<Separator />}
+    >
       <YGroup.Item>
         <ListItem title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
       </YGroup.Item>
