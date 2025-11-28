@@ -33,8 +33,7 @@
     "detox:build:android": "detox build -c android.emu.debug",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test:native": "yarn test:native:ios && yarn test:native:android && yarn test:native:maestro",
-    "test:all": "yarn test:web && yarn test:native",
-    "test": "yarn test:web"
+    "test": "yarn test:web && yarn test:native"
   },
   "dependencies": {
     "@dominicstop/ts-event-emitter": "1.1.0",
