@@ -36,6 +36,9 @@ const ListItemFrame = styled(View, {
   tag: 'li',
   role: 'listitem',
 
+  ...themeableVariants.pressTheme.true,
+  ...themeableVariants.hoverTheme.true,
+
   variants: {
     unstyled: {
       false: {
@@ -158,7 +161,7 @@ const ListItemIcon = (props: {
   const { children, size, scaleIcon = 1 } = props
   const styledContext = context.useStyledContext()
   if (!styledContext) {
-    throw new Error('Button.Icon must be used within a Button')
+    throw new Error('ListItem.Icon must be used within a ListItem')
   }
 
   const sizeToken = size ?? styledContext.size ?? '$true'
