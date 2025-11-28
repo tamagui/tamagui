@@ -1,3 +1,11 @@
+can explore removing internal import
+
+/Users/n8/tamagui3/code/core/core/src/vendor/Pressability.native.tsx
+
+maybe we can just render a Pressability inline and then grab the props off it after?
+
+---
+
 - v2 useTheme({ name: '' }) should remove since .get() doesnt match
 - release v5 config now
 
