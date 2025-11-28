@@ -77,8 +77,7 @@ const ListItemFrame = styled(View, {
     disabled: {
       true: {
         opacity: 0.5,
-        // TODO breaking types
-        pointerEvents: 'none' as any,
+        pointerEvents: 'none',
       },
     },
   } as const,
