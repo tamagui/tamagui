@@ -56,7 +56,8 @@ export const webOnlyStylePropsView = {
   overflowInline: true,
   overflowX: true,
   overflowY: true,
-  pointerEvents: true,
+  // NOTE: pointerEvents is NOT web-only - it's a core React Native View prop!
+  // Do NOT add it here.
   scrollbarWidth: true,
   textEmphasis: true,
   touchAction: true,

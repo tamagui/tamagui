@@ -1,14 +1,14 @@
 import 'react-native-gesture-handler'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
+import * as SplashScreen from 'expo-splash-screen'
 import React from 'react'
 import { Appearance, useColorScheme } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
-import * as SplashScreen from 'expo-splash-screen'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 SplashScreen.hideAsync()
 
@@ -45,8 +45,7 @@ export default function App() {
         <ThemeContext.Provider value={themeContext}>
           <Provider defaultTheme={theme as any}>
             <Navigation />
-            {/* TODO: it's overlapping the entire screen, need to fix this */}
-            {/* <SafeToastViewport /> */}
+            <SafeToastViewport />
           </Provider>
         </ThemeContext.Provider>
       </SafeAreaProvider>
