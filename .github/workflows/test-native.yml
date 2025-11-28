@@ -354,6 +354,13 @@ jobs:
             # Verify installation
             adb shell pm list packages | grep tamagui || echo "Warning: App package not found"
 
+            # Setup ADB reverse port forwarding for Metro and Detox server
+            # This allows the app inside the emulator to connect to services on the host
+            echo "Setting up ADB reverse port forwarding..."
+            adb reverse tcp:8081 tcp:8081  # Metro bundler
+            adb reverse tcp:8099 tcp:8099  # Detox server (must match DETOX_SERVER_PORT)
+            adb reverse --list
+
             # Run tests
             bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing
 
