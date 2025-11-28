@@ -9,14 +9,27 @@ import { METRO_PORT, DETOX_SERVER_PORT } from './constants'
 
 /**
  * Wait for Android device/emulator to be ready.
- * Blocks until the device has completed booting.
+ * Times out after 30 seconds if no device is available.
  */
 export async function waitForDevice(): Promise<void> {
   console.info('\n--- Waiting for device ---')
 
+  // Check if any device is connected first (with a quick timeout)
   try {
-    await $`adb wait-for-device`
-    await $`adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'`
+    const result = await $`adb devices`.quiet()
+    const lines = result.stdout.toString().split('\n').filter(line => line.includes('\tdevice'))
+    if (lines.length === 0) {
+      throw new Error('No Android device/emulator connected. Please start an emulator first.')
+    }
+  } catch (error) {
+    const err = error as Error
+    throw new Error(`No Android device available: ${err.message}`)
+  }
+
+  try {
+    // Wait for device to be fully booted (with timeout)
+    await $`timeout 30 adb wait-for-device`.quiet()
+    await $`timeout 60 adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'`.quiet()
     console.info('Device is ready!')
   } catch (error) {
     const err = error as Error
