@@ -30,10 +30,12 @@ export interface LocalCacheOptions {
 }
 /**
  * Save cache data locally (for testing).
+ * If filePath is a simple filename, it's saved directly in the current directory.
  */
-export declare function saveCache(key: string, data: Record<string, unknown>, options?: LocalCacheOptions): void;
+export declare function saveCache(filePath: string, data: Record<string, unknown>, options?: LocalCacheOptions): void;
 /**
  * Load cache data locally (for testing).
+ * If filePath is a simple filename, it's loaded from the current directory.
  */
-export declare function loadCache<T extends Record<string, unknown>>(key: string, options?: LocalCacheOptions): T | null;
+export declare function loadCache<T extends Record<string, unknown>>(filePath: string, options?: LocalCacheOptions): T | null;
 //# sourceMappingURL=cache.d.ts.map

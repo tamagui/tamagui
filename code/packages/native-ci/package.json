@@ -7,9 +7,7 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "module": "dist",
-  "bin": {
-    "native-ci": "./dist/cli.mjs"
-  },
+  "bin": "./dist/cli.mjs",
   "engines": {
     "node": ">=18"
   },

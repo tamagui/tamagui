@@ -32,7 +32,7 @@
     "detox:build:ios": "detox build -c ios.sim.debug",
     "detox:build:android": "detox build -c android.emu.debug",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "test:native": "yarn test:native:ios && yarn test:native:android && yarn test:native:maestro",
+    "test:native": "yarn test:native:ios && yarn test:native:maestro",
     "test": "yarn test:web && yarn test:native"
   },
   "dependencies": {

@@ -39,7 +39,6 @@ export declare const DefaultTabsTabFrame: import("@tamagui/core").TamaguiCompone
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const DefaultTabsContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;

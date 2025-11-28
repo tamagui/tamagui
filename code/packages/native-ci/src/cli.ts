@@ -117,8 +117,6 @@ function parseArgs(argv: string[]): ParsedArgs {
       if (!Number.isNaN(val) && val >= 0) {
         options.retries = val
       }
-    } else if (arg === '--headless') {
-      options.headless = true
     } else if (arg === '--prefix' && argv[i + 1]) {
       options.prefix = argv[++i]
     } else if (arg === '--github-output') {

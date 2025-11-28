@@ -69,7 +69,7 @@ export {
   type DetoxRunnerOptions,
 } from './detox'
 
-// Android utilities
+// Android utilities (disabled but kept for future use)
 export { waitForDevice, setupAdbReverse, setupAndroidDevice, ensureAndroidFolder } from './android'
 
 // iOS utilities
