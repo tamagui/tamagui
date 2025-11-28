@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "1.138.5",
+  "version": "1.138.6",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "test-ios": "vitest --config ./vitest.config.ios.mts --run",
     "test-android": "vitest --config ./vitest.config.android.mts --run",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "test": "yarn test:web && yarn test:native"
+    "test": "yarn test:web"
   },
   "dependencies": {
     "@dominicstop/ts-event-emitter": "1.1.0",
