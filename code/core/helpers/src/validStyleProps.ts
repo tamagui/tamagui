@@ -217,6 +217,16 @@ export const stylePropsView = {
   boxShadow: true,
   filter: true,
 
+  // RN 0.77+ style props (set REACT_NATIVE_PRE_77=1 for older RN)
+  ...(!process.env.REACT_NATIVE_PRE_77 && {
+    boxSizing: true,
+    mixBlendMode: true,
+    outlineColor: true,
+    outlineSpread: true,
+    outlineStyle: true,
+    outlineWidth: true,
+  }),
+
   // allow a few web only ones
 
   ...(process.env.TAMAGUI_TARGET === 'web' && {
@@ -240,7 +250,6 @@ export const stylePropsView = {
     borderLeftStyle: true,
     borderRightStyle: true,
     borderTopStyle: true,
-    boxSizing: true,
     caretColor: true,
     clipPath: true,
     contain: true,
@@ -265,12 +274,9 @@ export const stylePropsView = {
     maskRepeat: true,
     maskSize: true,
     maskType: true,
-    mixBlendMode: true,
     objectFit: true,
     objectPosition: true,
     outlineOffset: true,
-    outlineStyle: true,
-    outlineWidth: true,
     overflowBlock: true,
     overflowInline: true,
     overflowX: true,
