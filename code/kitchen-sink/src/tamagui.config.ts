@@ -2,10 +2,11 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
-import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
+import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
+import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
 
 export const animationsCSS = createAnimationsCSS({
   '100ms': 'ease-in 100ms',
@@ -208,13 +209,17 @@ const tamaConf = createTamagui({
   ...config,
   // Use v4 themes when ?v4theme=true is in the URL
   ...(useV4Themes && { themes: tamaguiThemes }),
+  themes: themeDev,
   defaultFont: undefined,
   shorthands: configV4.shorthands,
   settings: {
     defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
-    fastSchemeChange: true,
+    // fastSchemeChange: true,
+    shouldAddPrefersColorThemes: true,
+    maxDarkLightNesting: 2,
+    addThemeClassName: 'html',
   },
   tokens,
   media: {
@@ -228,7 +233,6 @@ const tamaConf = createTamagui({
       : search.includes('animationDriver=motion')
         ? animationsMotion
         : animationsMoti, // default moti
-  themeClassNameOnRoot: false,
 
   defaultProps: {
     Square: {
