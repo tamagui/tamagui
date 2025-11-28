@@ -53,6 +53,7 @@ export declare const webOnlyStylePropsView: {
     overflowInline: boolean;
     overflowX: boolean;
     overflowY: boolean;
+    pointerEvents: boolean;
     scrollbarWidth: boolean;
     textEmphasis: boolean;
     touchAction: boolean;

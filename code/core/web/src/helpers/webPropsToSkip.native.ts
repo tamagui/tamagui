@@ -1,11 +1,16 @@
 import { webOnlyStylePropsText, webOnlyStylePropsView } from '@tamagui/helpers'
 
+// pointerEvents is in webOnlyStylePropsView for web CSS, but it's a valid
+// React Native View prop, so we exclude it from the skip list on native.
+// It's handled specially in getSplitStyles.tsx
+const { pointerEvents: _, ...webOnlyStylePropsViewWithoutPointerEvents } = webOnlyStylePropsView
+
 /**
  * Web-only props and event handlers that should be skipped on native
  */
 export const webPropsToSkip = {
-  // Reuse web-only style props from webOnlyStyleProps
-  ...webOnlyStylePropsView,
+  // Reuse web-only style props from webOnlyStyleProps (excluding pointerEvents)
+  ...webOnlyStylePropsViewWithoutPointerEvents,
   ...webOnlyStylePropsText,
 
   // Web-only event handlers

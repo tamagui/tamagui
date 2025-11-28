@@ -98,7 +98,6 @@ export declare const webPropsToSkip: {
     overflowInline: boolean;
     overflowX: boolean;
     overflowY: boolean;
-    pointerEvents: boolean;
     scrollbarWidth: boolean;
     textEmphasis: boolean;
     touchAction: boolean;
