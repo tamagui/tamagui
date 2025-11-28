@@ -18,14 +18,14 @@ export function AnimationsDemo(props) {
   return (
     <>
       <Square
-        animation={(props.animation || 'bouncy') as any}
+        animation={props.animation ?? 'bouncy'}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}
         borderColor="$borderColor"
         borderWidth={1}
-        borderRadius="$9"
-        backgroundColor="$color9"
+        rounded="$9"
+        bg="$color9"
         hoverStyle={{
           scale: 1.01,
         }}
@@ -39,8 +39,8 @@ export function AnimationsDemo(props) {
 
       <Button
         position="absolute"
-        bottom={20}
-        left={20}
+        b={20}
+        l={20}
         icon={Play}
         theme={props.tint}
         size="$5"

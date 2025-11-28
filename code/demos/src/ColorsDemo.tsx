@@ -17,7 +17,7 @@ export function ColorsDemo() {
   const [colorsLight, colorsDark] = [getColors(colors), getColors(colors, true)]
 
   return (
-    <YStack marginTop="$4" gap="$8">
+    <YStack mt="$4" gap="$8">
       <ColorsRow title="Light" colors={colorsLight} />
       <Separator />
       <ColorsRow title="Dark" colors={colorsDark} />
@@ -30,8 +30,8 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
     <YStack gap="$4" $sm={{ gap: '$2' }}>
       <H2 size="$2">{title}</H2>
 
-      <XStack gap="$4" alignSelf="center">
-        <YStack gap="$4" $sm={{ gap: '$2' }} alignSelf="center">
+      <XStack gap="$4" self="center">
+        <YStack gap="$4" $sm={{ gap: '$2' }} self="center">
           {colors.map((group, index) => {
             return (
               <XStack gap="$2" key={index}>
@@ -39,11 +39,11 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
                   return (
                     <Square
                       key={`${color.key}${index}`}
-                      borderRadius="$2"
+                      rounded="$2"
                       size="$4"
                       height="$4"
                       borderWidth={1}
-                      backgroundColor={getVariableValue(color)}
+                      bg={getVariableValue(color)}
                       borderColor="$color7"
                       $sm={{
                         size: '$2',
@@ -58,7 +58,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
             )
           })}
 
-          <XStack gap="$2" alignSelf="center">
+          <XStack gap="$2" self="center">
             {new Array(13)
               .fill(0)
               .slice(1)
@@ -66,7 +66,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
                 return (
                   <Paragraph
                     color="$color10"
-                    textAlign="center"
+                    text="center"
                     width="$4"
                     $sm={{
                       width: '$2',
@@ -83,7 +83,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
           </XStack>
         </YStack>
 
-        <YStack gap="$4" marginTop="$2">
+        <YStack gap="$4" mt="$2">
           {colorGroups.map((name) => (
             <Paragraph
               theme={name as any}

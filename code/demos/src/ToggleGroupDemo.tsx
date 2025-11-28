@@ -13,13 +13,13 @@ const Item = styled(ToggleGroup.Item, {
 
 export function ToggleGroupDemo() {
   return (
-    <YStack paddingHorizontal="$4">
-      <XStack alignItems="center" gap="$10">
-        <YStack alignItems="center" gap="$6">
+    <YStack px="$4">
+      <XStack items="center" gap="$10">
+        <YStack items="center" gap="$6">
           <ToggleGroupComponent type="single" size="$3" orientation="horizontal" />
           <ToggleGroupComponent type="multiple" size="$4" orientation="horizontal" />
         </YStack>
-        <XStack alignItems="center" gap="$6">
+        <XStack items="center" gap="$6">
           <ToggleGroupComponent type="single" size="$3" orientation="vertical" />
           <ToggleGroupComponent type="multiple" size="$4" orientation="vertical" />
         </XStack>
@@ -37,11 +37,11 @@ function ToggleGroupComponent(props: {
   return (
     <XStack
       flexDirection={props.orientation === 'horizontal' ? 'row' : 'column'}
-      alignItems="center"
-      justifyContent="center"
+      items="center"
+      justify="center"
       gap="$4"
     >
-      <Label paddingRight="$0" justifyContent="flex-end" size={props.size} htmlFor={id}>
+      <Label pr="$0" justify="flex-end" size={props.size} htmlFor={id}>
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
       <ToggleGroup

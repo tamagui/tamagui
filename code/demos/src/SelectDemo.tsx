@@ -79,13 +79,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport
-          minW={200}
-          backgroundColor="$background"
-          borderRadius="$4"
-          borderWidth={1}
-          borderColor="$borderColor"
-        >
+        <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}

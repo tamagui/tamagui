@@ -18,7 +18,7 @@ export function ProgressDemo() {
 
   return (
     <>
-      <YStack height={60} alignItems="center" gap="$4">
+      <YStack height={60} items="center" gap="$4">
         <Paragraph height={30} opacity={0.5}>
           Size: {size}
         </Paragraph>
@@ -28,11 +28,11 @@ export function ProgressDemo() {
       </YStack>
 
       <XStack
-        alignItems="center"
+        items="center"
         gap="$2"
         position="absolute"
-        bottom="$3"
-        left="$4"
+        b="$3"
+        l="$4"
         $xxs={{ display: 'none' }}
       >
         <Slider

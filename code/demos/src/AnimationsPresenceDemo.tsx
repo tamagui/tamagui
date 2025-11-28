@@ -14,7 +14,7 @@ import photo3 from '../../public/photo3.jpg'
 export const images = [photo1, photo2, photo3].map((x) => x.src || x)
 
 const GalleryItem = styled(YStack, {
-  zIndex: 1,
+  z: 1,
   x: 0,
   opacity: 1,
   fullscreen: true,
@@ -53,11 +53,11 @@ export function AnimationsPresenceDemo() {
   return (
     <XStack
       overflow="hidden"
-      backgroundColor="#000"
+      bg="#000"
       position="relative"
       height={300}
       width="100%"
-      alignItems="center"
+      items="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
         <GalleryItem key={page} animation="slow" going={going}>
@@ -70,11 +70,11 @@ export function AnimationsPresenceDemo() {
         icon={ArrowLeft}
         size="$5"
         position="absolute"
-        left="$4"
+        l="$4"
         circular
         elevation="$4"
         onPress={() => paginate(-1)}
-        zIndex={100}
+        z={100}
       />
 
       <Button
@@ -82,11 +82,11 @@ export function AnimationsPresenceDemo() {
         icon={ArrowRight}
         size="$5"
         position="absolute"
-        right="$4"
+        r="$4"
         circular
         elevation="$4"
         onPress={() => paginate(1)}
-        zIndex={100}
+        z={100}
       />
     </XStack>
   )

@@ -5,15 +5,12 @@ import { Button as ButtonV1 } from '@tamagui/button/v1'
 
 export function ButtonDemo(props) {
   return (
-    <YStack padding="$3" gap="$3" w="100%" {...props}>
-      <ButtonV1 icon={Airplay}>Button v1</ButtonV1>
-      <Button>
-        <Button.Text>Plain</Button.Text>
-      </Button>
-      <Button alignSelf="center" icon={Airplay} size="$6">
+    <YStack p="$3" gap="$3" {...props}>
+      <Button>Plain</Button>
+      <Button self="center" icon={Airplay} size="$6">
         Large
       </Button>
-      <XStack gap="$2" justifyContent="center">
+      <XStack gap="$2" justify="center">
         <Button size="$3" theme="accent">
           Active
         </Button>

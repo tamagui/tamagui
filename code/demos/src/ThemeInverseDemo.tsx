@@ -19,13 +19,7 @@ export function ThemeInverseDemo() {
 
 function Buttons(props: { name: string; title: string }) {
   return (
-    <YStack
-      elevation="$4"
-      backgroundColor="$background"
-      padding="$4"
-      borderRadius="$4"
-      gap="$3"
-    >
+    <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
       <H5>{props.title}</H5>
       <Button>{props.name}</Button>
 

@@ -8,8 +8,8 @@ import { Label, XStack, YStack } from 'tamagui'
 
 export function SwitchHeadlessDemo() {
   return (
-    <YStack width={200} alignItems="center" gap="$3">
-      <XStack gap="$3" alignItems="center">
+    <YStack width={200} items="center" gap="$3">
+      <XStack gap="$3" items="center">
         <Label htmlFor="headless">Headless</Label>
         <HeadlessSwitch defaultChecked id="headless" />
       </XStack>
@@ -25,7 +25,7 @@ const HeadlessSwitch = React.forwardRef<View, SwitchHeadlessProps>((props, ref) 
     ref
   )
 
-  const animation = React.useRef(new Animated.Value(checked ? 1 : 0)).current
+  const [animation] = React.useState(() => new Animated.Value(0))
 
   React.useEffect(() => {
     Animated.timing(animation, {
@@ -33,7 +33,16 @@ const HeadlessSwitch = React.forwardRef<View, SwitchHeadlessProps>((props, ref) 
       duration: 100,
       useNativeDriver: true,
     }).start()
-  }, [checked])
+  }, [checked, animation])
+
+  const translateX = React.useMemo(
+    () =>
+      animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 20],
+      }),
+    [animation]
+  )
 
   return (
     <>
@@ -56,14 +65,7 @@ const HeadlessSwitch = React.forwardRef<View, SwitchHeadlessProps>((props, ref) 
               height: 20,
             },
             {
-              transform: [
-                {
-                  translateX: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, 20],
-                  }),
-                },
-              ],
+              transform: [{ translateX }],
             },
           ]}
         />
