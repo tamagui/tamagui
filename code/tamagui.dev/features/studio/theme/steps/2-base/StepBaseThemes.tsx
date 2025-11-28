@@ -57,6 +57,9 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
                     onValueChange={(value) => {
                       themeBuilder.setAccentSetting(value as any)
                     }}
+                    rounded="$4"
+                    minW={80}
+                    borderWidth={0}
                   >
                     <SelectItem value="off" index={0}>
                       Off
@@ -185,6 +188,10 @@ const PaletteView = memo((props: Props) => {
         lum: {
           light: lightHSLA[2],
           dark: darkHSLA[2],
+        },
+        alpha: {
+          light: 1,
+          dark: 1,
         },
       }
 

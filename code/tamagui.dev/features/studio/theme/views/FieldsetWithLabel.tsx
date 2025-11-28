@@ -34,6 +34,7 @@ export const FieldsetWithLabel = ({
       borderWidth={0}
       px="$3"
       onPress={onPress}
+      position="relative"
     >
       <YStack
         z={100}

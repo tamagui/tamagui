@@ -3,7 +3,7 @@ import React from 'react'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
-import { LinearGradient } from '@tamagui/linear-gradient'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function SelectDemo() {
   return (
@@ -79,7 +79,13 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport minW={200}>
+        <Select.Viewport
+          minW={200}
+          backgroundColor="$background"
+          borderRadius="$4"
+          borderWidth={1}
+          borderColor="$borderColor"
+        >
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
@@ -91,6 +97,13 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
+                      backgroundColor="transparent"
+                      pressStyle={{
+                        backgroundColor: '$backgroundPress',
+                      }}
+                      hoverStyle={{
+                        backgroundColor: '$color2',
+                      }}
                     >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
@@ -111,7 +124,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
               b={0}
               items="center"
               justify="center"
-              width="$4"
+              width={'$4'}
               pointerEvents="none"
             >
               <ChevronDown

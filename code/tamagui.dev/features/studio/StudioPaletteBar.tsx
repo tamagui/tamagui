@@ -41,6 +41,8 @@ export function StudioPaletteBar({
             key={color + i}
             height={18}
             flex={1}
+            flexBasis={0}
+            position="relative"
             {...(i > 0 && {
               borderLeftWidth: 0.5,
               borderLeftColor: '$background',

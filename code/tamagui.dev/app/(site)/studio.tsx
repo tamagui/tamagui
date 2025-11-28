@@ -8,7 +8,7 @@ import {
   EnsureFlexed,
   H1,
   H2,
-  Separator,
+  Spacer,
   XStack,
   YStack,
   useComposedRefs,

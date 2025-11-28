@@ -36,9 +36,6 @@ const ListItemFrame = styled(View, {
   tag: 'li',
   role: 'listitem',
 
-  ...themeableVariants.pressTheme.true,
-  ...themeableVariants.hoverTheme.true,
-
   variants: {
     unstyled: {
       false: {
@@ -47,6 +44,8 @@ const ListItemFrame = styled(View, {
         justifyContent: 'space-between',
         flexWrap: 'nowrap',
         borderColor: '$borderColor',
+        width: '100%',
+        maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',
         backgroundColor: '$background',
@@ -211,6 +210,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
         ? {
             unstyled: process.env.TAMAGUI_HEADLESS === '1',
             fontSize: propsIn.size,
+            fontWeight,
           }
         : undefined
     )

@@ -34,7 +34,7 @@ export const StepComponentThemes = memo(() => {
   const componentThemes = Object.entries(store.componentThemes)
   const { selectedComponentTheme = '' } = store
 
-  // // ensure first is always selected
+  // ensure first is always selected
   useEffect(() => {
     // timeout prevents the bug where we're left with a selected, but not applies theme
     const timeoutId = setTimeout(() => {
@@ -49,9 +49,16 @@ export const StepComponentThemes = memo(() => {
   }, [componentThemes.length, store.selectedComponentTheme])
 
   return (
-    <YStack mx="$-5" f={1}>
-      <XStack pe="auto" zi={100} px="$4" py="$2" ai="center" jc="space-between">
-        <H4 ff="$mono" size="$5">
+    <YStack mx="$-5" flex={1}>
+      <XStack
+        pointerEvents="auto"
+        zIndex={100}
+        px="$4"
+        py="$2"
+        items="center"
+        justify="space-between"
+      >
+        <H4 fontFamily="$mono" size="$5">
           Component: {selectedComponentTheme?.replace('Preview', '')}
         </H4>
         <SelectComponentTheme />
@@ -71,9 +78,9 @@ const SelectComponentTheme = () => {
   // const selected = store.selectedComponentTheme
 
   return (
-    <XStack ai="center" gap="$3">
-      <Label ff="$mono">Theme:</Label>
-      <Select size="$3" value="ok" w={200}>
+    <XStack items="center" gap="$3">
+      <Label fontFamily="$mono">Theme:</Label>
+      <Select size="$3" value="ok" width={200}>
         <Select.Item index={0} value="" />
       </Select>
     </XStack>
@@ -125,7 +132,7 @@ export function StepComponentThemesActions() {
   const setShow = (val: boolean) => (store.showAddThemeMenu = val)
 
   return (
-    <XStack ai="center" gap="$4">
+    <XStack items="center" gap="$4">
       <AddDropdown open={show} onOpenChange={setShow}>
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>
@@ -184,7 +191,7 @@ const SelectParentTheme = () => {
       <Label>Parent Theme:</Label>
       <Select
         size="$3"
-        w={200}
+        width={200}
         value="base"
         onValueChange={(val) => {
           store.componentParentTheme = val
@@ -214,14 +221,14 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
   return (
     <YStack
       key={name}
-      f={1}
-      miw={300}
-      h={400}
-      ov="hidden"
+      flex={1}
+      minW={300}
+      height={400}
+      overflow="hidden"
       elevation="$0.5"
-      br="$4"
-      bw={1}
-      bc="$borderColor"
+      rounded="$4"
+      borderWidth={1}
+      borderColor="$borderColor"
       {...(isActive && {
         outlineColor: 'blue',
         outlineWidth: 2,
@@ -233,33 +240,33 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
         }
       }}
     >
-      <XStack pos="absolute" t={0} l={0} r={0} ai="center" jc="center">
-        <SizableText size="$5" py="$3" fow="600">
+      <XStack position="absolute" t={0} l={0} r={0} items="center" justify="center">
+        <SizableText size="$5" py="$3" fontWeight="600">
           {name.replace('Preview', '')}
         </SizableText>
       </XStack>
 
-      <YStack f={1} ai="center" jc="center">
+      <YStack flex={1} items="center" justify="center">
         <Preview />
       </YStack>
 
       <YStack
         bg="$color2"
         py="$2"
-        pos="absolute"
+        position="absolute"
         b={0}
         l={0}
         r={0}
-        ai="center"
-        jc="center"
+        items="center"
+        justify="center"
       >
         <SizableText size="$3" theme="alt2">{`${parts.length} theme${
           parts.length === 1 ? '' : 's'
         }:`}</SizableText>
 
-        <XStack maw="100%" ov="hidden">
+        <XStack maxWidth="100%" overflow="hidden">
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <XStack ai="center" jc="center" gap="$2" px="$4" py="$2">
+            <XStack items="center" justify="center" gap="$2" px="$4" py="$2">
               {parts.map((part: any) => {
                 return (
                   <YStack key={part.name}>
