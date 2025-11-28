@@ -37,12 +37,12 @@
     }
   },
   "dependencies": {
-    "@expo/fingerprint": "^0.11.3"
+    "@expo/fingerprint": "^0.15.3"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "@types/bun": "^1.1.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^22.1.0"
   },
   "repository": {
     "type": "git",
