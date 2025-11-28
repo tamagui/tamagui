@@ -39,12 +39,8 @@ module.exports = {
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       testBinaryPath: 'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
       build: 'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle',
-      reversePorts: [8081, 8099],
-      launchArgs: {
-        // Detox server URL - ensure app connects to the right server
-        detoxServer: 'ws://localhost:8099',
-        detoxSessionId: 'test'
-      }
+      // Port 8081 for Metro, port 8099 for Detox server (fixed in native-ci scripts)
+      reversePorts: [8081, 8099]
     },
     'android.release': {
       type: 'android.apk',
@@ -68,8 +64,8 @@ module.exports = {
     emulator: {
       type: 'android.emulator',
       device: {
-        // Local development - use your own AVD name
-        avdName: process.env.DETOX_AVD_NAME || 'Pixel_8_Pro_API_35'
+        // Local development - use your own AVD name (default matches what native-ci expects)
+        avdName: process.env.DETOX_AVD_NAME || 'Pixel_6_API_33_8GB'
       }
     },
     // CI emulator - created by reactivecircus/android-emulator-runner

@@ -7,6 +7,7 @@
 import { parseArgs } from 'node:util'
 import { $ } from 'bun'
 import type { Platform } from './constants'
+import { DETOX_SERVER_PORT } from './constants'
 
 export interface DetoxRunnerOptions {
   /** Detox configuration name */
@@ -84,9 +85,11 @@ export async function runDetoxTests(options: DetoxRunnerOptions): Promise<number
   const detoxArgs = buildDetoxArgs(options)
 
   console.info('\n--- Running Detox tests ---')
+  console.info(`Using fixed Detox server port: ${DETOX_SERVER_PORT}`)
   console.info(`Command: npx ${detoxArgs.join(' ')}`)
 
-  const result = await $`npx ${detoxArgs}`.nothrow()
+  // Set DETOX_SERVER_PORT environment variable to use fixed port for ADB reverse forwarding
+  const result = await $`DETOX_SERVER_PORT=${DETOX_SERVER_PORT} npx ${detoxArgs}`.nothrow()
   const exitCode = result.exitCode
 
   if (exitCode === 0) {
