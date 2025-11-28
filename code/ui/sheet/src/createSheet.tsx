@@ -160,7 +160,9 @@ export function createSheet<
           // @ts-expect-error
           <Frame
             ref={composedContentRef}
+            // FIX: For fit mode, use flex: 0 with flexBasis: auto to allow content-driven sizing
             flex={hasFit && open ? 0 : 1}
+            flexBasis={hasFit ? 'auto' : undefined}
             height={
               shouldUseFixedHeight
                 ? stableFrameSize.current
@@ -187,6 +189,7 @@ export function createSheet<
         offscreenSize,
         adjustPaddingForOffscreenContent,
         hasFit,
+        children,
       ])
 
       return (
