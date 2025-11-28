@@ -95,7 +95,6 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     fullscreen?: boolean | undefined;
     size?: any;
     unstyled?: boolean | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type ToggleGroupImplExtraProps = GroupProps & {
     rovingFocus?: boolean;
