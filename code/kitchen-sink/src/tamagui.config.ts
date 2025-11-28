@@ -2,7 +2,7 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
-import { defaultConfig as configV4 } from '@tamagui/config/v4'
+import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
@@ -213,6 +213,7 @@ const tamaConf = createTamagui({
     ...config.themes,
     ...themeDev,
   },
+  shorthands: shorthands,
   defaultFont: undefined,
   settings: {
     defaultFont: '$body',
