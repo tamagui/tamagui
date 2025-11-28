@@ -1,3 +1,32 @@
+- remove group auto-index stuff, its not really doable with react
+  - https://github.com/tamagui/tamagui/pull/2163
+
+- document single-instance + scope for tooltip/dialog/popove
+- animation => transition
+- rem => https://github.com/tamagui/tamagui/pull/3109
+- fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
+
+potentially:
+
+- progress headless
+  - https://github.com/tamagui/tamagui/pull/2635
+  - demo https://github.com/tamagui/tamagui/pull/2717
+- accordion headless
+  - https://github.com/tamagui/tamagui/pull/2598
+- forgot we had headless menu
+  - https://github.com/tamagui/tamagui/pull/1978
+- tooltip follow
+  - https://github.com/tamagui/tamagui/pull/1318
+  - we did land scoped tooltip and better position support
+- popper origin/size
+  - https://github.com/tamagui/tamagui/pull/2734/files
+  - older version https://github.com/tamagui/tamagui/pull/2723
+
+see if claude can get working well:
+
+  - input adornment https://github.com/tamagui/tamagui/pull/1654
+  - headless list item https://github.com/tamagui/tamagui/pull/2458
+
 pre v2:
 
   - useTheme().x.val may have bug on light/dark switch
