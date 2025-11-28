@@ -14,19 +14,23 @@ export function TestModal() {
       <TDialog.Adapt when="md">
         <TDialog.Sheet modal snapPoints={[20, 40, 80]}>
           <TDialog.Sheet.Handle
-            h={10}
+            height={10}
             bg="$background"
-            o={1} // Uncommenting this causes a rare crash on native iOS Safari
+            opacity={1} // Uncommenting this causes a rare crash on native iOS Safari
             width="25%"
             m="$0"
             mb="$1"
             mt="$5"
-            alignSelf="center"
-            pos="absolute"
+            self="center"
+            position="absolute"
             t={-40}
           />
 
-          <TDialog.Sheet.Overlay h={windowHeight} w={windowWidth} bg="$background" />
+          <TDialog.Sheet.Overlay
+            height={windowHeight}
+            width={windowWidth}
+            bg="$background"
+          />
 
           {/* Uncommenting this causes a rare crash on native iOS Safari */}
           <TDialog.Sheet.Frame theme="red">
@@ -39,7 +43,7 @@ export function TestModal() {
 
       <TDialog.Portal>
         <TDialog.Content>
-          <YStack space p="$4">
+          <YStack gap="$4" p="$4">
             <H1>
               Esse nulla magna reprehenderit sunt ea elit. Voluptate amet elit
               reprehenderit tempor duis duis. Nostrud adipisicing duis in sunt adipisicing
