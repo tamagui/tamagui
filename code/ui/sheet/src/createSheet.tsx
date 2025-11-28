@@ -189,7 +189,6 @@ export function createSheet<
         offscreenSize,
         adjustPaddingForOffscreenContent,
         hasFit,
-        children,
       ])
 
       return (
