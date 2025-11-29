@@ -218,6 +218,15 @@ export const stylePropsView = {
 
   boxShadow: true,
   filter: true,
+  // RN 0.77+ style props (set REACT_NATIVE_PRE_77=1 for older RN)
+  ...(!process.env.REACT_NATIVE_PRE_77 && {
+    boxSizing: true,
+    mixBlendMode: true,
+    outlineColor: true,
+    outlineSpread: true,
+    outlineStyle: true,
+    outlineWidth: true,
+  }),
 
   // web-only for convenience - tree-shaken on native
   ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : {}),
