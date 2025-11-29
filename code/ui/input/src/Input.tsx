@@ -92,7 +92,8 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     style: {
       ...(rest.style as any),
       ...(placeholderTextColor && {
-        '--placeholderColor': theme[placeholderTextColor]?.variable || placeholderTextColor,
+        '--placeholderColor':
+          theme[placeholderTextColor]?.variable || placeholderTextColor,
       }),
       ...(selectionColor && {
         '--selectionColor': theme[selectionColor]?.variable || selectionColor,

@@ -107,7 +107,10 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
 
   // Resolve color tokens
   const resolvedPlaceholderColor = placeholderTextColor
-    ? getTokenValue(theme[placeholderTextColor as any]?.val ?? placeholderTextColor, 'color')
+    ? getTokenValue(
+        theme[placeholderTextColor as any]?.val ?? placeholderTextColor,
+        'color'
+      )
     : undefined
 
   const resolvedSelectionColor = selectionColor
@@ -172,7 +175,7 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     selectionColor: resolvedSelectionColor,
     onChangeText: handleChangeText,
     onKeyPress: onKeyDown ? handleKeyPress : undefined,
-    onSubmitEditing: (onKeyDown || onSubmitEditing) ? handleSubmitEditing : undefined,
+    onSubmitEditing: onKeyDown || onSubmitEditing ? handleSubmitEditing : undefined,
     onSelectionChange: onSelectionChange ? handleSelectionChange : undefined,
     autoComplete: autoComplete as any,
   }

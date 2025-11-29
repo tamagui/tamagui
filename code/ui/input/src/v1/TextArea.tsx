@@ -1,11 +1,10 @@
 import { styled } from '@tamagui/web'
 import { Input } from './Input'
-import { defaultStyles, textAreaSizeVariant } from './shared'
-
-export type { InputProps as TextAreaProps } from './types'
+import { defaultStyles, textAreaSizeVariant } from '../shared'
 
 /**
- * A web-aligned textarea component (multi-line input).
+ * @deprecated Use the new TextArea from '@tamagui/input' instead
+ * @summary A text area is a multi-line input field that allows users to enter text.
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
 export const TextArea = styled(Input, {
@@ -21,7 +20,7 @@ export const TextArea = styled(Input, {
       false: {
         height: 'auto',
         ...defaultStyles,
-        rows: 3,
+        numberOfLines: 3,
       },
     },
 
