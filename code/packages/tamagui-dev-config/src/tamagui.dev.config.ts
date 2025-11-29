@@ -41,7 +41,7 @@ export const config = {
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
     // Allow full style props (not just shorthands) for demos
-    onlyAllowShorthands: false,
+    onlyAllowShorthands: true,
   },
 } satisfies CreateTamaguiProps
 

@@ -62,6 +62,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
+  // Capture original value before resolution (for context prop tracking)
+  const originalValue = value
+
   if (value != null) {
     if (value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
@@ -81,10 +84,10 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
       const max = expanded.length
       for (let i = 0; i < max; i++) {
         const [nkey, nvalue] = expanded[i]
-        map(nkey, nvalue)
+        map(nkey, nvalue, originalValue)
       }
     } else {
-      map(key, value)
+      map(key, value, originalValue)
     }
   }
 }
@@ -233,15 +236,17 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     // Track context overrides for any key that's in context props (issues #3670, #3676)
-    // This must run for ALL keys that match context props, not just variants
+    // Store the ORIGINAL token value (like '$8') before resolution so that
+    // children's functional variants can look up token values
     if (staticConfig) {
       const contextProps =
         staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
       if (contextProps && subKey in contextProps) {
-        if (!styleState.overriddenContextProps) {
-          styleState.overriddenContextProps = {}
-        }
+        styleState.overriddenContextProps ||= {}
         styleState.overriddenContextProps[subKey] = val
+        // Also track the original token value separately
+        styleState.originalContextPropValues ||= {}
+        styleState.originalContextPropValues[subKey] = val
       }
     }
 

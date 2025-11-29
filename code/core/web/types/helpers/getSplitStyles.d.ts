@@ -1,6 +1,7 @@
 import type { AllGroupContexts, ComponentContextI, DebugProp, GetStyleResult, GetStyleState, SplitStyleProps, StaticConfig, TamaguiComponentState, TextStyle, ThemeParsed } from '../types';
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
+export declare const styleOriginalValues: WeakMap<object, Record<string, any>>;
 type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfig, theme: ThemeParsed, themeName: string, componentState: TamaguiComponentState, styleProps: SplitStyleProps, parentSplitStyles?: GetStyleResult | null, context?: ComponentContextI, groupContext?: AllGroupContexts | null, elementType?: string, startedUnhydrated?: boolean, debug?: DebugProp) => null | GetStyleResult;

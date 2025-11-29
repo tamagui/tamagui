@@ -32,7 +32,7 @@ export const SheetDemo = () => {
   return (
     <>
       <YStack gap="$4">
-        <XStack gap="$4" $maxMd={{ flexDirection: 'column', alignItems: 'center' }}>
+        <XStack gap="$4" $maxMd={{ flexDirection: 'column', items: 'center' }}>
           <Button onPress={() => setOpen(true)}>Open</Button>
           <Button onPress={() => setModal((x) => !x)}>
             {modal ? 'Type: Modal' : 'Type: Inline'}
@@ -56,7 +56,7 @@ export const SheetDemo = () => {
             {`Snap Points: ${JSON.stringify(snapPoints)}`}
           </Button>
         ) : (
-          <XStack paddingVertical="$2.5" justifyContent="center">
+          <XStack py="$2.5" justify="center">
             <Paragraph>
               {`Snap Points: ${isFit ? '(none)' : JSON.stringify(snapPoints)}`}
             </Paragraph>
@@ -79,13 +79,13 @@ export const SheetDemo = () => {
       >
         <Sheet.Overlay
           animation="lazy"
-          backgroundColor="$shadow6"
+          bg="$shadow6"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
 
         <Sheet.Handle />
-        <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" gap="$5">
+        <Sheet.Frame p="$4" justify="center" items="center" gap="$5">
           <SheetContents {...{ modal, isPercent, innerOpen, setInnerOpen, setOpen }} />
         </Sheet.Frame>
       </Sheet>
@@ -127,13 +127,13 @@ function InnerSheet(props: SheetProps) {
       />
 
       <Sheet.Handle />
-      <Sheet.Frame flex={1} justifyContent="center" alignItems="center" gap="$5">
+      <Sheet.Frame flex={1} justify="center" items="center" gap="$5">
         <Sheet.ScrollView>
-          <YStack padding="$5" gap="$8">
+          <YStack p="$5" gap="$8">
             <Button
               size="$6"
               circular
-              alignSelf="center"
+              self="center"
               icon={ChevronDown}
               onPress={() => props.onOpenChange?.(false)}
             />

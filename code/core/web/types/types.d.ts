@@ -1498,9 +1498,10 @@ export type GetStyleState = {
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
     overriddenContextProps?: Record<string, any>;
+    originalContextPropValues?: Record<string, any>;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
-export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any) => void) => void;
+export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any) => void) => void;
 export type GenericVariantDefinitions = {
     [key: string]: {
         [key: string]: ((a: any, b: any) => any) | {

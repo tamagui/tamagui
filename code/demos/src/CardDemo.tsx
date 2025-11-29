@@ -3,7 +3,7 @@ import { Button, Card, H2, Image, Paragraph, XStack } from 'tamagui'
 
 export function CardDemo() {
   return (
-    <XStack $maxMd={{ flexDirection: 'column' }} paddingHorizontal="$4" space>
+    <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
       <DemoCard
         animation="bouncy"
         size="$4"
@@ -27,12 +27,12 @@ export function DemoCard(props: CardProps) {
       </Card.Header>
       <Card.Footer padded>
         <XStack flex={1} />
-        <Button borderRadius="$10">Purchase</Button>
+        <Button rounded="$10">Purchase</Button>
       </Card.Footer>
       <Card.Background>
         <Image
-          resizeMode="contain"
-          alignSelf="center"
+          objectFit="contain"
+          self="center"
           source={{
             width: 300,
             height: 300,

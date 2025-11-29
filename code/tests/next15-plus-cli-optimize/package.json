@@ -8,5 +8,5 @@
   "dependencies": {
     "@tamagui/cli": "workspace:*"
   },
-  "version": "1.138.5"
+  "version": "1.138.6"
 }

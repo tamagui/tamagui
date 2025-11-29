@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Stack, styled } from '@tamagui/core'
 import { createSwitch } from '@tamagui/switch'
 import { Label, XStack, YStack } from 'tamagui'
@@ -6,7 +5,7 @@ import { Label, XStack, YStack } from 'tamagui'
 const Frame = styled(Stack, {
   width: 40,
   height: 20,
-  borderRadius: 20,
+  rounded: 20,
   variants: {
     checked: {
       true: {
@@ -25,8 +24,8 @@ const Frame = styled(Stack, {
 const Thumb = styled(Stack, {
   width: 20,
   height: 20,
-  backgroundColor: 'black',
-  borderRadius: 20,
+  bg: 'black',
+  rounded: 20,
 
   variants: {
     checked: {
@@ -47,8 +46,8 @@ export const Switch = createSwitch({
 
 export function SwitchUnstyledDemo() {
   return (
-    <YStack width={200} alignItems="center" space="$3">
-      <XStack gap="$3" alignItems="center">
+    <YStack width={200} items="center" gap="$3">
+      <XStack gap="$3" items="center">
         <Label htmlFor="unstyled-switch">Unstyled</Label>
         <Switch defaultChecked id="unstyled-switch">
           <Switch.Thumb animation="quick" />
