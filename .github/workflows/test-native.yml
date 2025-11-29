@@ -20,7 +20,7 @@ concurrency:
 env:
   test_container_app_path: code/kitchen-sink
   # Increment this to force a fresh Android build (invalidates Redis KV cache)
-  android_cache_version: v2
+  android_cache_version: v3
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
@@ -196,11 +196,12 @@ jobs:
         run: |
           npx expo prebuild --platform android --clean
 
-      - name: Create Gradle Init Script for Detox
+      - name: Setup Detox Test Infrastructure
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
-          cat > android/init.gradle << 'EOF'
+          # Create Gradle init script for JNI library conflicts
+          cat > android/init.gradle << 'INITGRADLE'
           // Gradle init script to fix JNI library conflicts for Detox tests
           allprojects {
               afterEvaluate {
@@ -215,7 +216,101 @@ jobs:
                   }
               }
           }
-          EOF
+          INITGRADLE
+          # Remove leading whitespace from heredoc
+          sed -i 's/^          //' android/init.gradle
+
+          # Add Detox repository to build.gradle (using node for reliable file editing)
+          node -e "
+            const fs = require('fs');
+            let content = fs.readFileSync('android/build.gradle', 'utf8');
+            content = content.replace(
+              \"maven { url 'https://www.jitpack.io' }\",
+              \"maven { url 'https://www.jitpack.io' }\\n    // Detox repository\\n    maven { url \\\"\\\$rootDir/../../../node_modules/detox/Detox-android\\\" }\"
+            );
+            fs.writeFileSync('android/build.gradle', content);
+          "
+
+          # Add Detox test runner config and dependencies to app/build.gradle
+          node -e "
+            const fs = require('fs');
+            let content = fs.readFileSync('android/app/build.gradle', 'utf8');
+
+            // Add testInstrumentationRunner after versionName
+            content = content.replace(
+              'versionName \"1.0.0\"',
+              'versionName \"1.0.0\"\\n\\n        // Detox instrumentation test runner\\n        testBuildType System.getProperty(\\'testBuildType\\', \\'debug\\')\\n        testInstrumentationRunner \\'androidx.test.runner.AndroidJUnitRunner\\''
+            );
+
+            // Add Detox dependencies before the final closing brace of dependencies block
+            content = content.replace(
+              /(implementation jscFlavor\s*\n\s*}\s*\n})/,
+              'implementation jscFlavor\\n    }\\n\\n    // Detox dependencies\\n    androidTestImplementation(\\'com.wix:detox:+\\')\\n    androidTestImplementation \\'junit:junit:4.13.2\\'\\n}'
+            );
+
+            fs.writeFileSync('android/app/build.gradle', content);
+          "
+
+          # Create androidTest directory structure
+          mkdir -p android/app/src/androidTest/java/com/tamagui/tamaguikitchensink
+
+          # Create DetoxTest.java
+          cat > android/app/src/androidTest/java/com/tamagui/tamaguikitchensink/DetoxTest.java << 'DETOXTEST'
+          package com.tamagui.tamaguikitchensink;
+
+          import com.wix.detox.Detox;
+          import com.wix.detox.config.DetoxConfig;
+
+          import org.junit.Rule;
+          import org.junit.Test;
+          import org.junit.runner.RunWith;
+
+          import androidx.test.ext.junit.runners.AndroidJUnit4;
+          import androidx.test.filters.LargeTest;
+          import androidx.test.rule.ActivityTestRule;
+
+          @RunWith(AndroidJUnit4.class)
+          @LargeTest
+          public class DetoxTest {
+              @Rule
+              public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, false, false);
+
+              @Test
+              public void runDetoxTests() {
+                  DetoxConfig detoxConfig = new DetoxConfig();
+                  detoxConfig.idlePolicyConfig.masterTimeoutSec = 90;
+                  detoxConfig.idlePolicyConfig.idleResourceTimeoutSec = 60;
+                  detoxConfig.rnContextLoadTimeoutSec = 180;
+
+                  Detox.runTests(mActivityRule, detoxConfig);
+              }
+          }
+          DETOXTEST
+
+          # Create AndroidManifest.xml for androidTest (fixes Android 12+ exported requirement)
+          cat > android/app/src/androidTest/AndroidManifest.xml << 'MANIFEST'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools">
+
+              <!-- Fix for Android 12+ requiring explicit android:exported -->
+              <application>
+                  <activity
+                      android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+                      android:exported="true"
+                      tools:node="merge" />
+                  <activity
+                      android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
+                      android:exported="true"
+                      tools:node="merge" />
+                  <activity
+                      android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity"
+                      android:exported="true"
+                      tools:node="merge" />
+              </application>
+
+          </manifest>
+          MANIFEST
 
       - name: Calculate Fingerprint
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
