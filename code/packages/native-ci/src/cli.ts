@@ -241,11 +241,15 @@ try {
 
         process.chdir(options.projectRoot)
 
-        const { $ } = await import('bun')
-        // Flows are at ./flows/ in kitchen-sink, not .maestro/flows/
-        const flowArg = flow ? `./flows/${flow}` : './flows'
-        const result = await $`maestro test ${flowArg} --exclude-tags=util --no-ansi`.nothrow()
-        process.exit(result.exitCode)
+        // Run Maestro with Metro for development builds
+        const exitCode = await withMetro('ios', async () => {
+          const { $ } = await import('bun')
+          // Flows are at ./flows/ in kitchen-sink, not .maestro/flows/
+          const flowArg = flow ? `./flows/${flow}` : './flows'
+          const result = await $`maestro test ${flowArg} --exclude-tags=util --no-ansi`.nothrow()
+          return result.exitCode
+        })
+        process.exit(exitCode)
       } else if (platform === 'all') {
         console.info('=== Running All Native Tests ===\n')
 
