@@ -284,7 +284,8 @@ export const getMediaImportanceIfMoreImportant = (
   const importance = isSizeMedia
     ? getMediaKeyImportance(mediaKey)
     : defaultMediaImportance
-  return !importance[key] || importance > importance[key] ? importance : null
+  const usedKeys = styleState.usedKeys
+  return !usedKeys[key] || importance > usedKeys[key] ? importance : null
 }
 
 function camelToHyphen(str: string) {

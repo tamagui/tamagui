@@ -182,7 +182,6 @@ const ThemeBuilderModal = memo(() => {
           animation={['medium', { opacity: { overshootClamping: true } }]}
           opacity={hide ? 0 : 1}
           gap="$4"
-          separator={<Separator borderWidth={1} />}
           flex={1}
         >
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>

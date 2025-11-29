@@ -3,24 +3,24 @@ import { TakeoutIcon } from '../icons/TakeoutIcon'
 
 export const TakeoutButton = (props: ButtonProps) => {
   return (
-    <Button
+    <Button.Frame
       borderColor="$color6"
       size="$3"
       rounded="$10"
-      fontFamily="$silkscreen"
-      fontSize={12}
-      borderWidth={0.5}
+      borderRightWidth={0.5}
       hoverStyle={{
         borderColor: '$color8',
         bg: '$color5',
       }}
       {...props}
     >
-      Takeout
-      <YStack y={-1} display="inline-flex">
+      <Button.Text fontFamily="$silkscreen" fontSize={12}>
+        Takeout
+      </Button.Text>
+      <YStack y={-1} display="inline-flex" mx="$1.5">
         <TakeoutIcon scale={0.75} />
       </YStack>
-      <Text
+      <Button.Text
         y={-0.5}
         fontFamily="$mono"
         fontSize="$4"
@@ -28,7 +28,7 @@ export const TakeoutButton = (props: ButtonProps) => {
         $sm={{ display: 'none' }}
       >
         starter
-      </Text>
-    </Button>
+      </Button.Text>
+    </Button.Frame>
   )
 }

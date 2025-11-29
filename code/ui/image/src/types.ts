@@ -13,6 +13,11 @@ type KeyofViewProps = keyof ViewProps
 export type ImageProps = ViewProps &
   Omit<RNImageProps, KeyofViewProps | 'source' | 'resizeMode' | 'style'> & {
     /**
+     * The image source URL or require() result.
+     * Preferred over `source` for better web alignment.
+     */
+    src?: string
+    /**
      * @deprecated
      * use src instead
      */
@@ -22,13 +27,22 @@ export type ImageProps = ViewProps &
      * use objectFit instead
      */
     resizeMode?: ImageResizeMode
+    /**
+     * How the image should be resized to fit its container.
+     * Maps to CSS object-fit on web and resizeMode on native.
+     */
     objectFit?: React.CSSProperties['objectFit']
+    /**
+     * How the image should be positioned within its container.
+     * Maps to CSS object-position on web.
+     * On native, requires expo-image or similar for full support.
+     */
     objectPosition?: React.CSSProperties['objectPosition']
   } & Omit<
     React.ImgHTMLAttributes<HTMLImageElement>,
-    'width' | 'height' | KeyofViewProps
+    'width' | 'height' | KeyofViewProps | 'src'
   > &
-  Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'>
+  Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style' | 'src'>
 
 export type ImageType = React.FC<Partial<ImageProps>> & {
   getSize: RNImageType['getSize']

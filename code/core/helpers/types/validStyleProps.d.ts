@@ -113,7 +113,6 @@ export declare const stylePropsView: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundColor: boolean;
     backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
@@ -167,6 +166,7 @@ export declare const stylePropsView: {
     transformStyle?: boolean | undefined;
     userSelect?: boolean | undefined;
     willChange?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     elevationAndroid?: boolean | undefined;
@@ -241,6 +241,7 @@ export declare const stylePropsView: {
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
+    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -402,7 +403,6 @@ export declare const stylePropsText: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundColor: boolean;
     backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
@@ -454,6 +454,7 @@ export declare const stylePropsText: {
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     elevationAndroid?: boolean | undefined;
@@ -523,6 +524,7 @@ export declare const stylePropsText: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
+    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -657,7 +659,6 @@ export declare const stylePropsAll: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundColor: boolean;
     backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
@@ -709,6 +710,7 @@ export declare const stylePropsAll: {
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     elevationAndroid?: boolean | undefined;
@@ -778,6 +780,7 @@ export declare const stylePropsAll: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
+    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -897,7 +900,6 @@ export declare const validStyles: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundColor: boolean;
     backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
@@ -951,6 +953,7 @@ export declare const validStyles: {
     transformStyle?: boolean | undefined;
     userSelect?: boolean | undefined;
     willChange?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     elevationAndroid?: boolean | undefined;
@@ -1025,6 +1028,7 @@ export declare const validStyles: {
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
+    backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;

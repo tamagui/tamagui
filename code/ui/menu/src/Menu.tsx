@@ -1,7 +1,6 @@
 import {
   type CreateBaseMenuProps,
   createNativeMenu,
-  useNativeProp,
   withNativeMenu,
 } from '@tamagui/create-menu'
 import { withStaticProperties } from '@tamagui/web'
@@ -14,8 +13,7 @@ export function createMenu(params: CreateBaseMenuProps) {
 
   const COMMON_PARAMS = {
     isRoot: false,
-    useNativeProp,
-    useNativePropScope: DROPDOWN_MENU_CONTEXT,
+    scope: DROPDOWN_MENU_CONTEXT,
   }
 
   const MenuComp = withNativeMenu({

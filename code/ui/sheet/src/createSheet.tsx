@@ -160,7 +160,9 @@ export function createSheet<
           // @ts-expect-error
           <Frame
             ref={composedContentRef}
+            // FIX: For fit mode, use flex: 0 with flexBasis: auto to allow content-driven sizing
             flex={hasFit && open ? 0 : 1}
+            flexBasis={hasFit ? 'auto' : undefined}
             height={
               shouldUseFixedHeight
                 ? stableFrameSize.current
@@ -203,6 +205,9 @@ export function createSheet<
               componentName="SheetCover"
               // biome-ignore lint/correctness/noChildrenProp: <explanation>
               children={null}
+              // Don't inherit testID - this is a visual helper element
+              testID={undefined}
+              id={undefined}
               position="absolute"
               bottom="-100%"
               zIndex={-1}

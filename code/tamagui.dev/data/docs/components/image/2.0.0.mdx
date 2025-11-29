@@ -16,7 +16,12 @@ demoName: Image
 ```
 
 <Highlights
-  features={['Supports SSR.', 'Works on native and web.', 'Accepts Tamagui style props.']}
+  features={[
+    'Supports SSR.',
+    'Works on native and web.',
+    'Accepts Tamagui style props.',
+    'Pluggable architecture with createImage for expo-image and more.',
+  ]}
 />
 
 ## Installation
@@ -29,20 +34,84 @@ npm install @tamagui/image
 
 ## Usage
 
-Note that you need to set `source` like so - the `width` and `height` properties apply as styles around the image, but the actual image needs `source.width` and `source.height` for React Native:
+Use the `src` prop for the image URL:
 
 ```tsx
+import { Image } from 'tamagui'
+
 export default () => (
   <Image
-    source={{ width: 200, height: 200, uri: 'https://...' }}
-    width="100%"
-    height="100%"
+    src="https://example.com/photo.jpg"
+    width={200}
+    height={200}
   />
 )
 ```
+
+You can also use `objectFit` to control how the image fits its container:
+
+```tsx
+<Image
+  src="https://example.com/photo.jpg"
+  width="100%"
+  height={300}
+  objectFit="cover"
+/>
+```
+
+## Using with expo-image
+
+For better performance and features like blurhash placeholders and transitions,
+you can use `createImage` to create a custom Image component with expo-image:
+
+```tsx
+import { Image as ExpoImage } from 'expo-image'
+import { createImage } from '@tamagui/image'
+
+export const Image = createImage({
+  Component: ExpoImage,
+  resizeModePropName: 'contentFit',
+  objectPositionPropName: 'contentPosition',
+})
+```
+
+Now you can use all expo-image props alongside Tamagui's unified API:
+
+```tsx
+const blurhash = '|rF?hV%2WCj[ayj[a|j[az...'
+
+export default () => (
+  <Image
+    src="https://example.com/photo.jpg"
+    width={200}
+    height={300}
+    objectFit="cover"
+    placeholder={{ blurhash }}
+    transition={300}
+  />
+)
+```
+
+### createImage Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `Component` | `ComponentType` | - | The underlying image component (expo-image, react-native-fast-image, etc.) |
+| `resizeModePropName` | `string` | `'resizeMode'` | The prop name for resize mode. expo-image uses `'contentFit'` |
+| `objectPositionPropName` | `string` | `undefined` | The prop name for object position. expo-image uses `'contentPosition'` |
+| `mapObjectFitToResizeMode` | `function` | Default mapper | Custom function to map `objectFit` values to the component's resize mode |
+| `transformSource` | `function` | Default transformer | Custom function to transform source props |
 
 ## API Reference
 
 ### Image
 
 [Tamagui props](/docs/intro/props) + [React Native Web Image props](https://necolas.github.io/react-native-web/docs/image/).
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `src` | `string` | The image URL. Preferred over `source` for better web alignment. |
+| `objectFit` | `'cover' \| 'contain' \| 'fill' \| 'none' \| 'scale-down'` | How the image should be resized to fit its container. Maps to CSS `object-fit` on web and `resizeMode` on native. |
+| `objectPosition` | `string` | How the image should be positioned within its container. On native, requires expo-image or similar for full support. |
+| `source` | `ImageSourcePropType` | **Deprecated.** Use `src` instead. |
+| `resizeMode` | `ImageResizeMode` | **Deprecated.** Use `objectFit` instead. |

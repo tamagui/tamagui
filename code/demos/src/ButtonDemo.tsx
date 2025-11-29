@@ -1,19 +1,15 @@
+import { Button } from '@tamagui/button'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { Theme, XGroup, XStack, YStack } from 'tamagui'
-import { Button } from '@tamagui/button'
-import { Button as ButtonV1 } from '@tamagui/button/v1'
 
 export function ButtonDemo(props) {
   return (
-    <YStack padding="$3" gap="$3" w="100%" {...props}>
-      <ButtonV1 icon={Airplay}>Button v1</ButtonV1>
-      <Button>
-        <Button.Text>Plain</Button.Text>
-      </Button>
-      <Button alignSelf="center" icon={Airplay} size="$6">
+    <YStack p="$3" gap="$3" {...props}>
+      <Button>Plain</Button>
+      <Button self="center" icon={Airplay} size="$6">
         Large
       </Button>
-      <XStack gap="$2" justifyContent="center">
+      <XStack gap="$2" justify="center">
         <Button size="$3" theme="accent">
           Active
         </Button>
@@ -21,7 +17,7 @@ export function ButtonDemo(props) {
           Outlined
         </Button>
       </XStack>
-      <XStack gap="$2">
+      <XStack gap="$2" justify="center">
         <Theme inverse>
           <Button
             size="$3"

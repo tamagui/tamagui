@@ -17,7 +17,7 @@ test('ListItem renders correctly with default theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(248, 248, 248)')
+  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
 })
 
 test('ListItem renders correctly with light theme', async ({ page }) => {
@@ -30,7 +30,7 @@ test('ListItem renders correctly with light theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(248, 248, 248)')
+  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
 })
 
 test('ListItem renders correctly with dark theme', async ({ page }) => {
@@ -43,7 +43,7 @@ test('ListItem renders correctly with dark theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(21, 21, 21)')
+  expect(styles.backgroundColor).toBe('rgb(10, 10, 10)')
 })
 
 test('ListItem with themeInverse renders correctly in light theme', async ({ page }) => {
@@ -58,7 +58,7 @@ test('ListItem with themeInverse renders correctly in light theme', async ({ pag
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(21, 21, 21)')
+  expect(styles.backgroundColor).toBe('rgb(10, 10, 10)')
 })
 
 test('ListItem with themeInverse renders correctly in dark theme', async ({ page }) => {
@@ -73,5 +73,5 @@ test('ListItem with themeInverse renders correctly in dark theme', async ({ page
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(248, 248, 248)')
+  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
 })

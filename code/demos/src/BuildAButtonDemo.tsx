@@ -3,13 +3,13 @@ import type { ButtonProps, ThemeName } from 'tamagui'
 import { Button, XStack, YStack } from 'tamagui'
 
 const outlined = {
-  backgroundColor: 'transparent',
+  bg: 'transparent',
   borderWidth: 2,
   borderColor: '$background',
-  borderRadius: '$10',
+  rounded: '$10',
 
   hoverStyle: {
-    backgroundColor: 'transparent',
+    bg: 'transparent',
     borderColor: '$backgroundPress',
   },
 }
@@ -26,7 +26,7 @@ export function BuildAButtonDemo() {
         <ButtonCol size="$6" subTheme="alt2" {...outlined} />
         <ButtonCol size="$8" subTheme="alt2" iconAfter={<Drumstick />} {...outlined} />
         <ButtonCol size="$10" subTheme="alt1" />
-        <ButtonCol size="$8" subTheme="alt2" {...outlined} borderRadius={0} />
+        <ButtonCol size="$8" subTheme="alt2" {...outlined} rounded={0} />
       </XStack>
     </YStack>
   )
@@ -37,8 +37,8 @@ function ButtonCol(props: any) {
   const subThemeSuffix = subTheme ? `_${subTheme}` : ''
 
   return (
-    <YStack padding="$2" gap="$3">
-      <Button theme={subTheme} {...buttonProps}>
+    <YStack p="$2" gap="$3">
+      <Button theme={props.subTheme} {...props}>
         Hello
       </Button>
       <Button theme={('orange' + subThemeSuffix) as ThemeName} {...buttonProps}>

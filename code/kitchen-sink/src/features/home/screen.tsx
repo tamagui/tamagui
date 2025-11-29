@@ -3,60 +3,20 @@ import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { H1, ListItem, Separator, styled, Text, YGroup, YStack } from 'tamagui'
-import { ColorSchemeListItem } from './ColorSchemeListItem'
-
-const ViewVariants = styled(Text, {
-  color: 'blue',
-
-  variants: {
-    test: {
-      true: {
-        color: 'red',
-      },
-    },
-  } as const,
-})
+import { H1, ListItem, YGroup, YStack } from 'tamagui'
 
 export function HomeScreen() {
-  // To test a single case easily:
-  // return (
-  //   <>
-  //     <ColorSchemeToggle />
-  //     <ScrollView>
-  //       <ThemeChange />
-  //     </ScrollView>
-  //   </>
-  // )
-
-  // return (
-  //   <>
-  //     <ColorSchemeToggle />
-  //     <Button color="$white1">
-  //       <Button.Text debug="verbose">test</Button.Text>
-  //     </Button>
-
-  //     <Button color="$white1">test</Button>
-  //   </>
-  // )
-
   return (
     <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
 
-        <YGroup size="$4">
-          <YGroup.Item>
-            <ColorSchemeListItem />
-          </YGroup.Item>
-        </YGroup>
-
-        <YStack gap="$4" maxWidth={600}>
+        <YStack gap="$4" maxW={600}>
           {demos.map(({ pages }, i) => {
             return (
-              <YGroup key={i} size="$4" separator={<Separator />}>
+              <YGroup key={i} size="$4">
                 {pages.map((page) => {
                   const route = page?.route
 
@@ -64,7 +24,12 @@ export function HomeScreen() {
 
                   return (
                     <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} size="$4">
+                      <LinkListItem
+                        bg="$color1"
+                        href={route}
+                        pressStyle={{ backgroundColor: '$color2' }}
+                        size="$4"
+                      >
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>
@@ -79,7 +44,7 @@ export function HomeScreen() {
   )
 }
 
-export const LinkListItem = ({
+const LinkListItem = ({
   children,
   href,
   as,
@@ -88,17 +53,21 @@ export const LinkListItem = ({
 }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
 
+  const handlePress = () => {
+    const onPress = linkProps?.onPress
+    if (onPress) {
+      try {
+        onPress()
+      } catch (error) {
+        console.info('error: ', error)
+      }
+    }
+  }
+
   return (
     <ListItem
       {...linkProps}
-      onPress={(e) => {
-        try {
-          linkProps?.onPress?.()
-        } catch (e) {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('error: ', e)
-        }
-      }}
+      onPress={handlePress}
       {...props}
       iconAfter={<ChevronRight color="$color10" />}
     >
@@ -126,6 +95,14 @@ const demos = [
       { title: 'Animations', route: '/demo/animations' },
       { title: 'Animate Presence', route: '/demo/animate-presence' },
       { title: 'Themes', route: '/demo/themes' },
+    ],
+  },
+
+  {
+    label: 'Menus',
+    pages: [
+      { title: 'Menu', route: '/demo/menu' },
+      { title: 'ContextMenu', route: '/demo/context-menu' },
     ],
   },
 

@@ -10,7 +10,7 @@ export function StepSchemes() {
   const store = useThemeBuilderStore()
 
   return (
-    <YStack f={1} my="$4" gap="$4">
+    <YStack flex={1} my="$4" gap="$4">
       <H4>Dark and light schemes</H4>
 
       <Paragraph size="$5" theme="alt1">
@@ -73,7 +73,7 @@ const Option = ({
 }) => {
   return (
     <Label
-      f={1}
+      flex={1}
       htmlFor={id}
       p="$3"
       height="unset"
@@ -84,7 +84,7 @@ const Option = ({
       borderColor={active ? '$color6' : '$color7'}
       borderRadius="$5"
       gap="$4"
-      ai="center"
+      items="center"
       hoverStyle={{
         borderColor: active ? '$color6' : '$color8',
       }}
@@ -103,10 +103,10 @@ const Option = ({
         </Checkbox.Indicator>
       </Checkbox>
 
-      <YStack gap="$2" f={1}>
+      <YStack gap="$2" flex={1}>
         <Paragraph size="$5">{label}</Paragraph>
         {!!description && (
-          <Paragraph size="$3" lh="$1" theme="alt2">
+          <Paragraph size="$3" lineHeight="$1" theme="alt2">
             {description}
           </Paragraph>
         )}

@@ -364,3 +364,27 @@ test(`conditional classname keeps base and concats properly`, async () => {
 
   expect(output?.js).toMatchSnapshot()
 })
+
+// https://github.com/tamagui/tamagui/issues/3608
+test('flexBasis: 0 with responsive style extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View
+          fb={1}
+          $gtXs={{ fb: 0 }}
+        />
+      )
+    }
+  `
+  )
+
+  // fb: 0 should extract as 0px, not auto
+  expect(output?.styles).toContain('_fb-_gtXs_0px')
+  expect(output?.styles).not.toContain('_fb-_gtXs_auto')
+  expect(output?.js).toMatchSnapshot()
+  expect(output?.styles).toMatchSnapshot()
+})

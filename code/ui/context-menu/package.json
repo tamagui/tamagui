@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/context-menu",
-  "version": "1.138.0",
+  "version": "1.138.6",
   "sideEffects": [
     "*.css"
   ],

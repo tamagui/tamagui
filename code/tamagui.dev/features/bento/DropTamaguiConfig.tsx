@@ -81,9 +81,10 @@ export const DropTamaguiConfig = () => {
               display: 'none',
             }}
             icon={Paintbrush}
-            color={config ? '$green10' : '$color12'}
           >
-            {config ? 'Customization enabled' : 'Customize'}
+            <Button.Text color={config ? '$green12' : '$color12'}>
+              {config ? 'Customization enabled' : 'Customize'}
+            </Button.Text>
           </Button>
         </Theme>
       </TooltipSimple>

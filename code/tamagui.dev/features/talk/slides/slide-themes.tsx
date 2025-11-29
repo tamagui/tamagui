@@ -185,7 +185,7 @@ const Container = styled(Stack, {
   minH: 400,
   items: 'center',
   justify: 'center',
-  space: true,
+  gap: '$4',
 })
 
 export default memo(() => {

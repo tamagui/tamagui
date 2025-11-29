@@ -11,5 +11,6 @@ test(`theme passes through .styleable HOC`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  expect(styles.backgroundColor).toBe(`rgb(233, 249, 238)`)
+  // Green theme background from themeDev
+  expect(styles.backgroundColor).toBe(`rgb(238, 247, 241)`)
 })

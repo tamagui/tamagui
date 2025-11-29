@@ -60,7 +60,7 @@ export const StepSubThemes = memo(() => {
   }, [store.subThemes.length])
 
   return (
-    <YStack mx="$-5" f={1}>
+    <YStack mx="$-5" flex={1}>
       <StageButtonBar steps={steps} />
       <Stage
         current={steps.index}
@@ -74,7 +74,7 @@ export const Themes = memo(() => {
   const store = useThemeBuilderStore()
 
   return (
-    <YStack f={1} gap="$4" py="$4" px="$2">
+    <YStack flex={1} gap="$4" py="$4" px="$2">
       {store.subThemes
         // .sort((a, b) => (a.id === store.selectedSubTheme ? -1 : 1))
         .map((theme) => {
@@ -106,7 +106,7 @@ export const Themes = memo(() => {
         })}
 
       {!store.subThemes.length && (
-        <YStack f={1} ai="center" jc="center" gap="$4">
+        <YStack flex={1} items="center" justify="center" gap="$4">
           <Paragraph theme="alt1">Add a theme to get started</Paragraph>
           <Button
             theme="accent"
@@ -129,7 +129,7 @@ export function StepSubThemesActions() {
   const setShow = (val: boolean) => (store.showAddThemeMenu = val)
 
   return (
-    <XStack ai="center" gap="$4">
+    <XStack items="center" gap="$4">
       <AddDropdown open={show} onOpenChange={setShow}>
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>
@@ -150,22 +150,9 @@ export function StepSubThemesActions() {
 
           <AddDropdown.Separator />
 
-          <H6 size="$1" pt="$2" px="$3" o={0.5}>
+          <H6 size="$1" pt="$2" px="$3" opacity={0.5}>
             Custom
           </H6>
-
-          {/* <AddDropdown.Item
-            size="$3"
-            onPress={() => {
-              store.addSubTheme({
-                name: 'mymasktheme',
-                type: 'mask',
-                masks: [],
-              })
-              setShow(false)
-            }}
-            title="Mask Theme"
-          ></AddDropdown.Item> */}
 
           <AddDropdown.Item
             size="$3"
@@ -198,24 +185,28 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           hue: { sync: true, light: 153, dark: 153 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.985, dark: 0.1 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 9,
           hue: { syncLeft: true, sync: true, light: 153, dark: 153 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 10,
           hue: { sync: true, light: 153, dark: 153 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 11,
           hue: { syncLeft: true, sync: true, light: 153, dark: 153 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
+          alpha: { light: 1, dark: 1 },
         },
       ],
     },
@@ -237,24 +228,28 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           hue: { sync: true, light: 48, dark: 48 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.985, dark: 0.1 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 9,
           hue: { syncLeft: true, sync: true, light: 48, dark: 48 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 10,
           hue: { sync: true, light: 48, dark: 48 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 11,
           hue: { syncLeft: true, sync: true, light: 48, dark: 48 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
+          alpha: { light: 1, dark: 1 },
         },
       ],
     },
@@ -276,24 +271,28 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           hue: { sync: true, light: 0, dark: 0 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.985, dark: 0.1 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 9,
           hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 10,
           hue: { sync: true, light: 0, dark: 0 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
+          alpha: { light: 1, dark: 1 },
         },
         {
           index: 11,
           hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
+          alpha: { light: 1, dark: 1 },
         },
       ],
     },
@@ -367,9 +366,9 @@ export function BaseThemesStepPreview2() {
       </Paragraph>
 
       <YGroup
-        separator={<Separator borderWidth={0.5} o={0.25} />}
-        bw={1}
-        bc="$borderColor"
+        separator={<Separator borderWidth={0.5} opacity={0.25} />}
+        borderWidth={1}
+        borderColor="$borderColor"
         my="$2"
       >
         {fullThemes.map((theme) => {

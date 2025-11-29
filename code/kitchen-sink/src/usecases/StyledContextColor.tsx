@@ -199,9 +199,9 @@ const PressStyleButtonComponent = PressStyleButtonFrame.styleable<PressStyleButt
 export function StyledContextColor() {
   return (
     <>
-      {/* Test 1: Using the standard Button - baseline */}
-      <Button testID="standard-button-green">
-        Standard Button
+      {/* Test 1: Using the standard Button with color prop */}
+      <Button testID="standard-button-green" color="green">
+        Standard Button Green
       </Button>
 
       {/* Test 2: Custom button with color variant - should propagate to text */}

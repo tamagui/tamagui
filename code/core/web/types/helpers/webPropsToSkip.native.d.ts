@@ -53,7 +53,6 @@ export declare const webPropsToSkip: {
     backgroundAttachment: boolean;
     backgroundBlendMode: boolean;
     backgroundClip: boolean;
-    backgroundColor: boolean;
     backgroundImage: boolean;
     backgroundOrigin: boolean;
     backgroundPosition: boolean;
@@ -99,7 +98,6 @@ export declare const webPropsToSkip: {
     overflowInline: boolean;
     overflowX: boolean;
     overflowY: boolean;
-    pointerEvents: boolean;
     scrollbarWidth: boolean;
     textEmphasis: boolean;
     touchAction: boolean;

@@ -77,6 +77,11 @@ export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
 let conf: TamaguiInternalConfig
 
+// WeakMap to track original token values for style objects
+// Used to preserve '$8' style tokens instead of resolved 'var(--t-space-8)'
+// for context prop propagation to children (issues #3670, #3676)
+export const styleOriginalValues = new WeakMap<object, Record<string, any>>()
+
 type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfig,
@@ -598,7 +603,7 @@ export const getSplitStyles: StyleSplitter = (
 
     const disablePropMap = isMediaOrPseudo || !isStyleLikeKey
 
-    propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
+    propMapper(keyInit, valInit, styleState, disablePropMap, (key, val, originalVal) => {
       const isStyledContextProp = styledContext && key in styledContext
 
       if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
@@ -625,7 +630,7 @@ export const getSplitStyles: StyleSplitter = (
         (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
       ) {
-        mergeStyle(styleState, key, val, 1)
+        mergeStyle(styleState, key, val, 1, false, originalVal)
         return
       }
 
@@ -734,6 +739,7 @@ export const getSplitStyles: StyleSplitter = (
 
           const importance = descriptor.priority
 
+          const pseudoOriginalValues = styleOriginalValues.get(pseudoStyleObject)
           for (const pkey in pseudoStyleObject) {
             const val = pseudoStyleObject[pkey]
             // when disabled ensure the default value is set for future animations to align
@@ -750,7 +756,14 @@ export const getSplitStyles: StyleSplitter = (
                   pseudos[key] ||= {}
                   pseudos[key][pkey] = val
                 }
-                mergeStyle(styleState, pkey, val, importance)
+                mergeStyle(
+                  styleState,
+                  pkey,
+                  val,
+                  importance,
+                  false,
+                  pseudoOriginalValues?.[pkey]
+                )
               }
 
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -889,6 +902,7 @@ export const getSplitStyles: StyleSplitter = (
               styleState.style ||= {}
               const scheme = mediaKeyShort
               const oppositeScheme = getOppositeScheme(mediaKeyShort)
+              const themeOriginalValues = styleOriginalValues.get(mediaStyle)
 
               for (const subKey in mediaStyle) {
                 let val = extractValueFromDynamic(mediaStyle[subKey], scheme)
@@ -902,7 +916,14 @@ export const getSplitStyles: StyleSplitter = (
                   val,
                   oppositeVal,
                 })
-                mergeStyle(styleState, subKey, mediaStyle[subKey], priority)
+                mergeStyle(
+                  styleState,
+                  subKey,
+                  mediaStyle[subKey],
+                  priority,
+                  false,
+                  themeOriginalValues?.[subKey]
+                )
               }
             } else if (
               !(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))
@@ -990,7 +1011,9 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          function mergeMediaStyle(key: string, val: any) {
+          const mediaOriginalValues = styleOriginalValues.get(mediaStyle)
+
+          function mergeMediaStyle(key: string, val: any, originalVal?: any) {
             styleState.style ||= {}
             const didMerge = mergeMediaByImportance(
               styleState,
@@ -999,7 +1022,8 @@ export const getSplitStyles: StyleSplitter = (
               val,
               mediaState[mediaKeyShort],
               importanceBump,
-              debug
+              debug,
+              originalVal
             )
             if (didMerge && key === 'fontFamily') {
               styleState.fontFamily = mediaStyle.fontFamily as string
@@ -1013,11 +1037,18 @@ export const getSplitStyles: StyleSplitter = (
             if (subKey[0] === '$') {
               if (!isActivePlatform(subKey)) continue
               if (!isActiveTheme(subKey, themeName)) continue
+              const subOriginalValues = styleOriginalValues.get(
+                mediaStyle[subKey] as object
+              )
               for (const subSubKey in mediaStyle[subKey]) {
-                mergeMediaStyle(subSubKey, mediaStyle[subKey][subSubKey])
+                mergeMediaStyle(
+                  subSubKey,
+                  mediaStyle[subKey][subSubKey],
+                  subOriginalValues?.[subSubKey]
+                )
               }
             } else {
-              mergeMediaStyle(subKey, mediaStyle[subKey])
+              mergeMediaStyle(subKey, mediaStyle[subKey], mediaOriginalValues?.[subKey])
             }
           }
         }
@@ -1352,7 +1383,8 @@ function mergeStyle(
   key: string,
   val: any,
   importance: number,
-  disableNormalize = false
+  disableNormalize = false,
+  originalVal?: any
 ) {
   const { viewProps, styleProps, staticConfig, usedKeys } = styleState
 
@@ -1363,12 +1395,16 @@ function mergeStyle(
 
   // Track context overrides for pseudo/media styles (issues #3670, #3676)
   // When a style sets a key that's in context props, update overriddenContextProps
-  // so it propagates to children. This handles pressStyle, hoverStyle, media queries, etc.
+  // so it propagates to children. Use the original token value (like '$8')
+  // instead of the resolved CSS variable (like 'var(--t-space-8)')
+  // so children's functional variants can look up token values.
   const contextProps =
     staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
   if (contextProps && key in contextProps) {
     styleState.overriddenContextProps ||= {}
-    styleState.overriddenContextProps[key] = val
+    // Priority: 1) originalVal from propMapper, 2) tracked original from variant resolution, 3) val
+    const originalFromState = styleState.originalContextPropValues?.[key]
+    styleState.overriddenContextProps[key] = originalVal ?? originalFromState ?? val
   }
 
   if (key in stylePropsTransform) {
@@ -1403,6 +1439,7 @@ export const getSubStyle = (
 ): TextStyle => {
   const { staticConfig, conf, styleProps } = styleState
   const styleOut: TextStyle = {}
+  let originalValues: Record<string, any> | undefined
 
   for (let key in styleIn) {
     const val = styleIn[key]
@@ -1413,7 +1450,12 @@ export const getSubStyle = (
       continue
     }
 
-    propMapper(key, val, styleState, false, (skey, sval) => {
+    propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
+      // Track original values for context prop propagation
+      if (originalVal !== undefined) {
+        originalValues ||= {}
+        originalValues[skey] = originalVal
+      }
       // pseudo inside media
       if (skey in validPseudoKeys) {
         sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
@@ -1442,6 +1484,11 @@ export const getSubStyle = (
 
   if (!styleProps.noNormalize) {
     fixStyles(styleOut)
+  }
+
+  // Store original values in WeakMap instead of on the object itself
+  if (originalValues) {
+    styleOriginalValues.set(styleOut, originalValues)
   }
 
   return styleOut
@@ -1549,7 +1596,8 @@ function mergeMediaByImportance(
   value: any,
   isSizeMedia: boolean,
   importanceBump?: number,
-  debugProp?: DebugProp
+  debugProp?: DebugProp,
+  originalVal?: any
 ) {
   const usedKeys = styleState.usedKeys
   let importance = getMediaImportanceIfMoreImportant(
@@ -1576,11 +1624,20 @@ function mergeMediaByImportance(
     if (isDisabled) {
       return false
     }
+    // For pseudo inside media, value is an object with subkeys
+    const pseudoOriginalValues = styleOriginalValues.get(value as object)
     for (const subKey in value) {
-      mergeStyle(styleState, subKey, value[subKey], importance)
+      mergeStyle(
+        styleState,
+        subKey,
+        value[subKey],
+        importance,
+        false,
+        pseudoOriginalValues?.[subKey]
+      )
     }
   } else {
-    mergeStyle(styleState, key, value, importance)
+    mergeStyle(styleState, key, value, importance, false, originalVal)
   }
 
   return true

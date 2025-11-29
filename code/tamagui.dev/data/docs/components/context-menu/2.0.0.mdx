@@ -1,17 +1,11 @@
 ---
 title: Context Menu
-description: A Context Menu
+description:  A menu component that is triggered by a right-click on the web and a long
+  press on touch devices.
 name: context menu
 component: ContextMenu
 package: context-menu
 ---
-
-# Context Menu
-
-<Description>
-  A menu component that is triggered by a right-click on the web and a long
-  press on touch devices.
-</Description>
 
 <HeroContainer>
   <ContextMenuDemo />
@@ -55,7 +49,11 @@ yarn add react-native-ios-context-menu
 ```
 
 ```bash
-yarn add react-native-ios-context-menu
+yarn add react-native-ios-utilities
+```
+
+```bash
+yarn add zeego
 ```
 
 ## Anatomy
@@ -63,7 +61,7 @@ yarn add react-native-ios-context-menu
 Import all parts and piece them together.
 
 ```jsx
-import { Accordion } from 'tamagui'
+import { ContextMenu } from 'tamagui'
 
 export default () => (
   <ContextMenu>
@@ -81,9 +79,10 @@ export default () => (
         <ContextMenu.Item>
           <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
         </ContextMenu.Item>
-        <ContextMenu.Item>
+        {/* when title is nested inside a React element then you need to use `textValue` */}
+        <ContextMenu.Item textValue="Calendar">
           <ContextMenu.ItemTitle>
-            <Text>Calender</Text>
+            <Text>Calendar</Text>
           </ContextMenu.ItemTitle>
           <ContextMenu.ItemIcon>
             <Calendar color="gray" size="$1" />

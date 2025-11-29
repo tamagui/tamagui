@@ -3,7 +3,7 @@ import type {
   NativeMenuItemIconProps,
   NativeMenuSubTriggerProps,
 } from '@tamagui/create-menu'
-import { createNativeMenu, useNativeProp, withNativeMenu } from '@tamagui/create-menu'
+import { createNativeMenu, withNativeMenu } from '@tamagui/create-menu'
 import { withStaticProperties } from '@tamagui/web'
 import React from 'react'
 
@@ -16,8 +16,7 @@ import {
 
 const COMMON_PARAMS = {
   isRoot: false,
-  useNativeProp,
-  useNativePropScope: CONTEXTMENU_CONTEXT,
+  scope: CONTEXTMENU_CONTEXT,
 }
 
 export function createContextMenu(param: CreateBaseMenuProps) {

@@ -207,7 +207,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     >
       <YStack flex={1} width="100%" gap="$4">
         <XStack flexWrap="wrap" items="center" flex={1} gap="$3">
-          <XStack minW={300} flex={1}>
+          <XStack minW={300} flex={1} position="relative">
             <Input
               ref={inputRef as any}
               flex={1}
@@ -234,6 +234,8 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               position="absolute"
               t={10}
               rounded={100}
+              borderWidth={1}
+              borderColor="$borderColor"
               r="$4"
               size="$4"
               value={model}

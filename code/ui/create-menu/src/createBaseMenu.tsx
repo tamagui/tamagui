@@ -38,6 +38,12 @@ import { MenuPredefined } from './MenuPredefined'
 
 type Direction = 'ltr' | 'rtl'
 
+function whenMouse<E>(
+  handler: React.PointerEventHandler<E>
+): React.PointerEventHandler<E> {
+  return (event) => (event.pointerType === 'mouse' ? handler(event) : undefined)
+}
+
 const SELECTION_KEYS = ['Enter', ' ']
 const FIRST_KEYS = ['ArrowDown', 'PageUp', 'Home']
 const LAST_KEYS = ['ArrowUp', 'PageDown', 'End']
@@ -102,11 +108,6 @@ type PortalContextValue = { forceMount?: true }
 
 interface MenuPortalProps {
   children?: React.ReactNode
-  /**
-   * Specify a container element to portal the content into.
-   */
-  // TODO removed
-  // host?: PortalProps['host']
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -364,9 +365,6 @@ const { Provider: MenuRootProvider, useStyledContext: useMenuRootContext } =
 
 const MENU_CONTEXT = 'MenuContext'
 
-export const { Provider: NativePropProvider, useStyledContext: useNativeProp } =
-  createStyledContext({ native: false })
-
 export type CreateBaseMenuProps = {
   Item?: TamaguiComponent
   MenuGroup?: TamaguiComponent
@@ -440,21 +438,16 @@ export function createBaseMenu({
           content={content}
           onContentChange={setContent}
         >
-          <NativePropProvider native={false} scope={scope}>
-            <MenuRootProvider
-              scope={scope}
-              onClose={React.useCallback(
-                () => handleOpenChange(false),
-                [handleOpenChange]
-              )}
-              isUsingKeyboardRef={isUsingKeyboardRef}
-              dir={direction}
-              modal={modal}
-            >
-              {/** this provider is just to avoid crashing when using useSubMenuContext() inside MenuPortal */}
-              <MenuSubProvider scope={scope}>{children}</MenuSubProvider>
-            </MenuRootProvider>
-          </NativePropProvider>
+          <MenuRootProvider
+            scope={scope}
+            onClose={React.useCallback(() => handleOpenChange(false), [handleOpenChange])}
+            isUsingKeyboardRef={isUsingKeyboardRef}
+            dir={direction}
+            modal={modal}
+          >
+            {/** this provider is just to avoid crashing when using useSubMenuContext() inside MenuPortal */}
+            <MenuSubProvider scope={scope}>{children}</MenuSubProvider>
+          </MenuRootProvider>
         </MenuProvider>
       </PopperPrimitive.Popper>
     )
@@ -480,19 +473,17 @@ export function createBaseMenu({
 
     return (
       <PopperPrimitive.PopperProvider {...popperContext} scope={scope}>
-        <NativePropProvider native={false} scope={scope}>
-          <MenuProvider scope={scope} {...menuContext}>
-            <MenuRootProvider scope={scope} {...rootContext}>
-              {menuSubContext ? (
-                <MenuSubProvider scope={scope} {...menuSubContext}>
-                  {children}
-                </MenuSubProvider>
-              ) : (
-                children
-              )}
-            </MenuRootProvider>
-          </MenuProvider>
-        </NativePropProvider>
+        <MenuProvider scope={scope} {...menuContext}>
+          <MenuRootProvider scope={scope} {...rootContext}>
+            {menuSubContext ? (
+              <MenuSubProvider scope={scope} {...menuSubContext}>
+                {children}
+              </MenuSubProvider>
+            ) : (
+              children
+            )}
+          </MenuRootProvider>
+        </MenuProvider>
       </PopperPrimitive.PopperProvider>
     )
   }
@@ -521,14 +512,7 @@ export function createBaseMenu({
     createStyledContext<PortalContextValue>(undefined, 'Portal')
 
   const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
-    const {
-      scope = MENU_CONTEXT,
-      forceMount,
-      zIndex,
-      children,
-      // TODO removed
-      // host
-    } = props
+    const { scope = MENU_CONTEXT, forceMount, zIndex, children } = props
     const menuContext = useMenuContext(scope)
     const rootContext = useMenuRootContext(scope)
     const popperContext = PopperPrimitive.usePopperContext(scope)
@@ -548,7 +532,6 @@ export function createBaseMenu({
     )
     return (
       <Animate type="presence" present={forceMount || menuContext.open}>
-        {/* TODO does this not need host anymore? */}
         <PortalPrimitive>
           <>
             <PortalProvider scope={scope} forceMount={forceMount}>
@@ -950,6 +933,7 @@ export function createBaseMenu({
         <MenuItemImpl
           outlineStyle="none"
           {...itemProps}
+          scope={scope}
           // @ts-ignore
           ref={composedRefs}
           disabled={disabled}
@@ -1401,7 +1385,6 @@ export function createBaseMenu({
              * between separate submenus.
              */
             if (isWeb) {
-              // @ts-ignore
               event.currentTarget.focus()
             }
             if (!context.open) context.onOpenChange(true)

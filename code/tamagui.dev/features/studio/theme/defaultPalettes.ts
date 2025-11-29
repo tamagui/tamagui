@@ -6,24 +6,28 @@ const defaultBasePaletteAnchors: BuildPalette['anchors'] = [
     hue: { sync: true, light: 0, dark: 0 },
     sat: { sync: true, light: 0.15, dark: 0.15 },
     lum: { light: 0.99, dark: 0.01 },
+    alpha: { light: 1, dark: 1 },
   },
   {
     index: 9,
     hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
     sat: { syncLeft: true, sync: true, light: 0.15, dark: 0.15 },
     lum: { light: 0.5, dark: 0.5 },
+    alpha: { light: 1, dark: 1 },
   },
   {
     index: 10,
     hue: { sync: true, light: 0, dark: 0 },
     sat: { sync: true, light: 0.15, dark: 0.15 },
     lum: { light: 0.15, dark: 0.925 },
+    alpha: { light: 1, dark: 1 },
   },
   {
     index: 11,
     hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
     sat: { syncLeft: true, sync: true, light: 0.15, dark: 0.15 },
     lum: { light: 0.01, dark: 0.99 },
+    alpha: { light: 1, dark: 1 },
   },
 ]
 
@@ -33,24 +37,28 @@ const defaultAccentPaletteAnchors: BuildPalette['anchors'] = [
     hue: { sync: true, light: 250, dark: 250 },
     sat: { sync: true, light: 0.5, dark: 0.5 },
     lum: { light: 0.4, dark: 0.35 },
+    alpha: { light: 1, dark: 1 },
   },
   {
     index: 9,
     hue: { syncLeft: true, sync: true, light: 250, dark: 250 },
     sat: { syncLeft: true, sync: true, light: 0.5, dark: 0.5 },
     lum: { light: 0.65, dark: 0.6 },
+    alpha: { light: 1, dark: 1 },
   },
   {
     index: 10,
     hue: { sync: true, light: 250, dark: 250 },
     sat: { sync: true, light: 0.5, dark: 0.5 },
     lum: { light: 0.95, dark: 0.9 },
+    alpha: { light: 1, dark: 1 },
   },
   {
     index: 11,
     hue: { syncLeft: true, sync: true, light: 250, dark: 250 },
     sat: { syncLeft: true, sync: true, light: 0.5, dark: 0.5 },
     lum: { light: 0.95, dark: 0.95 },
+    alpha: { light: 1, dark: 1 },
   },
 ]
 

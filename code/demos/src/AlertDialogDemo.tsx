@@ -12,6 +12,7 @@ export function AlertDialogDemo() {
           key="overlay"
           animation="quick"
           opacity={0.5}
+          backgroundColor="$background"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -40,7 +41,7 @@ export function AlertDialogDemo() {
               By pressing yes, you accept our terms and conditions.
             </AlertDialog.Description>
 
-            <XStack gap="$3" justifyContent="flex-end">
+            <XStack gap="$3" justify="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>Cancel</Button>
               </AlertDialog.Cancel>

@@ -19,7 +19,7 @@ export function PopoverDemo() {
 
   return (
     <YStack gap="$4">
-      <XStack gap="$2" flex={1} justifyContent="center" alignItems="center">
+      <XStack gap="$2" flex={1} justify="center" items="center">
         <Demo
           shouldAdapt={shouldAdapt}
           placement="left"
@@ -70,11 +70,11 @@ export function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet animation="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame padding="$4">
+            <Sheet.Frame p="$4">
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
-              backgroundColor="$shadowColor"
+              bg="$shadowColor"
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
@@ -102,25 +102,23 @@ export function Demo({
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
-        <YStack gap="$3">
-          <XStack gap="$3">
-            <Label size="$3" htmlFor={Name}>
-              Name
-            </Label>
-            <Input flex={1} size="$3" id={Name} />
-          </XStack>
+        <XStack gap="$3" mb="$3">
+          <Label size="$3" htmlFor={Name}>
+            Name
+          </Label>
+          <Input flex={1} size="$3" id={Name} />
+        </XStack>
 
-          <Popover.Close asChild>
-            <Button
-              size="$3"
-              onPress={() => {
-                /* Custom code goes here, does not interfere with popover closure */
-              }}
-            >
-              Submit
-            </Button>
-          </Popover.Close>
-        </YStack>
+        <Popover.Close asChild>
+          <Button
+            size="$3"
+            onPress={() => {
+              /* Custom code goes here, does not interfere with popover closure */
+            }}
+          >
+            Submit
+          </Button>
+        </Popover.Close>
       </Popover.Content>
     </Popover>
   )

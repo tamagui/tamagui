@@ -52,11 +52,11 @@ const CONTENT_NAME = 'TabsContent'
 export const ContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
   flex: 1,
-  padding: '$6',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: '$color4',
-  borderRadius: '$4',
+  p: '$6',
+  justify: 'center',
+  items: 'center',
+  bg: '$color4',
+  rounded: '$4',
 })
 
 export const CustomTabs = createTabs({
@@ -71,7 +71,7 @@ export function TabsHeadlessDemo() {
   return (
     // web only fix for position relative
     <YStack
-      paddingHorizontal="$4"
+      px="$4"
       {...(isWeb && {
         position: 'unset' as any,
       })}
@@ -79,11 +79,11 @@ export function TabsHeadlessDemo() {
       <TabsView flexDirection={demo === 'horizontal' ? 'row' : 'column'} />
 
       <XStack
-        alignItems="center"
+        items="center"
         gap="$4"
         position="absolute"
-        bottom="$3"
-        left="$4"
+        b="$3"
+        l="$4"
         $xxs={{ display: 'none' }}
       >
         <Button

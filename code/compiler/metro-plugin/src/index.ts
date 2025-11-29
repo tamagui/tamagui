@@ -9,15 +9,25 @@ import type { ConfigT } from 'metro-config'
 // Make the config mutable since we need to modify it
 type MetroConfig = { -readonly [K in keyof ConfigT]: ConfigT[K] }
 
+export type MetroTamaguiOptions = TamaguiOptions & {
+  /**
+   * When true, writes CSS to .tamagui/css/ files and imports them,
+   * letting Metro handle CSS bundling. When false (default), CSS is
+   * injected inline via JS at runtime.
+   * @default false
+   */
+  cssInterop?: boolean
+}
+
 export function withTamagui(
   metroConfig: Partial<MetroConfig>,
-  optionsIn?: TamaguiOptions & {
-    enableCSSInterop?: boolean
-  }
+  optionsIn?: MetroTamaguiOptions
 ): MetroConfig {
+  const { cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
+
   const options = {
-    ...optionsIn,
-    ...loadTamaguiBuildConfigSync(optionsIn),
+    ...tamaguiOptionsIn,
+    ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
   }
 
   // run one build up front
@@ -46,6 +56,8 @@ export function withTamagui(
       ...options,
       disableInitialBuild: true,
     },
+    // @ts-ignore - metro-plugin specific option
+    tamaguiCssInterop: cssInterop,
   }
 
   return metroConfig as MetroConfig

@@ -18,7 +18,7 @@ import { SelectDemoContents } from './SelectDemo'
 
 export function DialogDemo() {
   return (
-    <View gap="$4" justifyContent="center" alignItems="center">
+    <View gap="$4" justify="center" items="center">
       <DialogInstance />
       <DialogInstance disableAdapt />
     </View>
@@ -43,11 +43,12 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             dismissOnSnapToBottom
             unmountChildrenWhenHidden // we're nesting infinitely so need this
           >
-            <Sheet.Frame padding="$4" gap="$4">
+            <Sheet.Frame p="$4" gap="$4">
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
-              backgroundColor="$shadow6"
+              bg="$background"
+              opacity={0.5}
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
@@ -59,7 +60,8 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          backgroundColor="$shadow6"
+          bg="$background"
+          opacity={0.5}
           animateOnly={['transform', 'opacity']}
           animation={[
             'quicker',
@@ -76,10 +78,10 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
         <Dialog.FocusScope focusOnIdle>
           <Dialog.Content
             bordered
-            paddingVertical="$4"
-            paddingHorizontal="$6"
+            py="$4"
+            px="$6"
             elevate
-            borderRadius="$6"
+            rounded="$6"
             key="content"
             animateOnly={['transform', 'opacity']}
             animation={[
@@ -123,7 +125,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               </XStack>
             </Fieldset>
 
-            <XStack alignSelf="flex-end" gap="$4">
+            <XStack self="flex-end" gap="$4">
               <DialogInstance />
 
               <Dialog.Close displayWhenAdapted asChild>
@@ -135,7 +137,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" right="$3" size="$2" circular icon={X} />
+                <Button position="absolute" r="$3" size="$2" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

@@ -5,7 +5,7 @@ export function AccordionDemo() {
   return (
     <Accordion overflow="hidden" width="$20" type="multiple">
       <Accordion.Item value="a1">
-        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
+        <Accordion.Trigger flexDirection="row" justify="space-between">
           {({
             open,
           }: {
@@ -30,7 +30,7 @@ export function AccordionDemo() {
       </Accordion.Item>
 
       <Accordion.Item value="a2">
-        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
+        <Accordion.Trigger flexDirection="row" justify="space-between">
           {({
             open,
           }: {

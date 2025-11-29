@@ -1,0 +1,41 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/*.{ts,js}"],
+      "project": ["scripts/*.{ts,js}"],
+      "ignore": [
+        "scripts/takeout/**",
+        "scripts/codemod-*.js",
+        "tsconfig.json",
+        "tsconfig.*.json"
+      ],
+      "ignoreDependencies": [
+        "@biomejs/biome",
+        "@manypkg/cli",
+        "@playwright/test",
+        "@testing-library/dom",
+        "turbo",
+        "typescript",
+        "ultra-runner",
+        "lllink",
+        "npm-run-all",
+        "react-native-screens",
+        "dotenv-cli"
+      ],
+      "ignoreBinaries": [
+        "tamagui",
+        "create-tamagui",
+        "lighthouse",
+        "expo"
+      ]
+    }
+  },
+  "ignore": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/build/**",
+    "**/.expo/**"
+  ]
+}

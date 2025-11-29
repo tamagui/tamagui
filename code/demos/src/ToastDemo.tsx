@@ -11,7 +11,7 @@ export const ToastDemo = () => {
   const [native, setNative] = React.useState(false)
 
   return (
-    <YStack gap="$4" alignItems="center">
+    <YStack gap="$4" items="center">
       <ToastControl native={native} />
       <CurrentToast />
 
@@ -51,7 +51,7 @@ const ToastControl = ({ native }: { native: boolean }) => {
   const toast = useToastController()
 
   return (
-    <XStack gap="$2" justifyContent="center">
+    <XStack gap="$2" justify="center">
       <Button
         onPress={() => {
           toast.show('Successfully saved!', {

@@ -1,168 +1,72 @@
 import type { CreateBaseMenuProps } from '@tamagui/create-menu';
 import React from 'react';
-export declare function createContextMenu(param: CreateBaseMenuProps): ({
-    (props: import("./createNonNativeContextMenu").ContextMenuProps & {
+export declare function createContextMenu(param: CreateBaseMenuProps): React.FC<import("./createNonNativeContextMenu").ContextMenuProps & {
+    scope?: string;
+} & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps> & {
+    Trigger: React.FC<Omit<import("@tamagui/web").StackProps, "scope" | keyof import("./createNonNativeContextMenu").ContextMenuTriggerProps> & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
         scope?: string;
-    }): import("react/jsx-runtime").JSX.Element;
-    displayName: string;
-} | {
-    (props: import("./createNonNativeContextMenu").ContextMenuProps & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps>;
+    Portal: React.FC<import("@tamagui/create-menu").MenuPortalProps & {
         scope?: string;
-    } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps & {
-        native?: boolean;
-    }): import("react/jsx-runtime").JSX.Element;
-    displayName: string;
-}) & {
-    Trigger: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").StackProps, "scope" | keyof import("./createNonNativeContextMenu").ContextMenuTriggerProps> & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
+    } & {
         scope?: string;
-    }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
+    } & React.FragmentProps>;
+    Content: React.FC<import("./createNonNativeContextMenu").ContextMenuContentProps & {
         scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {}, {}> | {
-        (props: Omit<import("@tamagui/web").StackProps, "scope" | keyof import("./createNonNativeContextMenu").ContextMenuTriggerProps> & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
-            scope?: string;
-        } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Portal: {
-        (props: import("./createNonNativeContextMenu").ContextMenuPortalProps & {
-            scope?: string;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    } | {
-        (props: import("./createNonNativeContextMenu").ContextMenuPortalProps & {
-            scope?: string;
-        } & React.FragmentProps & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Content: React.ForwardRefExoticComponent<import("./createNonNativeContextMenu").ContextMenuContentProps & {
+    } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuContentProps>;
+    Group: React.FC<any>;
+    Label: React.FC<any>;
+    Item: React.FC<Omit<import("@tamagui/create-menu").MenuItemProps & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>> | {
-        (props: import("./createNonNativeContextMenu").ContextMenuContentProps & {
-            scope?: string;
-        } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuContentProps & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Group: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}> | {
-        (props: any): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Label: import("@tamagui/web").TamaguiComponent | {
-        (props: any): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Item: React.ForwardRefExoticComponent<import("./createNonNativeContextMenu").ContextMenuItemProps & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>> | {
-        (props: import("./createNonNativeContextMenu").ContextMenuItemProps & {
-            scope?: string;
-        } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
-            children: React.ReactNode;
-            textValue?: string;
-        } & {
-            disabled?: boolean;
-            hidden?: boolean;
-            destructive?: boolean;
-            key: string;
-        } & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    CheckboxItem: React.ForwardRefExoticComponent<import("./createNonNativeContextMenu").ContextMenuCheckboxItemProps & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
+        children: React.ReactNode;
+        textValue?: string;
+        onSelect?: (event?: Event) => void;
+    } & {
+        disabled?: boolean;
+        hidden?: boolean;
+        destructive?: boolean;
+        key: string;
+    }>;
+    CheckboxItem: React.FC<Omit<import("@tamagui/create-menu").MenuCheckboxItemProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>> | {
-        (props: import("./createNonNativeContextMenu").ContextMenuCheckboxItemProps & {
-            scope?: string;
-        } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemProps, "onSelect"> & {
-            value: "mixed" | "on" | "off" | boolean;
-            onValueChange?: (state: "mixed" | "on" | "off", prevState: "mixed" | "on" | "off") => void;
-            key: string;
-        } & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    RadioGroup: React.ForwardRefExoticComponent<Omit<Omit<Omit<any, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps> & import("@tamagui/create-menu").MenuRadioGroupProps & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemProps, "onSelect"> & {
+        checked?: boolean;
+        onCheckedChange?: (checked: boolean) => void;
+        value?: "mixed" | "on" | "off" | boolean;
+        onValueChange?: (state: "mixed" | "on" | "off", prevState: "mixed" | "on" | "off") => void;
+        key: string;
+    }>;
+    RadioGroup: React.FC<Omit<Omit<Omit<any, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps> & import("@tamagui/create-menu").MenuRadioGroupProps & {
         scope?: string;
     } & React.RefAttributes<any>, "ref"> & {
         scope?: string;
-    }, "ref"> & React.RefAttributes<any>> | {
-        (props: Omit<Omit<Omit<any, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps> & import("@tamagui/create-menu").MenuRadioGroupProps & {
-            scope?: string;
-        } & React.RefAttributes<any>, "ref"> & {
-            scope?: string;
-        }, "ref"> & React.RefAttributes<any> & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    RadioItem: React.ForwardRefExoticComponent<Omit<import("@tamagui/create-menu").MenuRadioItemProps & {
+    }, "ref"> & React.RefAttributes<any>>;
+    RadioItem: React.FC<any>;
+    ItemIndicator: React.FC<Omit<Omit<any, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
+    }, string | number | symbol> & Omit<Omit<any, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>> | {
-        (props: any): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/create-menu").MenuItemIndicatorProps & {
+    } & React.RefAttributes<any>, "ref"> & {
         scope?: string;
-    }, {}, {}>, keyof import("./createNonNativeContextMenu").ContextMenuItemIndicatorProps> & import("./createNonNativeContextMenu").ContextMenuItemIndicatorProps & {
+    } & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemIndicatorProps>;
+    Separator: React.FC<any>;
+    Arrow: React.FC<Omit<import("@tamagui/create-menu").MenuArrowProps & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
-    }, any, import("@tamagui/create-menu").MenuItemIndicatorProps & {
-        scope?: string;
-    } & import("./createNonNativeContextMenu").ContextMenuItemIndicatorProps & {
-        scope?: string;
-    }, {}, {}, import("@tamagui/web").StaticConfigPublic> | {
-        (props: Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/create-menu").MenuItemIndicatorProps & {
-            scope?: string;
-        }, {}, {}>, keyof import("./createNonNativeContextMenu").ContextMenuItemIndicatorProps> & import("./createNonNativeContextMenu").ContextMenuItemIndicatorProps & {
-            scope?: string;
-        } & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemIndicatorProps & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Separator: import("@tamagui/web").TamaguiComponent<Omit<any, string | number | symbol> & Omit<any, "ref"> & {
-        scope?: string;
-    }, any, Omit<any, "ref"> & {
-        scope?: string;
-    }, {}, {}, {}> | {
-        (props: Omit<any, string | number | symbol> & Omit<any, "ref"> & {
-            scope?: string;
-        } & React.RefAttributes<any> & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Arrow: React.ForwardRefExoticComponent<import("./createNonNativeContextMenu").ContextMenuArrowProps & React.RefAttributes<import("@tamagui/web").TamaguiElement>> | {
-        (props: import("./createNonNativeContextMenu").ContextMenuArrowProps & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>>;
     Sub: React.FC<import("./createNonNativeContextMenu").ContextMenuSubProps & {
         scope?: string;
-    }> | {
-        (props: import("./createNonNativeContextMenu").ContextMenuSubProps & {
-            scope?: string;
-        } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubProps & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
+    } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubProps>;
     SubTrigger: React.FC<Omit<import("@tamagui/create-menu").MenuSubTriggerProps & {
         scope?: string;
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & {
         children: React.ReactNode;
         textValue?: string;
+        onSelect?: (event?: Event) => void;
     } & {
         disabled?: boolean;
         hidden?: boolean;
@@ -171,52 +75,24 @@ export declare function createContextMenu(param: CreateBaseMenuProps): ({
     } & {
         key: string;
     }>;
-    SubContent: React.ForwardRefExoticComponent<import("./createNonNativeContextMenu").ContextMenuSubContentProps & {
-        children?: React.ReactNode | undefined;
-    } & {
+    SubContent: React.FC<Omit<import("@tamagui/create-menu").MenuSubContentProps & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>> | {
-        (props: import("./createNonNativeContextMenu").ContextMenuSubContentProps & {
-            children?: React.ReactNode | undefined;
-        } & {
-            scope?: string;
-        } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    ItemTitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}> | {
-        (props: any): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    ItemSubtitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}> | {
-        (props: any): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    ItemIcon: React.FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeAndShorthands<import("@tamagui/web").StackStyleBase, {}>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps>;
-    ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>> | {
-        (props: import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
-            source: import("react-native").ImageProps["source"];
-            ios?: {
-                style?: {
-                    tint?: string;
-                };
-                lazy?: boolean;
+    } & React.RefAttributes<HTMLElement | import("react-native").View>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps>;
+    ItemTitle: React.FC<any>;
+    ItemSubtitle: React.FC<any>;
+    ItemIcon: React.FC<Omit<any, "ref"> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps>;
+    ItemImage: React.FC<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
+        source: import("react-native").ImageProps["source"];
+        ios?: {
+            style?: {
+                tint?: string;
             };
-        } & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
-    Preview: {
-        (): null;
-        displayName: string;
-    } | {
-        (props: import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").ContextMenuPreviewProps & {
-            native?: boolean;
-        }): import("react/jsx-runtime").JSX.Element;
-        displayName: string;
-    };
+            lazy?: boolean;
+        };
+    }>;
+    Preview: React.FC<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").ContextMenuPreviewProps>;
 };
 export type { ContextMenuArrowProps, ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupProps, ContextMenuItemIconProps, ContextMenuItemImageProps, ContextMenuItemIndicatorProps, ContextMenuItemProps, ContextMenuProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuSeparatorProps, ContextMenuSubContentProps, ContextMenuSubProps, ContextMenuSubTriggerProps, ContextMenuTriggerProps, } from './createNonNativeContextMenu';
 //# sourceMappingURL=ContextMenu.d.ts.map

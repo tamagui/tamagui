@@ -3,7 +3,7 @@ import { ListItem, Separator, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
   return (
-    <XStack $maxMd={{ flexDirection: 'column' }} paddingHorizontal="$4">
+    <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
       <ListItemDemo1 />
       <ListItemDemo2 />
     </XStack>
@@ -13,9 +13,10 @@ export function ListItemDemo() {
 function ListItemDemo1() {
   return (
     <YGroup
-      alignSelf="center"
+      self="center"
       borderWidth={1}
       borderColor="$borderColor"
+      borderRadius="$4"
       width={240}
       size="$4"
     >
@@ -43,9 +44,10 @@ function ListItemDemo1() {
 function ListItemDemo2() {
   return (
     <YGroup
-      alignSelf="center"
+      self="center"
       borderWidth={1}
       borderColor="$borderColor"
+      borderRadius="$4"
       width={240}
       size="$5"
       separator={<Separator />}

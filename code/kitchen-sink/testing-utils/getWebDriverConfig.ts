@@ -59,7 +59,9 @@ function getSimulatorUdidCached() {
 
 async function pokeDevServer() {
   if (process.env.SKIP_POKE_DEV_SERVER) {
-    console.info('[pokeDevServer] Skipping dev server poke due to SKIP_POKE_DEV_SERVER env var')
+    console.info(
+      '[pokeDevServer] Skipping dev server poke due to SKIP_POKE_DEV_SERVER env var'
+    )
     return
   }
   console.info(
@@ -76,7 +78,7 @@ async function pokeDevServer() {
   const bundleUrl = json.launchAsset.url
   await fetch(bundleUrl, {
     method: 'GET',
-  }).catch(err => {
+  }).catch((err) => {
     console.warn('[pokeDevServer] Bundle fetch failed or timed out:', err.message)
   })
   const endTime = performance.now()

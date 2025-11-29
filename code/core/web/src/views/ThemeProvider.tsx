@@ -28,7 +28,6 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
   // because in all cases we are putting the classname elsewhere
   // if its undefined, then the default behavior applies and we use the className here
   const forceClassName = addThemeClassName === undefined
-  console.info('forceClassName', forceClassName)
 
   return (
     <Theme

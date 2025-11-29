@@ -34,7 +34,6 @@ const ListItemFrame = styled(View, {
   context,
   name: NAME,
   tag: 'li',
-  group: NAME as any,
   role: 'listitem',
 
   ...themeableVariants.pressTheme.true,
@@ -47,8 +46,8 @@ const ListItemFrame = styled(View, {
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'nowrap',
-        width: '100%',
         borderColor: '$borderColor',
+        width: '100%',
         maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',
@@ -80,8 +79,7 @@ const ListItemFrame = styled(View, {
     disabled: {
       true: {
         opacity: 0.5,
-        // TODO breaking types
-        pointerEvents: 'none' as any,
+        pointerEvents: 'none',
       },
     },
   } as const,
@@ -145,6 +143,14 @@ const ListItemSubtitle = styled(ListItemText, {
 const ListItemTitle = styled(ListItemText, {
   name: 'ListItemTitle',
   context,
+  variants: {
+    unstyled: {
+      false: {},
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 const ListItemIcon = (props: {
@@ -155,7 +161,7 @@ const ListItemIcon = (props: {
   const { children, size, scaleIcon = 1 } = props
   const styledContext = context.useStyledContext()
   if (!styledContext) {
-    throw new Error('Button.Icon must be used within a Button')
+    throw new Error('ListItem.Icon must be used within a ListItem')
   }
 
   const sizeToken = size ?? styledContext.size ?? '$true'
@@ -207,6 +213,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
         ? {
             unstyled: process.env.TAMAGUI_HEADLESS === '1',
             fontSize: propsIn.size,
+            fontWeight,
           }
         : undefined
     )
@@ -218,7 +225,9 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
           <YStack flex={1}>
             {title ? (
               typeof title === 'string' ? (
-                <ListItemTitle size={size as any}>{title}</ListItemTitle>
+                <ListItemTitle unstyled={unstyled} size={size as any}>
+                  {title}
+                </ListItemTitle>
               ) : (
                 title
               )

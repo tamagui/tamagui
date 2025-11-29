@@ -1,14 +1,15 @@
 // Web-only style props that need to be skipped on native
+// NOTE: backgroundColor is NOT web-only - it works on React Native too!
 export const webOnlyStylePropsView = {
   transition: true,
   textWrap: true,
   backdropFilter: true,
   WebkitBackdropFilter: true,
+  // These background-* props are web-only CSS, but NOT backgroundColor
   background: true,
   backgroundAttachment: true,
   backgroundBlendMode: true,
   backgroundClip: true,
-  backgroundColor: true,
   backgroundImage: true,
   backgroundOrigin: true,
   backgroundPosition: true,
@@ -55,6 +56,7 @@ export const webOnlyStylePropsView = {
   overflowInline: true,
   overflowX: true,
   overflowY: true,
+  // NOTE: pointerEvents is NOT web-only - it's a core React Native View prop (not a style)
   pointerEvents: true,
   scrollbarWidth: true,
   textEmphasis: true,

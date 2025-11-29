@@ -8,6 +8,7 @@ import {
   Button,
   Paragraph,
   Spacer,
+  Theme,
   Unspaced,
   XGroup,
   XStack,
@@ -17,9 +18,8 @@ import {
 
 import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'
-import type { Curve } from '../state/types'
 import { useGlobalState } from '../state/useGlobalState'
-import { getColor, colorToHex, getAccentScore, getRange } from './helpers'
+import { colorToHex, getAccentScore, getColor } from './helpers'
 
 const ColorCanvasFrame = ({ children }) => {
   const palette = useObserve(() => colorsStore.palette)
@@ -69,23 +69,25 @@ export const ColorCanvas = memo(function ColorCanvas() {
         <XGroup>
           {Object.entries(visibleCurves).map(([type, isVisible], i) => {
             return (
-              <Button
-                size="$2"
-                px="$3"
-                key={`${type}${i}`}
-                aria-label={`Toggle ${type} curve visibility`}
-                aria-pressed={isVisible}
-                onPress={() => setVisibleCurves({ ...visibleCurves, [type]: !isVisible })}
-                themeInverse={isVisible}
-                opacity={isVisible ? 1 : 0.5}
-              >
-                {type[0].toUpperCase()}
-              </Button>
+              <Theme key={`${type}${i}`} inverse={isVisible}>
+                <Button
+                  size="$2"
+                  px="$3"
+                  aria-label={`Toggle ${type} curve visibility`}
+                  aria-pressed={isVisible}
+                  onPress={() =>
+                    setVisibleCurves({ ...visibleCurves, [type]: !isVisible })
+                  }
+                  opacity={isVisible ? 1 : 0.5}
+                >
+                  {type[0].toUpperCase()}
+                </Button>
+              </Theme>
             )
           })}
         </XGroup>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <XGroup>
           <Button
@@ -140,7 +142,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 p="$2"
                 onPress={() => state.colors.setColorIndex(String(i))}
               >
-                <Spacer flex />
+                <Spacer flex={1} />
                 <YStack
                   ml="auto"
                   items="flex-end"

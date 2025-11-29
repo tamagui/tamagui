@@ -1,9 +1,8 @@
-import React from 'react'
 import { Avatar, XStack } from 'tamagui'
 
 export function AvatarDemo() {
   return (
-    <XStack alignItems="center" gap="$6">
+    <XStack items="center" gap="$6">
       <Avatar circular size="$10">
         <Avatar.Image
           aria-label="Cam"

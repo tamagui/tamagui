@@ -120,6 +120,26 @@ export function Test({
 }"
 `;
 
+exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
+"const _cn = "is_View _dsp-flex _ai-stretch _fd-column _bxs-border-box _mih-0px _miw-0px _fs-0 _fb-1px _fb-_gtXs_0px ";
+import { View } from '@tamagui/core';
+export function Test() {
+  return <div className={_cn} />;
+}"
+`;
+
+exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `
+":root ._dsp-flex{display:flex;}
+:root ._ai-stretch{align-items:stretch;}
+:root ._fd-column{flex-direction:column;}
+:root ._bxs-border-box{box-sizing:border-box;}
+:root ._mih-0px{min-height:0px;}
+:root ._miw-0px{min-width:0px;}
+:root ._fs-0{flex-shrink:0;}
+:root ._fb-1px{flex-basis:1px;}
+@media (min-width: 661px){:root:root:root:root:root:root:root:root ._fb-_gtXs_0px{flex-basis:0px;}}"
+`;
+
 exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `undefined`;
 
 exports[`fontFamily shorthand + styled + flatten works 1`] = `undefined`;

@@ -373,17 +373,6 @@ const ToggleGroupImplElementFrame = styled(Group, {
         backgroundColor: '$background',
       },
     },
-
-    orientation: {
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
-      },
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
-      },
-    },
   } as const,
 
   defaultVariants: {

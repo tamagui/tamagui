@@ -26,9 +26,6 @@ interface MenuAnchorProps extends PopperAnchorProps {
 interface MenuPortalProps {
     children?: React.ReactNode;
     /**
-     * Specify a container element to portal the content into.
-     */
-    /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
@@ -143,16 +140,6 @@ export interface MenuSubContentProps extends Omit<MenuContentImplProps, keyof Me
      */
     forceMount?: true;
 }
-export declare const NativePropProvider: React.Provider<{
-    native: boolean;
-}> & React.ProviderExoticComponent<Partial<{
-    native: boolean;
-}> & {
-    children?: React.ReactNode;
-    scope?: string;
-}>, useNativeProp: (scope?: string) => {
-    native: boolean;
-};
 export type CreateBaseMenuProps = {
     Item?: TamaguiComponent;
     MenuGroup?: TamaguiComponent;

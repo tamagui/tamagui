@@ -1,6 +1,16 @@
 import React from 'react'
 import type { TabsContentProps } from 'tamagui'
-import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb } from 'tamagui'
+import {
+  Button,
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  XStack,
+  YStack,
+  isWeb,
+  useWindowDimensions,
+} from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -15,7 +25,7 @@ export function TabsDemo() {
   return (
     // web only fix for position relative
     <YStack
-      paddingHorizontal="$4"
+      px="$4"
       {...(isWeb && {
         position: 'unset' as any,
       })}
@@ -23,11 +33,11 @@ export function TabsDemo() {
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
       <XStack
-        alignItems="center"
+        items="center"
         gap="$4"
         position="absolute"
-        bottom="$3"
-        left="$4"
+        b="$3"
+        l="$4"
         $maxXs={{ display: 'none' }}
       >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
@@ -39,15 +49,16 @@ export function TabsDemo() {
 }
 
 const HorizontalTabs = () => {
+  const { width } = useWindowDimensions()
   return (
     <Tabs
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      $maxMd={{ width: 300 }}
+      $maxMd={{ width: width - 32 }}
       width={400}
       height={150}
-      borderRadius="$4"
+      rounded="$4"
       borderWidth="$0.25"
       overflow="hidden"
       borderColor="$borderColor"
@@ -60,7 +71,7 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab1"
         >
-          <SizableText fontFamily="$body" textAlign="center">
+          <SizableText fontFamily="$body" text="center" ellipsis>
             Profile
           </SizableText>
         </Tabs.Tab>
@@ -71,7 +82,7 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab2"
         >
-          <SizableText fontFamily="$body" textAlign="center">
+          <SizableText fontFamily="$body" text="center" ellipsis>
             Connections
           </SizableText>
         </Tabs.Tab>
@@ -82,7 +93,7 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab3"
         >
-          <SizableText fontFamily="$body" textAlign="center">
+          <SizableText fontFamily="$body" text="center" ellipsis>
             Notifications
           </SizableText>
         </Tabs.Tab>
@@ -110,7 +121,7 @@ const VerticalTabs = () => {
       flexDirection="row"
       orientation="vertical"
       width={400}
-      borderRadius="$4"
+      rounded="$4"
       borderWidth="$0.25"
       overflow="hidden"
       borderColor="$borderColor"
@@ -128,13 +139,13 @@ const VerticalTabs = () => {
       </Tabs.List>
       <Separator vertical />
       <TabsContent value="tab1">
-        <H5 textAlign="center">Profile</H5>
+        <H5 text="center">Profile</H5>
       </TabsContent>
       <TabsContent value="tab2">
-        <H5 textAlign="center">Connections</H5>
+        <H5 text="center">Connections</H5>
       </TabsContent>
       <TabsContent value="tab3">
-        <H5 textAlign="center">Notifications</H5>
+        <H5 text="center">Notifications</H5>
       </TabsContent>
     </Tabs>
   )
@@ -143,14 +154,14 @@ const VerticalTabs = () => {
 const TabsContent = (props: TabsContentProps) => {
   return (
     <Tabs.Content
-      backgroundColor="$background"
+      bg="$background"
       key="tab3"
-      padding="$2"
-      alignItems="center"
-      justifyContent="center"
+      p="$2"
+      items="center"
+      justify="center"
       flex={1}
       borderColor="$background"
-      borderRadius="$2"
+      rounded="$2"
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
       borderWidth="$2"

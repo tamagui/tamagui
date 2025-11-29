@@ -29,7 +29,7 @@ export function TokensDemo() {
 
   return (
     <YStack gap="$4">
-      <XGroup alignItems="center" alignSelf="center">
+      <XGroup items="center" self="center">
         {sections.map(({ name, key }) => {
           return (
             <XGroup.Item key={key}>
@@ -71,7 +71,7 @@ function SizeSection({ section }: { section: Section }) {
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map(
           (token) => {
             return (
-              <XStack width="100%" alignItems="center" key={token}>
+              <XStack width="100%" items="center" key={token}>
                 <YStack width="25%">
                   <H3 size="$6">${token}</H3>
                 </YStack>

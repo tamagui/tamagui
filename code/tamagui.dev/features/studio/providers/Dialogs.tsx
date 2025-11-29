@@ -1,38 +1,21 @@
-import { Copy, X } from '@tamagui/lucide-icons'
-import { memo, useState } from 'react'
+import { X } from '@tamagui/lucide-icons'
+import { memo } from 'react'
 import { useWindowDimensions } from 'react-native'
 import type { DialogCloseProps } from 'tamagui'
-import {
-  Button,
-  Dialog,
-  Fieldset,
-  Input,
-  Label,
-  SizableText,
-  Tabs,
-  TextArea,
-  Unspaced,
-  XStack,
-  YStack,
-} from 'tamagui'
-
-import { generateOutput } from '../state/generateOutput'
+import { Button, Dialog, Fieldset, Input, Label, Unspaced, XStack, YStack } from 'tamagui'
 import { rootStore } from '../state/RootStore'
 import type {
   ConfirmDeleteDialogProps,
-  CreateAnimationDialogProps,
   CreateThemeDialogProps,
   DialogTypes,
-  ExportDialogProps,
   StudioAlertDialogProps,
 } from '../state/types'
 import { useGlobalState } from '../state/useGlobalState'
-// import { toastController } from '../ToastProvider'
 
 const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
-      <Button size="$3" pos="absolute" t="$3" r="$3" circular icon={X} zi={1000} />
+      <Button size="$3" position="absolute" t="$3" r="$3" circular icon={X} z={1000} />
     </Dialog.Close>
   </Unspaced>
 )
@@ -68,8 +51,7 @@ export const Dialogs = memo(() => {
           onPointerDownOutside={() => {
             rootStore.hideDialog()
           }}
-          borderWidth={1}
-          borderColor="$borderColor"
+          bordered
           elevate
           key="content"
           animation={[
@@ -86,7 +68,7 @@ export const Dialogs = memo(() => {
           scale={1}
           opacity={1}
           y={0}
-          maxWidth={dimensions.width * 75}
+          maxW={dimensions.width * 75}
           p="$5"
         >
           <DialogContents {...dialogProps} />
@@ -95,36 +77,6 @@ export const Dialogs = memo(() => {
     </Dialog>
   )
 })
-
-const CreateWorkspaceDialog = () => {
-  return (
-    <>
-      <DialogCloseButton />
-      <YStack gap="$4">
-        <YStack gap="$2">
-          <Dialog.Title size="$7">Create Workspace</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
-            A workspace contains assets: colors, themes, fonts, and icons. You can import
-            existing assets into the workspace after creation.
-          </Dialog.Description>
-        </YStack>
-
-        <Fieldset gap="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="workspace-name">
-            Name
-          </Label>
-          <Input size="$3" f={1} id="workspace-name" />
-        </Fieldset>
-
-        <YStack ai="flex-end" mt="$2">
-          <DialogClose>
-            <Button aria-label="Close">Create</Button>
-          </DialogClose>
-        </YStack>
-      </YStack>
-    </>
-  )
-}
 
 const DialogClose = (props: DialogCloseProps) => {
   return (
@@ -151,10 +103,10 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
         </YStack>
 
         <Fieldset gap="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="theme-name">
+          <Label size="$3" width={160} justify="flex-end" htmlFor="theme-name">
             Name
           </Label>
-          <Input size="$3" f={1} id="theme-name" />
+          <Input size="$3" flex={1} id="theme-name" />
         </Fieldset>
         <DialogClose>
           <Button aria-label="Close">Create</Button>
@@ -176,7 +128,7 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" gap="$4">
+        <XStack justify="flex-end" gap="$4">
           <Dialog.Close asChild>
             <Button>Cancel</Button>
           </Dialog.Close>
@@ -203,139 +155,11 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" gap="$4">
+        <XStack justify="flex-end" gap="$4">
           <DialogClose>
-            <Button aria-label="Ok" theme="accent">
+            <Button themeInverse aria-label="Ok">
               Ok
             </Button>
-          </DialogClose>
-        </XStack>
-      </YStack>
-    </>
-  )
-}
-
-const CreateAnimationDialog = (props: CreateAnimationDialogProps) => {
-  const state = useGlobalState()
-  const [name, setName] = useState('')
-
-  return (
-    <>
-      <DialogCloseButton />
-      <YStack gap="$4">
-        <YStack gap="$2">
-          <Dialog.Title size="$7">Create Theme</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
-            Create a new animation.
-          </Dialog.Description>
-        </YStack>
-
-        <Fieldset gap="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="animation-name">
-            Name
-          </Label>
-          <Input
-            value={name}
-            onChangeText={setName}
-            size="$3"
-            f={1}
-            id="animation-name"
-          />
-        </Fieldset>
-        {/* <Fieldset gap="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="animation-name">
-            Type
-          </Label>
-          <RadioGroup defaultValue="react-native">
-            <XStack ai="center" gap="$4">
-              <RadioGroup.Item value="react-native" id="radio-react-native">
-                <RadioGroup.Indicator />
-              </RadioGroup.Item>
-              <Label htmlFor="radio-react-native">React Native</Label>
-            </XStack>
-            <XStack ai="center" gap="$4">
-              <RadioGroup.Item value="css" id="radio-react-css">
-                <RadioGroup.Indicator />
-              </RadioGroup.Item>
-              <Label htmlFor="radio-react-css">CSS</Label>
-            </XStack>
-          </RadioGroup>
-        </Fieldset> */}
-        <DialogClose>
-          <Button
-            onPress={() => {
-              state.animations.createAnimation(name)
-            }}
-            aria-label="Close"
-          >
-            Create
-          </Button>
-        </DialogClose>
-      </YStack>
-    </>
-  )
-}
-
-const ExportDialog = (props: ExportDialogProps) => {
-  const state = useGlobalState()
-  const [tab, setTab] = useState('current')
-  const snippet = tab === 'current' ? props.snippet : generateOutput(state)
-
-  return (
-    <>
-      <DialogCloseButton />
-      <YStack gap="$4">
-        <YStack gap="$2">
-          <Dialog.Title size="$7">Export</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
-            Copy and paste (for now)
-          </Dialog.Description>
-        </YStack>
-        <Tabs
-          size="$3"
-          flexDirection="column"
-          orientation="horizontal"
-          value={tab}
-          onValueChange={(newTab) => setTab(newTab)}
-        >
-          <XStack jc="space-between" ai="center" mb="$2">
-            <Tabs.List disablePassBorderRadius>
-              <Tabs.Tab value="current">
-                <SizableText>Current Tab</SizableText>
-              </Tabs.Tab>
-              <Tabs.Tab value="full">
-                <SizableText>Full Config</SizableText>
-              </Tabs.Tab>
-            </Tabs.List>
-
-            <Button
-              size="$3"
-              theme="green"
-              icon={Copy}
-              onPress={async () => {
-                await navigator.clipboard.writeText(snippet)
-                // toastController.show('Copied!')
-              }}
-            >
-              Copy to Clipboard
-            </Button>
-          </XStack>
-
-          <TextArea
-            fontFamily="$mono"
-            multiline
-            width={600}
-            numberOfLines={10}
-            // @ts-ignore
-            rows="10"
-            disabled
-            value={snippet}
-          />
-        </Tabs>
-
-        <XStack jc="flex-end" mt="$2" gap="$4">
-          <DialogClose>
-            <Button aria-label="Close">Done</Button>
           </DialogClose>
         </XStack>
       </YStack>
@@ -346,11 +170,8 @@ const ExportDialog = (props: ExportDialogProps) => {
 const dialogs: {
   [Key in keyof DialogTypes]: (props: DialogTypes[Key]) => any
 } = {
-  none: CreateWorkspaceDialog,
-  'create-workspace': CreateWorkspaceDialog,
+  none: AlertDialog,
   'create-theme': CreateThemeDialog,
-  'create-animation': CreateAnimationDialog,
   'confirm-delete': ConfirmDeleteDialog,
-  export: ExportDialog,
   alert: AlertDialog,
 }

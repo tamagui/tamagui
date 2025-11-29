@@ -31,9 +31,9 @@ export const components: PreviewComponent[] = [
   {
     name: 'Card',
     component: () => (
-      <Card bw={1} bc="$borderColor" p="$4" width={300} elevation="$2">
+      <Card borderWidth={1} borderColor="$borderColor" p="$4" width={300} elevation="$2">
         <Card.Header p="$3">
-          <XStack jc="space-between" ai="center">
+          <XStack justify="space-between" items="center">
             <YStack gap="$1">
               <SizableText size="$5" fontWeight="600">
                 Card Title
@@ -45,7 +45,7 @@ export const components: PreviewComponent[] = [
           </XStack>
         </Card.Header>
         <Card.Footer p="$3">
-          <XStack gap="$3" jc="flex-end">
+          <XStack gap="$3" justify="flex-end">
             <Button size="$3">Cancel</Button>
             <Button size="$3" theme="blue">
               Save
@@ -69,7 +69,7 @@ export const components: PreviewComponent[] = [
   {
     name: 'Switch',
     component: () => (
-      <XStack gap="$4" ai="center">
+      <XStack gap="$4" items="center">
         <Switch />
         <Switch defaultChecked />
         <Switch disabled />
