@@ -1,30 +1,20 @@
-export type { InputProps as TextAreaProps } from './types';
 /**
- * A web-aligned textarea component (multi-line input).
+ * @deprecated Use the new TextArea from '@tamagui/input' instead
+ * @summary A text area is a multi-line input field that allows users to enter text.
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
-export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeAndShorthands<import("@tamagui/web").StackStyleBase, {}>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "color" | "size" | "children" | "style" | "className"> & Pick<import("@tamagui/web").TextProps, "color"> & {
-    rows?: number;
+export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeAndShorthands<import("@tamagui/web").StackStyleBase, {}>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").ClassAttributes<HTMLInputElement> & import("react").HTMLProps<HTMLInputElement>, "size" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeAndShorthands<import("@tamagui/web").StackStyleBase, {}>> | keyof import("@tamagui/web").StackNonStyleProps> & Pick<import("@tamagui/web").TextProps, "color"> & Omit<import("react").CSSProperties | undefined, "color"> & Omit<import("react-native").TextInputProps, "numberOfLines" | "selectionColor" | "enterKeyHint" | "inputMode" | "placeholderTextColor" | "editable" | "keyboardType" | "onChangeText" | "secureTextEntry"> & {
+    secureTextEntry?: import("react-native").TextInputProps["secureTextEntry"];
+    onChangeText?: import("react-native").TextInputProps["onChange"];
+    editable?: import("react-native").TextInputProps["editable"];
+    enterKeyHint?: "done" | "go" | "next" | "search" | "send" | "enter" | "previous";
+    keyboardType?: import("react-native").TextInputProps["keyboardType"];
+    inputMode?: import("react-native").InputModeOptions;
     placeholderTextColor?: import("@tamagui/web").ColorTokens;
     selectionColor?: import("@tamagui/web").ColorTokens;
-    onChangeText?: (text: string) => void;
-    onSubmitEditing?: (e: {
-        nativeEvent: {
-            text: string;
-        };
-    }) => void;
-    selection?: {
-        start: number;
-        end?: number;
-    };
-    onSelectionChange?: (e: {
-        nativeEvent: {
-            selection: {
-                start: number;
-                end: number;
-            };
-        };
-    }) => void;
+    tag?: import("@tamagui/web").TamaguiComponentPropsBase["tag"];
+    multiline?: boolean;
+    numberOfLines?: number;
 }, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
