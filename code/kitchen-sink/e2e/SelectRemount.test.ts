@@ -3,6 +3,9 @@
  * https://github.com/tamagui/tamagui/issues/1859
  *
  * Using Detox for more reliable cross-platform native testing.
+ *
+ * Note: This app uses Reanimated (via Moti) for animations, which can cause Detox
+ * synchronization issues. We disable synchronization and use manual waits instead.
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
@@ -10,11 +13,19 @@ import { by, device, element, expect, waitFor } from 'detox'
 describe('SelectRemount', () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true })
+    // Disable Detox synchronization because Reanimated keeps the JS thread busy
+    await device.disableSynchronization()
+  })
+
+  afterAll(async () => {
+    await device.enableSynchronization()
   })
 
   beforeEach(async () => {
     // Reload the app to start fresh on home screen
     await device.reloadReactNative()
+    // Wait for app to initialize after reload (since sync is disabled)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
     // Navigate to SelectRemount test case from home screen
     await navigateToSelectRemount()
   })
@@ -28,8 +39,13 @@ describe('SelectRemount', () => {
     // Tap the select trigger
     await element(by.id('select-remount-test-trigger')).tap()
 
-    // Wait for Select options to appear
-    await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
+    // Wait for Select sheet to animate in
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // Wait for Select options to appear (use toExist since it may be partially visible in sheet)
+    await waitFor(element(by.id('select-remount-test-option-apple')))
+      .toExist()
+      .withTimeout(5000)
 
     // Close Select by pressing back on Android or tapping outside on iOS
     if (device.getPlatform() === 'android') {
@@ -37,6 +53,7 @@ describe('SelectRemount', () => {
     } else {
       await device.tap({ x: 200, y: 100 })
     }
+    await new Promise((resolve) => setTimeout(resolve, 500))
   })
 
   it('should open Select after unmount/remount cycle', async () => {
@@ -44,13 +61,18 @@ describe('SelectRemount', () => {
     await element(by.id('remount-button')).tap()
 
     // Wait a moment for remount to complete
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
     // Try to open the Select again - THIS IS THE KEY TEST for #1859
     await element(by.id('select-remount-test-trigger')).tap()
 
-    // If the bug exists, the Select won't open. With the fix, options should be visible
-    await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
+    // Wait for Select sheet to animate in
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // If the bug exists, the Select won't open. With the fix, options should exist
+    await waitFor(element(by.id('select-remount-test-option-apple')))
+      .toExist()
+      .withTimeout(5000)
 
     // Close Select
     if (device.getPlatform() === 'android') {
@@ -58,6 +80,7 @@ describe('SelectRemount', () => {
     } else {
       await device.tap({ x: 200, y: 100 })
     }
+    await new Promise((resolve) => setTimeout(resolve, 500))
   })
 
   it('should work with multiple Selects after remount', async () => {
@@ -129,13 +152,15 @@ async function navigateToSelectRemount() {
     .withTimeout(10000)
 
   // Small delay for the list to render
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  // SelectRemount is now near the top of the list (2nd item after Benchmark)
-  // Wait for it to be visible and tap it using testID
+  // SelectRemount is in the middle of the alphabetically sorted list (position ~37)
+  // Scroll until the element becomes visible (larger scroll for faster navigation)
   await waitFor(element(by.id('test-case-SelectRemount')))
     .toBeVisible()
-    .withTimeout(10000)
+    .whileElement(by.id('test-cases-scroll-view'))
+    .scroll(600, 'down', Number.NaN, Number.NaN)
+
   await element(by.id('test-case-SelectRemount')).tap()
 
   // Wait for the test screen to load

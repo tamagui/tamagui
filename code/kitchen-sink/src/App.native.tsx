@@ -2,13 +2,17 @@ import 'react-native-gesture-handler'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import React from 'react'
-import { Appearance, useColorScheme } from 'react-native'
+import { Appearance, LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
 import * as SplashScreen from 'expo-splash-screen'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+// Disable LogBox warnings to prevent them from blocking E2E tests
+// These are typically deep import warnings from react-native internals
+LogBox.ignoreAllLogs()
 
 SplashScreen.hideAsync()
 
