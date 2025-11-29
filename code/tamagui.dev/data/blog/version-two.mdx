@@ -17,23 +17,37 @@ poster: banner-two.jpg
   going quite deep to make that possible. Some examples:
 </IntroParagraph>
 
-- It brings many style features from CSS to native, yet all style primitives
-  work native and web, runtime and compile-time, server-side and client-side.
-- Enjoy server-side rendering without flickering, even when using spring-based
-  animation drivers, or with media queries, or themes.
-- The optimizing compiler handles logic via complete partial analysis to output
-  flat trees with platform-specific optimization.
+Tamagui brings many style features from CSS to native, yet all style primitives
+work native and web, runtime and compile-time, server-side and client-side. You
+get server-side rendering without flickering, even when using spring-based
+animation drivers, or with media queries, or themes, and the optimizing compiler
+means you can write natural inline styles without the typical performance cost.
 
-The result is that Tamagui lets you ship world class experiences without being
-forced to write all your UI two or more times, and without downgrading your
-developer experience. We're proud to be used by companies like
-[Uniswap](https://uniswap.org), where we enabled a dramatic reduction in code
-duplication, while increasing shipping velocity and maintaining top-tier UX and
-performance.
+In comparison to other solutions, Tamagui is especially strong at:
+
+- _Able to share 100% between web and native._ Many other solutions focus on one
+  platform more than others, or implement their features in sub-par ways on web.
+- _Great performance and platform feeling on both web and native._ As a small
+  example - you can choose from 4 animations drivers (CSS, Reanimated, Motion,
+  React Native), per-platform, yet not matter which you choose proper SSR with
+  media queries and dark mode properly renders and hydrates.
+- _Fast, type-safe, properly mergable inline styling._ Inline styles are leap
+  forward, but the lack of type safety or easy ability to merge and group your
+  styles is their biggest drawback. Tamagui is fully type safe, lets you control
+  how you merge styles, and optimizes it all nearly perfectly even in the face
+  of complicated logic.
+- _A first-class, composable components based UI kit._ Our UI kit doesn't just
+  target one platform, uses composable components, and can even adapt based on
+  the device.
+
+The result is that Tamagui is the only library that lets you ship world class
+experiences on all platforms, with a lot less code. We're proud to be used by
+companies like [Uniswap](https://uniswap.org), who leveraged Tamagui to unify
+their featureset across platforms and greatly simplify their codebase.
 
 ### Improvements during v1
 
-Tamagui improved continously during major version one:
+Tamagui improved continously during version one:
 
 - Added hundreds of tests, stricter lints, dependency checks and a stricter
   release process to improve stability.
@@ -62,8 +76,10 @@ The breaking changes outside of deprecations are:
   but you can change settings to keep the legacy behavior.
 - Button and ListItem lose direct text style props, to gain performance.
 - useTheme no longer takes props, must be changed using a component.
-- Removed `onHoverIn` and `onHoverOut` in favor of standard `onMouseEnter` and `onMouseLeave`.
-- Added comprehensive web event handler support including keyboard, pointer, drag and drop, clipboard, and scroll events.
+- Removed `onHoverIn` and `onHoverOut` in favor of standard `onMouseEnter` and
+  `onMouseLeave`.
+- Added comprehensive web event handler support including keyboard, pointer,
+  drag and drop, clipboard, and scroll events.
 
 Things depreciated in version one that are now gone:
 

@@ -1,8 +1,12 @@
+// debug
+
+/**
+ * You can test with and without optimization
+ */
+
 import React from 'react'
 import { Button, StyleSheet, View } from 'react-native'
 import { Stack, Text, styled } from 'tamagui'
-
-// 123
 
 // disabling to avoid dep
 import { ThemeProvider, createBox } from '@shopify/restyle'
@@ -63,7 +67,13 @@ const BenchTama = () => {
     <BenchmarkFrame name="tamagui">
       <View style={{ flexDirection: 'row' }}>
         {iterArr.map((_, i) => (
-          <StyledStack key={i} />
+          <Stack
+            key={i}
+            backgroundColor="green"
+            paddingTop={5}
+            paddingBottom={5}
+            width={20}
+          />
         ))}
       </View>
     </BenchmarkFrame>

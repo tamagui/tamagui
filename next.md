@@ -1,7 +1,13 @@
+kitchen sink not hot reloading?
+  - had to disable a couple things see // TODO restore
+  - listItem has no bg
+
 compiler:
 
   - would be nice if we could get inline optimization working seamlessly
+    - enableDynamicEvaluation
   - no more experimental flatten themes
+
 
 pre v2:
 

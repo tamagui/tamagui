@@ -781,23 +781,25 @@ export function createExtractor(
         }
 
         // add data-* debug attributes
-        if (shouldAddDebugProp && !disableDebugAttr) {
-          res.modified++
-          node.attributes.unshift(
-            t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(node.name.name))
-          )
-          if (componentName) {
+        if (platform !== 'native') {
+          if (shouldAddDebugProp && !disableDebugAttr) {
+            res.modified++
             node.attributes.unshift(
-              t.jsxAttribute(t.jsxIdentifier('data-in'), t.stringLiteral(componentName))
+              t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(node.name.name))
+            )
+            if (componentName) {
+              node.attributes.unshift(
+                t.jsxAttribute(t.jsxIdentifier('data-in'), t.stringLiteral(componentName))
+              )
+            }
+
+            node.attributes.unshift(
+              t.jsxAttribute(
+                t.jsxIdentifier('data-at'),
+                t.stringLiteral(`${basename(filePath)}:${lineNumbers}`)
+              )
             )
           }
-
-          node.attributes.unshift(
-            t.jsxAttribute(
-              t.jsxIdentifier('data-at'),
-              t.stringLiteral(`${basename(filePath)}:${lineNumbers}`)
-            )
-          )
         }
 
         if (shouldDisableExtraction) {
@@ -1975,10 +1977,9 @@ export function createExtractor(
                   ...styleProps,
                   noClass: true,
                   fallbackProps: completeProps,
-                  ...(options.experimentalFlattenThemesOnNative &&
-                    platform === 'native' && {
-                      resolveValues: 'except-theme',
-                    }),
+                  ...(platform === 'native' && {
+                    resolveValues: 'except-theme',
+                  }),
                 },
                 undefined,
                 undefined,
@@ -2223,9 +2224,7 @@ export function createExtractor(
             }
           }
 
-          if (options.experimentalFlattenThemesOnNative) {
-            attrs = attrs.filter(Boolean)
-          }
+          attrs = attrs.filter(Boolean)
 
           // inlineWhenUnflattened
           if (!shouldFlatten) {

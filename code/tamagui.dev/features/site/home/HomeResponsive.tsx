@@ -1,5 +1,5 @@
 import { throttle } from '@github/mini-throttle'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/tamagui-dev-config'

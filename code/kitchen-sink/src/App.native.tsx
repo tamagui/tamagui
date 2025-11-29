@@ -14,10 +14,11 @@ SplashScreen.hideAsync()
 
 export default function App() {
   const [theme, setTheme] = React.useState(Appearance.getColorScheme())
-  const [loaded] = useFonts({
-    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  })
+  // TODO restore
+  // const [loaded] = useFonts({
+  //   Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+  //   InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  // })
 
   const colorScheme = useColorScheme()
 
@@ -35,9 +36,9 @@ export default function App() {
     }
   }, [theme])
 
-  if (!loaded) {
-    return null
-  }
+  // if (!loaded) {
+  //   return null
+  // }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -45,7 +46,8 @@ export default function App() {
         <ThemeContext.Provider value={themeContext}>
           <Provider defaultTheme={theme as any}>
             <Navigation />
-            <SafeToastViewport />
+            {/* // TODO restore */}
+            {/* <SafeToastViewport /> */}
           </Provider>
         </ThemeContext.Provider>
       </SafeAreaProvider>
