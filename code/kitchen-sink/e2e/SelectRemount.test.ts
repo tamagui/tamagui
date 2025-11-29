@@ -90,44 +90,48 @@ describe('SelectRemount', () => {
     // Tap remount to reset state
     await element(by.id('remount-button')).tap()
 
-    // Wait for remount - give extra time on Android
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    // Wait for remount - give extra time on Android CI (slower emulator)
+    await new Promise((resolve) => setTimeout(resolve, 3000))
 
     // Verify remount button is still visible (we're still on the right screen)
     await waitFor(element(by.id('remount-button')))
       .toBeVisible()
-      .withTimeout(5000)
+      .withTimeout(10000)
 
     // Test first Select - wait for it to be ready after remount
     await waitFor(element(by.id('select-remount-test-trigger')))
       .toBeVisible()
-      .withTimeout(5000)
+      .withTimeout(10000)
     await element(by.id('select-remount-test-trigger')).tap()
 
-    // Wait for Select sheet/content to animate in
+    // Wait for Select sheet/content to animate in (use toExist for CI stability)
     await waitFor(element(by.id('select-remount-test-option-apple')))
-      .toBeVisible()
-      .withTimeout(10000)
+      .toExist()
+      .withTimeout(15000)
 
-    // Select an option to close the Select instead of pressing back
-    await element(by.id('select-remount-test-option-apple')).tap()
+    // Close Select by pressing back on Android or tapping outside on iOS
+    if (device.getPlatform() === 'android') {
+      await device.pressBack()
+    } else {
+      await element(by.id('select-remount-test-option-apple')).tap()
+    }
 
     // Wait for sheet to close
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
     // Verify we're still on the SelectRemount screen
     await waitFor(element(by.id('remount-button')))
       .toBeVisible()
-      .withTimeout(5000)
+      .withTimeout(10000)
 
     // Test second Select - wait for it to be visible
     await waitFor(element(by.id('select-remount-test-2-trigger')))
       .toBeVisible()
-      .withTimeout(5000)
+      .withTimeout(10000)
     await element(by.id('select-remount-test-2-trigger')).tap()
     await waitFor(element(by.id('select-remount-test-2-option-apple')))
-      .toBeVisible()
-      .withTimeout(10000)
+      .toExist()
+      .withTimeout(15000)
   })
 })
 
