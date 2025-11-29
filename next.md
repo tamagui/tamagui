@@ -1,3 +1,8 @@
+compiler:
+
+  - would be nice if we could get inline optimization working seamlessly
+  - no more experimental flatten themes
+
 pre v2:
 
   - useTheme().x.val may have bug on light/dark switch
